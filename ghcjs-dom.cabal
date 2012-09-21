@@ -1,0 +1,17 @@
+name: ghcjs-dom
+version: 0.0.1
+cabal-version: >=1.2
+build-type: Simple
+license: BSD3
+license-file: ""
+data-dir: ""
+
+library
+    build-depends: glib >=0.12.3.1 && <0.13, gtk >=0.12.3.1 && <0.13,
+                   base -any, webkit >=0.12.5
+    exposed-modules: Graphics.UI.Gtk.WebKit.GHCJS
+    exposed: True
+    buildable: True
+    hs-source-dirs: src
+    c-sources:      cbits/ghcjs_stubs.c
+
