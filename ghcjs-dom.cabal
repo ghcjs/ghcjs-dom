@@ -1,15 +1,155 @@
 name: ghcjs-dom
 version: 0.0.1
-cabal-version: >=1.2
+cabal-version: >=1.8
 build-type: Simple
 license: BSD3
 license-file: ""
 data-dir: ""
 
 library
-    build-depends: glib >=0.12.3.1 && <0.13, gtk >=0.12.3.1 && <0.13,
-                   base -any, webkit >=0.12.5
-    exposed-modules: Graphics.UI.Gtk.WebKit.GHCJS
+    build-depends: base -any
+    exposed-modules: GHCJS.DOM
+
+    if impl(ghcjs)
+      build-depends: ghcjs-base,  mtl
+      exposed-modules:
+          GHCJS.DOM.Attr
+          GHCJS.DOM.BarInfo
+          GHCJS.DOM.Blob
+          GHCJS.DOM.CharacterData
+          GHCJS.DOM.Console
+          GHCJS.DOM.Css
+          GHCJS.DOM.CSSRule
+          GHCJS.DOM.CSSRuleList
+          GHCJS.DOM.CSSStyleDeclaration
+          GHCJS.DOM.CSSStyleSheet
+          GHCJS.DOM.CSSValue
+          GHCJS.DOM.Document
+          GHCJS.DOM.DocumentType
+          GHCJS.DOM.DOMApplicationCache
+          GHCJS.DOM.DOMImplementation
+          GHCJS.DOM.DOMMimeType
+          GHCJS.DOM.DOMMimeTypeArray
+          GHCJS.DOM.DOMPlugin
+          GHCJS.DOM.DOMPluginArray
+          GHCJS.DOM.DOMSelection
+          GHCJS.DOM.DOMSettableTokenList
+          GHCJS.DOM.DOMTokenList
+          GHCJS.DOM.DOMWindow
+          GHCJS.DOM.Element
+          GHCJS.DOM.Event
+          GHCJS.DOM.EventM
+          GHCJS.DOM.Events
+--          GHCJS.DOM.EventTarget
+          GHCJS.DOM.EventTargetClosures
+          GHCJS.DOM.File
+          GHCJS.DOM.FileList
+          GHCJS.DOM.History
+          GHCJS.DOM.HTMLAnchorElement
+          GHCJS.DOM.HTMLAppletElement
+          GHCJS.DOM.HTMLAreaElement
+          GHCJS.DOM.HTMLBaseElement
+          GHCJS.DOM.HTMLBaseFontElement
+          GHCJS.DOM.HTMLBodyElement
+          GHCJS.DOM.HTMLBRElement
+          GHCJS.DOM.HTMLButtonElement
+          GHCJS.DOM.HTMLCollection
+          GHCJS.DOM.HTMLDirectoryElement
+          GHCJS.DOM.HTMLDivElement
+          GHCJS.DOM.HTMLDListElement
+          GHCJS.DOM.HTMLDocument
+          GHCJS.DOM.HTMLElement
+          GHCJS.DOM.HTMLFieldSetElement
+          GHCJS.DOM.HTMLFontElement
+          GHCJS.DOM.HTMLFormElement
+          GHCJS.DOM.HTMLFrameElement
+          GHCJS.DOM.HTMLFrameSetElement
+          GHCJS.DOM.HTMLHeadElement
+          GHCJS.DOM.HTMLHeadingElement
+          GHCJS.DOM.HTMLHRElement
+          GHCJS.DOM.HTMLHtmlElement
+          GHCJS.DOM.HTMLIFrameElement
+          GHCJS.DOM.HTMLImageElement
+          GHCJS.DOM.HTMLInputElement
+          GHCJS.DOM.HTMLLabelElement
+          GHCJS.DOM.HTMLLegendElement
+          GHCJS.DOM.HTMLLIElement
+          GHCJS.DOM.HTMLLinkElement
+          GHCJS.DOM.HTMLMapElement
+          GHCJS.DOM.HTMLMenuElement
+          GHCJS.DOM.HTMLMetaElement
+          GHCJS.DOM.HTMLModElement
+          GHCJS.DOM.HTMLObjectElement
+          GHCJS.DOM.HTMLOListElement
+          GHCJS.DOM.HTMLOptGroupElement
+          GHCJS.DOM.HTMLOptionElement
+          GHCJS.DOM.HTMLOptionsCollection
+          GHCJS.DOM.HTMLParagraphElement
+          GHCJS.DOM.HTMLParamElement
+          GHCJS.DOM.HTMLPreElement
+          GHCJS.DOM.HTMLQuoteElement
+          GHCJS.DOM.HTMLScriptElement
+          GHCJS.DOM.HTMLSelectElement
+          GHCJS.DOM.HTMLStyleElement
+          GHCJS.DOM.HTMLTableCaptionElement
+          GHCJS.DOM.HTMLTableCellElement
+          GHCJS.DOM.HTMLTableColElement
+          GHCJS.DOM.HTMLTableElement
+          GHCJS.DOM.HTMLTableRowElement
+          GHCJS.DOM.HTMLTableSectionElement
+          GHCJS.DOM.HTMLTextAreaElement
+          GHCJS.DOM.HTMLTitleElement
+          GHCJS.DOM.HTMLUListElement
+          GHCJS.DOM.Location
+          GHCJS.DOM.MediaList
+          GHCJS.DOM.MediaQueryList
+          GHCJS.DOM.MemoryInfo
+          GHCJS.DOM.MouseEvent
+          GHCJS.DOM.NamedNodeMap
+          GHCJS.DOM.Navigator
+          GHCJS.DOM.Node
+          GHCJS.DOM.NodeFilter
+          GHCJS.DOM.NodeIterator
+          GHCJS.DOM.NodeList
+          GHCJS.DOM.ProcessingInstruction
+          GHCJS.DOM.Range
+          GHCJS.DOM.Ranges
+          GHCJS.DOM.Screen
+          GHCJS.DOM.StyleMedia
+          GHCJS.DOM.StyleSheet
+          GHCJS.DOM.StyleSheetList
+          GHCJS.DOM.Stylesheets
+          GHCJS.DOM.Storage
+          GHCJS.DOM.Text
+          GHCJS.DOM.Traversal
+          GHCJS.DOM.TreeWalker
+          GHCJS.DOM.UIEvent
+          GHCJS.DOM.ValidityState
+          GHCJS.DOM.WebKitNamedFlow
+          GHCJS.DOM.WebKitPoint
+          GHCJS.DOM.Window
+          GHCJS.DOM.XPathExpression
+          GHCJS.DOM.XPathNSResolver
+          GHCJS.DOM.XPathResult
+          GHCJS.DOM.DOMSecurityPolicy
+          GHCJS.DOM.DOMStringList
+          GHCJS.DOM.Geolocation
+          GHCJS.DOM.HTMLCanvasElement
+          GHCJS.DOM.HTMLDetailsElement
+          GHCJS.DOM.HTMLEmbedElement
+          GHCJS.DOM.HTMLKeygenElement
+          GHCJS.DOM.HTMLMarqueeElement
+          GHCJS.DOM.HTMLMediaElement
+          GHCJS.DOM.HTMLVideoElement
+          GHCJS.DOM.MediaError
+          GHCJS.DOM.StorageInfo
+          GHCJS.DOM.TimeRanges
+          -- GHCJS.DOM.WebKitAnimation
+          -- GHCJS.DOM.WebKitAnimationList
+    else
+      build-depends: glib >=0.12.3.1 && <0.13, gtk >=0.12.3.1 && <0.13,
+                     webkit >=0.12.5
+
     exposed: True
     buildable: True
     hs-source-dirs: src
