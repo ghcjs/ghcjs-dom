@@ -13,6 +13,7 @@ library
     if impl(ghcjs)
       build-depends: ghcjs-base,  mtl
       exposed-modules:
+          GHCJS.DOM.Types
           GHCJS.DOM.Attr
           GHCJS.DOM.BarInfo
           GHCJS.DOM.Blob
