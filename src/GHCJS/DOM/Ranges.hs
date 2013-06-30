@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Ranges (DOMRange, DOMRangeClass) where
+module GHCJS.DOM.Ranges (DOMRange, IsDOMRange) where
  
 data DOMRange = DOMRange
  
-class DOMRangeClass a
+class IsDOMRange a
  
-instance DOMRangeClass DOMRange
+instance IsDOMRange DOMRange

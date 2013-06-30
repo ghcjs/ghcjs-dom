@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Stylesheets (MediaList, MediaListClass) where
+module GHCJS.DOM.Stylesheets (MediaList, IsMediaList) where
  
 data MediaList = MediaList
  
-class MediaListClass a
+class IsMediaList a
  
-instance MediaListClass MediaList
+instance IsMediaList MediaList

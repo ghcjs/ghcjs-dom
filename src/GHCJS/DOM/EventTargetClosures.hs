@@ -5,7 +5,7 @@ module GHCJS.DOM.EventTargetClosures
 import GHCJS.DOM.Types
 
 eventTargetAddEventListener ::
-                         (GObjectClass self, EventClass event) =>
+                         (GObjectClass self, IsEvent event) =>
                            self -> String -> Bool -> (self -> event -> IO ()) -> IO Bool
 eventTargetAddEventListener self eventName bubble user = undefined
 --do

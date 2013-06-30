@@ -1,10 +1,10 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Core (DOMAttr, DOMAttrClass) where
+module GHCJS.DOM.Core (DOMAttr, IsDOMAttr) where
  
 data DOMAttr = DOMAttr
  
-class (NodeClass a) => DOMAttrClass a
+class (IsNode a) => IsDOMAttr a
  
-instance DOMAttrClass DOMAttr
+instance IsDOMAttr DOMAttr
  
-instance NodeClass DOMAttr
+instance IsNode DOMAttr

@@ -1,9 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Xpath (XPathExpression, XPathExpressionClass)
-       where
+module GHCJS.DOM.Xpath (XPathExpression, IsXPathExpression) where
  
 data XPathExpression = XPathExpression
  
-class XPathExpressionClass a
+class IsXPathExpression a
  
-instance XPathExpressionClass XPathExpression
+instance IsXPathExpression XPathExpression

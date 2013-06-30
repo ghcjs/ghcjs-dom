@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Window (BarInfo, BarInfoClass) where
+module GHCJS.DOM.Window (BarInfo, IsBarInfo) where
  
 data BarInfo = BarInfo
  
-class BarInfoClass a
+class IsBarInfo a
  
-instance BarInfoClass BarInfo
+instance IsBarInfo BarInfo

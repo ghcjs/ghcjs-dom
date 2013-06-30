@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Css (CSSRule, CSSRuleClass) where
+module GHCJS.DOM.Css (CSSRule, IsCSSRule) where
  
 data CSSRule = CSSRule
  
-class CSSRuleClass a
+class IsCSSRule a
  
-instance CSSRuleClass CSSRule
+instance IsCSSRule CSSRule

@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Traversal (NodeFilter, NodeFilterClass) where
+module GHCJS.DOM.Traversal (NodeFilter, IsNodeFilter) where
  
 data NodeFilter = NodeFilter
  
-class NodeFilterClass a
+class IsNodeFilter a
  
-instance NodeFilterClass NodeFilter
+instance IsNodeFilter NodeFilter

@@ -1,9 +1,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
 module GHCJS.DOM.Offline
-       (DOMApplicationCache, DOMApplicationCacheClass) where
+       (DOMApplicationCache, IsDOMApplicationCache) where
  
 data DOMApplicationCache = DOMApplicationCache
  
-class DOMApplicationCacheClass a
+class IsDOMApplicationCache a
  
-instance DOMApplicationCacheClass DOMApplicationCache
+instance IsDOMApplicationCache DOMApplicationCache

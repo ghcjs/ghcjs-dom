@@ -76,70 +76,70 @@ target = fst <$> ask
 event :: EventM e t e
 event = snd <$> ask
 
-eventTarget :: EventClass e => EventM e t (Maybe EventTarget)
+eventTarget :: IsEvent e => EventM e t (Maybe EventTarget)
 eventTarget = event >>= (liftIO . eventGetTarget)
 
-eventCurrentTarget :: EventClass e => EventM e t (Maybe EventTarget)
+eventCurrentTarget :: IsEvent e => EventM e t (Maybe EventTarget)
 eventCurrentTarget = event >>= (liftIO . eventGetCurrentTarget)
 
-eventPhase :: EventClass e => EventM e t Word
+eventPhase :: IsEvent e => EventM e t Word
 eventPhase = event >>= (liftIO . eventGetEventPhase)
 
-bubbles :: EventClass e => EventM e t Bool
+bubbles :: IsEvent e => EventM e t Bool
 bubbles = event >>= (liftIO . eventGetBubbles)
 
-cancelable :: EventClass e => EventM e t Bool
+cancelable :: IsEvent e => EventM e t Bool
 cancelable = event >>= (liftIO . eventGetCancelable)
 
-timeStamp :: EventClass e => EventM e t Word
+timeStamp :: IsEvent e => EventM e t Word
 timeStamp = event >>= (liftIO . eventGetTimeStamp)
 
-stopPropagation :: EventClass e => EventM e t ()
+stopPropagation :: IsEvent e => EventM e t ()
 stopPropagation = event >>= (liftIO . eventStopPropagation)
 
-preventDefault :: EventClass e => EventM e t ()
+preventDefault :: IsEvent e => EventM e t ()
 preventDefault = event >>= (liftIO . eventPreventDefault)
 
-defaultPrevented :: EventClass e => EventM e t Bool
+defaultPrevented :: IsEvent e => EventM e t Bool
 defaultPrevented = event >>= (liftIO . eventGetDefaultPrevented)
 
-stopImmediatePropagation :: EventClass e => EventM e t ()
+stopImmediatePropagation :: IsEvent e => EventM e t ()
 stopImmediatePropagation = event >>= (liftIO . eventStopImmediatePropagation)
 
-srcElement :: EventClass e => EventM e t (Maybe EventTarget)
+srcElement :: IsEvent e => EventM e t (Maybe EventTarget)
 srcElement = event >>= (liftIO . eventGetSrcElement)
 
-getCancelBubble :: EventClass e => EventM e t Bool
+getCancelBubble :: IsEvent e => EventM e t Bool
 getCancelBubble = event >>= (liftIO . eventGetCancelBubble)
 
-cancelBubble :: EventClass e => Bool -> EventM e t ()
+cancelBubble :: IsEvent e => Bool -> EventM e t ()
 cancelBubble f = event >>= (liftIO . flip eventSetCancelBubble f)
 
-getReturnValue :: EventClass e => EventM e t Bool
+getReturnValue :: IsEvent e => EventM e t Bool
 getReturnValue = event >>= (liftIO . eventGetReturnValue)
 
-returnValue :: EventClass e => Bool -> EventM e t ()
+returnValue :: IsEvent e => Bool -> EventM e t ()
 returnValue f = event >>= (liftIO . flip eventSetReturnValue f)
 
-uiView :: UIEventClass e => EventM e t (Maybe DOMWindow)
+uiView :: IsUIEvent e => EventM e t (Maybe DOMWindow)
 uiView = event >>= (liftIO . uiEventGetView)
 
-uiDetail :: UIEventClass e => EventM e t Int
+uiDetail :: IsUIEvent e => EventM e t Int
 uiDetail = event >>= (liftIO . uiEventGetDetail)
 
-uiKeyCode :: UIEventClass e => EventM e t Int
+uiKeyCode :: IsUIEvent e => EventM e t Int
 uiKeyCode = event >>= (liftIO . uiEventGetKeyCode)
 
-uiCharCode :: UIEventClass e => EventM e t Int
+uiCharCode :: IsUIEvent e => EventM e t Int
 uiCharCode = event >>= (liftIO . uiEventGetCharCode)
 
-uiLayerX :: UIEventClass e => EventM e t Int
+uiLayerX :: IsUIEvent e => EventM e t Int
 uiLayerX = event >>= (liftIO . uiEventGetLayerX)
 
-uiLayerY :: UIEventClass e => EventM e t Int
+uiLayerY :: IsUIEvent e => EventM e t Int
 uiLayerY = event >>= (liftIO . uiEventGetLayerY)
 
-uiLayerXY :: UIEventClass e => EventM e t (Int, Int)
+uiLayerXY :: IsUIEvent e => EventM e t (Int, Int)
 uiLayerXY = do
   e <- event
   liftIO $ do
@@ -147,13 +147,13 @@ uiLayerXY = do
     y <- uiEventGetLayerY e
     return (x, y)
 
-uiPageX :: UIEventClass e => EventM e t Int
+uiPageX :: IsUIEvent e => EventM e t Int
 uiPageX = event >>= (liftIO . uiEventGetPageX)
 
-uiPageY :: UIEventClass e => EventM e t Int
+uiPageY :: IsUIEvent e => EventM e t Int
 uiPageY = event >>= (liftIO . uiEventGetPageY)
 
-uiPageXY :: UIEventClass e => EventM e t (Int, Int)
+uiPageXY :: IsUIEvent e => EventM e t (Int, Int)
 uiPageXY = do
   e <- event
   liftIO $ do
@@ -161,16 +161,16 @@ uiPageXY = do
     y <- uiEventGetPageY e
     return (x, y)
 
-uiWhich :: UIEventClass e => EventM e t Int
+uiWhich :: IsUIEvent e => EventM e t Int
 uiWhich = event >>= (liftIO . uiEventGetWhich)
 
-mouseScreenX :: MouseEventClass e => EventM e t Int
+mouseScreenX :: IsMouseEvent e => EventM e t Int
 mouseScreenX = event >>= (liftIO . mouseEventGetScreenX)
 
-mouseScreenY :: MouseEventClass e => EventM e t Int
+mouseScreenY :: IsMouseEvent e => EventM e t Int
 mouseScreenY = event >>= (liftIO . mouseEventGetScreenY)
 
-mouseScreenXY :: MouseEventClass e => EventM e t (Int, Int)
+mouseScreenXY :: IsMouseEvent e => EventM e t (Int, Int)
 mouseScreenXY = do
   e <- event
   liftIO $ do
@@ -178,13 +178,13 @@ mouseScreenXY = do
     y <- mouseEventGetScreenY e
     return (x, y)
 
-mouseClientX :: MouseEventClass e => EventM e t Int
+mouseClientX :: IsMouseEvent e => EventM e t Int
 mouseClientX = event >>= (liftIO . mouseEventGetClientX)
 
-mouseClientY :: MouseEventClass e => EventM e t Int
+mouseClientY :: IsMouseEvent e => EventM e t Int
 mouseClientY = event >>= (liftIO . mouseEventGetClientY)
 
-mouseClientXY :: MouseEventClass e => EventM e t (Int, Int)
+mouseClientXY :: IsMouseEvent e => EventM e t (Int, Int)
 mouseClientXY = do
   e <- event
   liftIO $ do
@@ -192,13 +192,13 @@ mouseClientXY = do
     y <- mouseEventGetClientY e
     return (x, y)
 
-mouseWebkitMovementX :: MouseEventClass e => EventM e t Int
+mouseWebkitMovementX :: IsMouseEvent e => EventM e t Int
 mouseWebkitMovementX = event >>= (liftIO . mouseEventGetWebkitMovementX)
 
-mouseWebkitMovementY :: MouseEventClass e => EventM e t Int
+mouseWebkitMovementY :: IsMouseEvent e => EventM e t Int
 mouseWebkitMovementY = event >>= (liftIO . mouseEventGetWebkitMovementY)
 
-mouseWebkitMovementXY :: MouseEventClass e => EventM e t (Int, Int)
+mouseWebkitMovementXY :: IsMouseEvent e => EventM e t (Int, Int)
 mouseWebkitMovementXY = do
   e <- event
   liftIO $ do
@@ -206,31 +206,31 @@ mouseWebkitMovementXY = do
     y <- mouseEventGetWebkitMovementY e
     return (x, y)
 
-mouseCtrlKey :: MouseEventClass e => EventM e t Bool
+mouseCtrlKey :: IsMouseEvent e => EventM e t Bool
 mouseCtrlKey = event >>= (liftIO . mouseEventGetCtrlKey)
 
-mouseShiftKey :: MouseEventClass e => EventM e t Bool
+mouseShiftKey :: IsMouseEvent e => EventM e t Bool
 mouseShiftKey = event >>= (liftIO . mouseEventGetShiftKey)
 
-mouseAltKey :: MouseEventClass e => EventM e t Bool
+mouseAltKey :: IsMouseEvent e => EventM e t Bool
 mouseAltKey = event >>= (liftIO . mouseEventGetAltKey)
 
-mouseMetaKey :: MouseEventClass e => EventM e t Bool
+mouseMetaKey :: IsMouseEvent e => EventM e t Bool
 mouseMetaKey = event >>= (liftIO . mouseEventGetMetaKey)
 
-mouseButton :: MouseEventClass e => EventM e t Word
+mouseButton :: IsMouseEvent e => EventM e t Word
 mouseButton = event >>= (liftIO . mouseEventGetButton)
 
-mouseRelatedTarget :: MouseEventClass e => EventM e t (Maybe EventTarget)
+mouseRelatedTarget :: IsMouseEvent e => EventM e t (Maybe EventTarget)
 mouseRelatedTarget = event >>= (liftIO . mouseEventGetRelatedTarget)
 
-mouseOffsetX :: MouseEventClass e => EventM e t Int
+mouseOffsetX :: IsMouseEvent e => EventM e t Int
 mouseOffsetX = event >>= (liftIO . mouseEventGetOffsetX)
 
-mouseOffsetY :: MouseEventClass e => EventM e t Int
+mouseOffsetY :: IsMouseEvent e => EventM e t Int
 mouseOffsetY = event >>= (liftIO . mouseEventGetOffsetY)
 
-mouseOffsetXY :: MouseEventClass e => EventM e t (Int, Int)
+mouseOffsetXY :: IsMouseEvent e => EventM e t (Int, Int)
 mouseOffsetXY = do
   e <- event
   liftIO $ do
@@ -238,13 +238,13 @@ mouseOffsetXY = do
     y <- mouseEventGetOffsetY e
     return (x, y)
 
-mouseX :: MouseEventClass e => EventM e t Int
+mouseX :: IsMouseEvent e => EventM e t Int
 mouseX = event >>= (liftIO . mouseEventGetX)
 
-mouseY :: MouseEventClass e => EventM e t Int
+mouseY :: IsMouseEvent e => EventM e t Int
 mouseY = event >>= (liftIO . mouseEventGetY)
 
-mouseXY :: MouseEventClass e => EventM e t (Int, Int)
+mouseXY :: IsMouseEvent e => EventM e t (Int, Int)
 mouseXY = do
   e <- event
   liftIO $ do
@@ -252,12 +252,12 @@ mouseXY = do
     y <- mouseEventGetY e
     return (x, y)
 
-mouseFromElement :: MouseEventClass e => EventM e t (Maybe Node)
+mouseFromElement :: IsMouseEvent e => EventM e t (Maybe Node)
 mouseFromElement = event >>= (liftIO . mouseEventGetFromElement)
 
-mouseToElement :: MouseEventClass e => EventM e t (Maybe Node)
+mouseToElement :: IsMouseEvent e => EventM e t (Maybe Node)
 mouseToElement = event >>= (liftIO . mouseEventGetToElement)
 
-connect :: (GObjectClass t, EventClass e) => String -> t -> EventM e t () -> IO Bool
+connect :: (GObjectClass t, IsEvent e) => String -> t -> EventM e t () -> IO Bool
 connect eventName target callback =
   eventTargetAddEventListener target eventName False $ curry (runReaderT callback)

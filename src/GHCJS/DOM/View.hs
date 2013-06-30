@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.View (MediaQueryList, MediaQueryListClass) where
+module GHCJS.DOM.View (MediaQueryList, IsMediaQueryList) where
  
 data MediaQueryList = MediaQueryList
  
-class MediaQueryListClass a
+class IsMediaQueryList a
  
-instance MediaQueryListClass MediaQueryList
+instance IsMediaQueryList MediaQueryList

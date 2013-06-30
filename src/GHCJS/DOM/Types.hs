@@ -6,137 +6,137 @@ module GHCJS.DOM.Types (
   , WebView(WebView), WebViewClass, toWebView, unWebView, castToWebView, gTypeWebView
 
 -- AUTO GENERATION STARTS HERE
-  , DOMAttr(DOMAttr), unDOMAttr, DOMAttrClass, toDOMAttr, castToDOMAttr, gTypeDOMAttr
-  , BarInfo(BarInfo), unBarInfo, BarInfoClass, toBarInfo, castToBarInfo, gTypeBarInfo
-  , Blob(Blob), unBlob, BlobClass, toBlob, castToBlob, gTypeBlob
-  , CDATASection(CDATASection), unCDATASection, CDATASectionClass, toCDATASection, castToCDATASection, gTypeCDATASection
-  , CSSRule(CSSRule), unCSSRule, CSSRuleClass, toCSSRule, castToCSSRule, gTypeCSSRule
-  , CSSRuleList(CSSRuleList), unCSSRuleList, CSSRuleListClass, toCSSRuleList, castToCSSRuleList, gTypeCSSRuleList
-  , CSSStyleDeclaration(CSSStyleDeclaration), unCSSStyleDeclaration, CSSStyleDeclarationClass, toCSSStyleDeclaration, castToCSSStyleDeclaration, gTypeCSSStyleDeclaration
-  , CSSStyleSheet(CSSStyleSheet), unCSSStyleSheet, CSSStyleSheetClass, toCSSStyleSheet, castToCSSStyleSheet, gTypeCSSStyleSheet
-  , CSSValue(CSSValue), unCSSValue, CSSValueClass, toCSSValue, castToCSSValue, gTypeCSSValue
-  , CharacterData(CharacterData), unCharacterData, CharacterDataClass, toCharacterData, castToCharacterData, gTypeCharacterData
-  , Comment(Comment), unComment, CommentClass, toComment, castToComment, gTypeComment
-  , Console(Console), unConsole, ConsoleClass, toConsole, castToConsole, gTypeConsole
-  , DOMApplicationCache(DOMApplicationCache), unDOMApplicationCache, DOMApplicationCacheClass, toDOMApplicationCache, castToDOMApplicationCache, gTypeDOMApplicationCache
-  , DOMImplementation(DOMImplementation), unDOMImplementation, DOMImplementationClass, toDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
-  , DOMMimeType(DOMMimeType), unDOMMimeType, DOMMimeTypeClass, toDOMMimeType, castToDOMMimeType, gTypeDOMMimeType
-  , DOMMimeTypeArray(DOMMimeTypeArray), unDOMMimeTypeArray, DOMMimeTypeArrayClass, toDOMMimeTypeArray, castToDOMMimeTypeArray, gTypeDOMMimeTypeArray
-  , DOMPlugin(DOMPlugin), unDOMPlugin, DOMPluginClass, toDOMPlugin, castToDOMPlugin, gTypeDOMPlugin
-  , DOMPluginArray(DOMPluginArray), unDOMPluginArray, DOMPluginArrayClass, toDOMPluginArray, castToDOMPluginArray, gTypeDOMPluginArray
-  , DOMSecurityPolicy(DOMSecurityPolicy), unDOMSecurityPolicy, DOMSecurityPolicyClass, toDOMSecurityPolicy, castToDOMSecurityPolicy, gTypeDOMSecurityPolicy
-  , DOMSelection(DOMSelection), unDOMSelection, DOMSelectionClass, toDOMSelection, castToDOMSelection, gTypeDOMSelection
-  , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, DOMSettableTokenListClass, toDOMSettableTokenList, castToDOMSettableTokenList, gTypeDOMSettableTokenList
-  , DOMStringList(DOMStringList), unDOMStringList, DOMStringListClass, toDOMStringList, castToDOMStringList, gTypeDOMStringList
-  , DOMTokenList(DOMTokenList), unDOMTokenList, DOMTokenListClass, toDOMTokenList, castToDOMTokenList, gTypeDOMTokenList
-  , DOMWindow(DOMWindow), unDOMWindow, DOMWindowClass, toDOMWindow, castToDOMWindow, gTypeDOMWindow
-  , Document(Document), unDocument, DocumentClass, toDocument, castToDocument, gTypeDocument
-  , DocumentFragment(DocumentFragment), unDocumentFragment, DocumentFragmentClass, toDocumentFragment, castToDocumentFragment, gTypeDocumentFragment
-  , DocumentType(DocumentType), unDocumentType, DocumentTypeClass, toDocumentType, castToDocumentType, gTypeDocumentType
-  , Element(Element), unElement, ElementClass, toElement, castToElement, gTypeElement
-  , EntityReference(EntityReference), unEntityReference, EntityReferenceClass, toEntityReference, castToEntityReference, gTypeEntityReference
-  , Event(Event), unEvent, EventClass, toEvent, castToEvent, gTypeEvent
-  , EventTarget(EventTarget), unEventTarget, EventTargetClass, toEventTarget, castToEventTarget, gTypeEventTarget
-  , File(File), unFile, FileClass, toFile, castToFile, gTypeFile
-  , FileList(FileList), unFileList, FileListClass, toFileList, castToFileList, gTypeFileList
-  , Geolocation(Geolocation), unGeolocation, GeolocationClass, toGeolocation, castToGeolocation, gTypeGeolocation
-  , HTMLAnchorElement(HTMLAnchorElement), unHTMLAnchorElement, HTMLAnchorElementClass, toHTMLAnchorElement, castToHTMLAnchorElement, gTypeHTMLAnchorElement
-  , HTMLAppletElement(HTMLAppletElement), unHTMLAppletElement, HTMLAppletElementClass, toHTMLAppletElement, castToHTMLAppletElement, gTypeHTMLAppletElement
-  , HTMLAreaElement(HTMLAreaElement), unHTMLAreaElement, HTMLAreaElementClass, toHTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement
-  , HTMLAudioElement(HTMLAudioElement), unHTMLAudioElement, HTMLAudioElementClass, toHTMLAudioElement, castToHTMLAudioElement, gTypeHTMLAudioElement
-  , HTMLBRElement(HTMLBRElement), unHTMLBRElement, HTMLBRElementClass, toHTMLBRElement, castToHTMLBRElement, gTypeHTMLBRElement
-  , HTMLBaseElement(HTMLBaseElement), unHTMLBaseElement, HTMLBaseElementClass, toHTMLBaseElement, castToHTMLBaseElement, gTypeHTMLBaseElement
-  , HTMLBaseFontElement(HTMLBaseFontElement), unHTMLBaseFontElement, HTMLBaseFontElementClass, toHTMLBaseFontElement, castToHTMLBaseFontElement, gTypeHTMLBaseFontElement
-  , HTMLBodyElement(HTMLBodyElement), unHTMLBodyElement, HTMLBodyElementClass, toHTMLBodyElement, castToHTMLBodyElement, gTypeHTMLBodyElement
-  , HTMLButtonElement(HTMLButtonElement), unHTMLButtonElement, HTMLButtonElementClass, toHTMLButtonElement, castToHTMLButtonElement, gTypeHTMLButtonElement
-  , HTMLCanvasElement(HTMLCanvasElement), unHTMLCanvasElement, HTMLCanvasElementClass, toHTMLCanvasElement, castToHTMLCanvasElement, gTypeHTMLCanvasElement
-  , HTMLCollection(HTMLCollection), unHTMLCollection, HTMLCollectionClass, toHTMLCollection, castToHTMLCollection, gTypeHTMLCollection
-  , HTMLDListElement(HTMLDListElement), unHTMLDListElement, HTMLDListElementClass, toHTMLDListElement, castToHTMLDListElement, gTypeHTMLDListElement
-  , HTMLDetailsElement(HTMLDetailsElement), unHTMLDetailsElement, HTMLDetailsElementClass, toHTMLDetailsElement, castToHTMLDetailsElement, gTypeHTMLDetailsElement
-  , HTMLDirectoryElement(HTMLDirectoryElement), unHTMLDirectoryElement, HTMLDirectoryElementClass, toHTMLDirectoryElement, castToHTMLDirectoryElement, gTypeHTMLDirectoryElement
-  , HTMLDivElement(HTMLDivElement), unHTMLDivElement, HTMLDivElementClass, toHTMLDivElement, castToHTMLDivElement, gTypeHTMLDivElement
-  , HTMLDocument(HTMLDocument), unHTMLDocument, HTMLDocumentClass, toHTMLDocument, castToHTMLDocument, gTypeHTMLDocument
-  , HTMLElement(HTMLElement), unHTMLElement, HTMLElementClass, toHTMLElement, castToHTMLElement, gTypeHTMLElement
-  , HTMLEmbedElement(HTMLEmbedElement), unHTMLEmbedElement, HTMLEmbedElementClass, toHTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement
-  , HTMLFieldSetElement(HTMLFieldSetElement), unHTMLFieldSetElement, HTMLFieldSetElementClass, toHTMLFieldSetElement, castToHTMLFieldSetElement, gTypeHTMLFieldSetElement
-  , HTMLFontElement(HTMLFontElement), unHTMLFontElement, HTMLFontElementClass, toHTMLFontElement, castToHTMLFontElement, gTypeHTMLFontElement
-  , HTMLFormElement(HTMLFormElement), unHTMLFormElement, HTMLFormElementClass, toHTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement
-  , HTMLFrameElement(HTMLFrameElement), unHTMLFrameElement, HTMLFrameElementClass, toHTMLFrameElement, castToHTMLFrameElement, gTypeHTMLFrameElement
-  , HTMLFrameSetElement(HTMLFrameSetElement), unHTMLFrameSetElement, HTMLFrameSetElementClass, toHTMLFrameSetElement, castToHTMLFrameSetElement, gTypeHTMLFrameSetElement
-  , HTMLHRElement(HTMLHRElement), unHTMLHRElement, HTMLHRElementClass, toHTMLHRElement, castToHTMLHRElement, gTypeHTMLHRElement
-  , HTMLHeadElement(HTMLHeadElement), unHTMLHeadElement, HTMLHeadElementClass, toHTMLHeadElement, castToHTMLHeadElement, gTypeHTMLHeadElement
-  , HTMLHeadingElement(HTMLHeadingElement), unHTMLHeadingElement, HTMLHeadingElementClass, toHTMLHeadingElement, castToHTMLHeadingElement, gTypeHTMLHeadingElement
-  , HTMLHtmlElement(HTMLHtmlElement), unHTMLHtmlElement, HTMLHtmlElementClass, toHTMLHtmlElement, castToHTMLHtmlElement, gTypeHTMLHtmlElement
-  , HTMLIFrameElement(HTMLIFrameElement), unHTMLIFrameElement, HTMLIFrameElementClass, toHTMLIFrameElement, castToHTMLIFrameElement, gTypeHTMLIFrameElement
-  , HTMLImageElement(HTMLImageElement), unHTMLImageElement, HTMLImageElementClass, toHTMLImageElement, castToHTMLImageElement, gTypeHTMLImageElement
-  , HTMLInputElement(HTMLInputElement), unHTMLInputElement, HTMLInputElementClass, toHTMLInputElement, castToHTMLInputElement, gTypeHTMLInputElement
-  , HTMLKeygenElement(HTMLKeygenElement), unHTMLKeygenElement, HTMLKeygenElementClass, toHTMLKeygenElement, castToHTMLKeygenElement, gTypeHTMLKeygenElement
-  , HTMLLIElement(HTMLLIElement), unHTMLLIElement, HTMLLIElementClass, toHTMLLIElement, castToHTMLLIElement, gTypeHTMLLIElement
-  , HTMLLabelElement(HTMLLabelElement), unHTMLLabelElement, HTMLLabelElementClass, toHTMLLabelElement, castToHTMLLabelElement, gTypeHTMLLabelElement
-  , HTMLLegendElement(HTMLLegendElement), unHTMLLegendElement, HTMLLegendElementClass, toHTMLLegendElement, castToHTMLLegendElement, gTypeHTMLLegendElement
-  , HTMLLinkElement(HTMLLinkElement), unHTMLLinkElement, HTMLLinkElementClass, toHTMLLinkElement, castToHTMLLinkElement, gTypeHTMLLinkElement
-  , HTMLMapElement(HTMLMapElement), unHTMLMapElement, HTMLMapElementClass, toHTMLMapElement, castToHTMLMapElement, gTypeHTMLMapElement
-  , HTMLMarqueeElement(HTMLMarqueeElement), unHTMLMarqueeElement, HTMLMarqueeElementClass, toHTMLMarqueeElement, castToHTMLMarqueeElement, gTypeHTMLMarqueeElement
-  , HTMLMediaElement(HTMLMediaElement), unHTMLMediaElement, HTMLMediaElementClass, toHTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement
-  , HTMLMenuElement(HTMLMenuElement), unHTMLMenuElement, HTMLMenuElementClass, toHTMLMenuElement, castToHTMLMenuElement, gTypeHTMLMenuElement
-  , HTMLMetaElement(HTMLMetaElement), unHTMLMetaElement, HTMLMetaElementClass, toHTMLMetaElement, castToHTMLMetaElement, gTypeHTMLMetaElement
-  , HTMLModElement(HTMLModElement), unHTMLModElement, HTMLModElementClass, toHTMLModElement, castToHTMLModElement, gTypeHTMLModElement
-  , HTMLOListElement(HTMLOListElement), unHTMLOListElement, HTMLOListElementClass, toHTMLOListElement, castToHTMLOListElement, gTypeHTMLOListElement
-  , HTMLObjectElement(HTMLObjectElement), unHTMLObjectElement, HTMLObjectElementClass, toHTMLObjectElement, castToHTMLObjectElement, gTypeHTMLObjectElement
-  , HTMLOptGroupElement(HTMLOptGroupElement), unHTMLOptGroupElement, HTMLOptGroupElementClass, toHTMLOptGroupElement, castToHTMLOptGroupElement, gTypeHTMLOptGroupElement
-  , HTMLOptionElement(HTMLOptionElement), unHTMLOptionElement, HTMLOptionElementClass, toHTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement
-  , HTMLOptionsCollection(HTMLOptionsCollection), unHTMLOptionsCollection, HTMLOptionsCollectionClass, toHTMLOptionsCollection, castToHTMLOptionsCollection, gTypeHTMLOptionsCollection
-  , HTMLParagraphElement(HTMLParagraphElement), unHTMLParagraphElement, HTMLParagraphElementClass, toHTMLParagraphElement, castToHTMLParagraphElement, gTypeHTMLParagraphElement
-  , HTMLParamElement(HTMLParamElement), unHTMLParamElement, HTMLParamElementClass, toHTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement
-  , HTMLPreElement(HTMLPreElement), unHTMLPreElement, HTMLPreElementClass, toHTMLPreElement, castToHTMLPreElement, gTypeHTMLPreElement
-  , HTMLQuoteElement(HTMLQuoteElement), unHTMLQuoteElement, HTMLQuoteElementClass, toHTMLQuoteElement, castToHTMLQuoteElement, gTypeHTMLQuoteElement
-  , HTMLScriptElement(HTMLScriptElement), unHTMLScriptElement, HTMLScriptElementClass, toHTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement
-  , HTMLSelectElement(HTMLSelectElement), unHTMLSelectElement, HTMLSelectElementClass, toHTMLSelectElement, castToHTMLSelectElement, gTypeHTMLSelectElement
-  , HTMLStyleElement(HTMLStyleElement), unHTMLStyleElement, HTMLStyleElementClass, toHTMLStyleElement, castToHTMLStyleElement, gTypeHTMLStyleElement
-  , HTMLTableCaptionElement(HTMLTableCaptionElement), unHTMLTableCaptionElement, HTMLTableCaptionElementClass, toHTMLTableCaptionElement, castToHTMLTableCaptionElement, gTypeHTMLTableCaptionElement
-  , HTMLTableCellElement(HTMLTableCellElement), unHTMLTableCellElement, HTMLTableCellElementClass, toHTMLTableCellElement, castToHTMLTableCellElement, gTypeHTMLTableCellElement
-  , HTMLTableColElement(HTMLTableColElement), unHTMLTableColElement, HTMLTableColElementClass, toHTMLTableColElement, castToHTMLTableColElement, gTypeHTMLTableColElement
-  , HTMLTableElement(HTMLTableElement), unHTMLTableElement, HTMLTableElementClass, toHTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement
-  , HTMLTableRowElement(HTMLTableRowElement), unHTMLTableRowElement, HTMLTableRowElementClass, toHTMLTableRowElement, castToHTMLTableRowElement, gTypeHTMLTableRowElement
-  , HTMLTableSectionElement(HTMLTableSectionElement), unHTMLTableSectionElement, HTMLTableSectionElementClass, toHTMLTableSectionElement, castToHTMLTableSectionElement, gTypeHTMLTableSectionElement
-  , HTMLTextAreaElement(HTMLTextAreaElement), unHTMLTextAreaElement, HTMLTextAreaElementClass, toHTMLTextAreaElement, castToHTMLTextAreaElement, gTypeHTMLTextAreaElement
-  , HTMLTitleElement(HTMLTitleElement), unHTMLTitleElement, HTMLTitleElementClass, toHTMLTitleElement, castToHTMLTitleElement, gTypeHTMLTitleElement
-  , HTMLUListElement(HTMLUListElement), unHTMLUListElement, HTMLUListElementClass, toHTMLUListElement, castToHTMLUListElement, gTypeHTMLUListElement
-  , HTMLVideoElement(HTMLVideoElement), unHTMLVideoElement, HTMLVideoElementClass, toHTMLVideoElement, castToHTMLVideoElement, gTypeHTMLVideoElement
-  , History(History), unHistory, HistoryClass, toHistory, castToHistory, gTypeHistory
-  , Location(Location), unLocation, LocationClass, toLocation, castToLocation, gTypeLocation
-  , MediaError(MediaError), unMediaError, MediaErrorClass, toMediaError, castToMediaError, gTypeMediaError
-  , MediaList(MediaList), unMediaList, MediaListClass, toMediaList, castToMediaList, gTypeMediaList
-  , MediaQueryList(MediaQueryList), unMediaQueryList, MediaQueryListClass, toMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
-  , MemoryInfo(MemoryInfo), unMemoryInfo, MemoryInfoClass, toMemoryInfo, castToMemoryInfo, gTypeMemoryInfo
-  , MessagePort(MessagePort), unMessagePort, MessagePortClass, toMessagePort, castToMessagePort, gTypeMessagePort
-  , MouseEvent(MouseEvent), unMouseEvent, MouseEventClass, toMouseEvent, castToMouseEvent, gTypeMouseEvent
-  , NamedNodeMap(NamedNodeMap), unNamedNodeMap, NamedNodeMapClass, toNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
-  , Navigator(Navigator), unNavigator, NavigatorClass, toNavigator, castToNavigator, gTypeNavigator
-  , Node(Node), unNode, NodeClass, toNode, castToNode, gTypeNode
-  , NodeFilter(NodeFilter), unNodeFilter, NodeFilterClass, toNodeFilter, castToNodeFilter, gTypeNodeFilter
-  , NodeIterator(NodeIterator), unNodeIterator, NodeIteratorClass, toNodeIterator, castToNodeIterator, gTypeNodeIterator
-  , NodeList(NodeList), unNodeList, NodeListClass, toNodeList, castToNodeList, gTypeNodeList
-  , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, ProcessingInstructionClass, toProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
-  , DOMRange(DOMRange), unDOMRange, DOMRangeClass, toDOMRange, castToDOMRange, gTypeDOMRange
-  , DOMScreen(DOMScreen), unDOMScreen, DOMScreenClass, toDOMScreen, castToDOMScreen, gTypeDOMScreen
-  , Storage(Storage), unStorage, StorageClass, toStorage, castToStorage, gTypeStorage
-  , StorageInfo(StorageInfo), unStorageInfo, StorageInfoClass, toStorageInfo, castToStorageInfo, gTypeStorageInfo
-  , StyleMedia(StyleMedia), unStyleMedia, StyleMediaClass, toStyleMedia, castToStyleMedia, gTypeStyleMedia
-  , StyleSheet(StyleSheet), unStyleSheet, StyleSheetClass, toStyleSheet, castToStyleSheet, gTypeStyleSheet
-  , StyleSheetList(StyleSheetList), unStyleSheetList, StyleSheetListClass, toStyleSheetList, castToStyleSheetList, gTypeStyleSheetList
-  , Text(Text), unText, TextClass, toText, castToText, gTypeText
-  , TimeRanges(TimeRanges), unTimeRanges, TimeRangesClass, toTimeRanges, castToTimeRanges, gTypeTimeRanges
-  , TreeWalker(TreeWalker), unTreeWalker, TreeWalkerClass, toTreeWalker, castToTreeWalker, gTypeTreeWalker
-  , UIEvent(UIEvent), unUIEvent, UIEventClass, toUIEvent, castToUIEvent, gTypeUIEvent
-  , ValidityState(ValidityState), unValidityState, ValidityStateClass, toValidityState, castToValidityState, gTypeValidityState
-  , WebKitAnimation(WebKitAnimation), unWebKitAnimation, WebKitAnimationClass, toWebKitAnimation, castToWebKitAnimation, gTypeWebKitAnimation
-  , WebKitAnimationList(WebKitAnimationList), unWebKitAnimationList, WebKitAnimationListClass, toWebKitAnimationList, castToWebKitAnimationList, gTypeWebKitAnimationList
-  , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, WebKitNamedFlowClass, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
-  , WebKitPoint(WebKitPoint), unWebKitPoint, WebKitPointClass, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
-  , XPathExpression(XPathExpression), unXPathExpression, XPathExpressionClass, toXPathExpression, castToXPathExpression, gTypeXPathExpression
-  , XPathNSResolver(XPathNSResolver), unXPathNSResolver, XPathNSResolverClass, toXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
-  , XPathResult(XPathResult), unXPathResult, XPathResultClass, toXPathResult, castToXPathResult, gTypeXPathResult
+  , DOMAttr(DOMAttr), unDOMAttr, IsDOMAttr, toDOMAttr, castToDOMAttr, gTypeDOMAttr
+  , BarInfo(BarInfo), unBarInfo, IsBarInfo, toBarInfo, castToBarInfo, gTypeBarInfo
+  , Blob(Blob), unBlob, IsBlob, toBlob, castToBlob, gTypeBlob
+  , CDATASection(CDATASection), unCDATASection, IsCDATASection, toCDATASection, castToCDATASection, gTypeCDATASection
+  , CSSRule(CSSRule), unCSSRule, IsCSSRule, toCSSRule, castToCSSRule, gTypeCSSRule
+  , CSSRuleList(CSSRuleList), unCSSRuleList, IsCSSRuleList, toCSSRuleList, castToCSSRuleList, gTypeCSSRuleList
+  , CSSStyleDeclaration(CSSStyleDeclaration), unCSSStyleDeclaration, IsCSSStyleDeclaration, toCSSStyleDeclaration, castToCSSStyleDeclaration, gTypeCSSStyleDeclaration
+  , CSSStyleSheet(CSSStyleSheet), unCSSStyleSheet, IsCSSStyleSheet, toCSSStyleSheet, castToCSSStyleSheet, gTypeCSSStyleSheet
+  , CSSValue(CSSValue), unCSSValue, IsCSSValue, toCSSValue, castToCSSValue, gTypeCSSValue
+  , CharacterData(CharacterData), unCharacterData, IsCharacterData, toCharacterData, castToCharacterData, gTypeCharacterData
+  , Comment(Comment), unComment, IsComment, toComment, castToComment, gTypeComment
+  , Console(Console), unConsole, IsConsole, toConsole, castToConsole, gTypeConsole
+  , DOMApplicationCache(DOMApplicationCache), unDOMApplicationCache, IsDOMApplicationCache, toDOMApplicationCache, castToDOMApplicationCache, gTypeDOMApplicationCache
+  , DOMImplementation(DOMImplementation), unDOMImplementation, IsDOMImplementation, toDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
+  , DOMMimeType(DOMMimeType), unDOMMimeType, IsDOMMimeType, toDOMMimeType, castToDOMMimeType, gTypeDOMMimeType
+  , DOMMimeTypeArray(DOMMimeTypeArray), unDOMMimeTypeArray, IsDOMMimeTypeArray, toDOMMimeTypeArray, castToDOMMimeTypeArray, gTypeDOMMimeTypeArray
+  , DOMPlugin(DOMPlugin), unDOMPlugin, IsDOMPlugin, toDOMPlugin, castToDOMPlugin, gTypeDOMPlugin
+  , DOMPluginArray(DOMPluginArray), unDOMPluginArray, IsDOMPluginArray, toDOMPluginArray, castToDOMPluginArray, gTypeDOMPluginArray
+  , DOMSecurityPolicy(DOMSecurityPolicy), unDOMSecurityPolicy, IsDOMSecurityPolicy, toDOMSecurityPolicy, castToDOMSecurityPolicy, gTypeDOMSecurityPolicy
+  , DOMSelection(DOMSelection), unDOMSelection, IsDOMSelection, toDOMSelection, castToDOMSelection, gTypeDOMSelection
+  , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, IsDOMSettableTokenList, toDOMSettableTokenList, castToDOMSettableTokenList, gTypeDOMSettableTokenList
+  , DOMStringList(DOMStringList), unDOMStringList, IsDOMStringList, toDOMStringList, castToDOMStringList, gTypeDOMStringList
+  , DOMTokenList(DOMTokenList), unDOMTokenList, IsDOMTokenList, toDOMTokenList, castToDOMTokenList, gTypeDOMTokenList
+  , DOMWindow(DOMWindow), unDOMWindow, IsDOMWindow, toDOMWindow, castToDOMWindow, gTypeDOMWindow
+  , Document(Document), unDocument, IsDocument, toDocument, castToDocument, gTypeDocument
+  , DocumentFragment(DocumentFragment), unDocumentFragment, IsDocumentFragment, toDocumentFragment, castToDocumentFragment, gTypeDocumentFragment
+  , DocumentType(DocumentType), unDocumentType, IsDocumentType, toDocumentType, castToDocumentType, gTypeDocumentType
+  , Element(Element), unElement, IsElement, toElement, castToElement, gTypeElement
+  , EntityReference(EntityReference), unEntityReference, IsEntityReference, toEntityReference, castToEntityReference, gTypeEntityReference
+  , Event(Event), unEvent, IsEvent, toEvent, castToEvent, gTypeEvent
+  , EventTarget(EventTarget), unEventTarget, IsEventTarget, toEventTarget, castToEventTarget, gTypeEventTarget
+  , File(File), unFile, IsFile, toFile, castToFile, gTypeFile
+  , FileList(FileList), unFileList, IsFileList, toFileList, castToFileList, gTypeFileList
+  , Geolocation(Geolocation), unGeolocation, IsGeolocation, toGeolocation, castToGeolocation, gTypeGeolocation
+  , HTMLAnchorElement(HTMLAnchorElement), unHTMLAnchorElement, IsHTMLAnchorElement, toHTMLAnchorElement, castToHTMLAnchorElement, gTypeHTMLAnchorElement
+  , HTMLAppletElement(HTMLAppletElement), unHTMLAppletElement, IsHTMLAppletElement, toHTMLAppletElement, castToHTMLAppletElement, gTypeHTMLAppletElement
+  , HTMLAreaElement(HTMLAreaElement), unHTMLAreaElement, IsHTMLAreaElement, toHTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement
+  , HTMLAudioElement(HTMLAudioElement), unHTMLAudioElement, IsHTMLAudioElement, toHTMLAudioElement, castToHTMLAudioElement, gTypeHTMLAudioElement
+  , HTMLBRElement(HTMLBRElement), unHTMLBRElement, IsHTMLBRElement, toHTMLBRElement, castToHTMLBRElement, gTypeHTMLBRElement
+  , HTMLBaseElement(HTMLBaseElement), unHTMLBaseElement, IsHTMLBaseElement, toHTMLBaseElement, castToHTMLBaseElement, gTypeHTMLBaseElement
+  , HTMLBaseFontElement(HTMLBaseFontElement), unHTMLBaseFontElement, IsHTMLBaseFontElement, toHTMLBaseFontElement, castToHTMLBaseFontElement, gTypeHTMLBaseFontElement
+  , HTMLBodyElement(HTMLBodyElement), unHTMLBodyElement, IsHTMLBodyElement, toHTMLBodyElement, castToHTMLBodyElement, gTypeHTMLBodyElement
+  , HTMLButtonElement(HTMLButtonElement), unHTMLButtonElement, IsHTMLButtonElement, toHTMLButtonElement, castToHTMLButtonElement, gTypeHTMLButtonElement
+  , HTMLCanvasElement(HTMLCanvasElement), unHTMLCanvasElement, IsHTMLCanvasElement, toHTMLCanvasElement, castToHTMLCanvasElement, gTypeHTMLCanvasElement
+  , HTMLCollection(HTMLCollection), unHTMLCollection, IsHTMLCollection, toHTMLCollection, castToHTMLCollection, gTypeHTMLCollection
+  , HTMLDListElement(HTMLDListElement), unHTMLDListElement, IsHTMLDListElement, toHTMLDListElement, castToHTMLDListElement, gTypeHTMLDListElement
+  , HTMLDetailsElement(HTMLDetailsElement), unHTMLDetailsElement, IsHTMLDetailsElement, toHTMLDetailsElement, castToHTMLDetailsElement, gTypeHTMLDetailsElement
+  , HTMLDirectoryElement(HTMLDirectoryElement), unHTMLDirectoryElement, IsHTMLDirectoryElement, toHTMLDirectoryElement, castToHTMLDirectoryElement, gTypeHTMLDirectoryElement
+  , HTMLDivElement(HTMLDivElement), unHTMLDivElement, IsHTMLDivElement, toHTMLDivElement, castToHTMLDivElement, gTypeHTMLDivElement
+  , HTMLDocument(HTMLDocument), unHTMLDocument, IsHTMLDocument, toHTMLDocument, castToHTMLDocument, gTypeHTMLDocument
+  , HTMLElement(HTMLElement), unHTMLElement, IsHTMLElement, toHTMLElement, castToHTMLElement, gTypeHTMLElement
+  , HTMLEmbedElement(HTMLEmbedElement), unHTMLEmbedElement, IsHTMLEmbedElement, toHTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement
+  , HTMLFieldSetElement(HTMLFieldSetElement), unHTMLFieldSetElement, IsHTMLFieldSetElement, toHTMLFieldSetElement, castToHTMLFieldSetElement, gTypeHTMLFieldSetElement
+  , HTMLFontElement(HTMLFontElement), unHTMLFontElement, IsHTMLFontElement, toHTMLFontElement, castToHTMLFontElement, gTypeHTMLFontElement
+  , HTMLFormElement(HTMLFormElement), unHTMLFormElement, IsHTMLFormElement, toHTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement
+  , HTMLFrameElement(HTMLFrameElement), unHTMLFrameElement, IsHTMLFrameElement, toHTMLFrameElement, castToHTMLFrameElement, gTypeHTMLFrameElement
+  , HTMLFrameSetElement(HTMLFrameSetElement), unHTMLFrameSetElement, IsHTMLFrameSetElement, toHTMLFrameSetElement, castToHTMLFrameSetElement, gTypeHTMLFrameSetElement
+  , HTMLHRElement(HTMLHRElement), unHTMLHRElement, IsHTMLHRElement, toHTMLHRElement, castToHTMLHRElement, gTypeHTMLHRElement
+  , HTMLHeadElement(HTMLHeadElement), unHTMLHeadElement, IsHTMLHeadElement, toHTMLHeadElement, castToHTMLHeadElement, gTypeHTMLHeadElement
+  , HTMLHeadingElement(HTMLHeadingElement), unHTMLHeadingElement, IsHTMLHeadingElement, toHTMLHeadingElement, castToHTMLHeadingElement, gTypeHTMLHeadingElement
+  , HTMLHtmlElement(HTMLHtmlElement), unHTMLHtmlElement, IsHTMLHtmlElement, toHTMLHtmlElement, castToHTMLHtmlElement, gTypeHTMLHtmlElement
+  , HTMLIFrameElement(HTMLIFrameElement), unHTMLIFrameElement, IsHTMLIFrameElement, toHTMLIFrameElement, castToHTMLIFrameElement, gTypeHTMLIFrameElement
+  , HTMLImageElement(HTMLImageElement), unHTMLImageElement, IsHTMLImageElement, toHTMLImageElement, castToHTMLImageElement, gTypeHTMLImageElement
+  , HTMLInputElement(HTMLInputElement), unHTMLInputElement, IsHTMLInputElement, toHTMLInputElement, castToHTMLInputElement, gTypeHTMLInputElement
+  , HTMLKeygenElement(HTMLKeygenElement), unHTMLKeygenElement, IsHTMLKeygenElement, toHTMLKeygenElement, castToHTMLKeygenElement, gTypeHTMLKeygenElement
+  , HTMLLIElement(HTMLLIElement), unHTMLLIElement, IsHTMLLIElement, toHTMLLIElement, castToHTMLLIElement, gTypeHTMLLIElement
+  , HTMLLabelElement(HTMLLabelElement), unHTMLLabelElement, IsHTMLLabelElement, toHTMLLabelElement, castToHTMLLabelElement, gTypeHTMLLabelElement
+  , HTMLLegendElement(HTMLLegendElement), unHTMLLegendElement, IsHTMLLegendElement, toHTMLLegendElement, castToHTMLLegendElement, gTypeHTMLLegendElement
+  , HTMLLinkElement(HTMLLinkElement), unHTMLLinkElement, IsHTMLLinkElement, toHTMLLinkElement, castToHTMLLinkElement, gTypeHTMLLinkElement
+  , HTMLMapElement(HTMLMapElement), unHTMLMapElement, IsHTMLMapElement, toHTMLMapElement, castToHTMLMapElement, gTypeHTMLMapElement
+  , HTMLMarqueeElement(HTMLMarqueeElement), unHTMLMarqueeElement, IsHTMLMarqueeElement, toHTMLMarqueeElement, castToHTMLMarqueeElement, gTypeHTMLMarqueeElement
+  , HTMLMediaElement(HTMLMediaElement), unHTMLMediaElement, IsHTMLMediaElement, toHTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement
+  , HTMLMenuElement(HTMLMenuElement), unHTMLMenuElement, IsHTMLMenuElement, toHTMLMenuElement, castToHTMLMenuElement, gTypeHTMLMenuElement
+  , HTMLMetaElement(HTMLMetaElement), unHTMLMetaElement, IsHTMLMetaElement, toHTMLMetaElement, castToHTMLMetaElement, gTypeHTMLMetaElement
+  , HTMLModElement(HTMLModElement), unHTMLModElement, IsHTMLModElement, toHTMLModElement, castToHTMLModElement, gTypeHTMLModElement
+  , HTMLOListElement(HTMLOListElement), unHTMLOListElement, IsHTMLOListElement, toHTMLOListElement, castToHTMLOListElement, gTypeHTMLOListElement
+  , HTMLObjectElement(HTMLObjectElement), unHTMLObjectElement, IsHTMLObjectElement, toHTMLObjectElement, castToHTMLObjectElement, gTypeHTMLObjectElement
+  , HTMLOptGroupElement(HTMLOptGroupElement), unHTMLOptGroupElement, IsHTMLOptGroupElement, toHTMLOptGroupElement, castToHTMLOptGroupElement, gTypeHTMLOptGroupElement
+  , HTMLOptionElement(HTMLOptionElement), unHTMLOptionElement, IsHTMLOptionElement, toHTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement
+  , HTMLOptionsCollection(HTMLOptionsCollection), unHTMLOptionsCollection, IsHTMLOptionsCollection, toHTMLOptionsCollection, castToHTMLOptionsCollection, gTypeHTMLOptionsCollection
+  , HTMLParagraphElement(HTMLParagraphElement), unHTMLParagraphElement, IsHTMLParagraphElement, toHTMLParagraphElement, castToHTMLParagraphElement, gTypeHTMLParagraphElement
+  , HTMLParamElement(HTMLParamElement), unHTMLParamElement, IsHTMLParamElement, toHTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement
+  , HTMLPreElement(HTMLPreElement), unHTMLPreElement, IsHTMLPreElement, toHTMLPreElement, castToHTMLPreElement, gTypeHTMLPreElement
+  , HTMLQuoteElement(HTMLQuoteElement), unHTMLQuoteElement, IsHTMLQuoteElement, toHTMLQuoteElement, castToHTMLQuoteElement, gTypeHTMLQuoteElement
+  , HTMLScriptElement(HTMLScriptElement), unHTMLScriptElement, IsHTMLScriptElement, toHTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement
+  , HTMLSelectElement(HTMLSelectElement), unHTMLSelectElement, IsHTMLSelectElement, toHTMLSelectElement, castToHTMLSelectElement, gTypeHTMLSelectElement
+  , HTMLStyleElement(HTMLStyleElement), unHTMLStyleElement, IsHTMLStyleElement, toHTMLStyleElement, castToHTMLStyleElement, gTypeHTMLStyleElement
+  , HTMLTableCaptionElement(HTMLTableCaptionElement), unHTMLTableCaptionElement, IsHTMLTableCaptionElement, toHTMLTableCaptionElement, castToHTMLTableCaptionElement, gTypeHTMLTableCaptionElement
+  , HTMLTableCellElement(HTMLTableCellElement), unHTMLTableCellElement, IsHTMLTableCellElement, toHTMLTableCellElement, castToHTMLTableCellElement, gTypeHTMLTableCellElement
+  , HTMLTableColElement(HTMLTableColElement), unHTMLTableColElement, IsHTMLTableColElement, toHTMLTableColElement, castToHTMLTableColElement, gTypeHTMLTableColElement
+  , HTMLTableElement(HTMLTableElement), unHTMLTableElement, IsHTMLTableElement, toHTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement
+  , HTMLTableRowElement(HTMLTableRowElement), unHTMLTableRowElement, IsHTMLTableRowElement, toHTMLTableRowElement, castToHTMLTableRowElement, gTypeHTMLTableRowElement
+  , HTMLTableSectionElement(HTMLTableSectionElement), unHTMLTableSectionElement, IsHTMLTableSectionElement, toHTMLTableSectionElement, castToHTMLTableSectionElement, gTypeHTMLTableSectionElement
+  , HTMLTextAreaElement(HTMLTextAreaElement), unHTMLTextAreaElement, IsHTMLTextAreaElement, toHTMLTextAreaElement, castToHTMLTextAreaElement, gTypeHTMLTextAreaElement
+  , HTMLTitleElement(HTMLTitleElement), unHTMLTitleElement, IsHTMLTitleElement, toHTMLTitleElement, castToHTMLTitleElement, gTypeHTMLTitleElement
+  , HTMLUListElement(HTMLUListElement), unHTMLUListElement, IsHTMLUListElement, toHTMLUListElement, castToHTMLUListElement, gTypeHTMLUListElement
+  , HTMLVideoElement(HTMLVideoElement), unHTMLVideoElement, IsHTMLVideoElement, toHTMLVideoElement, castToHTMLVideoElement, gTypeHTMLVideoElement
+  , History(History), unHistory, IsHistory, toHistory, castToHistory, gTypeHistory
+  , Location(Location), unLocation, IsLocation, toLocation, castToLocation, gTypeLocation
+  , MediaError(MediaError), unMediaError, IsMediaError, toMediaError, castToMediaError, gTypeMediaError
+  , MediaList(MediaList), unMediaList, IsMediaList, toMediaList, castToMediaList, gTypeMediaList
+  , MediaQueryList(MediaQueryList), unMediaQueryList, IsMediaQueryList, toMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
+  , MemoryInfo(MemoryInfo), unMemoryInfo, IsMemoryInfo, toMemoryInfo, castToMemoryInfo, gTypeMemoryInfo
+  , MessagePort(MessagePort), unMessagePort, IsMessagePort, toMessagePort, castToMessagePort, gTypeMessagePort
+  , MouseEvent(MouseEvent), unMouseEvent, IsMouseEvent, toMouseEvent, castToMouseEvent, gTypeMouseEvent
+  , NamedNodeMap(NamedNodeMap), unNamedNodeMap, IsNamedNodeMap, toNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
+  , Navigator(Navigator), unNavigator, IsNavigator, toNavigator, castToNavigator, gTypeNavigator
+  , Node(Node), unNode, IsNode, toNode, castToNode, gTypeNode
+  , NodeFilter(NodeFilter), unNodeFilter, IsNodeFilter, toNodeFilter, castToNodeFilter, gTypeNodeFilter
+  , NodeIterator(NodeIterator), unNodeIterator, IsNodeIterator, toNodeIterator, castToNodeIterator, gTypeNodeIterator
+  , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, castToNodeList, gTypeNodeList
+  , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, IsProcessingInstruction, toProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
+  , DOMRange(DOMRange), unDOMRange, IsDOMRange, toDOMRange, castToDOMRange, gTypeDOMRange
+  , DOMScreen(DOMScreen), unDOMScreen, IsDOMScreen, toDOMScreen, castToDOMScreen, gTypeDOMScreen
+  , Storage(Storage), unStorage, IsStorage, toStorage, castToStorage, gTypeStorage
+  , StorageInfo(StorageInfo), unStorageInfo, IsStorageInfo, toStorageInfo, castToStorageInfo, gTypeStorageInfo
+  , StyleMedia(StyleMedia), unStyleMedia, IsStyleMedia, toStyleMedia, castToStyleMedia, gTypeStyleMedia
+  , StyleSheet(StyleSheet), unStyleSheet, IsStyleSheet, toStyleSheet, castToStyleSheet, gTypeStyleSheet
+  , StyleSheetList(StyleSheetList), unStyleSheetList, IsStyleSheetList, toStyleSheetList, castToStyleSheetList, gTypeStyleSheetList
+  , Text(Text), unText, IsText, toText, castToText, gTypeText
+  , TimeRanges(TimeRanges), unTimeRanges, IsTimeRanges, toTimeRanges, castToTimeRanges, gTypeTimeRanges
+  , TreeWalker(TreeWalker), unTreeWalker, IsTreeWalker, toTreeWalker, castToTreeWalker, gTypeTreeWalker
+  , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, castToUIEvent, gTypeUIEvent
+  , ValidityState(ValidityState), unValidityState, IsValidityState, toValidityState, castToValidityState, gTypeValidityState
+  , WebKitAnimation(WebKitAnimation), unWebKitAnimation, IsWebKitAnimation, toWebKitAnimation, castToWebKitAnimation, gTypeWebKitAnimation
+  , WebKitAnimationList(WebKitAnimationList), unWebKitAnimationList, IsWebKitAnimationList, toWebKitAnimationList, castToWebKitAnimationList, gTypeWebKitAnimationList
+  , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, IsWebKitNamedFlow, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
+  , WebKitPoint(WebKitPoint), unWebKitPoint, IsWebKitPoint, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
+  , XPathExpression(XPathExpression), unXPathExpression, IsXPathExpression, toXPathExpression, castToXPathExpression, gTypeXPathExpression
+  , XPathNSResolver(XPathNSResolver), unXPathNSResolver, IsXPathNSResolver, toXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
+  , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
 -- AUTO GENERATION ENDS HERE
   ) where
 
@@ -226,12 +226,12 @@ data DOMAttr = DOMAttr (JSRef DOMAttr)
 
 unDOMAttr (DOMAttr o) = o
 
-class NodeClass o => DOMAttrClass o
-toDOMAttr :: DOMAttrClass o => o -> DOMAttr
+class IsNode o => IsDOMAttr o
+toDOMAttr :: IsDOMAttr o => o -> DOMAttr
 toDOMAttr = unsafeCastGObject . toGObject
 
-instance DOMAttrClass DOMAttr
-instance NodeClass DOMAttr
+instance IsDOMAttr DOMAttr
+instance IsNode DOMAttr
 instance GObjectClass DOMAttr where
   toGObject = GObject . castRef . unDOMAttr
   unsafeCastGObject = DOMAttr . castRef . unGObject
@@ -251,11 +251,11 @@ data BarInfo = BarInfo (JSRef BarInfo)
 
 unBarInfo (BarInfo o) = o
 
-class GObjectClass o => BarInfoClass o
-toBarInfo :: BarInfoClass o => o -> BarInfo
+class GObjectClass o => IsBarInfo o
+toBarInfo :: IsBarInfo o => o -> BarInfo
 toBarInfo = unsafeCastGObject . toGObject
 
-instance BarInfoClass BarInfo
+instance IsBarInfo BarInfo
 instance GObjectClass BarInfo where
   toGObject = GObject . castRef . unBarInfo
   unsafeCastGObject = BarInfo . castRef . unGObject
@@ -275,11 +275,11 @@ data Blob = Blob (JSRef Blob)
 
 unBlob (Blob o) = o
 
-class GObjectClass o => BlobClass o
-toBlob :: BlobClass o => o -> Blob
+class GObjectClass o => IsBlob o
+toBlob :: IsBlob o => o -> Blob
 toBlob = unsafeCastGObject . toGObject
 
-instance BlobClass Blob
+instance IsBlob Blob
 instance GObjectClass Blob where
   toGObject = GObject . castRef . unBlob
   unsafeCastGObject = Blob . castRef . unGObject
@@ -299,14 +299,14 @@ data CDATASection = CDATASection (JSRef CDATASection)
 
 unCDATASection (CDATASection o) = o
 
-class TextClass o => CDATASectionClass o
-toCDATASection :: CDATASectionClass o => o -> CDATASection
+class IsText o => IsCDATASection o
+toCDATASection :: IsCDATASection o => o -> CDATASection
 toCDATASection = unsafeCastGObject . toGObject
 
-instance CDATASectionClass CDATASection
-instance TextClass CDATASection
-instance CharacterDataClass CDATASection
-instance NodeClass CDATASection
+instance IsCDATASection CDATASection
+instance IsText CDATASection
+instance IsCharacterData CDATASection
+instance IsNode CDATASection
 instance GObjectClass CDATASection where
   toGObject = GObject . castRef . unCDATASection
   unsafeCastGObject = CDATASection . castRef . unGObject
@@ -326,11 +326,11 @@ data CSSRule = CSSRule (JSRef CSSRule)
 
 unCSSRule (CSSRule o) = o
 
-class GObjectClass o => CSSRuleClass o
-toCSSRule :: CSSRuleClass o => o -> CSSRule
+class GObjectClass o => IsCSSRule o
+toCSSRule :: IsCSSRule o => o -> CSSRule
 toCSSRule = unsafeCastGObject . toGObject
 
-instance CSSRuleClass CSSRule
+instance IsCSSRule CSSRule
 instance GObjectClass CSSRule where
   toGObject = GObject . castRef . unCSSRule
   unsafeCastGObject = CSSRule . castRef . unGObject
@@ -350,11 +350,11 @@ data CSSRuleList = CSSRuleList (JSRef CSSRuleList)
 
 unCSSRuleList (CSSRuleList o) = o
 
-class GObjectClass o => CSSRuleListClass o
-toCSSRuleList :: CSSRuleListClass o => o -> CSSRuleList
+class GObjectClass o => IsCSSRuleList o
+toCSSRuleList :: IsCSSRuleList o => o -> CSSRuleList
 toCSSRuleList = unsafeCastGObject . toGObject
 
-instance CSSRuleListClass CSSRuleList
+instance IsCSSRuleList CSSRuleList
 instance GObjectClass CSSRuleList where
   toGObject = GObject . castRef . unCSSRuleList
   unsafeCastGObject = CSSRuleList . castRef . unGObject
@@ -374,11 +374,11 @@ data CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration)
 
 unCSSStyleDeclaration (CSSStyleDeclaration o) = o
 
-class GObjectClass o => CSSStyleDeclarationClass o
-toCSSStyleDeclaration :: CSSStyleDeclarationClass o => o -> CSSStyleDeclaration
+class GObjectClass o => IsCSSStyleDeclaration o
+toCSSStyleDeclaration :: IsCSSStyleDeclaration o => o -> CSSStyleDeclaration
 toCSSStyleDeclaration = unsafeCastGObject . toGObject
 
-instance CSSStyleDeclarationClass CSSStyleDeclaration
+instance IsCSSStyleDeclaration CSSStyleDeclaration
 instance GObjectClass CSSStyleDeclaration where
   toGObject = GObject . castRef . unCSSStyleDeclaration
   unsafeCastGObject = CSSStyleDeclaration . castRef . unGObject
@@ -398,12 +398,12 @@ data CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet)
 
 unCSSStyleSheet (CSSStyleSheet o) = o
 
-class StyleSheetClass o => CSSStyleSheetClass o
-toCSSStyleSheet :: CSSStyleSheetClass o => o -> CSSStyleSheet
+class IsStyleSheet o => IsCSSStyleSheet o
+toCSSStyleSheet :: IsCSSStyleSheet o => o -> CSSStyleSheet
 toCSSStyleSheet = unsafeCastGObject . toGObject
 
-instance CSSStyleSheetClass CSSStyleSheet
-instance StyleSheetClass CSSStyleSheet
+instance IsCSSStyleSheet CSSStyleSheet
+instance IsStyleSheet CSSStyleSheet
 instance GObjectClass CSSStyleSheet where
   toGObject = GObject . castRef . unCSSStyleSheet
   unsafeCastGObject = CSSStyleSheet . castRef . unGObject
@@ -423,11 +423,11 @@ data CSSValue = CSSValue (JSRef CSSValue)
 
 unCSSValue (CSSValue o) = o
 
-class GObjectClass o => CSSValueClass o
-toCSSValue :: CSSValueClass o => o -> CSSValue
+class GObjectClass o => IsCSSValue o
+toCSSValue :: IsCSSValue o => o -> CSSValue
 toCSSValue = unsafeCastGObject . toGObject
 
-instance CSSValueClass CSSValue
+instance IsCSSValue CSSValue
 instance GObjectClass CSSValue where
   toGObject = GObject . castRef . unCSSValue
   unsafeCastGObject = CSSValue . castRef . unGObject
@@ -447,12 +447,12 @@ data CharacterData = CharacterData (JSRef CharacterData)
 
 unCharacterData (CharacterData o) = o
 
-class NodeClass o => CharacterDataClass o
-toCharacterData :: CharacterDataClass o => o -> CharacterData
+class IsNode o => IsCharacterData o
+toCharacterData :: IsCharacterData o => o -> CharacterData
 toCharacterData = unsafeCastGObject . toGObject
 
-instance CharacterDataClass CharacterData
-instance NodeClass CharacterData
+instance IsCharacterData CharacterData
+instance IsNode CharacterData
 instance GObjectClass CharacterData where
   toGObject = GObject . castRef . unCharacterData
   unsafeCastGObject = CharacterData . castRef . unGObject
@@ -472,13 +472,13 @@ data Comment = Comment (JSRef Comment)
 
 unComment (Comment o) = o
 
-class CharacterDataClass o => CommentClass o
-toComment :: CommentClass o => o -> Comment
+class IsCharacterData o => IsComment o
+toComment :: IsComment o => o -> Comment
 toComment = unsafeCastGObject . toGObject
 
-instance CommentClass Comment
-instance CharacterDataClass Comment
-instance NodeClass Comment
+instance IsComment Comment
+instance IsCharacterData Comment
+instance IsNode Comment
 instance GObjectClass Comment where
   toGObject = GObject . castRef . unComment
   unsafeCastGObject = Comment . castRef . unGObject
@@ -498,11 +498,11 @@ data Console = Console (JSRef Console)
 
 unConsole (Console o) = o
 
-class GObjectClass o => ConsoleClass o
-toConsole :: ConsoleClass o => o -> Console
+class GObjectClass o => IsConsole o
+toConsole :: IsConsole o => o -> Console
 toConsole = unsafeCastGObject . toGObject
 
-instance ConsoleClass Console
+instance IsConsole Console
 instance GObjectClass Console where
   toGObject = GObject . castRef . unConsole
   unsafeCastGObject = Console . castRef . unGObject
@@ -522,11 +522,11 @@ data DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache)
 
 unDOMApplicationCache (DOMApplicationCache o) = o
 
-class GObjectClass o => DOMApplicationCacheClass o
-toDOMApplicationCache :: DOMApplicationCacheClass o => o -> DOMApplicationCache
+class GObjectClass o => IsDOMApplicationCache o
+toDOMApplicationCache :: IsDOMApplicationCache o => o -> DOMApplicationCache
 toDOMApplicationCache = unsafeCastGObject . toGObject
 
-instance DOMApplicationCacheClass DOMApplicationCache
+instance IsDOMApplicationCache DOMApplicationCache
 instance GObjectClass DOMApplicationCache where
   toGObject = GObject . castRef . unDOMApplicationCache
   unsafeCastGObject = DOMApplicationCache . castRef . unGObject
@@ -546,11 +546,11 @@ data DOMImplementation = DOMImplementation (JSRef DOMImplementation)
 
 unDOMImplementation (DOMImplementation o) = o
 
-class GObjectClass o => DOMImplementationClass o
-toDOMImplementation :: DOMImplementationClass o => o -> DOMImplementation
+class GObjectClass o => IsDOMImplementation o
+toDOMImplementation :: IsDOMImplementation o => o -> DOMImplementation
 toDOMImplementation = unsafeCastGObject . toGObject
 
-instance DOMImplementationClass DOMImplementation
+instance IsDOMImplementation DOMImplementation
 instance GObjectClass DOMImplementation where
   toGObject = GObject . castRef . unDOMImplementation
   unsafeCastGObject = DOMImplementation . castRef . unGObject
@@ -570,11 +570,11 @@ data DOMMimeType = DOMMimeType (JSRef DOMMimeType)
 
 unDOMMimeType (DOMMimeType o) = o
 
-class GObjectClass o => DOMMimeTypeClass o
-toDOMMimeType :: DOMMimeTypeClass o => o -> DOMMimeType
+class GObjectClass o => IsDOMMimeType o
+toDOMMimeType :: IsDOMMimeType o => o -> DOMMimeType
 toDOMMimeType = unsafeCastGObject . toGObject
 
-instance DOMMimeTypeClass DOMMimeType
+instance IsDOMMimeType DOMMimeType
 instance GObjectClass DOMMimeType where
   toGObject = GObject . castRef . unDOMMimeType
   unsafeCastGObject = DOMMimeType . castRef . unGObject
@@ -594,11 +594,11 @@ data DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray)
 
 unDOMMimeTypeArray (DOMMimeTypeArray o) = o
 
-class GObjectClass o => DOMMimeTypeArrayClass o
-toDOMMimeTypeArray :: DOMMimeTypeArrayClass o => o -> DOMMimeTypeArray
+class GObjectClass o => IsDOMMimeTypeArray o
+toDOMMimeTypeArray :: IsDOMMimeTypeArray o => o -> DOMMimeTypeArray
 toDOMMimeTypeArray = unsafeCastGObject . toGObject
 
-instance DOMMimeTypeArrayClass DOMMimeTypeArray
+instance IsDOMMimeTypeArray DOMMimeTypeArray
 instance GObjectClass DOMMimeTypeArray where
   toGObject = GObject . castRef . unDOMMimeTypeArray
   unsafeCastGObject = DOMMimeTypeArray . castRef . unGObject
@@ -618,11 +618,11 @@ data DOMPlugin = DOMPlugin (JSRef DOMPlugin)
 
 unDOMPlugin (DOMPlugin o) = o
 
-class GObjectClass o => DOMPluginClass o
-toDOMPlugin :: DOMPluginClass o => o -> DOMPlugin
+class GObjectClass o => IsDOMPlugin o
+toDOMPlugin :: IsDOMPlugin o => o -> DOMPlugin
 toDOMPlugin = unsafeCastGObject . toGObject
 
-instance DOMPluginClass DOMPlugin
+instance IsDOMPlugin DOMPlugin
 instance GObjectClass DOMPlugin where
   toGObject = GObject . castRef . unDOMPlugin
   unsafeCastGObject = DOMPlugin . castRef . unGObject
@@ -642,11 +642,11 @@ data DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray)
 
 unDOMPluginArray (DOMPluginArray o) = o
 
-class GObjectClass o => DOMPluginArrayClass o
-toDOMPluginArray :: DOMPluginArrayClass o => o -> DOMPluginArray
+class GObjectClass o => IsDOMPluginArray o
+toDOMPluginArray :: IsDOMPluginArray o => o -> DOMPluginArray
 toDOMPluginArray = unsafeCastGObject . toGObject
 
-instance DOMPluginArrayClass DOMPluginArray
+instance IsDOMPluginArray DOMPluginArray
 instance GObjectClass DOMPluginArray where
   toGObject = GObject . castRef . unDOMPluginArray
   unsafeCastGObject = DOMPluginArray . castRef . unGObject
@@ -666,11 +666,11 @@ data DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy)
 
 unDOMSecurityPolicy (DOMSecurityPolicy o) = o
 
-class GObjectClass o => DOMSecurityPolicyClass o
-toDOMSecurityPolicy :: DOMSecurityPolicyClass o => o -> DOMSecurityPolicy
+class GObjectClass o => IsDOMSecurityPolicy o
+toDOMSecurityPolicy :: IsDOMSecurityPolicy o => o -> DOMSecurityPolicy
 toDOMSecurityPolicy = unsafeCastGObject . toGObject
 
-instance DOMSecurityPolicyClass DOMSecurityPolicy
+instance IsDOMSecurityPolicy DOMSecurityPolicy
 instance GObjectClass DOMSecurityPolicy where
   toGObject = GObject . castRef . unDOMSecurityPolicy
   unsafeCastGObject = DOMSecurityPolicy . castRef . unGObject
@@ -690,11 +690,11 @@ data DOMSelection = DOMSelection (JSRef DOMSelection)
 
 unDOMSelection (DOMSelection o) = o
 
-class GObjectClass o => DOMSelectionClass o
-toDOMSelection :: DOMSelectionClass o => o -> DOMSelection
+class GObjectClass o => IsDOMSelection o
+toDOMSelection :: IsDOMSelection o => o -> DOMSelection
 toDOMSelection = unsafeCastGObject . toGObject
 
-instance DOMSelectionClass DOMSelection
+instance IsDOMSelection DOMSelection
 instance GObjectClass DOMSelection where
   toGObject = GObject . castRef . unDOMSelection
   unsafeCastGObject = DOMSelection . castRef . unGObject
@@ -714,12 +714,12 @@ data DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList)
 
 unDOMSettableTokenList (DOMSettableTokenList o) = o
 
-class DOMTokenListClass o => DOMSettableTokenListClass o
-toDOMSettableTokenList :: DOMSettableTokenListClass o => o -> DOMSettableTokenList
+class IsDOMTokenList o => IsDOMSettableTokenList o
+toDOMSettableTokenList :: IsDOMSettableTokenList o => o -> DOMSettableTokenList
 toDOMSettableTokenList = unsafeCastGObject . toGObject
 
-instance DOMSettableTokenListClass DOMSettableTokenList
-instance DOMTokenListClass DOMSettableTokenList
+instance IsDOMSettableTokenList DOMSettableTokenList
+instance IsDOMTokenList DOMSettableTokenList
 instance GObjectClass DOMSettableTokenList where
   toGObject = GObject . castRef . unDOMSettableTokenList
   unsafeCastGObject = DOMSettableTokenList . castRef . unGObject
@@ -739,11 +739,11 @@ data DOMStringList = DOMStringList (JSRef DOMStringList)
 
 unDOMStringList (DOMStringList o) = o
 
-class GObjectClass o => DOMStringListClass o
-toDOMStringList :: DOMStringListClass o => o -> DOMStringList
+class GObjectClass o => IsDOMStringList o
+toDOMStringList :: IsDOMStringList o => o -> DOMStringList
 toDOMStringList = unsafeCastGObject . toGObject
 
-instance DOMStringListClass DOMStringList
+instance IsDOMStringList DOMStringList
 instance GObjectClass DOMStringList where
   toGObject = GObject . castRef . unDOMStringList
   unsafeCastGObject = DOMStringList . castRef . unGObject
@@ -763,11 +763,11 @@ data DOMTokenList = DOMTokenList (JSRef DOMTokenList)
 
 unDOMTokenList (DOMTokenList o) = o
 
-class GObjectClass o => DOMTokenListClass o
-toDOMTokenList :: DOMTokenListClass o => o -> DOMTokenList
+class GObjectClass o => IsDOMTokenList o
+toDOMTokenList :: IsDOMTokenList o => o -> DOMTokenList
 toDOMTokenList = unsafeCastGObject . toGObject
 
-instance DOMTokenListClass DOMTokenList
+instance IsDOMTokenList DOMTokenList
 instance GObjectClass DOMTokenList where
   toGObject = GObject . castRef . unDOMTokenList
   unsafeCastGObject = DOMTokenList . castRef . unGObject
@@ -787,11 +787,11 @@ data DOMWindow = DOMWindow (JSRef DOMWindow)
 
 unDOMWindow (DOMWindow o) = o
 
-class GObjectClass o => DOMWindowClass o
-toDOMWindow :: DOMWindowClass o => o -> DOMWindow
+class GObjectClass o => IsDOMWindow o
+toDOMWindow :: IsDOMWindow o => o -> DOMWindow
 toDOMWindow = unsafeCastGObject . toGObject
 
-instance DOMWindowClass DOMWindow
+instance IsDOMWindow DOMWindow
 instance GObjectClass DOMWindow where
   toGObject = GObject . castRef . unDOMWindow
   unsafeCastGObject = DOMWindow . castRef . unGObject
@@ -811,12 +811,12 @@ data Document = Document (JSRef Document)
 
 unDocument (Document o) = o
 
-class NodeClass o => DocumentClass o
-toDocument :: DocumentClass o => o -> Document
+class IsNode o => IsDocument o
+toDocument :: IsDocument o => o -> Document
 toDocument = unsafeCastGObject . toGObject
 
-instance DocumentClass Document
-instance NodeClass Document
+instance IsDocument Document
+instance IsNode Document
 instance GObjectClass Document where
   toGObject = GObject . castRef . unDocument
   unsafeCastGObject = Document . castRef . unGObject
@@ -836,12 +836,12 @@ data DocumentFragment = DocumentFragment (JSRef DocumentFragment)
 
 unDocumentFragment (DocumentFragment o) = o
 
-class NodeClass o => DocumentFragmentClass o
-toDocumentFragment :: DocumentFragmentClass o => o -> DocumentFragment
+class IsNode o => IsDocumentFragment o
+toDocumentFragment :: IsDocumentFragment o => o -> DocumentFragment
 toDocumentFragment = unsafeCastGObject . toGObject
 
-instance DocumentFragmentClass DocumentFragment
-instance NodeClass DocumentFragment
+instance IsDocumentFragment DocumentFragment
+instance IsNode DocumentFragment
 instance GObjectClass DocumentFragment where
   toGObject = GObject . castRef . unDocumentFragment
   unsafeCastGObject = DocumentFragment . castRef . unGObject
@@ -861,12 +861,12 @@ data DocumentType = DocumentType (JSRef DocumentType)
 
 unDocumentType (DocumentType o) = o
 
-class NodeClass o => DocumentTypeClass o
-toDocumentType :: DocumentTypeClass o => o -> DocumentType
+class IsNode o => IsDocumentType o
+toDocumentType :: IsDocumentType o => o -> DocumentType
 toDocumentType = unsafeCastGObject . toGObject
 
-instance DocumentTypeClass DocumentType
-instance NodeClass DocumentType
+instance IsDocumentType DocumentType
+instance IsNode DocumentType
 instance GObjectClass DocumentType where
   toGObject = GObject . castRef . unDocumentType
   unsafeCastGObject = DocumentType . castRef . unGObject
@@ -886,12 +886,12 @@ data Element = Element (JSRef Element)
 
 unElement (Element o) = o
 
-class NodeClass o => ElementClass o
-toElement :: ElementClass o => o -> Element
+class IsNode o => IsElement o
+toElement :: IsElement o => o -> Element
 toElement = unsafeCastGObject . toGObject
 
-instance ElementClass Element
-instance NodeClass Element
+instance IsElement Element
+instance IsNode Element
 instance GObjectClass Element where
   toGObject = GObject . castRef . unElement
   unsafeCastGObject = Element . castRef . unGObject
@@ -911,12 +911,12 @@ data EntityReference = EntityReference (JSRef EntityReference)
 
 unEntityReference (EntityReference o) = o
 
-class NodeClass o => EntityReferenceClass o
-toEntityReference :: EntityReferenceClass o => o -> EntityReference
+class IsNode o => IsEntityReference o
+toEntityReference :: IsEntityReference o => o -> EntityReference
 toEntityReference = unsafeCastGObject . toGObject
 
-instance EntityReferenceClass EntityReference
-instance NodeClass EntityReference
+instance IsEntityReference EntityReference
+instance IsNode EntityReference
 instance GObjectClass EntityReference where
   toGObject = GObject . castRef . unEntityReference
   unsafeCastGObject = EntityReference . castRef . unGObject
@@ -936,11 +936,11 @@ data Event = Event (JSRef Event)
 
 unEvent (Event o) = o
 
-class GObjectClass o => EventClass o
-toEvent :: EventClass o => o -> Event
+class GObjectClass o => IsEvent o
+toEvent :: IsEvent o => o -> Event
 toEvent = unsafeCastGObject . toGObject
 
-instance EventClass Event
+instance IsEvent Event
 instance GObjectClass Event where
   toGObject = GObject . castRef . unEvent
   unsafeCastGObject = Event . castRef . unGObject
@@ -960,11 +960,11 @@ data EventTarget = EventTarget (JSRef EventTarget)
 
 unEventTarget (EventTarget o) = o
 
-class GObjectClass o => EventTargetClass o
-toEventTarget :: EventTargetClass o => o -> EventTarget
+class GObjectClass o => IsEventTarget o
+toEventTarget :: IsEventTarget o => o -> EventTarget
 toEventTarget = unsafeCastGObject . toGObject
 
-instance EventTargetClass EventTarget
+instance IsEventTarget EventTarget
 instance GObjectClass EventTarget where
   toGObject = GObject . castRef . unEventTarget
   unsafeCastGObject = EventTarget . castRef . unGObject
@@ -984,12 +984,12 @@ data File = File (JSRef File)
 
 unFile (File o) = o
 
-class BlobClass o => FileClass o
-toFile :: FileClass o => o -> File
+class IsBlob o => IsFile o
+toFile :: IsFile o => o -> File
 toFile = unsafeCastGObject . toGObject
 
-instance FileClass File
-instance BlobClass File
+instance IsFile File
+instance IsBlob File
 instance GObjectClass File where
   toGObject = GObject . castRef . unFile
   unsafeCastGObject = File . castRef . unGObject
@@ -1009,11 +1009,11 @@ data FileList = FileList (JSRef FileList)
 
 unFileList (FileList o) = o
 
-class GObjectClass o => FileListClass o
-toFileList :: FileListClass o => o -> FileList
+class GObjectClass o => IsFileList o
+toFileList :: IsFileList o => o -> FileList
 toFileList = unsafeCastGObject . toGObject
 
-instance FileListClass FileList
+instance IsFileList FileList
 instance GObjectClass FileList where
   toGObject = GObject . castRef . unFileList
   unsafeCastGObject = FileList . castRef . unGObject
@@ -1033,11 +1033,11 @@ data Geolocation = Geolocation (JSRef Geolocation)
 
 unGeolocation (Geolocation o) = o
 
-class GObjectClass o => GeolocationClass o
-toGeolocation :: GeolocationClass o => o -> Geolocation
+class GObjectClass o => IsGeolocation o
+toGeolocation :: IsGeolocation o => o -> Geolocation
 toGeolocation = unsafeCastGObject . toGObject
 
-instance GeolocationClass Geolocation
+instance IsGeolocation Geolocation
 instance GObjectClass Geolocation where
   toGObject = GObject . castRef . unGeolocation
   unsafeCastGObject = Geolocation . castRef . unGObject
@@ -1057,14 +1057,14 @@ data HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement)
 
 unHTMLAnchorElement (HTMLAnchorElement o) = o
 
-class HTMLElementClass o => HTMLAnchorElementClass o
-toHTMLAnchorElement :: HTMLAnchorElementClass o => o -> HTMLAnchorElement
+class IsHTMLElement o => IsHTMLAnchorElement o
+toHTMLAnchorElement :: IsHTMLAnchorElement o => o -> HTMLAnchorElement
 toHTMLAnchorElement = unsafeCastGObject . toGObject
 
-instance HTMLAnchorElementClass HTMLAnchorElement
-instance HTMLElementClass HTMLAnchorElement
-instance ElementClass HTMLAnchorElement
-instance NodeClass HTMLAnchorElement
+instance IsHTMLAnchorElement HTMLAnchorElement
+instance IsHTMLElement HTMLAnchorElement
+instance IsElement HTMLAnchorElement
+instance IsNode HTMLAnchorElement
 instance GObjectClass HTMLAnchorElement where
   toGObject = GObject . castRef . unHTMLAnchorElement
   unsafeCastGObject = HTMLAnchorElement . castRef . unGObject
@@ -1084,14 +1084,14 @@ data HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement)
 
 unHTMLAppletElement (HTMLAppletElement o) = o
 
-class HTMLElementClass o => HTMLAppletElementClass o
-toHTMLAppletElement :: HTMLAppletElementClass o => o -> HTMLAppletElement
+class IsHTMLElement o => IsHTMLAppletElement o
+toHTMLAppletElement :: IsHTMLAppletElement o => o -> HTMLAppletElement
 toHTMLAppletElement = unsafeCastGObject . toGObject
 
-instance HTMLAppletElementClass HTMLAppletElement
-instance HTMLElementClass HTMLAppletElement
-instance ElementClass HTMLAppletElement
-instance NodeClass HTMLAppletElement
+instance IsHTMLAppletElement HTMLAppletElement
+instance IsHTMLElement HTMLAppletElement
+instance IsElement HTMLAppletElement
+instance IsNode HTMLAppletElement
 instance GObjectClass HTMLAppletElement where
   toGObject = GObject . castRef . unHTMLAppletElement
   unsafeCastGObject = HTMLAppletElement . castRef . unGObject
@@ -1111,14 +1111,14 @@ data HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement)
 
 unHTMLAreaElement (HTMLAreaElement o) = o
 
-class HTMLElementClass o => HTMLAreaElementClass o
-toHTMLAreaElement :: HTMLAreaElementClass o => o -> HTMLAreaElement
+class IsHTMLElement o => IsHTMLAreaElement o
+toHTMLAreaElement :: IsHTMLAreaElement o => o -> HTMLAreaElement
 toHTMLAreaElement = unsafeCastGObject . toGObject
 
-instance HTMLAreaElementClass HTMLAreaElement
-instance HTMLElementClass HTMLAreaElement
-instance ElementClass HTMLAreaElement
-instance NodeClass HTMLAreaElement
+instance IsHTMLAreaElement HTMLAreaElement
+instance IsHTMLElement HTMLAreaElement
+instance IsElement HTMLAreaElement
+instance IsNode HTMLAreaElement
 instance GObjectClass HTMLAreaElement where
   toGObject = GObject . castRef . unHTMLAreaElement
   unsafeCastGObject = HTMLAreaElement . castRef . unGObject
@@ -1138,15 +1138,15 @@ data HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement)
 
 unHTMLAudioElement (HTMLAudioElement o) = o
 
-class HTMLMediaElementClass o => HTMLAudioElementClass o
-toHTMLAudioElement :: HTMLAudioElementClass o => o -> HTMLAudioElement
+class IsHTMLMediaElement o => IsHTMLAudioElement o
+toHTMLAudioElement :: IsHTMLAudioElement o => o -> HTMLAudioElement
 toHTMLAudioElement = unsafeCastGObject . toGObject
 
-instance HTMLAudioElementClass HTMLAudioElement
-instance HTMLMediaElementClass HTMLAudioElement
-instance HTMLElementClass HTMLAudioElement
-instance ElementClass HTMLAudioElement
-instance NodeClass HTMLAudioElement
+instance IsHTMLAudioElement HTMLAudioElement
+instance IsHTMLMediaElement HTMLAudioElement
+instance IsHTMLElement HTMLAudioElement
+instance IsElement HTMLAudioElement
+instance IsNode HTMLAudioElement
 instance GObjectClass HTMLAudioElement where
   toGObject = GObject . castRef . unHTMLAudioElement
   unsafeCastGObject = HTMLAudioElement . castRef . unGObject
@@ -1166,14 +1166,14 @@ data HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement)
 
 unHTMLBRElement (HTMLBRElement o) = o
 
-class HTMLElementClass o => HTMLBRElementClass o
-toHTMLBRElement :: HTMLBRElementClass o => o -> HTMLBRElement
+class IsHTMLElement o => IsHTMLBRElement o
+toHTMLBRElement :: IsHTMLBRElement o => o -> HTMLBRElement
 toHTMLBRElement = unsafeCastGObject . toGObject
 
-instance HTMLBRElementClass HTMLBRElement
-instance HTMLElementClass HTMLBRElement
-instance ElementClass HTMLBRElement
-instance NodeClass HTMLBRElement
+instance IsHTMLBRElement HTMLBRElement
+instance IsHTMLElement HTMLBRElement
+instance IsElement HTMLBRElement
+instance IsNode HTMLBRElement
 instance GObjectClass HTMLBRElement where
   toGObject = GObject . castRef . unHTMLBRElement
   unsafeCastGObject = HTMLBRElement . castRef . unGObject
@@ -1193,14 +1193,14 @@ data HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement)
 
 unHTMLBaseElement (HTMLBaseElement o) = o
 
-class HTMLElementClass o => HTMLBaseElementClass o
-toHTMLBaseElement :: HTMLBaseElementClass o => o -> HTMLBaseElement
+class IsHTMLElement o => IsHTMLBaseElement o
+toHTMLBaseElement :: IsHTMLBaseElement o => o -> HTMLBaseElement
 toHTMLBaseElement = unsafeCastGObject . toGObject
 
-instance HTMLBaseElementClass HTMLBaseElement
-instance HTMLElementClass HTMLBaseElement
-instance ElementClass HTMLBaseElement
-instance NodeClass HTMLBaseElement
+instance IsHTMLBaseElement HTMLBaseElement
+instance IsHTMLElement HTMLBaseElement
+instance IsElement HTMLBaseElement
+instance IsNode HTMLBaseElement
 instance GObjectClass HTMLBaseElement where
   toGObject = GObject . castRef . unHTMLBaseElement
   unsafeCastGObject = HTMLBaseElement . castRef . unGObject
@@ -1220,14 +1220,14 @@ data HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement)
 
 unHTMLBaseFontElement (HTMLBaseFontElement o) = o
 
-class HTMLElementClass o => HTMLBaseFontElementClass o
-toHTMLBaseFontElement :: HTMLBaseFontElementClass o => o -> HTMLBaseFontElement
+class IsHTMLElement o => IsHTMLBaseFontElement o
+toHTMLBaseFontElement :: IsHTMLBaseFontElement o => o -> HTMLBaseFontElement
 toHTMLBaseFontElement = unsafeCastGObject . toGObject
 
-instance HTMLBaseFontElementClass HTMLBaseFontElement
-instance HTMLElementClass HTMLBaseFontElement
-instance ElementClass HTMLBaseFontElement
-instance NodeClass HTMLBaseFontElement
+instance IsHTMLBaseFontElement HTMLBaseFontElement
+instance IsHTMLElement HTMLBaseFontElement
+instance IsElement HTMLBaseFontElement
+instance IsNode HTMLBaseFontElement
 instance GObjectClass HTMLBaseFontElement where
   toGObject = GObject . castRef . unHTMLBaseFontElement
   unsafeCastGObject = HTMLBaseFontElement . castRef . unGObject
@@ -1247,14 +1247,14 @@ data HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement)
 
 unHTMLBodyElement (HTMLBodyElement o) = o
 
-class HTMLElementClass o => HTMLBodyElementClass o
-toHTMLBodyElement :: HTMLBodyElementClass o => o -> HTMLBodyElement
+class IsHTMLElement o => IsHTMLBodyElement o
+toHTMLBodyElement :: IsHTMLBodyElement o => o -> HTMLBodyElement
 toHTMLBodyElement = unsafeCastGObject . toGObject
 
-instance HTMLBodyElementClass HTMLBodyElement
-instance HTMLElementClass HTMLBodyElement
-instance ElementClass HTMLBodyElement
-instance NodeClass HTMLBodyElement
+instance IsHTMLBodyElement HTMLBodyElement
+instance IsHTMLElement HTMLBodyElement
+instance IsElement HTMLBodyElement
+instance IsNode HTMLBodyElement
 instance GObjectClass HTMLBodyElement where
   toGObject = GObject . castRef . unHTMLBodyElement
   unsafeCastGObject = HTMLBodyElement . castRef . unGObject
@@ -1274,14 +1274,14 @@ data HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement)
 
 unHTMLButtonElement (HTMLButtonElement o) = o
 
-class HTMLElementClass o => HTMLButtonElementClass o
-toHTMLButtonElement :: HTMLButtonElementClass o => o -> HTMLButtonElement
+class IsHTMLElement o => IsHTMLButtonElement o
+toHTMLButtonElement :: IsHTMLButtonElement o => o -> HTMLButtonElement
 toHTMLButtonElement = unsafeCastGObject . toGObject
 
-instance HTMLButtonElementClass HTMLButtonElement
-instance HTMLElementClass HTMLButtonElement
-instance ElementClass HTMLButtonElement
-instance NodeClass HTMLButtonElement
+instance IsHTMLButtonElement HTMLButtonElement
+instance IsHTMLElement HTMLButtonElement
+instance IsElement HTMLButtonElement
+instance IsNode HTMLButtonElement
 instance GObjectClass HTMLButtonElement where
   toGObject = GObject . castRef . unHTMLButtonElement
   unsafeCastGObject = HTMLButtonElement . castRef . unGObject
@@ -1301,14 +1301,14 @@ data HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement)
 
 unHTMLCanvasElement (HTMLCanvasElement o) = o
 
-class HTMLElementClass o => HTMLCanvasElementClass o
-toHTMLCanvasElement :: HTMLCanvasElementClass o => o -> HTMLCanvasElement
+class IsHTMLElement o => IsHTMLCanvasElement o
+toHTMLCanvasElement :: IsHTMLCanvasElement o => o -> HTMLCanvasElement
 toHTMLCanvasElement = unsafeCastGObject . toGObject
 
-instance HTMLCanvasElementClass HTMLCanvasElement
-instance HTMLElementClass HTMLCanvasElement
-instance ElementClass HTMLCanvasElement
-instance NodeClass HTMLCanvasElement
+instance IsHTMLCanvasElement HTMLCanvasElement
+instance IsHTMLElement HTMLCanvasElement
+instance IsElement HTMLCanvasElement
+instance IsNode HTMLCanvasElement
 instance GObjectClass HTMLCanvasElement where
   toGObject = GObject . castRef . unHTMLCanvasElement
   unsafeCastGObject = HTMLCanvasElement . castRef . unGObject
@@ -1328,11 +1328,11 @@ data HTMLCollection = HTMLCollection (JSRef HTMLCollection)
 
 unHTMLCollection (HTMLCollection o) = o
 
-class GObjectClass o => HTMLCollectionClass o
-toHTMLCollection :: HTMLCollectionClass o => o -> HTMLCollection
+class GObjectClass o => IsHTMLCollection o
+toHTMLCollection :: IsHTMLCollection o => o -> HTMLCollection
 toHTMLCollection = unsafeCastGObject . toGObject
 
-instance HTMLCollectionClass HTMLCollection
+instance IsHTMLCollection HTMLCollection
 instance GObjectClass HTMLCollection where
   toGObject = GObject . castRef . unHTMLCollection
   unsafeCastGObject = HTMLCollection . castRef . unGObject
@@ -1352,14 +1352,14 @@ data HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement)
 
 unHTMLDListElement (HTMLDListElement o) = o
 
-class HTMLElementClass o => HTMLDListElementClass o
-toHTMLDListElement :: HTMLDListElementClass o => o -> HTMLDListElement
+class IsHTMLElement o => IsHTMLDListElement o
+toHTMLDListElement :: IsHTMLDListElement o => o -> HTMLDListElement
 toHTMLDListElement = unsafeCastGObject . toGObject
 
-instance HTMLDListElementClass HTMLDListElement
-instance HTMLElementClass HTMLDListElement
-instance ElementClass HTMLDListElement
-instance NodeClass HTMLDListElement
+instance IsHTMLDListElement HTMLDListElement
+instance IsHTMLElement HTMLDListElement
+instance IsElement HTMLDListElement
+instance IsNode HTMLDListElement
 instance GObjectClass HTMLDListElement where
   toGObject = GObject . castRef . unHTMLDListElement
   unsafeCastGObject = HTMLDListElement . castRef . unGObject
@@ -1379,14 +1379,14 @@ data HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement)
 
 unHTMLDetailsElement (HTMLDetailsElement o) = o
 
-class HTMLElementClass o => HTMLDetailsElementClass o
-toHTMLDetailsElement :: HTMLDetailsElementClass o => o -> HTMLDetailsElement
+class IsHTMLElement o => IsHTMLDetailsElement o
+toHTMLDetailsElement :: IsHTMLDetailsElement o => o -> HTMLDetailsElement
 toHTMLDetailsElement = unsafeCastGObject . toGObject
 
-instance HTMLDetailsElementClass HTMLDetailsElement
-instance HTMLElementClass HTMLDetailsElement
-instance ElementClass HTMLDetailsElement
-instance NodeClass HTMLDetailsElement
+instance IsHTMLDetailsElement HTMLDetailsElement
+instance IsHTMLElement HTMLDetailsElement
+instance IsElement HTMLDetailsElement
+instance IsNode HTMLDetailsElement
 instance GObjectClass HTMLDetailsElement where
   toGObject = GObject . castRef . unHTMLDetailsElement
   unsafeCastGObject = HTMLDetailsElement . castRef . unGObject
@@ -1406,14 +1406,14 @@ data HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement)
 
 unHTMLDirectoryElement (HTMLDirectoryElement o) = o
 
-class HTMLElementClass o => HTMLDirectoryElementClass o
-toHTMLDirectoryElement :: HTMLDirectoryElementClass o => o -> HTMLDirectoryElement
+class IsHTMLElement o => IsHTMLDirectoryElement o
+toHTMLDirectoryElement :: IsHTMLDirectoryElement o => o -> HTMLDirectoryElement
 toHTMLDirectoryElement = unsafeCastGObject . toGObject
 
-instance HTMLDirectoryElementClass HTMLDirectoryElement
-instance HTMLElementClass HTMLDirectoryElement
-instance ElementClass HTMLDirectoryElement
-instance NodeClass HTMLDirectoryElement
+instance IsHTMLDirectoryElement HTMLDirectoryElement
+instance IsHTMLElement HTMLDirectoryElement
+instance IsElement HTMLDirectoryElement
+instance IsNode HTMLDirectoryElement
 instance GObjectClass HTMLDirectoryElement where
   toGObject = GObject . castRef . unHTMLDirectoryElement
   unsafeCastGObject = HTMLDirectoryElement . castRef . unGObject
@@ -1433,14 +1433,14 @@ data HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement)
 
 unHTMLDivElement (HTMLDivElement o) = o
 
-class HTMLElementClass o => HTMLDivElementClass o
-toHTMLDivElement :: HTMLDivElementClass o => o -> HTMLDivElement
+class IsHTMLElement o => IsHTMLDivElement o
+toHTMLDivElement :: IsHTMLDivElement o => o -> HTMLDivElement
 toHTMLDivElement = unsafeCastGObject . toGObject
 
-instance HTMLDivElementClass HTMLDivElement
-instance HTMLElementClass HTMLDivElement
-instance ElementClass HTMLDivElement
-instance NodeClass HTMLDivElement
+instance IsHTMLDivElement HTMLDivElement
+instance IsHTMLElement HTMLDivElement
+instance IsElement HTMLDivElement
+instance IsNode HTMLDivElement
 instance GObjectClass HTMLDivElement where
   toGObject = GObject . castRef . unHTMLDivElement
   unsafeCastGObject = HTMLDivElement . castRef . unGObject
@@ -1460,13 +1460,13 @@ data HTMLDocument = HTMLDocument (JSRef HTMLDocument)
 
 unHTMLDocument (HTMLDocument o) = o
 
-class DocumentClass o => HTMLDocumentClass o
-toHTMLDocument :: HTMLDocumentClass o => o -> HTMLDocument
+class IsDocument o => IsHTMLDocument o
+toHTMLDocument :: IsHTMLDocument o => o -> HTMLDocument
 toHTMLDocument = unsafeCastGObject . toGObject
 
-instance HTMLDocumentClass HTMLDocument
-instance DocumentClass HTMLDocument
-instance NodeClass HTMLDocument
+instance IsHTMLDocument HTMLDocument
+instance IsDocument HTMLDocument
+instance IsNode HTMLDocument
 instance GObjectClass HTMLDocument where
   toGObject = GObject . castRef . unHTMLDocument
   unsafeCastGObject = HTMLDocument . castRef . unGObject
@@ -1486,13 +1486,13 @@ data HTMLElement = HTMLElement (JSRef HTMLElement)
 
 unHTMLElement (HTMLElement o) = o
 
-class ElementClass o => HTMLElementClass o
-toHTMLElement :: HTMLElementClass o => o -> HTMLElement
+class IsElement o => IsHTMLElement o
+toHTMLElement :: IsHTMLElement o => o -> HTMLElement
 toHTMLElement = unsafeCastGObject . toGObject
 
-instance HTMLElementClass HTMLElement
-instance ElementClass HTMLElement
-instance NodeClass HTMLElement
+instance IsHTMLElement HTMLElement
+instance IsElement HTMLElement
+instance IsNode HTMLElement
 instance GObjectClass HTMLElement where
   toGObject = GObject . castRef . unHTMLElement
   unsafeCastGObject = HTMLElement . castRef . unGObject
@@ -1512,14 +1512,14 @@ data HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement)
 
 unHTMLEmbedElement (HTMLEmbedElement o) = o
 
-class HTMLElementClass o => HTMLEmbedElementClass o
-toHTMLEmbedElement :: HTMLEmbedElementClass o => o -> HTMLEmbedElement
+class IsHTMLElement o => IsHTMLEmbedElement o
+toHTMLEmbedElement :: IsHTMLEmbedElement o => o -> HTMLEmbedElement
 toHTMLEmbedElement = unsafeCastGObject . toGObject
 
-instance HTMLEmbedElementClass HTMLEmbedElement
-instance HTMLElementClass HTMLEmbedElement
-instance ElementClass HTMLEmbedElement
-instance NodeClass HTMLEmbedElement
+instance IsHTMLEmbedElement HTMLEmbedElement
+instance IsHTMLElement HTMLEmbedElement
+instance IsElement HTMLEmbedElement
+instance IsNode HTMLEmbedElement
 instance GObjectClass HTMLEmbedElement where
   toGObject = GObject . castRef . unHTMLEmbedElement
   unsafeCastGObject = HTMLEmbedElement . castRef . unGObject
@@ -1539,14 +1539,14 @@ data HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement)
 
 unHTMLFieldSetElement (HTMLFieldSetElement o) = o
 
-class HTMLElementClass o => HTMLFieldSetElementClass o
-toHTMLFieldSetElement :: HTMLFieldSetElementClass o => o -> HTMLFieldSetElement
+class IsHTMLElement o => IsHTMLFieldSetElement o
+toHTMLFieldSetElement :: IsHTMLFieldSetElement o => o -> HTMLFieldSetElement
 toHTMLFieldSetElement = unsafeCastGObject . toGObject
 
-instance HTMLFieldSetElementClass HTMLFieldSetElement
-instance HTMLElementClass HTMLFieldSetElement
-instance ElementClass HTMLFieldSetElement
-instance NodeClass HTMLFieldSetElement
+instance IsHTMLFieldSetElement HTMLFieldSetElement
+instance IsHTMLElement HTMLFieldSetElement
+instance IsElement HTMLFieldSetElement
+instance IsNode HTMLFieldSetElement
 instance GObjectClass HTMLFieldSetElement where
   toGObject = GObject . castRef . unHTMLFieldSetElement
   unsafeCastGObject = HTMLFieldSetElement . castRef . unGObject
@@ -1566,14 +1566,14 @@ data HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement)
 
 unHTMLFontElement (HTMLFontElement o) = o
 
-class HTMLElementClass o => HTMLFontElementClass o
-toHTMLFontElement :: HTMLFontElementClass o => o -> HTMLFontElement
+class IsHTMLElement o => IsHTMLFontElement o
+toHTMLFontElement :: IsHTMLFontElement o => o -> HTMLFontElement
 toHTMLFontElement = unsafeCastGObject . toGObject
 
-instance HTMLFontElementClass HTMLFontElement
-instance HTMLElementClass HTMLFontElement
-instance ElementClass HTMLFontElement
-instance NodeClass HTMLFontElement
+instance IsHTMLFontElement HTMLFontElement
+instance IsHTMLElement HTMLFontElement
+instance IsElement HTMLFontElement
+instance IsNode HTMLFontElement
 instance GObjectClass HTMLFontElement where
   toGObject = GObject . castRef . unHTMLFontElement
   unsafeCastGObject = HTMLFontElement . castRef . unGObject
@@ -1593,14 +1593,14 @@ data HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement)
 
 unHTMLFormElement (HTMLFormElement o) = o
 
-class HTMLElementClass o => HTMLFormElementClass o
-toHTMLFormElement :: HTMLFormElementClass o => o -> HTMLFormElement
+class IsHTMLElement o => IsHTMLFormElement o
+toHTMLFormElement :: IsHTMLFormElement o => o -> HTMLFormElement
 toHTMLFormElement = unsafeCastGObject . toGObject
 
-instance HTMLFormElementClass HTMLFormElement
-instance HTMLElementClass HTMLFormElement
-instance ElementClass HTMLFormElement
-instance NodeClass HTMLFormElement
+instance IsHTMLFormElement HTMLFormElement
+instance IsHTMLElement HTMLFormElement
+instance IsElement HTMLFormElement
+instance IsNode HTMLFormElement
 instance GObjectClass HTMLFormElement where
   toGObject = GObject . castRef . unHTMLFormElement
   unsafeCastGObject = HTMLFormElement . castRef . unGObject
@@ -1620,14 +1620,14 @@ data HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement)
 
 unHTMLFrameElement (HTMLFrameElement o) = o
 
-class HTMLElementClass o => HTMLFrameElementClass o
-toHTMLFrameElement :: HTMLFrameElementClass o => o -> HTMLFrameElement
+class IsHTMLElement o => IsHTMLFrameElement o
+toHTMLFrameElement :: IsHTMLFrameElement o => o -> HTMLFrameElement
 toHTMLFrameElement = unsafeCastGObject . toGObject
 
-instance HTMLFrameElementClass HTMLFrameElement
-instance HTMLElementClass HTMLFrameElement
-instance ElementClass HTMLFrameElement
-instance NodeClass HTMLFrameElement
+instance IsHTMLFrameElement HTMLFrameElement
+instance IsHTMLElement HTMLFrameElement
+instance IsElement HTMLFrameElement
+instance IsNode HTMLFrameElement
 instance GObjectClass HTMLFrameElement where
   toGObject = GObject . castRef . unHTMLFrameElement
   unsafeCastGObject = HTMLFrameElement . castRef . unGObject
@@ -1647,14 +1647,14 @@ data HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement)
 
 unHTMLFrameSetElement (HTMLFrameSetElement o) = o
 
-class HTMLElementClass o => HTMLFrameSetElementClass o
-toHTMLFrameSetElement :: HTMLFrameSetElementClass o => o -> HTMLFrameSetElement
+class IsHTMLElement o => IsHTMLFrameSetElement o
+toHTMLFrameSetElement :: IsHTMLFrameSetElement o => o -> HTMLFrameSetElement
 toHTMLFrameSetElement = unsafeCastGObject . toGObject
 
-instance HTMLFrameSetElementClass HTMLFrameSetElement
-instance HTMLElementClass HTMLFrameSetElement
-instance ElementClass HTMLFrameSetElement
-instance NodeClass HTMLFrameSetElement
+instance IsHTMLFrameSetElement HTMLFrameSetElement
+instance IsHTMLElement HTMLFrameSetElement
+instance IsElement HTMLFrameSetElement
+instance IsNode HTMLFrameSetElement
 instance GObjectClass HTMLFrameSetElement where
   toGObject = GObject . castRef . unHTMLFrameSetElement
   unsafeCastGObject = HTMLFrameSetElement . castRef . unGObject
@@ -1674,14 +1674,14 @@ data HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement)
 
 unHTMLHRElement (HTMLHRElement o) = o
 
-class HTMLElementClass o => HTMLHRElementClass o
-toHTMLHRElement :: HTMLHRElementClass o => o -> HTMLHRElement
+class IsHTMLElement o => IsHTMLHRElement o
+toHTMLHRElement :: IsHTMLHRElement o => o -> HTMLHRElement
 toHTMLHRElement = unsafeCastGObject . toGObject
 
-instance HTMLHRElementClass HTMLHRElement
-instance HTMLElementClass HTMLHRElement
-instance ElementClass HTMLHRElement
-instance NodeClass HTMLHRElement
+instance IsHTMLHRElement HTMLHRElement
+instance IsHTMLElement HTMLHRElement
+instance IsElement HTMLHRElement
+instance IsNode HTMLHRElement
 instance GObjectClass HTMLHRElement where
   toGObject = GObject . castRef . unHTMLHRElement
   unsafeCastGObject = HTMLHRElement . castRef . unGObject
@@ -1701,14 +1701,14 @@ data HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement)
 
 unHTMLHeadElement (HTMLHeadElement o) = o
 
-class HTMLElementClass o => HTMLHeadElementClass o
-toHTMLHeadElement :: HTMLHeadElementClass o => o -> HTMLHeadElement
+class IsHTMLElement o => IsHTMLHeadElement o
+toHTMLHeadElement :: IsHTMLHeadElement o => o -> HTMLHeadElement
 toHTMLHeadElement = unsafeCastGObject . toGObject
 
-instance HTMLHeadElementClass HTMLHeadElement
-instance HTMLElementClass HTMLHeadElement
-instance ElementClass HTMLHeadElement
-instance NodeClass HTMLHeadElement
+instance IsHTMLHeadElement HTMLHeadElement
+instance IsHTMLElement HTMLHeadElement
+instance IsElement HTMLHeadElement
+instance IsNode HTMLHeadElement
 instance GObjectClass HTMLHeadElement where
   toGObject = GObject . castRef . unHTMLHeadElement
   unsafeCastGObject = HTMLHeadElement . castRef . unGObject
@@ -1728,14 +1728,14 @@ data HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement)
 
 unHTMLHeadingElement (HTMLHeadingElement o) = o
 
-class HTMLElementClass o => HTMLHeadingElementClass o
-toHTMLHeadingElement :: HTMLHeadingElementClass o => o -> HTMLHeadingElement
+class IsHTMLElement o => IsHTMLHeadingElement o
+toHTMLHeadingElement :: IsHTMLHeadingElement o => o -> HTMLHeadingElement
 toHTMLHeadingElement = unsafeCastGObject . toGObject
 
-instance HTMLHeadingElementClass HTMLHeadingElement
-instance HTMLElementClass HTMLHeadingElement
-instance ElementClass HTMLHeadingElement
-instance NodeClass HTMLHeadingElement
+instance IsHTMLHeadingElement HTMLHeadingElement
+instance IsHTMLElement HTMLHeadingElement
+instance IsElement HTMLHeadingElement
+instance IsNode HTMLHeadingElement
 instance GObjectClass HTMLHeadingElement where
   toGObject = GObject . castRef . unHTMLHeadingElement
   unsafeCastGObject = HTMLHeadingElement . castRef . unGObject
@@ -1755,14 +1755,14 @@ data HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement)
 
 unHTMLHtmlElement (HTMLHtmlElement o) = o
 
-class HTMLElementClass o => HTMLHtmlElementClass o
-toHTMLHtmlElement :: HTMLHtmlElementClass o => o -> HTMLHtmlElement
+class IsHTMLElement o => IsHTMLHtmlElement o
+toHTMLHtmlElement :: IsHTMLHtmlElement o => o -> HTMLHtmlElement
 toHTMLHtmlElement = unsafeCastGObject . toGObject
 
-instance HTMLHtmlElementClass HTMLHtmlElement
-instance HTMLElementClass HTMLHtmlElement
-instance ElementClass HTMLHtmlElement
-instance NodeClass HTMLHtmlElement
+instance IsHTMLHtmlElement HTMLHtmlElement
+instance IsHTMLElement HTMLHtmlElement
+instance IsElement HTMLHtmlElement
+instance IsNode HTMLHtmlElement
 instance GObjectClass HTMLHtmlElement where
   toGObject = GObject . castRef . unHTMLHtmlElement
   unsafeCastGObject = HTMLHtmlElement . castRef . unGObject
@@ -1782,14 +1782,14 @@ data HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement)
 
 unHTMLIFrameElement (HTMLIFrameElement o) = o
 
-class HTMLElementClass o => HTMLIFrameElementClass o
-toHTMLIFrameElement :: HTMLIFrameElementClass o => o -> HTMLIFrameElement
+class IsHTMLElement o => IsHTMLIFrameElement o
+toHTMLIFrameElement :: IsHTMLIFrameElement o => o -> HTMLIFrameElement
 toHTMLIFrameElement = unsafeCastGObject . toGObject
 
-instance HTMLIFrameElementClass HTMLIFrameElement
-instance HTMLElementClass HTMLIFrameElement
-instance ElementClass HTMLIFrameElement
-instance NodeClass HTMLIFrameElement
+instance IsHTMLIFrameElement HTMLIFrameElement
+instance IsHTMLElement HTMLIFrameElement
+instance IsElement HTMLIFrameElement
+instance IsNode HTMLIFrameElement
 instance GObjectClass HTMLIFrameElement where
   toGObject = GObject . castRef . unHTMLIFrameElement
   unsafeCastGObject = HTMLIFrameElement . castRef . unGObject
@@ -1809,14 +1809,14 @@ data HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement)
 
 unHTMLImageElement (HTMLImageElement o) = o
 
-class HTMLElementClass o => HTMLImageElementClass o
-toHTMLImageElement :: HTMLImageElementClass o => o -> HTMLImageElement
+class IsHTMLElement o => IsHTMLImageElement o
+toHTMLImageElement :: IsHTMLImageElement o => o -> HTMLImageElement
 toHTMLImageElement = unsafeCastGObject . toGObject
 
-instance HTMLImageElementClass HTMLImageElement
-instance HTMLElementClass HTMLImageElement
-instance ElementClass HTMLImageElement
-instance NodeClass HTMLImageElement
+instance IsHTMLImageElement HTMLImageElement
+instance IsHTMLElement HTMLImageElement
+instance IsElement HTMLImageElement
+instance IsNode HTMLImageElement
 instance GObjectClass HTMLImageElement where
   toGObject = GObject . castRef . unHTMLImageElement
   unsafeCastGObject = HTMLImageElement . castRef . unGObject
@@ -1836,14 +1836,14 @@ data HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement)
 
 unHTMLInputElement (HTMLInputElement o) = o
 
-class HTMLElementClass o => HTMLInputElementClass o
-toHTMLInputElement :: HTMLInputElementClass o => o -> HTMLInputElement
+class IsHTMLElement o => IsHTMLInputElement o
+toHTMLInputElement :: IsHTMLInputElement o => o -> HTMLInputElement
 toHTMLInputElement = unsafeCastGObject . toGObject
 
-instance HTMLInputElementClass HTMLInputElement
-instance HTMLElementClass HTMLInputElement
-instance ElementClass HTMLInputElement
-instance NodeClass HTMLInputElement
+instance IsHTMLInputElement HTMLInputElement
+instance IsHTMLElement HTMLInputElement
+instance IsElement HTMLInputElement
+instance IsNode HTMLInputElement
 instance GObjectClass HTMLInputElement where
   toGObject = GObject . castRef . unHTMLInputElement
   unsafeCastGObject = HTMLInputElement . castRef . unGObject
@@ -1863,14 +1863,14 @@ data HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement)
 
 unHTMLKeygenElement (HTMLKeygenElement o) = o
 
-class HTMLElementClass o => HTMLKeygenElementClass o
-toHTMLKeygenElement :: HTMLKeygenElementClass o => o -> HTMLKeygenElement
+class IsHTMLElement o => IsHTMLKeygenElement o
+toHTMLKeygenElement :: IsHTMLKeygenElement o => o -> HTMLKeygenElement
 toHTMLKeygenElement = unsafeCastGObject . toGObject
 
-instance HTMLKeygenElementClass HTMLKeygenElement
-instance HTMLElementClass HTMLKeygenElement
-instance ElementClass HTMLKeygenElement
-instance NodeClass HTMLKeygenElement
+instance IsHTMLKeygenElement HTMLKeygenElement
+instance IsHTMLElement HTMLKeygenElement
+instance IsElement HTMLKeygenElement
+instance IsNode HTMLKeygenElement
 instance GObjectClass HTMLKeygenElement where
   toGObject = GObject . castRef . unHTMLKeygenElement
   unsafeCastGObject = HTMLKeygenElement . castRef . unGObject
@@ -1890,14 +1890,14 @@ data HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement)
 
 unHTMLLIElement (HTMLLIElement o) = o
 
-class HTMLElementClass o => HTMLLIElementClass o
-toHTMLLIElement :: HTMLLIElementClass o => o -> HTMLLIElement
+class IsHTMLElement o => IsHTMLLIElement o
+toHTMLLIElement :: IsHTMLLIElement o => o -> HTMLLIElement
 toHTMLLIElement = unsafeCastGObject . toGObject
 
-instance HTMLLIElementClass HTMLLIElement
-instance HTMLElementClass HTMLLIElement
-instance ElementClass HTMLLIElement
-instance NodeClass HTMLLIElement
+instance IsHTMLLIElement HTMLLIElement
+instance IsHTMLElement HTMLLIElement
+instance IsElement HTMLLIElement
+instance IsNode HTMLLIElement
 instance GObjectClass HTMLLIElement where
   toGObject = GObject . castRef . unHTMLLIElement
   unsafeCastGObject = HTMLLIElement . castRef . unGObject
@@ -1917,14 +1917,14 @@ data HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement)
 
 unHTMLLabelElement (HTMLLabelElement o) = o
 
-class HTMLElementClass o => HTMLLabelElementClass o
-toHTMLLabelElement :: HTMLLabelElementClass o => o -> HTMLLabelElement
+class IsHTMLElement o => IsHTMLLabelElement o
+toHTMLLabelElement :: IsHTMLLabelElement o => o -> HTMLLabelElement
 toHTMLLabelElement = unsafeCastGObject . toGObject
 
-instance HTMLLabelElementClass HTMLLabelElement
-instance HTMLElementClass HTMLLabelElement
-instance ElementClass HTMLLabelElement
-instance NodeClass HTMLLabelElement
+instance IsHTMLLabelElement HTMLLabelElement
+instance IsHTMLElement HTMLLabelElement
+instance IsElement HTMLLabelElement
+instance IsNode HTMLLabelElement
 instance GObjectClass HTMLLabelElement where
   toGObject = GObject . castRef . unHTMLLabelElement
   unsafeCastGObject = HTMLLabelElement . castRef . unGObject
@@ -1944,14 +1944,14 @@ data HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement)
 
 unHTMLLegendElement (HTMLLegendElement o) = o
 
-class HTMLElementClass o => HTMLLegendElementClass o
-toHTMLLegendElement :: HTMLLegendElementClass o => o -> HTMLLegendElement
+class IsHTMLElement o => IsHTMLLegendElement o
+toHTMLLegendElement :: IsHTMLLegendElement o => o -> HTMLLegendElement
 toHTMLLegendElement = unsafeCastGObject . toGObject
 
-instance HTMLLegendElementClass HTMLLegendElement
-instance HTMLElementClass HTMLLegendElement
-instance ElementClass HTMLLegendElement
-instance NodeClass HTMLLegendElement
+instance IsHTMLLegendElement HTMLLegendElement
+instance IsHTMLElement HTMLLegendElement
+instance IsElement HTMLLegendElement
+instance IsNode HTMLLegendElement
 instance GObjectClass HTMLLegendElement where
   toGObject = GObject . castRef . unHTMLLegendElement
   unsafeCastGObject = HTMLLegendElement . castRef . unGObject
@@ -1971,14 +1971,14 @@ data HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement)
 
 unHTMLLinkElement (HTMLLinkElement o) = o
 
-class HTMLElementClass o => HTMLLinkElementClass o
-toHTMLLinkElement :: HTMLLinkElementClass o => o -> HTMLLinkElement
+class IsHTMLElement o => IsHTMLLinkElement o
+toHTMLLinkElement :: IsHTMLLinkElement o => o -> HTMLLinkElement
 toHTMLLinkElement = unsafeCastGObject . toGObject
 
-instance HTMLLinkElementClass HTMLLinkElement
-instance HTMLElementClass HTMLLinkElement
-instance ElementClass HTMLLinkElement
-instance NodeClass HTMLLinkElement
+instance IsHTMLLinkElement HTMLLinkElement
+instance IsHTMLElement HTMLLinkElement
+instance IsElement HTMLLinkElement
+instance IsNode HTMLLinkElement
 instance GObjectClass HTMLLinkElement where
   toGObject = GObject . castRef . unHTMLLinkElement
   unsafeCastGObject = HTMLLinkElement . castRef . unGObject
@@ -1998,14 +1998,14 @@ data HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement)
 
 unHTMLMapElement (HTMLMapElement o) = o
 
-class HTMLElementClass o => HTMLMapElementClass o
-toHTMLMapElement :: HTMLMapElementClass o => o -> HTMLMapElement
+class IsHTMLElement o => IsHTMLMapElement o
+toHTMLMapElement :: IsHTMLMapElement o => o -> HTMLMapElement
 toHTMLMapElement = unsafeCastGObject . toGObject
 
-instance HTMLMapElementClass HTMLMapElement
-instance HTMLElementClass HTMLMapElement
-instance ElementClass HTMLMapElement
-instance NodeClass HTMLMapElement
+instance IsHTMLMapElement HTMLMapElement
+instance IsHTMLElement HTMLMapElement
+instance IsElement HTMLMapElement
+instance IsNode HTMLMapElement
 instance GObjectClass HTMLMapElement where
   toGObject = GObject . castRef . unHTMLMapElement
   unsafeCastGObject = HTMLMapElement . castRef . unGObject
@@ -2025,14 +2025,14 @@ data HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement)
 
 unHTMLMarqueeElement (HTMLMarqueeElement o) = o
 
-class HTMLElementClass o => HTMLMarqueeElementClass o
-toHTMLMarqueeElement :: HTMLMarqueeElementClass o => o -> HTMLMarqueeElement
+class IsHTMLElement o => IsHTMLMarqueeElement o
+toHTMLMarqueeElement :: IsHTMLMarqueeElement o => o -> HTMLMarqueeElement
 toHTMLMarqueeElement = unsafeCastGObject . toGObject
 
-instance HTMLMarqueeElementClass HTMLMarqueeElement
-instance HTMLElementClass HTMLMarqueeElement
-instance ElementClass HTMLMarqueeElement
-instance NodeClass HTMLMarqueeElement
+instance IsHTMLMarqueeElement HTMLMarqueeElement
+instance IsHTMLElement HTMLMarqueeElement
+instance IsElement HTMLMarqueeElement
+instance IsNode HTMLMarqueeElement
 instance GObjectClass HTMLMarqueeElement where
   toGObject = GObject . castRef . unHTMLMarqueeElement
   unsafeCastGObject = HTMLMarqueeElement . castRef . unGObject
@@ -2052,14 +2052,14 @@ data HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement)
 
 unHTMLMediaElement (HTMLMediaElement o) = o
 
-class HTMLElementClass o => HTMLMediaElementClass o
-toHTMLMediaElement :: HTMLMediaElementClass o => o -> HTMLMediaElement
+class IsHTMLElement o => IsHTMLMediaElement o
+toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
 toHTMLMediaElement = unsafeCastGObject . toGObject
 
-instance HTMLMediaElementClass HTMLMediaElement
-instance HTMLElementClass HTMLMediaElement
-instance ElementClass HTMLMediaElement
-instance NodeClass HTMLMediaElement
+instance IsHTMLMediaElement HTMLMediaElement
+instance IsHTMLElement HTMLMediaElement
+instance IsElement HTMLMediaElement
+instance IsNode HTMLMediaElement
 instance GObjectClass HTMLMediaElement where
   toGObject = GObject . castRef . unHTMLMediaElement
   unsafeCastGObject = HTMLMediaElement . castRef . unGObject
@@ -2079,14 +2079,14 @@ data HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement)
 
 unHTMLMenuElement (HTMLMenuElement o) = o
 
-class HTMLElementClass o => HTMLMenuElementClass o
-toHTMLMenuElement :: HTMLMenuElementClass o => o -> HTMLMenuElement
+class IsHTMLElement o => IsHTMLMenuElement o
+toHTMLMenuElement :: IsHTMLMenuElement o => o -> HTMLMenuElement
 toHTMLMenuElement = unsafeCastGObject . toGObject
 
-instance HTMLMenuElementClass HTMLMenuElement
-instance HTMLElementClass HTMLMenuElement
-instance ElementClass HTMLMenuElement
-instance NodeClass HTMLMenuElement
+instance IsHTMLMenuElement HTMLMenuElement
+instance IsHTMLElement HTMLMenuElement
+instance IsElement HTMLMenuElement
+instance IsNode HTMLMenuElement
 instance GObjectClass HTMLMenuElement where
   toGObject = GObject . castRef . unHTMLMenuElement
   unsafeCastGObject = HTMLMenuElement . castRef . unGObject
@@ -2106,14 +2106,14 @@ data HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement)
 
 unHTMLMetaElement (HTMLMetaElement o) = o
 
-class HTMLElementClass o => HTMLMetaElementClass o
-toHTMLMetaElement :: HTMLMetaElementClass o => o -> HTMLMetaElement
+class IsHTMLElement o => IsHTMLMetaElement o
+toHTMLMetaElement :: IsHTMLMetaElement o => o -> HTMLMetaElement
 toHTMLMetaElement = unsafeCastGObject . toGObject
 
-instance HTMLMetaElementClass HTMLMetaElement
-instance HTMLElementClass HTMLMetaElement
-instance ElementClass HTMLMetaElement
-instance NodeClass HTMLMetaElement
+instance IsHTMLMetaElement HTMLMetaElement
+instance IsHTMLElement HTMLMetaElement
+instance IsElement HTMLMetaElement
+instance IsNode HTMLMetaElement
 instance GObjectClass HTMLMetaElement where
   toGObject = GObject . castRef . unHTMLMetaElement
   unsafeCastGObject = HTMLMetaElement . castRef . unGObject
@@ -2133,14 +2133,14 @@ data HTMLModElement = HTMLModElement (JSRef HTMLModElement)
 
 unHTMLModElement (HTMLModElement o) = o
 
-class HTMLElementClass o => HTMLModElementClass o
-toHTMLModElement :: HTMLModElementClass o => o -> HTMLModElement
+class IsHTMLElement o => IsHTMLModElement o
+toHTMLModElement :: IsHTMLModElement o => o -> HTMLModElement
 toHTMLModElement = unsafeCastGObject . toGObject
 
-instance HTMLModElementClass HTMLModElement
-instance HTMLElementClass HTMLModElement
-instance ElementClass HTMLModElement
-instance NodeClass HTMLModElement
+instance IsHTMLModElement HTMLModElement
+instance IsHTMLElement HTMLModElement
+instance IsElement HTMLModElement
+instance IsNode HTMLModElement
 instance GObjectClass HTMLModElement where
   toGObject = GObject . castRef . unHTMLModElement
   unsafeCastGObject = HTMLModElement . castRef . unGObject
@@ -2160,14 +2160,14 @@ data HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement)
 
 unHTMLOListElement (HTMLOListElement o) = o
 
-class HTMLElementClass o => HTMLOListElementClass o
-toHTMLOListElement :: HTMLOListElementClass o => o -> HTMLOListElement
+class IsHTMLElement o => IsHTMLOListElement o
+toHTMLOListElement :: IsHTMLOListElement o => o -> HTMLOListElement
 toHTMLOListElement = unsafeCastGObject . toGObject
 
-instance HTMLOListElementClass HTMLOListElement
-instance HTMLElementClass HTMLOListElement
-instance ElementClass HTMLOListElement
-instance NodeClass HTMLOListElement
+instance IsHTMLOListElement HTMLOListElement
+instance IsHTMLElement HTMLOListElement
+instance IsElement HTMLOListElement
+instance IsNode HTMLOListElement
 instance GObjectClass HTMLOListElement where
   toGObject = GObject . castRef . unHTMLOListElement
   unsafeCastGObject = HTMLOListElement . castRef . unGObject
@@ -2187,14 +2187,14 @@ data HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement)
 
 unHTMLObjectElement (HTMLObjectElement o) = o
 
-class HTMLElementClass o => HTMLObjectElementClass o
-toHTMLObjectElement :: HTMLObjectElementClass o => o -> HTMLObjectElement
+class IsHTMLElement o => IsHTMLObjectElement o
+toHTMLObjectElement :: IsHTMLObjectElement o => o -> HTMLObjectElement
 toHTMLObjectElement = unsafeCastGObject . toGObject
 
-instance HTMLObjectElementClass HTMLObjectElement
-instance HTMLElementClass HTMLObjectElement
-instance ElementClass HTMLObjectElement
-instance NodeClass HTMLObjectElement
+instance IsHTMLObjectElement HTMLObjectElement
+instance IsHTMLElement HTMLObjectElement
+instance IsElement HTMLObjectElement
+instance IsNode HTMLObjectElement
 instance GObjectClass HTMLObjectElement where
   toGObject = GObject . castRef . unHTMLObjectElement
   unsafeCastGObject = HTMLObjectElement . castRef . unGObject
@@ -2214,14 +2214,14 @@ data HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement)
 
 unHTMLOptGroupElement (HTMLOptGroupElement o) = o
 
-class HTMLElementClass o => HTMLOptGroupElementClass o
-toHTMLOptGroupElement :: HTMLOptGroupElementClass o => o -> HTMLOptGroupElement
+class IsHTMLElement o => IsHTMLOptGroupElement o
+toHTMLOptGroupElement :: IsHTMLOptGroupElement o => o -> HTMLOptGroupElement
 toHTMLOptGroupElement = unsafeCastGObject . toGObject
 
-instance HTMLOptGroupElementClass HTMLOptGroupElement
-instance HTMLElementClass HTMLOptGroupElement
-instance ElementClass HTMLOptGroupElement
-instance NodeClass HTMLOptGroupElement
+instance IsHTMLOptGroupElement HTMLOptGroupElement
+instance IsHTMLElement HTMLOptGroupElement
+instance IsElement HTMLOptGroupElement
+instance IsNode HTMLOptGroupElement
 instance GObjectClass HTMLOptGroupElement where
   toGObject = GObject . castRef . unHTMLOptGroupElement
   unsafeCastGObject = HTMLOptGroupElement . castRef . unGObject
@@ -2241,14 +2241,14 @@ data HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement)
 
 unHTMLOptionElement (HTMLOptionElement o) = o
 
-class HTMLElementClass o => HTMLOptionElementClass o
-toHTMLOptionElement :: HTMLOptionElementClass o => o -> HTMLOptionElement
+class IsHTMLElement o => IsHTMLOptionElement o
+toHTMLOptionElement :: IsHTMLOptionElement o => o -> HTMLOptionElement
 toHTMLOptionElement = unsafeCastGObject . toGObject
 
-instance HTMLOptionElementClass HTMLOptionElement
-instance HTMLElementClass HTMLOptionElement
-instance ElementClass HTMLOptionElement
-instance NodeClass HTMLOptionElement
+instance IsHTMLOptionElement HTMLOptionElement
+instance IsHTMLElement HTMLOptionElement
+instance IsElement HTMLOptionElement
+instance IsNode HTMLOptionElement
 instance GObjectClass HTMLOptionElement where
   toGObject = GObject . castRef . unHTMLOptionElement
   unsafeCastGObject = HTMLOptionElement . castRef . unGObject
@@ -2268,12 +2268,12 @@ data HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollection)
 
 unHTMLOptionsCollection (HTMLOptionsCollection o) = o
 
-class HTMLCollectionClass o => HTMLOptionsCollectionClass o
-toHTMLOptionsCollection :: HTMLOptionsCollectionClass o => o -> HTMLOptionsCollection
+class IsHTMLCollection o => IsHTMLOptionsCollection o
+toHTMLOptionsCollection :: IsHTMLOptionsCollection o => o -> HTMLOptionsCollection
 toHTMLOptionsCollection = unsafeCastGObject . toGObject
 
-instance HTMLOptionsCollectionClass HTMLOptionsCollection
-instance HTMLCollectionClass HTMLOptionsCollection
+instance IsHTMLOptionsCollection HTMLOptionsCollection
+instance IsHTMLCollection HTMLOptionsCollection
 instance GObjectClass HTMLOptionsCollection where
   toGObject = GObject . castRef . unHTMLOptionsCollection
   unsafeCastGObject = HTMLOptionsCollection . castRef . unGObject
@@ -2293,14 +2293,14 @@ data HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement)
 
 unHTMLParagraphElement (HTMLParagraphElement o) = o
 
-class HTMLElementClass o => HTMLParagraphElementClass o
-toHTMLParagraphElement :: HTMLParagraphElementClass o => o -> HTMLParagraphElement
+class IsHTMLElement o => IsHTMLParagraphElement o
+toHTMLParagraphElement :: IsHTMLParagraphElement o => o -> HTMLParagraphElement
 toHTMLParagraphElement = unsafeCastGObject . toGObject
 
-instance HTMLParagraphElementClass HTMLParagraphElement
-instance HTMLElementClass HTMLParagraphElement
-instance ElementClass HTMLParagraphElement
-instance NodeClass HTMLParagraphElement
+instance IsHTMLParagraphElement HTMLParagraphElement
+instance IsHTMLElement HTMLParagraphElement
+instance IsElement HTMLParagraphElement
+instance IsNode HTMLParagraphElement
 instance GObjectClass HTMLParagraphElement where
   toGObject = GObject . castRef . unHTMLParagraphElement
   unsafeCastGObject = HTMLParagraphElement . castRef . unGObject
@@ -2320,14 +2320,14 @@ data HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement)
 
 unHTMLParamElement (HTMLParamElement o) = o
 
-class HTMLElementClass o => HTMLParamElementClass o
-toHTMLParamElement :: HTMLParamElementClass o => o -> HTMLParamElement
+class IsHTMLElement o => IsHTMLParamElement o
+toHTMLParamElement :: IsHTMLParamElement o => o -> HTMLParamElement
 toHTMLParamElement = unsafeCastGObject . toGObject
 
-instance HTMLParamElementClass HTMLParamElement
-instance HTMLElementClass HTMLParamElement
-instance ElementClass HTMLParamElement
-instance NodeClass HTMLParamElement
+instance IsHTMLParamElement HTMLParamElement
+instance IsHTMLElement HTMLParamElement
+instance IsElement HTMLParamElement
+instance IsNode HTMLParamElement
 instance GObjectClass HTMLParamElement where
   toGObject = GObject . castRef . unHTMLParamElement
   unsafeCastGObject = HTMLParamElement . castRef . unGObject
@@ -2347,14 +2347,14 @@ data HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement)
 
 unHTMLPreElement (HTMLPreElement o) = o
 
-class HTMLElementClass o => HTMLPreElementClass o
-toHTMLPreElement :: HTMLPreElementClass o => o -> HTMLPreElement
+class IsHTMLElement o => IsHTMLPreElement o
+toHTMLPreElement :: IsHTMLPreElement o => o -> HTMLPreElement
 toHTMLPreElement = unsafeCastGObject . toGObject
 
-instance HTMLPreElementClass HTMLPreElement
-instance HTMLElementClass HTMLPreElement
-instance ElementClass HTMLPreElement
-instance NodeClass HTMLPreElement
+instance IsHTMLPreElement HTMLPreElement
+instance IsHTMLElement HTMLPreElement
+instance IsElement HTMLPreElement
+instance IsNode HTMLPreElement
 instance GObjectClass HTMLPreElement where
   toGObject = GObject . castRef . unHTMLPreElement
   unsafeCastGObject = HTMLPreElement . castRef . unGObject
@@ -2374,14 +2374,14 @@ data HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement)
 
 unHTMLQuoteElement (HTMLQuoteElement o) = o
 
-class HTMLElementClass o => HTMLQuoteElementClass o
-toHTMLQuoteElement :: HTMLQuoteElementClass o => o -> HTMLQuoteElement
+class IsHTMLElement o => IsHTMLQuoteElement o
+toHTMLQuoteElement :: IsHTMLQuoteElement o => o -> HTMLQuoteElement
 toHTMLQuoteElement = unsafeCastGObject . toGObject
 
-instance HTMLQuoteElementClass HTMLQuoteElement
-instance HTMLElementClass HTMLQuoteElement
-instance ElementClass HTMLQuoteElement
-instance NodeClass HTMLQuoteElement
+instance IsHTMLQuoteElement HTMLQuoteElement
+instance IsHTMLElement HTMLQuoteElement
+instance IsElement HTMLQuoteElement
+instance IsNode HTMLQuoteElement
 instance GObjectClass HTMLQuoteElement where
   toGObject = GObject . castRef . unHTMLQuoteElement
   unsafeCastGObject = HTMLQuoteElement . castRef . unGObject
@@ -2401,14 +2401,14 @@ data HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement)
 
 unHTMLScriptElement (HTMLScriptElement o) = o
 
-class HTMLElementClass o => HTMLScriptElementClass o
-toHTMLScriptElement :: HTMLScriptElementClass o => o -> HTMLScriptElement
+class IsHTMLElement o => IsHTMLScriptElement o
+toHTMLScriptElement :: IsHTMLScriptElement o => o -> HTMLScriptElement
 toHTMLScriptElement = unsafeCastGObject . toGObject
 
-instance HTMLScriptElementClass HTMLScriptElement
-instance HTMLElementClass HTMLScriptElement
-instance ElementClass HTMLScriptElement
-instance NodeClass HTMLScriptElement
+instance IsHTMLScriptElement HTMLScriptElement
+instance IsHTMLElement HTMLScriptElement
+instance IsElement HTMLScriptElement
+instance IsNode HTMLScriptElement
 instance GObjectClass HTMLScriptElement where
   toGObject = GObject . castRef . unHTMLScriptElement
   unsafeCastGObject = HTMLScriptElement . castRef . unGObject
@@ -2428,14 +2428,14 @@ data HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement)
 
 unHTMLSelectElement (HTMLSelectElement o) = o
 
-class HTMLElementClass o => HTMLSelectElementClass o
-toHTMLSelectElement :: HTMLSelectElementClass o => o -> HTMLSelectElement
+class IsHTMLElement o => IsHTMLSelectElement o
+toHTMLSelectElement :: IsHTMLSelectElement o => o -> HTMLSelectElement
 toHTMLSelectElement = unsafeCastGObject . toGObject
 
-instance HTMLSelectElementClass HTMLSelectElement
-instance HTMLElementClass HTMLSelectElement
-instance ElementClass HTMLSelectElement
-instance NodeClass HTMLSelectElement
+instance IsHTMLSelectElement HTMLSelectElement
+instance IsHTMLElement HTMLSelectElement
+instance IsElement HTMLSelectElement
+instance IsNode HTMLSelectElement
 instance GObjectClass HTMLSelectElement where
   toGObject = GObject . castRef . unHTMLSelectElement
   unsafeCastGObject = HTMLSelectElement . castRef . unGObject
@@ -2455,14 +2455,14 @@ data HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement)
 
 unHTMLStyleElement (HTMLStyleElement o) = o
 
-class HTMLElementClass o => HTMLStyleElementClass o
-toHTMLStyleElement :: HTMLStyleElementClass o => o -> HTMLStyleElement
+class IsHTMLElement o => IsHTMLStyleElement o
+toHTMLStyleElement :: IsHTMLStyleElement o => o -> HTMLStyleElement
 toHTMLStyleElement = unsafeCastGObject . toGObject
 
-instance HTMLStyleElementClass HTMLStyleElement
-instance HTMLElementClass HTMLStyleElement
-instance ElementClass HTMLStyleElement
-instance NodeClass HTMLStyleElement
+instance IsHTMLStyleElement HTMLStyleElement
+instance IsHTMLElement HTMLStyleElement
+instance IsElement HTMLStyleElement
+instance IsNode HTMLStyleElement
 instance GObjectClass HTMLStyleElement where
   toGObject = GObject . castRef . unHTMLStyleElement
   unsafeCastGObject = HTMLStyleElement . castRef . unGObject
@@ -2482,14 +2482,14 @@ data HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptionEl
 
 unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
 
-class HTMLElementClass o => HTMLTableCaptionElementClass o
-toHTMLTableCaptionElement :: HTMLTableCaptionElementClass o => o -> HTMLTableCaptionElement
+class IsHTMLElement o => IsHTMLTableCaptionElement o
+toHTMLTableCaptionElement :: IsHTMLTableCaptionElement o => o -> HTMLTableCaptionElement
 toHTMLTableCaptionElement = unsafeCastGObject . toGObject
 
-instance HTMLTableCaptionElementClass HTMLTableCaptionElement
-instance HTMLElementClass HTMLTableCaptionElement
-instance ElementClass HTMLTableCaptionElement
-instance NodeClass HTMLTableCaptionElement
+instance IsHTMLTableCaptionElement HTMLTableCaptionElement
+instance IsHTMLElement HTMLTableCaptionElement
+instance IsElement HTMLTableCaptionElement
+instance IsNode HTMLTableCaptionElement
 instance GObjectClass HTMLTableCaptionElement where
   toGObject = GObject . castRef . unHTMLTableCaptionElement
   unsafeCastGObject = HTMLTableCaptionElement . castRef . unGObject
@@ -2509,14 +2509,14 @@ data HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement)
 
 unHTMLTableCellElement (HTMLTableCellElement o) = o
 
-class HTMLElementClass o => HTMLTableCellElementClass o
-toHTMLTableCellElement :: HTMLTableCellElementClass o => o -> HTMLTableCellElement
+class IsHTMLElement o => IsHTMLTableCellElement o
+toHTMLTableCellElement :: IsHTMLTableCellElement o => o -> HTMLTableCellElement
 toHTMLTableCellElement = unsafeCastGObject . toGObject
 
-instance HTMLTableCellElementClass HTMLTableCellElement
-instance HTMLElementClass HTMLTableCellElement
-instance ElementClass HTMLTableCellElement
-instance NodeClass HTMLTableCellElement
+instance IsHTMLTableCellElement HTMLTableCellElement
+instance IsHTMLElement HTMLTableCellElement
+instance IsElement HTMLTableCellElement
+instance IsNode HTMLTableCellElement
 instance GObjectClass HTMLTableCellElement where
   toGObject = GObject . castRef . unHTMLTableCellElement
   unsafeCastGObject = HTMLTableCellElement . castRef . unGObject
@@ -2536,14 +2536,14 @@ data HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement)
 
 unHTMLTableColElement (HTMLTableColElement o) = o
 
-class HTMLElementClass o => HTMLTableColElementClass o
-toHTMLTableColElement :: HTMLTableColElementClass o => o -> HTMLTableColElement
+class IsHTMLElement o => IsHTMLTableColElement o
+toHTMLTableColElement :: IsHTMLTableColElement o => o -> HTMLTableColElement
 toHTMLTableColElement = unsafeCastGObject . toGObject
 
-instance HTMLTableColElementClass HTMLTableColElement
-instance HTMLElementClass HTMLTableColElement
-instance ElementClass HTMLTableColElement
-instance NodeClass HTMLTableColElement
+instance IsHTMLTableColElement HTMLTableColElement
+instance IsHTMLElement HTMLTableColElement
+instance IsElement HTMLTableColElement
+instance IsNode HTMLTableColElement
 instance GObjectClass HTMLTableColElement where
   toGObject = GObject . castRef . unHTMLTableColElement
   unsafeCastGObject = HTMLTableColElement . castRef . unGObject
@@ -2563,14 +2563,14 @@ data HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement)
 
 unHTMLTableElement (HTMLTableElement o) = o
 
-class HTMLElementClass o => HTMLTableElementClass o
-toHTMLTableElement :: HTMLTableElementClass o => o -> HTMLTableElement
+class IsHTMLElement o => IsHTMLTableElement o
+toHTMLTableElement :: IsHTMLTableElement o => o -> HTMLTableElement
 toHTMLTableElement = unsafeCastGObject . toGObject
 
-instance HTMLTableElementClass HTMLTableElement
-instance HTMLElementClass HTMLTableElement
-instance ElementClass HTMLTableElement
-instance NodeClass HTMLTableElement
+instance IsHTMLTableElement HTMLTableElement
+instance IsHTMLElement HTMLTableElement
+instance IsElement HTMLTableElement
+instance IsNode HTMLTableElement
 instance GObjectClass HTMLTableElement where
   toGObject = GObject . castRef . unHTMLTableElement
   unsafeCastGObject = HTMLTableElement . castRef . unGObject
@@ -2590,14 +2590,14 @@ data HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement)
 
 unHTMLTableRowElement (HTMLTableRowElement o) = o
 
-class HTMLElementClass o => HTMLTableRowElementClass o
-toHTMLTableRowElement :: HTMLTableRowElementClass o => o -> HTMLTableRowElement
+class IsHTMLElement o => IsHTMLTableRowElement o
+toHTMLTableRowElement :: IsHTMLTableRowElement o => o -> HTMLTableRowElement
 toHTMLTableRowElement = unsafeCastGObject . toGObject
 
-instance HTMLTableRowElementClass HTMLTableRowElement
-instance HTMLElementClass HTMLTableRowElement
-instance ElementClass HTMLTableRowElement
-instance NodeClass HTMLTableRowElement
+instance IsHTMLTableRowElement HTMLTableRowElement
+instance IsHTMLElement HTMLTableRowElement
+instance IsElement HTMLTableRowElement
+instance IsNode HTMLTableRowElement
 instance GObjectClass HTMLTableRowElement where
   toGObject = GObject . castRef . unHTMLTableRowElement
   unsafeCastGObject = HTMLTableRowElement . castRef . unGObject
@@ -2617,14 +2617,14 @@ data HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionEl
 
 unHTMLTableSectionElement (HTMLTableSectionElement o) = o
 
-class HTMLElementClass o => HTMLTableSectionElementClass o
-toHTMLTableSectionElement :: HTMLTableSectionElementClass o => o -> HTMLTableSectionElement
+class IsHTMLElement o => IsHTMLTableSectionElement o
+toHTMLTableSectionElement :: IsHTMLTableSectionElement o => o -> HTMLTableSectionElement
 toHTMLTableSectionElement = unsafeCastGObject . toGObject
 
-instance HTMLTableSectionElementClass HTMLTableSectionElement
-instance HTMLElementClass HTMLTableSectionElement
-instance ElementClass HTMLTableSectionElement
-instance NodeClass HTMLTableSectionElement
+instance IsHTMLTableSectionElement HTMLTableSectionElement
+instance IsHTMLElement HTMLTableSectionElement
+instance IsElement HTMLTableSectionElement
+instance IsNode HTMLTableSectionElement
 instance GObjectClass HTMLTableSectionElement where
   toGObject = GObject . castRef . unHTMLTableSectionElement
   unsafeCastGObject = HTMLTableSectionElement . castRef . unGObject
@@ -2644,14 +2644,14 @@ data HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement)
 
 unHTMLTextAreaElement (HTMLTextAreaElement o) = o
 
-class HTMLElementClass o => HTMLTextAreaElementClass o
-toHTMLTextAreaElement :: HTMLTextAreaElementClass o => o -> HTMLTextAreaElement
+class IsHTMLElement o => IsHTMLTextAreaElement o
+toHTMLTextAreaElement :: IsHTMLTextAreaElement o => o -> HTMLTextAreaElement
 toHTMLTextAreaElement = unsafeCastGObject . toGObject
 
-instance HTMLTextAreaElementClass HTMLTextAreaElement
-instance HTMLElementClass HTMLTextAreaElement
-instance ElementClass HTMLTextAreaElement
-instance NodeClass HTMLTextAreaElement
+instance IsHTMLTextAreaElement HTMLTextAreaElement
+instance IsHTMLElement HTMLTextAreaElement
+instance IsElement HTMLTextAreaElement
+instance IsNode HTMLTextAreaElement
 instance GObjectClass HTMLTextAreaElement where
   toGObject = GObject . castRef . unHTMLTextAreaElement
   unsafeCastGObject = HTMLTextAreaElement . castRef . unGObject
@@ -2671,14 +2671,14 @@ data HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement)
 
 unHTMLTitleElement (HTMLTitleElement o) = o
 
-class HTMLElementClass o => HTMLTitleElementClass o
-toHTMLTitleElement :: HTMLTitleElementClass o => o -> HTMLTitleElement
+class IsHTMLElement o => IsHTMLTitleElement o
+toHTMLTitleElement :: IsHTMLTitleElement o => o -> HTMLTitleElement
 toHTMLTitleElement = unsafeCastGObject . toGObject
 
-instance HTMLTitleElementClass HTMLTitleElement
-instance HTMLElementClass HTMLTitleElement
-instance ElementClass HTMLTitleElement
-instance NodeClass HTMLTitleElement
+instance IsHTMLTitleElement HTMLTitleElement
+instance IsHTMLElement HTMLTitleElement
+instance IsElement HTMLTitleElement
+instance IsNode HTMLTitleElement
 instance GObjectClass HTMLTitleElement where
   toGObject = GObject . castRef . unHTMLTitleElement
   unsafeCastGObject = HTMLTitleElement . castRef . unGObject
@@ -2698,14 +2698,14 @@ data HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement)
 
 unHTMLUListElement (HTMLUListElement o) = o
 
-class HTMLElementClass o => HTMLUListElementClass o
-toHTMLUListElement :: HTMLUListElementClass o => o -> HTMLUListElement
+class IsHTMLElement o => IsHTMLUListElement o
+toHTMLUListElement :: IsHTMLUListElement o => o -> HTMLUListElement
 toHTMLUListElement = unsafeCastGObject . toGObject
 
-instance HTMLUListElementClass HTMLUListElement
-instance HTMLElementClass HTMLUListElement
-instance ElementClass HTMLUListElement
-instance NodeClass HTMLUListElement
+instance IsHTMLUListElement HTMLUListElement
+instance IsHTMLElement HTMLUListElement
+instance IsElement HTMLUListElement
+instance IsNode HTMLUListElement
 instance GObjectClass HTMLUListElement where
   toGObject = GObject . castRef . unHTMLUListElement
   unsafeCastGObject = HTMLUListElement . castRef . unGObject
@@ -2725,15 +2725,15 @@ data HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement)
 
 unHTMLVideoElement (HTMLVideoElement o) = o
 
-class HTMLMediaElementClass o => HTMLVideoElementClass o
-toHTMLVideoElement :: HTMLVideoElementClass o => o -> HTMLVideoElement
+class IsHTMLMediaElement o => IsHTMLVideoElement o
+toHTMLVideoElement :: IsHTMLVideoElement o => o -> HTMLVideoElement
 toHTMLVideoElement = unsafeCastGObject . toGObject
 
-instance HTMLVideoElementClass HTMLVideoElement
-instance HTMLMediaElementClass HTMLVideoElement
-instance HTMLElementClass HTMLVideoElement
-instance ElementClass HTMLVideoElement
-instance NodeClass HTMLVideoElement
+instance IsHTMLVideoElement HTMLVideoElement
+instance IsHTMLMediaElement HTMLVideoElement
+instance IsHTMLElement HTMLVideoElement
+instance IsElement HTMLVideoElement
+instance IsNode HTMLVideoElement
 instance GObjectClass HTMLVideoElement where
   toGObject = GObject . castRef . unHTMLVideoElement
   unsafeCastGObject = HTMLVideoElement . castRef . unGObject
@@ -2753,11 +2753,11 @@ data History = History (JSRef History)
 
 unHistory (History o) = o
 
-class GObjectClass o => HistoryClass o
-toHistory :: HistoryClass o => o -> History
+class GObjectClass o => IsHistory o
+toHistory :: IsHistory o => o -> History
 toHistory = unsafeCastGObject . toGObject
 
-instance HistoryClass History
+instance IsHistory History
 instance GObjectClass History where
   toGObject = GObject . castRef . unHistory
   unsafeCastGObject = History . castRef . unGObject
@@ -2777,11 +2777,11 @@ data Location = Location (JSRef Location)
 
 unLocation (Location o) = o
 
-class GObjectClass o => LocationClass o
-toLocation :: LocationClass o => o -> Location
+class GObjectClass o => IsLocation o
+toLocation :: IsLocation o => o -> Location
 toLocation = unsafeCastGObject . toGObject
 
-instance LocationClass Location
+instance IsLocation Location
 instance GObjectClass Location where
   toGObject = GObject . castRef . unLocation
   unsafeCastGObject = Location . castRef . unGObject
@@ -2801,11 +2801,11 @@ data MediaError = MediaError (JSRef MediaError)
 
 unMediaError (MediaError o) = o
 
-class GObjectClass o => MediaErrorClass o
-toMediaError :: MediaErrorClass o => o -> MediaError
+class GObjectClass o => IsMediaError o
+toMediaError :: IsMediaError o => o -> MediaError
 toMediaError = unsafeCastGObject . toGObject
 
-instance MediaErrorClass MediaError
+instance IsMediaError MediaError
 instance GObjectClass MediaError where
   toGObject = GObject . castRef . unMediaError
   unsafeCastGObject = MediaError . castRef . unGObject
@@ -2825,11 +2825,11 @@ data MediaList = MediaList (JSRef MediaList)
 
 unMediaList (MediaList o) = o
 
-class GObjectClass o => MediaListClass o
-toMediaList :: MediaListClass o => o -> MediaList
+class GObjectClass o => IsMediaList o
+toMediaList :: IsMediaList o => o -> MediaList
 toMediaList = unsafeCastGObject . toGObject
 
-instance MediaListClass MediaList
+instance IsMediaList MediaList
 instance GObjectClass MediaList where
   toGObject = GObject . castRef . unMediaList
   unsafeCastGObject = MediaList . castRef . unGObject
@@ -2849,11 +2849,11 @@ data MediaQueryList = MediaQueryList (JSRef MediaQueryList)
 
 unMediaQueryList (MediaQueryList o) = o
 
-class GObjectClass o => MediaQueryListClass o
-toMediaQueryList :: MediaQueryListClass o => o -> MediaQueryList
+class GObjectClass o => IsMediaQueryList o
+toMediaQueryList :: IsMediaQueryList o => o -> MediaQueryList
 toMediaQueryList = unsafeCastGObject . toGObject
 
-instance MediaQueryListClass MediaQueryList
+instance IsMediaQueryList MediaQueryList
 instance GObjectClass MediaQueryList where
   toGObject = GObject . castRef . unMediaQueryList
   unsafeCastGObject = MediaQueryList . castRef . unGObject
@@ -2873,11 +2873,11 @@ data MemoryInfo = MemoryInfo (JSRef MemoryInfo)
 
 unMemoryInfo (MemoryInfo o) = o
 
-class GObjectClass o => MemoryInfoClass o
-toMemoryInfo :: MemoryInfoClass o => o -> MemoryInfo
+class GObjectClass o => IsMemoryInfo o
+toMemoryInfo :: IsMemoryInfo o => o -> MemoryInfo
 toMemoryInfo = unsafeCastGObject . toGObject
 
-instance MemoryInfoClass MemoryInfo
+instance IsMemoryInfo MemoryInfo
 instance GObjectClass MemoryInfo where
   toGObject = GObject . castRef . unMemoryInfo
   unsafeCastGObject = MemoryInfo . castRef . unGObject
@@ -2897,11 +2897,11 @@ data MessagePort = MessagePort (JSRef MessagePort)
 
 unMessagePort (MessagePort o) = o
 
-class GObjectClass o => MessagePortClass o
-toMessagePort :: MessagePortClass o => o -> MessagePort
+class GObjectClass o => IsMessagePort o
+toMessagePort :: IsMessagePort o => o -> MessagePort
 toMessagePort = unsafeCastGObject . toGObject
 
-instance MessagePortClass MessagePort
+instance IsMessagePort MessagePort
 instance GObjectClass MessagePort where
   toGObject = GObject . castRef . unMessagePort
   unsafeCastGObject = MessagePort . castRef . unGObject
@@ -2921,13 +2921,13 @@ data MouseEvent = MouseEvent (JSRef MouseEvent)
 
 unMouseEvent (MouseEvent o) = o
 
-class UIEventClass o => MouseEventClass o
-toMouseEvent :: MouseEventClass o => o -> MouseEvent
+class IsUIEvent o => IsMouseEvent o
+toMouseEvent :: IsMouseEvent o => o -> MouseEvent
 toMouseEvent = unsafeCastGObject . toGObject
 
-instance MouseEventClass MouseEvent
-instance UIEventClass MouseEvent
-instance EventClass MouseEvent
+instance IsMouseEvent MouseEvent
+instance IsUIEvent MouseEvent
+instance IsEvent MouseEvent
 instance GObjectClass MouseEvent where
   toGObject = GObject . castRef . unMouseEvent
   unsafeCastGObject = MouseEvent . castRef . unGObject
@@ -2947,11 +2947,11 @@ data NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap)
 
 unNamedNodeMap (NamedNodeMap o) = o
 
-class GObjectClass o => NamedNodeMapClass o
-toNamedNodeMap :: NamedNodeMapClass o => o -> NamedNodeMap
+class GObjectClass o => IsNamedNodeMap o
+toNamedNodeMap :: IsNamedNodeMap o => o -> NamedNodeMap
 toNamedNodeMap = unsafeCastGObject . toGObject
 
-instance NamedNodeMapClass NamedNodeMap
+instance IsNamedNodeMap NamedNodeMap
 instance GObjectClass NamedNodeMap where
   toGObject = GObject . castRef . unNamedNodeMap
   unsafeCastGObject = NamedNodeMap . castRef . unGObject
@@ -2971,11 +2971,11 @@ data Navigator = Navigator (JSRef Navigator)
 
 unNavigator (Navigator o) = o
 
-class GObjectClass o => NavigatorClass o
-toNavigator :: NavigatorClass o => o -> Navigator
+class GObjectClass o => IsNavigator o
+toNavigator :: IsNavigator o => o -> Navigator
 toNavigator = unsafeCastGObject . toGObject
 
-instance NavigatorClass Navigator
+instance IsNavigator Navigator
 instance GObjectClass Navigator where
   toGObject = GObject . castRef . unNavigator
   unsafeCastGObject = Navigator . castRef . unGObject
@@ -2995,11 +2995,11 @@ data Node = Node (JSRef Node)
 
 unNode (Node o) = o
 
-class GObjectClass o => NodeClass o
-toNode :: NodeClass o => o -> Node
+class GObjectClass o => IsNode o
+toNode :: IsNode o => o -> Node
 toNode = unsafeCastGObject . toGObject
 
-instance NodeClass Node
+instance IsNode Node
 instance GObjectClass Node where
   toGObject = GObject . castRef . unNode
   unsafeCastGObject = Node . castRef . unGObject
@@ -3019,11 +3019,11 @@ data NodeFilter = NodeFilter (JSRef NodeFilter)
 
 unNodeFilter (NodeFilter o) = o
 
-class GObjectClass o => NodeFilterClass o
-toNodeFilter :: NodeFilterClass o => o -> NodeFilter
+class GObjectClass o => IsNodeFilter o
+toNodeFilter :: IsNodeFilter o => o -> NodeFilter
 toNodeFilter = unsafeCastGObject . toGObject
 
-instance NodeFilterClass NodeFilter
+instance IsNodeFilter NodeFilter
 instance GObjectClass NodeFilter where
   toGObject = GObject . castRef . unNodeFilter
   unsafeCastGObject = NodeFilter . castRef . unGObject
@@ -3043,11 +3043,11 @@ data NodeIterator = NodeIterator (JSRef NodeIterator)
 
 unNodeIterator (NodeIterator o) = o
 
-class GObjectClass o => NodeIteratorClass o
-toNodeIterator :: NodeIteratorClass o => o -> NodeIterator
+class GObjectClass o => IsNodeIterator o
+toNodeIterator :: IsNodeIterator o => o -> NodeIterator
 toNodeIterator = unsafeCastGObject . toGObject
 
-instance NodeIteratorClass NodeIterator
+instance IsNodeIterator NodeIterator
 instance GObjectClass NodeIterator where
   toGObject = GObject . castRef . unNodeIterator
   unsafeCastGObject = NodeIterator . castRef . unGObject
@@ -3067,11 +3067,11 @@ data NodeList = NodeList (JSRef NodeList)
 
 unNodeList (NodeList o) = o
 
-class GObjectClass o => NodeListClass o
-toNodeList :: NodeListClass o => o -> NodeList
+class GObjectClass o => IsNodeList o
+toNodeList :: IsNodeList o => o -> NodeList
 toNodeList = unsafeCastGObject . toGObject
 
-instance NodeListClass NodeList
+instance IsNodeList NodeList
 instance GObjectClass NodeList where
   toGObject = GObject . castRef . unNodeList
   unsafeCastGObject = NodeList . castRef . unGObject
@@ -3091,12 +3091,12 @@ data ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction)
 
 unProcessingInstruction (ProcessingInstruction o) = o
 
-class NodeClass o => ProcessingInstructionClass o
-toProcessingInstruction :: ProcessingInstructionClass o => o -> ProcessingInstruction
+class IsNode o => IsProcessingInstruction o
+toProcessingInstruction :: IsProcessingInstruction o => o -> ProcessingInstruction
 toProcessingInstruction = unsafeCastGObject . toGObject
 
-instance ProcessingInstructionClass ProcessingInstruction
-instance NodeClass ProcessingInstruction
+instance IsProcessingInstruction ProcessingInstruction
+instance IsNode ProcessingInstruction
 instance GObjectClass ProcessingInstruction where
   toGObject = GObject . castRef . unProcessingInstruction
   unsafeCastGObject = ProcessingInstruction . castRef . unGObject
@@ -3116,11 +3116,11 @@ data DOMRange = DOMRange (JSRef DOMRange)
 
 unDOMRange (DOMRange o) = o
 
-class GObjectClass o => DOMRangeClass o
-toDOMRange :: DOMRangeClass o => o -> DOMRange
+class GObjectClass o => IsDOMRange o
+toDOMRange :: IsDOMRange o => o -> DOMRange
 toDOMRange = unsafeCastGObject . toGObject
 
-instance DOMRangeClass DOMRange
+instance IsDOMRange DOMRange
 instance GObjectClass DOMRange where
   toGObject = GObject . castRef . unDOMRange
   unsafeCastGObject = DOMRange . castRef . unGObject
@@ -3140,11 +3140,11 @@ data DOMScreen = DOMScreen (JSRef DOMScreen)
 
 unDOMScreen (DOMScreen o) = o
 
-class GObjectClass o => DOMScreenClass o
-toDOMScreen :: DOMScreenClass o => o -> DOMScreen
+class GObjectClass o => IsDOMScreen o
+toDOMScreen :: IsDOMScreen o => o -> DOMScreen
 toDOMScreen = unsafeCastGObject . toGObject
 
-instance DOMScreenClass DOMScreen
+instance IsDOMScreen DOMScreen
 instance GObjectClass DOMScreen where
   toGObject = GObject . castRef . unDOMScreen
   unsafeCastGObject = DOMScreen . castRef . unGObject
@@ -3164,11 +3164,11 @@ data Storage = Storage (JSRef Storage)
 
 unStorage (Storage o) = o
 
-class GObjectClass o => StorageClass o
-toStorage :: StorageClass o => o -> Storage
+class GObjectClass o => IsStorage o
+toStorage :: IsStorage o => o -> Storage
 toStorage = unsafeCastGObject . toGObject
 
-instance StorageClass Storage
+instance IsStorage Storage
 instance GObjectClass Storage where
   toGObject = GObject . castRef . unStorage
   unsafeCastGObject = Storage . castRef . unGObject
@@ -3188,11 +3188,11 @@ data StorageInfo = StorageInfo (JSRef StorageInfo)
 
 unStorageInfo (StorageInfo o) = o
 
-class GObjectClass o => StorageInfoClass o
-toStorageInfo :: StorageInfoClass o => o -> StorageInfo
+class GObjectClass o => IsStorageInfo o
+toStorageInfo :: IsStorageInfo o => o -> StorageInfo
 toStorageInfo = unsafeCastGObject . toGObject
 
-instance StorageInfoClass StorageInfo
+instance IsStorageInfo StorageInfo
 instance GObjectClass StorageInfo where
   toGObject = GObject . castRef . unStorageInfo
   unsafeCastGObject = StorageInfo . castRef . unGObject
@@ -3212,11 +3212,11 @@ data StyleMedia = StyleMedia (JSRef StyleMedia)
 
 unStyleMedia (StyleMedia o) = o
 
-class GObjectClass o => StyleMediaClass o
-toStyleMedia :: StyleMediaClass o => o -> StyleMedia
+class GObjectClass o => IsStyleMedia o
+toStyleMedia :: IsStyleMedia o => o -> StyleMedia
 toStyleMedia = unsafeCastGObject . toGObject
 
-instance StyleMediaClass StyleMedia
+instance IsStyleMedia StyleMedia
 instance GObjectClass StyleMedia where
   toGObject = GObject . castRef . unStyleMedia
   unsafeCastGObject = StyleMedia . castRef . unGObject
@@ -3236,11 +3236,11 @@ data StyleSheet = StyleSheet (JSRef StyleSheet)
 
 unStyleSheet (StyleSheet o) = o
 
-class GObjectClass o => StyleSheetClass o
-toStyleSheet :: StyleSheetClass o => o -> StyleSheet
+class GObjectClass o => IsStyleSheet o
+toStyleSheet :: IsStyleSheet o => o -> StyleSheet
 toStyleSheet = unsafeCastGObject . toGObject
 
-instance StyleSheetClass StyleSheet
+instance IsStyleSheet StyleSheet
 instance GObjectClass StyleSheet where
   toGObject = GObject . castRef . unStyleSheet
   unsafeCastGObject = StyleSheet . castRef . unGObject
@@ -3260,11 +3260,11 @@ data StyleSheetList = StyleSheetList (JSRef StyleSheetList)
 
 unStyleSheetList (StyleSheetList o) = o
 
-class GObjectClass o => StyleSheetListClass o
-toStyleSheetList :: StyleSheetListClass o => o -> StyleSheetList
+class GObjectClass o => IsStyleSheetList o
+toStyleSheetList :: IsStyleSheetList o => o -> StyleSheetList
 toStyleSheetList = unsafeCastGObject . toGObject
 
-instance StyleSheetListClass StyleSheetList
+instance IsStyleSheetList StyleSheetList
 instance GObjectClass StyleSheetList where
   toGObject = GObject . castRef . unStyleSheetList
   unsafeCastGObject = StyleSheetList . castRef . unGObject
@@ -3284,13 +3284,13 @@ data Text = Text (JSRef Text)
 
 unText (Text o) = o
 
-class CharacterDataClass o => TextClass o
-toText :: TextClass o => o -> Text
+class IsCharacterData o => IsText o
+toText :: IsText o => o -> Text
 toText = unsafeCastGObject . toGObject
 
-instance TextClass Text
-instance CharacterDataClass Text
-instance NodeClass Text
+instance IsText Text
+instance IsCharacterData Text
+instance IsNode Text
 instance GObjectClass Text where
   toGObject = GObject . castRef . unText
   unsafeCastGObject = Text . castRef . unGObject
@@ -3310,11 +3310,11 @@ data TimeRanges = TimeRanges (JSRef TimeRanges)
 
 unTimeRanges (TimeRanges o) = o
 
-class GObjectClass o => TimeRangesClass o
-toTimeRanges :: TimeRangesClass o => o -> TimeRanges
+class GObjectClass o => IsTimeRanges o
+toTimeRanges :: IsTimeRanges o => o -> TimeRanges
 toTimeRanges = unsafeCastGObject . toGObject
 
-instance TimeRangesClass TimeRanges
+instance IsTimeRanges TimeRanges
 instance GObjectClass TimeRanges where
   toGObject = GObject . castRef . unTimeRanges
   unsafeCastGObject = TimeRanges . castRef . unGObject
@@ -3334,11 +3334,11 @@ data TreeWalker = TreeWalker (JSRef TreeWalker)
 
 unTreeWalker (TreeWalker o) = o
 
-class GObjectClass o => TreeWalkerClass o
-toTreeWalker :: TreeWalkerClass o => o -> TreeWalker
+class GObjectClass o => IsTreeWalker o
+toTreeWalker :: IsTreeWalker o => o -> TreeWalker
 toTreeWalker = unsafeCastGObject . toGObject
 
-instance TreeWalkerClass TreeWalker
+instance IsTreeWalker TreeWalker
 instance GObjectClass TreeWalker where
   toGObject = GObject . castRef . unTreeWalker
   unsafeCastGObject = TreeWalker . castRef . unGObject
@@ -3358,12 +3358,12 @@ data UIEvent = UIEvent (JSRef UIEvent)
 
 unUIEvent (UIEvent o) = o
 
-class EventClass o => UIEventClass o
-toUIEvent :: UIEventClass o => o -> UIEvent
+class IsEvent o => IsUIEvent o
+toUIEvent :: IsUIEvent o => o -> UIEvent
 toUIEvent = unsafeCastGObject . toGObject
 
-instance UIEventClass UIEvent
-instance EventClass UIEvent
+instance IsUIEvent UIEvent
+instance IsEvent UIEvent
 instance GObjectClass UIEvent where
   toGObject = GObject . castRef . unUIEvent
   unsafeCastGObject = UIEvent . castRef . unGObject
@@ -3383,11 +3383,11 @@ data ValidityState = ValidityState (JSRef ValidityState)
 
 unValidityState (ValidityState o) = o
 
-class GObjectClass o => ValidityStateClass o
-toValidityState :: ValidityStateClass o => o -> ValidityState
+class GObjectClass o => IsValidityState o
+toValidityState :: IsValidityState o => o -> ValidityState
 toValidityState = unsafeCastGObject . toGObject
 
-instance ValidityStateClass ValidityState
+instance IsValidityState ValidityState
 instance GObjectClass ValidityState where
   toGObject = GObject . castRef . unValidityState
   unsafeCastGObject = ValidityState . castRef . unGObject
@@ -3407,11 +3407,11 @@ data WebKitAnimation = WebKitAnimation (JSRef WebKitAnimation)
 
 unWebKitAnimation (WebKitAnimation o) = o
 
-class GObjectClass o => WebKitAnimationClass o
-toWebKitAnimation :: WebKitAnimationClass o => o -> WebKitAnimation
+class GObjectClass o => IsWebKitAnimation o
+toWebKitAnimation :: IsWebKitAnimation o => o -> WebKitAnimation
 toWebKitAnimation = unsafeCastGObject . toGObject
 
-instance WebKitAnimationClass WebKitAnimation
+instance IsWebKitAnimation WebKitAnimation
 instance GObjectClass WebKitAnimation where
   toGObject = GObject . castRef . unWebKitAnimation
   unsafeCastGObject = WebKitAnimation . castRef . unGObject
@@ -3431,11 +3431,11 @@ data WebKitAnimationList = WebKitAnimationList (JSRef WebKitAnimationList)
 
 unWebKitAnimationList (WebKitAnimationList o) = o
 
-class GObjectClass o => WebKitAnimationListClass o
-toWebKitAnimationList :: WebKitAnimationListClass o => o -> WebKitAnimationList
+class GObjectClass o => IsWebKitAnimationList o
+toWebKitAnimationList :: IsWebKitAnimationList o => o -> WebKitAnimationList
 toWebKitAnimationList = unsafeCastGObject . toGObject
 
-instance WebKitAnimationListClass WebKitAnimationList
+instance IsWebKitAnimationList WebKitAnimationList
 instance GObjectClass WebKitAnimationList where
   toGObject = GObject . castRef . unWebKitAnimationList
   unsafeCastGObject = WebKitAnimationList . castRef . unGObject
@@ -3455,11 +3455,11 @@ data WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow)
 
 unWebKitNamedFlow (WebKitNamedFlow o) = o
 
-class GObjectClass o => WebKitNamedFlowClass o
-toWebKitNamedFlow :: WebKitNamedFlowClass o => o -> WebKitNamedFlow
+class GObjectClass o => IsWebKitNamedFlow o
+toWebKitNamedFlow :: IsWebKitNamedFlow o => o -> WebKitNamedFlow
 toWebKitNamedFlow = unsafeCastGObject . toGObject
 
-instance WebKitNamedFlowClass WebKitNamedFlow
+instance IsWebKitNamedFlow WebKitNamedFlow
 instance GObjectClass WebKitNamedFlow where
   toGObject = GObject . castRef . unWebKitNamedFlow
   unsafeCastGObject = WebKitNamedFlow . castRef . unGObject
@@ -3479,11 +3479,11 @@ data WebKitPoint = WebKitPoint (JSRef WebKitPoint)
 
 unWebKitPoint (WebKitPoint o) = o
 
-class GObjectClass o => WebKitPointClass o
-toWebKitPoint :: WebKitPointClass o => o -> WebKitPoint
+class GObjectClass o => IsWebKitPoint o
+toWebKitPoint :: IsWebKitPoint o => o -> WebKitPoint
 toWebKitPoint = unsafeCastGObject . toGObject
 
-instance WebKitPointClass WebKitPoint
+instance IsWebKitPoint WebKitPoint
 instance GObjectClass WebKitPoint where
   toGObject = GObject . castRef . unWebKitPoint
   unsafeCastGObject = WebKitPoint . castRef . unGObject
@@ -3503,11 +3503,11 @@ data XPathExpression = XPathExpression (JSRef XPathExpression)
 
 unXPathExpression (XPathExpression o) = o
 
-class GObjectClass o => XPathExpressionClass o
-toXPathExpression :: XPathExpressionClass o => o -> XPathExpression
+class GObjectClass o => IsXPathExpression o
+toXPathExpression :: IsXPathExpression o => o -> XPathExpression
 toXPathExpression = unsafeCastGObject . toGObject
 
-instance XPathExpressionClass XPathExpression
+instance IsXPathExpression XPathExpression
 instance GObjectClass XPathExpression where
   toGObject = GObject . castRef . unXPathExpression
   unsafeCastGObject = XPathExpression . castRef . unGObject
@@ -3527,11 +3527,11 @@ data XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver)
 
 unXPathNSResolver (XPathNSResolver o) = o
 
-class GObjectClass o => XPathNSResolverClass o
-toXPathNSResolver :: XPathNSResolverClass o => o -> XPathNSResolver
+class GObjectClass o => IsXPathNSResolver o
+toXPathNSResolver :: IsXPathNSResolver o => o -> XPathNSResolver
 toXPathNSResolver = unsafeCastGObject . toGObject
 
-instance XPathNSResolverClass XPathNSResolver
+instance IsXPathNSResolver XPathNSResolver
 instance GObjectClass XPathNSResolver where
   toGObject = GObject . castRef . unXPathNSResolver
   unsafeCastGObject = XPathNSResolver . castRef . unGObject
@@ -3551,11 +3551,11 @@ data XPathResult = XPathResult (JSRef XPathResult)
 
 unXPathResult (XPathResult o) = o
 
-class GObjectClass o => XPathResultClass o
-toXPathResult :: XPathResultClass o => o -> XPathResult
+class GObjectClass o => IsXPathResult o
+toXPathResult :: IsXPathResult o => o -> XPathResult
 toXPathResult = unsafeCastGObject . toGObject
 
-instance XPathResultClass XPathResult
+instance IsXPathResult XPathResult
 instance GObjectClass XPathResult where
   toGObject = GObject . castRef . unXPathResult
   unsafeCastGObject = XPathResult . castRef . unGObject

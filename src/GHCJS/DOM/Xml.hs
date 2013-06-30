@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Xml (XMLHttpRequest, XMLHttpRequestClass) where
+module GHCJS.DOM.Xml (XMLHttpRequest, IsXMLHttpRequest) where
  
 data XMLHttpRequest = XMLHttpRequest
  
-class XMLHttpRequestClass a
+class IsXMLHttpRequest a
  
-instance XMLHttpRequestClass XMLHttpRequest
+instance IsXMLHttpRequest XMLHttpRequest

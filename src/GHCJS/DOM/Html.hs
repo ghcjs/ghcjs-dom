@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Html (Blob, BlobClass) where
+module GHCJS.DOM.Html (Blob, IsBlob) where
  
 data Blob = Blob
  
-class BlobClass a
+class IsBlob a
  
-instance BlobClass Blob
+instance IsBlob Blob

@@ -1,12 +1,12 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
 module GHCJS.DOM.StyleSheet
-       (webkit_dom_style_sheet_set_disabled, styleSheetSetDisabled,
-        webkit_dom_style_sheet_get_disabled, styleSheetGetDisabled,
-        webkit_dom_style_sheet_get_owner_node, styleSheetGetOwnerNode,
-        webkit_dom_style_sheet_get_parent_style_sheet,
-        styleSheetGetParentStyleSheet, webkit_dom_style_sheet_get_href,
-        styleSheetGetHref, webkit_dom_style_sheet_get_title,
-        styleSheetGetTitle, webkit_dom_style_sheet_get_media,
+       (ghcjs_dom_style_sheet_set_disabled, styleSheetSetDisabled,
+        ghcjs_dom_style_sheet_get_disabled, styleSheetGetDisabled,
+        ghcjs_dom_style_sheet_get_owner_node, styleSheetGetOwnerNode,
+        ghcjs_dom_style_sheet_get_parent_style_sheet,
+        styleSheetGetParentStyleSheet, ghcjs_dom_style_sheet_get_href,
+        styleSheetGetHref, ghcjs_dom_style_sheet_get_title,
+        styleSheetGetTitle, ghcjs_dom_style_sheet_get_media,
         styleSheetGetMedia)
        where
 import GHCJS.Types
@@ -26,120 +26,117 @@ import GHCJS.DOM.EventM
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        webkit_dom_style_sheet_set_disabled ::
+        ghcjs_dom_style_sheet_set_disabled ::
         JSRef StyleSheet -> JSBool -> IO ()
 #else 
-webkit_dom_style_sheet_set_disabled ::
-                                      JSRef StyleSheet -> JSBool -> IO ()
-webkit_dom_style_sheet_set_disabled = undefined
+ghcjs_dom_style_sheet_set_disabled ::
+                                     JSRef StyleSheet -> JSBool -> IO ()
+ghcjs_dom_style_sheet_set_disabled = undefined
 #endif
  
 styleSheetSetDisabled ::
-                      (StyleSheetClass self) => self -> Bool -> IO ()
+                      (IsStyleSheet self) => self -> Bool -> IO ()
 styleSheetSetDisabled self val
-  = webkit_dom_style_sheet_set_disabled
+  = ghcjs_dom_style_sheet_set_disabled
       (unStyleSheet (toStyleSheet self))
       (toJSBool val)
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        webkit_dom_style_sheet_get_disabled ::
-        JSRef StyleSheet -> IO JSBool
+        ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO JSBool
 #else 
-webkit_dom_style_sheet_get_disabled ::
-                                      JSRef StyleSheet -> IO JSBool
-webkit_dom_style_sheet_get_disabled = undefined
+ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO JSBool
+ghcjs_dom_style_sheet_get_disabled = undefined
 #endif
  
-styleSheetGetDisabled :: (StyleSheetClass self) => self -> IO Bool
+styleSheetGetDisabled :: (IsStyleSheet self) => self -> IO Bool
 styleSheetGetDisabled self
   = fromJSBool <$>
-      (webkit_dom_style_sheet_get_disabled
+      (ghcjs_dom_style_sheet_get_disabled
          (unStyleSheet (toStyleSheet self)))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"ownerNode\"]"
-        webkit_dom_style_sheet_get_owner_node ::
+        ghcjs_dom_style_sheet_get_owner_node ::
         JSRef StyleSheet -> IO (JSRef Node)
 #else 
-webkit_dom_style_sheet_get_owner_node ::
-                                        JSRef StyleSheet -> IO (JSRef Node)
-webkit_dom_style_sheet_get_owner_node = undefined
+ghcjs_dom_style_sheet_get_owner_node ::
+                                       JSRef StyleSheet -> IO (JSRef Node)
+ghcjs_dom_style_sheet_get_owner_node = undefined
 #endif
  
 styleSheetGetOwnerNode ::
-                       (StyleSheetClass self) => self -> IO (Maybe Node)
+                       (IsStyleSheet self) => self -> IO (Maybe Node)
 styleSheetGetOwnerNode self
   = fmap Node . maybeJSNull <$>
-      (webkit_dom_style_sheet_get_owner_node
+      (ghcjs_dom_style_sheet_get_owner_node
          (unStyleSheet (toStyleSheet self)))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
-        webkit_dom_style_sheet_get_parent_style_sheet ::
+        ghcjs_dom_style_sheet_get_parent_style_sheet ::
         JSRef StyleSheet -> IO (JSRef StyleSheet)
 #else 
-webkit_dom_style_sheet_get_parent_style_sheet ::
-                                                JSRef StyleSheet -> IO (JSRef StyleSheet)
-webkit_dom_style_sheet_get_parent_style_sheet = undefined
+ghcjs_dom_style_sheet_get_parent_style_sheet ::
+                                               JSRef StyleSheet -> IO (JSRef StyleSheet)
+ghcjs_dom_style_sheet_get_parent_style_sheet = undefined
 #endif
  
 styleSheetGetParentStyleSheet ::
-                              (StyleSheetClass self) => self -> IO (Maybe StyleSheet)
+                              (IsStyleSheet self) => self -> IO (Maybe StyleSheet)
 styleSheetGetParentStyleSheet self
   = fmap StyleSheet . maybeJSNull <$>
-      (webkit_dom_style_sheet_get_parent_style_sheet
+      (ghcjs_dom_style_sheet_get_parent_style_sheet
          (unStyleSheet (toStyleSheet self)))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"href\"]"
-        webkit_dom_style_sheet_get_href :: JSRef StyleSheet -> IO JSString
+        ghcjs_dom_style_sheet_get_href :: JSRef StyleSheet -> IO JSString
 #else 
-webkit_dom_style_sheet_get_href :: JSRef StyleSheet -> IO JSString
-webkit_dom_style_sheet_get_href = undefined
+ghcjs_dom_style_sheet_get_href :: JSRef StyleSheet -> IO JSString
+ghcjs_dom_style_sheet_get_href = undefined
 #endif
  
 styleSheetGetHref ::
-                  (StyleSheetClass self, FromJSString result) => self -> IO result
+                  (IsStyleSheet self, FromJSString result) => self -> IO result
 styleSheetGetHref self
   = fromJSString <$>
-      (webkit_dom_style_sheet_get_href
-         (unStyleSheet (toStyleSheet self)))
+      (ghcjs_dom_style_sheet_get_href (unStyleSheet (toStyleSheet self)))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"title\"]"
-        webkit_dom_style_sheet_get_title :: JSRef StyleSheet -> IO JSString
+        ghcjs_dom_style_sheet_get_title :: JSRef StyleSheet -> IO JSString
 #else 
-webkit_dom_style_sheet_get_title :: JSRef StyleSheet -> IO JSString
-webkit_dom_style_sheet_get_title = undefined
+ghcjs_dom_style_sheet_get_title :: JSRef StyleSheet -> IO JSString
+ghcjs_dom_style_sheet_get_title = undefined
 #endif
  
 styleSheetGetTitle ::
-                   (StyleSheetClass self, FromJSString result) => self -> IO result
+                   (IsStyleSheet self, FromJSString result) => self -> IO result
 styleSheetGetTitle self
   = fromJSString <$>
-      (webkit_dom_style_sheet_get_title
+      (ghcjs_dom_style_sheet_get_title
          (unStyleSheet (toStyleSheet self)))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"media\"]"
-        webkit_dom_style_sheet_get_media ::
+        ghcjs_dom_style_sheet_get_media ::
         JSRef StyleSheet -> IO (JSRef MediaList)
 #else 
-webkit_dom_style_sheet_get_media ::
-                                   JSRef StyleSheet -> IO (JSRef MediaList)
-webkit_dom_style_sheet_get_media = undefined
+ghcjs_dom_style_sheet_get_media ::
+                                  JSRef StyleSheet -> IO (JSRef MediaList)
+ghcjs_dom_style_sheet_get_media = undefined
 #endif
  
 styleSheetGetMedia ::
-                   (StyleSheetClass self) => self -> IO (Maybe MediaList)
+                   (IsStyleSheet self) => self -> IO (Maybe MediaList)
 styleSheetGetMedia self
   = fmap MediaList . maybeJSNull <$>
-      (webkit_dom_style_sheet_get_media
+      (ghcjs_dom_style_sheet_get_media
          (unStyleSheet (toStyleSheet self)))

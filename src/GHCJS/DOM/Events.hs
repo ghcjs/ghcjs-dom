@@ -1,8 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
-module GHCJS.DOM.Events (Event, EventClass) where
+module GHCJS.DOM.Events (Event, IsEvent) where
  
 data Event = Event
  
-class EventClass a
+class IsEvent a
  
-instance EventClass Event
+instance IsEvent Event
