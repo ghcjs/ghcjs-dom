@@ -40,7 +40,7 @@ domStringListItem self index
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"contains\"]($2)"
+foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         webkit_dom_dom_string_list_contains ::
         JSRef DOMStringList -> JSString -> IO JSBool
 #else 

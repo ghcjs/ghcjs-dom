@@ -169,7 +169,7 @@ htmlAreaElementSetNoHref self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"noHref\"]"
+foreign import javascript unsafe "($1[\"noHref\"] ? 1 : 0)"
         webkit_dom_html_area_element_get_no_href ::
         JSRef HTMLAreaElement -> IO JSBool
 #else 

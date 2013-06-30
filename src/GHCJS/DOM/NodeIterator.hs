@@ -95,7 +95,8 @@ nodeIteratorGetFilter self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"expandEntityReferences\"]"
+foreign import javascript unsafe
+        "($1[\"expandEntityReferences\"] ? 1 : 0)"
         webkit_dom_node_iterator_get_expand_entity_references ::
         JSRef NodeIterator -> IO JSBool
 #else 
@@ -132,7 +133,7 @@ nodeIteratorGetReferenceNode self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "$1[\"pointerBeforeReferenceNode\"]"
+        "($1[\"pointerBeforeReferenceNode\"] ? 1 : 0)"
         webkit_dom_node_iterator_get_pointer_before_reference_node ::
         JSRef NodeIterator -> IO JSBool
 #else 

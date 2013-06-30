@@ -84,7 +84,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checkValidity\"]()"
+foreign import javascript unsafe
+        "($1[\"checkValidity\"]() ? 1 : 0)"
         webkit_dom_html_object_element_check_validity ::
         JSRef HTMLObjectElement -> IO JSBool
 #else 
@@ -423,7 +424,7 @@ htmlObjectElementSetDeclare self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"declare\"]"
+foreign import javascript unsafe "($1[\"declare\"] ? 1 : 0)"
         webkit_dom_html_object_element_get_declare ::
         JSRef HTMLObjectElement -> IO JSBool
 #else 
@@ -701,7 +702,7 @@ htmlObjectElementGetWidth self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"willValidate\"]"
+foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         webkit_dom_html_object_element_get_will_validate ::
         JSRef HTMLObjectElement -> IO JSBool
 #else 

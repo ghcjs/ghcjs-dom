@@ -196,7 +196,7 @@ domWindowAlert self message
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"confirm\"]($2)"
+foreign import javascript unsafe "($1[\"confirm\"]($2) ? 1 : 0)"
         webkit_dom_dom_window_confirm ::
         JSRef DOMWindow -> JSString -> IO JSBool
 #else 
@@ -237,7 +237,7 @@ domWindowPrompt self message defaultValue
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "$1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8)"
+        "($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0)"
         webkit_dom_dom_window_find ::
         JSRef DOMWindow ->
           JSString ->
@@ -567,7 +567,8 @@ domWindowBtoa self string
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"dispatchEvent\"]($2)"
+foreign import javascript unsafe
+        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         webkit_dom_dom_window_dispatch_event ::
         JSRef DOMWindow -> JSRef Event -> IO JSBool
 #else 
@@ -812,7 +813,8 @@ domWindowGetFrameElement self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"offscreenBuffering\"]"
+foreign import javascript unsafe
+        "($1[\"offscreenBuffering\"] ? 1 : 0)"
         webkit_dom_dom_window_get_offscreen_buffering ::
         JSRef DOMWindow -> IO JSBool
 #else 
@@ -1002,7 +1004,7 @@ domWindowGetPageYOffset self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"closed\"]"
+foreign import javascript unsafe "($1[\"closed\"] ? 1 : 0)"
         webkit_dom_dom_window_get_closed :: JSRef DOMWindow -> IO JSBool
 #else 
 webkit_dom_dom_window_get_closed :: JSRef DOMWindow -> IO JSBool

@@ -33,7 +33,7 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"valueMissing\"]"
+foreign import javascript unsafe "($1[\"valueMissing\"] ? 1 : 0)"
         webkit_dom_validity_state_get_value_missing ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -51,7 +51,7 @@ validityStateGetValueMissing self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"typeMismatch\"]"
+foreign import javascript unsafe "($1[\"typeMismatch\"] ? 1 : 0)"
         webkit_dom_validity_state_get_type_mismatch ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -69,7 +69,8 @@ validityStateGetTypeMismatch self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"patternMismatch\"]"
+foreign import javascript unsafe
+        "($1[\"patternMismatch\"] ? 1 : 0)"
         webkit_dom_validity_state_get_pattern_mismatch ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -87,7 +88,7 @@ validityStateGetPatternMismatch self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"tooLong\"]"
+foreign import javascript unsafe "($1[\"tooLong\"] ? 1 : 0)"
         webkit_dom_validity_state_get_too_long ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -105,7 +106,7 @@ validityStateGetTooLong self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"rangeUnderflow\"]"
+foreign import javascript unsafe "($1[\"rangeUnderflow\"] ? 1 : 0)"
         webkit_dom_validity_state_get_range_underflow ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -123,7 +124,7 @@ validityStateGetRangeUnderflow self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"rangeOverflow\"]"
+foreign import javascript unsafe "($1[\"rangeOverflow\"] ? 1 : 0)"
         webkit_dom_validity_state_get_range_overflow ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -141,7 +142,7 @@ validityStateGetRangeOverflow self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"stepMismatch\"]"
+foreign import javascript unsafe "($1[\"stepMismatch\"] ? 1 : 0)"
         webkit_dom_validity_state_get_step_mismatch ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -159,7 +160,7 @@ validityStateGetStepMismatch self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"customError\"]"
+foreign import javascript unsafe "($1[\"customError\"] ? 1 : 0)"
         webkit_dom_validity_state_get_custom_error ::
         JSRef ValidityState -> IO JSBool
 #else 
@@ -177,7 +178,7 @@ validityStateGetCustomError self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"valid\"]"
+foreign import javascript unsafe "($1[\"valid\"] ? 1 : 0)"
         webkit_dom_validity_state_get_valid ::
         JSRef ValidityState -> IO JSBool
 #else 

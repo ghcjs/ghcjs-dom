@@ -391,7 +391,7 @@ htmliFrameElementSetSeamless self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"seamless\"]"
+foreign import javascript unsafe "($1[\"seamless\"] ? 1 : 0)"
         webkit_dom_html_iframe_element_get_seamless ::
         JSRef HTMLIFrameElement -> IO JSBool
 #else 

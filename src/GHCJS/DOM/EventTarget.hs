@@ -18,7 +18,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"dispatchEvent\"]($2)"
+foreign import javascript unsafe
+        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         webkit_dom_event_target_dispatch_event ::
         JSRef EventTarget -> JSRef Event -> IO JSBool
 #else 

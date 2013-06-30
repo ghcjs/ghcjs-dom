@@ -37,7 +37,7 @@ attrGetName self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"specified\"]"
+foreign import javascript unsafe "($1[\"specified\"] ? 1 : 0)"
         webkit_dom_attr_get_specified :: JSRef DOMAttr -> IO JSBool
 #else 
 webkit_dom_attr_get_specified :: JSRef DOMAttr -> IO JSBool
@@ -98,7 +98,7 @@ attrGetOwnerElement self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isId\"]"
+foreign import javascript unsafe "($1[\"isId\"] ? 1 : 0)"
         webkit_dom_attr_get_is_id :: JSRef DOMAttr -> IO JSBool
 #else 
 webkit_dom_attr_get_is_id :: JSRef DOMAttr -> IO JSBool

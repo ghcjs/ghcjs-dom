@@ -123,7 +123,8 @@ domSelectionDeleteFromDocument self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"containsNode\"]($2, $3)"
+foreign import javascript unsafe
+        "($1[\"containsNode\"]($2,\n$3) ? 1 : 0)"
         webkit_dom_dom_selection_contains_node ::
         JSRef DOMSelection -> JSRef Node -> JSBool -> IO JSBool
 #else 
@@ -391,7 +392,7 @@ domSelectionGetFocusOffset self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isCollapsed\"]"
+foreign import javascript unsafe "($1[\"isCollapsed\"] ? 1 : 0)"
         webkit_dom_dom_selection_get_is_collapsed ::
         JSRef DOMSelection -> IO JSBool
 #else 

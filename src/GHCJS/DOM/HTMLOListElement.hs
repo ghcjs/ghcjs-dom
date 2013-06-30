@@ -45,7 +45,7 @@ htmloListElementSetCompact self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"compact\"]"
+foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         webkit_dom_htmlo_list_element_get_compact ::
         JSRef HTMLOListElement -> IO JSBool
 #else 
@@ -116,7 +116,7 @@ htmloListElementSetReversed self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"reversed\"]"
+foreign import javascript unsafe "($1[\"reversed\"] ? 1 : 0)"
         webkit_dom_htmlo_list_element_get_reversed ::
         JSRef HTMLOListElement -> IO JSBool
 #else 

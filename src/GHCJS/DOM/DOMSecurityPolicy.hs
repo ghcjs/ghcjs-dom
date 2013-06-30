@@ -47,7 +47,7 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isActive\"]()"
+foreign import javascript unsafe "($1[\"isActive\"]() ? 1 : 0)"
         webkit_dom_dom_security_policy_is_active ::
         JSRef DOMSecurityPolicy -> IO JSBool
 #else 
@@ -65,7 +65,8 @@ domSecurityPolicyIsActive self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsConnectionTo\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsConnectionTo\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_connection_to ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -86,7 +87,8 @@ domSecurityPolicyAllowsConnectionTo self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsFontFrom\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsFontFrom\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_font_from ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -106,7 +108,8 @@ domSecurityPolicyAllowsFontFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsFormAction\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsFormAction\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_form_action ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -126,7 +129,8 @@ domSecurityPolicyAllowsFormAction self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsFrameFrom\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsFrameFrom\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_frame_from ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -146,7 +150,8 @@ domSecurityPolicyAllowsFrameFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsImageFrom\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsImageFrom\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_image_from ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -166,7 +171,8 @@ domSecurityPolicyAllowsImageFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsMediaFrom\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsMediaFrom\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_media_from ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -186,7 +192,8 @@ domSecurityPolicyAllowsMediaFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsObjectFrom\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsObjectFrom\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_object_from ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -206,7 +213,8 @@ domSecurityPolicyAllowsObjectFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsPluginType\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsPluginType\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_plugin_type ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -226,7 +234,8 @@ domSecurityPolicyAllowsPluginType self type'
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsScriptFrom\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsScriptFrom\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_script_from ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -246,7 +255,8 @@ domSecurityPolicyAllowsScriptFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsStyleFrom\"]($2)"
+foreign import javascript unsafe
+        "($1[\"allowsStyleFrom\"]($2) ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_style_from ::
         JSRef DOMSecurityPolicy -> JSString -> IO JSBool
 #else 
@@ -266,7 +276,7 @@ domSecurityPolicyAllowsStyleFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsEval\"]()"
+foreign import javascript unsafe "($1[\"allowsEval\"]() ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_eval ::
         JSRef DOMSecurityPolicy -> IO JSBool
 #else 
@@ -284,7 +294,8 @@ domSecurityPolicyAllowsEval self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsInlineScript\"]()"
+foreign import javascript unsafe
+        "($1[\"allowsInlineScript\"]() ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_inline_script ::
         JSRef DOMSecurityPolicy -> IO JSBool
 #else 
@@ -302,7 +313,8 @@ domSecurityPolicyAllowsInlineScript self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"allowsInlineStyle\"]()"
+foreign import javascript unsafe
+        "($1[\"allowsInlineStyle\"]() ? 1 : 0)"
         webkit_dom_dom_security_policy_allows_inline_style ::
         JSRef DOMSecurityPolicy -> IO JSBool
 #else 

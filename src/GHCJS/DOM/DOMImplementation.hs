@@ -27,7 +27,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"hasFeature\"]($2, $3)"
+foreign import javascript unsafe
+        "($1[\"hasFeature\"]($2,\n$3) ? 1 : 0)"
         webkit_dom_dom_implementation_has_feature ::
         JSRef DOMImplementation -> JSString -> JSString -> IO JSBool
 #else 

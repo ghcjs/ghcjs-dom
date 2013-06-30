@@ -39,7 +39,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checkValidity\"]()"
+foreign import javascript unsafe
+        "($1[\"checkValidity\"]() ? 1 : 0)"
         webkit_dom_html_field_set_element_check_validity ::
         JSRef HTMLFieldSetElement -> IO JSBool
 #else 
@@ -95,7 +96,7 @@ htmlFieldSetElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_field_set_element_get_disabled ::
         JSRef HTMLFieldSetElement -> IO JSBool
 #else 
@@ -190,7 +191,7 @@ htmlFieldSetElementGetElements self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"willValidate\"]"
+foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         webkit_dom_html_field_set_element_get_will_validate ::
         JSRef HTMLFieldSetElement -> IO JSBool
 #else 

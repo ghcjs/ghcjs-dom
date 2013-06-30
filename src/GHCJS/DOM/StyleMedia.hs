@@ -17,7 +17,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"matchMedium\"]($2)"
+foreign import javascript unsafe
+        "($1[\"matchMedium\"]($2) ? 1 : 0)"
         webkit_dom_style_media_match_medium ::
         JSRef StyleMedia -> JSString -> IO JSBool
 #else 

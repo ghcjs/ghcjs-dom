@@ -193,7 +193,8 @@ cssStyleDeclarationGetPropertyShorthand self propertyName
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isPropertyImplicit\"]($2)"
+foreign import javascript unsafe
+        "($1[\"isPropertyImplicit\"]($2) ? 1 : 0)"
         webkit_dom_css_style_declaration_is_property_implicit ::
         JSRef CSSStyleDeclaration -> JSString -> IO JSBool
 #else 

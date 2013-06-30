@@ -273,7 +273,7 @@ htmlElementSetTranslate self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"translate\"]"
+foreign import javascript unsafe "($1[\"translate\"] ? 1 : 0)"
         webkit_dom_html_element_get_translate ::
         JSRef HTMLElement -> IO JSBool
 #else 
@@ -377,7 +377,7 @@ htmlElementSetDraggable self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"draggable\"]"
+foreign import javascript unsafe "($1[\"draggable\"] ? 1 : 0)"
         webkit_dom_html_element_get_draggable ::
         JSRef HTMLElement -> IO JSBool
 #else 
@@ -449,7 +449,7 @@ htmlElementSetHidden self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"hidden\"]"
+foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
         webkit_dom_html_element_get_hidden ::
         JSRef HTMLElement -> IO JSBool
 #else 
@@ -700,7 +700,8 @@ htmlElementGetContentEditable self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isContentEditable\"]"
+foreign import javascript unsafe
+        "($1[\"isContentEditable\"] ? 1 : 0)"
         webkit_dom_html_element_get_is_content_editable ::
         JSRef HTMLElement -> IO JSBool
 #else 
@@ -736,7 +737,7 @@ htmlElementSetSpellcheck self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"spellcheck\"]"
+foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
         webkit_dom_html_element_get_spellcheck ::
         JSRef HTMLElement -> IO JSBool
 #else 
@@ -772,7 +773,7 @@ htmlElementSetItemScope self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"itemScope\"]"
+foreign import javascript unsafe "($1[\"itemScope\"] ? 1 : 0)"
         webkit_dom_html_element_get_item_scope ::
         JSRef HTMLElement -> IO JSBool
 #else 

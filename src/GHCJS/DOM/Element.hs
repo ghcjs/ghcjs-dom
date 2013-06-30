@@ -361,7 +361,8 @@ elementSetAttributeNodeNS self newAttr
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"hasAttribute\"]($2)"
+foreign import javascript unsafe
+        "($1[\"hasAttribute\"]($2) ? 1 : 0)"
         webkit_dom_element_has_attribute ::
         JSRef Element -> JSString -> IO JSBool
 #else 
@@ -379,7 +380,8 @@ elementHasAttribute self name
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"hasAttributeNS\"]($2, $3)"
+foreign import javascript unsafe
+        "($1[\"hasAttributeNS\"]($2,\n$3) ? 1 : 0)"
         webkit_dom_element_has_attribute_ns ::
         JSRef Element -> JSString -> JSString -> IO JSBool
 #else 
@@ -550,7 +552,7 @@ elementQuerySelectorAll self selectors
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "$1[\"webkitMatchesSelector\"]($2)"
+        "($1[\"webkitMatchesSelector\"]($2) ? 1 : 0)"
         webkit_dom_element_webkit_matches_selector ::
         JSRef Element -> JSString -> IO JSBool
 #else 

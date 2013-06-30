@@ -140,8 +140,9 @@ nodeAppendChild self newChild
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"hasChildNodes\"]()"
-        webkit_dom_node_has_child_nodes :: JSRef Node -> IO JSBool
+foreign import javascript unsafe
+        "($1[\"hasChildNodes\"]() ? 1 : 0)" webkit_dom_node_has_child_nodes
+        :: JSRef Node -> IO JSBool
 #else 
 webkit_dom_node_has_child_nodes :: JSRef Node -> IO JSBool
 webkit_dom_node_has_child_nodes = undefined
@@ -184,7 +185,8 @@ nodeNormalize self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isSupported\"]($2, $3)"
+foreign import javascript unsafe
+        "($1[\"isSupported\"]($2,\n$3) ? 1 : 0)"
         webkit_dom_node_is_supported ::
         JSRef Node -> JSString -> JSString -> IO JSBool
 #else 
@@ -204,8 +206,9 @@ nodeIsSupported self feature version
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"hasAttributes\"]()"
-        webkit_dom_node_has_attributes :: JSRef Node -> IO JSBool
+foreign import javascript unsafe
+        "($1[\"hasAttributes\"]() ? 1 : 0)" webkit_dom_node_has_attributes
+        :: JSRef Node -> IO JSBool
 #else 
 webkit_dom_node_has_attributes :: JSRef Node -> IO JSBool
 webkit_dom_node_has_attributes = undefined
@@ -218,7 +221,7 @@ nodeHasAttributes self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isSameNode\"]($2)"
+foreign import javascript unsafe "($1[\"isSameNode\"]($2) ? 1 : 0)"
         webkit_dom_node_is_same_node ::
         JSRef Node -> JSRef Node -> IO JSBool
 #else 
@@ -236,9 +239,9 @@ nodeIsSameNode self other
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isEqualNode\"]($2)"
-        webkit_dom_node_is_equal_node ::
-        JSRef Node -> JSRef Node -> IO JSBool
+foreign import javascript unsafe
+        "($1[\"isEqualNode\"]($2) ? 1 : 0)" webkit_dom_node_is_equal_node
+        :: JSRef Node -> JSRef Node -> IO JSBool
 #else 
 webkit_dom_node_is_equal_node ::
                                 JSRef Node -> JSRef Node -> IO JSBool
@@ -273,7 +276,8 @@ nodeLookupPrefix self namespaceURI
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isDefaultNamespace\"]($2)"
+foreign import javascript unsafe
+        "($1[\"isDefaultNamespace\"]($2) ? 1 : 0)"
         webkit_dom_node_is_default_namespace ::
         JSRef Node -> JSString -> IO JSBool
 #else 
@@ -329,7 +333,7 @@ nodeCompareDocumentPosition self other
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"contains\"]($2)"
+foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         webkit_dom_node_contains :: JSRef Node -> JSRef Node -> IO JSBool
 #else 
 webkit_dom_node_contains :: JSRef Node -> JSRef Node -> IO JSBool
@@ -345,7 +349,8 @@ nodeContains self other
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"dispatchEvent\"]($2)"
+foreign import javascript unsafe
+        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         webkit_dom_node_dispatch_event ::
         JSRef Node -> JSRef Event -> IO JSBool
 #else 

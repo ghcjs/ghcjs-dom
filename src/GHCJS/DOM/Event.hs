@@ -163,7 +163,7 @@ eventGetEventPhase self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"bubbles\"]"
+foreign import javascript unsafe "($1[\"bubbles\"] ? 1 : 0)"
         webkit_dom_event_get_bubbles :: JSRef Event -> IO JSBool
 #else 
 webkit_dom_event_get_bubbles :: JSRef Event -> IO JSBool
@@ -177,7 +177,7 @@ eventGetBubbles self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"cancelable\"]"
+foreign import javascript unsafe "($1[\"cancelable\"] ? 1 : 0)"
         webkit_dom_event_get_cancelable :: JSRef Event -> IO JSBool
 #else 
 webkit_dom_event_get_cancelable :: JSRef Event -> IO JSBool
@@ -205,7 +205,8 @@ eventGetTimeStamp self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"defaultPrevented\"]"
+foreign import javascript unsafe
+        "($1[\"defaultPrevented\"] ? 1 : 0)"
         webkit_dom_event_get_default_prevented :: JSRef Event -> IO JSBool
 #else 
 webkit_dom_event_get_default_prevented :: JSRef Event -> IO JSBool
@@ -250,7 +251,7 @@ eventSetReturnValue self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"returnValue\"]"
+foreign import javascript unsafe "($1[\"returnValue\"] ? 1 : 0)"
         webkit_dom_event_get_return_value :: JSRef Event -> IO JSBool
 #else 
 webkit_dom_event_get_return_value :: JSRef Event -> IO JSBool
@@ -280,7 +281,7 @@ eventSetCancelBubble self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"cancelBubble\"]"
+foreign import javascript unsafe "($1[\"cancelBubble\"] ? 1 : 0)"
         webkit_dom_event_get_cancel_bubble :: JSRef Event -> IO JSBool
 #else 
 webkit_dom_event_get_cancel_bubble :: JSRef Event -> IO JSBool

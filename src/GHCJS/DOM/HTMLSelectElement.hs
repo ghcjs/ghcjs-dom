@@ -151,7 +151,8 @@ htmlSelectElementRemove self index
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checkValidity\"]()"
+foreign import javascript unsafe
+        "($1[\"checkValidity\"]() ? 1 : 0)"
         webkit_dom_html_select_element_check_validity ::
         JSRef HTMLSelectElement -> IO JSBool
 #else 
@@ -206,7 +207,7 @@ htmlSelectElementSetAutofocus self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"autofocus\"]"
+foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         webkit_dom_html_select_element_get_autofocus ::
         JSRef HTMLSelectElement -> IO JSBool
 #else 
@@ -242,7 +243,7 @@ htmlSelectElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_select_element_get_disabled ::
         JSRef HTMLSelectElement -> IO JSBool
 #else 
@@ -296,7 +297,7 @@ htmlSelectElementSetMultiple self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"multiple\"]"
+foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         webkit_dom_html_select_element_get_multiple ::
         JSRef HTMLSelectElement -> IO JSBool
 #else 
@@ -370,7 +371,7 @@ htmlSelectElementSetRequired self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"required\"]"
+foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         webkit_dom_html_select_element_get_required ::
         JSRef HTMLSelectElement -> IO JSBool
 #else 
@@ -571,7 +572,7 @@ htmlSelectElementGetValue self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"willValidate\"]"
+foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         webkit_dom_html_select_element_get_will_validate ::
         JSRef HTMLSelectElement -> IO JSBool
 #else 

@@ -46,7 +46,7 @@ htmlStyleElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_style_element_get_disabled ::
         JSRef HTMLStyleElement -> IO JSBool
 #else 
@@ -82,7 +82,7 @@ htmlStyleElementSetScoped self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"scoped\"]"
+foreign import javascript unsafe "($1[\"scoped\"] ? 1 : 0)"
         webkit_dom_html_style_element_get_scoped ::
         JSRef HTMLStyleElement -> IO JSBool
 #else 

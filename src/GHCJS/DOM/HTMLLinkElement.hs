@@ -57,7 +57,7 @@ htmlLinkElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_link_element_get_disabled ::
         JSRef HTMLLinkElement -> IO JSBool
 #else 

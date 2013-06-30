@@ -257,7 +257,8 @@ htmlVideoElementGetPoster self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitSupportsFullscreen\"]"
+foreign import javascript unsafe
+        "($1[\"webkitSupportsFullscreen\"] ? 1 : 0)"
         webkit_dom_html_video_element_get_webkit_supports_fullscreen ::
         JSRef HTMLVideoElement -> IO JSBool
 #else 
@@ -277,7 +278,7 @@ htmlVideoElementGetWebkitSupportsFullscreen self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "$1[\"webkitDisplayingFullscreen\"]"
+        "($1[\"webkitDisplayingFullscreen\"] ? 1 : 0)"
         webkit_dom_html_video_element_get_webkit_displaying_fullscreen ::
         JSRef HTMLVideoElement -> IO JSBool
 #else 

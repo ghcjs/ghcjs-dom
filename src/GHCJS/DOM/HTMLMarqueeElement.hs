@@ -407,7 +407,7 @@ htmlMarqueeElementSetTrueSpeed self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"trueSpeed\"]"
+foreign import javascript unsafe "($1[\"trueSpeed\"] ? 1 : 0)"
         webkit_dom_html_marquee_element_get_true_speed ::
         JSRef HTMLMarqueeElement -> IO JSBool
 #else 

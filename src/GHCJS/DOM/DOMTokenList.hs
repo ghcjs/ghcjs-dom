@@ -43,7 +43,7 @@ domTokenListItem self index
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"contains\"]($2)"
+foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         webkit_dom_dom_token_list_contains ::
         JSRef DOMTokenList -> JSString -> IO JSBool
 #else 
@@ -101,7 +101,7 @@ domTokenListRemove self token
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"toggle\"]($2)"
+foreign import javascript unsafe "($1[\"toggle\"]($2) ? 1 : 0)"
         webkit_dom_dom_token_list_toggle ::
         JSRef DOMTokenList -> JSString -> IO JSBool
 #else 

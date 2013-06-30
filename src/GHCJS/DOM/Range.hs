@@ -382,7 +382,8 @@ rangeCreateContextualFragment self html
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"intersectsNode\"]($2)"
+foreign import javascript unsafe
+        "($1[\"intersectsNode\"]($2) ? 1 : 0)"
         webkit_dom_range_intersects_node ::
         JSRef DOMRange -> JSRef Node -> IO JSBool
 #else 
@@ -438,7 +439,8 @@ rangeComparePoint self refNode offset
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isPointInRange\"]($2, $3)"
+foreign import javascript unsafe
+        "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)"
         webkit_dom_range_is_point_in_range ::
         JSRef DOMRange -> JSRef Node -> Int -> IO JSBool
 #else 
@@ -542,7 +544,7 @@ rangeGetEndOffset self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"collapsed\"]"
+foreign import javascript unsafe "($1[\"collapsed\"] ? 1 : 0)"
         webkit_dom_range_get_collapsed :: JSRef DOMRange -> IO JSBool
 #else 
 webkit_dom_range_get_collapsed :: JSRef DOMRange -> IO JSBool

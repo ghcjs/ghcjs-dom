@@ -101,7 +101,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checkValidity\"]()"
+foreign import javascript unsafe
+        "($1[\"checkValidity\"]() ? 1 : 0)"
         webkit_dom_html_text_area_element_check_validity ::
         JSRef HTMLTextAreaElement -> IO JSBool
 #else 
@@ -197,7 +198,7 @@ htmlTextAreaElementSetAutofocus self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"autofocus\"]"
+foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         webkit_dom_html_text_area_element_get_autofocus ::
         JSRef HTMLTextAreaElement -> IO JSBool
 #else 
@@ -306,7 +307,7 @@ htmlTextAreaElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_text_area_element_get_disabled ::
         JSRef HTMLTextAreaElement -> IO JSBool
 #else 
@@ -472,7 +473,7 @@ htmlTextAreaElementSetReadOnly self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"readOnly\"]"
+foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
         webkit_dom_html_text_area_element_get_read_only ::
         JSRef HTMLTextAreaElement -> IO JSBool
 #else 
@@ -508,7 +509,7 @@ htmlTextAreaElementSetRequired self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"required\"]"
+foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         webkit_dom_html_text_area_element_get_required ::
         JSRef HTMLTextAreaElement -> IO JSBool
 #else 
@@ -692,7 +693,7 @@ htmlTextAreaElementGetTextLength self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"willValidate\"]"
+foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         webkit_dom_html_text_area_element_get_will_validate ::
         JSRef HTMLTextAreaElement -> IO JSBool
 #else 

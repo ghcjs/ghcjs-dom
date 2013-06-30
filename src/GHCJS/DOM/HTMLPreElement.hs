@@ -74,7 +74,7 @@ htmlPreElementSetWrap self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"wrap\"]"
+foreign import javascript unsafe "($1[\"wrap\"] ? 1 : 0)"
         webkit_dom_html_pre_element_get_wrap ::
         JSRef HTMLPreElement -> IO JSBool
 #else 

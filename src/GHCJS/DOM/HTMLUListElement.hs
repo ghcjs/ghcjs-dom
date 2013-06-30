@@ -39,7 +39,7 @@ htmluListElementSetCompact self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"compact\"]"
+foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         webkit_dom_htmlu_list_element_get_compact ::
         JSRef HTMLUListElement -> IO JSBool
 #else 

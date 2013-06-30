@@ -48,7 +48,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checkValidity\"]()"
+foreign import javascript unsafe
+        "($1[\"checkValidity\"]() ? 1 : 0)"
         webkit_dom_html_keygen_element_check_validity ::
         JSRef HTMLKeygenElement -> IO JSBool
 #else 
@@ -103,7 +104,7 @@ htmlKeygenElementSetAutofocus self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"autofocus\"]"
+foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         webkit_dom_html_keygen_element_get_autofocus ::
         JSRef HTMLKeygenElement -> IO JSBool
 #else 
@@ -177,7 +178,7 @@ htmlKeygenElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_keygen_element_get_disabled ::
         JSRef HTMLKeygenElement -> IO JSBool
 #else 
@@ -289,7 +290,7 @@ htmlKeygenElementGetName self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"willValidate\"]"
+foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         webkit_dom_html_keygen_element_get_will_validate ::
         JSRef HTMLKeygenElement -> IO JSBool
 #else 

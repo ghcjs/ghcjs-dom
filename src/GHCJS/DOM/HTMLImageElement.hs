@@ -346,7 +346,7 @@ htmlImageElementSetIsMap self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"isMap\"]"
+foreign import javascript unsafe "($1[\"isMap\"] ? 1 : 0)"
         webkit_dom_html_image_element_get_is_map ::
         JSRef HTMLImageElement -> IO JSBool
 #else 
@@ -548,7 +548,7 @@ htmlImageElementGetWidth self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"complete\"]"
+foreign import javascript unsafe "($1[\"complete\"] ? 1 : 0)"
         webkit_dom_html_image_element_get_complete ::
         JSRef HTMLImageElement -> IO JSBool
 #else 

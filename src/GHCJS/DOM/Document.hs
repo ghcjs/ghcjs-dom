@@ -650,7 +650,8 @@ documentEvaluate self expression contextNode resolver type'
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"execCommand\"]($2, $3, $4)"
+foreign import javascript unsafe
+        "($1[\"execCommand\"]($2, $3,\n$4) ? 1 : 0)"
         webkit_dom_document_exec_command ::
         JSRef Document -> JSString -> JSBool -> JSString -> IO JSBool
 #else 
@@ -671,7 +672,8 @@ documentExecCommand self command userInterface value
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"queryCommandEnabled\"]($2)"
+foreign import javascript unsafe
+        "($1[\"queryCommandEnabled\"]($2) ? 1 : 0)"
         webkit_dom_document_query_command_enabled ::
         JSRef Document -> JSString -> IO JSBool
 #else 
@@ -691,7 +693,8 @@ documentQueryCommandEnabled self command
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"queryCommandIndeterm\"]($2)"
+foreign import javascript unsafe
+        "($1[\"queryCommandIndeterm\"]($2) ? 1 : 0)"
         webkit_dom_document_query_command_indeterm ::
         JSRef Document -> JSString -> IO JSBool
 #else 
@@ -711,7 +714,8 @@ documentQueryCommandIndeterm self command
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"queryCommandState\"]($2)"
+foreign import javascript unsafe
+        "($1[\"queryCommandState\"]($2) ? 1 : 0)"
         webkit_dom_document_query_command_state ::
         JSRef Document -> JSString -> IO JSBool
 #else 
@@ -732,7 +736,7 @@ documentQueryCommandState self command
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "$1[\"queryCommandSupported\"]($2)"
+        "($1[\"queryCommandSupported\"]($2) ? 1 : 0)"
         webkit_dom_document_query_command_supported ::
         JSRef Document -> JSString -> IO JSBool
 #else 
@@ -1055,7 +1059,7 @@ documentSetXmlStandalone self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"xmlStandalone\"]"
+foreign import javascript unsafe "($1[\"xmlStandalone\"] ? 1 : 0)"
         webkit_dom_document_get_xml_standalone ::
         JSRef Document -> IO JSBool
 #else 
@@ -1787,7 +1791,7 @@ documentGetWebkitVisibilityState self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitHidden\"]"
+foreign import javascript unsafe "($1[\"webkitHidden\"] ? 1 : 0)"
         webkit_dom_document_get_webkit_hidden ::
         JSRef Document -> IO JSBool
 #else 

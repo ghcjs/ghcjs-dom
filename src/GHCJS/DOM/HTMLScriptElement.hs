@@ -219,7 +219,7 @@ htmlScriptElementSetAsync self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"async\"]"
+foreign import javascript unsafe "($1[\"async\"] ? 1 : 0)"
         webkit_dom_html_script_element_get_async ::
         JSRef HTMLScriptElement -> IO JSBool
 #else 
@@ -255,7 +255,7 @@ htmlScriptElementSetDefer self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"defer\"]"
+foreign import javascript unsafe "($1[\"defer\"] ? 1 : 0)"
         webkit_dom_html_script_element_get_defer ::
         JSRef HTMLScriptElement -> IO JSBool
 #else 

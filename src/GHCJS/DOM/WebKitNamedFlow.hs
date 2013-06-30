@@ -87,7 +87,8 @@ webKitNamedFlowGetContent self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"dispatchEvent\"]($2)"
+foreign import javascript unsafe
+        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         webkit_dom_webkit_named_flow_dispatch_event ::
         JSRef WebKitNamedFlow -> JSRef Event -> IO JSBool
 #else 
@@ -126,7 +127,7 @@ webKitNamedFlowGetName self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"overset\"]"
+foreign import javascript unsafe "($1[\"overset\"] ? 1 : 0)"
         webkit_dom_webkit_named_flow_get_overset ::
         JSRef WebKitNamedFlow -> IO JSBool
 #else 

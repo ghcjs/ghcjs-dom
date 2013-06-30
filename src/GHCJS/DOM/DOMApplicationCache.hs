@@ -82,7 +82,8 @@ domApplicationCacheAbort self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"dispatchEvent\"]($2)"
+foreign import javascript unsafe
+        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         webkit_dom_dom_application_cache_dispatch_event ::
         JSRef DOMApplicationCache -> JSRef Event -> IO JSBool
 #else 

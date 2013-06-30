@@ -142,7 +142,8 @@ xmlHttpRequestOverrideMimeType self override
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"dispatchEvent\"]($2)"
+foreign import javascript unsafe
+        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         webkit_dom_xml_http_request_dispatch_event ::
         JSRef XMLHttpRequest -> JSRef Event -> IO JSBool
 #else 
@@ -230,7 +231,8 @@ xmlHttpRequestSetWithCredentials self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"withCredentials\"]"
+foreign import javascript unsafe
+        "($1[\"withCredentials\"] ? 1 : 0)"
         webkit_dom_xml_http_request_get_with_credentials ::
         JSRef XMLHttpRequest -> IO JSBool
 #else 

@@ -201,7 +201,7 @@ mouseEventGetWebkitMovementY self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"ctrlKey\"]"
+foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         webkit_dom_mouse_event_get_ctrl_key ::
         JSRef MouseEvent -> IO JSBool
 #else 
@@ -218,7 +218,7 @@ mouseEventGetCtrlKey self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"shiftKey\"]"
+foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
         webkit_dom_mouse_event_get_shift_key ::
         JSRef MouseEvent -> IO JSBool
 #else 
@@ -235,7 +235,7 @@ mouseEventGetShiftKey self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"altKey\"]"
+foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
         webkit_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO JSBool
 #else 
 webkit_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO JSBool
@@ -250,7 +250,7 @@ mouseEventGetAltKey self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"metaKey\"]"
+foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
         webkit_dom_mouse_event_get_meta_key ::
         JSRef MouseEvent -> IO JSBool
 #else 

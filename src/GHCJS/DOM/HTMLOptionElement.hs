@@ -58,7 +58,7 @@ htmlOptionElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_option_element_get_disabled ::
         JSRef HTMLOptionElement -> IO JSBool
 #else 
@@ -150,7 +150,8 @@ htmlOptionElementSetDefaultSelected self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"defaultSelected\"]"
+foreign import javascript unsafe
+        "($1[\"defaultSelected\"] ? 1 : 0)"
         webkit_dom_html_option_element_get_default_selected ::
         JSRef HTMLOptionElement -> IO JSBool
 #else 
@@ -186,7 +187,7 @@ htmlOptionElementSetSelected self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"selected\"]"
+foreign import javascript unsafe "($1[\"selected\"] ? 1 : 0)"
         webkit_dom_html_option_element_get_selected ::
         JSRef HTMLOptionElement -> IO JSBool
 #else 

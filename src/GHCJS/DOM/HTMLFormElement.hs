@@ -86,7 +86,8 @@ htmlFormElementReset self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checkValidity\"]()"
+foreign import javascript unsafe
+        "($1[\"checkValidity\"]() ? 1 : 0)"
         webkit_dom_html_form_element_check_validity ::
         JSRef HTMLFormElement -> IO JSBool
 #else 
@@ -381,7 +382,7 @@ htmlFormElementSetNoValidate self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"noValidate\"]"
+foreign import javascript unsafe "($1[\"noValidate\"] ? 1 : 0)"
         webkit_dom_html_form_element_get_no_validate ::
         JSRef HTMLFormElement -> IO JSBool
 #else 

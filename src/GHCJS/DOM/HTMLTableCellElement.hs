@@ -449,7 +449,7 @@ htmlTableCellElementSetNoWrap self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"noWrap\"]"
+foreign import javascript unsafe "($1[\"noWrap\"] ? 1 : 0)"
         webkit_dom_html_table_cell_element_get_no_wrap ::
         JSRef HTMLTableCellElement -> IO JSBool
 #else 

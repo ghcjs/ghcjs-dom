@@ -127,7 +127,7 @@ htmlDocumentReleaseEvents self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"hasFocus\"]()"
+foreign import javascript unsafe "($1[\"hasFocus\"]() ? 1 : 0)"
         webkit_dom_html_document_has_focus ::
         JSRef HTMLDocument -> IO JSBool
 #else 

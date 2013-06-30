@@ -39,7 +39,7 @@ htmlDetailsElementSetOpen self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"open\"]"
+foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
         webkit_dom_html_details_element_get_open ::
         JSRef HTMLDetailsElement -> IO JSBool
 #else 

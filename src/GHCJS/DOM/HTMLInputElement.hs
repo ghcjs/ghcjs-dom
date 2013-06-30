@@ -207,7 +207,8 @@ htmlInputElementStepDown self n
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checkValidity\"]()"
+foreign import javascript unsafe
+        "($1[\"checkValidity\"]() ? 1 : 0)"
         webkit_dom_html_input_element_check_validity ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -412,7 +413,7 @@ htmlInputElementSetAutofocus self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"autofocus\"]"
+foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_autofocus ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -448,7 +449,7 @@ htmlInputElementSetDefaultChecked self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"defaultChecked\"]"
+foreign import javascript unsafe "($1[\"defaultChecked\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_default_checked ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -484,7 +485,7 @@ htmlInputElementSetChecked self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"checked\"]"
+foreign import javascript unsafe "($1[\"checked\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_checked ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -558,7 +559,7 @@ htmlInputElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_disabled ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -763,7 +764,7 @@ htmlInputElementSetFormNoValidate self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"formNoValidate\"]"
+foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_form_no_validate ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -872,7 +873,7 @@ htmlInputElementSetIndeterminate self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"indeterminate\"]"
+foreign import javascript unsafe "($1[\"indeterminate\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_indeterminate ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1037,7 +1038,7 @@ htmlInputElementSetMultiple self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"multiple\"]"
+foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_multiple ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1187,7 +1188,7 @@ htmlInputElementSetReadOnly self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"readOnly\"]"
+foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_read_only ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1223,7 +1224,7 @@ htmlInputElementSetRequired self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"required\"]"
+foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_required ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1498,7 +1499,7 @@ htmlInputElementGetWidth self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"willValidate\"]"
+foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_will_validate ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1627,7 +1628,8 @@ htmlInputElementSetWebkitdirectory self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitdirectory\"]"
+foreign import javascript unsafe
+        "($1[\"webkitdirectory\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_webkitdirectory ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1701,7 +1703,7 @@ htmlInputElementSetIncremental self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"incremental\"]"
+foreign import javascript unsafe "($1[\"incremental\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_incremental ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1737,7 +1739,7 @@ htmlInputElementSetWebkitSpeech self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitSpeech\"]"
+foreign import javascript unsafe "($1[\"webkitSpeech\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_webkit_speech ::
         JSRef HTMLInputElement -> IO JSBool
 #else 
@@ -1773,7 +1775,7 @@ htmlInputElementSetWebkitGrammar self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitGrammar\"]"
+foreign import javascript unsafe "($1[\"webkitGrammar\"] ? 1 : 0)"
         webkit_dom_html_input_element_get_webkit_grammar ::
         JSRef HTMLInputElement -> IO JSBool
 #else 

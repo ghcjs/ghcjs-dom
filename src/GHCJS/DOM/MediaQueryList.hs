@@ -38,7 +38,7 @@ mediaQueryListGetMedia self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"matches\"]"
+foreign import javascript unsafe "($1[\"matches\"] ? 1 : 0)"
         webkit_dom_media_query_list_get_matches ::
         JSRef MediaQueryList -> IO JSBool
 #else 

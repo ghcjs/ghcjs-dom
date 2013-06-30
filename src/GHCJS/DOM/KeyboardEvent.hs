@@ -34,7 +34,8 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"getModifierState\"]($2)"
+foreign import javascript unsafe
+        "($1[\"getModifierState\"]($2) ? 1 : 0)"
         webkit_dom_keyboard_event_get_modifier_state ::
         JSRef KeyboardEvent -> JSString -> IO JSBool
 #else 
@@ -198,7 +199,7 @@ keyboardEventGetKeyLocation self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"ctrlKey\"]"
+foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         webkit_dom_keyboard_event_get_ctrl_key ::
         JSRef KeyboardEvent -> IO JSBool
 #else 
@@ -216,7 +217,7 @@ keyboardEventGetCtrlKey self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"shiftKey\"]"
+foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
         webkit_dom_keyboard_event_get_shift_key ::
         JSRef KeyboardEvent -> IO JSBool
 #else 
@@ -234,7 +235,7 @@ keyboardEventGetShiftKey self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"altKey\"]"
+foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
         webkit_dom_keyboard_event_get_alt_key ::
         JSRef KeyboardEvent -> IO JSBool
 #else 
@@ -252,7 +253,7 @@ keyboardEventGetAltKey self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"metaKey\"]"
+foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
         webkit_dom_keyboard_event_get_meta_key ::
         JSRef KeyboardEvent -> IO JSBool
 #else 
@@ -270,7 +271,7 @@ keyboardEventGetMetaKey self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"altGraphKey\"]"
+foreign import javascript unsafe "($1[\"altGraphKey\"] ? 1 : 0)"
         webkit_dom_keyboard_event_get_alt_graph_key ::
         JSRef KeyboardEvent -> IO JSBool
 #else 

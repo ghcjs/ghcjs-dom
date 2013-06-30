@@ -351,7 +351,7 @@ htmlMediaElementGetReadyState self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"seeking\"]"
+foreign import javascript unsafe "($1[\"seeking\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_seeking ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -455,7 +455,7 @@ htmlMediaElementGetDuration self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"paused\"]"
+foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_paused ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -580,7 +580,7 @@ htmlMediaElementGetSeekable self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"ended\"]"
+foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_ended ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -616,7 +616,7 @@ htmlMediaElementSetAutoplay self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"autoplay\"]"
+foreign import javascript unsafe "($1[\"autoplay\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_autoplay ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -652,7 +652,7 @@ htmlMediaElementSetLoop self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"loop\"]"
+foreign import javascript unsafe "($1[\"loop\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_loop ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -688,7 +688,7 @@ htmlMediaElementSetControls self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"controls\"]"
+foreign import javascript unsafe "($1[\"controls\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_controls ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -759,7 +759,7 @@ htmlMediaElementSetMuted self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"muted\"]"
+foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_muted ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -795,7 +795,7 @@ htmlMediaElementSetDefaultMuted self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"defaultMuted\"]"
+foreign import javascript unsafe "($1[\"defaultMuted\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_default_muted ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -833,7 +833,8 @@ htmlMediaElementSetWebkitPreservesPitch self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitPreservesPitch\"]"
+foreign import javascript unsafe
+        "($1[\"webkitPreservesPitch\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_webkit_preserves_pitch ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -852,7 +853,8 @@ htmlMediaElementGetWebkitPreservesPitch self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitHasClosedCaptions\"]"
+foreign import javascript unsafe
+        "($1[\"webkitHasClosedCaptions\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_webkit_has_closed_captions ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 
@@ -893,7 +895,7 @@ htmlMediaElementSetWebkitClosedCaptionsVisible self val
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "$1[\"webkitClosedCaptionsVisible\"]"
+        "($1[\"webkitClosedCaptionsVisible\"] ? 1 : 0)"
         webkit_dom_html_media_element_get_webkit_closed_captions_visible ::
         JSRef HTMLMediaElement -> IO JSBool
 #else 

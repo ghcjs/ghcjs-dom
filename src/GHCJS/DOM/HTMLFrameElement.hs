@@ -260,7 +260,7 @@ htmlFrameElementSetNoResize self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"noResize\"]"
+foreign import javascript unsafe "($1[\"noResize\"] ? 1 : 0)"
         webkit_dom_html_frame_element_get_no_resize ::
         JSRef HTMLFrameElement -> IO JSBool
 #else 

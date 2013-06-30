@@ -79,7 +79,7 @@ htmlhrElementSetNoShade self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"noShade\"]"
+foreign import javascript unsafe "($1[\"noShade\"] ? 1 : 0)"
         webkit_dom_htmlhr_element_get_no_shade ::
         JSRef HTMLHRElement -> IO JSBool
 #else 

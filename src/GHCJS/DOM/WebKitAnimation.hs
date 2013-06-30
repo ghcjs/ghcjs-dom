@@ -158,7 +158,7 @@ webKitAnimationGetDelay self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"paused\"]"
+foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
         webkit_dom_webkit_animation_get_paused ::
         JSRef WebKitAnimation -> IO JSBool
 #else 
@@ -176,7 +176,7 @@ webKitAnimationGetPaused self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"ended\"]"
+foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
         webkit_dom_webkit_animation_get_ended ::
         JSRef WebKitAnimation -> IO JSBool
 #else 

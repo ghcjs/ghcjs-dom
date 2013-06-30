@@ -34,7 +34,7 @@ import GHCJS.DOM.EventM
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"javaEnabled\"]()"
+foreign import javascript unsafe "($1[\"javaEnabled\"]() ? 1 : 0)"
         webkit_dom_navigator_java_enabled :: JSRef Navigator -> IO JSBool
 #else 
 webkit_dom_navigator_java_enabled :: JSRef Navigator -> IO JSBool
@@ -269,7 +269,7 @@ navigatorGetVendorSub self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"cookieEnabled\"]"
+foreign import javascript unsafe "($1[\"cookieEnabled\"] ? 1 : 0)"
         webkit_dom_navigator_get_cookie_enabled ::
         JSRef Navigator -> IO JSBool
 #else 
@@ -287,7 +287,7 @@ navigatorGetCookieEnabled self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"onLine\"]"
+foreign import javascript unsafe "($1[\"onLine\"] ? 1 : 0)"
         webkit_dom_navigator_get_on_line :: JSRef Navigator -> IO JSBool
 #else 
 webkit_dom_navigator_get_on_line :: JSRef Navigator -> IO JSBool

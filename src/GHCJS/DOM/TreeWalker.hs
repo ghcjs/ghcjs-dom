@@ -77,7 +77,8 @@ treeWalkerGetFilter self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"expandEntityReferences\"]"
+foreign import javascript unsafe
+        "($1[\"expandEntityReferences\"] ? 1 : 0)"
         webkit_dom_tree_walker_get_expand_entity_references ::
         JSRef TreeWalker -> IO JSBool
 #else 

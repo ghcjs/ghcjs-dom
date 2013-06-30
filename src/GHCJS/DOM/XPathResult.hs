@@ -135,7 +135,7 @@ xPathResultGetStringValue self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"booleanValue\"]"
+foreign import javascript unsafe "($1[\"booleanValue\"] ? 1 : 0)"
         webkit_dom_xpath_result_get_boolean_value ::
         JSRef XPathResult -> IO JSBool
 #else 
@@ -171,7 +171,8 @@ xPathResultGetSingleNodeValue self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"invalidIteratorState\"]"
+foreign import javascript unsafe
+        "($1[\"invalidIteratorState\"] ? 1 : 0)"
         webkit_dom_xpath_result_get_invalid_iterator_state ::
         JSRef XPathResult -> IO JSBool
 #else 

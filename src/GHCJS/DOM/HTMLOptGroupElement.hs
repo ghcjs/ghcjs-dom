@@ -43,7 +43,7 @@ htmlOptGroupElementSetDisabled self val
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"disabled\"]"
+foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         webkit_dom_html_opt_group_element_get_disabled ::
         JSRef HTMLOptGroupElement -> IO JSBool
 #else 
