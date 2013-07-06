@@ -6,13 +6,18 @@ license: BSD3
 license-file: ""
 data-dir: ""
 
-library
-    build-depends: base -any
-    exposed-modules: GHCJS.DOM
+flag webkit
+    description: Use GtkWebKit DOM functions
+    default: False
 
-    if impl(ghcjs)
-      build-depends: ghcjs-base,  mtl
-      exposed-modules:
+flag jsc
+    description: Use GtkWebKit JavaScriptCore
+    default: False
+
+library
+    build-depends: base -any, mtl -any
+    exposed-modules:
+          GHCJS.DOM
           GHCJS.DOM.Types
           GHCJS.DOM.Attr
           GHCJS.DOM.BarInfo
@@ -147,12 +152,22 @@ library
           GHCJS.DOM.TimeRanges
           -- GHCJS.DOM.WebKitAnimation
           -- GHCJS.DOM.WebKitAnimationList
+
+    if impl(ghcjs) && !flag(webkit) && !flag(jsc)
+      hs-source-dirs: src
+      build-depends: ghcjs-base
     else
-      build-depends: glib >=0.12.3.1 && <0.13, gtk >=0.12.3.1 && <0.13,
-                     webkit >=0.12.5
+      if !flag(jsc)
+        hs-source-dirs: webkit
+        build-depends:  glib >=0.12.3.1 && <0.13, gtk >=0.12.3.1 && <0.13,
+                        webkit >=0.12.5
+        c-sources:      cbits/ghcjs_stubs.c
+      else
+        hs-source-dirs: jsc
+        build-depends:  glib >=0.12.3.1 && <0.13, gtk >=0.12.3.1 && <0.13,
+                        webkit >=0.12.5
+        c-sources:      cbits/ghcjs_stubs.c
 
     exposed: True
     buildable: True
-    hs-source-dirs: src
-    c-sources:      cbits/ghcjs_stubs.c
 
