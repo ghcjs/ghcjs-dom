@@ -233,10 +233,10 @@ htmlFrameElementGetName self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"noResize\"] = $2;"
         ghcjs_dom_html_frame_element_set_no_resize ::
-        JSRef HTMLFrameElement -> JSBool -> IO ()
+        JSRef HTMLFrameElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_frame_element_set_no_resize ::
-                                             JSRef HTMLFrameElement -> JSBool -> IO ()
+                                             JSRef HTMLFrameElement -> Bool -> IO ()
 ghcjs_dom_html_frame_element_set_no_resize = undefined
 #endif
  
@@ -245,25 +245,24 @@ htmlFrameElementSetNoResize ::
 htmlFrameElementSetNoResize self val
   = ghcjs_dom_html_frame_element_set_no_resize
       (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"noResize\"] ? 1 : 0)"
         ghcjs_dom_html_frame_element_get_no_resize ::
-        JSRef HTMLFrameElement -> IO JSBool
+        JSRef HTMLFrameElement -> IO Bool
 #else 
 ghcjs_dom_html_frame_element_get_no_resize ::
-                                             JSRef HTMLFrameElement -> IO JSBool
+                                             JSRef HTMLFrameElement -> IO Bool
 ghcjs_dom_html_frame_element_get_no_resize = undefined
 #endif
  
 htmlFrameElementGetNoResize ::
                             (IsHTMLFrameElement self) => self -> IO Bool
 htmlFrameElementGetNoResize self
-  = fromJSBool <$>
-      (ghcjs_dom_html_frame_element_get_no_resize
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = ghcjs_dom_html_frame_element_get_no_resize
+      (unHTMLFrameElement (toHTMLFrameElement self))
 
 
 #ifdef __GHCJS__ 

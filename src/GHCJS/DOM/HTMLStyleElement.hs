@@ -28,10 +28,10 @@ import GHCJS.DOM.EventM
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_style_element_set_disabled ::
-        JSRef HTMLStyleElement -> JSBool -> IO ()
+        JSRef HTMLStyleElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_style_element_set_disabled ::
-                                            JSRef HTMLStyleElement -> JSBool -> IO ()
+                                            JSRef HTMLStyleElement -> Bool -> IO ()
 ghcjs_dom_html_style_element_set_disabled = undefined
 #endif
  
@@ -40,34 +40,33 @@ htmlStyleElementSetDisabled ::
 htmlStyleElementSetDisabled self val
   = ghcjs_dom_html_style_element_set_disabled
       (unHTMLStyleElement (toHTMLStyleElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_style_element_get_disabled ::
-        JSRef HTMLStyleElement -> IO JSBool
+        JSRef HTMLStyleElement -> IO Bool
 #else 
 ghcjs_dom_html_style_element_get_disabled ::
-                                            JSRef HTMLStyleElement -> IO JSBool
+                                            JSRef HTMLStyleElement -> IO Bool
 ghcjs_dom_html_style_element_get_disabled = undefined
 #endif
  
 htmlStyleElementGetDisabled ::
                             (IsHTMLStyleElement self) => self -> IO Bool
 htmlStyleElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_style_element_get_disabled
-         (unHTMLStyleElement (toHTMLStyleElement self)))
+  = ghcjs_dom_html_style_element_get_disabled
+      (unHTMLStyleElement (toHTMLStyleElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"scoped\"] = $2;"
         ghcjs_dom_html_style_element_set_scoped ::
-        JSRef HTMLStyleElement -> JSBool -> IO ()
+        JSRef HTMLStyleElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_style_element_set_scoped ::
-                                          JSRef HTMLStyleElement -> JSBool -> IO ()
+                                          JSRef HTMLStyleElement -> Bool -> IO ()
 ghcjs_dom_html_style_element_set_scoped = undefined
 #endif
  
@@ -76,25 +75,24 @@ htmlStyleElementSetScoped ::
 htmlStyleElementSetScoped self val
   = ghcjs_dom_html_style_element_set_scoped
       (unHTMLStyleElement (toHTMLStyleElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"scoped\"] ? 1 : 0)"
         ghcjs_dom_html_style_element_get_scoped ::
-        JSRef HTMLStyleElement -> IO JSBool
+        JSRef HTMLStyleElement -> IO Bool
 #else 
 ghcjs_dom_html_style_element_get_scoped ::
-                                          JSRef HTMLStyleElement -> IO JSBool
+                                          JSRef HTMLStyleElement -> IO Bool
 ghcjs_dom_html_style_element_get_scoped = undefined
 #endif
  
 htmlStyleElementGetScoped ::
                           (IsHTMLStyleElement self) => self -> IO Bool
 htmlStyleElementGetScoped self
-  = fromJSBool <$>
-      (ghcjs_dom_html_style_element_get_scoped
-         (unHTMLStyleElement (toHTMLStyleElement self)))
+  = ghcjs_dom_html_style_element_get_scoped
+      (unHTMLStyleElement (toHTMLStyleElement self))
 
 
 #ifdef __GHCJS__ 

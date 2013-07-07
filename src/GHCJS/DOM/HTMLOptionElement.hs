@@ -38,10 +38,10 @@ import GHCJS.DOM.EventM
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_option_element_set_disabled ::
-        JSRef HTMLOptionElement -> JSBool -> IO ()
+        JSRef HTMLOptionElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_option_element_set_disabled ::
-                                             JSRef HTMLOptionElement -> JSBool -> IO ()
+                                             JSRef HTMLOptionElement -> Bool -> IO ()
 ghcjs_dom_html_option_element_set_disabled = undefined
 #endif
  
@@ -50,25 +50,24 @@ htmlOptionElementSetDisabled ::
 htmlOptionElementSetDisabled self val
   = ghcjs_dom_html_option_element_set_disabled
       (unHTMLOptionElement (toHTMLOptionElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_option_element_get_disabled ::
-        JSRef HTMLOptionElement -> IO JSBool
+        JSRef HTMLOptionElement -> IO Bool
 #else 
 ghcjs_dom_html_option_element_get_disabled ::
-                                             JSRef HTMLOptionElement -> IO JSBool
+                                             JSRef HTMLOptionElement -> IO Bool
 ghcjs_dom_html_option_element_get_disabled = undefined
 #endif
  
 htmlOptionElementGetDisabled ::
                              (IsHTMLOptionElement self) => self -> IO Bool
 htmlOptionElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_option_element_get_disabled
-         (unHTMLOptionElement (toHTMLOptionElement self)))
+  = ghcjs_dom_html_option_element_get_disabled
+      (unHTMLOptionElement (toHTMLOptionElement self))
 
 
 #ifdef __GHCJS__ 
@@ -129,10 +128,10 @@ htmlOptionElementGetLabel self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"defaultSelected\"] = $2;"
         ghcjs_dom_html_option_element_set_default_selected ::
-        JSRef HTMLOptionElement -> JSBool -> IO ()
+        JSRef HTMLOptionElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_option_element_set_default_selected ::
-                                                     JSRef HTMLOptionElement -> JSBool -> IO ()
+                                                     JSRef HTMLOptionElement -> Bool -> IO ()
 ghcjs_dom_html_option_element_set_default_selected = undefined
 #endif
  
@@ -141,35 +140,34 @@ htmlOptionElementSetDefaultSelected ::
 htmlOptionElementSetDefaultSelected self val
   = ghcjs_dom_html_option_element_set_default_selected
       (unHTMLOptionElement (toHTMLOptionElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"defaultSelected\"] ? 1 : 0)"
         ghcjs_dom_html_option_element_get_default_selected ::
-        JSRef HTMLOptionElement -> IO JSBool
+        JSRef HTMLOptionElement -> IO Bool
 #else 
 ghcjs_dom_html_option_element_get_default_selected ::
-                                                     JSRef HTMLOptionElement -> IO JSBool
+                                                     JSRef HTMLOptionElement -> IO Bool
 ghcjs_dom_html_option_element_get_default_selected = undefined
 #endif
  
 htmlOptionElementGetDefaultSelected ::
                                     (IsHTMLOptionElement self) => self -> IO Bool
 htmlOptionElementGetDefaultSelected self
-  = fromJSBool <$>
-      (ghcjs_dom_html_option_element_get_default_selected
-         (unHTMLOptionElement (toHTMLOptionElement self)))
+  = ghcjs_dom_html_option_element_get_default_selected
+      (unHTMLOptionElement (toHTMLOptionElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"selected\"] = $2;"
         ghcjs_dom_html_option_element_set_selected ::
-        JSRef HTMLOptionElement -> JSBool -> IO ()
+        JSRef HTMLOptionElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_option_element_set_selected ::
-                                             JSRef HTMLOptionElement -> JSBool -> IO ()
+                                             JSRef HTMLOptionElement -> Bool -> IO ()
 ghcjs_dom_html_option_element_set_selected = undefined
 #endif
  
@@ -178,25 +176,24 @@ htmlOptionElementSetSelected ::
 htmlOptionElementSetSelected self val
   = ghcjs_dom_html_option_element_set_selected
       (unHTMLOptionElement (toHTMLOptionElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"selected\"] ? 1 : 0)"
         ghcjs_dom_html_option_element_get_selected ::
-        JSRef HTMLOptionElement -> IO JSBool
+        JSRef HTMLOptionElement -> IO Bool
 #else 
 ghcjs_dom_html_option_element_get_selected ::
-                                             JSRef HTMLOptionElement -> IO JSBool
+                                             JSRef HTMLOptionElement -> IO Bool
 ghcjs_dom_html_option_element_get_selected = undefined
 #endif
  
 htmlOptionElementGetSelected ::
                              (IsHTMLOptionElement self) => self -> IO Bool
 htmlOptionElementGetSelected self
-  = fromJSBool <$>
-      (ghcjs_dom_html_option_element_get_selected
-         (unHTMLOptionElement (toHTMLOptionElement self)))
+  = ghcjs_dom_html_option_element_get_selected
+      (unHTMLOptionElement (toHTMLOptionElement self))
 
 
 #ifdef __GHCJS__ 

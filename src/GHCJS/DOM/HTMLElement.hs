@@ -254,10 +254,10 @@ htmlElementGetLang self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"translate\"] = $2;"
         ghcjs_dom_html_element_set_translate ::
-        JSRef HTMLElement -> JSBool -> IO ()
+        JSRef HTMLElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_element_set_translate ::
-                                       JSRef HTMLElement -> JSBool -> IO ()
+                                       JSRef HTMLElement -> Bool -> IO ()
 ghcjs_dom_html_element_set_translate = undefined
 #endif
  
@@ -266,24 +266,23 @@ htmlElementSetTranslate ::
 htmlElementSetTranslate self val
   = ghcjs_dom_html_element_set_translate
       (unHTMLElement (toHTMLElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"translate\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_translate ::
-        JSRef HTMLElement -> IO JSBool
+        JSRef HTMLElement -> IO Bool
 #else 
 ghcjs_dom_html_element_get_translate ::
-                                       JSRef HTMLElement -> IO JSBool
+                                       JSRef HTMLElement -> IO Bool
 ghcjs_dom_html_element_get_translate = undefined
 #endif
  
 htmlElementGetTranslate :: (IsHTMLElement self) => self -> IO Bool
 htmlElementGetTranslate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_element_get_translate
-         (unHTMLElement (toHTMLElement self)))
+  = ghcjs_dom_html_element_get_translate
+      (unHTMLElement (toHTMLElement self))
 
 
 #ifdef __GHCJS__ 
@@ -355,10 +354,10 @@ htmlElementGetTabIndex self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"draggable\"] = $2;"
         ghcjs_dom_html_element_set_draggable ::
-        JSRef HTMLElement -> JSBool -> IO ()
+        JSRef HTMLElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_element_set_draggable ::
-                                       JSRef HTMLElement -> JSBool -> IO ()
+                                       JSRef HTMLElement -> Bool -> IO ()
 ghcjs_dom_html_element_set_draggable = undefined
 #endif
  
@@ -367,24 +366,23 @@ htmlElementSetDraggable ::
 htmlElementSetDraggable self val
   = ghcjs_dom_html_element_set_draggable
       (unHTMLElement (toHTMLElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"draggable\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_draggable ::
-        JSRef HTMLElement -> IO JSBool
+        JSRef HTMLElement -> IO Bool
 #else 
 ghcjs_dom_html_element_get_draggable ::
-                                       JSRef HTMLElement -> IO JSBool
+                                       JSRef HTMLElement -> IO Bool
 ghcjs_dom_html_element_get_draggable = undefined
 #endif
  
 htmlElementGetDraggable :: (IsHTMLElement self) => self -> IO Bool
 htmlElementGetDraggable self
-  = fromJSBool <$>
-      (ghcjs_dom_html_element_get_draggable
-         (unHTMLElement (toHTMLElement self)))
+  = ghcjs_dom_html_element_get_draggable
+      (unHTMLElement (toHTMLElement self))
 
 
 #ifdef __GHCJS__ 
@@ -426,10 +424,10 @@ htmlElementGetWebkitdropzone self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"hidden\"] = $2;"
         ghcjs_dom_html_element_set_hidden ::
-        JSRef HTMLElement -> JSBool -> IO ()
+        JSRef HTMLElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_element_set_hidden ::
-                                    JSRef HTMLElement -> JSBool -> IO ()
+                                    JSRef HTMLElement -> Bool -> IO ()
 ghcjs_dom_html_element_set_hidden = undefined
 #endif
  
@@ -438,22 +436,21 @@ htmlElementSetHidden ::
 htmlElementSetHidden self val
   = ghcjs_dom_html_element_set_hidden
       (unHTMLElement (toHTMLElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
-        ghcjs_dom_html_element_get_hidden :: JSRef HTMLElement -> IO JSBool
+        ghcjs_dom_html_element_get_hidden :: JSRef HTMLElement -> IO Bool
 #else 
-ghcjs_dom_html_element_get_hidden :: JSRef HTMLElement -> IO JSBool
+ghcjs_dom_html_element_get_hidden :: JSRef HTMLElement -> IO Bool
 ghcjs_dom_html_element_get_hidden = undefined
 #endif
  
 htmlElementGetHidden :: (IsHTMLElement self) => self -> IO Bool
 htmlElementGetHidden self
-  = fromJSBool <$>
-      (ghcjs_dom_html_element_get_hidden
-         (unHTMLElement (toHTMLElement self)))
+  = ghcjs_dom_html_element_get_hidden
+      (unHTMLElement (toHTMLElement self))
 
 
 #ifdef __GHCJS__ 
@@ -694,28 +691,27 @@ htmlElementGetContentEditable self
 foreign import javascript unsafe
         "($1[\"isContentEditable\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_is_content_editable ::
-        JSRef HTMLElement -> IO JSBool
+        JSRef HTMLElement -> IO Bool
 #else 
 ghcjs_dom_html_element_get_is_content_editable ::
-                                                 JSRef HTMLElement -> IO JSBool
+                                                 JSRef HTMLElement -> IO Bool
 ghcjs_dom_html_element_get_is_content_editable = undefined
 #endif
  
 htmlElementGetIsContentEditable ::
                                 (IsHTMLElement self) => self -> IO Bool
 htmlElementGetIsContentEditable self
-  = fromJSBool <$>
-      (ghcjs_dom_html_element_get_is_content_editable
-         (unHTMLElement (toHTMLElement self)))
+  = ghcjs_dom_html_element_get_is_content_editable
+      (unHTMLElement (toHTMLElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"spellcheck\"] = $2;"
         ghcjs_dom_html_element_set_spellcheck ::
-        JSRef HTMLElement -> JSBool -> IO ()
+        JSRef HTMLElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_element_set_spellcheck ::
-                                        JSRef HTMLElement -> JSBool -> IO ()
+                                        JSRef HTMLElement -> Bool -> IO ()
 ghcjs_dom_html_element_set_spellcheck = undefined
 #endif
  
@@ -724,33 +720,32 @@ htmlElementSetSpellcheck ::
 htmlElementSetSpellcheck self val
   = ghcjs_dom_html_element_set_spellcheck
       (unHTMLElement (toHTMLElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_spellcheck ::
-        JSRef HTMLElement -> IO JSBool
+        JSRef HTMLElement -> IO Bool
 #else 
 ghcjs_dom_html_element_get_spellcheck ::
-                                        JSRef HTMLElement -> IO JSBool
+                                        JSRef HTMLElement -> IO Bool
 ghcjs_dom_html_element_get_spellcheck = undefined
 #endif
  
 htmlElementGetSpellcheck :: (IsHTMLElement self) => self -> IO Bool
 htmlElementGetSpellcheck self
-  = fromJSBool <$>
-      (ghcjs_dom_html_element_get_spellcheck
-         (unHTMLElement (toHTMLElement self)))
+  = ghcjs_dom_html_element_get_spellcheck
+      (unHTMLElement (toHTMLElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"itemScope\"] = $2;"
         ghcjs_dom_html_element_set_item_scope ::
-        JSRef HTMLElement -> JSBool -> IO ()
+        JSRef HTMLElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_element_set_item_scope ::
-                                        JSRef HTMLElement -> JSBool -> IO ()
+                                        JSRef HTMLElement -> Bool -> IO ()
 ghcjs_dom_html_element_set_item_scope = undefined
 #endif
  
@@ -759,24 +754,23 @@ htmlElementSetItemScope ::
 htmlElementSetItemScope self val
   = ghcjs_dom_html_element_set_item_scope
       (unHTMLElement (toHTMLElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"itemScope\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_item_scope ::
-        JSRef HTMLElement -> IO JSBool
+        JSRef HTMLElement -> IO Bool
 #else 
 ghcjs_dom_html_element_get_item_scope ::
-                                        JSRef HTMLElement -> IO JSBool
+                                        JSRef HTMLElement -> IO Bool
 ghcjs_dom_html_element_get_item_scope = undefined
 #endif
  
 htmlElementGetItemScope :: (IsHTMLElement self) => self -> IO Bool
 htmlElementGetItemScope self
-  = fromJSBool <$>
-      (ghcjs_dom_html_element_get_item_scope
-         (unHTMLElement (toHTMLElement self)))
+  = ghcjs_dom_html_element_get_item_scope
+      (unHTMLElement (toHTMLElement self))
 
 
 #ifdef __GHCJS__ 

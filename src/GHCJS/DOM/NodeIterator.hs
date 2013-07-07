@@ -98,19 +98,18 @@ nodeIteratorGetFilter self
 foreign import javascript unsafe
         "($1[\"expandEntityReferences\"] ? 1 : 0)"
         ghcjs_dom_node_iterator_get_expand_entity_references ::
-        JSRef NodeIterator -> IO JSBool
+        JSRef NodeIterator -> IO Bool
 #else 
 ghcjs_dom_node_iterator_get_expand_entity_references ::
-                                                       JSRef NodeIterator -> IO JSBool
+                                                       JSRef NodeIterator -> IO Bool
 ghcjs_dom_node_iterator_get_expand_entity_references = undefined
 #endif
  
 nodeIteratorGetExpandEntityReferences ::
                                       (IsNodeIterator self) => self -> IO Bool
 nodeIteratorGetExpandEntityReferences self
-  = fromJSBool <$>
-      (ghcjs_dom_node_iterator_get_expand_entity_references
-         (unNodeIterator (toNodeIterator self)))
+  = ghcjs_dom_node_iterator_get_expand_entity_references
+      (unNodeIterator (toNodeIterator self))
 
 
 #ifdef __GHCJS__ 
@@ -135,10 +134,10 @@ nodeIteratorGetReferenceNode self
 foreign import javascript unsafe
         "($1[\"pointerBeforeReferenceNode\"] ? 1 : 0)"
         ghcjs_dom_node_iterator_get_pointer_before_reference_node ::
-        JSRef NodeIterator -> IO JSBool
+        JSRef NodeIterator -> IO Bool
 #else 
 ghcjs_dom_node_iterator_get_pointer_before_reference_node ::
-                                                            JSRef NodeIterator -> IO JSBool
+                                                            JSRef NodeIterator -> IO Bool
 ghcjs_dom_node_iterator_get_pointer_before_reference_node
   = undefined
 #endif
@@ -146,6 +145,5 @@ ghcjs_dom_node_iterator_get_pointer_before_reference_node
 nodeIteratorGetPointerBeforeReferenceNode ::
                                           (IsNodeIterator self) => self -> IO Bool
 nodeIteratorGetPointerBeforeReferenceNode self
-  = fromJSBool <$>
-      (ghcjs_dom_node_iterator_get_pointer_before_reference_node
-         (unNodeIterator (toNodeIterator self)))
+  = ghcjs_dom_node_iterator_get_pointer_before_reference_node
+      (unNodeIterator (toNodeIterator self))

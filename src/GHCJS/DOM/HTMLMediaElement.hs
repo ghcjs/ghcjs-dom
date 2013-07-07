@@ -339,19 +339,18 @@ htmlMediaElementGetReadyState self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"seeking\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_seeking ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_seeking ::
-                                           JSRef HTMLMediaElement -> IO JSBool
+                                           JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_seeking = undefined
 #endif
  
 htmlMediaElementGetSeeking ::
                            (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetSeeking self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_seeking
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_seeking
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
@@ -443,19 +442,18 @@ htmlMediaElementGetDuration self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_paused ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_paused ::
-                                          JSRef HTMLMediaElement -> IO JSBool
+                                          JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_paused = undefined
 #endif
  
 htmlMediaElementGetPaused ::
                           (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetPaused self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_paused
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_paused
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
@@ -568,28 +566,27 @@ htmlMediaElementGetSeekable self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_ended ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_ended ::
-                                         JSRef HTMLMediaElement -> IO JSBool
+                                         JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_ended = undefined
 #endif
  
 htmlMediaElementGetEnded ::
                          (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetEnded self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_ended
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_ended
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"autoplay\"] = $2;"
         ghcjs_dom_html_media_element_set_autoplay ::
-        JSRef HTMLMediaElement -> JSBool -> IO ()
+        JSRef HTMLMediaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_autoplay ::
-                                            JSRef HTMLMediaElement -> JSBool -> IO ()
+                                            JSRef HTMLMediaElement -> Bool -> IO ()
 ghcjs_dom_html_media_element_set_autoplay = undefined
 #endif
  
@@ -598,34 +595,33 @@ htmlMediaElementSetAutoplay ::
 htmlMediaElementSetAutoplay self val
   = ghcjs_dom_html_media_element_set_autoplay
       (unHTMLMediaElement (toHTMLMediaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"autoplay\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_autoplay ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_autoplay ::
-                                            JSRef HTMLMediaElement -> IO JSBool
+                                            JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_autoplay = undefined
 #endif
  
 htmlMediaElementGetAutoplay ::
                             (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetAutoplay self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_autoplay
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_autoplay
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"loop\"] = $2;"
         ghcjs_dom_html_media_element_set_loop ::
-        JSRef HTMLMediaElement -> JSBool -> IO ()
+        JSRef HTMLMediaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_loop ::
-                                        JSRef HTMLMediaElement -> JSBool -> IO ()
+                                        JSRef HTMLMediaElement -> Bool -> IO ()
 ghcjs_dom_html_media_element_set_loop = undefined
 #endif
  
@@ -634,34 +630,33 @@ htmlMediaElementSetLoop ::
 htmlMediaElementSetLoop self val
   = ghcjs_dom_html_media_element_set_loop
       (unHTMLMediaElement (toHTMLMediaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"loop\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_loop ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_loop ::
-                                        JSRef HTMLMediaElement -> IO JSBool
+                                        JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_loop = undefined
 #endif
  
 htmlMediaElementGetLoop ::
                         (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetLoop self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_loop
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_loop
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"controls\"] = $2;"
         ghcjs_dom_html_media_element_set_controls ::
-        JSRef HTMLMediaElement -> JSBool -> IO ()
+        JSRef HTMLMediaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_controls ::
-                                            JSRef HTMLMediaElement -> JSBool -> IO ()
+                                            JSRef HTMLMediaElement -> Bool -> IO ()
 ghcjs_dom_html_media_element_set_controls = undefined
 #endif
  
@@ -670,25 +665,24 @@ htmlMediaElementSetControls ::
 htmlMediaElementSetControls self val
   = ghcjs_dom_html_media_element_set_controls
       (unHTMLMediaElement (toHTMLMediaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"controls\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_controls ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_controls ::
-                                            JSRef HTMLMediaElement -> IO JSBool
+                                            JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_controls = undefined
 #endif
  
 htmlMediaElementGetControls ::
                             (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetControls self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_controls
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_controls
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
@@ -729,10 +723,10 @@ htmlMediaElementGetVolume self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"muted\"] = $2;"
         ghcjs_dom_html_media_element_set_muted ::
-        JSRef HTMLMediaElement -> JSBool -> IO ()
+        JSRef HTMLMediaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_muted ::
-                                         JSRef HTMLMediaElement -> JSBool -> IO ()
+                                         JSRef HTMLMediaElement -> Bool -> IO ()
 ghcjs_dom_html_media_element_set_muted = undefined
 #endif
  
@@ -741,34 +735,33 @@ htmlMediaElementSetMuted ::
 htmlMediaElementSetMuted self val
   = ghcjs_dom_html_media_element_set_muted
       (unHTMLMediaElement (toHTMLMediaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_muted ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_muted ::
-                                         JSRef HTMLMediaElement -> IO JSBool
+                                         JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_muted = undefined
 #endif
  
 htmlMediaElementGetMuted ::
                          (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetMuted self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_muted
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_muted
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"defaultMuted\"] = $2;"
         ghcjs_dom_html_media_element_set_default_muted ::
-        JSRef HTMLMediaElement -> JSBool -> IO ()
+        JSRef HTMLMediaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_default_muted ::
-                                                 JSRef HTMLMediaElement -> JSBool -> IO ()
+                                                 JSRef HTMLMediaElement -> Bool -> IO ()
 ghcjs_dom_html_media_element_set_default_muted = undefined
 #endif
  
@@ -777,35 +770,34 @@ htmlMediaElementSetDefaultMuted ::
 htmlMediaElementSetDefaultMuted self val
   = ghcjs_dom_html_media_element_set_default_muted
       (unHTMLMediaElement (toHTMLMediaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"defaultMuted\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_default_muted ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_default_muted ::
-                                                 JSRef HTMLMediaElement -> IO JSBool
+                                                 JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_default_muted = undefined
 #endif
  
 htmlMediaElementGetDefaultMuted ::
                                 (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetDefaultMuted self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_default_muted
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_default_muted
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "$1[\"webkitPreservesPitch\"] = $2;"
         ghcjs_dom_html_media_element_set_webkit_preserves_pitch ::
-        JSRef HTMLMediaElement -> JSBool -> IO ()
+        JSRef HTMLMediaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_webkit_preserves_pitch ::
-                                                          JSRef HTMLMediaElement -> JSBool -> IO ()
+                                                          JSRef HTMLMediaElement -> Bool -> IO ()
 ghcjs_dom_html_media_element_set_webkit_preserves_pitch = undefined
 #endif
  
@@ -814,36 +806,35 @@ htmlMediaElementSetWebkitPreservesPitch ::
 htmlMediaElementSetWebkitPreservesPitch self val
   = ghcjs_dom_html_media_element_set_webkit_preserves_pitch
       (unHTMLMediaElement (toHTMLMediaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"webkitPreservesPitch\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_webkit_preserves_pitch ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_webkit_preserves_pitch ::
-                                                          JSRef HTMLMediaElement -> IO JSBool
+                                                          JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_webkit_preserves_pitch = undefined
 #endif
  
 htmlMediaElementGetWebkitPreservesPitch ::
                                         (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetWebkitPreservesPitch self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_webkit_preserves_pitch
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_webkit_preserves_pitch
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"webkitHasClosedCaptions\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_webkit_has_closed_captions ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_webkit_has_closed_captions ::
-                                                              JSRef HTMLMediaElement -> IO JSBool
+                                                              JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_webkit_has_closed_captions
   = undefined
 #endif
@@ -851,20 +842,19 @@ ghcjs_dom_html_media_element_get_webkit_has_closed_captions
 htmlMediaElementGetWebkitHasClosedCaptions ::
                                            (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetWebkitHasClosedCaptions self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_webkit_has_closed_captions
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_webkit_has_closed_captions
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "$1[\"webkitClosedCaptionsVisible\"] = $2;"
         ghcjs_dom_html_media_element_set_webkit_closed_captions_visible ::
-        JSRef HTMLMediaElement -> JSBool -> IO ()
+        JSRef HTMLMediaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_webkit_closed_captions_visible ::
                                                                   JSRef HTMLMediaElement ->
-                                                                    JSBool -> IO ()
+                                                                    Bool -> IO ()
 ghcjs_dom_html_media_element_set_webkit_closed_captions_visible
   = undefined
 #endif
@@ -874,18 +864,17 @@ htmlMediaElementSetWebkitClosedCaptionsVisible ::
 htmlMediaElementSetWebkitClosedCaptionsVisible self val
   = ghcjs_dom_html_media_element_set_webkit_closed_captions_visible
       (unHTMLMediaElement (toHTMLMediaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"webkitClosedCaptionsVisible\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_webkit_closed_captions_visible ::
-        JSRef HTMLMediaElement -> IO JSBool
+        JSRef HTMLMediaElement -> IO Bool
 #else 
 ghcjs_dom_html_media_element_get_webkit_closed_captions_visible ::
-                                                                  JSRef HTMLMediaElement ->
-                                                                    IO JSBool
+                                                                  JSRef HTMLMediaElement -> IO Bool
 ghcjs_dom_html_media_element_get_webkit_closed_captions_visible
   = undefined
 #endif
@@ -893,9 +882,8 @@ ghcjs_dom_html_media_element_get_webkit_closed_captions_visible
 htmlMediaElementGetWebkitClosedCaptionsVisible ::
                                                (IsHTMLMediaElement self) => self -> IO Bool
 htmlMediaElementGetWebkitClosedCaptionsVisible self
-  = fromJSBool <$>
-      (ghcjs_dom_html_media_element_get_webkit_closed_captions_visible
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = ghcjs_dom_html_media_element_get_webkit_closed_captions_visible
+      (unHTMLMediaElement (toHTMLMediaElement self))
 
 
 #ifdef __GHCJS__ 

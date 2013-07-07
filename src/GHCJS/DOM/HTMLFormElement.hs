@@ -83,19 +83,18 @@ htmlFormElementReset self
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_form_element_check_validity ::
-        JSRef HTMLFormElement -> IO JSBool
+        JSRef HTMLFormElement -> IO Bool
 #else 
 ghcjs_dom_html_form_element_check_validity ::
-                                             JSRef HTMLFormElement -> IO JSBool
+                                             JSRef HTMLFormElement -> IO Bool
 ghcjs_dom_html_form_element_check_validity = undefined
 #endif
  
 htmlFormElementCheckValidity ::
                              (IsHTMLFormElement self) => self -> IO Bool
 htmlFormElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_form_element_check_validity
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = ghcjs_dom_html_form_element_check_validity
+      (unHTMLFormElement (toHTMLFormElement self))
 
 
 #ifdef __GHCJS__ 
@@ -353,10 +352,10 @@ htmlFormElementGetName self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"noValidate\"] = $2;"
         ghcjs_dom_html_form_element_set_no_validate ::
-        JSRef HTMLFormElement -> JSBool -> IO ()
+        JSRef HTMLFormElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_form_element_set_no_validate ::
-                                              JSRef HTMLFormElement -> JSBool -> IO ()
+                                              JSRef HTMLFormElement -> Bool -> IO ()
 ghcjs_dom_html_form_element_set_no_validate = undefined
 #endif
  
@@ -365,25 +364,24 @@ htmlFormElementSetNoValidate ::
 htmlFormElementSetNoValidate self val
   = ghcjs_dom_html_form_element_set_no_validate
       (unHTMLFormElement (toHTMLFormElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"noValidate\"] ? 1 : 0)"
         ghcjs_dom_html_form_element_get_no_validate ::
-        JSRef HTMLFormElement -> IO JSBool
+        JSRef HTMLFormElement -> IO Bool
 #else 
 ghcjs_dom_html_form_element_get_no_validate ::
-                                              JSRef HTMLFormElement -> IO JSBool
+                                              JSRef HTMLFormElement -> IO Bool
 ghcjs_dom_html_form_element_get_no_validate = undefined
 #endif
  
 htmlFormElementGetNoValidate ::
                              (IsHTMLFormElement self) => self -> IO Bool
 htmlFormElementGetNoValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_form_element_get_no_validate
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = ghcjs_dom_html_form_element_get_no_validate
+      (unHTMLFormElement (toHTMLFormElement self))
 
 
 #ifdef __GHCJS__ 

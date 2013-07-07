@@ -158,37 +158,35 @@ webKitAnimationGetDelay self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
         ghcjs_dom_webkit_animation_get_paused ::
-        JSRef WebKitAnimation -> IO JSBool
+        JSRef WebKitAnimation -> IO Bool
 #else 
 ghcjs_dom_webkit_animation_get_paused ::
-                                        JSRef WebKitAnimation -> IO JSBool
+                                        JSRef WebKitAnimation -> IO Bool
 ghcjs_dom_webkit_animation_get_paused = undefined
 #endif
  
 webKitAnimationGetPaused ::
                          (IsWebKitAnimation self) => self -> IO Bool
 webKitAnimationGetPaused self
-  = fromJSBool <$>
-      (ghcjs_dom_webkit_animation_get_paused
-         (unWebKitAnimation (toWebKitAnimation self)))
+  = ghcjs_dom_webkit_animation_get_paused
+      (unWebKitAnimation (toWebKitAnimation self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
         ghcjs_dom_webkit_animation_get_ended ::
-        JSRef WebKitAnimation -> IO JSBool
+        JSRef WebKitAnimation -> IO Bool
 #else 
 ghcjs_dom_webkit_animation_get_ended ::
-                                       JSRef WebKitAnimation -> IO JSBool
+                                       JSRef WebKitAnimation -> IO Bool
 ghcjs_dom_webkit_animation_get_ended = undefined
 #endif
  
 webKitAnimationGetEnded ::
                         (IsWebKitAnimation self) => self -> IO Bool
 webKitAnimationGetEnded self
-  = fromJSBool <$>
-      (ghcjs_dom_webkit_animation_get_ended
-         (unWebKitAnimation (toWebKitAnimation self)))
+  = ghcjs_dom_webkit_animation_get_ended
+      (unWebKitAnimation (toWebKitAnimation self))
 
 
 #ifdef __GHCJS__ 

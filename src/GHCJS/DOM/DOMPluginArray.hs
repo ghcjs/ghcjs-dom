@@ -62,10 +62,10 @@ domPluginArrayNamedItem self name
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"refresh\"]($2)"
         ghcjs_dom_dom_plugin_array_refresh ::
-        JSRef DOMPluginArray -> JSBool -> IO ()
+        JSRef DOMPluginArray -> Bool -> IO ()
 #else 
 ghcjs_dom_dom_plugin_array_refresh ::
-                                     JSRef DOMPluginArray -> JSBool -> IO ()
+                                     JSRef DOMPluginArray -> Bool -> IO ()
 ghcjs_dom_dom_plugin_array_refresh = undefined
 #endif
  
@@ -74,7 +74,7 @@ domPluginArrayRefresh ::
 domPluginArrayRefresh self reload
   = ghcjs_dom_dom_plugin_array_refresh
       (unDOMPluginArray (toDOMPluginArray self))
-      (toJSBool reload)
+      reload
 
 
 #ifdef __GHCJS__ 

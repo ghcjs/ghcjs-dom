@@ -385,10 +385,10 @@ htmlMarqueeElementGetScrollDelay self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"trueSpeed\"] = $2;"
         ghcjs_dom_html_marquee_element_set_true_speed ::
-        JSRef HTMLMarqueeElement -> JSBool -> IO ()
+        JSRef HTMLMarqueeElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_marquee_element_set_true_speed ::
-                                                JSRef HTMLMarqueeElement -> JSBool -> IO ()
+                                                JSRef HTMLMarqueeElement -> Bool -> IO ()
 ghcjs_dom_html_marquee_element_set_true_speed = undefined
 #endif
  
@@ -397,25 +397,24 @@ htmlMarqueeElementSetTrueSpeed ::
 htmlMarqueeElementSetTrueSpeed self val
   = ghcjs_dom_html_marquee_element_set_true_speed
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"trueSpeed\"] ? 1 : 0)"
         ghcjs_dom_html_marquee_element_get_true_speed ::
-        JSRef HTMLMarqueeElement -> IO JSBool
+        JSRef HTMLMarqueeElement -> IO Bool
 #else 
 ghcjs_dom_html_marquee_element_get_true_speed ::
-                                                JSRef HTMLMarqueeElement -> IO JSBool
+                                                JSRef HTMLMarqueeElement -> IO Bool
 ghcjs_dom_html_marquee_element_get_true_speed = undefined
 #endif
  
 htmlMarqueeElementGetTrueSpeed ::
                                (IsHTMLMarqueeElement self) => self -> IO Bool
 htmlMarqueeElementGetTrueSpeed self
-  = fromJSBool <$>
-      (ghcjs_dom_html_marquee_element_get_true_speed
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+  = ghcjs_dom_html_marquee_element_get_true_speed
+      (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
 #ifdef __GHCJS__ 

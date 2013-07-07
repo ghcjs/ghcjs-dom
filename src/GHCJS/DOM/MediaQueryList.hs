@@ -39,16 +39,15 @@ mediaQueryListGetMedia self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"matches\"] ? 1 : 0)"
         ghcjs_dom_media_query_list_get_matches ::
-        JSRef MediaQueryList -> IO JSBool
+        JSRef MediaQueryList -> IO Bool
 #else 
 ghcjs_dom_media_query_list_get_matches ::
-                                         JSRef MediaQueryList -> IO JSBool
+                                         JSRef MediaQueryList -> IO Bool
 ghcjs_dom_media_query_list_get_matches = undefined
 #endif
  
 mediaQueryListGetMatches ::
                          (IsMediaQueryList self) => self -> IO Bool
 mediaQueryListGetMatches self
-  = fromJSBool <$>
-      (ghcjs_dom_media_query_list_get_matches
-         (unMediaQueryList (toMediaQueryList self)))
+  = ghcjs_dom_media_query_list_get_matches
+      (unMediaQueryList (toMediaQueryList self))

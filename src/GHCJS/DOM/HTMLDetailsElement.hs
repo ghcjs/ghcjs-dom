@@ -22,10 +22,10 @@ import GHCJS.DOM.EventM
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"open\"] = $2;"
         ghcjs_dom_html_details_element_set_open ::
-        JSRef HTMLDetailsElement -> JSBool -> IO ()
+        JSRef HTMLDetailsElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_details_element_set_open ::
-                                          JSRef HTMLDetailsElement -> JSBool -> IO ()
+                                          JSRef HTMLDetailsElement -> Bool -> IO ()
 ghcjs_dom_html_details_element_set_open = undefined
 #endif
  
@@ -34,22 +34,21 @@ htmlDetailsElementSetOpen ::
 htmlDetailsElementSetOpen self val
   = ghcjs_dom_html_details_element_set_open
       (unHTMLDetailsElement (toHTMLDetailsElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
         ghcjs_dom_html_details_element_get_open ::
-        JSRef HTMLDetailsElement -> IO JSBool
+        JSRef HTMLDetailsElement -> IO Bool
 #else 
 ghcjs_dom_html_details_element_get_open ::
-                                          JSRef HTMLDetailsElement -> IO JSBool
+                                          JSRef HTMLDetailsElement -> IO Bool
 ghcjs_dom_html_details_element_get_open = undefined
 #endif
  
 htmlDetailsElementGetOpen ::
                           (IsHTMLDetailsElement self) => self -> IO Bool
 htmlDetailsElementGetOpen self
-  = fromJSBool <$>
-      (ghcjs_dom_html_details_element_get_open
-         (unHTMLDetailsElement (toHTMLDetailsElement self)))
+  = ghcjs_dom_html_details_element_get_open
+      (unHTMLDetailsElement (toHTMLDetailsElement self))

@@ -31,15 +31,15 @@ foreign import javascript unsafe
         ghcjs_dom_mutation_event_init_mutation_event ::
         JSRef MutationEvent ->
           JSString ->
-            JSBool ->
-              JSBool ->
+            Bool ->
+              Bool ->
                 JSRef Node -> JSString -> JSString -> JSString -> Word -> IO ()
 #else 
 ghcjs_dom_mutation_event_init_mutation_event ::
                                                JSRef MutationEvent ->
                                                  JSString ->
-                                                   JSBool ->
-                                                     JSBool ->
+                                                   Bool ->
+                                                     Bool ->
                                                        JSRef Node ->
                                                          JSString ->
                                                            JSString -> JSString -> Word -> IO ()
@@ -60,8 +60,8 @@ mutationEventInitMutationEvent self type' canBubble cancelable
   = ghcjs_dom_mutation_event_init_mutation_event
       (unMutationEvent (toMutationEvent self))
       (toJSString type')
-      (toJSBool canBubble)
-      (toJSBool cancelable)
+      canBubble
+      cancelable
       (maybe jsNull (unNode . toNode) relatedNode)
       (toJSString prevValue)
       (toJSString newValue)

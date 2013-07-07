@@ -254,10 +254,10 @@ htmlVideoElementGetPoster self
 foreign import javascript unsafe
         "($1[\"webkitSupportsFullscreen\"] ? 1 : 0)"
         ghcjs_dom_html_video_element_get_webkit_supports_fullscreen ::
-        JSRef HTMLVideoElement -> IO JSBool
+        JSRef HTMLVideoElement -> IO Bool
 #else 
 ghcjs_dom_html_video_element_get_webkit_supports_fullscreen ::
-                                                              JSRef HTMLVideoElement -> IO JSBool
+                                                              JSRef HTMLVideoElement -> IO Bool
 ghcjs_dom_html_video_element_get_webkit_supports_fullscreen
   = undefined
 #endif
@@ -265,19 +265,18 @@ ghcjs_dom_html_video_element_get_webkit_supports_fullscreen
 htmlVideoElementGetWebkitSupportsFullscreen ::
                                             (IsHTMLVideoElement self) => self -> IO Bool
 htmlVideoElementGetWebkitSupportsFullscreen self
-  = fromJSBool <$>
-      (ghcjs_dom_html_video_element_get_webkit_supports_fullscreen
-         (unHTMLVideoElement (toHTMLVideoElement self)))
+  = ghcjs_dom_html_video_element_get_webkit_supports_fullscreen
+      (unHTMLVideoElement (toHTMLVideoElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"webkitDisplayingFullscreen\"] ? 1 : 0)"
         ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen ::
-        JSRef HTMLVideoElement -> IO JSBool
+        JSRef HTMLVideoElement -> IO Bool
 #else 
 ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen ::
-                                                                JSRef HTMLVideoElement -> IO JSBool
+                                                                JSRef HTMLVideoElement -> IO Bool
 ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen
   = undefined
 #endif
@@ -285,9 +284,8 @@ ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen
 htmlVideoElementGetWebkitDisplayingFullscreen ::
                                               (IsHTMLVideoElement self) => self -> IO Bool
 htmlVideoElementGetWebkitDisplayingFullscreen self
-  = fromJSBool <$>
-      (ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen
-         (unHTMLVideoElement (toHTMLVideoElement self)))
+  = ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen
+      (unHTMLVideoElement (toHTMLVideoElement self))
 
 
 #ifdef __GHCJS__ 

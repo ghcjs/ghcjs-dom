@@ -83,19 +83,18 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_object_element_check_validity ::
-        JSRef HTMLObjectElement -> IO JSBool
+        JSRef HTMLObjectElement -> IO Bool
 #else 
 ghcjs_dom_html_object_element_check_validity ::
-                                               JSRef HTMLObjectElement -> IO JSBool
+                                               JSRef HTMLObjectElement -> IO Bool
 ghcjs_dom_html_object_element_check_validity = undefined
 #endif
  
 htmlObjectElementCheckValidity ::
                                (IsHTMLObjectElement self) => self -> IO Bool
 htmlObjectElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_object_element_check_validity
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+  = ghcjs_dom_html_object_element_check_validity
+      (unHTMLObjectElement (toHTMLObjectElement self))
 
 
 #ifdef __GHCJS__ 
@@ -397,10 +396,10 @@ htmlObjectElementGetData self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"declare\"] = $2;"
         ghcjs_dom_html_object_element_set_declare ::
-        JSRef HTMLObjectElement -> JSBool -> IO ()
+        JSRef HTMLObjectElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_object_element_set_declare ::
-                                            JSRef HTMLObjectElement -> JSBool -> IO ()
+                                            JSRef HTMLObjectElement -> Bool -> IO ()
 ghcjs_dom_html_object_element_set_declare = undefined
 #endif
  
@@ -409,25 +408,24 @@ htmlObjectElementSetDeclare ::
 htmlObjectElementSetDeclare self val
   = ghcjs_dom_html_object_element_set_declare
       (unHTMLObjectElement (toHTMLObjectElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"declare\"] ? 1 : 0)"
         ghcjs_dom_html_object_element_get_declare ::
-        JSRef HTMLObjectElement -> IO JSBool
+        JSRef HTMLObjectElement -> IO Bool
 #else 
 ghcjs_dom_html_object_element_get_declare ::
-                                            JSRef HTMLObjectElement -> IO JSBool
+                                            JSRef HTMLObjectElement -> IO Bool
 ghcjs_dom_html_object_element_get_declare = undefined
 #endif
  
 htmlObjectElementGetDeclare ::
                             (IsHTMLObjectElement self) => self -> IO Bool
 htmlObjectElementGetDeclare self
-  = fromJSBool <$>
-      (ghcjs_dom_html_object_element_get_declare
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+  = ghcjs_dom_html_object_element_get_declare
+      (unHTMLObjectElement (toHTMLObjectElement self))
 
 
 #ifdef __GHCJS__ 
@@ -688,19 +686,18 @@ htmlObjectElementGetWidth self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_object_element_get_will_validate ::
-        JSRef HTMLObjectElement -> IO JSBool
+        JSRef HTMLObjectElement -> IO Bool
 #else 
 ghcjs_dom_html_object_element_get_will_validate ::
-                                                  JSRef HTMLObjectElement -> IO JSBool
+                                                  JSRef HTMLObjectElement -> IO Bool
 ghcjs_dom_html_object_element_get_will_validate = undefined
 #endif
  
 htmlObjectElementGetWillValidate ::
                                  (IsHTMLObjectElement self) => self -> IO Bool
 htmlObjectElementGetWillValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_object_element_get_will_validate
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+  = ghcjs_dom_html_object_element_get_will_validate
+      (unHTMLObjectElement (toHTMLObjectElement self))
 
 
 #ifdef __GHCJS__ 

@@ -77,19 +77,18 @@ treeWalkerGetFilter self
 foreign import javascript unsafe
         "($1[\"expandEntityReferences\"] ? 1 : 0)"
         ghcjs_dom_tree_walker_get_expand_entity_references ::
-        JSRef TreeWalker -> IO JSBool
+        JSRef TreeWalker -> IO Bool
 #else 
 ghcjs_dom_tree_walker_get_expand_entity_references ::
-                                                     JSRef TreeWalker -> IO JSBool
+                                                     JSRef TreeWalker -> IO Bool
 ghcjs_dom_tree_walker_get_expand_entity_references = undefined
 #endif
  
 treeWalkerGetExpandEntityReferences ::
                                     (IsTreeWalker self) => self -> IO Bool
 treeWalkerGetExpandEntityReferences self
-  = fromJSBool <$>
-      (ghcjs_dom_tree_walker_get_expand_entity_references
-         (unTreeWalker (toTreeWalker self)))
+  = ghcjs_dom_tree_walker_get_expand_entity_references
+      (unTreeWalker (toTreeWalker self))
 
 
 #ifdef __GHCJS__ 

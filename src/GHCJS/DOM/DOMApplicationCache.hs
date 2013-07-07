@@ -84,11 +84,10 @@ domApplicationCacheAbort self
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_application_cache_dispatch_event ::
-        JSRef DOMApplicationCache -> JSRef Event -> IO JSBool
+        JSRef DOMApplicationCache -> JSRef Event -> IO Bool
 #else 
 ghcjs_dom_dom_application_cache_dispatch_event ::
-                                                 JSRef DOMApplicationCache ->
-                                                   JSRef Event -> IO JSBool
+                                                 JSRef DOMApplicationCache -> JSRef Event -> IO Bool
 ghcjs_dom_dom_application_cache_dispatch_event = undefined
 #endif
  
@@ -96,10 +95,9 @@ domApplicationCacheDispatchEvent ::
                                  (IsDOMApplicationCache self, IsEvent evt) =>
                                    self -> Maybe evt -> IO Bool
 domApplicationCacheDispatchEvent self evt
-  = fromJSBool <$>
-      (ghcjs_dom_dom_application_cache_dispatch_event
-         (unDOMApplicationCache (toDOMApplicationCache self))
-         (maybe jsNull (unEvent . toEvent) evt))
+  = ghcjs_dom_dom_application_cache_dispatch_event
+      (unDOMApplicationCache (toDOMApplicationCache self))
+      (maybe jsNull (unEvent . toEvent) evt)
 cUNCACHED = 0
 cIDLE = 1
 cCHECKING = 2

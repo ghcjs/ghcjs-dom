@@ -196,11 +196,11 @@ cssStyleDeclarationGetPropertyShorthand self propertyName
 foreign import javascript unsafe
         "($1[\"isPropertyImplicit\"]($2) ? 1 : 0)"
         ghcjs_dom_css_style_declaration_is_property_implicit ::
-        JSRef CSSStyleDeclaration -> JSString -> IO JSBool
+        JSRef CSSStyleDeclaration -> JSString -> IO Bool
 #else 
 ghcjs_dom_css_style_declaration_is_property_implicit ::
                                                        JSRef CSSStyleDeclaration ->
-                                                         JSString -> IO JSBool
+                                                         JSString -> IO Bool
 ghcjs_dom_css_style_declaration_is_property_implicit = undefined
 #endif
  
@@ -208,10 +208,9 @@ cssStyleDeclarationIsPropertyImplicit ::
                                       (IsCSSStyleDeclaration self, ToJSString propertyName) =>
                                         self -> propertyName -> IO Bool
 cssStyleDeclarationIsPropertyImplicit self propertyName
-  = fromJSBool <$>
-      (ghcjs_dom_css_style_declaration_is_property_implicit
-         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-         (toJSString propertyName))
+  = ghcjs_dom_css_style_declaration_is_property_implicit
+      (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+      (toJSString propertyName)
 
 
 #ifdef __GHCJS__ 

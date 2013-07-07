@@ -63,10 +63,10 @@ htmlhrElementGetAlign self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"noShade\"] = $2;"
         ghcjs_dom_htmlhr_element_set_no_shade ::
-        JSRef HTMLHRElement -> JSBool -> IO ()
+        JSRef HTMLHRElement -> Bool -> IO ()
 #else 
 ghcjs_dom_htmlhr_element_set_no_shade ::
-                                        JSRef HTMLHRElement -> JSBool -> IO ()
+                                        JSRef HTMLHRElement -> Bool -> IO ()
 ghcjs_dom_htmlhr_element_set_no_shade = undefined
 #endif
  
@@ -75,25 +75,24 @@ htmlhrElementSetNoShade ::
 htmlhrElementSetNoShade self val
   = ghcjs_dom_htmlhr_element_set_no_shade
       (unHTMLHRElement (toHTMLHRElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"noShade\"] ? 1 : 0)"
         ghcjs_dom_htmlhr_element_get_no_shade ::
-        JSRef HTMLHRElement -> IO JSBool
+        JSRef HTMLHRElement -> IO Bool
 #else 
 ghcjs_dom_htmlhr_element_get_no_shade ::
-                                        JSRef HTMLHRElement -> IO JSBool
+                                        JSRef HTMLHRElement -> IO Bool
 ghcjs_dom_htmlhr_element_get_no_shade = undefined
 #endif
  
 htmlhrElementGetNoShade ::
                         (IsHTMLHRElement self) => self -> IO Bool
 htmlhrElementGetNoShade self
-  = fromJSBool <$>
-      (ghcjs_dom_htmlhr_element_get_no_shade
-         (unHTMLHRElement (toHTMLHRElement self)))
+  = ghcjs_dom_htmlhr_element_get_no_shade
+      (unHTMLHRElement (toHTMLHRElement self))
 
 
 #ifdef __GHCJS__ 

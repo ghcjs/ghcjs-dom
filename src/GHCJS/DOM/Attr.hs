@@ -38,16 +38,15 @@ attrGetName self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"specified\"] ? 1 : 0)"
-        ghcjs_dom_attr_get_specified :: JSRef DOMAttr -> IO JSBool
+        ghcjs_dom_attr_get_specified :: JSRef DOMAttr -> IO Bool
 #else 
-ghcjs_dom_attr_get_specified :: JSRef DOMAttr -> IO JSBool
+ghcjs_dom_attr_get_specified :: JSRef DOMAttr -> IO Bool
 ghcjs_dom_attr_get_specified = undefined
 #endif
  
 attrGetSpecified :: (IsDOMAttr self) => self -> IO Bool
 attrGetSpecified self
-  = fromJSBool <$>
-      (ghcjs_dom_attr_get_specified (unDOMAttr (toDOMAttr self)))
+  = ghcjs_dom_attr_get_specified (unDOMAttr (toDOMAttr self))
 
 
 #ifdef __GHCJS__ 
@@ -99,13 +98,12 @@ attrGetOwnerElement self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"isId\"] ? 1 : 0)"
-        ghcjs_dom_attr_get_is_id :: JSRef DOMAttr -> IO JSBool
+        ghcjs_dom_attr_get_is_id :: JSRef DOMAttr -> IO Bool
 #else 
-ghcjs_dom_attr_get_is_id :: JSRef DOMAttr -> IO JSBool
+ghcjs_dom_attr_get_is_id :: JSRef DOMAttr -> IO Bool
 ghcjs_dom_attr_get_is_id = undefined
 #endif
  
 attrGetIsId :: (IsDOMAttr self) => self -> IO Bool
 attrGetIsId self
-  = fromJSBool <$>
-      (ghcjs_dom_attr_get_is_id (unDOMAttr (toDOMAttr self)))
+  = ghcjs_dom_attr_get_is_id (unDOMAttr (toDOMAttr self))

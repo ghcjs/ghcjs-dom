@@ -103,19 +103,18 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_text_area_element_check_validity ::
-        JSRef HTMLTextAreaElement -> IO JSBool
+        JSRef HTMLTextAreaElement -> IO Bool
 #else 
 ghcjs_dom_html_text_area_element_check_validity ::
-                                                  JSRef HTMLTextAreaElement -> IO JSBool
+                                                  JSRef HTMLTextAreaElement -> IO Bool
 ghcjs_dom_html_text_area_element_check_validity = undefined
 #endif
  
 htmlTextAreaElementCheckValidity ::
                                  (IsHTMLTextAreaElement self) => self -> IO Bool
 htmlTextAreaElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_text_area_element_check_validity
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+  = ghcjs_dom_html_text_area_element_check_validity
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
 #ifdef __GHCJS__ 
@@ -181,10 +180,10 @@ htmlTextAreaElementSetSelectionRange self start end direction
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_text_area_element_set_autofocus ::
-        JSRef HTMLTextAreaElement -> JSBool -> IO ()
+        JSRef HTMLTextAreaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_text_area_element_set_autofocus ::
-                                                 JSRef HTMLTextAreaElement -> JSBool -> IO ()
+                                                 JSRef HTMLTextAreaElement -> Bool -> IO ()
 ghcjs_dom_html_text_area_element_set_autofocus = undefined
 #endif
  
@@ -193,25 +192,24 @@ htmlTextAreaElementSetAutofocus ::
 htmlTextAreaElementSetAutofocus self val
   = ghcjs_dom_html_text_area_element_set_autofocus
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_autofocus ::
-        JSRef HTMLTextAreaElement -> IO JSBool
+        JSRef HTMLTextAreaElement -> IO Bool
 #else 
 ghcjs_dom_html_text_area_element_get_autofocus ::
-                                                 JSRef HTMLTextAreaElement -> IO JSBool
+                                                 JSRef HTMLTextAreaElement -> IO Bool
 ghcjs_dom_html_text_area_element_get_autofocus = undefined
 #endif
  
 htmlTextAreaElementGetAutofocus ::
                                 (IsHTMLTextAreaElement self) => self -> IO Bool
 htmlTextAreaElementGetAutofocus self
-  = fromJSBool <$>
-      (ghcjs_dom_html_text_area_element_get_autofocus
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+  = ghcjs_dom_html_text_area_element_get_autofocus
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
 #ifdef __GHCJS__ 
@@ -290,10 +288,10 @@ htmlTextAreaElementGetDirName self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_text_area_element_set_disabled ::
-        JSRef HTMLTextAreaElement -> JSBool -> IO ()
+        JSRef HTMLTextAreaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_text_area_element_set_disabled ::
-                                                JSRef HTMLTextAreaElement -> JSBool -> IO ()
+                                                JSRef HTMLTextAreaElement -> Bool -> IO ()
 ghcjs_dom_html_text_area_element_set_disabled = undefined
 #endif
  
@@ -302,25 +300,24 @@ htmlTextAreaElementSetDisabled ::
 htmlTextAreaElementSetDisabled self val
   = ghcjs_dom_html_text_area_element_set_disabled
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_disabled ::
-        JSRef HTMLTextAreaElement -> IO JSBool
+        JSRef HTMLTextAreaElement -> IO Bool
 #else 
 ghcjs_dom_html_text_area_element_get_disabled ::
-                                                JSRef HTMLTextAreaElement -> IO JSBool
+                                                JSRef HTMLTextAreaElement -> IO Bool
 ghcjs_dom_html_text_area_element_get_disabled = undefined
 #endif
  
 htmlTextAreaElementGetDisabled ::
                                (IsHTMLTextAreaElement self) => self -> IO Bool
 htmlTextAreaElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_text_area_element_get_disabled
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+  = ghcjs_dom_html_text_area_element_get_disabled
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
 #ifdef __GHCJS__ 
@@ -455,10 +452,10 @@ htmlTextAreaElementGetPlaceholder self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"readOnly\"] = $2;"
         ghcjs_dom_html_text_area_element_set_read_only ::
-        JSRef HTMLTextAreaElement -> JSBool -> IO ()
+        JSRef HTMLTextAreaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_text_area_element_set_read_only ::
-                                                 JSRef HTMLTextAreaElement -> JSBool -> IO ()
+                                                 JSRef HTMLTextAreaElement -> Bool -> IO ()
 ghcjs_dom_html_text_area_element_set_read_only = undefined
 #endif
  
@@ -467,34 +464,33 @@ htmlTextAreaElementSetReadOnly ::
 htmlTextAreaElementSetReadOnly self val
   = ghcjs_dom_html_text_area_element_set_read_only
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_read_only ::
-        JSRef HTMLTextAreaElement -> IO JSBool
+        JSRef HTMLTextAreaElement -> IO Bool
 #else 
 ghcjs_dom_html_text_area_element_get_read_only ::
-                                                 JSRef HTMLTextAreaElement -> IO JSBool
+                                                 JSRef HTMLTextAreaElement -> IO Bool
 ghcjs_dom_html_text_area_element_get_read_only = undefined
 #endif
  
 htmlTextAreaElementGetReadOnly ::
                                (IsHTMLTextAreaElement self) => self -> IO Bool
 htmlTextAreaElementGetReadOnly self
-  = fromJSBool <$>
-      (ghcjs_dom_html_text_area_element_get_read_only
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+  = ghcjs_dom_html_text_area_element_get_read_only
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_text_area_element_set_required ::
-        JSRef HTMLTextAreaElement -> JSBool -> IO ()
+        JSRef HTMLTextAreaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_text_area_element_set_required ::
-                                                JSRef HTMLTextAreaElement -> JSBool -> IO ()
+                                                JSRef HTMLTextAreaElement -> Bool -> IO ()
 ghcjs_dom_html_text_area_element_set_required = undefined
 #endif
  
@@ -503,25 +499,24 @@ htmlTextAreaElementSetRequired ::
 htmlTextAreaElementSetRequired self val
   = ghcjs_dom_html_text_area_element_set_required
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_required ::
-        JSRef HTMLTextAreaElement -> IO JSBool
+        JSRef HTMLTextAreaElement -> IO Bool
 #else 
 ghcjs_dom_html_text_area_element_get_required ::
-                                                JSRef HTMLTextAreaElement -> IO JSBool
+                                                JSRef HTMLTextAreaElement -> IO Bool
 ghcjs_dom_html_text_area_element_get_required = undefined
 #endif
  
 htmlTextAreaElementGetRequired ::
                                (IsHTMLTextAreaElement self) => self -> IO Bool
 htmlTextAreaElementGetRequired self
-  = fromJSBool <$>
-      (ghcjs_dom_html_text_area_element_get_required
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+  = ghcjs_dom_html_text_area_element_get_required
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
 #ifdef __GHCJS__ 
@@ -693,19 +688,18 @@ htmlTextAreaElementGetTextLength self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_will_validate ::
-        JSRef HTMLTextAreaElement -> IO JSBool
+        JSRef HTMLTextAreaElement -> IO Bool
 #else 
 ghcjs_dom_html_text_area_element_get_will_validate ::
-                                                     JSRef HTMLTextAreaElement -> IO JSBool
+                                                     JSRef HTMLTextAreaElement -> IO Bool
 ghcjs_dom_html_text_area_element_get_will_validate = undefined
 #endif
  
 htmlTextAreaElementGetWillValidate ::
                                    (IsHTMLTextAreaElement self) => self -> IO Bool
 htmlTextAreaElementGetWillValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_text_area_element_get_will_validate
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+  = ghcjs_dom_html_text_area_element_get_will_validate
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
 #ifdef __GHCJS__ 

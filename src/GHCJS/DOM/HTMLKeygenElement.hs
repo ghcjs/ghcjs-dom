@@ -51,19 +51,18 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_keygen_element_check_validity ::
-        JSRef HTMLKeygenElement -> IO JSBool
+        JSRef HTMLKeygenElement -> IO Bool
 #else 
 ghcjs_dom_html_keygen_element_check_validity ::
-                                               JSRef HTMLKeygenElement -> IO JSBool
+                                               JSRef HTMLKeygenElement -> IO Bool
 ghcjs_dom_html_keygen_element_check_validity = undefined
 #endif
  
 htmlKeygenElementCheckValidity ::
                                (IsHTMLKeygenElement self) => self -> IO Bool
 htmlKeygenElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_keygen_element_check_validity
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+  = ghcjs_dom_html_keygen_element_check_validity
+      (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
 #ifdef __GHCJS__ 
@@ -88,10 +87,10 @@ htmlKeygenElementSetCustomValidity self error
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_keygen_element_set_autofocus ::
-        JSRef HTMLKeygenElement -> JSBool -> IO ()
+        JSRef HTMLKeygenElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_keygen_element_set_autofocus ::
-                                              JSRef HTMLKeygenElement -> JSBool -> IO ()
+                                              JSRef HTMLKeygenElement -> Bool -> IO ()
 ghcjs_dom_html_keygen_element_set_autofocus = undefined
 #endif
  
@@ -100,25 +99,24 @@ htmlKeygenElementSetAutofocus ::
 htmlKeygenElementSetAutofocus self val
   = ghcjs_dom_html_keygen_element_set_autofocus
       (unHTMLKeygenElement (toHTMLKeygenElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_keygen_element_get_autofocus ::
-        JSRef HTMLKeygenElement -> IO JSBool
+        JSRef HTMLKeygenElement -> IO Bool
 #else 
 ghcjs_dom_html_keygen_element_get_autofocus ::
-                                              JSRef HTMLKeygenElement -> IO JSBool
+                                              JSRef HTMLKeygenElement -> IO Bool
 ghcjs_dom_html_keygen_element_get_autofocus = undefined
 #endif
  
 htmlKeygenElementGetAutofocus ::
                               (IsHTMLKeygenElement self) => self -> IO Bool
 htmlKeygenElementGetAutofocus self
-  = fromJSBool <$>
-      (ghcjs_dom_html_keygen_element_get_autofocus
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+  = ghcjs_dom_html_keygen_element_get_autofocus
+      (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
 #ifdef __GHCJS__ 
@@ -161,10 +159,10 @@ htmlKeygenElementGetChallenge self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_keygen_element_set_disabled ::
-        JSRef HTMLKeygenElement -> JSBool -> IO ()
+        JSRef HTMLKeygenElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_keygen_element_set_disabled ::
-                                             JSRef HTMLKeygenElement -> JSBool -> IO ()
+                                             JSRef HTMLKeygenElement -> Bool -> IO ()
 ghcjs_dom_html_keygen_element_set_disabled = undefined
 #endif
  
@@ -173,25 +171,24 @@ htmlKeygenElementSetDisabled ::
 htmlKeygenElementSetDisabled self val
   = ghcjs_dom_html_keygen_element_set_disabled
       (unHTMLKeygenElement (toHTMLKeygenElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_keygen_element_get_disabled ::
-        JSRef HTMLKeygenElement -> IO JSBool
+        JSRef HTMLKeygenElement -> IO Bool
 #else 
 ghcjs_dom_html_keygen_element_get_disabled ::
-                                             JSRef HTMLKeygenElement -> IO JSBool
+                                             JSRef HTMLKeygenElement -> IO Bool
 ghcjs_dom_html_keygen_element_get_disabled = undefined
 #endif
  
 htmlKeygenElementGetDisabled ::
                              (IsHTMLKeygenElement self) => self -> IO Bool
 htmlKeygenElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_keygen_element_get_disabled
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+  = ghcjs_dom_html_keygen_element_get_disabled
+      (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
 #ifdef __GHCJS__ 
@@ -289,19 +286,18 @@ htmlKeygenElementGetName self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_keygen_element_get_will_validate ::
-        JSRef HTMLKeygenElement -> IO JSBool
+        JSRef HTMLKeygenElement -> IO Bool
 #else 
 ghcjs_dom_html_keygen_element_get_will_validate ::
-                                                  JSRef HTMLKeygenElement -> IO JSBool
+                                                  JSRef HTMLKeygenElement -> IO Bool
 ghcjs_dom_html_keygen_element_get_will_validate = undefined
 #endif
  
 htmlKeygenElementGetWillValidate ::
                                  (IsHTMLKeygenElement self) => self -> IO Bool
 htmlKeygenElementGetWillValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_keygen_element_get_will_validate
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+  = ghcjs_dom_html_keygen_element_get_will_validate
+      (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
 #ifdef __GHCJS__ 

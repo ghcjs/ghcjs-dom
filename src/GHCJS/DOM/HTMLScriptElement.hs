@@ -191,10 +191,10 @@ htmlScriptElementGetCharset self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"async\"] = $2;"
         ghcjs_dom_html_script_element_set_async ::
-        JSRef HTMLScriptElement -> JSBool -> IO ()
+        JSRef HTMLScriptElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_script_element_set_async ::
-                                          JSRef HTMLScriptElement -> JSBool -> IO ()
+                                          JSRef HTMLScriptElement -> Bool -> IO ()
 ghcjs_dom_html_script_element_set_async = undefined
 #endif
  
@@ -203,34 +203,33 @@ htmlScriptElementSetAsync ::
 htmlScriptElementSetAsync self val
   = ghcjs_dom_html_script_element_set_async
       (unHTMLScriptElement (toHTMLScriptElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"async\"] ? 1 : 0)"
         ghcjs_dom_html_script_element_get_async ::
-        JSRef HTMLScriptElement -> IO JSBool
+        JSRef HTMLScriptElement -> IO Bool
 #else 
 ghcjs_dom_html_script_element_get_async ::
-                                          JSRef HTMLScriptElement -> IO JSBool
+                                          JSRef HTMLScriptElement -> IO Bool
 ghcjs_dom_html_script_element_get_async = undefined
 #endif
  
 htmlScriptElementGetAsync ::
                           (IsHTMLScriptElement self) => self -> IO Bool
 htmlScriptElementGetAsync self
-  = fromJSBool <$>
-      (ghcjs_dom_html_script_element_get_async
-         (unHTMLScriptElement (toHTMLScriptElement self)))
+  = ghcjs_dom_html_script_element_get_async
+      (unHTMLScriptElement (toHTMLScriptElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"defer\"] = $2;"
         ghcjs_dom_html_script_element_set_defer ::
-        JSRef HTMLScriptElement -> JSBool -> IO ()
+        JSRef HTMLScriptElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_script_element_set_defer ::
-                                          JSRef HTMLScriptElement -> JSBool -> IO ()
+                                          JSRef HTMLScriptElement -> Bool -> IO ()
 ghcjs_dom_html_script_element_set_defer = undefined
 #endif
  
@@ -239,25 +238,24 @@ htmlScriptElementSetDefer ::
 htmlScriptElementSetDefer self val
   = ghcjs_dom_html_script_element_set_defer
       (unHTMLScriptElement (toHTMLScriptElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"defer\"] ? 1 : 0)"
         ghcjs_dom_html_script_element_get_defer ::
-        JSRef HTMLScriptElement -> IO JSBool
+        JSRef HTMLScriptElement -> IO Bool
 #else 
 ghcjs_dom_html_script_element_get_defer ::
-                                          JSRef HTMLScriptElement -> IO JSBool
+                                          JSRef HTMLScriptElement -> IO Bool
 ghcjs_dom_html_script_element_get_defer = undefined
 #endif
  
 htmlScriptElementGetDefer ::
                           (IsHTMLScriptElement self) => self -> IO Bool
 htmlScriptElementGetDefer self
-  = fromJSBool <$>
-      (ghcjs_dom_html_script_element_get_defer
-         (unHTMLScriptElement (toHTMLScriptElement self)))
+  = ghcjs_dom_html_script_element_get_defer
+      (unHTMLScriptElement (toHTMLScriptElement self))
 
 
 #ifdef __GHCJS__ 

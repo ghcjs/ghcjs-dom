@@ -156,16 +156,15 @@ rangeSetEndAfter self refNode
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"collapse\"]($2)"
-        ghcjs_dom_range_collapse :: JSRef DOMRange -> JSBool -> IO ()
+        ghcjs_dom_range_collapse :: JSRef DOMRange -> Bool -> IO ()
 #else 
-ghcjs_dom_range_collapse :: JSRef DOMRange -> JSBool -> IO ()
+ghcjs_dom_range_collapse :: JSRef DOMRange -> Bool -> IO ()
 ghcjs_dom_range_collapse = undefined
 #endif
  
 rangeCollapse :: (IsDOMRange self) => self -> Bool -> IO ()
 rangeCollapse self toStart
-  = ghcjs_dom_range_collapse (unDOMRange (toDOMRange self))
-      (toJSBool toStart)
+  = ghcjs_dom_range_collapse (unDOMRange (toDOMRange self)) toStart
 
 
 #ifdef __GHCJS__ 
@@ -376,10 +375,10 @@ rangeCreateContextualFragment self html
 foreign import javascript unsafe
         "($1[\"intersectsNode\"]($2) ? 1 : 0)"
         ghcjs_dom_range_intersects_node ::
-        JSRef DOMRange -> JSRef Node -> IO JSBool
+        JSRef DOMRange -> JSRef Node -> IO Bool
 #else 
 ghcjs_dom_range_intersects_node ::
-                                  JSRef DOMRange -> JSRef Node -> IO JSBool
+                                  JSRef DOMRange -> JSRef Node -> IO Bool
 ghcjs_dom_range_intersects_node = undefined
 #endif
  
@@ -387,9 +386,8 @@ rangeIntersectsNode ::
                     (IsDOMRange self, IsNode refNode) =>
                       self -> Maybe refNode -> IO Bool
 rangeIntersectsNode self refNode
-  = fromJSBool <$>
-      (ghcjs_dom_range_intersects_node (unDOMRange (toDOMRange self))
-         (maybe jsNull (unNode . toNode) refNode))
+  = ghcjs_dom_range_intersects_node (unDOMRange (toDOMRange self))
+      (maybe jsNull (unNode . toNode) refNode)
 
 
 #ifdef __GHCJS__ 
@@ -433,10 +431,10 @@ rangeComparePoint self refNode offset
 foreign import javascript unsafe
         "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_range_is_point_in_range ::
-        JSRef DOMRange -> JSRef Node -> Int -> IO JSBool
+        JSRef DOMRange -> JSRef Node -> Int -> IO Bool
 #else 
 ghcjs_dom_range_is_point_in_range ::
-                                    JSRef DOMRange -> JSRef Node -> Int -> IO JSBool
+                                    JSRef DOMRange -> JSRef Node -> Int -> IO Bool
 ghcjs_dom_range_is_point_in_range = undefined
 #endif
  
@@ -444,10 +442,9 @@ rangeIsPointInRange ::
                     (IsDOMRange self, IsNode refNode) =>
                       self -> Maybe refNode -> Int -> IO Bool
 rangeIsPointInRange self refNode offset
-  = fromJSBool <$>
-      (ghcjs_dom_range_is_point_in_range (unDOMRange (toDOMRange self))
-         (maybe jsNull (unNode . toNode) refNode)
-         offset)
+  = ghcjs_dom_range_is_point_in_range (unDOMRange (toDOMRange self))
+      (maybe jsNull (unNode . toNode) refNode)
+      offset
 
 
 #ifdef __GHCJS__ 
@@ -536,16 +533,15 @@ rangeGetEndOffset self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"collapsed\"] ? 1 : 0)"
-        ghcjs_dom_range_get_collapsed :: JSRef DOMRange -> IO JSBool
+        ghcjs_dom_range_get_collapsed :: JSRef DOMRange -> IO Bool
 #else 
-ghcjs_dom_range_get_collapsed :: JSRef DOMRange -> IO JSBool
+ghcjs_dom_range_get_collapsed :: JSRef DOMRange -> IO Bool
 ghcjs_dom_range_get_collapsed = undefined
 #endif
  
 rangeGetCollapsed :: (IsDOMRange self) => self -> IO Bool
 rangeGetCollapsed self
-  = fromJSBool <$>
-      (ghcjs_dom_range_get_collapsed (unDOMRange (toDOMRange self)))
+  = ghcjs_dom_range_get_collapsed (unDOMRange (toDOMRange self))
 
 
 #ifdef __GHCJS__ 

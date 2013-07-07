@@ -120,19 +120,16 @@ htmlDocumentReleaseEvents self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"hasFocus\"]() ? 1 : 0)"
-        ghcjs_dom_html_document_has_focus ::
-        JSRef HTMLDocument -> IO JSBool
+        ghcjs_dom_html_document_has_focus :: JSRef HTMLDocument -> IO Bool
 #else 
-ghcjs_dom_html_document_has_focus ::
-                                    JSRef HTMLDocument -> IO JSBool
+ghcjs_dom_html_document_has_focus :: JSRef HTMLDocument -> IO Bool
 ghcjs_dom_html_document_has_focus = undefined
 #endif
  
 htmlDocumentHasFocus :: (IsHTMLDocument self) => self -> IO Bool
 htmlDocumentHasFocus self
-  = fromJSBool <$>
-      (ghcjs_dom_html_document_has_focus
-         (unHTMLDocument (toHTMLDocument self)))
+  = ghcjs_dom_html_document_has_focus
+      (unHTMLDocument (toHTMLDocument self))
 
 
 #ifdef __GHCJS__ 

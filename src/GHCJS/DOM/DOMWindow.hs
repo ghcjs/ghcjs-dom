@@ -195,10 +195,10 @@ domWindowAlert self message
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"confirm\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_confirm ::
-        JSRef DOMWindow -> JSString -> IO JSBool
+        JSRef DOMWindow -> JSString -> IO Bool
 #else 
 ghcjs_dom_dom_window_confirm ::
-                               JSRef DOMWindow -> JSString -> IO JSBool
+                               JSRef DOMWindow -> JSString -> IO Bool
 ghcjs_dom_dom_window_confirm = undefined
 #endif
  
@@ -206,9 +206,8 @@ domWindowConfirm ::
                  (IsDOMWindow self, ToJSString message) =>
                    self -> message -> IO Bool
 domWindowConfirm self message
-  = fromJSBool <$>
-      (ghcjs_dom_dom_window_confirm (unDOMWindow (toDOMWindow self))
-         (toJSString message))
+  = ghcjs_dom_dom_window_confirm (unDOMWindow (toDOMWindow self))
+      (toJSString message)
 
 
 #ifdef __GHCJS__ 
@@ -237,15 +236,11 @@ foreign import javascript unsafe
         "($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0)"
         ghcjs_dom_dom_window_find ::
         JSRef DOMWindow ->
-          JSString ->
-            JSBool ->
-              JSBool -> JSBool -> JSBool -> JSBool -> JSBool -> IO JSBool
+          JSString -> Bool -> Bool -> Bool -> Bool -> Bool -> Bool -> IO Bool
 #else 
 ghcjs_dom_dom_window_find ::
                             JSRef DOMWindow ->
-                              JSString ->
-                                JSBool ->
-                                  JSBool -> JSBool -> JSBool -> JSBool -> JSBool -> IO JSBool
+                              JSString -> Bool -> Bool -> Bool -> Bool -> Bool -> Bool -> IO Bool
 ghcjs_dom_dom_window_find = undefined
 #endif
  
@@ -255,15 +250,14 @@ domWindowFind ::
                   string -> Bool -> Bool -> Bool -> Bool -> Bool -> Bool -> IO Bool
 domWindowFind self string caseSensitive backwards wrap wholeWord
   searchInFrames showDialog
-  = fromJSBool <$>
-      (ghcjs_dom_dom_window_find (unDOMWindow (toDOMWindow self))
-         (toJSString string)
-         (toJSBool caseSensitive)
-         (toJSBool backwards)
-         (toJSBool wrap)
-         (toJSBool wholeWord)
-         (toJSBool searchInFrames)
-         (toJSBool showDialog))
+  = ghcjs_dom_dom_window_find (unDOMWindow (toDOMWindow self))
+      (toJSString string)
+      caseSensitive
+      backwards
+      wrap
+      wholeWord
+      searchInFrames
+      showDialog
 
 
 #ifdef __GHCJS__ 
@@ -558,20 +552,19 @@ domWindowBtoa self string
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_dispatch_event ::
-        JSRef DOMWindow -> JSRef Event -> IO JSBool
+        JSRef DOMWindow -> JSRef Event -> IO Bool
 #else 
 ghcjs_dom_dom_window_dispatch_event ::
-                                      JSRef DOMWindow -> JSRef Event -> IO JSBool
+                                      JSRef DOMWindow -> JSRef Event -> IO Bool
 ghcjs_dom_dom_window_dispatch_event = undefined
 #endif
  
 domWindowDispatchEvent ::
                        (IsDOMWindow self, IsEvent evt) => self -> Maybe evt -> IO Bool
 domWindowDispatchEvent self evt
-  = fromJSBool <$>
-      (ghcjs_dom_dom_window_dispatch_event
-         (unDOMWindow (toDOMWindow self))
-         (maybe jsNull (unEvent . toEvent) evt))
+  = ghcjs_dom_dom_window_dispatch_event
+      (unDOMWindow (toDOMWindow self))
+      (maybe jsNull (unEvent . toEvent) evt)
 
 
 #ifdef __GHCJS__ 
@@ -800,19 +793,18 @@ domWindowGetFrameElement self
 foreign import javascript unsafe
         "($1[\"offscreenBuffering\"] ? 1 : 0)"
         ghcjs_dom_dom_window_get_offscreen_buffering ::
-        JSRef DOMWindow -> IO JSBool
+        JSRef DOMWindow -> IO Bool
 #else 
 ghcjs_dom_dom_window_get_offscreen_buffering ::
-                                               JSRef DOMWindow -> IO JSBool
+                                               JSRef DOMWindow -> IO Bool
 ghcjs_dom_dom_window_get_offscreen_buffering = undefined
 #endif
  
 domWindowGetOffscreenBuffering ::
                                (IsDOMWindow self) => self -> IO Bool
 domWindowGetOffscreenBuffering self
-  = fromJSBool <$>
-      (ghcjs_dom_dom_window_get_offscreen_buffering
-         (unDOMWindow (toDOMWindow self)))
+  = ghcjs_dom_dom_window_get_offscreen_buffering
+      (unDOMWindow (toDOMWindow self))
 
 
 #ifdef __GHCJS__ 
@@ -985,16 +977,15 @@ domWindowGetPageYOffset self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"closed\"] ? 1 : 0)"
-        ghcjs_dom_dom_window_get_closed :: JSRef DOMWindow -> IO JSBool
+        ghcjs_dom_dom_window_get_closed :: JSRef DOMWindow -> IO Bool
 #else 
-ghcjs_dom_dom_window_get_closed :: JSRef DOMWindow -> IO JSBool
+ghcjs_dom_dom_window_get_closed :: JSRef DOMWindow -> IO Bool
 ghcjs_dom_dom_window_get_closed = undefined
 #endif
  
 domWindowGetClosed :: (IsDOMWindow self) => self -> IO Bool
 domWindowGetClosed self
-  = fromJSBool <$>
-      (ghcjs_dom_dom_window_get_closed (unDOMWindow (toDOMWindow self)))
+  = ghcjs_dom_dom_window_get_closed (unDOMWindow (toDOMWindow self))
 
 
 #ifdef __GHCJS__ 

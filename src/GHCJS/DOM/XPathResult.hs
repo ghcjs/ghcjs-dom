@@ -134,19 +134,18 @@ xPathResultGetStringValue self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"booleanValue\"] ? 1 : 0)"
         ghcjs_dom_xpath_result_get_boolean_value ::
-        JSRef XPathResult -> IO JSBool
+        JSRef XPathResult -> IO Bool
 #else 
 ghcjs_dom_xpath_result_get_boolean_value ::
-                                           JSRef XPathResult -> IO JSBool
+                                           JSRef XPathResult -> IO Bool
 ghcjs_dom_xpath_result_get_boolean_value = undefined
 #endif
  
 xPathResultGetBooleanValue ::
                            (IsXPathResult self) => self -> IO Bool
 xPathResultGetBooleanValue self
-  = fromJSBool <$>
-      (ghcjs_dom_xpath_result_get_boolean_value
-         (unXPathResult (toXPathResult self)))
+  = ghcjs_dom_xpath_result_get_boolean_value
+      (unXPathResult (toXPathResult self))
 
 
 #ifdef __GHCJS__ 
@@ -171,19 +170,18 @@ xPathResultGetSingleNodeValue self
 foreign import javascript unsafe
         "($1[\"invalidIteratorState\"] ? 1 : 0)"
         ghcjs_dom_xpath_result_get_invalid_iterator_state ::
-        JSRef XPathResult -> IO JSBool
+        JSRef XPathResult -> IO Bool
 #else 
 ghcjs_dom_xpath_result_get_invalid_iterator_state ::
-                                                    JSRef XPathResult -> IO JSBool
+                                                    JSRef XPathResult -> IO Bool
 ghcjs_dom_xpath_result_get_invalid_iterator_state = undefined
 #endif
  
 xPathResultGetInvalidIteratorState ::
                                    (IsXPathResult self) => self -> IO Bool
 xPathResultGetInvalidIteratorState self
-  = fromJSBool <$>
-      (ghcjs_dom_xpath_result_get_invalid_iterator_state
-         (unXPathResult (toXPathResult self)))
+  = ghcjs_dom_xpath_result_get_invalid_iterator_state
+      (unXPathResult (toXPathResult self))
 
 
 #ifdef __GHCJS__ 

@@ -150,10 +150,10 @@ htmlAreaElementGetHref self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"noHref\"] = $2;"
         ghcjs_dom_html_area_element_set_no_href ::
-        JSRef HTMLAreaElement -> JSBool -> IO ()
+        JSRef HTMLAreaElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_area_element_set_no_href ::
-                                          JSRef HTMLAreaElement -> JSBool -> IO ()
+                                          JSRef HTMLAreaElement -> Bool -> IO ()
 ghcjs_dom_html_area_element_set_no_href = undefined
 #endif
  
@@ -162,25 +162,24 @@ htmlAreaElementSetNoHref ::
 htmlAreaElementSetNoHref self val
   = ghcjs_dom_html_area_element_set_no_href
       (unHTMLAreaElement (toHTMLAreaElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"noHref\"] ? 1 : 0)"
         ghcjs_dom_html_area_element_get_no_href ::
-        JSRef HTMLAreaElement -> IO JSBool
+        JSRef HTMLAreaElement -> IO Bool
 #else 
 ghcjs_dom_html_area_element_get_no_href ::
-                                          JSRef HTMLAreaElement -> IO JSBool
+                                          JSRef HTMLAreaElement -> IO Bool
 ghcjs_dom_html_area_element_get_no_href = undefined
 #endif
  
 htmlAreaElementGetNoHref ::
                          (IsHTMLAreaElement self) => self -> IO Bool
 htmlAreaElementGetNoHref self
-  = fromJSBool <$>
-      (ghcjs_dom_html_area_element_get_no_href
-         (unHTMLAreaElement (toHTMLAreaElement self)))
+  = ghcjs_dom_html_area_element_get_no_href
+      (unHTMLAreaElement (toHTMLAreaElement self))
 
 
 #ifdef __GHCJS__ 

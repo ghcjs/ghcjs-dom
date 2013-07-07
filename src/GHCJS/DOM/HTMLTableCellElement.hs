@@ -433,10 +433,10 @@ htmlTableCellElementGetHeight self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"noWrap\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_no_wrap ::
-        JSRef HTMLTableCellElement -> JSBool -> IO ()
+        JSRef HTMLTableCellElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_table_cell_element_set_no_wrap ::
-                                                JSRef HTMLTableCellElement -> JSBool -> IO ()
+                                                JSRef HTMLTableCellElement -> Bool -> IO ()
 ghcjs_dom_html_table_cell_element_set_no_wrap = undefined
 #endif
  
@@ -445,25 +445,24 @@ htmlTableCellElementSetNoWrap ::
 htmlTableCellElementSetNoWrap self val
   = ghcjs_dom_html_table_cell_element_set_no_wrap
       (unHTMLTableCellElement (toHTMLTableCellElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"noWrap\"] ? 1 : 0)"
         ghcjs_dom_html_table_cell_element_get_no_wrap ::
-        JSRef HTMLTableCellElement -> IO JSBool
+        JSRef HTMLTableCellElement -> IO Bool
 #else 
 ghcjs_dom_html_table_cell_element_get_no_wrap ::
-                                                JSRef HTMLTableCellElement -> IO JSBool
+                                                JSRef HTMLTableCellElement -> IO Bool
 ghcjs_dom_html_table_cell_element_get_no_wrap = undefined
 #endif
  
 htmlTableCellElementGetNoWrap ::
                               (IsHTMLTableCellElement self) => self -> IO Bool
 htmlTableCellElementGetNoWrap self
-  = fromJSBool <$>
-      (ghcjs_dom_html_table_cell_element_get_no_wrap
-         (unHTMLTableCellElement (toHTMLTableCellElement self)))
+  = ghcjs_dom_html_table_cell_element_get_no_wrap
+      (unHTMLTableCellElement (toHTMLTableCellElement self))
 
 
 #ifdef __GHCJS__ 

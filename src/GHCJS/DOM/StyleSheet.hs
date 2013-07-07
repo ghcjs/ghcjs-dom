@@ -27,10 +27,10 @@ import GHCJS.DOM.EventM
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_style_sheet_set_disabled ::
-        JSRef StyleSheet -> JSBool -> IO ()
+        JSRef StyleSheet -> Bool -> IO ()
 #else 
 ghcjs_dom_style_sheet_set_disabled ::
-                                     JSRef StyleSheet -> JSBool -> IO ()
+                                     JSRef StyleSheet -> Bool -> IO ()
 ghcjs_dom_style_sheet_set_disabled = undefined
 #endif
  
@@ -39,22 +39,21 @@ styleSheetSetDisabled ::
 styleSheetSetDisabled self val
   = ghcjs_dom_style_sheet_set_disabled
       (unStyleSheet (toStyleSheet self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO JSBool
+        ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO Bool
 #else 
-ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO JSBool
+ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO Bool
 ghcjs_dom_style_sheet_get_disabled = undefined
 #endif
  
 styleSheetGetDisabled :: (IsStyleSheet self) => self -> IO Bool
 styleSheetGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_style_sheet_get_disabled
-         (unStyleSheet (toStyleSheet self)))
+  = ghcjs_dom_style_sheet_get_disabled
+      (unStyleSheet (toStyleSheet self))
 
 
 #ifdef __GHCJS__ 

@@ -27,10 +27,10 @@ import GHCJS.DOM.EventM
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_opt_group_element_set_disabled ::
-        JSRef HTMLOptGroupElement -> JSBool -> IO ()
+        JSRef HTMLOptGroupElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_opt_group_element_set_disabled ::
-                                                JSRef HTMLOptGroupElement -> JSBool -> IO ()
+                                                JSRef HTMLOptGroupElement -> Bool -> IO ()
 ghcjs_dom_html_opt_group_element_set_disabled = undefined
 #endif
  
@@ -39,25 +39,24 @@ htmlOptGroupElementSetDisabled ::
 htmlOptGroupElementSetDisabled self val
   = ghcjs_dom_html_opt_group_element_set_disabled
       (unHTMLOptGroupElement (toHTMLOptGroupElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_opt_group_element_get_disabled ::
-        JSRef HTMLOptGroupElement -> IO JSBool
+        JSRef HTMLOptGroupElement -> IO Bool
 #else 
 ghcjs_dom_html_opt_group_element_get_disabled ::
-                                                JSRef HTMLOptGroupElement -> IO JSBool
+                                                JSRef HTMLOptGroupElement -> IO Bool
 ghcjs_dom_html_opt_group_element_get_disabled = undefined
 #endif
  
 htmlOptGroupElementGetDisabled ::
                                (IsHTMLOptGroupElement self) => self -> IO Bool
 htmlOptGroupElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_opt_group_element_get_disabled
-         (unHTMLOptGroupElement (toHTMLOptGroupElement self)))
+  = ghcjs_dom_html_opt_group_element_get_disabled
+      (unHTMLOptGroupElement (toHTMLOptGroupElement self))
 
 
 #ifdef __GHCJS__ 

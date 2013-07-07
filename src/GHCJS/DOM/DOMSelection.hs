@@ -121,10 +121,10 @@ domSelectionDeleteFromDocument self
 foreign import javascript unsafe
         "($1[\"containsNode\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_dom_selection_contains_node ::
-        JSRef DOMSelection -> JSRef Node -> JSBool -> IO JSBool
+        JSRef DOMSelection -> JSRef Node -> Bool -> IO Bool
 #else 
 ghcjs_dom_dom_selection_contains_node ::
-                                        JSRef DOMSelection -> JSRef Node -> JSBool -> IO JSBool
+                                        JSRef DOMSelection -> JSRef Node -> Bool -> IO Bool
 ghcjs_dom_dom_selection_contains_node = undefined
 #endif
  
@@ -132,11 +132,10 @@ domSelectionContainsNode ::
                          (IsDOMSelection self, IsNode node) =>
                            self -> Maybe node -> Bool -> IO Bool
 domSelectionContainsNode self node allowPartial
-  = fromJSBool <$>
-      (ghcjs_dom_dom_selection_contains_node
-         (unDOMSelection (toDOMSelection self))
-         (maybe jsNull (unNode . toNode) node)
-         (toJSBool allowPartial))
+  = ghcjs_dom_dom_selection_contains_node
+      (unDOMSelection (toDOMSelection self))
+      (maybe jsNull (unNode . toNode) node)
+      allowPartial
 
 
 #ifdef __GHCJS__ 
@@ -387,19 +386,18 @@ domSelectionGetFocusOffset self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"isCollapsed\"] ? 1 : 0)"
         ghcjs_dom_dom_selection_get_is_collapsed ::
-        JSRef DOMSelection -> IO JSBool
+        JSRef DOMSelection -> IO Bool
 #else 
 ghcjs_dom_dom_selection_get_is_collapsed ::
-                                           JSRef DOMSelection -> IO JSBool
+                                           JSRef DOMSelection -> IO Bool
 ghcjs_dom_dom_selection_get_is_collapsed = undefined
 #endif
  
 domSelectionGetIsCollapsed ::
                            (IsDOMSelection self) => self -> IO Bool
 domSelectionGetIsCollapsed self
-  = fromJSBool <$>
-      (ghcjs_dom_dom_selection_get_is_collapsed
-         (unDOMSelection (toDOMSelection self)))
+  = ghcjs_dom_dom_selection_get_is_collapsed
+      (unDOMSelection (toDOMSelection self))
 
 
 #ifdef __GHCJS__ 

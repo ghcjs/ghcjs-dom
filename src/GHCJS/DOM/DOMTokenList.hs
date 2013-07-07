@@ -45,20 +45,19 @@ domTokenListItem self index
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_token_list_contains ::
-        JSRef DOMTokenList -> JSString -> IO JSBool
+        JSRef DOMTokenList -> JSString -> IO Bool
 #else 
 ghcjs_dom_dom_token_list_contains ::
-                                    JSRef DOMTokenList -> JSString -> IO JSBool
+                                    JSRef DOMTokenList -> JSString -> IO Bool
 ghcjs_dom_dom_token_list_contains = undefined
 #endif
  
 domTokenListContains ::
                      (IsDOMTokenList self, ToJSString token) => self -> token -> IO Bool
 domTokenListContains self token
-  = fromJSBool <$>
-      (ghcjs_dom_dom_token_list_contains
-         (unDOMTokenList (toDOMTokenList self))
-         (toJSString token))
+  = ghcjs_dom_dom_token_list_contains
+      (unDOMTokenList (toDOMTokenList self))
+      (toJSString token)
 
 
 #ifdef __GHCJS__ 
@@ -100,20 +99,19 @@ domTokenListRemove self token
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"toggle\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_token_list_toggle ::
-        JSRef DOMTokenList -> JSString -> IO JSBool
+        JSRef DOMTokenList -> JSString -> IO Bool
 #else 
 ghcjs_dom_dom_token_list_toggle ::
-                                  JSRef DOMTokenList -> JSString -> IO JSBool
+                                  JSRef DOMTokenList -> JSString -> IO Bool
 ghcjs_dom_dom_token_list_toggle = undefined
 #endif
  
 domTokenListToggle ::
                    (IsDOMTokenList self, ToJSString token) => self -> token -> IO Bool
 domTokenListToggle self token
-  = fromJSBool <$>
-      (ghcjs_dom_dom_token_list_toggle
-         (unDOMTokenList (toDOMTokenList self))
-         (toJSString token))
+  = ghcjs_dom_dom_token_list_toggle
+      (unDOMTokenList (toDOMTokenList self))
+      (toJSString token)
 
 
 #ifdef __GHCJS__ 

@@ -29,11 +29,11 @@ foreign import javascript unsafe
         "$1[\"initUIEvent\"]($2, $3, $4,\n$5, $6)"
         ghcjs_dom_ui_event_init_ui_event ::
         JSRef UIEvent ->
-          JSString -> JSBool -> JSBool -> JSRef DOMWindow -> Int -> IO ()
+          JSString -> Bool -> Bool -> JSRef DOMWindow -> Int -> IO ()
 #else 
 ghcjs_dom_ui_event_init_ui_event ::
                                    JSRef UIEvent ->
-                                     JSString -> JSBool -> JSBool -> JSRef DOMWindow -> Int -> IO ()
+                                     JSString -> Bool -> Bool -> JSRef DOMWindow -> Int -> IO ()
 ghcjs_dom_ui_event_init_ui_event = undefined
 #endif
  
@@ -43,8 +43,8 @@ uiEventInitUIEvent ::
 uiEventInitUIEvent self type' canBubble cancelable view detail
   = ghcjs_dom_ui_event_init_ui_event (unUIEvent (toUIEvent self))
       (toJSString type')
-      (toJSBool canBubble)
-      (toJSBool cancelable)
+      canBubble
+      cancelable
       (maybe jsNull (unDOMWindow . toDOMWindow) view)
       detail
 

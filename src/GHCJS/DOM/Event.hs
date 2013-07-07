@@ -63,10 +63,10 @@ eventPreventDefault self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"initEvent\"]($2, $3, $4)"
         ghcjs_dom_event_init_event ::
-        JSRef Event -> JSString -> JSBool -> JSBool -> IO ()
+        JSRef Event -> JSString -> Bool -> Bool -> IO ()
 #else 
 ghcjs_dom_event_init_event ::
-                             JSRef Event -> JSString -> JSBool -> JSBool -> IO ()
+                             JSRef Event -> JSString -> Bool -> Bool -> IO ()
 ghcjs_dom_event_init_event = undefined
 #endif
  
@@ -76,8 +76,8 @@ eventInitEvent ::
 eventInitEvent self eventTypeArg canBubbleArg cancelableArg
   = ghcjs_dom_event_init_event (unEvent (toEvent self))
       (toJSString eventTypeArg)
-      (toJSBool canBubbleArg)
-      (toJSBool cancelableArg)
+      canBubbleArg
+      cancelableArg
 
 
 #ifdef __GHCJS__ 
@@ -161,30 +161,28 @@ eventGetEventPhase self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"bubbles\"] ? 1 : 0)"
-        ghcjs_dom_event_get_bubbles :: JSRef Event -> IO JSBool
+        ghcjs_dom_event_get_bubbles :: JSRef Event -> IO Bool
 #else 
-ghcjs_dom_event_get_bubbles :: JSRef Event -> IO JSBool
+ghcjs_dom_event_get_bubbles :: JSRef Event -> IO Bool
 ghcjs_dom_event_get_bubbles = undefined
 #endif
  
 eventGetBubbles :: (IsEvent self) => self -> IO Bool
 eventGetBubbles self
-  = fromJSBool <$>
-      (ghcjs_dom_event_get_bubbles (unEvent (toEvent self)))
+  = ghcjs_dom_event_get_bubbles (unEvent (toEvent self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"cancelable\"] ? 1 : 0)"
-        ghcjs_dom_event_get_cancelable :: JSRef Event -> IO JSBool
+        ghcjs_dom_event_get_cancelable :: JSRef Event -> IO Bool
 #else 
-ghcjs_dom_event_get_cancelable :: JSRef Event -> IO JSBool
+ghcjs_dom_event_get_cancelable :: JSRef Event -> IO Bool
 ghcjs_dom_event_get_cancelable = undefined
 #endif
  
 eventGetCancelable :: (IsEvent self) => self -> IO Bool
 eventGetCancelable self
-  = fromJSBool <$>
-      (ghcjs_dom_event_get_cancelable (unEvent (toEvent self)))
+  = ghcjs_dom_event_get_cancelable (unEvent (toEvent self))
 
 
 #ifdef __GHCJS__ 
@@ -204,16 +202,15 @@ eventGetTimeStamp self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"defaultPrevented\"] ? 1 : 0)"
-        ghcjs_dom_event_get_default_prevented :: JSRef Event -> IO JSBool
+        ghcjs_dom_event_get_default_prevented :: JSRef Event -> IO Bool
 #else 
-ghcjs_dom_event_get_default_prevented :: JSRef Event -> IO JSBool
+ghcjs_dom_event_get_default_prevented :: JSRef Event -> IO Bool
 ghcjs_dom_event_get_default_prevented = undefined
 #endif
  
 eventGetDefaultPrevented :: (IsEvent self) => self -> IO Bool
 eventGetDefaultPrevented self
-  = fromJSBool <$>
-      (ghcjs_dom_event_get_default_prevented (unEvent (toEvent self)))
+  = ghcjs_dom_event_get_default_prevented (unEvent (toEvent self))
 
 
 #ifdef __GHCJS__ 
@@ -235,55 +232,51 @@ eventGetSrcElement self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"returnValue\"] = $2;"
-        ghcjs_dom_event_set_return_value :: JSRef Event -> JSBool -> IO ()
+        ghcjs_dom_event_set_return_value :: JSRef Event -> Bool -> IO ()
 #else 
-ghcjs_dom_event_set_return_value :: JSRef Event -> JSBool -> IO ()
+ghcjs_dom_event_set_return_value :: JSRef Event -> Bool -> IO ()
 ghcjs_dom_event_set_return_value = undefined
 #endif
  
 eventSetReturnValue :: (IsEvent self) => self -> Bool -> IO ()
 eventSetReturnValue self val
-  = ghcjs_dom_event_set_return_value (unEvent (toEvent self))
-      (toJSBool val)
+  = ghcjs_dom_event_set_return_value (unEvent (toEvent self)) val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"returnValue\"] ? 1 : 0)"
-        ghcjs_dom_event_get_return_value :: JSRef Event -> IO JSBool
+        ghcjs_dom_event_get_return_value :: JSRef Event -> IO Bool
 #else 
-ghcjs_dom_event_get_return_value :: JSRef Event -> IO JSBool
+ghcjs_dom_event_get_return_value :: JSRef Event -> IO Bool
 ghcjs_dom_event_get_return_value = undefined
 #endif
  
 eventGetReturnValue :: (IsEvent self) => self -> IO Bool
 eventGetReturnValue self
-  = fromJSBool <$>
-      (ghcjs_dom_event_get_return_value (unEvent (toEvent self)))
+  = ghcjs_dom_event_get_return_value (unEvent (toEvent self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"cancelBubble\"] = $2;"
-        ghcjs_dom_event_set_cancel_bubble :: JSRef Event -> JSBool -> IO ()
+        ghcjs_dom_event_set_cancel_bubble :: JSRef Event -> Bool -> IO ()
 #else 
-ghcjs_dom_event_set_cancel_bubble :: JSRef Event -> JSBool -> IO ()
+ghcjs_dom_event_set_cancel_bubble :: JSRef Event -> Bool -> IO ()
 ghcjs_dom_event_set_cancel_bubble = undefined
 #endif
  
 eventSetCancelBubble :: (IsEvent self) => self -> Bool -> IO ()
 eventSetCancelBubble self val
-  = ghcjs_dom_event_set_cancel_bubble (unEvent (toEvent self))
-      (toJSBool val)
+  = ghcjs_dom_event_set_cancel_bubble (unEvent (toEvent self)) val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"cancelBubble\"] ? 1 : 0)"
-        ghcjs_dom_event_get_cancel_bubble :: JSRef Event -> IO JSBool
+        ghcjs_dom_event_get_cancel_bubble :: JSRef Event -> IO Bool
 #else 
-ghcjs_dom_event_get_cancel_bubble :: JSRef Event -> IO JSBool
+ghcjs_dom_event_get_cancel_bubble :: JSRef Event -> IO Bool
 ghcjs_dom_event_get_cancel_bubble = undefined
 #endif
  
 eventGetCancelBubble :: (IsEvent self) => self -> IO Bool
 eventGetCancelBubble self
-  = fromJSBool <$>
-      (ghcjs_dom_event_get_cancel_bubble (unEvent (toEvent self)))
+  = ghcjs_dom_event_get_cancel_bubble (unEvent (toEvent self))

@@ -21,10 +21,10 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_event_target_dispatch_event ::
-        JSRef EventTarget -> JSRef Event -> IO JSBool
+        JSRef EventTarget -> JSRef Event -> IO Bool
 #else 
 ghcjs_dom_event_target_dispatch_event ::
-                                        JSRef EventTarget -> JSRef Event -> IO JSBool
+                                        JSRef EventTarget -> JSRef Event -> IO Bool
 ghcjs_dom_event_target_dispatch_event = undefined
 #endif
  
@@ -32,7 +32,6 @@ eventTargetDispatchEvent ::
                          (IsEventTarget self, IsEvent event) =>
                            self -> Maybe event -> IO Bool
 eventTargetDispatchEvent self event
-  = fromJSBool <$>
-      (ghcjs_dom_event_target_dispatch_event
-         (unEventTarget (toEventTarget self))
-         (maybe jsNull (unEvent . toEvent) event))
+  = ghcjs_dom_event_target_dispatch_event
+      (unEventTarget (toEventTarget self))
+      (maybe jsNull (unEvent . toEvent) event)

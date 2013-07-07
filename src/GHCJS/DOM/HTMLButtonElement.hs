@@ -65,19 +65,18 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_button_element_check_validity ::
-        JSRef HTMLButtonElement -> IO JSBool
+        JSRef HTMLButtonElement -> IO Bool
 #else 
 ghcjs_dom_html_button_element_check_validity ::
-                                               JSRef HTMLButtonElement -> IO JSBool
+                                               JSRef HTMLButtonElement -> IO Bool
 ghcjs_dom_html_button_element_check_validity = undefined
 #endif
  
 htmlButtonElementCheckValidity ::
                                (IsHTMLButtonElement self) => self -> IO Bool
 htmlButtonElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_button_element_check_validity
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = ghcjs_dom_html_button_element_check_validity
+      (unHTMLButtonElement (toHTMLButtonElement self))
 
 
 #ifdef __GHCJS__ 
@@ -102,10 +101,10 @@ htmlButtonElementSetCustomValidity self error
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_button_element_set_autofocus ::
-        JSRef HTMLButtonElement -> JSBool -> IO ()
+        JSRef HTMLButtonElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_button_element_set_autofocus ::
-                                              JSRef HTMLButtonElement -> JSBool -> IO ()
+                                              JSRef HTMLButtonElement -> Bool -> IO ()
 ghcjs_dom_html_button_element_set_autofocus = undefined
 #endif
  
@@ -114,34 +113,33 @@ htmlButtonElementSetAutofocus ::
 htmlButtonElementSetAutofocus self val
   = ghcjs_dom_html_button_element_set_autofocus
       (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_autofocus ::
-        JSRef HTMLButtonElement -> IO JSBool
+        JSRef HTMLButtonElement -> IO Bool
 #else 
 ghcjs_dom_html_button_element_get_autofocus ::
-                                              JSRef HTMLButtonElement -> IO JSBool
+                                              JSRef HTMLButtonElement -> IO Bool
 ghcjs_dom_html_button_element_get_autofocus = undefined
 #endif
  
 htmlButtonElementGetAutofocus ::
                               (IsHTMLButtonElement self) => self -> IO Bool
 htmlButtonElementGetAutofocus self
-  = fromJSBool <$>
-      (ghcjs_dom_html_button_element_get_autofocus
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = ghcjs_dom_html_button_element_get_autofocus
+      (unHTMLButtonElement (toHTMLButtonElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_button_element_set_disabled ::
-        JSRef HTMLButtonElement -> JSBool -> IO ()
+        JSRef HTMLButtonElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_button_element_set_disabled ::
-                                             JSRef HTMLButtonElement -> JSBool -> IO ()
+                                             JSRef HTMLButtonElement -> Bool -> IO ()
 ghcjs_dom_html_button_element_set_disabled = undefined
 #endif
  
@@ -150,25 +148,24 @@ htmlButtonElementSetDisabled ::
 htmlButtonElementSetDisabled self val
   = ghcjs_dom_html_button_element_set_disabled
       (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_disabled ::
-        JSRef HTMLButtonElement -> IO JSBool
+        JSRef HTMLButtonElement -> IO Bool
 #else 
 ghcjs_dom_html_button_element_get_disabled ::
-                                             JSRef HTMLButtonElement -> IO JSBool
+                                             JSRef HTMLButtonElement -> IO Bool
 ghcjs_dom_html_button_element_get_disabled = undefined
 #endif
  
 htmlButtonElementGetDisabled ::
                              (IsHTMLButtonElement self) => self -> IO Bool
 htmlButtonElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_button_element_get_disabled
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = ghcjs_dom_html_button_element_get_disabled
+      (unHTMLButtonElement (toHTMLButtonElement self))
 
 
 #ifdef __GHCJS__ 
@@ -303,10 +300,10 @@ htmlButtonElementGetFormMethod self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         ghcjs_dom_html_button_element_set_form_no_validate ::
-        JSRef HTMLButtonElement -> JSBool -> IO ()
+        JSRef HTMLButtonElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_button_element_set_form_no_validate ::
-                                                     JSRef HTMLButtonElement -> JSBool -> IO ()
+                                                     JSRef HTMLButtonElement -> Bool -> IO ()
 ghcjs_dom_html_button_element_set_form_no_validate = undefined
 #endif
  
@@ -315,25 +312,24 @@ htmlButtonElementSetFormNoValidate ::
 htmlButtonElementSetFormNoValidate self val
   = ghcjs_dom_html_button_element_set_form_no_validate
       (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_form_no_validate ::
-        JSRef HTMLButtonElement -> IO JSBool
+        JSRef HTMLButtonElement -> IO Bool
 #else 
 ghcjs_dom_html_button_element_get_form_no_validate ::
-                                                     JSRef HTMLButtonElement -> IO JSBool
+                                                     JSRef HTMLButtonElement -> IO Bool
 ghcjs_dom_html_button_element_get_form_no_validate = undefined
 #endif
  
 htmlButtonElementGetFormNoValidate ::
                                    (IsHTMLButtonElement self) => self -> IO Bool
 htmlButtonElementGetFormNoValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_button_element_get_form_no_validate
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = ghcjs_dom_html_button_element_get_form_no_validate
+      (unHTMLButtonElement (toHTMLButtonElement self))
 
 
 #ifdef __GHCJS__ 
@@ -450,19 +446,18 @@ htmlButtonElementGetValue self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_will_validate ::
-        JSRef HTMLButtonElement -> IO JSBool
+        JSRef HTMLButtonElement -> IO Bool
 #else 
 ghcjs_dom_html_button_element_get_will_validate ::
-                                                  JSRef HTMLButtonElement -> IO JSBool
+                                                  JSRef HTMLButtonElement -> IO Bool
 ghcjs_dom_html_button_element_get_will_validate = undefined
 #endif
  
 htmlButtonElementGetWillValidate ::
                                  (IsHTMLButtonElement self) => self -> IO Bool
 htmlButtonElementGetWillValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_button_element_get_will_validate
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = ghcjs_dom_html_button_element_get_will_validate
+      (unHTMLButtonElement (toHTMLButtonElement self))
 
 
 #ifdef __GHCJS__ 

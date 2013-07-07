@@ -42,10 +42,10 @@ domStringListItem self index
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_string_list_contains ::
-        JSRef DOMStringList -> JSString -> IO JSBool
+        JSRef DOMStringList -> JSString -> IO Bool
 #else 
 ghcjs_dom_dom_string_list_contains ::
-                                     JSRef DOMStringList -> JSString -> IO JSBool
+                                     JSRef DOMStringList -> JSString -> IO Bool
 ghcjs_dom_dom_string_list_contains = undefined
 #endif
  
@@ -53,10 +53,9 @@ domStringListContains ::
                       (IsDOMStringList self, ToJSString string) =>
                         self -> string -> IO Bool
 domStringListContains self string
-  = fromJSBool <$>
-      (ghcjs_dom_dom_string_list_contains
-         (unDOMStringList (toDOMStringList self))
-         (toJSString string))
+  = ghcjs_dom_dom_string_list_contains
+      (unDOMStringList (toDOMStringList self))
+      (toJSString string)
 
 
 #ifdef __GHCJS__ 

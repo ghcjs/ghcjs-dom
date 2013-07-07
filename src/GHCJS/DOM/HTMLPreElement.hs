@@ -57,10 +57,10 @@ htmlPreElementGetWidth self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"wrap\"] = $2;"
         ghcjs_dom_html_pre_element_set_wrap ::
-        JSRef HTMLPreElement -> JSBool -> IO ()
+        JSRef HTMLPreElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_pre_element_set_wrap ::
-                                      JSRef HTMLPreElement -> JSBool -> IO ()
+                                      JSRef HTMLPreElement -> Bool -> IO ()
 ghcjs_dom_html_pre_element_set_wrap = undefined
 #endif
  
@@ -69,21 +69,20 @@ htmlPreElementSetWrap ::
 htmlPreElementSetWrap self val
   = ghcjs_dom_html_pre_element_set_wrap
       (unHTMLPreElement (toHTMLPreElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"wrap\"] ? 1 : 0)"
         ghcjs_dom_html_pre_element_get_wrap ::
-        JSRef HTMLPreElement -> IO JSBool
+        JSRef HTMLPreElement -> IO Bool
 #else 
 ghcjs_dom_html_pre_element_get_wrap ::
-                                      JSRef HTMLPreElement -> IO JSBool
+                                      JSRef HTMLPreElement -> IO Bool
 ghcjs_dom_html_pre_element_get_wrap = undefined
 #endif
  
 htmlPreElementGetWrap :: (IsHTMLPreElement self) => self -> IO Bool
 htmlPreElementGetWrap self
-  = fromJSBool <$>
-      (ghcjs_dom_html_pre_element_get_wrap
-         (unHTMLPreElement (toHTMLPreElement self)))
+  = ghcjs_dom_html_pre_element_get_wrap
+      (unHTMLPreElement (toHTMLPreElement self))

@@ -20,10 +20,10 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"matchMedium\"]($2) ? 1 : 0)"
         ghcjs_dom_style_media_match_medium ::
-        JSRef StyleMedia -> JSString -> IO JSBool
+        JSRef StyleMedia -> JSString -> IO Bool
 #else 
 ghcjs_dom_style_media_match_medium ::
-                                     JSRef StyleMedia -> JSString -> IO JSBool
+                                     JSRef StyleMedia -> JSString -> IO Bool
 ghcjs_dom_style_media_match_medium = undefined
 #endif
  
@@ -31,7 +31,6 @@ styleMediaMatchMedium ::
                       (IsStyleMedia self, ToJSString mediaquery) =>
                         self -> mediaquery -> IO Bool
 styleMediaMatchMedium self mediaquery
-  = fromJSBool <$>
-      (ghcjs_dom_style_media_match_medium
-         (unStyleMedia (toStyleMedia self))
-         (toJSString mediaquery))
+  = ghcjs_dom_style_media_match_medium
+      (unStyleMedia (toStyleMedia self))
+      (toJSString mediaquery)

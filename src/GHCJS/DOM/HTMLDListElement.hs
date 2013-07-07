@@ -23,10 +23,10 @@ import GHCJS.DOM.EventM
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
         ghcjs_dom_htmld_list_element_set_compact ::
-        JSRef HTMLDListElement -> JSBool -> IO ()
+        JSRef HTMLDListElement -> Bool -> IO ()
 #else 
 ghcjs_dom_htmld_list_element_set_compact ::
-                                           JSRef HTMLDListElement -> JSBool -> IO ()
+                                           JSRef HTMLDListElement -> Bool -> IO ()
 ghcjs_dom_htmld_list_element_set_compact = undefined
 #endif
  
@@ -35,22 +35,21 @@ htmldListElementSetCompact ::
 htmldListElementSetCompact self val
   = ghcjs_dom_htmld_list_element_set_compact
       (unHTMLDListElement (toHTMLDListElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         ghcjs_dom_htmld_list_element_get_compact ::
-        JSRef HTMLDListElement -> IO JSBool
+        JSRef HTMLDListElement -> IO Bool
 #else 
 ghcjs_dom_htmld_list_element_get_compact ::
-                                           JSRef HTMLDListElement -> IO JSBool
+                                           JSRef HTMLDListElement -> IO Bool
 ghcjs_dom_htmld_list_element_get_compact = undefined
 #endif
  
 htmldListElementGetCompact ::
                            (IsHTMLDListElement self) => self -> IO Bool
 htmldListElementGetCompact self
-  = fromJSBool <$>
-      (ghcjs_dom_htmld_list_element_get_compact
-         (unHTMLDListElement (toHTMLDListElement self)))
+  = ghcjs_dom_htmld_list_element_get_compact
+      (unHTMLDListElement (toHTMLDListElement self))

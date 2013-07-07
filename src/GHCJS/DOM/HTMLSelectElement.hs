@@ -152,19 +152,18 @@ htmlSelectElementRemove self index
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_select_element_check_validity ::
-        JSRef HTMLSelectElement -> IO JSBool
+        JSRef HTMLSelectElement -> IO Bool
 #else 
 ghcjs_dom_html_select_element_check_validity ::
-                                               JSRef HTMLSelectElement -> IO JSBool
+                                               JSRef HTMLSelectElement -> IO Bool
 ghcjs_dom_html_select_element_check_validity = undefined
 #endif
  
 htmlSelectElementCheckValidity ::
                                (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_select_element_check_validity
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = ghcjs_dom_html_select_element_check_validity
+      (unHTMLSelectElement (toHTMLSelectElement self))
 
 
 #ifdef __GHCJS__ 
@@ -189,10 +188,10 @@ htmlSelectElementSetCustomValidity self error
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_select_element_set_autofocus ::
-        JSRef HTMLSelectElement -> JSBool -> IO ()
+        JSRef HTMLSelectElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_select_element_set_autofocus ::
-                                              JSRef HTMLSelectElement -> JSBool -> IO ()
+                                              JSRef HTMLSelectElement -> Bool -> IO ()
 ghcjs_dom_html_select_element_set_autofocus = undefined
 #endif
  
@@ -201,34 +200,33 @@ htmlSelectElementSetAutofocus ::
 htmlSelectElementSetAutofocus self val
   = ghcjs_dom_html_select_element_set_autofocus
       (unHTMLSelectElement (toHTMLSelectElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_autofocus ::
-        JSRef HTMLSelectElement -> IO JSBool
+        JSRef HTMLSelectElement -> IO Bool
 #else 
 ghcjs_dom_html_select_element_get_autofocus ::
-                                              JSRef HTMLSelectElement -> IO JSBool
+                                              JSRef HTMLSelectElement -> IO Bool
 ghcjs_dom_html_select_element_get_autofocus = undefined
 #endif
  
 htmlSelectElementGetAutofocus ::
                               (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetAutofocus self
-  = fromJSBool <$>
-      (ghcjs_dom_html_select_element_get_autofocus
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = ghcjs_dom_html_select_element_get_autofocus
+      (unHTMLSelectElement (toHTMLSelectElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_select_element_set_disabled ::
-        JSRef HTMLSelectElement -> JSBool -> IO ()
+        JSRef HTMLSelectElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_select_element_set_disabled ::
-                                             JSRef HTMLSelectElement -> JSBool -> IO ()
+                                             JSRef HTMLSelectElement -> Bool -> IO ()
 ghcjs_dom_html_select_element_set_disabled = undefined
 #endif
  
@@ -237,25 +235,24 @@ htmlSelectElementSetDisabled ::
 htmlSelectElementSetDisabled self val
   = ghcjs_dom_html_select_element_set_disabled
       (unHTMLSelectElement (toHTMLSelectElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_disabled ::
-        JSRef HTMLSelectElement -> IO JSBool
+        JSRef HTMLSelectElement -> IO Bool
 #else 
 ghcjs_dom_html_select_element_get_disabled ::
-                                             JSRef HTMLSelectElement -> IO JSBool
+                                             JSRef HTMLSelectElement -> IO Bool
 ghcjs_dom_html_select_element_get_disabled = undefined
 #endif
  
 htmlSelectElementGetDisabled ::
                              (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_select_element_get_disabled
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = ghcjs_dom_html_select_element_get_disabled
+      (unHTMLSelectElement (toHTMLSelectElement self))
 
 
 #ifdef __GHCJS__ 
@@ -279,10 +276,10 @@ htmlSelectElementGetForm self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"multiple\"] = $2;"
         ghcjs_dom_html_select_element_set_multiple ::
-        JSRef HTMLSelectElement -> JSBool -> IO ()
+        JSRef HTMLSelectElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_select_element_set_multiple ::
-                                             JSRef HTMLSelectElement -> JSBool -> IO ()
+                                             JSRef HTMLSelectElement -> Bool -> IO ()
 ghcjs_dom_html_select_element_set_multiple = undefined
 #endif
  
@@ -291,25 +288,24 @@ htmlSelectElementSetMultiple ::
 htmlSelectElementSetMultiple self val
   = ghcjs_dom_html_select_element_set_multiple
       (unHTMLSelectElement (toHTMLSelectElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_multiple ::
-        JSRef HTMLSelectElement -> IO JSBool
+        JSRef HTMLSelectElement -> IO Bool
 #else 
 ghcjs_dom_html_select_element_get_multiple ::
-                                             JSRef HTMLSelectElement -> IO JSBool
+                                             JSRef HTMLSelectElement -> IO Bool
 ghcjs_dom_html_select_element_get_multiple = undefined
 #endif
  
 htmlSelectElementGetMultiple ::
                              (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetMultiple self
-  = fromJSBool <$>
-      (ghcjs_dom_html_select_element_get_multiple
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = ghcjs_dom_html_select_element_get_multiple
+      (unHTMLSelectElement (toHTMLSelectElement self))
 
 
 #ifdef __GHCJS__ 
@@ -352,10 +348,10 @@ htmlSelectElementGetName self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_select_element_set_required ::
-        JSRef HTMLSelectElement -> JSBool -> IO ()
+        JSRef HTMLSelectElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_select_element_set_required ::
-                                             JSRef HTMLSelectElement -> JSBool -> IO ()
+                                             JSRef HTMLSelectElement -> Bool -> IO ()
 ghcjs_dom_html_select_element_set_required = undefined
 #endif
  
@@ -364,25 +360,24 @@ htmlSelectElementSetRequired ::
 htmlSelectElementSetRequired self val
   = ghcjs_dom_html_select_element_set_required
       (unHTMLSelectElement (toHTMLSelectElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_required ::
-        JSRef HTMLSelectElement -> IO JSBool
+        JSRef HTMLSelectElement -> IO Bool
 #else 
 ghcjs_dom_html_select_element_get_required ::
-                                             JSRef HTMLSelectElement -> IO JSBool
+                                             JSRef HTMLSelectElement -> IO Bool
 ghcjs_dom_html_select_element_get_required = undefined
 #endif
  
 htmlSelectElementGetRequired ::
                              (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetRequired self
-  = fromJSBool <$>
-      (ghcjs_dom_html_select_element_get_required
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = ghcjs_dom_html_select_element_get_required
+      (unHTMLSelectElement (toHTMLSelectElement self))
 
 
 #ifdef __GHCJS__ 
@@ -569,19 +564,18 @@ htmlSelectElementGetValue self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_will_validate ::
-        JSRef HTMLSelectElement -> IO JSBool
+        JSRef HTMLSelectElement -> IO Bool
 #else 
 ghcjs_dom_html_select_element_get_will_validate ::
-                                                  JSRef HTMLSelectElement -> IO JSBool
+                                                  JSRef HTMLSelectElement -> IO Bool
 ghcjs_dom_html_select_element_get_will_validate = undefined
 #endif
  
 htmlSelectElementGetWillValidate ::
                                  (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetWillValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_select_element_get_will_validate
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = ghcjs_dom_html_select_element_get_will_validate
+      (unHTMLSelectElement (toHTMLSelectElement self))
 
 
 #ifdef __GHCJS__ 

@@ -144,10 +144,10 @@ xmlHttpRequestOverrideMimeType self override
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_xml_http_request_dispatch_event ::
-        JSRef XMLHttpRequest -> JSRef Event -> IO JSBool
+        JSRef XMLHttpRequest -> JSRef Event -> IO Bool
 #else 
 ghcjs_dom_xml_http_request_dispatch_event ::
-                                            JSRef XMLHttpRequest -> JSRef Event -> IO JSBool
+                                            JSRef XMLHttpRequest -> JSRef Event -> IO Bool
 ghcjs_dom_xml_http_request_dispatch_event = undefined
 #endif
  
@@ -155,10 +155,9 @@ xmlHttpRequestDispatchEvent ::
                             (IsXMLHttpRequest self, IsEvent evt) =>
                               self -> Maybe evt -> IO Bool
 xmlHttpRequestDispatchEvent self evt
-  = fromJSBool <$>
-      (ghcjs_dom_xml_http_request_dispatch_event
-         (unXMLHttpRequest (toXMLHttpRequest self))
-         (maybe jsNull (unEvent . toEvent) evt))
+  = ghcjs_dom_xml_http_request_dispatch_event
+      (unXMLHttpRequest (toXMLHttpRequest self))
+      (maybe jsNull (unEvent . toEvent) evt)
 cUNSENT = 0
 cOPENED = 1
 cHEADERS_RECEIVED = 2
@@ -214,10 +213,10 @@ xmlHttpRequestGetReadyState self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"withCredentials\"] = $2;"
         ghcjs_dom_xml_http_request_set_with_credentials ::
-        JSRef XMLHttpRequest -> JSBool -> IO ()
+        JSRef XMLHttpRequest -> Bool -> IO ()
 #else 
 ghcjs_dom_xml_http_request_set_with_credentials ::
-                                                  JSRef XMLHttpRequest -> JSBool -> IO ()
+                                                  JSRef XMLHttpRequest -> Bool -> IO ()
 ghcjs_dom_xml_http_request_set_with_credentials = undefined
 #endif
  
@@ -226,26 +225,25 @@ xmlHttpRequestSetWithCredentials ::
 xmlHttpRequestSetWithCredentials self val
   = ghcjs_dom_xml_http_request_set_with_credentials
       (unXMLHttpRequest (toXMLHttpRequest self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"withCredentials\"] ? 1 : 0)"
         ghcjs_dom_xml_http_request_get_with_credentials ::
-        JSRef XMLHttpRequest -> IO JSBool
+        JSRef XMLHttpRequest -> IO Bool
 #else 
 ghcjs_dom_xml_http_request_get_with_credentials ::
-                                                  JSRef XMLHttpRequest -> IO JSBool
+                                                  JSRef XMLHttpRequest -> IO Bool
 ghcjs_dom_xml_http_request_get_with_credentials = undefined
 #endif
  
 xmlHttpRequestGetWithCredentials ::
                                  (IsXMLHttpRequest self) => self -> IO Bool
 xmlHttpRequestGetWithCredentials self
-  = fromJSBool <$>
-      (ghcjs_dom_xml_http_request_get_with_credentials
-         (unXMLHttpRequest (toXMLHttpRequest self)))
+  = ghcjs_dom_xml_http_request_get_with_credentials
+      (unXMLHttpRequest (toXMLHttpRequest self))
 
 
 #ifdef __GHCJS__ 

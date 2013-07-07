@@ -364,10 +364,10 @@ htmliFrameElementGetSandbox self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"seamless\"] = $2;"
         ghcjs_dom_html_iframe_element_set_seamless ::
-        JSRef HTMLIFrameElement -> JSBool -> IO ()
+        JSRef HTMLIFrameElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_iframe_element_set_seamless ::
-                                             JSRef HTMLIFrameElement -> JSBool -> IO ()
+                                             JSRef HTMLIFrameElement -> Bool -> IO ()
 ghcjs_dom_html_iframe_element_set_seamless = undefined
 #endif
  
@@ -376,25 +376,24 @@ htmliFrameElementSetSeamless ::
 htmliFrameElementSetSeamless self val
   = ghcjs_dom_html_iframe_element_set_seamless
       (unHTMLIFrameElement (toHTMLIFrameElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"seamless\"] ? 1 : 0)"
         ghcjs_dom_html_iframe_element_get_seamless ::
-        JSRef HTMLIFrameElement -> IO JSBool
+        JSRef HTMLIFrameElement -> IO Bool
 #else 
 ghcjs_dom_html_iframe_element_get_seamless ::
-                                             JSRef HTMLIFrameElement -> IO JSBool
+                                             JSRef HTMLIFrameElement -> IO Bool
 ghcjs_dom_html_iframe_element_get_seamless = undefined
 #endif
  
 htmliFrameElementGetSeamless ::
                              (IsHTMLIFrameElement self) => self -> IO Bool
 htmliFrameElementGetSeamless self
-  = fromJSBool <$>
-      (ghcjs_dom_html_iframe_element_get_seamless
-         (unHTMLIFrameElement (toHTMLIFrameElement self)))
+  = ghcjs_dom_html_iframe_element_get_seamless
+      (unHTMLIFrameElement (toHTMLIFrameElement self))
 
 
 #ifdef __GHCJS__ 

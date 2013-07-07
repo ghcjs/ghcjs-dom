@@ -30,11 +30,11 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"hasFeature\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_dom_implementation_has_feature ::
-        JSRef DOMImplementation -> JSString -> JSString -> IO JSBool
+        JSRef DOMImplementation -> JSString -> JSString -> IO Bool
 #else 
 ghcjs_dom_dom_implementation_has_feature ::
                                            JSRef DOMImplementation ->
-                                             JSString -> JSString -> IO JSBool
+                                             JSString -> JSString -> IO Bool
 ghcjs_dom_dom_implementation_has_feature = undefined
 #endif
  
@@ -43,11 +43,10 @@ domImplementationHasFeature ::
                              ToJSString version) =>
                               self -> feature -> version -> IO Bool
 domImplementationHasFeature self feature version
-  = fromJSBool <$>
-      (ghcjs_dom_dom_implementation_has_feature
-         (unDOMImplementation (toDOMImplementation self))
-         (toJSString feature)
-         (toJSString version))
+  = ghcjs_dom_dom_implementation_has_feature
+      (unDOMImplementation (toDOMImplementation self))
+      (toJSString feature)
+      (toJSString version)
 
 
 #ifdef __GHCJS__ 

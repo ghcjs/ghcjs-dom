@@ -310,10 +310,10 @@ htmlImageElementGetHspace self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"isMap\"] = $2;"
         ghcjs_dom_html_image_element_set_is_map ::
-        JSRef HTMLImageElement -> JSBool -> IO ()
+        JSRef HTMLImageElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_image_element_set_is_map ::
-                                          JSRef HTMLImageElement -> JSBool -> IO ()
+                                          JSRef HTMLImageElement -> Bool -> IO ()
 ghcjs_dom_html_image_element_set_is_map = undefined
 #endif
  
@@ -322,25 +322,24 @@ htmlImageElementSetIsMap ::
 htmlImageElementSetIsMap self val
   = ghcjs_dom_html_image_element_set_is_map
       (unHTMLImageElement (toHTMLImageElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"isMap\"] ? 1 : 0)"
         ghcjs_dom_html_image_element_get_is_map ::
-        JSRef HTMLImageElement -> IO JSBool
+        JSRef HTMLImageElement -> IO Bool
 #else 
 ghcjs_dom_html_image_element_get_is_map ::
-                                          JSRef HTMLImageElement -> IO JSBool
+                                          JSRef HTMLImageElement -> IO Bool
 ghcjs_dom_html_image_element_get_is_map = undefined
 #endif
  
 htmlImageElementGetIsMap ::
                          (IsHTMLImageElement self) => self -> IO Bool
 htmlImageElementGetIsMap self
-  = fromJSBool <$>
-      (ghcjs_dom_html_image_element_get_is_map
-         (unHTMLImageElement (toHTMLImageElement self)))
+  = ghcjs_dom_html_image_element_get_is_map
+      (unHTMLImageElement (toHTMLImageElement self))
 
 
 #ifdef __GHCJS__ 
@@ -524,19 +523,18 @@ htmlImageElementGetWidth self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"complete\"] ? 1 : 0)"
         ghcjs_dom_html_image_element_get_complete ::
-        JSRef HTMLImageElement -> IO JSBool
+        JSRef HTMLImageElement -> IO Bool
 #else 
 ghcjs_dom_html_image_element_get_complete ::
-                                            JSRef HTMLImageElement -> IO JSBool
+                                            JSRef HTMLImageElement -> IO Bool
 ghcjs_dom_html_image_element_get_complete = undefined
 #endif
  
 htmlImageElementGetComplete ::
                             (IsHTMLImageElement self) => self -> IO Bool
 htmlImageElementGetComplete self
-  = fromJSBool <$>
-      (ghcjs_dom_html_image_element_get_complete
-         (unHTMLImageElement (toHTMLImageElement self)))
+  = ghcjs_dom_html_image_element_get_complete
+      (unHTMLImageElement (toHTMLImageElement self))
 
 
 #ifdef __GHCJS__ 

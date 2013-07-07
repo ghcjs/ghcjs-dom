@@ -42,19 +42,18 @@ import GHCJS.DOM.EventM
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_field_set_element_check_validity ::
-        JSRef HTMLFieldSetElement -> IO JSBool
+        JSRef HTMLFieldSetElement -> IO Bool
 #else 
 ghcjs_dom_html_field_set_element_check_validity ::
-                                                  JSRef HTMLFieldSetElement -> IO JSBool
+                                                  JSRef HTMLFieldSetElement -> IO Bool
 ghcjs_dom_html_field_set_element_check_validity = undefined
 #endif
  
 htmlFieldSetElementCheckValidity ::
                                  (IsHTMLFieldSetElement self) => self -> IO Bool
 htmlFieldSetElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_field_set_element_check_validity
-         (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+  = ghcjs_dom_html_field_set_element_check_validity
+      (unHTMLFieldSetElement (toHTMLFieldSetElement self))
 
 
 #ifdef __GHCJS__ 
@@ -80,10 +79,10 @@ htmlFieldSetElementSetCustomValidity self error
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_field_set_element_set_disabled ::
-        JSRef HTMLFieldSetElement -> JSBool -> IO ()
+        JSRef HTMLFieldSetElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_field_set_element_set_disabled ::
-                                                JSRef HTMLFieldSetElement -> JSBool -> IO ()
+                                                JSRef HTMLFieldSetElement -> Bool -> IO ()
 ghcjs_dom_html_field_set_element_set_disabled = undefined
 #endif
  
@@ -92,25 +91,24 @@ htmlFieldSetElementSetDisabled ::
 htmlFieldSetElementSetDisabled self val
   = ghcjs_dom_html_field_set_element_set_disabled
       (unHTMLFieldSetElement (toHTMLFieldSetElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_field_set_element_get_disabled ::
-        JSRef HTMLFieldSetElement -> IO JSBool
+        JSRef HTMLFieldSetElement -> IO Bool
 #else 
 ghcjs_dom_html_field_set_element_get_disabled ::
-                                                JSRef HTMLFieldSetElement -> IO JSBool
+                                                JSRef HTMLFieldSetElement -> IO Bool
 ghcjs_dom_html_field_set_element_get_disabled = undefined
 #endif
  
 htmlFieldSetElementGetDisabled ::
                                (IsHTMLFieldSetElement self) => self -> IO Bool
 htmlFieldSetElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_field_set_element_get_disabled
-         (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+  = ghcjs_dom_html_field_set_element_get_disabled
+      (unHTMLFieldSetElement (toHTMLFieldSetElement self))
 
 
 #ifdef __GHCJS__ 
@@ -191,19 +189,18 @@ htmlFieldSetElementGetElements self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_field_set_element_get_will_validate ::
-        JSRef HTMLFieldSetElement -> IO JSBool
+        JSRef HTMLFieldSetElement -> IO Bool
 #else 
 ghcjs_dom_html_field_set_element_get_will_validate ::
-                                                     JSRef HTMLFieldSetElement -> IO JSBool
+                                                     JSRef HTMLFieldSetElement -> IO Bool
 ghcjs_dom_html_field_set_element_get_will_validate = undefined
 #endif
  
 htmlFieldSetElementGetWillValidate ::
                                    (IsHTMLFieldSetElement self) => self -> IO Bool
 htmlFieldSetElementGetWillValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_field_set_element_get_will_validate
-         (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+  = ghcjs_dom_html_field_set_element_get_will_validate
+      (unHTMLFieldSetElement (toHTMLFieldSetElement self))
 
 
 #ifdef __GHCJS__ 

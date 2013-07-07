@@ -311,10 +311,10 @@ documentGetElementsByTagName self tagname
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"importNode\"]($2, $3)"
         ghcjs_dom_document_import_node ::
-        JSRef Document -> JSRef Node -> JSBool -> IO (JSRef Node)
+        JSRef Document -> JSRef Node -> Bool -> IO (JSRef Node)
 #else 
 ghcjs_dom_document_import_node ::
-                                 JSRef Document -> JSRef Node -> JSBool -> IO (JSRef Node)
+                                 JSRef Document -> JSRef Node -> Bool -> IO (JSRef Node)
 ghcjs_dom_document_import_node = undefined
 #endif
  
@@ -325,7 +325,7 @@ documentImportNode self importedNode deep
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_document_import_node (unDocument (toDocument self))
          (maybe jsNull (unNode . toNode) importedNode)
-         (toJSBool deep))
+         deep)
 
 
 #ifdef __GHCJS__ 
@@ -478,14 +478,13 @@ foreign import javascript unsafe
         ghcjs_dom_document_create_node_iterator ::
         JSRef Document ->
           JSRef Node ->
-            Word -> JSRef NodeFilter -> JSBool -> IO (JSRef NodeIterator)
+            Word -> JSRef NodeFilter -> Bool -> IO (JSRef NodeIterator)
 #else 
 ghcjs_dom_document_create_node_iterator ::
                                           JSRef Document ->
                                             JSRef Node ->
                                               Word ->
-                                                JSRef NodeFilter ->
-                                                  JSBool -> IO (JSRef NodeIterator)
+                                                JSRef NodeFilter -> Bool -> IO (JSRef NodeIterator)
 ghcjs_dom_document_create_node_iterator = undefined
 #endif
  
@@ -502,7 +501,7 @@ documentCreateNodeIterator self root whatToShow filter
          (maybe jsNull (unNode . toNode) root)
          whatToShow
          (maybe jsNull (unNodeFilter . toNodeFilter) filter)
-         (toJSBool expandEntityReferences))
+         expandEntityReferences)
 
 
 #ifdef __GHCJS__ 
@@ -511,13 +510,13 @@ foreign import javascript unsafe
         ghcjs_dom_document_create_tree_walker ::
         JSRef Document ->
           JSRef Node ->
-            Word -> JSRef NodeFilter -> JSBool -> IO (JSRef TreeWalker)
+            Word -> JSRef NodeFilter -> Bool -> IO (JSRef TreeWalker)
 #else 
 ghcjs_dom_document_create_tree_walker ::
                                         JSRef Document ->
                                           JSRef Node ->
                                             Word ->
-                                              JSRef NodeFilter -> JSBool -> IO (JSRef TreeWalker)
+                                              JSRef NodeFilter -> Bool -> IO (JSRef TreeWalker)
 ghcjs_dom_document_create_tree_walker = undefined
 #endif
  
@@ -533,7 +532,7 @@ documentCreateTreeWalker self root whatToShow filter
          (maybe jsNull (unNode . toNode) root)
          whatToShow
          (maybe jsNull (unNodeFilter . toNodeFilter) filter)
-         (toJSBool expandEntityReferences))
+         expandEntityReferences)
 
 
 #ifdef __GHCJS__ 
@@ -647,10 +646,10 @@ documentEvaluate self expression contextNode resolver type'
 foreign import javascript unsafe
         "($1[\"execCommand\"]($2, $3,\n$4) ? 1 : 0)"
         ghcjs_dom_document_exec_command ::
-        JSRef Document -> JSString -> JSBool -> JSString -> IO JSBool
+        JSRef Document -> JSString -> Bool -> JSString -> IO Bool
 #else 
 ghcjs_dom_document_exec_command ::
-                                  JSRef Document -> JSString -> JSBool -> JSString -> IO JSBool
+                                  JSRef Document -> JSString -> Bool -> JSString -> IO Bool
 ghcjs_dom_document_exec_command = undefined
 #endif
  
@@ -658,91 +657,86 @@ documentExecCommand ::
                     (IsDocument self, ToJSString command, ToJSString value) =>
                       self -> command -> Bool -> value -> IO Bool
 documentExecCommand self command userInterface value
-  = fromJSBool <$>
-      (ghcjs_dom_document_exec_command (unDocument (toDocument self))
-         (toJSString command)
-         (toJSBool userInterface)
-         (toJSString value))
+  = ghcjs_dom_document_exec_command (unDocument (toDocument self))
+      (toJSString command)
+      userInterface
+      (toJSString value)
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"queryCommandEnabled\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_enabled ::
-        JSRef Document -> JSString -> IO JSBool
+        JSRef Document -> JSString -> IO Bool
 #else 
 ghcjs_dom_document_query_command_enabled ::
-                                           JSRef Document -> JSString -> IO JSBool
+                                           JSRef Document -> JSString -> IO Bool
 ghcjs_dom_document_query_command_enabled = undefined
 #endif
  
 documentQueryCommandEnabled ::
                             (IsDocument self, ToJSString command) => self -> command -> IO Bool
 documentQueryCommandEnabled self command
-  = fromJSBool <$>
-      (ghcjs_dom_document_query_command_enabled
-         (unDocument (toDocument self))
-         (toJSString command))
+  = ghcjs_dom_document_query_command_enabled
+      (unDocument (toDocument self))
+      (toJSString command)
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"queryCommandIndeterm\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_indeterm ::
-        JSRef Document -> JSString -> IO JSBool
+        JSRef Document -> JSString -> IO Bool
 #else 
 ghcjs_dom_document_query_command_indeterm ::
-                                            JSRef Document -> JSString -> IO JSBool
+                                            JSRef Document -> JSString -> IO Bool
 ghcjs_dom_document_query_command_indeterm = undefined
 #endif
  
 documentQueryCommandIndeterm ::
                              (IsDocument self, ToJSString command) => self -> command -> IO Bool
 documentQueryCommandIndeterm self command
-  = fromJSBool <$>
-      (ghcjs_dom_document_query_command_indeterm
-         (unDocument (toDocument self))
-         (toJSString command))
+  = ghcjs_dom_document_query_command_indeterm
+      (unDocument (toDocument self))
+      (toJSString command)
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"queryCommandState\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_state ::
-        JSRef Document -> JSString -> IO JSBool
+        JSRef Document -> JSString -> IO Bool
 #else 
 ghcjs_dom_document_query_command_state ::
-                                         JSRef Document -> JSString -> IO JSBool
+                                         JSRef Document -> JSString -> IO Bool
 ghcjs_dom_document_query_command_state = undefined
 #endif
  
 documentQueryCommandState ::
                           (IsDocument self, ToJSString command) => self -> command -> IO Bool
 documentQueryCommandState self command
-  = fromJSBool <$>
-      (ghcjs_dom_document_query_command_state
-         (unDocument (toDocument self))
-         (toJSString command))
+  = ghcjs_dom_document_query_command_state
+      (unDocument (toDocument self))
+      (toJSString command)
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"queryCommandSupported\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_supported ::
-        JSRef Document -> JSString -> IO JSBool
+        JSRef Document -> JSString -> IO Bool
 #else 
 ghcjs_dom_document_query_command_supported ::
-                                             JSRef Document -> JSString -> IO JSBool
+                                             JSRef Document -> JSString -> IO Bool
 ghcjs_dom_document_query_command_supported = undefined
 #endif
  
 documentQueryCommandSupported ::
                               (IsDocument self, ToJSString command) => self -> command -> IO Bool
 documentQueryCommandSupported self command
-  = fromJSBool <$>
-      (ghcjs_dom_document_query_command_supported
-         (unDocument (toDocument self))
-         (toJSString command))
+  = ghcjs_dom_document_query_command_supported
+      (unDocument (toDocument self))
+      (toJSString command)
 
 
 #ifdef __GHCJS__ 
@@ -1029,10 +1023,10 @@ documentGetXmlVersion self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"xmlStandalone\"] = $2;"
         ghcjs_dom_document_set_xml_standalone ::
-        JSRef Document -> JSBool -> IO ()
+        JSRef Document -> Bool -> IO ()
 #else 
 ghcjs_dom_document_set_xml_standalone ::
-                                        JSRef Document -> JSBool -> IO ()
+                                        JSRef Document -> Bool -> IO ()
 ghcjs_dom_document_set_xml_standalone = undefined
 #endif
  
@@ -1041,24 +1035,21 @@ documentSetXmlStandalone ::
 documentSetXmlStandalone self val
   = ghcjs_dom_document_set_xml_standalone
       (unDocument (toDocument self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"xmlStandalone\"] ? 1 : 0)"
-        ghcjs_dom_document_get_xml_standalone ::
-        JSRef Document -> IO JSBool
+        ghcjs_dom_document_get_xml_standalone :: JSRef Document -> IO Bool
 #else 
-ghcjs_dom_document_get_xml_standalone ::
-                                        JSRef Document -> IO JSBool
+ghcjs_dom_document_get_xml_standalone :: JSRef Document -> IO Bool
 ghcjs_dom_document_get_xml_standalone = undefined
 #endif
  
 documentGetXmlStandalone :: (IsDocument self) => self -> IO Bool
 documentGetXmlStandalone self
-  = fromJSBool <$>
-      (ghcjs_dom_document_get_xml_standalone
-         (unDocument (toDocument self)))
+  = ghcjs_dom_document_get_xml_standalone
+      (unDocument (toDocument self))
 
 
 #ifdef __GHCJS__ 
@@ -1769,17 +1760,16 @@ documentGetWebkitVisibilityState self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"webkitHidden\"] ? 1 : 0)"
-        ghcjs_dom_document_get_webkit_hidden :: JSRef Document -> IO JSBool
+        ghcjs_dom_document_get_webkit_hidden :: JSRef Document -> IO Bool
 #else 
-ghcjs_dom_document_get_webkit_hidden :: JSRef Document -> IO JSBool
+ghcjs_dom_document_get_webkit_hidden :: JSRef Document -> IO Bool
 ghcjs_dom_document_get_webkit_hidden = undefined
 #endif
  
 documentGetWebkitHidden :: (IsDocument self) => self -> IO Bool
 documentGetWebkitHidden self
-  = fromJSBool <$>
-      (ghcjs_dom_document_get_webkit_hidden
-         (unDocument (toDocument self)))
+  = ghcjs_dom_document_get_webkit_hidden
+      (unDocument (toDocument self))
 
 
 #ifdef __GHCJS__ 

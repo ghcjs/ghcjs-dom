@@ -87,10 +87,10 @@ webKitNamedFlowGetContent self
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_webkit_named_flow_dispatch_event ::
-        JSRef WebKitNamedFlow -> JSRef Event -> IO JSBool
+        JSRef WebKitNamedFlow -> JSRef Event -> IO Bool
 #else 
 ghcjs_dom_webkit_named_flow_dispatch_event ::
-                                             JSRef WebKitNamedFlow -> JSRef Event -> IO JSBool
+                                             JSRef WebKitNamedFlow -> JSRef Event -> IO Bool
 ghcjs_dom_webkit_named_flow_dispatch_event = undefined
 #endif
  
@@ -98,10 +98,9 @@ webKitNamedFlowDispatchEvent ::
                              (IsWebKitNamedFlow self, IsEvent event) =>
                                self -> Maybe event -> IO Bool
 webKitNamedFlowDispatchEvent self event
-  = fromJSBool <$>
-      (ghcjs_dom_webkit_named_flow_dispatch_event
-         (unWebKitNamedFlow (toWebKitNamedFlow self))
-         (maybe jsNull (unEvent . toEvent) event))
+  = ghcjs_dom_webkit_named_flow_dispatch_event
+      (unWebKitNamedFlow (toWebKitNamedFlow self))
+      (maybe jsNull (unEvent . toEvent) event)
 
 
 #ifdef __GHCJS__ 
@@ -125,19 +124,18 @@ webKitNamedFlowGetName self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"overset\"] ? 1 : 0)"
         ghcjs_dom_webkit_named_flow_get_overset ::
-        JSRef WebKitNamedFlow -> IO JSBool
+        JSRef WebKitNamedFlow -> IO Bool
 #else 
 ghcjs_dom_webkit_named_flow_get_overset ::
-                                          JSRef WebKitNamedFlow -> IO JSBool
+                                          JSRef WebKitNamedFlow -> IO Bool
 ghcjs_dom_webkit_named_flow_get_overset = undefined
 #endif
  
 webKitNamedFlowGetOverset ::
                           (IsWebKitNamedFlow self) => self -> IO Bool
 webKitNamedFlowGetOverset self
-  = fromJSBool <$>
-      (ghcjs_dom_webkit_named_flow_get_overset
-         (unWebKitNamedFlow (toWebKitNamedFlow self)))
+  = ghcjs_dom_webkit_named_flow_get_overset
+      (unWebKitNamedFlow (toWebKitNamedFlow self))
 
 
 #ifdef __GHCJS__ 

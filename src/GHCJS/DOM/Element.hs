@@ -358,29 +358,28 @@ elementSetAttributeNodeNS self newAttr
 foreign import javascript unsafe
         "($1[\"hasAttribute\"]($2) ? 1 : 0)"
         ghcjs_dom_element_has_attribute ::
-        JSRef Element -> JSString -> IO JSBool
+        JSRef Element -> JSString -> IO Bool
 #else 
 ghcjs_dom_element_has_attribute ::
-                                  JSRef Element -> JSString -> IO JSBool
+                                  JSRef Element -> JSString -> IO Bool
 ghcjs_dom_element_has_attribute = undefined
 #endif
  
 elementHasAttribute ::
                     (IsElement self, ToJSString name) => self -> name -> IO Bool
 elementHasAttribute self name
-  = fromJSBool <$>
-      (ghcjs_dom_element_has_attribute (unElement (toElement self))
-         (toJSString name))
+  = ghcjs_dom_element_has_attribute (unElement (toElement self))
+      (toJSString name)
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"hasAttributeNS\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_element_has_attribute_ns ::
-        JSRef Element -> JSString -> JSString -> IO JSBool
+        JSRef Element -> JSString -> JSString -> IO Bool
 #else 
 ghcjs_dom_element_has_attribute_ns ::
-                                     JSRef Element -> JSString -> JSString -> IO JSBool
+                                     JSRef Element -> JSString -> JSString -> IO Bool
 ghcjs_dom_element_has_attribute_ns = undefined
 #endif
  
@@ -388,10 +387,9 @@ elementHasAttributeNS ::
                       (IsElement self, ToJSString namespaceURI, ToJSString localName) =>
                         self -> namespaceURI -> localName -> IO Bool
 elementHasAttributeNS self namespaceURI localName
-  = fromJSBool <$>
-      (ghcjs_dom_element_has_attribute_ns (unElement (toElement self))
-         (toJSString namespaceURI)
-         (toJSString localName))
+  = ghcjs_dom_element_has_attribute_ns (unElement (toElement self))
+      (toJSString namespaceURI)
+      (toJSString localName)
 
 
 #ifdef __GHCJS__ 
@@ -423,27 +421,27 @@ elementBlur self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"scrollIntoView\"]($2)"
         ghcjs_dom_element_scroll_into_view ::
-        JSRef Element -> JSBool -> IO ()
+        JSRef Element -> Bool -> IO ()
 #else 
 ghcjs_dom_element_scroll_into_view ::
-                                     JSRef Element -> JSBool -> IO ()
+                                     JSRef Element -> Bool -> IO ()
 ghcjs_dom_element_scroll_into_view = undefined
 #endif
  
 elementScrollIntoView :: (IsElement self) => self -> Bool -> IO ()
 elementScrollIntoView self alignWithTop
   = ghcjs_dom_element_scroll_into_view (unElement (toElement self))
-      (toJSBool alignWithTop)
+      alignWithTop
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "$1[\"scrollIntoViewIfNeeded\"]($2)"
         ghcjs_dom_element_scroll_into_view_if_needed ::
-        JSRef Element -> JSBool -> IO ()
+        JSRef Element -> Bool -> IO ()
 #else 
 ghcjs_dom_element_scroll_into_view_if_needed ::
-                                               JSRef Element -> JSBool -> IO ()
+                                               JSRef Element -> Bool -> IO ()
 ghcjs_dom_element_scroll_into_view_if_needed = undefined
 #endif
  
@@ -452,7 +450,7 @@ elementScrollIntoViewIfNeeded ::
 elementScrollIntoViewIfNeeded self centerIfNeeded
   = ghcjs_dom_element_scroll_into_view_if_needed
       (unElement (toElement self))
-      (toJSBool centerIfNeeded)
+      centerIfNeeded
 
 
 #ifdef __GHCJS__ 
@@ -546,10 +544,10 @@ elementQuerySelectorAll self selectors
 foreign import javascript unsafe
         "($1[\"webkitMatchesSelector\"]($2) ? 1 : 0)"
         ghcjs_dom_element_webkit_matches_selector ::
-        JSRef Element -> JSString -> IO JSBool
+        JSRef Element -> JSString -> IO Bool
 #else 
 ghcjs_dom_element_webkit_matches_selector ::
-                                            JSRef Element -> JSString -> IO JSBool
+                                            JSRef Element -> JSString -> IO Bool
 ghcjs_dom_element_webkit_matches_selector = undefined
 #endif
  
@@ -557,10 +555,9 @@ elementWebkitMatchesSelector ::
                              (IsElement self, ToJSString selectors) =>
                                self -> selectors -> IO Bool
 elementWebkitMatchesSelector self selectors
-  = fromJSBool <$>
-      (ghcjs_dom_element_webkit_matches_selector
-         (unElement (toElement self))
-         (toJSString selectors))
+  = ghcjs_dom_element_webkit_matches_selector
+      (unElement (toElement self))
+      (toJSString selectors)
 
 
 #ifdef __GHCJS__ 

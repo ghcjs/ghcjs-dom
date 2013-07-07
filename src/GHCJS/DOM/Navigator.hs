@@ -35,16 +35,15 @@ import GHCJS.DOM.EventM
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"javaEnabled\"]() ? 1 : 0)"
-        ghcjs_dom_navigator_java_enabled :: JSRef Navigator -> IO JSBool
+        ghcjs_dom_navigator_java_enabled :: JSRef Navigator -> IO Bool
 #else 
-ghcjs_dom_navigator_java_enabled :: JSRef Navigator -> IO JSBool
+ghcjs_dom_navigator_java_enabled :: JSRef Navigator -> IO Bool
 ghcjs_dom_navigator_java_enabled = undefined
 #endif
  
 navigatorJavaEnabled :: (IsNavigator self) => self -> IO Bool
 navigatorJavaEnabled self
-  = fromJSBool <$>
-      (ghcjs_dom_navigator_java_enabled (unNavigator (toNavigator self)))
+  = ghcjs_dom_navigator_java_enabled (unNavigator (toNavigator self))
 
 
 #ifdef __GHCJS__ 
@@ -264,29 +263,27 @@ navigatorGetVendorSub self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"cookieEnabled\"] ? 1 : 0)"
         ghcjs_dom_navigator_get_cookie_enabled ::
-        JSRef Navigator -> IO JSBool
+        JSRef Navigator -> IO Bool
 #else 
 ghcjs_dom_navigator_get_cookie_enabled ::
-                                         JSRef Navigator -> IO JSBool
+                                         JSRef Navigator -> IO Bool
 ghcjs_dom_navigator_get_cookie_enabled = undefined
 #endif
  
 navigatorGetCookieEnabled :: (IsNavigator self) => self -> IO Bool
 navigatorGetCookieEnabled self
-  = fromJSBool <$>
-      (ghcjs_dom_navigator_get_cookie_enabled
-         (unNavigator (toNavigator self)))
+  = ghcjs_dom_navigator_get_cookie_enabled
+      (unNavigator (toNavigator self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"onLine\"] ? 1 : 0)"
-        ghcjs_dom_navigator_get_on_line :: JSRef Navigator -> IO JSBool
+        ghcjs_dom_navigator_get_on_line :: JSRef Navigator -> IO Bool
 #else 
-ghcjs_dom_navigator_get_on_line :: JSRef Navigator -> IO JSBool
+ghcjs_dom_navigator_get_on_line :: JSRef Navigator -> IO Bool
 ghcjs_dom_navigator_get_on_line = undefined
 #endif
  
 navigatorGetOnLine :: (IsNavigator self) => self -> IO Bool
 navigatorGetOnLine self
-  = fromJSBool <$>
-      (ghcjs_dom_navigator_get_on_line (unNavigator (toNavigator self)))
+  = ghcjs_dom_navigator_get_on_line (unNavigator (toNavigator self))

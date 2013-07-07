@@ -203,19 +203,18 @@ htmlInputElementStepDown self n
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_input_element_check_validity ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_check_validity ::
-                                              JSRef HTMLInputElement -> IO JSBool
+                                              JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_check_validity = undefined
 #endif
  
 htmlInputElementCheckValidity ::
                               (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementCheckValidity self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_check_validity
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_check_validity
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -384,10 +383,10 @@ htmlInputElementGetAutocomplete self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_input_element_set_autofocus ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_autofocus ::
-                                             JSRef HTMLInputElement -> JSBool -> IO ()
+                                             JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_autofocus = undefined
 #endif
  
@@ -396,34 +395,33 @@ htmlInputElementSetAutofocus ::
 htmlInputElementSetAutofocus self val
   = ghcjs_dom_html_input_element_set_autofocus
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_autofocus ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_autofocus ::
-                                             JSRef HTMLInputElement -> IO JSBool
+                                             JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_autofocus = undefined
 #endif
  
 htmlInputElementGetAutofocus ::
                              (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetAutofocus self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_autofocus
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_autofocus
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"defaultChecked\"] = $2;"
         ghcjs_dom_html_input_element_set_default_checked ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_default_checked ::
-                                                   JSRef HTMLInputElement -> JSBool -> IO ()
+                                                   JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_default_checked = undefined
 #endif
  
@@ -432,34 +430,33 @@ htmlInputElementSetDefaultChecked ::
 htmlInputElementSetDefaultChecked self val
   = ghcjs_dom_html_input_element_set_default_checked
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"defaultChecked\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_default_checked ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_default_checked ::
-                                                   JSRef HTMLInputElement -> IO JSBool
+                                                   JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_default_checked = undefined
 #endif
  
 htmlInputElementGetDefaultChecked ::
                                   (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetDefaultChecked self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_default_checked
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_default_checked
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"checked\"] = $2;"
         ghcjs_dom_html_input_element_set_checked ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_checked ::
-                                           JSRef HTMLInputElement -> JSBool -> IO ()
+                                           JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_checked = undefined
 #endif
  
@@ -468,25 +465,24 @@ htmlInputElementSetChecked ::
 htmlInputElementSetChecked self val
   = ghcjs_dom_html_input_element_set_checked
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"checked\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_checked ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_checked ::
-                                           JSRef HTMLInputElement -> IO JSBool
+                                           JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_checked = undefined
 #endif
  
 htmlInputElementGetChecked ::
                            (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetChecked self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_checked
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_checked
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -528,10 +524,10 @@ htmlInputElementGetDirName self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_input_element_set_disabled ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_disabled ::
-                                            JSRef HTMLInputElement -> JSBool -> IO ()
+                                            JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_disabled = undefined
 #endif
  
@@ -540,25 +536,24 @@ htmlInputElementSetDisabled ::
 htmlInputElementSetDisabled self val
   = ghcjs_dom_html_input_element_set_disabled
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_disabled ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_disabled ::
-                                            JSRef HTMLInputElement -> IO JSBool
+                                            JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_disabled = undefined
 #endif
  
 htmlInputElementGetDisabled ::
                             (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_disabled
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_disabled
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -727,10 +722,10 @@ htmlInputElementGetFormMethod self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         ghcjs_dom_html_input_element_set_form_no_validate ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_form_no_validate ::
-                                                    JSRef HTMLInputElement -> JSBool -> IO ()
+                                                    JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_form_no_validate = undefined
 #endif
  
@@ -739,25 +734,24 @@ htmlInputElementSetFormNoValidate ::
 htmlInputElementSetFormNoValidate self val
   = ghcjs_dom_html_input_element_set_form_no_validate
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_form_no_validate ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_form_no_validate ::
-                                                    JSRef HTMLInputElement -> IO JSBool
+                                                    JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_form_no_validate = undefined
 #endif
  
 htmlInputElementGetFormNoValidate ::
                                   (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetFormNoValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_form_no_validate
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_form_no_validate
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -834,10 +828,10 @@ htmlInputElementGetHeight self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"indeterminate\"] = $2;"
         ghcjs_dom_html_input_element_set_indeterminate ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_indeterminate ::
-                                                 JSRef HTMLInputElement -> JSBool -> IO ()
+                                                 JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_indeterminate = undefined
 #endif
  
@@ -846,25 +840,24 @@ htmlInputElementSetIndeterminate ::
 htmlInputElementSetIndeterminate self val
   = ghcjs_dom_html_input_element_set_indeterminate
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"indeterminate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_indeterminate ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_indeterminate ::
-                                                 JSRef HTMLInputElement -> IO JSBool
+                                                 JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_indeterminate = undefined
 #endif
  
 htmlInputElementGetIndeterminate ::
                                  (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetIndeterminate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_indeterminate
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_indeterminate
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -995,10 +988,10 @@ htmlInputElementGetMin self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"multiple\"] = $2;"
         ghcjs_dom_html_input_element_set_multiple ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_multiple ::
-                                            JSRef HTMLInputElement -> JSBool -> IO ()
+                                            JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_multiple = undefined
 #endif
  
@@ -1007,25 +1000,24 @@ htmlInputElementSetMultiple ::
 htmlInputElementSetMultiple self val
   = ghcjs_dom_html_input_element_set_multiple
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_multiple ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_multiple ::
-                                            JSRef HTMLInputElement -> IO JSBool
+                                            JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_multiple = undefined
 #endif
  
 htmlInputElementGetMultiple ::
                             (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetMultiple self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_multiple
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_multiple
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -1139,10 +1131,10 @@ htmlInputElementGetPlaceholder self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"readOnly\"] = $2;"
         ghcjs_dom_html_input_element_set_read_only ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_read_only ::
-                                             JSRef HTMLInputElement -> JSBool -> IO ()
+                                             JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_read_only = undefined
 #endif
  
@@ -1151,34 +1143,33 @@ htmlInputElementSetReadOnly ::
 htmlInputElementSetReadOnly self val
   = ghcjs_dom_html_input_element_set_read_only
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_read_only ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_read_only ::
-                                             JSRef HTMLInputElement -> IO JSBool
+                                             JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_read_only = undefined
 #endif
  
 htmlInputElementGetReadOnly ::
                             (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetReadOnly self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_read_only
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_read_only
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_input_element_set_required ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_required ::
-                                            JSRef HTMLInputElement -> JSBool -> IO ()
+                                            JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_required = undefined
 #endif
  
@@ -1187,25 +1178,24 @@ htmlInputElementSetRequired ::
 htmlInputElementSetRequired self val
   = ghcjs_dom_html_input_element_set_required
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_required ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_required ::
-                                            JSRef HTMLInputElement -> IO JSBool
+                                            JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_required = undefined
 #endif
  
 htmlInputElementGetRequired ::
                             (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetRequired self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_required
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_required
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -1460,19 +1450,18 @@ htmlInputElementGetWidth self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_will_validate ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_will_validate ::
-                                                 JSRef HTMLInputElement -> IO JSBool
+                                                 JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_will_validate = undefined
 #endif
  
 htmlInputElementGetWillValidate ::
                                 (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetWillValidate self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_will_validate
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_will_validate
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -1569,10 +1558,10 @@ htmlInputElementGetAlign self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"webkitdirectory\"] = $2;"
         ghcjs_dom_html_input_element_set_webkitdirectory ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_webkitdirectory ::
-                                                   JSRef HTMLInputElement -> JSBool -> IO ()
+                                                   JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_webkitdirectory = undefined
 #endif
  
@@ -1581,26 +1570,25 @@ htmlInputElementSetWebkitdirectory ::
 htmlInputElementSetWebkitdirectory self val
   = ghcjs_dom_html_input_element_set_webkitdirectory
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"webkitdirectory\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_webkitdirectory ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_webkitdirectory ::
-                                                   JSRef HTMLInputElement -> IO JSBool
+                                                   JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_webkitdirectory = undefined
 #endif
  
 htmlInputElementGetWebkitdirectory ::
                                    (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetWebkitdirectory self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_webkitdirectory
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_webkitdirectory
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
@@ -1642,10 +1630,10 @@ htmlInputElementGetUseMap self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"incremental\"] = $2;"
         ghcjs_dom_html_input_element_set_incremental ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_incremental ::
-                                               JSRef HTMLInputElement -> JSBool -> IO ()
+                                               JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_incremental = undefined
 #endif
  
@@ -1654,34 +1642,33 @@ htmlInputElementSetIncremental ::
 htmlInputElementSetIncremental self val
   = ghcjs_dom_html_input_element_set_incremental
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"incremental\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_incremental ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_incremental ::
-                                               JSRef HTMLInputElement -> IO JSBool
+                                               JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_incremental = undefined
 #endif
  
 htmlInputElementGetIncremental ::
                                (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetIncremental self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_incremental
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_incremental
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"webkitSpeech\"] = $2;"
         ghcjs_dom_html_input_element_set_webkit_speech ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_webkit_speech ::
-                                                 JSRef HTMLInputElement -> JSBool -> IO ()
+                                                 JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_webkit_speech = undefined
 #endif
  
@@ -1690,34 +1677,33 @@ htmlInputElementSetWebkitSpeech ::
 htmlInputElementSetWebkitSpeech self val
   = ghcjs_dom_html_input_element_set_webkit_speech
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"webkitSpeech\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_webkit_speech ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_webkit_speech ::
-                                                 JSRef HTMLInputElement -> IO JSBool
+                                                 JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_webkit_speech = undefined
 #endif
  
 htmlInputElementGetWebkitSpeech ::
                                 (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetWebkitSpeech self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_webkit_speech
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_webkit_speech
+      (unHTMLInputElement (toHTMLInputElement self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"webkitGrammar\"] = $2;"
         ghcjs_dom_html_input_element_set_webkit_grammar ::
-        JSRef HTMLInputElement -> JSBool -> IO ()
+        JSRef HTMLInputElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_input_element_set_webkit_grammar ::
-                                                  JSRef HTMLInputElement -> JSBool -> IO ()
+                                                  JSRef HTMLInputElement -> Bool -> IO ()
 ghcjs_dom_html_input_element_set_webkit_grammar = undefined
 #endif
  
@@ -1726,25 +1712,24 @@ htmlInputElementSetWebkitGrammar ::
 htmlInputElementSetWebkitGrammar self val
   = ghcjs_dom_html_input_element_set_webkit_grammar
       (unHTMLInputElement (toHTMLInputElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"webkitGrammar\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_webkit_grammar ::
-        JSRef HTMLInputElement -> IO JSBool
+        JSRef HTMLInputElement -> IO Bool
 #else 
 ghcjs_dom_html_input_element_get_webkit_grammar ::
-                                                  JSRef HTMLInputElement -> IO JSBool
+                                                  JSRef HTMLInputElement -> IO Bool
 ghcjs_dom_html_input_element_get_webkit_grammar = undefined
 #endif
  
 htmlInputElementGetWebkitGrammar ::
                                  (IsHTMLInputElement self) => self -> IO Bool
 htmlInputElementGetWebkitGrammar self
-  = fromJSBool <$>
-      (ghcjs_dom_html_input_element_get_webkit_grammar
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = ghcjs_dom_html_input_element_get_webkit_grammar
+      (unHTMLInputElement (toHTMLInputElement self))
  
 htmlInputElementOnwebkitspeechchange ::
                                      (IsHTMLInputElement self) =>

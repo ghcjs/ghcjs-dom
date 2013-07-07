@@ -40,32 +40,31 @@ foreign import javascript unsafe
         ghcjs_dom_mouse_event_init_mouse_event ::
         JSRef MouseEvent ->
           JSString ->
-            JSBool ->
-              JSBool ->
+            Bool ->
+              Bool ->
                 JSRef DOMWindow ->
                   Int ->
                     Int ->
                       Int ->
                         Int ->
                           Int ->
-                            JSBool ->
-                              JSBool -> JSBool -> JSBool -> Word -> JSRef EventTarget -> IO ()
+                            Bool -> Bool -> Bool -> Bool -> Word -> JSRef EventTarget -> IO ()
 #else 
 ghcjs_dom_mouse_event_init_mouse_event ::
                                          JSRef MouseEvent ->
                                            JSString ->
-                                             JSBool ->
-                                               JSBool ->
+                                             Bool ->
+                                               Bool ->
                                                  JSRef DOMWindow ->
                                                    Int ->
                                                      Int ->
                                                        Int ->
                                                          Int ->
                                                            Int ->
-                                                             JSBool ->
-                                                               JSBool ->
-                                                                 JSBool ->
-                                                                   JSBool ->
+                                                             Bool ->
+                                                               Bool ->
+                                                                 Bool ->
+                                                                   Bool ->
                                                                      Word ->
                                                                        JSRef EventTarget -> IO ()
 ghcjs_dom_mouse_event_init_mouse_event = undefined
@@ -94,18 +93,18 @@ mouseEventInitMouseEvent self type' canBubble cancelable view
   = ghcjs_dom_mouse_event_init_mouse_event
       (unMouseEvent (toMouseEvent self))
       (toJSString type')
-      (toJSBool canBubble)
-      (toJSBool cancelable)
+      canBubble
+      cancelable
       (maybe jsNull (unDOMWindow . toDOMWindow) view)
       detail
       screenX
       screenY
       clientX
       clientY
-      (toJSBool ctrlKey)
-      (toJSBool altKey)
-      (toJSBool shiftKey)
-      (toJSBool metaKey)
+      ctrlKey
+      altKey
+      shiftKey
+      metaKey
       button
       (maybe jsNull (unEventTarget . toEventTarget) relatedTarget)
 
@@ -202,64 +201,58 @@ mouseEventGetWebkitMovementY self
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
-        ghcjs_dom_mouse_event_get_ctrl_key :: JSRef MouseEvent -> IO JSBool
+        ghcjs_dom_mouse_event_get_ctrl_key :: JSRef MouseEvent -> IO Bool
 #else 
-ghcjs_dom_mouse_event_get_ctrl_key :: JSRef MouseEvent -> IO JSBool
+ghcjs_dom_mouse_event_get_ctrl_key :: JSRef MouseEvent -> IO Bool
 ghcjs_dom_mouse_event_get_ctrl_key = undefined
 #endif
  
 mouseEventGetCtrlKey :: (IsMouseEvent self) => self -> IO Bool
 mouseEventGetCtrlKey self
-  = fromJSBool <$>
-      (ghcjs_dom_mouse_event_get_ctrl_key
-         (unMouseEvent (toMouseEvent self)))
+  = ghcjs_dom_mouse_event_get_ctrl_key
+      (unMouseEvent (toMouseEvent self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
-        ghcjs_dom_mouse_event_get_shift_key ::
-        JSRef MouseEvent -> IO JSBool
+        ghcjs_dom_mouse_event_get_shift_key :: JSRef MouseEvent -> IO Bool
 #else 
-ghcjs_dom_mouse_event_get_shift_key ::
-                                      JSRef MouseEvent -> IO JSBool
+ghcjs_dom_mouse_event_get_shift_key :: JSRef MouseEvent -> IO Bool
 ghcjs_dom_mouse_event_get_shift_key = undefined
 #endif
  
 mouseEventGetShiftKey :: (IsMouseEvent self) => self -> IO Bool
 mouseEventGetShiftKey self
-  = fromJSBool <$>
-      (ghcjs_dom_mouse_event_get_shift_key
-         (unMouseEvent (toMouseEvent self)))
+  = ghcjs_dom_mouse_event_get_shift_key
+      (unMouseEvent (toMouseEvent self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
-        ghcjs_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO JSBool
+        ghcjs_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO Bool
 #else 
-ghcjs_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO JSBool
+ghcjs_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO Bool
 ghcjs_dom_mouse_event_get_alt_key = undefined
 #endif
  
 mouseEventGetAltKey :: (IsMouseEvent self) => self -> IO Bool
 mouseEventGetAltKey self
-  = fromJSBool <$>
-      (ghcjs_dom_mouse_event_get_alt_key
-         (unMouseEvent (toMouseEvent self)))
+  = ghcjs_dom_mouse_event_get_alt_key
+      (unMouseEvent (toMouseEvent self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
-        ghcjs_dom_mouse_event_get_meta_key :: JSRef MouseEvent -> IO JSBool
+        ghcjs_dom_mouse_event_get_meta_key :: JSRef MouseEvent -> IO Bool
 #else 
-ghcjs_dom_mouse_event_get_meta_key :: JSRef MouseEvent -> IO JSBool
+ghcjs_dom_mouse_event_get_meta_key :: JSRef MouseEvent -> IO Bool
 ghcjs_dom_mouse_event_get_meta_key = undefined
 #endif
  
 mouseEventGetMetaKey :: (IsMouseEvent self) => self -> IO Bool
 mouseEventGetMetaKey self
-  = fromJSBool <$>
-      (ghcjs_dom_mouse_event_get_meta_key
-         (unMouseEvent (toMouseEvent self)))
+  = ghcjs_dom_mouse_event_get_meta_key
+      (unMouseEvent (toMouseEvent self))
 
 
 #ifdef __GHCJS__ 

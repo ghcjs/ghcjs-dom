@@ -40,10 +40,10 @@ import GHCJS.DOM.EventM
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_link_element_set_disabled ::
-        JSRef HTMLLinkElement -> JSBool -> IO ()
+        JSRef HTMLLinkElement -> Bool -> IO ()
 #else 
 ghcjs_dom_html_link_element_set_disabled ::
-                                           JSRef HTMLLinkElement -> JSBool -> IO ()
+                                           JSRef HTMLLinkElement -> Bool -> IO ()
 ghcjs_dom_html_link_element_set_disabled = undefined
 #endif
  
@@ -52,25 +52,24 @@ htmlLinkElementSetDisabled ::
 htmlLinkElementSetDisabled self val
   = ghcjs_dom_html_link_element_set_disabled
       (unHTMLLinkElement (toHTMLLinkElement self))
-      (toJSBool val)
+      val
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_link_element_get_disabled ::
-        JSRef HTMLLinkElement -> IO JSBool
+        JSRef HTMLLinkElement -> IO Bool
 #else 
 ghcjs_dom_html_link_element_get_disabled ::
-                                           JSRef HTMLLinkElement -> IO JSBool
+                                           JSRef HTMLLinkElement -> IO Bool
 ghcjs_dom_html_link_element_get_disabled = undefined
 #endif
  
 htmlLinkElementGetDisabled ::
                            (IsHTMLLinkElement self) => self -> IO Bool
 htmlLinkElementGetDisabled self
-  = fromJSBool <$>
-      (ghcjs_dom_html_link_element_get_disabled
-         (unHTMLLinkElement (toHTMLLinkElement self)))
+  = ghcjs_dom_html_link_element_get_disabled
+      (unHTMLLinkElement (toHTMLLinkElement self))
 
 
 #ifdef __GHCJS__ 
