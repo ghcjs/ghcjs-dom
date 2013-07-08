@@ -2,7 +2,7 @@
 module GHCJS.DOM.Types (
     maybeJSNull, propagateGError
 
-  , GObject(GObject), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject
+  , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject
   , WebView(WebView), WebViewClass, toWebView, unWebView, castToWebView, gTypeWebView
 
 -- AUTO GENERATION STARTS HERE
