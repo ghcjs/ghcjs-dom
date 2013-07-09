@@ -125,8 +125,6 @@ module GHCJS.DOM.Types (
   , IsTreeWalker
   , IsUIEvent
   , IsValidityState
-  , IsWebKitAnimation
-  , IsWebKitAnimationList
   , IsWebKitNamedFlow
   , IsWebKitPoint
   , IsXPathExpression
@@ -384,10 +382,6 @@ type IsTreeWalker o = TreeWalkerClass o
 type IsUIEvent o = UIEventClass o
 
 type IsValidityState o = ValidityStateClass o
-
-type IsWebKitAnimation o = WebKitAnimationClass o
-
-type IsWebKitAnimationList o = WebKitAnimationListClass o
 
 type IsWebKitNamedFlow o = WebKitNamedFlowClass o
 

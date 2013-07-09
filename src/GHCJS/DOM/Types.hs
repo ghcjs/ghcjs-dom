@@ -130,8 +130,6 @@ module GHCJS.DOM.Types (
   , TreeWalker(TreeWalker), unTreeWalker, IsTreeWalker, toTreeWalker, castToTreeWalker, gTypeTreeWalker
   , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, castToUIEvent, gTypeUIEvent
   , ValidityState(ValidityState), unValidityState, IsValidityState, toValidityState, castToValidityState, gTypeValidityState
-  , WebKitAnimation(WebKitAnimation), unWebKitAnimation, IsWebKitAnimation, toWebKitAnimation, castToWebKitAnimation, gTypeWebKitAnimation
-  , WebKitAnimationList(WebKitAnimationList), unWebKitAnimationList, IsWebKitAnimationList, toWebKitAnimationList, castToWebKitAnimationList, gTypeWebKitAnimationList
   , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, IsWebKitNamedFlow, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
   , WebKitPoint(WebKitPoint), unWebKitPoint, IsWebKitPoint, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
   , XPathExpression(XPathExpression), unXPathExpression, IsXPathExpression, toXPathExpression, castToXPathExpression, gTypeXPathExpression
@@ -3401,54 +3399,6 @@ foreign import javascript unsafe "window.ValidityState" gTypeValidityState' :: J
 gTypeValidityState' = error "gTypeValidityState': only available in JavaScript"
 #endif
 gTypeValidityState = GType gTypeValidityState'
-
-
-data WebKitAnimation = WebKitAnimation (JSRef WebKitAnimation)
-
-unWebKitAnimation (WebKitAnimation o) = o
-
-class GObjectClass o => IsWebKitAnimation o
-toWebKitAnimation :: IsWebKitAnimation o => o -> WebKitAnimation
-toWebKitAnimation = unsafeCastGObject . toGObject
-
-instance IsWebKitAnimation WebKitAnimation
-instance GObjectClass WebKitAnimation where
-  toGObject = GObject . castRef . unWebKitAnimation
-  unsafeCastGObject = WebKitAnimation . castRef . unGObject
-
-castToWebKitAnimation :: GObjectClass obj => obj -> WebKitAnimation
-castToWebKitAnimation = castTo gTypeWebKitAnimation "WebKitAnimation"
-
-#ifdef __GHCJS__
-foreign import javascript unsafe "window.WebKitAnimation" gTypeWebKitAnimation' :: JSRef GType
-#else
-gTypeWebKitAnimation' = error "gTypeWebKitAnimation': only available in JavaScript"
-#endif
-gTypeWebKitAnimation = GType gTypeWebKitAnimation'
-
-
-data WebKitAnimationList = WebKitAnimationList (JSRef WebKitAnimationList)
-
-unWebKitAnimationList (WebKitAnimationList o) = o
-
-class GObjectClass o => IsWebKitAnimationList o
-toWebKitAnimationList :: IsWebKitAnimationList o => o -> WebKitAnimationList
-toWebKitAnimationList = unsafeCastGObject . toGObject
-
-instance IsWebKitAnimationList WebKitAnimationList
-instance GObjectClass WebKitAnimationList where
-  toGObject = GObject . castRef . unWebKitAnimationList
-  unsafeCastGObject = WebKitAnimationList . castRef . unGObject
-
-castToWebKitAnimationList :: GObjectClass obj => obj -> WebKitAnimationList
-castToWebKitAnimationList = castTo gTypeWebKitAnimationList "WebKitAnimationList"
-
-#ifdef __GHCJS__
-foreign import javascript unsafe "window.WebKitAnimationList" gTypeWebKitAnimationList' :: JSRef GType
-#else
-gTypeWebKitAnimationList' = error "gTypeWebKitAnimationList': only available in JavaScript"
-#endif
-gTypeWebKitAnimationList = GType gTypeWebKitAnimationList'
 
 
 data WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow)
