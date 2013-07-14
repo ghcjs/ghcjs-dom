@@ -14,6 +14,10 @@ flag jsc
     description: Use GtkWebKit JavaScriptCore
     default: False
 
+flag gtk3
+    Description: Use GTK3 rather than GTK2 (only matters when using webkit)
+    Default: True
+
 library
     build-depends: base -any, mtl -any
     exposed-modules:
@@ -159,15 +163,19 @@ library
     else
       if !flag(jsc)
         hs-source-dirs: webkit
-        build-depends:  glib >=0.12.3.1 && <0.13,
-                        gtk (>=0.12.4.1 && <0.13) || (>=3.12.4.1 && <3.13),
-                        webkit >=0.12.5
+        if flag(gtk3)
+          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
+        else
+          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
+        build-depends:  glib >=0.12.3.1 && <0.13
         c-sources:      cbits/ghcjs_stubs.c
       else
         hs-source-dirs: jsc
-        build-depends:  glib >=0.12.3.1 && <0.13,
-                        gtk (>=0.12.4.1 && <0.13) || (>=3.12.4.1 && <3.13),
-                        webkit >=0.12.5
+        if flag(gtk3)
+          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
+        else
+          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
+        build-depends:  glib >=0.12.3.1 && <0.13
         c-sources:      cbits/ghcjs_stubs.c
 
     exposed: True

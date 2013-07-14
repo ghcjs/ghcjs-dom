@@ -9,7 +9,7 @@ import Graphics.UI.Gtk.WebKit.WebView
        (webViewSetWebSettings, webViewGetWebSettings, loadStarted,
         webViewLoadUri, loadFinished, webViewNew, webViewGetDomDocument)
 import Graphics.UI.Gtk
-       (timeoutAddFull, widgetShowAll, mainQuit, onDestroy,
+       (timeoutAddFull, widgetShowAll, mainQuit, destroyEvent,
         WindowPosition(..), containerAdd, scrolledWindowNew,
         windowSetPosition, windowSetDefaultSize, windowNew, mainGUI,
         initGUI)
@@ -29,6 +29,7 @@ import Control.Concurrent
        (yield, threadDelay, takeMVar, newEmptyMVar)
 import System.Environment (getArgs)
 import Data.List (isSuffixOf)
+import Control.Monad.Trans (liftIO)
 
 foreign import ccall safe "ghcjs_currentWindow"
   ghcjs_currentWindow :: IO (Ptr DOMWindow)
@@ -73,7 +74,7 @@ makeDefaultWebView userAgentKey main = do
   webViewSetWebSettings webView settings
   window `containerAdd` scrollWin
   scrollWin `containerAdd` webView
-  window `onDestroy` mainQuit
+  on window destroyEvent . liftIO $ mainQuit >> return False
   widgetShowAll window
   webView `on` loadFinished $ \frame -> do
     Just doc <- webViewGetDomDocument webView
