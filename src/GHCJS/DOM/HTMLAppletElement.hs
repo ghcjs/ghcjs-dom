@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAppletElement
        (ghcjs_dom_html_applet_element_set_align,
         htmlAppletElementSetAlign, ghcjs_dom_html_applet_element_get_align,
@@ -450,3 +452,9 @@ htmlAppletElementGetWidth self
   = fromJSString <$>
       (ghcjs_dom_html_applet_element_get_width
          (unHTMLAppletElement (toHTMLAppletElement self)))
+#else
+module GHCJS.DOM.HTMLAppletElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLAppletElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLAppletElement
+#endif

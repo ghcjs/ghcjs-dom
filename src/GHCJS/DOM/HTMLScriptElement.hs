@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLScriptElement
        (ghcjs_dom_html_script_element_set_text, htmlScriptElementSetText,
         ghcjs_dom_html_script_element_get_text, htmlScriptElementGetText,
@@ -367,3 +369,9 @@ htmlScriptElementGetNonce self
   = fromJSString <$>
       (ghcjs_dom_html_script_element_get_nonce
          (unHTMLScriptElement (toHTMLScriptElement self)))
+#else
+module GHCJS.DOM.HTMLScriptElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLScriptElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLScriptElement
+#endif

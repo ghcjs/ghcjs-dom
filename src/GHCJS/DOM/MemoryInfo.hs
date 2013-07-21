@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MemoryInfo
        (ghcjs_dom_memory_info_get_total_js_heap_size,
         memoryInfoGetTotalJSHeapSize,
@@ -71,3 +73,9 @@ memoryInfoGetJsHeapSizeLimit ::
 memoryInfoGetJsHeapSizeLimit self
   = ghcjs_dom_memory_info_get_js_heap_size_limit
       (unMemoryInfo (toMemoryInfo self))
+#else
+module GHCJS.DOM.MemoryInfo (
+  module Graphics.UI.Gtk.WebKit.DOM.MemoryInfo
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.MemoryInfo
+#endif

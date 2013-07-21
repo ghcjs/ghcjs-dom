@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLEmbedElement
        (ghcjs_dom_html_embed_element_set_align, htmlEmbedElementSetAlign,
         ghcjs_dom_html_embed_element_get_align, htmlEmbedElementGetAlign,
@@ -202,3 +204,9 @@ htmlEmbedElementGetWidth ::
 htmlEmbedElementGetWidth self
   = ghcjs_dom_html_embed_element_get_width
       (unHTMLEmbedElement (toHTMLEmbedElement self))
+#else
+module GHCJS.DOM.HTMLEmbedElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLEmbedElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLEmbedElement
+#endif

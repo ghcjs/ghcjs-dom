@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Range
        (ghcjs_dom_range_set_start, rangeSetStart, ghcjs_dom_range_set_end,
         rangeSetEnd, ghcjs_dom_range_set_start_before, rangeSetStartBefore,
@@ -575,3 +577,9 @@ rangeGetText ::
 rangeGetText self
   = fromJSString <$>
       (ghcjs_dom_range_get_text (unDOMRange (toDOMRange self)))
+#else
+module GHCJS.DOM.Range (
+  module Graphics.UI.Gtk.WebKit.DOM.Range
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Range
+#endif

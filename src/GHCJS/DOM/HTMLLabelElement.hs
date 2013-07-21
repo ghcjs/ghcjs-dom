@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLabelElement
        (ghcjs_dom_html_label_element_get_form, htmlLabelElementGetForm,
         ghcjs_dom_html_label_element_set_html_for,
@@ -93,3 +95,9 @@ htmlLabelElementGetControl self
   = fmap HTMLElement . maybeJSNull <$>
       (ghcjs_dom_html_label_element_get_control
          (unHTMLLabelElement (toHTMLLabelElement self)))
+#else
+module GHCJS.DOM.HTMLLabelElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLLabelElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLLabelElement
+#endif

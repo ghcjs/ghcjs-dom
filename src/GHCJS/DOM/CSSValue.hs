@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSValue
        (cCSS_INHERIT, cCSS_PRIMITIVE_VALUE, cCSS_VALUE_LIST, cCSS_CUSTOM,
         ghcjs_dom_css_value_set_css_text, cssValueSetCssText,
@@ -68,3 +70,9 @@ cssValueGetCssValueType :: (IsCSSValue self) => self -> IO Word
 cssValueGetCssValueType self
   = ghcjs_dom_css_value_get_css_value_type
       (unCSSValue (toCSSValue self))
+#else
+module GHCJS.DOM.CSSValue (
+  module Graphics.UI.Gtk.WebKit.DOM.CSSValue
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.CSSValue
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLStyleElement
        (ghcjs_dom_html_style_element_set_disabled,
         htmlStyleElementSetDisabled,
@@ -147,3 +149,9 @@ htmlStyleElementGetSheet self
   = fmap StyleSheet . maybeJSNull <$>
       (ghcjs_dom_html_style_element_get_sheet
          (unHTMLStyleElement (toHTMLStyleElement self)))
+#else
+module GHCJS.DOM.HTMLStyleElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLStyleElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLStyleElement
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Screen
        (ghcjs_dom_screen_get_height, screenGetHeight,
         ghcjs_dom_screen_get_width, screenGetWidth,
@@ -127,3 +129,9 @@ ghcjs_dom_screen_get_avail_width = undefined
 screenGetAvailWidth :: (IsDOMScreen self) => self -> IO Word
 screenGetAvailWidth self
   = ghcjs_dom_screen_get_avail_width (unDOMScreen (toDOMScreen self))
+#else
+module GHCJS.DOM.Screen (
+  module Graphics.UI.Gtk.WebKit.DOM.Screen
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Screen
+#endif

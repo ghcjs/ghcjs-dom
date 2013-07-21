@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSecurityPolicy
        (ghcjs_dom_dom_security_policy_is_active,
         domSecurityPolicyIsActive,
@@ -332,3 +334,9 @@ domSecurityPolicyGetReportURIs self
   = fmap DOMStringList . maybeJSNull <$>
       (ghcjs_dom_dom_security_policy_get_report_ur_is
          (unDOMSecurityPolicy (toDOMSecurityPolicy self)))
+#else
+module GHCJS.DOM.DOMSecurityPolicy (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMSecurityPolicy
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMSecurityPolicy
+#endif

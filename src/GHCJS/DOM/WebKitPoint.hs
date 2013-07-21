@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitPoint
        (ghcjs_dom_webkit_point_set_x, webKitPointSetX,
         ghcjs_dom_webkit_point_get_x, webKitPointGetX,
@@ -72,3 +74,9 @@ ghcjs_dom_webkit_point_get_y = undefined
 webKitPointGetY :: (IsWebKitPoint self) => self -> IO Float
 webKitPointGetY self
   = ghcjs_dom_webkit_point_get_y (unWebKitPoint (toWebKitPoint self))
+#else
+module GHCJS.DOM.WebKitPoint (
+  module Graphics.UI.Gtk.WebKit.DOM.WebKitPoint
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.WebKitPoint
+#endif

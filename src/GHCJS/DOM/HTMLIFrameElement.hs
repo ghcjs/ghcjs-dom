@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLIFrameElement
        (ghcjs_dom_html_iframe_element_set_align,
         htmliFrameElementSetAlign, ghcjs_dom_html_iframe_element_get_align,
@@ -578,3 +580,9 @@ htmliFrameElementGetContentWindow self
   = fmap DOMWindow . maybeJSNull <$>
       (ghcjs_dom_html_iframe_element_get_content_window
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
+#else
+module GHCJS.DOM.HTMLIFrameElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLIFrameElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLIFrameElement
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitNamedFlow
        (ghcjs_dom_webkit_named_flow_get_regions_by_content,
         webKitNamedFlowGetRegionsByContent,
@@ -154,3 +156,9 @@ webKitNamedFlowGetFirstEmptyRegionIndex ::
 webKitNamedFlowGetFirstEmptyRegionIndex self
   = ghcjs_dom_webkit_named_flow_get_first_empty_region_index
       (unWebKitNamedFlow (toWebKitNamedFlow self))
+#else
+module GHCJS.DOM.WebKitNamedFlow (
+  module Graphics.UI.Gtk.WebKit.DOM.WebKitNamedFlow
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.WebKitNamedFlow
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Attr
        (ghcjs_dom_attr_get_name, attrGetName,
         ghcjs_dom_attr_get_specified, attrGetSpecified,
@@ -107,3 +109,9 @@ ghcjs_dom_attr_get_is_id = undefined
 attrGetIsId :: (IsDOMAttr self) => self -> IO Bool
 attrGetIsId self
   = ghcjs_dom_attr_get_is_id (unDOMAttr (toDOMAttr self))
+#else
+module GHCJS.DOM.Attr (
+  module Graphics.UI.Gtk.WebKit.DOM.Attr
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Attr
+#endif

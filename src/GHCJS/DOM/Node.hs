@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Node
        (ghcjs_dom_node_insert_before, nodeInsertBefore,
         ghcjs_dom_node_replace_child, nodeReplaceChild,
@@ -665,3 +667,9 @@ nodeGetParentElement :: (IsNode self) => self -> IO (Maybe Element)
 nodeGetParentElement self
   = fmap Element . maybeJSNull <$>
       (ghcjs_dom_node_get_parent_element (unNode (toNode self)))
+#else
+module GHCJS.DOM.Node (
+  module Graphics.UI.Gtk.WebKit.DOM.Node
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Node
+#endif

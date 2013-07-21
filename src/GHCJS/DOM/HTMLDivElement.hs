@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDivElement
        (ghcjs_dom_html_div_element_set_align, htmlDivElementSetAlign,
         ghcjs_dom_html_div_element_get_align, htmlDivElementGetAlign)
@@ -52,3 +54,9 @@ htmlDivElementGetAlign self
   = fromJSString <$>
       (ghcjs_dom_html_div_element_get_align
          (unHTMLDivElement (toHTMLDivElement self)))
+#else
+module GHCJS.DOM.HTMLDivElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLDivElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLDivElement
+#endif

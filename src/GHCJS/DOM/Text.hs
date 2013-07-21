@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Text
        (ghcjs_dom_text_split_text, textSplitText,
         ghcjs_dom_text_replace_whole_text, textReplaceWholeText,
@@ -65,3 +67,9 @@ textGetWholeText ::
 textGetWholeText self
   = fromJSString <$>
       (ghcjs_dom_text_get_whole_text (unText (toText self)))
+#else
+module GHCJS.DOM.Text (
+  module Graphics.UI.Gtk.WebKit.DOM.Text
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Text
+#endif

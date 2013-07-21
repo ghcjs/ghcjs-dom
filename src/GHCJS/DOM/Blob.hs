@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Blob (ghcjs_dom_blob_get_size, blobGetSize) where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -26,3 +28,9 @@ ghcjs_dom_blob_get_size = undefined
 blobGetSize :: (IsBlob self) => self -> IO Word64
 blobGetSize self
   = round <$> (ghcjs_dom_blob_get_size (unBlob (toBlob self)))
+#else
+module GHCJS.DOM.Blob (
+  module Graphics.UI.Gtk.WebKit.DOM.Blob
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Blob
+#endif

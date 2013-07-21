@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Console
        (ghcjs_dom_console_time, consoleTime, ghcjs_dom_console_group_end,
         consoleGroupEnd, ghcjs_dom_console_get_memory, consoleGetMemory)
@@ -61,3 +63,9 @@ consoleGetMemory ::
 consoleGetMemory self
   = fmap MemoryInfo . maybeJSNull <$>
       (ghcjs_dom_console_get_memory (unConsole (toConsole self)))
+#else
+module GHCJS.DOM.Console (
+  module Graphics.UI.Gtk.WebKit.DOM.Console
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Console
+#endif

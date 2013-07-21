@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TreeWalker
        (ghcjs_dom_tree_walker_get_root, treeWalkerGetRoot,
         ghcjs_dom_tree_walker_get_what_to_show, treeWalkerGetWhatToShow,
@@ -125,3 +127,9 @@ treeWalkerGetCurrentNode self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_tree_walker_get_current_node
          (unTreeWalker (toTreeWalker self)))
+#else
+module GHCJS.DOM.TreeWalker (
+  module Graphics.UI.Gtk.WebKit.DOM.TreeWalker
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.TreeWalker
+#endif

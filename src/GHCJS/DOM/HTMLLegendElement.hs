@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLegendElement
        (ghcjs_dom_html_legend_element_get_form, htmlLegendElementGetForm,
         ghcjs_dom_html_legend_element_set_align, htmlLegendElementSetAlign,
@@ -72,3 +74,9 @@ htmlLegendElementGetAlign self
   = fromJSString <$>
       (ghcjs_dom_html_legend_element_get_align
          (unHTMLLegendElement (toHTMLLegendElement self)))
+#else
+module GHCJS.DOM.HTMLLegendElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLLegendElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLLegendElement
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMetaElement
        (ghcjs_dom_html_meta_element_set_content,
         htmlMetaElementSetContent, ghcjs_dom_html_meta_element_get_content,
@@ -169,3 +171,9 @@ htmlMetaElementGetScheme self
   = fromJSString <$>
       (ghcjs_dom_html_meta_element_get_scheme
          (unHTMLMetaElement (toHTMLMetaElement self)))
+#else
+module GHCJS.DOM.HTMLMetaElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLMetaElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLMetaElement
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSStyleDeclaration
        (ghcjs_dom_css_style_declaration_get_property_value,
         cssStyleDeclarationGetPropertyValue,
@@ -284,3 +286,9 @@ cssStyleDeclarationGetParentRule self
   = fmap CSSRule . maybeJSNull <$>
       (ghcjs_dom_css_style_declaration_get_parent_rule
          (unCSSStyleDeclaration (toCSSStyleDeclaration self)))
+#else
+module GHCJS.DOM.CSSStyleDeclaration (
+  module Graphics.UI.Gtk.WebKit.DOM.CSSStyleDeclaration
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.CSSStyleDeclaration
+#endif

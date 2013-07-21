@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSettableTokenList
        (ghcjs_dom_dom_settable_token_list_set_value,
         domSettableTokenListSetValue,
@@ -56,3 +58,9 @@ domSettableTokenListGetValue self
   = fromJSString <$>
       (ghcjs_dom_dom_settable_token_list_get_value
          (unDOMSettableTokenList (toDOMSettableTokenList self)))
+#else
+module GHCJS.DOM.DOMSettableTokenList (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMSettableTokenList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMSettableTokenList
+#endif

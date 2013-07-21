@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Geolocation
        (ghcjs_dom_geolocation_clear_watch, geolocationClearWatch) where
 import GHCJS.Types
@@ -32,3 +34,9 @@ geolocationClearWatch self watchId
   = ghcjs_dom_geolocation_clear_watch
       (unGeolocation (toGeolocation self))
       watchId
+#else
+module GHCJS.DOM.Geolocation (
+  module Graphics.UI.Gtk.WebKit.DOM.Geolocation
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Geolocation
+#endif

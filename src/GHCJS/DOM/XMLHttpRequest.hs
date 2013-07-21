@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XMLHttpRequest
        (ghcjs_dom_xml_http_request_set_request_header,
         xmlHttpRequestSetRequestHeader, ghcjs_dom_xml_http_request_abort,
@@ -351,3 +353,9 @@ xmlHttpRequestGetStatusText self
   = fromJSString <$>
       (ghcjs_dom_xml_http_request_get_status_text
          (unXMLHttpRequest (toXMLHttpRequest self)))
+#else
+module GHCJS.DOM.XMLHttpRequest (
+  module Graphics.UI.Gtk.WebKit.DOM.XMLHttpRequest
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.XMLHttpRequest
+#endif

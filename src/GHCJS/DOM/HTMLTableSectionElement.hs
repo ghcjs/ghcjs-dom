@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableSectionElement
        (ghcjs_dom_html_table_section_element_insert_row,
         htmlTableSectionElementInsertRow,
@@ -248,3 +250,9 @@ htmlTableSectionElementGetRows self
   = fmap HTMLCollection . maybeJSNull <$>
       (ghcjs_dom_html_table_section_element_get_rows
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
+#else
+module GHCJS.DOM.HTMLTableSectionElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLTableSectionElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLTableSectionElement
+#endif

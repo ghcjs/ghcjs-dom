@@ -6,12 +6,16 @@ license: BSD3
 license-file: ""
 data-dir: ""
 
+flag jsffi
+    description: Use JavaScriptFFI extension for GHCJS JavaScript output
+    default: True
+
 flag webkit
-    description: Use GtkWebKit DOM functions
+    description: Use WebKitGtk DOM functions
     default: False
 
 flag jsc
-    description: Use GtkWebKit JavaScriptCore
+    description: Use WebKitGtk JavaScriptCore
     default: False
 
 flag gtk3
@@ -157,27 +161,38 @@ library
           -- GHCJS.DOM.WebKitAnimation
           -- GHCJS.DOM.WebKitAnimationList
 
-    if impl(ghcjs) && !flag(webkit) && !flag(jsc)
-      hs-source-dirs: src
-      build-depends: ghcjs-base
-    else
-      if !flag(jsc)
-        hs-source-dirs: webkit
+    if impl(ghcjs) && flag(jsffi)
+        cpp-options: -DUSE_JAVASCRIPTFFI
+        build-depends: ghcjs-base
+
+    if !impl(ghcjs) || flag(webkit)
+        cpp-options: -DUSE_WEBKIT
+        build-depends:  glib >=0.12.3.1 && <0.13, transformers >=0.3.0.0 && <0.4
         if flag(gtk3)
-          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
+            build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 >=0.12.5 && <0.13
         else
-          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
-        build-depends:  glib >=0.12.3.1 && <0.13
-        c-sources:      cbits/ghcjs_stubs.c
-      else
-        hs-source-dirs: jsc
-        if flag(gtk3)
-          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
-        else
-          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
-        build-depends:  glib >=0.12.3.1 && <0.13
+            build-depends: gtk >=0.12.4.1 && <0.13, webkit >=0.12.5 && <0.13
         c-sources:      cbits/ghcjs_stubs.c
 
+--    if impl(ghcjs) && !flag(webkit) && !flag(jsc)
+--      build-depends: ghcjs-base
+--    else
+--      if !flag(jsc)
+--        if flag(gtk3)
+--          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
+--        else
+--          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
+--        build-depends:  glib >=0.12.3.1 && <0.13
+--        c-sources:      cbits/ghcjs_stubs.c
+--      else
+--        if flag(gtk3)
+--          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
+--        else
+--          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
+--        build-depends:  glib >=0.12.3.1 && <0.13
+--        c-sources:      cbits/ghcjs_stubs.c
+
+    hs-source-dirs: src
     exposed: True
     buildable: True
 

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLObjectElement
        (ghcjs_dom_html_object_element_check_validity,
         htmlObjectElementCheckValidity,
@@ -753,3 +755,9 @@ htmlObjectElementGetContentDocument self
   = fmap Document . maybeJSNull <$>
       (ghcjs_dom_html_object_element_get_content_document
          (unHTMLObjectElement (toHTMLObjectElement self)))
+#else
+module GHCJS.DOM.HTMLObjectElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLObjectElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLObjectElement
+#endif

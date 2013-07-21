@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLHtmlElement
        (ghcjs_dom_html_html_element_set_version,
         htmlHtmlElementSetVersion, ghcjs_dom_html_html_element_get_version,
@@ -93,3 +95,9 @@ htmlHtmlElementGetManifest self
   = fromJSString <$>
       (ghcjs_dom_html_html_element_get_manifest
          (unHTMLHtmlElement (toHTMLHtmlElement self)))
+#else
+module GHCJS.DOM.HTMLHtmlElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLHtmlElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLHtmlElement
+#endif

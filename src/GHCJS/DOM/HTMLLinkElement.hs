@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLinkElement
        (ghcjs_dom_html_link_element_set_disabled,
         htmlLinkElementSetDisabled,
@@ -340,3 +342,9 @@ htmlLinkElementGetSheet self
   = fmap StyleSheet . maybeJSNull <$>
       (ghcjs_dom_html_link_element_get_sheet
          (unHTMLLinkElement (toHTMLLinkElement self)))
+#else
+module GHCJS.DOM.HTMLLinkElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLLinkElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLLinkElement
+#endif

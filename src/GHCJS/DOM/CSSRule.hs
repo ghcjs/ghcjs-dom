@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSRule
        (cUNKNOWN_RULE, cSTYLE_RULE, cCHARSET_RULE, cIMPORT_RULE,
         cMEDIA_RULE, cFONT_FACE_RULE, cPAGE_RULE, cWEBKIT_KEYFRAMES_RULE,
@@ -97,3 +99,9 @@ cssRuleGetParentRule ::
 cssRuleGetParentRule self
   = fmap CSSRule . maybeJSNull <$>
       (ghcjs_dom_css_rule_get_parent_rule (unCSSRule (toCSSRule self)))
+#else
+module GHCJS.DOM.CSSRule (
+  module Graphics.UI.Gtk.WebKit.DOM.CSSRule
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.CSSRule
+#endif

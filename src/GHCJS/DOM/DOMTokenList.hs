@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMTokenList
        (ghcjs_dom_dom_token_list_item, domTokenListItem,
         ghcjs_dom_dom_token_list_contains, domTokenListContains,
@@ -128,3 +130,9 @@ domTokenListGetLength :: (IsDOMTokenList self) => self -> IO Word
 domTokenListGetLength self
   = ghcjs_dom_dom_token_list_get_length
       (unDOMTokenList (toDOMTokenList self))
+#else
+module GHCJS.DOM.DOMTokenList (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMTokenList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMTokenList
+#endif

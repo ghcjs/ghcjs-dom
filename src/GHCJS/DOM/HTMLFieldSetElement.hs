@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFieldSetElement
        (ghcjs_dom_html_field_set_element_check_validity,
         htmlFieldSetElementCheckValidity,
@@ -239,3 +241,9 @@ htmlFieldSetElementGetValidationMessage self
   = fromJSString <$>
       (ghcjs_dom_html_field_set_element_get_validation_message
          (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+#else
+module GHCJS.DOM.HTMLFieldSetElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLFieldSetElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLFieldSetElement
+#endif

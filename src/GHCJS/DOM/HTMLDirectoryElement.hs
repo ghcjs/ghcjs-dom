@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDirectoryElement
        (ghcjs_dom_html_directory_element_set_compact,
         htmlDirectoryElementSetCompact,
@@ -53,3 +55,9 @@ htmlDirectoryElementGetCompact ::
 htmlDirectoryElementGetCompact self
   = ghcjs_dom_html_directory_element_get_compact
       (unHTMLDirectoryElement (toHTMLDirectoryElement self))
+#else
+module GHCJS.DOM.HTMLDirectoryElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLDirectoryElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLDirectoryElement
+#endif

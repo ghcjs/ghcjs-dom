@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableCaptionElement
        (ghcjs_dom_html_table_caption_element_set_align,
         htmlTableCaptionElementSetAlign,
@@ -56,3 +58,9 @@ htmlTableCaptionElementGetAlign self
   = fromJSString <$>
       (ghcjs_dom_html_table_caption_element_get_align
          (unHTMLTableCaptionElement (toHTMLTableCaptionElement self)))
+#else
+module GHCJS.DOM.HTMLTableCaptionElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLTableCaptionElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLTableCaptionElement
+#endif

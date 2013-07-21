@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NamedNodeMap
        (ghcjs_dom_named_node_map_get_named_item, namedNodeMapGetNamedItem,
         ghcjs_dom_named_node_map_set_named_item, namedNodeMapSetNamedItem,
@@ -187,3 +189,9 @@ namedNodeMapGetLength :: (IsNamedNodeMap self) => self -> IO Word
 namedNodeMapGetLength self
   = ghcjs_dom_named_node_map_get_length
       (unNamedNodeMap (toNamedNodeMap self))
+#else
+module GHCJS.DOM.NamedNodeMap (
+  module Graphics.UI.Gtk.WebKit.DOM.NamedNodeMap
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.NamedNodeMap
+#endif

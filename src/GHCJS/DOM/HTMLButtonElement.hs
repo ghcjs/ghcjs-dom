@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLButtonElement
        (ghcjs_dom_html_button_element_check_validity,
         htmlButtonElementCheckValidity,
@@ -513,3 +515,9 @@ htmlButtonElementGetLabels self
   = fmap NodeList . maybeJSNull <$>
       (ghcjs_dom_html_button_element_get_labels
          (unHTMLButtonElement (toHTMLButtonElement self)))
+#else
+module GHCJS.DOM.HTMLButtonElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLButtonElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLButtonElement
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFrameElement
        (ghcjs_dom_html_frame_element_set_frame_border,
         htmlFrameElementSetFrameBorder,
@@ -405,3 +407,9 @@ htmlFrameElementGetHeight ::
 htmlFrameElementGetHeight self
   = ghcjs_dom_html_frame_element_get_height
       (unHTMLFrameElement (toHTMLFrameElement self))
+#else
+module GHCJS.DOM.HTMLFrameElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLFrameElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLFrameElement
+#endif

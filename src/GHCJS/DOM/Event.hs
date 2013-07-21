@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Event
        (ghcjs_dom_event_stop_propagation, eventStopPropagation,
         ghcjs_dom_event_prevent_default, eventPreventDefault,
@@ -280,3 +282,9 @@ ghcjs_dom_event_get_cancel_bubble = undefined
 eventGetCancelBubble :: (IsEvent self) => self -> IO Bool
 eventGetCancelBubble self
   = ghcjs_dom_event_get_cancel_bubble (unEvent (toEvent self))
+#else
+module GHCJS.DOM.Event (
+  module Graphics.UI.Gtk.WebKit.DOM.Event
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Event
+#endif

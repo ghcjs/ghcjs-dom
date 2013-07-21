@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Location
        (ghcjs_dom_location_get_origin, locationGetOrigin,
         ghcjs_dom_location_get_ancestor_origins,
@@ -50,3 +52,9 @@ locationGetAncestorOrigins self
   = fmap DOMStringList . maybeJSNull <$>
       (ghcjs_dom_location_get_ancestor_origins
          (unLocation (toLocation self)))
+#else
+module GHCJS.DOM.Location (
+  module Graphics.UI.Gtk.WebKit.DOM.Location
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Location
+#endif

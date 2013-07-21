@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBaseFontElement
        (ghcjs_dom_html_base_font_element_set_color,
         htmlBaseFontElementSetColor,
@@ -137,3 +139,9 @@ htmlBaseFontElementGetSize ::
 htmlBaseFontElementGetSize self
   = ghcjs_dom_html_base_font_element_get_size
       (unHTMLBaseFontElement (toHTMLBaseFontElement self))
+#else
+module GHCJS.DOM.HTMLBaseFontElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLBaseFontElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLBaseFontElement
+#endif

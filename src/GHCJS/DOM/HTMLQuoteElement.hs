@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLQuoteElement
        (ghcjs_dom_html_quote_element_set_cite, htmlQuoteElementSetCite,
         ghcjs_dom_html_quote_element_get_cite, htmlQuoteElementGetCite)
@@ -52,3 +54,9 @@ htmlQuoteElementGetCite self
   = fromJSString <$>
       (ghcjs_dom_html_quote_element_get_cite
          (unHTMLQuoteElement (toHTMLQuoteElement self)))
+#else
+module GHCJS.DOM.HTMLQuoteElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLQuoteElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLQuoteElement
+#endif

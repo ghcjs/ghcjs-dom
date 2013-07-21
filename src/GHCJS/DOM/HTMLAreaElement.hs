@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAreaElement
        (ghcjs_dom_html_area_element_set_alt, htmlAreaElementSetAlt,
         ghcjs_dom_html_area_element_get_alt, htmlAreaElementGetAlt,
@@ -414,3 +416,9 @@ htmlAreaElementGetSearch self
   = fromJSString <$>
       (ghcjs_dom_html_area_element_get_search
          (unHTMLAreaElement (toHTMLAreaElement self)))
+#else
+module GHCJS.DOM.HTMLAreaElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLAreaElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLAreaElement
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAnchorElement
        (ghcjs_dom_html_anchor_element_set_charset,
         htmlAnchorElementSetCharset,
@@ -775,3 +777,9 @@ htmlAnchorElementGetText self
   = fromJSString <$>
       (ghcjs_dom_html_anchor_element_get_text
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
+#else
+module GHCJS.DOM.HTMLAnchorElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLAnchorElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLAnchorElement
+#endif

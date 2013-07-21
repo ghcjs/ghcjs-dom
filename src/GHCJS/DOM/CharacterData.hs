@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CharacterData
        (ghcjs_dom_character_data_substring_data,
         characterDataSubstringData, ghcjs_dom_character_data_append_data,
@@ -174,3 +176,9 @@ characterDataGetLength :: (IsCharacterData self) => self -> IO Word
 characterDataGetLength self
   = ghcjs_dom_character_data_get_length
       (unCharacterData (toCharacterData self))
+#else
+module GHCJS.DOM.CharacterData (
+  module Graphics.UI.Gtk.WebKit.DOM.CharacterData
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.CharacterData
+#endif

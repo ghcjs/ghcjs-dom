@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLCanvasElement
        (ghcjs_dom_html_canvas_element_set_width,
         htmlCanvasElementSetWidth, ghcjs_dom_html_canvas_element_get_width,
@@ -91,3 +93,9 @@ htmlCanvasElementGetHeight ::
 htmlCanvasElementGetHeight self
   = ghcjs_dom_html_canvas_element_get_height
       (unHTMLCanvasElement (toHTMLCanvasElement self))
+#else
+module GHCJS.DOM.HTMLCanvasElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLCanvasElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLCanvasElement
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLPreElement
        (ghcjs_dom_html_pre_element_set_width, htmlPreElementSetWidth,
         ghcjs_dom_html_pre_element_get_width, htmlPreElementGetWidth,
@@ -86,3 +88,9 @@ htmlPreElementGetWrap :: (IsHTMLPreElement self) => self -> IO Bool
 htmlPreElementGetWrap self
   = ghcjs_dom_html_pre_element_get_wrap
       (unHTMLPreElement (toHTMLPreElement self))
+#else
+module GHCJS.DOM.HTMLPreElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLPreElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLPreElement
+#endif

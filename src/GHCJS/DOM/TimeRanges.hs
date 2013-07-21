@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TimeRanges
        (ghcjs_dom_time_ranges_start, timeRangesStart,
         ghcjs_dom_time_ranges_end, timeRangesEnd,
@@ -59,3 +61,9 @@ timeRangesGetLength :: (IsTimeRanges self) => self -> IO Word
 timeRangesGetLength self
   = ghcjs_dom_time_ranges_get_length
       (unTimeRanges (toTimeRanges self))
+#else
+module GHCJS.DOM.TimeRanges (
+  module Graphics.UI.Gtk.WebKit.DOM.TimeRanges
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.TimeRanges
+#endif

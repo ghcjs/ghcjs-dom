@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBaseElement
        (ghcjs_dom_html_base_element_set_href, htmlBaseElementSetHref,
         ghcjs_dom_html_base_element_get_href, htmlBaseElementGetHref,
@@ -90,3 +92,9 @@ htmlBaseElementGetTarget self
   = fromJSString <$>
       (ghcjs_dom_html_base_element_get_target
          (unHTMLBaseElement (toHTMLBaseElement self)))
+#else
+module GHCJS.DOM.HTMLBaseElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLBaseElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLBaseElement
+#endif

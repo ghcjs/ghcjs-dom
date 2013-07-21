@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMapElement
        (ghcjs_dom_html_map_element_get_areas, htmlMapElementGetAreas,
         ghcjs_dom_html_map_element_set_name, htmlMapElementSetName,
@@ -71,3 +73,9 @@ htmlMapElementGetName self
   = fromJSString <$>
       (ghcjs_dom_html_map_element_get_name
          (unHTMLMapElement (toHTMLMapElement self)))
+#else
+module GHCJS.DOM.HTMLMapElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLMapElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLMapElement
+#endif

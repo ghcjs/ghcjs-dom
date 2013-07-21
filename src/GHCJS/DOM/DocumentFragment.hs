@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DocumentFragment
        (ghcjs_dom_document_fragment_query_selector,
         documentFragmentQuerySelector,
@@ -60,3 +62,9 @@ documentFragmentQuerySelectorAll self selectors
       (ghcjs_dom_document_fragment_query_selector_all
          (unDocumentFragment (toDocumentFragment self))
          (toJSString selectors))
+#else
+module GHCJS.DOM.DocumentFragment (
+  module Graphics.UI.Gtk.WebKit.DOM.DocumentFragment
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DocumentFragment
+#endif

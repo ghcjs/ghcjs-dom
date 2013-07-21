@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFrameSetElement
        (ghcjs_dom_html_frame_set_element_set_cols,
         htmlFrameSetElementSetCols,
@@ -176,3 +178,9 @@ htmlFrameSetElementOnload ::
                           (IsHTMLFrameSetElement self) =>
                             Signal self (EventM UIEvent self ())
 htmlFrameSetElementOnload = (connect "load")
+#else
+module GHCJS.DOM.HTMLFrameSetElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLFrameSetElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLFrameSetElement
+#endif

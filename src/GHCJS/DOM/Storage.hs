@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Storage
        (ghcjs_dom_storage_key, storageKey, ghcjs_dom_storage_get_item,
         storageGetItem, ghcjs_dom_storage_set_item, storageSetItem,
@@ -113,3 +115,9 @@ ghcjs_dom_storage_get_length = undefined
 storageGetLength :: (IsStorage self) => self -> IO Word
 storageGetLength self
   = ghcjs_dom_storage_get_length (unStorage (toStorage self))
+#else
+module GHCJS.DOM.Storage (
+  module Graphics.UI.Gtk.WebKit.DOM.Storage
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Storage
+#endif

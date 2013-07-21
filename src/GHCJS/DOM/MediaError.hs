@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaError
        (cMEDIA_ERR_ABORTED, cMEDIA_ERR_NETWORK, cMEDIA_ERR_DECODE,
         cMEDIA_ERR_SRC_NOT_SUPPORTED, ghcjs_dom_media_error_get_code,
@@ -34,3 +36,9 @@ ghcjs_dom_media_error_get_code = undefined
 mediaErrorGetCode :: (IsMediaError self) => self -> IO Word
 mediaErrorGetCode self
   = ghcjs_dom_media_error_get_code (unMediaError (toMediaError self))
+#else
+module GHCJS.DOM.MediaError (
+  module Graphics.UI.Gtk.WebKit.DOM.MediaError
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.MediaError
+#endif

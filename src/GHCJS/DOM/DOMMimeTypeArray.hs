@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMMimeTypeArray
        (ghcjs_dom_dom_mime_type_array_item, domMimeTypeArrayItem,
         ghcjs_dom_dom_mime_type_array_named_item,
@@ -76,3 +78,9 @@ domMimeTypeArrayGetLength ::
 domMimeTypeArrayGetLength self
   = ghcjs_dom_dom_mime_type_array_get_length
       (unDOMMimeTypeArray (toDOMMimeTypeArray self))
+#else
+module GHCJS.DOM.DOMMimeTypeArray (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMMimeTypeArray
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMMimeTypeArray
+#endif

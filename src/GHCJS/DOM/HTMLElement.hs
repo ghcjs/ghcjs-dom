@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLElement
        (ghcjs_dom_html_element_insert_adjacent_element,
         htmlElementInsertAdjacentElement,
@@ -861,3 +863,9 @@ htmlElementGetItemProp self
   = fmap DOMSettableTokenList . maybeJSNull <$>
       (ghcjs_dom_html_element_get_item_prop
          (unHTMLElement (toHTMLElement self)))
+#else
+module GHCJS.DOM.HTMLElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLElement
+#endif

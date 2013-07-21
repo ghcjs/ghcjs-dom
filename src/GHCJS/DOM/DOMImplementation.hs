@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMImplementation
        (ghcjs_dom_dom_implementation_has_feature,
         domImplementationHasFeature,
@@ -156,3 +158,9 @@ domImplementationCreateHTMLDocument self title
       (ghcjs_dom_dom_implementation_create_html_document
          (unDOMImplementation (toDOMImplementation self))
          (toJSString title))
+#else
+module GHCJS.DOM.DOMImplementation (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMImplementation
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMImplementation
+#endif

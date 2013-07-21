@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSStyleSheet
        (ghcjs_dom_css_style_sheet_insert_rule, cssStyleSheetInsertRule,
         ghcjs_dom_css_style_sheet_delete_rule, cssStyleSheetDeleteRule,
@@ -153,3 +155,9 @@ cssStyleSheetGetRules self
   = fmap CSSRuleList . maybeJSNull <$>
       (ghcjs_dom_css_style_sheet_get_rules
          (unCSSStyleSheet (toCSSStyleSheet self)))
+#else
+module GHCJS.DOM.CSSStyleSheet (
+  module Graphics.UI.Gtk.WebKit.DOM.CSSStyleSheet
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.CSSStyleSheet
+#endif

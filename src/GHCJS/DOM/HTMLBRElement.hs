@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBRElement
        (ghcjs_dom_htmlbr_element_set_clear, htmlbrElementSetClear,
         ghcjs_dom_htmlbr_element_get_clear, htmlbrElementGetClear)
@@ -52,3 +54,9 @@ htmlbrElementGetClear self
   = fromJSString <$>
       (ghcjs_dom_htmlbr_element_get_clear
          (unHTMLBRElement (toHTMLBRElement self)))
+#else
+module GHCJS.DOM.HTMLBRElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLBRElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLBRElement
+#endif

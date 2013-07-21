@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
 module GHCJS.DOM.EventTargetClosures
        (eventTargetAddEventListener) where
 
@@ -28,5 +30,9 @@ eventTargetAddEventListener self eventName bubble user = do
         (toJSString eventName)
         callback
         bubble
-
-
+#else
+module GHCJS.DOM.EventTargetClosures (
+  module Graphics.UI.Gtk.WebKit.DOM.EventTargetClosures
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.EventTargetClosures
+#endif

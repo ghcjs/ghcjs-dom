@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMPlugin
        (ghcjs_dom_dom_plugin_item, domPluginItem,
         ghcjs_dom_dom_plugin_named_item, domPluginNamedItem,
@@ -118,3 +120,9 @@ ghcjs_dom_dom_plugin_get_length = undefined
 domPluginGetLength :: (IsDOMPlugin self) => self -> IO Word
 domPluginGetLength self
   = ghcjs_dom_dom_plugin_get_length (unDOMPlugin (toDOMPlugin self))
+#else
+module GHCJS.DOM.DOMPlugin (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMPlugin
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMPlugin
+#endif

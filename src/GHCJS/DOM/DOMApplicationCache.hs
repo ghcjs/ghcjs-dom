@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMApplicationCache
        (ghcjs_dom_dom_application_cache_update, domApplicationCacheUpdate,
         ghcjs_dom_dom_application_cache_swap_cache,
@@ -161,3 +163,9 @@ domApplicationCacheOnobsolete ::
                               (IsDOMApplicationCache self) =>
                                 Signal self (EventM UIEvent self ())
 domApplicationCacheOnobsolete = (connect "obsolete")
+#else
+module GHCJS.DOM.DOMApplicationCache (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMApplicationCache
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMApplicationCache
+#endif

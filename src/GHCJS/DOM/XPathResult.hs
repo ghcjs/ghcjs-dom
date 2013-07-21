@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathResult
        (ghcjs_dom_xpath_result_iterate_next, xPathResultIterateNext,
         ghcjs_dom_xpath_result_snapshot_item, xPathResultSnapshotItem,
@@ -199,3 +201,9 @@ xPathResultGetSnapshotLength ::
 xPathResultGetSnapshotLength self
   = ghcjs_dom_xpath_result_get_snapshot_length
       (unXPathResult (toXPathResult self))
+#else
+module GHCJS.DOM.XPathResult (
+  module Graphics.UI.Gtk.WebKit.DOM.XPathResult
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.XPathResult
+#endif

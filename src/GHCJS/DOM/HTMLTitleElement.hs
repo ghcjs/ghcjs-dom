@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTitleElement
        (ghcjs_dom_html_title_element_set_text, htmlTitleElementSetText,
         ghcjs_dom_html_title_element_get_text, htmlTitleElementGetText)
@@ -52,3 +54,9 @@ htmlTitleElementGetText self
   = fromJSString <$>
       (ghcjs_dom_html_title_element_get_text
          (unHTMLTitleElement (toHTMLTitleElement self)))
+#else
+module GHCJS.DOM.HTMLTitleElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLTitleElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLTitleElement
+#endif

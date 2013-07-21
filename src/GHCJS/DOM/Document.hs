@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Document
        (ghcjs_dom_document_create_element, documentCreateElement,
         ghcjs_dom_document_create_document_fragment,
@@ -1788,3 +1790,9 @@ documentGetSecurityPolicy self
   = fmap DOMSecurityPolicy . maybeJSNull <$>
       (ghcjs_dom_document_get_security_policy
          (unDocument (toDocument self)))
+#else
+module GHCJS.DOM.Document (
+  module Graphics.UI.Gtk.WebKit.DOM.Document
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Document
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMarqueeElement
        (ghcjs_dom_html_marquee_element_start, htmlMarqueeElementStart,
         ghcjs_dom_html_marquee_element_stop, htmlMarqueeElementStop,
@@ -487,3 +489,9 @@ htmlMarqueeElementGetWidth self
   = fromJSString <$>
       (ghcjs_dom_html_marquee_element_get_width
          (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+#else
+module GHCJS.DOM.HTMLMarqueeElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLMarqueeElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLMarqueeElement
+#endif

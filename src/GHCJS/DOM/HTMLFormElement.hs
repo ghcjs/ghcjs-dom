@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFormElement
        (ghcjs_dom_html_form_element_submit, htmlFormElementSubmit,
         ghcjs_dom_html_form_element_reset, htmlFormElementReset,
@@ -453,3 +455,9 @@ htmlFormElementGetLength ::
 htmlFormElementGetLength self
   = ghcjs_dom_html_form_element_get_length
       (unHTMLFormElement (toHTMLFormElement self))
+#else
+module GHCJS.DOM.HTMLFormElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLFormElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLFormElement
+#endif

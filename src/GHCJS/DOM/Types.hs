@@ -1,9 +1,13 @@
-{-# LANGUAGE CPP, JavaScriptFFI, ForeignFunctionInterface #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
+#else
+{-# LANGUAGE ConstraintKinds #-}
+#endif
 module GHCJS.DOM.Types (
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
     maybeJSNull, propagateGError
-
   , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject
-  , WebView(WebView), WebViewClass, toWebView, unWebView, castToWebView, gTypeWebView
 
 -- AUTO GENERATION STARTS HERE
   , DOMAttr(DOMAttr), unDOMAttr, IsDOMAttr, toDOMAttr, castToDOMAttr, gTypeDOMAttr
@@ -130,17 +134,156 @@ module GHCJS.DOM.Types (
   , TreeWalker(TreeWalker), unTreeWalker, IsTreeWalker, toTreeWalker, castToTreeWalker, gTypeTreeWalker
   , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, castToUIEvent, gTypeUIEvent
   , ValidityState(ValidityState), unValidityState, IsValidityState, toValidityState, castToValidityState, gTypeValidityState
+  , WebKitAnimation(WebKitAnimation), unWebKitAnimation, IsWebKitAnimation, toWebKitAnimation, castToWebKitAnimation, gTypeWebKitAnimation
+  , WebKitAnimationList(WebKitAnimationList), unWebKitAnimationList, IsWebKitAnimationList, toWebKitAnimationList, castToWebKitAnimationList, gTypeWebKitAnimationList
   , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, IsWebKitNamedFlow, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
   , WebKitPoint(WebKitPoint), unWebKitPoint, IsWebKitPoint, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
   , XPathExpression(XPathExpression), unXPathExpression, IsXPathExpression, toXPathExpression, castToXPathExpression, gTypeXPathExpression
   , XPathNSResolver(XPathNSResolver), unXPathNSResolver, IsXPathNSResolver, toXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
   , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
 -- AUTO GENERATION ENDS HERE
+#else
+    propagateGError
+  , module Graphics.UI.Gtk.WebKit.Types
+  , IsDOMAttr
+  , IsBarInfo
+  , IsBlob
+  , IsCDATASection
+  , IsCSSRule
+  , IsCSSRuleList
+  , IsCSSStyleDeclaration
+  , IsCSSStyleSheet
+  , IsCSSValue
+  , IsCharacterData
+  , IsComment
+  , IsConsole
+  , IsDOMApplicationCache
+  , IsDOMImplementation
+  , IsDOMMimeType
+  , IsDOMMimeTypeArray
+  , IsDOMPlugin
+  , IsDOMPluginArray
+  , IsDOMSelection
+  , IsDOMSettableTokenList
+  , IsDOMStringList
+  , IsDOMTokenList
+  , IsDOMWindow
+  , IsDocument
+  , IsDocumentFragment
+  , IsDocumentType
+  , IsElement
+  , IsEntityReference
+  , IsEvent
+  , IsEventTarget
+  , IsFile
+  , IsFileList
+  , IsGeolocation
+  , IsHTMLAnchorElement
+  , IsHTMLAppletElement
+  , IsHTMLAreaElement
+  , IsHTMLAudioElement
+  , IsHTMLBRElement
+  , IsHTMLBaseElement
+  , IsHTMLBaseFontElement
+  , IsHTMLBodyElement
+  , IsHTMLButtonElement
+  , IsHTMLCanvasElement
+  , IsHTMLCollection
+  , IsHTMLDListElement
+  , IsHTMLDetailsElement
+  , IsHTMLDirectoryElement
+  , IsHTMLDivElement
+  , IsHTMLDocument
+  , IsHTMLElement
+  , IsHTMLEmbedElement
+  , IsHTMLFieldSetElement
+  , IsHTMLFontElement
+  , IsHTMLFormElement
+  , IsHTMLFrameElement
+  , IsHTMLFrameSetElement
+  , IsHTMLHRElement
+  , IsHTMLHeadElement
+  , IsHTMLHeadingElement
+  , IsHTMLHtmlElement
+  , IsHTMLIFrameElement
+  , IsHTMLImageElement
+  , IsHTMLInputElement
+  , IsHTMLKeygenElement
+  , IsHTMLLIElement
+  , IsHTMLLabelElement
+  , IsHTMLLegendElement
+  , IsHTMLLinkElement
+  , IsHTMLMapElement
+  , IsHTMLMarqueeElement
+  , IsHTMLMediaElement
+  , IsHTMLMenuElement
+  , IsHTMLMetaElement
+  , IsHTMLModElement
+  , IsHTMLOListElement
+  , IsHTMLObjectElement
+  , IsHTMLOptGroupElement
+  , IsHTMLOptionElement
+  , IsHTMLOptionsCollection
+  , IsHTMLParagraphElement
+  , IsHTMLParamElement
+  , IsHTMLPreElement
+  , IsHTMLQuoteElement
+  , IsHTMLScriptElement
+  , IsHTMLSelectElement
+  , IsHTMLStyleElement
+  , IsHTMLTableCaptionElement
+  , IsHTMLTableCellElement
+  , IsHTMLTableColElement
+  , IsHTMLTableElement
+  , IsHTMLTableRowElement
+  , IsHTMLTableSectionElement
+  , IsHTMLTextAreaElement
+  , IsHTMLTitleElement
+  , IsHTMLUListElement
+  , IsHTMLVideoElement
+  , IsHistory
+  , IsLocation
+  , IsMediaError
+  , IsMediaList
+  , IsMediaQueryList
+  , IsMemoryInfo
+  , IsMessagePort
+  , IsMouseEvent
+  , IsNamedNodeMap
+  , IsNavigator
+  , IsNode
+  , IsNodeFilter
+  , IsNodeIterator
+  , IsNodeList
+  , IsProcessingInstruction
+  , IsDOMRange
+  , IsDOMScreen
+  , IsStorage
+  , IsStyleMedia
+  , IsStyleSheet
+  , IsStyleSheetList
+  , IsText
+  , IsTimeRanges
+  , IsTreeWalker
+  , IsUIEvent
+  , IsValidityState
+  , IsWebKitNamedFlow
+  , IsWebKitPoint
+  , IsXPathExpression
+  , IsXPathNSResolver
+  , IsXPathResult
+#endif
   ) where
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 import GHCJS.Types (JSRef(..), castRef, isNull)
+#else
+import Graphics.UI.Gtk.WebKit.Types
+import System.Glib (propagateGError)
+#endif
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 maybeJSNull :: JSRef a -> Maybe (JSRef a)
 maybeJSNull r | isNull r = Nothing
 maybeJSNull r = Just r
@@ -194,32 +337,11 @@ foreign import javascript unsafe "object" gTypeGObject' :: JSRef GType
 gTypeGObject' = error "gTypeGObject': only available in JavaScript"
 #endif
 gTypeGObject = GType gTypeGObject'
-
-data WebView = WebView (JSRef WebView)
-
-unWebView (WebView o) = o
-
-class GObjectClass o => WebViewClass o
-toWebView :: WebViewClass o => o -> WebView
-toWebView = unsafeCastGObject . toGObject
-
-instance WebViewClass WebView
-instance GObjectClass WebView where
-  toGObject = GObject . castRef . unWebView
-  unsafeCastGObject = WebView . castRef . unGObject
-
-castToWebView :: GObjectClass obj => obj -> WebView
-castToWebView = castTo gTypeWebView "WebView"
-
-#ifdef __GHCJS__
-foreign import javascript unsafe "WebView" gTypeWebView' :: JSRef GType
-#else
-gTypeWebView' = error "gTypeWebView': only available in JavaScript"
 #endif
-gTypeWebView = GType gTypeWebView'
 
 -- AUTO GENERATION STARTS HERE
 -- The remainder of this file is generated from IDL files using domconv-webkit-jsffi
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMAttr = DOMAttr (JSRef DOMAttr)
 
 unDOMAttr (DOMAttr o) = o
@@ -243,8 +365,12 @@ foreign import javascript unsafe "window.DOMAttr" gTypeDOMAttr' :: JSRef GType
 gTypeDOMAttr' = error "gTypeDOMAttr': only available in JavaScript"
 #endif
 gTypeDOMAttr = GType gTypeDOMAttr'
+#else
+type IsDOMAttr o = DOMAttrClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data BarInfo = BarInfo (JSRef BarInfo)
 
 unBarInfo (BarInfo o) = o
@@ -267,8 +393,12 @@ foreign import javascript unsafe "window.BarInfo" gTypeBarInfo' :: JSRef GType
 gTypeBarInfo' = error "gTypeBarInfo': only available in JavaScript"
 #endif
 gTypeBarInfo = GType gTypeBarInfo'
+#else
+type IsBarInfo o = BarInfoClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Blob = Blob (JSRef Blob)
 
 unBlob (Blob o) = o
@@ -291,8 +421,12 @@ foreign import javascript unsafe "window.Blob" gTypeBlob' :: JSRef GType
 gTypeBlob' = error "gTypeBlob': only available in JavaScript"
 #endif
 gTypeBlob = GType gTypeBlob'
+#else
+type IsBlob o = BlobClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data CDATASection = CDATASection (JSRef CDATASection)
 
 unCDATASection (CDATASection o) = o
@@ -318,8 +452,12 @@ foreign import javascript unsafe "window.CDATASection" gTypeCDATASection' :: JSR
 gTypeCDATASection' = error "gTypeCDATASection': only available in JavaScript"
 #endif
 gTypeCDATASection = GType gTypeCDATASection'
+#else
+type IsCDATASection o = CDATASectionClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data CSSRule = CSSRule (JSRef CSSRule)
 
 unCSSRule (CSSRule o) = o
@@ -342,8 +480,12 @@ foreign import javascript unsafe "window.CSSRule" gTypeCSSRule' :: JSRef GType
 gTypeCSSRule' = error "gTypeCSSRule': only available in JavaScript"
 #endif
 gTypeCSSRule = GType gTypeCSSRule'
+#else
+type IsCSSRule o = CSSRuleClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data CSSRuleList = CSSRuleList (JSRef CSSRuleList)
 
 unCSSRuleList (CSSRuleList o) = o
@@ -366,8 +508,12 @@ foreign import javascript unsafe "window.CSSRuleList" gTypeCSSRuleList' :: JSRef
 gTypeCSSRuleList' = error "gTypeCSSRuleList': only available in JavaScript"
 #endif
 gTypeCSSRuleList = GType gTypeCSSRuleList'
+#else
+type IsCSSRuleList o = CSSRuleListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration)
 
 unCSSStyleDeclaration (CSSStyleDeclaration o) = o
@@ -390,8 +536,12 @@ foreign import javascript unsafe "window.CSSStyleDeclaration" gTypeCSSStyleDecla
 gTypeCSSStyleDeclaration' = error "gTypeCSSStyleDeclaration': only available in JavaScript"
 #endif
 gTypeCSSStyleDeclaration = GType gTypeCSSStyleDeclaration'
+#else
+type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet)
 
 unCSSStyleSheet (CSSStyleSheet o) = o
@@ -415,8 +565,12 @@ foreign import javascript unsafe "window.CSSStyleSheet" gTypeCSSStyleSheet' :: J
 gTypeCSSStyleSheet' = error "gTypeCSSStyleSheet': only available in JavaScript"
 #endif
 gTypeCSSStyleSheet = GType gTypeCSSStyleSheet'
+#else
+type IsCSSStyleSheet o = CSSStyleSheetClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data CSSValue = CSSValue (JSRef CSSValue)
 
 unCSSValue (CSSValue o) = o
@@ -439,8 +593,12 @@ foreign import javascript unsafe "window.CSSValue" gTypeCSSValue' :: JSRef GType
 gTypeCSSValue' = error "gTypeCSSValue': only available in JavaScript"
 #endif
 gTypeCSSValue = GType gTypeCSSValue'
+#else
+type IsCSSValue o = CSSValueClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data CharacterData = CharacterData (JSRef CharacterData)
 
 unCharacterData (CharacterData o) = o
@@ -464,8 +622,12 @@ foreign import javascript unsafe "window.CharacterData" gTypeCharacterData' :: J
 gTypeCharacterData' = error "gTypeCharacterData': only available in JavaScript"
 #endif
 gTypeCharacterData = GType gTypeCharacterData'
+#else
+type IsCharacterData o = CharacterDataClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Comment = Comment (JSRef Comment)
 
 unComment (Comment o) = o
@@ -490,8 +652,12 @@ foreign import javascript unsafe "window.Comment" gTypeComment' :: JSRef GType
 gTypeComment' = error "gTypeComment': only available in JavaScript"
 #endif
 gTypeComment = GType gTypeComment'
+#else
+type IsComment o = CommentClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Console = Console (JSRef Console)
 
 unConsole (Console o) = o
@@ -514,8 +680,12 @@ foreign import javascript unsafe "window.Console" gTypeConsole' :: JSRef GType
 gTypeConsole' = error "gTypeConsole': only available in JavaScript"
 #endif
 gTypeConsole = GType gTypeConsole'
+#else
+type IsConsole o = ConsoleClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache)
 
 unDOMApplicationCache (DOMApplicationCache o) = o
@@ -538,8 +708,12 @@ foreign import javascript unsafe "window.DOMApplicationCache" gTypeDOMApplicatio
 gTypeDOMApplicationCache' = error "gTypeDOMApplicationCache': only available in JavaScript"
 #endif
 gTypeDOMApplicationCache = GType gTypeDOMApplicationCache'
+#else
+type IsDOMApplicationCache o = DOMApplicationCacheClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMImplementation = DOMImplementation (JSRef DOMImplementation)
 
 unDOMImplementation (DOMImplementation o) = o
@@ -562,8 +736,12 @@ foreign import javascript unsafe "window.DOMImplementation" gTypeDOMImplementati
 gTypeDOMImplementation' = error "gTypeDOMImplementation': only available in JavaScript"
 #endif
 gTypeDOMImplementation = GType gTypeDOMImplementation'
+#else
+type IsDOMImplementation o = DOMImplementationClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMMimeType = DOMMimeType (JSRef DOMMimeType)
 
 unDOMMimeType (DOMMimeType o) = o
@@ -586,8 +764,12 @@ foreign import javascript unsafe "window.DOMMimeType" gTypeDOMMimeType' :: JSRef
 gTypeDOMMimeType' = error "gTypeDOMMimeType': only available in JavaScript"
 #endif
 gTypeDOMMimeType = GType gTypeDOMMimeType'
+#else
+type IsDOMMimeType o = DOMMimeTypeClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray)
 
 unDOMMimeTypeArray (DOMMimeTypeArray o) = o
@@ -610,8 +792,12 @@ foreign import javascript unsafe "window.DOMMimeTypeArray" gTypeDOMMimeTypeArray
 gTypeDOMMimeTypeArray' = error "gTypeDOMMimeTypeArray': only available in JavaScript"
 #endif
 gTypeDOMMimeTypeArray = GType gTypeDOMMimeTypeArray'
+#else
+type IsDOMMimeTypeArray o = DOMMimeTypeArrayClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMPlugin = DOMPlugin (JSRef DOMPlugin)
 
 unDOMPlugin (DOMPlugin o) = o
@@ -634,8 +820,12 @@ foreign import javascript unsafe "window.DOMPlugin" gTypeDOMPlugin' :: JSRef GTy
 gTypeDOMPlugin' = error "gTypeDOMPlugin': only available in JavaScript"
 #endif
 gTypeDOMPlugin = GType gTypeDOMPlugin'
+#else
+type IsDOMPlugin o = DOMPluginClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray)
 
 unDOMPluginArray (DOMPluginArray o) = o
@@ -658,8 +848,11 @@ foreign import javascript unsafe "window.DOMPluginArray" gTypeDOMPluginArray' ::
 gTypeDOMPluginArray' = error "gTypeDOMPluginArray': only available in JavaScript"
 #endif
 gTypeDOMPluginArray = GType gTypeDOMPluginArray'
+#else
+type IsDOMPluginArray o = DOMPluginArrayClass o
+#endif
 
-
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy)
 
 unDOMSecurityPolicy (DOMSecurityPolicy o) = o
@@ -682,8 +875,10 @@ foreign import javascript unsafe "window.DOMSecurityPolicy" gTypeDOMSecurityPoli
 gTypeDOMSecurityPolicy' = error "gTypeDOMSecurityPolicy': only available in JavaScript"
 #endif
 gTypeDOMSecurityPolicy = GType gTypeDOMSecurityPolicy'
+#else
+#endif
 
-
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMSelection = DOMSelection (JSRef DOMSelection)
 
 unDOMSelection (DOMSelection o) = o
@@ -706,8 +901,12 @@ foreign import javascript unsafe "window.DOMSelection" gTypeDOMSelection' :: JSR
 gTypeDOMSelection' = error "gTypeDOMSelection': only available in JavaScript"
 #endif
 gTypeDOMSelection = GType gTypeDOMSelection'
+#else
+type IsDOMSelection o = DOMSelectionClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList)
 
 unDOMSettableTokenList (DOMSettableTokenList o) = o
@@ -731,8 +930,12 @@ foreign import javascript unsafe "window.DOMSettableTokenList" gTypeDOMSettableT
 gTypeDOMSettableTokenList' = error "gTypeDOMSettableTokenList': only available in JavaScript"
 #endif
 gTypeDOMSettableTokenList = GType gTypeDOMSettableTokenList'
+#else
+type IsDOMSettableTokenList o = DOMSettableTokenListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMStringList = DOMStringList (JSRef DOMStringList)
 
 unDOMStringList (DOMStringList o) = o
@@ -755,8 +958,12 @@ foreign import javascript unsafe "window.DOMStringList" gTypeDOMStringList' :: J
 gTypeDOMStringList' = error "gTypeDOMStringList': only available in JavaScript"
 #endif
 gTypeDOMStringList = GType gTypeDOMStringList'
+#else
+type IsDOMStringList o = DOMStringListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMTokenList = DOMTokenList (JSRef DOMTokenList)
 
 unDOMTokenList (DOMTokenList o) = o
@@ -779,8 +986,12 @@ foreign import javascript unsafe "window.DOMTokenList" gTypeDOMTokenList' :: JSR
 gTypeDOMTokenList' = error "gTypeDOMTokenList': only available in JavaScript"
 #endif
 gTypeDOMTokenList = GType gTypeDOMTokenList'
+#else
+type IsDOMTokenList o = DOMTokenListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMWindow = DOMWindow (JSRef DOMWindow)
 
 unDOMWindow (DOMWindow o) = o
@@ -803,8 +1014,12 @@ foreign import javascript unsafe "window.DOMWindow" gTypeDOMWindow' :: JSRef GTy
 gTypeDOMWindow' = error "gTypeDOMWindow': only available in JavaScript"
 #endif
 gTypeDOMWindow = GType gTypeDOMWindow'
+#else
+type IsDOMWindow o = DOMWindowClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Document = Document (JSRef Document)
 
 unDocument (Document o) = o
@@ -828,8 +1043,12 @@ foreign import javascript unsafe "window.Document" gTypeDocument' :: JSRef GType
 gTypeDocument' = error "gTypeDocument': only available in JavaScript"
 #endif
 gTypeDocument = GType gTypeDocument'
+#else
+type IsDocument o = DocumentClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DocumentFragment = DocumentFragment (JSRef DocumentFragment)
 
 unDocumentFragment (DocumentFragment o) = o
@@ -853,8 +1072,12 @@ foreign import javascript unsafe "window.DocumentFragment" gTypeDocumentFragment
 gTypeDocumentFragment' = error "gTypeDocumentFragment': only available in JavaScript"
 #endif
 gTypeDocumentFragment = GType gTypeDocumentFragment'
+#else
+type IsDocumentFragment o = DocumentFragmentClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DocumentType = DocumentType (JSRef DocumentType)
 
 unDocumentType (DocumentType o) = o
@@ -878,8 +1101,12 @@ foreign import javascript unsafe "window.DocumentType" gTypeDocumentType' :: JSR
 gTypeDocumentType' = error "gTypeDocumentType': only available in JavaScript"
 #endif
 gTypeDocumentType = GType gTypeDocumentType'
+#else
+type IsDocumentType o = DocumentTypeClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Element = Element (JSRef Element)
 
 unElement (Element o) = o
@@ -903,8 +1130,12 @@ foreign import javascript unsafe "window.Element" gTypeElement' :: JSRef GType
 gTypeElement' = error "gTypeElement': only available in JavaScript"
 #endif
 gTypeElement = GType gTypeElement'
+#else
+type IsElement o = ElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data EntityReference = EntityReference (JSRef EntityReference)
 
 unEntityReference (EntityReference o) = o
@@ -928,8 +1159,12 @@ foreign import javascript unsafe "window.EntityReference" gTypeEntityReference' 
 gTypeEntityReference' = error "gTypeEntityReference': only available in JavaScript"
 #endif
 gTypeEntityReference = GType gTypeEntityReference'
+#else
+type IsEntityReference o = EntityReferenceClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Event = Event (JSRef Event)
 
 unEvent (Event o) = o
@@ -952,8 +1187,12 @@ foreign import javascript unsafe "window.Event" gTypeEvent' :: JSRef GType
 gTypeEvent' = error "gTypeEvent': only available in JavaScript"
 #endif
 gTypeEvent = GType gTypeEvent'
+#else
+type IsEvent o = EventClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data EventTarget = EventTarget (JSRef EventTarget)
 
 unEventTarget (EventTarget o) = o
@@ -976,8 +1215,12 @@ foreign import javascript unsafe "window.EventTarget" gTypeEventTarget' :: JSRef
 gTypeEventTarget' = error "gTypeEventTarget': only available in JavaScript"
 #endif
 gTypeEventTarget = GType gTypeEventTarget'
+#else
+type IsEventTarget o = EventTargetClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data File = File (JSRef File)
 
 unFile (File o) = o
@@ -1001,8 +1244,12 @@ foreign import javascript unsafe "window.File" gTypeFile' :: JSRef GType
 gTypeFile' = error "gTypeFile': only available in JavaScript"
 #endif
 gTypeFile = GType gTypeFile'
+#else
+type IsFile o = FileClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data FileList = FileList (JSRef FileList)
 
 unFileList (FileList o) = o
@@ -1025,8 +1272,12 @@ foreign import javascript unsafe "window.FileList" gTypeFileList' :: JSRef GType
 gTypeFileList' = error "gTypeFileList': only available in JavaScript"
 #endif
 gTypeFileList = GType gTypeFileList'
+#else
+type IsFileList o = FileListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Geolocation = Geolocation (JSRef Geolocation)
 
 unGeolocation (Geolocation o) = o
@@ -1049,8 +1300,12 @@ foreign import javascript unsafe "window.Geolocation" gTypeGeolocation' :: JSRef
 gTypeGeolocation' = error "gTypeGeolocation': only available in JavaScript"
 #endif
 gTypeGeolocation = GType gTypeGeolocation'
+#else
+type IsGeolocation o = GeolocationClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement)
 
 unHTMLAnchorElement (HTMLAnchorElement o) = o
@@ -1076,8 +1331,12 @@ foreign import javascript unsafe "window.HTMLAnchorElement" gTypeHTMLAnchorEleme
 gTypeHTMLAnchorElement' = error "gTypeHTMLAnchorElement': only available in JavaScript"
 #endif
 gTypeHTMLAnchorElement = GType gTypeHTMLAnchorElement'
+#else
+type IsHTMLAnchorElement o = HTMLAnchorElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement)
 
 unHTMLAppletElement (HTMLAppletElement o) = o
@@ -1103,8 +1362,12 @@ foreign import javascript unsafe "window.HTMLAppletElement" gTypeHTMLAppletEleme
 gTypeHTMLAppletElement' = error "gTypeHTMLAppletElement': only available in JavaScript"
 #endif
 gTypeHTMLAppletElement = GType gTypeHTMLAppletElement'
+#else
+type IsHTMLAppletElement o = HTMLAppletElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement)
 
 unHTMLAreaElement (HTMLAreaElement o) = o
@@ -1130,8 +1393,12 @@ foreign import javascript unsafe "window.HTMLAreaElement" gTypeHTMLAreaElement' 
 gTypeHTMLAreaElement' = error "gTypeHTMLAreaElement': only available in JavaScript"
 #endif
 gTypeHTMLAreaElement = GType gTypeHTMLAreaElement'
+#else
+type IsHTMLAreaElement o = HTMLAreaElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement)
 
 unHTMLAudioElement (HTMLAudioElement o) = o
@@ -1158,8 +1425,12 @@ foreign import javascript unsafe "window.HTMLAudioElement" gTypeHTMLAudioElement
 gTypeHTMLAudioElement' = error "gTypeHTMLAudioElement': only available in JavaScript"
 #endif
 gTypeHTMLAudioElement = GType gTypeHTMLAudioElement'
+#else
+type IsHTMLAudioElement o = HTMLAudioElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement)
 
 unHTMLBRElement (HTMLBRElement o) = o
@@ -1185,8 +1456,12 @@ foreign import javascript unsafe "window.HTMLBRElement" gTypeHTMLBRElement' :: J
 gTypeHTMLBRElement' = error "gTypeHTMLBRElement': only available in JavaScript"
 #endif
 gTypeHTMLBRElement = GType gTypeHTMLBRElement'
+#else
+type IsHTMLBRElement o = HTMLBRElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement)
 
 unHTMLBaseElement (HTMLBaseElement o) = o
@@ -1212,8 +1487,12 @@ foreign import javascript unsafe "window.HTMLBaseElement" gTypeHTMLBaseElement' 
 gTypeHTMLBaseElement' = error "gTypeHTMLBaseElement': only available in JavaScript"
 #endif
 gTypeHTMLBaseElement = GType gTypeHTMLBaseElement'
+#else
+type IsHTMLBaseElement o = HTMLBaseElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement)
 
 unHTMLBaseFontElement (HTMLBaseFontElement o) = o
@@ -1239,8 +1518,12 @@ foreign import javascript unsafe "window.HTMLBaseFontElement" gTypeHTMLBaseFontE
 gTypeHTMLBaseFontElement' = error "gTypeHTMLBaseFontElement': only available in JavaScript"
 #endif
 gTypeHTMLBaseFontElement = GType gTypeHTMLBaseFontElement'
+#else
+type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement)
 
 unHTMLBodyElement (HTMLBodyElement o) = o
@@ -1266,8 +1549,12 @@ foreign import javascript unsafe "window.HTMLBodyElement" gTypeHTMLBodyElement' 
 gTypeHTMLBodyElement' = error "gTypeHTMLBodyElement': only available in JavaScript"
 #endif
 gTypeHTMLBodyElement = GType gTypeHTMLBodyElement'
+#else
+type IsHTMLBodyElement o = HTMLBodyElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement)
 
 unHTMLButtonElement (HTMLButtonElement o) = o
@@ -1293,8 +1580,12 @@ foreign import javascript unsafe "window.HTMLButtonElement" gTypeHTMLButtonEleme
 gTypeHTMLButtonElement' = error "gTypeHTMLButtonElement': only available in JavaScript"
 #endif
 gTypeHTMLButtonElement = GType gTypeHTMLButtonElement'
+#else
+type IsHTMLButtonElement o = HTMLButtonElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement)
 
 unHTMLCanvasElement (HTMLCanvasElement o) = o
@@ -1320,8 +1611,12 @@ foreign import javascript unsafe "window.HTMLCanvasElement" gTypeHTMLCanvasEleme
 gTypeHTMLCanvasElement' = error "gTypeHTMLCanvasElement': only available in JavaScript"
 #endif
 gTypeHTMLCanvasElement = GType gTypeHTMLCanvasElement'
+#else
+type IsHTMLCanvasElement o = HTMLCanvasElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLCollection = HTMLCollection (JSRef HTMLCollection)
 
 unHTMLCollection (HTMLCollection o) = o
@@ -1344,8 +1639,12 @@ foreign import javascript unsafe "window.HTMLCollection" gTypeHTMLCollection' ::
 gTypeHTMLCollection' = error "gTypeHTMLCollection': only available in JavaScript"
 #endif
 gTypeHTMLCollection = GType gTypeHTMLCollection'
+#else
+type IsHTMLCollection o = HTMLCollectionClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement)
 
 unHTMLDListElement (HTMLDListElement o) = o
@@ -1371,8 +1670,12 @@ foreign import javascript unsafe "window.HTMLDListElement" gTypeHTMLDListElement
 gTypeHTMLDListElement' = error "gTypeHTMLDListElement': only available in JavaScript"
 #endif
 gTypeHTMLDListElement = GType gTypeHTMLDListElement'
+#else
+type IsHTMLDListElement o = HTMLDListElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement)
 
 unHTMLDetailsElement (HTMLDetailsElement o) = o
@@ -1398,8 +1701,12 @@ foreign import javascript unsafe "window.HTMLDetailsElement" gTypeHTMLDetailsEle
 gTypeHTMLDetailsElement' = error "gTypeHTMLDetailsElement': only available in JavaScript"
 #endif
 gTypeHTMLDetailsElement = GType gTypeHTMLDetailsElement'
+#else
+type IsHTMLDetailsElement o = HTMLDetailsElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement)
 
 unHTMLDirectoryElement (HTMLDirectoryElement o) = o
@@ -1425,8 +1732,12 @@ foreign import javascript unsafe "window.HTMLDirectoryElement" gTypeHTMLDirector
 gTypeHTMLDirectoryElement' = error "gTypeHTMLDirectoryElement': only available in JavaScript"
 #endif
 gTypeHTMLDirectoryElement = GType gTypeHTMLDirectoryElement'
+#else
+type IsHTMLDirectoryElement o = HTMLDirectoryElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement)
 
 unHTMLDivElement (HTMLDivElement o) = o
@@ -1452,8 +1763,12 @@ foreign import javascript unsafe "window.HTMLDivElement" gTypeHTMLDivElement' ::
 gTypeHTMLDivElement' = error "gTypeHTMLDivElement': only available in JavaScript"
 #endif
 gTypeHTMLDivElement = GType gTypeHTMLDivElement'
+#else
+type IsHTMLDivElement o = HTMLDivElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLDocument = HTMLDocument (JSRef HTMLDocument)
 
 unHTMLDocument (HTMLDocument o) = o
@@ -1478,8 +1793,12 @@ foreign import javascript unsafe "window.HTMLDocument" gTypeHTMLDocument' :: JSR
 gTypeHTMLDocument' = error "gTypeHTMLDocument': only available in JavaScript"
 #endif
 gTypeHTMLDocument = GType gTypeHTMLDocument'
+#else
+type IsHTMLDocument o = HTMLDocumentClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLElement = HTMLElement (JSRef HTMLElement)
 
 unHTMLElement (HTMLElement o) = o
@@ -1504,8 +1823,12 @@ foreign import javascript unsafe "window.HTMLElement" gTypeHTMLElement' :: JSRef
 gTypeHTMLElement' = error "gTypeHTMLElement': only available in JavaScript"
 #endif
 gTypeHTMLElement = GType gTypeHTMLElement'
+#else
+type IsHTMLElement o = HTMLElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement)
 
 unHTMLEmbedElement (HTMLEmbedElement o) = o
@@ -1531,8 +1854,12 @@ foreign import javascript unsafe "window.HTMLEmbedElement" gTypeHTMLEmbedElement
 gTypeHTMLEmbedElement' = error "gTypeHTMLEmbedElement': only available in JavaScript"
 #endif
 gTypeHTMLEmbedElement = GType gTypeHTMLEmbedElement'
+#else
+type IsHTMLEmbedElement o = HTMLEmbedElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement)
 
 unHTMLFieldSetElement (HTMLFieldSetElement o) = o
@@ -1558,8 +1885,12 @@ foreign import javascript unsafe "window.HTMLFieldSetElement" gTypeHTMLFieldSetE
 gTypeHTMLFieldSetElement' = error "gTypeHTMLFieldSetElement': only available in JavaScript"
 #endif
 gTypeHTMLFieldSetElement = GType gTypeHTMLFieldSetElement'
+#else
+type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement)
 
 unHTMLFontElement (HTMLFontElement o) = o
@@ -1585,8 +1916,12 @@ foreign import javascript unsafe "window.HTMLFontElement" gTypeHTMLFontElement' 
 gTypeHTMLFontElement' = error "gTypeHTMLFontElement': only available in JavaScript"
 #endif
 gTypeHTMLFontElement = GType gTypeHTMLFontElement'
+#else
+type IsHTMLFontElement o = HTMLFontElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement)
 
 unHTMLFormElement (HTMLFormElement o) = o
@@ -1612,8 +1947,12 @@ foreign import javascript unsafe "window.HTMLFormElement" gTypeHTMLFormElement' 
 gTypeHTMLFormElement' = error "gTypeHTMLFormElement': only available in JavaScript"
 #endif
 gTypeHTMLFormElement = GType gTypeHTMLFormElement'
+#else
+type IsHTMLFormElement o = HTMLFormElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement)
 
 unHTMLFrameElement (HTMLFrameElement o) = o
@@ -1639,8 +1978,12 @@ foreign import javascript unsafe "window.HTMLFrameElement" gTypeHTMLFrameElement
 gTypeHTMLFrameElement' = error "gTypeHTMLFrameElement': only available in JavaScript"
 #endif
 gTypeHTMLFrameElement = GType gTypeHTMLFrameElement'
+#else
+type IsHTMLFrameElement o = HTMLFrameElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement)
 
 unHTMLFrameSetElement (HTMLFrameSetElement o) = o
@@ -1666,8 +2009,12 @@ foreign import javascript unsafe "window.HTMLFrameSetElement" gTypeHTMLFrameSetE
 gTypeHTMLFrameSetElement' = error "gTypeHTMLFrameSetElement': only available in JavaScript"
 #endif
 gTypeHTMLFrameSetElement = GType gTypeHTMLFrameSetElement'
+#else
+type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement)
 
 unHTMLHRElement (HTMLHRElement o) = o
@@ -1693,8 +2040,12 @@ foreign import javascript unsafe "window.HTMLHRElement" gTypeHTMLHRElement' :: J
 gTypeHTMLHRElement' = error "gTypeHTMLHRElement': only available in JavaScript"
 #endif
 gTypeHTMLHRElement = GType gTypeHTMLHRElement'
+#else
+type IsHTMLHRElement o = HTMLHRElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement)
 
 unHTMLHeadElement (HTMLHeadElement o) = o
@@ -1720,8 +2071,12 @@ foreign import javascript unsafe "window.HTMLHeadElement" gTypeHTMLHeadElement' 
 gTypeHTMLHeadElement' = error "gTypeHTMLHeadElement': only available in JavaScript"
 #endif
 gTypeHTMLHeadElement = GType gTypeHTMLHeadElement'
+#else
+type IsHTMLHeadElement o = HTMLHeadElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement)
 
 unHTMLHeadingElement (HTMLHeadingElement o) = o
@@ -1747,8 +2102,12 @@ foreign import javascript unsafe "window.HTMLHeadingElement" gTypeHTMLHeadingEle
 gTypeHTMLHeadingElement' = error "gTypeHTMLHeadingElement': only available in JavaScript"
 #endif
 gTypeHTMLHeadingElement = GType gTypeHTMLHeadingElement'
+#else
+type IsHTMLHeadingElement o = HTMLHeadingElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement)
 
 unHTMLHtmlElement (HTMLHtmlElement o) = o
@@ -1774,8 +2133,12 @@ foreign import javascript unsafe "window.HTMLHtmlElement" gTypeHTMLHtmlElement' 
 gTypeHTMLHtmlElement' = error "gTypeHTMLHtmlElement': only available in JavaScript"
 #endif
 gTypeHTMLHtmlElement = GType gTypeHTMLHtmlElement'
+#else
+type IsHTMLHtmlElement o = HTMLHtmlElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement)
 
 unHTMLIFrameElement (HTMLIFrameElement o) = o
@@ -1801,8 +2164,12 @@ foreign import javascript unsafe "window.HTMLIFrameElement" gTypeHTMLIFrameEleme
 gTypeHTMLIFrameElement' = error "gTypeHTMLIFrameElement': only available in JavaScript"
 #endif
 gTypeHTMLIFrameElement = GType gTypeHTMLIFrameElement'
+#else
+type IsHTMLIFrameElement o = HTMLIFrameElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement)
 
 unHTMLImageElement (HTMLImageElement o) = o
@@ -1828,8 +2195,12 @@ foreign import javascript unsafe "window.HTMLImageElement" gTypeHTMLImageElement
 gTypeHTMLImageElement' = error "gTypeHTMLImageElement': only available in JavaScript"
 #endif
 gTypeHTMLImageElement = GType gTypeHTMLImageElement'
+#else
+type IsHTMLImageElement o = HTMLImageElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement)
 
 unHTMLInputElement (HTMLInputElement o) = o
@@ -1855,8 +2226,12 @@ foreign import javascript unsafe "window.HTMLInputElement" gTypeHTMLInputElement
 gTypeHTMLInputElement' = error "gTypeHTMLInputElement': only available in JavaScript"
 #endif
 gTypeHTMLInputElement = GType gTypeHTMLInputElement'
+#else
+type IsHTMLInputElement o = HTMLInputElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement)
 
 unHTMLKeygenElement (HTMLKeygenElement o) = o
@@ -1882,8 +2257,12 @@ foreign import javascript unsafe "window.HTMLKeygenElement" gTypeHTMLKeygenEleme
 gTypeHTMLKeygenElement' = error "gTypeHTMLKeygenElement': only available in JavaScript"
 #endif
 gTypeHTMLKeygenElement = GType gTypeHTMLKeygenElement'
+#else
+type IsHTMLKeygenElement o = HTMLKeygenElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement)
 
 unHTMLLIElement (HTMLLIElement o) = o
@@ -1909,8 +2288,12 @@ foreign import javascript unsafe "window.HTMLLIElement" gTypeHTMLLIElement' :: J
 gTypeHTMLLIElement' = error "gTypeHTMLLIElement': only available in JavaScript"
 #endif
 gTypeHTMLLIElement = GType gTypeHTMLLIElement'
+#else
+type IsHTMLLIElement o = HTMLLIElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement)
 
 unHTMLLabelElement (HTMLLabelElement o) = o
@@ -1936,8 +2319,12 @@ foreign import javascript unsafe "window.HTMLLabelElement" gTypeHTMLLabelElement
 gTypeHTMLLabelElement' = error "gTypeHTMLLabelElement': only available in JavaScript"
 #endif
 gTypeHTMLLabelElement = GType gTypeHTMLLabelElement'
+#else
+type IsHTMLLabelElement o = HTMLLabelElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement)
 
 unHTMLLegendElement (HTMLLegendElement o) = o
@@ -1963,8 +2350,12 @@ foreign import javascript unsafe "window.HTMLLegendElement" gTypeHTMLLegendEleme
 gTypeHTMLLegendElement' = error "gTypeHTMLLegendElement': only available in JavaScript"
 #endif
 gTypeHTMLLegendElement = GType gTypeHTMLLegendElement'
+#else
+type IsHTMLLegendElement o = HTMLLegendElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement)
 
 unHTMLLinkElement (HTMLLinkElement o) = o
@@ -1990,8 +2381,12 @@ foreign import javascript unsafe "window.HTMLLinkElement" gTypeHTMLLinkElement' 
 gTypeHTMLLinkElement' = error "gTypeHTMLLinkElement': only available in JavaScript"
 #endif
 gTypeHTMLLinkElement = GType gTypeHTMLLinkElement'
+#else
+type IsHTMLLinkElement o = HTMLLinkElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement)
 
 unHTMLMapElement (HTMLMapElement o) = o
@@ -2017,8 +2412,12 @@ foreign import javascript unsafe "window.HTMLMapElement" gTypeHTMLMapElement' ::
 gTypeHTMLMapElement' = error "gTypeHTMLMapElement': only available in JavaScript"
 #endif
 gTypeHTMLMapElement = GType gTypeHTMLMapElement'
+#else
+type IsHTMLMapElement o = HTMLMapElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement)
 
 unHTMLMarqueeElement (HTMLMarqueeElement o) = o
@@ -2044,8 +2443,12 @@ foreign import javascript unsafe "window.HTMLMarqueeElement" gTypeHTMLMarqueeEle
 gTypeHTMLMarqueeElement' = error "gTypeHTMLMarqueeElement': only available in JavaScript"
 #endif
 gTypeHTMLMarqueeElement = GType gTypeHTMLMarqueeElement'
+#else
+type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement)
 
 unHTMLMediaElement (HTMLMediaElement o) = o
@@ -2071,8 +2474,12 @@ foreign import javascript unsafe "window.HTMLMediaElement" gTypeHTMLMediaElement
 gTypeHTMLMediaElement' = error "gTypeHTMLMediaElement': only available in JavaScript"
 #endif
 gTypeHTMLMediaElement = GType gTypeHTMLMediaElement'
+#else
+type IsHTMLMediaElement o = HTMLMediaElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement)
 
 unHTMLMenuElement (HTMLMenuElement o) = o
@@ -2098,8 +2505,12 @@ foreign import javascript unsafe "window.HTMLMenuElement" gTypeHTMLMenuElement' 
 gTypeHTMLMenuElement' = error "gTypeHTMLMenuElement': only available in JavaScript"
 #endif
 gTypeHTMLMenuElement = GType gTypeHTMLMenuElement'
+#else
+type IsHTMLMenuElement o = HTMLMenuElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement)
 
 unHTMLMetaElement (HTMLMetaElement o) = o
@@ -2125,8 +2536,12 @@ foreign import javascript unsafe "window.HTMLMetaElement" gTypeHTMLMetaElement' 
 gTypeHTMLMetaElement' = error "gTypeHTMLMetaElement': only available in JavaScript"
 #endif
 gTypeHTMLMetaElement = GType gTypeHTMLMetaElement'
+#else
+type IsHTMLMetaElement o = HTMLMetaElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLModElement = HTMLModElement (JSRef HTMLModElement)
 
 unHTMLModElement (HTMLModElement o) = o
@@ -2152,8 +2567,12 @@ foreign import javascript unsafe "window.HTMLModElement" gTypeHTMLModElement' ::
 gTypeHTMLModElement' = error "gTypeHTMLModElement': only available in JavaScript"
 #endif
 gTypeHTMLModElement = GType gTypeHTMLModElement'
+#else
+type IsHTMLModElement o = HTMLModElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement)
 
 unHTMLOListElement (HTMLOListElement o) = o
@@ -2179,8 +2598,12 @@ foreign import javascript unsafe "window.HTMLOListElement" gTypeHTMLOListElement
 gTypeHTMLOListElement' = error "gTypeHTMLOListElement': only available in JavaScript"
 #endif
 gTypeHTMLOListElement = GType gTypeHTMLOListElement'
+#else
+type IsHTMLOListElement o = HTMLOListElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement)
 
 unHTMLObjectElement (HTMLObjectElement o) = o
@@ -2206,8 +2629,12 @@ foreign import javascript unsafe "window.HTMLObjectElement" gTypeHTMLObjectEleme
 gTypeHTMLObjectElement' = error "gTypeHTMLObjectElement': only available in JavaScript"
 #endif
 gTypeHTMLObjectElement = GType gTypeHTMLObjectElement'
+#else
+type IsHTMLObjectElement o = HTMLObjectElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement)
 
 unHTMLOptGroupElement (HTMLOptGroupElement o) = o
@@ -2233,8 +2660,12 @@ foreign import javascript unsafe "window.HTMLOptGroupElement" gTypeHTMLOptGroupE
 gTypeHTMLOptGroupElement' = error "gTypeHTMLOptGroupElement': only available in JavaScript"
 #endif
 gTypeHTMLOptGroupElement = GType gTypeHTMLOptGroupElement'
+#else
+type IsHTMLOptGroupElement o = HTMLOptGroupElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement)
 
 unHTMLOptionElement (HTMLOptionElement o) = o
@@ -2260,8 +2691,12 @@ foreign import javascript unsafe "window.HTMLOptionElement" gTypeHTMLOptionEleme
 gTypeHTMLOptionElement' = error "gTypeHTMLOptionElement': only available in JavaScript"
 #endif
 gTypeHTMLOptionElement = GType gTypeHTMLOptionElement'
+#else
+type IsHTMLOptionElement o = HTMLOptionElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollection)
 
 unHTMLOptionsCollection (HTMLOptionsCollection o) = o
@@ -2285,8 +2720,12 @@ foreign import javascript unsafe "window.HTMLOptionsCollection" gTypeHTMLOptions
 gTypeHTMLOptionsCollection' = error "gTypeHTMLOptionsCollection': only available in JavaScript"
 #endif
 gTypeHTMLOptionsCollection = GType gTypeHTMLOptionsCollection'
+#else
+type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement)
 
 unHTMLParagraphElement (HTMLParagraphElement o) = o
@@ -2312,8 +2751,12 @@ foreign import javascript unsafe "window.HTMLParagraphElement" gTypeHTMLParagrap
 gTypeHTMLParagraphElement' = error "gTypeHTMLParagraphElement': only available in JavaScript"
 #endif
 gTypeHTMLParagraphElement = GType gTypeHTMLParagraphElement'
+#else
+type IsHTMLParagraphElement o = HTMLParagraphElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement)
 
 unHTMLParamElement (HTMLParamElement o) = o
@@ -2339,8 +2782,12 @@ foreign import javascript unsafe "window.HTMLParamElement" gTypeHTMLParamElement
 gTypeHTMLParamElement' = error "gTypeHTMLParamElement': only available in JavaScript"
 #endif
 gTypeHTMLParamElement = GType gTypeHTMLParamElement'
+#else
+type IsHTMLParamElement o = HTMLParamElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement)
 
 unHTMLPreElement (HTMLPreElement o) = o
@@ -2366,8 +2813,12 @@ foreign import javascript unsafe "window.HTMLPreElement" gTypeHTMLPreElement' ::
 gTypeHTMLPreElement' = error "gTypeHTMLPreElement': only available in JavaScript"
 #endif
 gTypeHTMLPreElement = GType gTypeHTMLPreElement'
+#else
+type IsHTMLPreElement o = HTMLPreElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement)
 
 unHTMLQuoteElement (HTMLQuoteElement o) = o
@@ -2393,8 +2844,12 @@ foreign import javascript unsafe "window.HTMLQuoteElement" gTypeHTMLQuoteElement
 gTypeHTMLQuoteElement' = error "gTypeHTMLQuoteElement': only available in JavaScript"
 #endif
 gTypeHTMLQuoteElement = GType gTypeHTMLQuoteElement'
+#else
+type IsHTMLQuoteElement o = HTMLQuoteElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement)
 
 unHTMLScriptElement (HTMLScriptElement o) = o
@@ -2420,8 +2875,12 @@ foreign import javascript unsafe "window.HTMLScriptElement" gTypeHTMLScriptEleme
 gTypeHTMLScriptElement' = error "gTypeHTMLScriptElement': only available in JavaScript"
 #endif
 gTypeHTMLScriptElement = GType gTypeHTMLScriptElement'
+#else
+type IsHTMLScriptElement o = HTMLScriptElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement)
 
 unHTMLSelectElement (HTMLSelectElement o) = o
@@ -2447,8 +2906,12 @@ foreign import javascript unsafe "window.HTMLSelectElement" gTypeHTMLSelectEleme
 gTypeHTMLSelectElement' = error "gTypeHTMLSelectElement': only available in JavaScript"
 #endif
 gTypeHTMLSelectElement = GType gTypeHTMLSelectElement'
+#else
+type IsHTMLSelectElement o = HTMLSelectElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement)
 
 unHTMLStyleElement (HTMLStyleElement o) = o
@@ -2474,8 +2937,12 @@ foreign import javascript unsafe "window.HTMLStyleElement" gTypeHTMLStyleElement
 gTypeHTMLStyleElement' = error "gTypeHTMLStyleElement': only available in JavaScript"
 #endif
 gTypeHTMLStyleElement = GType gTypeHTMLStyleElement'
+#else
+type IsHTMLStyleElement o = HTMLStyleElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptionElement)
 
 unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
@@ -2501,8 +2968,12 @@ foreign import javascript unsafe "window.HTMLTableCaptionElement" gTypeHTMLTable
 gTypeHTMLTableCaptionElement' = error "gTypeHTMLTableCaptionElement': only available in JavaScript"
 #endif
 gTypeHTMLTableCaptionElement = GType gTypeHTMLTableCaptionElement'
+#else
+type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement)
 
 unHTMLTableCellElement (HTMLTableCellElement o) = o
@@ -2528,8 +2999,12 @@ foreign import javascript unsafe "window.HTMLTableCellElement" gTypeHTMLTableCel
 gTypeHTMLTableCellElement' = error "gTypeHTMLTableCellElement': only available in JavaScript"
 #endif
 gTypeHTMLTableCellElement = GType gTypeHTMLTableCellElement'
+#else
+type IsHTMLTableCellElement o = HTMLTableCellElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement)
 
 unHTMLTableColElement (HTMLTableColElement o) = o
@@ -2555,8 +3030,12 @@ foreign import javascript unsafe "window.HTMLTableColElement" gTypeHTMLTableColE
 gTypeHTMLTableColElement' = error "gTypeHTMLTableColElement': only available in JavaScript"
 #endif
 gTypeHTMLTableColElement = GType gTypeHTMLTableColElement'
+#else
+type IsHTMLTableColElement o = HTMLTableColElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement)
 
 unHTMLTableElement (HTMLTableElement o) = o
@@ -2582,8 +3061,12 @@ foreign import javascript unsafe "window.HTMLTableElement" gTypeHTMLTableElement
 gTypeHTMLTableElement' = error "gTypeHTMLTableElement': only available in JavaScript"
 #endif
 gTypeHTMLTableElement = GType gTypeHTMLTableElement'
+#else
+type IsHTMLTableElement o = HTMLTableElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement)
 
 unHTMLTableRowElement (HTMLTableRowElement o) = o
@@ -2609,8 +3092,12 @@ foreign import javascript unsafe "window.HTMLTableRowElement" gTypeHTMLTableRowE
 gTypeHTMLTableRowElement' = error "gTypeHTMLTableRowElement': only available in JavaScript"
 #endif
 gTypeHTMLTableRowElement = GType gTypeHTMLTableRowElement'
+#else
+type IsHTMLTableRowElement o = HTMLTableRowElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionElement)
 
 unHTMLTableSectionElement (HTMLTableSectionElement o) = o
@@ -2636,8 +3123,12 @@ foreign import javascript unsafe "window.HTMLTableSectionElement" gTypeHTMLTable
 gTypeHTMLTableSectionElement' = error "gTypeHTMLTableSectionElement': only available in JavaScript"
 #endif
 gTypeHTMLTableSectionElement = GType gTypeHTMLTableSectionElement'
+#else
+type IsHTMLTableSectionElement o = HTMLTableSectionElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement)
 
 unHTMLTextAreaElement (HTMLTextAreaElement o) = o
@@ -2663,8 +3154,12 @@ foreign import javascript unsafe "window.HTMLTextAreaElement" gTypeHTMLTextAreaE
 gTypeHTMLTextAreaElement' = error "gTypeHTMLTextAreaElement': only available in JavaScript"
 #endif
 gTypeHTMLTextAreaElement = GType gTypeHTMLTextAreaElement'
+#else
+type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement)
 
 unHTMLTitleElement (HTMLTitleElement o) = o
@@ -2690,8 +3185,12 @@ foreign import javascript unsafe "window.HTMLTitleElement" gTypeHTMLTitleElement
 gTypeHTMLTitleElement' = error "gTypeHTMLTitleElement': only available in JavaScript"
 #endif
 gTypeHTMLTitleElement = GType gTypeHTMLTitleElement'
+#else
+type IsHTMLTitleElement o = HTMLTitleElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement)
 
 unHTMLUListElement (HTMLUListElement o) = o
@@ -2717,8 +3216,12 @@ foreign import javascript unsafe "window.HTMLUListElement" gTypeHTMLUListElement
 gTypeHTMLUListElement' = error "gTypeHTMLUListElement': only available in JavaScript"
 #endif
 gTypeHTMLUListElement = GType gTypeHTMLUListElement'
+#else
+type IsHTMLUListElement o = HTMLUListElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement)
 
 unHTMLVideoElement (HTMLVideoElement o) = o
@@ -2745,8 +3248,12 @@ foreign import javascript unsafe "window.HTMLVideoElement" gTypeHTMLVideoElement
 gTypeHTMLVideoElement' = error "gTypeHTMLVideoElement': only available in JavaScript"
 #endif
 gTypeHTMLVideoElement = GType gTypeHTMLVideoElement'
+#else
+type IsHTMLVideoElement o = HTMLVideoElementClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data History = History (JSRef History)
 
 unHistory (History o) = o
@@ -2769,8 +3276,12 @@ foreign import javascript unsafe "window.History" gTypeHistory' :: JSRef GType
 gTypeHistory' = error "gTypeHistory': only available in JavaScript"
 #endif
 gTypeHistory = GType gTypeHistory'
+#else
+type IsHistory o = HistoryClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Location = Location (JSRef Location)
 
 unLocation (Location o) = o
@@ -2793,8 +3304,12 @@ foreign import javascript unsafe "window.Location" gTypeLocation' :: JSRef GType
 gTypeLocation' = error "gTypeLocation': only available in JavaScript"
 #endif
 gTypeLocation = GType gTypeLocation'
+#else
+type IsLocation o = LocationClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data MediaError = MediaError (JSRef MediaError)
 
 unMediaError (MediaError o) = o
@@ -2817,8 +3332,12 @@ foreign import javascript unsafe "window.MediaError" gTypeMediaError' :: JSRef G
 gTypeMediaError' = error "gTypeMediaError': only available in JavaScript"
 #endif
 gTypeMediaError = GType gTypeMediaError'
+#else
+type IsMediaError o = MediaErrorClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data MediaList = MediaList (JSRef MediaList)
 
 unMediaList (MediaList o) = o
@@ -2841,8 +3360,12 @@ foreign import javascript unsafe "window.MediaList" gTypeMediaList' :: JSRef GTy
 gTypeMediaList' = error "gTypeMediaList': only available in JavaScript"
 #endif
 gTypeMediaList = GType gTypeMediaList'
+#else
+type IsMediaList o = MediaListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data MediaQueryList = MediaQueryList (JSRef MediaQueryList)
 
 unMediaQueryList (MediaQueryList o) = o
@@ -2865,8 +3388,12 @@ foreign import javascript unsafe "window.MediaQueryList" gTypeMediaQueryList' ::
 gTypeMediaQueryList' = error "gTypeMediaQueryList': only available in JavaScript"
 #endif
 gTypeMediaQueryList = GType gTypeMediaQueryList'
+#else
+type IsMediaQueryList o = MediaQueryListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data MemoryInfo = MemoryInfo (JSRef MemoryInfo)
 
 unMemoryInfo (MemoryInfo o) = o
@@ -2889,8 +3416,12 @@ foreign import javascript unsafe "window.MemoryInfo" gTypeMemoryInfo' :: JSRef G
 gTypeMemoryInfo' = error "gTypeMemoryInfo': only available in JavaScript"
 #endif
 gTypeMemoryInfo = GType gTypeMemoryInfo'
+#else
+type IsMemoryInfo o = MemoryInfoClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data MessagePort = MessagePort (JSRef MessagePort)
 
 unMessagePort (MessagePort o) = o
@@ -2913,8 +3444,12 @@ foreign import javascript unsafe "window.MessagePort" gTypeMessagePort' :: JSRef
 gTypeMessagePort' = error "gTypeMessagePort': only available in JavaScript"
 #endif
 gTypeMessagePort = GType gTypeMessagePort'
+#else
+type IsMessagePort o = MessagePortClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data MouseEvent = MouseEvent (JSRef MouseEvent)
 
 unMouseEvent (MouseEvent o) = o
@@ -2939,8 +3474,12 @@ foreign import javascript unsafe "window.MouseEvent" gTypeMouseEvent' :: JSRef G
 gTypeMouseEvent' = error "gTypeMouseEvent': only available in JavaScript"
 #endif
 gTypeMouseEvent = GType gTypeMouseEvent'
+#else
+type IsMouseEvent o = MouseEventClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap)
 
 unNamedNodeMap (NamedNodeMap o) = o
@@ -2963,8 +3502,12 @@ foreign import javascript unsafe "window.NamedNodeMap" gTypeNamedNodeMap' :: JSR
 gTypeNamedNodeMap' = error "gTypeNamedNodeMap': only available in JavaScript"
 #endif
 gTypeNamedNodeMap = GType gTypeNamedNodeMap'
+#else
+type IsNamedNodeMap o = NamedNodeMapClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Navigator = Navigator (JSRef Navigator)
 
 unNavigator (Navigator o) = o
@@ -2987,8 +3530,12 @@ foreign import javascript unsafe "window.Navigator" gTypeNavigator' :: JSRef GTy
 gTypeNavigator' = error "gTypeNavigator': only available in JavaScript"
 #endif
 gTypeNavigator = GType gTypeNavigator'
+#else
+type IsNavigator o = NavigatorClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Node = Node (JSRef Node)
 
 unNode (Node o) = o
@@ -3011,8 +3558,12 @@ foreign import javascript unsafe "window.Node" gTypeNode' :: JSRef GType
 gTypeNode' = error "gTypeNode': only available in JavaScript"
 #endif
 gTypeNode = GType gTypeNode'
+#else
+type IsNode o = NodeClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data NodeFilter = NodeFilter (JSRef NodeFilter)
 
 unNodeFilter (NodeFilter o) = o
@@ -3035,8 +3586,12 @@ foreign import javascript unsafe "window.NodeFilter" gTypeNodeFilter' :: JSRef G
 gTypeNodeFilter' = error "gTypeNodeFilter': only available in JavaScript"
 #endif
 gTypeNodeFilter = GType gTypeNodeFilter'
+#else
+type IsNodeFilter o = NodeFilterClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data NodeIterator = NodeIterator (JSRef NodeIterator)
 
 unNodeIterator (NodeIterator o) = o
@@ -3059,8 +3614,12 @@ foreign import javascript unsafe "window.NodeIterator" gTypeNodeIterator' :: JSR
 gTypeNodeIterator' = error "gTypeNodeIterator': only available in JavaScript"
 #endif
 gTypeNodeIterator = GType gTypeNodeIterator'
+#else
+type IsNodeIterator o = NodeIteratorClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data NodeList = NodeList (JSRef NodeList)
 
 unNodeList (NodeList o) = o
@@ -3083,8 +3642,12 @@ foreign import javascript unsafe "window.NodeList" gTypeNodeList' :: JSRef GType
 gTypeNodeList' = error "gTypeNodeList': only available in JavaScript"
 #endif
 gTypeNodeList = GType gTypeNodeList'
+#else
+type IsNodeList o = NodeListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction)
 
 unProcessingInstruction (ProcessingInstruction o) = o
@@ -3108,8 +3671,12 @@ foreign import javascript unsafe "window.ProcessingInstruction" gTypeProcessingI
 gTypeProcessingInstruction' = error "gTypeProcessingInstruction': only available in JavaScript"
 #endif
 gTypeProcessingInstruction = GType gTypeProcessingInstruction'
+#else
+type IsProcessingInstruction o = ProcessingInstructionClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMRange = DOMRange (JSRef DOMRange)
 
 unDOMRange (DOMRange o) = o
@@ -3132,8 +3699,12 @@ foreign import javascript unsafe "window.DOMRange" gTypeDOMRange' :: JSRef GType
 gTypeDOMRange' = error "gTypeDOMRange': only available in JavaScript"
 #endif
 gTypeDOMRange = GType gTypeDOMRange'
+#else
+type IsDOMRange o = DOMRangeClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data DOMScreen = DOMScreen (JSRef DOMScreen)
 
 unDOMScreen (DOMScreen o) = o
@@ -3156,8 +3727,12 @@ foreign import javascript unsafe "window.DOMScreen" gTypeDOMScreen' :: JSRef GTy
 gTypeDOMScreen' = error "gTypeDOMScreen': only available in JavaScript"
 #endif
 gTypeDOMScreen = GType gTypeDOMScreen'
+#else
+type IsDOMScreen o = DOMScreenClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Storage = Storage (JSRef Storage)
 
 unStorage (Storage o) = o
@@ -3180,8 +3755,12 @@ foreign import javascript unsafe "window.Storage" gTypeStorage' :: JSRef GType
 gTypeStorage' = error "gTypeStorage': only available in JavaScript"
 #endif
 gTypeStorage = GType gTypeStorage'
+#else
+type IsStorage o = StorageClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data StorageInfo = StorageInfo (JSRef StorageInfo)
 
 unStorageInfo (StorageInfo o) = o
@@ -3204,8 +3783,11 @@ foreign import javascript unsafe "window.StorageInfo" gTypeStorageInfo' :: JSRef
 gTypeStorageInfo' = error "gTypeStorageInfo': only available in JavaScript"
 #endif
 gTypeStorageInfo = GType gTypeStorageInfo'
+#else
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data StyleMedia = StyleMedia (JSRef StyleMedia)
 
 unStyleMedia (StyleMedia o) = o
@@ -3228,8 +3810,12 @@ foreign import javascript unsafe "window.StyleMedia" gTypeStyleMedia' :: JSRef G
 gTypeStyleMedia' = error "gTypeStyleMedia': only available in JavaScript"
 #endif
 gTypeStyleMedia = GType gTypeStyleMedia'
+#else
+type IsStyleMedia o = StyleMediaClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data StyleSheet = StyleSheet (JSRef StyleSheet)
 
 unStyleSheet (StyleSheet o) = o
@@ -3252,8 +3838,12 @@ foreign import javascript unsafe "window.StyleSheet" gTypeStyleSheet' :: JSRef G
 gTypeStyleSheet' = error "gTypeStyleSheet': only available in JavaScript"
 #endif
 gTypeStyleSheet = GType gTypeStyleSheet'
+#else
+type IsStyleSheet o = StyleSheetClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data StyleSheetList = StyleSheetList (JSRef StyleSheetList)
 
 unStyleSheetList (StyleSheetList o) = o
@@ -3276,8 +3866,12 @@ foreign import javascript unsafe "window.StyleSheetList" gTypeStyleSheetList' ::
 gTypeStyleSheetList' = error "gTypeStyleSheetList': only available in JavaScript"
 #endif
 gTypeStyleSheetList = GType gTypeStyleSheetList'
+#else
+type IsStyleSheetList o = StyleSheetListClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data Text = Text (JSRef Text)
 
 unText (Text o) = o
@@ -3302,8 +3896,12 @@ foreign import javascript unsafe "window.Text" gTypeText' :: JSRef GType
 gTypeText' = error "gTypeText': only available in JavaScript"
 #endif
 gTypeText = GType gTypeText'
+#else
+type IsText o = TextClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data TimeRanges = TimeRanges (JSRef TimeRanges)
 
 unTimeRanges (TimeRanges o) = o
@@ -3326,8 +3924,12 @@ foreign import javascript unsafe "window.TimeRanges" gTypeTimeRanges' :: JSRef G
 gTypeTimeRanges' = error "gTypeTimeRanges': only available in JavaScript"
 #endif
 gTypeTimeRanges = GType gTypeTimeRanges'
+#else
+type IsTimeRanges o = TimeRangesClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data TreeWalker = TreeWalker (JSRef TreeWalker)
 
 unTreeWalker (TreeWalker o) = o
@@ -3350,8 +3952,12 @@ foreign import javascript unsafe "window.TreeWalker" gTypeTreeWalker' :: JSRef G
 gTypeTreeWalker' = error "gTypeTreeWalker': only available in JavaScript"
 #endif
 gTypeTreeWalker = GType gTypeTreeWalker'
+#else
+type IsTreeWalker o = TreeWalkerClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data UIEvent = UIEvent (JSRef UIEvent)
 
 unUIEvent (UIEvent o) = o
@@ -3375,8 +3981,12 @@ foreign import javascript unsafe "window.UIEvent" gTypeUIEvent' :: JSRef GType
 gTypeUIEvent' = error "gTypeUIEvent': only available in JavaScript"
 #endif
 gTypeUIEvent = GType gTypeUIEvent'
+#else
+type IsUIEvent o = UIEventClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data ValidityState = ValidityState (JSRef ValidityState)
 
 unValidityState (ValidityState o) = o
@@ -3399,8 +4009,66 @@ foreign import javascript unsafe "window.ValidityState" gTypeValidityState' :: J
 gTypeValidityState' = error "gTypeValidityState': only available in JavaScript"
 #endif
 gTypeValidityState = GType gTypeValidityState'
+#else
+type IsValidityState o = ValidityStateClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+data WebKitAnimation = WebKitAnimation (JSRef WebKitAnimation)
+
+unWebKitAnimation (WebKitAnimation o) = o
+
+class GObjectClass o => IsWebKitAnimation o
+toWebKitAnimation :: IsWebKitAnimation o => o -> WebKitAnimation
+toWebKitAnimation = unsafeCastGObject . toGObject
+
+instance IsWebKitAnimation WebKitAnimation
+instance GObjectClass WebKitAnimation where
+  toGObject = GObject . castRef . unWebKitAnimation
+  unsafeCastGObject = WebKitAnimation . castRef . unGObject
+
+castToWebKitAnimation :: GObjectClass obj => obj -> WebKitAnimation
+castToWebKitAnimation = castTo gTypeWebKitAnimation "WebKitAnimation"
+
+#ifdef __GHCJS__
+foreign import javascript unsafe "window.WebKitAnimation" gTypeWebKitAnimation' :: JSRef GType
+#else
+gTypeWebKitAnimation' = error "gTypeWebKitAnimation': only available in JavaScript"
+#endif
+gTypeWebKitAnimation = GType gTypeWebKitAnimation'
+#else
+#endif
+
+
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+data WebKitAnimationList = WebKitAnimationList (JSRef WebKitAnimationList)
+
+unWebKitAnimationList (WebKitAnimationList o) = o
+
+class GObjectClass o => IsWebKitAnimationList o
+toWebKitAnimationList :: IsWebKitAnimationList o => o -> WebKitAnimationList
+toWebKitAnimationList = unsafeCastGObject . toGObject
+
+instance IsWebKitAnimationList WebKitAnimationList
+instance GObjectClass WebKitAnimationList where
+  toGObject = GObject . castRef . unWebKitAnimationList
+  unsafeCastGObject = WebKitAnimationList . castRef . unGObject
+
+castToWebKitAnimationList :: GObjectClass obj => obj -> WebKitAnimationList
+castToWebKitAnimationList = castTo gTypeWebKitAnimationList "WebKitAnimationList"
+
+#ifdef __GHCJS__
+foreign import javascript unsafe "window.WebKitAnimationList" gTypeWebKitAnimationList' :: JSRef GType
+#else
+gTypeWebKitAnimationList' = error "gTypeWebKitAnimationList': only available in JavaScript"
+#endif
+gTypeWebKitAnimationList = GType gTypeWebKitAnimationList'
+#else
+#endif
+
+
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow)
 
 unWebKitNamedFlow (WebKitNamedFlow o) = o
@@ -3423,8 +4091,12 @@ foreign import javascript unsafe "window.WebKitNamedFlow" gTypeWebKitNamedFlow' 
 gTypeWebKitNamedFlow' = error "gTypeWebKitNamedFlow': only available in JavaScript"
 #endif
 gTypeWebKitNamedFlow = GType gTypeWebKitNamedFlow'
+#else
+type IsWebKitNamedFlow o = WebKitNamedFlowClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data WebKitPoint = WebKitPoint (JSRef WebKitPoint)
 
 unWebKitPoint (WebKitPoint o) = o
@@ -3447,8 +4119,12 @@ foreign import javascript unsafe "window.WebKitPoint" gTypeWebKitPoint' :: JSRef
 gTypeWebKitPoint' = error "gTypeWebKitPoint': only available in JavaScript"
 #endif
 gTypeWebKitPoint = GType gTypeWebKitPoint'
+#else
+type IsWebKitPoint o = WebKitPointClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data XPathExpression = XPathExpression (JSRef XPathExpression)
 
 unXPathExpression (XPathExpression o) = o
@@ -3471,8 +4147,12 @@ foreign import javascript unsafe "window.XPathExpression" gTypeXPathExpression' 
 gTypeXPathExpression' = error "gTypeXPathExpression': only available in JavaScript"
 #endif
 gTypeXPathExpression = GType gTypeXPathExpression'
+#else
+type IsXPathExpression o = XPathExpressionClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver)
 
 unXPathNSResolver (XPathNSResolver o) = o
@@ -3495,8 +4175,12 @@ foreign import javascript unsafe "window.XPathNSResolver" gTypeXPathNSResolver' 
 gTypeXPathNSResolver' = error "gTypeXPathNSResolver': only available in JavaScript"
 #endif
 gTypeXPathNSResolver = GType gTypeXPathNSResolver'
+#else
+type IsXPathNSResolver o = XPathNSResolverClass o
+#endif
 
 
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 data XPathResult = XPathResult (JSRef XPathResult)
 
 unXPathResult (XPathResult o) = o
@@ -3519,5 +4203,8 @@ foreign import javascript unsafe "window.XPathResult" gTypeXPathResult' :: JSRef
 gTypeXPathResult' = error "gTypeXPathResult': only available in JavaScript"
 #endif
 gTypeXPathResult = GType gTypeXPathResult'
+#else
+type IsXPathResult o = XPathResultClass o
+#endif
 
 

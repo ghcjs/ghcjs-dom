@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMediaElement
        (ghcjs_dom_html_media_element_load, htmlMediaElementLoad,
         ghcjs_dom_html_media_element_can_play_type,
@@ -958,3 +960,9 @@ htmlMediaElementGetMediaGroup self
   = fromJSString <$>
       (ghcjs_dom_html_media_element_get_media_group
          (unHTMLMediaElement (toHTMLMediaElement self)))
+#else
+module GHCJS.DOM.HTMLMediaElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLMediaElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLMediaElement
+#endif

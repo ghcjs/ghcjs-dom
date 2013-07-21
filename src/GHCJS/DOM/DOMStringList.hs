@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMStringList
        (ghcjs_dom_dom_string_list_item, domStringListItem,
         ghcjs_dom_dom_string_list_contains, domStringListContains,
@@ -72,3 +74,9 @@ domStringListGetLength :: (IsDOMStringList self) => self -> IO Word
 domStringListGetLength self
   = ghcjs_dom_dom_string_list_get_length
       (unDOMStringList (toDOMStringList self))
+#else
+module GHCJS.DOM.DOMStringList (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMStringList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMStringList
+#endif

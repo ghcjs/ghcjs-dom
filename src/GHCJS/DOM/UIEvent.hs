@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.UIEvent
        (ghcjs_dom_ui_event_init_ui_event, uiEventInitUIEvent,
         ghcjs_dom_ui_event_get_view, uiEventGetView,
@@ -167,3 +169,9 @@ ghcjs_dom_ui_event_get_which = undefined
 uiEventGetWhich :: (IsUIEvent self) => self -> IO Int
 uiEventGetWhich self
   = ghcjs_dom_ui_event_get_which (unUIEvent (toUIEvent self))
+#else
+module GHCJS.DOM.UIEvent (
+  module Graphics.UI.Gtk.WebKit.DOM.UIEvent
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.UIEvent
+#endif

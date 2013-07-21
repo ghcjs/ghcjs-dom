@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMPluginArray
        (ghcjs_dom_dom_plugin_array_item, domPluginArrayItem,
         ghcjs_dom_dom_plugin_array_named_item, domPluginArrayNamedItem,
@@ -92,3 +94,9 @@ domPluginArrayGetLength ::
 domPluginArrayGetLength self
   = ghcjs_dom_dom_plugin_array_get_length
       (unDOMPluginArray (toDOMPluginArray self))
+#else
+module GHCJS.DOM.DOMPluginArray (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMPluginArray
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMPluginArray
+#endif

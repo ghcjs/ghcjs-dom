@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSelection
        (ghcjs_dom_dom_selection_collapse, domSelectionCollapse,
         ghcjs_dom_dom_selection_collapse_to_end, domSelectionCollapseToEnd,
@@ -485,3 +487,9 @@ domSelectionGetExtentOffset ::
 domSelectionGetExtentOffset self
   = ghcjs_dom_dom_selection_get_extent_offset
       (unDOMSelection (toDOMSelection self))
+#else
+module GHCJS.DOM.DOMSelection (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMSelection
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMSelection
+#endif

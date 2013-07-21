@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NodeIterator
        (ghcjs_dom_node_iterator_detach, nodeIteratorDetach,
         ghcjs_dom_node_iterator_get_root, nodeIteratorGetRoot,
@@ -147,3 +149,9 @@ nodeIteratorGetPointerBeforeReferenceNode ::
 nodeIteratorGetPointerBeforeReferenceNode self
   = ghcjs_dom_node_iterator_get_pointer_before_reference_node
       (unNodeIterator (toNodeIterator self))
+#else
+module GHCJS.DOM.NodeIterator (
+  module Graphics.UI.Gtk.WebKit.DOM.NodeIterator
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.NodeIterator
+#endif

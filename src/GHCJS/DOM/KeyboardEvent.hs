@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.KeyboardEvent
        (ghcjs_dom_keyboard_event_get_modifier_state,
         keyboardEventGetModifierState,
@@ -308,3 +310,9 @@ keyboardEventGetCharCode ::
 keyboardEventGetCharCode self
   = ghcjs_dom_keyboard_event_get_char_code
       (unKeyboardEvent (toKeyboardEvent self))
+#else
+module GHCJS.DOM.KeyboardEvent (
+  module Graphics.UI.Gtk.WebKit.DOM.KeyboardEvent
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.KeyboardEvent
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Element
        (ghcjs_dom_element_get_attribute, elementGetAttribute,
         ghcjs_dom_element_set_attribute, elementSetAttribute,
@@ -1126,3 +1128,9 @@ elementOnwebkitfullscreenchange
 elementOnwebkitfullscreenerror ::
                                (IsElement self) => Signal self (EventM UIEvent self ())
 elementOnwebkitfullscreenerror = (connect "webkitfullscreenerror")
+#else
+module GHCJS.DOM.Element (
+  module Graphics.UI.Gtk.WebKit.DOM.Element
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Element
+#endif

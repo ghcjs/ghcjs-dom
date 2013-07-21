@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLIElement
        (ghcjs_dom_htmlli_element_set_value, htmlliElementSetValue,
         ghcjs_dom_htmlli_element_get_value, htmlliElementGetValue)
@@ -48,3 +50,9 @@ htmlliElementGetValue :: (IsHTMLLIElement self) => self -> IO Int
 htmlliElementGetValue self
   = ghcjs_dom_htmlli_element_get_value
       (unHTMLLIElement (toHTMLLIElement self))
+#else
+module GHCJS.DOM.HTMLLIElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLLIElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLLIElement
+#endif

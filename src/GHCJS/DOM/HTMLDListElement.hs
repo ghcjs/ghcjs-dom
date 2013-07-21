@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDListElement
        (ghcjs_dom_htmld_list_element_set_compact,
         htmldListElementSetCompact,
@@ -53,3 +55,9 @@ htmldListElementGetCompact ::
 htmldListElementGetCompact self
   = ghcjs_dom_htmld_list_element_get_compact
       (unHTMLDListElement (toHTMLDListElement self))
+#else
+module GHCJS.DOM.HTMLDListElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLDListElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLDListElement
+#endif

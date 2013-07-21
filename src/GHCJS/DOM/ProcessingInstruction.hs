@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ProcessingInstruction
        (ghcjs_dom_processing_instruction_get_target,
         processingInstructionGetTarget,
@@ -97,3 +99,9 @@ processingInstructionGetSheet self
   = fmap StyleSheet . maybeJSNull <$>
       (ghcjs_dom_processing_instruction_get_sheet
          (unProcessingInstruction (toProcessingInstruction self)))
+#else
+module GHCJS.DOM.ProcessingInstruction (
+  module Graphics.UI.Gtk.WebKit.DOM.ProcessingInstruction
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.ProcessingInstruction
+#endif

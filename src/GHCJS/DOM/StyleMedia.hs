@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleMedia
        (ghcjs_dom_style_media_match_medium, styleMediaMatchMedium) where
 import GHCJS.Types
@@ -34,3 +36,9 @@ styleMediaMatchMedium self mediaquery
   = ghcjs_dom_style_media_match_medium
       (unStyleMedia (toStyleMedia self))
       (toJSString mediaquery)
+#else
+module GHCJS.DOM.StyleMedia (
+  module Graphics.UI.Gtk.WebKit.DOM.StyleMedia
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.StyleMedia
+#endif

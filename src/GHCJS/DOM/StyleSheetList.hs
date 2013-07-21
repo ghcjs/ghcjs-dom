@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleSheetList
        (ghcjs_dom_style_sheet_list_item, styleSheetListItem,
         ghcjs_dom_style_sheet_list_get_length, styleSheetListGetLength)
@@ -52,3 +54,9 @@ styleSheetListGetLength ::
 styleSheetListGetLength self
   = ghcjs_dom_style_sheet_list_get_length
       (unStyleSheetList (toStyleSheetList self))
+#else
+module GHCJS.DOM.StyleSheetList (
+  module Graphics.UI.Gtk.WebKit.DOM.StyleSheetList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.StyleSheetList
+#endif

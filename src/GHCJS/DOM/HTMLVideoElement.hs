@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLVideoElement
        (ghcjs_dom_html_video_element_webkit_enter_fullscreen,
         htmlVideoElementWebkitEnterFullscreen,
@@ -322,3 +324,9 @@ htmlVideoElementGetWebkitDroppedFrameCount ::
 htmlVideoElementGetWebkitDroppedFrameCount self
   = ghcjs_dom_html_video_element_get_webkit_dropped_frame_count
       (unHTMLVideoElement (toHTMLVideoElement self))
+#else
+module GHCJS.DOM.HTMLVideoElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLVideoElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLVideoElement
+#endif

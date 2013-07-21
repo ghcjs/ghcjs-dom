@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMenuElement
        (ghcjs_dom_html_menu_element_set_compact,
         htmlMenuElementSetCompact, ghcjs_dom_html_menu_element_get_compact,
@@ -52,3 +54,9 @@ htmlMenuElementGetCompact ::
 htmlMenuElementGetCompact self
   = ghcjs_dom_html_menu_element_get_compact
       (unHTMLMenuElement (toHTMLMenuElement self))
+#else
+module GHCJS.DOM.HTMLMenuElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLMenuElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLMenuElement
+#endif

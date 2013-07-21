@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLParamElement
        (ghcjs_dom_html_param_element_set_name, htmlParamElementSetName,
         ghcjs_dom_html_param_element_get_name, htmlParamElementGetName,
@@ -130,3 +132,9 @@ htmlParamElementGetValueType self
   = fromJSString <$>
       (ghcjs_dom_html_param_element_get_value_type
          (unHTMLParamElement (toHTMLParamElement self)))
+#else
+module GHCJS.DOM.HTMLParamElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLParamElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLParamElement
+#endif

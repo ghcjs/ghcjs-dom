@@ -1,32 +1,37 @@
 {-# LANGUAGE CPP, ForeignFunctionInterface #-}
-#ifndef MIN_VERSION_webkit
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI #-}
 #endif
 module GHCJS.DOM (
   currentWindow
 , currentDocument
+, WebView(..)
+, webViewGetDomDocument
 , runWebGUI
 ) where
 
-#ifdef MIN_VERSION_webkit
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+import GHCJS.Types (JSRef(..))
+import Control.Applicative ((<$>))
+#else
 import Graphics.UI.Gtk.WebKit.WebView
        (webViewSetWebSettings, webViewGetWebSettings, loadStarted,
-        webViewLoadUri, loadFinished, webViewNew)
+        webViewLoadUri, loadFinished, webViewNew, webViewGetDomDocument)
 import Graphics.UI.Gtk
-       (timeoutAddFull, widgetShowAll, mainQuit, onDestroy,
+       (timeoutAddFull, widgetShowAll, mainQuit, destroyEvent,
         WindowPosition(..), containerAdd, scrolledWindowNew,
         windowSetPosition, windowSetDefaultSize, windowNew, mainGUI,
         initGUI)
 import System.Glib.Signals (on)
 import System.Glib.Attributes (get, AttrOp(..), set)
+import System.Glib.FFI (maybeNull)
+import System.Glib.MainLoop (priorityHigh)
 import Graphics.UI.Gtk.WebKit.WebSettings (webSettingsUserAgent)
-#else
-import GHCJS.Types (JSRef(..))
-import Control.Applicative ((<$>))
+import Control.Monad.IO.Class (liftIO)
 #endif
 
 import GHCJS.DOM.Types
-import GHCJS.DOM.DOMWindow (domWindowGetNavigator)
+import GHCJS.DOM.DOMWindow (domWindowGetNavigator, domWindowGetDocument)
 import GHCJS.DOM.Navigator (navigatorGetUserAgent)
 import Foreign (ForeignPtr, nullPtr, Ptr)
 import Control.Monad (unless, forever, liftM)
@@ -35,7 +40,30 @@ import Control.Concurrent
 import System.Environment (getArgs)
 import Data.List (isSuffixOf)
 
-#ifdef MIN_VERSION_webkit
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#ifdef __GHCJS__
+foreign import javascript unsafe "$r = window"
+  ghcjs_currentWindow :: IO (JSRef DOMWindow)
+foreign import javascript unsafe "$r = document"
+  ghcjs_currentDocument :: IO (JSRef Document)
+#else
+ghcjs_currentWindow :: IO (JSRef DOMWindow)
+ghcjs_currentWindow = undefined
+ghcjs_currentDocument :: IO (JSRef Document)
+ghcjs_currentDocument = undefined
+#endif
+
+currentWindow :: IO (Maybe DOMWindow)
+currentWindow = fmap DOMWindow . maybeJSNull <$> ghcjs_currentWindow
+currentDocument :: IO (Maybe Document)
+currentDocument = fmap Document . maybeJSNull <$> ghcjs_currentDocument
+
+type WebView = DOMWindow
+castToWebView = id
+
+webViewGetDomDocument :: IsDOMWindow w => w -> IO (Maybe Document)
+webViewGetDomDocument = domWindowGetDocument
+#else
 foreign import ccall safe "ghcjs_currentWindow"
   ghcjs_currentWindow :: IO (Ptr DOMWindow)
 
@@ -47,30 +75,12 @@ foreign import ccall unsafe "ghcjs_currentDocument"
 
 currentDocument :: IO (Maybe Document)
 currentDocument = maybeNull (makeNewGObject mkDocument) ghcjs_currentDocument
-#else
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "window.window"
-  ghcjs_currentWindow :: IO (JSRef DOMWindow)
-foreign import javascript unsafe "window.document"
-  ghcjs_currentDocument :: IO (JSRef Document)
-#else 
-ghcjs_currentWindow :: IO (JSRef DOMWindow)
-ghcjs_currentWindow = undefined
-ghcjs_currentDocument :: IO (JSRef Document)
-ghcjs_currentDocument = undefined
 #endif
 
-currentWindow :: IO (Maybe DOMWindow)
-currentWindow = fmap DOMWindow . maybeJSNull <$> ghcjs_currentWindow
-currentDocument :: IO (Maybe Document)
-currentDocument = fmap Document . maybeJSNull <$> ghcjs_currentDocument
-#endif
-
-runWebGUI :: (DOMWindow -> IO ()) -> IO ()
+runWebGUI :: (WebView -> IO ()) -> IO ()
 runWebGUI = runWebGUI' "GHCJS"
 
-runWebGUI' :: String -> (DOMWindow -> IO ()) -> IO ()
+runWebGUI' :: String -> (WebView -> IO ()) -> IO ()
 runWebGUI' userAgentKey main = do
   -- Are we in a java script inside some kind of browser
   mbWindow <- currentWindow
@@ -79,12 +89,14 @@ runWebGUI' userAgentKey main = do
       -- Check if we are running in javascript inside the the native version
       Just n <- domWindowGetNavigator window
       agent <- navigatorGetUserAgent n
-      unless ((" " ++ userAgentKey) `isSuffixOf` agent) $ main window
+      unless ((" " ++ userAgentKey) `isSuffixOf` agent) $ main (castToWebView window)
     Nothing -> do
       makeDefaultWebView userAgentKey main
 
-makeDefaultWebView :: String -> (DOMWindow -> IO ()) -> IO ()
-#ifdef MIN_VERSION_webkit
+makeDefaultWebView :: String -> (WebView -> IO ()) -> IO ()
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+makeDefaultWebView _ _ = error "Unsupported makeDefaultWebView"
+#else
 makeDefaultWebView userAgentKey main = do
   initGUI
   window <- windowNew
@@ -99,15 +111,14 @@ makeDefaultWebView userAgentKey main = do
   webViewSetWebSettings webView settings
   window `containerAdd` scrollWin
   scrollWin `containerAdd` webView
-  window `onDestroy` mainQuit
+  on window destroyEvent . liftIO $ mainQuit >> return False
   widgetShowAll window
   webView `on` loadFinished $ \frame -> do
     main webView
   args <- getArgs
   case args of
     uri:_ -> webViewLoadUri webView uri
-    []    -> main (castToDOMWindow webView)
+    []    -> do
+      main webView
   mainGUI
-#else
-makeDefaultWebView _ _ = error "Unsupported makeDefaultWebView"
 #endif

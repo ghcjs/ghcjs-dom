@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMWindow
        (ghcjs_dom_dom_window_get_selection, domWindowGetSelection,
         ghcjs_dom_dom_window_blur, domWindowBlur,
@@ -1623,3 +1625,9 @@ domWindowOnwebkitdeviceproximity ::
                                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOnwebkitdeviceproximity
   = (connect "webkitdeviceproximity")
+#else
+module GHCJS.DOM.DOMWindow (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMWindow
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMWindow
+#endif

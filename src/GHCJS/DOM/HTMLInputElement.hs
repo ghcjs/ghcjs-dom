@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLInputElement
        (ghcjs_dom_html_input_element_step_up, htmlInputElementStepUp,
         ghcjs_dom_html_input_element_step_down, htmlInputElementStepDown,
@@ -1772,3 +1774,9 @@ htmlInputElementGetCapture self
   = fromJSString <$>
       (ghcjs_dom_html_input_element_get_capture
          (unHTMLInputElement (toHTMLInputElement self)))
+#else
+module GHCJS.DOM.HTMLInputElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLInputElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLInputElement
+#endif

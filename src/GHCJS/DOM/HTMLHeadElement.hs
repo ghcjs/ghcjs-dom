@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLHeadElement
        (ghcjs_dom_html_head_element_set_profile,
         htmlHeadElementSetProfile, ghcjs_dom_html_head_element_get_profile,
@@ -53,3 +55,9 @@ htmlHeadElementGetProfile self
   = fromJSString <$>
       (ghcjs_dom_html_head_element_get_profile
          (unHTMLHeadElement (toHTMLHeadElement self)))
+#else
+module GHCJS.DOM.HTMLHeadElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLHeadElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLHeadElement
+#endif

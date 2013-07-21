@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Navigator
        (ghcjs_dom_navigator_java_enabled, navigatorJavaEnabled,
         ghcjs_dom_navigator_get_storage_updates,
@@ -287,3 +289,9 @@ ghcjs_dom_navigator_get_on_line = undefined
 navigatorGetOnLine :: (IsNavigator self) => self -> IO Bool
 navigatorGetOnLine self
   = ghcjs_dom_navigator_get_on_line (unNavigator (toNavigator self))
+#else
+module GHCJS.DOM.Navigator (
+  module Graphics.UI.Gtk.WebKit.DOM.Navigator
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Navigator
+#endif

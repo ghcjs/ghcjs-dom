@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ValidityState
        (ghcjs_dom_validity_state_get_value_missing,
         validityStateGetValueMissing,
@@ -183,3 +185,9 @@ validityStateGetValid :: (IsValidityState self) => self -> IO Bool
 validityStateGetValid self
   = ghcjs_dom_validity_state_get_valid
       (unValidityState (toValidityState self))
+#else
+module GHCJS.DOM.ValidityState (
+  module Graphics.UI.Gtk.WebKit.DOM.ValidityState
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.ValidityState
+#endif

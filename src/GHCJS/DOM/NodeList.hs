@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NodeList
        (ghcjs_dom_node_list_item, nodeListItem,
         ghcjs_dom_node_list_get_length, nodeListGetLength)
@@ -46,3 +48,9 @@ ghcjs_dom_node_list_get_length = undefined
 nodeListGetLength :: (IsNodeList self) => self -> IO Word
 nodeListGetLength self
   = ghcjs_dom_node_list_get_length (unNodeList (toNodeList self))
+#else
+module GHCJS.DOM.NodeList (
+  module Graphics.UI.Gtk.WebKit.DOM.NodeList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.NodeList
+#endif

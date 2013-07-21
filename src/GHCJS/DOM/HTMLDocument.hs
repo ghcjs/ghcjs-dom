@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDocument
        (ghcjs_dom_html_document_open, htmlDocumentOpen,
         ghcjs_dom_html_document_close, htmlDocumentClose,
@@ -500,3 +502,9 @@ htmlDocumentGetVlinkColor self
   = fromJSString <$>
       (ghcjs_dom_html_document_get_vlink_color
          (unHTMLDocument (toHTMLDocument self)))
+#else
+module GHCJS.DOM.HTMLDocument (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLDocument
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLDocument
+#endif

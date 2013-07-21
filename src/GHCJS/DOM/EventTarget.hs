@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.EventTarget
        (ghcjs_dom_event_target_dispatch_event, eventTargetDispatchEvent)
        where
@@ -35,3 +37,9 @@ eventTargetDispatchEvent self event
   = ghcjs_dom_event_target_dispatch_event
       (unEventTarget (toEventTarget self))
       (maybe jsNull (unEvent . toEvent) event)
+#else
+module GHCJS.DOM.EventTarget (
+  module Graphics.UI.Gtk.WebKit.DOM.EventTarget
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.EventTarget
+#endif

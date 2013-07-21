@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptionElement
        (ghcjs_dom_html_option_element_set_disabled,
         htmlOptionElementSetDisabled,
@@ -267,3 +269,9 @@ htmlOptionElementGetIndex ::
 htmlOptionElementGetIndex self
   = ghcjs_dom_html_option_element_get_index
       (unHTMLOptionElement (toHTMLOptionElement self))
+#else
+module GHCJS.DOM.HTMLOptionElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLOptionElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLOptionElement
+#endif

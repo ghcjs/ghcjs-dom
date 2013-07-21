@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLImageElement
        (ghcjs_dom_html_image_element_set_name, htmlImageElementSetName,
         ghcjs_dom_html_image_element_get_name, htmlImageElementGetName,
@@ -637,3 +639,9 @@ htmlImageElementGetY :: (IsHTMLImageElement self) => self -> IO Int
 htmlImageElementGetY self
   = ghcjs_dom_html_image_element_get_y
       (unHTMLImageElement (toHTMLImageElement self))
+#else
+module GHCJS.DOM.HTMLImageElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLImageElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLImageElement
+#endif

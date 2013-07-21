@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NodeFilter
        (cFILTER_ACCEPT, cFILTER_REJECT, cFILTER_SKIP, cSHOW_ALL,
         cSHOW_ELEMENT, cSHOW_ATTRIBUTE, cSHOW_TEXT, cSHOW_CDATA_SECTION,
@@ -35,3 +37,9 @@ cSHOW_DOCUMENT = 256
 cSHOW_DOCUMENT_TYPE = 512
 cSHOW_DOCUMENT_FRAGMENT = 1024
 cSHOW_NOTATION = 2048
+#else
+module GHCJS.DOM.NodeFilter (
+  module Graphics.UI.Gtk.WebKit.DOM.NodeFilter
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.NodeFilter
+#endif

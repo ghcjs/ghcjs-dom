@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableCellElement
        (ghcjs_dom_html_table_cell_element_get_cell_index,
         htmlTableCellElementGetCellIndex,
@@ -612,3 +614,9 @@ htmlTableCellElementGetWidth self
   = fromJSString <$>
       (ghcjs_dom_html_table_cell_element_get_width
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
+#else
+module GHCJS.DOM.HTMLTableCellElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLTableCellElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLTableCellElement
+#endif

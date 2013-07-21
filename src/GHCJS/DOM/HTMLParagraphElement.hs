@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLParagraphElement
        (ghcjs_dom_html_paragraph_element_set_align,
         htmlParagraphElementSetAlign,
@@ -56,3 +58,9 @@ htmlParagraphElementGetAlign self
   = fromJSString <$>
       (ghcjs_dom_html_paragraph_element_get_align
          (unHTMLParagraphElement (toHTMLParagraphElement self)))
+#else
+module GHCJS.DOM.HTMLParagraphElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLParagraphElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLParagraphElement
+#endif

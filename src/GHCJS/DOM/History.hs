@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.History
        (ghcjs_dom_history_get_length, historyGetLength) where
 import GHCJS.Types
@@ -27,3 +29,9 @@ ghcjs_dom_history_get_length = undefined
 historyGetLength :: (IsHistory self) => self -> IO Word
 historyGetLength self
   = ghcjs_dom_history_get_length (unHistory (toHistory self))
+#else
+module GHCJS.DOM.History (
+  module Graphics.UI.Gtk.WebKit.DOM.History
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.History
+#endif

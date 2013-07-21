@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathNSResolver
        (ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri,
         xPathNSResolverLookupNamespaceURI)
@@ -37,3 +39,9 @@ xPathNSResolverLookupNamespaceURI self prefix
       (ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri
          (unXPathNSResolver (toXPathNSResolver self))
          (toJSString prefix))
+#else
+module GHCJS.DOM.XPathNSResolver (
+  module Graphics.UI.Gtk.WebKit.DOM.XPathNSResolver
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.XPathNSResolver
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaQueryList
        (ghcjs_dom_media_query_list_get_media, mediaQueryListGetMedia,
         ghcjs_dom_media_query_list_get_matches, mediaQueryListGetMatches)
@@ -51,3 +53,9 @@ mediaQueryListGetMatches ::
 mediaQueryListGetMatches self
   = ghcjs_dom_media_query_list_get_matches
       (unMediaQueryList (toMediaQueryList self))
+#else
+module GHCJS.DOM.MediaQueryList (
+  module Graphics.UI.Gtk.WebKit.DOM.MediaQueryList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.MediaQueryList
+#endif

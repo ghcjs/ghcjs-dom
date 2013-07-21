@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLSelectElement
        (ghcjs_dom_html_select_element_item, htmlSelectElementItem,
         ghcjs_dom_html_select_element_named_item,
@@ -631,3 +633,9 @@ htmlSelectElementGetLabels self
   = fmap NodeList . maybeJSNull <$>
       (ghcjs_dom_html_select_element_get_labels
          (unHTMLSelectElement (toHTMLSelectElement self)))
+#else
+module GHCJS.DOM.HTMLSelectElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLSelectElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLSelectElement
+#endif

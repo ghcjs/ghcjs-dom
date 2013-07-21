@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DocumentType
        (ghcjs_dom_document_type_get_name, documentTypeGetName,
         ghcjs_dom_document_type_get_entities, documentTypeGetEntities,
@@ -129,3 +131,9 @@ documentTypeGetInternalSubset self
   = fromJSString <$>
       (ghcjs_dom_document_type_get_internal_subset
          (unDocumentType (toDocumentType self)))
+#else
+module GHCJS.DOM.DocumentType (
+  module Graphics.UI.Gtk.WebKit.DOM.DocumentType
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DocumentType
+#endif

@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableColElement
        (ghcjs_dom_html_table_col_element_set_align,
         htmlTableColElementSetAlign,
@@ -261,3 +263,9 @@ htmlTableColElementGetWidth self
   = fromJSString <$>
       (ghcjs_dom_html_table_col_element_get_width
          (unHTMLTableColElement (toHTMLTableColElement self)))
+#else
+module GHCJS.DOM.HTMLTableColElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLTableColElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLTableColElement
+#endif

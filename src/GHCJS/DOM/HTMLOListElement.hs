@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOListElement
        (ghcjs_dom_htmlo_list_element_set_compact,
         htmloListElementSetCompact,
@@ -129,3 +131,9 @@ htmloListElementGetReversed ::
 htmloListElementGetReversed self
   = ghcjs_dom_htmlo_list_element_get_reversed
       (unHTMLOListElement (toHTMLOListElement self))
+#else
+module GHCJS.DOM.HTMLOListElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLOListElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLOListElement
+#endif

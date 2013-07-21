@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaList
        (ghcjs_dom_media_list_item, mediaListItem,
         ghcjs_dom_media_list_delete_medium, mediaListDeleteMedium,
@@ -123,3 +125,9 @@ ghcjs_dom_media_list_get_length = undefined
 mediaListGetLength :: (IsMediaList self) => self -> IO Word
 mediaListGetLength self
   = ghcjs_dom_media_list_get_length (unMediaList (toMediaList self))
+#else
+module GHCJS.DOM.MediaList (
+  module Graphics.UI.Gtk.WebKit.DOM.MediaList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.MediaList
+#endif

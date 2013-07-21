@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptionsCollection
        (ghcjs_dom_html_options_collection_set_selected_index,
         htmlOptionsCollectionSetSelectedIndex,
@@ -53,3 +55,9 @@ htmlOptionsCollectionGetSelectedIndex ::
 htmlOptionsCollectionGetSelectedIndex self
   = ghcjs_dom_html_options_collection_get_selected_index
       (unHTMLOptionsCollection (toHTMLOptionsCollection self))
+#else
+module GHCJS.DOM.HTMLOptionsCollection (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLOptionsCollection
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLOptionsCollection
+#endif

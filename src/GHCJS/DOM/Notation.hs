@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Notation
        (ghcjs_dom_notation_get_public_id, notationGetPublicId,
         ghcjs_dom_notation_get_system_id, notationGetSystemId)
@@ -46,3 +48,9 @@ notationGetSystemId ::
 notationGetSystemId self
   = fromJSString <$>
       (ghcjs_dom_notation_get_system_id (unNotation (toNotation self)))
+#else
+module GHCJS.DOM.Notation (
+  module Graphics.UI.Gtk.WebKit.DOM.Notation
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.Notation
+#endif

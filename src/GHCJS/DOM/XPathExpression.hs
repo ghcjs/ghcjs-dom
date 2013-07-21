@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathExpression
        (ghcjs_dom_xpath_expression_evaluate, xPathExpressionEvaluate)
        where
@@ -43,3 +45,9 @@ xPathExpressionEvaluate self contextNode type' inResult
          (maybe jsNull (unNode . toNode) contextNode)
          type'
          (maybe jsNull (unXPathResult . toXPathResult) inResult))
+#else
+module GHCJS.DOM.XPathExpression (
+  module Graphics.UI.Gtk.WebKit.DOM.XPathExpression
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.XPathExpression
+#endif

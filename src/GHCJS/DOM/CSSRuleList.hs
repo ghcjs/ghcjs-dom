@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSRuleList
        (ghcjs_dom_css_rule_list_item, cssRuleListItem,
         ghcjs_dom_css_rule_list_get_length, cssRuleListGetLength)
@@ -48,3 +50,9 @@ cssRuleListGetLength :: (IsCSSRuleList self) => self -> IO Word
 cssRuleListGetLength self
   = ghcjs_dom_css_rule_list_get_length
       (unCSSRuleList (toCSSRuleList self))
+#else
+module GHCJS.DOM.CSSRuleList (
+  module Graphics.UI.Gtk.WebKit.DOM.CSSRuleList
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.CSSRuleList
+#endif

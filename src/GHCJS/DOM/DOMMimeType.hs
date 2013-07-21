@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMMimeType
        (ghcjs_dom_dom_mime_type_get_suffixes, domMimeTypeGetSuffixes,
         ghcjs_dom_dom_mime_type_get_description, domMimeTypeGetDescription,
@@ -72,3 +74,9 @@ domMimeTypeGetEnabledPlugin self
   = fmap DOMPlugin . maybeJSNull <$>
       (ghcjs_dom_dom_mime_type_get_enabled_plugin
          (unDOMMimeType (toDOMMimeType self)))
+#else
+module GHCJS.DOM.DOMMimeType (
+  module Graphics.UI.Gtk.WebKit.DOM.DOMMimeType
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.DOMMimeType
+#endif

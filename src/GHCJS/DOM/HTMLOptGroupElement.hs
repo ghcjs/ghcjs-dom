@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptGroupElement
        (ghcjs_dom_html_opt_group_element_set_disabled,
         htmlOptGroupElementSetDisabled,
@@ -95,3 +97,9 @@ htmlOptGroupElementGetLabel self
   = fromJSString <$>
       (ghcjs_dom_html_opt_group_element_get_label
          (unHTMLOptGroupElement (toHTMLOptGroupElement self)))
+#else
+module GHCJS.DOM.HTMLOptGroupElement (
+  module Graphics.UI.Gtk.WebKit.DOM.HTMLOptGroupElement
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.HTMLOptGroupElement
+#endif

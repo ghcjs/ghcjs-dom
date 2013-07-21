@@ -1,4 +1,6 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, CPP #-}
+{-# LANGUAGE CPP #-}
+#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MouseEvent
        (ghcjs_dom_mouse_event_init_mouse_event, mouseEventInitMouseEvent,
         ghcjs_dom_mouse_event_get_screen_x, mouseEventGetScreenX,
@@ -375,3 +377,9 @@ mouseEventGetToElement self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_mouse_event_get_to_element
          (unMouseEvent (toMouseEvent self)))
+#else
+module GHCJS.DOM.MouseEvent (
+  module Graphics.UI.Gtk.WebKit.DOM.MouseEvent
+  ) where
+import Graphics.UI.Gtk.WebKit.DOM.MouseEvent
+#endif
