@@ -169,28 +169,10 @@ library
         cpp-options: -DUSE_WEBKIT
         build-depends:  glib >=0.12.3.1 && <0.13, transformers >=0.3.0.0 && <0.4
         if flag(gtk3)
-            build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 >=0.12.5 && <0.13
+            build-depends: gtk3 >=0.12.4 && <0.13, webkit3 >=0.12.5 && <0.13
         else
-            build-depends: gtk >=0.12.4.1 && <0.13, webkit >=0.12.5 && <0.13
+            build-depends: gtk >=0.12.4 && <0.13, webkit >=0.12.5 && <0.13
         c-sources:      cbits/ghcjs_stubs.c
-
---    if impl(ghcjs) && !flag(webkit) && !flag(jsc)
---      build-depends: ghcjs-base
---    else
---      if !flag(jsc)
---        if flag(gtk3)
---          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
---        else
---          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
---        build-depends:  glib >=0.12.3.1 && <0.13
---        c-sources:      cbits/ghcjs_stubs.c
---      else
---        if flag(gtk3)
---          build-depends: gtk3 >=0.12.4.1 && <0.13, webkit3 -any, webkit3-javascriptcore -any
---        else
---          build-depends: gtk >=0.12.4.1 && <0.13, webkit -any, webkit-javascriptcore -any
---        build-depends:  glib >=0.12.3.1 && <0.13
---        c-sources:      cbits/ghcjs_stubs.c
 
     hs-source-dirs: src
     exposed: True
