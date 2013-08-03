@@ -6,7 +6,7 @@
 #endif
 module GHCJS.DOM.Types (
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-    maybeJSNull, propagateGError
+    maybeJSNull, propagateGError, GType(..)
   , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject
 
 -- AUTO GENERATION STARTS HERE
@@ -143,7 +143,7 @@ module GHCJS.DOM.Types (
   , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
 -- AUTO GENERATION ENDS HERE
 #else
-    propagateGError
+    propagateGError, GType(..)
   , module Graphics.UI.Gtk.WebKit.Types
   , IsDOMAttr
   , IsBarInfo
@@ -280,7 +280,7 @@ module GHCJS.DOM.Types (
 import GHCJS.Types (JSRef(..), castRef, isNull)
 #else
 import Graphics.UI.Gtk.WebKit.Types
-import System.Glib (propagateGError)
+import System.Glib (propagateGError, GType(..))
 #endif
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)

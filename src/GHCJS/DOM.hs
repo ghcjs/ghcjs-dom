@@ -8,6 +8,8 @@ module GHCJS.DOM (
 , WebView(..)
 , webViewGetDomDocument
 , runWebGUI
+, postGUISync
+, postGUIAsync
 ) where
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
@@ -21,7 +23,7 @@ import Graphics.UI.Gtk
        (timeoutAddFull, widgetShowAll, mainQuit, destroyEvent,
         WindowPosition(..), containerAdd, scrolledWindowNew,
         windowSetPosition, windowSetDefaultSize, windowNew, mainGUI,
-        initGUI)
+        initGUI, postGUISync, postGUIAsync)
 import System.Glib.Signals (on)
 import System.Glib.Attributes (get, AttrOp(..), set)
 import System.Glib.FFI (maybeNull)
@@ -41,6 +43,12 @@ import System.Environment (getArgs)
 import Data.List (isSuffixOf)
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+postGUIAsync :: IO () -> IO ()
+postGUIAsync = id
+
+postGUISync :: IO a -> IO a
+postGUISync = id
+
 #ifdef __GHCJS__
 foreign import javascript unsafe "$r = window"
   ghcjs_currentWindow :: IO (JSRef DOMWindow)
