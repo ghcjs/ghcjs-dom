@@ -342,7 +342,7 @@ gTypeGObject = GType gTypeGObject'
 -- AUTO GENERATION STARTS HERE
 -- The remainder of this file is generated from IDL files using domconv-webkit-jsffi
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMAttr = DOMAttr (JSRef DOMAttr)
+newtype DOMAttr = DOMAttr (JSRef DOMAttr)
 
 unDOMAttr (DOMAttr o) = o
 
@@ -371,7 +371,7 @@ type IsDOMAttr o = DOMAttrClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data BarInfo = BarInfo (JSRef BarInfo)
+newtype BarInfo = BarInfo (JSRef BarInfo)
 
 unBarInfo (BarInfo o) = o
 
@@ -399,7 +399,7 @@ type IsBarInfo o = BarInfoClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Blob = Blob (JSRef Blob)
+newtype Blob = Blob (JSRef Blob)
 
 unBlob (Blob o) = o
 
@@ -427,7 +427,7 @@ type IsBlob o = BlobClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data CDATASection = CDATASection (JSRef CDATASection)
+newtype CDATASection = CDATASection (JSRef CDATASection)
 
 unCDATASection (CDATASection o) = o
 
@@ -458,7 +458,7 @@ type IsCDATASection o = CDATASectionClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data CSSRule = CSSRule (JSRef CSSRule)
+newtype CSSRule = CSSRule (JSRef CSSRule)
 
 unCSSRule (CSSRule o) = o
 
@@ -486,7 +486,7 @@ type IsCSSRule o = CSSRuleClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data CSSRuleList = CSSRuleList (JSRef CSSRuleList)
+newtype CSSRuleList = CSSRuleList (JSRef CSSRuleList)
 
 unCSSRuleList (CSSRuleList o) = o
 
@@ -514,7 +514,7 @@ type IsCSSRuleList o = CSSRuleListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration)
+newtype CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration)
 
 unCSSStyleDeclaration (CSSStyleDeclaration o) = o
 
@@ -542,7 +542,7 @@ type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet)
+newtype CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet)
 
 unCSSStyleSheet (CSSStyleSheet o) = o
 
@@ -571,7 +571,7 @@ type IsCSSStyleSheet o = CSSStyleSheetClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data CSSValue = CSSValue (JSRef CSSValue)
+newtype CSSValue = CSSValue (JSRef CSSValue)
 
 unCSSValue (CSSValue o) = o
 
@@ -599,7 +599,7 @@ type IsCSSValue o = CSSValueClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data CharacterData = CharacterData (JSRef CharacterData)
+newtype CharacterData = CharacterData (JSRef CharacterData)
 
 unCharacterData (CharacterData o) = o
 
@@ -628,7 +628,7 @@ type IsCharacterData o = CharacterDataClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Comment = Comment (JSRef Comment)
+newtype Comment = Comment (JSRef Comment)
 
 unComment (Comment o) = o
 
@@ -658,7 +658,7 @@ type IsComment o = CommentClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Console = Console (JSRef Console)
+newtype Console = Console (JSRef Console)
 
 unConsole (Console o) = o
 
@@ -686,7 +686,7 @@ type IsConsole o = ConsoleClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache)
+newtype DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache)
 
 unDOMApplicationCache (DOMApplicationCache o) = o
 
@@ -714,7 +714,7 @@ type IsDOMApplicationCache o = DOMApplicationCacheClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMImplementation = DOMImplementation (JSRef DOMImplementation)
+newtype DOMImplementation = DOMImplementation (JSRef DOMImplementation)
 
 unDOMImplementation (DOMImplementation o) = o
 
@@ -742,7 +742,7 @@ type IsDOMImplementation o = DOMImplementationClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMMimeType = DOMMimeType (JSRef DOMMimeType)
+newtype DOMMimeType = DOMMimeType (JSRef DOMMimeType)
 
 unDOMMimeType (DOMMimeType o) = o
 
@@ -770,7 +770,7 @@ type IsDOMMimeType o = DOMMimeTypeClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray)
+newtype DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray)
 
 unDOMMimeTypeArray (DOMMimeTypeArray o) = o
 
@@ -798,7 +798,7 @@ type IsDOMMimeTypeArray o = DOMMimeTypeArrayClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMPlugin = DOMPlugin (JSRef DOMPlugin)
+newtype DOMPlugin = DOMPlugin (JSRef DOMPlugin)
 
 unDOMPlugin (DOMPlugin o) = o
 
@@ -826,7 +826,7 @@ type IsDOMPlugin o = DOMPluginClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray)
+newtype DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray)
 
 unDOMPluginArray (DOMPluginArray o) = o
 
@@ -852,8 +852,9 @@ gTypeDOMPluginArray = GType gTypeDOMPluginArray'
 type IsDOMPluginArray o = DOMPluginArrayClass o
 #endif
 
+
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy)
+newtype DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy)
 
 unDOMSecurityPolicy (DOMSecurityPolicy o) = o
 
@@ -878,8 +879,9 @@ gTypeDOMSecurityPolicy = GType gTypeDOMSecurityPolicy'
 #else
 #endif
 
+
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMSelection = DOMSelection (JSRef DOMSelection)
+newtype DOMSelection = DOMSelection (JSRef DOMSelection)
 
 unDOMSelection (DOMSelection o) = o
 
@@ -907,7 +909,7 @@ type IsDOMSelection o = DOMSelectionClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList)
+newtype DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList)
 
 unDOMSettableTokenList (DOMSettableTokenList o) = o
 
@@ -936,7 +938,7 @@ type IsDOMSettableTokenList o = DOMSettableTokenListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMStringList = DOMStringList (JSRef DOMStringList)
+newtype DOMStringList = DOMStringList (JSRef DOMStringList)
 
 unDOMStringList (DOMStringList o) = o
 
@@ -964,7 +966,7 @@ type IsDOMStringList o = DOMStringListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMTokenList = DOMTokenList (JSRef DOMTokenList)
+newtype DOMTokenList = DOMTokenList (JSRef DOMTokenList)
 
 unDOMTokenList (DOMTokenList o) = o
 
@@ -992,7 +994,7 @@ type IsDOMTokenList o = DOMTokenListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMWindow = DOMWindow (JSRef DOMWindow)
+newtype DOMWindow = DOMWindow (JSRef DOMWindow)
 
 unDOMWindow (DOMWindow o) = o
 
@@ -1020,7 +1022,7 @@ type IsDOMWindow o = DOMWindowClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Document = Document (JSRef Document)
+newtype Document = Document (JSRef Document)
 
 unDocument (Document o) = o
 
@@ -1049,7 +1051,7 @@ type IsDocument o = DocumentClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DocumentFragment = DocumentFragment (JSRef DocumentFragment)
+newtype DocumentFragment = DocumentFragment (JSRef DocumentFragment)
 
 unDocumentFragment (DocumentFragment o) = o
 
@@ -1078,7 +1080,7 @@ type IsDocumentFragment o = DocumentFragmentClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DocumentType = DocumentType (JSRef DocumentType)
+newtype DocumentType = DocumentType (JSRef DocumentType)
 
 unDocumentType (DocumentType o) = o
 
@@ -1107,7 +1109,7 @@ type IsDocumentType o = DocumentTypeClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Element = Element (JSRef Element)
+newtype Element = Element (JSRef Element)
 
 unElement (Element o) = o
 
@@ -1136,7 +1138,7 @@ type IsElement o = ElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data EntityReference = EntityReference (JSRef EntityReference)
+newtype EntityReference = EntityReference (JSRef EntityReference)
 
 unEntityReference (EntityReference o) = o
 
@@ -1165,7 +1167,7 @@ type IsEntityReference o = EntityReferenceClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Event = Event (JSRef Event)
+newtype Event = Event (JSRef Event)
 
 unEvent (Event o) = o
 
@@ -1193,7 +1195,7 @@ type IsEvent o = EventClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data EventTarget = EventTarget (JSRef EventTarget)
+newtype EventTarget = EventTarget (JSRef EventTarget)
 
 unEventTarget (EventTarget o) = o
 
@@ -1221,7 +1223,7 @@ type IsEventTarget o = EventTargetClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data File = File (JSRef File)
+newtype File = File (JSRef File)
 
 unFile (File o) = o
 
@@ -1250,7 +1252,7 @@ type IsFile o = FileClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data FileList = FileList (JSRef FileList)
+newtype FileList = FileList (JSRef FileList)
 
 unFileList (FileList o) = o
 
@@ -1278,7 +1280,7 @@ type IsFileList o = FileListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Geolocation = Geolocation (JSRef Geolocation)
+newtype Geolocation = Geolocation (JSRef Geolocation)
 
 unGeolocation (Geolocation o) = o
 
@@ -1306,7 +1308,7 @@ type IsGeolocation o = GeolocationClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement)
+newtype HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement)
 
 unHTMLAnchorElement (HTMLAnchorElement o) = o
 
@@ -1337,7 +1339,7 @@ type IsHTMLAnchorElement o = HTMLAnchorElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement)
+newtype HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement)
 
 unHTMLAppletElement (HTMLAppletElement o) = o
 
@@ -1368,7 +1370,7 @@ type IsHTMLAppletElement o = HTMLAppletElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement)
+newtype HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement)
 
 unHTMLAreaElement (HTMLAreaElement o) = o
 
@@ -1399,7 +1401,7 @@ type IsHTMLAreaElement o = HTMLAreaElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement)
+newtype HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement)
 
 unHTMLAudioElement (HTMLAudioElement o) = o
 
@@ -1431,7 +1433,7 @@ type IsHTMLAudioElement o = HTMLAudioElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement)
+newtype HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement)
 
 unHTMLBRElement (HTMLBRElement o) = o
 
@@ -1462,7 +1464,7 @@ type IsHTMLBRElement o = HTMLBRElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement)
+newtype HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement)
 
 unHTMLBaseElement (HTMLBaseElement o) = o
 
@@ -1493,7 +1495,7 @@ type IsHTMLBaseElement o = HTMLBaseElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement)
+newtype HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement)
 
 unHTMLBaseFontElement (HTMLBaseFontElement o) = o
 
@@ -1524,7 +1526,7 @@ type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement)
+newtype HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement)
 
 unHTMLBodyElement (HTMLBodyElement o) = o
 
@@ -1555,7 +1557,7 @@ type IsHTMLBodyElement o = HTMLBodyElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement)
+newtype HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement)
 
 unHTMLButtonElement (HTMLButtonElement o) = o
 
@@ -1586,7 +1588,7 @@ type IsHTMLButtonElement o = HTMLButtonElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement)
+newtype HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement)
 
 unHTMLCanvasElement (HTMLCanvasElement o) = o
 
@@ -1617,7 +1619,7 @@ type IsHTMLCanvasElement o = HTMLCanvasElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLCollection = HTMLCollection (JSRef HTMLCollection)
+newtype HTMLCollection = HTMLCollection (JSRef HTMLCollection)
 
 unHTMLCollection (HTMLCollection o) = o
 
@@ -1645,7 +1647,7 @@ type IsHTMLCollection o = HTMLCollectionClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement)
+newtype HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement)
 
 unHTMLDListElement (HTMLDListElement o) = o
 
@@ -1676,7 +1678,7 @@ type IsHTMLDListElement o = HTMLDListElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement)
+newtype HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement)
 
 unHTMLDetailsElement (HTMLDetailsElement o) = o
 
@@ -1707,7 +1709,7 @@ type IsHTMLDetailsElement o = HTMLDetailsElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement)
+newtype HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement)
 
 unHTMLDirectoryElement (HTMLDirectoryElement o) = o
 
@@ -1738,7 +1740,7 @@ type IsHTMLDirectoryElement o = HTMLDirectoryElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement)
+newtype HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement)
 
 unHTMLDivElement (HTMLDivElement o) = o
 
@@ -1769,7 +1771,7 @@ type IsHTMLDivElement o = HTMLDivElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLDocument = HTMLDocument (JSRef HTMLDocument)
+newtype HTMLDocument = HTMLDocument (JSRef HTMLDocument)
 
 unHTMLDocument (HTMLDocument o) = o
 
@@ -1799,7 +1801,7 @@ type IsHTMLDocument o = HTMLDocumentClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLElement = HTMLElement (JSRef HTMLElement)
+newtype HTMLElement = HTMLElement (JSRef HTMLElement)
 
 unHTMLElement (HTMLElement o) = o
 
@@ -1829,7 +1831,7 @@ type IsHTMLElement o = HTMLElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement)
+newtype HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement)
 
 unHTMLEmbedElement (HTMLEmbedElement o) = o
 
@@ -1860,7 +1862,7 @@ type IsHTMLEmbedElement o = HTMLEmbedElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement)
+newtype HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement)
 
 unHTMLFieldSetElement (HTMLFieldSetElement o) = o
 
@@ -1891,7 +1893,7 @@ type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement)
+newtype HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement)
 
 unHTMLFontElement (HTMLFontElement o) = o
 
@@ -1922,7 +1924,7 @@ type IsHTMLFontElement o = HTMLFontElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement)
+newtype HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement)
 
 unHTMLFormElement (HTMLFormElement o) = o
 
@@ -1953,7 +1955,7 @@ type IsHTMLFormElement o = HTMLFormElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement)
+newtype HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement)
 
 unHTMLFrameElement (HTMLFrameElement o) = o
 
@@ -1984,7 +1986,7 @@ type IsHTMLFrameElement o = HTMLFrameElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement)
+newtype HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement)
 
 unHTMLFrameSetElement (HTMLFrameSetElement o) = o
 
@@ -2015,7 +2017,7 @@ type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement)
+newtype HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement)
 
 unHTMLHRElement (HTMLHRElement o) = o
 
@@ -2046,7 +2048,7 @@ type IsHTMLHRElement o = HTMLHRElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement)
+newtype HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement)
 
 unHTMLHeadElement (HTMLHeadElement o) = o
 
@@ -2077,7 +2079,7 @@ type IsHTMLHeadElement o = HTMLHeadElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement)
+newtype HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement)
 
 unHTMLHeadingElement (HTMLHeadingElement o) = o
 
@@ -2108,7 +2110,7 @@ type IsHTMLHeadingElement o = HTMLHeadingElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement)
+newtype HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement)
 
 unHTMLHtmlElement (HTMLHtmlElement o) = o
 
@@ -2139,7 +2141,7 @@ type IsHTMLHtmlElement o = HTMLHtmlElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement)
+newtype HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement)
 
 unHTMLIFrameElement (HTMLIFrameElement o) = o
 
@@ -2170,7 +2172,7 @@ type IsHTMLIFrameElement o = HTMLIFrameElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement)
+newtype HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement)
 
 unHTMLImageElement (HTMLImageElement o) = o
 
@@ -2201,7 +2203,7 @@ type IsHTMLImageElement o = HTMLImageElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement)
+newtype HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement)
 
 unHTMLInputElement (HTMLInputElement o) = o
 
@@ -2232,7 +2234,7 @@ type IsHTMLInputElement o = HTMLInputElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement)
+newtype HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement)
 
 unHTMLKeygenElement (HTMLKeygenElement o) = o
 
@@ -2263,7 +2265,7 @@ type IsHTMLKeygenElement o = HTMLKeygenElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement)
+newtype HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement)
 
 unHTMLLIElement (HTMLLIElement o) = o
 
@@ -2294,7 +2296,7 @@ type IsHTMLLIElement o = HTMLLIElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement)
+newtype HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement)
 
 unHTMLLabelElement (HTMLLabelElement o) = o
 
@@ -2325,7 +2327,7 @@ type IsHTMLLabelElement o = HTMLLabelElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement)
+newtype HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement)
 
 unHTMLLegendElement (HTMLLegendElement o) = o
 
@@ -2356,7 +2358,7 @@ type IsHTMLLegendElement o = HTMLLegendElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement)
+newtype HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement)
 
 unHTMLLinkElement (HTMLLinkElement o) = o
 
@@ -2387,7 +2389,7 @@ type IsHTMLLinkElement o = HTMLLinkElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement)
+newtype HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement)
 
 unHTMLMapElement (HTMLMapElement o) = o
 
@@ -2418,7 +2420,7 @@ type IsHTMLMapElement o = HTMLMapElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement)
+newtype HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement)
 
 unHTMLMarqueeElement (HTMLMarqueeElement o) = o
 
@@ -2449,7 +2451,7 @@ type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement)
+newtype HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement)
 
 unHTMLMediaElement (HTMLMediaElement o) = o
 
@@ -2480,7 +2482,7 @@ type IsHTMLMediaElement o = HTMLMediaElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement)
+newtype HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement)
 
 unHTMLMenuElement (HTMLMenuElement o) = o
 
@@ -2511,7 +2513,7 @@ type IsHTMLMenuElement o = HTMLMenuElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement)
+newtype HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement)
 
 unHTMLMetaElement (HTMLMetaElement o) = o
 
@@ -2542,7 +2544,7 @@ type IsHTMLMetaElement o = HTMLMetaElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLModElement = HTMLModElement (JSRef HTMLModElement)
+newtype HTMLModElement = HTMLModElement (JSRef HTMLModElement)
 
 unHTMLModElement (HTMLModElement o) = o
 
@@ -2573,7 +2575,7 @@ type IsHTMLModElement o = HTMLModElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement)
+newtype HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement)
 
 unHTMLOListElement (HTMLOListElement o) = o
 
@@ -2604,7 +2606,7 @@ type IsHTMLOListElement o = HTMLOListElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement)
+newtype HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement)
 
 unHTMLObjectElement (HTMLObjectElement o) = o
 
@@ -2635,7 +2637,7 @@ type IsHTMLObjectElement o = HTMLObjectElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement)
+newtype HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement)
 
 unHTMLOptGroupElement (HTMLOptGroupElement o) = o
 
@@ -2666,7 +2668,7 @@ type IsHTMLOptGroupElement o = HTMLOptGroupElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement)
+newtype HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement)
 
 unHTMLOptionElement (HTMLOptionElement o) = o
 
@@ -2697,7 +2699,7 @@ type IsHTMLOptionElement o = HTMLOptionElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollection)
+newtype HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollection)
 
 unHTMLOptionsCollection (HTMLOptionsCollection o) = o
 
@@ -2726,7 +2728,7 @@ type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement)
+newtype HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement)
 
 unHTMLParagraphElement (HTMLParagraphElement o) = o
 
@@ -2757,7 +2759,7 @@ type IsHTMLParagraphElement o = HTMLParagraphElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement)
+newtype HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement)
 
 unHTMLParamElement (HTMLParamElement o) = o
 
@@ -2788,7 +2790,7 @@ type IsHTMLParamElement o = HTMLParamElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement)
+newtype HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement)
 
 unHTMLPreElement (HTMLPreElement o) = o
 
@@ -2819,7 +2821,7 @@ type IsHTMLPreElement o = HTMLPreElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement)
+newtype HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement)
 
 unHTMLQuoteElement (HTMLQuoteElement o) = o
 
@@ -2850,7 +2852,7 @@ type IsHTMLQuoteElement o = HTMLQuoteElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement)
+newtype HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement)
 
 unHTMLScriptElement (HTMLScriptElement o) = o
 
@@ -2881,7 +2883,7 @@ type IsHTMLScriptElement o = HTMLScriptElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement)
+newtype HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement)
 
 unHTMLSelectElement (HTMLSelectElement o) = o
 
@@ -2912,7 +2914,7 @@ type IsHTMLSelectElement o = HTMLSelectElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement)
+newtype HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement)
 
 unHTMLStyleElement (HTMLStyleElement o) = o
 
@@ -2943,7 +2945,7 @@ type IsHTMLStyleElement o = HTMLStyleElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptionElement)
+newtype HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptionElement)
 
 unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
 
@@ -2974,7 +2976,7 @@ type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement)
+newtype HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement)
 
 unHTMLTableCellElement (HTMLTableCellElement o) = o
 
@@ -3005,7 +3007,7 @@ type IsHTMLTableCellElement o = HTMLTableCellElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement)
+newtype HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement)
 
 unHTMLTableColElement (HTMLTableColElement o) = o
 
@@ -3036,7 +3038,7 @@ type IsHTMLTableColElement o = HTMLTableColElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement)
+newtype HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement)
 
 unHTMLTableElement (HTMLTableElement o) = o
 
@@ -3067,7 +3069,7 @@ type IsHTMLTableElement o = HTMLTableElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement)
+newtype HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement)
 
 unHTMLTableRowElement (HTMLTableRowElement o) = o
 
@@ -3098,7 +3100,7 @@ type IsHTMLTableRowElement o = HTMLTableRowElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionElement)
+newtype HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionElement)
 
 unHTMLTableSectionElement (HTMLTableSectionElement o) = o
 
@@ -3129,7 +3131,7 @@ type IsHTMLTableSectionElement o = HTMLTableSectionElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement)
+newtype HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement)
 
 unHTMLTextAreaElement (HTMLTextAreaElement o) = o
 
@@ -3160,7 +3162,7 @@ type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement)
+newtype HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement)
 
 unHTMLTitleElement (HTMLTitleElement o) = o
 
@@ -3191,7 +3193,7 @@ type IsHTMLTitleElement o = HTMLTitleElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement)
+newtype HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement)
 
 unHTMLUListElement (HTMLUListElement o) = o
 
@@ -3222,7 +3224,7 @@ type IsHTMLUListElement o = HTMLUListElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement)
+newtype HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement)
 
 unHTMLVideoElement (HTMLVideoElement o) = o
 
@@ -3254,7 +3256,7 @@ type IsHTMLVideoElement o = HTMLVideoElementClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data History = History (JSRef History)
+newtype History = History (JSRef History)
 
 unHistory (History o) = o
 
@@ -3282,7 +3284,7 @@ type IsHistory o = HistoryClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Location = Location (JSRef Location)
+newtype Location = Location (JSRef Location)
 
 unLocation (Location o) = o
 
@@ -3310,7 +3312,7 @@ type IsLocation o = LocationClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data MediaError = MediaError (JSRef MediaError)
+newtype MediaError = MediaError (JSRef MediaError)
 
 unMediaError (MediaError o) = o
 
@@ -3338,7 +3340,7 @@ type IsMediaError o = MediaErrorClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data MediaList = MediaList (JSRef MediaList)
+newtype MediaList = MediaList (JSRef MediaList)
 
 unMediaList (MediaList o) = o
 
@@ -3366,7 +3368,7 @@ type IsMediaList o = MediaListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data MediaQueryList = MediaQueryList (JSRef MediaQueryList)
+newtype MediaQueryList = MediaQueryList (JSRef MediaQueryList)
 
 unMediaQueryList (MediaQueryList o) = o
 
@@ -3394,7 +3396,7 @@ type IsMediaQueryList o = MediaQueryListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data MemoryInfo = MemoryInfo (JSRef MemoryInfo)
+newtype MemoryInfo = MemoryInfo (JSRef MemoryInfo)
 
 unMemoryInfo (MemoryInfo o) = o
 
@@ -3422,7 +3424,7 @@ type IsMemoryInfo o = MemoryInfoClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data MessagePort = MessagePort (JSRef MessagePort)
+newtype MessagePort = MessagePort (JSRef MessagePort)
 
 unMessagePort (MessagePort o) = o
 
@@ -3450,7 +3452,7 @@ type IsMessagePort o = MessagePortClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data MouseEvent = MouseEvent (JSRef MouseEvent)
+newtype MouseEvent = MouseEvent (JSRef MouseEvent)
 
 unMouseEvent (MouseEvent o) = o
 
@@ -3480,7 +3482,7 @@ type IsMouseEvent o = MouseEventClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap)
+newtype NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap)
 
 unNamedNodeMap (NamedNodeMap o) = o
 
@@ -3508,7 +3510,7 @@ type IsNamedNodeMap o = NamedNodeMapClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Navigator = Navigator (JSRef Navigator)
+newtype Navigator = Navigator (JSRef Navigator)
 
 unNavigator (Navigator o) = o
 
@@ -3536,7 +3538,7 @@ type IsNavigator o = NavigatorClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Node = Node (JSRef Node)
+newtype Node = Node (JSRef Node)
 
 unNode (Node o) = o
 
@@ -3564,7 +3566,7 @@ type IsNode o = NodeClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data NodeFilter = NodeFilter (JSRef NodeFilter)
+newtype NodeFilter = NodeFilter (JSRef NodeFilter)
 
 unNodeFilter (NodeFilter o) = o
 
@@ -3592,7 +3594,7 @@ type IsNodeFilter o = NodeFilterClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data NodeIterator = NodeIterator (JSRef NodeIterator)
+newtype NodeIterator = NodeIterator (JSRef NodeIterator)
 
 unNodeIterator (NodeIterator o) = o
 
@@ -3620,7 +3622,7 @@ type IsNodeIterator o = NodeIteratorClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data NodeList = NodeList (JSRef NodeList)
+newtype NodeList = NodeList (JSRef NodeList)
 
 unNodeList (NodeList o) = o
 
@@ -3648,7 +3650,7 @@ type IsNodeList o = NodeListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction)
+newtype ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction)
 
 unProcessingInstruction (ProcessingInstruction o) = o
 
@@ -3677,7 +3679,7 @@ type IsProcessingInstruction o = ProcessingInstructionClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMRange = DOMRange (JSRef DOMRange)
+newtype DOMRange = DOMRange (JSRef DOMRange)
 
 unDOMRange (DOMRange o) = o
 
@@ -3705,7 +3707,7 @@ type IsDOMRange o = DOMRangeClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data DOMScreen = DOMScreen (JSRef DOMScreen)
+newtype DOMScreen = DOMScreen (JSRef DOMScreen)
 
 unDOMScreen (DOMScreen o) = o
 
@@ -3733,7 +3735,7 @@ type IsDOMScreen o = DOMScreenClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Storage = Storage (JSRef Storage)
+newtype Storage = Storage (JSRef Storage)
 
 unStorage (Storage o) = o
 
@@ -3761,7 +3763,7 @@ type IsStorage o = StorageClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data StorageInfo = StorageInfo (JSRef StorageInfo)
+newtype StorageInfo = StorageInfo (JSRef StorageInfo)
 
 unStorageInfo (StorageInfo o) = o
 
@@ -3788,7 +3790,7 @@ gTypeStorageInfo = GType gTypeStorageInfo'
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data StyleMedia = StyleMedia (JSRef StyleMedia)
+newtype StyleMedia = StyleMedia (JSRef StyleMedia)
 
 unStyleMedia (StyleMedia o) = o
 
@@ -3816,7 +3818,7 @@ type IsStyleMedia o = StyleMediaClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data StyleSheet = StyleSheet (JSRef StyleSheet)
+newtype StyleSheet = StyleSheet (JSRef StyleSheet)
 
 unStyleSheet (StyleSheet o) = o
 
@@ -3844,7 +3846,7 @@ type IsStyleSheet o = StyleSheetClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data StyleSheetList = StyleSheetList (JSRef StyleSheetList)
+newtype StyleSheetList = StyleSheetList (JSRef StyleSheetList)
 
 unStyleSheetList (StyleSheetList o) = o
 
@@ -3872,7 +3874,7 @@ type IsStyleSheetList o = StyleSheetListClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data Text = Text (JSRef Text)
+newtype Text = Text (JSRef Text)
 
 unText (Text o) = o
 
@@ -3902,7 +3904,7 @@ type IsText o = TextClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data TimeRanges = TimeRanges (JSRef TimeRanges)
+newtype TimeRanges = TimeRanges (JSRef TimeRanges)
 
 unTimeRanges (TimeRanges o) = o
 
@@ -3930,7 +3932,7 @@ type IsTimeRanges o = TimeRangesClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data TreeWalker = TreeWalker (JSRef TreeWalker)
+newtype TreeWalker = TreeWalker (JSRef TreeWalker)
 
 unTreeWalker (TreeWalker o) = o
 
@@ -3958,7 +3960,7 @@ type IsTreeWalker o = TreeWalkerClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data UIEvent = UIEvent (JSRef UIEvent)
+newtype UIEvent = UIEvent (JSRef UIEvent)
 
 unUIEvent (UIEvent o) = o
 
@@ -3987,7 +3989,7 @@ type IsUIEvent o = UIEventClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data ValidityState = ValidityState (JSRef ValidityState)
+newtype ValidityState = ValidityState (JSRef ValidityState)
 
 unValidityState (ValidityState o) = o
 
@@ -4015,7 +4017,7 @@ type IsValidityState o = ValidityStateClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data WebKitAnimation = WebKitAnimation (JSRef WebKitAnimation)
+newtype WebKitAnimation = WebKitAnimation (JSRef WebKitAnimation)
 
 unWebKitAnimation (WebKitAnimation o) = o
 
@@ -4042,7 +4044,7 @@ gTypeWebKitAnimation = GType gTypeWebKitAnimation'
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data WebKitAnimationList = WebKitAnimationList (JSRef WebKitAnimationList)
+newtype WebKitAnimationList = WebKitAnimationList (JSRef WebKitAnimationList)
 
 unWebKitAnimationList (WebKitAnimationList o) = o
 
@@ -4069,7 +4071,7 @@ gTypeWebKitAnimationList = GType gTypeWebKitAnimationList'
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow)
+newtype WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow)
 
 unWebKitNamedFlow (WebKitNamedFlow o) = o
 
@@ -4097,7 +4099,7 @@ type IsWebKitNamedFlow o = WebKitNamedFlowClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data WebKitPoint = WebKitPoint (JSRef WebKitPoint)
+newtype WebKitPoint = WebKitPoint (JSRef WebKitPoint)
 
 unWebKitPoint (WebKitPoint o) = o
 
@@ -4125,7 +4127,7 @@ type IsWebKitPoint o = WebKitPointClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data XPathExpression = XPathExpression (JSRef XPathExpression)
+newtype XPathExpression = XPathExpression (JSRef XPathExpression)
 
 unXPathExpression (XPathExpression o) = o
 
@@ -4153,7 +4155,7 @@ type IsXPathExpression o = XPathExpressionClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver)
+newtype XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver)
 
 unXPathNSResolver (XPathNSResolver o) = o
 
@@ -4181,7 +4183,7 @@ type IsXPathNSResolver o = XPathNSResolverClass o
 
 
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-data XPathResult = XPathResult (JSRef XPathResult)
+newtype XPathResult = XPathResult (JSRef XPathResult)
 
 unXPathResult (XPathResult o) = o
 
