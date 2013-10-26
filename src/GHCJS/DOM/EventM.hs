@@ -1,3 +1,4 @@
+{-# LANGUAGE ConstraintKinds #-}
 module GHCJS.DOM.EventM
 (
   Signal (..)
