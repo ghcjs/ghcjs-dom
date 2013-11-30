@@ -1,0 +1,15 @@
+language: haskell
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get --no-install-recommends install libwebkitgtk-3.0-dev alex happy
+  - cabal install Cabal
+  - cabal install cabal-install
+install:
+  - cabal install gtk2hs-buildtools
+  - cabal install --enable-tests
+script:
+  - cabal test
+notifications:
+  irc:
+    channels: "irc.freenode.net#ghcjs"
+  email: true
