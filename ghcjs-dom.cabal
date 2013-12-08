@@ -16,6 +16,10 @@ Source-Repository head
   type:         git
   location:     https://github.com/ghcjs/ghcjs-dom
 
+flag ghcjs
+    description: Tell cabal we are using ghcjs (work around until hackage supports impl(ghcjs))
+    default: True
+
 flag jsffi
     description: Use JavaScriptFFI extension for GHCJS JavaScript output
     default: True
@@ -173,11 +177,13 @@ library
           -- GHCJS.DOM.WebKitAnimation
           -- GHCJS.DOM.WebKitAnimationList
 
-    if impl(ghcjs) && flag(jsffi)
+--    if impl(ghcjs) && flag(jsffi)
+    if flag(ghcjs) && flag(jsffi)
         cpp-options: -DUSE_JAVASCRIPTFFI
         build-depends: ghcjs-base
 
-    if !impl(ghcjs) || flag(webkit)
+--    if !impl(ghcjs) || flag(webkit)
+    if !flag(ghcjs) || flag(webkit)
         cpp-options: -DUSE_WEBKIT
         build-depends:  glib >=0.12.3.1 && <0.13, transformers >=0.3.0.0 && <0.4
         if flag(gtk3)
