@@ -1,10 +1,20 @@
 name: ghcjs-dom
 version: 0.0.1
-cabal-version: >=1.8
+cabal-version: >=1.10
 build-type: Simple
-license: BSD3
-license-file: ""
+license: MIT
+license-file: LICENSE
+maintainer: Hamish Mackenzie <Hamish.K.Mackenzie@googlemail.com>
+synopsis: DOM library that supports both GHCJS and WebKitGTK
+description: Documentent Object Model (DOM) functions that work with
+             GHCJS, but can also be used with GHC and WebKitGTK.
+author: Hamish Mackenzie
 data-dir: ""
+category: Web
+
+Source-Repository head
+  type:         git
+  location:     https://github.com/ghcjs/ghcjs-dom
 
 flag jsffi
     description: Use JavaScriptFFI extension for GHCJS JavaScript output
@@ -23,7 +33,8 @@ flag gtk3
     Default: True
 
 library
-    build-depends: base -any, mtl -any
+    build-depends: base <5, mtl -any
+    default-language: Haskell2010
     exposed-modules:
           GHCJS.DOM
           GHCJS.DOM.Types
