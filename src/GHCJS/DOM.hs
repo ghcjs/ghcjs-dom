@@ -20,7 +20,7 @@ import Graphics.UI.Gtk.WebKit.WebView
        (webViewSetWebSettings, webViewGetWebSettings, loadStarted,
         webViewLoadUri, loadFinished, webViewNew, webViewGetDomDocument)
 import Graphics.UI.Gtk
-       (timeoutAddFull, widgetShowAll, mainQuit, destroyEvent,
+       (timeoutAddFull, widgetShowAll, mainQuit, objectDestroy,
         WindowPosition(..), containerAdd, scrolledWindowNew,
         windowSetPosition, windowSetDefaultSize, windowNew, mainGUI,
         initGUI, postGUISync, postGUIAsync)
@@ -119,7 +119,7 @@ makeDefaultWebView userAgentKey main = do
   webViewSetWebSettings webView settings
   window `containerAdd` scrollWin
   scrollWin `containerAdd` webView
-  on window destroyEvent . liftIO $ mainQuit >> return False
+  on window objectDestroy . liftIO $ mainQuit
   widgetShowAll window
   webView `on` loadFinished $ \frame -> do
     main webView
