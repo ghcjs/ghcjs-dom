@@ -146,7 +146,6 @@ module GHCJS.DOM.Types (
     propagateGError, GType(..)
   , module Graphics.UI.Gtk.WebKit.Types
   , IsDOMAttr
-  , IsBarProp
   , IsBlob
   , IsCDATASection
   , IsCSSRule
@@ -161,7 +160,6 @@ module GHCJS.DOM.Types (
   , IsDOMImplementation
   , IsDOMMimeType
   , IsDOMMimeTypeArray
-  , IsDOMNamedFlowCollection
   , IsDOMPlugin
   , IsDOMPluginArray
   , IsDOMSelection
@@ -169,7 +167,6 @@ module GHCJS.DOM.Types (
   , IsDOMStringList
   , IsDOMTokenList
   , IsDOMWindow
-  , IsDOMWindowCSS
   , IsDocument
   , IsDocumentFragment
   , IsDocumentType
@@ -244,7 +241,6 @@ module GHCJS.DOM.Types (
   , IsHTMLUListElement
   , IsHTMLVideoElement
   , IsHistory
-  , IsKeyboardEvent
   , IsLocation
   , IsMediaError
   , IsMediaList
@@ -396,7 +392,6 @@ gTypeBarProp' = error "gTypeBarProp': only available in JavaScript"
 #endif
 gTypeBarProp = GType gTypeBarProp'
 #else
-type IsBarProp o = BarPropClass o
 #endif
 
 
@@ -823,7 +818,6 @@ gTypeDOMNamedFlowCollection' = error "gTypeDOMNamedFlowCollection': only availab
 #endif
 gTypeDOMNamedFlowCollection = GType gTypeDOMNamedFlowCollection'
 #else
-type IsDOMNamedFlowCollection o = DOMNamedFlowCollectionClass o
 #endif
 
 
@@ -1076,7 +1070,6 @@ gTypeDOMWindowCSS' = error "gTypeDOMWindowCSS': only available in JavaScript"
 #endif
 gTypeDOMWindowCSS = GType gTypeDOMWindowCSS'
 #else
-type IsDOMWindowCSS o = DOMWindowCSSClass o
 #endif
 
 
@@ -3368,7 +3361,6 @@ gTypeKeyboardEvent' = error "gTypeKeyboardEvent': only available in JavaScript"
 #endif
 gTypeKeyboardEvent = GType gTypeKeyboardEvent'
 #else
-type IsKeyboardEvent o = KeyboardEventClass o
 #endif
 
 
