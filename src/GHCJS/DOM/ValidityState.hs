@@ -15,6 +15,7 @@ module GHCJS.DOM.ValidityState
         validityStateGetRangeOverflow,
         ghcjs_dom_validity_state_get_step_mismatch,
         validityStateGetStepMismatch,
+        ghcjs_dom_validity_state_get_bad_input, validityStateGetBadInput,
         ghcjs_dom_validity_state_get_custom_error,
         validityStateGetCustomError, ghcjs_dom_validity_state_get_valid,
         validityStateGetValid)
@@ -151,6 +152,23 @@ validityStateGetStepMismatch ::
                              (IsValidityState self) => self -> IO Bool
 validityStateGetStepMismatch self
   = ghcjs_dom_validity_state_get_step_mismatch
+      (unValidityState (toValidityState self))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "($1[\"badInput\"] ? 1 : 0)"
+        ghcjs_dom_validity_state_get_bad_input ::
+        JSRef ValidityState -> IO Bool
+#else 
+ghcjs_dom_validity_state_get_bad_input ::
+                                         JSRef ValidityState -> IO Bool
+ghcjs_dom_validity_state_get_bad_input = undefined
+#endif
+ 
+validityStateGetBadInput ::
+                         (IsValidityState self) => self -> IO Bool
+validityStateGetBadInput self
+  = ghcjs_dom_validity_state_get_bad_input
       (unValidityState (toValidityState self))
 
 

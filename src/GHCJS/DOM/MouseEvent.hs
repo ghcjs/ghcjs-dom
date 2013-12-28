@@ -7,16 +7,17 @@ module GHCJS.DOM.MouseEvent
         ghcjs_dom_mouse_event_get_screen_y, mouseEventGetScreenY,
         ghcjs_dom_mouse_event_get_client_x, mouseEventGetClientX,
         ghcjs_dom_mouse_event_get_client_y, mouseEventGetClientY,
+        ghcjs_dom_mouse_event_get_ctrl_key, mouseEventGetCtrlKey,
+        ghcjs_dom_mouse_event_get_shift_key, mouseEventGetShiftKey,
+        ghcjs_dom_mouse_event_get_alt_key, mouseEventGetAltKey,
+        ghcjs_dom_mouse_event_get_meta_key, mouseEventGetMetaKey,
+        ghcjs_dom_mouse_event_get_button, mouseEventGetButton,
+        ghcjs_dom_mouse_event_get_related_target,
+        mouseEventGetRelatedTarget,
         ghcjs_dom_mouse_event_get_webkit_movement_x,
         mouseEventGetWebkitMovementX,
         ghcjs_dom_mouse_event_get_webkit_movement_y,
-        mouseEventGetWebkitMovementY, ghcjs_dom_mouse_event_get_ctrl_key,
-        mouseEventGetCtrlKey, ghcjs_dom_mouse_event_get_shift_key,
-        mouseEventGetShiftKey, ghcjs_dom_mouse_event_get_alt_key,
-        mouseEventGetAltKey, ghcjs_dom_mouse_event_get_meta_key,
-        mouseEventGetMetaKey, ghcjs_dom_mouse_event_get_button,
-        mouseEventGetButton, ghcjs_dom_mouse_event_get_related_target,
-        mouseEventGetRelatedTarget, ghcjs_dom_mouse_event_get_offset_x,
+        mouseEventGetWebkitMovementY, ghcjs_dom_mouse_event_get_offset_x,
         mouseEventGetOffsetX, ghcjs_dom_mouse_event_get_offset_y,
         mouseEventGetOffsetY, ghcjs_dom_mouse_event_get_x, mouseEventGetX,
         ghcjs_dom_mouse_event_get_y, mouseEventGetY,
@@ -168,40 +169,6 @@ mouseEventGetClientY self
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitMovementX\"]"
-        ghcjs_dom_mouse_event_get_webkit_movement_x ::
-        JSRef MouseEvent -> IO Int
-#else 
-ghcjs_dom_mouse_event_get_webkit_movement_x ::
-                                              JSRef MouseEvent -> IO Int
-ghcjs_dom_mouse_event_get_webkit_movement_x = undefined
-#endif
- 
-mouseEventGetWebkitMovementX ::
-                             (IsMouseEvent self) => self -> IO Int
-mouseEventGetWebkitMovementX self
-  = ghcjs_dom_mouse_event_get_webkit_movement_x
-      (unMouseEvent (toMouseEvent self))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitMovementY\"]"
-        ghcjs_dom_mouse_event_get_webkit_movement_y ::
-        JSRef MouseEvent -> IO Int
-#else 
-ghcjs_dom_mouse_event_get_webkit_movement_y ::
-                                              JSRef MouseEvent -> IO Int
-ghcjs_dom_mouse_event_get_webkit_movement_y = undefined
-#endif
- 
-mouseEventGetWebkitMovementY ::
-                             (IsMouseEvent self) => self -> IO Int
-mouseEventGetWebkitMovementY self
-  = ghcjs_dom_mouse_event_get_webkit_movement_y
-      (unMouseEvent (toMouseEvent self))
-
-
-#ifdef __GHCJS__ 
 foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_ctrl_key :: JSRef MouseEvent -> IO Bool
 #else 
@@ -287,6 +254,40 @@ mouseEventGetRelatedTarget self
   = fmap EventTarget . maybeJSNull <$>
       (ghcjs_dom_mouse_event_get_related_target
          (unMouseEvent (toMouseEvent self)))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"webkitMovementX\"]"
+        ghcjs_dom_mouse_event_get_webkit_movement_x ::
+        JSRef MouseEvent -> IO Int
+#else 
+ghcjs_dom_mouse_event_get_webkit_movement_x ::
+                                              JSRef MouseEvent -> IO Int
+ghcjs_dom_mouse_event_get_webkit_movement_x = undefined
+#endif
+ 
+mouseEventGetWebkitMovementX ::
+                             (IsMouseEvent self) => self -> IO Int
+mouseEventGetWebkitMovementX self
+  = ghcjs_dom_mouse_event_get_webkit_movement_x
+      (unMouseEvent (toMouseEvent self))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"webkitMovementY\"]"
+        ghcjs_dom_mouse_event_get_webkit_movement_y ::
+        JSRef MouseEvent -> IO Int
+#else 
+ghcjs_dom_mouse_event_get_webkit_movement_y ::
+                                              JSRef MouseEvent -> IO Int
+ghcjs_dom_mouse_event_get_webkit_movement_y = undefined
+#endif
+ 
+mouseEventGetWebkitMovementY ::
+                             (IsMouseEvent self) => self -> IO Int
+mouseEventGetWebkitMovementY self
+  = ghcjs_dom_mouse_event_get_webkit_movement_y
+      (unMouseEvent (toMouseEvent self))
 
 
 #ifdef __GHCJS__ 

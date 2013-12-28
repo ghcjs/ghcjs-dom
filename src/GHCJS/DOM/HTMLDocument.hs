@@ -2,8 +2,7 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDocument
-       (ghcjs_dom_html_document_open, htmlDocumentOpen,
-        ghcjs_dom_html_document_close, htmlDocumentClose,
+       (ghcjs_dom_html_document_close, htmlDocumentClose,
         ghcjs_dom_html_document_clear, htmlDocumentClear,
         ghcjs_dom_html_document_capture_events, htmlDocumentCaptureEvents,
         ghcjs_dom_html_document_release_events, htmlDocumentReleaseEvents,
@@ -44,20 +43,6 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"open\"]()"
-        ghcjs_dom_html_document_open :: JSRef HTMLDocument -> IO ()
-#else 
-ghcjs_dom_html_document_open :: JSRef HTMLDocument -> IO ()
-ghcjs_dom_html_document_open = undefined
-#endif
- 
-htmlDocumentOpen :: (IsHTMLDocument self) => self -> IO ()
-htmlDocumentOpen self
-  = ghcjs_dom_html_document_open
-      (unHTMLDocument (toHTMLDocument self))
 
 
 #ifdef __GHCJS__ 

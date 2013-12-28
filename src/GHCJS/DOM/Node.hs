@@ -9,7 +9,6 @@ module GHCJS.DOM.Node
         ghcjs_dom_node_has_child_nodes, nodeHasChildNodes,
         ghcjs_dom_node_clone_node, nodeCloneNode, ghcjs_dom_node_normalize,
         nodeNormalize, ghcjs_dom_node_is_supported, nodeIsSupported,
-        ghcjs_dom_node_has_attributes, nodeHasAttributes,
         ghcjs_dom_node_is_same_node, nodeIsSameNode,
         ghcjs_dom_node_is_equal_node, nodeIsEqualNode,
         ghcjs_dom_node_lookup_prefix, nodeLookupPrefix,
@@ -36,7 +35,6 @@ module GHCJS.DOM.Node
         ghcjs_dom_node_get_last_child, nodeGetLastChild,
         ghcjs_dom_node_get_previous_sibling, nodeGetPreviousSibling,
         ghcjs_dom_node_get_next_sibling, nodeGetNextSibling,
-        ghcjs_dom_node_get_attributes, nodeGetAttributes,
         ghcjs_dom_node_get_owner_document, nodeGetOwnerDocument,
         ghcjs_dom_node_get_namespace_uri, nodeGetNamespaceURI,
         ghcjs_dom_node_set_prefix, nodeSetPrefix,
@@ -199,20 +197,6 @@ nodeIsSupported self feature version
   = ghcjs_dom_node_is_supported (unNode (toNode self))
       (toJSString feature)
       (toJSString version)
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe
-        "($1[\"hasAttributes\"]() ? 1 : 0)" ghcjs_dom_node_has_attributes
-        :: JSRef Node -> IO Bool
-#else 
-ghcjs_dom_node_has_attributes :: JSRef Node -> IO Bool
-ghcjs_dom_node_has_attributes = undefined
-#endif
- 
-nodeHasAttributes :: (IsNode self) => self -> IO Bool
-nodeHasAttributes self
-  = ghcjs_dom_node_has_attributes (unNode (toNode self))
 
 
 #ifdef __GHCJS__ 
@@ -513,23 +497,6 @@ nodeGetNextSibling :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetNextSibling self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_get_next_sibling (unNode (toNode self)))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"attributes\"]"
-        ghcjs_dom_node_get_attributes ::
-        JSRef Node -> IO (JSRef NamedNodeMap)
-#else 
-ghcjs_dom_node_get_attributes ::
-                                JSRef Node -> IO (JSRef NamedNodeMap)
-ghcjs_dom_node_get_attributes = undefined
-#endif
- 
-nodeGetAttributes ::
-                  (IsNode self) => self -> IO (Maybe NamedNodeMap)
-nodeGetAttributes self
-  = fmap NamedNodeMap . maybeJSNull <$>
-      (ghcjs_dom_node_get_attributes (unNode (toNode self)))
 
 
 #ifdef __GHCJS__ 

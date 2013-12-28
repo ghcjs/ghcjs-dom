@@ -49,7 +49,11 @@ module GHCJS.DOM.Document
         ghcjs_dom_document_get_elements_by_class_name,
         documentGetElementsByClassName, ghcjs_dom_document_query_selector,
         documentQuerySelector, ghcjs_dom_document_query_selector_all,
-        documentQuerySelectorAll, ghcjs_dom_document_get_doctype,
+        documentQuerySelectorAll,
+        ghcjs_dom_document_webkit_exit_pointer_lock,
+        documentWebkitExitPointerLock,
+        ghcjs_dom_document_webkit_get_named_flows,
+        documentWebkitGetNamedFlows, ghcjs_dom_document_get_doctype,
         documentGetDoctype, ghcjs_dom_document_get_implementation,
         documentGetImplementation, ghcjs_dom_document_get_document_element,
         documentGetDocumentElement, ghcjs_dom_document_get_input_encoding,
@@ -98,21 +102,23 @@ module GHCJS.DOM.Document
         documentOnerror, documentOnfocus, documentOninput,
         documentOninvalid, documentOnkeydown, documentOnkeypress,
         documentOnkeyup, documentOnload, documentOnmousedown,
-        documentOnmousemove, documentOnmouseout, documentOnmouseover,
-        documentOnmouseup, documentOnmousewheel,
-        documentOnreadystatechange, documentOnscroll, documentOnselect,
-        documentOnsubmit, documentOnbeforecut, documentOncut,
-        documentOnbeforecopy, documentOncopy, documentOnbeforepaste,
-        documentOnpaste, documentOnreset, documentOnsearch,
-        documentOnselectstart, documentOnselectionchange,
+        documentOnmouseenter, documentOnmouseleave, documentOnmousemove,
+        documentOnmouseout, documentOnmouseover, documentOnmouseup,
+        documentOnmousewheel, documentOnreadystatechange, documentOnscroll,
+        documentOnselect, documentOnsubmit, documentOnbeforecut,
+        documentOncut, documentOnbeforecopy, documentOncopy,
+        documentOnbeforepaste, documentOnpaste, documentOnreset,
+        documentOnsearch, documentOnselectstart, documentOnselectionchange,
         documentOntouchstart, documentOntouchmove, documentOntouchend,
         documentOntouchcancel, documentOnwebkitfullscreenchange,
         documentOnwebkitfullscreenerror, documentOnwebkitpointerlockchange,
         documentOnwebkitpointerlockerror,
-        ghcjs_dom_document_get_webkit_visibility_state,
-        documentGetWebkitVisibilityState,
-        ghcjs_dom_document_get_webkit_hidden, documentGetWebkitHidden,
-        ghcjs_dom_document_get_security_policy, documentGetSecurityPolicy)
+        documentOnsecuritypolicyviolation,
+        ghcjs_dom_document_get_visibility_state,
+        documentGetVisibilityState, ghcjs_dom_document_get_hidden,
+        documentGetHidden, ghcjs_dom_document_get_security_policy,
+        documentGetSecurityPolicy, ghcjs_dom_document_get_current_script,
+        documentGetCurrentScript)
        where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -902,6 +908,40 @@ documentQuerySelectorAll self selectors
 
 
 #ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"webkitExitPointerLock\"]()"
+        ghcjs_dom_document_webkit_exit_pointer_lock ::
+        JSRef Document -> IO ()
+#else 
+ghcjs_dom_document_webkit_exit_pointer_lock ::
+                                              JSRef Document -> IO ()
+ghcjs_dom_document_webkit_exit_pointer_lock = undefined
+#endif
+ 
+documentWebkitExitPointerLock :: (IsDocument self) => self -> IO ()
+documentWebkitExitPointerLock self
+  = ghcjs_dom_document_webkit_exit_pointer_lock
+      (unDocument (toDocument self))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"webkitGetNamedFlows\"]()"
+        ghcjs_dom_document_webkit_get_named_flows ::
+        JSRef Document -> IO (JSRef DOMNamedFlowCollection)
+#else 
+ghcjs_dom_document_webkit_get_named_flows ::
+                                            JSRef Document -> IO (JSRef DOMNamedFlowCollection)
+ghcjs_dom_document_webkit_get_named_flows = undefined
+#endif
+ 
+documentWebkitGetNamedFlows ::
+                            (IsDocument self) => self -> IO (Maybe DOMNamedFlowCollection)
+documentWebkitGetNamedFlows self
+  = fmap DOMNamedFlowCollection . maybeJSNull <$>
+      (ghcjs_dom_document_webkit_get_named_flows
+         (unDocument (toDocument self)))
+
+
+#ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"doctype\"]"
         ghcjs_dom_document_get_doctype ::
         JSRef Document -> IO (JSRef DocumentType)
@@ -1630,6 +1670,14 @@ documentOnmousedown ::
                     (IsDocument self) => Signal self (EventM MouseEvent self ())
 documentOnmousedown = (connect "mousedown")
  
+documentOnmouseenter ::
+                     (IsDocument self) => Signal self (EventM UIEvent self ())
+documentOnmouseenter = (connect "mouseenter")
+ 
+documentOnmouseleave ::
+                     (IsDocument self) => Signal self (EventM UIEvent self ())
+documentOnmouseleave = (connect "mouseleave")
+ 
 documentOnmousemove ::
                     (IsDocument self) => Signal self (EventM MouseEvent self ())
 documentOnmousemove = (connect "mousemove")
@@ -1740,42 +1788,46 @@ documentOnwebkitpointerlockerror ::
                                  (IsDocument self) => Signal self (EventM UIEvent self ())
 documentOnwebkitpointerlockerror
   = (connect "webkitpointerlockerror")
+ 
+documentOnsecuritypolicyviolation ::
+                                  (IsDocument self) => Signal self (EventM UIEvent self ())
+documentOnsecuritypolicyviolation
+  = (connect "securitypolicyviolation")
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"webkitVisibilityState\"]"
-        ghcjs_dom_document_get_webkit_visibility_state ::
+foreign import javascript unsafe "$1[\"visibilityState\"]"
+        ghcjs_dom_document_get_visibility_state ::
         JSRef Document -> IO JSString
 #else 
-ghcjs_dom_document_get_webkit_visibility_state ::
-                                                 JSRef Document -> IO JSString
-ghcjs_dom_document_get_webkit_visibility_state = undefined
+ghcjs_dom_document_get_visibility_state ::
+                                          JSRef Document -> IO JSString
+ghcjs_dom_document_get_visibility_state = undefined
 #endif
  
-documentGetWebkitVisibilityState ::
-                                 (IsDocument self, FromJSString result) => self -> IO result
-documentGetWebkitVisibilityState self
+documentGetVisibilityState ::
+                           (IsDocument self, FromJSString result) => self -> IO result
+documentGetVisibilityState self
   = fromJSString <$>
-      (ghcjs_dom_document_get_webkit_visibility_state
+      (ghcjs_dom_document_get_visibility_state
          (unDocument (toDocument self)))
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "($1[\"webkitHidden\"] ? 1 : 0)"
-        ghcjs_dom_document_get_webkit_hidden :: JSRef Document -> IO Bool
+foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
+        ghcjs_dom_document_get_hidden :: JSRef Document -> IO Bool
 #else 
-ghcjs_dom_document_get_webkit_hidden :: JSRef Document -> IO Bool
-ghcjs_dom_document_get_webkit_hidden = undefined
+ghcjs_dom_document_get_hidden :: JSRef Document -> IO Bool
+ghcjs_dom_document_get_hidden = undefined
 #endif
  
-documentGetWebkitHidden :: (IsDocument self) => self -> IO Bool
-documentGetWebkitHidden self
-  = ghcjs_dom_document_get_webkit_hidden
-      (unDocument (toDocument self))
+documentGetHidden :: (IsDocument self) => self -> IO Bool
+documentGetHidden self
+  = ghcjs_dom_document_get_hidden (unDocument (toDocument self))
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"SecurityPolicy\"]"
+foreign import javascript unsafe "$1[\"securityPolicy\"]"
         ghcjs_dom_document_get_security_policy ::
         JSRef Document -> IO (JSRef DOMSecurityPolicy)
 #else 
@@ -1789,6 +1841,24 @@ documentGetSecurityPolicy ::
 documentGetSecurityPolicy self
   = fmap DOMSecurityPolicy . maybeJSNull <$>
       (ghcjs_dom_document_get_security_policy
+         (unDocument (toDocument self)))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"currentScript\"]"
+        ghcjs_dom_document_get_current_script ::
+        JSRef Document -> IO (JSRef HTMLScriptElement)
+#else 
+ghcjs_dom_document_get_current_script ::
+                                        JSRef Document -> IO (JSRef HTMLScriptElement)
+ghcjs_dom_document_get_current_script = undefined
+#endif
+ 
+documentGetCurrentScript ::
+                         (IsDocument self) => self -> IO (Maybe HTMLScriptElement)
+documentGetCurrentScript self
+  = fmap HTMLScriptElement . maybeJSNull <$>
+      (ghcjs_dom_document_get_current_script
          (unDocument (toDocument self)))
 #else
 module GHCJS.DOM.Document (

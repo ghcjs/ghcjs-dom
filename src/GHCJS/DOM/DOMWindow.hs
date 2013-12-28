@@ -79,18 +79,19 @@ module GHCJS.DOM.DOMWindow
         ghcjs_dom_dom_window_get_session_storage,
         domWindowGetSessionStorage, ghcjs_dom_dom_window_get_local_storage,
         domWindowGetLocalStorage, ghcjs_dom_dom_window_get_console,
-        domWindowGetConsole, domWindowOnabort, domWindowOnbeforeunload,
-        domWindowOnblur, domWindowOncanplay, domWindowOncanplaythrough,
-        domWindowOnchange, domWindowOnclick, domWindowOncontextmenu,
-        domWindowOndblclick, domWindowOndrag, domWindowOndragend,
-        domWindowOndragenter, domWindowOndragleave, domWindowOndragover,
-        domWindowOndragstart, domWindowOndrop, domWindowOndurationchange,
-        domWindowOnemptied, domWindowOnended, domWindowOnerror,
-        domWindowOnfocus, domWindowOnhashchange, domWindowOninput,
-        domWindowOninvalid, domWindowOnkeydown, domWindowOnkeypress,
-        domWindowOnkeyup, domWindowOnload, domWindowOnloadeddata,
-        domWindowOnloadedmetadata, domWindowOnloadstart,
-        domWindowOnmessage, domWindowOnmousedown, domWindowOnmousemove,
+        domWindowGetConsole, ghcjs_dom_dom_window_get_css, domWindowGetCSS,
+        domWindowOnabort, domWindowOnbeforeunload, domWindowOnblur,
+        domWindowOncanplay, domWindowOncanplaythrough, domWindowOnchange,
+        domWindowOnclick, domWindowOncontextmenu, domWindowOndblclick,
+        domWindowOndrag, domWindowOndragend, domWindowOndragenter,
+        domWindowOndragleave, domWindowOndragover, domWindowOndragstart,
+        domWindowOndrop, domWindowOndurationchange, domWindowOnemptied,
+        domWindowOnended, domWindowOnerror, domWindowOnfocus,
+        domWindowOnhashchange, domWindowOninput, domWindowOninvalid,
+        domWindowOnkeydown, domWindowOnkeypress, domWindowOnkeyup,
+        domWindowOnload, domWindowOnloadeddata, domWindowOnloadedmetadata,
+        domWindowOnloadstart, domWindowOnmessage, domWindowOnmousedown,
+        domWindowOnmouseenter, domWindowOnmouseleave, domWindowOnmousemove,
         domWindowOnmouseout, domWindowOnmouseover, domWindowOnmouseup,
         domWindowOnmousewheel, domWindowOnoffline, domWindowOnonline,
         domWindowOnpagehide, domWindowOnpageshow, domWindowOnpause,
@@ -103,9 +104,10 @@ module GHCJS.DOM.DOMWindow
         domWindowOnreset, domWindowOnsearch, domWindowOnwebkitanimationend,
         domWindowOnwebkitanimationiteration,
         domWindowOnwebkitanimationstart, domWindowOnwebkittransitionend,
-        domWindowOntouchstart, domWindowOntouchmove, domWindowOntouchend,
-        domWindowOntouchcancel, domWindowOndevicemotion,
-        domWindowOndeviceorientation, domWindowOnwebkitdeviceproximity)
+        domWindowOntransitionend, domWindowOntouchstart,
+        domWindowOntouchmove, domWindowOntouchend, domWindowOntouchcancel,
+        domWindowOndevicemotion, domWindowOndeviceorientation,
+        domWindowOnwebkitdeviceproximity)
        where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -478,79 +480,6 @@ domWindowWebkitConvertPointFromNodeToPage self node p
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"clearTimeout\"]($2)"
-        ghcjs_dom_dom_window_clear_timeout ::
-        JSRef DOMWindow -> Int -> IO ()
-#else 
-ghcjs_dom_dom_window_clear_timeout ::
-                                     JSRef DOMWindow -> Int -> IO ()
-ghcjs_dom_dom_window_clear_timeout = undefined
-#endif
- 
-domWindowClearTimeout :: (IsDOMWindow self) => self -> Int -> IO ()
-domWindowClearTimeout self handle
-  = ghcjs_dom_dom_window_clear_timeout
-      (unDOMWindow (toDOMWindow self))
-      handle
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"clearInterval\"]($2)"
-        ghcjs_dom_dom_window_clear_interval ::
-        JSRef DOMWindow -> Int -> IO ()
-#else 
-ghcjs_dom_dom_window_clear_interval ::
-                                      JSRef DOMWindow -> Int -> IO ()
-ghcjs_dom_dom_window_clear_interval = undefined
-#endif
- 
-domWindowClearInterval ::
-                       (IsDOMWindow self) => self -> Int -> IO ()
-domWindowClearInterval self handle
-  = ghcjs_dom_dom_window_clear_interval
-      (unDOMWindow (toDOMWindow self))
-      handle
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"atob\"]($2)"
-        ghcjs_dom_dom_window_atob ::
-        JSRef DOMWindow -> JSString -> IO JSString
-#else 
-ghcjs_dom_dom_window_atob ::
-                            JSRef DOMWindow -> JSString -> IO JSString
-ghcjs_dom_dom_window_atob = undefined
-#endif
- 
-domWindowAtob ::
-              (IsDOMWindow self, ToJSString string, FromJSString result) =>
-                self -> string -> IO result
-domWindowAtob self string
-  = fromJSString <$>
-      (ghcjs_dom_dom_window_atob (unDOMWindow (toDOMWindow self))
-         (toJSString string))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"btoa\"]($2)"
-        ghcjs_dom_dom_window_btoa ::
-        JSRef DOMWindow -> JSString -> IO JSString
-#else 
-ghcjs_dom_dom_window_btoa ::
-                            JSRef DOMWindow -> JSString -> IO JSString
-ghcjs_dom_dom_window_btoa = undefined
-#endif
- 
-domWindowBtoa ::
-              (IsDOMWindow self, ToJSString string, FromJSString result) =>
-                self -> string -> IO result
-domWindowBtoa self string
-  = fromJSString <$>
-      (ghcjs_dom_dom_window_btoa (unDOMWindow (toDOMWindow self))
-         (toJSString string))
-
-
-#ifdef __GHCJS__ 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_dispatch_event ::
@@ -634,17 +563,17 @@ domWindowGetHistory self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"locationbar\"]"
         ghcjs_dom_dom_window_get_locationbar ::
-        JSRef DOMWindow -> IO (JSRef BarInfo)
+        JSRef DOMWindow -> IO (JSRef BarProp)
 #else 
 ghcjs_dom_dom_window_get_locationbar ::
-                                       JSRef DOMWindow -> IO (JSRef BarInfo)
+                                       JSRef DOMWindow -> IO (JSRef BarProp)
 ghcjs_dom_dom_window_get_locationbar = undefined
 #endif
  
 domWindowGetLocationbar ::
-                        (IsDOMWindow self) => self -> IO (Maybe BarInfo)
+                        (IsDOMWindow self) => self -> IO (Maybe BarProp)
 domWindowGetLocationbar self
-  = fmap BarInfo . maybeJSNull <$>
+  = fmap BarProp . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_locationbar
          (unDOMWindow (toDOMWindow self)))
 
@@ -652,34 +581,34 @@ domWindowGetLocationbar self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"menubar\"]"
         ghcjs_dom_dom_window_get_menubar ::
-        JSRef DOMWindow -> IO (JSRef BarInfo)
+        JSRef DOMWindow -> IO (JSRef BarProp)
 #else 
 ghcjs_dom_dom_window_get_menubar ::
-                                   JSRef DOMWindow -> IO (JSRef BarInfo)
+                                   JSRef DOMWindow -> IO (JSRef BarProp)
 ghcjs_dom_dom_window_get_menubar = undefined
 #endif
  
 domWindowGetMenubar ::
-                    (IsDOMWindow self) => self -> IO (Maybe BarInfo)
+                    (IsDOMWindow self) => self -> IO (Maybe BarProp)
 domWindowGetMenubar self
-  = fmap BarInfo . maybeJSNull <$>
+  = fmap BarProp . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_menubar (unDOMWindow (toDOMWindow self)))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"personalbar\"]"
         ghcjs_dom_dom_window_get_personalbar ::
-        JSRef DOMWindow -> IO (JSRef BarInfo)
+        JSRef DOMWindow -> IO (JSRef BarProp)
 #else 
 ghcjs_dom_dom_window_get_personalbar ::
-                                       JSRef DOMWindow -> IO (JSRef BarInfo)
+                                       JSRef DOMWindow -> IO (JSRef BarProp)
 ghcjs_dom_dom_window_get_personalbar = undefined
 #endif
  
 domWindowGetPersonalbar ::
-                        (IsDOMWindow self) => self -> IO (Maybe BarInfo)
+                        (IsDOMWindow self) => self -> IO (Maybe BarProp)
 domWindowGetPersonalbar self
-  = fmap BarInfo . maybeJSNull <$>
+  = fmap BarProp . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_personalbar
          (unDOMWindow (toDOMWindow self)))
 
@@ -687,17 +616,17 @@ domWindowGetPersonalbar self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"scrollbars\"]"
         ghcjs_dom_dom_window_get_scrollbars ::
-        JSRef DOMWindow -> IO (JSRef BarInfo)
+        JSRef DOMWindow -> IO (JSRef BarProp)
 #else 
 ghcjs_dom_dom_window_get_scrollbars ::
-                                      JSRef DOMWindow -> IO (JSRef BarInfo)
+                                      JSRef DOMWindow -> IO (JSRef BarProp)
 ghcjs_dom_dom_window_get_scrollbars = undefined
 #endif
  
 domWindowGetScrollbars ::
-                       (IsDOMWindow self) => self -> IO (Maybe BarInfo)
+                       (IsDOMWindow self) => self -> IO (Maybe BarProp)
 domWindowGetScrollbars self
-  = fmap BarInfo . maybeJSNull <$>
+  = fmap BarProp . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_scrollbars
          (unDOMWindow (toDOMWindow self)))
 
@@ -705,17 +634,17 @@ domWindowGetScrollbars self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"statusbar\"]"
         ghcjs_dom_dom_window_get_statusbar ::
-        JSRef DOMWindow -> IO (JSRef BarInfo)
+        JSRef DOMWindow -> IO (JSRef BarProp)
 #else 
 ghcjs_dom_dom_window_get_statusbar ::
-                                     JSRef DOMWindow -> IO (JSRef BarInfo)
+                                     JSRef DOMWindow -> IO (JSRef BarProp)
 ghcjs_dom_dom_window_get_statusbar = undefined
 #endif
  
 domWindowGetStatusbar ::
-                      (IsDOMWindow self) => self -> IO (Maybe BarInfo)
+                      (IsDOMWindow self) => self -> IO (Maybe BarProp)
 domWindowGetStatusbar self
-  = fmap BarInfo . maybeJSNull <$>
+  = fmap BarProp . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_statusbar
          (unDOMWindow (toDOMWindow self)))
 
@@ -723,17 +652,17 @@ domWindowGetStatusbar self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"toolbar\"]"
         ghcjs_dom_dom_window_get_toolbar ::
-        JSRef DOMWindow -> IO (JSRef BarInfo)
+        JSRef DOMWindow -> IO (JSRef BarProp)
 #else 
 ghcjs_dom_dom_window_get_toolbar ::
-                                   JSRef DOMWindow -> IO (JSRef BarInfo)
+                                   JSRef DOMWindow -> IO (JSRef BarProp)
 ghcjs_dom_dom_window_get_toolbar = undefined
 #endif
  
 domWindowGetToolbar ::
-                    (IsDOMWindow self) => self -> IO (Maybe BarInfo)
+                    (IsDOMWindow self) => self -> IO (Maybe BarProp)
 domWindowGetToolbar self
-  = fmap BarInfo . maybeJSNull <$>
+  = fmap BarProp . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_toolbar (unDOMWindow (toDOMWindow self)))
 
 
@@ -1327,6 +1256,23 @@ domWindowGetConsole ::
 domWindowGetConsole self
   = fmap Console . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_console (unDOMWindow (toDOMWindow self)))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"CSS\"]"
+        ghcjs_dom_dom_window_get_css ::
+        JSRef DOMWindow -> IO (JSRef DOMWindowCSS)
+#else 
+ghcjs_dom_dom_window_get_css ::
+                               JSRef DOMWindow -> IO (JSRef DOMWindowCSS)
+ghcjs_dom_dom_window_get_css = undefined
+#endif
+ 
+domWindowGetCSS ::
+                (IsDOMWindow self) => self -> IO (Maybe DOMWindowCSS)
+domWindowGetCSS self
+  = fmap DOMWindowCSS . maybeJSNull <$>
+      (ghcjs_dom_dom_window_get_css (unDOMWindow (toDOMWindow self)))
  
 domWindowOnabort ::
                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
@@ -1459,6 +1405,14 @@ domWindowOnmessage = (connect "message")
 domWindowOnmousedown ::
                      (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
 domWindowOnmousedown = (connect "mousedown")
+ 
+domWindowOnmouseenter ::
+                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnmouseenter = (connect "mouseenter")
+ 
+domWindowOnmouseleave ::
+                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnmouseleave = (connect "mouseleave")
  
 domWindowOnmousemove ::
                      (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
@@ -1596,6 +1550,10 @@ domWindowOnwebkitanimationstart = (connect "webkitanimationstart")
 domWindowOnwebkittransitionend ::
                                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOnwebkittransitionend = (connect "webkittransitionend")
+ 
+domWindowOntransitionend ::
+                         (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOntransitionend = (connect "transitionend")
  
 domWindowOntouchstart ::
                       (IsDOMWindow self) => Signal self (EventM UIEvent self ())

@@ -9,6 +9,8 @@ module GHCJS.DOM.HTMLInputElement
         ghcjs_dom_html_input_element_set_custom_validity,
         htmlInputElementSetCustomValidity,
         ghcjs_dom_html_input_element_select, htmlInputElementSelect,
+        ghcjs_dom_html_input_element_set_range_text,
+        htmlInputElementSetRangeText,
         ghcjs_dom_html_input_element_set_value_for_user,
         htmlInputElementSetValueForUser,
         ghcjs_dom_html_input_element_set_accept, htmlInputElementSetAccept,
@@ -253,6 +255,52 @@ htmlInputElementSelect ::
 htmlInputElementSelect self
   = ghcjs_dom_html_input_element_select
       (unHTMLInputElement (toHTMLInputElement self))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"setRangeText\"]($2)"
+        ghcjs_dom_html_input_element_set_range_text ::
+        JSRef HTMLInputElement -> JSString -> IO ()
+#else 
+ghcjs_dom_html_input_element_set_range_text ::
+                                              JSRef HTMLInputElement -> JSString -> IO ()
+ghcjs_dom_html_input_element_set_range_text = undefined
+#endif
+ 
+htmlInputElementSetRangeText ::
+                             (IsHTMLInputElement self, ToJSString replacement) =>
+                               self -> replacement -> IO ()
+htmlInputElementSetRangeText self replacement
+  = ghcjs_dom_html_input_element_set_range_text
+      (unHTMLInputElement (toHTMLInputElement self))
+      (toJSString replacement)
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe
+        "$1[\"setRangeText\"]($2, $3, $4,\n$5)"
+        ghcjs_dom_html_input_element_set_range_text ::
+        JSRef HTMLInputElement ->
+          JSString -> Word -> Word -> JSString -> IO ()
+#else 
+ghcjs_dom_html_input_element_set_range_text ::
+                                              JSRef HTMLInputElement ->
+                                                JSString -> Word -> Word -> JSString -> IO ()
+ghcjs_dom_html_input_element_set_range_text = undefined
+#endif
+ 
+htmlInputElementSetRangeText ::
+                             (IsHTMLInputElement self, ToJSString replacement,
+                              ToJSString selectionMode) =>
+                               self -> replacement -> Word -> Word -> selectionMode -> IO ()
+htmlInputElementSetRangeText self replacement start end
+  selectionMode
+  = ghcjs_dom_html_input_element_set_range_text
+      (unHTMLInputElement (toHTMLInputElement self))
+      (toJSString replacement)
+      start
+      end
+      (toJSString selectionMode)
 
 
 #ifdef __GHCJS__ 

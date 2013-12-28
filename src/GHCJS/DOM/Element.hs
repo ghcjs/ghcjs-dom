@@ -10,7 +10,8 @@ module GHCJS.DOM.Element
         ghcjs_dom_element_remove_attribute_node,
         elementRemoveAttributeNode,
         ghcjs_dom_element_get_elements_by_tag_name,
-        elementGetElementsByTagName, ghcjs_dom_element_get_attribute_ns,
+        elementGetElementsByTagName, ghcjs_dom_element_has_attributes,
+        elementHasAttributes, ghcjs_dom_element_get_attribute_ns,
         elementGetAttributeNS, ghcjs_dom_element_set_attribute_ns,
         elementSetAttributeNS, ghcjs_dom_element_remove_attribute_ns,
         elementRemoveAttributeNS,
@@ -30,27 +31,31 @@ module GHCJS.DOM.Element
         elementGetElementsByClassName, ghcjs_dom_element_query_selector,
         elementQuerySelector, ghcjs_dom_element_query_selector_all,
         elementQuerySelectorAll, ghcjs_dom_element_webkit_matches_selector,
-        elementWebkitMatchesSelector, ghcjs_dom_element_get_tag_name,
-        elementGetTagName, ghcjs_dom_element_get_style, elementGetStyle,
-        ghcjs_dom_element_get_offset_left, elementGetOffsetLeft,
-        ghcjs_dom_element_get_offset_top, elementGetOffsetTop,
-        ghcjs_dom_element_get_offset_width, elementGetOffsetWidth,
-        ghcjs_dom_element_get_offset_height, elementGetOffsetHeight,
-        ghcjs_dom_element_get_offset_parent, elementGetOffsetParent,
-        ghcjs_dom_element_get_client_left, elementGetClientLeft,
-        ghcjs_dom_element_get_client_top, elementGetClientTop,
-        ghcjs_dom_element_get_client_width, elementGetClientWidth,
-        ghcjs_dom_element_get_client_height, elementGetClientHeight,
-        ghcjs_dom_element_set_scroll_left, elementSetScrollLeft,
-        ghcjs_dom_element_get_scroll_left, elementGetScrollLeft,
-        ghcjs_dom_element_set_scroll_top, elementSetScrollTop,
-        ghcjs_dom_element_get_scroll_top, elementGetScrollTop,
-        ghcjs_dom_element_get_scroll_width, elementGetScrollWidth,
-        ghcjs_dom_element_get_scroll_height, elementGetScrollHeight,
-        ghcjs_dom_element_set_class_name, elementSetClassName,
-        ghcjs_dom_element_get_class_name, elementGetClassName,
-        ghcjs_dom_element_get_class_list, elementGetClassList,
-        ghcjs_dom_element_get_first_element_child,
+        elementWebkitMatchesSelector,
+        ghcjs_dom_element_webkit_request_pointer_lock,
+        elementWebkitRequestPointerLock, ghcjs_dom_element_get_tag_name,
+        elementGetTagName, ghcjs_dom_element_get_attributes,
+        elementGetAttributes, ghcjs_dom_element_get_style, elementGetStyle,
+        ghcjs_dom_element_set_id, elementSetId, ghcjs_dom_element_get_id,
+        elementGetId, ghcjs_dom_element_get_offset_left,
+        elementGetOffsetLeft, ghcjs_dom_element_get_offset_top,
+        elementGetOffsetTop, ghcjs_dom_element_get_offset_width,
+        elementGetOffsetWidth, ghcjs_dom_element_get_offset_height,
+        elementGetOffsetHeight, ghcjs_dom_element_get_offset_parent,
+        elementGetOffsetParent, ghcjs_dom_element_get_client_left,
+        elementGetClientLeft, ghcjs_dom_element_get_client_top,
+        elementGetClientTop, ghcjs_dom_element_get_client_width,
+        elementGetClientWidth, ghcjs_dom_element_get_client_height,
+        elementGetClientHeight, ghcjs_dom_element_set_scroll_left,
+        elementSetScrollLeft, ghcjs_dom_element_get_scroll_left,
+        elementGetScrollLeft, ghcjs_dom_element_set_scroll_top,
+        elementSetScrollTop, ghcjs_dom_element_get_scroll_top,
+        elementGetScrollTop, ghcjs_dom_element_get_scroll_width,
+        elementGetScrollWidth, ghcjs_dom_element_get_scroll_height,
+        elementGetScrollHeight, ghcjs_dom_element_set_class_name,
+        elementSetClassName, ghcjs_dom_element_get_class_name,
+        elementGetClassName, ghcjs_dom_element_get_class_list,
+        elementGetClassList, ghcjs_dom_element_get_first_element_child,
         elementGetFirstElementChild,
         ghcjs_dom_element_get_last_element_child,
         elementGetLastElementChild,
@@ -68,15 +73,15 @@ module GHCJS.DOM.Element
         elementOndragstart, elementOndrop, elementOnerror, elementOnfocus,
         elementOninput, elementOninvalid, elementOnkeydown,
         elementOnkeypress, elementOnkeyup, elementOnload,
-        elementOnmousedown, elementOnmousemove, elementOnmouseout,
-        elementOnmouseover, elementOnmouseup, elementOnmousewheel,
-        elementOnscroll, elementOnselect, elementOnsubmit,
-        elementOnbeforecut, elementOncut, elementOnbeforecopy,
-        elementOncopy, elementOnbeforepaste, elementOnpaste,
-        elementOnreset, elementOnsearch, elementOnselectstart,
-        elementOntouchstart, elementOntouchmove, elementOntouchend,
-        elementOntouchcancel, elementOnwebkitfullscreenchange,
-        elementOnwebkitfullscreenerror)
+        elementOnmousedown, elementOnmouseenter, elementOnmouseleave,
+        elementOnmousemove, elementOnmouseout, elementOnmouseover,
+        elementOnmouseup, elementOnmousewheel, elementOnscroll,
+        elementOnselect, elementOnsubmit, elementOnbeforecut, elementOncut,
+        elementOnbeforecopy, elementOncopy, elementOnbeforepaste,
+        elementOnpaste, elementOnreset, elementOnsearch,
+        elementOnselectstart, elementOntouchstart, elementOntouchmove,
+        elementOntouchend, elementOntouchcancel,
+        elementOnwebkitfullscreenchange, elementOnwebkitfullscreenerror)
        where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -224,6 +229,20 @@ elementGetElementsByTagName self name
       (ghcjs_dom_element_get_elements_by_tag_name
          (unElement (toElement self))
          (toJSString name))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe
+        "($1[\"hasAttributes\"]() ? 1 : 0)"
+        ghcjs_dom_element_has_attributes :: JSRef Element -> IO Bool
+#else 
+ghcjs_dom_element_has_attributes :: JSRef Element -> IO Bool
+ghcjs_dom_element_has_attributes = undefined
+#endif
+ 
+elementHasAttributes :: (IsElement self) => self -> IO Bool
+elementHasAttributes self
+  = ghcjs_dom_element_has_attributes (unElement (toElement self))
 
 
 #ifdef __GHCJS__ 
@@ -563,6 +582,24 @@ elementWebkitMatchesSelector self selectors
 
 
 #ifdef __GHCJS__ 
+foreign import javascript unsafe
+        "$1[\"webkitRequestPointerLock\"]()"
+        ghcjs_dom_element_webkit_request_pointer_lock ::
+        JSRef Element -> IO ()
+#else 
+ghcjs_dom_element_webkit_request_pointer_lock ::
+                                                JSRef Element -> IO ()
+ghcjs_dom_element_webkit_request_pointer_lock = undefined
+#endif
+ 
+elementWebkitRequestPointerLock ::
+                                (IsElement self) => self -> IO ()
+elementWebkitRequestPointerLock self
+  = ghcjs_dom_element_webkit_request_pointer_lock
+      (unElement (toElement self))
+
+
+#ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"tagName\"]"
         ghcjs_dom_element_get_tag_name :: JSRef Element -> IO JSString
 #else 
@@ -575,6 +612,23 @@ elementGetTagName ::
 elementGetTagName self
   = fromJSString <$>
       (ghcjs_dom_element_get_tag_name (unElement (toElement self)))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"attributes\"]"
+        ghcjs_dom_element_get_attributes ::
+        JSRef Element -> IO (JSRef NamedNodeMap)
+#else 
+ghcjs_dom_element_get_attributes ::
+                                   JSRef Element -> IO (JSRef NamedNodeMap)
+ghcjs_dom_element_get_attributes = undefined
+#endif
+ 
+elementGetAttributes ::
+                     (IsElement self) => self -> IO (Maybe NamedNodeMap)
+elementGetAttributes self
+  = fmap NamedNodeMap . maybeJSNull <$>
+      (ghcjs_dom_element_get_attributes (unElement (toElement self)))
 
 
 #ifdef __GHCJS__ 
@@ -592,6 +646,36 @@ elementGetStyle ::
 elementGetStyle self
   = fmap CSSStyleDeclaration . maybeJSNull <$>
       (ghcjs_dom_element_get_style (unElement (toElement self)))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"id\"] = $2;"
+        ghcjs_dom_element_set_id :: JSRef Element -> JSString -> IO ()
+#else 
+ghcjs_dom_element_set_id :: JSRef Element -> JSString -> IO ()
+ghcjs_dom_element_set_id = undefined
+#endif
+ 
+elementSetId ::
+             (IsElement self, ToJSString val) => self -> val -> IO ()
+elementSetId self val
+  = ghcjs_dom_element_set_id (unElement (toElement self))
+      (toJSString val)
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"id\"]"
+        ghcjs_dom_element_get_id :: JSRef Element -> IO JSString
+#else 
+ghcjs_dom_element_get_id :: JSRef Element -> IO JSString
+ghcjs_dom_element_get_id = undefined
+#endif
+ 
+elementGetId ::
+             (IsElement self, FromJSString result) => self -> IO result
+elementGetId self
+  = fromJSString <$>
+      (ghcjs_dom_element_get_id (unElement (toElement self)))
 
 
 #ifdef __GHCJS__ 
@@ -1035,6 +1119,14 @@ elementOnload = (connect "load")
 elementOnmousedown ::
                    (IsElement self) => Signal self (EventM MouseEvent self ())
 elementOnmousedown = (connect "mousedown")
+ 
+elementOnmouseenter ::
+                    (IsElement self) => Signal self (EventM UIEvent self ())
+elementOnmouseenter = (connect "mouseenter")
+ 
+elementOnmouseleave ::
+                    (IsElement self) => Signal self (EventM UIEvent self ())
+elementOnmouseleave = (connect "mouseleave")
  
 elementOnmousemove ::
                    (IsElement self) => Signal self (EventM MouseEvent self ())

@@ -81,6 +81,7 @@ module GHCJS.DOM.HTMLMediaElement
         htmlMediaElementGetWebkitAudioDecodedByteCount,
         ghcjs_dom_html_media_element_get_webkit_video_decoded_byte_count,
         htmlMediaElementGetWebkitVideoDecodedByteCount,
+        htmlMediaElementOnwebkitneedkey,
         ghcjs_dom_html_media_element_set_media_group,
         htmlMediaElementSetMediaGroup,
         ghcjs_dom_html_media_element_get_media_group,
@@ -358,15 +359,15 @@ htmlMediaElementGetSeeking self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"currentTime\"] = $2;"
         ghcjs_dom_html_media_element_set_current_time ::
-        JSRef HTMLMediaElement -> Float -> IO ()
+        JSRef HTMLMediaElement -> Double -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_current_time ::
-                                                JSRef HTMLMediaElement -> Float -> IO ()
+                                                JSRef HTMLMediaElement -> Double -> IO ()
 ghcjs_dom_html_media_element_set_current_time = undefined
 #endif
  
 htmlMediaElementSetCurrentTime ::
-                               (IsHTMLMediaElement self) => self -> Float -> IO ()
+                               (IsHTMLMediaElement self) => self -> Double -> IO ()
 htmlMediaElementSetCurrentTime self val
   = ghcjs_dom_html_media_element_set_current_time
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -376,15 +377,15 @@ htmlMediaElementSetCurrentTime self val
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"currentTime\"]"
         ghcjs_dom_html_media_element_get_current_time ::
-        JSRef HTMLMediaElement -> IO Float
+        JSRef HTMLMediaElement -> IO Double
 #else 
 ghcjs_dom_html_media_element_get_current_time ::
-                                                JSRef HTMLMediaElement -> IO Float
+                                                JSRef HTMLMediaElement -> IO Double
 ghcjs_dom_html_media_element_get_current_time = undefined
 #endif
  
 htmlMediaElementGetCurrentTime ::
-                               (IsHTMLMediaElement self) => self -> IO Float
+                               (IsHTMLMediaElement self) => self -> IO Double
 htmlMediaElementGetCurrentTime self
   = ghcjs_dom_html_media_element_get_current_time
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -410,15 +411,15 @@ htmlMediaElementGetInitialTime self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"startTime\"]"
         ghcjs_dom_html_media_element_get_start_time ::
-        JSRef HTMLMediaElement -> IO Float
+        JSRef HTMLMediaElement -> IO Double
 #else 
 ghcjs_dom_html_media_element_get_start_time ::
-                                              JSRef HTMLMediaElement -> IO Float
+                                              JSRef HTMLMediaElement -> IO Double
 ghcjs_dom_html_media_element_get_start_time = undefined
 #endif
  
 htmlMediaElementGetStartTime ::
-                             (IsHTMLMediaElement self) => self -> IO Float
+                             (IsHTMLMediaElement self) => self -> IO Double
 htmlMediaElementGetStartTime self
   = ghcjs_dom_html_media_element_get_start_time
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -427,15 +428,15 @@ htmlMediaElementGetStartTime self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"duration\"]"
         ghcjs_dom_html_media_element_get_duration ::
-        JSRef HTMLMediaElement -> IO Float
+        JSRef HTMLMediaElement -> IO Double
 #else 
 ghcjs_dom_html_media_element_get_duration ::
-                                            JSRef HTMLMediaElement -> IO Float
+                                            JSRef HTMLMediaElement -> IO Double
 ghcjs_dom_html_media_element_get_duration = undefined
 #endif
  
 htmlMediaElementGetDuration ::
-                            (IsHTMLMediaElement self) => self -> IO Float
+                            (IsHTMLMediaElement self) => self -> IO Double
 htmlMediaElementGetDuration self
   = ghcjs_dom_html_media_element_get_duration
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -462,15 +463,15 @@ htmlMediaElementGetPaused self
 foreign import javascript unsafe
         "$1[\"defaultPlaybackRate\"] = $2;"
         ghcjs_dom_html_media_element_set_default_playback_rate ::
-        JSRef HTMLMediaElement -> Float -> IO ()
+        JSRef HTMLMediaElement -> Double -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_default_playback_rate ::
-                                                         JSRef HTMLMediaElement -> Float -> IO ()
+                                                         JSRef HTMLMediaElement -> Double -> IO ()
 ghcjs_dom_html_media_element_set_default_playback_rate = undefined
 #endif
  
 htmlMediaElementSetDefaultPlaybackRate ::
-                                       (IsHTMLMediaElement self) => self -> Float -> IO ()
+                                       (IsHTMLMediaElement self) => self -> Double -> IO ()
 htmlMediaElementSetDefaultPlaybackRate self val
   = ghcjs_dom_html_media_element_set_default_playback_rate
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -480,15 +481,15 @@ htmlMediaElementSetDefaultPlaybackRate self val
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"defaultPlaybackRate\"]"
         ghcjs_dom_html_media_element_get_default_playback_rate ::
-        JSRef HTMLMediaElement -> IO Float
+        JSRef HTMLMediaElement -> IO Double
 #else 
 ghcjs_dom_html_media_element_get_default_playback_rate ::
-                                                         JSRef HTMLMediaElement -> IO Float
+                                                         JSRef HTMLMediaElement -> IO Double
 ghcjs_dom_html_media_element_get_default_playback_rate = undefined
 #endif
  
 htmlMediaElementGetDefaultPlaybackRate ::
-                                       (IsHTMLMediaElement self) => self -> IO Float
+                                       (IsHTMLMediaElement self) => self -> IO Double
 htmlMediaElementGetDefaultPlaybackRate self
   = ghcjs_dom_html_media_element_get_default_playback_rate
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -497,15 +498,15 @@ htmlMediaElementGetDefaultPlaybackRate self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"playbackRate\"] = $2;"
         ghcjs_dom_html_media_element_set_playback_rate ::
-        JSRef HTMLMediaElement -> Float -> IO ()
+        JSRef HTMLMediaElement -> Double -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_playback_rate ::
-                                                 JSRef HTMLMediaElement -> Float -> IO ()
+                                                 JSRef HTMLMediaElement -> Double -> IO ()
 ghcjs_dom_html_media_element_set_playback_rate = undefined
 #endif
  
 htmlMediaElementSetPlaybackRate ::
-                                (IsHTMLMediaElement self) => self -> Float -> IO ()
+                                (IsHTMLMediaElement self) => self -> Double -> IO ()
 htmlMediaElementSetPlaybackRate self val
   = ghcjs_dom_html_media_element_set_playback_rate
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -515,15 +516,15 @@ htmlMediaElementSetPlaybackRate self val
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"playbackRate\"]"
         ghcjs_dom_html_media_element_get_playback_rate ::
-        JSRef HTMLMediaElement -> IO Float
+        JSRef HTMLMediaElement -> IO Double
 #else 
 ghcjs_dom_html_media_element_get_playback_rate ::
-                                                 JSRef HTMLMediaElement -> IO Float
+                                                 JSRef HTMLMediaElement -> IO Double
 ghcjs_dom_html_media_element_get_playback_rate = undefined
 #endif
  
 htmlMediaElementGetPlaybackRate ::
-                                (IsHTMLMediaElement self) => self -> IO Float
+                                (IsHTMLMediaElement self) => self -> IO Double
 htmlMediaElementGetPlaybackRate self
   = ghcjs_dom_html_media_element_get_playback_rate
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -690,15 +691,15 @@ htmlMediaElementGetControls self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"volume\"] = $2;"
         ghcjs_dom_html_media_element_set_volume ::
-        JSRef HTMLMediaElement -> Float -> IO ()
+        JSRef HTMLMediaElement -> Double -> IO ()
 #else 
 ghcjs_dom_html_media_element_set_volume ::
-                                          JSRef HTMLMediaElement -> Float -> IO ()
+                                          JSRef HTMLMediaElement -> Double -> IO ()
 ghcjs_dom_html_media_element_set_volume = undefined
 #endif
  
 htmlMediaElementSetVolume ::
-                          (IsHTMLMediaElement self) => self -> Float -> IO ()
+                          (IsHTMLMediaElement self) => self -> Double -> IO ()
 htmlMediaElementSetVolume self val
   = ghcjs_dom_html_media_element_set_volume
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -708,15 +709,15 @@ htmlMediaElementSetVolume self val
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"volume\"]"
         ghcjs_dom_html_media_element_get_volume ::
-        JSRef HTMLMediaElement -> IO Float
+        JSRef HTMLMediaElement -> IO Double
 #else 
 ghcjs_dom_html_media_element_get_volume ::
-                                          JSRef HTMLMediaElement -> IO Float
+                                          JSRef HTMLMediaElement -> IO Double
 ghcjs_dom_html_media_element_get_volume = undefined
 #endif
  
 htmlMediaElementGetVolume ::
-                          (IsHTMLMediaElement self) => self -> IO Float
+                          (IsHTMLMediaElement self) => self -> IO Double
 htmlMediaElementGetVolume self
   = ghcjs_dom_html_media_element_get_volume
       (unHTMLMediaElement (toHTMLMediaElement self))
@@ -924,6 +925,10 @@ htmlMediaElementGetWebkitVideoDecodedByteCount ::
 htmlMediaElementGetWebkitVideoDecodedByteCount self
   = ghcjs_dom_html_media_element_get_webkit_video_decoded_byte_count
       (unHTMLMediaElement (toHTMLMediaElement self))
+ 
+htmlMediaElementOnwebkitneedkey ::
+                                (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnwebkitneedkey = (connect "webkitneedkey")
 
 
 #ifdef __GHCJS__ 

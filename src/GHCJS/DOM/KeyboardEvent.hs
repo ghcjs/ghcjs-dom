@@ -16,9 +16,7 @@ module GHCJS.DOM.KeyboardEvent
         keyboardEventGetAltKey, ghcjs_dom_keyboard_event_get_meta_key,
         keyboardEventGetMetaKey,
         ghcjs_dom_keyboard_event_get_alt_graph_key,
-        keyboardEventGetAltGraphKey, ghcjs_dom_keyboard_event_get_key_code,
-        keyboardEventGetKeyCode, ghcjs_dom_keyboard_event_get_char_code,
-        keyboardEventGetCharCode)
+        keyboardEventGetAltGraphKey)
        where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -90,8 +88,7 @@ keyboardEventInitKeyboardEvent ::
                                            keyIdentifier ->
                                              Word -> Bool -> Bool -> Bool -> Bool -> Bool -> IO ()
 keyboardEventInitKeyboardEvent self type' canBubble cancelable view
-  keyIdentifier keyLocation ctrlKey altKey shiftKey metaKey
-  altGraphKey
+  keyIdentifier location ctrlKey altKey shiftKey metaKey altGraphKey
   = ghcjs_dom_keyboard_event_init_keyboard_event
       (unKeyboardEvent (toKeyboardEvent self))
       (toJSString type')
@@ -99,61 +96,12 @@ keyboardEventInitKeyboardEvent self type' canBubble cancelable view
       cancelable
       (maybe jsNull (unDOMWindow . toDOMWindow) view)
       (toJSString keyIdentifier)
-      keyLocation
+      location
       ctrlKey
       altKey
       shiftKey
       metaKey
       altGraphKey
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe
-        "$1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11)"
-        ghcjs_dom_keyboard_event_init_keyboard_event ::
-        JSRef KeyboardEvent ->
-          JSString ->
-            Bool ->
-              Bool ->
-                JSRef DOMWindow ->
-                  JSString -> Word -> Bool -> Bool -> Bool -> Bool -> IO ()
-#else 
-ghcjs_dom_keyboard_event_init_keyboard_event ::
-                                               JSRef KeyboardEvent ->
-                                                 JSString ->
-                                                   Bool ->
-                                                     Bool ->
-                                                       JSRef DOMWindow ->
-                                                         JSString ->
-                                                           Word ->
-                                                             Bool -> Bool -> Bool -> Bool -> IO ()
-ghcjs_dom_keyboard_event_init_keyboard_event = undefined
-#endif
- 
-keyboardEventInitKeyboardEvent ::
-                               (IsKeyboardEvent self, ToJSString type', IsDOMWindow view,
-                                ToJSString keyIdentifier) =>
-                                 self ->
-                                   type' ->
-                                     Bool ->
-                                       Bool ->
-                                         Maybe view ->
-                                           keyIdentifier ->
-                                             Word -> Bool -> Bool -> Bool -> Bool -> IO ()
-keyboardEventInitKeyboardEvent self type' canBubble cancelable view
-  keyIdentifier keyLocation ctrlKey altKey shiftKey metaKey
-  = ghcjs_dom_keyboard_event_init_keyboard_event
-      (unKeyboardEvent (toKeyboardEvent self))
-      (toJSString type')
-      canBubble
-      cancelable
-      (maybe jsNull (unDOMWindow . toDOMWindow) view)
-      (toJSString keyIdentifier)
-      keyLocation
-      ctrlKey
-      altKey
-      shiftKey
-      metaKey
 cKEY_LOCATION_STANDARD = 0
 cKEY_LOCATION_LEFT = 1
 cKEY_LOCATION_RIGHT = 2
@@ -276,39 +224,6 @@ keyboardEventGetAltGraphKey ::
                             (IsKeyboardEvent self) => self -> IO Bool
 keyboardEventGetAltGraphKey self
   = ghcjs_dom_keyboard_event_get_alt_graph_key
-      (unKeyboardEvent (toKeyboardEvent self))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"keyCode\"]"
-        ghcjs_dom_keyboard_event_get_key_code ::
-        JSRef KeyboardEvent -> IO Int
-#else 
-ghcjs_dom_keyboard_event_get_key_code ::
-                                        JSRef KeyboardEvent -> IO Int
-ghcjs_dom_keyboard_event_get_key_code = undefined
-#endif
- 
-keyboardEventGetKeyCode :: (IsKeyboardEvent self) => self -> IO Int
-keyboardEventGetKeyCode self
-  = ghcjs_dom_keyboard_event_get_key_code
-      (unKeyboardEvent (toKeyboardEvent self))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"charCode\"]"
-        ghcjs_dom_keyboard_event_get_char_code ::
-        JSRef KeyboardEvent -> IO Int
-#else 
-ghcjs_dom_keyboard_event_get_char_code ::
-                                         JSRef KeyboardEvent -> IO Int
-ghcjs_dom_keyboard_event_get_char_code = undefined
-#endif
- 
-keyboardEventGetCharCode ::
-                         (IsKeyboardEvent self) => self -> IO Int
-keyboardEventGetCharCode self
-  = ghcjs_dom_keyboard_event_get_char_code
       (unKeyboardEvent (toKeyboardEvent self))
 #else
 module GHCJS.DOM.KeyboardEvent (

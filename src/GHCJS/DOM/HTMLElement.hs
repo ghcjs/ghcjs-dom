@@ -8,21 +8,19 @@ module GHCJS.DOM.HTMLElement
         htmlElementInsertAdjacentHTML,
         ghcjs_dom_html_element_insert_adjacent_text,
         htmlElementInsertAdjacentText, ghcjs_dom_html_element_click,
-        htmlElementClick, ghcjs_dom_html_element_set_id, htmlElementSetId,
-        ghcjs_dom_html_element_get_id, htmlElementGetId,
-        ghcjs_dom_html_element_set_title, htmlElementSetTitle,
-        ghcjs_dom_html_element_get_title, htmlElementGetTitle,
-        ghcjs_dom_html_element_set_lang, htmlElementSetLang,
-        ghcjs_dom_html_element_get_lang, htmlElementGetLang,
-        ghcjs_dom_html_element_set_translate, htmlElementSetTranslate,
-        ghcjs_dom_html_element_get_translate, htmlElementGetTranslate,
-        ghcjs_dom_html_element_set_dir, htmlElementSetDir,
-        ghcjs_dom_html_element_get_dir, htmlElementGetDir,
-        ghcjs_dom_html_element_set_tab_index, htmlElementSetTabIndex,
-        ghcjs_dom_html_element_get_tab_index, htmlElementGetTabIndex,
-        ghcjs_dom_html_element_set_draggable, htmlElementSetDraggable,
-        ghcjs_dom_html_element_get_draggable, htmlElementGetDraggable,
-        ghcjs_dom_html_element_set_webkitdropzone,
+        htmlElementClick, ghcjs_dom_html_element_set_title,
+        htmlElementSetTitle, ghcjs_dom_html_element_get_title,
+        htmlElementGetTitle, ghcjs_dom_html_element_set_lang,
+        htmlElementSetLang, ghcjs_dom_html_element_get_lang,
+        htmlElementGetLang, ghcjs_dom_html_element_set_translate,
+        htmlElementSetTranslate, ghcjs_dom_html_element_get_translate,
+        htmlElementGetTranslate, ghcjs_dom_html_element_set_dir,
+        htmlElementSetDir, ghcjs_dom_html_element_get_dir,
+        htmlElementGetDir, ghcjs_dom_html_element_set_tab_index,
+        htmlElementSetTabIndex, ghcjs_dom_html_element_get_tab_index,
+        htmlElementGetTabIndex, ghcjs_dom_html_element_set_draggable,
+        htmlElementSetDraggable, ghcjs_dom_html_element_get_draggable,
+        htmlElementGetDraggable, ghcjs_dom_html_element_set_webkitdropzone,
         htmlElementSetWebkitdropzone,
         ghcjs_dom_html_element_get_webkitdropzone,
         htmlElementGetWebkitdropzone, ghcjs_dom_html_element_set_hidden,
@@ -46,14 +44,7 @@ module GHCJS.DOM.HTMLElement
         ghcjs_dom_html_element_get_is_content_editable,
         htmlElementGetIsContentEditable,
         ghcjs_dom_html_element_set_spellcheck, htmlElementSetSpellcheck,
-        ghcjs_dom_html_element_get_spellcheck, htmlElementGetSpellcheck,
-        ghcjs_dom_html_element_set_item_scope, htmlElementSetItemScope,
-        ghcjs_dom_html_element_get_item_scope, htmlElementGetItemScope,
-        ghcjs_dom_html_element_get_item_type, htmlElementGetItemType,
-        ghcjs_dom_html_element_set_item_id, htmlElementSetItemId,
-        ghcjs_dom_html_element_get_item_id, htmlElementGetItemId,
-        ghcjs_dom_html_element_get_item_ref, htmlElementGetItemRef,
-        ghcjs_dom_html_element_get_item_prop, htmlElementGetItemProp)
+        ghcjs_dom_html_element_get_spellcheck, htmlElementGetSpellcheck)
        where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -147,40 +138,6 @@ ghcjs_dom_html_element_click = undefined
 htmlElementClick :: (IsHTMLElement self) => self -> IO ()
 htmlElementClick self
   = ghcjs_dom_html_element_click (unHTMLElement (toHTMLElement self))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"id\"] = $2;"
-        ghcjs_dom_html_element_set_id ::
-        JSRef HTMLElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_element_set_id ::
-                                JSRef HTMLElement -> JSString -> IO ()
-ghcjs_dom_html_element_set_id = undefined
-#endif
- 
-htmlElementSetId ::
-                 (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
-htmlElementSetId self val
-  = ghcjs_dom_html_element_set_id
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"id\"]"
-        ghcjs_dom_html_element_get_id :: JSRef HTMLElement -> IO JSString
-#else 
-ghcjs_dom_html_element_get_id :: JSRef HTMLElement -> IO JSString
-ghcjs_dom_html_element_get_id = undefined
-#endif
- 
-htmlElementGetId ::
-                 (IsHTMLElement self, FromJSString result) => self -> IO result
-htmlElementGetId self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_id
-         (unHTMLElement (toHTMLElement self)))
 
 
 #ifdef __GHCJS__ 
@@ -739,130 +696,6 @@ htmlElementGetSpellcheck :: (IsHTMLElement self) => self -> IO Bool
 htmlElementGetSpellcheck self
   = ghcjs_dom_html_element_get_spellcheck
       (unHTMLElement (toHTMLElement self))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"itemScope\"] = $2;"
-        ghcjs_dom_html_element_set_item_scope ::
-        JSRef HTMLElement -> Bool -> IO ()
-#else 
-ghcjs_dom_html_element_set_item_scope ::
-                                        JSRef HTMLElement -> Bool -> IO ()
-ghcjs_dom_html_element_set_item_scope = undefined
-#endif
- 
-htmlElementSetItemScope ::
-                        (IsHTMLElement self) => self -> Bool -> IO ()
-htmlElementSetItemScope self val
-  = ghcjs_dom_html_element_set_item_scope
-      (unHTMLElement (toHTMLElement self))
-      val
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "($1[\"itemScope\"] ? 1 : 0)"
-        ghcjs_dom_html_element_get_item_scope ::
-        JSRef HTMLElement -> IO Bool
-#else 
-ghcjs_dom_html_element_get_item_scope ::
-                                        JSRef HTMLElement -> IO Bool
-ghcjs_dom_html_element_get_item_scope = undefined
-#endif
- 
-htmlElementGetItemScope :: (IsHTMLElement self) => self -> IO Bool
-htmlElementGetItemScope self
-  = ghcjs_dom_html_element_get_item_scope
-      (unHTMLElement (toHTMLElement self))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"itemType\"]"
-        ghcjs_dom_html_element_get_item_type ::
-        JSRef HTMLElement -> IO (JSRef DOMSettableTokenList)
-#else 
-ghcjs_dom_html_element_get_item_type ::
-                                       JSRef HTMLElement -> IO (JSRef DOMSettableTokenList)
-ghcjs_dom_html_element_get_item_type = undefined
-#endif
- 
-htmlElementGetItemType ::
-                       (IsHTMLElement self) => self -> IO (Maybe DOMSettableTokenList)
-htmlElementGetItemType self
-  = fmap DOMSettableTokenList . maybeJSNull <$>
-      (ghcjs_dom_html_element_get_item_type
-         (unHTMLElement (toHTMLElement self)))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"itemId\"] = $2;"
-        ghcjs_dom_html_element_set_item_id ::
-        JSRef HTMLElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_element_set_item_id ::
-                                     JSRef HTMLElement -> JSString -> IO ()
-ghcjs_dom_html_element_set_item_id = undefined
-#endif
- 
-htmlElementSetItemId ::
-                     (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
-htmlElementSetItemId self val
-  = ghcjs_dom_html_element_set_item_id
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"itemId\"]"
-        ghcjs_dom_html_element_get_item_id ::
-        JSRef HTMLElement -> IO JSString
-#else 
-ghcjs_dom_html_element_get_item_id ::
-                                     JSRef HTMLElement -> IO JSString
-ghcjs_dom_html_element_get_item_id = undefined
-#endif
- 
-htmlElementGetItemId ::
-                     (IsHTMLElement self, FromJSString result) => self -> IO result
-htmlElementGetItemId self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_item_id
-         (unHTMLElement (toHTMLElement self)))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"itemRef\"]"
-        ghcjs_dom_html_element_get_item_ref ::
-        JSRef HTMLElement -> IO (JSRef DOMSettableTokenList)
-#else 
-ghcjs_dom_html_element_get_item_ref ::
-                                      JSRef HTMLElement -> IO (JSRef DOMSettableTokenList)
-ghcjs_dom_html_element_get_item_ref = undefined
-#endif
- 
-htmlElementGetItemRef ::
-                      (IsHTMLElement self) => self -> IO (Maybe DOMSettableTokenList)
-htmlElementGetItemRef self
-  = fmap DOMSettableTokenList . maybeJSNull <$>
-      (ghcjs_dom_html_element_get_item_ref
-         (unHTMLElement (toHTMLElement self)))
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "$1[\"itemProp\"]"
-        ghcjs_dom_html_element_get_item_prop ::
-        JSRef HTMLElement -> IO (JSRef DOMSettableTokenList)
-#else 
-ghcjs_dom_html_element_get_item_prop ::
-                                       JSRef HTMLElement -> IO (JSRef DOMSettableTokenList)
-ghcjs_dom_html_element_get_item_prop = undefined
-#endif
- 
-htmlElementGetItemProp ::
-                       (IsHTMLElement self) => self -> IO (Maybe DOMSettableTokenList)
-htmlElementGetItemProp self
-  = fmap DOMSettableTokenList . maybeJSNull <$>
-      (ghcjs_dom_html_element_get_item_prop
-         (unHTMLElement (toHTMLElement self)))
 #else
 module GHCJS.DOM.HTMLElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLElement

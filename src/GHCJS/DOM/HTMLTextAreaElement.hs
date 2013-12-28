@@ -7,6 +7,8 @@ module GHCJS.DOM.HTMLTextAreaElement
         ghcjs_dom_html_text_area_element_set_custom_validity,
         htmlTextAreaElementSetCustomValidity,
         ghcjs_dom_html_text_area_element_select, htmlTextAreaElementSelect,
+        ghcjs_dom_html_text_area_element_set_range_text,
+        htmlTextAreaElementSetRangeText,
         ghcjs_dom_html_text_area_element_set_selection_range,
         htmlTextAreaElementSetSelectionRange,
         ghcjs_dom_html_text_area_element_set_autofocus,
@@ -154,6 +156,52 @@ htmlTextAreaElementSelect ::
 htmlTextAreaElementSelect self
   = ghcjs_dom_html_text_area_element_select
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"setRangeText\"]($2)"
+        ghcjs_dom_html_text_area_element_set_range_text ::
+        JSRef HTMLTextAreaElement -> JSString -> IO ()
+#else 
+ghcjs_dom_html_text_area_element_set_range_text ::
+                                                  JSRef HTMLTextAreaElement -> JSString -> IO ()
+ghcjs_dom_html_text_area_element_set_range_text = undefined
+#endif
+ 
+htmlTextAreaElementSetRangeText ::
+                                (IsHTMLTextAreaElement self, ToJSString replacement) =>
+                                  self -> replacement -> IO ()
+htmlTextAreaElementSetRangeText self replacement
+  = ghcjs_dom_html_text_area_element_set_range_text
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+      (toJSString replacement)
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe
+        "$1[\"setRangeText\"]($2, $3, $4,\n$5)"
+        ghcjs_dom_html_text_area_element_set_range_text ::
+        JSRef HTMLTextAreaElement ->
+          JSString -> Word -> Word -> JSString -> IO ()
+#else 
+ghcjs_dom_html_text_area_element_set_range_text ::
+                                                  JSRef HTMLTextAreaElement ->
+                                                    JSString -> Word -> Word -> JSString -> IO ()
+ghcjs_dom_html_text_area_element_set_range_text = undefined
+#endif
+ 
+htmlTextAreaElementSetRangeText ::
+                                (IsHTMLTextAreaElement self, ToJSString replacement,
+                                 ToJSString selectionMode) =>
+                                  self -> replacement -> Word -> Word -> selectionMode -> IO ()
+htmlTextAreaElementSetRangeText self replacement start end
+  selectionMode
+  = ghcjs_dom_html_text_area_element_set_range_text
+      (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+      (toJSString replacement)
+      start
+      end
+      (toJSString selectionMode)
 
 
 #ifdef __GHCJS__ 

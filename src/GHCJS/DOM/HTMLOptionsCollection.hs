@@ -2,7 +2,9 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptionsCollection
-       (ghcjs_dom_html_options_collection_set_selected_index,
+       (ghcjs_dom_html_options_collection_named_item,
+        htmlOptionsCollectionNamedItem,
+        ghcjs_dom_html_options_collection_set_selected_index,
         htmlOptionsCollectionSetSelectedIndex,
         ghcjs_dom_html_options_collection_get_selected_index,
         htmlOptionsCollectionGetSelectedIndex)
@@ -20,6 +22,27 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"namedItem\"]($2)"
+        ghcjs_dom_html_options_collection_named_item ::
+        JSRef HTMLOptionsCollection -> JSString -> IO (JSRef Node)
+#else 
+ghcjs_dom_html_options_collection_named_item ::
+                                               JSRef HTMLOptionsCollection ->
+                                                 JSString -> IO (JSRef Node)
+ghcjs_dom_html_options_collection_named_item = undefined
+#endif
+ 
+htmlOptionsCollectionNamedItem ::
+                               (IsHTMLOptionsCollection self, ToJSString name) =>
+                                 self -> name -> IO (Maybe Node)
+htmlOptionsCollectionNamedItem self name
+  = fmap Node . maybeJSNull <$>
+      (ghcjs_dom_html_options_collection_named_item
+         (unHTMLOptionsCollection (toHTMLOptionsCollection self))
+         (toJSString name))
 
 
 #ifdef __GHCJS__ 

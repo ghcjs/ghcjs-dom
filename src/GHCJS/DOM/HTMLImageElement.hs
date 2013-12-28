@@ -25,7 +25,10 @@ module GHCJS.DOM.HTMLImageElement
         ghcjs_dom_html_image_element_get_long_desc,
         htmlImageElementGetLongDesc, ghcjs_dom_html_image_element_set_src,
         htmlImageElementSetSrc, ghcjs_dom_html_image_element_get_src,
-        htmlImageElementGetSrc, ghcjs_dom_html_image_element_set_use_map,
+        htmlImageElementGetSrc, ghcjs_dom_html_image_element_set_srcset,
+        htmlImageElementSetSrcset, ghcjs_dom_html_image_element_get_srcset,
+        htmlImageElementGetSrcset,
+        ghcjs_dom_html_image_element_set_use_map,
         htmlImageElementSetUseMap,
         ghcjs_dom_html_image_element_get_use_map,
         htmlImageElementGetUseMap, ghcjs_dom_html_image_element_set_vspace,
@@ -413,6 +416,42 @@ htmlImageElementGetSrc ::
 htmlImageElementGetSrc self
   = fromJSString <$>
       (ghcjs_dom_html_image_element_get_src
+         (unHTMLImageElement (toHTMLImageElement self)))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"srcset\"] = $2;"
+        ghcjs_dom_html_image_element_set_srcset ::
+        JSRef HTMLImageElement -> JSString -> IO ()
+#else 
+ghcjs_dom_html_image_element_set_srcset ::
+                                          JSRef HTMLImageElement -> JSString -> IO ()
+ghcjs_dom_html_image_element_set_srcset = undefined
+#endif
+ 
+htmlImageElementSetSrcset ::
+                          (IsHTMLImageElement self, ToJSString val) => self -> val -> IO ()
+htmlImageElementSetSrcset self val
+  = ghcjs_dom_html_image_element_set_srcset
+      (unHTMLImageElement (toHTMLImageElement self))
+      (toJSString val)
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"srcset\"]"
+        ghcjs_dom_html_image_element_get_srcset ::
+        JSRef HTMLImageElement -> IO JSString
+#else 
+ghcjs_dom_html_image_element_get_srcset ::
+                                          JSRef HTMLImageElement -> IO JSString
+ghcjs_dom_html_image_element_get_srcset = undefined
+#endif
+ 
+htmlImageElementGetSrcset ::
+                          (IsHTMLImageElement self, FromJSString result) => self -> IO result
+htmlImageElementGetSrcset self
+  = fromJSString <$>
+      (ghcjs_dom_html_image_element_get_srcset
          (unHTMLImageElement (toHTMLImageElement self)))
 
 

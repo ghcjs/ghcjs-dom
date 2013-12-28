@@ -23,13 +23,15 @@ import GHCJS.DOM.EventM
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"start\"]($2)"
-        ghcjs_dom_time_ranges_start :: JSRef TimeRanges -> Word -> IO Float
+        ghcjs_dom_time_ranges_start ::
+        JSRef TimeRanges -> Word -> IO Double
 #else 
-ghcjs_dom_time_ranges_start :: JSRef TimeRanges -> Word -> IO Float
+ghcjs_dom_time_ranges_start ::
+                              JSRef TimeRanges -> Word -> IO Double
 ghcjs_dom_time_ranges_start = undefined
 #endif
  
-timeRangesStart :: (IsTimeRanges self) => self -> Word -> IO Float
+timeRangesStart :: (IsTimeRanges self) => self -> Word -> IO Double
 timeRangesStart self index
   = ghcjs_dom_time_ranges_start (unTimeRanges (toTimeRanges self))
       index
@@ -37,13 +39,13 @@ timeRangesStart self index
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"end\"]($2)"
-        ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Float
+        ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Double
 #else 
-ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Float
+ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Double
 ghcjs_dom_time_ranges_end = undefined
 #endif
  
-timeRangesEnd :: (IsTimeRanges self) => self -> Word -> IO Float
+timeRangesEnd :: (IsTimeRanges self) => self -> Word -> IO Double
 timeRangesEnd self index
   = ghcjs_dom_time_ranges_end (unTimeRanges (toTimeRanges self))
       index

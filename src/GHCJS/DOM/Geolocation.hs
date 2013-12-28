@@ -30,10 +30,10 @@ ghcjs_dom_geolocation_clear_watch = undefined
  
 geolocationClearWatch ::
                       (IsGeolocation self) => self -> Int -> IO ()
-geolocationClearWatch self watchId
+geolocationClearWatch self watchID
   = ghcjs_dom_geolocation_clear_watch
       (unGeolocation (toGeolocation self))
-      watchId
+      watchID
 #else
 module GHCJS.DOM.Geolocation (
   module Graphics.UI.Gtk.WebKit.DOM.Geolocation

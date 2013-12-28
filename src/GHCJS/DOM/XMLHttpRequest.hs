@@ -16,7 +16,9 @@ module GHCJS.DOM.XMLHttpRequest
         cLOADING, cDONE, xmlHttpRequestOnabort, xmlHttpRequestOnerror,
         xmlHttpRequestOnload, xmlHttpRequestOnloadend,
         xmlHttpRequestOnloadstart, xmlHttpRequestOnprogress,
-        xmlHttpRequestOnreadystatechange,
+        xmlHttpRequestOntimeout, xmlHttpRequestOnreadystatechange,
+        ghcjs_dom_xml_http_request_set_timeout, xmlHttpRequestSetTimeout,
+        ghcjs_dom_xml_http_request_get_timeout, xmlHttpRequestGetTimeout,
         ghcjs_dom_xml_http_request_get_ready_state,
         xmlHttpRequestGetReadyState,
         ghcjs_dom_xml_http_request_set_with_credentials,
@@ -190,9 +192,48 @@ xmlHttpRequestOnprogress ::
                          (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
 xmlHttpRequestOnprogress = (connect "progress")
  
+xmlHttpRequestOntimeout ::
+                        (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
+xmlHttpRequestOntimeout = (connect "timeout")
+ 
 xmlHttpRequestOnreadystatechange ::
                                  (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
 xmlHttpRequestOnreadystatechange = (connect "readystatechange")
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"timeout\"] = $2;"
+        ghcjs_dom_xml_http_request_set_timeout ::
+        JSRef XMLHttpRequest -> Word -> IO ()
+#else 
+ghcjs_dom_xml_http_request_set_timeout ::
+                                         JSRef XMLHttpRequest -> Word -> IO ()
+ghcjs_dom_xml_http_request_set_timeout = undefined
+#endif
+ 
+xmlHttpRequestSetTimeout ::
+                         (IsXMLHttpRequest self) => self -> Word -> IO ()
+xmlHttpRequestSetTimeout self val
+  = ghcjs_dom_xml_http_request_set_timeout
+      (unXMLHttpRequest (toXMLHttpRequest self))
+      val
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"timeout\"]"
+        ghcjs_dom_xml_http_request_get_timeout ::
+        JSRef XMLHttpRequest -> IO Word
+#else 
+ghcjs_dom_xml_http_request_get_timeout ::
+                                         JSRef XMLHttpRequest -> IO Word
+ghcjs_dom_xml_http_request_get_timeout = undefined
+#endif
+ 
+xmlHttpRequestGetTimeout ::
+                         (IsXMLHttpRequest self) => self -> IO Word
+xmlHttpRequestGetTimeout self
+  = ghcjs_dom_xml_http_request_get_timeout
+      (unXMLHttpRequest (toXMLHttpRequest self))
 
 
 #ifdef __GHCJS__ 
@@ -251,17 +292,17 @@ xmlHttpRequestGetWithCredentials self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"upload\"]"
         ghcjs_dom_xml_http_request_get_upload ::
-        JSRef XMLHttpRequest -> IO (JSRef XMLHttpRequestUpload)
+        JSRef XMLHttpRequest -> IO JSString
 #else 
 ghcjs_dom_xml_http_request_get_upload ::
-                                        JSRef XMLHttpRequest -> IO (JSRef XMLHttpRequestUpload)
+                                        JSRef XMLHttpRequest -> IO JSString
 ghcjs_dom_xml_http_request_get_upload = undefined
 #endif
  
 xmlHttpRequestGetUpload ::
-                        (IsXMLHttpRequest self) => self -> IO (Maybe XMLHttpRequestUpload)
+                        (IsXMLHttpRequest self, FromJSString result) => self -> IO result
 xmlHttpRequestGetUpload self
-  = fmap XMLHttpRequestUpload . maybeJSNull <$>
+  = fromJSString <$>
       (ghcjs_dom_xml_http_request_get_upload
          (unXMLHttpRequest (toXMLHttpRequest self)))
 
@@ -287,35 +328,41 @@ xmlHttpRequestGetResponseXML self
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"responseType\"] = $2;"
         ghcjs_dom_xml_http_request_set_response_type ::
-        JSRef XMLHttpRequest -> JSString -> IO ()
+        JSRef XMLHttpRequest -> JSRef XMLHttpRequestResponseType -> IO ()
 #else 
 ghcjs_dom_xml_http_request_set_response_type ::
-                                               JSRef XMLHttpRequest -> JSString -> IO ()
+                                               JSRef XMLHttpRequest ->
+                                                 JSRef XMLHttpRequestResponseType -> IO ()
 ghcjs_dom_xml_http_request_set_response_type = undefined
 #endif
  
 xmlHttpRequestSetResponseType ::
-                              (IsXMLHttpRequest self, ToJSString val) => self -> val -> IO ()
+                              (IsXMLHttpRequest self, IsXMLHttpRequestResponseType val) =>
+                                self -> Maybe val -> IO ()
 xmlHttpRequestSetResponseType self val
   = ghcjs_dom_xml_http_request_set_response_type
       (unXMLHttpRequest (toXMLHttpRequest self))
-      (toJSString val)
+      (maybe jsNull
+         (unXMLHttpRequestResponseType . toXMLHttpRequestResponseType)
+         val)
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe "$1[\"responseType\"]"
         ghcjs_dom_xml_http_request_get_response_type ::
-        JSRef XMLHttpRequest -> IO JSString
+        JSRef XMLHttpRequest -> IO (JSRef XMLHttpRequestResponseType)
 #else 
 ghcjs_dom_xml_http_request_get_response_type ::
-                                               JSRef XMLHttpRequest -> IO JSString
+                                               JSRef XMLHttpRequest ->
+                                                 IO (JSRef XMLHttpRequestResponseType)
 ghcjs_dom_xml_http_request_get_response_type = undefined
 #endif
  
 xmlHttpRequestGetResponseType ::
-                              (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+                              (IsXMLHttpRequest self) =>
+                                self -> IO (Maybe XMLHttpRequestResponseType)
 xmlHttpRequestGetResponseType self
-  = fromJSString <$>
+  = fmap XMLHttpRequestResponseType . maybeJSNull <$>
       (ghcjs_dom_xml_http_request_get_response_type
          (unXMLHttpRequest (toXMLHttpRequest self)))
 

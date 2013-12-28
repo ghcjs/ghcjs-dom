@@ -1,7 +1,10 @@
 {-# LANGUAGE CPP #-}
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
-module GHCJS.DOM.File (ghcjs_dom_file_get_name, fileGetName) where
+module GHCJS.DOM.File
+       (ghcjs_dom_file_get_name, fileGetName,
+        ghcjs_dom_file_get_webkit_relative_path, fileGetWebkitRelativePath)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word
@@ -29,6 +32,23 @@ fileGetName ::
             (IsFile self, FromJSString result) => self -> IO result
 fileGetName self
   = fromJSString <$> (ghcjs_dom_file_get_name (unFile (toFile self)))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"webkitRelativePath\"]"
+        ghcjs_dom_file_get_webkit_relative_path ::
+        JSRef File -> IO JSString
+#else 
+ghcjs_dom_file_get_webkit_relative_path ::
+                                          JSRef File -> IO JSString
+ghcjs_dom_file_get_webkit_relative_path = undefined
+#endif
+ 
+fileGetWebkitRelativePath ::
+                          (IsFile self, FromJSString result) => self -> IO result
+fileGetWebkitRelativePath self
+  = fromJSString <$>
+      (ghcjs_dom_file_get_webkit_relative_path (unFile (toFile self)))
 #else
 module GHCJS.DOM.File (
   module Graphics.UI.Gtk.WebKit.DOM.File
