@@ -27,7 +27,9 @@ module GHCJS.DOM.HTMLVideoElement
         ghcjs_dom_html_video_element_get_webkit_decoded_frame_count,
         htmlVideoElementGetWebkitDecodedFrameCount,
         ghcjs_dom_html_video_element_get_webkit_dropped_frame_count,
-        htmlVideoElementGetWebkitDroppedFrameCount)
+        htmlVideoElementGetWebkitDroppedFrameCount, HTMLVideoElement,
+        IsHTMLVideoElement, castToHTMLVideoElement, gTypeHTMLVideoElement,
+        toHTMLVideoElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -22,7 +22,9 @@ module GHCJS.DOM.CSSStyleDeclaration
         ghcjs_dom_css_style_declaration_get_length,
         cssStyleDeclarationGetLength,
         ghcjs_dom_css_style_declaration_get_parent_rule,
-        cssStyleDeclarationGetParentRule)
+        cssStyleDeclarationGetParentRule, CSSStyleDeclaration,
+        IsCSSStyleDeclaration, castToCSSStyleDeclaration,
+        gTypeCSSStyleDeclaration, toCSSStyleDeclaration)
        where
 import GHCJS.Types
 import GHCJS.Foreign

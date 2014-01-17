@@ -9,7 +9,9 @@ module GHCJS.DOM.HTMLOptGroupElement
         ghcjs_dom_html_opt_group_element_set_label,
         htmlOptGroupElementSetLabel,
         ghcjs_dom_html_opt_group_element_get_label,
-        htmlOptGroupElementGetLabel)
+        htmlOptGroupElementGetLabel, HTMLOptGroupElement,
+        IsHTMLOptGroupElement, castToHTMLOptGroupElement,
+        gTypeHTMLOptGroupElement, toHTMLOptGroupElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

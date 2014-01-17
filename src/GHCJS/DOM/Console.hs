@@ -3,7 +3,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Console
        (ghcjs_dom_console_time, consoleTime, ghcjs_dom_console_group_end,
-        consoleGroupEnd)
+        consoleGroupEnd, Console, IsConsole, castToConsole, gTypeConsole,
+        toConsole)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -34,7 +34,8 @@ module GHCJS.DOM.XMLHttpRequest
         xmlHttpRequestGetResponseType,
         ghcjs_dom_xml_http_request_get_status, xmlHttpRequestGetStatus,
         ghcjs_dom_xml_http_request_get_status_text,
-        xmlHttpRequestGetStatusText)
+        xmlHttpRequestGetStatusText, XMLHttpRequest, IsXMLHttpRequest,
+        castToXMLHttpRequest, gTypeXMLHttpRequest, toXMLHttpRequest)
        where
 import GHCJS.Types
 import GHCJS.Foreign

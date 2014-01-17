@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathNSResolver
        (ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri,
-        xPathNSResolverLookupNamespaceURI)
+        xPathNSResolverLookupNamespaceURI, XPathNSResolver,
+        IsXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver,
+        toXPathNSResolver)
        where
 import GHCJS.Types
 import GHCJS.Foreign

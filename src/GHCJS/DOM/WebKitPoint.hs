@@ -5,7 +5,8 @@ module GHCJS.DOM.WebKitPoint
        (ghcjs_dom_webkit_point_set_x, webKitPointSetX,
         ghcjs_dom_webkit_point_get_x, webKitPointGetX,
         ghcjs_dom_webkit_point_set_y, webKitPointSetY,
-        ghcjs_dom_webkit_point_get_y, webKitPointGetY)
+        ghcjs_dom_webkit_point_get_y, webKitPointGetY, WebKitPoint,
+        IsWebKitPoint, castToWebKitPoint, gTypeWebKitPoint, toWebKitPoint)
        where
 import GHCJS.Types
 import GHCJS.Foreign

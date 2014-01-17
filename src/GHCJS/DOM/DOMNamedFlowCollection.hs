@@ -7,7 +7,9 @@ module GHCJS.DOM.DOMNamedFlowCollection
         ghcjs_dom_dom_named_flow_collection_named_item,
         domNamedFlowCollectionNamedItem,
         ghcjs_dom_dom_named_flow_collection_get_length,
-        domNamedFlowCollectionGetLength)
+        domNamedFlowCollectionGetLength, DOMNamedFlowCollection,
+        IsDOMNamedFlowCollection, castToDOMNamedFlowCollection,
+        gTypeDOMNamedFlowCollection, toDOMNamedFlowCollection)
        where
 import GHCJS.Types
 import GHCJS.Foreign

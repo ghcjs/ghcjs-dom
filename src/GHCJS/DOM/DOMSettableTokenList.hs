@@ -5,7 +5,9 @@ module GHCJS.DOM.DOMSettableTokenList
        (ghcjs_dom_dom_settable_token_list_set_value,
         domSettableTokenListSetValue,
         ghcjs_dom_dom_settable_token_list_get_value,
-        domSettableTokenListGetValue)
+        domSettableTokenListGetValue, DOMSettableTokenList,
+        IsDOMSettableTokenList, castToDOMSettableTokenList,
+        gTypeDOMSettableTokenList, toDOMSettableTokenList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -4,7 +4,8 @@
 module GHCJS.DOM.Text
        (ghcjs_dom_text_split_text, textSplitText,
         ghcjs_dom_text_replace_whole_text, textReplaceWholeText,
-        ghcjs_dom_text_get_whole_text, textGetWholeText)
+        ghcjs_dom_text_get_whole_text, textGetWholeText, Text(..), IsText,
+        castToText, gTypeText, toText)
        where
 import GHCJS.Types
 import GHCJS.Foreign

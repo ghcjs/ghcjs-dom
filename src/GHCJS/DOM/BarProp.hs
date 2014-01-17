@@ -2,7 +2,9 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.BarProp
-       (ghcjs_dom_bar_prop_get_visible, barPropGetVisible) where
+       (ghcjs_dom_bar_prop_get_visible, barPropGetVisible, BarProp,
+        IsBarProp, castToBarProp, gTypeBarProp, toBarProp)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word

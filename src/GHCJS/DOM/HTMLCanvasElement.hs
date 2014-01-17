@@ -8,7 +8,9 @@ module GHCJS.DOM.HTMLCanvasElement
         ghcjs_dom_html_canvas_element_set_height,
         htmlCanvasElementSetHeight,
         ghcjs_dom_html_canvas_element_get_height,
-        htmlCanvasElementGetHeight)
+        htmlCanvasElementGetHeight, HTMLCanvasElement, IsHTMLCanvasElement,
+        castToHTMLCanvasElement, gTypeHTMLCanvasElement,
+        toHTMLCanvasElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

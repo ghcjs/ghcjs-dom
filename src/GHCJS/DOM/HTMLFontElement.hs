@@ -7,7 +7,9 @@ module GHCJS.DOM.HTMLFontElement
         ghcjs_dom_html_font_element_set_face, htmlFontElementSetFace,
         ghcjs_dom_html_font_element_get_face, htmlFontElementGetFace,
         ghcjs_dom_html_font_element_set_size, htmlFontElementSetSize,
-        ghcjs_dom_html_font_element_get_size, htmlFontElementGetSize)
+        ghcjs_dom_html_font_element_get_size, htmlFontElementGetSize,
+        HTMLFontElement, IsHTMLFontElement, castToHTMLFontElement,
+        gTypeHTMLFontElement, toHTMLFontElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -2,7 +2,10 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Geolocation
-       (ghcjs_dom_geolocation_clear_watch, geolocationClearWatch) where
+       (ghcjs_dom_geolocation_clear_watch, geolocationClearWatch,
+        Geolocation, IsGeolocation, castToGeolocation, gTypeGeolocation,
+        toGeolocation)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word

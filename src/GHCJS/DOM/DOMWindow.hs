@@ -23,10 +23,6 @@ module GHCJS.DOM.DOMWindow
         domWindowWebkitConvertPointFromPageToNode,
         ghcjs_dom_dom_window_webkit_convert_point_from_node_to_page,
         domWindowWebkitConvertPointFromNodeToPage,
-        ghcjs_dom_dom_window_clear_timeout, domWindowClearTimeout,
-        ghcjs_dom_dom_window_clear_interval, domWindowClearInterval,
-        ghcjs_dom_dom_window_atob, domWindowAtob,
-        ghcjs_dom_dom_window_btoa, domWindowBtoa,
         ghcjs_dom_dom_window_dispatch_event, domWindowDispatchEvent,
         ghcjs_dom_dom_window_capture_events, domWindowCaptureEvents,
         ghcjs_dom_dom_window_release_events, domWindowReleaseEvents,
@@ -107,7 +103,8 @@ module GHCJS.DOM.DOMWindow
         domWindowOntransitionend, domWindowOntouchstart,
         domWindowOntouchmove, domWindowOntouchend, domWindowOntouchcancel,
         domWindowOndevicemotion, domWindowOndeviceorientation,
-        domWindowOnwebkitdeviceproximity)
+        domWindowOnwebkitdeviceproximity, DOMWindow, IsDOMWindow,
+        castToDOMWindow, gTypeDOMWindow, toDOMWindow)
        where
 import GHCJS.Types
 import GHCJS.Foreign

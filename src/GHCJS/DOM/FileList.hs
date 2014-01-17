@@ -3,7 +3,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.FileList
        (ghcjs_dom_file_list_item, fileListItem,
-        ghcjs_dom_file_list_get_length, fileListGetLength)
+        ghcjs_dom_file_list_get_length, fileListGetLength, FileList,
+        IsFileList, castToFileList, gTypeFileList, toFileList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -81,7 +81,8 @@ module GHCJS.DOM.Element
         elementOnpaste, elementOnreset, elementOnsearch,
         elementOnselectstart, elementOntouchstart, elementOntouchmove,
         elementOntouchend, elementOntouchcancel,
-        elementOnwebkitfullscreenchange, elementOnwebkitfullscreenerror)
+        elementOnwebkitfullscreenchange, elementOnwebkitfullscreenerror,
+        Element, IsElement, castToElement, gTypeElement, toElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

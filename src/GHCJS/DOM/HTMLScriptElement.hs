@@ -25,7 +25,9 @@ module GHCJS.DOM.HTMLScriptElement
         ghcjs_dom_html_script_element_get_cross_origin,
         htmlScriptElementGetCrossOrigin,
         ghcjs_dom_html_script_element_set_nonce, htmlScriptElementSetNonce,
-        ghcjs_dom_html_script_element_get_nonce, htmlScriptElementGetNonce)
+        ghcjs_dom_html_script_element_get_nonce, htmlScriptElementGetNonce,
+        HTMLScriptElement, IsHTMLScriptElement, castToHTMLScriptElement,
+        gTypeHTMLScriptElement, toHTMLScriptElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

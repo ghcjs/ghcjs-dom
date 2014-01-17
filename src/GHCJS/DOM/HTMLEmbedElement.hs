@@ -11,7 +11,9 @@ module GHCJS.DOM.HTMLEmbedElement
         ghcjs_dom_html_embed_element_set_src, htmlEmbedElementSetSrc,
         ghcjs_dom_html_embed_element_get_src, htmlEmbedElementGetSrc,
         ghcjs_dom_html_embed_element_set_width, htmlEmbedElementSetWidth,
-        ghcjs_dom_html_embed_element_get_width, htmlEmbedElementGetWidth)
+        ghcjs_dom_html_embed_element_get_width, htmlEmbedElementGetWidth,
+        HTMLEmbedElement, IsHTMLEmbedElement, castToHTMLEmbedElement,
+        gTypeHTMLEmbedElement, toHTMLEmbedElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

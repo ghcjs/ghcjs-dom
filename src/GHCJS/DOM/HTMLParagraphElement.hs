@@ -5,7 +5,9 @@ module GHCJS.DOM.HTMLParagraphElement
        (ghcjs_dom_html_paragraph_element_set_align,
         htmlParagraphElementSetAlign,
         ghcjs_dom_html_paragraph_element_get_align,
-        htmlParagraphElementGetAlign)
+        htmlParagraphElementGetAlign, HTMLParagraphElement,
+        IsHTMLParagraphElement, castToHTMLParagraphElement,
+        gTypeHTMLParagraphElement, toHTMLParagraphElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

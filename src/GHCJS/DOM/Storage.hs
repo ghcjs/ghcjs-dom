@@ -6,7 +6,8 @@ module GHCJS.DOM.Storage
         storageGetItem, ghcjs_dom_storage_set_item, storageSetItem,
         ghcjs_dom_storage_remove_item, storageRemoveItem,
         ghcjs_dom_storage_clear, storageClear,
-        ghcjs_dom_storage_get_length, storageGetLength)
+        ghcjs_dom_storage_get_length, storageGetLength, Storage, IsStorage,
+        castToStorage, gTypeStorage, toStorage)
        where
 import GHCJS.Types
 import GHCJS.Foreign

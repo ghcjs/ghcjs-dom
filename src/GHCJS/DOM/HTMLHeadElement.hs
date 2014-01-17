@@ -4,7 +4,8 @@
 module GHCJS.DOM.HTMLHeadElement
        (ghcjs_dom_html_head_element_set_profile,
         htmlHeadElementSetProfile, ghcjs_dom_html_head_element_get_profile,
-        htmlHeadElementGetProfile)
+        htmlHeadElementGetProfile, HTMLHeadElement, IsHTMLHeadElement,
+        castToHTMLHeadElement, gTypeHTMLHeadElement, toHTMLHeadElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -35,7 +35,9 @@ module GHCJS.DOM.HTMLFrameElement
         ghcjs_dom_html_frame_element_get_content_window,
         htmlFrameElementGetContentWindow,
         ghcjs_dom_html_frame_element_get_width, htmlFrameElementGetWidth,
-        ghcjs_dom_html_frame_element_get_height, htmlFrameElementGetHeight)
+        ghcjs_dom_html_frame_element_get_height, htmlFrameElementGetHeight,
+        HTMLFrameElement, IsHTMLFrameElement, castToHTMLFrameElement,
+        gTypeHTMLFrameElement, toHTMLFrameElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

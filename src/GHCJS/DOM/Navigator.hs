@@ -18,7 +18,8 @@ module GHCJS.DOM.Navigator
         navigatorGetVendor, ghcjs_dom_navigator_get_vendor_sub,
         navigatorGetVendorSub, ghcjs_dom_navigator_get_cookie_enabled,
         navigatorGetCookieEnabled, ghcjs_dom_navigator_get_on_line,
-        navigatorGetOnLine)
+        navigatorGetOnLine, Navigator, IsNavigator, castToNavigator,
+        gTypeNavigator, toNavigator)
        where
 import GHCJS.Types
 import GHCJS.Foreign

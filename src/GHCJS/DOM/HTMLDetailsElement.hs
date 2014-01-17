@@ -4,7 +4,9 @@
 module GHCJS.DOM.HTMLDetailsElement
        (ghcjs_dom_html_details_element_set_open,
         htmlDetailsElementSetOpen, ghcjs_dom_html_details_element_get_open,
-        htmlDetailsElementGetOpen)
+        htmlDetailsElementGetOpen, HTMLDetailsElement,
+        IsHTMLDetailsElement, castToHTMLDetailsElement,
+        gTypeHTMLDetailsElement, toHTMLDetailsElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

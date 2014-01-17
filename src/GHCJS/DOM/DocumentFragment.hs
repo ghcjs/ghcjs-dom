@@ -5,7 +5,9 @@ module GHCJS.DOM.DocumentFragment
        (ghcjs_dom_document_fragment_query_selector,
         documentFragmentQuerySelector,
         ghcjs_dom_document_fragment_query_selector_all,
-        documentFragmentQuerySelectorAll)
+        documentFragmentQuerySelectorAll, DocumentFragment,
+        IsDocumentFragment, castToDocumentFragment, gTypeDocumentFragment,
+        toDocumentFragment)
        where
 import GHCJS.Types
 import GHCJS.Foreign

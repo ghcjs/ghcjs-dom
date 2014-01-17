@@ -3,7 +3,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.File
        (ghcjs_dom_file_get_name, fileGetName,
-        ghcjs_dom_file_get_webkit_relative_path, fileGetWebkitRelativePath)
+        ghcjs_dom_file_get_webkit_relative_path, fileGetWebkitRelativePath,
+        File, IsFile, castToFile, gTypeFile, toFile)
        where
 import GHCJS.Types
 import GHCJS.Foreign

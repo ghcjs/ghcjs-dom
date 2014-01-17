@@ -46,7 +46,9 @@ module GHCJS.DOM.HTMLButtonElement
         ghcjs_dom_html_button_element_get_validation_message,
         htmlButtonElementGetValidationMessage,
         ghcjs_dom_html_button_element_get_labels,
-        htmlButtonElementGetLabels)
+        htmlButtonElementGetLabels, HTMLButtonElement, IsHTMLButtonElement,
+        castToHTMLButtonElement, gTypeHTMLButtonElement,
+        toHTMLButtonElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

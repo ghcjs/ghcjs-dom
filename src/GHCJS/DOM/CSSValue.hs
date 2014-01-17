@@ -5,7 +5,8 @@ module GHCJS.DOM.CSSValue
        (cCSS_INHERIT, cCSS_PRIMITIVE_VALUE, cCSS_VALUE_LIST, cCSS_CUSTOM,
         ghcjs_dom_css_value_set_css_text, cssValueSetCssText,
         ghcjs_dom_css_value_get_css_text, cssValueGetCssText,
-        ghcjs_dom_css_value_get_css_value_type, cssValueGetCssValueType)
+        ghcjs_dom_css_value_get_css_value_type, cssValueGetCssValueType,
+        CSSValue, IsCSSValue, castToCSSValue, gTypeCSSValue, toCSSValue)
        where
 import GHCJS.Types
 import GHCJS.Foreign

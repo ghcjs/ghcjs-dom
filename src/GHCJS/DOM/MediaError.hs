@@ -4,7 +4,8 @@
 module GHCJS.DOM.MediaError
        (cMEDIA_ERR_ABORTED, cMEDIA_ERR_NETWORK, cMEDIA_ERR_DECODE,
         cMEDIA_ERR_SRC_NOT_SUPPORTED, ghcjs_dom_media_error_get_code,
-        mediaErrorGetCode)
+        mediaErrorGetCode, MediaError, IsMediaError, castToMediaError,
+        gTypeMediaError, toMediaError)
        where
 import GHCJS.Types
 import GHCJS.Foreign

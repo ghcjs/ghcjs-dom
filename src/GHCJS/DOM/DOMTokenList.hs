@@ -7,7 +7,9 @@ module GHCJS.DOM.DOMTokenList
         ghcjs_dom_dom_token_list_add, domTokenListAdd,
         ghcjs_dom_dom_token_list_remove, domTokenListRemove,
         ghcjs_dom_dom_token_list_toggle, domTokenListToggle,
-        ghcjs_dom_dom_token_list_get_length, domTokenListGetLength)
+        ghcjs_dom_dom_token_list_get_length, domTokenListGetLength,
+        DOMTokenList, IsDOMTokenList, castToDOMTokenList,
+        gTypeDOMTokenList, toDOMTokenList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

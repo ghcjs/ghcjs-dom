@@ -9,7 +9,8 @@ module GHCJS.DOM.HTMLParamElement
         ghcjs_dom_html_param_element_set_value_type,
         htmlParamElementSetValueType,
         ghcjs_dom_html_param_element_get_value_type,
-        htmlParamElementGetValueType)
+        htmlParamElementGetValueType, HTMLParamElement, IsHTMLParamElement,
+        castToHTMLParamElement, gTypeHTMLParamElement, toHTMLParamElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

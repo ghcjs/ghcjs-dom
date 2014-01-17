@@ -118,7 +118,8 @@ module GHCJS.DOM.Document
         documentGetVisibilityState, ghcjs_dom_document_get_hidden,
         documentGetHidden, ghcjs_dom_document_get_security_policy,
         documentGetSecurityPolicy, ghcjs_dom_document_get_current_script,
-        documentGetCurrentScript)
+        documentGetCurrentScript, Document, IsDocument, castToDocument,
+        gTypeDocument, toDocument)
        where
 import GHCJS.Types
 import GHCJS.Foreign

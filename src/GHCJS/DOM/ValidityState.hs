@@ -18,7 +18,8 @@ module GHCJS.DOM.ValidityState
         ghcjs_dom_validity_state_get_bad_input, validityStateGetBadInput,
         ghcjs_dom_validity_state_get_custom_error,
         validityStateGetCustomError, ghcjs_dom_validity_state_get_valid,
-        validityStateGetValid)
+        validityStateGetValid, ValidityState, IsValidityState,
+        castToValidityState, gTypeValidityState, toValidityState)
        where
 import GHCJS.Types
 import GHCJS.Foreign

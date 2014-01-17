@@ -4,7 +4,9 @@
 module GHCJS.DOM.HTMLMapElement
        (ghcjs_dom_html_map_element_get_areas, htmlMapElementGetAreas,
         ghcjs_dom_html_map_element_set_name, htmlMapElementSetName,
-        ghcjs_dom_html_map_element_get_name, htmlMapElementGetName)
+        ghcjs_dom_html_map_element_get_name, htmlMapElementGetName,
+        HTMLMapElement, IsHTMLMapElement, castToHTMLMapElement,
+        gTypeHTMLMapElement, toHTMLMapElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

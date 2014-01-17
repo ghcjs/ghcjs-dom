@@ -11,7 +11,9 @@ module GHCJS.DOM.DOMImplementation
         ghcjs_dom_dom_implementation_create_css_style_sheet,
         domImplementationCreateCSSStyleSheet,
         ghcjs_dom_dom_implementation_create_html_document,
-        domImplementationCreateHTMLDocument)
+        domImplementationCreateHTMLDocument, DOMImplementation,
+        IsDOMImplementation, castToDOMImplementation,
+        gTypeDOMImplementation, toDOMImplementation)
        where
 import GHCJS.Types
 import GHCJS.Foreign

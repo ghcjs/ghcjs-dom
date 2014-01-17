@@ -9,7 +9,8 @@ module GHCJS.DOM.CSSStyleSheet
         ghcjs_dom_css_style_sheet_get_owner_rule,
         cssStyleSheetGetOwnerRule, ghcjs_dom_css_style_sheet_get_css_rules,
         cssStyleSheetGetCssRules, ghcjs_dom_css_style_sheet_get_rules,
-        cssStyleSheetGetRules)
+        cssStyleSheetGetRules, CSSStyleSheet, IsCSSStyleSheet,
+        castToCSSStyleSheet, gTypeCSSStyleSheet, toCSSStyleSheet)
        where
 import GHCJS.Types
 import GHCJS.Foreign

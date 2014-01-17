@@ -7,7 +7,9 @@ module GHCJS.DOM.HTMLOptionsCollection
         ghcjs_dom_html_options_collection_set_selected_index,
         htmlOptionsCollectionSetSelectedIndex,
         ghcjs_dom_html_options_collection_get_selected_index,
-        htmlOptionsCollectionGetSelectedIndex)
+        htmlOptionsCollectionGetSelectedIndex, HTMLOptionsCollection,
+        IsHTMLOptionsCollection, castToHTMLOptionsCollection,
+        gTypeHTMLOptionsCollection, toHTMLOptionsCollection)
        where
 import GHCJS.Types
 import GHCJS.Foreign

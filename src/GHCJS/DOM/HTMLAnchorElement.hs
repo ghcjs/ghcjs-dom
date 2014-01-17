@@ -58,7 +58,9 @@ module GHCJS.DOM.HTMLAnchorElement
         htmlAnchorElementGetSearch,
         ghcjs_dom_html_anchor_element_get_origin,
         htmlAnchorElementGetOrigin, ghcjs_dom_html_anchor_element_get_text,
-        htmlAnchorElementGetText)
+        htmlAnchorElementGetText, HTMLAnchorElement, IsHTMLAnchorElement,
+        castToHTMLAnchorElement, gTypeHTMLAnchorElement,
+        toHTMLAnchorElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

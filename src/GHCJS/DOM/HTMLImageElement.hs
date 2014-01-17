@@ -45,7 +45,9 @@ module GHCJS.DOM.HTMLImageElement
         ghcjs_dom_html_image_element_get_natural_width,
         htmlImageElementGetNaturalWidth,
         ghcjs_dom_html_image_element_get_x, htmlImageElementGetX,
-        ghcjs_dom_html_image_element_get_y, htmlImageElementGetY)
+        ghcjs_dom_html_image_element_get_y, htmlImageElementGetY,
+        HTMLImageElement, IsHTMLImageElement, castToHTMLImageElement,
+        gTypeHTMLImageElement, toHTMLImageElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

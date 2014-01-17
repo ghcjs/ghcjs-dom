@@ -18,7 +18,8 @@ module GHCJS.DOM.XPathResult
         ghcjs_dom_xpath_result_get_invalid_iterator_state,
         xPathResultGetInvalidIteratorState,
         ghcjs_dom_xpath_result_get_snapshot_length,
-        xPathResultGetSnapshotLength)
+        xPathResultGetSnapshotLength, XPathResult, IsXPathResult,
+        castToXPathResult, gTypeXPathResult, toXPathResult)
        where
 import GHCJS.Types
 import GHCJS.Foreign

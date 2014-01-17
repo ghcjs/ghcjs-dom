@@ -23,7 +23,9 @@ module GHCJS.DOM.HTMLTableColElement
         ghcjs_dom_html_table_col_element_set_width,
         htmlTableColElementSetWidth,
         ghcjs_dom_html_table_col_element_get_width,
-        htmlTableColElementGetWidth)
+        htmlTableColElementGetWidth, HTMLTableColElement,
+        IsHTMLTableColElement, castToHTMLTableColElement,
+        gTypeHTMLTableColElement, toHTMLTableColElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

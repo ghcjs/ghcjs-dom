@@ -4,7 +4,9 @@
 module GHCJS.DOM.DOMStringList
        (ghcjs_dom_dom_string_list_item, domStringListItem,
         ghcjs_dom_dom_string_list_contains, domStringListContains,
-        ghcjs_dom_dom_string_list_get_length, domStringListGetLength)
+        ghcjs_dom_dom_string_list_get_length, domStringListGetLength,
+        DOMStringList, IsDOMStringList, castToDOMStringList,
+        gTypeDOMStringList, toDOMStringList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

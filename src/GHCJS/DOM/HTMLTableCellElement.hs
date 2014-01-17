@@ -59,7 +59,9 @@ module GHCJS.DOM.HTMLTableCellElement
         ghcjs_dom_html_table_cell_element_set_width,
         htmlTableCellElementSetWidth,
         ghcjs_dom_html_table_cell_element_get_width,
-        htmlTableCellElementGetWidth)
+        htmlTableCellElementGetWidth, HTMLTableCellElement,
+        IsHTMLTableCellElement, castToHTMLTableCellElement,
+        gTypeHTMLTableCellElement, toHTMLTableCellElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -5,7 +5,8 @@ module GHCJS.DOM.DOMMimeType
        (ghcjs_dom_dom_mime_type_get_suffixes, domMimeTypeGetSuffixes,
         ghcjs_dom_dom_mime_type_get_description, domMimeTypeGetDescription,
         ghcjs_dom_dom_mime_type_get_enabled_plugin,
-        domMimeTypeGetEnabledPlugin)
+        domMimeTypeGetEnabledPlugin, DOMMimeType, IsDOMMimeType,
+        castToDOMMimeType, gTypeDOMMimeType, toDOMMimeType)
        where
 import GHCJS.Types
 import GHCJS.Foreign

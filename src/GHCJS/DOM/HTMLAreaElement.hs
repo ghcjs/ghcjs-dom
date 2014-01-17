@@ -24,7 +24,8 @@ module GHCJS.DOM.HTMLAreaElement
         htmlAreaElementGetPathname, ghcjs_dom_html_area_element_get_port,
         htmlAreaElementGetPort, ghcjs_dom_html_area_element_get_protocol,
         htmlAreaElementGetProtocol, ghcjs_dom_html_area_element_get_search,
-        htmlAreaElementGetSearch)
+        htmlAreaElementGetSearch, HTMLAreaElement, IsHTMLAreaElement,
+        castToHTMLAreaElement, gTypeHTMLAreaElement, toHTMLAreaElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

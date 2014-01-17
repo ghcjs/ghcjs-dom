@@ -5,7 +5,9 @@ module GHCJS.DOM.HTMLHeadingElement
        (ghcjs_dom_html_heading_element_set_align,
         htmlHeadingElementSetAlign,
         ghcjs_dom_html_heading_element_get_align,
-        htmlHeadingElementGetAlign)
+        htmlHeadingElementGetAlign, HTMLHeadingElement,
+        IsHTMLHeadingElement, castToHTMLHeadingElement,
+        gTypeHTMLHeadingElement, toHTMLHeadingElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

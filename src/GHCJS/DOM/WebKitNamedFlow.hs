@@ -11,7 +11,9 @@ module GHCJS.DOM.WebKitNamedFlow
         webKitNamedFlowGetName, ghcjs_dom_webkit_named_flow_get_overset,
         webKitNamedFlowGetOverset,
         ghcjs_dom_webkit_named_flow_get_first_empty_region_index,
-        webKitNamedFlowGetFirstEmptyRegionIndex)
+        webKitNamedFlowGetFirstEmptyRegionIndex, WebKitNamedFlow,
+        IsWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow,
+        toWebKitNamedFlow)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -23,7 +23,9 @@ module GHCJS.DOM.HTMLFieldSetElement
         ghcjs_dom_html_field_set_element_get_validity,
         htmlFieldSetElementGetValidity,
         ghcjs_dom_html_field_set_element_get_validation_message,
-        htmlFieldSetElementGetValidationMessage)
+        htmlFieldSetElementGetValidationMessage, HTMLFieldSetElement,
+        IsHTMLFieldSetElement, castToHTMLFieldSetElement,
+        gTypeHTMLFieldSetElement, toHTMLFieldSetElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

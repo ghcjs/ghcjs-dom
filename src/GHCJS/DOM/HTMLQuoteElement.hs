@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLQuoteElement
        (ghcjs_dom_html_quote_element_set_cite, htmlQuoteElementSetCite,
-        ghcjs_dom_html_quote_element_get_cite, htmlQuoteElementGetCite)
+        ghcjs_dom_html_quote_element_get_cite, htmlQuoteElementGetCite,
+        HTMLQuoteElement, IsHTMLQuoteElement, castToHTMLQuoteElement,
+        gTypeHTMLQuoteElement, toHTMLQuoteElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -5,7 +5,9 @@ module GHCJS.DOM.HTMLDirectoryElement
        (ghcjs_dom_html_directory_element_set_compact,
         htmlDirectoryElementSetCompact,
         ghcjs_dom_html_directory_element_get_compact,
-        htmlDirectoryElementGetCompact)
+        htmlDirectoryElementGetCompact, HTMLDirectoryElement,
+        IsHTMLDirectoryElement, castToHTMLDirectoryElement,
+        gTypeHTMLDirectoryElement, toHTMLDirectoryElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

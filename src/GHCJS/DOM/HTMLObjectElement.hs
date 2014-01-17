@@ -64,7 +64,9 @@ module GHCJS.DOM.HTMLObjectElement
         ghcjs_dom_html_object_element_get_validation_message,
         htmlObjectElementGetValidationMessage,
         ghcjs_dom_html_object_element_get_content_document,
-        htmlObjectElementGetContentDocument)
+        htmlObjectElementGetContentDocument, HTMLObjectElement,
+        IsHTMLObjectElement, castToHTMLObjectElement,
+        gTypeHTMLObjectElement, toHTMLObjectElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

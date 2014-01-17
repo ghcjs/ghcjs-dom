@@ -12,7 +12,8 @@ module GHCJS.DOM.HTMLMetaElement
         htmlMetaElementSetName, ghcjs_dom_html_meta_element_get_name,
         htmlMetaElementGetName, ghcjs_dom_html_meta_element_set_scheme,
         htmlMetaElementSetScheme, ghcjs_dom_html_meta_element_get_scheme,
-        htmlMetaElementGetScheme)
+        htmlMetaElementGetScheme, HTMLMetaElement, IsHTMLMetaElement,
+        castToHTMLMetaElement, gTypeHTMLMetaElement, toHTMLMetaElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

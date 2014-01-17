@@ -22,7 +22,9 @@ module GHCJS.DOM.MouseEvent
         mouseEventGetOffsetY, ghcjs_dom_mouse_event_get_x, mouseEventGetX,
         ghcjs_dom_mouse_event_get_y, mouseEventGetY,
         ghcjs_dom_mouse_event_get_from_element, mouseEventGetFromElement,
-        ghcjs_dom_mouse_event_get_to_element, mouseEventGetToElement)
+        ghcjs_dom_mouse_event_get_to_element, mouseEventGetToElement,
+        MouseEvent, IsMouseEvent, castToMouseEvent, gTypeMouseEvent,
+        toMouseEvent)
        where
 import GHCJS.Types
 import GHCJS.Foreign

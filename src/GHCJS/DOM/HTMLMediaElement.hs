@@ -85,7 +85,9 @@ module GHCJS.DOM.HTMLMediaElement
         ghcjs_dom_html_media_element_set_media_group,
         htmlMediaElementSetMediaGroup,
         ghcjs_dom_html_media_element_get_media_group,
-        htmlMediaElementGetMediaGroup)
+        htmlMediaElementGetMediaGroup, HTMLMediaElement,
+        IsHTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement,
+        toHTMLMediaElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

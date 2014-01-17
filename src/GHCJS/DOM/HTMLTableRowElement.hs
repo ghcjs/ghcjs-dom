@@ -29,7 +29,9 @@ module GHCJS.DOM.HTMLTableRowElement
         ghcjs_dom_html_table_row_element_set_v_align,
         htmlTableRowElementSetVAlign,
         ghcjs_dom_html_table_row_element_get_v_align,
-        htmlTableRowElementGetVAlign)
+        htmlTableRowElementGetVAlign, HTMLTableRowElement,
+        IsHTMLTableRowElement, castToHTMLTableRowElement,
+        gTypeHTMLTableRowElement, toHTMLTableRowElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

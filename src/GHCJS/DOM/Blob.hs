@@ -1,7 +1,10 @@
 {-# LANGUAGE CPP #-}
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
-module GHCJS.DOM.Blob (ghcjs_dom_blob_get_size, blobGetSize) where
+module GHCJS.DOM.Blob
+       (ghcjs_dom_blob_get_size, blobGetSize, Blob, IsBlob, castToBlob,
+        gTypeBlob, toBlob)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word

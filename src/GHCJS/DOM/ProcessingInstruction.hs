@@ -9,7 +9,9 @@ module GHCJS.DOM.ProcessingInstruction
         ghcjs_dom_processing_instruction_get_data,
         processingInstructionGetData,
         ghcjs_dom_processing_instruction_get_sheet,
-        processingInstructionGetSheet)
+        processingInstructionGetSheet, ProcessingInstruction,
+        IsProcessingInstruction, castToProcessingInstruction,
+        gTypeProcessingInstruction, toProcessingInstruction)
        where
 import GHCJS.Types
 import GHCJS.Foreign

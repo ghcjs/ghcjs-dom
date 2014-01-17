@@ -54,7 +54,8 @@ module GHCJS.DOM.HTMLTableElement
         ghcjs_dom_html_table_element_get_summary,
         htmlTableElementGetSummary, ghcjs_dom_html_table_element_set_width,
         htmlTableElementSetWidth, ghcjs_dom_html_table_element_get_width,
-        htmlTableElementGetWidth)
+        htmlTableElementGetWidth, HTMLTableElement, IsHTMLTableElement,
+        castToHTMLTableElement, gTypeHTMLTableElement, toHTMLTableElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -7,7 +7,8 @@ module GHCJS.DOM.HTMLModElement
         ghcjs_dom_html_mod_element_set_date_time,
         htmlModElementSetDateTime,
         ghcjs_dom_html_mod_element_get_date_time,
-        htmlModElementGetDateTime)
+        htmlModElementGetDateTime, HTMLModElement, IsHTMLModElement,
+        castToHTMLModElement, gTypeHTMLModElement, toHTMLModElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

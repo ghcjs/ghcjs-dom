@@ -32,7 +32,9 @@ module GHCJS.DOM.HTMLKeygenElement
         ghcjs_dom_html_keygen_element_get_validation_message,
         htmlKeygenElementGetValidationMessage,
         ghcjs_dom_html_keygen_element_get_labels,
-        htmlKeygenElementGetLabels)
+        htmlKeygenElementGetLabels, HTMLKeygenElement, IsHTMLKeygenElement,
+        castToHTMLKeygenElement, gTypeHTMLKeygenElement,
+        toHTMLKeygenElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

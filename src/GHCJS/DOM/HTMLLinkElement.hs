@@ -22,7 +22,8 @@ module GHCJS.DOM.HTMLLinkElement
         htmlLinkElementGetRev, ghcjs_dom_html_link_element_set_target,
         htmlLinkElementSetTarget, ghcjs_dom_html_link_element_get_target,
         htmlLinkElementGetTarget, ghcjs_dom_html_link_element_get_sheet,
-        htmlLinkElementGetSheet)
+        htmlLinkElementGetSheet, HTMLLinkElement, IsHTMLLinkElement,
+        castToHTMLLinkElement, gTypeHTMLLinkElement, toHTMLLinkElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

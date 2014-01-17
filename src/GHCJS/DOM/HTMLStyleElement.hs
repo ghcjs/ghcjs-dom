@@ -10,7 +10,9 @@ module GHCJS.DOM.HTMLStyleElement
         ghcjs_dom_html_style_element_get_scoped, htmlStyleElementGetScoped,
         ghcjs_dom_html_style_element_set_media, htmlStyleElementSetMedia,
         ghcjs_dom_html_style_element_get_media, htmlStyleElementGetMedia,
-        ghcjs_dom_html_style_element_get_sheet, htmlStyleElementGetSheet)
+        ghcjs_dom_html_style_element_get_sheet, htmlStyleElementGetSheet,
+        HTMLStyleElement, IsHTMLStyleElement, castToHTMLStyleElement,
+        gTypeHTMLStyleElement, toHTMLStyleElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -86,7 +86,9 @@ module GHCJS.DOM.HTMLTextAreaElement
         ghcjs_dom_html_text_area_element_set_selection_direction,
         htmlTextAreaElementSetSelectionDirection,
         ghcjs_dom_html_text_area_element_get_selection_direction,
-        htmlTextAreaElementGetSelectionDirection)
+        htmlTextAreaElementGetSelectionDirection, HTMLTextAreaElement,
+        IsHTMLTextAreaElement, castToHTMLTextAreaElement,
+        gTypeHTMLTextAreaElement, toHTMLTextAreaElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

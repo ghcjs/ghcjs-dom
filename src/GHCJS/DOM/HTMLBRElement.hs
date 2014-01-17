@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBRElement
        (ghcjs_dom_htmlbr_element_set_clear, htmlbrElementSetClear,
-        ghcjs_dom_htmlbr_element_get_clear, htmlbrElementGetClear)
+        ghcjs_dom_htmlbr_element_get_clear, htmlbrElementGetClear,
+        HTMLBRElement, IsHTMLBRElement, castToHTMLBRElement,
+        gTypeHTMLBRElement, toHTMLBRElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

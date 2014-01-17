@@ -28,7 +28,8 @@ module GHCJS.DOM.HTMLDocument
         htmlDocumentSetLinkColor, ghcjs_dom_html_document_get_link_color,
         htmlDocumentGetLinkColor, ghcjs_dom_html_document_set_vlink_color,
         htmlDocumentSetVlinkColor, ghcjs_dom_html_document_get_vlink_color,
-        htmlDocumentGetVlinkColor)
+        htmlDocumentGetVlinkColor, HTMLDocument, IsHTMLDocument,
+        castToHTMLDocument, gTypeHTMLDocument, toHTMLDocument)
        where
 import GHCJS.Types
 import GHCJS.Foreign

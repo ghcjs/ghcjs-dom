@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLIElement
        (ghcjs_dom_htmlli_element_set_value, htmlliElementSetValue,
-        ghcjs_dom_htmlli_element_get_value, htmlliElementGetValue)
+        ghcjs_dom_htmlli_element_get_value, htmlliElementGetValue,
+        HTMLLIElement, IsHTMLLIElement, castToHTMLLIElement,
+        gTypeHTMLLIElement, toHTMLLIElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

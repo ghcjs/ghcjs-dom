@@ -4,7 +4,9 @@
 module GHCJS.DOM.TimeRanges
        (ghcjs_dom_time_ranges_start, timeRangesStart,
         ghcjs_dom_time_ranges_end, timeRangesEnd,
-        ghcjs_dom_time_ranges_get_length, timeRangesGetLength)
+        ghcjs_dom_time_ranges_get_length, timeRangesGetLength,
+        TimeRanges(..), IsTimeRanges, castToTimeRanges, gTypeTimeRanges,
+        toTimeRanges)
        where
 import GHCJS.Types
 import GHCJS.Foreign

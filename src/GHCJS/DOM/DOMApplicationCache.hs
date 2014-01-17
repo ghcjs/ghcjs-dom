@@ -14,7 +14,9 @@ module GHCJS.DOM.DOMApplicationCache
         domApplicationCacheOnerror, domApplicationCacheOnnoupdate,
         domApplicationCacheOndownloading, domApplicationCacheOnprogress,
         domApplicationCacheOnupdateready, domApplicationCacheOncached,
-        domApplicationCacheOnobsolete)
+        domApplicationCacheOnobsolete, DOMApplicationCache,
+        IsDOMApplicationCache, castToDOMApplicationCache,
+        gTypeDOMApplicationCache, toDOMApplicationCache)
        where
 import GHCJS.Types
 import GHCJS.Foreign

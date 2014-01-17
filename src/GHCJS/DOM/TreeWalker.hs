@@ -8,7 +8,9 @@ module GHCJS.DOM.TreeWalker
         ghcjs_dom_tree_walker_get_expand_entity_references,
         treeWalkerGetExpandEntityReferences,
         ghcjs_dom_tree_walker_set_current_node, treeWalkerSetCurrentNode,
-        ghcjs_dom_tree_walker_get_current_node, treeWalkerGetCurrentNode)
+        ghcjs_dom_tree_walker_get_current_node, treeWalkerGetCurrentNode,
+        TreeWalker(..), IsTreeWalker, castToTreeWalker, gTypeTreeWalker,
+        toTreeWalker)
        where
 import GHCJS.Types
 import GHCJS.Foreign

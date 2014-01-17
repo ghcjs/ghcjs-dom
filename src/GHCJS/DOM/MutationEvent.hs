@@ -10,7 +10,8 @@ module GHCJS.DOM.MutationEvent
         ghcjs_dom_mutation_event_get_new_value, mutationEventGetNewValue,
         ghcjs_dom_mutation_event_get_attr_name, mutationEventGetAttrName,
         ghcjs_dom_mutation_event_get_attr_change,
-        mutationEventGetAttrChange)
+        mutationEventGetAttrChange, MutationEvent, IsMutationEvent,
+        castToMutationEvent, gTypeMutationEvent, toMutationEvent)
        where
 import GHCJS.Types
 import GHCJS.Foreign

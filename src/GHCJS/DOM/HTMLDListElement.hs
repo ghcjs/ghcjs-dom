@@ -5,7 +5,8 @@ module GHCJS.DOM.HTMLDListElement
        (ghcjs_dom_htmld_list_element_set_compact,
         htmldListElementSetCompact,
         ghcjs_dom_htmld_list_element_get_compact,
-        htmldListElementGetCompact)
+        htmldListElementGetCompact, HTMLDListElement, IsHTMLDListElement,
+        castToHTMLDListElement, gTypeHTMLDListElement, toHTMLDListElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

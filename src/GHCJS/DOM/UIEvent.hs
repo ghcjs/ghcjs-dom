@@ -11,7 +11,8 @@ module GHCJS.DOM.UIEvent
         ghcjs_dom_ui_event_get_layer_y, uiEventGetLayerY,
         ghcjs_dom_ui_event_get_page_x, uiEventGetPageX,
         ghcjs_dom_ui_event_get_page_y, uiEventGetPageY,
-        ghcjs_dom_ui_event_get_which, uiEventGetWhich)
+        ghcjs_dom_ui_event_get_which, uiEventGetWhich, UIEvent, IsUIEvent,
+        castToUIEvent, gTypeUIEvent, toUIEvent)
        where
 import GHCJS.Types
 import GHCJS.Foreign

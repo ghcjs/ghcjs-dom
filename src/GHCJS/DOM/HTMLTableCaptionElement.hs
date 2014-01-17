@@ -5,7 +5,9 @@ module GHCJS.DOM.HTMLTableCaptionElement
        (ghcjs_dom_html_table_caption_element_set_align,
         htmlTableCaptionElementSetAlign,
         ghcjs_dom_html_table_caption_element_get_align,
-        htmlTableCaptionElementGetAlign)
+        htmlTableCaptionElementGetAlign, HTMLTableCaptionElement,
+        IsHTMLTableCaptionElement, castToHTMLTableCaptionElement,
+        gTypeHTMLTableCaptionElement, toHTMLTableCaptionElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

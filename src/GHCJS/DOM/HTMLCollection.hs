@@ -4,7 +4,9 @@
 module GHCJS.DOM.HTMLCollection
        (ghcjs_dom_html_collection_item, htmlCollectionItem,
         ghcjs_dom_html_collection_named_item, htmlCollectionNamedItem,
-        ghcjs_dom_html_collection_get_length, htmlCollectionGetLength)
+        ghcjs_dom_html_collection_get_length, htmlCollectionGetLength,
+        HTMLCollection, IsHTMLCollection, castToHTMLCollection,
+        gTypeHTMLCollection, toHTMLCollection)
        where
 import GHCJS.Types
 import GHCJS.Foreign

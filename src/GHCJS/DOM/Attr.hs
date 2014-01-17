@@ -6,7 +6,8 @@ module GHCJS.DOM.Attr
         ghcjs_dom_attr_get_specified, attrGetSpecified,
         ghcjs_dom_attr_set_value, attrSetValue, ghcjs_dom_attr_get_value,
         attrGetValue, ghcjs_dom_attr_get_owner_element,
-        attrGetOwnerElement, ghcjs_dom_attr_get_is_id, attrGetIsId)
+        attrGetOwnerElement, ghcjs_dom_attr_get_is_id, attrGetIsId,
+        DOMAttr, IsDOMAttr, castToDOMAttr, gTypeDOMAttr, toDOMAttr)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -53,7 +53,9 @@ module GHCJS.DOM.HTMLSelectElement
         ghcjs_dom_html_select_element_get_validation_message,
         htmlSelectElementGetValidationMessage,
         ghcjs_dom_html_select_element_get_labels,
-        htmlSelectElementGetLabels)
+        htmlSelectElementGetLabels, HTMLSelectElement, IsHTMLSelectElement,
+        castToHTMLSelectElement, gTypeHTMLSelectElement,
+        toHTMLSelectElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

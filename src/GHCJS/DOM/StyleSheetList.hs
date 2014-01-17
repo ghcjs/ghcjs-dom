@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleSheetList
        (ghcjs_dom_style_sheet_list_item, styleSheetListItem,
-        ghcjs_dom_style_sheet_list_get_length, styleSheetListGetLength)
+        ghcjs_dom_style_sheet_list_get_length, styleSheetListGetLength,
+        StyleSheetList, IsStyleSheetList, castToStyleSheetList,
+        gTypeStyleSheetList, toStyleSheetList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -43,7 +43,8 @@ module GHCJS.DOM.Node
         ghcjs_dom_node_get_base_uri, nodeGetBaseURI,
         ghcjs_dom_node_set_text_content, nodeSetTextContent,
         ghcjs_dom_node_get_text_content, nodeGetTextContent,
-        ghcjs_dom_node_get_parent_element, nodeGetParentElement)
+        ghcjs_dom_node_get_parent_element, nodeGetParentElement, Node,
+        IsNode, castToNode, gTypeNode, toNode)
        where
 import GHCJS.Types
 import GHCJS.Foreign

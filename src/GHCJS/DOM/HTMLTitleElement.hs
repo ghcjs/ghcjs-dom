@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTitleElement
        (ghcjs_dom_html_title_element_set_text, htmlTitleElementSetText,
-        ghcjs_dom_html_title_element_get_text, htmlTitleElementGetText)
+        ghcjs_dom_html_title_element_get_text, htmlTitleElementGetText,
+        HTMLTitleElement, IsHTMLTitleElement, castToHTMLTitleElement,
+        gTypeHTMLTitleElement, toHTMLTitleElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

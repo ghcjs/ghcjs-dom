@@ -1,7 +1,10 @@
 {-# LANGUAGE CPP #-}
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
-module GHCJS.DOM.StorageInfo (cTEMPORARY, cPERSISTENT) where
+module GHCJS.DOM.StorageInfo
+       (cTEMPORARY, cPERSISTENT, StorageInfo, IsStorageInfo,
+        castToStorageInfo, gTypeStorageInfo, toStorageInfo)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word

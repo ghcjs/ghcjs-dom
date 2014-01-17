@@ -45,7 +45,9 @@ module GHCJS.DOM.HTMLMarqueeElement
         ghcjs_dom_html_marquee_element_set_width,
         htmlMarqueeElementSetWidth,
         ghcjs_dom_html_marquee_element_get_width,
-        htmlMarqueeElementGetWidth)
+        htmlMarqueeElementGetWidth, HTMLMarqueeElement,
+        IsHTMLMarqueeElement, castToHTMLMarqueeElement,
+        gTypeHTMLMarqueeElement, toHTMLMarqueeElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

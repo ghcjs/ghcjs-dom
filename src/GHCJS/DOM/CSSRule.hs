@@ -8,7 +8,8 @@ module GHCJS.DOM.CSSRule
         cssRuleSetCssText, ghcjs_dom_css_rule_get_css_text,
         cssRuleGetCssText, ghcjs_dom_css_rule_get_parent_style_sheet,
         cssRuleGetParentStyleSheet, ghcjs_dom_css_rule_get_parent_rule,
-        cssRuleGetParentRule)
+        cssRuleGetParentRule, CSSRule, IsCSSRule, castToCSSRule,
+        gTypeCSSRule, toCSSRule)
        where
 import GHCJS.Types
 import GHCJS.Foreign

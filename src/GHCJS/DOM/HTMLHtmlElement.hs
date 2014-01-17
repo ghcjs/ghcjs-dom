@@ -8,7 +8,8 @@ module GHCJS.DOM.HTMLHtmlElement
         ghcjs_dom_html_html_element_set_manifest,
         htmlHtmlElementSetManifest,
         ghcjs_dom_html_html_element_get_manifest,
-        htmlHtmlElementGetManifest)
+        htmlHtmlElementGetManifest, HTMLHtmlElement, IsHTMLHtmlElement,
+        castToHTMLHtmlElement, gTypeHTMLHtmlElement, toHTMLHtmlElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

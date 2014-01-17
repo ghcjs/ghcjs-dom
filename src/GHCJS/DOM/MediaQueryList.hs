@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaQueryList
        (ghcjs_dom_media_query_list_get_media, mediaQueryListGetMedia,
-        ghcjs_dom_media_query_list_get_matches, mediaQueryListGetMatches)
+        ghcjs_dom_media_query_list_get_matches, mediaQueryListGetMatches,
+        MediaQueryList, IsMediaQueryList, castToMediaQueryList,
+        gTypeMediaQueryList, toMediaQueryList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

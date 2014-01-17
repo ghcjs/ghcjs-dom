@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDivElement
        (ghcjs_dom_html_div_element_set_align, htmlDivElementSetAlign,
-        ghcjs_dom_html_div_element_get_align, htmlDivElementGetAlign)
+        ghcjs_dom_html_div_element_get_align, htmlDivElementGetAlign,
+        HTMLDivElement, IsHTMLDivElement, castToHTMLDivElement,
+        gTypeHTMLDivElement, toHTMLDivElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

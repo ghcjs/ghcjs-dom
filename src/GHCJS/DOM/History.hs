@@ -2,7 +2,9 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.History
-       (ghcjs_dom_history_get_length, historyGetLength) where
+       (ghcjs_dom_history_get_length, historyGetLength, History,
+        IsHistory, castToHistory, gTypeHistory, toHistory)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word

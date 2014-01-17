@@ -12,7 +12,9 @@ module GHCJS.DOM.NodeIterator
         ghcjs_dom_node_iterator_get_reference_node,
         nodeIteratorGetReferenceNode,
         ghcjs_dom_node_iterator_get_pointer_before_reference_node,
-        nodeIteratorGetPointerBeforeReferenceNode)
+        nodeIteratorGetPointerBeforeReferenceNode, NodeIterator,
+        IsNodeIterator, castToNodeIterator, gTypeNodeIterator,
+        toNodeIterator)
        where
 import GHCJS.Types
 import GHCJS.Foreign

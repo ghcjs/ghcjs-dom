@@ -13,7 +13,9 @@ module GHCJS.DOM.HTMLBaseFontElement
         ghcjs_dom_html_base_font_element_set_size,
         htmlBaseFontElementSetSize,
         ghcjs_dom_html_base_font_element_get_size,
-        htmlBaseFontElementGetSize)
+        htmlBaseFontElementGetSize, HTMLBaseFontElement,
+        IsHTMLBaseFontElement, castToHTMLBaseFontElement,
+        gTypeHTMLBaseFontElement, toHTMLBaseFontElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

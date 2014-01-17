@@ -4,7 +4,8 @@
 module GHCJS.DOM.HTMLMenuElement
        (ghcjs_dom_html_menu_element_set_compact,
         htmlMenuElementSetCompact, ghcjs_dom_html_menu_element_get_compact,
-        htmlMenuElementGetCompact)
+        htmlMenuElementGetCompact, HTMLMenuElement, IsHTMLMenuElement,
+        castToHTMLMenuElement, gTypeHTMLMenuElement, toHTMLMenuElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

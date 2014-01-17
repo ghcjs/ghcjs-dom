@@ -4,7 +4,9 @@
 module GHCJS.DOM.HTMLLegendElement
        (ghcjs_dom_html_legend_element_get_form, htmlLegendElementGetForm,
         ghcjs_dom_html_legend_element_set_align, htmlLegendElementSetAlign,
-        ghcjs_dom_html_legend_element_get_align, htmlLegendElementGetAlign)
+        ghcjs_dom_html_legend_element_get_align, htmlLegendElementGetAlign,
+        HTMLLegendElement, IsHTMLLegendElement, castToHTMLLegendElement,
+        gTypeHTMLLegendElement, toHTMLLegendElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

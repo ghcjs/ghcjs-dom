@@ -44,7 +44,9 @@ module GHCJS.DOM.HTMLElement
         ghcjs_dom_html_element_get_is_content_editable,
         htmlElementGetIsContentEditable,
         ghcjs_dom_html_element_set_spellcheck, htmlElementSetSpellcheck,
-        ghcjs_dom_html_element_get_spellcheck, htmlElementGetSpellcheck)
+        ghcjs_dom_html_element_get_spellcheck, htmlElementGetSpellcheck,
+        HTMLElement, IsHTMLElement, castToHTMLElement, gTypeHTMLElement,
+        toHTMLElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

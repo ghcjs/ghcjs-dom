@@ -2,7 +2,8 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFormElement
-       (ghcjs_dom_html_form_element_submit, htmlFormElementSubmit,
+       (ghcjs_dom_html_form_element_get, htmlFormElement_get,
+        ghcjs_dom_html_form_element_submit, htmlFormElementSubmit,
         ghcjs_dom_html_form_element_reset, htmlFormElementReset,
         ghcjs_dom_html_form_element_check_validity,
         htmlFormElementCheckValidity,
@@ -34,7 +35,8 @@ module GHCJS.DOM.HTMLFormElement
         ghcjs_dom_html_form_element_get_target, htmlFormElementGetTarget,
         ghcjs_dom_html_form_element_get_elements,
         htmlFormElementGetElements, ghcjs_dom_html_form_element_get_length,
-        htmlFormElementGetLength)
+        htmlFormElementGetLength, HTMLFormElement, IsHTMLFormElement,
+        castToHTMLFormElement, gTypeHTMLFormElement, toHTMLFormElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -49,6 +51,25 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "$1[\"_get\"]($2)"
+        ghcjs_dom_html_form_element_get ::
+        JSRef HTMLFormElement -> Word -> IO (JSRef Element)
+#else 
+ghcjs_dom_html_form_element_get ::
+                                  JSRef HTMLFormElement -> Word -> IO (JSRef Element)
+ghcjs_dom_html_form_element_get = undefined
+#endif
+ 
+htmlFormElement_get ::
+                    (IsHTMLFormElement self) => self -> Word -> IO (Maybe Element)
+htmlFormElement_get self index
+  = fmap Element . maybeJSNull <$>
+      (ghcjs_dom_html_form_element_get
+         (unHTMLFormElement (toHTMLFormElement self))
+         index)
 
 
 #ifdef __GHCJS__ 

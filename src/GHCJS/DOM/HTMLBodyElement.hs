@@ -24,7 +24,8 @@ module GHCJS.DOM.HTMLBodyElement
         htmlBodyElementOnstorage, htmlBodyElementOnunload,
         htmlBodyElementOnorientationchange, htmlBodyElementOnblur,
         htmlBodyElementOnerror, htmlBodyElementOnfocus,
-        htmlBodyElementOnload)
+        htmlBodyElementOnload, HTMLBodyElement, IsHTMLBodyElement,
+        castToHTMLBodyElement, gTypeHTMLBodyElement, toHTMLBodyElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

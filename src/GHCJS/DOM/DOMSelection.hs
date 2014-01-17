@@ -32,7 +32,8 @@ module GHCJS.DOM.DOMSelection
         ghcjs_dom_dom_selection_get_base_offset, domSelectionGetBaseOffset,
         ghcjs_dom_dom_selection_get_extent_node, domSelectionGetExtentNode,
         ghcjs_dom_dom_selection_get_extent_offset,
-        domSelectionGetExtentOffset)
+        domSelectionGetExtentOffset, DOMSelection, IsDOMSelection,
+        castToDOMSelection, gTypeDOMSelection, toDOMSelection)
        where
 import GHCJS.Types
 import GHCJS.Foreign

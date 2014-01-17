@@ -34,7 +34,9 @@ module GHCJS.DOM.HTMLAppletElement
         ghcjs_dom_html_applet_element_get_vspace,
         htmlAppletElementGetVspace,
         ghcjs_dom_html_applet_element_set_width, htmlAppletElementSetWidth,
-        ghcjs_dom_html_applet_element_get_width, htmlAppletElementGetWidth)
+        ghcjs_dom_html_applet_element_get_width, htmlAppletElementGetWidth,
+        HTMLAppletElement, IsHTMLAppletElement, castToHTMLAppletElement,
+        gTypeHTMLAppletElement, toHTMLAppletElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

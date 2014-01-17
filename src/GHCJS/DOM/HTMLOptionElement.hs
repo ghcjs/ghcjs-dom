@@ -20,7 +20,9 @@ module GHCJS.DOM.HTMLOptionElement
         ghcjs_dom_html_option_element_set_value, htmlOptionElementSetValue,
         ghcjs_dom_html_option_element_get_value, htmlOptionElementGetValue,
         ghcjs_dom_html_option_element_get_text, htmlOptionElementGetText,
-        ghcjs_dom_html_option_element_get_index, htmlOptionElementGetIndex)
+        ghcjs_dom_html_option_element_get_index, htmlOptionElementGetIndex,
+        HTMLOptionElement, IsHTMLOptionElement, castToHTMLOptionElement,
+        gTypeHTMLOptionElement, toHTMLOptionElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

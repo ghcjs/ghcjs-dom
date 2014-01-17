@@ -7,7 +7,8 @@ module GHCJS.DOM.DOMPlugin
         ghcjs_dom_dom_plugin_get_name, domPluginGetName,
         ghcjs_dom_dom_plugin_get_filename, domPluginGetFilename,
         ghcjs_dom_dom_plugin_get_description, domPluginGetDescription,
-        ghcjs_dom_dom_plugin_get_length, domPluginGetLength)
+        ghcjs_dom_dom_plugin_get_length, domPluginGetLength, DOMPlugin,
+        IsDOMPlugin, castToDOMPlugin, gTypeDOMPlugin, toDOMPlugin)
        where
 import GHCJS.Types
 import GHCJS.Foreign

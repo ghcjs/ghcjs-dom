@@ -16,7 +16,9 @@ module GHCJS.DOM.HTMLFrameSetElement
         htmlFrameSetElementOnstorage, htmlFrameSetElementOnunload,
         htmlFrameSetElementOnorientationchange, htmlFrameSetElementOnblur,
         htmlFrameSetElementOnerror, htmlFrameSetElementOnfocus,
-        htmlFrameSetElementOnload)
+        htmlFrameSetElementOnload, HTMLFrameSetElement,
+        IsHTMLFrameSetElement, castToHTMLFrameSetElement,
+        gTypeHTMLFrameSetElement, toHTMLFrameSetElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

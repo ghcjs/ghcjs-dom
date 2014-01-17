@@ -2,7 +2,9 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.EventTarget
-       (ghcjs_dom_event_target_dispatch_event, eventTargetDispatchEvent)
+       (ghcjs_dom_event_target_dispatch_event, eventTargetDispatchEvent,
+        EventTarget, IsEventTarget, castToEventTarget, gTypeEventTarget,
+        toEventTarget)
        where
 import GHCJS.Types
 import GHCJS.Foreign

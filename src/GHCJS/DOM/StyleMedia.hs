@@ -2,7 +2,10 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleMedia
-       (ghcjs_dom_style_media_match_medium, styleMediaMatchMedium) where
+       (ghcjs_dom_style_media_match_medium, styleMediaMatchMedium,
+        StyleMedia, IsStyleMedia, castToStyleMedia, gTypeStyleMedia,
+        toStyleMedia)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word

@@ -10,7 +10,8 @@ module GHCJS.DOM.CharacterData
         characterDataReplaceData, ghcjs_dom_character_data_set_data,
         characterDataSetData, ghcjs_dom_character_data_get_data,
         characterDataGetData, ghcjs_dom_character_data_get_length,
-        characterDataGetLength)
+        characterDataGetLength, CharacterData, IsCharacterData,
+        castToCharacterData, gTypeCharacterData, toCharacterData)
        where
 import GHCJS.Types
 import GHCJS.Foreign

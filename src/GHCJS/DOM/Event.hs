@@ -21,7 +21,8 @@ module GHCJS.DOM.Event
         ghcjs_dom_event_set_return_value, eventSetReturnValue,
         ghcjs_dom_event_get_return_value, eventGetReturnValue,
         ghcjs_dom_event_set_cancel_bubble, eventSetCancelBubble,
-        ghcjs_dom_event_get_cancel_bubble, eventGetCancelBubble)
+        ghcjs_dom_event_get_cancel_bubble, eventGetCancelBubble, Event,
+        IsEvent, castToEvent, gTypeEvent, toEvent)
        where
 import GHCJS.Types
 import GHCJS.Foreign

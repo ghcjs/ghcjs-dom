@@ -9,7 +9,8 @@ module GHCJS.DOM.Screen
         ghcjs_dom_screen_get_avail_left, screenGetAvailLeft,
         ghcjs_dom_screen_get_avail_top, screenGetAvailTop,
         ghcjs_dom_screen_get_avail_height, screenGetAvailHeight,
-        ghcjs_dom_screen_get_avail_width, screenGetAvailWidth)
+        ghcjs_dom_screen_get_avail_width, screenGetAvailWidth, Screen,
+        IsScreen, castToScreen, gTypeScreen, toScreen)
        where
 import GHCJS.Types
 import GHCJS.Foreign

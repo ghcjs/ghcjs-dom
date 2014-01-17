@@ -5,7 +5,9 @@ module GHCJS.DOM.HTMLBaseElement
        (ghcjs_dom_html_base_element_set_href, htmlBaseElementSetHref,
         ghcjs_dom_html_base_element_get_href, htmlBaseElementGetHref,
         ghcjs_dom_html_base_element_set_target, htmlBaseElementSetTarget,
-        ghcjs_dom_html_base_element_get_target, htmlBaseElementGetTarget)
+        ghcjs_dom_html_base_element_get_target, htmlBaseElementGetTarget,
+        HTMLBaseElement, IsHTMLBaseElement, castToHTMLBaseElement,
+        gTypeHTMLBaseElement, toHTMLBaseElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

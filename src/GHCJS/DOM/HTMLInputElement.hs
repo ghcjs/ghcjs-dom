@@ -150,7 +150,8 @@ module GHCJS.DOM.HTMLInputElement
         ghcjs_dom_html_input_element_set_capture,
         htmlInputElementSetCapture,
         ghcjs_dom_html_input_element_get_capture,
-        htmlInputElementGetCapture)
+        htmlInputElementGetCapture, HTMLInputElement, IsHTMLInputElement,
+        castToHTMLInputElement, gTypeHTMLInputElement, toHTMLInputElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -8,7 +8,8 @@ module GHCJS.DOM.DocumentType
         ghcjs_dom_document_type_get_public_id, documentTypeGetPublicId,
         ghcjs_dom_document_type_get_system_id, documentTypeGetSystemId,
         ghcjs_dom_document_type_get_internal_subset,
-        documentTypeGetInternalSubset)
+        documentTypeGetInternalSubset, DocumentType, IsDocumentType,
+        castToDocumentType, gTypeDocumentType, toDocumentType)
        where
 import GHCJS.Types
 import GHCJS.Foreign

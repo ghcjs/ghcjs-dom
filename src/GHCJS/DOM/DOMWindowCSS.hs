@@ -2,7 +2,10 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMWindowCSS
-       (ghcjs_dom_dom_window_css_supports, domWindowCSSSupports) where
+       (ghcjs_dom_dom_window_css_supports, domWindowCSSSupports,
+        DOMWindowCSS, IsDOMWindowCSS, castToDOMWindowCSS,
+        gTypeDOMWindowCSS, toDOMWindowCSS)
+       where
 import GHCJS.Types
 import GHCJS.Foreign
 import Data.Word

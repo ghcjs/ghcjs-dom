@@ -23,7 +23,9 @@ module GHCJS.DOM.HTMLTableSectionElement
         ghcjs_dom_html_table_section_element_get_v_align,
         htmlTableSectionElementGetVAlign,
         ghcjs_dom_html_table_section_element_get_rows,
-        htmlTableSectionElementGetRows)
+        htmlTableSectionElementGetRows, HTMLTableSectionElement,
+        IsHTMLTableSectionElement, castToHTMLTableSectionElement,
+        gTypeHTMLTableSectionElement, toHTMLTableSectionElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

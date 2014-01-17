@@ -3,7 +3,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSRuleList
        (ghcjs_dom_css_rule_list_item, cssRuleListItem,
-        ghcjs_dom_css_rule_list_get_length, cssRuleListGetLength)
+        ghcjs_dom_css_rule_list_get_length, cssRuleListGetLength,
+        CSSRuleList, IsCSSRuleList, castToCSSRuleList, gTypeCSSRuleList,
+        toCSSRuleList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

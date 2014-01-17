@@ -4,7 +4,8 @@
 module GHCJS.DOM.Location
        (ghcjs_dom_location_get_origin, locationGetOrigin,
         ghcjs_dom_location_get_ancestor_origins,
-        locationGetAncestorOrigins)
+        locationGetAncestorOrigins, Location, IsLocation, castToLocation,
+        gTypeLocation, toLocation)
        where
 import GHCJS.Types
 import GHCJS.Foreign

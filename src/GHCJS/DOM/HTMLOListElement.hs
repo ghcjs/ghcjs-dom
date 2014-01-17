@@ -11,7 +11,8 @@ module GHCJS.DOM.HTMLOListElement
         ghcjs_dom_htmlo_list_element_set_reversed,
         htmloListElementSetReversed,
         ghcjs_dom_htmlo_list_element_get_reversed,
-        htmloListElementGetReversed)
+        htmloListElementGetReversed, HTMLOListElement, IsHTMLOListElement,
+        castToHTMLOListElement, gTypeHTMLOListElement, toHTMLOListElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

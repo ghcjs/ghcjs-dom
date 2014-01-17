@@ -12,7 +12,8 @@ module GHCJS.DOM.NamedNodeMap
         namedNodeMapSetNamedItemNS,
         ghcjs_dom_named_node_map_remove_named_item_ns,
         namedNodeMapRemoveNamedItemNS, ghcjs_dom_named_node_map_get_length,
-        namedNodeMapGetLength)
+        namedNodeMapGetLength, NamedNodeMap, IsNamedNodeMap,
+        castToNamedNodeMap, gTypeNamedNodeMap, toNamedNodeMap)
        where
 import GHCJS.Types
 import GHCJS.Foreign

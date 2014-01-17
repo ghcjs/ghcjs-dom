@@ -5,7 +5,9 @@ module GHCJS.DOM.HTMLPreElement
        (ghcjs_dom_html_pre_element_set_width, htmlPreElementSetWidth,
         ghcjs_dom_html_pre_element_get_width, htmlPreElementGetWidth,
         ghcjs_dom_html_pre_element_set_wrap, htmlPreElementSetWrap,
-        ghcjs_dom_html_pre_element_get_wrap, htmlPreElementGetWrap)
+        ghcjs_dom_html_pre_element_get_wrap, htmlPreElementGetWrap,
+        HTMLPreElement, IsHTMLPreElement, castToHTMLPreElement,
+        gTypeHTMLPreElement, toHTMLPreElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

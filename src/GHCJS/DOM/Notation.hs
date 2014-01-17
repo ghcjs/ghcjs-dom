@@ -3,7 +3,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Notation
        (ghcjs_dom_notation_get_public_id, notationGetPublicId,
-        ghcjs_dom_notation_get_system_id, notationGetSystemId)
+        ghcjs_dom_notation_get_system_id, notationGetSystemId, Notation,
+        IsNotation, castToNotation, gTypeNotation, toNotation)
        where
 import GHCJS.Types
 import GHCJS.Foreign

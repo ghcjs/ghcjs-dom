@@ -3,7 +3,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NodeList
        (ghcjs_dom_node_list_item, nodeListItem,
-        ghcjs_dom_node_list_get_length, nodeListGetLength)
+        ghcjs_dom_node_list_get_length, nodeListGetLength, NodeList,
+        IsNodeList, castToNodeList, gTypeNodeList, toNodeList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

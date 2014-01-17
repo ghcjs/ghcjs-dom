@@ -9,7 +9,9 @@ module GHCJS.DOM.HTMLHRElement
         ghcjs_dom_htmlhr_element_set_size, htmlhrElementSetSize,
         ghcjs_dom_htmlhr_element_get_size, htmlhrElementGetSize,
         ghcjs_dom_htmlhr_element_set_width, htmlhrElementSetWidth,
-        ghcjs_dom_htmlhr_element_get_width, htmlhrElementGetWidth)
+        ghcjs_dom_htmlhr_element_get_width, htmlhrElementGetWidth,
+        HTMLHRElement, IsHTMLHRElement, castToHTMLHRElement,
+        gTypeHTMLHRElement, toHTMLHRElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

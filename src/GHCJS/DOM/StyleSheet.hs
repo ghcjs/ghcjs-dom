@@ -9,7 +9,8 @@ module GHCJS.DOM.StyleSheet
         styleSheetGetParentStyleSheet, ghcjs_dom_style_sheet_get_href,
         styleSheetGetHref, ghcjs_dom_style_sheet_get_title,
         styleSheetGetTitle, ghcjs_dom_style_sheet_get_media,
-        styleSheetGetMedia)
+        styleSheetGetMedia, StyleSheet, IsStyleSheet, castToStyleSheet,
+        gTypeStyleSheet, toStyleSheet)
        where
 import GHCJS.Types
 import GHCJS.Foreign

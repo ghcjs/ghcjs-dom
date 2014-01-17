@@ -50,7 +50,9 @@ module GHCJS.DOM.HTMLIFrameElement
         ghcjs_dom_html_iframe_element_get_content_document,
         htmliFrameElementGetContentDocument,
         ghcjs_dom_html_iframe_element_get_content_window,
-        htmliFrameElementGetContentWindow)
+        htmliFrameElementGetContentWindow, HTMLIFrameElement,
+        IsHTMLIFrameElement, castToHTMLIFrameElement,
+        gTypeHTMLIFrameElement, toHTMLIFrameElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

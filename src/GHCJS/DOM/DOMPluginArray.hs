@@ -5,7 +5,9 @@ module GHCJS.DOM.DOMPluginArray
        (ghcjs_dom_dom_plugin_array_item, domPluginArrayItem,
         ghcjs_dom_dom_plugin_array_named_item, domPluginArrayNamedItem,
         ghcjs_dom_dom_plugin_array_refresh, domPluginArrayRefresh,
-        ghcjs_dom_dom_plugin_array_get_length, domPluginArrayGetLength)
+        ghcjs_dom_dom_plugin_array_get_length, domPluginArrayGetLength,
+        DOMPluginArray, IsDOMPluginArray, castToDOMPluginArray,
+        gTypeDOMPluginArray, toDOMPluginArray)
        where
 import GHCJS.Types
 import GHCJS.Foreign

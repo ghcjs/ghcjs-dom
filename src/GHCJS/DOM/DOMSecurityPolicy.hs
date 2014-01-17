@@ -2,9 +2,7 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSecurityPolicy
-       (ghcjs_dom_dom_security_policy_is_active,
-        domSecurityPolicyIsActive,
-        ghcjs_dom_dom_security_policy_allows_connection_to,
+       (ghcjs_dom_dom_security_policy_allows_connection_to,
         domSecurityPolicyAllowsConnectionTo,
         ghcjs_dom_dom_security_policy_allows_font_from,
         domSecurityPolicyAllowsFontFrom,
@@ -24,14 +22,18 @@ module GHCJS.DOM.DOMSecurityPolicy
         domSecurityPolicyAllowsScriptFrom,
         ghcjs_dom_dom_security_policy_allows_style_from,
         domSecurityPolicyAllowsStyleFrom,
-        ghcjs_dom_dom_security_policy_allows_eval,
-        domSecurityPolicyAllowsEval,
-        ghcjs_dom_dom_security_policy_allows_inline_script,
-        domSecurityPolicyAllowsInlineScript,
-        ghcjs_dom_dom_security_policy_allows_inline_style,
-        domSecurityPolicyAllowsInlineStyle,
+        ghcjs_dom_dom_security_policy_get_allows_eval,
+        domSecurityPolicyGetAllowsEval,
+        ghcjs_dom_dom_security_policy_get_allows_inline_script,
+        domSecurityPolicyGetAllowsInlineScript,
+        ghcjs_dom_dom_security_policy_get_allows_inline_style,
+        domSecurityPolicyGetAllowsInlineStyle,
+        ghcjs_dom_dom_security_policy_get_is_active,
+        domSecurityPolicyGetIsActive,
         ghcjs_dom_dom_security_policy_get_report_ur_is,
-        domSecurityPolicyGetReportURIs)
+        domSecurityPolicyGetReportURIs, DOMSecurityPolicy,
+        IsDOMSecurityPolicy, castToDOMSecurityPolicy,
+        gTypeDOMSecurityPolicy, toDOMSecurityPolicy)
        where
 import GHCJS.Types
 import GHCJS.Foreign
@@ -46,23 +48,6 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef __GHCJS__ 
-foreign import javascript unsafe "($1[\"isActive\"]() ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_is_active ::
-        JSRef DOMSecurityPolicy -> IO Bool
-#else 
-ghcjs_dom_dom_security_policy_is_active ::
-                                          JSRef DOMSecurityPolicy -> IO Bool
-ghcjs_dom_dom_security_policy_is_active = undefined
-#endif
- 
-domSecurityPolicyIsActive ::
-                          (IsDOMSecurityPolicy self) => self -> IO Bool
-domSecurityPolicyIsActive self
-  = ghcjs_dom_dom_security_policy_is_active
-      (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 
 #ifdef __GHCJS__ 
@@ -266,55 +251,72 @@ domSecurityPolicyAllowsStyleFrom self url
 
 
 #ifdef __GHCJS__ 
-foreign import javascript unsafe "($1[\"allowsEval\"]() ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_eval ::
+foreign import javascript unsafe "($1[\"allowsEval\"] ? 1 : 0)"
+        ghcjs_dom_dom_security_policy_get_allows_eval ::
         JSRef DOMSecurityPolicy -> IO Bool
 #else 
-ghcjs_dom_dom_security_policy_allows_eval ::
-                                            JSRef DOMSecurityPolicy -> IO Bool
-ghcjs_dom_dom_security_policy_allows_eval = undefined
+ghcjs_dom_dom_security_policy_get_allows_eval ::
+                                                JSRef DOMSecurityPolicy -> IO Bool
+ghcjs_dom_dom_security_policy_get_allows_eval = undefined
 #endif
  
-domSecurityPolicyAllowsEval ::
-                            (IsDOMSecurityPolicy self) => self -> IO Bool
-domSecurityPolicyAllowsEval self
-  = ghcjs_dom_dom_security_policy_allows_eval
+domSecurityPolicyGetAllowsEval ::
+                               (IsDOMSecurityPolicy self) => self -> IO Bool
+domSecurityPolicyGetAllowsEval self
+  = ghcjs_dom_dom_security_policy_get_allows_eval
       (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "($1[\"allowsInlineScript\"]() ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_inline_script ::
+        "($1[\"allowsInlineScript\"] ? 1 : 0)"
+        ghcjs_dom_dom_security_policy_get_allows_inline_script ::
         JSRef DOMSecurityPolicy -> IO Bool
 #else 
-ghcjs_dom_dom_security_policy_allows_inline_script ::
-                                                     JSRef DOMSecurityPolicy -> IO Bool
-ghcjs_dom_dom_security_policy_allows_inline_script = undefined
+ghcjs_dom_dom_security_policy_get_allows_inline_script ::
+                                                         JSRef DOMSecurityPolicy -> IO Bool
+ghcjs_dom_dom_security_policy_get_allows_inline_script = undefined
 #endif
  
-domSecurityPolicyAllowsInlineScript ::
-                                    (IsDOMSecurityPolicy self) => self -> IO Bool
-domSecurityPolicyAllowsInlineScript self
-  = ghcjs_dom_dom_security_policy_allows_inline_script
+domSecurityPolicyGetAllowsInlineScript ::
+                                       (IsDOMSecurityPolicy self) => self -> IO Bool
+domSecurityPolicyGetAllowsInlineScript self
+  = ghcjs_dom_dom_security_policy_get_allows_inline_script
       (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 
 #ifdef __GHCJS__ 
 foreign import javascript unsafe
-        "($1[\"allowsInlineStyle\"]() ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_inline_style ::
+        "($1[\"allowsInlineStyle\"] ? 1 : 0)"
+        ghcjs_dom_dom_security_policy_get_allows_inline_style ::
         JSRef DOMSecurityPolicy -> IO Bool
 #else 
-ghcjs_dom_dom_security_policy_allows_inline_style ::
-                                                    JSRef DOMSecurityPolicy -> IO Bool
-ghcjs_dom_dom_security_policy_allows_inline_style = undefined
+ghcjs_dom_dom_security_policy_get_allows_inline_style ::
+                                                        JSRef DOMSecurityPolicy -> IO Bool
+ghcjs_dom_dom_security_policy_get_allows_inline_style = undefined
 #endif
  
-domSecurityPolicyAllowsInlineStyle ::
-                                   (IsDOMSecurityPolicy self) => self -> IO Bool
-domSecurityPolicyAllowsInlineStyle self
-  = ghcjs_dom_dom_security_policy_allows_inline_style
+domSecurityPolicyGetAllowsInlineStyle ::
+                                      (IsDOMSecurityPolicy self) => self -> IO Bool
+domSecurityPolicyGetAllowsInlineStyle self
+  = ghcjs_dom_dom_security_policy_get_allows_inline_style
+      (unDOMSecurityPolicy (toDOMSecurityPolicy self))
+
+
+#ifdef __GHCJS__ 
+foreign import javascript unsafe "($1[\"isActive\"] ? 1 : 0)"
+        ghcjs_dom_dom_security_policy_get_is_active ::
+        JSRef DOMSecurityPolicy -> IO Bool
+#else 
+ghcjs_dom_dom_security_policy_get_is_active ::
+                                              JSRef DOMSecurityPolicy -> IO Bool
+ghcjs_dom_dom_security_policy_get_is_active = undefined
+#endif
+ 
+domSecurityPolicyGetIsActive ::
+                             (IsDOMSecurityPolicy self) => self -> IO Bool
+domSecurityPolicyGetIsActive self
+  = ghcjs_dom_dom_security_policy_get_is_active
       (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 

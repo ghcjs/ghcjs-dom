@@ -2,7 +2,9 @@
 #if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathExpression
-       (ghcjs_dom_xpath_expression_evaluate, xPathExpressionEvaluate)
+       (ghcjs_dom_xpath_expression_evaluate, xPathExpressionEvaluate,
+        XPathExpression, IsXPathExpression, castToXPathExpression,
+        gTypeXPathExpression, toXPathExpression)
        where
 import GHCJS.Types
 import GHCJS.Foreign

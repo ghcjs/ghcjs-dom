@@ -8,7 +8,8 @@ module GHCJS.DOM.HTMLLabelElement
         ghcjs_dom_html_label_element_get_html_for,
         htmlLabelElementGetHtmlFor,
         ghcjs_dom_html_label_element_get_control,
-        htmlLabelElementGetControl)
+        htmlLabelElementGetControl, HTMLLabelElement, IsHTMLLabelElement,
+        castToHTMLLabelElement, gTypeHTMLLabelElement, toHTMLLabelElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign

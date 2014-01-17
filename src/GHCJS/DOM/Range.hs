@@ -33,7 +33,7 @@ module GHCJS.DOM.Range
         ghcjs_dom_range_get_collapsed, rangeGetCollapsed,
         ghcjs_dom_range_get_common_ancestor_container,
         rangeGetCommonAncestorContainer, ghcjs_dom_range_get_text,
-        rangeGetText)
+        rangeGetText, Range, IsRange, castToRange, gTypeRange, toRange)
        where
 import GHCJS.Types
 import GHCJS.Foreign

@@ -6,7 +6,8 @@ module GHCJS.DOM.DOMMimeTypeArray
         ghcjs_dom_dom_mime_type_array_named_item,
         domMimeTypeArrayNamedItem,
         ghcjs_dom_dom_mime_type_array_get_length,
-        domMimeTypeArrayGetLength)
+        domMimeTypeArrayGetLength, DOMMimeTypeArray, IsDOMMimeTypeArray,
+        castToDOMMimeTypeArray, gTypeDOMMimeTypeArray, toDOMMimeTypeArray)
        where
 import GHCJS.Types
 import GHCJS.Foreign

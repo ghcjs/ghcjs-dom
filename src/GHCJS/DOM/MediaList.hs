@@ -7,7 +7,8 @@ module GHCJS.DOM.MediaList
         ghcjs_dom_media_list_append_medium, mediaListAppendMedium,
         ghcjs_dom_media_list_set_media_text, mediaListSetMediaText,
         ghcjs_dom_media_list_get_media_text, mediaListGetMediaText,
-        ghcjs_dom_media_list_get_length, mediaListGetLength)
+        ghcjs_dom_media_list_get_length, mediaListGetLength, MediaList,
+        IsMediaList, castToMediaList, gTypeMediaList, toMediaList)
        where
 import GHCJS.Types
 import GHCJS.Foreign

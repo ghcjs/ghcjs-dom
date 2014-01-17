@@ -16,7 +16,8 @@ module GHCJS.DOM.KeyboardEvent
         keyboardEventGetAltKey, ghcjs_dom_keyboard_event_get_meta_key,
         keyboardEventGetMetaKey,
         ghcjs_dom_keyboard_event_get_alt_graph_key,
-        keyboardEventGetAltGraphKey)
+        keyboardEventGetAltGraphKey, KeyboardEvent, IsKeyboardEvent,
+        castToKeyboardEvent, gTypeKeyboardEvent, toKeyboardEvent)
        where
 import GHCJS.Types
 import GHCJS.Foreign
