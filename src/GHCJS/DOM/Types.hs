@@ -901,7 +901,6 @@ gTypeDOMSecurityPolicy' = error "gTypeDOMSecurityPolicy': only available in Java
 #endif
 gTypeDOMSecurityPolicy = GType gTypeDOMSecurityPolicy'
 #else
-type IsDOMSecurityPolicy o = DOMSecurityPolicyClass o
 #endif
 
 
@@ -3839,7 +3838,6 @@ gTypeStorageInfo' = error "gTypeStorageInfo': only available in JavaScript"
 #endif
 gTypeStorageInfo = GType gTypeStorageInfo'
 #else
-type IsStorageInfo o = StorageInfoClass o
 #endif
 
 
