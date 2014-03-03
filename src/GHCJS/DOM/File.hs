@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.File
        (ghcjs_dom_file_get_name, fileGetName,
@@ -21,7 +21,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_file_get_name :: JSRef File -> IO JSString
 #else 
@@ -35,7 +35,7 @@ fileGetName self
   = fromJSString <$> (ghcjs_dom_file_get_name (unFile (toFile self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitRelativePath\"]"
         ghcjs_dom_file_get_webkit_relative_path ::
         JSRef File -> IO JSString

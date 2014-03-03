@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Element
        (ghcjs_dom_element_get_attribute, elementGetAttribute,
@@ -99,7 +99,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getAttribute\"]($2)"
         ghcjs_dom_element_get_attribute ::
         JSRef Element -> JSString -> IO JSString
@@ -118,7 +118,7 @@ elementGetAttribute self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setAttribute\"]($2, $3)"
         ghcjs_dom_element_set_attribute ::
         JSRef Element -> JSString -> JSString -> IO ()
@@ -137,7 +137,7 @@ elementSetAttribute self name value
       (toJSString value)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"removeAttribute\"]($2)"
         ghcjs_dom_element_remove_attribute ::
         JSRef Element -> JSString -> IO ()
@@ -154,7 +154,7 @@ elementRemoveAttribute self name
       (toJSString name)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getAttributeNode\"]($2)"
         ghcjs_dom_element_get_attribute_node ::
         JSRef Element -> JSString -> IO (JSRef DOMAttr)
@@ -173,7 +173,7 @@ elementGetAttributeNode self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setAttributeNode\"]($2)"
         ghcjs_dom_element_set_attribute_node ::
         JSRef Element -> JSRef DOMAttr -> IO (JSRef DOMAttr)
@@ -192,7 +192,7 @@ elementSetAttributeNode self newAttr
          (maybe jsNull (unDOMAttr . toDOMAttr) newAttr))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"removeAttributeNode\"]($2)"
         ghcjs_dom_element_remove_attribute_node ::
         JSRef Element -> JSRef DOMAttr -> IO (JSRef DOMAttr)
@@ -212,7 +212,7 @@ elementRemoveAttributeNode self oldAttr
          (maybe jsNull (unDOMAttr . toDOMAttr) oldAttr))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
         ghcjs_dom_element_get_elements_by_tag_name ::
         JSRef Element -> JSString -> IO (JSRef NodeList)
@@ -232,7 +232,7 @@ elementGetElementsByTagName self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"hasAttributes\"]() ? 1 : 0)"
         ghcjs_dom_element_has_attributes :: JSRef Element -> IO Bool
@@ -246,7 +246,7 @@ elementHasAttributes self
   = ghcjs_dom_element_has_attributes (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getAttributeNS\"]($2, $3)"
         ghcjs_dom_element_get_attribute_ns ::
         JSRef Element -> JSString -> JSString -> IO JSString
@@ -267,7 +267,7 @@ elementGetAttributeNS self namespaceURI localName
          (toJSString localName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"setAttributeNS\"]($2, $3, $4)"
         ghcjs_dom_element_set_attribute_ns ::
@@ -289,7 +289,7 @@ elementSetAttributeNS self namespaceURI qualifiedName value
       (toJSString value)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"removeAttributeNS\"]($2, $3)"
         ghcjs_dom_element_remove_attribute_ns ::
@@ -310,7 +310,7 @@ elementRemoveAttributeNS self namespaceURI localName
       (toJSString localName)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"getElementsByTagNameNS\"]($2,\n$3)"
         ghcjs_dom_element_get_elements_by_tag_name_ns ::
@@ -333,7 +333,7 @@ elementGetElementsByTagNameNS self namespaceURI localName
          (toJSString localName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"getAttributeNodeNS\"]($2, $3)"
         ghcjs_dom_element_get_attribute_node_ns ::
@@ -356,7 +356,7 @@ elementGetAttributeNodeNS self namespaceURI localName
          (toJSString localName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setAttributeNodeNS\"]($2)"
         ghcjs_dom_element_set_attribute_node_ns ::
         JSRef Element -> JSRef DOMAttr -> IO (JSRef DOMAttr)
@@ -376,7 +376,7 @@ elementSetAttributeNodeNS self newAttr
          (maybe jsNull (unDOMAttr . toDOMAttr) newAttr))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"hasAttribute\"]($2) ? 1 : 0)"
         ghcjs_dom_element_has_attribute ::
@@ -394,7 +394,7 @@ elementHasAttribute self name
       (toJSString name)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"hasAttributeNS\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_element_has_attribute_ns ::
@@ -414,7 +414,7 @@ elementHasAttributeNS self namespaceURI localName
       (toJSString localName)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"focus\"]()"
         ghcjs_dom_element_focus :: JSRef Element -> IO ()
 #else 
@@ -427,7 +427,7 @@ elementFocus self
   = ghcjs_dom_element_focus (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"blur\"]()"
         ghcjs_dom_element_blur :: JSRef Element -> IO ()
 #else 
@@ -440,7 +440,7 @@ elementBlur self
   = ghcjs_dom_element_blur (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollIntoView\"]($2)"
         ghcjs_dom_element_scroll_into_view ::
         JSRef Element -> Bool -> IO ()
@@ -456,7 +456,7 @@ elementScrollIntoView self alignWithTop
       alignWithTop
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"scrollIntoViewIfNeeded\"]($2)"
         ghcjs_dom_element_scroll_into_view_if_needed ::
@@ -475,7 +475,7 @@ elementScrollIntoViewIfNeeded self centerIfNeeded
       centerIfNeeded
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollByLines\"]($2)"
         ghcjs_dom_element_scroll_by_lines :: JSRef Element -> Int -> IO ()
 #else 
@@ -489,7 +489,7 @@ elementScrollByLines self lines
       lines
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollByPages\"]($2)"
         ghcjs_dom_element_scroll_by_pages :: JSRef Element -> Int -> IO ()
 #else 
@@ -503,7 +503,7 @@ elementScrollByPages self pages
       pages
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"getElementsByClassName\"]($2)"
         ghcjs_dom_element_get_elements_by_class_name ::
@@ -524,7 +524,7 @@ elementGetElementsByClassName self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         ghcjs_dom_element_query_selector ::
         JSRef Element -> JSString -> IO (JSRef Element)
@@ -543,7 +543,7 @@ elementQuerySelector self selectors
          (toJSString selectors))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         ghcjs_dom_element_query_selector_all ::
         JSRef Element -> JSString -> IO (JSRef NodeList)
@@ -562,7 +562,7 @@ elementQuerySelectorAll self selectors
          (toJSString selectors))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"webkitMatchesSelector\"]($2) ? 1 : 0)"
         ghcjs_dom_element_webkit_matches_selector ::
@@ -582,7 +582,7 @@ elementWebkitMatchesSelector self selectors
       (toJSString selectors)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"webkitRequestPointerLock\"]()"
         ghcjs_dom_element_webkit_request_pointer_lock ::
@@ -600,7 +600,7 @@ elementWebkitRequestPointerLock self
       (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"tagName\"]"
         ghcjs_dom_element_get_tag_name :: JSRef Element -> IO JSString
 #else 
@@ -615,7 +615,7 @@ elementGetTagName self
       (ghcjs_dom_element_get_tag_name (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"attributes\"]"
         ghcjs_dom_element_get_attributes ::
         JSRef Element -> IO (JSRef NamedNodeMap)
@@ -632,7 +632,7 @@ elementGetAttributes self
       (ghcjs_dom_element_get_attributes (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"style\"]"
         ghcjs_dom_element_get_style ::
         JSRef Element -> IO (JSRef CSSStyleDeclaration)
@@ -649,7 +649,7 @@ elementGetStyle self
       (ghcjs_dom_element_get_style (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"id\"] = $2;"
         ghcjs_dom_element_set_id :: JSRef Element -> JSString -> IO ()
 #else 
@@ -664,7 +664,7 @@ elementSetId self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"id\"]"
         ghcjs_dom_element_get_id :: JSRef Element -> IO JSString
 #else 
@@ -679,7 +679,7 @@ elementGetId self
       (ghcjs_dom_element_get_id (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetLeft\"]"
         ghcjs_dom_element_get_offset_left :: JSRef Element -> IO Int
 #else 
@@ -692,7 +692,7 @@ elementGetOffsetLeft self
   = ghcjs_dom_element_get_offset_left (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetTop\"]"
         ghcjs_dom_element_get_offset_top :: JSRef Element -> IO Int
 #else 
@@ -705,7 +705,7 @@ elementGetOffsetTop self
   = ghcjs_dom_element_get_offset_top (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetWidth\"]"
         ghcjs_dom_element_get_offset_width :: JSRef Element -> IO Int
 #else 
@@ -718,7 +718,7 @@ elementGetOffsetWidth self
   = ghcjs_dom_element_get_offset_width (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetHeight\"]"
         ghcjs_dom_element_get_offset_height :: JSRef Element -> IO Int
 #else 
@@ -731,7 +731,7 @@ elementGetOffsetHeight self
   = ghcjs_dom_element_get_offset_height (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetParent\"]"
         ghcjs_dom_element_get_offset_parent ::
         JSRef Element -> IO (JSRef Element)
@@ -748,7 +748,7 @@ elementGetOffsetParent self
       (ghcjs_dom_element_get_offset_parent (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientLeft\"]"
         ghcjs_dom_element_get_client_left :: JSRef Element -> IO Int
 #else 
@@ -761,7 +761,7 @@ elementGetClientLeft self
   = ghcjs_dom_element_get_client_left (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientTop\"]"
         ghcjs_dom_element_get_client_top :: JSRef Element -> IO Int
 #else 
@@ -774,7 +774,7 @@ elementGetClientTop self
   = ghcjs_dom_element_get_client_top (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientWidth\"]"
         ghcjs_dom_element_get_client_width :: JSRef Element -> IO Int
 #else 
@@ -787,7 +787,7 @@ elementGetClientWidth self
   = ghcjs_dom_element_get_client_width (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientHeight\"]"
         ghcjs_dom_element_get_client_height :: JSRef Element -> IO Int
 #else 
@@ -800,7 +800,7 @@ elementGetClientHeight self
   = ghcjs_dom_element_get_client_height (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollLeft\"] = $2;"
         ghcjs_dom_element_set_scroll_left :: JSRef Element -> Int -> IO ()
 #else 
@@ -814,7 +814,7 @@ elementSetScrollLeft self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollLeft\"]"
         ghcjs_dom_element_get_scroll_left :: JSRef Element -> IO Int
 #else 
@@ -827,7 +827,7 @@ elementGetScrollLeft self
   = ghcjs_dom_element_get_scroll_left (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollTop\"] = $2;"
         ghcjs_dom_element_set_scroll_top :: JSRef Element -> Int -> IO ()
 #else 
@@ -840,7 +840,7 @@ elementSetScrollTop self val
   = ghcjs_dom_element_set_scroll_top (unElement (toElement self)) val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollTop\"]"
         ghcjs_dom_element_get_scroll_top :: JSRef Element -> IO Int
 #else 
@@ -853,7 +853,7 @@ elementGetScrollTop self
   = ghcjs_dom_element_get_scroll_top (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollWidth\"]"
         ghcjs_dom_element_get_scroll_width :: JSRef Element -> IO Int
 #else 
@@ -866,7 +866,7 @@ elementGetScrollWidth self
   = ghcjs_dom_element_get_scroll_width (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollHeight\"]"
         ghcjs_dom_element_get_scroll_height :: JSRef Element -> IO Int
 #else 
@@ -879,7 +879,7 @@ elementGetScrollHeight self
   = ghcjs_dom_element_get_scroll_height (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"className\"] = $2;"
         ghcjs_dom_element_set_class_name ::
         JSRef Element -> JSString -> IO ()
@@ -896,7 +896,7 @@ elementSetClassName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"className\"]"
         ghcjs_dom_element_get_class_name :: JSRef Element -> IO JSString
 #else 
@@ -911,7 +911,7 @@ elementGetClassName self
       (ghcjs_dom_element_get_class_name (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"classList\"]"
         ghcjs_dom_element_get_class_list ::
         JSRef Element -> IO (JSRef DOMTokenList)
@@ -928,7 +928,7 @@ elementGetClassList self
       (ghcjs_dom_element_get_class_list (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"firstElementChild\"]"
         ghcjs_dom_element_get_first_element_child ::
         JSRef Element -> IO (JSRef Element)
@@ -946,7 +946,7 @@ elementGetFirstElementChild self
          (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"lastElementChild\"]"
         ghcjs_dom_element_get_last_element_child ::
         JSRef Element -> IO (JSRef Element)
@@ -964,7 +964,7 @@ elementGetLastElementChild self
          (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"previousElementSibling\"]"
         ghcjs_dom_element_get_previous_element_sibling ::
         JSRef Element -> IO (JSRef Element)
@@ -982,7 +982,7 @@ elementGetPreviousElementSibling self
          (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"nextElementSibling\"]"
         ghcjs_dom_element_get_next_element_sibling ::
         JSRef Element -> IO (JSRef Element)
@@ -1000,7 +1000,7 @@ elementGetNextElementSibling self
          (unElement (toElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"childElementCount\"]"
         ghcjs_dom_element_get_child_element_count ::
         JSRef Element -> IO Word
@@ -1016,7 +1016,7 @@ elementGetChildElementCount self
       (unElement (toElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitRegionOverset\"]"
         ghcjs_dom_element_get_webkit_region_overset ::
         JSRef Element -> IO JSString

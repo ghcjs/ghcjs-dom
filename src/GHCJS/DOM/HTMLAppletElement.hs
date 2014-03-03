@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAppletElement
        (ghcjs_dom_html_applet_element_set_align,
@@ -53,7 +53,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_applet_element_set_align ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -71,7 +71,7 @@ htmlAppletElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_applet_element_get_align ::
         JSRef HTMLAppletElement -> IO JSString
@@ -90,7 +90,7 @@ htmlAppletElementGetAlign self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alt\"] = $2;"
         ghcjs_dom_html_applet_element_set_alt ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -108,7 +108,7 @@ htmlAppletElementSetAlt self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alt\"]"
         ghcjs_dom_html_applet_element_get_alt ::
         JSRef HTMLAppletElement -> IO JSString
@@ -127,7 +127,7 @@ htmlAppletElementGetAlt self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"archive\"] = $2;"
         ghcjs_dom_html_applet_element_set_archive ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -145,7 +145,7 @@ htmlAppletElementSetArchive self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"archive\"]"
         ghcjs_dom_html_applet_element_get_archive ::
         JSRef HTMLAppletElement -> IO JSString
@@ -164,7 +164,7 @@ htmlAppletElementGetArchive self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"code\"] = $2;"
         ghcjs_dom_html_applet_element_set_code ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -182,7 +182,7 @@ htmlAppletElementSetCode self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_html_applet_element_get_code ::
         JSRef HTMLAppletElement -> IO JSString
@@ -201,7 +201,7 @@ htmlAppletElementGetCode self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"codeBase\"] = $2;"
         ghcjs_dom_html_applet_element_set_code_base ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -219,7 +219,7 @@ htmlAppletElementSetCodeBase self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"codeBase\"]"
         ghcjs_dom_html_applet_element_get_code_base ::
         JSRef HTMLAppletElement -> IO JSString
@@ -238,7 +238,7 @@ htmlAppletElementGetCodeBase self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_applet_element_set_height ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -256,7 +256,7 @@ htmlAppletElementSetHeight self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_applet_element_get_height ::
         JSRef HTMLAppletElement -> IO JSString
@@ -275,7 +275,7 @@ htmlAppletElementGetHeight self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
         ghcjs_dom_html_applet_element_set_hspace ::
         JSRef HTMLAppletElement -> Int -> IO ()
@@ -293,7 +293,7 @@ htmlAppletElementSetHspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"]"
         ghcjs_dom_html_applet_element_get_hspace ::
         JSRef HTMLAppletElement -> IO Int
@@ -310,7 +310,7 @@ htmlAppletElementGetHspace self
       (unHTMLAppletElement (toHTMLAppletElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_applet_element_set_name ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -328,7 +328,7 @@ htmlAppletElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_applet_element_get_name ::
         JSRef HTMLAppletElement -> IO JSString
@@ -347,7 +347,7 @@ htmlAppletElementGetName self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"object\"] = $2;"
         ghcjs_dom_html_applet_element_set_object ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -365,7 +365,7 @@ htmlAppletElementSetObject self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"object\"]"
         ghcjs_dom_html_applet_element_get_object ::
         JSRef HTMLAppletElement -> IO JSString
@@ -384,7 +384,7 @@ htmlAppletElementGetObject self
          (unHTMLAppletElement (toHTMLAppletElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
         ghcjs_dom_html_applet_element_set_vspace ::
         JSRef HTMLAppletElement -> Int -> IO ()
@@ -402,7 +402,7 @@ htmlAppletElementSetVspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"]"
         ghcjs_dom_html_applet_element_get_vspace ::
         JSRef HTMLAppletElement -> IO Int
@@ -419,7 +419,7 @@ htmlAppletElementGetVspace self
       (unHTMLAppletElement (toHTMLAppletElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_applet_element_set_width ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -437,7 +437,7 @@ htmlAppletElementSetWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_applet_element_get_width ::
         JSRef HTMLAppletElement -> IO JSString

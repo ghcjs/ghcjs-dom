@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAreaElement
        (ghcjs_dom_html_area_element_set_alt, htmlAreaElementSetAlt,
@@ -42,7 +42,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alt\"] = $2;"
         ghcjs_dom_html_area_element_set_alt ::
         JSRef HTMLAreaElement -> JSString -> IO ()
@@ -60,7 +60,7 @@ htmlAreaElementSetAlt self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alt\"]"
         ghcjs_dom_html_area_element_get_alt ::
         JSRef HTMLAreaElement -> IO JSString
@@ -78,7 +78,7 @@ htmlAreaElementGetAlt self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"coords\"] = $2;"
         ghcjs_dom_html_area_element_set_coords ::
         JSRef HTMLAreaElement -> JSString -> IO ()
@@ -96,7 +96,7 @@ htmlAreaElementSetCoords self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"coords\"]"
         ghcjs_dom_html_area_element_get_coords ::
         JSRef HTMLAreaElement -> IO JSString
@@ -114,7 +114,7 @@ htmlAreaElementGetCoords self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"] = $2;"
         ghcjs_dom_html_area_element_set_href ::
         JSRef HTMLAreaElement -> JSString -> IO ()
@@ -132,7 +132,7 @@ htmlAreaElementSetHref self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_html_area_element_get_href ::
         JSRef HTMLAreaElement -> IO JSString
@@ -150,7 +150,7 @@ htmlAreaElementGetHref self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"noHref\"] = $2;"
         ghcjs_dom_html_area_element_set_no_href ::
         JSRef HTMLAreaElement -> Bool -> IO ()
@@ -168,7 +168,7 @@ htmlAreaElementSetNoHref self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"noHref\"] ? 1 : 0)"
         ghcjs_dom_html_area_element_get_no_href ::
         JSRef HTMLAreaElement -> IO Bool
@@ -185,7 +185,7 @@ htmlAreaElementGetNoHref self
       (unHTMLAreaElement (toHTMLAreaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ping\"] = $2;"
         ghcjs_dom_html_area_element_set_ping ::
         JSRef HTMLAreaElement -> JSString -> IO ()
@@ -203,7 +203,7 @@ htmlAreaElementSetPing self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ping\"]"
         ghcjs_dom_html_area_element_get_ping ::
         JSRef HTMLAreaElement -> IO JSString
@@ -221,7 +221,7 @@ htmlAreaElementGetPing self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"shape\"] = $2;"
         ghcjs_dom_html_area_element_set_shape ::
         JSRef HTMLAreaElement -> JSString -> IO ()
@@ -239,7 +239,7 @@ htmlAreaElementSetShape self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"shape\"]"
         ghcjs_dom_html_area_element_get_shape ::
         JSRef HTMLAreaElement -> IO JSString
@@ -257,7 +257,7 @@ htmlAreaElementGetShape self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         ghcjs_dom_html_area_element_set_target ::
         JSRef HTMLAreaElement -> JSString -> IO ()
@@ -275,7 +275,7 @@ htmlAreaElementSetTarget self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_html_area_element_get_target ::
         JSRef HTMLAreaElement -> IO JSString
@@ -293,7 +293,7 @@ htmlAreaElementGetTarget self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hash\"]"
         ghcjs_dom_html_area_element_get_hash ::
         JSRef HTMLAreaElement -> IO JSString
@@ -311,7 +311,7 @@ htmlAreaElementGetHash self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"host\"]"
         ghcjs_dom_html_area_element_get_host ::
         JSRef HTMLAreaElement -> IO JSString
@@ -329,7 +329,7 @@ htmlAreaElementGetHost self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hostname\"]"
         ghcjs_dom_html_area_element_get_hostname ::
         JSRef HTMLAreaElement -> IO JSString
@@ -347,7 +347,7 @@ htmlAreaElementGetHostname self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pathname\"]"
         ghcjs_dom_html_area_element_get_pathname ::
         JSRef HTMLAreaElement -> IO JSString
@@ -365,7 +365,7 @@ htmlAreaElementGetPathname self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"port\"]"
         ghcjs_dom_html_area_element_get_port ::
         JSRef HTMLAreaElement -> IO JSString
@@ -383,7 +383,7 @@ htmlAreaElementGetPort self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"protocol\"]"
         ghcjs_dom_html_area_element_get_protocol ::
         JSRef HTMLAreaElement -> IO JSString
@@ -401,7 +401,7 @@ htmlAreaElementGetProtocol self
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"search\"]"
         ghcjs_dom_html_area_element_get_search ::
         JSRef HTMLAreaElement -> IO JSString

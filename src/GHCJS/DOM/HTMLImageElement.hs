@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLImageElement
        (ghcjs_dom_html_image_element_set_name, htmlImageElementSetName,
@@ -64,7 +64,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_image_element_set_name ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -82,7 +82,7 @@ htmlImageElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_image_element_get_name ::
         JSRef HTMLImageElement -> IO JSString
@@ -100,7 +100,7 @@ htmlImageElementGetName self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_image_element_set_align ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -118,7 +118,7 @@ htmlImageElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_image_element_get_align ::
         JSRef HTMLImageElement -> IO JSString
@@ -136,7 +136,7 @@ htmlImageElementGetAlign self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alt\"] = $2;"
         ghcjs_dom_html_image_element_set_alt ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -154,7 +154,7 @@ htmlImageElementSetAlt self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alt\"]"
         ghcjs_dom_html_image_element_get_alt ::
         JSRef HTMLImageElement -> IO JSString
@@ -172,7 +172,7 @@ htmlImageElementGetAlt self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"border\"] = $2;"
         ghcjs_dom_html_image_element_set_border ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -190,7 +190,7 @@ htmlImageElementSetBorder self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"border\"]"
         ghcjs_dom_html_image_element_get_border ::
         JSRef HTMLImageElement -> IO JSString
@@ -208,7 +208,7 @@ htmlImageElementGetBorder self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
         ghcjs_dom_html_image_element_set_cross_origin ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -226,7 +226,7 @@ htmlImageElementSetCrossOrigin self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"crossOrigin\"]"
         ghcjs_dom_html_image_element_get_cross_origin ::
         JSRef HTMLImageElement -> IO JSString
@@ -244,7 +244,7 @@ htmlImageElementGetCrossOrigin self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_image_element_set_height ::
         JSRef HTMLImageElement -> Int -> IO ()
@@ -262,7 +262,7 @@ htmlImageElementSetHeight self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_image_element_get_height ::
         JSRef HTMLImageElement -> IO Int
@@ -279,7 +279,7 @@ htmlImageElementGetHeight self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
         ghcjs_dom_html_image_element_set_hspace ::
         JSRef HTMLImageElement -> Int -> IO ()
@@ -297,7 +297,7 @@ htmlImageElementSetHspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"]"
         ghcjs_dom_html_image_element_get_hspace ::
         JSRef HTMLImageElement -> IO Int
@@ -314,7 +314,7 @@ htmlImageElementGetHspace self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"isMap\"] = $2;"
         ghcjs_dom_html_image_element_set_is_map ::
         JSRef HTMLImageElement -> Bool -> IO ()
@@ -332,7 +332,7 @@ htmlImageElementSetIsMap self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"isMap\"] ? 1 : 0)"
         ghcjs_dom_html_image_element_get_is_map ::
         JSRef HTMLImageElement -> IO Bool
@@ -349,7 +349,7 @@ htmlImageElementGetIsMap self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"longDesc\"] = $2;"
         ghcjs_dom_html_image_element_set_long_desc ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -367,7 +367,7 @@ htmlImageElementSetLongDesc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"longDesc\"]"
         ghcjs_dom_html_image_element_get_long_desc ::
         JSRef HTMLImageElement -> IO JSString
@@ -385,7 +385,7 @@ htmlImageElementGetLongDesc self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_image_element_set_src ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -403,7 +403,7 @@ htmlImageElementSetSrc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_image_element_get_src ::
         JSRef HTMLImageElement -> IO JSString
@@ -421,7 +421,7 @@ htmlImageElementGetSrc self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"srcset\"] = $2;"
         ghcjs_dom_html_image_element_set_srcset ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -439,7 +439,7 @@ htmlImageElementSetSrcset self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"srcset\"]"
         ghcjs_dom_html_image_element_get_srcset ::
         JSRef HTMLImageElement -> IO JSString
@@ -457,7 +457,7 @@ htmlImageElementGetSrcset self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
         ghcjs_dom_html_image_element_set_use_map ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -475,7 +475,7 @@ htmlImageElementSetUseMap self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"useMap\"]"
         ghcjs_dom_html_image_element_get_use_map ::
         JSRef HTMLImageElement -> IO JSString
@@ -493,7 +493,7 @@ htmlImageElementGetUseMap self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
         ghcjs_dom_html_image_element_set_vspace ::
         JSRef HTMLImageElement -> Int -> IO ()
@@ -511,7 +511,7 @@ htmlImageElementSetVspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"]"
         ghcjs_dom_html_image_element_get_vspace ::
         JSRef HTMLImageElement -> IO Int
@@ -528,7 +528,7 @@ htmlImageElementGetVspace self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_image_element_set_width ::
         JSRef HTMLImageElement -> Int -> IO ()
@@ -546,7 +546,7 @@ htmlImageElementSetWidth self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_image_element_get_width ::
         JSRef HTMLImageElement -> IO Int
@@ -563,7 +563,7 @@ htmlImageElementGetWidth self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"complete\"] ? 1 : 0)"
         ghcjs_dom_html_image_element_get_complete ::
         JSRef HTMLImageElement -> IO Bool
@@ -580,7 +580,7 @@ htmlImageElementGetComplete self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"lowsrc\"] = $2;"
         ghcjs_dom_html_image_element_set_lowsrc ::
         JSRef HTMLImageElement -> JSString -> IO ()
@@ -598,7 +598,7 @@ htmlImageElementSetLowsrc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"lowsrc\"]"
         ghcjs_dom_html_image_element_get_lowsrc ::
         JSRef HTMLImageElement -> IO JSString
@@ -616,7 +616,7 @@ htmlImageElementGetLowsrc self
          (unHTMLImageElement (toHTMLImageElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"naturalHeight\"]"
         ghcjs_dom_html_image_element_get_natural_height ::
         JSRef HTMLImageElement -> IO Int
@@ -633,7 +633,7 @@ htmlImageElementGetNaturalHeight self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"naturalWidth\"]"
         ghcjs_dom_html_image_element_get_natural_width ::
         JSRef HTMLImageElement -> IO Int
@@ -650,7 +650,7 @@ htmlImageElementGetNaturalWidth self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_html_image_element_get_x ::
         JSRef HTMLImageElement -> IO Int
@@ -666,7 +666,7 @@ htmlImageElementGetX self
       (unHTMLImageElement (toHTMLImageElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_html_image_element_get_y ::
         JSRef HTMLImageElement -> IO Int

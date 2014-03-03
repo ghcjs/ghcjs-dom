@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMediaElement
        (ghcjs_dom_html_media_element_load, htmlMediaElementLoad,
@@ -104,7 +104,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"load\"]()"
         ghcjs_dom_html_media_element_load ::
         JSRef HTMLMediaElement -> IO ()
@@ -120,7 +120,7 @@ htmlMediaElementLoad self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"canPlayType\"]($2)"
         ghcjs_dom_html_media_element_can_play_type ::
         JSRef HTMLMediaElement -> JSString -> IO JSString
@@ -140,7 +140,7 @@ htmlMediaElementCanPlayType self type'
          (toJSString type'))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"play\"]()"
         ghcjs_dom_html_media_element_play ::
         JSRef HTMLMediaElement -> IO ()
@@ -156,7 +156,7 @@ htmlMediaElementPlay self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pause\"]()"
         ghcjs_dom_html_media_element_pause ::
         JSRef HTMLMediaElement -> IO ()
@@ -181,7 +181,7 @@ cHAVE_FUTURE_DATA = 3
 cHAVE_ENOUGH_DATA = 4
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"error\"]"
         ghcjs_dom_html_media_element_get_error ::
         JSRef HTMLMediaElement -> IO (JSRef MediaError)
@@ -199,7 +199,7 @@ htmlMediaElementGetError self
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_media_element_set_src ::
         JSRef HTMLMediaElement -> JSString -> IO ()
@@ -217,7 +217,7 @@ htmlMediaElementSetSrc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_media_element_get_src ::
         JSRef HTMLMediaElement -> IO JSString
@@ -235,7 +235,7 @@ htmlMediaElementGetSrc self
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"currentSrc\"]"
         ghcjs_dom_html_media_element_get_current_src ::
         JSRef HTMLMediaElement -> IO JSString
@@ -253,7 +253,7 @@ htmlMediaElementGetCurrentSrc self
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"networkState\"]"
         ghcjs_dom_html_media_element_get_network_state ::
         JSRef HTMLMediaElement -> IO Word
@@ -270,7 +270,7 @@ htmlMediaElementGetNetworkState self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"preload\"] = $2;"
         ghcjs_dom_html_media_element_set_preload ::
         JSRef HTMLMediaElement -> JSString -> IO ()
@@ -288,7 +288,7 @@ htmlMediaElementSetPreload self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"preload\"]"
         ghcjs_dom_html_media_element_get_preload ::
         JSRef HTMLMediaElement -> IO JSString
@@ -306,7 +306,7 @@ htmlMediaElementGetPreload self
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"buffered\"]"
         ghcjs_dom_html_media_element_get_buffered ::
         JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
@@ -324,7 +324,7 @@ htmlMediaElementGetBuffered self
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_html_media_element_get_ready_state ::
         JSRef HTMLMediaElement -> IO Word
@@ -341,7 +341,7 @@ htmlMediaElementGetReadyState self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"seeking\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_seeking ::
         JSRef HTMLMediaElement -> IO Bool
@@ -358,7 +358,7 @@ htmlMediaElementGetSeeking self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"currentTime\"] = $2;"
         ghcjs_dom_html_media_element_set_current_time ::
         JSRef HTMLMediaElement -> Double -> IO ()
@@ -376,7 +376,7 @@ htmlMediaElementSetCurrentTime self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"currentTime\"]"
         ghcjs_dom_html_media_element_get_current_time ::
         JSRef HTMLMediaElement -> IO Double
@@ -393,7 +393,7 @@ htmlMediaElementGetCurrentTime self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"initialTime\"]"
         ghcjs_dom_html_media_element_get_initial_time ::
         JSRef HTMLMediaElement -> IO Double
@@ -410,7 +410,7 @@ htmlMediaElementGetInitialTime self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"startTime\"]"
         ghcjs_dom_html_media_element_get_start_time ::
         JSRef HTMLMediaElement -> IO Double
@@ -427,7 +427,7 @@ htmlMediaElementGetStartTime self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"duration\"]"
         ghcjs_dom_html_media_element_get_duration ::
         JSRef HTMLMediaElement -> IO Double
@@ -444,7 +444,7 @@ htmlMediaElementGetDuration self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_paused ::
         JSRef HTMLMediaElement -> IO Bool
@@ -461,7 +461,7 @@ htmlMediaElementGetPaused self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"defaultPlaybackRate\"] = $2;"
         ghcjs_dom_html_media_element_set_default_playback_rate ::
@@ -480,7 +480,7 @@ htmlMediaElementSetDefaultPlaybackRate self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defaultPlaybackRate\"]"
         ghcjs_dom_html_media_element_get_default_playback_rate ::
         JSRef HTMLMediaElement -> IO Double
@@ -497,7 +497,7 @@ htmlMediaElementGetDefaultPlaybackRate self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"playbackRate\"] = $2;"
         ghcjs_dom_html_media_element_set_playback_rate ::
         JSRef HTMLMediaElement -> Double -> IO ()
@@ -515,7 +515,7 @@ htmlMediaElementSetPlaybackRate self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"playbackRate\"]"
         ghcjs_dom_html_media_element_get_playback_rate ::
         JSRef HTMLMediaElement -> IO Double
@@ -532,7 +532,7 @@ htmlMediaElementGetPlaybackRate self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"played\"]"
         ghcjs_dom_html_media_element_get_played ::
         JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
@@ -550,7 +550,7 @@ htmlMediaElementGetPlayed self
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"seekable\"]"
         ghcjs_dom_html_media_element_get_seekable ::
         JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
@@ -568,7 +568,7 @@ htmlMediaElementGetSeekable self
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_ended ::
         JSRef HTMLMediaElement -> IO Bool
@@ -585,7 +585,7 @@ htmlMediaElementGetEnded self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"autoplay\"] = $2;"
         ghcjs_dom_html_media_element_set_autoplay ::
         JSRef HTMLMediaElement -> Bool -> IO ()
@@ -603,7 +603,7 @@ htmlMediaElementSetAutoplay self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"autoplay\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_autoplay ::
         JSRef HTMLMediaElement -> IO Bool
@@ -620,7 +620,7 @@ htmlMediaElementGetAutoplay self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"loop\"] = $2;"
         ghcjs_dom_html_media_element_set_loop ::
         JSRef HTMLMediaElement -> Bool -> IO ()
@@ -638,7 +638,7 @@ htmlMediaElementSetLoop self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"loop\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_loop ::
         JSRef HTMLMediaElement -> IO Bool
@@ -655,7 +655,7 @@ htmlMediaElementGetLoop self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"controls\"] = $2;"
         ghcjs_dom_html_media_element_set_controls ::
         JSRef HTMLMediaElement -> Bool -> IO ()
@@ -673,7 +673,7 @@ htmlMediaElementSetControls self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"controls\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_controls ::
         JSRef HTMLMediaElement -> IO Bool
@@ -690,7 +690,7 @@ htmlMediaElementGetControls self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"volume\"] = $2;"
         ghcjs_dom_html_media_element_set_volume ::
         JSRef HTMLMediaElement -> Double -> IO ()
@@ -708,7 +708,7 @@ htmlMediaElementSetVolume self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"volume\"]"
         ghcjs_dom_html_media_element_get_volume ::
         JSRef HTMLMediaElement -> IO Double
@@ -725,7 +725,7 @@ htmlMediaElementGetVolume self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"muted\"] = $2;"
         ghcjs_dom_html_media_element_set_muted ::
         JSRef HTMLMediaElement -> Bool -> IO ()
@@ -743,7 +743,7 @@ htmlMediaElementSetMuted self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_muted ::
         JSRef HTMLMediaElement -> IO Bool
@@ -760,7 +760,7 @@ htmlMediaElementGetMuted self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defaultMuted\"] = $2;"
         ghcjs_dom_html_media_element_set_default_muted ::
         JSRef HTMLMediaElement -> Bool -> IO ()
@@ -778,7 +778,7 @@ htmlMediaElementSetDefaultMuted self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"defaultMuted\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_default_muted ::
         JSRef HTMLMediaElement -> IO Bool
@@ -795,7 +795,7 @@ htmlMediaElementGetDefaultMuted self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"webkitPreservesPitch\"] = $2;"
         ghcjs_dom_html_media_element_set_webkit_preserves_pitch ::
@@ -814,7 +814,7 @@ htmlMediaElementSetWebkitPreservesPitch self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"webkitPreservesPitch\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_webkit_preserves_pitch ::
@@ -832,7 +832,7 @@ htmlMediaElementGetWebkitPreservesPitch self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"webkitHasClosedCaptions\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_webkit_has_closed_captions ::
@@ -851,7 +851,7 @@ htmlMediaElementGetWebkitHasClosedCaptions self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"webkitClosedCaptionsVisible\"] = $2;"
         ghcjs_dom_html_media_element_set_webkit_closed_captions_visible ::
@@ -872,7 +872,7 @@ htmlMediaElementSetWebkitClosedCaptionsVisible self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"webkitClosedCaptionsVisible\"] ? 1 : 0)"
         ghcjs_dom_html_media_element_get_webkit_closed_captions_visible ::
@@ -891,7 +891,7 @@ htmlMediaElementGetWebkitClosedCaptionsVisible self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"webkitAudioDecodedByteCount\"]"
         ghcjs_dom_html_media_element_get_webkit_audio_decoded_byte_count ::
@@ -910,7 +910,7 @@ htmlMediaElementGetWebkitAudioDecodedByteCount self
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"webkitVideoDecodedByteCount\"]"
         ghcjs_dom_html_media_element_get_webkit_video_decoded_byte_count ::
@@ -933,7 +933,7 @@ htmlMediaElementOnwebkitneedkey ::
 htmlMediaElementOnwebkitneedkey = (connect "webkitneedkey")
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"mediaGroup\"] = $2;"
         ghcjs_dom_html_media_element_set_media_group ::
         JSRef HTMLMediaElement -> JSString -> IO ()
@@ -951,7 +951,7 @@ htmlMediaElementSetMediaGroup self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"mediaGroup\"]"
         ghcjs_dom_html_media_element_get_media_group ::
         JSRef HTMLMediaElement -> IO JSString

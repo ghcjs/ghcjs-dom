@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CharacterData
        (ghcjs_dom_character_data_substring_data,
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"substringData\"]($2, $3)"
         ghcjs_dom_character_data_substring_data ::
         JSRef CharacterData -> Word -> Word -> IO JSString
@@ -49,7 +49,7 @@ characterDataSubstringData self offset length
          length)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"appendData\"]($2)"
         ghcjs_dom_character_data_append_data ::
         JSRef CharacterData -> JSString -> IO ()
@@ -67,7 +67,7 @@ characterDataAppendData self data'
       (toJSString data')
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"insertData\"]($2, $3)"
         ghcjs_dom_character_data_insert_data ::
         JSRef CharacterData -> Word -> JSString -> IO ()
@@ -87,7 +87,7 @@ characterDataInsertData self offset data'
       (toJSString data')
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"deleteData\"]($2, $3)"
         ghcjs_dom_character_data_delete_data ::
         JSRef CharacterData -> Word -> Word -> IO ()
@@ -106,7 +106,7 @@ characterDataDeleteData self offset length
       length
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"replaceData\"]($2, $3, $4)"
         ghcjs_dom_character_data_replace_data ::
         JSRef CharacterData -> Word -> Word -> JSString -> IO ()
@@ -127,7 +127,7 @@ characterDataReplaceData self offset length data'
       (toJSString data')
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"data\"] = $2;"
         ghcjs_dom_character_data_set_data ::
         JSRef CharacterData -> JSString -> IO ()
@@ -145,7 +145,7 @@ characterDataSetData self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"data\"]"
         ghcjs_dom_character_data_get_data ::
         JSRef CharacterData -> IO JSString
@@ -163,7 +163,7 @@ characterDataGetData self
          (unCharacterData (toCharacterData self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_character_data_get_length ::
         JSRef CharacterData -> IO Word

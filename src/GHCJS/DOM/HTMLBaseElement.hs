@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBaseElement
        (ghcjs_dom_html_base_element_set_href, htmlBaseElementSetHref,
@@ -24,7 +24,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"] = $2;"
         ghcjs_dom_html_base_element_set_href ::
         JSRef HTMLBaseElement -> JSString -> IO ()
@@ -42,7 +42,7 @@ htmlBaseElementSetHref self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_html_base_element_get_href ::
         JSRef HTMLBaseElement -> IO JSString
@@ -60,7 +60,7 @@ htmlBaseElementGetHref self
          (unHTMLBaseElement (toHTMLBaseElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         ghcjs_dom_html_base_element_set_target ::
         JSRef HTMLBaseElement -> JSString -> IO ()
@@ -78,7 +78,7 @@ htmlBaseElementSetTarget self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_html_base_element_get_target ::
         JSRef HTMLBaseElement -> IO JSString

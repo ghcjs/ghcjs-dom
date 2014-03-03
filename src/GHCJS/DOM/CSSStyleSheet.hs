@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSStyleSheet
        (ghcjs_dom_css_style_sheet_insert_rule, cssStyleSheetInsertRule,
@@ -27,7 +27,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"insertRule\"]($2, $3)"
         ghcjs_dom_css_style_sheet_insert_rule ::
         JSRef CSSStyleSheet -> JSString -> Word -> IO Word
@@ -47,7 +47,7 @@ cssStyleSheetInsertRule self rule index
       index
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
         ghcjs_dom_css_style_sheet_delete_rule ::
         JSRef CSSStyleSheet -> Word -> IO ()
@@ -65,7 +65,7 @@ cssStyleSheetDeleteRule self index
       index
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"addRule\"]($2, $3, $4)"
         ghcjs_dom_css_style_sheet_add_rule ::
         JSRef CSSStyleSheet -> JSString -> JSString -> Word -> IO Int
@@ -86,7 +86,7 @@ cssStyleSheetAddRule self selector style index
       index
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"removeRule\"]($2)"
         ghcjs_dom_css_style_sheet_remove_rule ::
         JSRef CSSStyleSheet -> Word -> IO ()
@@ -104,7 +104,7 @@ cssStyleSheetRemoveRule self index
       index
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ownerRule\"]"
         ghcjs_dom_css_style_sheet_get_owner_rule ::
         JSRef CSSStyleSheet -> IO (JSRef CSSRule)
@@ -122,7 +122,7 @@ cssStyleSheetGetOwnerRule self
          (unCSSStyleSheet (toCSSStyleSheet self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssRules\"]"
         ghcjs_dom_css_style_sheet_get_css_rules ::
         JSRef CSSStyleSheet -> IO (JSRef CSSRuleList)
@@ -140,7 +140,7 @@ cssStyleSheetGetCssRules self
          (unCSSStyleSheet (toCSSStyleSheet self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rules\"]"
         ghcjs_dom_css_style_sheet_get_rules ::
         JSRef CSSStyleSheet -> IO (JSRef CSSRuleList)

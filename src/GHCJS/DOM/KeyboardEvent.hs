@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.KeyboardEvent
        (ghcjs_dom_keyboard_event_get_modifier_state,
@@ -34,7 +34,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"getModifierState\"]($2) ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_modifier_state ::
@@ -54,7 +54,7 @@ keyboardEventGetModifierState self keyIdentifierArg
       (toJSString keyIdentifierArg)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11, $12)"
         ghcjs_dom_keyboard_event_init_keyboard_event ::
@@ -109,7 +109,7 @@ cKEY_LOCATION_RIGHT = 2
 cKEY_LOCATION_NUMPAD = 3
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"keyIdentifier\"]"
         ghcjs_dom_keyboard_event_get_key_identifier ::
         JSRef KeyboardEvent -> IO JSString
@@ -127,7 +127,7 @@ keyboardEventGetKeyIdentifier self
          (unKeyboardEvent (toKeyboardEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"keyLocation\"]"
         ghcjs_dom_keyboard_event_get_key_location ::
         JSRef KeyboardEvent -> IO Word
@@ -144,7 +144,7 @@ keyboardEventGetKeyLocation self
       (unKeyboardEvent (toKeyboardEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_ctrl_key ::
         JSRef KeyboardEvent -> IO Bool
@@ -161,7 +161,7 @@ keyboardEventGetCtrlKey self
       (unKeyboardEvent (toKeyboardEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_shift_key ::
         JSRef KeyboardEvent -> IO Bool
@@ -178,7 +178,7 @@ keyboardEventGetShiftKey self
       (unKeyboardEvent (toKeyboardEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_alt_key ::
         JSRef KeyboardEvent -> IO Bool
@@ -194,7 +194,7 @@ keyboardEventGetAltKey self
       (unKeyboardEvent (toKeyboardEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_meta_key ::
         JSRef KeyboardEvent -> IO Bool
@@ -211,7 +211,7 @@ keyboardEventGetMetaKey self
       (unKeyboardEvent (toKeyboardEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"altGraphKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_alt_graph_key ::
         JSRef KeyboardEvent -> IO Bool

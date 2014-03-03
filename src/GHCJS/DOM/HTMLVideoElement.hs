@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLVideoElement
        (ghcjs_dom_html_video_element_webkit_enter_fullscreen,
@@ -46,7 +46,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitEnterFullscreen\"]()"
         ghcjs_dom_html_video_element_webkit_enter_fullscreen ::
         JSRef HTMLVideoElement -> IO ()
@@ -63,7 +63,7 @@ htmlVideoElementWebkitEnterFullscreen self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitExitFullscreen\"]()"
         ghcjs_dom_html_video_element_webkit_exit_fullscreen ::
         JSRef HTMLVideoElement -> IO ()
@@ -80,7 +80,7 @@ htmlVideoElementWebkitExitFullscreen self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitEnterFullScreen\"]()"
         ghcjs_dom_html_video_element_webkit_enter_full_screen ::
         JSRef HTMLVideoElement -> IO ()
@@ -97,7 +97,7 @@ htmlVideoElementWebkitEnterFullScreen self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitExitFullScreen\"]()"
         ghcjs_dom_html_video_element_webkit_exit_full_screen ::
         JSRef HTMLVideoElement -> IO ()
@@ -114,7 +114,7 @@ htmlVideoElementWebkitExitFullScreen self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_video_element_set_width ::
         JSRef HTMLVideoElement -> Word -> IO ()
@@ -132,7 +132,7 @@ htmlVideoElementSetWidth self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_video_element_get_width ::
         JSRef HTMLVideoElement -> IO Word
@@ -149,7 +149,7 @@ htmlVideoElementGetWidth self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_video_element_set_height ::
         JSRef HTMLVideoElement -> Word -> IO ()
@@ -167,7 +167,7 @@ htmlVideoElementSetHeight self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_video_element_get_height ::
         JSRef HTMLVideoElement -> IO Word
@@ -184,7 +184,7 @@ htmlVideoElementGetHeight self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"videoWidth\"]"
         ghcjs_dom_html_video_element_get_video_width ::
         JSRef HTMLVideoElement -> IO Word
@@ -201,7 +201,7 @@ htmlVideoElementGetVideoWidth self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"videoHeight\"]"
         ghcjs_dom_html_video_element_get_video_height ::
         JSRef HTMLVideoElement -> IO Word
@@ -218,7 +218,7 @@ htmlVideoElementGetVideoHeight self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"poster\"] = $2;"
         ghcjs_dom_html_video_element_set_poster ::
         JSRef HTMLVideoElement -> JSString -> IO ()
@@ -236,7 +236,7 @@ htmlVideoElementSetPoster self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"poster\"]"
         ghcjs_dom_html_video_element_get_poster ::
         JSRef HTMLVideoElement -> IO JSString
@@ -254,7 +254,7 @@ htmlVideoElementGetPoster self
          (unHTMLVideoElement (toHTMLVideoElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"webkitSupportsFullscreen\"] ? 1 : 0)"
         ghcjs_dom_html_video_element_get_webkit_supports_fullscreen ::
@@ -273,7 +273,7 @@ htmlVideoElementGetWebkitSupportsFullscreen self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"webkitDisplayingFullscreen\"] ? 1 : 0)"
         ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen ::
@@ -292,7 +292,7 @@ htmlVideoElementGetWebkitDisplayingFullscreen self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitDecodedFrameCount\"]"
         ghcjs_dom_html_video_element_get_webkit_decoded_frame_count ::
         JSRef HTMLVideoElement -> IO Word
@@ -310,7 +310,7 @@ htmlVideoElementGetWebkitDecodedFrameCount self
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitDroppedFrameCount\"]"
         ghcjs_dom_html_video_element_get_webkit_dropped_frame_count ::
         JSRef HTMLVideoElement -> IO Word

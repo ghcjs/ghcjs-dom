@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XMLHttpRequest
        (ghcjs_dom_xml_http_request_set_request_header,
@@ -52,7 +52,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setRequestHeader\"]($2, $3)"
         ghcjs_dom_xml_http_request_set_request_header ::
         JSRef XMLHttpRequest -> JSString -> JSString -> IO ()
@@ -73,7 +73,7 @@ xmlHttpRequestSetRequestHeader self header value
       (toJSString value)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"abort\"]()"
         ghcjs_dom_xml_http_request_abort :: JSRef XMLHttpRequest -> IO ()
 #else 
@@ -87,7 +87,7 @@ xmlHttpRequestAbort self
       (unXMLHttpRequest (toXMLHttpRequest self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getAllResponseHeaders\"]()"
         ghcjs_dom_xml_http_request_get_all_response_headers ::
         JSRef XMLHttpRequest -> IO JSString
@@ -106,7 +106,7 @@ xmlHttpRequestGetAllResponseHeaders self
          (unXMLHttpRequest (toXMLHttpRequest self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getResponseHeader\"]($2)"
         ghcjs_dom_xml_http_request_get_response_header ::
         JSRef XMLHttpRequest -> JSString -> IO JSString
@@ -126,7 +126,7 @@ xmlHttpRequestGetResponseHeader self header
          (toJSString header))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"overrideMimeType\"]($2)"
         ghcjs_dom_xml_http_request_override_mime_type ::
         JSRef XMLHttpRequest -> JSString -> IO ()
@@ -145,7 +145,7 @@ xmlHttpRequestOverrideMimeType self override
       (toJSString override)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_xml_http_request_dispatch_event ::
@@ -202,7 +202,7 @@ xmlHttpRequestOnreadystatechange ::
 xmlHttpRequestOnreadystatechange = (connect "readystatechange")
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"timeout\"] = $2;"
         ghcjs_dom_xml_http_request_set_timeout ::
         JSRef XMLHttpRequest -> Word -> IO ()
@@ -220,7 +220,7 @@ xmlHttpRequestSetTimeout self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"timeout\"]"
         ghcjs_dom_xml_http_request_get_timeout ::
         JSRef XMLHttpRequest -> IO Word
@@ -237,7 +237,7 @@ xmlHttpRequestGetTimeout self
       (unXMLHttpRequest (toXMLHttpRequest self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_xml_http_request_get_ready_state ::
         JSRef XMLHttpRequest -> IO Word
@@ -254,7 +254,7 @@ xmlHttpRequestGetReadyState self
       (unXMLHttpRequest (toXMLHttpRequest self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"withCredentials\"] = $2;"
         ghcjs_dom_xml_http_request_set_with_credentials ::
         JSRef XMLHttpRequest -> Bool -> IO ()
@@ -272,7 +272,7 @@ xmlHttpRequestSetWithCredentials self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"withCredentials\"] ? 1 : 0)"
         ghcjs_dom_xml_http_request_get_with_credentials ::
@@ -290,7 +290,7 @@ xmlHttpRequestGetWithCredentials self
       (unXMLHttpRequest (toXMLHttpRequest self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"upload\"]"
         ghcjs_dom_xml_http_request_get_upload ::
         JSRef XMLHttpRequest -> IO JSString
@@ -308,7 +308,7 @@ xmlHttpRequestGetUpload self
          (unXMLHttpRequest (toXMLHttpRequest self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"responseXML\"]"
         ghcjs_dom_xml_http_request_get_response_xml ::
         JSRef XMLHttpRequest -> IO (JSRef Document)
@@ -326,7 +326,7 @@ xmlHttpRequestGetResponseXML self
          (unXMLHttpRequest (toXMLHttpRequest self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"responseType\"] = $2;"
         ghcjs_dom_xml_http_request_set_response_type ::
         JSRef XMLHttpRequest -> JSRef XMLHttpRequestResponseType -> IO ()
@@ -348,7 +348,7 @@ xmlHttpRequestSetResponseType self val
          val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"responseType\"]"
         ghcjs_dom_xml_http_request_get_response_type ::
         JSRef XMLHttpRequest -> IO (JSRef XMLHttpRequestResponseType)
@@ -368,7 +368,7 @@ xmlHttpRequestGetResponseType self
          (unXMLHttpRequest (toXMLHttpRequest self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"status\"]"
         ghcjs_dom_xml_http_request_get_status ::
         JSRef XMLHttpRequest -> IO Word
@@ -385,7 +385,7 @@ xmlHttpRequestGetStatus self
       (unXMLHttpRequest (toXMLHttpRequest self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"statusText\"]"
         ghcjs_dom_xml_http_request_get_status_text ::
         JSRef XMLHttpRequest -> IO JSString

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMPluginArray
        (ghcjs_dom_dom_plugin_array_item, domPluginArrayItem,
@@ -24,7 +24,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_dom_plugin_array_item ::
         JSRef DOMPluginArray -> Word -> IO (JSRef DOMPlugin)
@@ -43,7 +43,7 @@ domPluginArrayItem self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_dom_plugin_array_named_item ::
         JSRef DOMPluginArray -> JSString -> IO (JSRef DOMPlugin)
@@ -63,7 +63,7 @@ domPluginArrayNamedItem self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"refresh\"]($2)"
         ghcjs_dom_dom_plugin_array_refresh ::
         JSRef DOMPluginArray -> Bool -> IO ()
@@ -81,7 +81,7 @@ domPluginArrayRefresh self reload
       reload
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_plugin_array_get_length ::
         JSRef DOMPluginArray -> IO Word

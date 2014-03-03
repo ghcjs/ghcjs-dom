@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBRElement
        (ghcjs_dom_htmlbr_element_set_clear, htmlbrElementSetClear,
@@ -22,7 +22,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clear\"] = $2;"
         ghcjs_dom_htmlbr_element_set_clear ::
         JSRef HTMLBRElement -> JSString -> IO ()
@@ -40,7 +40,7 @@ htmlbrElementSetClear self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clear\"]"
         ghcjs_dom_htmlbr_element_get_clear ::
         JSRef HTMLBRElement -> IO JSString

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Range
        (ghcjs_dom_range_set_start, rangeSetStart, ghcjs_dom_range_set_end,
@@ -50,7 +50,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setStart\"]($2, $3)"
         ghcjs_dom_range_set_start ::
         JSRef DOMRange -> JSRef Node -> Int -> IO ()
@@ -69,7 +69,7 @@ rangeSetStart self refNode offset
       offset
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setEnd\"]($2, $3)"
         ghcjs_dom_range_set_end ::
         JSRef DOMRange -> JSRef Node -> Int -> IO ()
@@ -88,7 +88,7 @@ rangeSetEnd self refNode offset
       offset
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setStartBefore\"]($2)"
         ghcjs_dom_range_set_start_before ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -105,7 +105,7 @@ rangeSetStartBefore self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setStartAfter\"]($2)"
         ghcjs_dom_range_set_start_after ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -122,7 +122,7 @@ rangeSetStartAfter self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setEndBefore\"]($2)"
         ghcjs_dom_range_set_end_before ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -139,7 +139,7 @@ rangeSetEndBefore self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setEndAfter\"]($2)"
         ghcjs_dom_range_set_end_after ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -156,7 +156,7 @@ rangeSetEndAfter self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"collapse\"]($2)"
         ghcjs_dom_range_collapse :: JSRef DOMRange -> Bool -> IO ()
 #else
@@ -169,7 +169,7 @@ rangeCollapse self toStart
   = ghcjs_dom_range_collapse (unDOMRange (toDOMRange self)) toStart
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectNode\"]($2)"
         ghcjs_dom_range_select_node ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -186,7 +186,7 @@ rangeSelectNode self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectNodeContents\"]($2)"
         ghcjs_dom_range_select_node_contents ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -204,7 +204,7 @@ rangeSelectNodeContents self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "$1[\"compareBoundaryPoints\"]($2,\n$3)"
         ghcjs_dom_range_compare_boundary_points ::
@@ -225,7 +225,7 @@ rangeCompareBoundaryPoints self how sourceRange
       (maybe jsNull (unDOMRange . toDOMRange) sourceRange)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"deleteContents\"]()"
         ghcjs_dom_range_delete_contents :: JSRef DOMRange -> IO ()
 #else
@@ -238,7 +238,7 @@ rangeDeleteContents self
   = ghcjs_dom_range_delete_contents (unDOMRange (toDOMRange self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"extractContents\"]()"
         ghcjs_dom_range_extract_contents ::
         JSRef DOMRange -> IO (JSRef DocumentFragment)
@@ -255,7 +255,7 @@ rangeExtractContents self
       (ghcjs_dom_range_extract_contents (unDOMRange (toDOMRange self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"cloneContents\"]()"
         ghcjs_dom_range_clone_contents ::
         JSRef DOMRange -> IO (JSRef DocumentFragment)
@@ -272,7 +272,7 @@ rangeCloneContents self
       (ghcjs_dom_range_clone_contents (unDOMRange (toDOMRange self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"insertNode\"]($2)"
         ghcjs_dom_range_insert_node ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -289,7 +289,7 @@ rangeInsertNode self newNode
       (maybe jsNull (unNode . toNode) newNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"surroundContents\"]($2)"
         ghcjs_dom_range_surround_contents ::
         JSRef DOMRange -> JSRef Node -> IO ()
@@ -307,7 +307,7 @@ rangeSurroundContents self newParent
       (maybe jsNull (unNode . toNode) newParent)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"cloneRange\"]()"
         ghcjs_dom_range_clone_range ::
         JSRef DOMRange -> IO (JSRef DOMRange)
@@ -323,7 +323,7 @@ rangeCloneRange self
       (ghcjs_dom_range_clone_range (unDOMRange (toDOMRange self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"toString\"]()"
         ghcjs_dom_range_to_string :: JSRef DOMRange -> IO JSString
 #else
@@ -338,7 +338,7 @@ rangeToString self
       (ghcjs_dom_range_to_string (unDOMRange (toDOMRange self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"detach\"]()"
         ghcjs_dom_range_detach :: JSRef DOMRange -> IO ()
 #else
@@ -351,7 +351,7 @@ rangeDetach self
   = ghcjs_dom_range_detach (unDOMRange (toDOMRange self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "$1[\"createContextualFragment\"]($2)"
         ghcjs_dom_range_create_contextual_fragment ::
@@ -373,7 +373,7 @@ rangeCreateContextualFragment self html
          (toJSString html))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "($1[\"intersectsNode\"]($2) ? 1 : 0)"
         ghcjs_dom_range_intersects_node ::
@@ -392,7 +392,7 @@ rangeIntersectsNode self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"compareNode\"]($2)"
         ghcjs_dom_range_compare_node ::
         JSRef DOMRange -> JSRef Node -> IO Int
@@ -410,7 +410,7 @@ rangeCompareNode self refNode
       (maybe jsNull (unNode . toNode) refNode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"comparePoint\"]($2, $3)"
         ghcjs_dom_range_compare_point ::
         JSRef DOMRange -> JSRef Node -> Int -> IO Int
@@ -429,7 +429,7 @@ rangeComparePoint self refNode offset
       offset
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_range_is_point_in_range ::
@@ -449,7 +449,7 @@ rangeIsPointInRange self refNode offset
       offset
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"expand\"]($2)"
         ghcjs_dom_range_expand :: JSRef DOMRange -> JSString -> IO ()
 #else
@@ -472,7 +472,7 @@ cNODE_BEFORE_AND_AFTER = 2
 cNODE_INSIDE = 3
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"startContainer\"]"
         ghcjs_dom_range_get_start_container ::
         JSRef DOMRange -> IO (JSRef Node)
@@ -490,7 +490,7 @@ rangeGetStartContainer self
          (unDOMRange (toDOMRange self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"startOffset\"]"
         ghcjs_dom_range_get_start_offset :: JSRef DOMRange -> IO Int
 #else
@@ -503,7 +503,7 @@ rangeGetStartOffset self
   = ghcjs_dom_range_get_start_offset (unDOMRange (toDOMRange self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"endContainer\"]"
         ghcjs_dom_range_get_end_container ::
         JSRef DOMRange -> IO (JSRef Node)
@@ -520,7 +520,7 @@ rangeGetEndContainer self
       (ghcjs_dom_range_get_end_container (unDOMRange (toDOMRange self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"endOffset\"]"
         ghcjs_dom_range_get_end_offset :: JSRef DOMRange -> IO Int
 #else
@@ -533,7 +533,7 @@ rangeGetEndOffset self
   = ghcjs_dom_range_get_end_offset (unDOMRange (toDOMRange self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"collapsed\"] ? 1 : 0)"
         ghcjs_dom_range_get_collapsed :: JSRef DOMRange -> IO Bool
 #else
@@ -546,7 +546,7 @@ rangeGetCollapsed self
   = ghcjs_dom_range_get_collapsed (unDOMRange (toDOMRange self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"commonAncestorContainer\"]"
         ghcjs_dom_range_get_common_ancestor_container ::
         JSRef DOMRange -> IO (JSRef Node)
@@ -564,7 +564,7 @@ rangeGetCommonAncestorContainer self
          (unDOMRange (toDOMRange self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_range_get_text :: JSRef DOMRange -> IO JSString
 #else

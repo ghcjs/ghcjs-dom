@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MouseEvent
        (ghcjs_dom_mouse_event_init_mouse_event, mouseEventInitMouseEvent,
@@ -39,7 +39,7 @@ import Control.Applicative ((<$>))
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"initMouseEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14, $15, $16)"
         ghcjs_dom_mouse_event_init_mouse_event ::
@@ -114,7 +114,7 @@ mouseEventInitMouseEvent self type' canBubble cancelable view
       (maybe jsNull (unEventTarget . toEventTarget) relatedTarget)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"screenX\"]"
         ghcjs_dom_mouse_event_get_screen_x :: JSRef MouseEvent -> IO Int
 #else 
@@ -128,7 +128,7 @@ mouseEventGetScreenX self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"screenY\"]"
         ghcjs_dom_mouse_event_get_screen_y :: JSRef MouseEvent -> IO Int
 #else 
@@ -142,7 +142,7 @@ mouseEventGetScreenY self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientX\"]"
         ghcjs_dom_mouse_event_get_client_x :: JSRef MouseEvent -> IO Int
 #else 
@@ -156,7 +156,7 @@ mouseEventGetClientX self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientY\"]"
         ghcjs_dom_mouse_event_get_client_y :: JSRef MouseEvent -> IO Int
 #else 
@@ -170,7 +170,7 @@ mouseEventGetClientY self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_ctrl_key :: JSRef MouseEvent -> IO Bool
 #else 
@@ -184,7 +184,7 @@ mouseEventGetCtrlKey self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_shift_key :: JSRef MouseEvent -> IO Bool
 #else 
@@ -198,7 +198,7 @@ mouseEventGetShiftKey self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO Bool
 #else 
@@ -212,7 +212,7 @@ mouseEventGetAltKey self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_meta_key :: JSRef MouseEvent -> IO Bool
 #else 
@@ -226,7 +226,7 @@ mouseEventGetMetaKey self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"button\"]"
         ghcjs_dom_mouse_event_get_button :: JSRef MouseEvent -> IO Word
 #else 
@@ -240,7 +240,7 @@ mouseEventGetButton self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"relatedTarget\"]"
         ghcjs_dom_mouse_event_get_related_target ::
         JSRef MouseEvent -> IO (JSRef EventTarget)
@@ -258,7 +258,7 @@ mouseEventGetRelatedTarget self
          (unMouseEvent (toMouseEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitMovementX\"]"
         ghcjs_dom_mouse_event_get_webkit_movement_x ::
         JSRef MouseEvent -> IO Int
@@ -275,7 +275,7 @@ mouseEventGetWebkitMovementX self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitMovementY\"]"
         ghcjs_dom_mouse_event_get_webkit_movement_y ::
         JSRef MouseEvent -> IO Int
@@ -292,7 +292,7 @@ mouseEventGetWebkitMovementY self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetX\"]"
         ghcjs_dom_mouse_event_get_offset_x :: JSRef MouseEvent -> IO Int
 #else 
@@ -306,7 +306,7 @@ mouseEventGetOffsetX self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetY\"]"
         ghcjs_dom_mouse_event_get_offset_y :: JSRef MouseEvent -> IO Int
 #else 
@@ -320,7 +320,7 @@ mouseEventGetOffsetY self
       (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_mouse_event_get_x :: JSRef MouseEvent -> IO Int
 #else 
@@ -333,7 +333,7 @@ mouseEventGetX self
   = ghcjs_dom_mouse_event_get_x (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_mouse_event_get_y :: JSRef MouseEvent -> IO Int
 #else 
@@ -346,7 +346,7 @@ mouseEventGetY self
   = ghcjs_dom_mouse_event_get_y (unMouseEvent (toMouseEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"fromElement\"]"
         ghcjs_dom_mouse_event_get_from_element ::
         JSRef MouseEvent -> IO (JSRef Node)
@@ -364,7 +364,7 @@ mouseEventGetFromElement self
          (unMouseEvent (toMouseEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"toElement\"]"
         ghcjs_dom_mouse_event_get_to_element ::
         JSRef MouseEvent -> IO (JSRef Node)

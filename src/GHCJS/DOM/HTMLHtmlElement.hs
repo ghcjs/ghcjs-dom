@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLHtmlElement
        (ghcjs_dom_html_html_element_set_version,
@@ -26,7 +26,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"version\"] = $2;"
         ghcjs_dom_html_html_element_set_version ::
         JSRef HTMLHtmlElement -> JSString -> IO ()
@@ -44,7 +44,7 @@ htmlHtmlElementSetVersion self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"version\"]"
         ghcjs_dom_html_html_element_get_version ::
         JSRef HTMLHtmlElement -> IO JSString
@@ -62,7 +62,7 @@ htmlHtmlElementGetVersion self
          (unHTMLHtmlElement (toHTMLHtmlElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"manifest\"] = $2;"
         ghcjs_dom_html_html_element_set_manifest ::
         JSRef HTMLHtmlElement -> JSString -> IO ()
@@ -80,7 +80,7 @@ htmlHtmlElementSetManifest self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"manifest\"]"
         ghcjs_dom_html_html_element_get_manifest ::
         JSRef HTMLHtmlElement -> IO JSString

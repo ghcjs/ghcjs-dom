@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.FileList
        (ghcjs_dom_file_list_item, fileListItem,
@@ -21,7 +21,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_file_list_item ::
         JSRef FileList -> Word -> IO (JSRef File)
@@ -38,7 +38,7 @@ fileListItem self index
       (ghcjs_dom_file_list_item (unFileList (toFileList self)) index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_file_list_get_length :: JSRef FileList -> IO Word
 #else 

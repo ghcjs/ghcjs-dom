@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP, ForeignFunctionInterface #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI #-}
 #endif
 module GHCJS.DOM (
@@ -12,7 +12,7 @@ module GHCJS.DOM (
 , postGUIAsync
 ) where
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 import GHCJS.Types (JSRef(..))
 import Control.Applicative ((<$>))
 #else
@@ -42,14 +42,14 @@ import Control.Concurrent
 import System.Environment (getArgs)
 import Data.List (isSuffixOf)
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 postGUIAsync :: IO () -> IO ()
 postGUIAsync = id
 
 postGUISync :: IO a -> IO a
 postGUISync = id
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$r = window"
   ghcjs_currentWindow :: IO (JSRef DOMWindow)
 foreign import javascript unsafe "$r = document"
@@ -102,7 +102,7 @@ runWebGUI' userAgentKey main = do
       makeDefaultWebView userAgentKey main
 
 makeDefaultWebView :: String -> (WebView -> IO ()) -> IO ()
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 makeDefaultWebView _ _ = error "Unsupported makeDefaultWebView"
 #else
 makeDefaultWebView userAgentKey main = do

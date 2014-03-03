@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFormElement
        (ghcjs_dom_html_form_element_get, htmlFormElement_get,
@@ -53,7 +53,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"_get\"]($2)"
         ghcjs_dom_html_form_element_get ::
         JSRef HTMLFormElement -> Word -> IO (JSRef Element)
@@ -72,7 +72,7 @@ htmlFormElement_get self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"submit\"]()"
         ghcjs_dom_html_form_element_submit ::
         JSRef HTMLFormElement -> IO ()
@@ -88,7 +88,7 @@ htmlFormElementSubmit self
       (unHTMLFormElement (toHTMLFormElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"reset\"]()"
         ghcjs_dom_html_form_element_reset :: JSRef HTMLFormElement -> IO ()
 #else 
@@ -102,7 +102,7 @@ htmlFormElementReset self
       (unHTMLFormElement (toHTMLFormElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_form_element_check_validity ::
@@ -120,7 +120,7 @@ htmlFormElementCheckValidity self
       (unHTMLFormElement (toHTMLFormElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"acceptCharset\"] = $2;"
         ghcjs_dom_html_form_element_set_accept_charset ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -138,7 +138,7 @@ htmlFormElementSetAcceptCharset self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"acceptCharset\"]"
         ghcjs_dom_html_form_element_get_accept_charset ::
         JSRef HTMLFormElement -> IO JSString
@@ -156,7 +156,7 @@ htmlFormElementGetAcceptCharset self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"action\"] = $2;"
         ghcjs_dom_html_form_element_set_action ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -174,7 +174,7 @@ htmlFormElementSetAction self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"action\"]"
         ghcjs_dom_html_form_element_get_action ::
         JSRef HTMLFormElement -> IO JSString
@@ -192,7 +192,7 @@ htmlFormElementGetAction self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"autocomplete\"] = $2;"
         ghcjs_dom_html_form_element_set_autocomplete ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -210,7 +210,7 @@ htmlFormElementSetAutocomplete self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"autocomplete\"]"
         ghcjs_dom_html_form_element_get_autocomplete ::
         JSRef HTMLFormElement -> IO JSString
@@ -228,7 +228,7 @@ htmlFormElementGetAutocomplete self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"enctype\"] = $2;"
         ghcjs_dom_html_form_element_set_enctype ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -246,7 +246,7 @@ htmlFormElementSetEnctype self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"enctype\"]"
         ghcjs_dom_html_form_element_get_enctype ::
         JSRef HTMLFormElement -> IO JSString
@@ -264,7 +264,7 @@ htmlFormElementGetEnctype self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"encoding\"] = $2;"
         ghcjs_dom_html_form_element_set_encoding ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -282,7 +282,7 @@ htmlFormElementSetEncoding self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"encoding\"]"
         ghcjs_dom_html_form_element_get_encoding ::
         JSRef HTMLFormElement -> IO JSString
@@ -300,7 +300,7 @@ htmlFormElementGetEncoding self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"method\"] = $2;"
         ghcjs_dom_html_form_element_set_method ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -318,7 +318,7 @@ htmlFormElementSetMethod self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"method\"]"
         ghcjs_dom_html_form_element_get_method ::
         JSRef HTMLFormElement -> IO JSString
@@ -336,7 +336,7 @@ htmlFormElementGetMethod self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_form_element_set_name ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -354,7 +354,7 @@ htmlFormElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_form_element_get_name ::
         JSRef HTMLFormElement -> IO JSString
@@ -372,7 +372,7 @@ htmlFormElementGetName self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"noValidate\"] = $2;"
         ghcjs_dom_html_form_element_set_no_validate ::
         JSRef HTMLFormElement -> Bool -> IO ()
@@ -390,7 +390,7 @@ htmlFormElementSetNoValidate self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"noValidate\"] ? 1 : 0)"
         ghcjs_dom_html_form_element_get_no_validate ::
         JSRef HTMLFormElement -> IO Bool
@@ -407,7 +407,7 @@ htmlFormElementGetNoValidate self
       (unHTMLFormElement (toHTMLFormElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         ghcjs_dom_html_form_element_set_target ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -425,7 +425,7 @@ htmlFormElementSetTarget self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_html_form_element_get_target ::
         JSRef HTMLFormElement -> IO JSString
@@ -443,7 +443,7 @@ htmlFormElementGetTarget self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"elements\"]"
         ghcjs_dom_html_form_element_get_elements ::
         JSRef HTMLFormElement -> IO (JSRef HTMLCollection)
@@ -461,7 +461,7 @@ htmlFormElementGetElements self
          (unHTMLFormElement (toHTMLFormElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_html_form_element_get_length ::
         JSRef HTMLFormElement -> IO Int

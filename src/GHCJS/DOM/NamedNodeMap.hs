@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NamedNodeMap
        (ghcjs_dom_named_node_map_get_named_item, namedNodeMapGetNamedItem,
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getNamedItem\"]($2)"
         ghcjs_dom_named_node_map_get_named_item ::
         JSRef NamedNodeMap -> JSString -> IO (JSRef Node)
@@ -50,7 +50,7 @@ namedNodeMapGetNamedItem self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setNamedItem\"]($2)"
         ghcjs_dom_named_node_map_set_named_item ::
         JSRef NamedNodeMap -> JSRef Node -> IO (JSRef Node)
@@ -70,7 +70,7 @@ namedNodeMapSetNamedItem self node
          (maybe jsNull (unNode . toNode) node))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"removeNamedItem\"]($2)"
         ghcjs_dom_named_node_map_remove_named_item ::
         JSRef NamedNodeMap -> JSString -> IO (JSRef Node)
@@ -90,7 +90,7 @@ namedNodeMapRemoveNamedItem self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_named_node_map_item ::
         JSRef NamedNodeMap -> Word -> IO (JSRef Node)
@@ -109,7 +109,7 @@ namedNodeMapItem self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getNamedItemNS\"]($2, $3)"
         ghcjs_dom_named_node_map_get_named_item_ns ::
         JSRef NamedNodeMap -> JSString -> JSString -> IO (JSRef Node)
@@ -132,7 +132,7 @@ namedNodeMapGetNamedItemNS self namespaceURI localName
          (toJSString localName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setNamedItemNS\"]($2)"
         ghcjs_dom_named_node_map_set_named_item_ns ::
         JSRef NamedNodeMap -> JSRef Node -> IO (JSRef Node)
@@ -152,7 +152,7 @@ namedNodeMapSetNamedItemNS self node
          (maybe jsNull (unNode . toNode) node))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"removeNamedItemNS\"]($2, $3)"
         ghcjs_dom_named_node_map_remove_named_item_ns ::
@@ -176,7 +176,7 @@ namedNodeMapRemoveNamedItemNS self namespaceURI localName
          (toJSString localName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_named_node_map_get_length ::
         JSRef NamedNodeMap -> IO Word

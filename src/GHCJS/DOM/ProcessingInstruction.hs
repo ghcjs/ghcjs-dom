@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ProcessingInstruction
        (ghcjs_dom_processing_instruction_get_target,
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_processing_instruction_get_target ::
         JSRef ProcessingInstruction -> IO JSString
@@ -47,7 +47,7 @@ processingInstructionGetTarget self
          (unProcessingInstruction (toProcessingInstruction self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"data\"] = $2;"
         ghcjs_dom_processing_instruction_set_data ::
         JSRef ProcessingInstruction -> JSString -> IO ()
@@ -66,7 +66,7 @@ processingInstructionSetData self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"data\"]"
         ghcjs_dom_processing_instruction_get_data ::
         JSRef ProcessingInstruction -> IO JSString
@@ -85,7 +85,7 @@ processingInstructionGetData self
          (unProcessingInstruction (toProcessingInstruction self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"sheet\"]"
         ghcjs_dom_processing_instruction_get_sheet ::
         JSRef ProcessingInstruction -> IO (JSRef StyleSheet)

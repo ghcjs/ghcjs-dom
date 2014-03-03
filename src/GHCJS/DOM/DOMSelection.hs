@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSelection
        (ghcjs_dom_dom_selection_collapse, domSelectionCollapse,
@@ -50,7 +50,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"collapse\"]($2, $3)"
         ghcjs_dom_dom_selection_collapse ::
         JSRef DOMSelection -> JSRef Node -> Int -> IO ()
@@ -70,7 +70,7 @@ domSelectionCollapse self node index
       index
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"collapseToEnd\"]()"
         ghcjs_dom_dom_selection_collapse_to_end ::
         JSRef DOMSelection -> IO ()
@@ -86,7 +86,7 @@ domSelectionCollapseToEnd self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"collapseToStart\"]()"
         ghcjs_dom_dom_selection_collapse_to_start ::
         JSRef DOMSelection -> IO ()
@@ -103,7 +103,7 @@ domSelectionCollapseToStart self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"deleteFromDocument\"]()"
         ghcjs_dom_dom_selection_delete_from_document ::
         JSRef DOMSelection -> IO ()
@@ -120,7 +120,7 @@ domSelectionDeleteFromDocument self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"containsNode\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_dom_selection_contains_node ::
@@ -141,7 +141,7 @@ domSelectionContainsNode self node allowPartial
       allowPartial
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"selectAllChildren\"]($2)"
         ghcjs_dom_dom_selection_select_all_children ::
         JSRef DOMSelection -> JSRef Node -> IO ()
@@ -159,7 +159,7 @@ domSelectionSelectAllChildren self node
       (maybe jsNull (unNode . toNode) node)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"extend\"]($2, $3)"
         ghcjs_dom_dom_selection_extend ::
         JSRef DOMSelection -> JSRef Node -> Int -> IO ()
@@ -179,7 +179,7 @@ domSelectionExtend self node offset
       offset
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getRangeAt\"]($2)"
         ghcjs_dom_dom_selection_get_range_at ::
         JSRef DOMSelection -> Int -> IO (JSRef DOMRange)
@@ -198,7 +198,7 @@ domSelectionGetRangeAt self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"removeAllRanges\"]()"
         ghcjs_dom_dom_selection_remove_all_ranges ::
         JSRef DOMSelection -> IO ()
@@ -215,7 +215,7 @@ domSelectionRemoveAllRanges self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"addRange\"]($2)"
         ghcjs_dom_dom_selection_add_range ::
         JSRef DOMSelection -> JSRef DOMRange -> IO ()
@@ -234,7 +234,7 @@ domSelectionAddRange self range
       (maybe jsNull (unDOMRange . toDOMRange) range)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"modify\"]($2, $3, $4)"
         ghcjs_dom_dom_selection_modify ::
         JSRef DOMSelection -> JSString -> JSString -> JSString -> IO ()
@@ -256,7 +256,7 @@ domSelectionModify self alter direction granularity
       (toJSString granularity)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"setBaseAndExtent\"]($2, $3,\n$4, $5)"
         ghcjs_dom_dom_selection_set_base_and_extent ::
@@ -282,7 +282,7 @@ domSelectionSetBaseAndExtent self baseNode baseOffset extentNode
       extentOffset
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setPosition\"]($2, $3)"
         ghcjs_dom_dom_selection_set_position ::
         JSRef DOMSelection -> JSRef Node -> Int -> IO ()
@@ -302,7 +302,7 @@ domSelectionSetPosition self node offset
       offset
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"empty\"]()"
         ghcjs_dom_dom_selection_empty :: JSRef DOMSelection -> IO ()
 #else 
@@ -316,7 +316,7 @@ domSelectionEmpty self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"anchorNode\"]"
         ghcjs_dom_dom_selection_get_anchor_node ::
         JSRef DOMSelection -> IO (JSRef Node)
@@ -334,7 +334,7 @@ domSelectionGetAnchorNode self
          (unDOMSelection (toDOMSelection self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"anchorOffset\"]"
         ghcjs_dom_dom_selection_get_anchor_offset ::
         JSRef DOMSelection -> IO Int
@@ -351,7 +351,7 @@ domSelectionGetAnchorOffset self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"focusNode\"]"
         ghcjs_dom_dom_selection_get_focus_node ::
         JSRef DOMSelection -> IO (JSRef Node)
@@ -369,7 +369,7 @@ domSelectionGetFocusNode self
          (unDOMSelection (toDOMSelection self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"focusOffset\"]"
         ghcjs_dom_dom_selection_get_focus_offset ::
         JSRef DOMSelection -> IO Int
@@ -386,7 +386,7 @@ domSelectionGetFocusOffset self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"isCollapsed\"] ? 1 : 0)"
         ghcjs_dom_dom_selection_get_is_collapsed ::
         JSRef DOMSelection -> IO Bool
@@ -403,7 +403,7 @@ domSelectionGetIsCollapsed self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rangeCount\"]"
         ghcjs_dom_dom_selection_get_range_count ::
         JSRef DOMSelection -> IO Int
@@ -420,7 +420,7 @@ domSelectionGetRangeCount self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"baseNode\"]"
         ghcjs_dom_dom_selection_get_base_node ::
         JSRef DOMSelection -> IO (JSRef Node)
@@ -438,7 +438,7 @@ domSelectionGetBaseNode self
          (unDOMSelection (toDOMSelection self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"baseOffset\"]"
         ghcjs_dom_dom_selection_get_base_offset ::
         JSRef DOMSelection -> IO Int
@@ -455,7 +455,7 @@ domSelectionGetBaseOffset self
       (unDOMSelection (toDOMSelection self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"extentNode\"]"
         ghcjs_dom_dom_selection_get_extent_node ::
         JSRef DOMSelection -> IO (JSRef Node)
@@ -473,7 +473,7 @@ domSelectionGetExtentNode self
          (unDOMSelection (toDOMSelection self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"extentOffset\"]"
         ghcjs_dom_dom_selection_get_extent_offset ::
         JSRef DOMSelection -> IO Int

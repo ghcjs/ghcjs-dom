@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLEmbedElement
        (ghcjs_dom_html_embed_element_set_align, htmlEmbedElementSetAlign,
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_embed_element_set_align ::
         JSRef HTMLEmbedElement -> JSString -> IO ()
@@ -48,7 +48,7 @@ htmlEmbedElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_embed_element_get_align ::
         JSRef HTMLEmbedElement -> IO JSString
@@ -66,7 +66,7 @@ htmlEmbedElementGetAlign self
          (unHTMLEmbedElement (toHTMLEmbedElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_embed_element_set_height ::
         JSRef HTMLEmbedElement -> Int -> IO ()
@@ -84,7 +84,7 @@ htmlEmbedElementSetHeight self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_embed_element_get_height ::
         JSRef HTMLEmbedElement -> IO Int
@@ -101,7 +101,7 @@ htmlEmbedElementGetHeight self
       (unHTMLEmbedElement (toHTMLEmbedElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_embed_element_set_name ::
         JSRef HTMLEmbedElement -> JSString -> IO ()
@@ -119,7 +119,7 @@ htmlEmbedElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_embed_element_get_name ::
         JSRef HTMLEmbedElement -> IO JSString
@@ -137,7 +137,7 @@ htmlEmbedElementGetName self
          (unHTMLEmbedElement (toHTMLEmbedElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_embed_element_set_src ::
         JSRef HTMLEmbedElement -> JSString -> IO ()
@@ -155,7 +155,7 @@ htmlEmbedElementSetSrc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_embed_element_get_src ::
         JSRef HTMLEmbedElement -> IO JSString
@@ -173,7 +173,7 @@ htmlEmbedElementGetSrc self
          (unHTMLEmbedElement (toHTMLEmbedElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_embed_element_set_width ::
         JSRef HTMLEmbedElement -> Int -> IO ()
@@ -191,7 +191,7 @@ htmlEmbedElementSetWidth self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_embed_element_get_width ::
         JSRef HTMLEmbedElement -> IO Int

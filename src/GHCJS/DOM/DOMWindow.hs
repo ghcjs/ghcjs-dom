@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMWindow
        (ghcjs_dom_dom_window_get_selection, domWindowGetSelection,
@@ -121,7 +121,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getSelection\"]()"
         ghcjs_dom_dom_window_get_selection ::
         JSRef DOMWindow -> IO (JSRef DOMSelection)
@@ -139,7 +139,7 @@ domWindowGetSelection self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"blur\"]()"
         ghcjs_dom_dom_window_blur :: JSRef DOMWindow -> IO ()
 #else 
@@ -152,7 +152,7 @@ domWindowBlur self
   = ghcjs_dom_dom_window_blur (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"print\"]()"
         ghcjs_dom_dom_window_print :: JSRef DOMWindow -> IO ()
 #else 
@@ -165,7 +165,7 @@ domWindowPrint self
   = ghcjs_dom_dom_window_print (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"stop\"]()"
         ghcjs_dom_dom_window_stop :: JSRef DOMWindow -> IO ()
 #else 
@@ -178,7 +178,7 @@ domWindowStop self
   = ghcjs_dom_dom_window_stop (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alert\"]($2)"
         ghcjs_dom_dom_window_alert :: JSRef DOMWindow -> JSString -> IO ()
 #else 
@@ -193,7 +193,7 @@ domWindowAlert self message
       (toJSString message)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"confirm\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_confirm ::
         JSRef DOMWindow -> JSString -> IO Bool
@@ -211,7 +211,7 @@ domWindowConfirm self message
       (toJSString message)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"prompt\"]($2, $3)"
         ghcjs_dom_dom_window_prompt ::
         JSRef DOMWindow -> JSString -> JSString -> IO JSString
@@ -232,7 +232,7 @@ domWindowPrompt self message defaultValue
          (toJSString defaultValue))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0)"
         ghcjs_dom_dom_window_find ::
@@ -261,7 +261,7 @@ domWindowFind self string caseSensitive backwards wrap wholeWord
       showDialog
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollBy\"]($2, $3)"
         ghcjs_dom_dom_window_scroll_by ::
         JSRef DOMWindow -> Int -> Int -> IO ()
@@ -278,7 +278,7 @@ domWindowScrollBy self x y
       y
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollTo\"]($2, $3)"
         ghcjs_dom_dom_window_scroll_to ::
         JSRef DOMWindow -> Int -> Int -> IO ()
@@ -295,7 +295,7 @@ domWindowScrollTo self x y
       y
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scroll\"]($2, $3)"
         ghcjs_dom_dom_window_scroll ::
         JSRef DOMWindow -> Int -> Int -> IO ()
@@ -311,7 +311,7 @@ domWindowScroll self x y
   = ghcjs_dom_dom_window_scroll (unDOMWindow (toDOMWindow self)) x y
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"moveBy\"]($2, $3)"
         ghcjs_dom_dom_window_move_by ::
         JSRef DOMWindow -> Float -> Float -> IO ()
@@ -327,7 +327,7 @@ domWindowMoveBy self x y
   = ghcjs_dom_dom_window_move_by (unDOMWindow (toDOMWindow self)) x y
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"moveTo\"]($2, $3)"
         ghcjs_dom_dom_window_move_to ::
         JSRef DOMWindow -> Float -> Float -> IO ()
@@ -343,7 +343,7 @@ domWindowMoveTo self x y
   = ghcjs_dom_dom_window_move_to (unDOMWindow (toDOMWindow self)) x y
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"resizeBy\"]($2, $3)"
         ghcjs_dom_dom_window_resize_by ::
         JSRef DOMWindow -> Float -> Float -> IO ()
@@ -360,7 +360,7 @@ domWindowResizeBy self x y
       y
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"resizeTo\"]($2, $3)"
         ghcjs_dom_dom_window_resize_to ::
         JSRef DOMWindow -> Float -> Float -> IO ()
@@ -378,7 +378,7 @@ domWindowResizeTo self width height
       height
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"matchMedia\"]($2)"
         ghcjs_dom_dom_window_match_media ::
         JSRef DOMWindow -> JSString -> IO (JSRef MediaQueryList)
@@ -397,7 +397,7 @@ domWindowMatchMedia self query
          (toJSString query))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getComputedStyle\"]($2, $3)"
         ghcjs_dom_dom_window_get_computed_style ::
         JSRef DOMWindow ->
@@ -422,7 +422,7 @@ domWindowGetComputedStyle self element pseudoElement
          (toJSString pseudoElement))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"webkitConvertPointFromPageToNode\"]($2,\n$3)"
         ghcjs_dom_dom_window_webkit_convert_point_from_page_to_node ::
@@ -449,7 +449,7 @@ domWindowWebkitConvertPointFromPageToNode self node p
          (maybe jsNull (unWebKitPoint . toWebKitPoint) p))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"webkitConvertPointFromNodeToPage\"]($2,\n$3)"
         ghcjs_dom_dom_window_webkit_convert_point_from_node_to_page ::
@@ -476,7 +476,7 @@ domWindowWebkitConvertPointFromNodeToPage self node p
          (maybe jsNull (unWebKitPoint . toWebKitPoint) p))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_dispatch_event ::
@@ -495,7 +495,7 @@ domWindowDispatchEvent self evt
       (maybe jsNull (unEvent . toEvent) evt)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"captureEvents\"]()"
         ghcjs_dom_dom_window_capture_events :: JSRef DOMWindow -> IO ()
 #else 
@@ -509,7 +509,7 @@ domWindowCaptureEvents self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"releaseEvents\"]()"
         ghcjs_dom_dom_window_release_events :: JSRef DOMWindow -> IO ()
 #else 
@@ -523,7 +523,7 @@ domWindowReleaseEvents self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"screen\"]"
         ghcjs_dom_dom_window_get_screen ::
         JSRef DOMWindow -> IO (JSRef DOMScreen)
@@ -540,7 +540,7 @@ domWindowGetScreen self
       (ghcjs_dom_dom_window_get_screen (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"history\"]"
         ghcjs_dom_dom_window_get_history ::
         JSRef DOMWindow -> IO (JSRef History)
@@ -557,7 +557,7 @@ domWindowGetHistory self
       (ghcjs_dom_dom_window_get_history (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"locationbar\"]"
         ghcjs_dom_dom_window_get_locationbar ::
         JSRef DOMWindow -> IO (JSRef BarProp)
@@ -575,7 +575,7 @@ domWindowGetLocationbar self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"menubar\"]"
         ghcjs_dom_dom_window_get_menubar ::
         JSRef DOMWindow -> IO (JSRef BarProp)
@@ -592,7 +592,7 @@ domWindowGetMenubar self
       (ghcjs_dom_dom_window_get_menubar (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"personalbar\"]"
         ghcjs_dom_dom_window_get_personalbar ::
         JSRef DOMWindow -> IO (JSRef BarProp)
@@ -610,7 +610,7 @@ domWindowGetPersonalbar self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollbars\"]"
         ghcjs_dom_dom_window_get_scrollbars ::
         JSRef DOMWindow -> IO (JSRef BarProp)
@@ -628,7 +628,7 @@ domWindowGetScrollbars self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"statusbar\"]"
         ghcjs_dom_dom_window_get_statusbar ::
         JSRef DOMWindow -> IO (JSRef BarProp)
@@ -646,7 +646,7 @@ domWindowGetStatusbar self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"toolbar\"]"
         ghcjs_dom_dom_window_get_toolbar ::
         JSRef DOMWindow -> IO (JSRef BarProp)
@@ -663,7 +663,7 @@ domWindowGetToolbar self
       (ghcjs_dom_dom_window_get_toolbar (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"navigator\"]"
         ghcjs_dom_dom_window_get_navigator ::
         JSRef DOMWindow -> IO (JSRef Navigator)
@@ -681,7 +681,7 @@ domWindowGetNavigator self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientInformation\"]"
         ghcjs_dom_dom_window_get_client_information ::
         JSRef DOMWindow -> IO (JSRef Navigator)
@@ -699,7 +699,7 @@ domWindowGetClientInformation self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"frameElement\"]"
         ghcjs_dom_dom_window_get_frame_element ::
         JSRef DOMWindow -> IO (JSRef Element)
@@ -717,7 +717,7 @@ domWindowGetFrameElement self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"offscreenBuffering\"] ? 1 : 0)"
         ghcjs_dom_dom_window_get_offscreen_buffering ::
@@ -735,7 +735,7 @@ domWindowGetOffscreenBuffering self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"outerHeight\"]"
         ghcjs_dom_dom_window_get_outer_height :: JSRef DOMWindow -> IO Int
 #else 
@@ -749,7 +749,7 @@ domWindowGetOuterHeight self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"outerWidth\"]"
         ghcjs_dom_dom_window_get_outer_width :: JSRef DOMWindow -> IO Int
 #else 
@@ -763,7 +763,7 @@ domWindowGetOuterWidth self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"innerHeight\"]"
         ghcjs_dom_dom_window_get_inner_height :: JSRef DOMWindow -> IO Int
 #else 
@@ -777,7 +777,7 @@ domWindowGetInnerHeight self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"innerWidth\"]"
         ghcjs_dom_dom_window_get_inner_width :: JSRef DOMWindow -> IO Int
 #else 
@@ -791,7 +791,7 @@ domWindowGetInnerWidth self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"screenX\"]"
         ghcjs_dom_dom_window_get_screen_x :: JSRef DOMWindow -> IO Int
 #else 
@@ -805,7 +805,7 @@ domWindowGetScreenX self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"screenY\"]"
         ghcjs_dom_dom_window_get_screen_y :: JSRef DOMWindow -> IO Int
 #else 
@@ -819,7 +819,7 @@ domWindowGetScreenY self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"screenLeft\"]"
         ghcjs_dom_dom_window_get_screen_left :: JSRef DOMWindow -> IO Int
 #else 
@@ -833,7 +833,7 @@ domWindowGetScreenLeft self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"screenTop\"]"
         ghcjs_dom_dom_window_get_screen_top :: JSRef DOMWindow -> IO Int
 #else 
@@ -847,7 +847,7 @@ domWindowGetScreenTop self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollX\"]"
         ghcjs_dom_dom_window_get_scroll_x :: JSRef DOMWindow -> IO Int
 #else 
@@ -861,7 +861,7 @@ domWindowGetScrollX self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollY\"]"
         ghcjs_dom_dom_window_get_scroll_y :: JSRef DOMWindow -> IO Int
 #else 
@@ -875,7 +875,7 @@ domWindowGetScrollY self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pageXOffset\"]"
         ghcjs_dom_dom_window_get_page_x_offset :: JSRef DOMWindow -> IO Int
 #else 
@@ -889,7 +889,7 @@ domWindowGetPageXOffset self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pageYOffset\"]"
         ghcjs_dom_dom_window_get_page_y_offset :: JSRef DOMWindow -> IO Int
 #else 
@@ -903,7 +903,7 @@ domWindowGetPageYOffset self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"closed\"] ? 1 : 0)"
         ghcjs_dom_dom_window_get_closed :: JSRef DOMWindow -> IO Bool
 #else 
@@ -916,7 +916,7 @@ domWindowGetClosed self
   = ghcjs_dom_dom_window_get_closed (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_window_get_length :: JSRef DOMWindow -> IO Word
 #else 
@@ -929,7 +929,7 @@ domWindowGetLength self
   = ghcjs_dom_dom_window_get_length (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_dom_window_set_name ::
         JSRef DOMWindow -> JSString -> IO ()
@@ -946,7 +946,7 @@ domWindowSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_dom_window_get_name :: JSRef DOMWindow -> IO JSString
 #else 
@@ -961,7 +961,7 @@ domWindowGetName self
       (ghcjs_dom_dom_window_get_name (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"status\"] = $2;"
         ghcjs_dom_dom_window_set_status ::
         JSRef DOMWindow -> JSString -> IO ()
@@ -978,7 +978,7 @@ domWindowSetStatus self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"status\"]"
         ghcjs_dom_dom_window_get_status :: JSRef DOMWindow -> IO JSString
 #else 
@@ -993,7 +993,7 @@ domWindowGetStatus self
       (ghcjs_dom_dom_window_get_status (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defaultStatus\"] = $2;"
         ghcjs_dom_dom_window_set_default_status ::
         JSRef DOMWindow -> JSString -> IO ()
@@ -1011,7 +1011,7 @@ domWindowSetDefaultStatus self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defaultStatus\"]"
         ghcjs_dom_dom_window_get_default_status ::
         JSRef DOMWindow -> IO JSString
@@ -1029,7 +1029,7 @@ domWindowGetDefaultStatus self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"self\"]"
         ghcjs_dom_dom_window_get_self ::
         JSRef DOMWindow -> IO (JSRef DOMWindow)
@@ -1046,7 +1046,7 @@ domWindowGetSelf self
       (ghcjs_dom_dom_window_get_self (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"window\"]"
         ghcjs_dom_dom_window_get_window ::
         JSRef DOMWindow -> IO (JSRef DOMWindow)
@@ -1063,7 +1063,7 @@ domWindowGetWindow self
       (ghcjs_dom_dom_window_get_window (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"frames\"]"
         ghcjs_dom_dom_window_get_frames ::
         JSRef DOMWindow -> IO (JSRef DOMWindow)
@@ -1080,7 +1080,7 @@ domWindowGetFrames self
       (ghcjs_dom_dom_window_get_frames (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"opener\"]"
         ghcjs_dom_dom_window_get_opener ::
         JSRef DOMWindow -> IO (JSRef DOMWindow)
@@ -1097,7 +1097,7 @@ domWindowGetOpener self
       (ghcjs_dom_dom_window_get_opener (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"parent\"]"
         ghcjs_dom_dom_window_get_parent ::
         JSRef DOMWindow -> IO (JSRef DOMWindow)
@@ -1114,7 +1114,7 @@ domWindowGetParent self
       (ghcjs_dom_dom_window_get_parent (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"top\"]"
         ghcjs_dom_dom_window_get_top ::
         JSRef DOMWindow -> IO (JSRef DOMWindow)
@@ -1131,7 +1131,7 @@ domWindowGetTop self
       (ghcjs_dom_dom_window_get_top (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"document\"]"
         ghcjs_dom_dom_window_get_document ::
         JSRef DOMWindow -> IO (JSRef Document)
@@ -1149,7 +1149,7 @@ domWindowGetDocument self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"styleMedia\"]"
         ghcjs_dom_dom_window_get_style_media ::
         JSRef DOMWindow -> IO (JSRef StyleMedia)
@@ -1167,7 +1167,7 @@ domWindowGetStyleMedia self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"devicePixelRatio\"]"
         ghcjs_dom_dom_window_get_device_pixel_ratio ::
         JSRef DOMWindow -> IO Double
@@ -1184,7 +1184,7 @@ domWindowGetDevicePixelRatio self
       (unDOMWindow (toDOMWindow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"applicationCache\"]"
         ghcjs_dom_dom_window_get_application_cache ::
         JSRef DOMWindow -> IO (JSRef DOMApplicationCache)
@@ -1202,7 +1202,7 @@ domWindowGetApplicationCache self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"sessionStorage\"]"
         ghcjs_dom_dom_window_get_session_storage ::
         JSRef DOMWindow -> IO (JSRef Storage)
@@ -1220,7 +1220,7 @@ domWindowGetSessionStorage self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"localStorage\"]"
         ghcjs_dom_dom_window_get_local_storage ::
         JSRef DOMWindow -> IO (JSRef Storage)
@@ -1238,7 +1238,7 @@ domWindowGetLocalStorage self
          (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"console\"]"
         ghcjs_dom_dom_window_get_console ::
         JSRef DOMWindow -> IO (JSRef Console)
@@ -1255,7 +1255,7 @@ domWindowGetConsole self
       (ghcjs_dom_dom_window_get_console (unDOMWindow (toDOMWindow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"CSS\"]"
         ghcjs_dom_dom_window_get_css ::
         JSRef DOMWindow -> IO (JSRef DOMWindowCSS)

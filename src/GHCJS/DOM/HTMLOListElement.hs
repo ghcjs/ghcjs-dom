@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOListElement
        (ghcjs_dom_htmlo_list_element_set_compact,
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
         ghcjs_dom_htmlo_list_element_set_compact ::
         JSRef HTMLOListElement -> Bool -> IO ()
@@ -47,7 +47,7 @@ htmloListElementSetCompact self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         ghcjs_dom_htmlo_list_element_get_compact ::
         JSRef HTMLOListElement -> IO Bool
@@ -64,7 +64,7 @@ htmloListElementGetCompact self
       (unHTMLOListElement (toHTMLOListElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"start\"] = $2;"
         ghcjs_dom_htmlo_list_element_set_start ::
         JSRef HTMLOListElement -> Int -> IO ()
@@ -82,7 +82,7 @@ htmloListElementSetStart self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"start\"]"
         ghcjs_dom_htmlo_list_element_get_start ::
         JSRef HTMLOListElement -> IO Int
@@ -99,7 +99,7 @@ htmloListElementGetStart self
       (unHTMLOListElement (toHTMLOListElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"reversed\"] = $2;"
         ghcjs_dom_htmlo_list_element_set_reversed ::
         JSRef HTMLOListElement -> Bool -> IO ()
@@ -117,7 +117,7 @@ htmloListElementSetReversed self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"reversed\"] ? 1 : 0)"
         ghcjs_dom_htmlo_list_element_get_reversed ::
         JSRef HTMLOListElement -> IO Bool

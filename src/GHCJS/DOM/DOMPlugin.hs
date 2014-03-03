@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMPlugin
        (ghcjs_dom_dom_plugin_item, domPluginItem,
@@ -25,7 +25,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_dom_plugin_item ::
         JSRef DOMPlugin -> Word -> IO (JSRef DOMMimeType)
@@ -42,7 +42,7 @@ domPluginItem self index
       (ghcjs_dom_dom_plugin_item (unDOMPlugin (toDOMPlugin self)) index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_dom_plugin_named_item ::
         JSRef DOMPlugin -> JSString -> IO (JSRef DOMMimeType)
@@ -61,7 +61,7 @@ domPluginNamedItem self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_dom_plugin_get_name :: JSRef DOMPlugin -> IO JSString
 #else 
@@ -76,7 +76,7 @@ domPluginGetName self
       (ghcjs_dom_dom_plugin_get_name (unDOMPlugin (toDOMPlugin self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"filename\"]"
         ghcjs_dom_dom_plugin_get_filename :: JSRef DOMPlugin -> IO JSString
 #else 
@@ -92,7 +92,7 @@ domPluginGetFilename self
          (unDOMPlugin (toDOMPlugin self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"description\"]"
         ghcjs_dom_dom_plugin_get_description ::
         JSRef DOMPlugin -> IO JSString
@@ -110,7 +110,7 @@ domPluginGetDescription self
          (unDOMPlugin (toDOMPlugin self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_plugin_get_length :: JSRef DOMPlugin -> IO Word
 #else 

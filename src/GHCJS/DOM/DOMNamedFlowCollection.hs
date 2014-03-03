@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMNamedFlowCollection
        (ghcjs_dom_dom_named_flow_collection_item,
@@ -26,7 +26,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_dom_named_flow_collection_item ::
         JSRef DOMNamedFlowCollection -> Word -> IO (JSRef WebKitNamedFlow)
@@ -47,7 +47,7 @@ domNamedFlowCollectionItem self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_dom_named_flow_collection_named_item ::
         JSRef DOMNamedFlowCollection ->
@@ -69,7 +69,7 @@ domNamedFlowCollectionNamedItem self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_named_flow_collection_get_length ::
         JSRef DOMNamedFlowCollection -> IO Word

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTextAreaElement
        (ghcjs_dom_html_text_area_element_check_validity,
@@ -105,7 +105,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_text_area_element_check_validity ::
@@ -123,7 +123,7 @@ htmlTextAreaElementCheckValidity self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_text_area_element_set_custom_validity ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -143,7 +143,7 @@ htmlTextAreaElementSetCustomValidity self error
       (toJSString error)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"select\"]()"
         ghcjs_dom_html_text_area_element_select ::
         JSRef HTMLTextAreaElement -> IO ()
@@ -160,7 +160,7 @@ htmlTextAreaElementSelect self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "$1[\"setRangeText\"]($2, $3, $4,\n$5)"
         ghcjs_dom_html_text_area_element_set_range_text ::
@@ -187,7 +187,7 @@ htmlTextAreaElementSetRangeText self replacement start end
       (toJSString selectionMode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "$1[\"setSelectionRange\"]($2, $3,\n$4)"
         ghcjs_dom_html_text_area_element_set_selection_range ::
@@ -210,7 +210,7 @@ htmlTextAreaElementSetSelectionRange self start end direction
       (toJSString direction)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_text_area_element_set_autofocus ::
         JSRef HTMLTextAreaElement -> Bool -> IO ()
@@ -228,7 +228,7 @@ htmlTextAreaElementSetAutofocus self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_autofocus ::
         JSRef HTMLTextAreaElement -> IO Bool
@@ -245,7 +245,7 @@ htmlTextAreaElementGetAutofocus self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"cols\"] = $2;"
         ghcjs_dom_html_text_area_element_set_cols ::
         JSRef HTMLTextAreaElement -> Int -> IO ()
@@ -263,7 +263,7 @@ htmlTextAreaElementSetCols self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"cols\"]"
         ghcjs_dom_html_text_area_element_get_cols ::
         JSRef HTMLTextAreaElement -> IO Int
@@ -280,7 +280,7 @@ htmlTextAreaElementGetCols self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"dirName\"] = $2;"
         ghcjs_dom_html_text_area_element_set_dir_name ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -299,7 +299,7 @@ htmlTextAreaElementSetDirName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"dirName\"]"
         ghcjs_dom_html_text_area_element_get_dir_name ::
         JSRef HTMLTextAreaElement -> IO JSString
@@ -318,7 +318,7 @@ htmlTextAreaElementGetDirName self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_text_area_element_set_disabled ::
         JSRef HTMLTextAreaElement -> Bool -> IO ()
@@ -336,7 +336,7 @@ htmlTextAreaElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_disabled ::
         JSRef HTMLTextAreaElement -> IO Bool
@@ -353,7 +353,7 @@ htmlTextAreaElementGetDisabled self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_text_area_element_get_form ::
         JSRef HTMLTextAreaElement -> IO (JSRef HTMLFormElement)
@@ -371,7 +371,7 @@ htmlTextAreaElementGetForm self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"maxLength\"] = $2;"
         ghcjs_dom_html_text_area_element_set_max_length ::
         JSRef HTMLTextAreaElement -> Int -> IO ()
@@ -389,7 +389,7 @@ htmlTextAreaElementSetMaxLength self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"maxLength\"]"
         ghcjs_dom_html_text_area_element_get_max_length ::
         JSRef HTMLTextAreaElement -> IO Int
@@ -406,7 +406,7 @@ htmlTextAreaElementGetMaxLength self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_text_area_element_set_name ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -425,7 +425,7 @@ htmlTextAreaElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_text_area_element_get_name ::
         JSRef HTMLTextAreaElement -> IO JSString
@@ -444,7 +444,7 @@ htmlTextAreaElementGetName self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"placeholder\"] = $2;"
         ghcjs_dom_html_text_area_element_set_placeholder ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -463,7 +463,7 @@ htmlTextAreaElementSetPlaceholder self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"placeholder\"]"
         ghcjs_dom_html_text_area_element_get_placeholder ::
         JSRef HTMLTextAreaElement -> IO JSString
@@ -482,7 +482,7 @@ htmlTextAreaElementGetPlaceholder self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"readOnly\"] = $2;"
         ghcjs_dom_html_text_area_element_set_read_only ::
         JSRef HTMLTextAreaElement -> Bool -> IO ()
@@ -500,7 +500,7 @@ htmlTextAreaElementSetReadOnly self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_read_only ::
         JSRef HTMLTextAreaElement -> IO Bool
@@ -517,7 +517,7 @@ htmlTextAreaElementGetReadOnly self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_text_area_element_set_required ::
         JSRef HTMLTextAreaElement -> Bool -> IO ()
@@ -535,7 +535,7 @@ htmlTextAreaElementSetRequired self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_required ::
         JSRef HTMLTextAreaElement -> IO Bool
@@ -552,7 +552,7 @@ htmlTextAreaElementGetRequired self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"rows\"] = $2;"
         ghcjs_dom_html_text_area_element_set_rows ::
         JSRef HTMLTextAreaElement -> Int -> IO ()
@@ -570,7 +570,7 @@ htmlTextAreaElementSetRows self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"rows\"]"
         ghcjs_dom_html_text_area_element_get_rows ::
         JSRef HTMLTextAreaElement -> IO Int
@@ -587,7 +587,7 @@ htmlTextAreaElementGetRows self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"wrap\"] = $2;"
         ghcjs_dom_html_text_area_element_set_wrap ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -606,7 +606,7 @@ htmlTextAreaElementSetWrap self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"wrap\"]"
         ghcjs_dom_html_text_area_element_get_wrap ::
         JSRef HTMLTextAreaElement -> IO JSString
@@ -625,7 +625,7 @@ htmlTextAreaElementGetWrap self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
         ghcjs_dom_html_text_area_element_set_default_value ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -644,7 +644,7 @@ htmlTextAreaElementSetDefaultValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"defaultValue\"]"
         ghcjs_dom_html_text_area_element_get_default_value ::
         JSRef HTMLTextAreaElement -> IO JSString
@@ -663,7 +663,7 @@ htmlTextAreaElementGetDefaultValue self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_text_area_element_set_value ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -682,7 +682,7 @@ htmlTextAreaElementSetValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_text_area_element_get_value ::
         JSRef HTMLTextAreaElement -> IO JSString
@@ -701,7 +701,7 @@ htmlTextAreaElementGetValue self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"textLength\"]"
         ghcjs_dom_html_text_area_element_get_text_length ::
         JSRef HTMLTextAreaElement -> IO Word
@@ -718,7 +718,7 @@ htmlTextAreaElementGetTextLength self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_text_area_element_get_will_validate ::
         JSRef HTMLTextAreaElement -> IO Bool
@@ -735,7 +735,7 @@ htmlTextAreaElementGetWillValidate self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_text_area_element_get_validity ::
         JSRef HTMLTextAreaElement -> IO (JSRef ValidityState)
@@ -754,7 +754,7 @@ htmlTextAreaElementGetValidity self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_text_area_element_get_validation_message ::
         JSRef HTMLTextAreaElement -> IO JSString
@@ -773,7 +773,7 @@ htmlTextAreaElementGetValidationMessage self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_text_area_element_get_labels ::
         JSRef HTMLTextAreaElement -> IO (JSRef NodeList)
@@ -791,7 +791,7 @@ htmlTextAreaElementGetLabels self
          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectionStart\"] = $2;"
         ghcjs_dom_html_text_area_element_set_selection_start ::
         JSRef HTMLTextAreaElement -> Int -> IO ()
@@ -809,7 +809,7 @@ htmlTextAreaElementSetSelectionStart self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectionStart\"]"
         ghcjs_dom_html_text_area_element_get_selection_start ::
         JSRef HTMLTextAreaElement -> IO Int
@@ -826,7 +826,7 @@ htmlTextAreaElementGetSelectionStart self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectionEnd\"] = $2;"
         ghcjs_dom_html_text_area_element_set_selection_end ::
         JSRef HTMLTextAreaElement -> Int -> IO ()
@@ -844,7 +844,7 @@ htmlTextAreaElementSetSelectionEnd self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectionEnd\"]"
         ghcjs_dom_html_text_area_element_get_selection_end ::
         JSRef HTMLTextAreaElement -> IO Int
@@ -861,7 +861,7 @@ htmlTextAreaElementGetSelectionEnd self
       (unHTMLTextAreaElement (toHTMLTextAreaElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectionDirection\"] = $2;"
         ghcjs_dom_html_text_area_element_set_selection_direction ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
@@ -882,7 +882,7 @@ htmlTextAreaElementSetSelectionDirection self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"selectionDirection\"]"
         ghcjs_dom_html_text_area_element_get_selection_direction ::
         JSRef HTMLTextAreaElement -> IO JSString

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDocument
        (ghcjs_dom_html_document_close, htmlDocumentClose,
@@ -46,7 +46,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_html_document_close :: JSRef HTMLDocument -> IO ()
 #else 
@@ -60,7 +60,7 @@ htmlDocumentClose self
       (unHTMLDocument (toHTMLDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_html_document_clear :: JSRef HTMLDocument -> IO ()
 #else 
@@ -74,7 +74,7 @@ htmlDocumentClear self
       (unHTMLDocument (toHTMLDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"captureEvents\"]()"
         ghcjs_dom_html_document_capture_events ::
         JSRef HTMLDocument -> IO ()
@@ -90,7 +90,7 @@ htmlDocumentCaptureEvents self
       (unHTMLDocument (toHTMLDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"releaseEvents\"]()"
         ghcjs_dom_html_document_release_events ::
         JSRef HTMLDocument -> IO ()
@@ -106,7 +106,7 @@ htmlDocumentReleaseEvents self
       (unHTMLDocument (toHTMLDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"hasFocus\"]() ? 1 : 0)"
         ghcjs_dom_html_document_has_focus :: JSRef HTMLDocument -> IO Bool
 #else 
@@ -120,7 +120,7 @@ htmlDocumentHasFocus self
       (unHTMLDocument (toHTMLDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"embeds\"]"
         ghcjs_dom_html_document_get_embeds ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
@@ -138,7 +138,7 @@ htmlDocumentGetEmbeds self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"plugins\"]"
         ghcjs_dom_html_document_get_plugins ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
@@ -156,7 +156,7 @@ htmlDocumentGetPlugins self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scripts\"]"
         ghcjs_dom_html_document_get_scripts ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
@@ -174,7 +174,7 @@ htmlDocumentGetScripts self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_document_get_width :: JSRef HTMLDocument -> IO Int
 #else 
@@ -188,7 +188,7 @@ htmlDocumentGetWidth self
       (unHTMLDocument (toHTMLDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_document_get_height :: JSRef HTMLDocument -> IO Int
 #else 
@@ -202,7 +202,7 @@ htmlDocumentGetHeight self
       (unHTMLDocument (toHTMLDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"dir\"] = $2;"
         ghcjs_dom_html_document_set_dir ::
         JSRef HTMLDocument -> JSString -> IO ()
@@ -220,7 +220,7 @@ htmlDocumentSetDir self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"dir\"]"
         ghcjs_dom_html_document_get_dir ::
         JSRef HTMLDocument -> IO JSString
@@ -238,7 +238,7 @@ htmlDocumentGetDir self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"designMode\"] = $2;"
         ghcjs_dom_html_document_set_design_mode ::
         JSRef HTMLDocument -> JSString -> IO ()
@@ -256,7 +256,7 @@ htmlDocumentSetDesignMode self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"designMode\"]"
         ghcjs_dom_html_document_get_design_mode ::
         JSRef HTMLDocument -> IO JSString
@@ -274,7 +274,7 @@ htmlDocumentGetDesignMode self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"compatMode\"]"
         ghcjs_dom_html_document_get_compat_mode ::
         JSRef HTMLDocument -> IO JSString
@@ -292,7 +292,7 @@ htmlDocumentGetCompatMode self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"activeElement\"]"
         ghcjs_dom_html_document_get_active_element ::
         JSRef HTMLDocument -> IO (JSRef Element)
@@ -310,7 +310,7 @@ htmlDocumentGetActiveElement self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
         ghcjs_dom_html_document_set_bg_color ::
         JSRef HTMLDocument -> JSString -> IO ()
@@ -328,7 +328,7 @@ htmlDocumentSetBgColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"]"
         ghcjs_dom_html_document_get_bg_color ::
         JSRef HTMLDocument -> IO JSString
@@ -346,7 +346,7 @@ htmlDocumentGetBgColor self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"fgColor\"] = $2;"
         ghcjs_dom_html_document_set_fg_color ::
         JSRef HTMLDocument -> JSString -> IO ()
@@ -364,7 +364,7 @@ htmlDocumentSetFgColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"fgColor\"]"
         ghcjs_dom_html_document_get_fg_color ::
         JSRef HTMLDocument -> IO JSString
@@ -382,7 +382,7 @@ htmlDocumentGetFgColor self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alinkColor\"] = $2;"
         ghcjs_dom_html_document_set_alink_color ::
         JSRef HTMLDocument -> JSString -> IO ()
@@ -400,7 +400,7 @@ htmlDocumentSetAlinkColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"alinkColor\"]"
         ghcjs_dom_html_document_get_alink_color ::
         JSRef HTMLDocument -> IO JSString
@@ -418,7 +418,7 @@ htmlDocumentGetAlinkColor self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"linkColor\"] = $2;"
         ghcjs_dom_html_document_set_link_color ::
         JSRef HTMLDocument -> JSString -> IO ()
@@ -436,7 +436,7 @@ htmlDocumentSetLinkColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"linkColor\"]"
         ghcjs_dom_html_document_get_link_color ::
         JSRef HTMLDocument -> IO JSString
@@ -454,7 +454,7 @@ htmlDocumentGetLinkColor self
          (unHTMLDocument (toHTMLDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vlinkColor\"] = $2;"
         ghcjs_dom_html_document_set_vlink_color ::
         JSRef HTMLDocument -> JSString -> IO ()
@@ -472,7 +472,7 @@ htmlDocumentSetVlinkColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vlinkColor\"]"
         ghcjs_dom_html_document_get_vlink_color ::
         JSRef HTMLDocument -> IO JSString

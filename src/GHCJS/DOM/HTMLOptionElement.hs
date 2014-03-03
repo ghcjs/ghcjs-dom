@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptionElement
        (ghcjs_dom_html_option_element_set_disabled,
@@ -39,7 +39,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_option_element_set_disabled ::
         JSRef HTMLOptionElement -> Bool -> IO ()
@@ -57,7 +57,7 @@ htmlOptionElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_option_element_get_disabled ::
         JSRef HTMLOptionElement -> IO Bool
@@ -74,7 +74,7 @@ htmlOptionElementGetDisabled self
       (unHTMLOptionElement (toHTMLOptionElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_option_element_get_form ::
         JSRef HTMLOptionElement -> IO (JSRef HTMLFormElement)
@@ -92,7 +92,7 @@ htmlOptionElementGetForm self
          (unHTMLOptionElement (toHTMLOptionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"label\"] = $2;"
         ghcjs_dom_html_option_element_set_label ::
         JSRef HTMLOptionElement -> JSString -> IO ()
@@ -110,7 +110,7 @@ htmlOptionElementSetLabel self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"label\"]"
         ghcjs_dom_html_option_element_get_label ::
         JSRef HTMLOptionElement -> IO JSString
@@ -129,7 +129,7 @@ htmlOptionElementGetLabel self
          (unHTMLOptionElement (toHTMLOptionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defaultSelected\"] = $2;"
         ghcjs_dom_html_option_element_set_default_selected ::
         JSRef HTMLOptionElement -> Bool -> IO ()
@@ -147,7 +147,7 @@ htmlOptionElementSetDefaultSelected self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"defaultSelected\"] ? 1 : 0)"
         ghcjs_dom_html_option_element_get_default_selected ::
@@ -165,7 +165,7 @@ htmlOptionElementGetDefaultSelected self
       (unHTMLOptionElement (toHTMLOptionElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"selected\"] = $2;"
         ghcjs_dom_html_option_element_set_selected ::
         JSRef HTMLOptionElement -> Bool -> IO ()
@@ -183,7 +183,7 @@ htmlOptionElementSetSelected self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"selected\"] ? 1 : 0)"
         ghcjs_dom_html_option_element_get_selected ::
         JSRef HTMLOptionElement -> IO Bool
@@ -200,7 +200,7 @@ htmlOptionElementGetSelected self
       (unHTMLOptionElement (toHTMLOptionElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_option_element_set_value ::
         JSRef HTMLOptionElement -> JSString -> IO ()
@@ -218,7 +218,7 @@ htmlOptionElementSetValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_option_element_get_value ::
         JSRef HTMLOptionElement -> IO JSString
@@ -237,7 +237,7 @@ htmlOptionElementGetValue self
          (unHTMLOptionElement (toHTMLOptionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_option_element_get_text ::
         JSRef HTMLOptionElement -> IO JSString
@@ -256,7 +256,7 @@ htmlOptionElementGetText self
          (unHTMLOptionElement (toHTMLOptionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"index\"]"
         ghcjs_dom_html_option_element_get_index ::
         JSRef HTMLOptionElement -> IO Int

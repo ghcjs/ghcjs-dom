@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitNamedFlow
        (ghcjs_dom_webkit_named_flow_get_regions_by_content,
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getRegionsByContent\"]($2)"
         ghcjs_dom_webkit_named_flow_get_regions_by_content ::
         JSRef WebKitNamedFlow -> JSRef Node -> IO (JSRef NodeList)
@@ -51,7 +51,7 @@ webKitNamedFlowGetRegionsByContent self contentNode
          (maybe jsNull (unNode . toNode) contentNode))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getRegions\"]()"
         ghcjs_dom_webkit_named_flow_get_regions ::
         JSRef WebKitNamedFlow -> IO (JSRef NodeList)
@@ -69,7 +69,7 @@ webKitNamedFlowGetRegions self
          (unWebKitNamedFlow (toWebKitNamedFlow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getContent\"]()"
         ghcjs_dom_webkit_named_flow_get_content ::
         JSRef WebKitNamedFlow -> IO (JSRef NodeList)
@@ -87,7 +87,7 @@ webKitNamedFlowGetContent self
          (unWebKitNamedFlow (toWebKitNamedFlow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_webkit_named_flow_dispatch_event ::
@@ -107,7 +107,7 @@ webKitNamedFlowDispatchEvent self event
       (maybe jsNull (unEvent . toEvent) event)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_webkit_named_flow_get_name ::
         JSRef WebKitNamedFlow -> IO JSString
@@ -125,7 +125,7 @@ webKitNamedFlowGetName self
          (unWebKitNamedFlow (toWebKitNamedFlow self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"overset\"] ? 1 : 0)"
         ghcjs_dom_webkit_named_flow_get_overset ::
         JSRef WebKitNamedFlow -> IO Bool
@@ -142,7 +142,7 @@ webKitNamedFlowGetOverset self
       (unWebKitNamedFlow (toWebKitNamedFlow self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"firstEmptyRegionIndex\"]"
         ghcjs_dom_webkit_named_flow_get_first_empty_region_index ::
         JSRef WebKitNamedFlow -> IO Int

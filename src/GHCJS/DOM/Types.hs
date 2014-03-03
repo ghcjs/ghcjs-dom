@@ -1,11 +1,11 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
 #else
 {-# LANGUAGE ConstraintKinds #-}
 #endif
 module GHCJS.DOM.Types (
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
     maybeJSNull, propagateGError, GType(..)
   , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject
 
@@ -274,14 +274,14 @@ module GHCJS.DOM.Types (
   ) where
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 import GHCJS.Types (JSRef(..), castRef, isNull)
 #else
 import Graphics.UI.Gtk.WebKit.Types
 import System.Glib (propagateGError, GType(..))
 #endif
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 maybeJSNull :: JSRef a -> Maybe (JSRef a)
 maybeJSNull r | isNull r = Nothing
 maybeJSNull r = Just r
@@ -290,7 +290,7 @@ propagateGError = id
 
 data GType = GType (JSRef GType)
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "h$isInstanceOf $1 $2"
     typeInstanceIsA' :: JSRef a -> JSRef GType -> Bool
 #else
@@ -329,7 +329,7 @@ instance GObjectClass GObject where
 castToGObject :: GObjectClass obj => obj -> obj
 castToGObject = id
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "object" gTypeGObject' :: JSRef GType
 #else
 gTypeGObject' = error "gTypeGObject': only available in JavaScript"
@@ -339,7 +339,7 @@ gTypeGObject = GType gTypeGObject'
 
 -- AUTO GENERATION STARTS HERE
 -- The remainder of this file is generated from IDL files using domconv-webkit-jsffi
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMAttr = DOMAttr (JSRef DOMAttr)
 
 unDOMAttr (DOMAttr o) = o
@@ -357,7 +357,7 @@ instance GObjectClass DOMAttr where
 castToDOMAttr :: GObjectClass obj => obj -> DOMAttr
 castToDOMAttr = castTo gTypeDOMAttr "DOMAttr"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMAttr\"]" gTypeDOMAttr' :: JSRef GType
 #else
 gTypeDOMAttr' = error "gTypeDOMAttr': only available in JavaScript"
@@ -368,7 +368,7 @@ type IsDOMAttr o = DOMAttrClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype BarProp = BarProp (JSRef BarProp)
 
 unBarProp (BarProp o) = o
@@ -385,7 +385,7 @@ instance GObjectClass BarProp where
 castToBarProp :: GObjectClass obj => obj -> BarProp
 castToBarProp = castTo gTypeBarProp "BarProp"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp' :: JSRef GType
 #else
 gTypeBarProp' = error "gTypeBarProp': only available in JavaScript"
@@ -395,7 +395,7 @@ gTypeBarProp = GType gTypeBarProp'
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Blob = Blob (JSRef Blob)
 
 unBlob (Blob o) = o
@@ -412,7 +412,7 @@ instance GObjectClass Blob where
 castToBlob :: GObjectClass obj => obj -> Blob
 castToBlob = castTo gTypeBlob "Blob"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Blob\"]" gTypeBlob' :: JSRef GType
 #else
 gTypeBlob' = error "gTypeBlob': only available in JavaScript"
@@ -423,7 +423,7 @@ type IsBlob o = BlobClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CDATASection = CDATASection (JSRef CDATASection)
 
 unCDATASection (CDATASection o) = o
@@ -443,7 +443,7 @@ instance GObjectClass CDATASection where
 castToCDATASection :: GObjectClass obj => obj -> CDATASection
 castToCDATASection = castTo gTypeCDATASection "CDATASection"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"CDATASection\"]" gTypeCDATASection' :: JSRef GType
 #else
 gTypeCDATASection' = error "gTypeCDATASection': only available in JavaScript"
@@ -454,7 +454,7 @@ type IsCDATASection o = CDATASectionClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CSSRule = CSSRule (JSRef CSSRule)
 
 unCSSRule (CSSRule o) = o
@@ -471,7 +471,7 @@ instance GObjectClass CSSRule where
 castToCSSRule :: GObjectClass obj => obj -> CSSRule
 castToCSSRule = castTo gTypeCSSRule "CSSRule"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"CSSRule\"]" gTypeCSSRule' :: JSRef GType
 #else
 gTypeCSSRule' = error "gTypeCSSRule': only available in JavaScript"
@@ -482,7 +482,7 @@ type IsCSSRule o = CSSRuleClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CSSRuleList = CSSRuleList (JSRef CSSRuleList)
 
 unCSSRuleList (CSSRuleList o) = o
@@ -499,7 +499,7 @@ instance GObjectClass CSSRuleList where
 castToCSSRuleList :: GObjectClass obj => obj -> CSSRuleList
 castToCSSRuleList = castTo gTypeCSSRuleList "CSSRuleList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"CSSRuleList\"]" gTypeCSSRuleList' :: JSRef GType
 #else
 gTypeCSSRuleList' = error "gTypeCSSRuleList': only available in JavaScript"
@@ -510,7 +510,7 @@ type IsCSSRuleList o = CSSRuleListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration)
 
 unCSSStyleDeclaration (CSSStyleDeclaration o) = o
@@ -527,7 +527,7 @@ instance GObjectClass CSSStyleDeclaration where
 castToCSSStyleDeclaration :: GObjectClass obj => obj -> CSSStyleDeclaration
 castToCSSStyleDeclaration = castTo gTypeCSSStyleDeclaration "CSSStyleDeclaration"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"CSSStyleDeclaration\"]" gTypeCSSStyleDeclaration' :: JSRef GType
 #else
 gTypeCSSStyleDeclaration' = error "gTypeCSSStyleDeclaration': only available in JavaScript"
@@ -538,7 +538,7 @@ type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet)
 
 unCSSStyleSheet (CSSStyleSheet o) = o
@@ -556,7 +556,7 @@ instance GObjectClass CSSStyleSheet where
 castToCSSStyleSheet :: GObjectClass obj => obj -> CSSStyleSheet
 castToCSSStyleSheet = castTo gTypeCSSStyleSheet "CSSStyleSheet"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"CSSStyleSheet\"]" gTypeCSSStyleSheet' :: JSRef GType
 #else
 gTypeCSSStyleSheet' = error "gTypeCSSStyleSheet': only available in JavaScript"
@@ -567,7 +567,7 @@ type IsCSSStyleSheet o = CSSStyleSheetClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CSSValue = CSSValue (JSRef CSSValue)
 
 unCSSValue (CSSValue o) = o
@@ -584,7 +584,7 @@ instance GObjectClass CSSValue where
 castToCSSValue :: GObjectClass obj => obj -> CSSValue
 castToCSSValue = castTo gTypeCSSValue "CSSValue"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"CSSValue\"]" gTypeCSSValue' :: JSRef GType
 #else
 gTypeCSSValue' = error "gTypeCSSValue': only available in JavaScript"
@@ -595,7 +595,7 @@ type IsCSSValue o = CSSValueClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CharacterData = CharacterData (JSRef CharacterData)
 
 unCharacterData (CharacterData o) = o
@@ -613,7 +613,7 @@ instance GObjectClass CharacterData where
 castToCharacterData :: GObjectClass obj => obj -> CharacterData
 castToCharacterData = castTo gTypeCharacterData "CharacterData"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"CharacterData\"]" gTypeCharacterData' :: JSRef GType
 #else
 gTypeCharacterData' = error "gTypeCharacterData': only available in JavaScript"
@@ -624,7 +624,7 @@ type IsCharacterData o = CharacterDataClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Comment = Comment (JSRef Comment)
 
 unComment (Comment o) = o
@@ -643,7 +643,7 @@ instance GObjectClass Comment where
 castToComment :: GObjectClass obj => obj -> Comment
 castToComment = castTo gTypeComment "Comment"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Comment\"]" gTypeComment' :: JSRef GType
 #else
 gTypeComment' = error "gTypeComment': only available in JavaScript"
@@ -654,7 +654,7 @@ type IsComment o = CommentClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Console = Console (JSRef Console)
 
 unConsole (Console o) = o
@@ -671,7 +671,7 @@ instance GObjectClass Console where
 castToConsole :: GObjectClass obj => obj -> Console
 castToConsole = castTo gTypeConsole "Console"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Console\"]" gTypeConsole' :: JSRef GType
 #else
 gTypeConsole' = error "gTypeConsole': only available in JavaScript"
@@ -682,7 +682,7 @@ type IsConsole o = ConsoleClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache)
 
 unDOMApplicationCache (DOMApplicationCache o) = o
@@ -699,7 +699,7 @@ instance GObjectClass DOMApplicationCache where
 castToDOMApplicationCache :: GObjectClass obj => obj -> DOMApplicationCache
 castToDOMApplicationCache = castTo gTypeDOMApplicationCache "DOMApplicationCache"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMApplicationCache\"]" gTypeDOMApplicationCache' :: JSRef GType
 #else
 gTypeDOMApplicationCache' = error "gTypeDOMApplicationCache': only available in JavaScript"
@@ -710,7 +710,7 @@ type IsDOMApplicationCache o = DOMApplicationCacheClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMImplementation = DOMImplementation (JSRef DOMImplementation)
 
 unDOMImplementation (DOMImplementation o) = o
@@ -727,7 +727,7 @@ instance GObjectClass DOMImplementation where
 castToDOMImplementation :: GObjectClass obj => obj -> DOMImplementation
 castToDOMImplementation = castTo gTypeDOMImplementation "DOMImplementation"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMImplementation\"]" gTypeDOMImplementation' :: JSRef GType
 #else
 gTypeDOMImplementation' = error "gTypeDOMImplementation': only available in JavaScript"
@@ -738,7 +738,7 @@ type IsDOMImplementation o = DOMImplementationClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMMimeType = DOMMimeType (JSRef DOMMimeType)
 
 unDOMMimeType (DOMMimeType o) = o
@@ -755,7 +755,7 @@ instance GObjectClass DOMMimeType where
 castToDOMMimeType :: GObjectClass obj => obj -> DOMMimeType
 castToDOMMimeType = castTo gTypeDOMMimeType "DOMMimeType"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMMimeType\"]" gTypeDOMMimeType' :: JSRef GType
 #else
 gTypeDOMMimeType' = error "gTypeDOMMimeType': only available in JavaScript"
@@ -766,7 +766,7 @@ type IsDOMMimeType o = DOMMimeTypeClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray)
 
 unDOMMimeTypeArray (DOMMimeTypeArray o) = o
@@ -783,7 +783,7 @@ instance GObjectClass DOMMimeTypeArray where
 castToDOMMimeTypeArray :: GObjectClass obj => obj -> DOMMimeTypeArray
 castToDOMMimeTypeArray = castTo gTypeDOMMimeTypeArray "DOMMimeTypeArray"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMMimeTypeArray\"]" gTypeDOMMimeTypeArray' :: JSRef GType
 #else
 gTypeDOMMimeTypeArray' = error "gTypeDOMMimeTypeArray': only available in JavaScript"
@@ -794,7 +794,7 @@ type IsDOMMimeTypeArray o = DOMMimeTypeArrayClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMNamedFlowCollection = DOMNamedFlowCollection (JSRef DOMNamedFlowCollection)
 
 unDOMNamedFlowCollection (DOMNamedFlowCollection o) = o
@@ -811,7 +811,7 @@ instance GObjectClass DOMNamedFlowCollection where
 castToDOMNamedFlowCollection :: GObjectClass obj => obj -> DOMNamedFlowCollection
 castToDOMNamedFlowCollection = castTo gTypeDOMNamedFlowCollection "DOMNamedFlowCollection"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMNamedFlowCollection\"]" gTypeDOMNamedFlowCollection' :: JSRef GType
 #else
 gTypeDOMNamedFlowCollection' = error "gTypeDOMNamedFlowCollection': only available in JavaScript"
@@ -821,7 +821,7 @@ gTypeDOMNamedFlowCollection = GType gTypeDOMNamedFlowCollection'
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMPlugin = DOMPlugin (JSRef DOMPlugin)
 
 unDOMPlugin (DOMPlugin o) = o
@@ -838,7 +838,7 @@ instance GObjectClass DOMPlugin where
 castToDOMPlugin :: GObjectClass obj => obj -> DOMPlugin
 castToDOMPlugin = castTo gTypeDOMPlugin "DOMPlugin"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMPlugin\"]" gTypeDOMPlugin' :: JSRef GType
 #else
 gTypeDOMPlugin' = error "gTypeDOMPlugin': only available in JavaScript"
@@ -849,7 +849,7 @@ type IsDOMPlugin o = DOMPluginClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray)
 
 unDOMPluginArray (DOMPluginArray o) = o
@@ -866,7 +866,7 @@ instance GObjectClass DOMPluginArray where
 castToDOMPluginArray :: GObjectClass obj => obj -> DOMPluginArray
 castToDOMPluginArray = castTo gTypeDOMPluginArray "DOMPluginArray"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMPluginArray\"]" gTypeDOMPluginArray' :: JSRef GType
 #else
 gTypeDOMPluginArray' = error "gTypeDOMPluginArray': only available in JavaScript"
@@ -877,7 +877,7 @@ type IsDOMPluginArray o = DOMPluginArrayClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy)
 
 unDOMSecurityPolicy (DOMSecurityPolicy o) = o
@@ -894,7 +894,7 @@ instance GObjectClass DOMSecurityPolicy where
 castToDOMSecurityPolicy :: GObjectClass obj => obj -> DOMSecurityPolicy
 castToDOMSecurityPolicy = castTo gTypeDOMSecurityPolicy "DOMSecurityPolicy"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMSecurityPolicy\"]" gTypeDOMSecurityPolicy' :: JSRef GType
 #else
 gTypeDOMSecurityPolicy' = error "gTypeDOMSecurityPolicy': only available in JavaScript"
@@ -904,7 +904,7 @@ gTypeDOMSecurityPolicy = GType gTypeDOMSecurityPolicy'
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMSelection = DOMSelection (JSRef DOMSelection)
 
 unDOMSelection (DOMSelection o) = o
@@ -921,7 +921,7 @@ instance GObjectClass DOMSelection where
 castToDOMSelection :: GObjectClass obj => obj -> DOMSelection
 castToDOMSelection = castTo gTypeDOMSelection "DOMSelection"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMSelection\"]" gTypeDOMSelection' :: JSRef GType
 #else
 gTypeDOMSelection' = error "gTypeDOMSelection': only available in JavaScript"
@@ -932,7 +932,7 @@ type IsDOMSelection o = DOMSelectionClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList)
 
 unDOMSettableTokenList (DOMSettableTokenList o) = o
@@ -950,7 +950,7 @@ instance GObjectClass DOMSettableTokenList where
 castToDOMSettableTokenList :: GObjectClass obj => obj -> DOMSettableTokenList
 castToDOMSettableTokenList = castTo gTypeDOMSettableTokenList "DOMSettableTokenList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMSettableTokenList\"]" gTypeDOMSettableTokenList' :: JSRef GType
 #else
 gTypeDOMSettableTokenList' = error "gTypeDOMSettableTokenList': only available in JavaScript"
@@ -961,7 +961,7 @@ type IsDOMSettableTokenList o = DOMSettableTokenListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMStringList = DOMStringList (JSRef DOMStringList)
 
 unDOMStringList (DOMStringList o) = o
@@ -978,7 +978,7 @@ instance GObjectClass DOMStringList where
 castToDOMStringList :: GObjectClass obj => obj -> DOMStringList
 castToDOMStringList = castTo gTypeDOMStringList "DOMStringList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMStringList\"]" gTypeDOMStringList' :: JSRef GType
 #else
 gTypeDOMStringList' = error "gTypeDOMStringList': only available in JavaScript"
@@ -989,7 +989,7 @@ type IsDOMStringList o = DOMStringListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMTokenList = DOMTokenList (JSRef DOMTokenList)
 
 unDOMTokenList (DOMTokenList o) = o
@@ -1006,7 +1006,7 @@ instance GObjectClass DOMTokenList where
 castToDOMTokenList :: GObjectClass obj => obj -> DOMTokenList
 castToDOMTokenList = castTo gTypeDOMTokenList "DOMTokenList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMTokenList\"]" gTypeDOMTokenList' :: JSRef GType
 #else
 gTypeDOMTokenList' = error "gTypeDOMTokenList': only available in JavaScript"
@@ -1017,7 +1017,7 @@ type IsDOMTokenList o = DOMTokenListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMWindow = DOMWindow (JSRef DOMWindow)
 
 unDOMWindow (DOMWindow o) = o
@@ -1034,7 +1034,7 @@ instance GObjectClass DOMWindow where
 castToDOMWindow :: GObjectClass obj => obj -> DOMWindow
 castToDOMWindow = castTo gTypeDOMWindow "DOMWindow"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMWindow\"]" gTypeDOMWindow' :: JSRef GType
 #else
 gTypeDOMWindow' = error "gTypeDOMWindow': only available in JavaScript"
@@ -1045,7 +1045,7 @@ type IsDOMWindow o = DOMWindowClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMWindowCSS = DOMWindowCSS (JSRef DOMWindowCSS)
 
 unDOMWindowCSS (DOMWindowCSS o) = o
@@ -1062,7 +1062,7 @@ instance GObjectClass DOMWindowCSS where
 castToDOMWindowCSS :: GObjectClass obj => obj -> DOMWindowCSS
 castToDOMWindowCSS = castTo gTypeDOMWindowCSS "DOMWindowCSS"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMWindowCSS\"]" gTypeDOMWindowCSS' :: JSRef GType
 #else
 gTypeDOMWindowCSS' = error "gTypeDOMWindowCSS': only available in JavaScript"
@@ -1072,7 +1072,7 @@ gTypeDOMWindowCSS = GType gTypeDOMWindowCSS'
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Document = Document (JSRef Document)
 
 unDocument (Document o) = o
@@ -1090,7 +1090,7 @@ instance GObjectClass Document where
 castToDocument :: GObjectClass obj => obj -> Document
 castToDocument = castTo gTypeDocument "Document"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Document\"]" gTypeDocument' :: JSRef GType
 #else
 gTypeDocument' = error "gTypeDocument': only available in JavaScript"
@@ -1101,7 +1101,7 @@ type IsDocument o = DocumentClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DocumentFragment = DocumentFragment (JSRef DocumentFragment)
 
 unDocumentFragment (DocumentFragment o) = o
@@ -1119,7 +1119,7 @@ instance GObjectClass DocumentFragment where
 castToDocumentFragment :: GObjectClass obj => obj -> DocumentFragment
 castToDocumentFragment = castTo gTypeDocumentFragment "DocumentFragment"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DocumentFragment\"]" gTypeDocumentFragment' :: JSRef GType
 #else
 gTypeDocumentFragment' = error "gTypeDocumentFragment': only available in JavaScript"
@@ -1130,7 +1130,7 @@ type IsDocumentFragment o = DocumentFragmentClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DocumentType = DocumentType (JSRef DocumentType)
 
 unDocumentType (DocumentType o) = o
@@ -1148,7 +1148,7 @@ instance GObjectClass DocumentType where
 castToDocumentType :: GObjectClass obj => obj -> DocumentType
 castToDocumentType = castTo gTypeDocumentType "DocumentType"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DocumentType\"]" gTypeDocumentType' :: JSRef GType
 #else
 gTypeDocumentType' = error "gTypeDocumentType': only available in JavaScript"
@@ -1159,7 +1159,7 @@ type IsDocumentType o = DocumentTypeClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Element = Element (JSRef Element)
 
 unElement (Element o) = o
@@ -1177,7 +1177,7 @@ instance GObjectClass Element where
 castToElement :: GObjectClass obj => obj -> Element
 castToElement = castTo gTypeElement "Element"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Element\"]" gTypeElement' :: JSRef GType
 #else
 gTypeElement' = error "gTypeElement': only available in JavaScript"
@@ -1188,7 +1188,7 @@ type IsElement o = ElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype EntityReference = EntityReference (JSRef EntityReference)
 
 unEntityReference (EntityReference o) = o
@@ -1206,7 +1206,7 @@ instance GObjectClass EntityReference where
 castToEntityReference :: GObjectClass obj => obj -> EntityReference
 castToEntityReference = castTo gTypeEntityReference "EntityReference"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"EntityReference\"]" gTypeEntityReference' :: JSRef GType
 #else
 gTypeEntityReference' = error "gTypeEntityReference': only available in JavaScript"
@@ -1217,7 +1217,7 @@ type IsEntityReference o = EntityReferenceClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Event = Event (JSRef Event)
 
 unEvent (Event o) = o
@@ -1234,7 +1234,7 @@ instance GObjectClass Event where
 castToEvent :: GObjectClass obj => obj -> Event
 castToEvent = castTo gTypeEvent "Event"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Event\"]" gTypeEvent' :: JSRef GType
 #else
 gTypeEvent' = error "gTypeEvent': only available in JavaScript"
@@ -1245,7 +1245,7 @@ type IsEvent o = EventClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype EventTarget = EventTarget (JSRef EventTarget)
 
 unEventTarget (EventTarget o) = o
@@ -1262,7 +1262,7 @@ instance GObjectClass EventTarget where
 castToEventTarget :: GObjectClass obj => obj -> EventTarget
 castToEventTarget = castTo gTypeEventTarget "EventTarget"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"EventTarget\"]" gTypeEventTarget' :: JSRef GType
 #else
 gTypeEventTarget' = error "gTypeEventTarget': only available in JavaScript"
@@ -1273,7 +1273,7 @@ type IsEventTarget o = EventTargetClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype File = File (JSRef File)
 
 unFile (File o) = o
@@ -1291,7 +1291,7 @@ instance GObjectClass File where
 castToFile :: GObjectClass obj => obj -> File
 castToFile = castTo gTypeFile "File"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"File\"]" gTypeFile' :: JSRef GType
 #else
 gTypeFile' = error "gTypeFile': only available in JavaScript"
@@ -1302,7 +1302,7 @@ type IsFile o = FileClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype FileList = FileList (JSRef FileList)
 
 unFileList (FileList o) = o
@@ -1319,7 +1319,7 @@ instance GObjectClass FileList where
 castToFileList :: GObjectClass obj => obj -> FileList
 castToFileList = castTo gTypeFileList "FileList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"FileList\"]" gTypeFileList' :: JSRef GType
 #else
 gTypeFileList' = error "gTypeFileList': only available in JavaScript"
@@ -1330,7 +1330,7 @@ type IsFileList o = FileListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Geolocation = Geolocation (JSRef Geolocation)
 
 unGeolocation (Geolocation o) = o
@@ -1347,7 +1347,7 @@ instance GObjectClass Geolocation where
 castToGeolocation :: GObjectClass obj => obj -> Geolocation
 castToGeolocation = castTo gTypeGeolocation "Geolocation"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Geolocation\"]" gTypeGeolocation' :: JSRef GType
 #else
 gTypeGeolocation' = error "gTypeGeolocation': only available in JavaScript"
@@ -1358,7 +1358,7 @@ type IsGeolocation o = GeolocationClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement)
 
 unHTMLAnchorElement (HTMLAnchorElement o) = o
@@ -1378,7 +1378,7 @@ instance GObjectClass HTMLAnchorElement where
 castToHTMLAnchorElement :: GObjectClass obj => obj -> HTMLAnchorElement
 castToHTMLAnchorElement = castTo gTypeHTMLAnchorElement "HTMLAnchorElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLAnchorElement\"]" gTypeHTMLAnchorElement' :: JSRef GType
 #else
 gTypeHTMLAnchorElement' = error "gTypeHTMLAnchorElement': only available in JavaScript"
@@ -1389,7 +1389,7 @@ type IsHTMLAnchorElement o = HTMLAnchorElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement)
 
 unHTMLAppletElement (HTMLAppletElement o) = o
@@ -1409,7 +1409,7 @@ instance GObjectClass HTMLAppletElement where
 castToHTMLAppletElement :: GObjectClass obj => obj -> HTMLAppletElement
 castToHTMLAppletElement = castTo gTypeHTMLAppletElement "HTMLAppletElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLAppletElement\"]" gTypeHTMLAppletElement' :: JSRef GType
 #else
 gTypeHTMLAppletElement' = error "gTypeHTMLAppletElement': only available in JavaScript"
@@ -1420,7 +1420,7 @@ type IsHTMLAppletElement o = HTMLAppletElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement)
 
 unHTMLAreaElement (HTMLAreaElement o) = o
@@ -1440,7 +1440,7 @@ instance GObjectClass HTMLAreaElement where
 castToHTMLAreaElement :: GObjectClass obj => obj -> HTMLAreaElement
 castToHTMLAreaElement = castTo gTypeHTMLAreaElement "HTMLAreaElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLAreaElement\"]" gTypeHTMLAreaElement' :: JSRef GType
 #else
 gTypeHTMLAreaElement' = error "gTypeHTMLAreaElement': only available in JavaScript"
@@ -1451,7 +1451,7 @@ type IsHTMLAreaElement o = HTMLAreaElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement)
 
 unHTMLAudioElement (HTMLAudioElement o) = o
@@ -1472,7 +1472,7 @@ instance GObjectClass HTMLAudioElement where
 castToHTMLAudioElement :: GObjectClass obj => obj -> HTMLAudioElement
 castToHTMLAudioElement = castTo gTypeHTMLAudioElement "HTMLAudioElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLAudioElement\"]" gTypeHTMLAudioElement' :: JSRef GType
 #else
 gTypeHTMLAudioElement' = error "gTypeHTMLAudioElement': only available in JavaScript"
@@ -1483,7 +1483,7 @@ type IsHTMLAudioElement o = HTMLAudioElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement)
 
 unHTMLBRElement (HTMLBRElement o) = o
@@ -1503,7 +1503,7 @@ instance GObjectClass HTMLBRElement where
 castToHTMLBRElement :: GObjectClass obj => obj -> HTMLBRElement
 castToHTMLBRElement = castTo gTypeHTMLBRElement "HTMLBRElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLBRElement\"]" gTypeHTMLBRElement' :: JSRef GType
 #else
 gTypeHTMLBRElement' = error "gTypeHTMLBRElement': only available in JavaScript"
@@ -1514,7 +1514,7 @@ type IsHTMLBRElement o = HTMLBRElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement)
 
 unHTMLBaseElement (HTMLBaseElement o) = o
@@ -1534,7 +1534,7 @@ instance GObjectClass HTMLBaseElement where
 castToHTMLBaseElement :: GObjectClass obj => obj -> HTMLBaseElement
 castToHTMLBaseElement = castTo gTypeHTMLBaseElement "HTMLBaseElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLBaseElement\"]" gTypeHTMLBaseElement' :: JSRef GType
 #else
 gTypeHTMLBaseElement' = error "gTypeHTMLBaseElement': only available in JavaScript"
@@ -1545,7 +1545,7 @@ type IsHTMLBaseElement o = HTMLBaseElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement)
 
 unHTMLBaseFontElement (HTMLBaseFontElement o) = o
@@ -1565,7 +1565,7 @@ instance GObjectClass HTMLBaseFontElement where
 castToHTMLBaseFontElement :: GObjectClass obj => obj -> HTMLBaseFontElement
 castToHTMLBaseFontElement = castTo gTypeHTMLBaseFontElement "HTMLBaseFontElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLBaseFontElement\"]" gTypeHTMLBaseFontElement' :: JSRef GType
 #else
 gTypeHTMLBaseFontElement' = error "gTypeHTMLBaseFontElement': only available in JavaScript"
@@ -1576,7 +1576,7 @@ type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement)
 
 unHTMLBodyElement (HTMLBodyElement o) = o
@@ -1596,7 +1596,7 @@ instance GObjectClass HTMLBodyElement where
 castToHTMLBodyElement :: GObjectClass obj => obj -> HTMLBodyElement
 castToHTMLBodyElement = castTo gTypeHTMLBodyElement "HTMLBodyElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLBodyElement\"]" gTypeHTMLBodyElement' :: JSRef GType
 #else
 gTypeHTMLBodyElement' = error "gTypeHTMLBodyElement': only available in JavaScript"
@@ -1607,7 +1607,7 @@ type IsHTMLBodyElement o = HTMLBodyElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement)
 
 unHTMLButtonElement (HTMLButtonElement o) = o
@@ -1627,7 +1627,7 @@ instance GObjectClass HTMLButtonElement where
 castToHTMLButtonElement :: GObjectClass obj => obj -> HTMLButtonElement
 castToHTMLButtonElement = castTo gTypeHTMLButtonElement "HTMLButtonElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLButtonElement\"]" gTypeHTMLButtonElement' :: JSRef GType
 #else
 gTypeHTMLButtonElement' = error "gTypeHTMLButtonElement': only available in JavaScript"
@@ -1638,7 +1638,7 @@ type IsHTMLButtonElement o = HTMLButtonElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement)
 
 unHTMLCanvasElement (HTMLCanvasElement o) = o
@@ -1658,7 +1658,7 @@ instance GObjectClass HTMLCanvasElement where
 castToHTMLCanvasElement :: GObjectClass obj => obj -> HTMLCanvasElement
 castToHTMLCanvasElement = castTo gTypeHTMLCanvasElement "HTMLCanvasElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLCanvasElement\"]" gTypeHTMLCanvasElement' :: JSRef GType
 #else
 gTypeHTMLCanvasElement' = error "gTypeHTMLCanvasElement': only available in JavaScript"
@@ -1669,7 +1669,7 @@ type IsHTMLCanvasElement o = HTMLCanvasElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLCollection = HTMLCollection (JSRef HTMLCollection)
 
 unHTMLCollection (HTMLCollection o) = o
@@ -1686,7 +1686,7 @@ instance GObjectClass HTMLCollection where
 castToHTMLCollection :: GObjectClass obj => obj -> HTMLCollection
 castToHTMLCollection = castTo gTypeHTMLCollection "HTMLCollection"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLCollection\"]" gTypeHTMLCollection' :: JSRef GType
 #else
 gTypeHTMLCollection' = error "gTypeHTMLCollection': only available in JavaScript"
@@ -1697,7 +1697,7 @@ type IsHTMLCollection o = HTMLCollectionClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement)
 
 unHTMLDListElement (HTMLDListElement o) = o
@@ -1717,7 +1717,7 @@ instance GObjectClass HTMLDListElement where
 castToHTMLDListElement :: GObjectClass obj => obj -> HTMLDListElement
 castToHTMLDListElement = castTo gTypeHTMLDListElement "HTMLDListElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLDListElement\"]" gTypeHTMLDListElement' :: JSRef GType
 #else
 gTypeHTMLDListElement' = error "gTypeHTMLDListElement': only available in JavaScript"
@@ -1728,7 +1728,7 @@ type IsHTMLDListElement o = HTMLDListElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement)
 
 unHTMLDetailsElement (HTMLDetailsElement o) = o
@@ -1748,7 +1748,7 @@ instance GObjectClass HTMLDetailsElement where
 castToHTMLDetailsElement :: GObjectClass obj => obj -> HTMLDetailsElement
 castToHTMLDetailsElement = castTo gTypeHTMLDetailsElement "HTMLDetailsElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLDetailsElement\"]" gTypeHTMLDetailsElement' :: JSRef GType
 #else
 gTypeHTMLDetailsElement' = error "gTypeHTMLDetailsElement': only available in JavaScript"
@@ -1759,7 +1759,7 @@ type IsHTMLDetailsElement o = HTMLDetailsElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement)
 
 unHTMLDirectoryElement (HTMLDirectoryElement o) = o
@@ -1779,7 +1779,7 @@ instance GObjectClass HTMLDirectoryElement where
 castToHTMLDirectoryElement :: GObjectClass obj => obj -> HTMLDirectoryElement
 castToHTMLDirectoryElement = castTo gTypeHTMLDirectoryElement "HTMLDirectoryElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLDirectoryElement\"]" gTypeHTMLDirectoryElement' :: JSRef GType
 #else
 gTypeHTMLDirectoryElement' = error "gTypeHTMLDirectoryElement': only available in JavaScript"
@@ -1790,7 +1790,7 @@ type IsHTMLDirectoryElement o = HTMLDirectoryElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement)
 
 unHTMLDivElement (HTMLDivElement o) = o
@@ -1810,7 +1810,7 @@ instance GObjectClass HTMLDivElement where
 castToHTMLDivElement :: GObjectClass obj => obj -> HTMLDivElement
 castToHTMLDivElement = castTo gTypeHTMLDivElement "HTMLDivElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLDivElement\"]" gTypeHTMLDivElement' :: JSRef GType
 #else
 gTypeHTMLDivElement' = error "gTypeHTMLDivElement': only available in JavaScript"
@@ -1821,7 +1821,7 @@ type IsHTMLDivElement o = HTMLDivElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLDocument = HTMLDocument (JSRef HTMLDocument)
 
 unHTMLDocument (HTMLDocument o) = o
@@ -1840,7 +1840,7 @@ instance GObjectClass HTMLDocument where
 castToHTMLDocument :: GObjectClass obj => obj -> HTMLDocument
 castToHTMLDocument = castTo gTypeHTMLDocument "HTMLDocument"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLDocument\"]" gTypeHTMLDocument' :: JSRef GType
 #else
 gTypeHTMLDocument' = error "gTypeHTMLDocument': only available in JavaScript"
@@ -1851,7 +1851,7 @@ type IsHTMLDocument o = HTMLDocumentClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLElement = HTMLElement (JSRef HTMLElement)
 
 unHTMLElement (HTMLElement o) = o
@@ -1870,7 +1870,7 @@ instance GObjectClass HTMLElement where
 castToHTMLElement :: GObjectClass obj => obj -> HTMLElement
 castToHTMLElement = castTo gTypeHTMLElement "HTMLElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLElement\"]" gTypeHTMLElement' :: JSRef GType
 #else
 gTypeHTMLElement' = error "gTypeHTMLElement': only available in JavaScript"
@@ -1881,7 +1881,7 @@ type IsHTMLElement o = HTMLElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement)
 
 unHTMLEmbedElement (HTMLEmbedElement o) = o
@@ -1901,7 +1901,7 @@ instance GObjectClass HTMLEmbedElement where
 castToHTMLEmbedElement :: GObjectClass obj => obj -> HTMLEmbedElement
 castToHTMLEmbedElement = castTo gTypeHTMLEmbedElement "HTMLEmbedElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLEmbedElement\"]" gTypeHTMLEmbedElement' :: JSRef GType
 #else
 gTypeHTMLEmbedElement' = error "gTypeHTMLEmbedElement': only available in JavaScript"
@@ -1912,7 +1912,7 @@ type IsHTMLEmbedElement o = HTMLEmbedElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement)
 
 unHTMLFieldSetElement (HTMLFieldSetElement o) = o
@@ -1932,7 +1932,7 @@ instance GObjectClass HTMLFieldSetElement where
 castToHTMLFieldSetElement :: GObjectClass obj => obj -> HTMLFieldSetElement
 castToHTMLFieldSetElement = castTo gTypeHTMLFieldSetElement "HTMLFieldSetElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLFieldSetElement\"]" gTypeHTMLFieldSetElement' :: JSRef GType
 #else
 gTypeHTMLFieldSetElement' = error "gTypeHTMLFieldSetElement': only available in JavaScript"
@@ -1943,7 +1943,7 @@ type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement)
 
 unHTMLFontElement (HTMLFontElement o) = o
@@ -1963,7 +1963,7 @@ instance GObjectClass HTMLFontElement where
 castToHTMLFontElement :: GObjectClass obj => obj -> HTMLFontElement
 castToHTMLFontElement = castTo gTypeHTMLFontElement "HTMLFontElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLFontElement\"]" gTypeHTMLFontElement' :: JSRef GType
 #else
 gTypeHTMLFontElement' = error "gTypeHTMLFontElement': only available in JavaScript"
@@ -1974,7 +1974,7 @@ type IsHTMLFontElement o = HTMLFontElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement)
 
 unHTMLFormElement (HTMLFormElement o) = o
@@ -1994,7 +1994,7 @@ instance GObjectClass HTMLFormElement where
 castToHTMLFormElement :: GObjectClass obj => obj -> HTMLFormElement
 castToHTMLFormElement = castTo gTypeHTMLFormElement "HTMLFormElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLFormElement\"]" gTypeHTMLFormElement' :: JSRef GType
 #else
 gTypeHTMLFormElement' = error "gTypeHTMLFormElement': only available in JavaScript"
@@ -2005,7 +2005,7 @@ type IsHTMLFormElement o = HTMLFormElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement)
 
 unHTMLFrameElement (HTMLFrameElement o) = o
@@ -2025,7 +2025,7 @@ instance GObjectClass HTMLFrameElement where
 castToHTMLFrameElement :: GObjectClass obj => obj -> HTMLFrameElement
 castToHTMLFrameElement = castTo gTypeHTMLFrameElement "HTMLFrameElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLFrameElement\"]" gTypeHTMLFrameElement' :: JSRef GType
 #else
 gTypeHTMLFrameElement' = error "gTypeHTMLFrameElement': only available in JavaScript"
@@ -2036,7 +2036,7 @@ type IsHTMLFrameElement o = HTMLFrameElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement)
 
 unHTMLFrameSetElement (HTMLFrameSetElement o) = o
@@ -2056,7 +2056,7 @@ instance GObjectClass HTMLFrameSetElement where
 castToHTMLFrameSetElement :: GObjectClass obj => obj -> HTMLFrameSetElement
 castToHTMLFrameSetElement = castTo gTypeHTMLFrameSetElement "HTMLFrameSetElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLFrameSetElement\"]" gTypeHTMLFrameSetElement' :: JSRef GType
 #else
 gTypeHTMLFrameSetElement' = error "gTypeHTMLFrameSetElement': only available in JavaScript"
@@ -2067,7 +2067,7 @@ type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement)
 
 unHTMLHRElement (HTMLHRElement o) = o
@@ -2087,7 +2087,7 @@ instance GObjectClass HTMLHRElement where
 castToHTMLHRElement :: GObjectClass obj => obj -> HTMLHRElement
 castToHTMLHRElement = castTo gTypeHTMLHRElement "HTMLHRElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLHRElement\"]" gTypeHTMLHRElement' :: JSRef GType
 #else
 gTypeHTMLHRElement' = error "gTypeHTMLHRElement': only available in JavaScript"
@@ -2098,7 +2098,7 @@ type IsHTMLHRElement o = HTMLHRElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement)
 
 unHTMLHeadElement (HTMLHeadElement o) = o
@@ -2118,7 +2118,7 @@ instance GObjectClass HTMLHeadElement where
 castToHTMLHeadElement :: GObjectClass obj => obj -> HTMLHeadElement
 castToHTMLHeadElement = castTo gTypeHTMLHeadElement "HTMLHeadElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLHeadElement\"]" gTypeHTMLHeadElement' :: JSRef GType
 #else
 gTypeHTMLHeadElement' = error "gTypeHTMLHeadElement': only available in JavaScript"
@@ -2129,7 +2129,7 @@ type IsHTMLHeadElement o = HTMLHeadElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement)
 
 unHTMLHeadingElement (HTMLHeadingElement o) = o
@@ -2149,7 +2149,7 @@ instance GObjectClass HTMLHeadingElement where
 castToHTMLHeadingElement :: GObjectClass obj => obj -> HTMLHeadingElement
 castToHTMLHeadingElement = castTo gTypeHTMLHeadingElement "HTMLHeadingElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLHeadingElement\"]" gTypeHTMLHeadingElement' :: JSRef GType
 #else
 gTypeHTMLHeadingElement' = error "gTypeHTMLHeadingElement': only available in JavaScript"
@@ -2160,7 +2160,7 @@ type IsHTMLHeadingElement o = HTMLHeadingElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement)
 
 unHTMLHtmlElement (HTMLHtmlElement o) = o
@@ -2180,7 +2180,7 @@ instance GObjectClass HTMLHtmlElement where
 castToHTMLHtmlElement :: GObjectClass obj => obj -> HTMLHtmlElement
 castToHTMLHtmlElement = castTo gTypeHTMLHtmlElement "HTMLHtmlElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLHtmlElement\"]" gTypeHTMLHtmlElement' :: JSRef GType
 #else
 gTypeHTMLHtmlElement' = error "gTypeHTMLHtmlElement': only available in JavaScript"
@@ -2191,7 +2191,7 @@ type IsHTMLHtmlElement o = HTMLHtmlElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement)
 
 unHTMLIFrameElement (HTMLIFrameElement o) = o
@@ -2211,7 +2211,7 @@ instance GObjectClass HTMLIFrameElement where
 castToHTMLIFrameElement :: GObjectClass obj => obj -> HTMLIFrameElement
 castToHTMLIFrameElement = castTo gTypeHTMLIFrameElement "HTMLIFrameElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLIFrameElement\"]" gTypeHTMLIFrameElement' :: JSRef GType
 #else
 gTypeHTMLIFrameElement' = error "gTypeHTMLIFrameElement': only available in JavaScript"
@@ -2222,7 +2222,7 @@ type IsHTMLIFrameElement o = HTMLIFrameElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement)
 
 unHTMLImageElement (HTMLImageElement o) = o
@@ -2242,7 +2242,7 @@ instance GObjectClass HTMLImageElement where
 castToHTMLImageElement :: GObjectClass obj => obj -> HTMLImageElement
 castToHTMLImageElement = castTo gTypeHTMLImageElement "HTMLImageElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLImageElement\"]" gTypeHTMLImageElement' :: JSRef GType
 #else
 gTypeHTMLImageElement' = error "gTypeHTMLImageElement': only available in JavaScript"
@@ -2253,7 +2253,7 @@ type IsHTMLImageElement o = HTMLImageElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement)
 
 unHTMLInputElement (HTMLInputElement o) = o
@@ -2273,7 +2273,7 @@ instance GObjectClass HTMLInputElement where
 castToHTMLInputElement :: GObjectClass obj => obj -> HTMLInputElement
 castToHTMLInputElement = castTo gTypeHTMLInputElement "HTMLInputElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLInputElement\"]" gTypeHTMLInputElement' :: JSRef GType
 #else
 gTypeHTMLInputElement' = error "gTypeHTMLInputElement': only available in JavaScript"
@@ -2284,7 +2284,7 @@ type IsHTMLInputElement o = HTMLInputElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement)
 
 unHTMLKeygenElement (HTMLKeygenElement o) = o
@@ -2304,7 +2304,7 @@ instance GObjectClass HTMLKeygenElement where
 castToHTMLKeygenElement :: GObjectClass obj => obj -> HTMLKeygenElement
 castToHTMLKeygenElement = castTo gTypeHTMLKeygenElement "HTMLKeygenElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLKeygenElement\"]" gTypeHTMLKeygenElement' :: JSRef GType
 #else
 gTypeHTMLKeygenElement' = error "gTypeHTMLKeygenElement': only available in JavaScript"
@@ -2315,7 +2315,7 @@ type IsHTMLKeygenElement o = HTMLKeygenElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement)
 
 unHTMLLIElement (HTMLLIElement o) = o
@@ -2335,7 +2335,7 @@ instance GObjectClass HTMLLIElement where
 castToHTMLLIElement :: GObjectClass obj => obj -> HTMLLIElement
 castToHTMLLIElement = castTo gTypeHTMLLIElement "HTMLLIElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLLIElement\"]" gTypeHTMLLIElement' :: JSRef GType
 #else
 gTypeHTMLLIElement' = error "gTypeHTMLLIElement': only available in JavaScript"
@@ -2346,7 +2346,7 @@ type IsHTMLLIElement o = HTMLLIElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement)
 
 unHTMLLabelElement (HTMLLabelElement o) = o
@@ -2366,7 +2366,7 @@ instance GObjectClass HTMLLabelElement where
 castToHTMLLabelElement :: GObjectClass obj => obj -> HTMLLabelElement
 castToHTMLLabelElement = castTo gTypeHTMLLabelElement "HTMLLabelElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLLabelElement\"]" gTypeHTMLLabelElement' :: JSRef GType
 #else
 gTypeHTMLLabelElement' = error "gTypeHTMLLabelElement': only available in JavaScript"
@@ -2377,7 +2377,7 @@ type IsHTMLLabelElement o = HTMLLabelElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement)
 
 unHTMLLegendElement (HTMLLegendElement o) = o
@@ -2397,7 +2397,7 @@ instance GObjectClass HTMLLegendElement where
 castToHTMLLegendElement :: GObjectClass obj => obj -> HTMLLegendElement
 castToHTMLLegendElement = castTo gTypeHTMLLegendElement "HTMLLegendElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLLegendElement\"]" gTypeHTMLLegendElement' :: JSRef GType
 #else
 gTypeHTMLLegendElement' = error "gTypeHTMLLegendElement': only available in JavaScript"
@@ -2408,7 +2408,7 @@ type IsHTMLLegendElement o = HTMLLegendElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement)
 
 unHTMLLinkElement (HTMLLinkElement o) = o
@@ -2428,7 +2428,7 @@ instance GObjectClass HTMLLinkElement where
 castToHTMLLinkElement :: GObjectClass obj => obj -> HTMLLinkElement
 castToHTMLLinkElement = castTo gTypeHTMLLinkElement "HTMLLinkElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLLinkElement\"]" gTypeHTMLLinkElement' :: JSRef GType
 #else
 gTypeHTMLLinkElement' = error "gTypeHTMLLinkElement': only available in JavaScript"
@@ -2439,7 +2439,7 @@ type IsHTMLLinkElement o = HTMLLinkElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement)
 
 unHTMLMapElement (HTMLMapElement o) = o
@@ -2459,7 +2459,7 @@ instance GObjectClass HTMLMapElement where
 castToHTMLMapElement :: GObjectClass obj => obj -> HTMLMapElement
 castToHTMLMapElement = castTo gTypeHTMLMapElement "HTMLMapElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLMapElement\"]" gTypeHTMLMapElement' :: JSRef GType
 #else
 gTypeHTMLMapElement' = error "gTypeHTMLMapElement': only available in JavaScript"
@@ -2470,7 +2470,7 @@ type IsHTMLMapElement o = HTMLMapElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement)
 
 unHTMLMarqueeElement (HTMLMarqueeElement o) = o
@@ -2490,7 +2490,7 @@ instance GObjectClass HTMLMarqueeElement where
 castToHTMLMarqueeElement :: GObjectClass obj => obj -> HTMLMarqueeElement
 castToHTMLMarqueeElement = castTo gTypeHTMLMarqueeElement "HTMLMarqueeElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLMarqueeElement\"]" gTypeHTMLMarqueeElement' :: JSRef GType
 #else
 gTypeHTMLMarqueeElement' = error "gTypeHTMLMarqueeElement': only available in JavaScript"
@@ -2501,7 +2501,7 @@ type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement)
 
 unHTMLMediaElement (HTMLMediaElement o) = o
@@ -2521,7 +2521,7 @@ instance GObjectClass HTMLMediaElement where
 castToHTMLMediaElement :: GObjectClass obj => obj -> HTMLMediaElement
 castToHTMLMediaElement = castTo gTypeHTMLMediaElement "HTMLMediaElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLMediaElement\"]" gTypeHTMLMediaElement' :: JSRef GType
 #else
 gTypeHTMLMediaElement' = error "gTypeHTMLMediaElement': only available in JavaScript"
@@ -2532,7 +2532,7 @@ type IsHTMLMediaElement o = HTMLMediaElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement)
 
 unHTMLMenuElement (HTMLMenuElement o) = o
@@ -2552,7 +2552,7 @@ instance GObjectClass HTMLMenuElement where
 castToHTMLMenuElement :: GObjectClass obj => obj -> HTMLMenuElement
 castToHTMLMenuElement = castTo gTypeHTMLMenuElement "HTMLMenuElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLMenuElement\"]" gTypeHTMLMenuElement' :: JSRef GType
 #else
 gTypeHTMLMenuElement' = error "gTypeHTMLMenuElement': only available in JavaScript"
@@ -2563,7 +2563,7 @@ type IsHTMLMenuElement o = HTMLMenuElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement)
 
 unHTMLMetaElement (HTMLMetaElement o) = o
@@ -2583,7 +2583,7 @@ instance GObjectClass HTMLMetaElement where
 castToHTMLMetaElement :: GObjectClass obj => obj -> HTMLMetaElement
 castToHTMLMetaElement = castTo gTypeHTMLMetaElement "HTMLMetaElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLMetaElement\"]" gTypeHTMLMetaElement' :: JSRef GType
 #else
 gTypeHTMLMetaElement' = error "gTypeHTMLMetaElement': only available in JavaScript"
@@ -2594,7 +2594,7 @@ type IsHTMLMetaElement o = HTMLMetaElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLModElement = HTMLModElement (JSRef HTMLModElement)
 
 unHTMLModElement (HTMLModElement o) = o
@@ -2614,7 +2614,7 @@ instance GObjectClass HTMLModElement where
 castToHTMLModElement :: GObjectClass obj => obj -> HTMLModElement
 castToHTMLModElement = castTo gTypeHTMLModElement "HTMLModElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLModElement\"]" gTypeHTMLModElement' :: JSRef GType
 #else
 gTypeHTMLModElement' = error "gTypeHTMLModElement': only available in JavaScript"
@@ -2625,7 +2625,7 @@ type IsHTMLModElement o = HTMLModElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement)
 
 unHTMLOListElement (HTMLOListElement o) = o
@@ -2645,7 +2645,7 @@ instance GObjectClass HTMLOListElement where
 castToHTMLOListElement :: GObjectClass obj => obj -> HTMLOListElement
 castToHTMLOListElement = castTo gTypeHTMLOListElement "HTMLOListElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLOListElement\"]" gTypeHTMLOListElement' :: JSRef GType
 #else
 gTypeHTMLOListElement' = error "gTypeHTMLOListElement': only available in JavaScript"
@@ -2656,7 +2656,7 @@ type IsHTMLOListElement o = HTMLOListElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement)
 
 unHTMLObjectElement (HTMLObjectElement o) = o
@@ -2676,7 +2676,7 @@ instance GObjectClass HTMLObjectElement where
 castToHTMLObjectElement :: GObjectClass obj => obj -> HTMLObjectElement
 castToHTMLObjectElement = castTo gTypeHTMLObjectElement "HTMLObjectElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLObjectElement\"]" gTypeHTMLObjectElement' :: JSRef GType
 #else
 gTypeHTMLObjectElement' = error "gTypeHTMLObjectElement': only available in JavaScript"
@@ -2687,7 +2687,7 @@ type IsHTMLObjectElement o = HTMLObjectElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement)
 
 unHTMLOptGroupElement (HTMLOptGroupElement o) = o
@@ -2707,7 +2707,7 @@ instance GObjectClass HTMLOptGroupElement where
 castToHTMLOptGroupElement :: GObjectClass obj => obj -> HTMLOptGroupElement
 castToHTMLOptGroupElement = castTo gTypeHTMLOptGroupElement "HTMLOptGroupElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLOptGroupElement\"]" gTypeHTMLOptGroupElement' :: JSRef GType
 #else
 gTypeHTMLOptGroupElement' = error "gTypeHTMLOptGroupElement': only available in JavaScript"
@@ -2718,7 +2718,7 @@ type IsHTMLOptGroupElement o = HTMLOptGroupElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement)
 
 unHTMLOptionElement (HTMLOptionElement o) = o
@@ -2738,7 +2738,7 @@ instance GObjectClass HTMLOptionElement where
 castToHTMLOptionElement :: GObjectClass obj => obj -> HTMLOptionElement
 castToHTMLOptionElement = castTo gTypeHTMLOptionElement "HTMLOptionElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLOptionElement\"]" gTypeHTMLOptionElement' :: JSRef GType
 #else
 gTypeHTMLOptionElement' = error "gTypeHTMLOptionElement': only available in JavaScript"
@@ -2749,7 +2749,7 @@ type IsHTMLOptionElement o = HTMLOptionElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollection)
 
 unHTMLOptionsCollection (HTMLOptionsCollection o) = o
@@ -2767,7 +2767,7 @@ instance GObjectClass HTMLOptionsCollection where
 castToHTMLOptionsCollection :: GObjectClass obj => obj -> HTMLOptionsCollection
 castToHTMLOptionsCollection = castTo gTypeHTMLOptionsCollection "HTMLOptionsCollection"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLOptionsCollection\"]" gTypeHTMLOptionsCollection' :: JSRef GType
 #else
 gTypeHTMLOptionsCollection' = error "gTypeHTMLOptionsCollection': only available in JavaScript"
@@ -2778,7 +2778,7 @@ type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement)
 
 unHTMLParagraphElement (HTMLParagraphElement o) = o
@@ -2798,7 +2798,7 @@ instance GObjectClass HTMLParagraphElement where
 castToHTMLParagraphElement :: GObjectClass obj => obj -> HTMLParagraphElement
 castToHTMLParagraphElement = castTo gTypeHTMLParagraphElement "HTMLParagraphElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLParagraphElement\"]" gTypeHTMLParagraphElement' :: JSRef GType
 #else
 gTypeHTMLParagraphElement' = error "gTypeHTMLParagraphElement': only available in JavaScript"
@@ -2809,7 +2809,7 @@ type IsHTMLParagraphElement o = HTMLParagraphElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement)
 
 unHTMLParamElement (HTMLParamElement o) = o
@@ -2829,7 +2829,7 @@ instance GObjectClass HTMLParamElement where
 castToHTMLParamElement :: GObjectClass obj => obj -> HTMLParamElement
 castToHTMLParamElement = castTo gTypeHTMLParamElement "HTMLParamElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLParamElement\"]" gTypeHTMLParamElement' :: JSRef GType
 #else
 gTypeHTMLParamElement' = error "gTypeHTMLParamElement': only available in JavaScript"
@@ -2840,7 +2840,7 @@ type IsHTMLParamElement o = HTMLParamElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement)
 
 unHTMLPreElement (HTMLPreElement o) = o
@@ -2860,7 +2860,7 @@ instance GObjectClass HTMLPreElement where
 castToHTMLPreElement :: GObjectClass obj => obj -> HTMLPreElement
 castToHTMLPreElement = castTo gTypeHTMLPreElement "HTMLPreElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLPreElement\"]" gTypeHTMLPreElement' :: JSRef GType
 #else
 gTypeHTMLPreElement' = error "gTypeHTMLPreElement': only available in JavaScript"
@@ -2871,7 +2871,7 @@ type IsHTMLPreElement o = HTMLPreElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement)
 
 unHTMLQuoteElement (HTMLQuoteElement o) = o
@@ -2891,7 +2891,7 @@ instance GObjectClass HTMLQuoteElement where
 castToHTMLQuoteElement :: GObjectClass obj => obj -> HTMLQuoteElement
 castToHTMLQuoteElement = castTo gTypeHTMLQuoteElement "HTMLQuoteElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLQuoteElement\"]" gTypeHTMLQuoteElement' :: JSRef GType
 #else
 gTypeHTMLQuoteElement' = error "gTypeHTMLQuoteElement': only available in JavaScript"
@@ -2902,7 +2902,7 @@ type IsHTMLQuoteElement o = HTMLQuoteElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement)
 
 unHTMLScriptElement (HTMLScriptElement o) = o
@@ -2922,7 +2922,7 @@ instance GObjectClass HTMLScriptElement where
 castToHTMLScriptElement :: GObjectClass obj => obj -> HTMLScriptElement
 castToHTMLScriptElement = castTo gTypeHTMLScriptElement "HTMLScriptElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLScriptElement\"]" gTypeHTMLScriptElement' :: JSRef GType
 #else
 gTypeHTMLScriptElement' = error "gTypeHTMLScriptElement': only available in JavaScript"
@@ -2933,7 +2933,7 @@ type IsHTMLScriptElement o = HTMLScriptElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement)
 
 unHTMLSelectElement (HTMLSelectElement o) = o
@@ -2953,7 +2953,7 @@ instance GObjectClass HTMLSelectElement where
 castToHTMLSelectElement :: GObjectClass obj => obj -> HTMLSelectElement
 castToHTMLSelectElement = castTo gTypeHTMLSelectElement "HTMLSelectElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLSelectElement\"]" gTypeHTMLSelectElement' :: JSRef GType
 #else
 gTypeHTMLSelectElement' = error "gTypeHTMLSelectElement': only available in JavaScript"
@@ -2964,7 +2964,7 @@ type IsHTMLSelectElement o = HTMLSelectElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement)
 
 unHTMLStyleElement (HTMLStyleElement o) = o
@@ -2984,7 +2984,7 @@ instance GObjectClass HTMLStyleElement where
 castToHTMLStyleElement :: GObjectClass obj => obj -> HTMLStyleElement
 castToHTMLStyleElement = castTo gTypeHTMLStyleElement "HTMLStyleElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLStyleElement\"]" gTypeHTMLStyleElement' :: JSRef GType
 #else
 gTypeHTMLStyleElement' = error "gTypeHTMLStyleElement': only available in JavaScript"
@@ -2995,7 +2995,7 @@ type IsHTMLStyleElement o = HTMLStyleElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptionElement)
 
 unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
@@ -3015,7 +3015,7 @@ instance GObjectClass HTMLTableCaptionElement where
 castToHTMLTableCaptionElement :: GObjectClass obj => obj -> HTMLTableCaptionElement
 castToHTMLTableCaptionElement = castTo gTypeHTMLTableCaptionElement "HTMLTableCaptionElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTableCaptionElement\"]" gTypeHTMLTableCaptionElement' :: JSRef GType
 #else
 gTypeHTMLTableCaptionElement' = error "gTypeHTMLTableCaptionElement': only available in JavaScript"
@@ -3026,7 +3026,7 @@ type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement)
 
 unHTMLTableCellElement (HTMLTableCellElement o) = o
@@ -3046,7 +3046,7 @@ instance GObjectClass HTMLTableCellElement where
 castToHTMLTableCellElement :: GObjectClass obj => obj -> HTMLTableCellElement
 castToHTMLTableCellElement = castTo gTypeHTMLTableCellElement "HTMLTableCellElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTableCellElement\"]" gTypeHTMLTableCellElement' :: JSRef GType
 #else
 gTypeHTMLTableCellElement' = error "gTypeHTMLTableCellElement': only available in JavaScript"
@@ -3057,7 +3057,7 @@ type IsHTMLTableCellElement o = HTMLTableCellElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement)
 
 unHTMLTableColElement (HTMLTableColElement o) = o
@@ -3077,7 +3077,7 @@ instance GObjectClass HTMLTableColElement where
 castToHTMLTableColElement :: GObjectClass obj => obj -> HTMLTableColElement
 castToHTMLTableColElement = castTo gTypeHTMLTableColElement "HTMLTableColElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTableColElement\"]" gTypeHTMLTableColElement' :: JSRef GType
 #else
 gTypeHTMLTableColElement' = error "gTypeHTMLTableColElement': only available in JavaScript"
@@ -3088,7 +3088,7 @@ type IsHTMLTableColElement o = HTMLTableColElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement)
 
 unHTMLTableElement (HTMLTableElement o) = o
@@ -3108,7 +3108,7 @@ instance GObjectClass HTMLTableElement where
 castToHTMLTableElement :: GObjectClass obj => obj -> HTMLTableElement
 castToHTMLTableElement = castTo gTypeHTMLTableElement "HTMLTableElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTableElement\"]" gTypeHTMLTableElement' :: JSRef GType
 #else
 gTypeHTMLTableElement' = error "gTypeHTMLTableElement': only available in JavaScript"
@@ -3119,7 +3119,7 @@ type IsHTMLTableElement o = HTMLTableElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement)
 
 unHTMLTableRowElement (HTMLTableRowElement o) = o
@@ -3139,7 +3139,7 @@ instance GObjectClass HTMLTableRowElement where
 castToHTMLTableRowElement :: GObjectClass obj => obj -> HTMLTableRowElement
 castToHTMLTableRowElement = castTo gTypeHTMLTableRowElement "HTMLTableRowElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTableRowElement\"]" gTypeHTMLTableRowElement' :: JSRef GType
 #else
 gTypeHTMLTableRowElement' = error "gTypeHTMLTableRowElement': only available in JavaScript"
@@ -3150,7 +3150,7 @@ type IsHTMLTableRowElement o = HTMLTableRowElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionElement)
 
 unHTMLTableSectionElement (HTMLTableSectionElement o) = o
@@ -3170,7 +3170,7 @@ instance GObjectClass HTMLTableSectionElement where
 castToHTMLTableSectionElement :: GObjectClass obj => obj -> HTMLTableSectionElement
 castToHTMLTableSectionElement = castTo gTypeHTMLTableSectionElement "HTMLTableSectionElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTableSectionElement\"]" gTypeHTMLTableSectionElement' :: JSRef GType
 #else
 gTypeHTMLTableSectionElement' = error "gTypeHTMLTableSectionElement': only available in JavaScript"
@@ -3181,7 +3181,7 @@ type IsHTMLTableSectionElement o = HTMLTableSectionElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement)
 
 unHTMLTextAreaElement (HTMLTextAreaElement o) = o
@@ -3201,7 +3201,7 @@ instance GObjectClass HTMLTextAreaElement where
 castToHTMLTextAreaElement :: GObjectClass obj => obj -> HTMLTextAreaElement
 castToHTMLTextAreaElement = castTo gTypeHTMLTextAreaElement "HTMLTextAreaElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTextAreaElement\"]" gTypeHTMLTextAreaElement' :: JSRef GType
 #else
 gTypeHTMLTextAreaElement' = error "gTypeHTMLTextAreaElement': only available in JavaScript"
@@ -3212,7 +3212,7 @@ type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement)
 
 unHTMLTitleElement (HTMLTitleElement o) = o
@@ -3232,7 +3232,7 @@ instance GObjectClass HTMLTitleElement where
 castToHTMLTitleElement :: GObjectClass obj => obj -> HTMLTitleElement
 castToHTMLTitleElement = castTo gTypeHTMLTitleElement "HTMLTitleElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLTitleElement\"]" gTypeHTMLTitleElement' :: JSRef GType
 #else
 gTypeHTMLTitleElement' = error "gTypeHTMLTitleElement': only available in JavaScript"
@@ -3243,7 +3243,7 @@ type IsHTMLTitleElement o = HTMLTitleElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement)
 
 unHTMLUListElement (HTMLUListElement o) = o
@@ -3263,7 +3263,7 @@ instance GObjectClass HTMLUListElement where
 castToHTMLUListElement :: GObjectClass obj => obj -> HTMLUListElement
 castToHTMLUListElement = castTo gTypeHTMLUListElement "HTMLUListElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLUListElement\"]" gTypeHTMLUListElement' :: JSRef GType
 #else
 gTypeHTMLUListElement' = error "gTypeHTMLUListElement': only available in JavaScript"
@@ -3274,7 +3274,7 @@ type IsHTMLUListElement o = HTMLUListElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement)
 
 unHTMLVideoElement (HTMLVideoElement o) = o
@@ -3295,7 +3295,7 @@ instance GObjectClass HTMLVideoElement where
 castToHTMLVideoElement :: GObjectClass obj => obj -> HTMLVideoElement
 castToHTMLVideoElement = castTo gTypeHTMLVideoElement "HTMLVideoElement"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"HTMLVideoElement\"]" gTypeHTMLVideoElement' :: JSRef GType
 #else
 gTypeHTMLVideoElement' = error "gTypeHTMLVideoElement': only available in JavaScript"
@@ -3306,7 +3306,7 @@ type IsHTMLVideoElement o = HTMLVideoElementClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype History = History (JSRef History)
 
 unHistory (History o) = o
@@ -3323,7 +3323,7 @@ instance GObjectClass History where
 castToHistory :: GObjectClass obj => obj -> History
 castToHistory = castTo gTypeHistory "History"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"History\"]" gTypeHistory' :: JSRef GType
 #else
 gTypeHistory' = error "gTypeHistory': only available in JavaScript"
@@ -3334,7 +3334,7 @@ type IsHistory o = HistoryClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype KeyboardEvent = KeyboardEvent (JSRef KeyboardEvent)
 
 unKeyboardEvent (KeyboardEvent o) = o
@@ -3353,7 +3353,7 @@ instance GObjectClass KeyboardEvent where
 castToKeyboardEvent :: GObjectClass obj => obj -> KeyboardEvent
 castToKeyboardEvent = castTo gTypeKeyboardEvent "KeyboardEvent"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"KeyboardEvent\"]" gTypeKeyboardEvent' :: JSRef GType
 #else
 gTypeKeyboardEvent' = error "gTypeKeyboardEvent': only available in JavaScript"
@@ -3363,7 +3363,7 @@ gTypeKeyboardEvent = GType gTypeKeyboardEvent'
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Location = Location (JSRef Location)
 
 unLocation (Location o) = o
@@ -3380,7 +3380,7 @@ instance GObjectClass Location where
 castToLocation :: GObjectClass obj => obj -> Location
 castToLocation = castTo gTypeLocation "Location"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Location\"]" gTypeLocation' :: JSRef GType
 #else
 gTypeLocation' = error "gTypeLocation': only available in JavaScript"
@@ -3391,7 +3391,7 @@ type IsLocation o = LocationClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype MediaError = MediaError (JSRef MediaError)
 
 unMediaError (MediaError o) = o
@@ -3408,7 +3408,7 @@ instance GObjectClass MediaError where
 castToMediaError :: GObjectClass obj => obj -> MediaError
 castToMediaError = castTo gTypeMediaError "MediaError"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"MediaError\"]" gTypeMediaError' :: JSRef GType
 #else
 gTypeMediaError' = error "gTypeMediaError': only available in JavaScript"
@@ -3419,7 +3419,7 @@ type IsMediaError o = MediaErrorClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype MediaList = MediaList (JSRef MediaList)
 
 unMediaList (MediaList o) = o
@@ -3436,7 +3436,7 @@ instance GObjectClass MediaList where
 castToMediaList :: GObjectClass obj => obj -> MediaList
 castToMediaList = castTo gTypeMediaList "MediaList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"MediaList\"]" gTypeMediaList' :: JSRef GType
 #else
 gTypeMediaList' = error "gTypeMediaList': only available in JavaScript"
@@ -3447,7 +3447,7 @@ type IsMediaList o = MediaListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype MediaQueryList = MediaQueryList (JSRef MediaQueryList)
 
 unMediaQueryList (MediaQueryList o) = o
@@ -3464,7 +3464,7 @@ instance GObjectClass MediaQueryList where
 castToMediaQueryList :: GObjectClass obj => obj -> MediaQueryList
 castToMediaQueryList = castTo gTypeMediaQueryList "MediaQueryList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"MediaQueryList\"]" gTypeMediaQueryList' :: JSRef GType
 #else
 gTypeMediaQueryList' = error "gTypeMediaQueryList': only available in JavaScript"
@@ -3475,7 +3475,7 @@ type IsMediaQueryList o = MediaQueryListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype MessagePort = MessagePort (JSRef MessagePort)
 
 unMessagePort (MessagePort o) = o
@@ -3492,7 +3492,7 @@ instance GObjectClass MessagePort where
 castToMessagePort :: GObjectClass obj => obj -> MessagePort
 castToMessagePort = castTo gTypeMessagePort "MessagePort"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"MessagePort\"]" gTypeMessagePort' :: JSRef GType
 #else
 gTypeMessagePort' = error "gTypeMessagePort': only available in JavaScript"
@@ -3503,7 +3503,7 @@ type IsMessagePort o = MessagePortClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype MouseEvent = MouseEvent (JSRef MouseEvent)
 
 unMouseEvent (MouseEvent o) = o
@@ -3522,7 +3522,7 @@ instance GObjectClass MouseEvent where
 castToMouseEvent :: GObjectClass obj => obj -> MouseEvent
 castToMouseEvent = castTo gTypeMouseEvent "MouseEvent"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"MouseEvent\"]" gTypeMouseEvent' :: JSRef GType
 #else
 gTypeMouseEvent' = error "gTypeMouseEvent': only available in JavaScript"
@@ -3533,7 +3533,7 @@ type IsMouseEvent o = MouseEventClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap)
 
 unNamedNodeMap (NamedNodeMap o) = o
@@ -3550,7 +3550,7 @@ instance GObjectClass NamedNodeMap where
 castToNamedNodeMap :: GObjectClass obj => obj -> NamedNodeMap
 castToNamedNodeMap = castTo gTypeNamedNodeMap "NamedNodeMap"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"NamedNodeMap\"]" gTypeNamedNodeMap' :: JSRef GType
 #else
 gTypeNamedNodeMap' = error "gTypeNamedNodeMap': only available in JavaScript"
@@ -3561,7 +3561,7 @@ type IsNamedNodeMap o = NamedNodeMapClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Navigator = Navigator (JSRef Navigator)
 
 unNavigator (Navigator o) = o
@@ -3578,7 +3578,7 @@ instance GObjectClass Navigator where
 castToNavigator :: GObjectClass obj => obj -> Navigator
 castToNavigator = castTo gTypeNavigator "Navigator"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Navigator\"]" gTypeNavigator' :: JSRef GType
 #else
 gTypeNavigator' = error "gTypeNavigator': only available in JavaScript"
@@ -3589,7 +3589,7 @@ type IsNavigator o = NavigatorClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Node = Node (JSRef Node)
 
 unNode (Node o) = o
@@ -3606,7 +3606,7 @@ instance GObjectClass Node where
 castToNode :: GObjectClass obj => obj -> Node
 castToNode = castTo gTypeNode "Node"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Node\"]" gTypeNode' :: JSRef GType
 #else
 gTypeNode' = error "gTypeNode': only available in JavaScript"
@@ -3617,7 +3617,7 @@ type IsNode o = NodeClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype NodeFilter = NodeFilter (JSRef NodeFilter)
 
 unNodeFilter (NodeFilter o) = o
@@ -3634,7 +3634,7 @@ instance GObjectClass NodeFilter where
 castToNodeFilter :: GObjectClass obj => obj -> NodeFilter
 castToNodeFilter = castTo gTypeNodeFilter "NodeFilter"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"NodeFilter\"]" gTypeNodeFilter' :: JSRef GType
 #else
 gTypeNodeFilter' = error "gTypeNodeFilter': only available in JavaScript"
@@ -3645,7 +3645,7 @@ type IsNodeFilter o = NodeFilterClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype NodeIterator = NodeIterator (JSRef NodeIterator)
 
 unNodeIterator (NodeIterator o) = o
@@ -3662,7 +3662,7 @@ instance GObjectClass NodeIterator where
 castToNodeIterator :: GObjectClass obj => obj -> NodeIterator
 castToNodeIterator = castTo gTypeNodeIterator "NodeIterator"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"NodeIterator\"]" gTypeNodeIterator' :: JSRef GType
 #else
 gTypeNodeIterator' = error "gTypeNodeIterator': only available in JavaScript"
@@ -3673,7 +3673,7 @@ type IsNodeIterator o = NodeIteratorClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype NodeList = NodeList (JSRef NodeList)
 
 unNodeList (NodeList o) = o
@@ -3690,7 +3690,7 @@ instance GObjectClass NodeList where
 castToNodeList :: GObjectClass obj => obj -> NodeList
 castToNodeList = castTo gTypeNodeList "NodeList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"NodeList\"]" gTypeNodeList' :: JSRef GType
 #else
 gTypeNodeList' = error "gTypeNodeList': only available in JavaScript"
@@ -3701,7 +3701,7 @@ type IsNodeList o = NodeListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction)
 
 unProcessingInstruction (ProcessingInstruction o) = o
@@ -3719,7 +3719,7 @@ instance GObjectClass ProcessingInstruction where
 castToProcessingInstruction :: GObjectClass obj => obj -> ProcessingInstruction
 castToProcessingInstruction = castTo gTypeProcessingInstruction "ProcessingInstruction"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"ProcessingInstruction\"]" gTypeProcessingInstruction' :: JSRef GType
 #else
 gTypeProcessingInstruction' = error "gTypeProcessingInstruction': only available in JavaScript"
@@ -3730,7 +3730,7 @@ type IsProcessingInstruction o = ProcessingInstructionClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMRange = DOMRange (JSRef DOMRange)
 
 unDOMRange (DOMRange o) = o
@@ -3747,7 +3747,7 @@ instance GObjectClass DOMRange where
 castToDOMRange :: GObjectClass obj => obj -> DOMRange
 castToDOMRange = castTo gTypeDOMRange "DOMRange"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMRange\"]" gTypeDOMRange' :: JSRef GType
 #else
 gTypeDOMRange' = error "gTypeDOMRange': only available in JavaScript"
@@ -3758,7 +3758,7 @@ type IsDOMRange o = DOMRangeClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMScreen = DOMScreen (JSRef DOMScreen)
 
 unDOMScreen (DOMScreen o) = o
@@ -3775,7 +3775,7 @@ instance GObjectClass DOMScreen where
 castToDOMScreen :: GObjectClass obj => obj -> DOMScreen
 castToDOMScreen = castTo gTypeDOMScreen "DOMScreen"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"DOMScreen\"]" gTypeDOMScreen' :: JSRef GType
 #else
 gTypeDOMScreen' = error "gTypeDOMScreen': only available in JavaScript"
@@ -3786,7 +3786,7 @@ type IsDOMScreen o = DOMScreenClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Storage = Storage (JSRef Storage)
 
 unStorage (Storage o) = o
@@ -3803,7 +3803,7 @@ instance GObjectClass Storage where
 castToStorage :: GObjectClass obj => obj -> Storage
 castToStorage = castTo gTypeStorage "Storage"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Storage\"]" gTypeStorage' :: JSRef GType
 #else
 gTypeStorage' = error "gTypeStorage': only available in JavaScript"
@@ -3814,7 +3814,7 @@ type IsStorage o = StorageClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype StorageInfo = StorageInfo (JSRef StorageInfo)
 
 unStorageInfo (StorageInfo o) = o
@@ -3831,7 +3831,7 @@ instance GObjectClass StorageInfo where
 castToStorageInfo :: GObjectClass obj => obj -> StorageInfo
 castToStorageInfo = castTo gTypeStorageInfo "StorageInfo"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"StorageInfo\"]" gTypeStorageInfo' :: JSRef GType
 #else
 gTypeStorageInfo' = error "gTypeStorageInfo': only available in JavaScript"
@@ -3841,7 +3841,7 @@ gTypeStorageInfo = GType gTypeStorageInfo'
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype StyleMedia = StyleMedia (JSRef StyleMedia)
 
 unStyleMedia (StyleMedia o) = o
@@ -3858,7 +3858,7 @@ instance GObjectClass StyleMedia where
 castToStyleMedia :: GObjectClass obj => obj -> StyleMedia
 castToStyleMedia = castTo gTypeStyleMedia "StyleMedia"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"StyleMedia\"]" gTypeStyleMedia' :: JSRef GType
 #else
 gTypeStyleMedia' = error "gTypeStyleMedia': only available in JavaScript"
@@ -3869,7 +3869,7 @@ type IsStyleMedia o = StyleMediaClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype StyleSheet = StyleSheet (JSRef StyleSheet)
 
 unStyleSheet (StyleSheet o) = o
@@ -3886,7 +3886,7 @@ instance GObjectClass StyleSheet where
 castToStyleSheet :: GObjectClass obj => obj -> StyleSheet
 castToStyleSheet = castTo gTypeStyleSheet "StyleSheet"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"StyleSheet\"]" gTypeStyleSheet' :: JSRef GType
 #else
 gTypeStyleSheet' = error "gTypeStyleSheet': only available in JavaScript"
@@ -3897,7 +3897,7 @@ type IsStyleSheet o = StyleSheetClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype StyleSheetList = StyleSheetList (JSRef StyleSheetList)
 
 unStyleSheetList (StyleSheetList o) = o
@@ -3914,7 +3914,7 @@ instance GObjectClass StyleSheetList where
 castToStyleSheetList :: GObjectClass obj => obj -> StyleSheetList
 castToStyleSheetList = castTo gTypeStyleSheetList "StyleSheetList"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"StyleSheetList\"]" gTypeStyleSheetList' :: JSRef GType
 #else
 gTypeStyleSheetList' = error "gTypeStyleSheetList': only available in JavaScript"
@@ -3925,7 +3925,7 @@ type IsStyleSheetList o = StyleSheetListClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Text = Text (JSRef Text)
 
 unText (Text o) = o
@@ -3944,7 +3944,7 @@ instance GObjectClass Text where
 castToText :: GObjectClass obj => obj -> Text
 castToText = castTo gTypeText "Text"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"Text\"]" gTypeText' :: JSRef GType
 #else
 gTypeText' = error "gTypeText': only available in JavaScript"
@@ -3955,7 +3955,7 @@ type IsText o = TextClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype TimeRanges = TimeRanges (JSRef TimeRanges)
 
 unTimeRanges (TimeRanges o) = o
@@ -3972,7 +3972,7 @@ instance GObjectClass TimeRanges where
 castToTimeRanges :: GObjectClass obj => obj -> TimeRanges
 castToTimeRanges = castTo gTypeTimeRanges "TimeRanges"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"TimeRanges\"]" gTypeTimeRanges' :: JSRef GType
 #else
 gTypeTimeRanges' = error "gTypeTimeRanges': only available in JavaScript"
@@ -3983,7 +3983,7 @@ type IsTimeRanges o = TimeRangesClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype TreeWalker = TreeWalker (JSRef TreeWalker)
 
 unTreeWalker (TreeWalker o) = o
@@ -4000,7 +4000,7 @@ instance GObjectClass TreeWalker where
 castToTreeWalker :: GObjectClass obj => obj -> TreeWalker
 castToTreeWalker = castTo gTypeTreeWalker "TreeWalker"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"TreeWalker\"]" gTypeTreeWalker' :: JSRef GType
 #else
 gTypeTreeWalker' = error "gTypeTreeWalker': only available in JavaScript"
@@ -4011,7 +4011,7 @@ type IsTreeWalker o = TreeWalkerClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype UIEvent = UIEvent (JSRef UIEvent)
 
 unUIEvent (UIEvent o) = o
@@ -4029,7 +4029,7 @@ instance GObjectClass UIEvent where
 castToUIEvent :: GObjectClass obj => obj -> UIEvent
 castToUIEvent = castTo gTypeUIEvent "UIEvent"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"UIEvent\"]" gTypeUIEvent' :: JSRef GType
 #else
 gTypeUIEvent' = error "gTypeUIEvent': only available in JavaScript"
@@ -4040,7 +4040,7 @@ type IsUIEvent o = UIEventClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype ValidityState = ValidityState (JSRef ValidityState)
 
 unValidityState (ValidityState o) = o
@@ -4057,7 +4057,7 @@ instance GObjectClass ValidityState where
 castToValidityState :: GObjectClass obj => obj -> ValidityState
 castToValidityState = castTo gTypeValidityState "ValidityState"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"ValidityState\"]" gTypeValidityState' :: JSRef GType
 #else
 gTypeValidityState' = error "gTypeValidityState': only available in JavaScript"
@@ -4068,7 +4068,7 @@ type IsValidityState o = ValidityStateClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow)
 
 unWebKitNamedFlow (WebKitNamedFlow o) = o
@@ -4085,7 +4085,7 @@ instance GObjectClass WebKitNamedFlow where
 castToWebKitNamedFlow :: GObjectClass obj => obj -> WebKitNamedFlow
 castToWebKitNamedFlow = castTo gTypeWebKitNamedFlow "WebKitNamedFlow"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"WebKitNamedFlow\"]" gTypeWebKitNamedFlow' :: JSRef GType
 #else
 gTypeWebKitNamedFlow' = error "gTypeWebKitNamedFlow': only available in JavaScript"
@@ -4096,7 +4096,7 @@ type IsWebKitNamedFlow o = WebKitNamedFlowClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype WebKitPoint = WebKitPoint (JSRef WebKitPoint)
 
 unWebKitPoint (WebKitPoint o) = o
@@ -4113,7 +4113,7 @@ instance GObjectClass WebKitPoint where
 castToWebKitPoint :: GObjectClass obj => obj -> WebKitPoint
 castToWebKitPoint = castTo gTypeWebKitPoint "WebKitPoint"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"WebKitPoint\"]" gTypeWebKitPoint' :: JSRef GType
 #else
 gTypeWebKitPoint' = error "gTypeWebKitPoint': only available in JavaScript"
@@ -4124,7 +4124,7 @@ type IsWebKitPoint o = WebKitPointClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype XPathExpression = XPathExpression (JSRef XPathExpression)
 
 unXPathExpression (XPathExpression o) = o
@@ -4141,7 +4141,7 @@ instance GObjectClass XPathExpression where
 castToXPathExpression :: GObjectClass obj => obj -> XPathExpression
 castToXPathExpression = castTo gTypeXPathExpression "XPathExpression"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"XPathExpression\"]" gTypeXPathExpression' :: JSRef GType
 #else
 gTypeXPathExpression' = error "gTypeXPathExpression': only available in JavaScript"
@@ -4152,7 +4152,7 @@ type IsXPathExpression o = XPathExpressionClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver)
 
 unXPathNSResolver (XPathNSResolver o) = o
@@ -4169,7 +4169,7 @@ instance GObjectClass XPathNSResolver where
 castToXPathNSResolver :: GObjectClass obj => obj -> XPathNSResolver
 castToXPathNSResolver = castTo gTypeXPathNSResolver "XPathNSResolver"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"XPathNSResolver\"]" gTypeXPathNSResolver' :: JSRef GType
 #else
 gTypeXPathNSResolver' = error "gTypeXPathNSResolver': only available in JavaScript"
@@ -4180,7 +4180,7 @@ type IsXPathNSResolver o = XPathNSResolverClass o
 #endif
 
 
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype XPathResult = XPathResult (JSRef XPathResult)
 
 unXPathResult (XPathResult o) = o
@@ -4197,7 +4197,7 @@ instance GObjectClass XPathResult where
 castToXPathResult :: GObjectClass obj => obj -> XPathResult
 castToXPathResult = castTo gTypeXPathResult "XPathResult"
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "window[\"XPathResult\"]" gTypeXPathResult' :: JSRef GType
 #else
 gTypeXPathResult' = error "gTypeXPathResult': only available in JavaScript"

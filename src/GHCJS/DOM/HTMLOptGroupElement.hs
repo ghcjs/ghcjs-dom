@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptGroupElement
        (ghcjs_dom_html_opt_group_element_set_disabled,
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_opt_group_element_set_disabled ::
         JSRef HTMLOptGroupElement -> Bool -> IO ()
@@ -46,7 +46,7 @@ htmlOptGroupElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_opt_group_element_get_disabled ::
         JSRef HTMLOptGroupElement -> IO Bool
@@ -63,7 +63,7 @@ htmlOptGroupElementGetDisabled self
       (unHTMLOptGroupElement (toHTMLOptGroupElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"label\"] = $2;"
         ghcjs_dom_html_opt_group_element_set_label ::
         JSRef HTMLOptGroupElement -> JSString -> IO ()
@@ -82,7 +82,7 @@ htmlOptGroupElementSetLabel self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"label\"]"
         ghcjs_dom_html_opt_group_element_get_label ::
         JSRef HTMLOptGroupElement -> IO JSString

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLObjectElement
        (ghcjs_dom_html_object_element_check_validity,
@@ -83,7 +83,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_object_element_check_validity ::
@@ -101,7 +101,7 @@ htmlObjectElementCheckValidity self
       (unHTMLObjectElement (toHTMLObjectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_object_element_set_custom_validity ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -120,7 +120,7 @@ htmlObjectElementSetCustomValidity self error
       (toJSString error)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_object_element_get_form ::
         JSRef HTMLObjectElement -> IO (JSRef HTMLFormElement)
@@ -138,7 +138,7 @@ htmlObjectElementGetForm self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"code\"] = $2;"
         ghcjs_dom_html_object_element_set_code ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -156,7 +156,7 @@ htmlObjectElementSetCode self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_html_object_element_get_code ::
         JSRef HTMLObjectElement -> IO JSString
@@ -175,7 +175,7 @@ htmlObjectElementGetCode self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_object_element_set_align ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -193,7 +193,7 @@ htmlObjectElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_object_element_get_align ::
         JSRef HTMLObjectElement -> IO JSString
@@ -212,7 +212,7 @@ htmlObjectElementGetAlign self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"archive\"] = $2;"
         ghcjs_dom_html_object_element_set_archive ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -230,7 +230,7 @@ htmlObjectElementSetArchive self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"archive\"]"
         ghcjs_dom_html_object_element_get_archive ::
         JSRef HTMLObjectElement -> IO JSString
@@ -249,7 +249,7 @@ htmlObjectElementGetArchive self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"border\"] = $2;"
         ghcjs_dom_html_object_element_set_border ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -267,7 +267,7 @@ htmlObjectElementSetBorder self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"border\"]"
         ghcjs_dom_html_object_element_get_border ::
         JSRef HTMLObjectElement -> IO JSString
@@ -286,7 +286,7 @@ htmlObjectElementGetBorder self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"codeBase\"] = $2;"
         ghcjs_dom_html_object_element_set_code_base ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -304,7 +304,7 @@ htmlObjectElementSetCodeBase self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"codeBase\"]"
         ghcjs_dom_html_object_element_get_code_base ::
         JSRef HTMLObjectElement -> IO JSString
@@ -323,7 +323,7 @@ htmlObjectElementGetCodeBase self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"codeType\"] = $2;"
         ghcjs_dom_html_object_element_set_code_type ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -341,7 +341,7 @@ htmlObjectElementSetCodeType self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"codeType\"]"
         ghcjs_dom_html_object_element_get_code_type ::
         JSRef HTMLObjectElement -> IO JSString
@@ -360,7 +360,7 @@ htmlObjectElementGetCodeType self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"data\"] = $2;"
         ghcjs_dom_html_object_element_set_data ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -378,7 +378,7 @@ htmlObjectElementSetData self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"data\"]"
         ghcjs_dom_html_object_element_get_data ::
         JSRef HTMLObjectElement -> IO JSString
@@ -397,7 +397,7 @@ htmlObjectElementGetData self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"declare\"] = $2;"
         ghcjs_dom_html_object_element_set_declare ::
         JSRef HTMLObjectElement -> Bool -> IO ()
@@ -415,7 +415,7 @@ htmlObjectElementSetDeclare self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"declare\"] ? 1 : 0)"
         ghcjs_dom_html_object_element_get_declare ::
         JSRef HTMLObjectElement -> IO Bool
@@ -432,7 +432,7 @@ htmlObjectElementGetDeclare self
       (unHTMLObjectElement (toHTMLObjectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_object_element_set_height ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -450,7 +450,7 @@ htmlObjectElementSetHeight self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_object_element_get_height ::
         JSRef HTMLObjectElement -> IO JSString
@@ -469,7 +469,7 @@ htmlObjectElementGetHeight self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
         ghcjs_dom_html_object_element_set_hspace ::
         JSRef HTMLObjectElement -> Int -> IO ()
@@ -487,7 +487,7 @@ htmlObjectElementSetHspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"]"
         ghcjs_dom_html_object_element_get_hspace ::
         JSRef HTMLObjectElement -> IO Int
@@ -504,7 +504,7 @@ htmlObjectElementGetHspace self
       (unHTMLObjectElement (toHTMLObjectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_object_element_set_name ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -522,7 +522,7 @@ htmlObjectElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_object_element_get_name ::
         JSRef HTMLObjectElement -> IO JSString
@@ -541,7 +541,7 @@ htmlObjectElementGetName self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"standby\"] = $2;"
         ghcjs_dom_html_object_element_set_standby ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -559,7 +559,7 @@ htmlObjectElementSetStandby self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"standby\"]"
         ghcjs_dom_html_object_element_get_standby ::
         JSRef HTMLObjectElement -> IO JSString
@@ -578,7 +578,7 @@ htmlObjectElementGetStandby self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
         ghcjs_dom_html_object_element_set_use_map ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -596,7 +596,7 @@ htmlObjectElementSetUseMap self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"useMap\"]"
         ghcjs_dom_html_object_element_get_use_map ::
         JSRef HTMLObjectElement -> IO JSString
@@ -615,7 +615,7 @@ htmlObjectElementGetUseMap self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
         ghcjs_dom_html_object_element_set_vspace ::
         JSRef HTMLObjectElement -> Int -> IO ()
@@ -633,7 +633,7 @@ htmlObjectElementSetVspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"]"
         ghcjs_dom_html_object_element_get_vspace ::
         JSRef HTMLObjectElement -> IO Int
@@ -650,7 +650,7 @@ htmlObjectElementGetVspace self
       (unHTMLObjectElement (toHTMLObjectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_object_element_set_width ::
         JSRef HTMLObjectElement -> JSString -> IO ()
@@ -668,7 +668,7 @@ htmlObjectElementSetWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_object_element_get_width ::
         JSRef HTMLObjectElement -> IO JSString
@@ -687,7 +687,7 @@ htmlObjectElementGetWidth self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_object_element_get_will_validate ::
         JSRef HTMLObjectElement -> IO Bool
@@ -704,7 +704,7 @@ htmlObjectElementGetWillValidate self
       (unHTMLObjectElement (toHTMLObjectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_object_element_get_validity ::
         JSRef HTMLObjectElement -> IO (JSRef ValidityState)
@@ -722,7 +722,7 @@ htmlObjectElementGetValidity self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_object_element_get_validation_message ::
         JSRef HTMLObjectElement -> IO JSString
@@ -741,7 +741,7 @@ htmlObjectElementGetValidationMessage self
          (unHTMLObjectElement (toHTMLObjectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"contentDocument\"]"
         ghcjs_dom_html_object_element_get_content_document ::
         JSRef HTMLObjectElement -> IO (JSRef Document)

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Notation
        (ghcjs_dom_notation_get_public_id, notationGetPublicId,
@@ -21,7 +21,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"publicId\"]"
         ghcjs_dom_notation_get_public_id :: JSRef Notation -> IO JSString
 #else 
@@ -36,7 +36,7 @@ notationGetPublicId self
       (ghcjs_dom_notation_get_public_id (unNotation (toNotation self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"systemId\"]"
         ghcjs_dom_notation_get_system_id :: JSRef Notation -> IO JSString
 #else 

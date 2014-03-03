@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLModElement
        (ghcjs_dom_html_mod_element_set_cite, htmlModElementSetCite,
@@ -25,7 +25,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cite\"] = $2;"
         ghcjs_dom_html_mod_element_set_cite ::
         JSRef HTMLModElement -> JSString -> IO ()
@@ -43,7 +43,7 @@ htmlModElementSetCite self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cite\"]"
         ghcjs_dom_html_mod_element_get_cite ::
         JSRef HTMLModElement -> IO JSString
@@ -61,7 +61,7 @@ htmlModElementGetCite self
          (unHTMLModElement (toHTMLModElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
         ghcjs_dom_html_mod_element_set_date_time ::
         JSRef HTMLModElement -> JSString -> IO ()
@@ -79,7 +79,7 @@ htmlModElementSetDateTime self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"dateTime\"]"
         ghcjs_dom_html_mod_element_get_date_time ::
         JSRef HTMLModElement -> IO JSString

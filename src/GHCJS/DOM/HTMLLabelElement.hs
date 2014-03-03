@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLabelElement
        (ghcjs_dom_html_label_element_get_form, htmlLabelElementGetForm,
@@ -26,7 +26,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_label_element_get_form ::
         JSRef HTMLLabelElement -> IO (JSRef HTMLFormElement)
@@ -44,7 +44,7 @@ htmlLabelElementGetForm self
          (unHTMLLabelElement (toHTMLLabelElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
         ghcjs_dom_html_label_element_set_html_for ::
         JSRef HTMLLabelElement -> JSString -> IO ()
@@ -62,7 +62,7 @@ htmlLabelElementSetHtmlFor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"htmlFor\"]"
         ghcjs_dom_html_label_element_get_html_for ::
         JSRef HTMLLabelElement -> IO JSString
@@ -80,7 +80,7 @@ htmlLabelElementGetHtmlFor self
          (unHTMLLabelElement (toHTMLLabelElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"control\"]"
         ghcjs_dom_html_label_element_get_control ::
         JSRef HTMLLabelElement -> IO (JSRef HTMLElement)

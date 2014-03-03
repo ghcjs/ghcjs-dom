@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NodeIterator
        (ghcjs_dom_node_iterator_detach, nodeIteratorDetach,
@@ -31,7 +31,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"detach\"]()"
         ghcjs_dom_node_iterator_detach :: JSRef NodeIterator -> IO ()
 #else 
@@ -45,7 +45,7 @@ nodeIteratorDetach self
       (unNodeIterator (toNodeIterator self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"root\"]"
         ghcjs_dom_node_iterator_get_root ::
         JSRef NodeIterator -> IO (JSRef Node)
@@ -63,7 +63,7 @@ nodeIteratorGetRoot self
          (unNodeIterator (toNodeIterator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"whatToShow\"]"
         ghcjs_dom_node_iterator_get_what_to_show ::
         JSRef NodeIterator -> IO Word
@@ -80,7 +80,7 @@ nodeIteratorGetWhatToShow self
       (unNodeIterator (toNodeIterator self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"filter\"]"
         ghcjs_dom_node_iterator_get_filter ::
         JSRef NodeIterator -> IO (JSRef NodeFilter)
@@ -98,7 +98,7 @@ nodeIteratorGetFilter self
          (unNodeIterator (toNodeIterator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"expandEntityReferences\"] ? 1 : 0)"
         ghcjs_dom_node_iterator_get_expand_entity_references ::
@@ -116,7 +116,7 @@ nodeIteratorGetExpandEntityReferences self
       (unNodeIterator (toNodeIterator self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"referenceNode\"]"
         ghcjs_dom_node_iterator_get_reference_node ::
         JSRef NodeIterator -> IO (JSRef Node)
@@ -134,7 +134,7 @@ nodeIteratorGetReferenceNode self
          (unNodeIterator (toNodeIterator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"pointerBeforeReferenceNode\"] ? 1 : 0)"
         ghcjs_dom_node_iterator_get_pointer_before_reference_node ::

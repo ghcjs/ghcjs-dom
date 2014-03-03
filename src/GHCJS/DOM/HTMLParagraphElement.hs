@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLParagraphElement
        (ghcjs_dom_html_paragraph_element_set_align,
@@ -24,7 +24,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_paragraph_element_set_align ::
         JSRef HTMLParagraphElement -> JSString -> IO ()
@@ -43,7 +43,7 @@ htmlParagraphElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_paragraph_element_get_align ::
         JSRef HTMLParagraphElement -> IO JSString

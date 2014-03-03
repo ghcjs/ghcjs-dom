@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFontElement
        (ghcjs_dom_html_font_element_set_color, htmlFontElementSetColor,
@@ -26,7 +26,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"color\"] = $2;"
         ghcjs_dom_html_font_element_set_color ::
         JSRef HTMLFontElement -> JSString -> IO ()
@@ -44,7 +44,7 @@ htmlFontElementSetColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"color\"]"
         ghcjs_dom_html_font_element_get_color ::
         JSRef HTMLFontElement -> IO JSString
@@ -62,7 +62,7 @@ htmlFontElementGetColor self
          (unHTMLFontElement (toHTMLFontElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"face\"] = $2;"
         ghcjs_dom_html_font_element_set_face ::
         JSRef HTMLFontElement -> JSString -> IO ()
@@ -80,7 +80,7 @@ htmlFontElementSetFace self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"face\"]"
         ghcjs_dom_html_font_element_get_face ::
         JSRef HTMLFontElement -> IO JSString
@@ -98,7 +98,7 @@ htmlFontElementGetFace self
          (unHTMLFontElement (toHTMLFontElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_font_element_set_size ::
         JSRef HTMLFontElement -> JSString -> IO ()
@@ -116,7 +116,7 @@ htmlFontElementSetSize self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_font_element_get_size ::
         JSRef HTMLFontElement -> IO JSString

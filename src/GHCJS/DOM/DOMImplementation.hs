@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMImplementation
        (ghcjs_dom_dom_implementation_has_feature,
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"hasFeature\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_dom_implementation_has_feature ::
@@ -53,7 +53,7 @@ domImplementationHasFeature self feature version
       (toJSString version)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createDocumentType\"]($2, $3,\n$4)"
         ghcjs_dom_dom_implementation_create_document_type ::
@@ -84,7 +84,7 @@ domImplementationCreateDocumentType self qualifiedName publicId
          (toJSString systemId))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createDocument\"]($2, $3, $4)"
         ghcjs_dom_dom_implementation_create_document ::
@@ -115,7 +115,7 @@ domImplementationCreateDocument self namespaceURI qualifiedName
          (maybe jsNull (unDocumentType . toDocumentType) doctype))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createCSSStyleSheet\"]($2,\n$3)"
         ghcjs_dom_dom_implementation_create_css_style_sheet ::
@@ -141,7 +141,7 @@ domImplementationCreateCSSStyleSheet self title media
          (toJSString media))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"
         ghcjs_dom_dom_implementation_create_html_document ::
         JSRef DOMImplementation -> JSString -> IO (JSRef HTMLDocument)

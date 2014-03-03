@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLHeadElement
        (ghcjs_dom_html_head_element_set_profile,
@@ -22,7 +22,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"profile\"] = $2;"
         ghcjs_dom_html_head_element_set_profile ::
         JSRef HTMLHeadElement -> JSString -> IO ()
@@ -40,7 +40,7 @@ htmlHeadElementSetProfile self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"profile\"]"
         ghcjs_dom_html_head_element_get_profile ::
         JSRef HTMLHeadElement -> IO JSString

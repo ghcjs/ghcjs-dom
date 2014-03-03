@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDListElement
        (ghcjs_dom_htmld_list_element_set_compact,
@@ -23,7 +23,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
         ghcjs_dom_htmld_list_element_set_compact ::
         JSRef HTMLDListElement -> Bool -> IO ()
@@ -41,7 +41,7 @@ htmldListElementSetCompact self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         ghcjs_dom_htmld_list_element_get_compact ::
         JSRef HTMLDListElement -> IO Bool

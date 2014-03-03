@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.UIEvent
        (ghcjs_dom_ui_event_init_ui_event, uiEventInitUIEvent,
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"initUIEvent\"]($2, $3, $4,\n$5, $6)"
         ghcjs_dom_ui_event_init_ui_event ::
@@ -52,7 +52,7 @@ uiEventInitUIEvent self type' canBubble cancelable view detail
       detail
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"view\"]"
         ghcjs_dom_ui_event_get_view ::
         JSRef UIEvent -> IO (JSRef DOMWindow)
@@ -68,7 +68,7 @@ uiEventGetView self
       (ghcjs_dom_ui_event_get_view (unUIEvent (toUIEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"detail\"]"
         ghcjs_dom_ui_event_get_detail :: JSRef UIEvent -> IO Int
 #else 
@@ -81,7 +81,7 @@ uiEventGetDetail self
   = ghcjs_dom_ui_event_get_detail (unUIEvent (toUIEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"keyCode\"]"
         ghcjs_dom_ui_event_get_key_code :: JSRef UIEvent -> IO Int
 #else 
@@ -94,7 +94,7 @@ uiEventGetKeyCode self
   = ghcjs_dom_ui_event_get_key_code (unUIEvent (toUIEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charCode\"]"
         ghcjs_dom_ui_event_get_char_code :: JSRef UIEvent -> IO Int
 #else 
@@ -107,7 +107,7 @@ uiEventGetCharCode self
   = ghcjs_dom_ui_event_get_char_code (unUIEvent (toUIEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"layerX\"]"
         ghcjs_dom_ui_event_get_layer_x :: JSRef UIEvent -> IO Int
 #else 
@@ -120,7 +120,7 @@ uiEventGetLayerX self
   = ghcjs_dom_ui_event_get_layer_x (unUIEvent (toUIEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"layerY\"]"
         ghcjs_dom_ui_event_get_layer_y :: JSRef UIEvent -> IO Int
 #else 
@@ -133,7 +133,7 @@ uiEventGetLayerY self
   = ghcjs_dom_ui_event_get_layer_y (unUIEvent (toUIEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pageX\"]"
         ghcjs_dom_ui_event_get_page_x :: JSRef UIEvent -> IO Int
 #else 
@@ -146,7 +146,7 @@ uiEventGetPageX self
   = ghcjs_dom_ui_event_get_page_x (unUIEvent (toUIEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pageY\"]"
         ghcjs_dom_ui_event_get_page_y :: JSRef UIEvent -> IO Int
 #else 
@@ -159,7 +159,7 @@ uiEventGetPageY self
   = ghcjs_dom_ui_event_get_page_y (unUIEvent (toUIEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"which\"]"
         ghcjs_dom_ui_event_get_which :: JSRef UIEvent -> IO Int
 #else 

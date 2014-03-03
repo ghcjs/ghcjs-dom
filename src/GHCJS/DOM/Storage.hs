@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Storage
        (ghcjs_dom_storage_key, storageKey, ghcjs_dom_storage_get_item,
@@ -24,7 +24,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"key\"]($2)"
         ghcjs_dom_storage_key :: JSRef Storage -> Word -> IO JSString
 #else 
@@ -39,7 +39,7 @@ storageKey self index
       (ghcjs_dom_storage_key (unStorage (toStorage self)) index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getItem\"]($2)"
         ghcjs_dom_storage_get_item ::
         JSRef Storage -> JSString -> IO JSString
@@ -58,7 +58,7 @@ storageGetItem self key
          (toJSString key))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setItem\"]($2, $3)"
         ghcjs_dom_storage_set_item ::
         JSRef Storage -> JSString -> JSString -> IO ()
@@ -77,7 +77,7 @@ storageSetItem self key data'
       (toJSString data')
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
         ghcjs_dom_storage_remove_item :: JSRef Storage -> JSString -> IO ()
 #else 
@@ -92,7 +92,7 @@ storageRemoveItem self key
       (toJSString key)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_storage_clear :: JSRef Storage -> IO ()
 #else 
@@ -105,7 +105,7 @@ storageClear self
   = ghcjs_dom_storage_clear (unStorage (toStorage self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_storage_get_length :: JSRef Storage -> IO Word
 #else 

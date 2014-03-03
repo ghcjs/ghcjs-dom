@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TreeWalker
        (ghcjs_dom_tree_walker_get_root, treeWalkerGetRoot,
@@ -27,7 +27,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"root\"]"
         ghcjs_dom_tree_walker_get_root ::
         JSRef TreeWalker -> IO (JSRef Node)
@@ -43,7 +43,7 @@ treeWalkerGetRoot self
       (ghcjs_dom_tree_walker_get_root (unTreeWalker (toTreeWalker self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"whatToShow\"]"
         ghcjs_dom_tree_walker_get_what_to_show ::
         JSRef TreeWalker -> IO Word
@@ -59,7 +59,7 @@ treeWalkerGetWhatToShow self
       (unTreeWalker (toTreeWalker self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"filter\"]"
         ghcjs_dom_tree_walker_get_filter ::
         JSRef TreeWalker -> IO (JSRef NodeFilter)
@@ -77,7 +77,7 @@ treeWalkerGetFilter self
          (unTreeWalker (toTreeWalker self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"expandEntityReferences\"] ? 1 : 0)"
         ghcjs_dom_tree_walker_get_expand_entity_references ::
@@ -95,7 +95,7 @@ treeWalkerGetExpandEntityReferences self
       (unTreeWalker (toTreeWalker self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"currentNode\"] = $2;"
         ghcjs_dom_tree_walker_set_current_node ::
         JSRef TreeWalker -> JSRef Node -> IO ()
@@ -113,7 +113,7 @@ treeWalkerSetCurrentNode self val
       (maybe jsNull (unNode . toNode) val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"currentNode\"]"
         ghcjs_dom_tree_walker_get_current_node ::
         JSRef TreeWalker -> IO (JSRef Node)

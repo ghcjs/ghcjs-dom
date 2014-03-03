@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTitleElement
        (ghcjs_dom_html_title_element_set_text, htmlTitleElementSetText,
@@ -22,7 +22,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"] = $2;"
         ghcjs_dom_html_title_element_set_text ::
         JSRef HTMLTitleElement -> JSString -> IO ()
@@ -40,7 +40,7 @@ htmlTitleElementSetText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_title_element_get_text ::
         JSRef HTMLTitleElement -> IO JSString

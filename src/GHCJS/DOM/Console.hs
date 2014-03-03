@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Console
        (ghcjs_dom_console_time, consoleTime, ghcjs_dom_console_group_end,
@@ -21,7 +21,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"time\"]($2)"
         ghcjs_dom_console_time :: JSRef Console -> JSString -> IO ()
 #else 
@@ -36,7 +36,7 @@ consoleTime self title
       (toJSString title)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"groupEnd\"]()"
         ghcjs_dom_console_group_end :: JSRef Console -> IO ()
 #else 

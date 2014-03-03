@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitPoint
        (ghcjs_dom_webkit_point_set_x, webKitPointSetX,
@@ -23,7 +23,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_webkit_point_set_x :: JSRef WebKitPoint -> Float -> IO ()
 #else 
@@ -37,7 +37,7 @@ webKitPointSetX self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_webkit_point_get_x :: JSRef WebKitPoint -> IO Float
 #else 
@@ -50,7 +50,7 @@ webKitPointGetX self
   = ghcjs_dom_webkit_point_get_x (unWebKitPoint (toWebKitPoint self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_webkit_point_set_y :: JSRef WebKitPoint -> Float -> IO ()
 #else 
@@ -64,7 +64,7 @@ webKitPointSetY self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_webkit_point_get_y :: JSRef WebKitPoint -> IO Float
 #else 

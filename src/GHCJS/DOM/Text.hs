@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Text
        (ghcjs_dom_text_split_text, textSplitText,
@@ -22,7 +22,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"splitText\"]($2)"
         ghcjs_dom_text_split_text :: JSRef Text -> Word -> IO (JSRef Text)
 #else 
@@ -36,7 +36,7 @@ textSplitText self offset
       (ghcjs_dom_text_split_text (unText (toText self)) offset)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"replaceWholeText\"]($2)"
         ghcjs_dom_text_replace_whole_text ::
         JSRef Text -> JSString -> IO (JSRef Text)
@@ -55,7 +55,7 @@ textReplaceWholeText self content
          (toJSString content))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"wholeText\"]"
         ghcjs_dom_text_get_whole_text :: JSRef Text -> IO JSString
 #else 

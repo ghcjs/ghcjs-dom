@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMarqueeElement
        (ghcjs_dom_html_marquee_element_start, htmlMarqueeElementStart,
@@ -64,7 +64,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"start\"]()"
         ghcjs_dom_html_marquee_element_start ::
         JSRef HTMLMarqueeElement -> IO ()
@@ -81,7 +81,7 @@ htmlMarqueeElementStart self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"stop\"]()"
         ghcjs_dom_html_marquee_element_stop ::
         JSRef HTMLMarqueeElement -> IO ()
@@ -98,7 +98,7 @@ htmlMarqueeElementStop self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"behavior\"] = $2;"
         ghcjs_dom_html_marquee_element_set_behavior ::
         JSRef HTMLMarqueeElement -> JSString -> IO ()
@@ -116,7 +116,7 @@ htmlMarqueeElementSetBehavior self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"behavior\"]"
         ghcjs_dom_html_marquee_element_get_behavior ::
         JSRef HTMLMarqueeElement -> IO JSString
@@ -135,7 +135,7 @@ htmlMarqueeElementGetBehavior self
          (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
         ghcjs_dom_html_marquee_element_set_bg_color ::
         JSRef HTMLMarqueeElement -> JSString -> IO ()
@@ -153,7 +153,7 @@ htmlMarqueeElementSetBgColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"]"
         ghcjs_dom_html_marquee_element_get_bg_color ::
         JSRef HTMLMarqueeElement -> IO JSString
@@ -172,7 +172,7 @@ htmlMarqueeElementGetBgColor self
          (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"direction\"] = $2;"
         ghcjs_dom_html_marquee_element_set_direction ::
         JSRef HTMLMarqueeElement -> JSString -> IO ()
@@ -190,7 +190,7 @@ htmlMarqueeElementSetDirection self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"direction\"]"
         ghcjs_dom_html_marquee_element_get_direction ::
         JSRef HTMLMarqueeElement -> IO JSString
@@ -209,7 +209,7 @@ htmlMarqueeElementGetDirection self
          (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_marquee_element_set_height ::
         JSRef HTMLMarqueeElement -> JSString -> IO ()
@@ -227,7 +227,7 @@ htmlMarqueeElementSetHeight self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_marquee_element_get_height ::
         JSRef HTMLMarqueeElement -> IO JSString
@@ -246,7 +246,7 @@ htmlMarqueeElementGetHeight self
          (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
         ghcjs_dom_html_marquee_element_set_hspace ::
         JSRef HTMLMarqueeElement -> Word -> IO ()
@@ -264,7 +264,7 @@ htmlMarqueeElementSetHspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hspace\"]"
         ghcjs_dom_html_marquee_element_get_hspace ::
         JSRef HTMLMarqueeElement -> IO Word
@@ -281,7 +281,7 @@ htmlMarqueeElementGetHspace self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"loop\"] = $2;"
         ghcjs_dom_html_marquee_element_set_loop ::
         JSRef HTMLMarqueeElement -> Int -> IO ()
@@ -299,7 +299,7 @@ htmlMarqueeElementSetLoop self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"loop\"]"
         ghcjs_dom_html_marquee_element_get_loop ::
         JSRef HTMLMarqueeElement -> IO Int
@@ -316,7 +316,7 @@ htmlMarqueeElementGetLoop self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollAmount\"] = $2;"
         ghcjs_dom_html_marquee_element_set_scroll_amount ::
         JSRef HTMLMarqueeElement -> Int -> IO ()
@@ -334,7 +334,7 @@ htmlMarqueeElementSetScrollAmount self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollAmount\"]"
         ghcjs_dom_html_marquee_element_get_scroll_amount ::
         JSRef HTMLMarqueeElement -> IO Int
@@ -351,7 +351,7 @@ htmlMarqueeElementGetScrollAmount self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollDelay\"] = $2;"
         ghcjs_dom_html_marquee_element_set_scroll_delay ::
         JSRef HTMLMarqueeElement -> Int -> IO ()
@@ -369,7 +369,7 @@ htmlMarqueeElementSetScrollDelay self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrollDelay\"]"
         ghcjs_dom_html_marquee_element_get_scroll_delay ::
         JSRef HTMLMarqueeElement -> IO Int
@@ -386,7 +386,7 @@ htmlMarqueeElementGetScrollDelay self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"trueSpeed\"] = $2;"
         ghcjs_dom_html_marquee_element_set_true_speed ::
         JSRef HTMLMarqueeElement -> Bool -> IO ()
@@ -404,7 +404,7 @@ htmlMarqueeElementSetTrueSpeed self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"trueSpeed\"] ? 1 : 0)"
         ghcjs_dom_html_marquee_element_get_true_speed ::
         JSRef HTMLMarqueeElement -> IO Bool
@@ -421,7 +421,7 @@ htmlMarqueeElementGetTrueSpeed self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
         ghcjs_dom_html_marquee_element_set_vspace ::
         JSRef HTMLMarqueeElement -> Word -> IO ()
@@ -439,7 +439,7 @@ htmlMarqueeElementSetVspace self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vspace\"]"
         ghcjs_dom_html_marquee_element_get_vspace ::
         JSRef HTMLMarqueeElement -> IO Word
@@ -456,7 +456,7 @@ htmlMarqueeElementGetVspace self
       (unHTMLMarqueeElement (toHTMLMarqueeElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_marquee_element_set_width ::
         JSRef HTMLMarqueeElement -> JSString -> IO ()
@@ -474,7 +474,7 @@ htmlMarqueeElementSetWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_marquee_element_get_width ::
         JSRef HTMLMarqueeElement -> IO JSString

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLKeygenElement
        (ghcjs_dom_html_keygen_element_check_validity,
@@ -51,7 +51,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_keygen_element_check_validity ::
@@ -69,7 +69,7 @@ htmlKeygenElementCheckValidity self
       (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_keygen_element_set_custom_validity ::
         JSRef HTMLKeygenElement -> JSString -> IO ()
@@ -88,7 +88,7 @@ htmlKeygenElementSetCustomValidity self error
       (toJSString error)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_keygen_element_set_autofocus ::
         JSRef HTMLKeygenElement -> Bool -> IO ()
@@ -106,7 +106,7 @@ htmlKeygenElementSetAutofocus self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_keygen_element_get_autofocus ::
         JSRef HTMLKeygenElement -> IO Bool
@@ -123,7 +123,7 @@ htmlKeygenElementGetAutofocus self
       (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"challenge\"] = $2;"
         ghcjs_dom_html_keygen_element_set_challenge ::
         JSRef HTMLKeygenElement -> JSString -> IO ()
@@ -141,7 +141,7 @@ htmlKeygenElementSetChallenge self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"challenge\"]"
         ghcjs_dom_html_keygen_element_get_challenge ::
         JSRef HTMLKeygenElement -> IO JSString
@@ -160,7 +160,7 @@ htmlKeygenElementGetChallenge self
          (unHTMLKeygenElement (toHTMLKeygenElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_keygen_element_set_disabled ::
         JSRef HTMLKeygenElement -> Bool -> IO ()
@@ -178,7 +178,7 @@ htmlKeygenElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_keygen_element_get_disabled ::
         JSRef HTMLKeygenElement -> IO Bool
@@ -195,7 +195,7 @@ htmlKeygenElementGetDisabled self
       (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_keygen_element_get_form ::
         JSRef HTMLKeygenElement -> IO (JSRef HTMLFormElement)
@@ -213,7 +213,7 @@ htmlKeygenElementGetForm self
          (unHTMLKeygenElement (toHTMLKeygenElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"keytype\"] = $2;"
         ghcjs_dom_html_keygen_element_set_keytype ::
         JSRef HTMLKeygenElement -> JSString -> IO ()
@@ -231,7 +231,7 @@ htmlKeygenElementSetKeytype self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"keytype\"]"
         ghcjs_dom_html_keygen_element_get_keytype ::
         JSRef HTMLKeygenElement -> IO JSString
@@ -250,7 +250,7 @@ htmlKeygenElementGetKeytype self
          (unHTMLKeygenElement (toHTMLKeygenElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_keygen_element_set_name ::
         JSRef HTMLKeygenElement -> JSString -> IO ()
@@ -268,7 +268,7 @@ htmlKeygenElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_keygen_element_get_name ::
         JSRef HTMLKeygenElement -> IO JSString
@@ -287,7 +287,7 @@ htmlKeygenElementGetName self
          (unHTMLKeygenElement (toHTMLKeygenElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_keygen_element_get_will_validate ::
         JSRef HTMLKeygenElement -> IO Bool
@@ -304,7 +304,7 @@ htmlKeygenElementGetWillValidate self
       (unHTMLKeygenElement (toHTMLKeygenElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_keygen_element_get_validity ::
         JSRef HTMLKeygenElement -> IO (JSRef ValidityState)
@@ -322,7 +322,7 @@ htmlKeygenElementGetValidity self
          (unHTMLKeygenElement (toHTMLKeygenElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_keygen_element_get_validation_message ::
         JSRef HTMLKeygenElement -> IO JSString
@@ -341,7 +341,7 @@ htmlKeygenElementGetValidationMessage self
          (unHTMLKeygenElement (toHTMLKeygenElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_keygen_element_get_labels ::
         JSRef HTMLKeygenElement -> IO (JSRef NodeList)

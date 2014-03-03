@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSecurityPolicy
        (ghcjs_dom_dom_security_policy_allows_connection_to,
@@ -50,7 +50,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsConnectionTo\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_connection_to ::
@@ -70,7 +70,7 @@ domSecurityPolicyAllowsConnectionTo self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsFontFrom\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_font_from ::
@@ -90,7 +90,7 @@ domSecurityPolicyAllowsFontFrom self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsFormAction\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_form_action ::
@@ -110,7 +110,7 @@ domSecurityPolicyAllowsFormAction self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsFrameFrom\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_frame_from ::
@@ -130,7 +130,7 @@ domSecurityPolicyAllowsFrameFrom self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsImageFrom\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_image_from ::
@@ -150,7 +150,7 @@ domSecurityPolicyAllowsImageFrom self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsMediaFrom\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_media_from ::
@@ -170,7 +170,7 @@ domSecurityPolicyAllowsMediaFrom self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsObjectFrom\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_object_from ::
@@ -190,7 +190,7 @@ domSecurityPolicyAllowsObjectFrom self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsPluginType\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_plugin_type ::
@@ -210,7 +210,7 @@ domSecurityPolicyAllowsPluginType self type'
       (toJSString type')
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsScriptFrom\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_script_from ::
@@ -230,7 +230,7 @@ domSecurityPolicyAllowsScriptFrom self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsStyleFrom\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_security_policy_allows_style_from ::
@@ -250,7 +250,7 @@ domSecurityPolicyAllowsStyleFrom self url
       (toJSString url)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"allowsEval\"] ? 1 : 0)"
         ghcjs_dom_dom_security_policy_get_allows_eval ::
         JSRef DOMSecurityPolicy -> IO Bool
@@ -267,7 +267,7 @@ domSecurityPolicyGetAllowsEval self
       (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsInlineScript\"] ? 1 : 0)"
         ghcjs_dom_dom_security_policy_get_allows_inline_script ::
@@ -285,7 +285,7 @@ domSecurityPolicyGetAllowsInlineScript self
       (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"allowsInlineStyle\"] ? 1 : 0)"
         ghcjs_dom_dom_security_policy_get_allows_inline_style ::
@@ -303,7 +303,7 @@ domSecurityPolicyGetAllowsInlineStyle self
       (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"isActive\"] ? 1 : 0)"
         ghcjs_dom_dom_security_policy_get_is_active ::
         JSRef DOMSecurityPolicy -> IO Bool
@@ -320,7 +320,7 @@ domSecurityPolicyGetIsActive self
       (unDOMSecurityPolicy (toDOMSecurityPolicy self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"reportURIs\"]"
         ghcjs_dom_dom_security_policy_get_report_ur_is ::
         JSRef DOMSecurityPolicy -> IO (JSRef DOMStringList)

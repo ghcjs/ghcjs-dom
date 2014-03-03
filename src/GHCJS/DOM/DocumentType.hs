@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DocumentType
        (ghcjs_dom_document_type_get_name, documentTypeGetName,
@@ -26,7 +26,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_document_type_get_name ::
         JSRef DocumentType -> IO JSString
@@ -44,7 +44,7 @@ documentTypeGetName self
          (unDocumentType (toDocumentType self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"entities\"]"
         ghcjs_dom_document_type_get_entities ::
         JSRef DocumentType -> IO (JSRef NamedNodeMap)
@@ -62,7 +62,7 @@ documentTypeGetEntities self
          (unDocumentType (toDocumentType self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"notations\"]"
         ghcjs_dom_document_type_get_notations ::
         JSRef DocumentType -> IO (JSRef NamedNodeMap)
@@ -80,7 +80,7 @@ documentTypeGetNotations self
          (unDocumentType (toDocumentType self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"publicId\"]"
         ghcjs_dom_document_type_get_public_id ::
         JSRef DocumentType -> IO JSString
@@ -98,7 +98,7 @@ documentTypeGetPublicId self
          (unDocumentType (toDocumentType self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"systemId\"]"
         ghcjs_dom_document_type_get_system_id ::
         JSRef DocumentType -> IO JSString
@@ -116,7 +116,7 @@ documentTypeGetSystemId self
          (unDocumentType (toDocumentType self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"internalSubset\"]"
         ghcjs_dom_document_type_get_internal_subset ::
         JSRef DocumentType -> IO JSString

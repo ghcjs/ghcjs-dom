@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSRule
        (cUNKNOWN_RULE, cSTYLE_RULE, cCHARSET_RULE, cIMPORT_RULE,
@@ -35,7 +35,7 @@ cWEBKIT_KEYFRAMES_RULE = 7
 cWEBKIT_KEYFRAME_RULE = 8
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
         ghcjs_dom_css_rule_set_css_text ::
         JSRef CSSRule -> JSString -> IO ()
@@ -52,7 +52,7 @@ cssRuleSetCssText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssText\"]"
         ghcjs_dom_css_rule_get_css_text :: JSRef CSSRule -> IO JSString
 #else 
@@ -67,7 +67,7 @@ cssRuleGetCssText self
       (ghcjs_dom_css_rule_get_css_text (unCSSRule (toCSSRule self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
         ghcjs_dom_css_rule_get_parent_style_sheet ::
         JSRef CSSRule -> IO (JSRef CSSStyleSheet)
@@ -85,7 +85,7 @@ cssRuleGetParentStyleSheet self
          (unCSSRule (toCSSRule self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"parentRule\"]"
         ghcjs_dom_css_rule_get_parent_rule ::
         JSRef CSSRule -> IO (JSRef CSSRule)

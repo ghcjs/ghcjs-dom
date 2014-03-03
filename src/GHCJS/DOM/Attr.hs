@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Attr
        (ghcjs_dom_attr_get_name, attrGetName,
@@ -24,7 +24,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_attr_get_name :: JSRef DOMAttr -> IO JSString
 #else 
@@ -39,7 +39,7 @@ attrGetName self
       (ghcjs_dom_attr_get_name (unDOMAttr (toDOMAttr self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"specified\"] ? 1 : 0)"
         ghcjs_dom_attr_get_specified :: JSRef DOMAttr -> IO Bool
 #else 
@@ -52,7 +52,7 @@ attrGetSpecified self
   = ghcjs_dom_attr_get_specified (unDOMAttr (toDOMAttr self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_attr_set_value :: JSRef DOMAttr -> JSString -> IO ()
 #else 
@@ -67,7 +67,7 @@ attrSetValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_attr_get_value :: JSRef DOMAttr -> IO JSString
 #else 
@@ -82,7 +82,7 @@ attrGetValue self
       (ghcjs_dom_attr_get_value (unDOMAttr (toDOMAttr self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ownerElement\"]"
         ghcjs_dom_attr_get_owner_element ::
         JSRef DOMAttr -> IO (JSRef Element)
@@ -99,7 +99,7 @@ attrGetOwnerElement self
       (ghcjs_dom_attr_get_owner_element (unDOMAttr (toDOMAttr self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"isId\"] ? 1 : 0)"
         ghcjs_dom_attr_get_is_id :: JSRef DOMAttr -> IO Bool
 #else 

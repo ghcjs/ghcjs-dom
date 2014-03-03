@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLInputElement
        (ghcjs_dom_html_input_element_step_up, htmlInputElementStepUp,
@@ -168,7 +168,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"stepUp\"]($2)"
         ghcjs_dom_html_input_element_step_up ::
         JSRef HTMLInputElement -> Int -> IO ()
@@ -186,7 +186,7 @@ htmlInputElementStepUp self n
       n
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"stepDown\"]($2)"
         ghcjs_dom_html_input_element_step_down ::
         JSRef HTMLInputElement -> Int -> IO ()
@@ -204,7 +204,7 @@ htmlInputElementStepDown self n
       n
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_input_element_check_validity ::
@@ -222,7 +222,7 @@ htmlInputElementCheckValidity self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_input_element_set_custom_validity ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -241,7 +241,7 @@ htmlInputElementSetCustomValidity self error
       (toJSString error)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"select\"]()"
         ghcjs_dom_html_input_element_select ::
         JSRef HTMLInputElement -> IO ()
@@ -258,7 +258,7 @@ htmlInputElementSelect self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "$1[\"setRangeText\"]($2, $3, $4,\n$5)"
         ghcjs_dom_html_input_element_set_range_text ::
@@ -285,7 +285,7 @@ htmlInputElementSetRangeText self replacement start end
       (toJSString selectionMode)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"setValueForUser\"]($2)"
         ghcjs_dom_html_input_element_set_value_for_user ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -304,7 +304,7 @@ htmlInputElementSetValueForUser self value
       (toJSString value)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"accept\"] = $2;"
         ghcjs_dom_html_input_element_set_accept ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -322,7 +322,7 @@ htmlInputElementSetAccept self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"accept\"]"
         ghcjs_dom_html_input_element_get_accept ::
         JSRef HTMLInputElement -> IO JSString
@@ -340,7 +340,7 @@ htmlInputElementGetAccept self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"alt\"] = $2;"
         ghcjs_dom_html_input_element_set_alt ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -358,7 +358,7 @@ htmlInputElementSetAlt self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"alt\"]"
         ghcjs_dom_html_input_element_get_alt ::
         JSRef HTMLInputElement -> IO JSString
@@ -376,7 +376,7 @@ htmlInputElementGetAlt self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"autocomplete\"] = $2;"
         ghcjs_dom_html_input_element_set_autocomplete ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -394,7 +394,7 @@ htmlInputElementSetAutocomplete self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"autocomplete\"]"
         ghcjs_dom_html_input_element_get_autocomplete ::
         JSRef HTMLInputElement -> IO JSString
@@ -412,7 +412,7 @@ htmlInputElementGetAutocomplete self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_input_element_set_autofocus ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -430,7 +430,7 @@ htmlInputElementSetAutofocus self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_autofocus ::
         JSRef HTMLInputElement -> IO Bool
@@ -447,7 +447,7 @@ htmlInputElementGetAutofocus self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"defaultChecked\"] = $2;"
         ghcjs_dom_html_input_element_set_default_checked ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -465,7 +465,7 @@ htmlInputElementSetDefaultChecked self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"defaultChecked\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_default_checked ::
         JSRef HTMLInputElement -> IO Bool
@@ -482,7 +482,7 @@ htmlInputElementGetDefaultChecked self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"checked\"] = $2;"
         ghcjs_dom_html_input_element_set_checked ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -500,7 +500,7 @@ htmlInputElementSetChecked self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"checked\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_checked ::
         JSRef HTMLInputElement -> IO Bool
@@ -517,7 +517,7 @@ htmlInputElementGetChecked self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"dirName\"] = $2;"
         ghcjs_dom_html_input_element_set_dir_name ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -535,7 +535,7 @@ htmlInputElementSetDirName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"dirName\"]"
         ghcjs_dom_html_input_element_get_dir_name ::
         JSRef HTMLInputElement -> IO JSString
@@ -553,7 +553,7 @@ htmlInputElementGetDirName self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_input_element_set_disabled ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -571,7 +571,7 @@ htmlInputElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_disabled ::
         JSRef HTMLInputElement -> IO Bool
@@ -588,7 +588,7 @@ htmlInputElementGetDisabled self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_input_element_get_form ::
         JSRef HTMLInputElement -> IO (JSRef HTMLFormElement)
@@ -606,7 +606,7 @@ htmlInputElementGetForm self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"files\"] = $2;"
         ghcjs_dom_html_input_element_set_files ::
         JSRef HTMLInputElement -> JSRef FileList -> IO ()
@@ -625,7 +625,7 @@ htmlInputElementSetFiles self val
       (maybe jsNull (unFileList . toFileList) val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"files\"]"
         ghcjs_dom_html_input_element_get_files ::
         JSRef HTMLInputElement -> IO (JSRef FileList)
@@ -643,7 +643,7 @@ htmlInputElementGetFiles self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formAction\"] = $2;"
         ghcjs_dom_html_input_element_set_form_action ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -661,7 +661,7 @@ htmlInputElementSetFormAction self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formAction\"]"
         ghcjs_dom_html_input_element_get_form_action ::
         JSRef HTMLInputElement -> IO JSString
@@ -679,7 +679,7 @@ htmlInputElementGetFormAction self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
         ghcjs_dom_html_input_element_set_form_enctype ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -697,7 +697,7 @@ htmlInputElementSetFormEnctype self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formEnctype\"]"
         ghcjs_dom_html_input_element_get_form_enctype ::
         JSRef HTMLInputElement -> IO JSString
@@ -715,7 +715,7 @@ htmlInputElementGetFormEnctype self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
         ghcjs_dom_html_input_element_set_form_method ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -733,7 +733,7 @@ htmlInputElementSetFormMethod self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formMethod\"]"
         ghcjs_dom_html_input_element_get_form_method ::
         JSRef HTMLInputElement -> IO JSString
@@ -751,7 +751,7 @@ htmlInputElementGetFormMethod self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         ghcjs_dom_html_input_element_set_form_no_validate ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -769,7 +769,7 @@ htmlInputElementSetFormNoValidate self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_form_no_validate ::
         JSRef HTMLInputElement -> IO Bool
@@ -786,7 +786,7 @@ htmlInputElementGetFormNoValidate self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formTarget\"] = $2;"
         ghcjs_dom_html_input_element_set_form_target ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -804,7 +804,7 @@ htmlInputElementSetFormTarget self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"formTarget\"]"
         ghcjs_dom_html_input_element_get_form_target ::
         JSRef HTMLInputElement -> IO JSString
@@ -822,7 +822,7 @@ htmlInputElementGetFormTarget self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_input_element_set_height ::
         JSRef HTMLInputElement -> Word -> IO ()
@@ -840,7 +840,7 @@ htmlInputElementSetHeight self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_input_element_get_height ::
         JSRef HTMLInputElement -> IO Word
@@ -857,7 +857,7 @@ htmlInputElementGetHeight self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"indeterminate\"] = $2;"
         ghcjs_dom_html_input_element_set_indeterminate ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -875,7 +875,7 @@ htmlInputElementSetIndeterminate self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"indeterminate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_indeterminate ::
         JSRef HTMLInputElement -> IO Bool
@@ -892,7 +892,7 @@ htmlInputElementGetIndeterminate self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"list\"]"
         ghcjs_dom_html_input_element_get_list ::
         JSRef HTMLInputElement -> IO (JSRef HTMLElement)
@@ -910,7 +910,7 @@ htmlInputElementGetList self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"max\"] = $2;"
         ghcjs_dom_html_input_element_set_max ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -928,7 +928,7 @@ htmlInputElementSetMax self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"max\"]"
         ghcjs_dom_html_input_element_get_max ::
         JSRef HTMLInputElement -> IO JSString
@@ -946,7 +946,7 @@ htmlInputElementGetMax self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"maxLength\"] = $2;"
         ghcjs_dom_html_input_element_set_max_length ::
         JSRef HTMLInputElement -> Int -> IO ()
@@ -964,7 +964,7 @@ htmlInputElementSetMaxLength self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"maxLength\"]"
         ghcjs_dom_html_input_element_get_max_length ::
         JSRef HTMLInputElement -> IO Int
@@ -981,7 +981,7 @@ htmlInputElementGetMaxLength self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"min\"] = $2;"
         ghcjs_dom_html_input_element_set_min ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -999,7 +999,7 @@ htmlInputElementSetMin self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"min\"]"
         ghcjs_dom_html_input_element_get_min ::
         JSRef HTMLInputElement -> IO JSString
@@ -1017,7 +1017,7 @@ htmlInputElementGetMin self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"multiple\"] = $2;"
         ghcjs_dom_html_input_element_set_multiple ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -1035,7 +1035,7 @@ htmlInputElementSetMultiple self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_multiple ::
         JSRef HTMLInputElement -> IO Bool
@@ -1052,7 +1052,7 @@ htmlInputElementGetMultiple self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_input_element_set_name ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1070,7 +1070,7 @@ htmlInputElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_input_element_get_name ::
         JSRef HTMLInputElement -> IO JSString
@@ -1088,7 +1088,7 @@ htmlInputElementGetName self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"pattern\"] = $2;"
         ghcjs_dom_html_input_element_set_pattern ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1106,7 +1106,7 @@ htmlInputElementSetPattern self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"pattern\"]"
         ghcjs_dom_html_input_element_get_pattern ::
         JSRef HTMLInputElement -> IO JSString
@@ -1124,7 +1124,7 @@ htmlInputElementGetPattern self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"placeholder\"] = $2;"
         ghcjs_dom_html_input_element_set_placeholder ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1142,7 +1142,7 @@ htmlInputElementSetPlaceholder self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"placeholder\"]"
         ghcjs_dom_html_input_element_get_placeholder ::
         JSRef HTMLInputElement -> IO JSString
@@ -1160,7 +1160,7 @@ htmlInputElementGetPlaceholder self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"readOnly\"] = $2;"
         ghcjs_dom_html_input_element_set_read_only ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -1178,7 +1178,7 @@ htmlInputElementSetReadOnly self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_read_only ::
         JSRef HTMLInputElement -> IO Bool
@@ -1195,7 +1195,7 @@ htmlInputElementGetReadOnly self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_input_element_set_required ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -1213,7 +1213,7 @@ htmlInputElementSetRequired self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_required ::
         JSRef HTMLInputElement -> IO Bool
@@ -1230,7 +1230,7 @@ htmlInputElementGetRequired self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_input_element_set_size ::
         JSRef HTMLInputElement -> Word -> IO ()
@@ -1248,7 +1248,7 @@ htmlInputElementSetSize self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_input_element_get_size ::
         JSRef HTMLInputElement -> IO Word
@@ -1265,7 +1265,7 @@ htmlInputElementGetSize self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_input_element_set_src ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1283,7 +1283,7 @@ htmlInputElementSetSrc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_input_element_get_src ::
         JSRef HTMLInputElement -> IO JSString
@@ -1301,7 +1301,7 @@ htmlInputElementGetSrc self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"step\"] = $2;"
         ghcjs_dom_html_input_element_set_step ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1319,7 +1319,7 @@ htmlInputElementSetStep self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"step\"]"
         ghcjs_dom_html_input_element_get_step ::
         JSRef HTMLInputElement -> IO JSString
@@ -1337,7 +1337,7 @@ htmlInputElementGetStep self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
         ghcjs_dom_html_input_element_set_default_value ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1355,7 +1355,7 @@ htmlInputElementSetDefaultValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"defaultValue\"]"
         ghcjs_dom_html_input_element_get_default_value ::
         JSRef HTMLInputElement -> IO JSString
@@ -1373,7 +1373,7 @@ htmlInputElementGetDefaultValue self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_input_element_set_value ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1391,7 +1391,7 @@ htmlInputElementSetValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_input_element_get_value ::
         JSRef HTMLInputElement -> IO JSString
@@ -1409,7 +1409,7 @@ htmlInputElementGetValue self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"valueAsNumber\"] = $2;"
         ghcjs_dom_html_input_element_set_value_as_number ::
         JSRef HTMLInputElement -> Double -> IO ()
@@ -1427,7 +1427,7 @@ htmlInputElementSetValueAsNumber self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"valueAsNumber\"]"
         ghcjs_dom_html_input_element_get_value_as_number ::
         JSRef HTMLInputElement -> IO Double
@@ -1444,7 +1444,7 @@ htmlInputElementGetValueAsNumber self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_input_element_set_width ::
         JSRef HTMLInputElement -> Word -> IO ()
@@ -1462,7 +1462,7 @@ htmlInputElementSetWidth self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_input_element_get_width ::
         JSRef HTMLInputElement -> IO Word
@@ -1479,7 +1479,7 @@ htmlInputElementGetWidth self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_will_validate ::
         JSRef HTMLInputElement -> IO Bool
@@ -1496,7 +1496,7 @@ htmlInputElementGetWillValidate self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_input_element_get_validity ::
         JSRef HTMLInputElement -> IO (JSRef ValidityState)
@@ -1514,7 +1514,7 @@ htmlInputElementGetValidity self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_input_element_get_validation_message ::
         JSRef HTMLInputElement -> IO JSString
@@ -1533,7 +1533,7 @@ htmlInputElementGetValidationMessage self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_input_element_get_labels ::
         JSRef HTMLInputElement -> IO (JSRef NodeList)
@@ -1551,7 +1551,7 @@ htmlInputElementGetLabels self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_input_element_set_align ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1569,7 +1569,7 @@ htmlInputElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_input_element_get_align ::
         JSRef HTMLInputElement -> IO JSString
@@ -1587,7 +1587,7 @@ htmlInputElementGetAlign self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"webkitdirectory\"] = $2;"
         ghcjs_dom_html_input_element_set_webkitdirectory ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -1605,7 +1605,7 @@ htmlInputElementSetWebkitdirectory self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "($1[\"webkitdirectory\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_webkitdirectory ::
@@ -1623,7 +1623,7 @@ htmlInputElementGetWebkitdirectory self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
         ghcjs_dom_html_input_element_set_use_map ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1641,7 +1641,7 @@ htmlInputElementSetUseMap self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"useMap\"]"
         ghcjs_dom_html_input_element_get_use_map ::
         JSRef HTMLInputElement -> IO JSString
@@ -1659,7 +1659,7 @@ htmlInputElementGetUseMap self
          (unHTMLInputElement (toHTMLInputElement self)))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"incremental\"] = $2;"
         ghcjs_dom_html_input_element_set_incremental ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -1677,7 +1677,7 @@ htmlInputElementSetIncremental self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"incremental\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_incremental ::
         JSRef HTMLInputElement -> IO Bool
@@ -1694,7 +1694,7 @@ htmlInputElementGetIncremental self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"webkitSpeech\"] = $2;"
         ghcjs_dom_html_input_element_set_webkit_speech ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -1712,7 +1712,7 @@ htmlInputElementSetWebkitSpeech self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"webkitSpeech\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_webkit_speech ::
         JSRef HTMLInputElement -> IO Bool
@@ -1729,7 +1729,7 @@ htmlInputElementGetWebkitSpeech self
       (unHTMLInputElement (toHTMLInputElement self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"webkitGrammar\"] = $2;"
         ghcjs_dom_html_input_element_set_webkit_grammar ::
         JSRef HTMLInputElement -> Bool -> IO ()
@@ -1747,7 +1747,7 @@ htmlInputElementSetWebkitGrammar self val
       val
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "($1[\"webkitGrammar\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_webkit_grammar ::
         JSRef HTMLInputElement -> IO Bool
@@ -1770,7 +1770,7 @@ htmlInputElementOnwebkitspeechchange
   = (connect "webkitspeechchange")
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"capture\"] = $2;"
         ghcjs_dom_html_input_element_set_capture ::
         JSRef HTMLInputElement -> JSString -> IO ()
@@ -1788,7 +1788,7 @@ htmlInputElementSetCapture self val
       (toJSString val)
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"capture\"]"
         ghcjs_dom_html_input_element_get_capture ::
         JSRef HTMLInputElement -> IO JSString

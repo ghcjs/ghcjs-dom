@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLIFrameElement
        (ghcjs_dom_html_iframe_element_set_align,
@@ -69,7 +69,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_iframe_element_set_align ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -87,7 +87,7 @@ htmliFrameElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_iframe_element_get_align ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -106,7 +106,7 @@ htmliFrameElementGetAlign self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"frameBorder\"] = $2;"
         ghcjs_dom_html_iframe_element_set_frame_border ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -124,7 +124,7 @@ htmliFrameElementSetFrameBorder self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"frameBorder\"]"
         ghcjs_dom_html_iframe_element_get_frame_border ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -143,7 +143,7 @@ htmliFrameElementGetFrameBorder self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_iframe_element_set_height ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -161,7 +161,7 @@ htmliFrameElementSetHeight self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_iframe_element_get_height ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -180,7 +180,7 @@ htmliFrameElementGetHeight self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"longDesc\"] = $2;"
         ghcjs_dom_html_iframe_element_set_long_desc ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -198,7 +198,7 @@ htmliFrameElementSetLongDesc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"longDesc\"]"
         ghcjs_dom_html_iframe_element_get_long_desc ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -217,7 +217,7 @@ htmliFrameElementGetLongDesc self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"marginHeight\"] = $2;"
         ghcjs_dom_html_iframe_element_set_margin_height ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -235,7 +235,7 @@ htmliFrameElementSetMarginHeight self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"marginHeight\"]"
         ghcjs_dom_html_iframe_element_get_margin_height ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -254,7 +254,7 @@ htmliFrameElementGetMarginHeight self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"marginWidth\"] = $2;"
         ghcjs_dom_html_iframe_element_set_margin_width ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -272,7 +272,7 @@ htmliFrameElementSetMarginWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"marginWidth\"]"
         ghcjs_dom_html_iframe_element_get_margin_width ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -291,7 +291,7 @@ htmliFrameElementGetMarginWidth self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_iframe_element_set_name ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -309,7 +309,7 @@ htmliFrameElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_iframe_element_get_name ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -328,7 +328,7 @@ htmliFrameElementGetName self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"sandbox\"] = $2;"
         ghcjs_dom_html_iframe_element_set_sandbox ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -346,7 +346,7 @@ htmliFrameElementSetSandbox self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"sandbox\"]"
         ghcjs_dom_html_iframe_element_get_sandbox ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -365,7 +365,7 @@ htmliFrameElementGetSandbox self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"seamless\"] = $2;"
         ghcjs_dom_html_iframe_element_set_seamless ::
         JSRef HTMLIFrameElement -> Bool -> IO ()
@@ -383,7 +383,7 @@ htmliFrameElementSetSeamless self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"seamless\"] ? 1 : 0)"
         ghcjs_dom_html_iframe_element_get_seamless ::
         JSRef HTMLIFrameElement -> IO Bool
@@ -400,7 +400,7 @@ htmliFrameElementGetSeamless self
       (unHTMLIFrameElement (toHTMLIFrameElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrolling\"] = $2;"
         ghcjs_dom_html_iframe_element_set_scrolling ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -418,7 +418,7 @@ htmliFrameElementSetScrolling self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scrolling\"]"
         ghcjs_dom_html_iframe_element_get_scrolling ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -437,7 +437,7 @@ htmliFrameElementGetScrolling self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_iframe_element_set_src ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -455,7 +455,7 @@ htmliFrameElementSetSrc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_iframe_element_get_src ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -474,7 +474,7 @@ htmliFrameElementGetSrc self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"srcdoc\"] = $2;"
         ghcjs_dom_html_iframe_element_set_srcdoc ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -492,7 +492,7 @@ htmliFrameElementSetSrcdoc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"srcdoc\"]"
         ghcjs_dom_html_iframe_element_get_srcdoc ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -511,7 +511,7 @@ htmliFrameElementGetSrcdoc self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_iframe_element_set_width ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
@@ -529,7 +529,7 @@ htmliFrameElementSetWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_iframe_element_get_width ::
         JSRef HTMLIFrameElement -> IO JSString
@@ -548,7 +548,7 @@ htmliFrameElementGetWidth self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"contentDocument\"]"
         ghcjs_dom_html_iframe_element_get_content_document ::
         JSRef HTMLIFrameElement -> IO (JSRef Document)
@@ -566,7 +566,7 @@ htmliFrameElementGetContentDocument self
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"contentWindow\"]"
         ghcjs_dom_html_iframe_element_get_content_window ::
         JSRef HTMLIFrameElement -> IO (JSRef DOMWindow)

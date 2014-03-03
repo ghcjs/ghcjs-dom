@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableSectionElement
        (ghcjs_dom_html_table_section_element_insert_row,
@@ -42,7 +42,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"insertRow\"]($2)"
         ghcjs_dom_html_table_section_element_insert_row ::
         JSRef HTMLTableSectionElement -> Int -> IO (JSRef HTMLElement)
@@ -63,7 +63,7 @@ htmlTableSectionElementInsertRow self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
         ghcjs_dom_html_table_section_element_delete_row ::
         JSRef HTMLTableSectionElement -> Int -> IO ()
@@ -81,7 +81,7 @@ htmlTableSectionElementDeleteRow self index
       index
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_table_section_element_set_align ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
@@ -100,7 +100,7 @@ htmlTableSectionElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_section_element_get_align ::
         JSRef HTMLTableSectionElement -> IO JSString
@@ -119,7 +119,7 @@ htmlTableSectionElementGetAlign self
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ch\"] = $2;"
         ghcjs_dom_html_table_section_element_set_ch ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
@@ -138,7 +138,7 @@ htmlTableSectionElementSetCh self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ch\"]"
         ghcjs_dom_html_table_section_element_get_ch ::
         JSRef HTMLTableSectionElement -> IO JSString
@@ -157,7 +157,7 @@ htmlTableSectionElementGetCh self
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"chOff\"] = $2;"
         ghcjs_dom_html_table_section_element_set_ch_off ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
@@ -176,7 +176,7 @@ htmlTableSectionElementSetChOff self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"chOff\"]"
         ghcjs_dom_html_table_section_element_get_ch_off ::
         JSRef HTMLTableSectionElement -> IO JSString
@@ -195,7 +195,7 @@ htmlTableSectionElementGetChOff self
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
         ghcjs_dom_html_table_section_element_set_v_align ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
@@ -215,7 +215,7 @@ htmlTableSectionElementSetVAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vAlign\"]"
         ghcjs_dom_html_table_section_element_get_v_align ::
         JSRef HTMLTableSectionElement -> IO JSString
@@ -234,7 +234,7 @@ htmlTableSectionElementGetVAlign self
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rows\"]"
         ghcjs_dom_html_table_section_element_get_rows ::
         JSRef HTMLTableSectionElement -> IO (JSRef HTMLCollection)

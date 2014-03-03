@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBaseFontElement
        (ghcjs_dom_html_base_font_element_set_color,
@@ -32,7 +32,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"color\"] = $2;"
         ghcjs_dom_html_base_font_element_set_color ::
         JSRef HTMLBaseFontElement -> JSString -> IO ()
@@ -51,7 +51,7 @@ htmlBaseFontElementSetColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"color\"]"
         ghcjs_dom_html_base_font_element_get_color ::
         JSRef HTMLBaseFontElement -> IO JSString
@@ -70,7 +70,7 @@ htmlBaseFontElementGetColor self
          (unHTMLBaseFontElement (toHTMLBaseFontElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"face\"] = $2;"
         ghcjs_dom_html_base_font_element_set_face ::
         JSRef HTMLBaseFontElement -> JSString -> IO ()
@@ -89,7 +89,7 @@ htmlBaseFontElementSetFace self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"face\"]"
         ghcjs_dom_html_base_font_element_get_face ::
         JSRef HTMLBaseFontElement -> IO JSString
@@ -108,7 +108,7 @@ htmlBaseFontElementGetFace self
          (unHTMLBaseFontElement (toHTMLBaseFontElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_base_font_element_set_size ::
         JSRef HTMLBaseFontElement -> Int -> IO ()
@@ -126,7 +126,7 @@ htmlBaseFontElementSetSize self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_base_font_element_get_size ::
         JSRef HTMLBaseFontElement -> IO Int

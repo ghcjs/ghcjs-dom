@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableCellElement
        (ghcjs_dom_html_table_cell_element_get_cell_index,
@@ -78,7 +78,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cellIndex\"]"
         ghcjs_dom_html_table_cell_element_get_cell_index ::
         JSRef HTMLTableCellElement -> IO Int
@@ -95,7 +95,7 @@ htmlTableCellElementGetCellIndex self
       (unHTMLTableCellElement (toHTMLTableCellElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"abbr\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_abbr ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -114,7 +114,7 @@ htmlTableCellElementSetAbbr self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"abbr\"]"
         ghcjs_dom_html_table_cell_element_get_abbr ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -133,7 +133,7 @@ htmlTableCellElementGetAbbr self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_align ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -152,7 +152,7 @@ htmlTableCellElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_cell_element_get_align ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -171,7 +171,7 @@ htmlTableCellElementGetAlign self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"axis\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_axis ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -190,7 +190,7 @@ htmlTableCellElementSetAxis self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"axis\"]"
         ghcjs_dom_html_table_cell_element_get_axis ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -209,7 +209,7 @@ htmlTableCellElementGetAxis self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_bg_color ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -228,7 +228,7 @@ htmlTableCellElementSetBgColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"]"
         ghcjs_dom_html_table_cell_element_get_bg_color ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -247,7 +247,7 @@ htmlTableCellElementGetBgColor self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ch\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_ch ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -266,7 +266,7 @@ htmlTableCellElementSetCh self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ch\"]"
         ghcjs_dom_html_table_cell_element_get_ch ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -285,7 +285,7 @@ htmlTableCellElementGetCh self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"chOff\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_ch_off ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -304,7 +304,7 @@ htmlTableCellElementSetChOff self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"chOff\"]"
         ghcjs_dom_html_table_cell_element_get_ch_off ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -323,7 +323,7 @@ htmlTableCellElementGetChOff self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"colSpan\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_col_span ::
         JSRef HTMLTableCellElement -> Int -> IO ()
@@ -341,7 +341,7 @@ htmlTableCellElementSetColSpan self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"colSpan\"]"
         ghcjs_dom_html_table_cell_element_get_col_span ::
         JSRef HTMLTableCellElement -> IO Int
@@ -358,7 +358,7 @@ htmlTableCellElementGetColSpan self
       (unHTMLTableCellElement (toHTMLTableCellElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"headers\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_headers ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -377,7 +377,7 @@ htmlTableCellElementSetHeaders self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"headers\"]"
         ghcjs_dom_html_table_cell_element_get_headers ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -396,7 +396,7 @@ htmlTableCellElementGetHeaders self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_height ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -415,7 +415,7 @@ htmlTableCellElementSetHeight self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_table_cell_element_get_height ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -434,7 +434,7 @@ htmlTableCellElementGetHeight self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"noWrap\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_no_wrap ::
         JSRef HTMLTableCellElement -> Bool -> IO ()
@@ -452,7 +452,7 @@ htmlTableCellElementSetNoWrap self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"noWrap\"] ? 1 : 0)"
         ghcjs_dom_html_table_cell_element_get_no_wrap ::
         JSRef HTMLTableCellElement -> IO Bool
@@ -469,7 +469,7 @@ htmlTableCellElementGetNoWrap self
       (unHTMLTableCellElement (toHTMLTableCellElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rowSpan\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_row_span ::
         JSRef HTMLTableCellElement -> Int -> IO ()
@@ -487,7 +487,7 @@ htmlTableCellElementSetRowSpan self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rowSpan\"]"
         ghcjs_dom_html_table_cell_element_get_row_span ::
         JSRef HTMLTableCellElement -> IO Int
@@ -504,7 +504,7 @@ htmlTableCellElementGetRowSpan self
       (unHTMLTableCellElement (toHTMLTableCellElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scope\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_scope ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -523,7 +523,7 @@ htmlTableCellElementSetScope self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scope\"]"
         ghcjs_dom_html_table_cell_element_get_scope ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -542,7 +542,7 @@ htmlTableCellElementGetScope self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_v_align ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -561,7 +561,7 @@ htmlTableCellElementSetVAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vAlign\"]"
         ghcjs_dom_html_table_cell_element_get_v_align ::
         JSRef HTMLTableCellElement -> IO JSString
@@ -580,7 +580,7 @@ htmlTableCellElementGetVAlign self
          (unHTMLTableCellElement (toHTMLTableCellElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_table_cell_element_set_width ::
         JSRef HTMLTableCellElement -> JSString -> IO ()
@@ -599,7 +599,7 @@ htmlTableCellElementSetWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_table_cell_element_get_width ::
         JSRef HTMLTableCellElement -> IO JSString

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Navigator
        (ghcjs_dom_navigator_java_enabled, navigatorJavaEnabled,
@@ -36,7 +36,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"javaEnabled\"]() ? 1 : 0)"
         ghcjs_dom_navigator_java_enabled :: JSRef Navigator -> IO Bool
 #else 
@@ -49,7 +49,7 @@ navigatorJavaEnabled self
   = ghcjs_dom_navigator_java_enabled (unNavigator (toNavigator self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getStorageUpdates\"]()"
         ghcjs_dom_navigator_get_storage_updates :: JSRef Navigator -> IO ()
 #else 
@@ -63,7 +63,7 @@ navigatorGetStorageUpdates self
       (unNavigator (toNavigator self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"appCodeName\"]"
         ghcjs_dom_navigator_get_app_code_name ::
         JSRef Navigator -> IO JSString
@@ -81,7 +81,7 @@ navigatorGetAppCodeName self
          (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"appName\"]"
         ghcjs_dom_navigator_get_app_name :: JSRef Navigator -> IO JSString
 #else 
@@ -96,7 +96,7 @@ navigatorGetAppName self
       (ghcjs_dom_navigator_get_app_name (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"appVersion\"]"
         ghcjs_dom_navigator_get_app_version ::
         JSRef Navigator -> IO JSString
@@ -114,7 +114,7 @@ navigatorGetAppVersion self
          (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"language\"]"
         ghcjs_dom_navigator_get_language :: JSRef Navigator -> IO JSString
 #else 
@@ -129,7 +129,7 @@ navigatorGetLanguage self
       (ghcjs_dom_navigator_get_language (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"userAgent\"]"
         ghcjs_dom_navigator_get_user_agent ::
         JSRef Navigator -> IO JSString
@@ -147,7 +147,7 @@ navigatorGetUserAgent self
          (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"platform\"]"
         ghcjs_dom_navigator_get_platform :: JSRef Navigator -> IO JSString
 #else 
@@ -162,7 +162,7 @@ navigatorGetPlatform self
       (ghcjs_dom_navigator_get_platform (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"plugins\"]"
         ghcjs_dom_navigator_get_plugins ::
         JSRef Navigator -> IO (JSRef DOMPluginArray)
@@ -179,7 +179,7 @@ navigatorGetPlugins self
       (ghcjs_dom_navigator_get_plugins (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"mimeTypes\"]"
         ghcjs_dom_navigator_get_mime_types ::
         JSRef Navigator -> IO (JSRef DOMMimeTypeArray)
@@ -197,7 +197,7 @@ navigatorGetMimeTypes self
          (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"product\"]"
         ghcjs_dom_navigator_get_product :: JSRef Navigator -> IO JSString
 #else 
@@ -212,7 +212,7 @@ navigatorGetProduct self
       (ghcjs_dom_navigator_get_product (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"productSub\"]"
         ghcjs_dom_navigator_get_product_sub ::
         JSRef Navigator -> IO JSString
@@ -230,7 +230,7 @@ navigatorGetProductSub self
          (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vendor\"]"
         ghcjs_dom_navigator_get_vendor :: JSRef Navigator -> IO JSString
 #else 
@@ -245,7 +245,7 @@ navigatorGetVendor self
       (ghcjs_dom_navigator_get_vendor (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vendorSub\"]"
         ghcjs_dom_navigator_get_vendor_sub ::
         JSRef Navigator -> IO JSString
@@ -263,7 +263,7 @@ navigatorGetVendorSub self
          (unNavigator (toNavigator self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"cookieEnabled\"] ? 1 : 0)"
         ghcjs_dom_navigator_get_cookie_enabled ::
         JSRef Navigator -> IO Bool
@@ -279,7 +279,7 @@ navigatorGetCookieEnabled self
       (unNavigator (toNavigator self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"onLine\"] ? 1 : 0)"
         ghcjs_dom_navigator_get_on_line :: JSRef Navigator -> IO Bool
 #else 

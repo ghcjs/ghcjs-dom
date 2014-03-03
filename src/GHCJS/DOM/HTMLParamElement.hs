@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLParamElement
        (ghcjs_dom_html_param_element_set_name, htmlParamElementSetName,
@@ -27,7 +27,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_param_element_set_name ::
         JSRef HTMLParamElement -> JSString -> IO ()
@@ -45,7 +45,7 @@ htmlParamElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_param_element_get_name ::
         JSRef HTMLParamElement -> IO JSString
@@ -63,7 +63,7 @@ htmlParamElementGetName self
          (unHTMLParamElement (toHTMLParamElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_param_element_set_value ::
         JSRef HTMLParamElement -> JSString -> IO ()
@@ -81,7 +81,7 @@ htmlParamElementSetValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_param_element_get_value ::
         JSRef HTMLParamElement -> IO JSString
@@ -99,7 +99,7 @@ htmlParamElementGetValue self
          (unHTMLParamElement (toHTMLParamElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"valueType\"] = $2;"
         ghcjs_dom_html_param_element_set_value_type ::
         JSRef HTMLParamElement -> JSString -> IO ()
@@ -117,7 +117,7 @@ htmlParamElementSetValueType self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"valueType\"]"
         ghcjs_dom_html_param_element_get_value_type ::
         JSRef HTMLParamElement -> IO JSString

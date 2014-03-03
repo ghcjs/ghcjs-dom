@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLStyleElement
        (ghcjs_dom_html_style_element_set_disabled,
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_style_element_set_disabled ::
         JSRef HTMLStyleElement -> Bool -> IO ()
@@ -47,7 +47,7 @@ htmlStyleElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_style_element_get_disabled ::
         JSRef HTMLStyleElement -> IO Bool
@@ -64,7 +64,7 @@ htmlStyleElementGetDisabled self
       (unHTMLStyleElement (toHTMLStyleElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scoped\"] = $2;"
         ghcjs_dom_html_style_element_set_scoped ::
         JSRef HTMLStyleElement -> Bool -> IO ()
@@ -82,7 +82,7 @@ htmlStyleElementSetScoped self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"scoped\"] ? 1 : 0)"
         ghcjs_dom_html_style_element_get_scoped ::
         JSRef HTMLStyleElement -> IO Bool
@@ -99,7 +99,7 @@ htmlStyleElementGetScoped self
       (unHTMLStyleElement (toHTMLStyleElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"media\"] = $2;"
         ghcjs_dom_html_style_element_set_media ::
         JSRef HTMLStyleElement -> JSString -> IO ()
@@ -117,7 +117,7 @@ htmlStyleElementSetMedia self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"media\"]"
         ghcjs_dom_html_style_element_get_media ::
         JSRef HTMLStyleElement -> IO JSString
@@ -135,7 +135,7 @@ htmlStyleElementGetMedia self
          (unHTMLStyleElement (toHTMLStyleElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"sheet\"]"
         ghcjs_dom_html_style_element_get_sheet ::
         JSRef HTMLStyleElement -> IO (JSRef StyleSheet)

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSValue
        (cCSS_INHERIT, cCSS_PRIMITIVE_VALUE, cCSS_VALUE_LIST, cCSS_CUSTOM,
@@ -27,7 +27,7 @@ cCSS_VALUE_LIST = 2
 cCSS_CUSTOM = 3
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
         ghcjs_dom_css_value_set_css_text ::
         JSRef CSSValue -> JSString -> IO ()
@@ -44,7 +44,7 @@ cssValueSetCssText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssText\"]"
         ghcjs_dom_css_value_get_css_text :: JSRef CSSValue -> IO JSString
 #else 
@@ -59,7 +59,7 @@ cssValueGetCssText self
       (ghcjs_dom_css_value_get_css_text (unCSSValue (toCSSValue self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssValueType\"]"
         ghcjs_dom_css_value_get_css_value_type :: JSRef CSSValue -> IO Word
 #else 

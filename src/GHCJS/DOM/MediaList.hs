@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaList
        (ghcjs_dom_media_list_item, mediaListItem,
@@ -25,7 +25,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_media_list_item :: JSRef MediaList -> Word -> IO JSString
 #else 
@@ -41,7 +41,7 @@ mediaListItem self index
       (ghcjs_dom_media_list_item (unMediaList (toMediaList self)) index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"deleteMedium\"]($2)"
         ghcjs_dom_media_list_delete_medium ::
         JSRef MediaList -> JSString -> IO ()
@@ -60,7 +60,7 @@ mediaListDeleteMedium self oldMedium
       (toJSString oldMedium)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"appendMedium\"]($2)"
         ghcjs_dom_media_list_append_medium ::
         JSRef MediaList -> JSString -> IO ()
@@ -79,7 +79,7 @@ mediaListAppendMedium self newMedium
       (toJSString newMedium)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"mediaText\"] = $2;"
         ghcjs_dom_media_list_set_media_text ::
         JSRef MediaList -> JSString -> IO ()
@@ -97,7 +97,7 @@ mediaListSetMediaText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"mediaText\"]"
         ghcjs_dom_media_list_get_media_text ::
         JSRef MediaList -> IO JSString
@@ -115,7 +115,7 @@ mediaListGetMediaText self
          (unMediaList (toMediaList self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_media_list_get_length :: JSRef MediaList -> IO Word
 #else 

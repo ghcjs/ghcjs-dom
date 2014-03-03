@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Screen
        (ghcjs_dom_screen_get_height, screenGetHeight,
@@ -27,7 +27,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_screen_get_height :: JSRef DOMScreen -> IO Word
 #else
@@ -40,7 +40,7 @@ screenGetHeight self
   = ghcjs_dom_screen_get_height (unDOMScreen (toDOMScreen self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_screen_get_width :: JSRef DOMScreen -> IO Word
 #else
@@ -53,7 +53,7 @@ screenGetWidth self
   = ghcjs_dom_screen_get_width (unDOMScreen (toDOMScreen self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"colorDepth\"]"
         ghcjs_dom_screen_get_color_depth :: JSRef DOMScreen -> IO Word
 #else
@@ -66,7 +66,7 @@ screenGetColorDepth self
   = ghcjs_dom_screen_get_color_depth (unDOMScreen (toDOMScreen self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"pixelDepth\"]"
         ghcjs_dom_screen_get_pixel_depth :: JSRef DOMScreen -> IO Word
 #else
@@ -79,7 +79,7 @@ screenGetPixelDepth self
   = ghcjs_dom_screen_get_pixel_depth (unDOMScreen (toDOMScreen self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"availLeft\"]"
         ghcjs_dom_screen_get_avail_left :: JSRef DOMScreen -> IO Int
 #else
@@ -92,7 +92,7 @@ screenGetAvailLeft self
   = ghcjs_dom_screen_get_avail_left (unDOMScreen (toDOMScreen self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"availTop\"]"
         ghcjs_dom_screen_get_avail_top :: JSRef DOMScreen -> IO Int
 #else
@@ -105,7 +105,7 @@ screenGetAvailTop self
   = ghcjs_dom_screen_get_avail_top (unDOMScreen (toDOMScreen self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"availHeight\"]"
         ghcjs_dom_screen_get_avail_height :: JSRef DOMScreen -> IO Word
 #else
@@ -119,7 +119,7 @@ screenGetAvailHeight self
       (unDOMScreen (toDOMScreen self))
 
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$1[\"availWidth\"]"
         ghcjs_dom_screen_get_avail_width :: JSRef DOMScreen -> IO Word
 #else

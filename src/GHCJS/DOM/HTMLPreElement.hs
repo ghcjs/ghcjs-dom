@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLPreElement
        (ghcjs_dom_html_pre_element_set_width, htmlPreElementSetWidth,
@@ -24,7 +24,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_pre_element_set_width ::
         JSRef HTMLPreElement -> Int -> IO ()
@@ -42,7 +42,7 @@ htmlPreElementSetWidth self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_pre_element_get_width ::
         JSRef HTMLPreElement -> IO Int
@@ -58,7 +58,7 @@ htmlPreElementGetWidth self
       (unHTMLPreElement (toHTMLPreElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"wrap\"] = $2;"
         ghcjs_dom_html_pre_element_set_wrap ::
         JSRef HTMLPreElement -> Bool -> IO ()
@@ -76,7 +76,7 @@ htmlPreElementSetWrap self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"wrap\"] ? 1 : 0)"
         ghcjs_dom_html_pre_element_get_wrap ::
         JSRef HTMLPreElement -> IO Bool

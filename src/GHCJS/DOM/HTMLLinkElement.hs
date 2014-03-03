@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLinkElement
        (ghcjs_dom_html_link_element_set_disabled,
@@ -40,7 +40,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_link_element_set_disabled ::
         JSRef HTMLLinkElement -> Bool -> IO ()
@@ -58,7 +58,7 @@ htmlLinkElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_link_element_get_disabled ::
         JSRef HTMLLinkElement -> IO Bool
@@ -75,7 +75,7 @@ htmlLinkElementGetDisabled self
       (unHTMLLinkElement (toHTMLLinkElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
         ghcjs_dom_html_link_element_set_charset ::
         JSRef HTMLLinkElement -> JSString -> IO ()
@@ -93,7 +93,7 @@ htmlLinkElementSetCharset self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"]"
         ghcjs_dom_html_link_element_get_charset ::
         JSRef HTMLLinkElement -> IO JSString
@@ -111,7 +111,7 @@ htmlLinkElementGetCharset self
          (unHTMLLinkElement (toHTMLLinkElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"] = $2;"
         ghcjs_dom_html_link_element_set_href ::
         JSRef HTMLLinkElement -> JSString -> IO ()
@@ -129,7 +129,7 @@ htmlLinkElementSetHref self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_html_link_element_get_href ::
         JSRef HTMLLinkElement -> IO JSString
@@ -147,7 +147,7 @@ htmlLinkElementGetHref self
          (unHTMLLinkElement (toHTMLLinkElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hreflang\"] = $2;"
         ghcjs_dom_html_link_element_set_hreflang ::
         JSRef HTMLLinkElement -> JSString -> IO ()
@@ -165,7 +165,7 @@ htmlLinkElementSetHreflang self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hreflang\"]"
         ghcjs_dom_html_link_element_get_hreflang ::
         JSRef HTMLLinkElement -> IO JSString
@@ -183,7 +183,7 @@ htmlLinkElementGetHreflang self
          (unHTMLLinkElement (toHTMLLinkElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"media\"] = $2;"
         ghcjs_dom_html_link_element_set_media ::
         JSRef HTMLLinkElement -> JSString -> IO ()
@@ -201,7 +201,7 @@ htmlLinkElementSetMedia self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"media\"]"
         ghcjs_dom_html_link_element_get_media ::
         JSRef HTMLLinkElement -> IO JSString
@@ -219,7 +219,7 @@ htmlLinkElementGetMedia self
          (unHTMLLinkElement (toHTMLLinkElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rel\"] = $2;"
         ghcjs_dom_html_link_element_set_rel ::
         JSRef HTMLLinkElement -> JSString -> IO ()
@@ -237,7 +237,7 @@ htmlLinkElementSetRel self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rel\"]"
         ghcjs_dom_html_link_element_get_rel ::
         JSRef HTMLLinkElement -> IO JSString
@@ -255,7 +255,7 @@ htmlLinkElementGetRel self
          (unHTMLLinkElement (toHTMLLinkElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rev\"] = $2;"
         ghcjs_dom_html_link_element_set_rev ::
         JSRef HTMLLinkElement -> JSString -> IO ()
@@ -273,7 +273,7 @@ htmlLinkElementSetRev self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rev\"]"
         ghcjs_dom_html_link_element_get_rev ::
         JSRef HTMLLinkElement -> IO JSString
@@ -291,7 +291,7 @@ htmlLinkElementGetRev self
          (unHTMLLinkElement (toHTMLLinkElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         ghcjs_dom_html_link_element_set_target ::
         JSRef HTMLLinkElement -> JSString -> IO ()
@@ -309,7 +309,7 @@ htmlLinkElementSetTarget self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_html_link_element_get_target ::
         JSRef HTMLLinkElement -> IO JSString
@@ -327,7 +327,7 @@ htmlLinkElementGetTarget self
          (unHTMLLinkElement (toHTMLLinkElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"sheet\"]"
         ghcjs_dom_html_link_element_get_sheet ::
         JSRef HTMLLinkElement -> IO (JSRef StyleSheet)

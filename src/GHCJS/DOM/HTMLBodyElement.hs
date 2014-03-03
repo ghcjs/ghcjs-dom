@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBodyElement
        (ghcjs_dom_html_body_element_set_a_link, htmlBodyElementSetALink,
@@ -42,7 +42,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"aLink\"] = $2;"
         ghcjs_dom_html_body_element_set_a_link ::
         JSRef HTMLBodyElement -> JSString -> IO ()
@@ -60,7 +60,7 @@ htmlBodyElementSetALink self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"aLink\"]"
         ghcjs_dom_html_body_element_get_a_link ::
         JSRef HTMLBodyElement -> IO JSString
@@ -78,7 +78,7 @@ htmlBodyElementGetALink self
          (unHTMLBodyElement (toHTMLBodyElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"background\"] = $2;"
         ghcjs_dom_html_body_element_set_background ::
         JSRef HTMLBodyElement -> JSString -> IO ()
@@ -96,7 +96,7 @@ htmlBodyElementSetBackground self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"background\"]"
         ghcjs_dom_html_body_element_get_background ::
         JSRef HTMLBodyElement -> IO JSString
@@ -114,7 +114,7 @@ htmlBodyElementGetBackground self
          (unHTMLBodyElement (toHTMLBodyElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
         ghcjs_dom_html_body_element_set_bg_color ::
         JSRef HTMLBodyElement -> JSString -> IO ()
@@ -132,7 +132,7 @@ htmlBodyElementSetBgColor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"bgColor\"]"
         ghcjs_dom_html_body_element_get_bg_color ::
         JSRef HTMLBodyElement -> IO JSString
@@ -150,7 +150,7 @@ htmlBodyElementGetBgColor self
          (unHTMLBodyElement (toHTMLBodyElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"link\"] = $2;"
         ghcjs_dom_html_body_element_set_link ::
         JSRef HTMLBodyElement -> JSString -> IO ()
@@ -168,7 +168,7 @@ htmlBodyElementSetLink self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"link\"]"
         ghcjs_dom_html_body_element_get_link ::
         JSRef HTMLBodyElement -> IO JSString
@@ -186,7 +186,7 @@ htmlBodyElementGetLink self
          (unHTMLBodyElement (toHTMLBodyElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"] = $2;"
         ghcjs_dom_html_body_element_set_text ::
         JSRef HTMLBodyElement -> JSString -> IO ()
@@ -204,7 +204,7 @@ htmlBodyElementSetText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_body_element_get_text ::
         JSRef HTMLBodyElement -> IO JSString
@@ -222,7 +222,7 @@ htmlBodyElementGetText self
          (unHTMLBodyElement (toHTMLBodyElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vLink\"] = $2;"
         ghcjs_dom_html_body_element_set_v_link ::
         JSRef HTMLBodyElement -> JSString -> IO ()
@@ -240,7 +240,7 @@ htmlBodyElementSetVLink self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vLink\"]"
         ghcjs_dom_html_body_element_get_v_link ::
         JSRef HTMLBodyElement -> IO JSString

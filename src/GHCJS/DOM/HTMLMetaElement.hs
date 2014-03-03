@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMetaElement
        (ghcjs_dom_html_meta_element_set_content,
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"content\"] = $2;"
         ghcjs_dom_html_meta_element_set_content ::
         JSRef HTMLMetaElement -> JSString -> IO ()
@@ -48,7 +48,7 @@ htmlMetaElementSetContent self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"content\"]"
         ghcjs_dom_html_meta_element_get_content ::
         JSRef HTMLMetaElement -> IO JSString
@@ -66,7 +66,7 @@ htmlMetaElementGetContent self
          (unHTMLMetaElement (toHTMLMetaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"httpEquiv\"] = $2;"
         ghcjs_dom_html_meta_element_set_http_equiv ::
         JSRef HTMLMetaElement -> JSString -> IO ()
@@ -84,7 +84,7 @@ htmlMetaElementSetHttpEquiv self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"httpEquiv\"]"
         ghcjs_dom_html_meta_element_get_http_equiv ::
         JSRef HTMLMetaElement -> IO JSString
@@ -102,7 +102,7 @@ htmlMetaElementGetHttpEquiv self
          (unHTMLMetaElement (toHTMLMetaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_meta_element_set_name ::
         JSRef HTMLMetaElement -> JSString -> IO ()
@@ -120,7 +120,7 @@ htmlMetaElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_meta_element_get_name ::
         JSRef HTMLMetaElement -> IO JSString
@@ -138,7 +138,7 @@ htmlMetaElementGetName self
          (unHTMLMetaElement (toHTMLMetaElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scheme\"] = $2;"
         ghcjs_dom_html_meta_element_set_scheme ::
         JSRef HTMLMetaElement -> JSString -> IO ()
@@ -156,7 +156,7 @@ htmlMetaElementSetScheme self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"scheme\"]"
         ghcjs_dom_html_meta_element_get_scheme ::
         JSRef HTMLMetaElement -> IO JSString

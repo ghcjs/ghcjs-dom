@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLScriptElement
        (ghcjs_dom_html_script_element_set_text, htmlScriptElementSetText,
@@ -44,7 +44,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"] = $2;"
         ghcjs_dom_html_script_element_set_text ::
         JSRef HTMLScriptElement -> JSString -> IO ()
@@ -62,7 +62,7 @@ htmlScriptElementSetText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_script_element_get_text ::
         JSRef HTMLScriptElement -> IO JSString
@@ -81,7 +81,7 @@ htmlScriptElementGetText self
          (unHTMLScriptElement (toHTMLScriptElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
         ghcjs_dom_html_script_element_set_html_for ::
         JSRef HTMLScriptElement -> JSString -> IO ()
@@ -99,7 +99,7 @@ htmlScriptElementSetHtmlFor self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"htmlFor\"]"
         ghcjs_dom_html_script_element_get_html_for ::
         JSRef HTMLScriptElement -> IO JSString
@@ -118,7 +118,7 @@ htmlScriptElementGetHtmlFor self
          (unHTMLScriptElement (toHTMLScriptElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"event\"] = $2;"
         ghcjs_dom_html_script_element_set_event ::
         JSRef HTMLScriptElement -> JSString -> IO ()
@@ -136,7 +136,7 @@ htmlScriptElementSetEvent self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"event\"]"
         ghcjs_dom_html_script_element_get_event ::
         JSRef HTMLScriptElement -> IO JSString
@@ -155,7 +155,7 @@ htmlScriptElementGetEvent self
          (unHTMLScriptElement (toHTMLScriptElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
         ghcjs_dom_html_script_element_set_charset ::
         JSRef HTMLScriptElement -> JSString -> IO ()
@@ -173,7 +173,7 @@ htmlScriptElementSetCharset self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"]"
         ghcjs_dom_html_script_element_get_charset ::
         JSRef HTMLScriptElement -> IO JSString
@@ -192,7 +192,7 @@ htmlScriptElementGetCharset self
          (unHTMLScriptElement (toHTMLScriptElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"async\"] = $2;"
         ghcjs_dom_html_script_element_set_async ::
         JSRef HTMLScriptElement -> Bool -> IO ()
@@ -210,7 +210,7 @@ htmlScriptElementSetAsync self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"async\"] ? 1 : 0)"
         ghcjs_dom_html_script_element_get_async ::
         JSRef HTMLScriptElement -> IO Bool
@@ -227,7 +227,7 @@ htmlScriptElementGetAsync self
       (unHTMLScriptElement (toHTMLScriptElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defer\"] = $2;"
         ghcjs_dom_html_script_element_set_defer ::
         JSRef HTMLScriptElement -> Bool -> IO ()
@@ -245,7 +245,7 @@ htmlScriptElementSetDefer self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"defer\"] ? 1 : 0)"
         ghcjs_dom_html_script_element_get_defer ::
         JSRef HTMLScriptElement -> IO Bool
@@ -262,7 +262,7 @@ htmlScriptElementGetDefer self
       (unHTMLScriptElement (toHTMLScriptElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_script_element_set_src ::
         JSRef HTMLScriptElement -> JSString -> IO ()
@@ -280,7 +280,7 @@ htmlScriptElementSetSrc self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_script_element_get_src ::
         JSRef HTMLScriptElement -> IO JSString
@@ -299,7 +299,7 @@ htmlScriptElementGetSrc self
          (unHTMLScriptElement (toHTMLScriptElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
         ghcjs_dom_html_script_element_set_cross_origin ::
         JSRef HTMLScriptElement -> JSString -> IO ()
@@ -317,7 +317,7 @@ htmlScriptElementSetCrossOrigin self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"crossOrigin\"]"
         ghcjs_dom_html_script_element_get_cross_origin ::
         JSRef HTMLScriptElement -> IO JSString
@@ -336,7 +336,7 @@ htmlScriptElementGetCrossOrigin self
          (unHTMLScriptElement (toHTMLScriptElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"nonce\"] = $2;"
         ghcjs_dom_html_script_element_set_nonce ::
         JSRef HTMLScriptElement -> JSString -> IO ()
@@ -354,7 +354,7 @@ htmlScriptElementSetNonce self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"nonce\"]"
         ghcjs_dom_html_script_element_get_nonce ::
         JSRef HTMLScriptElement -> IO JSString

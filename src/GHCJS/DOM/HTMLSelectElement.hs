@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLSelectElement
        (ghcjs_dom_html_select_element_item, htmlSelectElementItem,
@@ -72,7 +72,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_html_select_element_item ::
         JSRef HTMLSelectElement -> Word -> IO (JSRef Node)
@@ -91,7 +91,7 @@ htmlSelectElementItem self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_html_select_element_named_item ::
         JSRef HTMLSelectElement -> JSString -> IO (JSRef Node)
@@ -111,7 +111,7 @@ htmlSelectElementNamedItem self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"add\"]($2, $3)"
         ghcjs_dom_html_select_element_add ::
         JSRef HTMLSelectElement ->
@@ -134,7 +134,7 @@ htmlSelectElementAdd self element before
       (maybe jsNull (unHTMLElement . toHTMLElement) before)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"remove\"]($2)"
         ghcjs_dom_html_select_element_remove ::
         JSRef HTMLSelectElement -> Int -> IO ()
@@ -152,7 +152,7 @@ htmlSelectElementRemove self index
       index
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_select_element_check_validity ::
@@ -170,7 +170,7 @@ htmlSelectElementCheckValidity self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_select_element_set_custom_validity ::
         JSRef HTMLSelectElement -> JSString -> IO ()
@@ -189,7 +189,7 @@ htmlSelectElementSetCustomValidity self error
       (toJSString error)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_select_element_set_autofocus ::
         JSRef HTMLSelectElement -> Bool -> IO ()
@@ -207,7 +207,7 @@ htmlSelectElementSetAutofocus self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_autofocus ::
         JSRef HTMLSelectElement -> IO Bool
@@ -224,7 +224,7 @@ htmlSelectElementGetAutofocus self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_select_element_set_disabled ::
         JSRef HTMLSelectElement -> Bool -> IO ()
@@ -242,7 +242,7 @@ htmlSelectElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_disabled ::
         JSRef HTMLSelectElement -> IO Bool
@@ -259,7 +259,7 @@ htmlSelectElementGetDisabled self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_select_element_get_form ::
         JSRef HTMLSelectElement -> IO (JSRef HTMLFormElement)
@@ -277,7 +277,7 @@ htmlSelectElementGetForm self
          (unHTMLSelectElement (toHTMLSelectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"multiple\"] = $2;"
         ghcjs_dom_html_select_element_set_multiple ::
         JSRef HTMLSelectElement -> Bool -> IO ()
@@ -295,7 +295,7 @@ htmlSelectElementSetMultiple self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_multiple ::
         JSRef HTMLSelectElement -> IO Bool
@@ -312,7 +312,7 @@ htmlSelectElementGetMultiple self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_select_element_set_name ::
         JSRef HTMLSelectElement -> JSString -> IO ()
@@ -330,7 +330,7 @@ htmlSelectElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_select_element_get_name ::
         JSRef HTMLSelectElement -> IO JSString
@@ -349,7 +349,7 @@ htmlSelectElementGetName self
          (unHTMLSelectElement (toHTMLSelectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_select_element_set_required ::
         JSRef HTMLSelectElement -> Bool -> IO ()
@@ -367,7 +367,7 @@ htmlSelectElementSetRequired self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_required ::
         JSRef HTMLSelectElement -> IO Bool
@@ -384,7 +384,7 @@ htmlSelectElementGetRequired self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_select_element_set_size ::
         JSRef HTMLSelectElement -> Int -> IO ()
@@ -402,7 +402,7 @@ htmlSelectElementSetSize self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_select_element_get_size ::
         JSRef HTMLSelectElement -> IO Int
@@ -419,7 +419,7 @@ htmlSelectElementGetSize self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"options\"]"
         ghcjs_dom_html_select_element_get_options ::
         JSRef HTMLSelectElement -> IO (JSRef HTMLOptionsCollection)
@@ -439,7 +439,7 @@ htmlSelectElementGetOptions self
          (unHTMLSelectElement (toHTMLSelectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"] = $2;"
         ghcjs_dom_html_select_element_set_length ::
         JSRef HTMLSelectElement -> Word -> IO ()
@@ -457,7 +457,7 @@ htmlSelectElementSetLength self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_html_select_element_get_length ::
         JSRef HTMLSelectElement -> IO Word
@@ -474,7 +474,7 @@ htmlSelectElementGetLength self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"selectedOptions\"]"
         ghcjs_dom_html_select_element_get_selected_options ::
         JSRef HTMLSelectElement -> IO (JSRef HTMLCollection)
@@ -493,7 +493,7 @@ htmlSelectElementGetSelectedOptions self
          (unHTMLSelectElement (toHTMLSelectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"selectedIndex\"] = $2;"
         ghcjs_dom_html_select_element_set_selected_index ::
         JSRef HTMLSelectElement -> Int -> IO ()
@@ -511,7 +511,7 @@ htmlSelectElementSetSelectedIndex self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"selectedIndex\"]"
         ghcjs_dom_html_select_element_get_selected_index ::
         JSRef HTMLSelectElement -> IO Int
@@ -528,7 +528,7 @@ htmlSelectElementGetSelectedIndex self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_select_element_set_value ::
         JSRef HTMLSelectElement -> JSString -> IO ()
@@ -546,7 +546,7 @@ htmlSelectElementSetValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_select_element_get_value ::
         JSRef HTMLSelectElement -> IO JSString
@@ -565,7 +565,7 @@ htmlSelectElementGetValue self
          (unHTMLSelectElement (toHTMLSelectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_will_validate ::
         JSRef HTMLSelectElement -> IO Bool
@@ -582,7 +582,7 @@ htmlSelectElementGetWillValidate self
       (unHTMLSelectElement (toHTMLSelectElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_select_element_get_validity ::
         JSRef HTMLSelectElement -> IO (JSRef ValidityState)
@@ -600,7 +600,7 @@ htmlSelectElementGetValidity self
          (unHTMLSelectElement (toHTMLSelectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_select_element_get_validation_message ::
         JSRef HTMLSelectElement -> IO JSString
@@ -619,7 +619,7 @@ htmlSelectElementGetValidationMessage self
          (unHTMLSelectElement (toHTMLSelectElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_select_element_get_labels ::
         JSRef HTMLSelectElement -> IO (JSRef NodeList)

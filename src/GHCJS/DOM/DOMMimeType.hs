@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMMimeType
        (ghcjs_dom_dom_mime_type_get_suffixes, domMimeTypeGetSuffixes,
@@ -23,7 +23,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"suffixes\"]"
         ghcjs_dom_dom_mime_type_get_suffixes ::
         JSRef DOMMimeType -> IO JSString
@@ -41,7 +41,7 @@ domMimeTypeGetSuffixes self
          (unDOMMimeType (toDOMMimeType self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"description\"]"
         ghcjs_dom_dom_mime_type_get_description ::
         JSRef DOMMimeType -> IO JSString
@@ -59,7 +59,7 @@ domMimeTypeGetDescription self
          (unDOMMimeType (toDOMMimeType self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"enabledPlugin\"]"
         ghcjs_dom_dom_mime_type_get_enabled_plugin ::
         JSRef DOMMimeType -> IO (JSRef DOMPlugin)

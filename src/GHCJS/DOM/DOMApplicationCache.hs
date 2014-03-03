@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMApplicationCache
        (ghcjs_dom_dom_application_cache_update, domApplicationCacheUpdate,
@@ -33,7 +33,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"update\"]()"
         ghcjs_dom_dom_application_cache_update ::
         JSRef DOMApplicationCache -> IO ()
@@ -50,7 +50,7 @@ domApplicationCacheUpdate self
       (unDOMApplicationCache (toDOMApplicationCache self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"swapCache\"]()"
         ghcjs_dom_dom_application_cache_swap_cache ::
         JSRef DOMApplicationCache -> IO ()
@@ -67,7 +67,7 @@ domApplicationCacheSwapCache self
       (unDOMApplicationCache (toDOMApplicationCache self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"abort\"]()"
         ghcjs_dom_dom_application_cache_abort ::
         JSRef DOMApplicationCache -> IO ()
@@ -84,7 +84,7 @@ domApplicationCacheAbort self
       (unDOMApplicationCache (toDOMApplicationCache self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_application_cache_dispatch_event ::
@@ -110,7 +110,7 @@ cUPDATEREADY = 4
 cOBSOLETE = 5
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"status\"]"
         ghcjs_dom_dom_application_cache_get_status ::
         JSRef DOMApplicationCache -> IO Word

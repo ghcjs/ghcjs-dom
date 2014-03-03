@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
 module GHCJS.DOM.EventTargetClosures
        (eventTargetAddEventListener) where
@@ -9,7 +9,7 @@ import GHCJS.Foreign
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 
-#ifdef __GHCJS__
+#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
         "($1[\"addEventListener\"]($2, $3, $4) ? 1 : 0)"
         ghcjs_dom_event_target_add_event_listener ::

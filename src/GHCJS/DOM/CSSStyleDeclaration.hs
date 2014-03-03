@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSStyleDeclaration
        (ghcjs_dom_css_style_declaration_get_property_value,
@@ -41,7 +41,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getPropertyValue\"]($2)"
         ghcjs_dom_css_style_declaration_get_property_value ::
         JSRef CSSStyleDeclaration -> JSString -> IO JSString
@@ -63,7 +63,7 @@ cssStyleDeclarationGetPropertyValue self propertyName
          (toJSString propertyName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"removeProperty\"]($2)"
         ghcjs_dom_css_style_declaration_remove_property ::
         JSRef CSSStyleDeclaration -> JSString -> IO JSString
@@ -85,7 +85,7 @@ cssStyleDeclarationRemoveProperty self propertyName
          (toJSString propertyName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getPropertyPriority\"]($2)"
         ghcjs_dom_css_style_declaration_get_property_priority ::
         JSRef CSSStyleDeclaration -> JSString -> IO JSString
@@ -107,7 +107,7 @@ cssStyleDeclarationGetPropertyPriority self propertyName
          (toJSString propertyName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setProperty\"]($2, $3, $4)"
         ghcjs_dom_css_style_declaration_set_property ::
         JSRef CSSStyleDeclaration ->
@@ -131,7 +131,7 @@ cssStyleDeclarationSetProperty self propertyName value priority
       (toJSString priority)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_css_style_declaration_item ::
         JSRef CSSStyleDeclaration -> Word -> IO JSString
@@ -151,7 +151,7 @@ cssStyleDeclarationItem self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getPropertyShorthand\"]($2)"
         ghcjs_dom_css_style_declaration_get_property_shorthand ::
         JSRef CSSStyleDeclaration -> JSString -> IO JSString
@@ -173,7 +173,7 @@ cssStyleDeclarationGetPropertyShorthand self propertyName
          (toJSString propertyName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"isPropertyImplicit\"]($2) ? 1 : 0)"
         ghcjs_dom_css_style_declaration_is_property_implicit ::
@@ -194,7 +194,7 @@ cssStyleDeclarationIsPropertyImplicit self propertyName
       (toJSString propertyName)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
         ghcjs_dom_css_style_declaration_set_css_text ::
         JSRef CSSStyleDeclaration -> JSString -> IO ()
@@ -213,7 +213,7 @@ cssStyleDeclarationSetCssText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cssText\"]"
         ghcjs_dom_css_style_declaration_get_css_text ::
         JSRef CSSStyleDeclaration -> IO JSString
@@ -232,7 +232,7 @@ cssStyleDeclarationGetCssText self
          (unCSSStyleDeclaration (toCSSStyleDeclaration self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_css_style_declaration_get_length ::
         JSRef CSSStyleDeclaration -> IO Word
@@ -249,7 +249,7 @@ cssStyleDeclarationGetLength self
       (unCSSStyleDeclaration (toCSSStyleDeclaration self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"parentRule\"]"
         ghcjs_dom_css_style_declaration_get_parent_rule ::
         JSRef CSSStyleDeclaration -> IO (JSRef CSSRule)

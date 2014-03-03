@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLElement
        (ghcjs_dom_html_element_insert_adjacent_element,
@@ -63,7 +63,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"insertAdjacentElement\"]($2,\n$3)"
         ghcjs_dom_html_element_insert_adjacent_element ::
@@ -87,7 +87,7 @@ htmlElementInsertAdjacentElement self where' element
          (maybe jsNull (unElement . toElement) element))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"insertAdjacentHTML\"]($2, $3)"
         ghcjs_dom_html_element_insert_adjacent_html ::
@@ -108,7 +108,7 @@ htmlElementInsertAdjacentHTML self where' html
       (toJSString html)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"insertAdjacentText\"]($2, $3)"
         ghcjs_dom_html_element_insert_adjacent_text ::
@@ -129,7 +129,7 @@ htmlElementInsertAdjacentText self where' text
       (toJSString text)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"click\"]()"
         ghcjs_dom_html_element_click :: JSRef HTMLElement -> IO ()
 #else 
@@ -142,7 +142,7 @@ htmlElementClick self
   = ghcjs_dom_html_element_click (unHTMLElement (toHTMLElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"title\"] = $2;"
         ghcjs_dom_html_element_set_title ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -160,7 +160,7 @@ htmlElementSetTitle self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"title\"]"
         ghcjs_dom_html_element_get_title ::
         JSRef HTMLElement -> IO JSString
@@ -178,7 +178,7 @@ htmlElementGetTitle self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"lang\"] = $2;"
         ghcjs_dom_html_element_set_lang ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -196,7 +196,7 @@ htmlElementSetLang self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"lang\"]"
         ghcjs_dom_html_element_get_lang :: JSRef HTMLElement -> IO JSString
 #else 
@@ -212,7 +212,7 @@ htmlElementGetLang self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"translate\"] = $2;"
         ghcjs_dom_html_element_set_translate ::
         JSRef HTMLElement -> Bool -> IO ()
@@ -230,7 +230,7 @@ htmlElementSetTranslate self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"translate\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_translate ::
         JSRef HTMLElement -> IO Bool
@@ -246,7 +246,7 @@ htmlElementGetTranslate self
       (unHTMLElement (toHTMLElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"dir\"] = $2;"
         ghcjs_dom_html_element_set_dir ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -264,7 +264,7 @@ htmlElementSetDir self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"dir\"]"
         ghcjs_dom_html_element_get_dir :: JSRef HTMLElement -> IO JSString
 #else 
@@ -280,7 +280,7 @@ htmlElementGetDir self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
         ghcjs_dom_html_element_set_tab_index ::
         JSRef HTMLElement -> Int -> IO ()
@@ -298,7 +298,7 @@ htmlElementSetTabIndex self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"tabIndex\"]"
         ghcjs_dom_html_element_get_tab_index :: JSRef HTMLElement -> IO Int
 #else 
@@ -312,7 +312,7 @@ htmlElementGetTabIndex self
       (unHTMLElement (toHTMLElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"draggable\"] = $2;"
         ghcjs_dom_html_element_set_draggable ::
         JSRef HTMLElement -> Bool -> IO ()
@@ -330,7 +330,7 @@ htmlElementSetDraggable self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"draggable\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_draggable ::
         JSRef HTMLElement -> IO Bool
@@ -346,7 +346,7 @@ htmlElementGetDraggable self
       (unHTMLElement (toHTMLElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitdropzone\"] = $2;"
         ghcjs_dom_html_element_set_webkitdropzone ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -364,7 +364,7 @@ htmlElementSetWebkitdropzone self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitdropzone\"]"
         ghcjs_dom_html_element_get_webkitdropzone ::
         JSRef HTMLElement -> IO JSString
@@ -382,7 +382,7 @@ htmlElementGetWebkitdropzone self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hidden\"] = $2;"
         ghcjs_dom_html_element_set_hidden ::
         JSRef HTMLElement -> Bool -> IO ()
@@ -400,7 +400,7 @@ htmlElementSetHidden self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_hidden :: JSRef HTMLElement -> IO Bool
 #else 
@@ -414,7 +414,7 @@ htmlElementGetHidden self
       (unHTMLElement (toHTMLElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"accessKey\"] = $2;"
         ghcjs_dom_html_element_set_access_key ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -432,7 +432,7 @@ htmlElementSetAccessKey self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"accessKey\"]"
         ghcjs_dom_html_element_get_access_key ::
         JSRef HTMLElement -> IO JSString
@@ -450,7 +450,7 @@ htmlElementGetAccessKey self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"innerHTML\"] = $2;"
         ghcjs_dom_html_element_set_inner_html ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -468,7 +468,7 @@ htmlElementSetInnerHTML self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"innerHTML\"]"
         ghcjs_dom_html_element_get_inner_html ::
         JSRef HTMLElement -> IO JSString
@@ -486,7 +486,7 @@ htmlElementGetInnerHTML self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"innerText\"] = $2;"
         ghcjs_dom_html_element_set_inner_text ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -504,7 +504,7 @@ htmlElementSetInnerText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"innerText\"]"
         ghcjs_dom_html_element_get_inner_text ::
         JSRef HTMLElement -> IO JSString
@@ -522,7 +522,7 @@ htmlElementGetInnerText self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"outerHTML\"] = $2;"
         ghcjs_dom_html_element_set_outer_html ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -540,7 +540,7 @@ htmlElementSetOuterHTML self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"outerHTML\"]"
         ghcjs_dom_html_element_get_outer_html ::
         JSRef HTMLElement -> IO JSString
@@ -558,7 +558,7 @@ htmlElementGetOuterHTML self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"outerText\"] = $2;"
         ghcjs_dom_html_element_set_outer_text ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -576,7 +576,7 @@ htmlElementSetOuterText self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"outerText\"]"
         ghcjs_dom_html_element_get_outer_text ::
         JSRef HTMLElement -> IO JSString
@@ -594,7 +594,7 @@ htmlElementGetOuterText self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"children\"]"
         ghcjs_dom_html_element_get_children ::
         JSRef HTMLElement -> IO (JSRef HTMLCollection)
@@ -612,7 +612,7 @@ htmlElementGetChildren self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
         ghcjs_dom_html_element_set_content_editable ::
         JSRef HTMLElement -> JSString -> IO ()
@@ -630,7 +630,7 @@ htmlElementSetContentEditable self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"contentEditable\"]"
         ghcjs_dom_html_element_get_content_editable ::
         JSRef HTMLElement -> IO JSString
@@ -648,7 +648,7 @@ htmlElementGetContentEditable self
          (unHTMLElement (toHTMLElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"isContentEditable\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_is_content_editable ::
@@ -666,7 +666,7 @@ htmlElementGetIsContentEditable self
       (unHTMLElement (toHTMLElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"spellcheck\"] = $2;"
         ghcjs_dom_html_element_set_spellcheck ::
         JSRef HTMLElement -> Bool -> IO ()
@@ -684,7 +684,7 @@ htmlElementSetSpellcheck self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_spellcheck ::
         JSRef HTMLElement -> IO Bool

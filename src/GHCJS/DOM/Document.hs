@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Document
        (ghcjs_dom_document_create_element, documentCreateElement,
@@ -136,7 +136,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createElement\"]($2)"
         ghcjs_dom_document_create_element ::
         JSRef Document -> JSString -> IO (JSRef Element)
@@ -155,7 +155,7 @@ documentCreateElement self tagName
          (toJSString tagName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createDocumentFragment\"]()"
         ghcjs_dom_document_create_document_fragment ::
         JSRef Document -> IO (JSRef DocumentFragment)
@@ -173,7 +173,7 @@ documentCreateDocumentFragment self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createTextNode\"]($2)"
         ghcjs_dom_document_create_text_node ::
         JSRef Document -> JSString -> IO (JSRef Text)
@@ -192,7 +192,7 @@ documentCreateTextNode self data'
          (toJSString data'))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createComment\"]($2)"
         ghcjs_dom_document_create_comment ::
         JSRef Document -> JSString -> IO (JSRef Comment)
@@ -211,7 +211,7 @@ documentCreateComment self data'
          (toJSString data'))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createCDATASection\"]($2)"
         ghcjs_dom_document_create_cdata_section ::
         JSRef Document -> JSString -> IO (JSRef CDATASection)
@@ -231,7 +231,7 @@ documentCreateCDATASection self data'
          (toJSString data'))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createProcessingInstruction\"]($2,\n$3)"
         ghcjs_dom_document_create_processing_instruction ::
@@ -256,7 +256,7 @@ documentCreateProcessingInstruction self target data'
          (toJSString data'))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createAttribute\"]($2)"
         ghcjs_dom_document_create_attribute ::
         JSRef Document -> JSString -> IO (JSRef DOMAttr)
@@ -275,7 +275,7 @@ documentCreateAttribute self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createEntityReference\"]($2)"
         ghcjs_dom_document_create_entity_reference ::
@@ -297,7 +297,7 @@ documentCreateEntityReference self name
          (toJSString name))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
         ghcjs_dom_document_get_elements_by_tag_name ::
         JSRef Document -> JSString -> IO (JSRef NodeList)
@@ -317,7 +317,7 @@ documentGetElementsByTagName self tagname
          (toJSString tagname))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"importNode\"]($2, $3)"
         ghcjs_dom_document_import_node ::
         JSRef Document -> JSRef Node -> Bool -> IO (JSRef Node)
@@ -337,7 +337,7 @@ documentImportNode self importedNode deep
          deep)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createElementNS\"]($2, $3)"
         ghcjs_dom_document_create_element_ns ::
         JSRef Document -> JSString -> JSString -> IO (JSRef Element)
@@ -359,7 +359,7 @@ documentCreateElementNS self namespaceURI qualifiedName
          (toJSString qualifiedName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createAttributeNS\"]($2, $3)"
         ghcjs_dom_document_create_attribute_ns ::
@@ -383,7 +383,7 @@ documentCreateAttributeNS self namespaceURI qualifiedName
          (toJSString qualifiedName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"getElementsByTagNameNS\"]($2,\n$3)"
         ghcjs_dom_document_get_elements_by_tag_name_ns ::
@@ -406,7 +406,7 @@ documentGetElementsByTagNameNS self namespaceURI localName
          (toJSString localName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getElementById\"]($2)"
         ghcjs_dom_document_get_element_by_id ::
         JSRef Document -> JSString -> IO (JSRef Element)
@@ -426,7 +426,7 @@ documentGetElementById self elementId
          (toJSString elementId))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"adoptNode\"]($2)"
         ghcjs_dom_document_adopt_node ::
         JSRef Document -> JSRef Node -> IO (JSRef Node)
@@ -445,7 +445,7 @@ documentAdoptNode self source
          (maybe jsNull (unNode . toNode) source))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createEvent\"]($2)"
         ghcjs_dom_document_create_event ::
         JSRef Document -> JSString -> IO (JSRef Event)
@@ -464,7 +464,7 @@ documentCreateEvent self eventType
          (toJSString eventType))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createRange\"]()"
         ghcjs_dom_document_create_range ::
         JSRef Document -> IO (JSRef DOMRange)
@@ -481,7 +481,7 @@ documentCreateRange self
       (ghcjs_dom_document_create_range (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createNodeIterator\"]($2, $3,\n$4, $5)"
         ghcjs_dom_document_create_node_iterator ::
@@ -513,7 +513,7 @@ documentCreateNodeIterator self root whatToShow filter
          expandEntityReferences)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createTreeWalker\"]($2, $3,\n$4, $5)"
         ghcjs_dom_document_create_tree_walker ::
@@ -544,7 +544,7 @@ documentCreateTreeWalker self root whatToShow filter
          expandEntityReferences)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getOverrideStyle\"]($2, $3)"
         ghcjs_dom_document_get_override_style ::
         JSRef Document ->
@@ -569,7 +569,7 @@ documentGetOverrideStyle self element pseudoElement
          (toJSString pseudoElement))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
         ghcjs_dom_document_create_expression ::
         JSRef Document ->
@@ -594,7 +594,7 @@ documentCreateExpression self expression resolver
          (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
         ghcjs_dom_document_create_ns_resolver ::
         JSRef Document -> JSRef Node -> IO (JSRef XPathNSResolver)
@@ -614,7 +614,7 @@ documentCreateNSResolver self nodeResolver
          (maybe jsNull (unNode . toNode) nodeResolver))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" ghcjs_dom_document_evaluate
         ::
@@ -651,7 +651,7 @@ documentEvaluate self expression contextNode resolver type'
          (maybe jsNull (unXPathResult . toXPathResult) inResult))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"execCommand\"]($2, $3,\n$4) ? 1 : 0)"
         ghcjs_dom_document_exec_command ::
@@ -672,7 +672,7 @@ documentExecCommand self command userInterface value
       (toJSString value)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"queryCommandEnabled\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_enabled ::
@@ -691,7 +691,7 @@ documentQueryCommandEnabled self command
       (toJSString command)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"queryCommandIndeterm\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_indeterm ::
@@ -710,7 +710,7 @@ documentQueryCommandIndeterm self command
       (toJSString command)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"queryCommandState\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_state ::
@@ -729,7 +729,7 @@ documentQueryCommandState self command
       (toJSString command)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"queryCommandSupported\"]($2) ? 1 : 0)"
         ghcjs_dom_document_query_command_supported ::
@@ -748,7 +748,7 @@ documentQueryCommandSupported self command
       (toJSString command)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"queryCommandValue\"]($2)"
         ghcjs_dom_document_query_command_value ::
         JSRef Document -> JSString -> IO JSString
@@ -768,7 +768,7 @@ documentQueryCommandValue self command
          (toJSString command))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"getElementsByName\"]($2)"
         ghcjs_dom_document_get_elements_by_name ::
         JSRef Document -> JSString -> IO (JSRef NodeList)
@@ -788,7 +788,7 @@ documentGetElementsByName self elementName
          (toJSString elementName))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"elementFromPoint\"]($2, $3)"
         ghcjs_dom_document_element_from_point ::
         JSRef Document -> Int -> Int -> IO (JSRef Element)
@@ -808,7 +808,7 @@ documentElementFromPoint self x y
          y)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"caretRangeFromPoint\"]($2,\n$3)"
         ghcjs_dom_document_caret_range_from_point ::
@@ -829,7 +829,7 @@ documentCaretRangeFromPoint self x y
          y)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"createCSSStyleDeclaration\"]()"
         ghcjs_dom_document_create_css_style_declaration ::
@@ -848,7 +848,7 @@ documentCreateCSSStyleDeclaration self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"getElementsByClassName\"]($2)"
         ghcjs_dom_document_get_elements_by_class_name ::
@@ -869,7 +869,7 @@ documentGetElementsByClassName self tagname
          (toJSString tagname))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         ghcjs_dom_document_query_selector ::
         JSRef Document -> JSString -> IO (JSRef Element)
@@ -888,7 +888,7 @@ documentQuerySelector self selectors
          (toJSString selectors))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         ghcjs_dom_document_query_selector_all ::
         JSRef Document -> JSString -> IO (JSRef NodeList)
@@ -908,7 +908,7 @@ documentQuerySelectorAll self selectors
          (toJSString selectors))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitExitPointerLock\"]()"
         ghcjs_dom_document_webkit_exit_pointer_lock ::
         JSRef Document -> IO ()
@@ -924,7 +924,7 @@ documentWebkitExitPointerLock self
       (unDocument (toDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitGetNamedFlows\"]()"
         ghcjs_dom_document_webkit_get_named_flows ::
         JSRef Document -> IO (JSRef DOMNamedFlowCollection)
@@ -942,7 +942,7 @@ documentWebkitGetNamedFlows self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"doctype\"]"
         ghcjs_dom_document_get_doctype ::
         JSRef Document -> IO (JSRef DocumentType)
@@ -959,7 +959,7 @@ documentGetDoctype self
       (ghcjs_dom_document_get_doctype (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"implementation\"]"
         ghcjs_dom_document_get_implementation ::
         JSRef Document -> IO (JSRef DOMImplementation)
@@ -977,7 +977,7 @@ documentGetImplementation self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"documentElement\"]"
         ghcjs_dom_document_get_document_element ::
         JSRef Document -> IO (JSRef Element)
@@ -995,7 +995,7 @@ documentGetDocumentElement self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"inputEncoding\"]"
         ghcjs_dom_document_get_input_encoding ::
         JSRef Document -> IO JSString
@@ -1013,7 +1013,7 @@ documentGetInputEncoding self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"xmlEncoding\"]"
         ghcjs_dom_document_get_xml_encoding ::
         JSRef Document -> IO JSString
@@ -1031,7 +1031,7 @@ documentGetXmlEncoding self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"xmlVersion\"] = $2;"
         ghcjs_dom_document_set_xml_version ::
         JSRef Document -> JSString -> IO ()
@@ -1048,7 +1048,7 @@ documentSetXmlVersion self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"xmlVersion\"]"
         ghcjs_dom_document_get_xml_version :: JSRef Document -> IO JSString
 #else 
@@ -1063,7 +1063,7 @@ documentGetXmlVersion self
       (ghcjs_dom_document_get_xml_version (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"xmlStandalone\"] = $2;"
         ghcjs_dom_document_set_xml_standalone ::
         JSRef Document -> Bool -> IO ()
@@ -1081,7 +1081,7 @@ documentSetXmlStandalone self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"xmlStandalone\"] ? 1 : 0)"
         ghcjs_dom_document_get_xml_standalone :: JSRef Document -> IO Bool
 #else 
@@ -1095,7 +1095,7 @@ documentGetXmlStandalone self
       (unDocument (toDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"documentURI\"] = $2;"
         ghcjs_dom_document_set_document_uri ::
         JSRef Document -> JSString -> IO ()
@@ -1113,7 +1113,7 @@ documentSetDocumentURI self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"documentURI\"]"
         ghcjs_dom_document_get_document_uri ::
         JSRef Document -> IO JSString
@@ -1131,7 +1131,7 @@ documentGetDocumentURI self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defaultView\"]"
         ghcjs_dom_document_get_default_view ::
         JSRef Document -> IO (JSRef DOMWindow)
@@ -1149,7 +1149,7 @@ documentGetDefaultView self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"styleSheets\"]"
         ghcjs_dom_document_get_style_sheets ::
         JSRef Document -> IO (JSRef StyleSheetList)
@@ -1167,7 +1167,7 @@ documentGetStyleSheets self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"title\"] = $2;"
         ghcjs_dom_document_set_title :: JSRef Document -> JSString -> IO ()
 #else 
@@ -1182,7 +1182,7 @@ documentSetTitle self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"title\"]"
         ghcjs_dom_document_get_title :: JSRef Document -> IO JSString
 #else 
@@ -1197,7 +1197,7 @@ documentGetTitle self
       (ghcjs_dom_document_get_title (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"referrer\"]"
         ghcjs_dom_document_get_referrer :: JSRef Document -> IO JSString
 #else 
@@ -1212,7 +1212,7 @@ documentGetReferrer self
       (ghcjs_dom_document_get_referrer (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"domain\"]"
         ghcjs_dom_document_get_domain :: JSRef Document -> IO JSString
 #else 
@@ -1227,7 +1227,7 @@ documentGetDomain self
       (ghcjs_dom_document_get_domain (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cookie\"] = $2;"
         ghcjs_dom_document_set_cookie ::
         JSRef Document -> JSString -> IO ()
@@ -1244,7 +1244,7 @@ documentSetCookie self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cookie\"]"
         ghcjs_dom_document_get_cookie :: JSRef Document -> IO JSString
 #else 
@@ -1259,7 +1259,7 @@ documentGetCookie self
       (ghcjs_dom_document_get_cookie (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"body\"] = $2;"
         ghcjs_dom_document_set_body ::
         JSRef Document -> JSRef HTMLElement -> IO ()
@@ -1276,7 +1276,7 @@ documentSetBody self val
       (maybe jsNull (unHTMLElement . toHTMLElement) val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"body\"]"
         ghcjs_dom_document_get_body ::
         JSRef Document -> IO (JSRef HTMLElement)
@@ -1293,7 +1293,7 @@ documentGetBody self
       (ghcjs_dom_document_get_body (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"head\"]"
         ghcjs_dom_document_get_head ::
         JSRef Document -> IO (JSRef HTMLHeadElement)
@@ -1310,7 +1310,7 @@ documentGetHead self
       (ghcjs_dom_document_get_head (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"images\"]"
         ghcjs_dom_document_get_images ::
         JSRef Document -> IO (JSRef HTMLCollection)
@@ -1327,7 +1327,7 @@ documentGetImages self
       (ghcjs_dom_document_get_images (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"applets\"]"
         ghcjs_dom_document_get_applets ::
         JSRef Document -> IO (JSRef HTMLCollection)
@@ -1344,7 +1344,7 @@ documentGetApplets self
       (ghcjs_dom_document_get_applets (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"links\"]"
         ghcjs_dom_document_get_links ::
         JSRef Document -> IO (JSRef HTMLCollection)
@@ -1361,7 +1361,7 @@ documentGetLinks self
       (ghcjs_dom_document_get_links (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"forms\"]"
         ghcjs_dom_document_get_forms ::
         JSRef Document -> IO (JSRef HTMLCollection)
@@ -1378,7 +1378,7 @@ documentGetForms self
       (ghcjs_dom_document_get_forms (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"anchors\"]"
         ghcjs_dom_document_get_anchors ::
         JSRef Document -> IO (JSRef HTMLCollection)
@@ -1395,7 +1395,7 @@ documentGetAnchors self
       (ghcjs_dom_document_get_anchors (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"lastModified\"]"
         ghcjs_dom_document_get_last_modified ::
         JSRef Document -> IO JSString
@@ -1413,7 +1413,7 @@ documentGetLastModified self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
         ghcjs_dom_document_set_charset ::
         JSRef Document -> JSString -> IO ()
@@ -1430,7 +1430,7 @@ documentSetCharset self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"]"
         ghcjs_dom_document_get_charset :: JSRef Document -> IO JSString
 #else 
@@ -1445,7 +1445,7 @@ documentGetCharset self
       (ghcjs_dom_document_get_charset (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"defaultCharset\"]"
         ghcjs_dom_document_get_default_charset ::
         JSRef Document -> IO JSString
@@ -1463,7 +1463,7 @@ documentGetDefaultCharset self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_document_get_ready_state :: JSRef Document -> IO JSString
 #else 
@@ -1478,7 +1478,7 @@ documentGetReadyState self
       (ghcjs_dom_document_get_ready_state (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"characterSet\"]"
         ghcjs_dom_document_get_character_set ::
         JSRef Document -> IO JSString
@@ -1496,7 +1496,7 @@ documentGetCharacterSet self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"preferredStylesheetSet\"]"
         ghcjs_dom_document_get_preferred_stylesheet_set ::
         JSRef Document -> IO JSString
@@ -1514,7 +1514,7 @@ documentGetPreferredStylesheetSet self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"selectedStylesheetSet\"] = $2;"
         ghcjs_dom_document_set_selected_stylesheet_set ::
@@ -1533,7 +1533,7 @@ documentSetSelectedStylesheetSet self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"selectedStylesheetSet\"]"
         ghcjs_dom_document_get_selected_stylesheet_set ::
         JSRef Document -> IO JSString
@@ -1551,7 +1551,7 @@ documentGetSelectedStylesheetSet self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"compatMode\"]"
         ghcjs_dom_document_get_compat_mode :: JSRef Document -> IO JSString
 #else 
@@ -1566,7 +1566,7 @@ documentGetCompatMode self
       (ghcjs_dom_document_get_compat_mode (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"webkitPointerLockElement\"]"
         ghcjs_dom_document_get_webkit_pointer_lock_element ::
         JSRef Document -> IO (JSRef Element)
@@ -1796,7 +1796,7 @@ documentOnsecuritypolicyviolation
   = (connect "securitypolicyviolation")
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"visibilityState\"]"
         ghcjs_dom_document_get_visibility_state ::
         JSRef Document -> IO JSString
@@ -1814,7 +1814,7 @@ documentGetVisibilityState self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
         ghcjs_dom_document_get_hidden :: JSRef Document -> IO Bool
 #else 
@@ -1827,7 +1827,7 @@ documentGetHidden self
   = ghcjs_dom_document_get_hidden (unDocument (toDocument self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"securityPolicy\"]"
         ghcjs_dom_document_get_security_policy ::
         JSRef Document -> IO (JSRef DOMSecurityPolicy)
@@ -1845,7 +1845,7 @@ documentGetSecurityPolicy self
          (unDocument (toDocument self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"currentScript\"]"
         ghcjs_dom_document_get_current_script ::
         JSRef Document -> IO (JSRef HTMLScriptElement)

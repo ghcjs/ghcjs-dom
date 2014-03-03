@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Event
        (ghcjs_dom_event_stop_propagation, eventStopPropagation,
@@ -37,7 +37,7 @@ import Control.Applicative ((<$>))
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"stopPropagation\"]()"
         ghcjs_dom_event_stop_propagation :: JSRef Event -> IO ()
 #else 
@@ -50,7 +50,7 @@ eventStopPropagation self
   = ghcjs_dom_event_stop_propagation (unEvent (toEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"preventDefault\"]()"
         ghcjs_dom_event_prevent_default :: JSRef Event -> IO ()
 #else 
@@ -63,7 +63,7 @@ eventPreventDefault self
   = ghcjs_dom_event_prevent_default (unEvent (toEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"initEvent\"]($2, $3, $4)"
         ghcjs_dom_event_init_event ::
         JSRef Event -> JSString -> Bool -> Bool -> IO ()
@@ -83,7 +83,7 @@ eventInitEvent self eventTypeArg canBubbleArg cancelableArg
       cancelableArg
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"stopImmediatePropagation\"]()"
         ghcjs_dom_event_stop_immediate_propagation :: JSRef Event -> IO ()
@@ -118,7 +118,7 @@ cSELECT = 16384
 cCHANGE = 32768
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_event_get_target :: JSRef Event -> IO (JSRef EventTarget)
 #else 
@@ -132,7 +132,7 @@ eventGetTarget self
       (ghcjs_dom_event_get_target (unEvent (toEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"currentTarget\"]"
         ghcjs_dom_event_get_current_target ::
         JSRef Event -> IO (JSRef EventTarget)
@@ -149,7 +149,7 @@ eventGetCurrentTarget self
       (ghcjs_dom_event_get_current_target (unEvent (toEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"eventPhase\"]"
         ghcjs_dom_event_get_event_phase :: JSRef Event -> IO Word
 #else 
@@ -162,7 +162,7 @@ eventGetEventPhase self
   = ghcjs_dom_event_get_event_phase (unEvent (toEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"bubbles\"] ? 1 : 0)"
         ghcjs_dom_event_get_bubbles :: JSRef Event -> IO Bool
 #else 
@@ -175,7 +175,7 @@ eventGetBubbles self
   = ghcjs_dom_event_get_bubbles (unEvent (toEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"cancelable\"] ? 1 : 0)"
         ghcjs_dom_event_get_cancelable :: JSRef Event -> IO Bool
 #else 
@@ -188,7 +188,7 @@ eventGetCancelable self
   = ghcjs_dom_event_get_cancelable (unEvent (toEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"timeStamp\"]"
         ghcjs_dom_event_get_time_stamp :: JSRef Event -> IO Word
 #else 
@@ -202,7 +202,7 @@ eventGetTimeStamp self
       (ghcjs_dom_event_get_time_stamp (unEvent (toEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"defaultPrevented\"] ? 1 : 0)"
         ghcjs_dom_event_get_default_prevented :: JSRef Event -> IO Bool
@@ -216,7 +216,7 @@ eventGetDefaultPrevented self
   = ghcjs_dom_event_get_default_prevented (unEvent (toEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"srcElement\"]"
         ghcjs_dom_event_get_src_element ::
         JSRef Event -> IO (JSRef EventTarget)
@@ -233,7 +233,7 @@ eventGetSrcElement self
       (ghcjs_dom_event_get_src_element (unEvent (toEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"returnValue\"] = $2;"
         ghcjs_dom_event_set_return_value :: JSRef Event -> Bool -> IO ()
 #else 
@@ -246,7 +246,7 @@ eventSetReturnValue self val
   = ghcjs_dom_event_set_return_value (unEvent (toEvent self)) val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"returnValue\"] ? 1 : 0)"
         ghcjs_dom_event_get_return_value :: JSRef Event -> IO Bool
 #else 
@@ -259,7 +259,7 @@ eventGetReturnValue self
   = ghcjs_dom_event_get_return_value (unEvent (toEvent self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"cancelBubble\"] = $2;"
         ghcjs_dom_event_set_cancel_bubble :: JSRef Event -> Bool -> IO ()
 #else 
@@ -272,7 +272,7 @@ eventSetCancelBubble self val
   = ghcjs_dom_event_set_cancel_bubble (unEvent (toEvent self)) val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"cancelBubble\"] ? 1 : 0)"
         ghcjs_dom_event_get_cancel_bubble :: JSRef Event -> IO Bool
 #else 

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFieldSetElement
        (ghcjs_dom_html_field_set_element_check_validity,
@@ -42,7 +42,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_field_set_element_check_validity ::
@@ -60,7 +60,7 @@ htmlFieldSetElementCheckValidity self
       (unHTMLFieldSetElement (toHTMLFieldSetElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_field_set_element_set_custom_validity ::
         JSRef HTMLFieldSetElement -> JSString -> IO ()
@@ -80,7 +80,7 @@ htmlFieldSetElementSetCustomValidity self error
       (toJSString error)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_field_set_element_set_disabled ::
         JSRef HTMLFieldSetElement -> Bool -> IO ()
@@ -98,7 +98,7 @@ htmlFieldSetElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_field_set_element_get_disabled ::
         JSRef HTMLFieldSetElement -> IO Bool
@@ -115,7 +115,7 @@ htmlFieldSetElementGetDisabled self
       (unHTMLFieldSetElement (toHTMLFieldSetElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_field_set_element_get_form ::
         JSRef HTMLFieldSetElement -> IO (JSRef HTMLFormElement)
@@ -133,7 +133,7 @@ htmlFieldSetElementGetForm self
          (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_field_set_element_set_name ::
         JSRef HTMLFieldSetElement -> JSString -> IO ()
@@ -152,7 +152,7 @@ htmlFieldSetElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_field_set_element_get_name ::
         JSRef HTMLFieldSetElement -> IO JSString
@@ -171,7 +171,7 @@ htmlFieldSetElementGetName self
          (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"elements\"]"
         ghcjs_dom_html_field_set_element_get_elements ::
         JSRef HTMLFieldSetElement -> IO (JSRef HTMLCollection)
@@ -190,7 +190,7 @@ htmlFieldSetElementGetElements self
          (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_field_set_element_get_will_validate ::
         JSRef HTMLFieldSetElement -> IO Bool
@@ -207,7 +207,7 @@ htmlFieldSetElementGetWillValidate self
       (unHTMLFieldSetElement (toHTMLFieldSetElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_field_set_element_get_validity ::
         JSRef HTMLFieldSetElement -> IO (JSRef ValidityState)
@@ -226,7 +226,7 @@ htmlFieldSetElementGetValidity self
          (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_field_set_element_get_validation_message ::
         JSRef HTMLFieldSetElement -> IO JSString

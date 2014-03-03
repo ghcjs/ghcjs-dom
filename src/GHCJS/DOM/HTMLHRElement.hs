@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLHRElement
        (ghcjs_dom_htmlhr_element_set_align, htmlhrElementSetAlign,
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_htmlhr_element_set_align ::
         JSRef HTMLHRElement -> JSString -> IO ()
@@ -46,7 +46,7 @@ htmlhrElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_htmlhr_element_get_align ::
         JSRef HTMLHRElement -> IO JSString
@@ -64,7 +64,7 @@ htmlhrElementGetAlign self
          (unHTMLHRElement (toHTMLHRElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"noShade\"] = $2;"
         ghcjs_dom_htmlhr_element_set_no_shade ::
         JSRef HTMLHRElement -> Bool -> IO ()
@@ -82,7 +82,7 @@ htmlhrElementSetNoShade self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"noShade\"] ? 1 : 0)"
         ghcjs_dom_htmlhr_element_get_no_shade ::
         JSRef HTMLHRElement -> IO Bool
@@ -99,7 +99,7 @@ htmlhrElementGetNoShade self
       (unHTMLHRElement (toHTMLHRElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_htmlhr_element_set_size ::
         JSRef HTMLHRElement -> JSString -> IO ()
@@ -117,7 +117,7 @@ htmlhrElementSetSize self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_htmlhr_element_get_size ::
         JSRef HTMLHRElement -> IO JSString
@@ -135,7 +135,7 @@ htmlhrElementGetSize self
          (unHTMLHRElement (toHTMLHRElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_htmlhr_element_set_width ::
         JSRef HTMLHRElement -> JSString -> IO ()
@@ -153,7 +153,7 @@ htmlhrElementSetWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_htmlhr_element_get_width ::
         JSRef HTMLHRElement -> IO JSString

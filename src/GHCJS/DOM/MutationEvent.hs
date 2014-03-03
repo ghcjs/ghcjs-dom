@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MutationEvent
        (ghcjs_dom_mutation_event_init_mutation_event,
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "$1[\"initMutationEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
         ghcjs_dom_mutation_event_init_mutation_event ::
@@ -75,7 +75,7 @@ cADDITION = 2
 cREMOVAL = 3
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"relatedNode\"]"
         ghcjs_dom_mutation_event_get_related_node ::
         JSRef MutationEvent -> IO (JSRef Node)
@@ -93,7 +93,7 @@ mutationEventGetRelatedNode self
          (unMutationEvent (toMutationEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"prevValue\"]"
         ghcjs_dom_mutation_event_get_prev_value ::
         JSRef MutationEvent -> IO JSString
@@ -111,7 +111,7 @@ mutationEventGetPrevValue self
          (unMutationEvent (toMutationEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"newValue\"]"
         ghcjs_dom_mutation_event_get_new_value ::
         JSRef MutationEvent -> IO JSString
@@ -129,7 +129,7 @@ mutationEventGetNewValue self
          (unMutationEvent (toMutationEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"attrName\"]"
         ghcjs_dom_mutation_event_get_attr_name ::
         JSRef MutationEvent -> IO JSString
@@ -147,7 +147,7 @@ mutationEventGetAttrName self
          (unMutationEvent (toMutationEvent self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"attrChange\"]"
         ghcjs_dom_mutation_event_get_attr_change ::
         JSRef MutationEvent -> IO Word

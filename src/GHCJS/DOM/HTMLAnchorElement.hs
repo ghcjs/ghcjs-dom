@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAnchorElement
        (ghcjs_dom_html_anchor_element_set_charset,
@@ -77,7 +77,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
         ghcjs_dom_html_anchor_element_set_charset ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -95,7 +95,7 @@ htmlAnchorElementSetCharset self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"charset\"]"
         ghcjs_dom_html_anchor_element_get_charset ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -114,7 +114,7 @@ htmlAnchorElementGetCharset self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"coords\"] = $2;"
         ghcjs_dom_html_anchor_element_set_coords ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -132,7 +132,7 @@ htmlAnchorElementSetCoords self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"coords\"]"
         ghcjs_dom_html_anchor_element_get_coords ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -151,7 +151,7 @@ htmlAnchorElementGetCoords self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"download\"] = $2;"
         ghcjs_dom_html_anchor_element_set_download ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -169,7 +169,7 @@ htmlAnchorElementSetDownload self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"download\"]"
         ghcjs_dom_html_anchor_element_get_download ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -188,7 +188,7 @@ htmlAnchorElementGetDownload self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"] = $2;"
         ghcjs_dom_html_anchor_element_set_href ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -206,7 +206,7 @@ htmlAnchorElementSetHref self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_html_anchor_element_get_href ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -225,7 +225,7 @@ htmlAnchorElementGetHref self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hreflang\"] = $2;"
         ghcjs_dom_html_anchor_element_set_hreflang ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -243,7 +243,7 @@ htmlAnchorElementSetHreflang self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hreflang\"]"
         ghcjs_dom_html_anchor_element_get_hreflang ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -262,7 +262,7 @@ htmlAnchorElementGetHreflang self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_anchor_element_set_name ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -280,7 +280,7 @@ htmlAnchorElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_anchor_element_get_name ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -299,7 +299,7 @@ htmlAnchorElementGetName self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ping\"] = $2;"
         ghcjs_dom_html_anchor_element_set_ping ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -317,7 +317,7 @@ htmlAnchorElementSetPing self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ping\"]"
         ghcjs_dom_html_anchor_element_get_ping ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -336,7 +336,7 @@ htmlAnchorElementGetPing self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rel\"] = $2;"
         ghcjs_dom_html_anchor_element_set_rel ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -354,7 +354,7 @@ htmlAnchorElementSetRel self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rel\"]"
         ghcjs_dom_html_anchor_element_get_rel ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -373,7 +373,7 @@ htmlAnchorElementGetRel self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rev\"] = $2;"
         ghcjs_dom_html_anchor_element_set_rev ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -391,7 +391,7 @@ htmlAnchorElementSetRev self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"rev\"]"
         ghcjs_dom_html_anchor_element_get_rev ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -410,7 +410,7 @@ htmlAnchorElementGetRev self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"shape\"] = $2;"
         ghcjs_dom_html_anchor_element_set_shape ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -428,7 +428,7 @@ htmlAnchorElementSetShape self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"shape\"]"
         ghcjs_dom_html_anchor_element_get_shape ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -447,7 +447,7 @@ htmlAnchorElementGetShape self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         ghcjs_dom_html_anchor_element_set_target ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -465,7 +465,7 @@ htmlAnchorElementSetTarget self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_html_anchor_element_get_target ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -484,7 +484,7 @@ htmlAnchorElementGetTarget self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hash\"] = $2;"
         ghcjs_dom_html_anchor_element_set_hash ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -502,7 +502,7 @@ htmlAnchorElementSetHash self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hash\"]"
         ghcjs_dom_html_anchor_element_get_hash ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -521,7 +521,7 @@ htmlAnchorElementGetHash self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"host\"] = $2;"
         ghcjs_dom_html_anchor_element_set_host ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -539,7 +539,7 @@ htmlAnchorElementSetHost self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"host\"]"
         ghcjs_dom_html_anchor_element_get_host ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -558,7 +558,7 @@ htmlAnchorElementGetHost self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hostname\"] = $2;"
         ghcjs_dom_html_anchor_element_set_hostname ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -576,7 +576,7 @@ htmlAnchorElementSetHostname self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"hostname\"]"
         ghcjs_dom_html_anchor_element_get_hostname ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -595,7 +595,7 @@ htmlAnchorElementGetHostname self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pathname\"] = $2;"
         ghcjs_dom_html_anchor_element_set_pathname ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -613,7 +613,7 @@ htmlAnchorElementSetPathname self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"pathname\"]"
         ghcjs_dom_html_anchor_element_get_pathname ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -632,7 +632,7 @@ htmlAnchorElementGetPathname self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"port\"] = $2;"
         ghcjs_dom_html_anchor_element_set_port ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -650,7 +650,7 @@ htmlAnchorElementSetPort self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"port\"]"
         ghcjs_dom_html_anchor_element_get_port ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -669,7 +669,7 @@ htmlAnchorElementGetPort self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"protocol\"] = $2;"
         ghcjs_dom_html_anchor_element_set_protocol ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -687,7 +687,7 @@ htmlAnchorElementSetProtocol self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"protocol\"]"
         ghcjs_dom_html_anchor_element_get_protocol ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -706,7 +706,7 @@ htmlAnchorElementGetProtocol self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"search\"] = $2;"
         ghcjs_dom_html_anchor_element_set_search ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
@@ -724,7 +724,7 @@ htmlAnchorElementSetSearch self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"search\"]"
         ghcjs_dom_html_anchor_element_get_search ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -743,7 +743,7 @@ htmlAnchorElementGetSearch self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"origin\"]"
         ghcjs_dom_html_anchor_element_get_origin ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -762,7 +762,7 @@ htmlAnchorElementGetOrigin self
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_anchor_element_get_text ::
         JSRef HTMLAnchorElement -> IO JSString

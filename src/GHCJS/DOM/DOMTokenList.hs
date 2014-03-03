@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMTokenList
        (ghcjs_dom_dom_token_list_item, domTokenListItem,
@@ -26,7 +26,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_dom_token_list_item ::
         JSRef DOMTokenList -> Word -> IO JSString
@@ -46,7 +46,7 @@ domTokenListItem self index
          index)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_token_list_contains ::
         JSRef DOMTokenList -> JSString -> IO Bool
@@ -64,7 +64,7 @@ domTokenListContains self token
       (toJSString token)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"add\"]($2)"
         ghcjs_dom_dom_token_list_add ::
         JSRef DOMTokenList -> JSString -> IO ()
@@ -82,7 +82,7 @@ domTokenListAdd self token
       (toJSString token)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"remove\"]($2)"
         ghcjs_dom_dom_token_list_remove ::
         JSRef DOMTokenList -> JSString -> IO ()
@@ -100,7 +100,7 @@ domTokenListRemove self token
       (toJSString token)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"toggle\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_token_list_toggle ::
         JSRef DOMTokenList -> JSString -> IO Bool
@@ -118,7 +118,7 @@ domTokenListToggle self token
       (toJSString token)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_token_list_get_length ::
         JSRef DOMTokenList -> IO Word

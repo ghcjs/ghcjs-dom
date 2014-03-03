@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleSheet
        (ghcjs_dom_style_sheet_set_disabled, styleSheetSetDisabled,
@@ -27,7 +27,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_style_sheet_set_disabled ::
         JSRef StyleSheet -> Bool -> IO ()
@@ -45,7 +45,7 @@ styleSheetSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO Bool
 #else 
@@ -59,7 +59,7 @@ styleSheetGetDisabled self
       (unStyleSheet (toStyleSheet self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ownerNode\"]"
         ghcjs_dom_style_sheet_get_owner_node ::
         JSRef StyleSheet -> IO (JSRef Node)
@@ -77,7 +77,7 @@ styleSheetGetOwnerNode self
          (unStyleSheet (toStyleSheet self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
         ghcjs_dom_style_sheet_get_parent_style_sheet ::
         JSRef StyleSheet -> IO (JSRef StyleSheet)
@@ -95,7 +95,7 @@ styleSheetGetParentStyleSheet self
          (unStyleSheet (toStyleSheet self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_style_sheet_get_href :: JSRef StyleSheet -> IO JSString
 #else 
@@ -110,7 +110,7 @@ styleSheetGetHref self
       (ghcjs_dom_style_sheet_get_href (unStyleSheet (toStyleSheet self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"title\"]"
         ghcjs_dom_style_sheet_get_title :: JSRef StyleSheet -> IO JSString
 #else 
@@ -126,7 +126,7 @@ styleSheetGetTitle self
          (unStyleSheet (toStyleSheet self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"media\"]"
         ghcjs_dom_style_sheet_get_media ::
         JSRef StyleSheet -> IO (JSRef MediaList)

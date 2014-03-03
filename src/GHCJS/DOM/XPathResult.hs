@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathResult
        (ghcjs_dom_xpath_result_iterate_next, xPathResultIterateNext,
@@ -36,7 +36,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"iterateNext\"]()"
         ghcjs_dom_xpath_result_iterate_next ::
         JSRef XPathResult -> IO (JSRef Node)
@@ -54,7 +54,7 @@ xPathResultIterateNext self
          (unXPathResult (toXPathResult self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"snapshotItem\"]($2)"
         ghcjs_dom_xpath_result_snapshot_item ::
         JSRef XPathResult -> Word -> IO (JSRef Node)
@@ -83,7 +83,7 @@ cANY_UNORDERED_NODE_TYPE = 8
 cFIRST_ORDERED_NODE_TYPE = 9
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"resultType\"]"
         ghcjs_dom_xpath_result_get_result_type ::
         JSRef XPathResult -> IO Word
@@ -99,7 +99,7 @@ xPathResultGetResultType self
       (unXPathResult (toXPathResult self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"numberValue\"]"
         ghcjs_dom_xpath_result_get_number_value ::
         JSRef XPathResult -> IO Double
@@ -116,7 +116,7 @@ xPathResultGetNumberValue self
       (unXPathResult (toXPathResult self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"stringValue\"]"
         ghcjs_dom_xpath_result_get_string_value ::
         JSRef XPathResult -> IO JSString
@@ -134,7 +134,7 @@ xPathResultGetStringValue self
          (unXPathResult (toXPathResult self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"booleanValue\"] ? 1 : 0)"
         ghcjs_dom_xpath_result_get_boolean_value ::
         JSRef XPathResult -> IO Bool
@@ -151,7 +151,7 @@ xPathResultGetBooleanValue self
       (unXPathResult (toXPathResult self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"singleNodeValue\"]"
         ghcjs_dom_xpath_result_get_single_node_value ::
         JSRef XPathResult -> IO (JSRef Node)
@@ -169,7 +169,7 @@ xPathResultGetSingleNodeValue self
          (unXPathResult (toXPathResult self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"invalidIteratorState\"] ? 1 : 0)"
         ghcjs_dom_xpath_result_get_invalid_iterator_state ::
@@ -187,7 +187,7 @@ xPathResultGetInvalidIteratorState self
       (unXPathResult (toXPathResult self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"snapshotLength\"]"
         ghcjs_dom_xpath_result_get_snapshot_length ::
         JSRef XPathResult -> IO Word

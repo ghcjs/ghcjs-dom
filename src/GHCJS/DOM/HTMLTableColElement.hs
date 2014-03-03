@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableColElement
        (ghcjs_dom_html_table_col_element_set_align,
@@ -42,7 +42,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_table_col_element_set_align ::
         JSRef HTMLTableColElement -> JSString -> IO ()
@@ -61,7 +61,7 @@ htmlTableColElementSetAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_col_element_get_align ::
         JSRef HTMLTableColElement -> IO JSString
@@ -80,7 +80,7 @@ htmlTableColElementGetAlign self
          (unHTMLTableColElement (toHTMLTableColElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ch\"] = $2;"
         ghcjs_dom_html_table_col_element_set_ch ::
         JSRef HTMLTableColElement -> JSString -> IO ()
@@ -99,7 +99,7 @@ htmlTableColElementSetCh self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"ch\"]"
         ghcjs_dom_html_table_col_element_get_ch ::
         JSRef HTMLTableColElement -> IO JSString
@@ -118,7 +118,7 @@ htmlTableColElementGetCh self
          (unHTMLTableColElement (toHTMLTableColElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"chOff\"] = $2;"
         ghcjs_dom_html_table_col_element_set_ch_off ::
         JSRef HTMLTableColElement -> JSString -> IO ()
@@ -137,7 +137,7 @@ htmlTableColElementSetChOff self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"chOff\"]"
         ghcjs_dom_html_table_col_element_get_ch_off ::
         JSRef HTMLTableColElement -> IO JSString
@@ -156,7 +156,7 @@ htmlTableColElementGetChOff self
          (unHTMLTableColElement (toHTMLTableColElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"span\"] = $2;"
         ghcjs_dom_html_table_col_element_set_span ::
         JSRef HTMLTableColElement -> Int -> IO ()
@@ -174,7 +174,7 @@ htmlTableColElementSetSpan self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"span\"]"
         ghcjs_dom_html_table_col_element_get_span ::
         JSRef HTMLTableColElement -> IO Int
@@ -191,7 +191,7 @@ htmlTableColElementGetSpan self
       (unHTMLTableColElement (toHTMLTableColElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
         ghcjs_dom_html_table_col_element_set_v_align ::
         JSRef HTMLTableColElement -> JSString -> IO ()
@@ -210,7 +210,7 @@ htmlTableColElementSetVAlign self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"vAlign\"]"
         ghcjs_dom_html_table_col_element_get_v_align ::
         JSRef HTMLTableColElement -> IO JSString
@@ -229,7 +229,7 @@ htmlTableColElementGetVAlign self
          (unHTMLTableColElement (toHTMLTableColElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_table_col_element_set_width ::
         JSRef HTMLTableColElement -> JSString -> IO ()
@@ -248,7 +248,7 @@ htmlTableColElementSetWidth self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_table_col_element_get_width ::
         JSRef HTMLTableColElement -> IO JSString

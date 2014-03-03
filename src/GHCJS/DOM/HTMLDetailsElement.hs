@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDetailsElement
        (ghcjs_dom_html_details_element_set_open,
@@ -23,7 +23,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"open\"] = $2;"
         ghcjs_dom_html_details_element_set_open ::
         JSRef HTMLDetailsElement -> Bool -> IO ()
@@ -41,7 +41,7 @@ htmlDetailsElementSetOpen self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
         ghcjs_dom_html_details_element_get_open ::
         JSRef HTMLDetailsElement -> IO Bool

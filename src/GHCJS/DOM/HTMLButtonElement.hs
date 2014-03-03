@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-#if (defined(__GHCJS__) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLButtonElement
        (ghcjs_dom_html_button_element_check_validity,
@@ -65,7 +65,7 @@ import GHCJS.DOM.EventM
 
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_button_element_check_validity ::
@@ -83,7 +83,7 @@ htmlButtonElementCheckValidity self
       (unHTMLButtonElement (toHTMLButtonElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_button_element_set_custom_validity ::
         JSRef HTMLButtonElement -> JSString -> IO ()
@@ -102,7 +102,7 @@ htmlButtonElementSetCustomValidity self error
       (toJSString error)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_button_element_set_autofocus ::
         JSRef HTMLButtonElement -> Bool -> IO ()
@@ -120,7 +120,7 @@ htmlButtonElementSetAutofocus self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_autofocus ::
         JSRef HTMLButtonElement -> IO Bool
@@ -137,7 +137,7 @@ htmlButtonElementGetAutofocus self
       (unHTMLButtonElement (toHTMLButtonElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_button_element_set_disabled ::
         JSRef HTMLButtonElement -> Bool -> IO ()
@@ -155,7 +155,7 @@ htmlButtonElementSetDisabled self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_disabled ::
         JSRef HTMLButtonElement -> IO Bool
@@ -172,7 +172,7 @@ htmlButtonElementGetDisabled self
       (unHTMLButtonElement (toHTMLButtonElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_button_element_get_form ::
         JSRef HTMLButtonElement -> IO (JSRef HTMLFormElement)
@@ -190,7 +190,7 @@ htmlButtonElementGetForm self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formAction\"] = $2;"
         ghcjs_dom_html_button_element_set_form_action ::
         JSRef HTMLButtonElement -> JSString -> IO ()
@@ -208,7 +208,7 @@ htmlButtonElementSetFormAction self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formAction\"]"
         ghcjs_dom_html_button_element_get_form_action ::
         JSRef HTMLButtonElement -> IO JSString
@@ -227,7 +227,7 @@ htmlButtonElementGetFormAction self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
         ghcjs_dom_html_button_element_set_form_enctype ::
         JSRef HTMLButtonElement -> JSString -> IO ()
@@ -245,7 +245,7 @@ htmlButtonElementSetFormEnctype self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formEnctype\"]"
         ghcjs_dom_html_button_element_get_form_enctype ::
         JSRef HTMLButtonElement -> IO JSString
@@ -264,7 +264,7 @@ htmlButtonElementGetFormEnctype self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
         ghcjs_dom_html_button_element_set_form_method ::
         JSRef HTMLButtonElement -> JSString -> IO ()
@@ -282,7 +282,7 @@ htmlButtonElementSetFormMethod self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formMethod\"]"
         ghcjs_dom_html_button_element_get_form_method ::
         JSRef HTMLButtonElement -> IO JSString
@@ -301,7 +301,7 @@ htmlButtonElementGetFormMethod self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         ghcjs_dom_html_button_element_set_form_no_validate ::
         JSRef HTMLButtonElement -> Bool -> IO ()
@@ -319,7 +319,7 @@ htmlButtonElementSetFormNoValidate self val
       val
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_form_no_validate ::
         JSRef HTMLButtonElement -> IO Bool
@@ -336,7 +336,7 @@ htmlButtonElementGetFormNoValidate self
       (unHTMLButtonElement (toHTMLButtonElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formTarget\"] = $2;"
         ghcjs_dom_html_button_element_set_form_target ::
         JSRef HTMLButtonElement -> JSString -> IO ()
@@ -354,7 +354,7 @@ htmlButtonElementSetFormTarget self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"formTarget\"]"
         ghcjs_dom_html_button_element_get_form_target ::
         JSRef HTMLButtonElement -> IO JSString
@@ -373,7 +373,7 @@ htmlButtonElementGetFormTarget self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_button_element_set_name ::
         JSRef HTMLButtonElement -> JSString -> IO ()
@@ -391,7 +391,7 @@ htmlButtonElementSetName self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_button_element_get_name ::
         JSRef HTMLButtonElement -> IO JSString
@@ -410,7 +410,7 @@ htmlButtonElementGetName self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_button_element_set_value ::
         JSRef HTMLButtonElement -> JSString -> IO ()
@@ -428,7 +428,7 @@ htmlButtonElementSetValue self val
       (toJSString val)
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_button_element_get_value ::
         JSRef HTMLButtonElement -> IO JSString
@@ -447,7 +447,7 @@ htmlButtonElementGetValue self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_will_validate ::
         JSRef HTMLButtonElement -> IO Bool
@@ -464,7 +464,7 @@ htmlButtonElementGetWillValidate self
       (unHTMLButtonElement (toHTMLButtonElement self))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_button_element_get_validity ::
         JSRef HTMLButtonElement -> IO (JSRef ValidityState)
@@ -482,7 +482,7 @@ htmlButtonElementGetValidity self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_button_element_get_validation_message ::
         JSRef HTMLButtonElement -> IO JSString
@@ -501,7 +501,7 @@ htmlButtonElementGetValidationMessage self
          (unHTMLButtonElement (toHTMLButtonElement self)))
 
 
-#ifdef __GHCJS__ 
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_button_element_get_labels ::
         JSRef HTMLButtonElement -> IO (JSRef NodeList)
