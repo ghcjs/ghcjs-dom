@@ -24,7 +24,7 @@ eventTargetAddEventListener ::
                          (GObjectClass self, IsEvent event) =>
                            self -> String -> Bool -> (self -> event -> IO ()) -> IO Bool
 eventTargetAddEventListener self eventName bubble user = do
-    callback <- syncCallback1 False True $ \e -> user self (unsafeCastGObject $ GObject e)
+    callback <- syncCallback1 NeverRetain True $ \e -> user self (unsafeCastGObject $ GObject e)
     ghcjs_dom_event_target_add_event_listener
         (unGObject (toGObject self))
         (toJSString eventName)
