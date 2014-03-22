@@ -67,7 +67,7 @@ import GHCJS.DOM.MouseEvent
 import GHCJS.DOM.EventTargetClosures
 import Data.Word (Word)
 
-type Signal target callback = target -> callback -> IO Bool
+type Signal target callback = target -> callback -> IO (IO ())
 
 type EventM e t a = ReaderT (t, e) IO a
 
@@ -259,6 +259,6 @@ mouseFromElement = event >>= (liftIO . mouseEventGetFromElement)
 mouseToElement :: IsMouseEvent e => EventM e t (Maybe Node)
 mouseToElement = event >>= (liftIO . mouseEventGetToElement)
 
-connect :: (GObjectClass t, IsEvent e) => String -> t -> EventM e t () -> IO Bool
+connect :: (GObjectClass t, IsEvent e) => String -> t -> EventM e t () -> IO (IO ())
 connect eventName target callback =
   eventTargetAddEventListener target eventName False $ curry (runReaderT callback)
