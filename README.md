@@ -8,12 +8,12 @@ There are three different implementations.
 
  * *JSFFI* uses GHCJS Java Script FFI (default when compiled with GHCJS)
  * *WebKit* uses WebKitGtk (default when compiled with GHC)
- * *JSC* uses WebKitGtk-JavaScriptCore (not done yet)
+ * *JSaddle* uses WebKitGtk-JavaScriptCore (not done yet)
 
 GHCJS provides shims for WebKitGtk so the WebKit version will
 work when compiled with GHCJS (though it will be slower
 compared to the JSFFI version).
 
-Once done the JSC implementation will make interaction
+Once done the JSaddle implementation will make interaction
 between native code and JavaScript running in the JavaScriptCore
-engine work smothly.
+engine work smoothly.
