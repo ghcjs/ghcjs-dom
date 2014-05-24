@@ -7,7 +7,6 @@ module GHCJS.DOM.EventTargetClosures
 import GHCJS.Types
 import GHCJS.Foreign
 import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
 
 #ifdef ghcjs_HOST_OS
 foreign import javascript unsafe
@@ -30,8 +29,8 @@ ghcjs_dom_event_target_remove_event_listener = undefined
 #endif
 
 eventTargetAddEventListener ::
-                         (GObjectClass self, IsEvent event) =>
-                           self -> String -> Bool -> (self -> event -> IO ()) -> IO (IO ())
+                         (GObjectClass self, ToJSString eventName, IsEvent event) =>
+                           self -> eventName -> Bool -> (self -> event -> IO ()) -> IO (IO ())
 eventTargetAddEventListener self eventName bubble user = do
     callback <- syncCallback1 AlwaysRetain True $ \e -> user self (unsafeCastGObject $ GObject e)
     ghcjs_dom_event_target_add_event_listener
