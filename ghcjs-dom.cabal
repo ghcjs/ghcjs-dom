@@ -1,5 +1,5 @@
 name: ghcjs-dom
-version: 0.0.7
+version: 0.0.8
 cabal-version: >=1.10
 build-type: Simple
 license: MIT
@@ -185,7 +185,7 @@ library
 --    if !impl(ghcjs) || flag(webkit)
     if !flag(ghcjs) || flag(webkit)
         cpp-options: -DUSE_WEBKIT
-        build-depends:  glib >=0.12.3.1 && <0.13, transformers >=0.3.0.0 && <0.4
+        build-depends:  glib >=0.12.3.1 && <0.13, transformers >=0.3.0.0 && <0.5
         if flag(gtk3)
             build-depends: gtk3 >=0.12.4 && <0.13, webkitgtk3 >=0.12.6.0 && <0.13
         else
