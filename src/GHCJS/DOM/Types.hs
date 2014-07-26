@@ -1,12 +1,14 @@
+{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE CPP #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds #-}
 #else
 {-# LANGUAGE ConstraintKinds #-}
 #endif
 module GHCJS.DOM.Types (
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-    maybeJSNull, propagateGError, GType(..)
+    maybeJSNull, propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
   , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject
 
 -- AUTO GENERATION STARTS HERE
@@ -143,7 +145,7 @@ module GHCJS.DOM.Types (
   , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
 -- AUTO GENERATION ENDS HERE
 #else
-    propagateGError, GType(..)
+    propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
   , module Graphics.UI.Gtk.WebKit.Types
   , IsDOMAttr
   , IsBlob
@@ -273,12 +275,18 @@ module GHCJS.DOM.Types (
 #endif
   ) where
 
-
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-import GHCJS.Types (JSRef(..), castRef, isNull)
+import GHCJS.Types (JSRef(..), castRef, nullRef, undefinedRef, isNull, JSString(..))
+import GHCJS.Foreign (ToJSString(..), FromJSString(..))
 #else
+import Control.Applicative ((<$>))
+import qualified Data.Text as T (Text)
+import Data.Maybe (isNothing)
+import Foreign.C (CString)
 import Graphics.UI.Gtk.WebKit.Types
 import System.Glib (propagateGError, GType(..))
+import System.Glib.UTFString
+       (readUTFString, GlibString(..))
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
@@ -335,6 +343,25 @@ foreign import javascript unsafe "object" gTypeGObject' :: JSRef GType
 gTypeGObject' = error "gTypeGObject': only available in JavaScript"
 #endif
 gTypeGObject = GType gTypeGObject'
+
+#ifdef ghcjs_HOST_OS
+-- | Fastest string type to use when you just
+--   want to take a string from the DOM then
+--   give it back as is.
+type DOMString = JSString
+
+type ToDOMString s = ToJSString s
+type FromDOMString s = FromJSString s
+#endif
+
+#else
+-- | Fastest string type to use when you just
+--   want to take a string from the DOM then
+--   give it back as is.
+type DOMString = T.Text
+
+type ToDOMString s = GlibString s
+type FromDOMString s = GlibString s
 #endif
 
 -- AUTO GENERATION STARTS HERE

@@ -1,4 +1,4 @@
-{-# LANGUAGE CPP, ForeignFunctionInterface #-}
+{-# LANGUAGE CPP, ForeignFunctionInterface, OverloadedStrings #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI #-}
 #endif
@@ -16,6 +16,8 @@ module GHCJS.DOM (
 import GHCJS.Types (JSRef(..))
 import Control.Applicative ((<$>))
 #else
+import qualified Data.Text as T
+import Data.Monoid ((<>))
 import Graphics.UI.Gtk.WebKit.WebView
        (webViewSetWebSettings, webViewGetWebSettings, loadStarted,
         webViewLoadUri, loadFinished, webViewNew, webViewGetDomDocument)
@@ -88,7 +90,7 @@ currentDocument = maybeNull (makeNewGObject mkDocument) ghcjs_currentDocument
 runWebGUI :: (WebView -> IO ()) -> IO ()
 runWebGUI = runWebGUI' "GHCJS"
 
-runWebGUI' :: String -> (WebView -> IO ()) -> IO ()
+runWebGUI' :: T.Text -> (WebView -> IO ()) -> IO ()
 runWebGUI' userAgentKey main = do
   -- Are we in a java script inside some kind of browser
   mbWindow <- currentWindow
@@ -97,11 +99,11 @@ runWebGUI' userAgentKey main = do
       -- Check if we are running in javascript inside the the native version
       Just n <- domWindowGetNavigator window
       agent <- navigatorGetUserAgent n
-      unless ((" " ++ userAgentKey) `isSuffixOf` agent) $ main (castToWebView window)
+      unless ((" " <> userAgentKey) `T.isSuffixOf` agent) $ main (castToWebView window)
     Nothing -> do
       makeDefaultWebView userAgentKey main
 
-makeDefaultWebView :: String -> (WebView -> IO ()) -> IO ()
+makeDefaultWebView :: T.Text -> (WebView -> IO ()) -> IO ()
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 makeDefaultWebView _ _ = error "Unsupported makeDefaultWebView"
 #else
@@ -115,7 +117,7 @@ makeDefaultWebView userAgentKey main = do
   webView <- webViewNew
   settings <- webViewGetWebSettings webView
   userAgent <- settings `get` webSettingsUserAgent
-  settings `set` [webSettingsUserAgent := userAgent ++ " " ++ userAgentKey]
+  settings `set` [webSettingsUserAgent := userAgent <> " " <> userAgentKey]
   webViewSetWebSettings webView settings
   window `containerAdd` scrollWin
   scrollWin `containerAdd` webView
@@ -125,7 +127,7 @@ makeDefaultWebView userAgentKey main = do
     main webView
   args <- getArgs
   case args of
-    uri:_ -> webViewLoadUri webView uri
+    uri:_ -> webViewLoadUri webView (T.pack uri)
     []    -> do
       main webView
   mainGUI

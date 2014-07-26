@@ -259,6 +259,6 @@ mouseFromElement = event >>= (liftIO . mouseEventGetFromElement)
 mouseToElement :: IsMouseEvent e => EventM e t (Maybe Node)
 mouseToElement = event >>= (liftIO . mouseEventGetToElement)
 
-connect :: (GObjectClass t, IsEvent e) => String -> t -> EventM e t () -> IO (IO ())
+connect :: (GObjectClass t, IsEvent e, ToDOMString string) => string -> t -> EventM e t () -> IO (IO ())
 connect eventName target callback =
   eventTargetAddEventListener target eventName False $ curry (runReaderT callback)
