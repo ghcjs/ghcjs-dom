@@ -12,12 +12,12 @@ module GHCJS.DOM (
 , postGUIAsync
 ) where
 
+import qualified Data.Text as T
+import Data.Monoid ((<>))
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 import GHCJS.Types (JSRef(..))
 import Control.Applicative ((<$>))
 #else
-import qualified Data.Text as T
-import Data.Monoid ((<>))
 import Graphics.UI.Gtk.WebKit.WebView
        (webViewSetWebSettings, webViewGetWebSettings, loadStarted,
         webViewLoadUri, loadFinished, webViewNew, webViewGetDomDocument)

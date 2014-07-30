@@ -276,7 +276,7 @@ module GHCJS.DOM.Types (
   ) where
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-import GHCJS.Types (JSRef(..), castRef, nullRef, undefinedRef, isNull, JSString(..))
+import GHCJS.Types (JSRef(..), castRef, nullRef, isNull, JSString(..))
 import GHCJS.Foreign (ToJSString(..), FromJSString(..))
 #else
 import Control.Applicative ((<$>))
