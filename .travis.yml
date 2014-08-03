@@ -20,11 +20,14 @@ before_install:
     fi
 
 install:
-  - cabal install Cabal
+  - cabal install Cabal cabal-install
   - cabal install gtk2hs-buildtools
-  - cabal install --enable-tests
 
 script:
+  - cabal install --enable-tests
+  - cabal test
+  - cabal clean
+  - cabal install -f-gtk3 --enable-tests
   - cabal test
 
 notifications:
