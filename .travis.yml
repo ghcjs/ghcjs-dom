@@ -27,7 +27,7 @@ script:
   - cabal install --enable-tests
   - cabal test
   - cabal clean
-  - cabal install -f-gtk3 --enable-tests
+  - cabal install -f-gtk3 -f-ghcjs --enable-tests
   - cabal test
 
 notifications:
