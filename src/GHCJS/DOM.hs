@@ -8,6 +8,7 @@ module GHCJS.DOM (
 , WebView(..)
 , webViewGetDomDocument
 , runWebGUI
+, enableInspector
 , postGUISync
 , postGUIAsync
 ) where
@@ -20,7 +21,10 @@ import Control.Applicative ((<$>))
 #else
 import Graphics.UI.Gtk.WebKit.WebView
        (webViewSetWebSettings, webViewGetWebSettings, loadStarted,
-        webViewLoadUri, loadFinished, webViewNew, webViewGetDomDocument)
+        webViewLoadUri, loadFinished, webViewNew, webViewGetDomDocument,
+        webViewGetInspector)
+import Graphics.UI.Gtk.WebKit.WebInspector
+       (showWindow, inspectWebView)
 import Graphics.UI.Gtk
        (timeoutAddFull, widgetShowAll, mainQuit, objectDestroy,
         WindowPosition(..), containerAdd, scrolledWindowNew,
@@ -30,7 +34,9 @@ import System.Glib.Signals (on)
 import System.Glib.Attributes (get, AttrOp(..), set)
 import System.Glib.FFI (maybeNull)
 import System.Glib.MainLoop (priorityHigh)
-import Graphics.UI.Gtk.WebKit.WebSettings (webSettingsUserAgent)
+import Graphics.UI.Gtk.WebKit.WebSettings
+       (webSettingsMonospaceFontFamily, webSettingsUserAgent,
+        webSettingsEnableDeveloperExtras)
 import Control.Monad.IO.Class (liftIO)
 #endif
 
@@ -131,4 +137,31 @@ makeDefaultWebView userAgentKey main = do
     []    -> do
       main webView
   mainGUI
+#endif
+
+enableInspector :: WebView -> IO ()
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+enableInspector _ = return ()
+#else
+enableInspector webView = do
+  settings <- webViewGetWebSettings webView
+  settings `set` [webSettingsEnableDeveloperExtras := True]
+  webViewSetWebSettings webView settings
+  inspector <- webViewGetInspector webView
+  window <- windowNew
+  windowSetDefaultSize window 900 300
+  scrollWin <- scrolledWindowNew Nothing Nothing
+  inspector `on` inspectWebView $ \view -> do
+    inspectorView <- webViewNew
+    settings <- webViewGetWebSettings inspectorView
+    settings `set` [webSettingsMonospaceFontFamily := ("Consolas" :: String)]
+    webViewSetWebSettings inspectorView settings
+    scrollWin `containerAdd` inspectorView
+    window `containerAdd` scrollWin
+    widgetShowAll window
+    return inspectorView
+  inspector `on` showWindow $ do
+    widgetShowAll window
+    return True
+  return ()
 #endif
