@@ -47,12 +47,11 @@ module GHCJS.DOM.Document
         ghcjs_dom_document_create_css_style_declaration,
         documentCreateCSSStyleDeclaration,
         ghcjs_dom_document_get_elements_by_class_name,
-        documentGetElementsByClassName, ghcjs_dom_document_query_selector,
+        documentGetElementsByClassName, ghcjs_dom_document_has_focus,
+        documentHasFocus, ghcjs_dom_document_query_selector,
         documentQuerySelector, ghcjs_dom_document_query_selector_all,
-        documentQuerySelectorAll,
-        ghcjs_dom_document_webkit_exit_pointer_lock,
-        documentWebkitExitPointerLock,
-        ghcjs_dom_document_webkit_get_named_flows,
+        documentQuerySelectorAll, ghcjs_dom_document_exit_pointer_lock,
+        documentExitPointerLock, ghcjs_dom_document_webkit_get_named_flows,
         documentWebkitGetNamedFlows, ghcjs_dom_document_get_doctype,
         documentGetDoctype, ghcjs_dom_document_get_implementation,
         documentGetImplementation, ghcjs_dom_document_get_document_element,
@@ -92,43 +91,21 @@ module GHCJS.DOM.Document
         documentSetSelectedStylesheetSet,
         ghcjs_dom_document_get_selected_stylesheet_set,
         documentGetSelectedStylesheetSet,
+        ghcjs_dom_document_get_active_element, documentGetActiveElement,
         ghcjs_dom_document_get_compat_mode, documentGetCompatMode,
-        ghcjs_dom_document_get_webkit_pointer_lock_element,
-        documentGetWebkitPointerLockElement, documentOnabort,
-        documentOnblur, documentOnchange, documentOnclick,
-        documentOncontextmenu, documentOndblclick, documentOndrag,
-        documentOndragend, documentOndragenter, documentOndragleave,
-        documentOndragover, documentOndragstart, documentOndrop,
-        documentOnerror, documentOnfocus, documentOninput,
-        documentOninvalid, documentOnkeydown, documentOnkeypress,
-        documentOnkeyup, documentOnload, documentOnmousedown,
-        documentOnmouseenter, documentOnmouseleave, documentOnmousemove,
-        documentOnmouseout, documentOnmouseover, documentOnmouseup,
-        documentOnmousewheel, documentOnreadystatechange, documentOnscroll,
-        documentOnselect, documentOnsubmit, documentOnbeforecut,
-        documentOncut, documentOnbeforecopy, documentOncopy,
-        documentOnbeforepaste, documentOnpaste, documentOnreset,
-        documentOnsearch, documentOnselectstart, documentOnselectionchange,
-        documentOntouchstart, documentOntouchmove, documentOntouchend,
-        documentOntouchcancel, documentOnwebkitfullscreenchange,
-        documentOnwebkitfullscreenerror, documentOnwebkitpointerlockchange,
-        documentOnwebkitpointerlockerror,
-        documentOnsecuritypolicyviolation,
+        ghcjs_dom_document_get_pointer_lock_element,
+        documentGetPointerLockElement,
         ghcjs_dom_document_get_visibility_state,
         documentGetVisibilityState, ghcjs_dom_document_get_hidden,
         documentGetHidden, ghcjs_dom_document_get_security_policy,
         documentGetSecurityPolicy, ghcjs_dom_document_get_current_script,
-        documentGetCurrentScript, Document, IsDocument, castToDocument,
+        documentGetCurrentScript, ghcjs_dom_document_get_origin,
+        documentGetOrigin, Document, IsDocument, castToDocument,
         gTypeDocument, toDocument)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -870,6 +847,19 @@ documentGetElementsByClassName self tagname
 
 
 #ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "($1[\"hasFocus\"]() ? 1 : 0)"
+        ghcjs_dom_document_has_focus :: JSRef Document -> IO Bool
+#else 
+ghcjs_dom_document_has_focus :: JSRef Document -> IO Bool
+ghcjs_dom_document_has_focus = undefined
+#endif
+ 
+documentHasFocus :: (IsDocument self) => self -> IO Bool
+documentHasFocus self
+  = ghcjs_dom_document_has_focus (unDocument (toDocument self))
+
+
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         ghcjs_dom_document_query_selector ::
         JSRef Document -> JSString -> IO (JSRef Element)
@@ -909,18 +899,16 @@ documentQuerySelectorAll self selectors
 
 
 #ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"webkitExitPointerLock\"]()"
-        ghcjs_dom_document_webkit_exit_pointer_lock ::
-        JSRef Document -> IO ()
+foreign import javascript unsafe "$1[\"exitPointerLock\"]()"
+        ghcjs_dom_document_exit_pointer_lock :: JSRef Document -> IO ()
 #else 
-ghcjs_dom_document_webkit_exit_pointer_lock ::
-                                              JSRef Document -> IO ()
-ghcjs_dom_document_webkit_exit_pointer_lock = undefined
+ghcjs_dom_document_exit_pointer_lock :: JSRef Document -> IO ()
+ghcjs_dom_document_exit_pointer_lock = undefined
 #endif
  
-documentWebkitExitPointerLock :: (IsDocument self) => self -> IO ()
-documentWebkitExitPointerLock self
-  = ghcjs_dom_document_webkit_exit_pointer_lock
+documentExitPointerLock :: (IsDocument self) => self -> IO ()
+documentExitPointerLock self
+  = ghcjs_dom_document_exit_pointer_lock
       (unDocument (toDocument self))
 
 
@@ -1552,6 +1540,24 @@ documentGetSelectedStylesheetSet self
 
 
 #ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"activeElement\"]"
+        ghcjs_dom_document_get_active_element ::
+        JSRef Document -> IO (JSRef Element)
+#else 
+ghcjs_dom_document_get_active_element ::
+                                        JSRef Document -> IO (JSRef Element)
+ghcjs_dom_document_get_active_element = undefined
+#endif
+ 
+documentGetActiveElement ::
+                         (IsDocument self) => self -> IO (Maybe Element)
+documentGetActiveElement self
+  = fmap Element . maybeJSNull <$>
+      (ghcjs_dom_document_get_active_element
+         (unDocument (toDocument self)))
+
+
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"compatMode\"]"
         ghcjs_dom_document_get_compat_mode :: JSRef Document -> IO JSString
 #else 
@@ -1567,233 +1573,21 @@ documentGetCompatMode self
 
 
 #ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"webkitPointerLockElement\"]"
-        ghcjs_dom_document_get_webkit_pointer_lock_element ::
+foreign import javascript unsafe "$1[\"pointerLockElement\"]"
+        ghcjs_dom_document_get_pointer_lock_element ::
         JSRef Document -> IO (JSRef Element)
 #else 
-ghcjs_dom_document_get_webkit_pointer_lock_element ::
-                                                     JSRef Document -> IO (JSRef Element)
-ghcjs_dom_document_get_webkit_pointer_lock_element = undefined
+ghcjs_dom_document_get_pointer_lock_element ::
+                                              JSRef Document -> IO (JSRef Element)
+ghcjs_dom_document_get_pointer_lock_element = undefined
 #endif
  
-documentGetWebkitPointerLockElement ::
-                                    (IsDocument self) => self -> IO (Maybe Element)
-documentGetWebkitPointerLockElement self
+documentGetPointerLockElement ::
+                              (IsDocument self) => self -> IO (Maybe Element)
+documentGetPointerLockElement self
   = fmap Element . maybeJSNull <$>
-      (ghcjs_dom_document_get_webkit_pointer_lock_element
+      (ghcjs_dom_document_get_pointer_lock_element
          (unDocument (toDocument self)))
- 
-documentOnabort ::
-                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnabort = (connect "abort")
- 
-documentOnblur ::
-               (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnblur = (connect "blur")
- 
-documentOnchange ::
-                 (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnchange = (connect "change")
- 
-documentOnclick ::
-                (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOnclick = (connect "click")
- 
-documentOncontextmenu ::
-                      (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOncontextmenu = (connect "contextmenu")
- 
-documentOndblclick ::
-                   (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndblclick = (connect "dblclick")
- 
-documentOndrag ::
-               (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndrag = (connect "drag")
- 
-documentOndragend ::
-                  (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndragend = (connect "dragend")
- 
-documentOndragenter ::
-                    (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndragenter = (connect "dragenter")
- 
-documentOndragleave ::
-                    (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndragleave = (connect "dragleave")
- 
-documentOndragover ::
-                   (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndragover = (connect "dragover")
- 
-documentOndragstart ::
-                    (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndragstart = (connect "dragstart")
- 
-documentOndrop ::
-               (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOndrop = (connect "drop")
- 
-documentOnerror ::
-                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnerror = (connect "error")
- 
-documentOnfocus ::
-                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnfocus = (connect "focus")
- 
-documentOninput ::
-                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOninput = (connect "input")
- 
-documentOninvalid ::
-                  (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOninvalid = (connect "invalid")
- 
-documentOnkeydown ::
-                  (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnkeydown = (connect "keydown")
- 
-documentOnkeypress ::
-                   (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnkeypress = (connect "keypress")
- 
-documentOnkeyup ::
-                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnkeyup = (connect "keyup")
- 
-documentOnload ::
-               (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnload = (connect "load")
- 
-documentOnmousedown ::
-                    (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOnmousedown = (connect "mousedown")
- 
-documentOnmouseenter ::
-                     (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnmouseenter = (connect "mouseenter")
- 
-documentOnmouseleave ::
-                     (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnmouseleave = (connect "mouseleave")
- 
-documentOnmousemove ::
-                    (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOnmousemove = (connect "mousemove")
- 
-documentOnmouseout ::
-                   (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOnmouseout = (connect "mouseout")
- 
-documentOnmouseover ::
-                    (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOnmouseover = (connect "mouseover")
- 
-documentOnmouseup ::
-                  (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOnmouseup = (connect "mouseup")
- 
-documentOnmousewheel ::
-                     (IsDocument self) => Signal self (EventM MouseEvent self ())
-documentOnmousewheel = (connect "mousewheel")
- 
-documentOnreadystatechange ::
-                           (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnreadystatechange = (connect "readystatechange")
- 
-documentOnscroll ::
-                 (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnscroll = (connect "scroll")
- 
-documentOnselect ::
-                 (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnselect = (connect "select")
- 
-documentOnsubmit ::
-                 (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnsubmit = (connect "submit")
- 
-documentOnbeforecut ::
-                    (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnbeforecut = (connect "beforecut")
- 
-documentOncut ::
-              (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOncut = (connect "cut")
- 
-documentOnbeforecopy ::
-                     (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnbeforecopy = (connect "beforecopy")
- 
-documentOncopy ::
-               (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOncopy = (connect "copy")
- 
-documentOnbeforepaste ::
-                      (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnbeforepaste = (connect "beforepaste")
- 
-documentOnpaste ::
-                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnpaste = (connect "paste")
- 
-documentOnreset ::
-                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnreset = (connect "reset")
- 
-documentOnsearch ::
-                 (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnsearch = (connect "search")
- 
-documentOnselectstart ::
-                      (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnselectstart = (connect "selectstart")
- 
-documentOnselectionchange ::
-                          (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnselectionchange = (connect "selectionchange")
- 
-documentOntouchstart ::
-                     (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOntouchstart = (connect "touchstart")
- 
-documentOntouchmove ::
-                    (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOntouchmove = (connect "touchmove")
- 
-documentOntouchend ::
-                   (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOntouchend = (connect "touchend")
- 
-documentOntouchcancel ::
-                      (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOntouchcancel = (connect "touchcancel")
- 
-documentOnwebkitfullscreenchange ::
-                                 (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnwebkitfullscreenchange
-  = (connect "webkitfullscreenchange")
- 
-documentOnwebkitfullscreenerror ::
-                                (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnwebkitfullscreenerror = (connect "webkitfullscreenerror")
- 
-documentOnwebkitpointerlockchange ::
-                                  (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnwebkitpointerlockchange
-  = (connect "webkitpointerlockchange")
- 
-documentOnwebkitpointerlockerror ::
-                                 (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnwebkitpointerlockerror
-  = (connect "webkitpointerlockerror")
- 
-documentOnsecuritypolicyviolation ::
-                                  (IsDocument self) => Signal self (EventM UIEvent self ())
-documentOnsecuritypolicyviolation
-  = (connect "securitypolicyviolation")
 
 
 #ifdef ghcjs_HOST_OS 
@@ -1861,6 +1655,21 @@ documentGetCurrentScript self
   = fmap HTMLScriptElement . maybeJSNull <$>
       (ghcjs_dom_document_get_current_script
          (unDocument (toDocument self)))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"origin\"]"
+        ghcjs_dom_document_get_origin :: JSRef Document -> IO JSString
+#else 
+ghcjs_dom_document_get_origin :: JSRef Document -> IO JSString
+ghcjs_dom_document_get_origin = undefined
+#endif
+ 
+documentGetOrigin ::
+                  (IsDocument self, FromJSString result) => self -> IO result
+documentGetOrigin self
+  = fromJSString <$>
+      (ghcjs_dom_document_get_origin (unDocument (toDocument self)))
 #else
 module GHCJS.DOM.Document (
   module Graphics.UI.Gtk.WebKit.DOM.Document

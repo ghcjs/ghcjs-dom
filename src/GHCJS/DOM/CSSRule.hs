@@ -3,7 +3,8 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSRule
        (cUNKNOWN_RULE, cSTYLE_RULE, cCHARSET_RULE, cIMPORT_RULE,
-        cMEDIA_RULE, cFONT_FACE_RULE, cPAGE_RULE, cWEBKIT_KEYFRAMES_RULE,
+        cMEDIA_RULE, cFONT_FACE_RULE, cPAGE_RULE, cKEYFRAMES_RULE,
+        cKEYFRAME_RULE, cSUPPORTS_RULE, cWEBKIT_KEYFRAMES_RULE,
         cWEBKIT_KEYFRAME_RULE, ghcjs_dom_css_rule_set_css_text,
         cssRuleSetCssText, ghcjs_dom_css_rule_get_css_text,
         cssRuleGetCssText, ghcjs_dom_css_rule_get_parent_style_sheet,
@@ -13,12 +14,7 @@ module GHCJS.DOM.CSSRule
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -31,6 +27,9 @@ cIMPORT_RULE = 3
 cMEDIA_RULE = 4
 cFONT_FACE_RULE = 5
 cPAGE_RULE = 6
+cKEYFRAMES_RULE = 7
+cKEYFRAME_RULE = 8
+cSUPPORTS_RULE = 12
 cWEBKIT_KEYFRAMES_RULE = 7
 cWEBKIT_KEYFRAME_RULE = 8
 

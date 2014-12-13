@@ -37,9 +37,9 @@ module GHCJS.DOM.EventM
 , mouseClientX
 , mouseClientY
 , mouseClientXY
-, mouseWebkitMovementX
-, mouseWebkitMovementY
-, mouseWebkitMovementXY
+, mouseMovementX
+, mouseMovementY
+, mouseMovementXY
 , mouseCtrlKey
 , mouseShiftKey
 , mouseAltKey
@@ -193,18 +193,18 @@ mouseClientXY = do
     y <- mouseEventGetClientY e
     return (x, y)
 
-mouseWebkitMovementX :: IsMouseEvent e => EventM e t Int
-mouseWebkitMovementX = event >>= (liftIO . mouseEventGetWebkitMovementX)
+mouseMovementX :: IsMouseEvent e => EventM e t Int
+mouseMovementX = event >>= (liftIO . mouseEventGetMovementX)
 
-mouseWebkitMovementY :: IsMouseEvent e => EventM e t Int
-mouseWebkitMovementY = event >>= (liftIO . mouseEventGetWebkitMovementY)
+mouseMovementY :: IsMouseEvent e => EventM e t Int
+mouseMovementY = event >>= (liftIO . mouseEventGetMovementY)
 
-mouseWebkitMovementXY :: IsMouseEvent e => EventM e t (Int, Int)
-mouseWebkitMovementXY = do
+mouseMovementXY :: IsMouseEvent e => EventM e t (Int, Int)
+mouseMovementXY = do
   e <- event
   liftIO $ do
-    x <- mouseEventGetWebkitMovementX e
-    y <- mouseEventGetWebkitMovementY e
+    x <- mouseEventGetMovementX e
+    y <- mouseEventGetMovementY e
     return (x, y)
 
 mouseCtrlKey :: IsMouseEvent e => EventM e t Bool

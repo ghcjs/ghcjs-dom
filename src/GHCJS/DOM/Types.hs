@@ -23,7 +23,6 @@ module GHCJS.DOM.Types (
   , CSSValue(CSSValue), unCSSValue, IsCSSValue, toCSSValue, castToCSSValue, gTypeCSSValue
   , CharacterData(CharacterData), unCharacterData, IsCharacterData, toCharacterData, castToCharacterData, gTypeCharacterData
   , Comment(Comment), unComment, IsComment, toComment, castToComment, gTypeComment
-  , Console(Console), unConsole, IsConsole, toConsole, castToConsole, gTypeConsole
   , DOMApplicationCache(DOMApplicationCache), unDOMApplicationCache, IsDOMApplicationCache, toDOMApplicationCache, castToDOMApplicationCache, gTypeDOMApplicationCache
   , DOMImplementation(DOMImplementation), unDOMImplementation, IsDOMImplementation, toDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
   , DOMMimeType(DOMMimeType), unDOMMimeType, IsDOMMimeType, toDOMMimeType, castToDOMMimeType, gTypeDOMMimeType
@@ -157,7 +156,6 @@ module GHCJS.DOM.Types (
   , IsCSSValue
   , IsCharacterData
   , IsComment
-  , IsConsole
   , IsDOMApplicationCache
   , IsDOMImplementation
   , IsDOMMimeType
@@ -678,34 +676,6 @@ gTypeComment' = error "gTypeComment': only available in JavaScript"
 gTypeComment = GType gTypeComment'
 #else
 type IsComment o = CommentClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Console = Console (JSRef Console)
-
-unConsole (Console o) = o
-
-class GObjectClass o => IsConsole o
-toConsole :: IsConsole o => o -> Console
-toConsole = unsafeCastGObject . toGObject
-
-instance IsConsole Console
-instance GObjectClass Console where
-  toGObject = GObject . castRef . unConsole
-  unsafeCastGObject = Console . castRef . unGObject
-
-castToConsole :: GObjectClass obj => obj -> Console
-castToConsole = castTo gTypeConsole "Console"
-
-#ifdef ghcjs_HOST_OS
-foreign import javascript unsafe "window[\"Console\"]" gTypeConsole' :: JSRef GType
-#else
-gTypeConsole' = error "gTypeConsole': only available in JavaScript"
-#endif
-gTypeConsole = GType gTypeConsole'
-#else
-type IsConsole o = ConsoleClass o
 #endif
 
 
@@ -3733,11 +3703,12 @@ newtype ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstructi
 
 unProcessingInstruction (ProcessingInstruction o) = o
 
-class IsNode o => IsProcessingInstruction o
+class IsCharacterData o => IsProcessingInstruction o
 toProcessingInstruction :: IsProcessingInstruction o => o -> ProcessingInstruction
 toProcessingInstruction = unsafeCastGObject . toGObject
 
 instance IsProcessingInstruction ProcessingInstruction
+instance IsCharacterData ProcessingInstruction
 instance IsNode ProcessingInstruction
 instance GObjectClass ProcessingInstruction where
   toGObject = GObject . castRef . unProcessingInstruction

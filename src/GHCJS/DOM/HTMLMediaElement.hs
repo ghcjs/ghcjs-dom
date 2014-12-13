@@ -6,8 +6,11 @@ module GHCJS.DOM.HTMLMediaElement
         ghcjs_dom_html_media_element_can_play_type,
         htmlMediaElementCanPlayType, ghcjs_dom_html_media_element_play,
         htmlMediaElementPlay, ghcjs_dom_html_media_element_pause,
-        htmlMediaElementPause, cNETWORK_EMPTY, cNETWORK_IDLE,
-        cNETWORK_LOADING, cNETWORK_NO_SOURCE, cHAVE_NOTHING,
+        htmlMediaElementPause, ghcjs_dom_html_media_element_fast_seek,
+        htmlMediaElementFastSeek,
+        ghcjs_dom_html_media_element_webkit_show_playback_target_picker,
+        htmlMediaElementWebkitShowPlaybackTargetPicker, cNETWORK_EMPTY,
+        cNETWORK_IDLE, cNETWORK_LOADING, cNETWORK_NO_SOURCE, cHAVE_NOTHING,
         cHAVE_METADATA, cHAVE_CURRENT_DATA, cHAVE_FUTURE_DATA,
         cHAVE_ENOUGH_DATA, ghcjs_dom_html_media_element_get_error,
         htmlMediaElementGetError, ghcjs_dom_html_media_element_set_src,
@@ -31,10 +34,6 @@ module GHCJS.DOM.HTMLMediaElement
         htmlMediaElementSetCurrentTime,
         ghcjs_dom_html_media_element_get_current_time,
         htmlMediaElementGetCurrentTime,
-        ghcjs_dom_html_media_element_get_initial_time,
-        htmlMediaElementGetInitialTime,
-        ghcjs_dom_html_media_element_get_start_time,
-        htmlMediaElementGetStartTime,
         ghcjs_dom_html_media_element_get_duration,
         htmlMediaElementGetDuration,
         ghcjs_dom_html_media_element_get_paused, htmlMediaElementGetPaused,
@@ -66,7 +65,14 @@ module GHCJS.DOM.HTMLMediaElement
         ghcjs_dom_html_media_element_set_default_muted,
         htmlMediaElementSetDefaultMuted,
         ghcjs_dom_html_media_element_get_default_muted,
-        htmlMediaElementGetDefaultMuted,
+        htmlMediaElementGetDefaultMuted, htmlMediaElementOnemptied,
+        htmlMediaElementOnloadedmetadata, htmlMediaElementOnloadeddata,
+        htmlMediaElementOncanplay, htmlMediaElementOncanplaythrough,
+        htmlMediaElementOnplaying, htmlMediaElementOnended,
+        htmlMediaElementOnwaiting, htmlMediaElementOndurationchange,
+        htmlMediaElementOntimeupdate, htmlMediaElementOnplay,
+        htmlMediaElementOnpause, htmlMediaElementOnratechange,
+        htmlMediaElementOnvolumechange,
         ghcjs_dom_html_media_element_set_webkit_preserves_pitch,
         htmlMediaElementSetWebkitPreservesPitch,
         ghcjs_dom_html_media_element_get_webkit_preserves_pitch,
@@ -85,18 +91,17 @@ module GHCJS.DOM.HTMLMediaElement
         ghcjs_dom_html_media_element_set_media_group,
         htmlMediaElementSetMediaGroup,
         ghcjs_dom_html_media_element_get_media_group,
-        htmlMediaElementGetMediaGroup, HTMLMediaElement,
-        IsHTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement,
-        toHTMLMediaElement)
+        htmlMediaElementGetMediaGroup,
+        ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless,
+        htmlMediaElementGetWebkitCurrentPlaybackTargetIsWireless,
+        htmlMediaElementOnwebkitcurrentplaybacktargetiswirelesschanged,
+        htmlMediaElementOnwebkitplaybacktargetavailabilitychanged,
+        HTMLMediaElement, IsHTMLMediaElement, castToHTMLMediaElement,
+        gTypeHTMLMediaElement, toHTMLMediaElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -169,6 +174,43 @@ ghcjs_dom_html_media_element_pause = undefined
 htmlMediaElementPause :: (IsHTMLMediaElement self) => self -> IO ()
 htmlMediaElementPause self
   = ghcjs_dom_html_media_element_pause
+      (unHTMLMediaElement (toHTMLMediaElement self))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"fastSeek\"]($2)"
+        ghcjs_dom_html_media_element_fast_seek ::
+        JSRef HTMLMediaElement -> Double -> IO ()
+#else 
+ghcjs_dom_html_media_element_fast_seek ::
+                                         JSRef HTMLMediaElement -> Double -> IO ()
+ghcjs_dom_html_media_element_fast_seek = undefined
+#endif
+ 
+htmlMediaElementFastSeek ::
+                         (IsHTMLMediaElement self) => self -> Double -> IO ()
+htmlMediaElementFastSeek self time
+  = ghcjs_dom_html_media_element_fast_seek
+      (unHTMLMediaElement (toHTMLMediaElement self))
+      time
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe
+        "$1[\"webkitShowPlaybackTargetPicker\"]()"
+        ghcjs_dom_html_media_element_webkit_show_playback_target_picker ::
+        JSRef HTMLMediaElement -> IO ()
+#else 
+ghcjs_dom_html_media_element_webkit_show_playback_target_picker ::
+                                                                  JSRef HTMLMediaElement -> IO ()
+ghcjs_dom_html_media_element_webkit_show_playback_target_picker
+  = undefined
+#endif
+ 
+htmlMediaElementWebkitShowPlaybackTargetPicker ::
+                                               (IsHTMLMediaElement self) => self -> IO ()
+htmlMediaElementWebkitShowPlaybackTargetPicker self
+  = ghcjs_dom_html_media_element_webkit_show_playback_target_picker
       (unHTMLMediaElement (toHTMLMediaElement self))
 cNETWORK_EMPTY = 0
 cNETWORK_IDLE = 1
@@ -390,40 +432,6 @@ htmlMediaElementGetCurrentTime ::
                                (IsHTMLMediaElement self) => self -> IO Double
 htmlMediaElementGetCurrentTime self
   = ghcjs_dom_html_media_element_get_current_time
-      (unHTMLMediaElement (toHTMLMediaElement self))
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"initialTime\"]"
-        ghcjs_dom_html_media_element_get_initial_time ::
-        JSRef HTMLMediaElement -> IO Double
-#else 
-ghcjs_dom_html_media_element_get_initial_time ::
-                                                JSRef HTMLMediaElement -> IO Double
-ghcjs_dom_html_media_element_get_initial_time = undefined
-#endif
- 
-htmlMediaElementGetInitialTime ::
-                               (IsHTMLMediaElement self) => self -> IO Double
-htmlMediaElementGetInitialTime self
-  = ghcjs_dom_html_media_element_get_initial_time
-      (unHTMLMediaElement (toHTMLMediaElement self))
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"startTime\"]"
-        ghcjs_dom_html_media_element_get_start_time ::
-        JSRef HTMLMediaElement -> IO Double
-#else 
-ghcjs_dom_html_media_element_get_start_time ::
-                                              JSRef HTMLMediaElement -> IO Double
-ghcjs_dom_html_media_element_get_start_time = undefined
-#endif
- 
-htmlMediaElementGetStartTime ::
-                             (IsHTMLMediaElement self) => self -> IO Double
-htmlMediaElementGetStartTime self
-  = ghcjs_dom_html_media_element_get_start_time
       (unHTMLMediaElement (toHTMLMediaElement self))
 
 
@@ -793,6 +801,62 @@ htmlMediaElementGetDefaultMuted ::
 htmlMediaElementGetDefaultMuted self
   = ghcjs_dom_html_media_element_get_default_muted
       (unHTMLMediaElement (toHTMLMediaElement self))
+ 
+htmlMediaElementOnemptied ::
+                          (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnemptied = (connect "emptied")
+ 
+htmlMediaElementOnloadedmetadata ::
+                                 (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnloadedmetadata = (connect "loadedmetadata")
+ 
+htmlMediaElementOnloadeddata ::
+                             (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnloadeddata = (connect "loadeddata")
+ 
+htmlMediaElementOncanplay ::
+                          (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOncanplay = (connect "canplay")
+ 
+htmlMediaElementOncanplaythrough ::
+                                 (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOncanplaythrough = (connect "canplaythrough")
+ 
+htmlMediaElementOnplaying ::
+                          (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnplaying = (connect "playing")
+ 
+htmlMediaElementOnended ::
+                        (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnended = (connect "ended")
+ 
+htmlMediaElementOnwaiting ::
+                          (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnwaiting = (connect "waiting")
+ 
+htmlMediaElementOndurationchange ::
+                                 (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOndurationchange = (connect "durationchange")
+ 
+htmlMediaElementOntimeupdate ::
+                             (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOntimeupdate = (connect "timeupdate")
+ 
+htmlMediaElementOnplay ::
+                       (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnplay = (connect "play")
+ 
+htmlMediaElementOnpause ::
+                        (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnpause = (connect "pause")
+ 
+htmlMediaElementOnratechange ::
+                             (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnratechange = (connect "ratechange")
+ 
+htmlMediaElementOnvolumechange ::
+                               (IsHTMLMediaElement self) => Signal self (EventM UIEvent self ())
+htmlMediaElementOnvolumechange = (connect "volumechange")
 
 
 #ifdef ghcjs_HOST_OS 
@@ -967,6 +1031,40 @@ htmlMediaElementGetMediaGroup self
   = fromJSString <$>
       (ghcjs_dom_html_media_element_get_media_group
          (unHTMLMediaElement (toHTMLMediaElement self)))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe
+        "($1[\"webkitCurrentPlaybackTargetIsWireless\"] ? 1 : 0)"
+        ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless
+        :: JSRef HTMLMediaElement -> IO Bool
+#else 
+ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless ::
+                                                                              JSRef HTMLMediaElement
+                                                                                -> IO Bool
+ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless
+  = undefined
+#endif
+ 
+htmlMediaElementGetWebkitCurrentPlaybackTargetIsWireless ::
+                                                         (IsHTMLMediaElement self) =>
+                                                           self -> IO Bool
+htmlMediaElementGetWebkitCurrentPlaybackTargetIsWireless self
+  = ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless
+      (unHTMLMediaElement (toHTMLMediaElement self))
+ 
+htmlMediaElementOnwebkitcurrentplaybacktargetiswirelesschanged ::
+                                                               (IsHTMLMediaElement self) =>
+                                                                 Signal self
+                                                                   (EventM UIEvent self ())
+htmlMediaElementOnwebkitcurrentplaybacktargetiswirelesschanged
+  = (connect "webkitcurrentplaybacktargetiswirelesschanged")
+ 
+htmlMediaElementOnwebkitplaybacktargetavailabilitychanged ::
+                                                          (IsHTMLMediaElement self) =>
+                                                            Signal self (EventM UIEvent self ())
+htmlMediaElementOnwebkitplaybacktargetavailabilitychanged
+  = (connect "webkitplaybacktargetavailabilitychanged")
 #else
 module GHCJS.DOM.HTMLMediaElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLMediaElement

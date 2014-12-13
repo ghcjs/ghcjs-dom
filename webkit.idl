@@ -6,7 +6,6 @@ module core {
 #include "dom/CDATASection.idl"
 #include "dom/CharacterData.idl"
 #include "dom/Comment.idl"
-#include "page/Console.idl"
 #include "css/CSSRule.idl"
 #include "css/CSSRuleList.idl"
 #include "css/CSSStyleDeclaration.idl"

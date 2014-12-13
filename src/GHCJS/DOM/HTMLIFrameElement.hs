@@ -31,10 +31,6 @@ module GHCJS.DOM.HTMLIFrameElement
         htmliFrameElementSetSandbox,
         ghcjs_dom_html_iframe_element_get_sandbox,
         htmliFrameElementGetSandbox,
-        ghcjs_dom_html_iframe_element_set_seamless,
-        htmliFrameElementSetSeamless,
-        ghcjs_dom_html_iframe_element_get_seamless,
-        htmliFrameElementGetSeamless,
         ghcjs_dom_html_iframe_element_set_scrolling,
         htmliFrameElementSetScrolling,
         ghcjs_dom_html_iframe_element_get_scrolling,
@@ -56,12 +52,7 @@ module GHCJS.DOM.HTMLIFrameElement
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -363,41 +354,6 @@ htmliFrameElementGetSandbox self
   = fromJSString <$>
       (ghcjs_dom_html_iframe_element_get_sandbox
          (unHTMLIFrameElement (toHTMLIFrameElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"seamless\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_seamless ::
-        JSRef HTMLIFrameElement -> Bool -> IO ()
-#else 
-ghcjs_dom_html_iframe_element_set_seamless ::
-                                             JSRef HTMLIFrameElement -> Bool -> IO ()
-ghcjs_dom_html_iframe_element_set_seamless = undefined
-#endif
- 
-htmliFrameElementSetSeamless ::
-                             (IsHTMLIFrameElement self) => self -> Bool -> IO ()
-htmliFrameElementSetSeamless self val
-  = ghcjs_dom_html_iframe_element_set_seamless
-      (unHTMLIFrameElement (toHTMLIFrameElement self))
-      val
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "($1[\"seamless\"] ? 1 : 0)"
-        ghcjs_dom_html_iframe_element_get_seamless ::
-        JSRef HTMLIFrameElement -> IO Bool
-#else 
-ghcjs_dom_html_iframe_element_get_seamless ::
-                                             JSRef HTMLIFrameElement -> IO Bool
-ghcjs_dom_html_iframe_element_get_seamless = undefined
-#endif
- 
-htmliFrameElementGetSeamless ::
-                             (IsHTMLIFrameElement self) => self -> IO Bool
-htmliFrameElementGetSeamless self
-  = ghcjs_dom_html_iframe_element_get_seamless
-      (unHTMLIFrameElement (toHTMLIFrameElement self))
 
 
 #ifdef ghcjs_HOST_OS 

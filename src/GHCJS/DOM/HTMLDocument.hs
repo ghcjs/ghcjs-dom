@@ -6,7 +6,6 @@ module GHCJS.DOM.HTMLDocument
         ghcjs_dom_html_document_clear, htmlDocumentClear,
         ghcjs_dom_html_document_capture_events, htmlDocumentCaptureEvents,
         ghcjs_dom_html_document_release_events, htmlDocumentReleaseEvents,
-        ghcjs_dom_html_document_has_focus, htmlDocumentHasFocus,
         ghcjs_dom_html_document_get_embeds, htmlDocumentGetEmbeds,
         ghcjs_dom_html_document_get_plugins, htmlDocumentGetPlugins,
         ghcjs_dom_html_document_get_scripts, htmlDocumentGetScripts,
@@ -17,28 +16,22 @@ module GHCJS.DOM.HTMLDocument
         ghcjs_dom_html_document_set_design_mode, htmlDocumentSetDesignMode,
         ghcjs_dom_html_document_get_design_mode, htmlDocumentGetDesignMode,
         ghcjs_dom_html_document_get_compat_mode, htmlDocumentGetCompatMode,
-        ghcjs_dom_html_document_get_active_element,
-        htmlDocumentGetActiveElement, ghcjs_dom_html_document_set_bg_color,
-        htmlDocumentSetBgColor, ghcjs_dom_html_document_get_bg_color,
-        htmlDocumentGetBgColor, ghcjs_dom_html_document_set_fg_color,
-        htmlDocumentSetFgColor, ghcjs_dom_html_document_get_fg_color,
-        htmlDocumentGetFgColor, ghcjs_dom_html_document_set_alink_color,
-        htmlDocumentSetAlinkColor, ghcjs_dom_html_document_get_alink_color,
-        htmlDocumentGetAlinkColor, ghcjs_dom_html_document_set_link_color,
-        htmlDocumentSetLinkColor, ghcjs_dom_html_document_get_link_color,
-        htmlDocumentGetLinkColor, ghcjs_dom_html_document_set_vlink_color,
-        htmlDocumentSetVlinkColor, ghcjs_dom_html_document_get_vlink_color,
-        htmlDocumentGetVlinkColor, HTMLDocument, IsHTMLDocument,
-        castToHTMLDocument, gTypeHTMLDocument, toHTMLDocument)
+        ghcjs_dom_html_document_set_bg_color, htmlDocumentSetBgColor,
+        ghcjs_dom_html_document_get_bg_color, htmlDocumentGetBgColor,
+        ghcjs_dom_html_document_set_fg_color, htmlDocumentSetFgColor,
+        ghcjs_dom_html_document_get_fg_color, htmlDocumentGetFgColor,
+        ghcjs_dom_html_document_set_alink_color, htmlDocumentSetAlinkColor,
+        ghcjs_dom_html_document_get_alink_color, htmlDocumentGetAlinkColor,
+        ghcjs_dom_html_document_set_link_color, htmlDocumentSetLinkColor,
+        ghcjs_dom_html_document_get_link_color, htmlDocumentGetLinkColor,
+        ghcjs_dom_html_document_set_vlink_color, htmlDocumentSetVlinkColor,
+        ghcjs_dom_html_document_get_vlink_color, htmlDocumentGetVlinkColor,
+        HTMLDocument, IsHTMLDocument, castToHTMLDocument,
+        gTypeHTMLDocument, toHTMLDocument)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -103,20 +96,6 @@ ghcjs_dom_html_document_release_events = undefined
 htmlDocumentReleaseEvents :: (IsHTMLDocument self) => self -> IO ()
 htmlDocumentReleaseEvents self
   = ghcjs_dom_html_document_release_events
-      (unHTMLDocument (toHTMLDocument self))
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "($1[\"hasFocus\"]() ? 1 : 0)"
-        ghcjs_dom_html_document_has_focus :: JSRef HTMLDocument -> IO Bool
-#else 
-ghcjs_dom_html_document_has_focus :: JSRef HTMLDocument -> IO Bool
-ghcjs_dom_html_document_has_focus = undefined
-#endif
- 
-htmlDocumentHasFocus :: (IsHTMLDocument self) => self -> IO Bool
-htmlDocumentHasFocus self
-  = ghcjs_dom_html_document_has_focus
       (unHTMLDocument (toHTMLDocument self))
 
 
@@ -289,24 +268,6 @@ htmlDocumentGetCompatMode ::
 htmlDocumentGetCompatMode self
   = fromJSString <$>
       (ghcjs_dom_html_document_get_compat_mode
-         (unHTMLDocument (toHTMLDocument self)))
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"activeElement\"]"
-        ghcjs_dom_html_document_get_active_element ::
-        JSRef HTMLDocument -> IO (JSRef Element)
-#else 
-ghcjs_dom_html_document_get_active_element ::
-                                             JSRef HTMLDocument -> IO (JSRef Element)
-ghcjs_dom_html_document_get_active_element = undefined
-#endif
- 
-htmlDocumentGetActiveElement ::
-                             (IsHTMLDocument self) => self -> IO (Maybe Element)
-htmlDocumentGetActiveElement self
-  = fmap Element . maybeJSNull <$>
-      (ghcjs_dom_html_document_get_active_element
          (unHTMLDocument (toHTMLDocument self)))
 
 

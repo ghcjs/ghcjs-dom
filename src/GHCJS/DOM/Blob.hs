@@ -2,22 +2,37 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Blob
-       (ghcjs_dom_blob_get_size, blobGetSize, Blob, IsBlob, castToBlob,
-        gTypeBlob, toBlob)
+       (ghcjs_dom_blob_slice, blobSlice, ghcjs_dom_blob_get_size,
+        blobGetSize, Blob, IsBlob, castToBlob, gTypeBlob, toBlob)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"slice\"]($2, $3, $4)"
+        ghcjs_dom_blob_slice ::
+        JSRef Blob -> Double -> Double -> JSString -> IO (JSRef Blob)
+#else 
+ghcjs_dom_blob_slice ::
+                       JSRef Blob -> Double -> Double -> JSString -> IO (JSRef Blob)
+ghcjs_dom_blob_slice = undefined
+#endif
+ 
+blobSlice ::
+          (IsBlob self, ToJSString contentType) =>
+            self -> Int64 -> Int64 -> contentType -> IO (Maybe Blob)
+blobSlice self start end contentType
+  = fmap Blob . maybeJSNull <$>
+      (ghcjs_dom_blob_slice (unBlob (toBlob self)) (fromIntegral start)
+         (fromIntegral end)
+         (toJSString contentType))
 
 
 #ifdef ghcjs_HOST_OS 

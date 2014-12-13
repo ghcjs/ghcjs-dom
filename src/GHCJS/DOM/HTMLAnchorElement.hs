@@ -57,19 +57,17 @@ module GHCJS.DOM.HTMLAnchorElement
         ghcjs_dom_html_anchor_element_get_search,
         htmlAnchorElementGetSearch,
         ghcjs_dom_html_anchor_element_get_origin,
-        htmlAnchorElementGetOrigin, ghcjs_dom_html_anchor_element_get_text,
-        htmlAnchorElementGetText, HTMLAnchorElement, IsHTMLAnchorElement,
-        castToHTMLAnchorElement, gTypeHTMLAnchorElement,
-        toHTMLAnchorElement)
+        htmlAnchorElementGetOrigin, ghcjs_dom_html_anchor_element_set_text,
+        htmlAnchorElementSetText, ghcjs_dom_html_anchor_element_get_text,
+        htmlAnchorElementGetText,
+        ghcjs_dom_html_anchor_element_get_rel_list,
+        htmlAnchorElementGetRelList, HTMLAnchorElement,
+        IsHTMLAnchorElement, castToHTMLAnchorElement,
+        gTypeHTMLAnchorElement, toHTMLAnchorElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -763,6 +761,24 @@ htmlAnchorElementGetOrigin self
 
 
 #ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"text\"] = $2;"
+        ghcjs_dom_html_anchor_element_set_text ::
+        JSRef HTMLAnchorElement -> JSString -> IO ()
+#else 
+ghcjs_dom_html_anchor_element_set_text ::
+                                         JSRef HTMLAnchorElement -> JSString -> IO ()
+ghcjs_dom_html_anchor_element_set_text = undefined
+#endif
+ 
+htmlAnchorElementSetText ::
+                         (IsHTMLAnchorElement self, ToJSString val) => self -> val -> IO ()
+htmlAnchorElementSetText self val
+  = ghcjs_dom_html_anchor_element_set_text
+      (unHTMLAnchorElement (toHTMLAnchorElement self))
+      (toJSString val)
+
+
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_anchor_element_get_text ::
         JSRef HTMLAnchorElement -> IO JSString
@@ -778,6 +794,24 @@ htmlAnchorElementGetText ::
 htmlAnchorElementGetText self
   = fromJSString <$>
       (ghcjs_dom_html_anchor_element_get_text
+         (unHTMLAnchorElement (toHTMLAnchorElement self)))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"relList\"]"
+        ghcjs_dom_html_anchor_element_get_rel_list ::
+        JSRef HTMLAnchorElement -> IO (JSRef DOMTokenList)
+#else 
+ghcjs_dom_html_anchor_element_get_rel_list ::
+                                             JSRef HTMLAnchorElement -> IO (JSRef DOMTokenList)
+ghcjs_dom_html_anchor_element_get_rel_list = undefined
+#endif
+ 
+htmlAnchorElementGetRelList ::
+                            (IsHTMLAnchorElement self) => self -> IO (Maybe DOMTokenList)
+htmlAnchorElementGetRelList self
+  = fmap DOMTokenList . maybeJSNull <$>
+      (ghcjs_dom_html_anchor_element_get_rel_list
          (unHTMLAnchorElement (toHTMLAnchorElement self)))
 #else
 module GHCJS.DOM.HTMLAnchorElement (

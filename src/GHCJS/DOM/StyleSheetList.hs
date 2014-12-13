@@ -3,18 +3,14 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleSheetList
        (ghcjs_dom_style_sheet_list_item, styleSheetListItem,
+        ghcjs_dom_style_sheet_list_get, styleSheetList_get,
         ghcjs_dom_style_sheet_list_get_length, styleSheetListGetLength,
         StyleSheetList, IsStyleSheetList, castToStyleSheetList,
         gTypeStyleSheetList, toStyleSheetList)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -39,6 +35,26 @@ styleSheetListItem self index
       (ghcjs_dom_style_sheet_list_item
          (unStyleSheetList (toStyleSheetList self))
          index)
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"_get\"]($2)"
+        ghcjs_dom_style_sheet_list_get ::
+        JSRef StyleSheetList -> JSString -> IO (JSRef CSSStyleSheet)
+#else 
+ghcjs_dom_style_sheet_list_get ::
+                                 JSRef StyleSheetList -> JSString -> IO (JSRef CSSStyleSheet)
+ghcjs_dom_style_sheet_list_get = undefined
+#endif
+ 
+styleSheetList_get ::
+                   (IsStyleSheetList self, ToJSString name) =>
+                     self -> name -> IO (Maybe CSSStyleSheet)
+styleSheetList_get self name
+  = fmap CSSStyleSheet . maybeJSNull <$>
+      (ghcjs_dom_style_sheet_list_get
+         (unStyleSheetList (toStyleSheetList self))
+         (toJSString name))
 
 
 #ifdef ghcjs_HOST_OS 

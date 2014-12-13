@@ -24,6 +24,10 @@ module GHCJS.DOM.HTMLVideoElement
         htmlVideoElementGetWebkitSupportsFullscreen,
         ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen,
         htmlVideoElementGetWebkitDisplayingFullscreen,
+        ghcjs_dom_html_video_element_set_webkit_wireless_video_playback_disabled,
+        htmlVideoElementSetWebkitWirelessVideoPlaybackDisabled,
+        ghcjs_dom_html_video_element_get_webkit_wireless_video_playback_disabled,
+        htmlVideoElementGetWebkitWirelessVideoPlaybackDisabled,
         ghcjs_dom_html_video_element_get_webkit_decoded_frame_count,
         htmlVideoElementGetWebkitDecodedFrameCount,
         ghcjs_dom_html_video_element_get_webkit_dropped_frame_count,
@@ -33,12 +37,7 @@ module GHCJS.DOM.HTMLVideoElement
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -289,6 +288,48 @@ htmlVideoElementGetWebkitDisplayingFullscreen ::
                                               (IsHTMLVideoElement self) => self -> IO Bool
 htmlVideoElementGetWebkitDisplayingFullscreen self
   = ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen
+      (unHTMLVideoElement (toHTMLVideoElement self))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe
+        "$1[\"webkitWirelessVideoPlaybackDisabled\"] = $2;"
+        ghcjs_dom_html_video_element_set_webkit_wireless_video_playback_disabled
+        :: JSRef HTMLVideoElement -> Bool -> IO ()
+#else 
+ghcjs_dom_html_video_element_set_webkit_wireless_video_playback_disabled ::
+                                                                           JSRef HTMLVideoElement ->
+                                                                             Bool -> IO ()
+ghcjs_dom_html_video_element_set_webkit_wireless_video_playback_disabled
+  = undefined
+#endif
+ 
+htmlVideoElementSetWebkitWirelessVideoPlaybackDisabled ::
+                                                       (IsHTMLVideoElement self) =>
+                                                         self -> Bool -> IO ()
+htmlVideoElementSetWebkitWirelessVideoPlaybackDisabled self val
+  = ghcjs_dom_html_video_element_set_webkit_wireless_video_playback_disabled
+      (unHTMLVideoElement (toHTMLVideoElement self))
+      val
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe
+        "($1[\"webkitWirelessVideoPlaybackDisabled\"] ? 1 : 0)"
+        ghcjs_dom_html_video_element_get_webkit_wireless_video_playback_disabled
+        :: JSRef HTMLVideoElement -> IO Bool
+#else 
+ghcjs_dom_html_video_element_get_webkit_wireless_video_playback_disabled ::
+                                                                           JSRef HTMLVideoElement ->
+                                                                             IO Bool
+ghcjs_dom_html_video_element_get_webkit_wireless_video_playback_disabled
+  = undefined
+#endif
+ 
+htmlVideoElementGetWebkitWirelessVideoPlaybackDisabled ::
+                                                       (IsHTMLVideoElement self) => self -> IO Bool
+htmlVideoElementGetWebkitWirelessVideoPlaybackDisabled self
+  = ghcjs_dom_html_video_element_get_webkit_wireless_video_playback_disabled
       (unHTMLVideoElement (toHTMLVideoElement self))
 
 

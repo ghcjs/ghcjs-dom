@@ -6,8 +6,6 @@ module GHCJS.DOM.HTMLStyleElement
         htmlStyleElementSetDisabled,
         ghcjs_dom_html_style_element_get_disabled,
         htmlStyleElementGetDisabled,
-        ghcjs_dom_html_style_element_set_scoped, htmlStyleElementSetScoped,
-        ghcjs_dom_html_style_element_get_scoped, htmlStyleElementGetScoped,
         ghcjs_dom_html_style_element_set_media, htmlStyleElementSetMedia,
         ghcjs_dom_html_style_element_get_media, htmlStyleElementGetMedia,
         ghcjs_dom_html_style_element_get_sheet, htmlStyleElementGetSheet,
@@ -16,12 +14,7 @@ module GHCJS.DOM.HTMLStyleElement
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -61,41 +54,6 @@ htmlStyleElementGetDisabled ::
                             (IsHTMLStyleElement self) => self -> IO Bool
 htmlStyleElementGetDisabled self
   = ghcjs_dom_html_style_element_get_disabled
-      (unHTMLStyleElement (toHTMLStyleElement self))
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"scoped\"] = $2;"
-        ghcjs_dom_html_style_element_set_scoped ::
-        JSRef HTMLStyleElement -> Bool -> IO ()
-#else 
-ghcjs_dom_html_style_element_set_scoped ::
-                                          JSRef HTMLStyleElement -> Bool -> IO ()
-ghcjs_dom_html_style_element_set_scoped = undefined
-#endif
- 
-htmlStyleElementSetScoped ::
-                          (IsHTMLStyleElement self) => self -> Bool -> IO ()
-htmlStyleElementSetScoped self val
-  = ghcjs_dom_html_style_element_set_scoped
-      (unHTMLStyleElement (toHTMLStyleElement self))
-      val
-
-
-#ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "($1[\"scoped\"] ? 1 : 0)"
-        ghcjs_dom_html_style_element_get_scoped ::
-        JSRef HTMLStyleElement -> IO Bool
-#else 
-ghcjs_dom_html_style_element_get_scoped ::
-                                          JSRef HTMLStyleElement -> IO Bool
-ghcjs_dom_html_style_element_get_scoped = undefined
-#endif
- 
-htmlStyleElementGetScoped ::
-                          (IsHTMLStyleElement self) => self -> IO Bool
-htmlStyleElementGetScoped self
-  = ghcjs_dom_html_style_element_get_scoped
       (unHTMLStyleElement (toHTMLStyleElement self))
 
 

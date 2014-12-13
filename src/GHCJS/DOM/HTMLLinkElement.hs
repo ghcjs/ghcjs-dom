@@ -22,17 +22,13 @@ module GHCJS.DOM.HTMLLinkElement
         htmlLinkElementGetRev, ghcjs_dom_html_link_element_set_target,
         htmlLinkElementSetTarget, ghcjs_dom_html_link_element_get_target,
         htmlLinkElementGetTarget, ghcjs_dom_html_link_element_get_sheet,
-        htmlLinkElementGetSheet, HTMLLinkElement, IsHTMLLinkElement,
+        htmlLinkElementGetSheet, ghcjs_dom_html_link_element_get_rel_list,
+        htmlLinkElementGetRelList, HTMLLinkElement, IsHTMLLinkElement,
         castToHTMLLinkElement, gTypeHTMLLinkElement, toHTMLLinkElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -342,6 +338,24 @@ htmlLinkElementGetSheet ::
 htmlLinkElementGetSheet self
   = fmap StyleSheet . maybeJSNull <$>
       (ghcjs_dom_html_link_element_get_sheet
+         (unHTMLLinkElement (toHTMLLinkElement self)))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"relList\"]"
+        ghcjs_dom_html_link_element_get_rel_list ::
+        JSRef HTMLLinkElement -> IO (JSRef DOMTokenList)
+#else 
+ghcjs_dom_html_link_element_get_rel_list ::
+                                           JSRef HTMLLinkElement -> IO (JSRef DOMTokenList)
+ghcjs_dom_html_link_element_get_rel_list = undefined
+#endif
+ 
+htmlLinkElementGetRelList ::
+                          (IsHTMLLinkElement self) => self -> IO (Maybe DOMTokenList)
+htmlLinkElementGetRelList self
+  = fmap DOMTokenList . maybeJSNull <$>
+      (ghcjs_dom_html_link_element_get_rel_list
          (unHTMLLinkElement (toHTMLLinkElement self)))
 #else
 module GHCJS.DOM.HTMLLinkElement (

@@ -7,6 +7,8 @@ module GHCJS.DOM.HTMLFormElement
         ghcjs_dom_html_form_element_reset, htmlFormElementReset,
         ghcjs_dom_html_form_element_check_validity,
         htmlFormElementCheckValidity,
+        ghcjs_dom_html_form_element_request_autocomplete,
+        htmlFormElementRequestAutocomplete,
         ghcjs_dom_html_form_element_set_accept_charset,
         htmlFormElementSetAcceptCharset,
         ghcjs_dom_html_form_element_get_accept_charset,
@@ -35,17 +37,21 @@ module GHCJS.DOM.HTMLFormElement
         ghcjs_dom_html_form_element_get_target, htmlFormElementGetTarget,
         ghcjs_dom_html_form_element_get_elements,
         htmlFormElementGetElements, ghcjs_dom_html_form_element_get_length,
-        htmlFormElementGetLength, HTMLFormElement, IsHTMLFormElement,
-        castToHTMLFormElement, gTypeHTMLFormElement, toHTMLFormElement)
+        htmlFormElementGetLength,
+        ghcjs_dom_html_form_element_set_autocorrect,
+        htmlFormElementSetAutocorrect,
+        ghcjs_dom_html_form_element_get_autocorrect,
+        htmlFormElementGetAutocorrect,
+        ghcjs_dom_html_form_element_set_autocapitalize,
+        htmlFormElementSetAutocapitalize,
+        ghcjs_dom_html_form_element_get_autocapitalize,
+        htmlFormElementGetAutocapitalize, HTMLFormElement,
+        IsHTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement,
+        toHTMLFormElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -117,6 +123,23 @@ htmlFormElementCheckValidity ::
                              (IsHTMLFormElement self) => self -> IO Bool
 htmlFormElementCheckValidity self
   = ghcjs_dom_html_form_element_check_validity
+      (unHTMLFormElement (toHTMLFormElement self))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"requestAutocomplete\"]()"
+        ghcjs_dom_html_form_element_request_autocomplete ::
+        JSRef HTMLFormElement -> IO ()
+#else 
+ghcjs_dom_html_form_element_request_autocomplete ::
+                                                   JSRef HTMLFormElement -> IO ()
+ghcjs_dom_html_form_element_request_autocomplete = undefined
+#endif
+ 
+htmlFormElementRequestAutocomplete ::
+                                   (IsHTMLFormElement self) => self -> IO ()
+htmlFormElementRequestAutocomplete self
+  = ghcjs_dom_html_form_element_request_autocomplete
       (unHTMLFormElement (toHTMLFormElement self))
 
 
@@ -476,6 +499,77 @@ htmlFormElementGetLength ::
 htmlFormElementGetLength self
   = ghcjs_dom_html_form_element_get_length
       (unHTMLFormElement (toHTMLFormElement self))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
+        ghcjs_dom_html_form_element_set_autocorrect ::
+        JSRef HTMLFormElement -> Bool -> IO ()
+#else 
+ghcjs_dom_html_form_element_set_autocorrect ::
+                                              JSRef HTMLFormElement -> Bool -> IO ()
+ghcjs_dom_html_form_element_set_autocorrect = undefined
+#endif
+ 
+htmlFormElementSetAutocorrect ::
+                              (IsHTMLFormElement self) => self -> Bool -> IO ()
+htmlFormElementSetAutocorrect self val
+  = ghcjs_dom_html_form_element_set_autocorrect
+      (unHTMLFormElement (toHTMLFormElement self))
+      val
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
+        ghcjs_dom_html_form_element_get_autocorrect ::
+        JSRef HTMLFormElement -> IO Bool
+#else 
+ghcjs_dom_html_form_element_get_autocorrect ::
+                                              JSRef HTMLFormElement -> IO Bool
+ghcjs_dom_html_form_element_get_autocorrect = undefined
+#endif
+ 
+htmlFormElementGetAutocorrect ::
+                              (IsHTMLFormElement self) => self -> IO Bool
+htmlFormElementGetAutocorrect self
+  = ghcjs_dom_html_form_element_get_autocorrect
+      (unHTMLFormElement (toHTMLFormElement self))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
+        ghcjs_dom_html_form_element_set_autocapitalize ::
+        JSRef HTMLFormElement -> JSString -> IO ()
+#else 
+ghcjs_dom_html_form_element_set_autocapitalize ::
+                                                 JSRef HTMLFormElement -> JSString -> IO ()
+ghcjs_dom_html_form_element_set_autocapitalize = undefined
+#endif
+ 
+htmlFormElementSetAutocapitalize ::
+                                 (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+htmlFormElementSetAutocapitalize self val
+  = ghcjs_dom_html_form_element_set_autocapitalize
+      (unHTMLFormElement (toHTMLFormElement self))
+      (toJSString val)
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"autocapitalize\"]"
+        ghcjs_dom_html_form_element_get_autocapitalize ::
+        JSRef HTMLFormElement -> IO JSString
+#else 
+ghcjs_dom_html_form_element_get_autocapitalize ::
+                                                 JSRef HTMLFormElement -> IO JSString
+ghcjs_dom_html_form_element_get_autocapitalize = undefined
+#endif
+ 
+htmlFormElementGetAutocapitalize ::
+                                 (IsHTMLFormElement self, FromJSString result) => self -> IO result
+htmlFormElementGetAutocapitalize self
+  = fromJSString <$>
+      (ghcjs_dom_html_form_element_get_autocapitalize
+         (unHTMLFormElement (toHTMLFormElement self)))
 #else
 module GHCJS.DOM.HTMLFormElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLFormElement

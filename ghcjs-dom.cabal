@@ -49,7 +49,6 @@ library
           GHCJS.DOM.BarProp
           GHCJS.DOM.Blob
           GHCJS.DOM.CharacterData
-          GHCJS.DOM.Console
           GHCJS.DOM.Css
           GHCJS.DOM.CSSRule
           GHCJS.DOM.CSSRuleList

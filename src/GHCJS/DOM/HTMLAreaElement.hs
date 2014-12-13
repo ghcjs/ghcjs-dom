@@ -12,6 +12,8 @@ module GHCJS.DOM.HTMLAreaElement
         ghcjs_dom_html_area_element_get_no_href, htmlAreaElementGetNoHref,
         ghcjs_dom_html_area_element_set_ping, htmlAreaElementSetPing,
         ghcjs_dom_html_area_element_get_ping, htmlAreaElementGetPing,
+        ghcjs_dom_html_area_element_set_rel, htmlAreaElementSetRel,
+        ghcjs_dom_html_area_element_get_rel, htmlAreaElementGetRel,
         ghcjs_dom_html_area_element_set_shape, htmlAreaElementSetShape,
         ghcjs_dom_html_area_element_get_shape, htmlAreaElementGetShape,
         ghcjs_dom_html_area_element_set_target, htmlAreaElementSetTarget,
@@ -24,17 +26,13 @@ module GHCJS.DOM.HTMLAreaElement
         htmlAreaElementGetPathname, ghcjs_dom_html_area_element_get_port,
         htmlAreaElementGetPort, ghcjs_dom_html_area_element_get_protocol,
         htmlAreaElementGetProtocol, ghcjs_dom_html_area_element_get_search,
-        htmlAreaElementGetSearch, HTMLAreaElement, IsHTMLAreaElement,
+        htmlAreaElementGetSearch, ghcjs_dom_html_area_element_get_rel_list,
+        htmlAreaElementGetRelList, HTMLAreaElement, IsHTMLAreaElement,
         castToHTMLAreaElement, gTypeHTMLAreaElement, toHTMLAreaElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -218,6 +216,42 @@ htmlAreaElementGetPing ::
 htmlAreaElementGetPing self
   = fromJSString <$>
       (ghcjs_dom_html_area_element_get_ping
+         (unHTMLAreaElement (toHTMLAreaElement self)))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"rel\"] = $2;"
+        ghcjs_dom_html_area_element_set_rel ::
+        JSRef HTMLAreaElement -> JSString -> IO ()
+#else 
+ghcjs_dom_html_area_element_set_rel ::
+                                      JSRef HTMLAreaElement -> JSString -> IO ()
+ghcjs_dom_html_area_element_set_rel = undefined
+#endif
+ 
+htmlAreaElementSetRel ::
+                      (IsHTMLAreaElement self, ToJSString val) => self -> val -> IO ()
+htmlAreaElementSetRel self val
+  = ghcjs_dom_html_area_element_set_rel
+      (unHTMLAreaElement (toHTMLAreaElement self))
+      (toJSString val)
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"rel\"]"
+        ghcjs_dom_html_area_element_get_rel ::
+        JSRef HTMLAreaElement -> IO JSString
+#else 
+ghcjs_dom_html_area_element_get_rel ::
+                                      JSRef HTMLAreaElement -> IO JSString
+ghcjs_dom_html_area_element_get_rel = undefined
+#endif
+ 
+htmlAreaElementGetRel ::
+                      (IsHTMLAreaElement self, FromJSString result) => self -> IO result
+htmlAreaElementGetRel self
+  = fromJSString <$>
+      (ghcjs_dom_html_area_element_get_rel
          (unHTMLAreaElement (toHTMLAreaElement self)))
 
 
@@ -416,6 +450,24 @@ htmlAreaElementGetSearch ::
 htmlAreaElementGetSearch self
   = fromJSString <$>
       (ghcjs_dom_html_area_element_get_search
+         (unHTMLAreaElement (toHTMLAreaElement self)))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"relList\"]"
+        ghcjs_dom_html_area_element_get_rel_list ::
+        JSRef HTMLAreaElement -> IO (JSRef DOMTokenList)
+#else 
+ghcjs_dom_html_area_element_get_rel_list ::
+                                           JSRef HTMLAreaElement -> IO (JSRef DOMTokenList)
+ghcjs_dom_html_area_element_get_rel_list = undefined
+#endif
+ 
+htmlAreaElementGetRelList ::
+                          (IsHTMLAreaElement self) => self -> IO (Maybe DOMTokenList)
+htmlAreaElementGetRelList self
+  = fmap DOMTokenList . maybeJSNull <$>
+      (ghcjs_dom_html_area_element_get_rel_list
          (unHTMLAreaElement (toHTMLAreaElement self)))
 #else
 module GHCJS.DOM.HTMLAreaElement (

@@ -34,17 +34,14 @@ module GHCJS.DOM.XMLHttpRequest
         xmlHttpRequestGetResponseType,
         ghcjs_dom_xml_http_request_get_status, xmlHttpRequestGetStatus,
         ghcjs_dom_xml_http_request_get_status_text,
-        xmlHttpRequestGetStatusText, XMLHttpRequest, IsXMLHttpRequest,
+        xmlHttpRequestGetStatusText,
+        ghcjs_dom_xml_http_request_get_response_url,
+        xmlHttpRequestGetResponseURL, XMLHttpRequest, IsXMLHttpRequest,
         castToXMLHttpRequest, gTypeXMLHttpRequest, toXMLHttpRequest)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -293,17 +290,17 @@ xmlHttpRequestGetWithCredentials self
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"upload\"]"
         ghcjs_dom_xml_http_request_get_upload ::
-        JSRef XMLHttpRequest -> IO JSString
+        JSRef XMLHttpRequest -> IO (JSRef XMLHttpRequestUpload)
 #else 
 ghcjs_dom_xml_http_request_get_upload ::
-                                        JSRef XMLHttpRequest -> IO JSString
+                                        JSRef XMLHttpRequest -> IO (JSRef XMLHttpRequestUpload)
 ghcjs_dom_xml_http_request_get_upload = undefined
 #endif
  
 xmlHttpRequestGetUpload ::
-                        (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+                        (IsXMLHttpRequest self) => self -> IO (Maybe XMLHttpRequestUpload)
 xmlHttpRequestGetUpload self
-  = fromJSString <$>
+  = fmap XMLHttpRequestUpload . maybeJSNull <$>
       (ghcjs_dom_xml_http_request_get_upload
          (unXMLHttpRequest (toXMLHttpRequest self)))
 
@@ -400,6 +397,24 @@ xmlHttpRequestGetStatusText ::
 xmlHttpRequestGetStatusText self
   = fromJSString <$>
       (ghcjs_dom_xml_http_request_get_status_text
+         (unXMLHttpRequest (toXMLHttpRequest self)))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"responseURL\"]"
+        ghcjs_dom_xml_http_request_get_response_url ::
+        JSRef XMLHttpRequest -> IO JSString
+#else 
+ghcjs_dom_xml_http_request_get_response_url ::
+                                              JSRef XMLHttpRequest -> IO JSString
+ghcjs_dom_xml_http_request_get_response_url = undefined
+#endif
+ 
+xmlHttpRequestGetResponseURL ::
+                             (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+xmlHttpRequestGetResponseURL self
+  = fromJSString <$>
+      (ghcjs_dom_xml_http_request_get_response_url
          (unXMLHttpRequest (toXMLHttpRequest self)))
 #else
 module GHCJS.DOM.XMLHttpRequest (

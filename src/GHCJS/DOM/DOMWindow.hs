@@ -74,46 +74,47 @@ module GHCJS.DOM.DOMWindow
         domWindowGetApplicationCache,
         ghcjs_dom_dom_window_get_session_storage,
         domWindowGetSessionStorage, ghcjs_dom_dom_window_get_local_storage,
-        domWindowGetLocalStorage, ghcjs_dom_dom_window_get_console,
-        domWindowGetConsole, ghcjs_dom_dom_window_get_css, domWindowGetCSS,
-        domWindowOnabort, domWindowOnbeforeunload, domWindowOnblur,
-        domWindowOncanplay, domWindowOncanplaythrough, domWindowOnchange,
-        domWindowOnclick, domWindowOncontextmenu, domWindowOndblclick,
-        domWindowOndrag, domWindowOndragend, domWindowOndragenter,
-        domWindowOndragleave, domWindowOndragover, domWindowOndragstart,
-        domWindowOndrop, domWindowOndurationchange, domWindowOnemptied,
-        domWindowOnended, domWindowOnerror, domWindowOnfocus,
-        domWindowOnhashchange, domWindowOninput, domWindowOninvalid,
-        domWindowOnkeydown, domWindowOnkeypress, domWindowOnkeyup,
-        domWindowOnload, domWindowOnloadeddata, domWindowOnloadedmetadata,
-        domWindowOnloadstart, domWindowOnmessage, domWindowOnmousedown,
-        domWindowOnmouseenter, domWindowOnmouseleave, domWindowOnmousemove,
-        domWindowOnmouseout, domWindowOnmouseover, domWindowOnmouseup,
-        domWindowOnmousewheel, domWindowOnoffline, domWindowOnonline,
-        domWindowOnpagehide, domWindowOnpageshow, domWindowOnpause,
-        domWindowOnplay, domWindowOnplaying, domWindowOnpopstate,
-        domWindowOnprogress, domWindowOnratechange, domWindowOnresize,
-        domWindowOnscroll, domWindowOnseeked, domWindowOnseeking,
-        domWindowOnselect, domWindowOnstalled, domWindowOnstorage,
-        domWindowOnsubmit, domWindowOnsuspend, domWindowOntimeupdate,
-        domWindowOnunload, domWindowOnvolumechange, domWindowOnwaiting,
+        domWindowGetLocalStorage, ghcjs_dom_dom_window_get_css,
+        domWindowGetCSS, domWindowOnabort, domWindowOnbeforeunload,
+        domWindowOnblur, domWindowOncanplay, domWindowOncanplaythrough,
+        domWindowOnchange, domWindowOnclick, domWindowOncontextmenu,
+        domWindowOndblclick, domWindowOndrag, domWindowOndragend,
+        domWindowOndragenter, domWindowOndragleave, domWindowOndragover,
+        domWindowOndragstart, domWindowOndrop, domWindowOndurationchange,
+        domWindowOnemptied, domWindowOnended, domWindowOnerror,
+        domWindowOnfocus, domWindowOnhashchange, domWindowOninput,
+        domWindowOninvalid, domWindowOnkeydown, domWindowOnkeypress,
+        domWindowOnkeyup, domWindowOnload, domWindowOnloadeddata,
+        domWindowOnloadedmetadata, domWindowOnloadstart,
+        domWindowOnmessage, domWindowOnmousedown, domWindowOnmouseenter,
+        domWindowOnmouseleave, domWindowOnmousemove, domWindowOnmouseout,
+        domWindowOnmouseover, domWindowOnmouseup, domWindowOnmousewheel,
+        domWindowOnoffline, domWindowOnonline, domWindowOnpagehide,
+        domWindowOnpageshow, domWindowOnpause, domWindowOnplay,
+        domWindowOnplaying, domWindowOnpopstate, domWindowOnprogress,
+        domWindowOnratechange, domWindowOnresize, domWindowOnscroll,
+        domWindowOnseeked, domWindowOnseeking, domWindowOnselect,
+        domWindowOnstalled, domWindowOnstorage, domWindowOnsubmit,
+        domWindowOnsuspend, domWindowOntimeupdate, domWindowOnunload,
+        domWindowOnvolumechange, domWindowOnwaiting, domWindowOnwheel,
         domWindowOnreset, domWindowOnsearch, domWindowOnwebkitanimationend,
         domWindowOnwebkitanimationiteration,
-        domWindowOnwebkitanimationstart, domWindowOnwebkittransitionend,
-        domWindowOntransitionend, domWindowOntouchstart,
-        domWindowOntouchmove, domWindowOntouchend, domWindowOntouchcancel,
+        domWindowOnwebkitanimationstart, domWindowOnanimationend,
+        domWindowOnanimationiteration, domWindowOnanimationstart,
+        domWindowOnwebkittransitionend, domWindowOntransitionend,
+        domWindowOntouchstart, domWindowOntouchmove, domWindowOntouchend,
+        domWindowOntouchcancel, domWindowOngesturestart,
+        domWindowOngesturechange, domWindowOngestureend,
         domWindowOndevicemotion, domWindowOndeviceorientation,
-        domWindowOnwebkitdeviceproximity, DOMWindow, IsDOMWindow,
-        castToDOMWindow, gTypeDOMWindow, toDOMWindow)
+        domWindowOnwebkitdeviceproximity,
+        domWindowOnwebkitwillrevealbottom, domWindowOnwebkitwillrevealleft,
+        domWindowOnwebkitwillrevealright, domWindowOnwebkitwillrevealtop,
+        DOMWindow, IsDOMWindow, castToDOMWindow, gTypeDOMWindow,
+        toDOMWindow)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -1239,23 +1240,6 @@ domWindowGetLocalStorage self
 
 
 #ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"console\"]"
-        ghcjs_dom_dom_window_get_console ::
-        JSRef DOMWindow -> IO (JSRef Console)
-#else 
-ghcjs_dom_dom_window_get_console ::
-                                   JSRef DOMWindow -> IO (JSRef Console)
-ghcjs_dom_dom_window_get_console = undefined
-#endif
- 
-domWindowGetConsole ::
-                    (IsDOMWindow self) => self -> IO (Maybe Console)
-domWindowGetConsole self
-  = fmap Console . maybeJSNull <$>
-      (ghcjs_dom_dom_window_get_console (unDOMWindow (toDOMWindow self)))
-
-
-#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"CSS\"]"
         ghcjs_dom_dom_window_get_css ::
         JSRef DOMWindow -> IO (JSRef DOMWindowCSS)
@@ -1523,6 +1507,10 @@ domWindowOnwaiting ::
                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOnwaiting = (connect "waiting")
  
+domWindowOnwheel ::
+                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnwheel = (connect "wheel")
+ 
 domWindowOnreset ::
                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOnreset = (connect "reset")
@@ -1543,6 +1531,18 @@ domWindowOnwebkitanimationiteration
 domWindowOnwebkitanimationstart ::
                                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOnwebkitanimationstart = (connect "webkitanimationstart")
+ 
+domWindowOnanimationend ::
+                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnanimationend = (connect "animationend")
+ 
+domWindowOnanimationiteration ::
+                              (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnanimationiteration = (connect "animationiteration")
+ 
+domWindowOnanimationstart ::
+                          (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnanimationstart = (connect "animationstart")
  
 domWindowOnwebkittransitionend ::
                                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
@@ -1568,6 +1568,18 @@ domWindowOntouchcancel ::
                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOntouchcancel = (connect "touchcancel")
  
+domWindowOngesturestart ::
+                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOngesturestart = (connect "gesturestart")
+ 
+domWindowOngesturechange ::
+                         (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOngesturechange = (connect "gesturechange")
+ 
+domWindowOngestureend ::
+                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOngestureend = (connect "gestureend")
+ 
 domWindowOndevicemotion ::
                         (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOndevicemotion = (connect "devicemotion")
@@ -1580,6 +1592,24 @@ domWindowOnwebkitdeviceproximity ::
                                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
 domWindowOnwebkitdeviceproximity
   = (connect "webkitdeviceproximity")
+ 
+domWindowOnwebkitwillrevealbottom ::
+                                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnwebkitwillrevealbottom
+  = (connect "webkitwillrevealbottom")
+ 
+domWindowOnwebkitwillrevealleft ::
+                                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnwebkitwillrevealleft = (connect "webkitwillrevealleft")
+ 
+domWindowOnwebkitwillrevealright ::
+                                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnwebkitwillrevealright
+  = (connect "webkitwillrevealright")
+ 
+domWindowOnwebkitwillrevealtop ::
+                               (IsDOMWindow self) => Signal self (EventM UIEvent self ())
+domWindowOnwebkitwillrevealtop = (connect "webkitwillrevealtop")
 #else
 module GHCJS.DOM.DOMWindow (
   module Graphics.UI.Gtk.WebKit.DOM.DOMWindow

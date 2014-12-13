@@ -30,19 +30,20 @@ module GHCJS.DOM.Element
         elementScrollByPages, ghcjs_dom_element_get_elements_by_class_name,
         elementGetElementsByClassName, ghcjs_dom_element_query_selector,
         elementQuerySelector, ghcjs_dom_element_query_selector_all,
-        elementQuerySelectorAll, ghcjs_dom_element_webkit_matches_selector,
+        elementQuerySelectorAll, ghcjs_dom_element_matches, elementMatches,
+        ghcjs_dom_element_closest, elementClosest,
+        ghcjs_dom_element_webkit_matches_selector,
         elementWebkitMatchesSelector,
-        ghcjs_dom_element_webkit_request_pointer_lock,
-        elementWebkitRequestPointerLock, ghcjs_dom_element_get_tag_name,
-        elementGetTagName, ghcjs_dom_element_get_attributes,
-        elementGetAttributes, ghcjs_dom_element_get_style, elementGetStyle,
+        ghcjs_dom_element_request_pointer_lock, elementRequestPointerLock,
+        ghcjs_dom_element_get_tag_name, elementGetTagName,
+        ghcjs_dom_element_get_attributes, elementGetAttributes,
+        ghcjs_dom_element_get_style, elementGetStyle,
         ghcjs_dom_element_set_id, elementSetId, ghcjs_dom_element_get_id,
         elementGetId, ghcjs_dom_element_get_offset_left,
         elementGetOffsetLeft, ghcjs_dom_element_get_offset_top,
         elementGetOffsetTop, ghcjs_dom_element_get_offset_width,
         elementGetOffsetWidth, ghcjs_dom_element_get_offset_height,
-        elementGetOffsetHeight, ghcjs_dom_element_get_offset_parent,
-        elementGetOffsetParent, ghcjs_dom_element_get_client_left,
+        elementGetOffsetHeight, ghcjs_dom_element_get_client_left,
         elementGetClientLeft, ghcjs_dom_element_get_client_top,
         elementGetClientTop, ghcjs_dom_element_get_client_width,
         elementGetClientWidth, ghcjs_dom_element_get_client_height,
@@ -52,7 +53,8 @@ module GHCJS.DOM.Element
         elementSetScrollTop, ghcjs_dom_element_get_scroll_top,
         elementGetScrollTop, ghcjs_dom_element_get_scroll_width,
         elementGetScrollWidth, ghcjs_dom_element_get_scroll_height,
-        elementGetScrollHeight, ghcjs_dom_element_set_class_name,
+        elementGetScrollHeight, ghcjs_dom_element_get_offset_parent,
+        elementGetOffsetParent, ghcjs_dom_element_set_class_name,
         elementSetClassName, ghcjs_dom_element_get_class_name,
         elementGetClassName, ghcjs_dom_element_get_class_list,
         elementGetClassList, ghcjs_dom_element_get_first_element_child,
@@ -76,22 +78,20 @@ module GHCJS.DOM.Element
         elementOnmousedown, elementOnmouseenter, elementOnmouseleave,
         elementOnmousemove, elementOnmouseout, elementOnmouseover,
         elementOnmouseup, elementOnmousewheel, elementOnscroll,
-        elementOnselect, elementOnsubmit, elementOnbeforecut, elementOncut,
-        elementOnbeforecopy, elementOncopy, elementOnbeforepaste,
-        elementOnpaste, elementOnreset, elementOnsearch,
-        elementOnselectstart, elementOntouchstart, elementOntouchmove,
-        elementOntouchend, elementOntouchcancel,
-        elementOnwebkitfullscreenchange, elementOnwebkitfullscreenerror,
-        Element, IsElement, castToElement, gTypeElement, toElement)
+        elementOnselect, elementOnsubmit, elementOnwheel,
+        elementOnbeforecut, elementOncut, elementOnbeforecopy,
+        elementOncopy, elementOnbeforepaste, elementOnpaste,
+        elementOnreset, elementOnsearch, elementOnselectstart,
+        elementOntouchstart, elementOntouchmove, elementOntouchend,
+        elementOntouchcancel, elementOnwebkitfullscreenchange,
+        elementOnwebkitfullscreenerror, elementOnwebkitwillrevealbottom,
+        elementOnwebkitwillrevealleft, elementOnwebkitwillrevealright,
+        elementOnwebkitwillrevealtop, Element, IsElement, castToElement,
+        gTypeElement, toElement)
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import Data.Word
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
-import GHCJS.Types
-import GHCJS.Foreign
+import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
@@ -563,6 +563,41 @@ elementQuerySelectorAll self selectors
 
 
 #ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "($1[\"matches\"]($2) ? 1 : 0)"
+        ghcjs_dom_element_matches :: JSRef Element -> JSString -> IO Bool
+#else 
+ghcjs_dom_element_matches :: JSRef Element -> JSString -> IO Bool
+ghcjs_dom_element_matches = undefined
+#endif
+ 
+elementMatches ::
+               (IsElement self, ToJSString selectors) =>
+                 self -> selectors -> IO Bool
+elementMatches self selectors
+  = ghcjs_dom_element_matches (unElement (toElement self))
+      (toJSString selectors)
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"closest\"]($2)"
+        ghcjs_dom_element_closest ::
+        JSRef Element -> JSString -> IO (JSRef Element)
+#else 
+ghcjs_dom_element_closest ::
+                            JSRef Element -> JSString -> IO (JSRef Element)
+ghcjs_dom_element_closest = undefined
+#endif
+ 
+elementClosest ::
+               (IsElement self, ToJSString selectors) =>
+                 self -> selectors -> IO (Maybe Element)
+elementClosest self selectors
+  = fmap Element . maybeJSNull <$>
+      (ghcjs_dom_element_closest (unElement (toElement self))
+         (toJSString selectors))
+
+
+#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe
         "($1[\"webkitMatchesSelector\"]($2) ? 1 : 0)"
         ghcjs_dom_element_webkit_matches_selector ::
@@ -583,20 +618,16 @@ elementWebkitMatchesSelector self selectors
 
 
 #ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe
-        "$1[\"webkitRequestPointerLock\"]()"
-        ghcjs_dom_element_webkit_request_pointer_lock ::
-        JSRef Element -> IO ()
+foreign import javascript unsafe "$1[\"requestPointerLock\"]()"
+        ghcjs_dom_element_request_pointer_lock :: JSRef Element -> IO ()
 #else 
-ghcjs_dom_element_webkit_request_pointer_lock ::
-                                                JSRef Element -> IO ()
-ghcjs_dom_element_webkit_request_pointer_lock = undefined
+ghcjs_dom_element_request_pointer_lock :: JSRef Element -> IO ()
+ghcjs_dom_element_request_pointer_lock = undefined
 #endif
  
-elementWebkitRequestPointerLock ::
-                                (IsElement self) => self -> IO ()
-elementWebkitRequestPointerLock self
-  = ghcjs_dom_element_webkit_request_pointer_lock
+elementRequestPointerLock :: (IsElement self) => self -> IO ()
+elementRequestPointerLock self
+  = ghcjs_dom_element_request_pointer_lock
       (unElement (toElement self))
 
 
@@ -681,121 +712,104 @@ elementGetId self
 
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetLeft\"]"
-        ghcjs_dom_element_get_offset_left :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_offset_left :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_offset_left :: JSRef Element -> IO Int
+ghcjs_dom_element_get_offset_left :: JSRef Element -> IO Double
 ghcjs_dom_element_get_offset_left = undefined
 #endif
  
-elementGetOffsetLeft :: (IsElement self) => self -> IO Int
+elementGetOffsetLeft :: (IsElement self) => self -> IO Double
 elementGetOffsetLeft self
   = ghcjs_dom_element_get_offset_left (unElement (toElement self))
 
 
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetTop\"]"
-        ghcjs_dom_element_get_offset_top :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_offset_top :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_offset_top :: JSRef Element -> IO Int
+ghcjs_dom_element_get_offset_top :: JSRef Element -> IO Double
 ghcjs_dom_element_get_offset_top = undefined
 #endif
  
-elementGetOffsetTop :: (IsElement self) => self -> IO Int
+elementGetOffsetTop :: (IsElement self) => self -> IO Double
 elementGetOffsetTop self
   = ghcjs_dom_element_get_offset_top (unElement (toElement self))
 
 
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetWidth\"]"
-        ghcjs_dom_element_get_offset_width :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_offset_width :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_offset_width :: JSRef Element -> IO Int
+ghcjs_dom_element_get_offset_width :: JSRef Element -> IO Double
 ghcjs_dom_element_get_offset_width = undefined
 #endif
  
-elementGetOffsetWidth :: (IsElement self) => self -> IO Int
+elementGetOffsetWidth :: (IsElement self) => self -> IO Double
 elementGetOffsetWidth self
   = ghcjs_dom_element_get_offset_width (unElement (toElement self))
 
 
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"offsetHeight\"]"
-        ghcjs_dom_element_get_offset_height :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_offset_height :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_offset_height :: JSRef Element -> IO Int
+ghcjs_dom_element_get_offset_height :: JSRef Element -> IO Double
 ghcjs_dom_element_get_offset_height = undefined
 #endif
  
-elementGetOffsetHeight :: (IsElement self) => self -> IO Int
+elementGetOffsetHeight :: (IsElement self) => self -> IO Double
 elementGetOffsetHeight self
   = ghcjs_dom_element_get_offset_height (unElement (toElement self))
 
 
 #ifdef ghcjs_HOST_OS 
-foreign import javascript unsafe "$1[\"offsetParent\"]"
-        ghcjs_dom_element_get_offset_parent ::
-        JSRef Element -> IO (JSRef Element)
-#else 
-ghcjs_dom_element_get_offset_parent ::
-                                      JSRef Element -> IO (JSRef Element)
-ghcjs_dom_element_get_offset_parent = undefined
-#endif
- 
-elementGetOffsetParent ::
-                       (IsElement self) => self -> IO (Maybe Element)
-elementGetOffsetParent self
-  = fmap Element . maybeJSNull <$>
-      (ghcjs_dom_element_get_offset_parent (unElement (toElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientLeft\"]"
-        ghcjs_dom_element_get_client_left :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_client_left :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_client_left :: JSRef Element -> IO Int
+ghcjs_dom_element_get_client_left :: JSRef Element -> IO Double
 ghcjs_dom_element_get_client_left = undefined
 #endif
  
-elementGetClientLeft :: (IsElement self) => self -> IO Int
+elementGetClientLeft :: (IsElement self) => self -> IO Double
 elementGetClientLeft self
   = ghcjs_dom_element_get_client_left (unElement (toElement self))
 
 
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientTop\"]"
-        ghcjs_dom_element_get_client_top :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_client_top :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_client_top :: JSRef Element -> IO Int
+ghcjs_dom_element_get_client_top :: JSRef Element -> IO Double
 ghcjs_dom_element_get_client_top = undefined
 #endif
  
-elementGetClientTop :: (IsElement self) => self -> IO Int
+elementGetClientTop :: (IsElement self) => self -> IO Double
 elementGetClientTop self
   = ghcjs_dom_element_get_client_top (unElement (toElement self))
 
 
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientWidth\"]"
-        ghcjs_dom_element_get_client_width :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_client_width :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_client_width :: JSRef Element -> IO Int
+ghcjs_dom_element_get_client_width :: JSRef Element -> IO Double
 ghcjs_dom_element_get_client_width = undefined
 #endif
  
-elementGetClientWidth :: (IsElement self) => self -> IO Int
+elementGetClientWidth :: (IsElement self) => self -> IO Double
 elementGetClientWidth self
   = ghcjs_dom_element_get_client_width (unElement (toElement self))
 
 
 #ifdef ghcjs_HOST_OS 
 foreign import javascript unsafe "$1[\"clientHeight\"]"
-        ghcjs_dom_element_get_client_height :: JSRef Element -> IO Int
+        ghcjs_dom_element_get_client_height :: JSRef Element -> IO Double
 #else 
-ghcjs_dom_element_get_client_height :: JSRef Element -> IO Int
+ghcjs_dom_element_get_client_height :: JSRef Element -> IO Double
 ghcjs_dom_element_get_client_height = undefined
 #endif
  
-elementGetClientHeight :: (IsElement self) => self -> IO Int
+elementGetClientHeight :: (IsElement self) => self -> IO Double
 elementGetClientHeight self
   = ghcjs_dom_element_get_client_height (unElement (toElement self))
 
@@ -877,6 +891,23 @@ ghcjs_dom_element_get_scroll_height = undefined
 elementGetScrollHeight :: (IsElement self) => self -> IO Int
 elementGetScrollHeight self
   = ghcjs_dom_element_get_scroll_height (unElement (toElement self))
+
+
+#ifdef ghcjs_HOST_OS 
+foreign import javascript unsafe "$1[\"offsetParent\"]"
+        ghcjs_dom_element_get_offset_parent ::
+        JSRef Element -> IO (JSRef Element)
+#else 
+ghcjs_dom_element_get_offset_parent ::
+                                      JSRef Element -> IO (JSRef Element)
+ghcjs_dom_element_get_offset_parent = undefined
+#endif
+ 
+elementGetOffsetParent ::
+                       (IsElement self) => self -> IO (Maybe Element)
+elementGetOffsetParent self
+  = fmap Element . maybeJSNull <$>
+      (ghcjs_dom_element_get_offset_parent (unElement (toElement self)))
 
 
 #ifdef ghcjs_HOST_OS 
@@ -1161,6 +1192,10 @@ elementOnsubmit ::
                 (IsElement self) => Signal self (EventM UIEvent self ())
 elementOnsubmit = (connect "submit")
  
+elementOnwheel ::
+               (IsElement self) => Signal self (EventM UIEvent self ())
+elementOnwheel = (connect "wheel")
+ 
 elementOnbeforecut ::
                    (IsElement self) => Signal self (EventM UIEvent self ())
 elementOnbeforecut = (connect "beforecut")
@@ -1221,6 +1256,23 @@ elementOnwebkitfullscreenchange
 elementOnwebkitfullscreenerror ::
                                (IsElement self) => Signal self (EventM UIEvent self ())
 elementOnwebkitfullscreenerror = (connect "webkitfullscreenerror")
+ 
+elementOnwebkitwillrevealbottom ::
+                                (IsElement self) => Signal self (EventM UIEvent self ())
+elementOnwebkitwillrevealbottom
+  = (connect "webkitwillrevealbottom")
+ 
+elementOnwebkitwillrevealleft ::
+                              (IsElement self) => Signal self (EventM UIEvent self ())
+elementOnwebkitwillrevealleft = (connect "webkitwillrevealleft")
+ 
+elementOnwebkitwillrevealright ::
+                               (IsElement self) => Signal self (EventM UIEvent self ())
+elementOnwebkitwillrevealright = (connect "webkitwillrevealright")
+ 
+elementOnwebkitwillrevealtop ::
+                             (IsElement self) => Signal self (EventM UIEvent self ())
+elementOnwebkitwillrevealtop = (connect "webkitwillrevealtop")
 #else
 module GHCJS.DOM.Element (
   module Graphics.UI.Gtk.WebKit.DOM.Element
