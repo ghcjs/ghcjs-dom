@@ -55,17 +55,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"insertBefore\"]($2, $3)"
         ghcjs_dom_node_insert_before ::
         JSRef Node -> JSRef Node -> JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_insert_before ::
-                               JSRef Node -> JSRef Node -> JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_insert_before = undefined
-#endif
  
 nodeInsertBefore ::
                  (IsNode self, IsNode newChild, IsNode refChild) =>
@@ -75,17 +68,10 @@ nodeInsertBefore self newChild refChild
       (ghcjs_dom_node_insert_before (unNode (toNode self))
          (maybe jsNull (unNode . toNode) newChild)
          (maybe jsNull (unNode . toNode) refChild))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"replaceChild\"]($2, $3)"
         ghcjs_dom_node_replace_child ::
         JSRef Node -> JSRef Node -> JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_replace_child ::
-                               JSRef Node -> JSRef Node -> JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_replace_child = undefined
-#endif
  
 nodeReplaceChild ::
                  (IsNode self, IsNode newChild, IsNode oldChild) =>
@@ -95,17 +81,10 @@ nodeReplaceChild self newChild oldChild
       (ghcjs_dom_node_replace_child (unNode (toNode self))
          (maybe jsNull (unNode . toNode) newChild)
          (maybe jsNull (unNode . toNode) oldChild))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"removeChild\"]($2)"
         ghcjs_dom_node_remove_child ::
         JSRef Node -> JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_remove_child ::
-                              JSRef Node -> JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_remove_child = undefined
-#endif
  
 nodeRemoveChild ::
                 (IsNode self, IsNode oldChild) =>
@@ -114,17 +93,10 @@ nodeRemoveChild self oldChild
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_remove_child (unNode (toNode self))
          (maybe jsNull (unNode . toNode) oldChild))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"appendChild\"]($2)"
         ghcjs_dom_node_append_child ::
         JSRef Node -> JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_append_child ::
-                              JSRef Node -> JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_append_child = undefined
-#endif
  
 nodeAppendChild ::
                 (IsNode self, IsNode newChild) =>
@@ -133,59 +105,34 @@ nodeAppendChild self newChild
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_append_child (unNode (toNode self))
          (maybe jsNull (unNode . toNode) newChild))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"hasChildNodes\"]() ? 1 : 0)" ghcjs_dom_node_has_child_nodes
         :: JSRef Node -> IO Bool
-#else 
-ghcjs_dom_node_has_child_nodes :: JSRef Node -> IO Bool
-ghcjs_dom_node_has_child_nodes = undefined
-#endif
  
 nodeHasChildNodes :: (IsNode self) => self -> IO Bool
 nodeHasChildNodes self
   = ghcjs_dom_node_has_child_nodes (unNode (toNode self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cloneNode\"]($2)"
         ghcjs_dom_node_clone_node :: JSRef Node -> Bool -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_clone_node :: JSRef Node -> Bool -> IO (JSRef Node)
-ghcjs_dom_node_clone_node = undefined
-#endif
  
 nodeCloneNode :: (IsNode self) => self -> Bool -> IO (Maybe Node)
 nodeCloneNode self deep
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_clone_node (unNode (toNode self)) deep)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"normalize\"]()"
         ghcjs_dom_node_normalize :: JSRef Node -> IO ()
-#else 
-ghcjs_dom_node_normalize :: JSRef Node -> IO ()
-ghcjs_dom_node_normalize = undefined
-#endif
  
 nodeNormalize :: (IsNode self) => self -> IO ()
 nodeNormalize self
   = ghcjs_dom_node_normalize (unNode (toNode self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"isSupported\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_node_is_supported ::
         JSRef Node -> JSString -> JSString -> IO Bool
-#else 
-ghcjs_dom_node_is_supported ::
-                              JSRef Node -> JSString -> JSString -> IO Bool
-ghcjs_dom_node_is_supported = undefined
-#endif
  
 nodeIsSupported ::
                 (IsNode self, ToJSString feature, ToJSString version) =>
@@ -194,48 +141,29 @@ nodeIsSupported self feature version
   = ghcjs_dom_node_is_supported (unNode (toNode self))
       (toJSString feature)
       (toJSString version)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"isSameNode\"]($2) ? 1 : 0)"
         ghcjs_dom_node_is_same_node :: JSRef Node -> JSRef Node -> IO Bool
-#else 
-ghcjs_dom_node_is_same_node :: JSRef Node -> JSRef Node -> IO Bool
-ghcjs_dom_node_is_same_node = undefined
-#endif
  
 nodeIsSameNode ::
                (IsNode self, IsNode other) => self -> Maybe other -> IO Bool
 nodeIsSameNode self other
   = ghcjs_dom_node_is_same_node (unNode (toNode self))
       (maybe jsNull (unNode . toNode) other)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"isEqualNode\"]($2) ? 1 : 0)" ghcjs_dom_node_is_equal_node ::
         JSRef Node -> JSRef Node -> IO Bool
-#else 
-ghcjs_dom_node_is_equal_node :: JSRef Node -> JSRef Node -> IO Bool
-ghcjs_dom_node_is_equal_node = undefined
-#endif
  
 nodeIsEqualNode ::
                 (IsNode self, IsNode other) => self -> Maybe other -> IO Bool
 nodeIsEqualNode self other
   = ghcjs_dom_node_is_equal_node (unNode (toNode self))
       (maybe jsNull (unNode . toNode) other)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"lookupPrefix\"]($2)"
         ghcjs_dom_node_lookup_prefix ::
         JSRef Node -> JSString -> IO JSString
-#else 
-ghcjs_dom_node_lookup_prefix ::
-                               JSRef Node -> JSString -> IO JSString
-ghcjs_dom_node_lookup_prefix = undefined
-#endif
  
 nodeLookupPrefix ::
                  (IsNode self, ToJSString namespaceURI, FromJSString result) =>
@@ -244,18 +172,11 @@ nodeLookupPrefix self namespaceURI
   = fromJSString <$>
       (ghcjs_dom_node_lookup_prefix (unNode (toNode self))
          (toJSString namespaceURI))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"isDefaultNamespace\"]($2) ? 1 : 0)"
         ghcjs_dom_node_is_default_namespace ::
         JSRef Node -> JSString -> IO Bool
-#else 
-ghcjs_dom_node_is_default_namespace ::
-                                      JSRef Node -> JSString -> IO Bool
-ghcjs_dom_node_is_default_namespace = undefined
-#endif
  
 nodeIsDefaultNamespace ::
                        (IsNode self, ToJSString namespaceURI) =>
@@ -263,17 +184,10 @@ nodeIsDefaultNamespace ::
 nodeIsDefaultNamespace self namespaceURI
   = ghcjs_dom_node_is_default_namespace (unNode (toNode self))
       (toJSString namespaceURI)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
         ghcjs_dom_node_lookup_namespace_uri ::
         JSRef Node -> JSString -> IO JSString
-#else 
-ghcjs_dom_node_lookup_namespace_uri ::
-                                      JSRef Node -> JSString -> IO JSString
-ghcjs_dom_node_lookup_namespace_uri = undefined
-#endif
  
 nodeLookupNamespaceURI ::
                        (IsNode self, ToJSString prefix, FromJSString result) =>
@@ -282,50 +196,30 @@ nodeLookupNamespaceURI self prefix
   = fromJSString <$>
       (ghcjs_dom_node_lookup_namespace_uri (unNode (toNode self))
          (toJSString prefix))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "$1[\"compareDocumentPosition\"]($2)"
         ghcjs_dom_node_compare_document_position ::
         JSRef Node -> JSRef Node -> IO Word
-#else 
-ghcjs_dom_node_compare_document_position ::
-                                           JSRef Node -> JSRef Node -> IO Word
-ghcjs_dom_node_compare_document_position = undefined
-#endif
  
 nodeCompareDocumentPosition ::
                             (IsNode self, IsNode other) => self -> Maybe other -> IO Word
 nodeCompareDocumentPosition self other
   = ghcjs_dom_node_compare_document_position (unNode (toNode self))
       (maybe jsNull (unNode . toNode) other)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         ghcjs_dom_node_contains :: JSRef Node -> JSRef Node -> IO Bool
-#else 
-ghcjs_dom_node_contains :: JSRef Node -> JSRef Node -> IO Bool
-ghcjs_dom_node_contains = undefined
-#endif
  
 nodeContains ::
              (IsNode self, IsNode other) => self -> Maybe other -> IO Bool
 nodeContains self other
   = ghcjs_dom_node_contains (unNode (toNode self))
       (maybe jsNull (unNode . toNode) other)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)" ghcjs_dom_node_dispatch_event
         :: JSRef Node -> JSRef Event -> IO Bool
-#else 
-ghcjs_dom_node_dispatch_event ::
-                                JSRef Node -> JSRef Event -> IO Bool
-ghcjs_dom_node_dispatch_event = undefined
-#endif
  
 nodeDispatchEvent ::
                   (IsNode self, IsEvent event) => self -> Maybe event -> IO Bool
@@ -350,282 +244,165 @@ cDOCUMENT_POSITION_FOLLOWING = 4
 cDOCUMENT_POSITION_CONTAINS = 8
 cDOCUMENT_POSITION_CONTAINED_BY = 16
 cDOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC = 32
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"nodeName\"]"
         ghcjs_dom_node_get_node_name :: JSRef Node -> IO JSString
-#else 
-ghcjs_dom_node_get_node_name :: JSRef Node -> IO JSString
-ghcjs_dom_node_get_node_name = undefined
-#endif
  
 nodeGetNodeName ::
                 (IsNode self, FromJSString result) => self -> IO result
 nodeGetNodeName self
   = fromJSString <$>
       (ghcjs_dom_node_get_node_name (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"nodeValue\"] = $2;"
         ghcjs_dom_node_set_node_value :: JSRef Node -> JSString -> IO ()
-#else 
-ghcjs_dom_node_set_node_value :: JSRef Node -> JSString -> IO ()
-ghcjs_dom_node_set_node_value = undefined
-#endif
  
 nodeSetNodeValue ::
                  (IsNode self, ToJSString val) => self -> val -> IO ()
 nodeSetNodeValue self val
   = ghcjs_dom_node_set_node_value (unNode (toNode self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"nodeValue\"]"
         ghcjs_dom_node_get_node_value :: JSRef Node -> IO JSString
-#else 
-ghcjs_dom_node_get_node_value :: JSRef Node -> IO JSString
-ghcjs_dom_node_get_node_value = undefined
-#endif
  
 nodeGetNodeValue ::
                  (IsNode self, FromJSString result) => self -> IO result
 nodeGetNodeValue self
   = fromJSString <$>
       (ghcjs_dom_node_get_node_value (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"nodeType\"]"
         ghcjs_dom_node_get_node_type :: JSRef Node -> IO Word
-#else 
-ghcjs_dom_node_get_node_type :: JSRef Node -> IO Word
-ghcjs_dom_node_get_node_type = undefined
-#endif
  
 nodeGetNodeType :: (IsNode self) => self -> IO Word
 nodeGetNodeType self
   = ghcjs_dom_node_get_node_type (unNode (toNode self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"parentNode\"]"
         ghcjs_dom_node_get_parent_node :: JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_get_parent_node :: JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_get_parent_node = undefined
-#endif
  
 nodeGetParentNode :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetParentNode self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_get_parent_node (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"childNodes\"]"
         ghcjs_dom_node_get_child_nodes :: JSRef Node -> IO (JSRef NodeList)
-#else 
-ghcjs_dom_node_get_child_nodes :: JSRef Node -> IO (JSRef NodeList)
-ghcjs_dom_node_get_child_nodes = undefined
-#endif
  
 nodeGetChildNodes :: (IsNode self) => self -> IO (Maybe NodeList)
 nodeGetChildNodes self
   = fmap NodeList . maybeJSNull <$>
       (ghcjs_dom_node_get_child_nodes (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"firstChild\"]"
         ghcjs_dom_node_get_first_child :: JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_get_first_child :: JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_get_first_child = undefined
-#endif
  
 nodeGetFirstChild :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetFirstChild self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_get_first_child (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"lastChild\"]"
         ghcjs_dom_node_get_last_child :: JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_get_last_child :: JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_get_last_child = undefined
-#endif
  
 nodeGetLastChild :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetLastChild self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_get_last_child (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"previousSibling\"]"
         ghcjs_dom_node_get_previous_sibling ::
         JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_get_previous_sibling ::
-                                      JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_get_previous_sibling = undefined
-#endif
  
 nodeGetPreviousSibling :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetPreviousSibling self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_get_previous_sibling (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"nextSibling\"]"
         ghcjs_dom_node_get_next_sibling :: JSRef Node -> IO (JSRef Node)
-#else 
-ghcjs_dom_node_get_next_sibling :: JSRef Node -> IO (JSRef Node)
-ghcjs_dom_node_get_next_sibling = undefined
-#endif
  
 nodeGetNextSibling :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetNextSibling self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_node_get_next_sibling (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"ownerDocument\"]"
         ghcjs_dom_node_get_owner_document ::
         JSRef Node -> IO (JSRef Document)
-#else 
-ghcjs_dom_node_get_owner_document ::
-                                    JSRef Node -> IO (JSRef Document)
-ghcjs_dom_node_get_owner_document = undefined
-#endif
  
 nodeGetOwnerDocument ::
                      (IsNode self) => self -> IO (Maybe Document)
 nodeGetOwnerDocument self
   = fmap Document . maybeJSNull <$>
       (ghcjs_dom_node_get_owner_document (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"namespaceURI\"]"
         ghcjs_dom_node_get_namespace_uri :: JSRef Node -> IO JSString
-#else 
-ghcjs_dom_node_get_namespace_uri :: JSRef Node -> IO JSString
-ghcjs_dom_node_get_namespace_uri = undefined
-#endif
  
 nodeGetNamespaceURI ::
                     (IsNode self, FromJSString result) => self -> IO result
 nodeGetNamespaceURI self
   = fromJSString <$>
       (ghcjs_dom_node_get_namespace_uri (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"prefix\"] = $2;"
         ghcjs_dom_node_set_prefix :: JSRef Node -> JSString -> IO ()
-#else 
-ghcjs_dom_node_set_prefix :: JSRef Node -> JSString -> IO ()
-ghcjs_dom_node_set_prefix = undefined
-#endif
  
 nodeSetPrefix ::
               (IsNode self, ToJSString val) => self -> val -> IO ()
 nodeSetPrefix self val
   = ghcjs_dom_node_set_prefix (unNode (toNode self)) (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"prefix\"]"
         ghcjs_dom_node_get_prefix :: JSRef Node -> IO JSString
-#else 
-ghcjs_dom_node_get_prefix :: JSRef Node -> IO JSString
-ghcjs_dom_node_get_prefix = undefined
-#endif
  
 nodeGetPrefix ::
               (IsNode self, FromJSString result) => self -> IO result
 nodeGetPrefix self
   = fromJSString <$>
       (ghcjs_dom_node_get_prefix (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"localName\"]"
         ghcjs_dom_node_get_local_name :: JSRef Node -> IO JSString
-#else 
-ghcjs_dom_node_get_local_name :: JSRef Node -> IO JSString
-ghcjs_dom_node_get_local_name = undefined
-#endif
  
 nodeGetLocalName ::
                  (IsNode self, FromJSString result) => self -> IO result
 nodeGetLocalName self
   = fromJSString <$>
       (ghcjs_dom_node_get_local_name (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"baseURI\"]"
         ghcjs_dom_node_get_base_uri :: JSRef Node -> IO JSString
-#else 
-ghcjs_dom_node_get_base_uri :: JSRef Node -> IO JSString
-ghcjs_dom_node_get_base_uri = undefined
-#endif
  
 nodeGetBaseURI ::
                (IsNode self, FromJSString result) => self -> IO result
 nodeGetBaseURI self
   = fromJSString <$>
       (ghcjs_dom_node_get_base_uri (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"textContent\"] = $2;"
         ghcjs_dom_node_set_text_content :: JSRef Node -> JSString -> IO ()
-#else 
-ghcjs_dom_node_set_text_content :: JSRef Node -> JSString -> IO ()
-ghcjs_dom_node_set_text_content = undefined
-#endif
  
 nodeSetTextContent ::
                    (IsNode self, ToJSString val) => self -> val -> IO ()
 nodeSetTextContent self val
   = ghcjs_dom_node_set_text_content (unNode (toNode self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"textContent\"]"
         ghcjs_dom_node_get_text_content :: JSRef Node -> IO JSString
-#else 
-ghcjs_dom_node_get_text_content :: JSRef Node -> IO JSString
-ghcjs_dom_node_get_text_content = undefined
-#endif
  
 nodeGetTextContent ::
                    (IsNode self, FromJSString result) => self -> IO result
 nodeGetTextContent self
   = fromJSString <$>
       (ghcjs_dom_node_get_text_content (unNode (toNode self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"parentElement\"]"
         ghcjs_dom_node_get_parent_element ::
         JSRef Node -> IO (JSRef Element)
-#else 
-ghcjs_dom_node_get_parent_element ::
-                                    JSRef Node -> IO (JSRef Element)
-ghcjs_dom_node_get_parent_element = undefined
-#endif
  
 nodeGetParentElement :: (IsNode self) => self -> IO (Maybe Element)
 nodeGetParentElement self

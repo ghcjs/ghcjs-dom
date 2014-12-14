@@ -14,17 +14,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"slice\"]($2, $3, $4)"
         ghcjs_dom_blob_slice ::
         JSRef Blob -> Double -> Double -> JSString -> IO (JSRef Blob)
-#else 
-ghcjs_dom_blob_slice ::
-                       JSRef Blob -> Double -> Double -> JSString -> IO (JSRef Blob)
-ghcjs_dom_blob_slice = undefined
-#endif
  
 blobSlice ::
           (IsBlob self, ToJSString contentType) =>
@@ -34,15 +27,9 @@ blobSlice self start end contentType
       (ghcjs_dom_blob_slice (unBlob (toBlob self)) (fromIntegral start)
          (fromIntegral end)
          (toJSString contentType))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_blob_get_size :: JSRef Blob -> IO Double
-#else 
-ghcjs_dom_blob_get_size :: JSRef Blob -> IO Double
-ghcjs_dom_blob_get_size = undefined
-#endif
  
 blobGetSize :: (IsBlob self) => self -> IO Word64
 blobGetSize self

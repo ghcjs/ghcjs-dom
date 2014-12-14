@@ -16,32 +16,19 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"origin\"]"
         ghcjs_dom_location_get_origin :: JSRef Location -> IO JSString
-#else 
-ghcjs_dom_location_get_origin :: JSRef Location -> IO JSString
-ghcjs_dom_location_get_origin = undefined
-#endif
  
 locationGetOrigin ::
                   (IsLocation self, FromJSString result) => self -> IO result
 locationGetOrigin self
   = fromJSString <$>
       (ghcjs_dom_location_get_origin (unLocation (toLocation self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"ancestorOrigins\"]"
         ghcjs_dom_location_get_ancestor_origins ::
         JSRef Location -> IO (JSRef DOMStringList)
-#else 
-ghcjs_dom_location_get_ancestor_origins ::
-                                          JSRef Location -> IO (JSRef DOMStringList)
-ghcjs_dom_location_get_ancestor_origins = undefined
-#endif
  
 locationGetAncestorOrigins ::
                            (IsLocation self) => self -> IO (Maybe DOMStringList)

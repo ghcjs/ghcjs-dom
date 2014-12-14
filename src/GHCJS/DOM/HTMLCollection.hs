@@ -17,17 +17,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_html_collection_item ::
         JSRef HTMLCollection -> Word -> IO (JSRef Node)
-#else 
-ghcjs_dom_html_collection_item ::
-                                 JSRef HTMLCollection -> Word -> IO (JSRef Node)
-ghcjs_dom_html_collection_item = undefined
-#endif
  
 htmlCollectionItem ::
                    (IsHTMLCollection self) => self -> Word -> IO (Maybe Node)
@@ -36,17 +29,10 @@ htmlCollectionItem self index
       (ghcjs_dom_html_collection_item
          (unHTMLCollection (toHTMLCollection self))
          index)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_html_collection_named_item ::
         JSRef HTMLCollection -> JSString -> IO (JSRef Node)
-#else 
-ghcjs_dom_html_collection_named_item ::
-                                       JSRef HTMLCollection -> JSString -> IO (JSRef Node)
-ghcjs_dom_html_collection_named_item = undefined
-#endif
  
 htmlCollectionNamedItem ::
                         (IsHTMLCollection self, ToJSString name) =>
@@ -56,17 +42,10 @@ htmlCollectionNamedItem self name
       (ghcjs_dom_html_collection_named_item
          (unHTMLCollection (toHTMLCollection self))
          (toJSString name))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_html_collection_get_length ::
         JSRef HTMLCollection -> IO Word
-#else 
-ghcjs_dom_html_collection_get_length ::
-                                       JSRef HTMLCollection -> IO Word
-ghcjs_dom_html_collection_get_length = undefined
-#endif
  
 htmlCollectionGetLength ::
                         (IsHTMLCollection self) => self -> IO Word

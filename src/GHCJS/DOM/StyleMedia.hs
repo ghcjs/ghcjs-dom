@@ -15,18 +15,11 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"matchMedium\"]($2) ? 1 : 0)"
         ghcjs_dom_style_media_match_medium ::
         JSRef StyleMedia -> JSString -> IO Bool
-#else 
-ghcjs_dom_style_media_match_medium ::
-                                     JSRef StyleMedia -> JSString -> IO Bool
-ghcjs_dom_style_media_match_medium = undefined
-#endif
  
 styleMediaMatchMedium ::
                       (IsStyleMedia self, ToJSString mediaquery) =>

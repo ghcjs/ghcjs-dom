@@ -16,17 +16,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"text\"] = $2;"
         ghcjs_dom_html_title_element_set_text ::
         JSRef HTMLTitleElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_title_element_set_text ::
-                                        JSRef HTMLTitleElement -> JSString -> IO ()
-ghcjs_dom_html_title_element_set_text = undefined
-#endif
  
 htmlTitleElementSetText ::
                         (IsHTMLTitleElement self, ToJSString val) => self -> val -> IO ()
@@ -34,17 +27,10 @@ htmlTitleElementSetText self val
   = ghcjs_dom_html_title_element_set_text
       (unHTMLTitleElement (toHTMLTitleElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_title_element_get_text ::
         JSRef HTMLTitleElement -> IO JSString
-#else 
-ghcjs_dom_html_title_element_get_text ::
-                                        JSRef HTMLTitleElement -> IO JSString
-ghcjs_dom_html_title_element_get_text = undefined
-#endif
  
 htmlTitleElementGetText ::
                         (IsHTMLTitleElement self, FromJSString result) => self -> IO result

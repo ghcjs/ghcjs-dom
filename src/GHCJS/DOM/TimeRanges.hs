@@ -17,45 +17,26 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"start\"]($2)"
         ghcjs_dom_time_ranges_start ::
         JSRef TimeRanges -> Word -> IO Double
-#else 
-ghcjs_dom_time_ranges_start ::
-                              JSRef TimeRanges -> Word -> IO Double
-ghcjs_dom_time_ranges_start = undefined
-#endif
  
 timeRangesStart :: (IsTimeRanges self) => self -> Word -> IO Double
 timeRangesStart self index
   = ghcjs_dom_time_ranges_start (unTimeRanges (toTimeRanges self))
       index
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"end\"]($2)"
         ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Double
-#else 
-ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Double
-ghcjs_dom_time_ranges_end = undefined
-#endif
  
 timeRangesEnd :: (IsTimeRanges self) => self -> Word -> IO Double
 timeRangesEnd self index
   = ghcjs_dom_time_ranges_end (unTimeRanges (toTimeRanges self))
       index
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_time_ranges_get_length :: JSRef TimeRanges -> IO Word
-#else 
-ghcjs_dom_time_ranges_get_length :: JSRef TimeRanges -> IO Word
-ghcjs_dom_time_ranges_get_length = undefined
-#endif
  
 timeRangesGetLength :: (IsTimeRanges self) => self -> IO Word
 timeRangesGetLength self

@@ -26,17 +26,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"color\"] = $2;"
         ghcjs_dom_html_base_font_element_set_color ::
         JSRef HTMLBaseFontElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_base_font_element_set_color ::
-                                             JSRef HTMLBaseFontElement -> JSString -> IO ()
-ghcjs_dom_html_base_font_element_set_color = undefined
-#endif
  
 htmlBaseFontElementSetColor ::
                             (IsHTMLBaseFontElement self, ToJSString val) =>
@@ -45,17 +38,10 @@ htmlBaseFontElementSetColor self val
   = ghcjs_dom_html_base_font_element_set_color
       (unHTMLBaseFontElement (toHTMLBaseFontElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"color\"]"
         ghcjs_dom_html_base_font_element_get_color ::
         JSRef HTMLBaseFontElement -> IO JSString
-#else 
-ghcjs_dom_html_base_font_element_get_color ::
-                                             JSRef HTMLBaseFontElement -> IO JSString
-ghcjs_dom_html_base_font_element_get_color = undefined
-#endif
  
 htmlBaseFontElementGetColor ::
                             (IsHTMLBaseFontElement self, FromJSString result) =>
@@ -64,17 +50,10 @@ htmlBaseFontElementGetColor self
   = fromJSString <$>
       (ghcjs_dom_html_base_font_element_get_color
          (unHTMLBaseFontElement (toHTMLBaseFontElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"face\"] = $2;"
         ghcjs_dom_html_base_font_element_set_face ::
         JSRef HTMLBaseFontElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_base_font_element_set_face ::
-                                            JSRef HTMLBaseFontElement -> JSString -> IO ()
-ghcjs_dom_html_base_font_element_set_face = undefined
-#endif
  
 htmlBaseFontElementSetFace ::
                            (IsHTMLBaseFontElement self, ToJSString val) =>
@@ -83,17 +62,10 @@ htmlBaseFontElementSetFace self val
   = ghcjs_dom_html_base_font_element_set_face
       (unHTMLBaseFontElement (toHTMLBaseFontElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"face\"]"
         ghcjs_dom_html_base_font_element_get_face ::
         JSRef HTMLBaseFontElement -> IO JSString
-#else 
-ghcjs_dom_html_base_font_element_get_face ::
-                                            JSRef HTMLBaseFontElement -> IO JSString
-ghcjs_dom_html_base_font_element_get_face = undefined
-#endif
  
 htmlBaseFontElementGetFace ::
                            (IsHTMLBaseFontElement self, FromJSString result) =>
@@ -102,17 +74,10 @@ htmlBaseFontElementGetFace self
   = fromJSString <$>
       (ghcjs_dom_html_base_font_element_get_face
          (unHTMLBaseFontElement (toHTMLBaseFontElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_base_font_element_set_size ::
         JSRef HTMLBaseFontElement -> Int -> IO ()
-#else 
-ghcjs_dom_html_base_font_element_set_size ::
-                                            JSRef HTMLBaseFontElement -> Int -> IO ()
-ghcjs_dom_html_base_font_element_set_size = undefined
-#endif
  
 htmlBaseFontElementSetSize ::
                            (IsHTMLBaseFontElement self) => self -> Int -> IO ()
@@ -120,17 +85,10 @@ htmlBaseFontElementSetSize self val
   = ghcjs_dom_html_base_font_element_set_size
       (unHTMLBaseFontElement (toHTMLBaseFontElement self))
       val
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_base_font_element_get_size ::
         JSRef HTMLBaseFontElement -> IO Int
-#else 
-ghcjs_dom_html_base_font_element_get_size ::
-                                            JSRef HTMLBaseFontElement -> IO Int
-ghcjs_dom_html_base_font_element_get_size = undefined
-#endif
  
 htmlBaseFontElementGetSize ::
                            (IsHTMLBaseFontElement self) => self -> IO Int

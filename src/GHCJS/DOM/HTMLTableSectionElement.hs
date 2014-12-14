@@ -36,18 +36,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"insertRow\"]($2)"
         ghcjs_dom_html_table_section_element_insert_row ::
         JSRef HTMLTableSectionElement -> Int -> IO (JSRef HTMLElement)
-#else 
-ghcjs_dom_html_table_section_element_insert_row ::
-                                                  JSRef HTMLTableSectionElement ->
-                                                    Int -> IO (JSRef HTMLElement)
-ghcjs_dom_html_table_section_element_insert_row = undefined
-#endif
  
 htmlTableSectionElementInsertRow ::
                                  (IsHTMLTableSectionElement self) =>
@@ -57,17 +49,10 @@ htmlTableSectionElementInsertRow self index
       (ghcjs_dom_html_table_section_element_insert_row
          (unHTMLTableSectionElement (toHTMLTableSectionElement self))
          index)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
         ghcjs_dom_html_table_section_element_delete_row ::
         JSRef HTMLTableSectionElement -> Int -> IO ()
-#else 
-ghcjs_dom_html_table_section_element_delete_row ::
-                                                  JSRef HTMLTableSectionElement -> Int -> IO ()
-ghcjs_dom_html_table_section_element_delete_row = undefined
-#endif
  
 htmlTableSectionElementDeleteRow ::
                                  (IsHTMLTableSectionElement self) => self -> Int -> IO ()
@@ -75,17 +60,10 @@ htmlTableSectionElementDeleteRow self index
   = ghcjs_dom_html_table_section_element_delete_row
       (unHTMLTableSectionElement (toHTMLTableSectionElement self))
       index
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_table_section_element_set_align ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_table_section_element_set_align ::
-                                                 JSRef HTMLTableSectionElement -> JSString -> IO ()
-ghcjs_dom_html_table_section_element_set_align = undefined
-#endif
  
 htmlTableSectionElementSetAlign ::
                                 (IsHTMLTableSectionElement self, ToJSString val) =>
@@ -94,17 +72,10 @@ htmlTableSectionElementSetAlign self val
   = ghcjs_dom_html_table_section_element_set_align
       (unHTMLTableSectionElement (toHTMLTableSectionElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_section_element_get_align ::
         JSRef HTMLTableSectionElement -> IO JSString
-#else 
-ghcjs_dom_html_table_section_element_get_align ::
-                                                 JSRef HTMLTableSectionElement -> IO JSString
-ghcjs_dom_html_table_section_element_get_align = undefined
-#endif
  
 htmlTableSectionElementGetAlign ::
                                 (IsHTMLTableSectionElement self, FromJSString result) =>
@@ -113,17 +84,10 @@ htmlTableSectionElementGetAlign self
   = fromJSString <$>
       (ghcjs_dom_html_table_section_element_get_align
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"ch\"] = $2;"
         ghcjs_dom_html_table_section_element_set_ch ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_table_section_element_set_ch ::
-                                              JSRef HTMLTableSectionElement -> JSString -> IO ()
-ghcjs_dom_html_table_section_element_set_ch = undefined
-#endif
  
 htmlTableSectionElementSetCh ::
                              (IsHTMLTableSectionElement self, ToJSString val) =>
@@ -132,17 +96,10 @@ htmlTableSectionElementSetCh self val
   = ghcjs_dom_html_table_section_element_set_ch
       (unHTMLTableSectionElement (toHTMLTableSectionElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"ch\"]"
         ghcjs_dom_html_table_section_element_get_ch ::
         JSRef HTMLTableSectionElement -> IO JSString
-#else 
-ghcjs_dom_html_table_section_element_get_ch ::
-                                              JSRef HTMLTableSectionElement -> IO JSString
-ghcjs_dom_html_table_section_element_get_ch = undefined
-#endif
  
 htmlTableSectionElementGetCh ::
                              (IsHTMLTableSectionElement self, FromJSString result) =>
@@ -151,17 +108,10 @@ htmlTableSectionElementGetCh self
   = fromJSString <$>
       (ghcjs_dom_html_table_section_element_get_ch
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"chOff\"] = $2;"
         ghcjs_dom_html_table_section_element_set_ch_off ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_table_section_element_set_ch_off ::
-                                                  JSRef HTMLTableSectionElement -> JSString -> IO ()
-ghcjs_dom_html_table_section_element_set_ch_off = undefined
-#endif
  
 htmlTableSectionElementSetChOff ::
                                 (IsHTMLTableSectionElement self, ToJSString val) =>
@@ -170,17 +120,10 @@ htmlTableSectionElementSetChOff self val
   = ghcjs_dom_html_table_section_element_set_ch_off
       (unHTMLTableSectionElement (toHTMLTableSectionElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"chOff\"]"
         ghcjs_dom_html_table_section_element_get_ch_off ::
         JSRef HTMLTableSectionElement -> IO JSString
-#else 
-ghcjs_dom_html_table_section_element_get_ch_off ::
-                                                  JSRef HTMLTableSectionElement -> IO JSString
-ghcjs_dom_html_table_section_element_get_ch_off = undefined
-#endif
  
 htmlTableSectionElementGetChOff ::
                                 (IsHTMLTableSectionElement self, FromJSString result) =>
@@ -189,18 +132,10 @@ htmlTableSectionElementGetChOff self
   = fromJSString <$>
       (ghcjs_dom_html_table_section_element_get_ch_off
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
         ghcjs_dom_html_table_section_element_set_v_align ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_table_section_element_set_v_align ::
-                                                   JSRef HTMLTableSectionElement ->
-                                                     JSString -> IO ()
-ghcjs_dom_html_table_section_element_set_v_align = undefined
-#endif
  
 htmlTableSectionElementSetVAlign ::
                                  (IsHTMLTableSectionElement self, ToJSString val) =>
@@ -209,17 +144,10 @@ htmlTableSectionElementSetVAlign self val
   = ghcjs_dom_html_table_section_element_set_v_align
       (unHTMLTableSectionElement (toHTMLTableSectionElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"vAlign\"]"
         ghcjs_dom_html_table_section_element_get_v_align ::
         JSRef HTMLTableSectionElement -> IO JSString
-#else 
-ghcjs_dom_html_table_section_element_get_v_align ::
-                                                   JSRef HTMLTableSectionElement -> IO JSString
-ghcjs_dom_html_table_section_element_get_v_align = undefined
-#endif
  
 htmlTableSectionElementGetVAlign ::
                                  (IsHTMLTableSectionElement self, FromJSString result) =>
@@ -228,18 +156,10 @@ htmlTableSectionElementGetVAlign self
   = fromJSString <$>
       (ghcjs_dom_html_table_section_element_get_v_align
          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"rows\"]"
         ghcjs_dom_html_table_section_element_get_rows ::
         JSRef HTMLTableSectionElement -> IO (JSRef HTMLCollection)
-#else 
-ghcjs_dom_html_table_section_element_get_rows ::
-                                                JSRef HTMLTableSectionElement ->
-                                                  IO (JSRef HTMLCollection)
-ghcjs_dom_html_table_section_element_get_rows = undefined
-#endif
  
 htmlTableSectionElementGetRows ::
                                (IsHTMLTableSectionElement self) =>

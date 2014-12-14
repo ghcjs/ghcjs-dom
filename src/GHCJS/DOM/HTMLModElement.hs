@@ -19,17 +19,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cite\"] = $2;"
         ghcjs_dom_html_mod_element_set_cite ::
         JSRef HTMLModElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_mod_element_set_cite ::
-                                      JSRef HTMLModElement -> JSString -> IO ()
-ghcjs_dom_html_mod_element_set_cite = undefined
-#endif
  
 htmlModElementSetCite ::
                       (IsHTMLModElement self, ToJSString val) => self -> val -> IO ()
@@ -37,17 +30,10 @@ htmlModElementSetCite self val
   = ghcjs_dom_html_mod_element_set_cite
       (unHTMLModElement (toHTMLModElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cite\"]"
         ghcjs_dom_html_mod_element_get_cite ::
         JSRef HTMLModElement -> IO JSString
-#else 
-ghcjs_dom_html_mod_element_get_cite ::
-                                      JSRef HTMLModElement -> IO JSString
-ghcjs_dom_html_mod_element_get_cite = undefined
-#endif
  
 htmlModElementGetCite ::
                       (IsHTMLModElement self, FromJSString result) => self -> IO result
@@ -55,17 +41,10 @@ htmlModElementGetCite self
   = fromJSString <$>
       (ghcjs_dom_html_mod_element_get_cite
          (unHTMLModElement (toHTMLModElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
         ghcjs_dom_html_mod_element_set_date_time ::
         JSRef HTMLModElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_mod_element_set_date_time ::
-                                           JSRef HTMLModElement -> JSString -> IO ()
-ghcjs_dom_html_mod_element_set_date_time = undefined
-#endif
  
 htmlModElementSetDateTime ::
                           (IsHTMLModElement self, ToJSString val) => self -> val -> IO ()
@@ -73,17 +52,10 @@ htmlModElementSetDateTime self val
   = ghcjs_dom_html_mod_element_set_date_time
       (unHTMLModElement (toHTMLModElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"dateTime\"]"
         ghcjs_dom_html_mod_element_get_date_time ::
         JSRef HTMLModElement -> IO JSString
-#else 
-ghcjs_dom_html_mod_element_get_date_time ::
-                                           JSRef HTMLModElement -> IO JSString
-ghcjs_dom_html_mod_element_get_date_time = undefined
-#endif
  
 htmlModElementGetDateTime ::
                           (IsHTMLModElement self, FromJSString result) => self -> IO result

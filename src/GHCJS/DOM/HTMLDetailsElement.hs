@@ -17,17 +17,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"open\"] = $2;"
         ghcjs_dom_html_details_element_set_open ::
         JSRef HTMLDetailsElement -> Bool -> IO ()
-#else 
-ghcjs_dom_html_details_element_set_open ::
-                                          JSRef HTMLDetailsElement -> Bool -> IO ()
-ghcjs_dom_html_details_element_set_open = undefined
-#endif
  
 htmlDetailsElementSetOpen ::
                           (IsHTMLDetailsElement self) => self -> Bool -> IO ()
@@ -35,17 +28,10 @@ htmlDetailsElementSetOpen self val
   = ghcjs_dom_html_details_element_set_open
       (unHTMLDetailsElement (toHTMLDetailsElement self))
       val
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
         ghcjs_dom_html_details_element_get_open ::
         JSRef HTMLDetailsElement -> IO Bool
-#else 
-ghcjs_dom_html_details_element_get_open ::
-                                          JSRef HTMLDetailsElement -> IO Bool
-ghcjs_dom_html_details_element_get_open = undefined
-#endif
  
 htmlDetailsElementGetOpen ::
                           (IsHTMLDetailsElement self) => self -> IO Bool

@@ -15,17 +15,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"clearWatch\"]($2)"
         ghcjs_dom_geolocation_clear_watch ::
         JSRef Geolocation -> Int -> IO ()
-#else 
-ghcjs_dom_geolocation_clear_watch ::
-                                    JSRef Geolocation -> Int -> IO ()
-ghcjs_dom_geolocation_clear_watch = undefined
-#endif
  
 geolocationClearWatch ::
                       (IsGeolocation self) => self -> Int -> IO ()

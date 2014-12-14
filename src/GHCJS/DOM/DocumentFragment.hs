@@ -18,18 +18,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         ghcjs_dom_document_fragment_query_selector ::
         JSRef DocumentFragment -> JSString -> IO (JSRef Element)
-#else 
-ghcjs_dom_document_fragment_query_selector ::
-                                             JSRef DocumentFragment ->
-                                               JSString -> IO (JSRef Element)
-ghcjs_dom_document_fragment_query_selector = undefined
-#endif
  
 documentFragmentQuerySelector ::
                               (IsDocumentFragment self, ToJSString selectors) =>
@@ -39,18 +31,10 @@ documentFragmentQuerySelector self selectors
       (ghcjs_dom_document_fragment_query_selector
          (unDocumentFragment (toDocumentFragment self))
          (toJSString selectors))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         ghcjs_dom_document_fragment_query_selector_all ::
         JSRef DocumentFragment -> JSString -> IO (JSRef NodeList)
-#else 
-ghcjs_dom_document_fragment_query_selector_all ::
-                                                 JSRef DocumentFragment ->
-                                                   JSString -> IO (JSRef NodeList)
-ghcjs_dom_document_fragment_query_selector_all = undefined
-#endif
  
 documentFragmentQuerySelectorAll ::
                                  (IsDocumentFragment self, ToJSString selectors) =>

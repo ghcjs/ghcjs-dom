@@ -24,19 +24,11 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"hasFeature\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_dom_implementation_has_feature ::
         JSRef DOMImplementation -> JSString -> JSString -> IO Bool
-#else 
-ghcjs_dom_dom_implementation_has_feature ::
-                                           JSRef DOMImplementation ->
-                                             JSString -> JSString -> IO Bool
-ghcjs_dom_dom_implementation_has_feature = undefined
-#endif
  
 domImplementationHasFeature ::
                             (IsDOMImplementation self, ToJSString feature,
@@ -47,22 +39,12 @@ domImplementationHasFeature self feature version
       (unDOMImplementation (toDOMImplementation self))
       (toJSString feature)
       (toJSString version)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "$1[\"createDocumentType\"]($2, $3,\n$4)"
         ghcjs_dom_dom_implementation_create_document_type ::
         JSRef DOMImplementation ->
           JSString -> JSString -> JSString -> IO (JSRef DocumentType)
-#else 
-ghcjs_dom_dom_implementation_create_document_type ::
-                                                    JSRef DOMImplementation ->
-                                                      JSString ->
-                                                        JSString ->
-                                                          JSString -> IO (JSRef DocumentType)
-ghcjs_dom_dom_implementation_create_document_type = undefined
-#endif
  
 domImplementationCreateDocumentType ::
                                     (IsDOMImplementation self, ToJSString qualifiedName,
@@ -78,22 +60,12 @@ domImplementationCreateDocumentType self qualifiedName publicId
          (toJSString qualifiedName)
          (toJSString publicId)
          (toJSString systemId))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "$1[\"createDocument\"]($2, $3, $4)"
         ghcjs_dom_dom_implementation_create_document ::
         JSRef DOMImplementation ->
           JSString -> JSString -> JSRef DocumentType -> IO (JSRef Document)
-#else 
-ghcjs_dom_dom_implementation_create_document ::
-                                               JSRef DOMImplementation ->
-                                                 JSString ->
-                                                   JSString ->
-                                                     JSRef DocumentType -> IO (JSRef Document)
-ghcjs_dom_dom_implementation_create_document = undefined
-#endif
  
 domImplementationCreateDocument ::
                                 (IsDOMImplementation self, ToJSString namespaceURI,
@@ -109,21 +81,12 @@ domImplementationCreateDocument self namespaceURI qualifiedName
          (toJSString namespaceURI)
          (toJSString qualifiedName)
          (maybe jsNull (unDocumentType . toDocumentType) doctype))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "$1[\"createCSSStyleSheet\"]($2,\n$3)"
         ghcjs_dom_dom_implementation_create_css_style_sheet ::
         JSRef DOMImplementation ->
           JSString -> JSString -> IO (JSRef CSSStyleSheet)
-#else 
-ghcjs_dom_dom_implementation_create_css_style_sheet ::
-                                                      JSRef DOMImplementation ->
-                                                        JSString ->
-                                                          JSString -> IO (JSRef CSSStyleSheet)
-ghcjs_dom_dom_implementation_create_css_style_sheet = undefined
-#endif
  
 domImplementationCreateCSSStyleSheet ::
                                      (IsDOMImplementation self, ToJSString title,
@@ -135,18 +98,10 @@ domImplementationCreateCSSStyleSheet self title media
          (unDOMImplementation (toDOMImplementation self))
          (toJSString title)
          (toJSString media))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"
         ghcjs_dom_dom_implementation_create_html_document ::
         JSRef DOMImplementation -> JSString -> IO (JSRef HTMLDocument)
-#else 
-ghcjs_dom_dom_implementation_create_html_document ::
-                                                    JSRef DOMImplementation ->
-                                                      JSString -> IO (JSRef HTMLDocument)
-ghcjs_dom_dom_implementation_create_html_document = undefined
-#endif
  
 domImplementationCreateHTMLDocument ::
                                     (IsDOMImplementation self, ToJSString title) =>

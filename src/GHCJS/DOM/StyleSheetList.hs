@@ -17,17 +17,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_style_sheet_list_item ::
         JSRef StyleSheetList -> Word -> IO (JSRef StyleSheet)
-#else 
-ghcjs_dom_style_sheet_list_item ::
-                                  JSRef StyleSheetList -> Word -> IO (JSRef StyleSheet)
-ghcjs_dom_style_sheet_list_item = undefined
-#endif
  
 styleSheetListItem ::
                    (IsStyleSheetList self) => self -> Word -> IO (Maybe StyleSheet)
@@ -36,17 +29,10 @@ styleSheetListItem self index
       (ghcjs_dom_style_sheet_list_item
          (unStyleSheetList (toStyleSheetList self))
          index)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"_get\"]($2)"
         ghcjs_dom_style_sheet_list_get ::
         JSRef StyleSheetList -> JSString -> IO (JSRef CSSStyleSheet)
-#else 
-ghcjs_dom_style_sheet_list_get ::
-                                 JSRef StyleSheetList -> JSString -> IO (JSRef CSSStyleSheet)
-ghcjs_dom_style_sheet_list_get = undefined
-#endif
  
 styleSheetList_get ::
                    (IsStyleSheetList self, ToJSString name) =>
@@ -56,17 +42,10 @@ styleSheetList_get self name
       (ghcjs_dom_style_sheet_list_get
          (unStyleSheetList (toStyleSheetList self))
          (toJSString name))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_style_sheet_list_get_length ::
         JSRef StyleSheetList -> IO Word
-#else 
-ghcjs_dom_style_sheet_list_get_length ::
-                                        JSRef StyleSheetList -> IO Word
-ghcjs_dom_style_sheet_list_get_length = undefined
-#endif
  
 styleSheetListGetLength ::
                         (IsStyleSheetList self) => self -> IO Word

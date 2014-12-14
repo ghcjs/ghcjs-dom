@@ -22,9 +22,7 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "$1[\"initMutationEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
         ghcjs_dom_mutation_event_init_mutation_event ::
@@ -33,17 +31,6 @@ foreign import javascript unsafe
             Bool ->
               Bool ->
                 JSRef Node -> JSString -> JSString -> JSString -> Word -> IO ()
-#else 
-ghcjs_dom_mutation_event_init_mutation_event ::
-                                               JSRef MutationEvent ->
-                                                 JSString ->
-                                                   Bool ->
-                                                     Bool ->
-                                                       JSRef Node ->
-                                                         JSString ->
-                                                           JSString -> JSString -> Word -> IO ()
-ghcjs_dom_mutation_event_init_mutation_event = undefined
-#endif
  
 mutationEventInitMutationEvent ::
                                (IsMutationEvent self, ToJSString type', IsNode relatedNode,
@@ -69,17 +56,10 @@ mutationEventInitMutationEvent self type' canBubble cancelable
 cMODIFICATION = 1
 cADDITION = 2
 cREMOVAL = 3
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"relatedNode\"]"
         ghcjs_dom_mutation_event_get_related_node ::
         JSRef MutationEvent -> IO (JSRef Node)
-#else 
-ghcjs_dom_mutation_event_get_related_node ::
-                                            JSRef MutationEvent -> IO (JSRef Node)
-ghcjs_dom_mutation_event_get_related_node = undefined
-#endif
  
 mutationEventGetRelatedNode ::
                             (IsMutationEvent self) => self -> IO (Maybe Node)
@@ -87,17 +67,10 @@ mutationEventGetRelatedNode self
   = fmap Node . maybeJSNull <$>
       (ghcjs_dom_mutation_event_get_related_node
          (unMutationEvent (toMutationEvent self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"prevValue\"]"
         ghcjs_dom_mutation_event_get_prev_value ::
         JSRef MutationEvent -> IO JSString
-#else 
-ghcjs_dom_mutation_event_get_prev_value ::
-                                          JSRef MutationEvent -> IO JSString
-ghcjs_dom_mutation_event_get_prev_value = undefined
-#endif
  
 mutationEventGetPrevValue ::
                           (IsMutationEvent self, FromJSString result) => self -> IO result
@@ -105,17 +78,10 @@ mutationEventGetPrevValue self
   = fromJSString <$>
       (ghcjs_dom_mutation_event_get_prev_value
          (unMutationEvent (toMutationEvent self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"newValue\"]"
         ghcjs_dom_mutation_event_get_new_value ::
         JSRef MutationEvent -> IO JSString
-#else 
-ghcjs_dom_mutation_event_get_new_value ::
-                                         JSRef MutationEvent -> IO JSString
-ghcjs_dom_mutation_event_get_new_value = undefined
-#endif
  
 mutationEventGetNewValue ::
                          (IsMutationEvent self, FromJSString result) => self -> IO result
@@ -123,17 +89,10 @@ mutationEventGetNewValue self
   = fromJSString <$>
       (ghcjs_dom_mutation_event_get_new_value
          (unMutationEvent (toMutationEvent self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"attrName\"]"
         ghcjs_dom_mutation_event_get_attr_name ::
         JSRef MutationEvent -> IO JSString
-#else 
-ghcjs_dom_mutation_event_get_attr_name ::
-                                         JSRef MutationEvent -> IO JSString
-ghcjs_dom_mutation_event_get_attr_name = undefined
-#endif
  
 mutationEventGetAttrName ::
                          (IsMutationEvent self, FromJSString result) => self -> IO result
@@ -141,17 +100,10 @@ mutationEventGetAttrName self
   = fromJSString <$>
       (ghcjs_dom_mutation_event_get_attr_name
          (unMutationEvent (toMutationEvent self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"attrChange\"]"
         ghcjs_dom_mutation_event_get_attr_change ::
         JSRef MutationEvent -> IO Word
-#else 
-ghcjs_dom_mutation_event_get_attr_change ::
-                                           JSRef MutationEvent -> IO Word
-ghcjs_dom_mutation_event_get_attr_change = undefined
-#endif
  
 mutationEventGetAttrChange ::
                            (IsMutationEvent self) => self -> IO Word

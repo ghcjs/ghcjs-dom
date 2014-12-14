@@ -27,69 +27,41 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"update\"]()"
         ghcjs_dom_dom_application_cache_update ::
         JSRef DOMApplicationCache -> IO ()
-#else 
-ghcjs_dom_dom_application_cache_update ::
-                                         JSRef DOMApplicationCache -> IO ()
-ghcjs_dom_dom_application_cache_update = undefined
-#endif
  
 domApplicationCacheUpdate ::
                           (IsDOMApplicationCache self) => self -> IO ()
 domApplicationCacheUpdate self
   = ghcjs_dom_dom_application_cache_update
       (unDOMApplicationCache (toDOMApplicationCache self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"swapCache\"]()"
         ghcjs_dom_dom_application_cache_swap_cache ::
         JSRef DOMApplicationCache -> IO ()
-#else 
-ghcjs_dom_dom_application_cache_swap_cache ::
-                                             JSRef DOMApplicationCache -> IO ()
-ghcjs_dom_dom_application_cache_swap_cache = undefined
-#endif
  
 domApplicationCacheSwapCache ::
                              (IsDOMApplicationCache self) => self -> IO ()
 domApplicationCacheSwapCache self
   = ghcjs_dom_dom_application_cache_swap_cache
       (unDOMApplicationCache (toDOMApplicationCache self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"abort\"]()"
         ghcjs_dom_dom_application_cache_abort ::
         JSRef DOMApplicationCache -> IO ()
-#else 
-ghcjs_dom_dom_application_cache_abort ::
-                                        JSRef DOMApplicationCache -> IO ()
-ghcjs_dom_dom_application_cache_abort = undefined
-#endif
  
 domApplicationCacheAbort ::
                          (IsDOMApplicationCache self) => self -> IO ()
 domApplicationCacheAbort self
   = ghcjs_dom_dom_application_cache_abort
       (unDOMApplicationCache (toDOMApplicationCache self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_application_cache_dispatch_event ::
         JSRef DOMApplicationCache -> JSRef Event -> IO Bool
-#else 
-ghcjs_dom_dom_application_cache_dispatch_event ::
-                                                 JSRef DOMApplicationCache -> JSRef Event -> IO Bool
-ghcjs_dom_dom_application_cache_dispatch_event = undefined
-#endif
  
 domApplicationCacheDispatchEvent ::
                                  (IsDOMApplicationCache self, IsEvent evt) =>
@@ -104,17 +76,10 @@ cCHECKING = 2
 cDOWNLOADING = 3
 cUPDATEREADY = 4
 cOBSOLETE = 5
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"status\"]"
         ghcjs_dom_dom_application_cache_get_status ::
         JSRef DOMApplicationCache -> IO Word
-#else 
-ghcjs_dom_dom_application_cache_get_status ::
-                                             JSRef DOMApplicationCache -> IO Word
-ghcjs_dom_dom_application_cache_get_status = undefined
-#endif
  
 domApplicationCacheGetStatus ::
                              (IsDOMApplicationCache self) => self -> IO Word

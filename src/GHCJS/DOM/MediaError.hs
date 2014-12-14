@@ -20,15 +20,9 @@ cMEDIA_ERR_ABORTED = 1
 cMEDIA_ERR_NETWORK = 2
 cMEDIA_ERR_DECODE = 3
 cMEDIA_ERR_SRC_NOT_SUPPORTED = 4
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_media_error_get_code :: JSRef MediaError -> IO Word
-#else 
-ghcjs_dom_media_error_get_code :: JSRef MediaError -> IO Word
-ghcjs_dom_media_error_get_code = undefined
-#endif
  
 mediaErrorGetCode :: (IsMediaError self) => self -> IO Word
 mediaErrorGetCode self

@@ -16,17 +16,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
         ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri ::
         JSRef XPathNSResolver -> JSString -> IO JSString
-#else 
-ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri ::
-                                                   JSRef XPathNSResolver -> JSString -> IO JSString
-ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri = undefined
-#endif
  
 xPathNSResolverLookupNamespaceURI ::
                                   (IsXPathNSResolver self, ToJSString prefix,

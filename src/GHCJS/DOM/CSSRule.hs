@@ -33,49 +33,29 @@ cKEYFRAME_RULE = 8
 cSUPPORTS_RULE = 12
 cWEBKIT_KEYFRAMES_RULE = 7
 cWEBKIT_KEYFRAME_RULE = 8
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
         ghcjs_dom_css_rule_set_css_text ::
         JSRef CSSRule -> JSString -> IO ()
-#else 
-ghcjs_dom_css_rule_set_css_text ::
-                                  JSRef CSSRule -> JSString -> IO ()
-ghcjs_dom_css_rule_set_css_text = undefined
-#endif
  
 cssRuleSetCssText ::
                   (IsCSSRule self, ToJSString val) => self -> val -> IO ()
 cssRuleSetCssText self val
   = ghcjs_dom_css_rule_set_css_text (unCSSRule (toCSSRule self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cssText\"]"
         ghcjs_dom_css_rule_get_css_text :: JSRef CSSRule -> IO JSString
-#else 
-ghcjs_dom_css_rule_get_css_text :: JSRef CSSRule -> IO JSString
-ghcjs_dom_css_rule_get_css_text = undefined
-#endif
  
 cssRuleGetCssText ::
                   (IsCSSRule self, FromJSString result) => self -> IO result
 cssRuleGetCssText self
   = fromJSString <$>
       (ghcjs_dom_css_rule_get_css_text (unCSSRule (toCSSRule self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
         ghcjs_dom_css_rule_get_parent_style_sheet ::
         JSRef CSSRule -> IO (JSRef CSSStyleSheet)
-#else 
-ghcjs_dom_css_rule_get_parent_style_sheet ::
-                                            JSRef CSSRule -> IO (JSRef CSSStyleSheet)
-ghcjs_dom_css_rule_get_parent_style_sheet = undefined
-#endif
  
 cssRuleGetParentStyleSheet ::
                            (IsCSSRule self) => self -> IO (Maybe CSSStyleSheet)
@@ -83,17 +63,10 @@ cssRuleGetParentStyleSheet self
   = fmap CSSStyleSheet . maybeJSNull <$>
       (ghcjs_dom_css_rule_get_parent_style_sheet
          (unCSSRule (toCSSRule self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"parentRule\"]"
         ghcjs_dom_css_rule_get_parent_rule ::
         JSRef CSSRule -> IO (JSRef CSSRule)
-#else 
-ghcjs_dom_css_rule_get_parent_rule ::
-                                     JSRef CSSRule -> IO (JSRef CSSRule)
-ghcjs_dom_css_rule_get_parent_rule = undefined
-#endif
  
 cssRuleGetParentRule ::
                      (IsCSSRule self) => self -> IO (Maybe CSSRule)

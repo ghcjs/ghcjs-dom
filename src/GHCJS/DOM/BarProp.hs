@@ -14,15 +14,9 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"visible\"] ? 1 : 0)"
         ghcjs_dom_bar_prop_get_visible :: JSRef BarProp -> IO Bool
-#else 
-ghcjs_dom_bar_prop_get_visible :: JSRef BarProp -> IO Bool
-ghcjs_dom_bar_prop_get_visible = undefined
-#endif
  
 barPropGetVisible :: (IsBarProp self) => self -> IO Bool
 barPropGetVisible self

@@ -16,17 +16,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"clear\"] = $2;"
         ghcjs_dom_htmlbr_element_set_clear ::
         JSRef HTMLBRElement -> JSString -> IO ()
-#else 
-ghcjs_dom_htmlbr_element_set_clear ::
-                                     JSRef HTMLBRElement -> JSString -> IO ()
-ghcjs_dom_htmlbr_element_set_clear = undefined
-#endif
  
 htmlbrElementSetClear ::
                       (IsHTMLBRElement self, ToJSString val) => self -> val -> IO ()
@@ -34,17 +27,10 @@ htmlbrElementSetClear self val
   = ghcjs_dom_htmlbr_element_set_clear
       (unHTMLBRElement (toHTMLBRElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"clear\"]"
         ghcjs_dom_htmlbr_element_get_clear ::
         JSRef HTMLBRElement -> IO JSString
-#else 
-ghcjs_dom_htmlbr_element_get_clear ::
-                                     JSRef HTMLBRElement -> IO JSString
-ghcjs_dom_htmlbr_element_get_clear = undefined
-#endif
  
 htmlbrElementGetClear ::
                       (IsHTMLBRElement self, FromJSString result) => self -> IO result

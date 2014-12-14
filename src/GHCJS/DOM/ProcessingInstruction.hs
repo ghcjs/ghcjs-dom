@@ -18,17 +18,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_processing_instruction_get_target ::
         JSRef ProcessingInstruction -> IO JSString
-#else 
-ghcjs_dom_processing_instruction_get_target ::
-                                              JSRef ProcessingInstruction -> IO JSString
-ghcjs_dom_processing_instruction_get_target = undefined
-#endif
  
 processingInstructionGetTarget ::
                                (IsProcessingInstruction self, FromJSString result) =>
@@ -37,17 +30,10 @@ processingInstructionGetTarget self
   = fromJSString <$>
       (ghcjs_dom_processing_instruction_get_target
          (unProcessingInstruction (toProcessingInstruction self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"sheet\"]"
         ghcjs_dom_processing_instruction_get_sheet ::
         JSRef ProcessingInstruction -> IO (JSRef StyleSheet)
-#else 
-ghcjs_dom_processing_instruction_get_sheet ::
-                                             JSRef ProcessingInstruction -> IO (JSRef StyleSheet)
-ghcjs_dom_processing_instruction_get_sheet = undefined
-#endif
  
 processingInstructionGetSheet ::
                               (IsProcessingInstruction self) => self -> IO (Maybe StyleSheet)

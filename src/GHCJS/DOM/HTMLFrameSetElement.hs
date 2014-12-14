@@ -29,17 +29,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cols\"] = $2;"
         ghcjs_dom_html_frame_set_element_set_cols ::
         JSRef HTMLFrameSetElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_frame_set_element_set_cols ::
-                                            JSRef HTMLFrameSetElement -> JSString -> IO ()
-ghcjs_dom_html_frame_set_element_set_cols = undefined
-#endif
  
 htmlFrameSetElementSetCols ::
                            (IsHTMLFrameSetElement self, ToJSString val) =>
@@ -48,17 +41,10 @@ htmlFrameSetElementSetCols self val
   = ghcjs_dom_html_frame_set_element_set_cols
       (unHTMLFrameSetElement (toHTMLFrameSetElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cols\"]"
         ghcjs_dom_html_frame_set_element_get_cols ::
         JSRef HTMLFrameSetElement -> IO JSString
-#else 
-ghcjs_dom_html_frame_set_element_get_cols ::
-                                            JSRef HTMLFrameSetElement -> IO JSString
-ghcjs_dom_html_frame_set_element_get_cols = undefined
-#endif
  
 htmlFrameSetElementGetCols ::
                            (IsHTMLFrameSetElement self, FromJSString result) =>
@@ -67,17 +53,10 @@ htmlFrameSetElementGetCols self
   = fromJSString <$>
       (ghcjs_dom_html_frame_set_element_get_cols
          (unHTMLFrameSetElement (toHTMLFrameSetElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"rows\"] = $2;"
         ghcjs_dom_html_frame_set_element_set_rows ::
         JSRef HTMLFrameSetElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_frame_set_element_set_rows ::
-                                            JSRef HTMLFrameSetElement -> JSString -> IO ()
-ghcjs_dom_html_frame_set_element_set_rows = undefined
-#endif
  
 htmlFrameSetElementSetRows ::
                            (IsHTMLFrameSetElement self, ToJSString val) =>
@@ -86,17 +65,10 @@ htmlFrameSetElementSetRows self val
   = ghcjs_dom_html_frame_set_element_set_rows
       (unHTMLFrameSetElement (toHTMLFrameSetElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"rows\"]"
         ghcjs_dom_html_frame_set_element_get_rows ::
         JSRef HTMLFrameSetElement -> IO JSString
-#else 
-ghcjs_dom_html_frame_set_element_get_rows ::
-                                            JSRef HTMLFrameSetElement -> IO JSString
-ghcjs_dom_html_frame_set_element_get_rows = undefined
-#endif
  
 htmlFrameSetElementGetRows ::
                            (IsHTMLFrameSetElement self, FromJSString result) =>

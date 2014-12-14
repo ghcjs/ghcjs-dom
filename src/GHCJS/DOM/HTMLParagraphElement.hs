@@ -18,17 +18,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_paragraph_element_set_align ::
         JSRef HTMLParagraphElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_paragraph_element_set_align ::
-                                             JSRef HTMLParagraphElement -> JSString -> IO ()
-ghcjs_dom_html_paragraph_element_set_align = undefined
-#endif
  
 htmlParagraphElementSetAlign ::
                              (IsHTMLParagraphElement self, ToJSString val) =>
@@ -37,17 +30,10 @@ htmlParagraphElementSetAlign self val
   = ghcjs_dom_html_paragraph_element_set_align
       (unHTMLParagraphElement (toHTMLParagraphElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_paragraph_element_get_align ::
         JSRef HTMLParagraphElement -> IO JSString
-#else 
-ghcjs_dom_html_paragraph_element_get_align ::
-                                             JSRef HTMLParagraphElement -> IO JSString
-ghcjs_dom_html_paragraph_element_get_align = undefined
-#endif
  
 htmlParagraphElementGetAlign ::
                              (IsHTMLParagraphElement self, FromJSString result) =>

@@ -21,47 +21,28 @@ cCSS_INHERIT = 0
 cCSS_PRIMITIVE_VALUE = 1
 cCSS_VALUE_LIST = 2
 cCSS_CUSTOM = 3
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
         ghcjs_dom_css_value_set_css_text ::
         JSRef CSSValue -> JSString -> IO ()
-#else 
-ghcjs_dom_css_value_set_css_text ::
-                                   JSRef CSSValue -> JSString -> IO ()
-ghcjs_dom_css_value_set_css_text = undefined
-#endif
  
 cssValueSetCssText ::
                    (IsCSSValue self, ToJSString val) => self -> val -> IO ()
 cssValueSetCssText self val
   = ghcjs_dom_css_value_set_css_text (unCSSValue (toCSSValue self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cssText\"]"
         ghcjs_dom_css_value_get_css_text :: JSRef CSSValue -> IO JSString
-#else 
-ghcjs_dom_css_value_get_css_text :: JSRef CSSValue -> IO JSString
-ghcjs_dom_css_value_get_css_text = undefined
-#endif
  
 cssValueGetCssText ::
                    (IsCSSValue self, FromJSString result) => self -> IO result
 cssValueGetCssText self
   = fromJSString <$>
       (ghcjs_dom_css_value_get_css_text (unCSSValue (toCSSValue self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cssValueType\"]"
         ghcjs_dom_css_value_get_css_value_type :: JSRef CSSValue -> IO Word
-#else 
-ghcjs_dom_css_value_get_css_value_type :: JSRef CSSValue -> IO Word
-ghcjs_dom_css_value_get_css_value_type = undefined
-#endif
  
 cssValueGetCssValueType :: (IsCSSValue self) => self -> IO Word
 cssValueGetCssValueType self

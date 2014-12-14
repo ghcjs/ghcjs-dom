@@ -17,17 +17,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"areas\"]"
         ghcjs_dom_html_map_element_get_areas ::
         JSRef HTMLMapElement -> IO (JSRef HTMLCollection)
-#else 
-ghcjs_dom_html_map_element_get_areas ::
-                                       JSRef HTMLMapElement -> IO (JSRef HTMLCollection)
-ghcjs_dom_html_map_element_get_areas = undefined
-#endif
  
 htmlMapElementGetAreas ::
                        (IsHTMLMapElement self) => self -> IO (Maybe HTMLCollection)
@@ -35,17 +28,10 @@ htmlMapElementGetAreas self
   = fmap HTMLCollection . maybeJSNull <$>
       (ghcjs_dom_html_map_element_get_areas
          (unHTMLMapElement (toHTMLMapElement self)))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_map_element_set_name ::
         JSRef HTMLMapElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_map_element_set_name ::
-                                      JSRef HTMLMapElement -> JSString -> IO ()
-ghcjs_dom_html_map_element_set_name = undefined
-#endif
  
 htmlMapElementSetName ::
                       (IsHTMLMapElement self, ToJSString val) => self -> val -> IO ()
@@ -53,17 +39,10 @@ htmlMapElementSetName self val
   = ghcjs_dom_html_map_element_set_name
       (unHTMLMapElement (toHTMLMapElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_map_element_get_name ::
         JSRef HTMLMapElement -> IO JSString
-#else 
-ghcjs_dom_html_map_element_get_name ::
-                                      JSRef HTMLMapElement -> IO JSString
-ghcjs_dom_html_map_element_get_name = undefined
-#endif
  
 htmlMapElementGetName ::
                       (IsHTMLMapElement self, FromJSString result) => self -> IO result

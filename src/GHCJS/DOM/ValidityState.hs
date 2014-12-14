@@ -30,171 +30,101 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"valueMissing\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_value_missing ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_value_missing ::
-                                             JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_value_missing = undefined
-#endif
  
 validityStateGetValueMissing ::
                              (IsValidityState self) => self -> IO Bool
 validityStateGetValueMissing self
   = ghcjs_dom_validity_state_get_value_missing
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"typeMismatch\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_type_mismatch ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_type_mismatch ::
-                                             JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_type_mismatch = undefined
-#endif
  
 validityStateGetTypeMismatch ::
                              (IsValidityState self) => self -> IO Bool
 validityStateGetTypeMismatch self
   = ghcjs_dom_validity_state_get_type_mismatch
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe
         "($1[\"patternMismatch\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_pattern_mismatch ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_pattern_mismatch ::
-                                                JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_pattern_mismatch = undefined
-#endif
  
 validityStateGetPatternMismatch ::
                                 (IsValidityState self) => self -> IO Bool
 validityStateGetPatternMismatch self
   = ghcjs_dom_validity_state_get_pattern_mismatch
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"tooLong\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_too_long ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_too_long ::
-                                        JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_too_long = undefined
-#endif
  
 validityStateGetTooLong ::
                         (IsValidityState self) => self -> IO Bool
 validityStateGetTooLong self
   = ghcjs_dom_validity_state_get_too_long
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"rangeUnderflow\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_range_underflow ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_range_underflow ::
-                                               JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_range_underflow = undefined
-#endif
  
 validityStateGetRangeUnderflow ::
                                (IsValidityState self) => self -> IO Bool
 validityStateGetRangeUnderflow self
   = ghcjs_dom_validity_state_get_range_underflow
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"rangeOverflow\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_range_overflow ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_range_overflow ::
-                                              JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_range_overflow = undefined
-#endif
  
 validityStateGetRangeOverflow ::
                               (IsValidityState self) => self -> IO Bool
 validityStateGetRangeOverflow self
   = ghcjs_dom_validity_state_get_range_overflow
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"stepMismatch\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_step_mismatch ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_step_mismatch ::
-                                             JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_step_mismatch = undefined
-#endif
  
 validityStateGetStepMismatch ::
                              (IsValidityState self) => self -> IO Bool
 validityStateGetStepMismatch self
   = ghcjs_dom_validity_state_get_step_mismatch
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"badInput\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_bad_input ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_bad_input ::
-                                         JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_bad_input = undefined
-#endif
  
 validityStateGetBadInput ::
                          (IsValidityState self) => self -> IO Bool
 validityStateGetBadInput self
   = ghcjs_dom_validity_state_get_bad_input
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"customError\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_custom_error ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_custom_error ::
-                                            JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_custom_error = undefined
-#endif
  
 validityStateGetCustomError ::
                             (IsValidityState self) => self -> IO Bool
 validityStateGetCustomError self
   = ghcjs_dom_validity_state_get_custom_error
       (unValidityState (toValidityState self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"valid\"] ? 1 : 0)"
         ghcjs_dom_validity_state_get_valid ::
         JSRef ValidityState -> IO Bool
-#else 
-ghcjs_dom_validity_state_get_valid ::
-                                     JSRef ValidityState -> IO Bool
-ghcjs_dom_validity_state_get_valid = undefined
-#endif
  
 validityStateGetValid :: (IsValidityState self) => self -> IO Bool
 validityStateGetValid self

@@ -22,17 +22,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_opt_group_element_set_disabled ::
         JSRef HTMLOptGroupElement -> Bool -> IO ()
-#else 
-ghcjs_dom_html_opt_group_element_set_disabled ::
-                                                JSRef HTMLOptGroupElement -> Bool -> IO ()
-ghcjs_dom_html_opt_group_element_set_disabled = undefined
-#endif
  
 htmlOptGroupElementSetDisabled ::
                                (IsHTMLOptGroupElement self) => self -> Bool -> IO ()
@@ -40,34 +33,20 @@ htmlOptGroupElementSetDisabled self val
   = ghcjs_dom_html_opt_group_element_set_disabled
       (unHTMLOptGroupElement (toHTMLOptGroupElement self))
       val
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_opt_group_element_get_disabled ::
         JSRef HTMLOptGroupElement -> IO Bool
-#else 
-ghcjs_dom_html_opt_group_element_get_disabled ::
-                                                JSRef HTMLOptGroupElement -> IO Bool
-ghcjs_dom_html_opt_group_element_get_disabled = undefined
-#endif
  
 htmlOptGroupElementGetDisabled ::
                                (IsHTMLOptGroupElement self) => self -> IO Bool
 htmlOptGroupElementGetDisabled self
   = ghcjs_dom_html_opt_group_element_get_disabled
       (unHTMLOptGroupElement (toHTMLOptGroupElement self))
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"label\"] = $2;"
         ghcjs_dom_html_opt_group_element_set_label ::
         JSRef HTMLOptGroupElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_opt_group_element_set_label ::
-                                             JSRef HTMLOptGroupElement -> JSString -> IO ()
-ghcjs_dom_html_opt_group_element_set_label = undefined
-#endif
  
 htmlOptGroupElementSetLabel ::
                             (IsHTMLOptGroupElement self, ToJSString val) =>
@@ -76,17 +55,10 @@ htmlOptGroupElementSetLabel self val
   = ghcjs_dom_html_opt_group_element_set_label
       (unHTMLOptGroupElement (toHTMLOptGroupElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"label\"]"
         ghcjs_dom_html_opt_group_element_get_label ::
         JSRef HTMLOptGroupElement -> IO JSString
-#else 
-ghcjs_dom_html_opt_group_element_get_label ::
-                                             JSRef HTMLOptGroupElement -> IO JSString
-ghcjs_dom_html_opt_group_element_get_label = undefined
-#endif
  
 htmlOptGroupElementGetLabel ::
                             (IsHTMLOptGroupElement self, FromJSString result) =>

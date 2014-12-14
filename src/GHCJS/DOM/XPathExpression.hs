@@ -15,20 +15,11 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"evaluate\"]($2, $3, $4)"
         ghcjs_dom_xpath_expression_evaluate ::
         JSRef XPathExpression ->
           JSRef Node -> Word -> JSRef XPathResult -> IO (JSRef XPathResult)
-#else 
-ghcjs_dom_xpath_expression_evaluate ::
-                                      JSRef XPathExpression ->
-                                        JSRef Node ->
-                                          Word -> JSRef XPathResult -> IO (JSRef XPathResult)
-ghcjs_dom_xpath_expression_evaluate = undefined
-#endif
  
 xPathExpressionEvaluate ::
                         (IsXPathExpression self, IsNode contextNode,

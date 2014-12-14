@@ -18,17 +18,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_table_caption_element_set_align ::
         JSRef HTMLTableCaptionElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_table_caption_element_set_align ::
-                                                 JSRef HTMLTableCaptionElement -> JSString -> IO ()
-ghcjs_dom_html_table_caption_element_set_align = undefined
-#endif
  
 htmlTableCaptionElementSetAlign ::
                                 (IsHTMLTableCaptionElement self, ToJSString val) =>
@@ -37,17 +30,10 @@ htmlTableCaptionElementSetAlign self val
   = ghcjs_dom_html_table_caption_element_set_align
       (unHTMLTableCaptionElement (toHTMLTableCaptionElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_caption_element_get_align ::
         JSRef HTMLTableCaptionElement -> IO JSString
-#else 
-ghcjs_dom_html_table_caption_element_get_align ::
-                                                 JSRef HTMLTableCaptionElement -> IO JSString
-ghcjs_dom_html_table_caption_element_get_align = undefined
-#endif
  
 htmlTableCaptionElementGetAlign ::
                                 (IsHTMLTableCaptionElement self, FromJSString result) =>

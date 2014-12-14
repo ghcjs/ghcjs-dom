@@ -17,17 +17,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
         ghcjs_dom_htmld_list_element_set_compact ::
         JSRef HTMLDListElement -> Bool -> IO ()
-#else 
-ghcjs_dom_htmld_list_element_set_compact ::
-                                           JSRef HTMLDListElement -> Bool -> IO ()
-ghcjs_dom_htmld_list_element_set_compact = undefined
-#endif
  
 htmldListElementSetCompact ::
                            (IsHTMLDListElement self) => self -> Bool -> IO ()
@@ -35,17 +28,10 @@ htmldListElementSetCompact self val
   = ghcjs_dom_htmld_list_element_set_compact
       (unHTMLDListElement (toHTMLDListElement self))
       val
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         ghcjs_dom_htmld_list_element_get_compact ::
         JSRef HTMLDListElement -> IO Bool
-#else 
-ghcjs_dom_htmld_list_element_get_compact ::
-                                           JSRef HTMLDListElement -> IO Bool
-ghcjs_dom_htmld_list_element_get_compact = undefined
-#endif
  
 htmldListElementGetCompact ::
                            (IsHTMLDListElement self) => self -> IO Bool

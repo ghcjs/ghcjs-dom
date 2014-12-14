@@ -16,17 +16,10 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cite\"] = $2;"
         ghcjs_dom_html_quote_element_set_cite ::
         JSRef HTMLQuoteElement -> JSString -> IO ()
-#else 
-ghcjs_dom_html_quote_element_set_cite ::
-                                        JSRef HTMLQuoteElement -> JSString -> IO ()
-ghcjs_dom_html_quote_element_set_cite = undefined
-#endif
  
 htmlQuoteElementSetCite ::
                         (IsHTMLQuoteElement self, ToJSString val) => self -> val -> IO ()
@@ -34,17 +27,10 @@ htmlQuoteElementSetCite self val
   = ghcjs_dom_html_quote_element_set_cite
       (unHTMLQuoteElement (toHTMLQuoteElement self))
       (toJSString val)
-
-
-#ifdef ghcjs_HOST_OS 
+ 
 foreign import javascript unsafe "$1[\"cite\"]"
         ghcjs_dom_html_quote_element_get_cite ::
         JSRef HTMLQuoteElement -> IO JSString
-#else 
-ghcjs_dom_html_quote_element_get_cite ::
-                                        JSRef HTMLQuoteElement -> IO JSString
-ghcjs_dom_html_quote_element_get_cite = undefined
-#endif
  
 htmlQuoteElementGetCite ::
                         (IsHTMLQuoteElement self, FromJSString result) => self -> IO result
