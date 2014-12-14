@@ -22,6 +22,7 @@ module GHCJS.DOM.HTMLFrameSetElement
        where
 import GHCJS.Types
 import GHCJS.Foreign
+import GHCJS.Marshal.Pure
 import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
