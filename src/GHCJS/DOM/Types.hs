@@ -276,6 +276,7 @@ module GHCJS.DOM.Types (
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 import GHCJS.Types (JSRef(..), castRef, nullRef, isNull, JSString(..))
 import GHCJS.Foreign (ToJSString(..), FromJSString(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 #else
 import Control.Applicative ((<$>))
 import qualified Data.Text as T (Text)
@@ -369,6 +370,12 @@ newtype DOMAttr = DOMAttr (JSRef DOMAttr)
 
 unDOMAttr (DOMAttr o) = o
 
+instance ToJSRef DOMAttr where
+  toJSRef = return . unDOMAttr
+
+instance FromJSRef DOMAttr where
+  fromJSRef = return . fmap DOMAttr . maybeJSNull
+
 class IsNode o => IsDOMAttr o
 toDOMAttr :: IsDOMAttr o => o -> DOMAttr
 toDOMAttr = unsafeCastGObject . toGObject
@@ -394,6 +401,12 @@ newtype BarProp = BarProp (JSRef BarProp)
 
 unBarProp (BarProp o) = o
 
+instance ToJSRef BarProp where
+  toJSRef = return . unBarProp
+
+instance FromJSRef BarProp where
+  fromJSRef = return . fmap BarProp . maybeJSNull
+
 class GObjectClass o => IsBarProp o
 toBarProp :: IsBarProp o => o -> BarProp
 toBarProp = unsafeCastGObject . toGObject
@@ -416,6 +429,12 @@ gTypeBarProp = GType gTypeBarProp'
 newtype Blob = Blob (JSRef Blob)
 
 unBlob (Blob o) = o
+
+instance ToJSRef Blob where
+  toJSRef = return . unBlob
+
+instance FromJSRef Blob where
+  fromJSRef = return . fmap Blob . maybeJSNull
 
 class GObjectClass o => IsBlob o
 toBlob :: IsBlob o => o -> Blob
@@ -440,6 +459,12 @@ type IsBlob o = BlobClass o
 newtype CDATASection = CDATASection (JSRef CDATASection)
 
 unCDATASection (CDATASection o) = o
+
+instance ToJSRef CDATASection where
+  toJSRef = return . unCDATASection
+
+instance FromJSRef CDATASection where
+  fromJSRef = return . fmap CDATASection . maybeJSNull
 
 class IsText o => IsCDATASection o
 toCDATASection :: IsCDATASection o => o -> CDATASection
@@ -468,6 +493,12 @@ newtype CSSRule = CSSRule (JSRef CSSRule)
 
 unCSSRule (CSSRule o) = o
 
+instance ToJSRef CSSRule where
+  toJSRef = return . unCSSRule
+
+instance FromJSRef CSSRule where
+  fromJSRef = return . fmap CSSRule . maybeJSNull
+
 class GObjectClass o => IsCSSRule o
 toCSSRule :: IsCSSRule o => o -> CSSRule
 toCSSRule = unsafeCastGObject . toGObject
@@ -491,6 +522,12 @@ type IsCSSRule o = CSSRuleClass o
 newtype CSSRuleList = CSSRuleList (JSRef CSSRuleList)
 
 unCSSRuleList (CSSRuleList o) = o
+
+instance ToJSRef CSSRuleList where
+  toJSRef = return . unCSSRuleList
+
+instance FromJSRef CSSRuleList where
+  fromJSRef = return . fmap CSSRuleList . maybeJSNull
 
 class GObjectClass o => IsCSSRuleList o
 toCSSRuleList :: IsCSSRuleList o => o -> CSSRuleList
@@ -516,6 +553,12 @@ newtype CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration)
 
 unCSSStyleDeclaration (CSSStyleDeclaration o) = o
 
+instance ToJSRef CSSStyleDeclaration where
+  toJSRef = return . unCSSStyleDeclaration
+
+instance FromJSRef CSSStyleDeclaration where
+  fromJSRef = return . fmap CSSStyleDeclaration . maybeJSNull
+
 class GObjectClass o => IsCSSStyleDeclaration o
 toCSSStyleDeclaration :: IsCSSStyleDeclaration o => o -> CSSStyleDeclaration
 toCSSStyleDeclaration = unsafeCastGObject . toGObject
@@ -539,6 +582,12 @@ type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
 newtype CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet)
 
 unCSSStyleSheet (CSSStyleSheet o) = o
+
+instance ToJSRef CSSStyleSheet where
+  toJSRef = return . unCSSStyleSheet
+
+instance FromJSRef CSSStyleSheet where
+  fromJSRef = return . fmap CSSStyleSheet . maybeJSNull
 
 class IsStyleSheet o => IsCSSStyleSheet o
 toCSSStyleSheet :: IsCSSStyleSheet o => o -> CSSStyleSheet
@@ -565,6 +614,12 @@ newtype CSSValue = CSSValue (JSRef CSSValue)
 
 unCSSValue (CSSValue o) = o
 
+instance ToJSRef CSSValue where
+  toJSRef = return . unCSSValue
+
+instance FromJSRef CSSValue where
+  fromJSRef = return . fmap CSSValue . maybeJSNull
+
 class GObjectClass o => IsCSSValue o
 toCSSValue :: IsCSSValue o => o -> CSSValue
 toCSSValue = unsafeCastGObject . toGObject
@@ -588,6 +643,12 @@ type IsCSSValue o = CSSValueClass o
 newtype CharacterData = CharacterData (JSRef CharacterData)
 
 unCharacterData (CharacterData o) = o
+
+instance ToJSRef CharacterData where
+  toJSRef = return . unCharacterData
+
+instance FromJSRef CharacterData where
+  fromJSRef = return . fmap CharacterData . maybeJSNull
 
 class IsNode o => IsCharacterData o
 toCharacterData :: IsCharacterData o => o -> CharacterData
@@ -613,6 +674,12 @@ type IsCharacterData o = CharacterDataClass o
 newtype Comment = Comment (JSRef Comment)
 
 unComment (Comment o) = o
+
+instance ToJSRef Comment where
+  toJSRef = return . unComment
+
+instance FromJSRef Comment where
+  fromJSRef = return . fmap Comment . maybeJSNull
 
 class IsCharacterData o => IsComment o
 toComment :: IsComment o => o -> Comment
@@ -640,6 +707,12 @@ newtype DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache)
 
 unDOMApplicationCache (DOMApplicationCache o) = o
 
+instance ToJSRef DOMApplicationCache where
+  toJSRef = return . unDOMApplicationCache
+
+instance FromJSRef DOMApplicationCache where
+  fromJSRef = return . fmap DOMApplicationCache . maybeJSNull
+
 class GObjectClass o => IsDOMApplicationCache o
 toDOMApplicationCache :: IsDOMApplicationCache o => o -> DOMApplicationCache
 toDOMApplicationCache = unsafeCastGObject . toGObject
@@ -663,6 +736,12 @@ type IsDOMApplicationCache o = DOMApplicationCacheClass o
 newtype DOMImplementation = DOMImplementation (JSRef DOMImplementation)
 
 unDOMImplementation (DOMImplementation o) = o
+
+instance ToJSRef DOMImplementation where
+  toJSRef = return . unDOMImplementation
+
+instance FromJSRef DOMImplementation where
+  fromJSRef = return . fmap DOMImplementation . maybeJSNull
 
 class GObjectClass o => IsDOMImplementation o
 toDOMImplementation :: IsDOMImplementation o => o -> DOMImplementation
@@ -688,6 +767,12 @@ newtype DOMMimeType = DOMMimeType (JSRef DOMMimeType)
 
 unDOMMimeType (DOMMimeType o) = o
 
+instance ToJSRef DOMMimeType where
+  toJSRef = return . unDOMMimeType
+
+instance FromJSRef DOMMimeType where
+  fromJSRef = return . fmap DOMMimeType . maybeJSNull
+
 class GObjectClass o => IsDOMMimeType o
 toDOMMimeType :: IsDOMMimeType o => o -> DOMMimeType
 toDOMMimeType = unsafeCastGObject . toGObject
@@ -711,6 +796,12 @@ type IsDOMMimeType o = DOMMimeTypeClass o
 newtype DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray)
 
 unDOMMimeTypeArray (DOMMimeTypeArray o) = o
+
+instance ToJSRef DOMMimeTypeArray where
+  toJSRef = return . unDOMMimeTypeArray
+
+instance FromJSRef DOMMimeTypeArray where
+  fromJSRef = return . fmap DOMMimeTypeArray . maybeJSNull
 
 class GObjectClass o => IsDOMMimeTypeArray o
 toDOMMimeTypeArray :: IsDOMMimeTypeArray o => o -> DOMMimeTypeArray
@@ -736,6 +827,12 @@ newtype DOMNamedFlowCollection = DOMNamedFlowCollection (JSRef DOMNamedFlowColle
 
 unDOMNamedFlowCollection (DOMNamedFlowCollection o) = o
 
+instance ToJSRef DOMNamedFlowCollection where
+  toJSRef = return . unDOMNamedFlowCollection
+
+instance FromJSRef DOMNamedFlowCollection where
+  fromJSRef = return . fmap DOMNamedFlowCollection . maybeJSNull
+
 class GObjectClass o => IsDOMNamedFlowCollection o
 toDOMNamedFlowCollection :: IsDOMNamedFlowCollection o => o -> DOMNamedFlowCollection
 toDOMNamedFlowCollection = unsafeCastGObject . toGObject
@@ -758,6 +855,12 @@ gTypeDOMNamedFlowCollection = GType gTypeDOMNamedFlowCollection'
 newtype DOMPlugin = DOMPlugin (JSRef DOMPlugin)
 
 unDOMPlugin (DOMPlugin o) = o
+
+instance ToJSRef DOMPlugin where
+  toJSRef = return . unDOMPlugin
+
+instance FromJSRef DOMPlugin where
+  fromJSRef = return . fmap DOMPlugin . maybeJSNull
 
 class GObjectClass o => IsDOMPlugin o
 toDOMPlugin :: IsDOMPlugin o => o -> DOMPlugin
@@ -783,6 +886,12 @@ newtype DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray)
 
 unDOMPluginArray (DOMPluginArray o) = o
 
+instance ToJSRef DOMPluginArray where
+  toJSRef = return . unDOMPluginArray
+
+instance FromJSRef DOMPluginArray where
+  fromJSRef = return . fmap DOMPluginArray . maybeJSNull
+
 class GObjectClass o => IsDOMPluginArray o
 toDOMPluginArray :: IsDOMPluginArray o => o -> DOMPluginArray
 toDOMPluginArray = unsafeCastGObject . toGObject
@@ -807,6 +916,12 @@ newtype DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy)
 
 unDOMSecurityPolicy (DOMSecurityPolicy o) = o
 
+instance ToJSRef DOMSecurityPolicy where
+  toJSRef = return . unDOMSecurityPolicy
+
+instance FromJSRef DOMSecurityPolicy where
+  fromJSRef = return . fmap DOMSecurityPolicy . maybeJSNull
+
 class GObjectClass o => IsDOMSecurityPolicy o
 toDOMSecurityPolicy :: IsDOMSecurityPolicy o => o -> DOMSecurityPolicy
 toDOMSecurityPolicy = unsafeCastGObject . toGObject
@@ -829,6 +944,12 @@ gTypeDOMSecurityPolicy = GType gTypeDOMSecurityPolicy'
 newtype DOMSelection = DOMSelection (JSRef DOMSelection)
 
 unDOMSelection (DOMSelection o) = o
+
+instance ToJSRef DOMSelection where
+  toJSRef = return . unDOMSelection
+
+instance FromJSRef DOMSelection where
+  fromJSRef = return . fmap DOMSelection . maybeJSNull
 
 class GObjectClass o => IsDOMSelection o
 toDOMSelection :: IsDOMSelection o => o -> DOMSelection
@@ -853,6 +974,12 @@ type IsDOMSelection o = DOMSelectionClass o
 newtype DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList)
 
 unDOMSettableTokenList (DOMSettableTokenList o) = o
+
+instance ToJSRef DOMSettableTokenList where
+  toJSRef = return . unDOMSettableTokenList
+
+instance FromJSRef DOMSettableTokenList where
+  fromJSRef = return . fmap DOMSettableTokenList . maybeJSNull
 
 class IsDOMTokenList o => IsDOMSettableTokenList o
 toDOMSettableTokenList :: IsDOMSettableTokenList o => o -> DOMSettableTokenList
@@ -879,6 +1006,12 @@ newtype DOMStringList = DOMStringList (JSRef DOMStringList)
 
 unDOMStringList (DOMStringList o) = o
 
+instance ToJSRef DOMStringList where
+  toJSRef = return . unDOMStringList
+
+instance FromJSRef DOMStringList where
+  fromJSRef = return . fmap DOMStringList . maybeJSNull
+
 class GObjectClass o => IsDOMStringList o
 toDOMStringList :: IsDOMStringList o => o -> DOMStringList
 toDOMStringList = unsafeCastGObject . toGObject
@@ -902,6 +1035,12 @@ type IsDOMStringList o = DOMStringListClass o
 newtype DOMTokenList = DOMTokenList (JSRef DOMTokenList)
 
 unDOMTokenList (DOMTokenList o) = o
+
+instance ToJSRef DOMTokenList where
+  toJSRef = return . unDOMTokenList
+
+instance FromJSRef DOMTokenList where
+  fromJSRef = return . fmap DOMTokenList . maybeJSNull
 
 class GObjectClass o => IsDOMTokenList o
 toDOMTokenList :: IsDOMTokenList o => o -> DOMTokenList
@@ -927,6 +1066,12 @@ newtype DOMWindow = DOMWindow (JSRef DOMWindow)
 
 unDOMWindow (DOMWindow o) = o
 
+instance ToJSRef DOMWindow where
+  toJSRef = return . unDOMWindow
+
+instance FromJSRef DOMWindow where
+  fromJSRef = return . fmap DOMWindow . maybeJSNull
+
 class GObjectClass o => IsDOMWindow o
 toDOMWindow :: IsDOMWindow o => o -> DOMWindow
 toDOMWindow = unsafeCastGObject . toGObject
@@ -951,6 +1096,12 @@ newtype DOMWindowCSS = DOMWindowCSS (JSRef DOMWindowCSS)
 
 unDOMWindowCSS (DOMWindowCSS o) = o
 
+instance ToJSRef DOMWindowCSS where
+  toJSRef = return . unDOMWindowCSS
+
+instance FromJSRef DOMWindowCSS where
+  fromJSRef = return . fmap DOMWindowCSS . maybeJSNull
+
 class GObjectClass o => IsDOMWindowCSS o
 toDOMWindowCSS :: IsDOMWindowCSS o => o -> DOMWindowCSS
 toDOMWindowCSS = unsafeCastGObject . toGObject
@@ -973,6 +1124,12 @@ gTypeDOMWindowCSS = GType gTypeDOMWindowCSS'
 newtype Document = Document (JSRef Document)
 
 unDocument (Document o) = o
+
+instance ToJSRef Document where
+  toJSRef = return . unDocument
+
+instance FromJSRef Document where
+  fromJSRef = return . fmap Document . maybeJSNull
 
 class IsNode o => IsDocument o
 toDocument :: IsDocument o => o -> Document
@@ -999,6 +1156,12 @@ newtype DocumentFragment = DocumentFragment (JSRef DocumentFragment)
 
 unDocumentFragment (DocumentFragment o) = o
 
+instance ToJSRef DocumentFragment where
+  toJSRef = return . unDocumentFragment
+
+instance FromJSRef DocumentFragment where
+  fromJSRef = return . fmap DocumentFragment . maybeJSNull
+
 class IsNode o => IsDocumentFragment o
 toDocumentFragment :: IsDocumentFragment o => o -> DocumentFragment
 toDocumentFragment = unsafeCastGObject . toGObject
@@ -1023,6 +1186,12 @@ type IsDocumentFragment o = DocumentFragmentClass o
 newtype DocumentType = DocumentType (JSRef DocumentType)
 
 unDocumentType (DocumentType o) = o
+
+instance ToJSRef DocumentType where
+  toJSRef = return . unDocumentType
+
+instance FromJSRef DocumentType where
+  fromJSRef = return . fmap DocumentType . maybeJSNull
 
 class IsNode o => IsDocumentType o
 toDocumentType :: IsDocumentType o => o -> DocumentType
@@ -1049,6 +1218,12 @@ newtype Element = Element (JSRef Element)
 
 unElement (Element o) = o
 
+instance ToJSRef Element where
+  toJSRef = return . unElement
+
+instance FromJSRef Element where
+  fromJSRef = return . fmap Element . maybeJSNull
+
 class IsNode o => IsElement o
 toElement :: IsElement o => o -> Element
 toElement = unsafeCastGObject . toGObject
@@ -1073,6 +1248,12 @@ type IsElement o = ElementClass o
 newtype EntityReference = EntityReference (JSRef EntityReference)
 
 unEntityReference (EntityReference o) = o
+
+instance ToJSRef EntityReference where
+  toJSRef = return . unEntityReference
+
+instance FromJSRef EntityReference where
+  fromJSRef = return . fmap EntityReference . maybeJSNull
 
 class IsNode o => IsEntityReference o
 toEntityReference :: IsEntityReference o => o -> EntityReference
@@ -1099,6 +1280,12 @@ newtype Event = Event (JSRef Event)
 
 unEvent (Event o) = o
 
+instance ToJSRef Event where
+  toJSRef = return . unEvent
+
+instance FromJSRef Event where
+  fromJSRef = return . fmap Event . maybeJSNull
+
 class GObjectClass o => IsEvent o
 toEvent :: IsEvent o => o -> Event
 toEvent = unsafeCastGObject . toGObject
@@ -1123,6 +1310,12 @@ newtype EventTarget = EventTarget (JSRef EventTarget)
 
 unEventTarget (EventTarget o) = o
 
+instance ToJSRef EventTarget where
+  toJSRef = return . unEventTarget
+
+instance FromJSRef EventTarget where
+  fromJSRef = return . fmap EventTarget . maybeJSNull
+
 class GObjectClass o => IsEventTarget o
 toEventTarget :: IsEventTarget o => o -> EventTarget
 toEventTarget = unsafeCastGObject . toGObject
@@ -1146,6 +1339,12 @@ type IsEventTarget o = EventTargetClass o
 newtype File = File (JSRef File)
 
 unFile (File o) = o
+
+instance ToJSRef File where
+  toJSRef = return . unFile
+
+instance FromJSRef File where
+  fromJSRef = return . fmap File . maybeJSNull
 
 class IsBlob o => IsFile o
 toFile :: IsFile o => o -> File
@@ -1172,6 +1371,12 @@ newtype FileList = FileList (JSRef FileList)
 
 unFileList (FileList o) = o
 
+instance ToJSRef FileList where
+  toJSRef = return . unFileList
+
+instance FromJSRef FileList where
+  fromJSRef = return . fmap FileList . maybeJSNull
+
 class GObjectClass o => IsFileList o
 toFileList :: IsFileList o => o -> FileList
 toFileList = unsafeCastGObject . toGObject
@@ -1196,6 +1401,12 @@ newtype Geolocation = Geolocation (JSRef Geolocation)
 
 unGeolocation (Geolocation o) = o
 
+instance ToJSRef Geolocation where
+  toJSRef = return . unGeolocation
+
+instance FromJSRef Geolocation where
+  fromJSRef = return . fmap Geolocation . maybeJSNull
+
 class GObjectClass o => IsGeolocation o
 toGeolocation :: IsGeolocation o => o -> Geolocation
 toGeolocation = unsafeCastGObject . toGObject
@@ -1219,6 +1430,12 @@ type IsGeolocation o = GeolocationClass o
 newtype HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement)
 
 unHTMLAnchorElement (HTMLAnchorElement o) = o
+
+instance ToJSRef HTMLAnchorElement where
+  toJSRef = return . unHTMLAnchorElement
+
+instance FromJSRef HTMLAnchorElement where
+  fromJSRef = return . fmap HTMLAnchorElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLAnchorElement o
 toHTMLAnchorElement :: IsHTMLAnchorElement o => o -> HTMLAnchorElement
@@ -1247,6 +1464,12 @@ newtype HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement)
 
 unHTMLAppletElement (HTMLAppletElement o) = o
 
+instance ToJSRef HTMLAppletElement where
+  toJSRef = return . unHTMLAppletElement
+
+instance FromJSRef HTMLAppletElement where
+  fromJSRef = return . fmap HTMLAppletElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLAppletElement o
 toHTMLAppletElement :: IsHTMLAppletElement o => o -> HTMLAppletElement
 toHTMLAppletElement = unsafeCastGObject . toGObject
@@ -1274,6 +1497,12 @@ newtype HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement)
 
 unHTMLAreaElement (HTMLAreaElement o) = o
 
+instance ToJSRef HTMLAreaElement where
+  toJSRef = return . unHTMLAreaElement
+
+instance FromJSRef HTMLAreaElement where
+  fromJSRef = return . fmap HTMLAreaElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLAreaElement o
 toHTMLAreaElement :: IsHTMLAreaElement o => o -> HTMLAreaElement
 toHTMLAreaElement = unsafeCastGObject . toGObject
@@ -1300,6 +1529,12 @@ type IsHTMLAreaElement o = HTMLAreaElementClass o
 newtype HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement)
 
 unHTMLAudioElement (HTMLAudioElement o) = o
+
+instance ToJSRef HTMLAudioElement where
+  toJSRef = return . unHTMLAudioElement
+
+instance FromJSRef HTMLAudioElement where
+  fromJSRef = return . fmap HTMLAudioElement . maybeJSNull
 
 class IsHTMLMediaElement o => IsHTMLAudioElement o
 toHTMLAudioElement :: IsHTMLAudioElement o => o -> HTMLAudioElement
@@ -1329,6 +1564,12 @@ newtype HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement)
 
 unHTMLBRElement (HTMLBRElement o) = o
 
+instance ToJSRef HTMLBRElement where
+  toJSRef = return . unHTMLBRElement
+
+instance FromJSRef HTMLBRElement where
+  fromJSRef = return . fmap HTMLBRElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLBRElement o
 toHTMLBRElement :: IsHTMLBRElement o => o -> HTMLBRElement
 toHTMLBRElement = unsafeCastGObject . toGObject
@@ -1355,6 +1596,12 @@ type IsHTMLBRElement o = HTMLBRElementClass o
 newtype HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement)
 
 unHTMLBaseElement (HTMLBaseElement o) = o
+
+instance ToJSRef HTMLBaseElement where
+  toJSRef = return . unHTMLBaseElement
+
+instance FromJSRef HTMLBaseElement where
+  fromJSRef = return . fmap HTMLBaseElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLBaseElement o
 toHTMLBaseElement :: IsHTMLBaseElement o => o -> HTMLBaseElement
@@ -1383,6 +1630,12 @@ newtype HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement)
 
 unHTMLBaseFontElement (HTMLBaseFontElement o) = o
 
+instance ToJSRef HTMLBaseFontElement where
+  toJSRef = return . unHTMLBaseFontElement
+
+instance FromJSRef HTMLBaseFontElement where
+  fromJSRef = return . fmap HTMLBaseFontElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLBaseFontElement o
 toHTMLBaseFontElement :: IsHTMLBaseFontElement o => o -> HTMLBaseFontElement
 toHTMLBaseFontElement = unsafeCastGObject . toGObject
@@ -1409,6 +1662,12 @@ type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
 newtype HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement)
 
 unHTMLBodyElement (HTMLBodyElement o) = o
+
+instance ToJSRef HTMLBodyElement where
+  toJSRef = return . unHTMLBodyElement
+
+instance FromJSRef HTMLBodyElement where
+  fromJSRef = return . fmap HTMLBodyElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLBodyElement o
 toHTMLBodyElement :: IsHTMLBodyElement o => o -> HTMLBodyElement
@@ -1437,6 +1696,12 @@ newtype HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement)
 
 unHTMLButtonElement (HTMLButtonElement o) = o
 
+instance ToJSRef HTMLButtonElement where
+  toJSRef = return . unHTMLButtonElement
+
+instance FromJSRef HTMLButtonElement where
+  fromJSRef = return . fmap HTMLButtonElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLButtonElement o
 toHTMLButtonElement :: IsHTMLButtonElement o => o -> HTMLButtonElement
 toHTMLButtonElement = unsafeCastGObject . toGObject
@@ -1463,6 +1728,12 @@ type IsHTMLButtonElement o = HTMLButtonElementClass o
 newtype HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement)
 
 unHTMLCanvasElement (HTMLCanvasElement o) = o
+
+instance ToJSRef HTMLCanvasElement where
+  toJSRef = return . unHTMLCanvasElement
+
+instance FromJSRef HTMLCanvasElement where
+  fromJSRef = return . fmap HTMLCanvasElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLCanvasElement o
 toHTMLCanvasElement :: IsHTMLCanvasElement o => o -> HTMLCanvasElement
@@ -1491,6 +1762,12 @@ newtype HTMLCollection = HTMLCollection (JSRef HTMLCollection)
 
 unHTMLCollection (HTMLCollection o) = o
 
+instance ToJSRef HTMLCollection where
+  toJSRef = return . unHTMLCollection
+
+instance FromJSRef HTMLCollection where
+  fromJSRef = return . fmap HTMLCollection . maybeJSNull
+
 class GObjectClass o => IsHTMLCollection o
 toHTMLCollection :: IsHTMLCollection o => o -> HTMLCollection
 toHTMLCollection = unsafeCastGObject . toGObject
@@ -1514,6 +1791,12 @@ type IsHTMLCollection o = HTMLCollectionClass o
 newtype HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement)
 
 unHTMLDListElement (HTMLDListElement o) = o
+
+instance ToJSRef HTMLDListElement where
+  toJSRef = return . unHTMLDListElement
+
+instance FromJSRef HTMLDListElement where
+  fromJSRef = return . fmap HTMLDListElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLDListElement o
 toHTMLDListElement :: IsHTMLDListElement o => o -> HTMLDListElement
@@ -1542,6 +1825,12 @@ newtype HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement)
 
 unHTMLDetailsElement (HTMLDetailsElement o) = o
 
+instance ToJSRef HTMLDetailsElement where
+  toJSRef = return . unHTMLDetailsElement
+
+instance FromJSRef HTMLDetailsElement where
+  fromJSRef = return . fmap HTMLDetailsElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLDetailsElement o
 toHTMLDetailsElement :: IsHTMLDetailsElement o => o -> HTMLDetailsElement
 toHTMLDetailsElement = unsafeCastGObject . toGObject
@@ -1568,6 +1857,12 @@ type IsHTMLDetailsElement o = HTMLDetailsElementClass o
 newtype HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement)
 
 unHTMLDirectoryElement (HTMLDirectoryElement o) = o
+
+instance ToJSRef HTMLDirectoryElement where
+  toJSRef = return . unHTMLDirectoryElement
+
+instance FromJSRef HTMLDirectoryElement where
+  fromJSRef = return . fmap HTMLDirectoryElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLDirectoryElement o
 toHTMLDirectoryElement :: IsHTMLDirectoryElement o => o -> HTMLDirectoryElement
@@ -1596,6 +1891,12 @@ newtype HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement)
 
 unHTMLDivElement (HTMLDivElement o) = o
 
+instance ToJSRef HTMLDivElement where
+  toJSRef = return . unHTMLDivElement
+
+instance FromJSRef HTMLDivElement where
+  fromJSRef = return . fmap HTMLDivElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLDivElement o
 toHTMLDivElement :: IsHTMLDivElement o => o -> HTMLDivElement
 toHTMLDivElement = unsafeCastGObject . toGObject
@@ -1623,6 +1924,12 @@ newtype HTMLDocument = HTMLDocument (JSRef HTMLDocument)
 
 unHTMLDocument (HTMLDocument o) = o
 
+instance ToJSRef HTMLDocument where
+  toJSRef = return . unHTMLDocument
+
+instance FromJSRef HTMLDocument where
+  fromJSRef = return . fmap HTMLDocument . maybeJSNull
+
 class IsDocument o => IsHTMLDocument o
 toHTMLDocument :: IsHTMLDocument o => o -> HTMLDocument
 toHTMLDocument = unsafeCastGObject . toGObject
@@ -1649,6 +1956,12 @@ newtype HTMLElement = HTMLElement (JSRef HTMLElement)
 
 unHTMLElement (HTMLElement o) = o
 
+instance ToJSRef HTMLElement where
+  toJSRef = return . unHTMLElement
+
+instance FromJSRef HTMLElement where
+  fromJSRef = return . fmap HTMLElement . maybeJSNull
+
 class IsElement o => IsHTMLElement o
 toHTMLElement :: IsHTMLElement o => o -> HTMLElement
 toHTMLElement = unsafeCastGObject . toGObject
@@ -1674,6 +1987,12 @@ type IsHTMLElement o = HTMLElementClass o
 newtype HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement)
 
 unHTMLEmbedElement (HTMLEmbedElement o) = o
+
+instance ToJSRef HTMLEmbedElement where
+  toJSRef = return . unHTMLEmbedElement
+
+instance FromJSRef HTMLEmbedElement where
+  fromJSRef = return . fmap HTMLEmbedElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLEmbedElement o
 toHTMLEmbedElement :: IsHTMLEmbedElement o => o -> HTMLEmbedElement
@@ -1702,6 +2021,12 @@ newtype HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement)
 
 unHTMLFieldSetElement (HTMLFieldSetElement o) = o
 
+instance ToJSRef HTMLFieldSetElement where
+  toJSRef = return . unHTMLFieldSetElement
+
+instance FromJSRef HTMLFieldSetElement where
+  fromJSRef = return . fmap HTMLFieldSetElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLFieldSetElement o
 toHTMLFieldSetElement :: IsHTMLFieldSetElement o => o -> HTMLFieldSetElement
 toHTMLFieldSetElement = unsafeCastGObject . toGObject
@@ -1728,6 +2053,12 @@ type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
 newtype HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement)
 
 unHTMLFontElement (HTMLFontElement o) = o
+
+instance ToJSRef HTMLFontElement where
+  toJSRef = return . unHTMLFontElement
+
+instance FromJSRef HTMLFontElement where
+  fromJSRef = return . fmap HTMLFontElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLFontElement o
 toHTMLFontElement :: IsHTMLFontElement o => o -> HTMLFontElement
@@ -1756,6 +2087,12 @@ newtype HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement)
 
 unHTMLFormElement (HTMLFormElement o) = o
 
+instance ToJSRef HTMLFormElement where
+  toJSRef = return . unHTMLFormElement
+
+instance FromJSRef HTMLFormElement where
+  fromJSRef = return . fmap HTMLFormElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLFormElement o
 toHTMLFormElement :: IsHTMLFormElement o => o -> HTMLFormElement
 toHTMLFormElement = unsafeCastGObject . toGObject
@@ -1782,6 +2119,12 @@ type IsHTMLFormElement o = HTMLFormElementClass o
 newtype HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement)
 
 unHTMLFrameElement (HTMLFrameElement o) = o
+
+instance ToJSRef HTMLFrameElement where
+  toJSRef = return . unHTMLFrameElement
+
+instance FromJSRef HTMLFrameElement where
+  fromJSRef = return . fmap HTMLFrameElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLFrameElement o
 toHTMLFrameElement :: IsHTMLFrameElement o => o -> HTMLFrameElement
@@ -1810,6 +2153,12 @@ newtype HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement)
 
 unHTMLFrameSetElement (HTMLFrameSetElement o) = o
 
+instance ToJSRef HTMLFrameSetElement where
+  toJSRef = return . unHTMLFrameSetElement
+
+instance FromJSRef HTMLFrameSetElement where
+  fromJSRef = return . fmap HTMLFrameSetElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLFrameSetElement o
 toHTMLFrameSetElement :: IsHTMLFrameSetElement o => o -> HTMLFrameSetElement
 toHTMLFrameSetElement = unsafeCastGObject . toGObject
@@ -1836,6 +2185,12 @@ type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
 newtype HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement)
 
 unHTMLHRElement (HTMLHRElement o) = o
+
+instance ToJSRef HTMLHRElement where
+  toJSRef = return . unHTMLHRElement
+
+instance FromJSRef HTMLHRElement where
+  fromJSRef = return . fmap HTMLHRElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLHRElement o
 toHTMLHRElement :: IsHTMLHRElement o => o -> HTMLHRElement
@@ -1864,6 +2219,12 @@ newtype HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement)
 
 unHTMLHeadElement (HTMLHeadElement o) = o
 
+instance ToJSRef HTMLHeadElement where
+  toJSRef = return . unHTMLHeadElement
+
+instance FromJSRef HTMLHeadElement where
+  fromJSRef = return . fmap HTMLHeadElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLHeadElement o
 toHTMLHeadElement :: IsHTMLHeadElement o => o -> HTMLHeadElement
 toHTMLHeadElement = unsafeCastGObject . toGObject
@@ -1890,6 +2251,12 @@ type IsHTMLHeadElement o = HTMLHeadElementClass o
 newtype HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement)
 
 unHTMLHeadingElement (HTMLHeadingElement o) = o
+
+instance ToJSRef HTMLHeadingElement where
+  toJSRef = return . unHTMLHeadingElement
+
+instance FromJSRef HTMLHeadingElement where
+  fromJSRef = return . fmap HTMLHeadingElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLHeadingElement o
 toHTMLHeadingElement :: IsHTMLHeadingElement o => o -> HTMLHeadingElement
@@ -1918,6 +2285,12 @@ newtype HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement)
 
 unHTMLHtmlElement (HTMLHtmlElement o) = o
 
+instance ToJSRef HTMLHtmlElement where
+  toJSRef = return . unHTMLHtmlElement
+
+instance FromJSRef HTMLHtmlElement where
+  fromJSRef = return . fmap HTMLHtmlElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLHtmlElement o
 toHTMLHtmlElement :: IsHTMLHtmlElement o => o -> HTMLHtmlElement
 toHTMLHtmlElement = unsafeCastGObject . toGObject
@@ -1944,6 +2317,12 @@ type IsHTMLHtmlElement o = HTMLHtmlElementClass o
 newtype HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement)
 
 unHTMLIFrameElement (HTMLIFrameElement o) = o
+
+instance ToJSRef HTMLIFrameElement where
+  toJSRef = return . unHTMLIFrameElement
+
+instance FromJSRef HTMLIFrameElement where
+  fromJSRef = return . fmap HTMLIFrameElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLIFrameElement o
 toHTMLIFrameElement :: IsHTMLIFrameElement o => o -> HTMLIFrameElement
@@ -1972,6 +2351,12 @@ newtype HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement)
 
 unHTMLImageElement (HTMLImageElement o) = o
 
+instance ToJSRef HTMLImageElement where
+  toJSRef = return . unHTMLImageElement
+
+instance FromJSRef HTMLImageElement where
+  fromJSRef = return . fmap HTMLImageElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLImageElement o
 toHTMLImageElement :: IsHTMLImageElement o => o -> HTMLImageElement
 toHTMLImageElement = unsafeCastGObject . toGObject
@@ -1998,6 +2383,12 @@ type IsHTMLImageElement o = HTMLImageElementClass o
 newtype HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement)
 
 unHTMLInputElement (HTMLInputElement o) = o
+
+instance ToJSRef HTMLInputElement where
+  toJSRef = return . unHTMLInputElement
+
+instance FromJSRef HTMLInputElement where
+  fromJSRef = return . fmap HTMLInputElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLInputElement o
 toHTMLInputElement :: IsHTMLInputElement o => o -> HTMLInputElement
@@ -2026,6 +2417,12 @@ newtype HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement)
 
 unHTMLKeygenElement (HTMLKeygenElement o) = o
 
+instance ToJSRef HTMLKeygenElement where
+  toJSRef = return . unHTMLKeygenElement
+
+instance FromJSRef HTMLKeygenElement where
+  fromJSRef = return . fmap HTMLKeygenElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLKeygenElement o
 toHTMLKeygenElement :: IsHTMLKeygenElement o => o -> HTMLKeygenElement
 toHTMLKeygenElement = unsafeCastGObject . toGObject
@@ -2052,6 +2449,12 @@ type IsHTMLKeygenElement o = HTMLKeygenElementClass o
 newtype HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement)
 
 unHTMLLIElement (HTMLLIElement o) = o
+
+instance ToJSRef HTMLLIElement where
+  toJSRef = return . unHTMLLIElement
+
+instance FromJSRef HTMLLIElement where
+  fromJSRef = return . fmap HTMLLIElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLLIElement o
 toHTMLLIElement :: IsHTMLLIElement o => o -> HTMLLIElement
@@ -2080,6 +2483,12 @@ newtype HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement)
 
 unHTMLLabelElement (HTMLLabelElement o) = o
 
+instance ToJSRef HTMLLabelElement where
+  toJSRef = return . unHTMLLabelElement
+
+instance FromJSRef HTMLLabelElement where
+  fromJSRef = return . fmap HTMLLabelElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLLabelElement o
 toHTMLLabelElement :: IsHTMLLabelElement o => o -> HTMLLabelElement
 toHTMLLabelElement = unsafeCastGObject . toGObject
@@ -2106,6 +2515,12 @@ type IsHTMLLabelElement o = HTMLLabelElementClass o
 newtype HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement)
 
 unHTMLLegendElement (HTMLLegendElement o) = o
+
+instance ToJSRef HTMLLegendElement where
+  toJSRef = return . unHTMLLegendElement
+
+instance FromJSRef HTMLLegendElement where
+  fromJSRef = return . fmap HTMLLegendElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLLegendElement o
 toHTMLLegendElement :: IsHTMLLegendElement o => o -> HTMLLegendElement
@@ -2134,6 +2549,12 @@ newtype HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement)
 
 unHTMLLinkElement (HTMLLinkElement o) = o
 
+instance ToJSRef HTMLLinkElement where
+  toJSRef = return . unHTMLLinkElement
+
+instance FromJSRef HTMLLinkElement where
+  fromJSRef = return . fmap HTMLLinkElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLLinkElement o
 toHTMLLinkElement :: IsHTMLLinkElement o => o -> HTMLLinkElement
 toHTMLLinkElement = unsafeCastGObject . toGObject
@@ -2160,6 +2581,12 @@ type IsHTMLLinkElement o = HTMLLinkElementClass o
 newtype HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement)
 
 unHTMLMapElement (HTMLMapElement o) = o
+
+instance ToJSRef HTMLMapElement where
+  toJSRef = return . unHTMLMapElement
+
+instance FromJSRef HTMLMapElement where
+  fromJSRef = return . fmap HTMLMapElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLMapElement o
 toHTMLMapElement :: IsHTMLMapElement o => o -> HTMLMapElement
@@ -2188,6 +2615,12 @@ newtype HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement)
 
 unHTMLMarqueeElement (HTMLMarqueeElement o) = o
 
+instance ToJSRef HTMLMarqueeElement where
+  toJSRef = return . unHTMLMarqueeElement
+
+instance FromJSRef HTMLMarqueeElement where
+  fromJSRef = return . fmap HTMLMarqueeElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLMarqueeElement o
 toHTMLMarqueeElement :: IsHTMLMarqueeElement o => o -> HTMLMarqueeElement
 toHTMLMarqueeElement = unsafeCastGObject . toGObject
@@ -2214,6 +2647,12 @@ type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
 newtype HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement)
 
 unHTMLMediaElement (HTMLMediaElement o) = o
+
+instance ToJSRef HTMLMediaElement where
+  toJSRef = return . unHTMLMediaElement
+
+instance FromJSRef HTMLMediaElement where
+  fromJSRef = return . fmap HTMLMediaElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLMediaElement o
 toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
@@ -2242,6 +2681,12 @@ newtype HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement)
 
 unHTMLMenuElement (HTMLMenuElement o) = o
 
+instance ToJSRef HTMLMenuElement where
+  toJSRef = return . unHTMLMenuElement
+
+instance FromJSRef HTMLMenuElement where
+  fromJSRef = return . fmap HTMLMenuElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLMenuElement o
 toHTMLMenuElement :: IsHTMLMenuElement o => o -> HTMLMenuElement
 toHTMLMenuElement = unsafeCastGObject . toGObject
@@ -2268,6 +2713,12 @@ type IsHTMLMenuElement o = HTMLMenuElementClass o
 newtype HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement)
 
 unHTMLMetaElement (HTMLMetaElement o) = o
+
+instance ToJSRef HTMLMetaElement where
+  toJSRef = return . unHTMLMetaElement
+
+instance FromJSRef HTMLMetaElement where
+  fromJSRef = return . fmap HTMLMetaElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLMetaElement o
 toHTMLMetaElement :: IsHTMLMetaElement o => o -> HTMLMetaElement
@@ -2296,6 +2747,12 @@ newtype HTMLModElement = HTMLModElement (JSRef HTMLModElement)
 
 unHTMLModElement (HTMLModElement o) = o
 
+instance ToJSRef HTMLModElement where
+  toJSRef = return . unHTMLModElement
+
+instance FromJSRef HTMLModElement where
+  fromJSRef = return . fmap HTMLModElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLModElement o
 toHTMLModElement :: IsHTMLModElement o => o -> HTMLModElement
 toHTMLModElement = unsafeCastGObject . toGObject
@@ -2322,6 +2779,12 @@ type IsHTMLModElement o = HTMLModElementClass o
 newtype HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement)
 
 unHTMLOListElement (HTMLOListElement o) = o
+
+instance ToJSRef HTMLOListElement where
+  toJSRef = return . unHTMLOListElement
+
+instance FromJSRef HTMLOListElement where
+  fromJSRef = return . fmap HTMLOListElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLOListElement o
 toHTMLOListElement :: IsHTMLOListElement o => o -> HTMLOListElement
@@ -2350,6 +2813,12 @@ newtype HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement)
 
 unHTMLObjectElement (HTMLObjectElement o) = o
 
+instance ToJSRef HTMLObjectElement where
+  toJSRef = return . unHTMLObjectElement
+
+instance FromJSRef HTMLObjectElement where
+  fromJSRef = return . fmap HTMLObjectElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLObjectElement o
 toHTMLObjectElement :: IsHTMLObjectElement o => o -> HTMLObjectElement
 toHTMLObjectElement = unsafeCastGObject . toGObject
@@ -2376,6 +2845,12 @@ type IsHTMLObjectElement o = HTMLObjectElementClass o
 newtype HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement)
 
 unHTMLOptGroupElement (HTMLOptGroupElement o) = o
+
+instance ToJSRef HTMLOptGroupElement where
+  toJSRef = return . unHTMLOptGroupElement
+
+instance FromJSRef HTMLOptGroupElement where
+  fromJSRef = return . fmap HTMLOptGroupElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLOptGroupElement o
 toHTMLOptGroupElement :: IsHTMLOptGroupElement o => o -> HTMLOptGroupElement
@@ -2404,6 +2879,12 @@ newtype HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement)
 
 unHTMLOptionElement (HTMLOptionElement o) = o
 
+instance ToJSRef HTMLOptionElement where
+  toJSRef = return . unHTMLOptionElement
+
+instance FromJSRef HTMLOptionElement where
+  fromJSRef = return . fmap HTMLOptionElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLOptionElement o
 toHTMLOptionElement :: IsHTMLOptionElement o => o -> HTMLOptionElement
 toHTMLOptionElement = unsafeCastGObject . toGObject
@@ -2431,6 +2912,12 @@ newtype HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollecti
 
 unHTMLOptionsCollection (HTMLOptionsCollection o) = o
 
+instance ToJSRef HTMLOptionsCollection where
+  toJSRef = return . unHTMLOptionsCollection
+
+instance FromJSRef HTMLOptionsCollection where
+  fromJSRef = return . fmap HTMLOptionsCollection . maybeJSNull
+
 class IsHTMLCollection o => IsHTMLOptionsCollection o
 toHTMLOptionsCollection :: IsHTMLOptionsCollection o => o -> HTMLOptionsCollection
 toHTMLOptionsCollection = unsafeCastGObject . toGObject
@@ -2455,6 +2942,12 @@ type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
 newtype HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement)
 
 unHTMLParagraphElement (HTMLParagraphElement o) = o
+
+instance ToJSRef HTMLParagraphElement where
+  toJSRef = return . unHTMLParagraphElement
+
+instance FromJSRef HTMLParagraphElement where
+  fromJSRef = return . fmap HTMLParagraphElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLParagraphElement o
 toHTMLParagraphElement :: IsHTMLParagraphElement o => o -> HTMLParagraphElement
@@ -2483,6 +2976,12 @@ newtype HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement)
 
 unHTMLParamElement (HTMLParamElement o) = o
 
+instance ToJSRef HTMLParamElement where
+  toJSRef = return . unHTMLParamElement
+
+instance FromJSRef HTMLParamElement where
+  fromJSRef = return . fmap HTMLParamElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLParamElement o
 toHTMLParamElement :: IsHTMLParamElement o => o -> HTMLParamElement
 toHTMLParamElement = unsafeCastGObject . toGObject
@@ -2509,6 +3008,12 @@ type IsHTMLParamElement o = HTMLParamElementClass o
 newtype HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement)
 
 unHTMLPreElement (HTMLPreElement o) = o
+
+instance ToJSRef HTMLPreElement where
+  toJSRef = return . unHTMLPreElement
+
+instance FromJSRef HTMLPreElement where
+  fromJSRef = return . fmap HTMLPreElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLPreElement o
 toHTMLPreElement :: IsHTMLPreElement o => o -> HTMLPreElement
@@ -2537,6 +3042,12 @@ newtype HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement)
 
 unHTMLQuoteElement (HTMLQuoteElement o) = o
 
+instance ToJSRef HTMLQuoteElement where
+  toJSRef = return . unHTMLQuoteElement
+
+instance FromJSRef HTMLQuoteElement where
+  fromJSRef = return . fmap HTMLQuoteElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLQuoteElement o
 toHTMLQuoteElement :: IsHTMLQuoteElement o => o -> HTMLQuoteElement
 toHTMLQuoteElement = unsafeCastGObject . toGObject
@@ -2563,6 +3074,12 @@ type IsHTMLQuoteElement o = HTMLQuoteElementClass o
 newtype HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement)
 
 unHTMLScriptElement (HTMLScriptElement o) = o
+
+instance ToJSRef HTMLScriptElement where
+  toJSRef = return . unHTMLScriptElement
+
+instance FromJSRef HTMLScriptElement where
+  fromJSRef = return . fmap HTMLScriptElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLScriptElement o
 toHTMLScriptElement :: IsHTMLScriptElement o => o -> HTMLScriptElement
@@ -2591,6 +3108,12 @@ newtype HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement)
 
 unHTMLSelectElement (HTMLSelectElement o) = o
 
+instance ToJSRef HTMLSelectElement where
+  toJSRef = return . unHTMLSelectElement
+
+instance FromJSRef HTMLSelectElement where
+  fromJSRef = return . fmap HTMLSelectElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLSelectElement o
 toHTMLSelectElement :: IsHTMLSelectElement o => o -> HTMLSelectElement
 toHTMLSelectElement = unsafeCastGObject . toGObject
@@ -2617,6 +3140,12 @@ type IsHTMLSelectElement o = HTMLSelectElementClass o
 newtype HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement)
 
 unHTMLStyleElement (HTMLStyleElement o) = o
+
+instance ToJSRef HTMLStyleElement where
+  toJSRef = return . unHTMLStyleElement
+
+instance FromJSRef HTMLStyleElement where
+  fromJSRef = return . fmap HTMLStyleElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLStyleElement o
 toHTMLStyleElement :: IsHTMLStyleElement o => o -> HTMLStyleElement
@@ -2645,6 +3174,12 @@ newtype HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptio
 
 unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
 
+instance ToJSRef HTMLTableCaptionElement where
+  toJSRef = return . unHTMLTableCaptionElement
+
+instance FromJSRef HTMLTableCaptionElement where
+  fromJSRef = return . fmap HTMLTableCaptionElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLTableCaptionElement o
 toHTMLTableCaptionElement :: IsHTMLTableCaptionElement o => o -> HTMLTableCaptionElement
 toHTMLTableCaptionElement = unsafeCastGObject . toGObject
@@ -2671,6 +3206,12 @@ type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
 newtype HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement)
 
 unHTMLTableCellElement (HTMLTableCellElement o) = o
+
+instance ToJSRef HTMLTableCellElement where
+  toJSRef = return . unHTMLTableCellElement
+
+instance FromJSRef HTMLTableCellElement where
+  fromJSRef = return . fmap HTMLTableCellElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLTableCellElement o
 toHTMLTableCellElement :: IsHTMLTableCellElement o => o -> HTMLTableCellElement
@@ -2699,6 +3240,12 @@ newtype HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement)
 
 unHTMLTableColElement (HTMLTableColElement o) = o
 
+instance ToJSRef HTMLTableColElement where
+  toJSRef = return . unHTMLTableColElement
+
+instance FromJSRef HTMLTableColElement where
+  fromJSRef = return . fmap HTMLTableColElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLTableColElement o
 toHTMLTableColElement :: IsHTMLTableColElement o => o -> HTMLTableColElement
 toHTMLTableColElement = unsafeCastGObject . toGObject
@@ -2725,6 +3272,12 @@ type IsHTMLTableColElement o = HTMLTableColElementClass o
 newtype HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement)
 
 unHTMLTableElement (HTMLTableElement o) = o
+
+instance ToJSRef HTMLTableElement where
+  toJSRef = return . unHTMLTableElement
+
+instance FromJSRef HTMLTableElement where
+  fromJSRef = return . fmap HTMLTableElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLTableElement o
 toHTMLTableElement :: IsHTMLTableElement o => o -> HTMLTableElement
@@ -2753,6 +3306,12 @@ newtype HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement)
 
 unHTMLTableRowElement (HTMLTableRowElement o) = o
 
+instance ToJSRef HTMLTableRowElement where
+  toJSRef = return . unHTMLTableRowElement
+
+instance FromJSRef HTMLTableRowElement where
+  fromJSRef = return . fmap HTMLTableRowElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLTableRowElement o
 toHTMLTableRowElement :: IsHTMLTableRowElement o => o -> HTMLTableRowElement
 toHTMLTableRowElement = unsafeCastGObject . toGObject
@@ -2779,6 +3338,12 @@ type IsHTMLTableRowElement o = HTMLTableRowElementClass o
 newtype HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionElement)
 
 unHTMLTableSectionElement (HTMLTableSectionElement o) = o
+
+instance ToJSRef HTMLTableSectionElement where
+  toJSRef = return . unHTMLTableSectionElement
+
+instance FromJSRef HTMLTableSectionElement where
+  fromJSRef = return . fmap HTMLTableSectionElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLTableSectionElement o
 toHTMLTableSectionElement :: IsHTMLTableSectionElement o => o -> HTMLTableSectionElement
@@ -2807,6 +3372,12 @@ newtype HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement)
 
 unHTMLTextAreaElement (HTMLTextAreaElement o) = o
 
+instance ToJSRef HTMLTextAreaElement where
+  toJSRef = return . unHTMLTextAreaElement
+
+instance FromJSRef HTMLTextAreaElement where
+  fromJSRef = return . fmap HTMLTextAreaElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLTextAreaElement o
 toHTMLTextAreaElement :: IsHTMLTextAreaElement o => o -> HTMLTextAreaElement
 toHTMLTextAreaElement = unsafeCastGObject . toGObject
@@ -2833,6 +3404,12 @@ type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
 newtype HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement)
 
 unHTMLTitleElement (HTMLTitleElement o) = o
+
+instance ToJSRef HTMLTitleElement where
+  toJSRef = return . unHTMLTitleElement
+
+instance FromJSRef HTMLTitleElement where
+  fromJSRef = return . fmap HTMLTitleElement . maybeJSNull
 
 class IsHTMLElement o => IsHTMLTitleElement o
 toHTMLTitleElement :: IsHTMLTitleElement o => o -> HTMLTitleElement
@@ -2861,6 +3438,12 @@ newtype HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement)
 
 unHTMLUListElement (HTMLUListElement o) = o
 
+instance ToJSRef HTMLUListElement where
+  toJSRef = return . unHTMLUListElement
+
+instance FromJSRef HTMLUListElement where
+  fromJSRef = return . fmap HTMLUListElement . maybeJSNull
+
 class IsHTMLElement o => IsHTMLUListElement o
 toHTMLUListElement :: IsHTMLUListElement o => o -> HTMLUListElement
 toHTMLUListElement = unsafeCastGObject . toGObject
@@ -2887,6 +3470,12 @@ type IsHTMLUListElement o = HTMLUListElementClass o
 newtype HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement)
 
 unHTMLVideoElement (HTMLVideoElement o) = o
+
+instance ToJSRef HTMLVideoElement where
+  toJSRef = return . unHTMLVideoElement
+
+instance FromJSRef HTMLVideoElement where
+  fromJSRef = return . fmap HTMLVideoElement . maybeJSNull
 
 class IsHTMLMediaElement o => IsHTMLVideoElement o
 toHTMLVideoElement :: IsHTMLVideoElement o => o -> HTMLVideoElement
@@ -2916,6 +3505,12 @@ newtype History = History (JSRef History)
 
 unHistory (History o) = o
 
+instance ToJSRef History where
+  toJSRef = return . unHistory
+
+instance FromJSRef History where
+  fromJSRef = return . fmap History . maybeJSNull
+
 class GObjectClass o => IsHistory o
 toHistory :: IsHistory o => o -> History
 toHistory = unsafeCastGObject . toGObject
@@ -2939,6 +3534,12 @@ type IsHistory o = HistoryClass o
 newtype KeyboardEvent = KeyboardEvent (JSRef KeyboardEvent)
 
 unKeyboardEvent (KeyboardEvent o) = o
+
+instance ToJSRef KeyboardEvent where
+  toJSRef = return . unKeyboardEvent
+
+instance FromJSRef KeyboardEvent where
+  fromJSRef = return . fmap KeyboardEvent . maybeJSNull
 
 class IsUIEvent o => IsKeyboardEvent o
 toKeyboardEvent :: IsKeyboardEvent o => o -> KeyboardEvent
@@ -2965,6 +3566,12 @@ newtype Location = Location (JSRef Location)
 
 unLocation (Location o) = o
 
+instance ToJSRef Location where
+  toJSRef = return . unLocation
+
+instance FromJSRef Location where
+  fromJSRef = return . fmap Location . maybeJSNull
+
 class GObjectClass o => IsLocation o
 toLocation :: IsLocation o => o -> Location
 toLocation = unsafeCastGObject . toGObject
@@ -2988,6 +3595,12 @@ type IsLocation o = LocationClass o
 newtype MediaError = MediaError (JSRef MediaError)
 
 unMediaError (MediaError o) = o
+
+instance ToJSRef MediaError where
+  toJSRef = return . unMediaError
+
+instance FromJSRef MediaError where
+  fromJSRef = return . fmap MediaError . maybeJSNull
 
 class GObjectClass o => IsMediaError o
 toMediaError :: IsMediaError o => o -> MediaError
@@ -3013,6 +3626,12 @@ newtype MediaList = MediaList (JSRef MediaList)
 
 unMediaList (MediaList o) = o
 
+instance ToJSRef MediaList where
+  toJSRef = return . unMediaList
+
+instance FromJSRef MediaList where
+  fromJSRef = return . fmap MediaList . maybeJSNull
+
 class GObjectClass o => IsMediaList o
 toMediaList :: IsMediaList o => o -> MediaList
 toMediaList = unsafeCastGObject . toGObject
@@ -3036,6 +3655,12 @@ type IsMediaList o = MediaListClass o
 newtype MediaQueryList = MediaQueryList (JSRef MediaQueryList)
 
 unMediaQueryList (MediaQueryList o) = o
+
+instance ToJSRef MediaQueryList where
+  toJSRef = return . unMediaQueryList
+
+instance FromJSRef MediaQueryList where
+  fromJSRef = return . fmap MediaQueryList . maybeJSNull
 
 class GObjectClass o => IsMediaQueryList o
 toMediaQueryList :: IsMediaQueryList o => o -> MediaQueryList
@@ -3061,6 +3686,12 @@ newtype MessagePort = MessagePort (JSRef MessagePort)
 
 unMessagePort (MessagePort o) = o
 
+instance ToJSRef MessagePort where
+  toJSRef = return . unMessagePort
+
+instance FromJSRef MessagePort where
+  fromJSRef = return . fmap MessagePort . maybeJSNull
+
 class GObjectClass o => IsMessagePort o
 toMessagePort :: IsMessagePort o => o -> MessagePort
 toMessagePort = unsafeCastGObject . toGObject
@@ -3084,6 +3715,12 @@ type IsMessagePort o = MessagePortClass o
 newtype MouseEvent = MouseEvent (JSRef MouseEvent)
 
 unMouseEvent (MouseEvent o) = o
+
+instance ToJSRef MouseEvent where
+  toJSRef = return . unMouseEvent
+
+instance FromJSRef MouseEvent where
+  fromJSRef = return . fmap MouseEvent . maybeJSNull
 
 class IsUIEvent o => IsMouseEvent o
 toMouseEvent :: IsMouseEvent o => o -> MouseEvent
@@ -3111,6 +3748,12 @@ newtype NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap)
 
 unNamedNodeMap (NamedNodeMap o) = o
 
+instance ToJSRef NamedNodeMap where
+  toJSRef = return . unNamedNodeMap
+
+instance FromJSRef NamedNodeMap where
+  fromJSRef = return . fmap NamedNodeMap . maybeJSNull
+
 class GObjectClass o => IsNamedNodeMap o
 toNamedNodeMap :: IsNamedNodeMap o => o -> NamedNodeMap
 toNamedNodeMap = unsafeCastGObject . toGObject
@@ -3134,6 +3777,12 @@ type IsNamedNodeMap o = NamedNodeMapClass o
 newtype Navigator = Navigator (JSRef Navigator)
 
 unNavigator (Navigator o) = o
+
+instance ToJSRef Navigator where
+  toJSRef = return . unNavigator
+
+instance FromJSRef Navigator where
+  fromJSRef = return . fmap Navigator . maybeJSNull
 
 class GObjectClass o => IsNavigator o
 toNavigator :: IsNavigator o => o -> Navigator
@@ -3159,6 +3808,12 @@ newtype Node = Node (JSRef Node)
 
 unNode (Node o) = o
 
+instance ToJSRef Node where
+  toJSRef = return . unNode
+
+instance FromJSRef Node where
+  fromJSRef = return . fmap Node . maybeJSNull
+
 class GObjectClass o => IsNode o
 toNode :: IsNode o => o -> Node
 toNode = unsafeCastGObject . toGObject
@@ -3182,6 +3837,12 @@ type IsNode o = NodeClass o
 newtype NodeFilter = NodeFilter (JSRef NodeFilter)
 
 unNodeFilter (NodeFilter o) = o
+
+instance ToJSRef NodeFilter where
+  toJSRef = return . unNodeFilter
+
+instance FromJSRef NodeFilter where
+  fromJSRef = return . fmap NodeFilter . maybeJSNull
 
 class GObjectClass o => IsNodeFilter o
 toNodeFilter :: IsNodeFilter o => o -> NodeFilter
@@ -3207,6 +3868,12 @@ newtype NodeIterator = NodeIterator (JSRef NodeIterator)
 
 unNodeIterator (NodeIterator o) = o
 
+instance ToJSRef NodeIterator where
+  toJSRef = return . unNodeIterator
+
+instance FromJSRef NodeIterator where
+  fromJSRef = return . fmap NodeIterator . maybeJSNull
+
 class GObjectClass o => IsNodeIterator o
 toNodeIterator :: IsNodeIterator o => o -> NodeIterator
 toNodeIterator = unsafeCastGObject . toGObject
@@ -3231,6 +3898,12 @@ newtype NodeList = NodeList (JSRef NodeList)
 
 unNodeList (NodeList o) = o
 
+instance ToJSRef NodeList where
+  toJSRef = return . unNodeList
+
+instance FromJSRef NodeList where
+  fromJSRef = return . fmap NodeList . maybeJSNull
+
 class GObjectClass o => IsNodeList o
 toNodeList :: IsNodeList o => o -> NodeList
 toNodeList = unsafeCastGObject . toGObject
@@ -3254,6 +3927,12 @@ type IsNodeList o = NodeListClass o
 newtype ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction)
 
 unProcessingInstruction (ProcessingInstruction o) = o
+
+instance ToJSRef ProcessingInstruction where
+  toJSRef = return . unProcessingInstruction
+
+instance FromJSRef ProcessingInstruction where
+  fromJSRef = return . fmap ProcessingInstruction . maybeJSNull
 
 class IsCharacterData o => IsProcessingInstruction o
 toProcessingInstruction :: IsProcessingInstruction o => o -> ProcessingInstruction
@@ -3281,6 +3960,12 @@ newtype DOMRange = DOMRange (JSRef DOMRange)
 
 unDOMRange (DOMRange o) = o
 
+instance ToJSRef DOMRange where
+  toJSRef = return . unDOMRange
+
+instance FromJSRef DOMRange where
+  fromJSRef = return . fmap DOMRange . maybeJSNull
+
 class GObjectClass o => IsDOMRange o
 toDOMRange :: IsDOMRange o => o -> DOMRange
 toDOMRange = unsafeCastGObject . toGObject
@@ -3304,6 +3989,12 @@ type IsDOMRange o = DOMRangeClass o
 newtype DOMScreen = DOMScreen (JSRef DOMScreen)
 
 unDOMScreen (DOMScreen o) = o
+
+instance ToJSRef DOMScreen where
+  toJSRef = return . unDOMScreen
+
+instance FromJSRef DOMScreen where
+  fromJSRef = return . fmap DOMScreen . maybeJSNull
 
 class GObjectClass o => IsDOMScreen o
 toDOMScreen :: IsDOMScreen o => o -> DOMScreen
@@ -3329,6 +4020,12 @@ newtype Storage = Storage (JSRef Storage)
 
 unStorage (Storage o) = o
 
+instance ToJSRef Storage where
+  toJSRef = return . unStorage
+
+instance FromJSRef Storage where
+  fromJSRef = return . fmap Storage . maybeJSNull
+
 class GObjectClass o => IsStorage o
 toStorage :: IsStorage o => o -> Storage
 toStorage = unsafeCastGObject . toGObject
@@ -3353,6 +4050,12 @@ newtype StorageInfo = StorageInfo (JSRef StorageInfo)
 
 unStorageInfo (StorageInfo o) = o
 
+instance ToJSRef StorageInfo where
+  toJSRef = return . unStorageInfo
+
+instance FromJSRef StorageInfo where
+  fromJSRef = return . fmap StorageInfo . maybeJSNull
+
 class GObjectClass o => IsStorageInfo o
 toStorageInfo :: IsStorageInfo o => o -> StorageInfo
 toStorageInfo = unsafeCastGObject . toGObject
@@ -3375,6 +4078,12 @@ gTypeStorageInfo = GType gTypeStorageInfo'
 newtype StyleMedia = StyleMedia (JSRef StyleMedia)
 
 unStyleMedia (StyleMedia o) = o
+
+instance ToJSRef StyleMedia where
+  toJSRef = return . unStyleMedia
+
+instance FromJSRef StyleMedia where
+  fromJSRef = return . fmap StyleMedia . maybeJSNull
 
 class GObjectClass o => IsStyleMedia o
 toStyleMedia :: IsStyleMedia o => o -> StyleMedia
@@ -3400,6 +4109,12 @@ newtype StyleSheet = StyleSheet (JSRef StyleSheet)
 
 unStyleSheet (StyleSheet o) = o
 
+instance ToJSRef StyleSheet where
+  toJSRef = return . unStyleSheet
+
+instance FromJSRef StyleSheet where
+  fromJSRef = return . fmap StyleSheet . maybeJSNull
+
 class GObjectClass o => IsStyleSheet o
 toStyleSheet :: IsStyleSheet o => o -> StyleSheet
 toStyleSheet = unsafeCastGObject . toGObject
@@ -3424,6 +4139,12 @@ newtype StyleSheetList = StyleSheetList (JSRef StyleSheetList)
 
 unStyleSheetList (StyleSheetList o) = o
 
+instance ToJSRef StyleSheetList where
+  toJSRef = return . unStyleSheetList
+
+instance FromJSRef StyleSheetList where
+  fromJSRef = return . fmap StyleSheetList . maybeJSNull
+
 class GObjectClass o => IsStyleSheetList o
 toStyleSheetList :: IsStyleSheetList o => o -> StyleSheetList
 toStyleSheetList = unsafeCastGObject . toGObject
@@ -3447,6 +4168,12 @@ type IsStyleSheetList o = StyleSheetListClass o
 newtype Text = Text (JSRef Text)
 
 unText (Text o) = o
+
+instance ToJSRef Text where
+  toJSRef = return . unText
+
+instance FromJSRef Text where
+  fromJSRef = return . fmap Text . maybeJSNull
 
 class IsCharacterData o => IsText o
 toText :: IsText o => o -> Text
@@ -3474,6 +4201,12 @@ newtype TimeRanges = TimeRanges (JSRef TimeRanges)
 
 unTimeRanges (TimeRanges o) = o
 
+instance ToJSRef TimeRanges where
+  toJSRef = return . unTimeRanges
+
+instance FromJSRef TimeRanges where
+  fromJSRef = return . fmap TimeRanges . maybeJSNull
+
 class GObjectClass o => IsTimeRanges o
 toTimeRanges :: IsTimeRanges o => o -> TimeRanges
 toTimeRanges = unsafeCastGObject . toGObject
@@ -3498,6 +4231,12 @@ newtype TreeWalker = TreeWalker (JSRef TreeWalker)
 
 unTreeWalker (TreeWalker o) = o
 
+instance ToJSRef TreeWalker where
+  toJSRef = return . unTreeWalker
+
+instance FromJSRef TreeWalker where
+  fromJSRef = return . fmap TreeWalker . maybeJSNull
+
 class GObjectClass o => IsTreeWalker o
 toTreeWalker :: IsTreeWalker o => o -> TreeWalker
 toTreeWalker = unsafeCastGObject . toGObject
@@ -3521,6 +4260,12 @@ type IsTreeWalker o = TreeWalkerClass o
 newtype UIEvent = UIEvent (JSRef UIEvent)
 
 unUIEvent (UIEvent o) = o
+
+instance ToJSRef UIEvent where
+  toJSRef = return . unUIEvent
+
+instance FromJSRef UIEvent where
+  fromJSRef = return . fmap UIEvent . maybeJSNull
 
 class IsEvent o => IsUIEvent o
 toUIEvent :: IsUIEvent o => o -> UIEvent
@@ -3547,6 +4292,12 @@ newtype ValidityState = ValidityState (JSRef ValidityState)
 
 unValidityState (ValidityState o) = o
 
+instance ToJSRef ValidityState where
+  toJSRef = return . unValidityState
+
+instance FromJSRef ValidityState where
+  fromJSRef = return . fmap ValidityState . maybeJSNull
+
 class GObjectClass o => IsValidityState o
 toValidityState :: IsValidityState o => o -> ValidityState
 toValidityState = unsafeCastGObject . toGObject
@@ -3570,6 +4321,12 @@ type IsValidityState o = ValidityStateClass o
 newtype WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow)
 
 unWebKitNamedFlow (WebKitNamedFlow o) = o
+
+instance ToJSRef WebKitNamedFlow where
+  toJSRef = return . unWebKitNamedFlow
+
+instance FromJSRef WebKitNamedFlow where
+  fromJSRef = return . fmap WebKitNamedFlow . maybeJSNull
 
 class GObjectClass o => IsWebKitNamedFlow o
 toWebKitNamedFlow :: IsWebKitNamedFlow o => o -> WebKitNamedFlow
@@ -3595,6 +4352,12 @@ newtype WebKitPoint = WebKitPoint (JSRef WebKitPoint)
 
 unWebKitPoint (WebKitPoint o) = o
 
+instance ToJSRef WebKitPoint where
+  toJSRef = return . unWebKitPoint
+
+instance FromJSRef WebKitPoint where
+  fromJSRef = return . fmap WebKitPoint . maybeJSNull
+
 class GObjectClass o => IsWebKitPoint o
 toWebKitPoint :: IsWebKitPoint o => o -> WebKitPoint
 toWebKitPoint = unsafeCastGObject . toGObject
@@ -3618,6 +4381,12 @@ type IsWebKitPoint o = WebKitPointClass o
 newtype XPathExpression = XPathExpression (JSRef XPathExpression)
 
 unXPathExpression (XPathExpression o) = o
+
+instance ToJSRef XPathExpression where
+  toJSRef = return . unXPathExpression
+
+instance FromJSRef XPathExpression where
+  fromJSRef = return . fmap XPathExpression . maybeJSNull
 
 class GObjectClass o => IsXPathExpression o
 toXPathExpression :: IsXPathExpression o => o -> XPathExpression
@@ -3643,6 +4412,12 @@ newtype XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver)
 
 unXPathNSResolver (XPathNSResolver o) = o
 
+instance ToJSRef XPathNSResolver where
+  toJSRef = return . unXPathNSResolver
+
+instance FromJSRef XPathNSResolver where
+  fromJSRef = return . fmap XPathNSResolver . maybeJSNull
+
 class GObjectClass o => IsXPathNSResolver o
 toXPathNSResolver :: IsXPathNSResolver o => o -> XPathNSResolver
 toXPathNSResolver = unsafeCastGObject . toGObject
@@ -3666,6 +4441,12 @@ type IsXPathNSResolver o = XPathNSResolverClass o
 newtype XPathResult = XPathResult (JSRef XPathResult)
 
 unXPathResult (XPathResult o) = o
+
+instance ToJSRef XPathResult where
+  toJSRef = return . unXPathResult
+
+instance FromJSRef XPathResult where
+  fromJSRef = return . fmap XPathResult . maybeJSNull
 
 class GObjectClass o => IsXPathResult o
 toXPathResult :: IsXPathResult o => o -> XPathResult
