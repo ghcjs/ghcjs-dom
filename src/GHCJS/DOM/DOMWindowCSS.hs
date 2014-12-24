@@ -9,7 +9,7 @@ module GHCJS.DOM.DOMWindowCSS
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import GHCJS.Marshal.Pure
+import GHCJS.Marshal
 import Data.Int
 import Data.Word
 import GHCJS.DOM.Types

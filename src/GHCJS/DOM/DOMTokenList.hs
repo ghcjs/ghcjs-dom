@@ -13,7 +13,7 @@ module GHCJS.DOM.DOMTokenList
        where
 import GHCJS.Types
 import GHCJS.Foreign
-import GHCJS.Marshal.Pure
+import GHCJS.Marshal
 import Data.Int
 import Data.Word
 import GHCJS.DOM.Types
@@ -47,27 +47,30 @@ domTokenListContains self token
  
 foreign import javascript unsafe "$1[\"add\"].apply($1, $2)"
         ghcjs_dom_dom_token_list_add ::
-        JSRef DOMTokenList -> JSArray JSString -> IO ()
+        JSRef DOMTokenList -> JSRef [a] -> IO ()
  
 domTokenListAdd ::
                 (IsDOMTokenList self, ToJSString tokens) =>
                   self -> [tokens] -> IO ()
 domTokenListAdd self tokens
-  = ghcjs_dom_dom_token_list_add
-      (unDOMTokenList (toDOMTokenList self))
-      (ptoJSRefListOf (map toJSString tokens))
+  = toJSRef tokens >>=
+      \ tokens' ->
+        ghcjs_dom_dom_token_list_add (unDOMTokenList (toDOMTokenList self))
+          tokens'
  
 foreign import javascript unsafe "$1[\"remove\"].apply($1, $2)"
         ghcjs_dom_dom_token_list_remove ::
-        JSRef DOMTokenList -> JSArray JSString -> IO ()
+        JSRef DOMTokenList -> JSRef [a] -> IO ()
  
 domTokenListRemove ::
                    (IsDOMTokenList self, ToJSString tokens) =>
                      self -> [tokens] -> IO ()
 domTokenListRemove self tokens
-  = ghcjs_dom_dom_token_list_remove
-      (unDOMTokenList (toDOMTokenList self))
-      (ptoJSRefListOf (map toJSString tokens))
+  = toJSRef tokens >>=
+      \ tokens' ->
+        ghcjs_dom_dom_token_list_remove
+          (unDOMTokenList (toDOMTokenList self))
+          tokens'
  
 foreign import javascript unsafe "($1[\"toggle\"]($2, $3) ? 1 : 0)"
         ghcjs_dom_dom_token_list_toggle ::

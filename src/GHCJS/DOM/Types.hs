@@ -323,11 +323,19 @@ data GObject = GObject (JSRef GObject)
 
 unGObject (GObject o) = o
 
-class GObjectClass o where
+class (ToJSRef o, FromJSRef o) => GObjectClass o where
   -- | Safe upcast.
   toGObject         :: o -> GObject
   -- | Unchecked downcast.
   unsafeCastGObject :: GObject -> o
+
+instance ToJSRef GObject where
+  toJSRef = return . unGObject
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef GObject where
+  fromJSRef = return . fmap GObject . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 instance GObjectClass GObject where
   toGObject = id
@@ -372,9 +380,11 @@ unDOMAttr (DOMAttr o) = o
 
 instance ToJSRef DOMAttr where
   toJSRef = return . unDOMAttr
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMAttr where
   fromJSRef = return . fmap DOMAttr . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsNode o => IsDOMAttr o
 toDOMAttr :: IsDOMAttr o => o -> DOMAttr
@@ -403,9 +413,11 @@ unBarProp (BarProp o) = o
 
 instance ToJSRef BarProp where
   toJSRef = return . unBarProp
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef BarProp where
   fromJSRef = return . fmap BarProp . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsBarProp o
 toBarProp :: IsBarProp o => o -> BarProp
@@ -432,9 +444,11 @@ unBlob (Blob o) = o
 
 instance ToJSRef Blob where
   toJSRef = return . unBlob
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Blob where
   fromJSRef = return . fmap Blob . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsBlob o
 toBlob :: IsBlob o => o -> Blob
@@ -462,9 +476,11 @@ unCDATASection (CDATASection o) = o
 
 instance ToJSRef CDATASection where
   toJSRef = return . unCDATASection
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef CDATASection where
   fromJSRef = return . fmap CDATASection . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsText o => IsCDATASection o
 toCDATASection :: IsCDATASection o => o -> CDATASection
@@ -495,9 +511,11 @@ unCSSRule (CSSRule o) = o
 
 instance ToJSRef CSSRule where
   toJSRef = return . unCSSRule
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef CSSRule where
   fromJSRef = return . fmap CSSRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsCSSRule o
 toCSSRule :: IsCSSRule o => o -> CSSRule
@@ -525,9 +543,11 @@ unCSSRuleList (CSSRuleList o) = o
 
 instance ToJSRef CSSRuleList where
   toJSRef = return . unCSSRuleList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef CSSRuleList where
   fromJSRef = return . fmap CSSRuleList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsCSSRuleList o
 toCSSRuleList :: IsCSSRuleList o => o -> CSSRuleList
@@ -555,9 +575,11 @@ unCSSStyleDeclaration (CSSStyleDeclaration o) = o
 
 instance ToJSRef CSSStyleDeclaration where
   toJSRef = return . unCSSStyleDeclaration
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef CSSStyleDeclaration where
   fromJSRef = return . fmap CSSStyleDeclaration . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsCSSStyleDeclaration o
 toCSSStyleDeclaration :: IsCSSStyleDeclaration o => o -> CSSStyleDeclaration
@@ -585,9 +607,11 @@ unCSSStyleSheet (CSSStyleSheet o) = o
 
 instance ToJSRef CSSStyleSheet where
   toJSRef = return . unCSSStyleSheet
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef CSSStyleSheet where
   fromJSRef = return . fmap CSSStyleSheet . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsStyleSheet o => IsCSSStyleSheet o
 toCSSStyleSheet :: IsCSSStyleSheet o => o -> CSSStyleSheet
@@ -616,9 +640,11 @@ unCSSValue (CSSValue o) = o
 
 instance ToJSRef CSSValue where
   toJSRef = return . unCSSValue
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef CSSValue where
   fromJSRef = return . fmap CSSValue . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsCSSValue o
 toCSSValue :: IsCSSValue o => o -> CSSValue
@@ -646,9 +672,11 @@ unCharacterData (CharacterData o) = o
 
 instance ToJSRef CharacterData where
   toJSRef = return . unCharacterData
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef CharacterData where
   fromJSRef = return . fmap CharacterData . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsNode o => IsCharacterData o
 toCharacterData :: IsCharacterData o => o -> CharacterData
@@ -677,9 +705,11 @@ unComment (Comment o) = o
 
 instance ToJSRef Comment where
   toJSRef = return . unComment
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Comment where
   fromJSRef = return . fmap Comment . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsCharacterData o => IsComment o
 toComment :: IsComment o => o -> Comment
@@ -709,9 +739,11 @@ unDOMApplicationCache (DOMApplicationCache o) = o
 
 instance ToJSRef DOMApplicationCache where
   toJSRef = return . unDOMApplicationCache
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMApplicationCache where
   fromJSRef = return . fmap DOMApplicationCache . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMApplicationCache o
 toDOMApplicationCache :: IsDOMApplicationCache o => o -> DOMApplicationCache
@@ -739,9 +771,11 @@ unDOMImplementation (DOMImplementation o) = o
 
 instance ToJSRef DOMImplementation where
   toJSRef = return . unDOMImplementation
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMImplementation where
   fromJSRef = return . fmap DOMImplementation . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMImplementation o
 toDOMImplementation :: IsDOMImplementation o => o -> DOMImplementation
@@ -769,9 +803,11 @@ unDOMMimeType (DOMMimeType o) = o
 
 instance ToJSRef DOMMimeType where
   toJSRef = return . unDOMMimeType
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMMimeType where
   fromJSRef = return . fmap DOMMimeType . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMMimeType o
 toDOMMimeType :: IsDOMMimeType o => o -> DOMMimeType
@@ -799,9 +835,11 @@ unDOMMimeTypeArray (DOMMimeTypeArray o) = o
 
 instance ToJSRef DOMMimeTypeArray where
   toJSRef = return . unDOMMimeTypeArray
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMMimeTypeArray where
   fromJSRef = return . fmap DOMMimeTypeArray . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMMimeTypeArray o
 toDOMMimeTypeArray :: IsDOMMimeTypeArray o => o -> DOMMimeTypeArray
@@ -829,9 +867,11 @@ unDOMNamedFlowCollection (DOMNamedFlowCollection o) = o
 
 instance ToJSRef DOMNamedFlowCollection where
   toJSRef = return . unDOMNamedFlowCollection
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMNamedFlowCollection where
   fromJSRef = return . fmap DOMNamedFlowCollection . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMNamedFlowCollection o
 toDOMNamedFlowCollection :: IsDOMNamedFlowCollection o => o -> DOMNamedFlowCollection
@@ -858,9 +898,11 @@ unDOMPlugin (DOMPlugin o) = o
 
 instance ToJSRef DOMPlugin where
   toJSRef = return . unDOMPlugin
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMPlugin where
   fromJSRef = return . fmap DOMPlugin . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMPlugin o
 toDOMPlugin :: IsDOMPlugin o => o -> DOMPlugin
@@ -888,9 +930,11 @@ unDOMPluginArray (DOMPluginArray o) = o
 
 instance ToJSRef DOMPluginArray where
   toJSRef = return . unDOMPluginArray
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMPluginArray where
   fromJSRef = return . fmap DOMPluginArray . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMPluginArray o
 toDOMPluginArray :: IsDOMPluginArray o => o -> DOMPluginArray
@@ -918,9 +962,11 @@ unDOMSecurityPolicy (DOMSecurityPolicy o) = o
 
 instance ToJSRef DOMSecurityPolicy where
   toJSRef = return . unDOMSecurityPolicy
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMSecurityPolicy where
   fromJSRef = return . fmap DOMSecurityPolicy . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMSecurityPolicy o
 toDOMSecurityPolicy :: IsDOMSecurityPolicy o => o -> DOMSecurityPolicy
@@ -947,9 +993,11 @@ unDOMSelection (DOMSelection o) = o
 
 instance ToJSRef DOMSelection where
   toJSRef = return . unDOMSelection
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMSelection where
   fromJSRef = return . fmap DOMSelection . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMSelection o
 toDOMSelection :: IsDOMSelection o => o -> DOMSelection
@@ -977,9 +1025,11 @@ unDOMSettableTokenList (DOMSettableTokenList o) = o
 
 instance ToJSRef DOMSettableTokenList where
   toJSRef = return . unDOMSettableTokenList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMSettableTokenList where
   fromJSRef = return . fmap DOMSettableTokenList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsDOMTokenList o => IsDOMSettableTokenList o
 toDOMSettableTokenList :: IsDOMSettableTokenList o => o -> DOMSettableTokenList
@@ -1008,9 +1058,11 @@ unDOMStringList (DOMStringList o) = o
 
 instance ToJSRef DOMStringList where
   toJSRef = return . unDOMStringList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMStringList where
   fromJSRef = return . fmap DOMStringList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMStringList o
 toDOMStringList :: IsDOMStringList o => o -> DOMStringList
@@ -1038,9 +1090,11 @@ unDOMTokenList (DOMTokenList o) = o
 
 instance ToJSRef DOMTokenList where
   toJSRef = return . unDOMTokenList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMTokenList where
   fromJSRef = return . fmap DOMTokenList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMTokenList o
 toDOMTokenList :: IsDOMTokenList o => o -> DOMTokenList
@@ -1068,9 +1122,11 @@ unDOMWindow (DOMWindow o) = o
 
 instance ToJSRef DOMWindow where
   toJSRef = return . unDOMWindow
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMWindow where
   fromJSRef = return . fmap DOMWindow . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMWindow o
 toDOMWindow :: IsDOMWindow o => o -> DOMWindow
@@ -1098,9 +1154,11 @@ unDOMWindowCSS (DOMWindowCSS o) = o
 
 instance ToJSRef DOMWindowCSS where
   toJSRef = return . unDOMWindowCSS
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMWindowCSS where
   fromJSRef = return . fmap DOMWindowCSS . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMWindowCSS o
 toDOMWindowCSS :: IsDOMWindowCSS o => o -> DOMWindowCSS
@@ -1127,9 +1185,11 @@ unDocument (Document o) = o
 
 instance ToJSRef Document where
   toJSRef = return . unDocument
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Document where
   fromJSRef = return . fmap Document . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsNode o => IsDocument o
 toDocument :: IsDocument o => o -> Document
@@ -1158,9 +1218,11 @@ unDocumentFragment (DocumentFragment o) = o
 
 instance ToJSRef DocumentFragment where
   toJSRef = return . unDocumentFragment
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DocumentFragment where
   fromJSRef = return . fmap DocumentFragment . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsNode o => IsDocumentFragment o
 toDocumentFragment :: IsDocumentFragment o => o -> DocumentFragment
@@ -1189,9 +1251,11 @@ unDocumentType (DocumentType o) = o
 
 instance ToJSRef DocumentType where
   toJSRef = return . unDocumentType
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DocumentType where
   fromJSRef = return . fmap DocumentType . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsNode o => IsDocumentType o
 toDocumentType :: IsDocumentType o => o -> DocumentType
@@ -1220,9 +1284,11 @@ unElement (Element o) = o
 
 instance ToJSRef Element where
   toJSRef = return . unElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Element where
   fromJSRef = return . fmap Element . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsNode o => IsElement o
 toElement :: IsElement o => o -> Element
@@ -1251,9 +1317,11 @@ unEntityReference (EntityReference o) = o
 
 instance ToJSRef EntityReference where
   toJSRef = return . unEntityReference
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef EntityReference where
   fromJSRef = return . fmap EntityReference . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsNode o => IsEntityReference o
 toEntityReference :: IsEntityReference o => o -> EntityReference
@@ -1282,9 +1350,11 @@ unEvent (Event o) = o
 
 instance ToJSRef Event where
   toJSRef = return . unEvent
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Event where
   fromJSRef = return . fmap Event . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsEvent o
 toEvent :: IsEvent o => o -> Event
@@ -1312,9 +1382,11 @@ unEventTarget (EventTarget o) = o
 
 instance ToJSRef EventTarget where
   toJSRef = return . unEventTarget
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef EventTarget where
   fromJSRef = return . fmap EventTarget . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsEventTarget o
 toEventTarget :: IsEventTarget o => o -> EventTarget
@@ -1342,9 +1414,11 @@ unFile (File o) = o
 
 instance ToJSRef File where
   toJSRef = return . unFile
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef File where
   fromJSRef = return . fmap File . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsBlob o => IsFile o
 toFile :: IsFile o => o -> File
@@ -1373,9 +1447,11 @@ unFileList (FileList o) = o
 
 instance ToJSRef FileList where
   toJSRef = return . unFileList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef FileList where
   fromJSRef = return . fmap FileList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsFileList o
 toFileList :: IsFileList o => o -> FileList
@@ -1403,9 +1479,11 @@ unGeolocation (Geolocation o) = o
 
 instance ToJSRef Geolocation where
   toJSRef = return . unGeolocation
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Geolocation where
   fromJSRef = return . fmap Geolocation . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsGeolocation o
 toGeolocation :: IsGeolocation o => o -> Geolocation
@@ -1433,9 +1511,11 @@ unHTMLAnchorElement (HTMLAnchorElement o) = o
 
 instance ToJSRef HTMLAnchorElement where
   toJSRef = return . unHTMLAnchorElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLAnchorElement where
   fromJSRef = return . fmap HTMLAnchorElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLAnchorElement o
 toHTMLAnchorElement :: IsHTMLAnchorElement o => o -> HTMLAnchorElement
@@ -1466,9 +1546,11 @@ unHTMLAppletElement (HTMLAppletElement o) = o
 
 instance ToJSRef HTMLAppletElement where
   toJSRef = return . unHTMLAppletElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLAppletElement where
   fromJSRef = return . fmap HTMLAppletElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLAppletElement o
 toHTMLAppletElement :: IsHTMLAppletElement o => o -> HTMLAppletElement
@@ -1499,9 +1581,11 @@ unHTMLAreaElement (HTMLAreaElement o) = o
 
 instance ToJSRef HTMLAreaElement where
   toJSRef = return . unHTMLAreaElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLAreaElement where
   fromJSRef = return . fmap HTMLAreaElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLAreaElement o
 toHTMLAreaElement :: IsHTMLAreaElement o => o -> HTMLAreaElement
@@ -1532,9 +1616,11 @@ unHTMLAudioElement (HTMLAudioElement o) = o
 
 instance ToJSRef HTMLAudioElement where
   toJSRef = return . unHTMLAudioElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLAudioElement where
   fromJSRef = return . fmap HTMLAudioElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLMediaElement o => IsHTMLAudioElement o
 toHTMLAudioElement :: IsHTMLAudioElement o => o -> HTMLAudioElement
@@ -1566,9 +1652,11 @@ unHTMLBRElement (HTMLBRElement o) = o
 
 instance ToJSRef HTMLBRElement where
   toJSRef = return . unHTMLBRElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLBRElement where
   fromJSRef = return . fmap HTMLBRElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLBRElement o
 toHTMLBRElement :: IsHTMLBRElement o => o -> HTMLBRElement
@@ -1599,9 +1687,11 @@ unHTMLBaseElement (HTMLBaseElement o) = o
 
 instance ToJSRef HTMLBaseElement where
   toJSRef = return . unHTMLBaseElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLBaseElement where
   fromJSRef = return . fmap HTMLBaseElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLBaseElement o
 toHTMLBaseElement :: IsHTMLBaseElement o => o -> HTMLBaseElement
@@ -1632,9 +1722,11 @@ unHTMLBaseFontElement (HTMLBaseFontElement o) = o
 
 instance ToJSRef HTMLBaseFontElement where
   toJSRef = return . unHTMLBaseFontElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLBaseFontElement where
   fromJSRef = return . fmap HTMLBaseFontElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLBaseFontElement o
 toHTMLBaseFontElement :: IsHTMLBaseFontElement o => o -> HTMLBaseFontElement
@@ -1665,9 +1757,11 @@ unHTMLBodyElement (HTMLBodyElement o) = o
 
 instance ToJSRef HTMLBodyElement where
   toJSRef = return . unHTMLBodyElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLBodyElement where
   fromJSRef = return . fmap HTMLBodyElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLBodyElement o
 toHTMLBodyElement :: IsHTMLBodyElement o => o -> HTMLBodyElement
@@ -1698,9 +1792,11 @@ unHTMLButtonElement (HTMLButtonElement o) = o
 
 instance ToJSRef HTMLButtonElement where
   toJSRef = return . unHTMLButtonElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLButtonElement where
   fromJSRef = return . fmap HTMLButtonElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLButtonElement o
 toHTMLButtonElement :: IsHTMLButtonElement o => o -> HTMLButtonElement
@@ -1731,9 +1827,11 @@ unHTMLCanvasElement (HTMLCanvasElement o) = o
 
 instance ToJSRef HTMLCanvasElement where
   toJSRef = return . unHTMLCanvasElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLCanvasElement where
   fromJSRef = return . fmap HTMLCanvasElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLCanvasElement o
 toHTMLCanvasElement :: IsHTMLCanvasElement o => o -> HTMLCanvasElement
@@ -1764,9 +1862,11 @@ unHTMLCollection (HTMLCollection o) = o
 
 instance ToJSRef HTMLCollection where
   toJSRef = return . unHTMLCollection
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLCollection where
   fromJSRef = return . fmap HTMLCollection . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsHTMLCollection o
 toHTMLCollection :: IsHTMLCollection o => o -> HTMLCollection
@@ -1794,9 +1894,11 @@ unHTMLDListElement (HTMLDListElement o) = o
 
 instance ToJSRef HTMLDListElement where
   toJSRef = return . unHTMLDListElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLDListElement where
   fromJSRef = return . fmap HTMLDListElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLDListElement o
 toHTMLDListElement :: IsHTMLDListElement o => o -> HTMLDListElement
@@ -1827,9 +1929,11 @@ unHTMLDetailsElement (HTMLDetailsElement o) = o
 
 instance ToJSRef HTMLDetailsElement where
   toJSRef = return . unHTMLDetailsElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLDetailsElement where
   fromJSRef = return . fmap HTMLDetailsElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLDetailsElement o
 toHTMLDetailsElement :: IsHTMLDetailsElement o => o -> HTMLDetailsElement
@@ -1860,9 +1964,11 @@ unHTMLDirectoryElement (HTMLDirectoryElement o) = o
 
 instance ToJSRef HTMLDirectoryElement where
   toJSRef = return . unHTMLDirectoryElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLDirectoryElement where
   fromJSRef = return . fmap HTMLDirectoryElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLDirectoryElement o
 toHTMLDirectoryElement :: IsHTMLDirectoryElement o => o -> HTMLDirectoryElement
@@ -1893,9 +1999,11 @@ unHTMLDivElement (HTMLDivElement o) = o
 
 instance ToJSRef HTMLDivElement where
   toJSRef = return . unHTMLDivElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLDivElement where
   fromJSRef = return . fmap HTMLDivElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLDivElement o
 toHTMLDivElement :: IsHTMLDivElement o => o -> HTMLDivElement
@@ -1926,9 +2034,11 @@ unHTMLDocument (HTMLDocument o) = o
 
 instance ToJSRef HTMLDocument where
   toJSRef = return . unHTMLDocument
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLDocument where
   fromJSRef = return . fmap HTMLDocument . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsDocument o => IsHTMLDocument o
 toHTMLDocument :: IsHTMLDocument o => o -> HTMLDocument
@@ -1958,9 +2068,11 @@ unHTMLElement (HTMLElement o) = o
 
 instance ToJSRef HTMLElement where
   toJSRef = return . unHTMLElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLElement where
   fromJSRef = return . fmap HTMLElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsElement o => IsHTMLElement o
 toHTMLElement :: IsHTMLElement o => o -> HTMLElement
@@ -1990,9 +2102,11 @@ unHTMLEmbedElement (HTMLEmbedElement o) = o
 
 instance ToJSRef HTMLEmbedElement where
   toJSRef = return . unHTMLEmbedElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLEmbedElement where
   fromJSRef = return . fmap HTMLEmbedElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLEmbedElement o
 toHTMLEmbedElement :: IsHTMLEmbedElement o => o -> HTMLEmbedElement
@@ -2023,9 +2137,11 @@ unHTMLFieldSetElement (HTMLFieldSetElement o) = o
 
 instance ToJSRef HTMLFieldSetElement where
   toJSRef = return . unHTMLFieldSetElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLFieldSetElement where
   fromJSRef = return . fmap HTMLFieldSetElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLFieldSetElement o
 toHTMLFieldSetElement :: IsHTMLFieldSetElement o => o -> HTMLFieldSetElement
@@ -2056,9 +2172,11 @@ unHTMLFontElement (HTMLFontElement o) = o
 
 instance ToJSRef HTMLFontElement where
   toJSRef = return . unHTMLFontElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLFontElement where
   fromJSRef = return . fmap HTMLFontElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLFontElement o
 toHTMLFontElement :: IsHTMLFontElement o => o -> HTMLFontElement
@@ -2089,9 +2207,11 @@ unHTMLFormElement (HTMLFormElement o) = o
 
 instance ToJSRef HTMLFormElement where
   toJSRef = return . unHTMLFormElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLFormElement where
   fromJSRef = return . fmap HTMLFormElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLFormElement o
 toHTMLFormElement :: IsHTMLFormElement o => o -> HTMLFormElement
@@ -2122,9 +2242,11 @@ unHTMLFrameElement (HTMLFrameElement o) = o
 
 instance ToJSRef HTMLFrameElement where
   toJSRef = return . unHTMLFrameElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLFrameElement where
   fromJSRef = return . fmap HTMLFrameElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLFrameElement o
 toHTMLFrameElement :: IsHTMLFrameElement o => o -> HTMLFrameElement
@@ -2155,9 +2277,11 @@ unHTMLFrameSetElement (HTMLFrameSetElement o) = o
 
 instance ToJSRef HTMLFrameSetElement where
   toJSRef = return . unHTMLFrameSetElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLFrameSetElement where
   fromJSRef = return . fmap HTMLFrameSetElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLFrameSetElement o
 toHTMLFrameSetElement :: IsHTMLFrameSetElement o => o -> HTMLFrameSetElement
@@ -2188,9 +2312,11 @@ unHTMLHRElement (HTMLHRElement o) = o
 
 instance ToJSRef HTMLHRElement where
   toJSRef = return . unHTMLHRElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLHRElement where
   fromJSRef = return . fmap HTMLHRElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLHRElement o
 toHTMLHRElement :: IsHTMLHRElement o => o -> HTMLHRElement
@@ -2221,9 +2347,11 @@ unHTMLHeadElement (HTMLHeadElement o) = o
 
 instance ToJSRef HTMLHeadElement where
   toJSRef = return . unHTMLHeadElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLHeadElement where
   fromJSRef = return . fmap HTMLHeadElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLHeadElement o
 toHTMLHeadElement :: IsHTMLHeadElement o => o -> HTMLHeadElement
@@ -2254,9 +2382,11 @@ unHTMLHeadingElement (HTMLHeadingElement o) = o
 
 instance ToJSRef HTMLHeadingElement where
   toJSRef = return . unHTMLHeadingElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLHeadingElement where
   fromJSRef = return . fmap HTMLHeadingElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLHeadingElement o
 toHTMLHeadingElement :: IsHTMLHeadingElement o => o -> HTMLHeadingElement
@@ -2287,9 +2417,11 @@ unHTMLHtmlElement (HTMLHtmlElement o) = o
 
 instance ToJSRef HTMLHtmlElement where
   toJSRef = return . unHTMLHtmlElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLHtmlElement where
   fromJSRef = return . fmap HTMLHtmlElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLHtmlElement o
 toHTMLHtmlElement :: IsHTMLHtmlElement o => o -> HTMLHtmlElement
@@ -2320,9 +2452,11 @@ unHTMLIFrameElement (HTMLIFrameElement o) = o
 
 instance ToJSRef HTMLIFrameElement where
   toJSRef = return . unHTMLIFrameElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLIFrameElement where
   fromJSRef = return . fmap HTMLIFrameElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLIFrameElement o
 toHTMLIFrameElement :: IsHTMLIFrameElement o => o -> HTMLIFrameElement
@@ -2353,9 +2487,11 @@ unHTMLImageElement (HTMLImageElement o) = o
 
 instance ToJSRef HTMLImageElement where
   toJSRef = return . unHTMLImageElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLImageElement where
   fromJSRef = return . fmap HTMLImageElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLImageElement o
 toHTMLImageElement :: IsHTMLImageElement o => o -> HTMLImageElement
@@ -2386,9 +2522,11 @@ unHTMLInputElement (HTMLInputElement o) = o
 
 instance ToJSRef HTMLInputElement where
   toJSRef = return . unHTMLInputElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLInputElement where
   fromJSRef = return . fmap HTMLInputElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLInputElement o
 toHTMLInputElement :: IsHTMLInputElement o => o -> HTMLInputElement
@@ -2419,9 +2557,11 @@ unHTMLKeygenElement (HTMLKeygenElement o) = o
 
 instance ToJSRef HTMLKeygenElement where
   toJSRef = return . unHTMLKeygenElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLKeygenElement where
   fromJSRef = return . fmap HTMLKeygenElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLKeygenElement o
 toHTMLKeygenElement :: IsHTMLKeygenElement o => o -> HTMLKeygenElement
@@ -2452,9 +2592,11 @@ unHTMLLIElement (HTMLLIElement o) = o
 
 instance ToJSRef HTMLLIElement where
   toJSRef = return . unHTMLLIElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLLIElement where
   fromJSRef = return . fmap HTMLLIElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLLIElement o
 toHTMLLIElement :: IsHTMLLIElement o => o -> HTMLLIElement
@@ -2485,9 +2627,11 @@ unHTMLLabelElement (HTMLLabelElement o) = o
 
 instance ToJSRef HTMLLabelElement where
   toJSRef = return . unHTMLLabelElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLLabelElement where
   fromJSRef = return . fmap HTMLLabelElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLLabelElement o
 toHTMLLabelElement :: IsHTMLLabelElement o => o -> HTMLLabelElement
@@ -2518,9 +2662,11 @@ unHTMLLegendElement (HTMLLegendElement o) = o
 
 instance ToJSRef HTMLLegendElement where
   toJSRef = return . unHTMLLegendElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLLegendElement where
   fromJSRef = return . fmap HTMLLegendElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLLegendElement o
 toHTMLLegendElement :: IsHTMLLegendElement o => o -> HTMLLegendElement
@@ -2551,9 +2697,11 @@ unHTMLLinkElement (HTMLLinkElement o) = o
 
 instance ToJSRef HTMLLinkElement where
   toJSRef = return . unHTMLLinkElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLLinkElement where
   fromJSRef = return . fmap HTMLLinkElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLLinkElement o
 toHTMLLinkElement :: IsHTMLLinkElement o => o -> HTMLLinkElement
@@ -2584,9 +2732,11 @@ unHTMLMapElement (HTMLMapElement o) = o
 
 instance ToJSRef HTMLMapElement where
   toJSRef = return . unHTMLMapElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLMapElement where
   fromJSRef = return . fmap HTMLMapElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLMapElement o
 toHTMLMapElement :: IsHTMLMapElement o => o -> HTMLMapElement
@@ -2617,9 +2767,11 @@ unHTMLMarqueeElement (HTMLMarqueeElement o) = o
 
 instance ToJSRef HTMLMarqueeElement where
   toJSRef = return . unHTMLMarqueeElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLMarqueeElement where
   fromJSRef = return . fmap HTMLMarqueeElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLMarqueeElement o
 toHTMLMarqueeElement :: IsHTMLMarqueeElement o => o -> HTMLMarqueeElement
@@ -2650,9 +2802,11 @@ unHTMLMediaElement (HTMLMediaElement o) = o
 
 instance ToJSRef HTMLMediaElement where
   toJSRef = return . unHTMLMediaElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLMediaElement where
   fromJSRef = return . fmap HTMLMediaElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLMediaElement o
 toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
@@ -2683,9 +2837,11 @@ unHTMLMenuElement (HTMLMenuElement o) = o
 
 instance ToJSRef HTMLMenuElement where
   toJSRef = return . unHTMLMenuElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLMenuElement where
   fromJSRef = return . fmap HTMLMenuElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLMenuElement o
 toHTMLMenuElement :: IsHTMLMenuElement o => o -> HTMLMenuElement
@@ -2716,9 +2872,11 @@ unHTMLMetaElement (HTMLMetaElement o) = o
 
 instance ToJSRef HTMLMetaElement where
   toJSRef = return . unHTMLMetaElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLMetaElement where
   fromJSRef = return . fmap HTMLMetaElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLMetaElement o
 toHTMLMetaElement :: IsHTMLMetaElement o => o -> HTMLMetaElement
@@ -2749,9 +2907,11 @@ unHTMLModElement (HTMLModElement o) = o
 
 instance ToJSRef HTMLModElement where
   toJSRef = return . unHTMLModElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLModElement where
   fromJSRef = return . fmap HTMLModElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLModElement o
 toHTMLModElement :: IsHTMLModElement o => o -> HTMLModElement
@@ -2782,9 +2942,11 @@ unHTMLOListElement (HTMLOListElement o) = o
 
 instance ToJSRef HTMLOListElement where
   toJSRef = return . unHTMLOListElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLOListElement where
   fromJSRef = return . fmap HTMLOListElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLOListElement o
 toHTMLOListElement :: IsHTMLOListElement o => o -> HTMLOListElement
@@ -2815,9 +2977,11 @@ unHTMLObjectElement (HTMLObjectElement o) = o
 
 instance ToJSRef HTMLObjectElement where
   toJSRef = return . unHTMLObjectElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLObjectElement where
   fromJSRef = return . fmap HTMLObjectElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLObjectElement o
 toHTMLObjectElement :: IsHTMLObjectElement o => o -> HTMLObjectElement
@@ -2848,9 +3012,11 @@ unHTMLOptGroupElement (HTMLOptGroupElement o) = o
 
 instance ToJSRef HTMLOptGroupElement where
   toJSRef = return . unHTMLOptGroupElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLOptGroupElement where
   fromJSRef = return . fmap HTMLOptGroupElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLOptGroupElement o
 toHTMLOptGroupElement :: IsHTMLOptGroupElement o => o -> HTMLOptGroupElement
@@ -2881,9 +3047,11 @@ unHTMLOptionElement (HTMLOptionElement o) = o
 
 instance ToJSRef HTMLOptionElement where
   toJSRef = return . unHTMLOptionElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLOptionElement where
   fromJSRef = return . fmap HTMLOptionElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLOptionElement o
 toHTMLOptionElement :: IsHTMLOptionElement o => o -> HTMLOptionElement
@@ -2914,9 +3082,11 @@ unHTMLOptionsCollection (HTMLOptionsCollection o) = o
 
 instance ToJSRef HTMLOptionsCollection where
   toJSRef = return . unHTMLOptionsCollection
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLOptionsCollection where
   fromJSRef = return . fmap HTMLOptionsCollection . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLCollection o => IsHTMLOptionsCollection o
 toHTMLOptionsCollection :: IsHTMLOptionsCollection o => o -> HTMLOptionsCollection
@@ -2945,9 +3115,11 @@ unHTMLParagraphElement (HTMLParagraphElement o) = o
 
 instance ToJSRef HTMLParagraphElement where
   toJSRef = return . unHTMLParagraphElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLParagraphElement where
   fromJSRef = return . fmap HTMLParagraphElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLParagraphElement o
 toHTMLParagraphElement :: IsHTMLParagraphElement o => o -> HTMLParagraphElement
@@ -2978,9 +3150,11 @@ unHTMLParamElement (HTMLParamElement o) = o
 
 instance ToJSRef HTMLParamElement where
   toJSRef = return . unHTMLParamElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLParamElement where
   fromJSRef = return . fmap HTMLParamElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLParamElement o
 toHTMLParamElement :: IsHTMLParamElement o => o -> HTMLParamElement
@@ -3011,9 +3185,11 @@ unHTMLPreElement (HTMLPreElement o) = o
 
 instance ToJSRef HTMLPreElement where
   toJSRef = return . unHTMLPreElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLPreElement where
   fromJSRef = return . fmap HTMLPreElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLPreElement o
 toHTMLPreElement :: IsHTMLPreElement o => o -> HTMLPreElement
@@ -3044,9 +3220,11 @@ unHTMLQuoteElement (HTMLQuoteElement o) = o
 
 instance ToJSRef HTMLQuoteElement where
   toJSRef = return . unHTMLQuoteElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLQuoteElement where
   fromJSRef = return . fmap HTMLQuoteElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLQuoteElement o
 toHTMLQuoteElement :: IsHTMLQuoteElement o => o -> HTMLQuoteElement
@@ -3077,9 +3255,11 @@ unHTMLScriptElement (HTMLScriptElement o) = o
 
 instance ToJSRef HTMLScriptElement where
   toJSRef = return . unHTMLScriptElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLScriptElement where
   fromJSRef = return . fmap HTMLScriptElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLScriptElement o
 toHTMLScriptElement :: IsHTMLScriptElement o => o -> HTMLScriptElement
@@ -3110,9 +3290,11 @@ unHTMLSelectElement (HTMLSelectElement o) = o
 
 instance ToJSRef HTMLSelectElement where
   toJSRef = return . unHTMLSelectElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLSelectElement where
   fromJSRef = return . fmap HTMLSelectElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLSelectElement o
 toHTMLSelectElement :: IsHTMLSelectElement o => o -> HTMLSelectElement
@@ -3143,9 +3325,11 @@ unHTMLStyleElement (HTMLStyleElement o) = o
 
 instance ToJSRef HTMLStyleElement where
   toJSRef = return . unHTMLStyleElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLStyleElement where
   fromJSRef = return . fmap HTMLStyleElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLStyleElement o
 toHTMLStyleElement :: IsHTMLStyleElement o => o -> HTMLStyleElement
@@ -3176,9 +3360,11 @@ unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
 
 instance ToJSRef HTMLTableCaptionElement where
   toJSRef = return . unHTMLTableCaptionElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTableCaptionElement where
   fromJSRef = return . fmap HTMLTableCaptionElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTableCaptionElement o
 toHTMLTableCaptionElement :: IsHTMLTableCaptionElement o => o -> HTMLTableCaptionElement
@@ -3209,9 +3395,11 @@ unHTMLTableCellElement (HTMLTableCellElement o) = o
 
 instance ToJSRef HTMLTableCellElement where
   toJSRef = return . unHTMLTableCellElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTableCellElement where
   fromJSRef = return . fmap HTMLTableCellElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTableCellElement o
 toHTMLTableCellElement :: IsHTMLTableCellElement o => o -> HTMLTableCellElement
@@ -3242,9 +3430,11 @@ unHTMLTableColElement (HTMLTableColElement o) = o
 
 instance ToJSRef HTMLTableColElement where
   toJSRef = return . unHTMLTableColElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTableColElement where
   fromJSRef = return . fmap HTMLTableColElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTableColElement o
 toHTMLTableColElement :: IsHTMLTableColElement o => o -> HTMLTableColElement
@@ -3275,9 +3465,11 @@ unHTMLTableElement (HTMLTableElement o) = o
 
 instance ToJSRef HTMLTableElement where
   toJSRef = return . unHTMLTableElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTableElement where
   fromJSRef = return . fmap HTMLTableElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTableElement o
 toHTMLTableElement :: IsHTMLTableElement o => o -> HTMLTableElement
@@ -3308,9 +3500,11 @@ unHTMLTableRowElement (HTMLTableRowElement o) = o
 
 instance ToJSRef HTMLTableRowElement where
   toJSRef = return . unHTMLTableRowElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTableRowElement where
   fromJSRef = return . fmap HTMLTableRowElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTableRowElement o
 toHTMLTableRowElement :: IsHTMLTableRowElement o => o -> HTMLTableRowElement
@@ -3341,9 +3535,11 @@ unHTMLTableSectionElement (HTMLTableSectionElement o) = o
 
 instance ToJSRef HTMLTableSectionElement where
   toJSRef = return . unHTMLTableSectionElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTableSectionElement where
   fromJSRef = return . fmap HTMLTableSectionElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTableSectionElement o
 toHTMLTableSectionElement :: IsHTMLTableSectionElement o => o -> HTMLTableSectionElement
@@ -3374,9 +3570,11 @@ unHTMLTextAreaElement (HTMLTextAreaElement o) = o
 
 instance ToJSRef HTMLTextAreaElement where
   toJSRef = return . unHTMLTextAreaElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTextAreaElement where
   fromJSRef = return . fmap HTMLTextAreaElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTextAreaElement o
 toHTMLTextAreaElement :: IsHTMLTextAreaElement o => o -> HTMLTextAreaElement
@@ -3407,9 +3605,11 @@ unHTMLTitleElement (HTMLTitleElement o) = o
 
 instance ToJSRef HTMLTitleElement where
   toJSRef = return . unHTMLTitleElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLTitleElement where
   fromJSRef = return . fmap HTMLTitleElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLTitleElement o
 toHTMLTitleElement :: IsHTMLTitleElement o => o -> HTMLTitleElement
@@ -3440,9 +3640,11 @@ unHTMLUListElement (HTMLUListElement o) = o
 
 instance ToJSRef HTMLUListElement where
   toJSRef = return . unHTMLUListElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLUListElement where
   fromJSRef = return . fmap HTMLUListElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLElement o => IsHTMLUListElement o
 toHTMLUListElement :: IsHTMLUListElement o => o -> HTMLUListElement
@@ -3473,9 +3675,11 @@ unHTMLVideoElement (HTMLVideoElement o) = o
 
 instance ToJSRef HTMLVideoElement where
   toJSRef = return . unHTMLVideoElement
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef HTMLVideoElement where
   fromJSRef = return . fmap HTMLVideoElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsHTMLMediaElement o => IsHTMLVideoElement o
 toHTMLVideoElement :: IsHTMLVideoElement o => o -> HTMLVideoElement
@@ -3507,9 +3711,11 @@ unHistory (History o) = o
 
 instance ToJSRef History where
   toJSRef = return . unHistory
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef History where
   fromJSRef = return . fmap History . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsHistory o
 toHistory :: IsHistory o => o -> History
@@ -3537,9 +3743,11 @@ unKeyboardEvent (KeyboardEvent o) = o
 
 instance ToJSRef KeyboardEvent where
   toJSRef = return . unKeyboardEvent
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef KeyboardEvent where
   fromJSRef = return . fmap KeyboardEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsUIEvent o => IsKeyboardEvent o
 toKeyboardEvent :: IsKeyboardEvent o => o -> KeyboardEvent
@@ -3568,9 +3776,11 @@ unLocation (Location o) = o
 
 instance ToJSRef Location where
   toJSRef = return . unLocation
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Location where
   fromJSRef = return . fmap Location . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsLocation o
 toLocation :: IsLocation o => o -> Location
@@ -3598,9 +3808,11 @@ unMediaError (MediaError o) = o
 
 instance ToJSRef MediaError where
   toJSRef = return . unMediaError
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef MediaError where
   fromJSRef = return . fmap MediaError . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsMediaError o
 toMediaError :: IsMediaError o => o -> MediaError
@@ -3628,9 +3840,11 @@ unMediaList (MediaList o) = o
 
 instance ToJSRef MediaList where
   toJSRef = return . unMediaList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef MediaList where
   fromJSRef = return . fmap MediaList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsMediaList o
 toMediaList :: IsMediaList o => o -> MediaList
@@ -3658,9 +3872,11 @@ unMediaQueryList (MediaQueryList o) = o
 
 instance ToJSRef MediaQueryList where
   toJSRef = return . unMediaQueryList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef MediaQueryList where
   fromJSRef = return . fmap MediaQueryList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsMediaQueryList o
 toMediaQueryList :: IsMediaQueryList o => o -> MediaQueryList
@@ -3688,9 +3904,11 @@ unMessagePort (MessagePort o) = o
 
 instance ToJSRef MessagePort where
   toJSRef = return . unMessagePort
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef MessagePort where
   fromJSRef = return . fmap MessagePort . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsMessagePort o
 toMessagePort :: IsMessagePort o => o -> MessagePort
@@ -3718,9 +3936,11 @@ unMouseEvent (MouseEvent o) = o
 
 instance ToJSRef MouseEvent where
   toJSRef = return . unMouseEvent
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef MouseEvent where
   fromJSRef = return . fmap MouseEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsUIEvent o => IsMouseEvent o
 toMouseEvent :: IsMouseEvent o => o -> MouseEvent
@@ -3750,9 +3970,11 @@ unNamedNodeMap (NamedNodeMap o) = o
 
 instance ToJSRef NamedNodeMap where
   toJSRef = return . unNamedNodeMap
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef NamedNodeMap where
   fromJSRef = return . fmap NamedNodeMap . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsNamedNodeMap o
 toNamedNodeMap :: IsNamedNodeMap o => o -> NamedNodeMap
@@ -3780,9 +4002,11 @@ unNavigator (Navigator o) = o
 
 instance ToJSRef Navigator where
   toJSRef = return . unNavigator
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Navigator where
   fromJSRef = return . fmap Navigator . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsNavigator o
 toNavigator :: IsNavigator o => o -> Navigator
@@ -3810,9 +4034,11 @@ unNode (Node o) = o
 
 instance ToJSRef Node where
   toJSRef = return . unNode
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Node where
   fromJSRef = return . fmap Node . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsNode o
 toNode :: IsNode o => o -> Node
@@ -3840,9 +4066,11 @@ unNodeFilter (NodeFilter o) = o
 
 instance ToJSRef NodeFilter where
   toJSRef = return . unNodeFilter
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef NodeFilter where
   fromJSRef = return . fmap NodeFilter . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsNodeFilter o
 toNodeFilter :: IsNodeFilter o => o -> NodeFilter
@@ -3870,9 +4098,11 @@ unNodeIterator (NodeIterator o) = o
 
 instance ToJSRef NodeIterator where
   toJSRef = return . unNodeIterator
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef NodeIterator where
   fromJSRef = return . fmap NodeIterator . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsNodeIterator o
 toNodeIterator :: IsNodeIterator o => o -> NodeIterator
@@ -3900,9 +4130,11 @@ unNodeList (NodeList o) = o
 
 instance ToJSRef NodeList where
   toJSRef = return . unNodeList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef NodeList where
   fromJSRef = return . fmap NodeList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsNodeList o
 toNodeList :: IsNodeList o => o -> NodeList
@@ -3930,9 +4162,11 @@ unProcessingInstruction (ProcessingInstruction o) = o
 
 instance ToJSRef ProcessingInstruction where
   toJSRef = return . unProcessingInstruction
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef ProcessingInstruction where
   fromJSRef = return . fmap ProcessingInstruction . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsCharacterData o => IsProcessingInstruction o
 toProcessingInstruction :: IsProcessingInstruction o => o -> ProcessingInstruction
@@ -3962,9 +4196,11 @@ unDOMRange (DOMRange o) = o
 
 instance ToJSRef DOMRange where
   toJSRef = return . unDOMRange
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMRange where
   fromJSRef = return . fmap DOMRange . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMRange o
 toDOMRange :: IsDOMRange o => o -> DOMRange
@@ -3992,9 +4228,11 @@ unDOMScreen (DOMScreen o) = o
 
 instance ToJSRef DOMScreen where
   toJSRef = return . unDOMScreen
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef DOMScreen where
   fromJSRef = return . fmap DOMScreen . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsDOMScreen o
 toDOMScreen :: IsDOMScreen o => o -> DOMScreen
@@ -4022,9 +4260,11 @@ unStorage (Storage o) = o
 
 instance ToJSRef Storage where
   toJSRef = return . unStorage
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Storage where
   fromJSRef = return . fmap Storage . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsStorage o
 toStorage :: IsStorage o => o -> Storage
@@ -4052,9 +4292,11 @@ unStorageInfo (StorageInfo o) = o
 
 instance ToJSRef StorageInfo where
   toJSRef = return . unStorageInfo
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef StorageInfo where
   fromJSRef = return . fmap StorageInfo . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsStorageInfo o
 toStorageInfo :: IsStorageInfo o => o -> StorageInfo
@@ -4081,9 +4323,11 @@ unStyleMedia (StyleMedia o) = o
 
 instance ToJSRef StyleMedia where
   toJSRef = return . unStyleMedia
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef StyleMedia where
   fromJSRef = return . fmap StyleMedia . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsStyleMedia o
 toStyleMedia :: IsStyleMedia o => o -> StyleMedia
@@ -4111,9 +4355,11 @@ unStyleSheet (StyleSheet o) = o
 
 instance ToJSRef StyleSheet where
   toJSRef = return . unStyleSheet
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef StyleSheet where
   fromJSRef = return . fmap StyleSheet . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsStyleSheet o
 toStyleSheet :: IsStyleSheet o => o -> StyleSheet
@@ -4141,9 +4387,11 @@ unStyleSheetList (StyleSheetList o) = o
 
 instance ToJSRef StyleSheetList where
   toJSRef = return . unStyleSheetList
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef StyleSheetList where
   fromJSRef = return . fmap StyleSheetList . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsStyleSheetList o
 toStyleSheetList :: IsStyleSheetList o => o -> StyleSheetList
@@ -4171,9 +4419,11 @@ unText (Text o) = o
 
 instance ToJSRef Text where
   toJSRef = return . unText
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef Text where
   fromJSRef = return . fmap Text . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsCharacterData o => IsText o
 toText :: IsText o => o -> Text
@@ -4203,9 +4453,11 @@ unTimeRanges (TimeRanges o) = o
 
 instance ToJSRef TimeRanges where
   toJSRef = return . unTimeRanges
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef TimeRanges where
   fromJSRef = return . fmap TimeRanges . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsTimeRanges o
 toTimeRanges :: IsTimeRanges o => o -> TimeRanges
@@ -4233,9 +4485,11 @@ unTreeWalker (TreeWalker o) = o
 
 instance ToJSRef TreeWalker where
   toJSRef = return . unTreeWalker
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef TreeWalker where
   fromJSRef = return . fmap TreeWalker . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsTreeWalker o
 toTreeWalker :: IsTreeWalker o => o -> TreeWalker
@@ -4263,9 +4517,11 @@ unUIEvent (UIEvent o) = o
 
 instance ToJSRef UIEvent where
   toJSRef = return . unUIEvent
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef UIEvent where
   fromJSRef = return . fmap UIEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class IsEvent o => IsUIEvent o
 toUIEvent :: IsUIEvent o => o -> UIEvent
@@ -4294,9 +4550,11 @@ unValidityState (ValidityState o) = o
 
 instance ToJSRef ValidityState where
   toJSRef = return . unValidityState
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef ValidityState where
   fromJSRef = return . fmap ValidityState . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsValidityState o
 toValidityState :: IsValidityState o => o -> ValidityState
@@ -4324,9 +4582,11 @@ unWebKitNamedFlow (WebKitNamedFlow o) = o
 
 instance ToJSRef WebKitNamedFlow where
   toJSRef = return . unWebKitNamedFlow
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef WebKitNamedFlow where
   fromJSRef = return . fmap WebKitNamedFlow . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsWebKitNamedFlow o
 toWebKitNamedFlow :: IsWebKitNamedFlow o => o -> WebKitNamedFlow
@@ -4354,9 +4614,11 @@ unWebKitPoint (WebKitPoint o) = o
 
 instance ToJSRef WebKitPoint where
   toJSRef = return . unWebKitPoint
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef WebKitPoint where
   fromJSRef = return . fmap WebKitPoint . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsWebKitPoint o
 toWebKitPoint :: IsWebKitPoint o => o -> WebKitPoint
@@ -4384,9 +4646,11 @@ unXPathExpression (XPathExpression o) = o
 
 instance ToJSRef XPathExpression where
   toJSRef = return . unXPathExpression
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef XPathExpression where
   fromJSRef = return . fmap XPathExpression . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsXPathExpression o
 toXPathExpression :: IsXPathExpression o => o -> XPathExpression
@@ -4414,9 +4678,11 @@ unXPathNSResolver (XPathNSResolver o) = o
 
 instance ToJSRef XPathNSResolver where
   toJSRef = return . unXPathNSResolver
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef XPathNSResolver where
   fromJSRef = return . fmap XPathNSResolver . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsXPathNSResolver o
 toXPathNSResolver :: IsXPathNSResolver o => o -> XPathNSResolver
@@ -4444,9 +4710,11 @@ unXPathResult (XPathResult o) = o
 
 instance ToJSRef XPathResult where
   toJSRef = return . unXPathResult
+  {-# INLINE toJSRef #-}
 
 instance FromJSRef XPathResult where
   fromJSRef = return . fmap XPathResult . maybeJSNull
+  {-# INLINE fromJSRef #-}
 
 class GObjectClass o => IsXPathResult o
 toXPathResult :: IsXPathResult o => o -> XPathResult
