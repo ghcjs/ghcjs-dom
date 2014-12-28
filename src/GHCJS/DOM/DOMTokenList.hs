@@ -50,7 +50,7 @@ foreign import javascript unsafe "$1[\"add\"].apply($1, $2)"
         JSRef DOMTokenList -> JSRef [a] -> IO ()
  
 domTokenListAdd ::
-                (IsDOMTokenList self, ToJSString tokens) =>
+                (IsDOMTokenList self, ToJSString tokens, ToJSRef tokens) =>
                   self -> [tokens] -> IO ()
 domTokenListAdd self tokens
   = toJSRef tokens >>=
@@ -63,7 +63,7 @@ foreign import javascript unsafe "$1[\"remove\"].apply($1, $2)"
         JSRef DOMTokenList -> JSRef [a] -> IO ()
  
 domTokenListRemove ::
-                   (IsDOMTokenList self, ToJSString tokens) =>
+                   (IsDOMTokenList self, ToJSString tokens, ToJSRef tokens) =>
                      self -> [tokens] -> IO ()
 domTokenListRemove self tokens
   = toJSRef tokens >>=
