@@ -9,7 +9,7 @@
 module GHCJS.DOM.Types (
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
     maybeJSNull, propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
-  , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject
+  , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA
 
 -- AUTO GENERATION STARTS HERE
   , DOMAttr(DOMAttr), unDOMAttr, IsDOMAttr, toDOMAttr, castToDOMAttr, gTypeDOMAttr
@@ -318,6 +318,11 @@ castTo gtype objTypeName obj =
       | typeInstanceIsA objRef gtype
                   -> unsafeCastGObject gobj
       | otherwise -> error $ "Cannot cast object to " ++ objTypeName
+
+-- | Determine if this is an instance of a particular type
+--
+isA :: GObjectClass o => o -> GType -> Bool
+isA obj = typeInstanceIsA (unGObject $ toGObject obj)
 
 data GObject = GObject (JSRef GObject)
 
