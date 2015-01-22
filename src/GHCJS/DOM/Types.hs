@@ -118,12 +118,14 @@ module GHCJS.DOM.Types (
   , MediaQueryList(MediaQueryList), unMediaQueryList, IsMediaQueryList, toMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
   , MessagePort(MessagePort), unMessagePort, IsMessagePort, toMessagePort, castToMessagePort, gTypeMessagePort
   , MouseEvent(MouseEvent), unMouseEvent, IsMouseEvent, toMouseEvent, castToMouseEvent, gTypeMouseEvent
+  , MutationEvent(MutationEvent), unMutationEvent, IsMutationEvent, toMutationEvent, castToMutationEvent, gTypeMutationEvent
   , NamedNodeMap(NamedNodeMap), unNamedNodeMap, IsNamedNodeMap, toNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
   , Navigator(Navigator), unNavigator, IsNavigator, toNavigator, castToNavigator, gTypeNavigator
   , Node(Node), unNode, IsNode, toNode, castToNode, gTypeNode
   , NodeFilter(NodeFilter), unNodeFilter, IsNodeFilter, toNodeFilter, castToNodeFilter, gTypeNodeFilter
   , NodeIterator(NodeIterator), unNodeIterator, IsNodeIterator, toNodeIterator, castToNodeIterator, gTypeNodeIterator
   , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, castToNodeList, gTypeNodeList
+  , Notation(Notation), unNotation, IsNotation, toNotation, castToNotation, gTypeNotation
   , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, IsProcessingInstruction, toProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
   , DOMRange(DOMRange), unDOMRange, IsDOMRange, toDOMRange, castToDOMRange, gTypeDOMRange
   , DOMScreen(DOMScreen), unDOMScreen, IsDOMScreen, toDOMScreen, castToDOMScreen, gTypeDOMScreen
@@ -139,6 +141,7 @@ module GHCJS.DOM.Types (
   , ValidityState(ValidityState), unValidityState, IsValidityState, toValidityState, castToValidityState, gTypeValidityState
   , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, IsWebKitNamedFlow, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
   , WebKitPoint(WebKitPoint), unWebKitPoint, IsWebKitPoint, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
+  , XMLHttpRequest(XMLHttpRequest), unXMLHttpRequest, IsXMLHttpRequest, toXMLHttpRequest, castToXMLHttpRequest, gTypeXMLHttpRequest
   , XPathExpression(XPathExpression), unXPathExpression, IsXPathExpression, toXPathExpression, castToXPathExpression, gTypeXPathExpression
   , XPathNSResolver(XPathNSResolver), unXPathNSResolver, IsXPathNSResolver, toXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
   , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
@@ -3969,6 +3972,38 @@ type IsMouseEvent o = MouseEventClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype MutationEvent = MutationEvent (JSRef MutationEvent) deriving (Eq)
+
+unMutationEvent (MutationEvent o) = o
+
+instance ToJSRef MutationEvent where
+  toJSRef = return . unMutationEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MutationEvent where
+  fromJSRef = return . fmap MutationEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsMutationEvent o
+toMutationEvent :: IsMutationEvent o => o -> MutationEvent
+toMutationEvent = unsafeCastGObject . toGObject
+
+instance IsMutationEvent MutationEvent
+instance IsEvent MutationEvent
+instance GObjectClass MutationEvent where
+  toGObject = GObject . castRef . unMutationEvent
+  unsafeCastGObject = MutationEvent . castRef . unGObject
+
+castToMutationEvent :: GObjectClass obj => obj -> MutationEvent
+castToMutationEvent = castTo gTypeMutationEvent "MutationEvent"
+
+foreign import javascript unsafe "window[\"MutationEvent\"]" gTypeMutationEvent' :: JSRef GType
+gTypeMutationEvent = GType gTypeMutationEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap) deriving (Eq)
 
 unNamedNodeMap (NamedNodeMap o) = o
@@ -4157,6 +4192,38 @@ foreign import javascript unsafe "window[\"NodeList\"]" gTypeNodeList' :: JSRef 
 gTypeNodeList = GType gTypeNodeList'
 #else
 type IsNodeList o = NodeListClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Notation = Notation (JSRef Notation) deriving (Eq)
+
+unNotation (Notation o) = o
+
+instance ToJSRef Notation where
+  toJSRef = return . unNotation
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Notation where
+  fromJSRef = return . fmap Notation . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsNode o => IsNotation o
+toNotation :: IsNotation o => o -> Notation
+toNotation = unsafeCastGObject . toGObject
+
+instance IsNotation Notation
+instance IsNode Notation
+instance GObjectClass Notation where
+  toGObject = GObject . castRef . unNotation
+  unsafeCastGObject = Notation . castRef . unGObject
+
+castToNotation :: GObjectClass obj => obj -> Notation
+castToNotation = castTo gTypeNotation "Notation"
+
+foreign import javascript unsafe "window[\"Notation\"]" gTypeNotation' :: JSRef GType
+gTypeNotation = GType gTypeNotation'
+#else
 #endif
 
 
@@ -4641,6 +4708,37 @@ foreign import javascript unsafe "window[\"WebKitPoint\"]" gTypeWebKitPoint' :: 
 gTypeWebKitPoint = GType gTypeWebKitPoint'
 #else
 type IsWebKitPoint o = WebKitPointClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype XMLHttpRequest = XMLHttpRequest (JSRef XMLHttpRequest) deriving (Eq)
+
+unXMLHttpRequest (XMLHttpRequest o) = o
+
+instance ToJSRef XMLHttpRequest where
+  toJSRef = return . unXMLHttpRequest
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef XMLHttpRequest where
+  fromJSRef = return . fmap XMLHttpRequest . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsXMLHttpRequest o
+toXMLHttpRequest :: IsXMLHttpRequest o => o -> XMLHttpRequest
+toXMLHttpRequest = unsafeCastGObject . toGObject
+
+instance IsXMLHttpRequest XMLHttpRequest
+instance GObjectClass XMLHttpRequest where
+  toGObject = GObject . castRef . unXMLHttpRequest
+  unsafeCastGObject = XMLHttpRequest . castRef . unGObject
+
+castToXMLHttpRequest :: GObjectClass obj => obj -> XMLHttpRequest
+castToXMLHttpRequest = castTo gTypeXMLHttpRequest "XMLHttpRequest"
+
+foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpRequest' :: JSRef GType
+gTypeXMLHttpRequest = GType gTypeXMLHttpRequest'
+#else
 #endif
 
 
