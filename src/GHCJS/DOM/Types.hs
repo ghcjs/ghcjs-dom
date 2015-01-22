@@ -142,6 +142,7 @@ module GHCJS.DOM.Types (
   , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, IsWebKitNamedFlow, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
   , WebKitPoint(WebKitPoint), unWebKitPoint, IsWebKitPoint, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
   , XMLHttpRequest(XMLHttpRequest), unXMLHttpRequest, IsXMLHttpRequest, toXMLHttpRequest, castToXMLHttpRequest, gTypeXMLHttpRequest
+  , XMLHttpRequestUpload(XMLHttpRequestUpload), unXMLHttpRequestUpload, IsXMLHttpRequestUpload, toXMLHttpRequestUpload, castToXMLHttpRequestUpload, gTypeXMLHttpRequestUpload
   , XPathExpression(XPathExpression), unXPathExpression, IsXPathExpression, toXPathExpression, castToXPathExpression, gTypeXPathExpression
   , XPathNSResolver(XPathNSResolver), unXPathNSResolver, IsXPathNSResolver, toXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
   , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
@@ -4738,6 +4739,37 @@ castToXMLHttpRequest = castTo gTypeXMLHttpRequest "XMLHttpRequest"
 
 foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpRequest' :: JSRef GType
 gTypeXMLHttpRequest = GType gTypeXMLHttpRequest'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype XMLHttpRequestUpload = XMLHttpRequestUpload (JSRef XMLHttpRequestUpload) deriving (Eq)
+
+unXMLHttpRequestUpload (XMLHttpRequestUpload o) = o
+
+instance ToJSRef XMLHttpRequestUpload where
+  toJSRef = return . unXMLHttpRequestUpload
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef XMLHttpRequestUpload where
+  fromJSRef = return . fmap XMLHttpRequestUpload . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsXMLHttpRequestUpload o
+toXMLHttpRequestUpload :: IsXMLHttpRequestUpload o => o -> XMLHttpRequestUpload
+toXMLHttpRequestUpload = unsafeCastGObject . toGObject
+
+instance IsXMLHttpRequestUpload XMLHttpRequestUpload
+instance GObjectClass XMLHttpRequestUpload where
+  toGObject = GObject . castRef . unXMLHttpRequestUpload
+  unsafeCastGObject = XMLHttpRequestUpload . castRef . unGObject
+
+castToXMLHttpRequestUpload :: GObjectClass obj => obj -> XMLHttpRequestUpload
+castToXMLHttpRequestUpload = castTo gTypeXMLHttpRequestUpload "XMLHttpRequestUpload"
+
+foreign import javascript unsafe "window[\"XMLHttpRequestUpload\"]" gTypeXMLHttpRequestUpload' :: JSRef GType
+gTypeXMLHttpRequestUpload = GType gTypeXMLHttpRequestUpload'
 #else
 #endif
 

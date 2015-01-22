@@ -234,27 +234,23 @@ xmlHttpRequestGetResponseXML self
  
 foreign import javascript unsafe "$1[\"responseType\"] = $2;"
         ghcjs_dom_xml_http_request_set_response_type ::
-        JSRef XMLHttpRequest -> JSRef XMLHttpRequestResponseType -> IO ()
+        JSRef XMLHttpRequest -> JSString -> IO ()
  
 xmlHttpRequestSetResponseType ::
-                              (IsXMLHttpRequest self, IsXMLHttpRequestResponseType val) =>
-                                self -> Maybe val -> IO ()
+                              (IsXMLHttpRequest self, ToJSString val) => self -> val -> IO ()
 xmlHttpRequestSetResponseType self val
   = ghcjs_dom_xml_http_request_set_response_type
       (unXMLHttpRequest (toXMLHttpRequest self))
-      (maybe jsNull
-         (unXMLHttpRequestResponseType . toXMLHttpRequestResponseType)
-         val)
+      (toJSString val)
  
 foreign import javascript unsafe "$1[\"responseType\"]"
         ghcjs_dom_xml_http_request_get_response_type ::
-        JSRef XMLHttpRequest -> IO (JSRef XMLHttpRequestResponseType)
+        JSRef XMLHttpRequest -> IO JSString
  
 xmlHttpRequestGetResponseType ::
-                              (IsXMLHttpRequest self) =>
-                                self -> IO (Maybe XMLHttpRequestResponseType)
+                              (IsXMLHttpRequest self, FromJSString result) => self -> IO result
 xmlHttpRequestGetResponseType self
-  = fmap XMLHttpRequestResponseType . maybeJSNull <$>
+  = fromJSString <$>
       (ghcjs_dom_xml_http_request_get_response_type
          (unXMLHttpRequest (toXMLHttpRequest self)))
  

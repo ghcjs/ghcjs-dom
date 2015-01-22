@@ -133,6 +133,7 @@ module core {
 #include "dom/WebKitNamedFlow.idl"
 #include "page/WebKitPoint.idl"
 #include "xml/XMLHttpRequest.idl"
+#include "xml/XMLHttpRequestUpload.idl"
 #include "xml/XPathExpression.idl"
 #include "xml/XPathNSResolver.idl"
 #include "xml/XPathResult.idl"

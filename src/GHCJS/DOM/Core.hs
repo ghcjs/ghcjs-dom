@@ -36,11 +36,11 @@ module GHCJS.DOM.Core
         Notation, ProcessingInstruction, DOMRange, DOMScreen, StyleMedia,
         StyleSheet, StyleSheetList, Storage, StorageInfo, Text(..),
         TimeRanges(..), TreeWalker(..), ValidityState, UIEvent,
-        WebKitNamedFlow, WebKitPoint, XMLHttpRequest, XPathExpression,
-        XPathNSResolver, XPathResult, IsDOMAttr, IsBarProp, IsBlob,
-        IsCDATASection, IsCharacterData, IsComment, IsCSSRule,
-        IsCSSRuleList, IsCSSStyleDeclaration, IsCSSStyleSheet, IsCSSValue,
-        IsDocument, IsDocumentFragment, IsDocumentType,
+        WebKitNamedFlow, WebKitPoint, XMLHttpRequest, XMLHttpRequestUpload,
+        XPathExpression, XPathNSResolver, XPathResult, IsDOMAttr,
+        IsBarProp, IsBlob, IsCDATASection, IsCharacterData, IsComment,
+        IsCSSRule, IsCSSRuleList, IsCSSStyleDeclaration, IsCSSStyleSheet,
+        IsCSSValue, IsDocument, IsDocumentFragment, IsDocumentType,
         IsDOMApplicationCache, IsDOMImplementation, IsDOMMimeType,
         IsDOMMimeTypeArray, IsDOMNamedFlowCollection, IsDOMPlugin,
         IsDOMPluginArray, IsDOMSecurityPolicy, IsDOMSelection,
@@ -76,8 +76,8 @@ module GHCJS.DOM.Core
         IsDOMScreen, IsStyleMedia, IsStyleSheet, IsStyleSheetList,
         IsStorage, IsStorageInfo, IsText, IsTimeRanges, IsTreeWalker,
         IsValidityState, IsUIEvent, IsWebKitNamedFlow, IsWebKitPoint,
-        IsXMLHttpRequest, IsXPathExpression, IsXPathNSResolver,
-        IsXPathResult)
+        IsXMLHttpRequest, IsXMLHttpRequestUpload, IsXPathExpression,
+        IsXPathNSResolver, IsXPathResult)
        where
  
 data DOMAttr = DOMAttr
@@ -339,6 +339,8 @@ data WebKitNamedFlow = WebKitNamedFlow
 data WebKitPoint = WebKitPoint
  
 data XMLHttpRequest = XMLHttpRequest
+ 
+data XMLHttpRequestUpload = XMLHttpRequestUpload
  
 data XPathExpression = XPathExpression
  
@@ -605,6 +607,8 @@ class IsWebKitNamedFlow a
 class IsWebKitPoint a
  
 class IsXMLHttpRequest a
+ 
+class IsXMLHttpRequestUpload a
  
 class IsXPathExpression a
  
@@ -1291,6 +1295,8 @@ instance IsWebKitNamedFlow WebKitNamedFlow
 instance IsWebKitPoint WebKitPoint
  
 instance IsXMLHttpRequest XMLHttpRequest
+ 
+instance IsXMLHttpRequestUpload XMLHttpRequestUpload
  
 instance IsXPathExpression XPathExpression
  
