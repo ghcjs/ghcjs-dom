@@ -36,6 +36,8 @@ module GHCJS.DOM.XMLHttpRequest
         ghcjs_dom_xml_http_request_get_status_text,
         xmlHttpRequestGetStatusText,
         ghcjs_dom_xml_http_request_get_response_url,
+        xmlHttpRequestGetResponseText, xmlHttpRequestNew,
+        xmlHttpRequestOpen, xmlHttpRequestSend,
         xmlHttpRequestGetResponseURL, XMLHttpRequest, IsXMLHttpRequest,
         castToXMLHttpRequest, gTypeXMLHttpRequest, toXMLHttpRequest)
        where
@@ -49,6 +51,44 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
  
+foreign import javascript unsafe "new XMLHttpRequest()"
+        ghcjs_dom_xml_http_request_new ::
+        IO (JSRef XMLHttpRequest)
+
+xmlHttpRequestNew :: IO XMLHttpRequest
+xmlHttpRequestNew = XMLHttpRequest <$> ghcjs_dom_xml_http_request_new
+
+foreign import javascript unsafe "$1[\"open\"]($2, $3, $4, $5, $6)"
+        ghcjs_dom_xml_http_request_open ::
+        JSRef XMLHttpRequest -> JSString -> JSString -> JSBool -> JSString -> JSString -> IO ()
+
+xmlHttpRequestOpen ::
+                   (IsXMLHttpRequest self, ToJSString method, ToJSString url, ToJSString user, ToJSString password) =>
+                     self -> method -> url -> Bool -> user -> password -> IO ()
+xmlHttpRequestOpen self method url async user password
+  = ghcjs_dom_xml_http_request_open
+      (unXMLHttpRequest (toXMLHttpRequest self))
+      (toJSString method)
+      (toJSString url)
+      (toJSBool async)
+      (toJSString user)
+      (toJSString password)
+
+foreign import javascript unsafe "($2===null)?$1[\"send\"]():$1[\"send\"]($2)"
+        ghcjs_dom_xml_http_request_send ::
+        JSRef XMLHttpRequest -> JSString -> IO ()
+
+xmlHttpRequestSend ::
+                   (IsXMLHttpRequest self, ToJSString payload) =>
+                     self -> Maybe payload -> IO ()
+xmlHttpRequestSend self payload
+  = ghcjs_dom_xml_http_request_send
+      (unXMLHttpRequest (toXMLHttpRequest self))
+      (case payload of
+            Just p -> toJSString p
+            Nothing -> jsNull)
+
+
 foreign import javascript unsafe "$1[\"setRequestHeader\"]($2, $3)"
         ghcjs_dom_xml_http_request_set_request_header ::
         JSRef XMLHttpRequest -> JSString -> JSString -> IO ()
@@ -221,6 +261,17 @@ xmlHttpRequestGetUpload self
       (ghcjs_dom_xml_http_request_get_upload
          (unXMLHttpRequest (toXMLHttpRequest self)))
  
+foreign import javascript unsafe "$1[\"responseText\"]"
+        ghcjs_dom_xml_http_request_get_response_text ::
+        JSRef XMLHttpRequest -> IO JSString
+
+xmlHttpRequestGetResponseText ::
+                             (IsXMLHttpRequest self, FromJSString result) => self -> IO (Maybe result)
+xmlHttpRequestGetResponseText self
+  = fmap fromJSString . maybeJSNull <$>
+      (ghcjs_dom_xml_http_request_get_response_text
+         (unXMLHttpRequest (toXMLHttpRequest self)))
+
 foreign import javascript unsafe "$1[\"responseXML\"]"
         ghcjs_dom_xml_http_request_get_response_xml ::
         JSRef XMLHttpRequest -> IO (JSRef Document)
