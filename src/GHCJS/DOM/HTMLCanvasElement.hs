@@ -2,9 +2,14 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLCanvasElement
-       (ghcjs_dom_html_canvas_element_set_width,
-        htmlCanvasElementSetWidth, ghcjs_dom_html_canvas_element_get_width,
-        htmlCanvasElementGetWidth,
+       (ghcjs_dom_html_canvas_element_to_data_url,
+        htmlCanvasElementToDataURL,
+        ghcjs_dom_html_canvas_element_get_context,
+        htmlCanvasElementGetContext,
+        ghcjs_dom_html_canvas_element_probably_supports_context,
+        htmlCanvasElementProbablySupportsContext,
+        ghcjs_dom_html_canvas_element_set_width, htmlCanvasElementSetWidth,
+        ghcjs_dom_html_canvas_element_get_width, htmlCanvasElementGetWidth,
         ghcjs_dom_html_canvas_element_set_height,
         htmlCanvasElementSetHeight,
         ghcjs_dom_html_canvas_element_get_height,
@@ -21,6 +26,45 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
+ 
+foreign import javascript unsafe "$1[\"toDataURL\"]($2)"
+        ghcjs_dom_html_canvas_element_to_data_url ::
+        JSRef HTMLCanvasElement -> JSString -> IO JSString
+ 
+htmlCanvasElementToDataURL ::
+                           (IsHTMLCanvasElement self, ToJSString type',
+                            FromJSString result) =>
+                             self -> type' -> IO result
+htmlCanvasElementToDataURL self type'
+  = fromJSString <$>
+      (ghcjs_dom_html_canvas_element_to_data_url
+         (unHTMLCanvasElement (toHTMLCanvasElement self))
+         (toJSString type'))
+ 
+foreign import javascript unsafe "$1[\"getContext\"]($2)"
+        ghcjs_dom_html_canvas_element_get_context ::
+        JSRef HTMLCanvasElement -> JSString -> IO (JSRef a)
+ 
+htmlCanvasElementGetContext ::
+                            (IsHTMLCanvasElement self, ToJSString contextId) =>
+                              self -> contextId -> IO (JSRef a)
+htmlCanvasElementGetContext self contextId
+  = ghcjs_dom_html_canvas_element_get_context
+      (unHTMLCanvasElement (toHTMLCanvasElement self))
+      (toJSString contextId)
+ 
+foreign import javascript unsafe
+        "$1[\"probablySupportsContext\"]($2)"
+        ghcjs_dom_html_canvas_element_probably_supports_context ::
+        JSRef HTMLCanvasElement -> JSString -> IO (JSRef a)
+ 
+htmlCanvasElementProbablySupportsContext ::
+                                         (IsHTMLCanvasElement self, ToJSString contextId) =>
+                                           self -> contextId -> IO (JSRef a)
+htmlCanvasElementProbablySupportsContext self contextId
+  = ghcjs_dom_html_canvas_element_probably_supports_context
+      (unHTMLCanvasElement (toHTMLCanvasElement self))
+      (toJSString contextId)
  
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_canvas_element_set_width ::

@@ -2,7 +2,10 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDocument
-       (ghcjs_dom_html_document_close, htmlDocumentClose,
+       (ghcjs_dom_html_document_open, htmlDocumentOpen,
+        ghcjs_dom_html_document_close, htmlDocumentClose,
+        ghcjs_dom_html_document_write, htmlDocumentWrite,
+        ghcjs_dom_html_document_writeln, htmlDocumentWriteln,
         ghcjs_dom_html_document_clear, htmlDocumentClear,
         ghcjs_dom_html_document_capture_events, htmlDocumentCaptureEvents,
         ghcjs_dom_html_document_release_events, htmlDocumentReleaseEvents,
@@ -39,6 +42,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
  
+foreign import javascript unsafe "$1[\"open\"]()"
+        ghcjs_dom_html_document_open :: JSRef HTMLDocument -> IO ()
+ 
+htmlDocumentOpen :: (IsHTMLDocument self) => self -> IO ()
+htmlDocumentOpen self
+  = ghcjs_dom_html_document_open
+      (unHTMLDocument (toHTMLDocument self))
+ 
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_html_document_close :: JSRef HTMLDocument -> IO ()
  
@@ -46,6 +57,28 @@ htmlDocumentClose :: (IsHTMLDocument self) => self -> IO ()
 htmlDocumentClose self
   = ghcjs_dom_html_document_close
       (unHTMLDocument (toHTMLDocument self))
+ 
+foreign import javascript unsafe "$1[\"write\"]($2)"
+        ghcjs_dom_html_document_write ::
+        JSRef HTMLDocument -> JSString -> IO ()
+ 
+htmlDocumentWrite ::
+                  (IsHTMLDocument self, ToJSString text) => self -> text -> IO ()
+htmlDocumentWrite self text
+  = ghcjs_dom_html_document_write
+      (unHTMLDocument (toHTMLDocument self))
+      (toJSString text)
+ 
+foreign import javascript unsafe "$1[\"writeln\"]($2)"
+        ghcjs_dom_html_document_writeln ::
+        JSRef HTMLDocument -> JSString -> IO ()
+ 
+htmlDocumentWriteln ::
+                    (IsHTMLDocument self, ToJSString text) => self -> text -> IO ()
+htmlDocumentWriteln self text
+  = ghcjs_dom_html_document_writeln
+      (unHTMLDocument (toHTMLDocument self))
+      (toJSString text)
  
 foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_html_document_clear :: JSRef HTMLDocument -> IO ()

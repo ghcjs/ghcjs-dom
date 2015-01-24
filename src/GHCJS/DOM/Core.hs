@@ -10,27 +10,28 @@ module GHCJS.DOM.Core
         DOMSecurityPolicy, DOMSelection, DOMSettableTokenList,
         DOMStringList, DOMTokenList, DOMWindow, DOMWindowCSS, Element,
         EntityReference, Event, EventTarget, File, FileList, Geolocation,
-        History, HTMLAnchorElement, HTMLAppletElement, HTMLAreaElement,
-        HTMLBaseElement, HTMLBaseFontElement, HTMLBodyElement,
-        HTMLBRElement, HTMLButtonElement, HTMLCanvasElement,
-        HTMLCollection, HTMLDetailsElement, HTMLDirectoryElement,
-        HTMLDivElement, HTMLDListElement, HTMLDocument, HTMLElement,
-        HTMLEmbedElement, HTMLFieldSetElement, HTMLFontElement,
-        HTMLFormElement, HTMLFrameElement, HTMLFrameSetElement,
-        HTMLHeadElement, HTMLHeadingElement, HTMLHRElement,
-        HTMLHtmlElement, HTMLIFrameElement, HTMLImageElement,
-        HTMLInputElement, HTMLKeygenElement, HTMLLabelElement,
-        HTMLLegendElement, HTMLLIElement, HTMLLinkElement, HTMLMapElement,
-        HTMLMarqueeElement, HTMLMediaElement, HTMLAudioElement,
-        HTMLMenuElement, HTMLMetaElement, HTMLModElement,
-        HTMLObjectElement, HTMLOListElement, HTMLOptGroupElement,
-        HTMLOptionElement, HTMLOptionsCollection, HTMLParagraphElement,
-        HTMLParamElement, HTMLPreElement, HTMLQuoteElement,
-        HTMLScriptElement, HTMLSelectElement, HTMLStyleElement,
-        HTMLTableCaptionElement, HTMLTableCellElement, HTMLTableColElement,
-        HTMLTableElement, HTMLTableRowElement, HTMLTableSectionElement,
-        HTMLTextAreaElement, HTMLTitleElement, HTMLUListElement,
-        HTMLVideoElement, KeyboardEvent, Location, MediaError, MediaList,
+        PositionError, History, HTMLAnchorElement, HTMLAppletElement,
+        HTMLAreaElement, HTMLBaseElement, HTMLBaseFontElement,
+        HTMLBodyElement, HTMLBRElement, HTMLButtonElement,
+        HTMLCanvasElement, HTMLCollection, HTMLDetailsElement,
+        HTMLDirectoryElement, HTMLDivElement, HTMLDListElement,
+        HTMLDocument, HTMLElement, HTMLEmbedElement, HTMLFieldSetElement,
+        HTMLFontElement, HTMLFormElement, HTMLFrameElement,
+        HTMLFrameSetElement, HTMLHeadElement, HTMLHeadingElement,
+        HTMLHRElement, HTMLHtmlElement, HTMLIFrameElement,
+        HTMLImageElement, HTMLInputElement, HTMLKeygenElement,
+        HTMLLabelElement, HTMLLegendElement, HTMLLIElement,
+        HTMLLinkElement, HTMLMapElement, HTMLMarqueeElement,
+        HTMLMediaElement, HTMLAudioElement, HTMLMenuElement,
+        HTMLMetaElement, HTMLModElement, HTMLObjectElement,
+        HTMLOListElement, HTMLOptGroupElement, HTMLOptionElement,
+        HTMLOptionsCollection, HTMLParagraphElement, HTMLParamElement,
+        HTMLPreElement, HTMLQuoteElement, HTMLScriptElement,
+        HTMLSelectElement, HTMLStyleElement, HTMLTableCaptionElement,
+        HTMLTableCellElement, HTMLTableColElement, HTMLTableElement,
+        HTMLTableRowElement, HTMLTableSectionElement, HTMLTextAreaElement,
+        HTMLTitleElement, HTMLUListElement, HTMLVideoElement,
+        MediaController, KeyboardEvent, Location, MediaError, MediaList,
         MediaQueryList, MouseEvent, MessagePort, MutationEvent,
         NamedNodeMap, Navigator, Node, NodeFilter, NodeIterator, NodeList,
         Notation, ProcessingInstruction, DOMRange, DOMScreen, StyleMedia,
@@ -46,38 +47,39 @@ module GHCJS.DOM.Core
         IsDOMPluginArray, IsDOMSecurityPolicy, IsDOMSelection,
         IsDOMSettableTokenList, IsDOMStringList, IsDOMTokenList,
         IsDOMWindow, IsDOMWindowCSS, IsElement, IsEntityReference, IsEvent,
-        IsEventTarget, IsFile, IsFileList, IsGeolocation, IsHistory,
-        IsHTMLAnchorElement, IsHTMLAppletElement, IsHTMLAreaElement,
-        IsHTMLBaseElement, IsHTMLBaseFontElement, IsHTMLBodyElement,
-        IsHTMLBRElement, IsHTMLButtonElement, IsHTMLCanvasElement,
-        IsHTMLCollection, IsHTMLDetailsElement, IsHTMLDirectoryElement,
-        IsHTMLDivElement, IsHTMLDListElement, IsHTMLDocument,
-        IsHTMLElement, IsHTMLEmbedElement, IsHTMLFieldSetElement,
-        IsHTMLFontElement, IsHTMLFormElement, IsHTMLFrameElement,
-        IsHTMLFrameSetElement, IsHTMLHeadElement, IsHTMLHeadingElement,
-        IsHTMLHRElement, IsHTMLHtmlElement, IsHTMLIFrameElement,
-        IsHTMLImageElement, IsHTMLInputElement, IsHTMLKeygenElement,
-        IsHTMLLabelElement, IsHTMLLegendElement, IsHTMLLIElement,
-        IsHTMLLinkElement, IsHTMLMapElement, IsHTMLMarqueeElement,
-        IsHTMLMediaElement, IsHTMLAudioElement, IsHTMLMenuElement,
-        IsHTMLMetaElement, IsHTMLModElement, IsHTMLObjectElement,
-        IsHTMLOListElement, IsHTMLOptGroupElement, IsHTMLOptionElement,
-        IsHTMLOptionsCollection, IsHTMLParagraphElement,
-        IsHTMLParamElement, IsHTMLPreElement, IsHTMLQuoteElement,
-        IsHTMLScriptElement, IsHTMLSelectElement, IsHTMLStyleElement,
-        IsHTMLTableCaptionElement, IsHTMLTableCellElement,
-        IsHTMLTableColElement, IsHTMLTableElement, IsHTMLTableRowElement,
-        IsHTMLTableSectionElement, IsHTMLTextAreaElement,
-        IsHTMLTitleElement, IsHTMLUListElement, IsHTMLVideoElement,
-        IsKeyboardEvent, IsLocation, IsMediaError, IsMediaList,
-        IsMediaQueryList, IsMouseEvent, IsMessagePort, IsMutationEvent,
-        IsNamedNodeMap, IsNavigator, IsNode, IsNodeFilter, IsNodeIterator,
-        IsNodeList, IsNotation, IsProcessingInstruction, IsDOMRange,
-        IsDOMScreen, IsStyleMedia, IsStyleSheet, IsStyleSheetList,
-        IsStorage, IsStorageInfo, IsText, IsTimeRanges, IsTreeWalker,
-        IsValidityState, IsUIEvent, IsWebKitNamedFlow, IsWebKitPoint,
-        IsXMLHttpRequest, IsXMLHttpRequestUpload, IsXPathExpression,
-        IsXPathNSResolver, IsXPathResult)
+        IsEventTarget, IsFile, IsFileList, IsGeolocation, IsPositionError,
+        IsHistory, IsHTMLAnchorElement, IsHTMLAppletElement,
+        IsHTMLAreaElement, IsHTMLBaseElement, IsHTMLBaseFontElement,
+        IsHTMLBodyElement, IsHTMLBRElement, IsHTMLButtonElement,
+        IsHTMLCanvasElement, IsHTMLCollection, IsHTMLDetailsElement,
+        IsHTMLDirectoryElement, IsHTMLDivElement, IsHTMLDListElement,
+        IsHTMLDocument, IsHTMLElement, IsHTMLEmbedElement,
+        IsHTMLFieldSetElement, IsHTMLFontElement, IsHTMLFormElement,
+        IsHTMLFrameElement, IsHTMLFrameSetElement, IsHTMLHeadElement,
+        IsHTMLHeadingElement, IsHTMLHRElement, IsHTMLHtmlElement,
+        IsHTMLIFrameElement, IsHTMLImageElement, IsHTMLInputElement,
+        IsHTMLKeygenElement, IsHTMLLabelElement, IsHTMLLegendElement,
+        IsHTMLLIElement, IsHTMLLinkElement, IsHTMLMapElement,
+        IsHTMLMarqueeElement, IsHTMLMediaElement, IsHTMLAudioElement,
+        IsHTMLMenuElement, IsHTMLMetaElement, IsHTMLModElement,
+        IsHTMLObjectElement, IsHTMLOListElement, IsHTMLOptGroupElement,
+        IsHTMLOptionElement, IsHTMLOptionsCollection,
+        IsHTMLParagraphElement, IsHTMLParamElement, IsHTMLPreElement,
+        IsHTMLQuoteElement, IsHTMLScriptElement, IsHTMLSelectElement,
+        IsHTMLStyleElement, IsHTMLTableCaptionElement,
+        IsHTMLTableCellElement, IsHTMLTableColElement, IsHTMLTableElement,
+        IsHTMLTableRowElement, IsHTMLTableSectionElement,
+        IsHTMLTextAreaElement, IsHTMLTitleElement, IsHTMLUListElement,
+        IsHTMLVideoElement, IsMediaController, IsKeyboardEvent, IsLocation,
+        IsMediaError, IsMediaList, IsMediaQueryList, IsMouseEvent,
+        IsMessagePort, IsMutationEvent, IsNamedNodeMap, IsNavigator,
+        IsNode, IsNodeFilter, IsNodeIterator, IsNodeList, IsNotation,
+        IsProcessingInstruction, IsDOMRange, IsDOMScreen, IsStyleMedia,
+        IsStyleSheet, IsStyleSheetList, IsStorage, IsStorageInfo, IsText,
+        IsTimeRanges, IsTreeWalker, IsValidityState, IsUIEvent,
+        IsWebKitNamedFlow, IsWebKitPoint, IsXMLHttpRequest,
+        IsXMLHttpRequestUpload, IsXPathExpression, IsXPathNSResolver,
+        IsXPathResult)
        where
  
 data DOMAttr = DOMAttr
@@ -149,6 +151,8 @@ data File = File
 data FileList = FileList
  
 data Geolocation = Geolocation
+ 
+data PositionError = PositionError
  
 data History = History
  
@@ -277,6 +281,8 @@ data HTMLTitleElement = HTMLTitleElement
 data HTMLUListElement = HTMLUListElement
  
 data HTMLVideoElement = HTMLVideoElement
+ 
+data MediaController = MediaController
  
 data KeyboardEvent = KeyboardEvent
  
@@ -418,6 +424,8 @@ class IsFileList a
  
 class IsGeolocation a
  
+class IsPositionError a
+ 
 class IsHistory a
  
 class (IsHTMLElement a) => IsHTMLAnchorElement a
@@ -545,6 +553,8 @@ class (IsHTMLElement a) => IsHTMLTitleElement a
 class (IsHTMLElement a) => IsHTMLUListElement a
  
 class (IsHTMLMediaElement a) => IsHTMLVideoElement a
+ 
+class IsMediaController a
  
 class (IsUIEvent a) => IsKeyboardEvent a
  
@@ -715,6 +725,8 @@ instance IsBlob File
 instance IsFileList FileList
  
 instance IsGeolocation Geolocation
+ 
+instance IsPositionError PositionError
  
 instance IsHistory History
  
@@ -1211,6 +1223,8 @@ instance IsHTMLElement HTMLVideoElement
 instance IsElement HTMLVideoElement
  
 instance IsNode HTMLVideoElement
+ 
+instance IsMediaController MediaController
  
 instance IsKeyboardEvent KeyboardEvent
  

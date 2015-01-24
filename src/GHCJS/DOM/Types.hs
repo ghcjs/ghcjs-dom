@@ -10,6 +10,10 @@ module GHCJS.DOM.Types (
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
     maybeJSNull, propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
   , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA
+  , SerializedScriptValue(SerializedScriptValue), unSerializedScriptValue, IsSerializedScriptValue, toSerializedScriptValue
+  , PositionCallback(PositionCallback), unPositionCallback, IsPositionCallback, toPositionCallback
+  , PositionErrorCallback(PositionErrorCallback), unPositionErrorCallback, IsPositionErrorCallback, toPositionErrorCallback
+  , PositionOptions(PositionOptions), unPositionOptions, IsPositionOptions, toPositionOptions
 
 -- AUTO GENERATION STARTS HERE
   , DOMAttr(DOMAttr), unDOMAttr, IsDOMAttr, toDOMAttr, castToDOMAttr, gTypeDOMAttr
@@ -113,6 +117,7 @@ module GHCJS.DOM.Types (
   , History(History), unHistory, IsHistory, toHistory, castToHistory, gTypeHistory
   , KeyboardEvent(KeyboardEvent), unKeyboardEvent, IsKeyboardEvent, toKeyboardEvent, castToKeyboardEvent, gTypeKeyboardEvent
   , Location(Location), unLocation, IsLocation, toLocation, castToLocation, gTypeLocation
+  , MediaController(MediaController), unMediaController, IsMediaController, toMediaController, castToMediaController, gTypeMediaController
   , MediaError(MediaError), unMediaError, IsMediaError, toMediaError, castToMediaError, gTypeMediaError
   , MediaList(MediaList), unMediaList, IsMediaList, toMediaList, castToMediaList, gTypeMediaList
   , MediaQueryList(MediaQueryList), unMediaQueryList, IsMediaQueryList, toMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
@@ -126,6 +131,7 @@ module GHCJS.DOM.Types (
   , NodeIterator(NodeIterator), unNodeIterator, IsNodeIterator, toNodeIterator, castToNodeIterator, gTypeNodeIterator
   , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, castToNodeList, gTypeNodeList
   , Notation(Notation), unNotation, IsNotation, toNotation, castToNotation, gTypeNotation
+  , PositionError(PositionError), unPositionError, IsPositionError, toPositionError, castToPositionError, gTypePositionError
   , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, IsProcessingInstruction, toProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
   , DOMRange(DOMRange), unDOMRange, IsDOMRange, toDOMRange, castToDOMRange, gTypeDOMRange
   , DOMScreen(DOMScreen), unDOMScreen, IsDOMScreen, toDOMScreen, castToDOMScreen, gTypeDOMScreen
@@ -378,6 +384,111 @@ type DOMString = T.Text
 
 type ToDOMString s = GlibString s
 type FromDOMString s = GlibString s
+#endif
+
+-- Custom types
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype SerializedScriptValue = SerializedScriptValue (JSRef SerializedScriptValue) deriving (Eq)
+
+unSerializedScriptValue (SerializedScriptValue o) = o
+
+instance ToJSRef SerializedScriptValue where
+  toJSRef = return . unSerializedScriptValue
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SerializedScriptValue where
+  fromJSRef = return . fmap SerializedScriptValue . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSerializedScriptValue o
+toSerializedScriptValue :: IsSerializedScriptValue o => o -> SerializedScriptValue
+toSerializedScriptValue = unsafeCastGObject . toGObject
+
+instance IsSerializedScriptValue SerializedScriptValue
+instance GObjectClass SerializedScriptValue where
+  toGObject = GObject . castRef . unSerializedScriptValue
+  unsafeCastGObject = SerializedScriptValue . castRef . unGObject
+-- TODO add more IsSerializedScriptValue instances
+#else
+-- TODO work out how we can support SerializedScriptValue in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype PositionCallback = PositionCallback (JSRef PositionCallback) deriving (Eq)
+
+unPositionCallback (PositionCallback o) = o
+
+instance ToJSRef PositionCallback where
+  toJSRef = return . unPositionCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PositionCallback where
+  fromJSRef = return . fmap PositionCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPositionCallback o
+toPositionCallback :: IsPositionCallback o => o -> PositionCallback
+toPositionCallback = unsafeCastGObject . toGObject
+
+instance IsPositionCallback PositionCallback
+instance GObjectClass PositionCallback where
+  toGObject = GObject . castRef . unPositionCallback
+  unsafeCastGObject = PositionCallback . castRef . unGObject
+-- TODO add more IsPositionCallback instances
+#else
+-- TODO work out how we can support PositionCallback in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype PositionErrorCallback = PositionErrorCallback (JSRef PositionErrorCallback) deriving (Eq)
+
+unPositionErrorCallback (PositionErrorCallback o) = o
+
+instance ToJSRef PositionErrorCallback where
+  toJSRef = return . unPositionErrorCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PositionErrorCallback where
+  fromJSRef = return . fmap PositionErrorCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPositionErrorCallback o
+toPositionErrorCallback :: IsPositionErrorCallback o => o -> PositionErrorCallback
+toPositionErrorCallback = unsafeCastGObject . toGObject
+
+instance IsPositionErrorCallback PositionErrorCallback
+instance GObjectClass PositionErrorCallback where
+  toGObject = GObject . castRef . unPositionErrorCallback
+  unsafeCastGObject = PositionErrorCallback . castRef . unGObject
+-- TODO add more IsPositionErrorCallback instances
+#else
+-- TODO work out how we can support PositionErrorCallback in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype PositionOptions = PositionOptions (JSRef PositionOptions) deriving (Eq)
+
+unPositionOptions (PositionOptions o) = o
+
+instance ToJSRef PositionOptions where
+  toJSRef = return . unPositionOptions
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PositionOptions where
+  fromJSRef = return . fmap PositionOptions . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPositionOptions o
+toPositionOptions :: IsPositionOptions o => o -> PositionOptions
+toPositionOptions = unsafeCastGObject . toGObject
+
+instance IsPositionOptions PositionOptions
+instance GObjectClass PositionOptions where
+  toGObject = GObject . castRef . unPositionOptions
+  unsafeCastGObject = PositionOptions . castRef . unGObject
+-- TODO add more IsPositionOptions instances
+#else
+-- TODO work out how we can support PositionOptions in native code
 #endif
 
 -- AUTO GENERATION STARTS HERE
@@ -3811,6 +3922,38 @@ type IsLocation o = LocationClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype MediaController = MediaController (JSRef MediaController) deriving (Eq)
+
+unMediaController (MediaController o) = o
+
+instance ToJSRef MediaController where
+  toJSRef = return . unMediaController
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaController where
+  fromJSRef = return . fmap MediaController . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaController o
+toMediaController :: IsMediaController o => o -> MediaController
+toMediaController = unsafeCastGObject . toGObject
+
+instance IsMediaController MediaController
+instance GObjectClass MediaController where
+  toGObject = GObject . castRef . unMediaController
+  unsafeCastGObject = MediaController . castRef . unGObject
+
+castToMediaController :: GObjectClass obj => obj -> MediaController
+castToMediaController = castTo gTypeMediaController "MediaController"
+
+foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaController' :: JSRef GType
+gTypeMediaController = GType gTypeMediaController'
+#else
+type IsMediaController o = MediaControllerClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype MediaError = MediaError (JSRef MediaError) deriving (Eq)
 
 unMediaError (MediaError o) = o
@@ -4225,6 +4368,38 @@ castToNotation = castTo gTypeNotation "Notation"
 foreign import javascript unsafe "window[\"Notation\"]" gTypeNotation' :: JSRef GType
 gTypeNotation = GType gTypeNotation'
 #else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype PositionError = PositionError (JSRef PositionError) deriving (Eq)
+
+unPositionError (PositionError o) = o
+
+instance ToJSRef PositionError where
+  toJSRef = return . unPositionError
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PositionError where
+  fromJSRef = return . fmap PositionError . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPositionError o
+toPositionError :: IsPositionError o => o -> PositionError
+toPositionError = unsafeCastGObject . toGObject
+
+instance IsPositionError PositionError
+instance GObjectClass PositionError where
+  toGObject = GObject . castRef . unPositionError
+  unsafeCastGObject = PositionError . castRef . unGObject
+
+castToPositionError :: GObjectClass obj => obj -> PositionError
+castToPositionError = castTo gTypePositionError "PositionError"
+
+foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError' :: JSRef GType
+gTypePositionError = GType gTypePositionError'
+#else
+type IsPositionError o = PositionErrorClass o
 #endif
 
 

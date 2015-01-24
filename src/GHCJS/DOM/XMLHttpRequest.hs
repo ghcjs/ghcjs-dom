@@ -2,8 +2,10 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XMLHttpRequest
-       (ghcjs_dom_xml_http_request_set_request_header,
-        xmlHttpRequestSetRequestHeader, ghcjs_dom_xml_http_request_abort,
+       (ghcjs_dom_xml_http_request_open, xmlHttpRequestOpen,
+        ghcjs_dom_xml_http_request_set_request_header,
+        xmlHttpRequestSetRequestHeader, ghcjs_dom_xml_http_request_send,
+        xmlHttpRequestSend, ghcjs_dom_xml_http_request_abort,
         xmlHttpRequestAbort,
         ghcjs_dom_xml_http_request_get_all_response_headers,
         xmlHttpRequestGetAllResponseHeaders,
@@ -26,12 +28,15 @@ module GHCJS.DOM.XMLHttpRequest
         ghcjs_dom_xml_http_request_get_with_credentials,
         xmlHttpRequestGetWithCredentials,
         ghcjs_dom_xml_http_request_get_upload, xmlHttpRequestGetUpload,
+        ghcjs_dom_xml_http_request_get_response_text,
+        xmlHttpRequestGetResponseText,
         ghcjs_dom_xml_http_request_get_response_xml,
         xmlHttpRequestGetResponseXML,
         ghcjs_dom_xml_http_request_set_response_type,
         xmlHttpRequestSetResponseType,
         ghcjs_dom_xml_http_request_get_response_type,
         xmlHttpRequestGetResponseType,
+        ghcjs_dom_xml_http_request_get_response, xmlHttpRequestGetResponse,
         ghcjs_dom_xml_http_request_get_status, xmlHttpRequestGetStatus,
         ghcjs_dom_xml_http_request_get_status_text,
         xmlHttpRequestGetStatusText,
@@ -49,6 +54,24 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
 
  
+foreign import javascript unsafe "$1[\"open\"]($2, $3, $4, $5, $6)"
+        ghcjs_dom_xml_http_request_open ::
+        JSRef XMLHttpRequest ->
+          JSString -> JSString -> Bool -> JSString -> JSString -> IO ()
+ 
+xmlHttpRequestOpen ::
+                   (IsXMLHttpRequest self, ToJSString method, ToJSString url,
+                    ToJSString user, ToJSString password) =>
+                     self -> method -> url -> Bool -> user -> password -> IO ()
+xmlHttpRequestOpen self method url async user password
+  = ghcjs_dom_xml_http_request_open
+      (unXMLHttpRequest (toXMLHttpRequest self))
+      (toJSString method)
+      (toJSString url)
+      async
+      (toJSString user)
+      (toJSString password)
+ 
 foreign import javascript unsafe "$1[\"setRequestHeader\"]($2, $3)"
         ghcjs_dom_xml_http_request_set_request_header ::
         JSRef XMLHttpRequest -> JSString -> JSString -> IO ()
@@ -61,6 +84,14 @@ xmlHttpRequestSetRequestHeader self header value
       (unXMLHttpRequest (toXMLHttpRequest self))
       (toJSString header)
       (toJSString value)
+ 
+foreign import javascript unsafe "$1[\"send\"]()"
+        ghcjs_dom_xml_http_request_send :: JSRef XMLHttpRequest -> IO ()
+ 
+xmlHttpRequestSend :: (IsXMLHttpRequest self) => self -> IO ()
+xmlHttpRequestSend self
+  = ghcjs_dom_xml_http_request_send
+      (unXMLHttpRequest (toXMLHttpRequest self))
  
 foreign import javascript unsafe "$1[\"abort\"]()"
         ghcjs_dom_xml_http_request_abort :: JSRef XMLHttpRequest -> IO ()
@@ -221,6 +252,17 @@ xmlHttpRequestGetUpload self
       (ghcjs_dom_xml_http_request_get_upload
          (unXMLHttpRequest (toXMLHttpRequest self)))
  
+foreign import javascript unsafe "$1[\"responseText\"]"
+        ghcjs_dom_xml_http_request_get_response_text ::
+        JSRef XMLHttpRequest -> IO JSString
+ 
+xmlHttpRequestGetResponseText ::
+                              (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+xmlHttpRequestGetResponseText self
+  = fromJSString <$>
+      (ghcjs_dom_xml_http_request_get_response_text
+         (unXMLHttpRequest (toXMLHttpRequest self)))
+ 
 foreign import javascript unsafe "$1[\"responseXML\"]"
         ghcjs_dom_xml_http_request_get_response_xml ::
         JSRef XMLHttpRequest -> IO (JSRef Document)
@@ -253,6 +295,16 @@ xmlHttpRequestGetResponseType self
   = fromJSString <$>
       (ghcjs_dom_xml_http_request_get_response_type
          (unXMLHttpRequest (toXMLHttpRequest self)))
+ 
+foreign import javascript unsafe "$1[\"response\"]"
+        ghcjs_dom_xml_http_request_get_response ::
+        JSRef XMLHttpRequest -> IO (JSRef GObject)
+ 
+xmlHttpRequestGetResponse ::
+                          (IsXMLHttpRequest self) => self -> IO (JSRef GObject)
+xmlHttpRequestGetResponse self
+  = ghcjs_dom_xml_http_request_get_response
+      (unXMLHttpRequest (toXMLHttpRequest self))
  
 foreign import javascript unsafe "$1[\"status\"]"
         ghcjs_dom_xml_http_request_get_status ::

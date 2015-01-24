@@ -4,6 +4,8 @@
 module GHCJS.DOM.CSSStyleDeclaration
        (ghcjs_dom_css_style_declaration_get_property_value,
         cssStyleDeclarationGetPropertyValue,
+        ghcjs_dom_css_style_declaration_get_property_css_value,
+        cssStyleDeclarationGetPropertyCSSValue,
         ghcjs_dom_css_style_declaration_remove_property,
         cssStyleDeclarationRemoveProperty,
         ghcjs_dom_css_style_declaration_get_property_priority,
@@ -47,6 +49,19 @@ cssStyleDeclarationGetPropertyValue ::
 cssStyleDeclarationGetPropertyValue self propertyName
   = fromJSString <$>
       (ghcjs_dom_css_style_declaration_get_property_value
+         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+         (toJSString propertyName))
+ 
+foreign import javascript unsafe "$1[\"getPropertyCSSValue\"]($2)"
+        ghcjs_dom_css_style_declaration_get_property_css_value ::
+        JSRef CSSStyleDeclaration -> JSString -> IO (JSRef CSSValue)
+ 
+cssStyleDeclarationGetPropertyCSSValue ::
+                                       (IsCSSStyleDeclaration self, ToJSString propertyName) =>
+                                         self -> propertyName -> IO (Maybe CSSValue)
+cssStyleDeclarationGetPropertyCSSValue self propertyName
+  = fmap CSSValue . maybeJSNull <$>
+      (ghcjs_dom_css_style_declaration_get_property_css_value
          (unCSSStyleDeclaration (toCSSStyleDeclaration self))
          (toJSString propertyName))
  

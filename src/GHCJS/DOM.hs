@@ -33,7 +33,7 @@ import Graphics.UI.Gtk
 import System.Glib.Signals (on)
 import System.Glib.Attributes (get, AttrOp(..), set)
 import System.Glib.FFI (maybeNull)
-import System.Glib.MainLoop (priorityHigh)
+import System.Glib.MainLoop (priorityLow)
 import Graphics.UI.Gtk.WebKit.WebSettings
        (webSettingsMonospaceFontFamily, webSettingsUserAgent,
         webSettingsEnableDeveloperExtras)
@@ -116,7 +116,7 @@ makeDefaultWebView _ _ = error "Unsupported makeDefaultWebView"
 makeDefaultWebView userAgentKey main = do
   initGUI
   window <- windowNew
-  timeoutAddFull (yield >> return True) priorityHigh 10
+  timeoutAddFull (yield >> return True) priorityLow 10
   windowSetDefaultSize window 900 600
   windowSetPosition window WinPosCenter
   scrollWin <- scrolledWindowNew Nothing Nothing

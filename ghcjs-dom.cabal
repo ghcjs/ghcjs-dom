@@ -135,6 +135,7 @@ library
           GHCJS.DOM.HTMLUListElement
           GHCJS.DOM.KeyboardEvent
           GHCJS.DOM.Location
+          GHCJS.DOM.MediaController
           GHCJS.DOM.MediaList
           GHCJS.DOM.MediaQueryList
           GHCJS.DOM.MouseEvent
@@ -144,6 +145,7 @@ library
           GHCJS.DOM.NodeFilter
           GHCJS.DOM.NodeIterator
           GHCJS.DOM.NodeList
+          GHCJS.DOM.PositionError
           GHCJS.DOM.ProcessingInstruction
           GHCJS.DOM.Range
           GHCJS.DOM.Ranges

@@ -6,6 +6,8 @@ module GHCJS.DOM.DOMWindow
         ghcjs_dom_dom_window_blur, domWindowBlur,
         ghcjs_dom_dom_window_print, domWindowPrint,
         ghcjs_dom_dom_window_stop, domWindowStop,
+        ghcjs_dom_dom_window_open, domWindowOpen,
+        ghcjs_dom_dom_window_show_modal_dialog, domWindowShowModalDialog,
         ghcjs_dom_dom_window_alert, domWindowAlert,
         ghcjs_dom_dom_window_confirm, domWindowConfirm,
         ghcjs_dom_dom_window_prompt, domWindowPrompt,
@@ -23,6 +25,7 @@ module GHCJS.DOM.DOMWindow
         domWindowWebkitConvertPointFromPageToNode,
         ghcjs_dom_dom_window_webkit_convert_point_from_node_to_page,
         domWindowWebkitConvertPointFromNodeToPage,
+        ghcjs_dom_dom_window_post_message, domWindowPostMessage,
         ghcjs_dom_dom_window_dispatch_event, domWindowDispatchEvent,
         ghcjs_dom_dom_window_capture_events, domWindowCaptureEvents,
         ghcjs_dom_dom_window_release_events, domWindowReleaseEvents,
@@ -36,8 +39,9 @@ module GHCJS.DOM.DOMWindow
         ghcjs_dom_dom_window_get_toolbar, domWindowGetToolbar,
         ghcjs_dom_dom_window_get_navigator, domWindowGetNavigator,
         ghcjs_dom_dom_window_get_client_information,
-        domWindowGetClientInformation,
-        ghcjs_dom_dom_window_get_frame_element, domWindowGetFrameElement,
+        domWindowGetClientInformation, ghcjs_dom_dom_window_get_event,
+        domWindowGetEvent, ghcjs_dom_dom_window_get_frame_element,
+        domWindowGetFrameElement,
         ghcjs_dom_dom_window_get_offscreen_buffering,
         domWindowGetOffscreenBuffering,
         ghcjs_dom_dom_window_get_outer_height, domWindowGetOuterHeight,
@@ -153,6 +157,37 @@ foreign import javascript unsafe "$1[\"stop\"]()"
 domWindowStop :: (IsDOMWindow self) => self -> IO ()
 domWindowStop self
   = ghcjs_dom_dom_window_stop (unDOMWindow (toDOMWindow self))
+ 
+foreign import javascript unsafe "$1[\"open\"]($2, $3, $4)"
+        ghcjs_dom_dom_window_open ::
+        JSRef DOMWindow ->
+          JSString -> JSString -> JSString -> IO (JSRef DOMWindow)
+ 
+domWindowOpen ::
+              (IsDOMWindow self, ToJSString url, ToJSString name,
+               ToJSString options) =>
+                self -> url -> name -> options -> IO (Maybe DOMWindow)
+domWindowOpen self url name options
+  = fmap DOMWindow . maybeJSNull <$>
+      (ghcjs_dom_dom_window_open (unDOMWindow (toDOMWindow self))
+         (toJSString url)
+         (toJSString name)
+         (toJSString options))
+ 
+foreign import javascript unsafe
+        "$1[\"showModalDialog\"]($2, $3,\n$4)"
+        ghcjs_dom_dom_window_show_modal_dialog ::
+        JSRef DOMWindow -> JSString -> JSRef a -> JSString -> IO (JSRef a)
+ 
+domWindowShowModalDialog ::
+                         (IsDOMWindow self, ToJSString url, ToJSString featureArgs) =>
+                           self -> url -> JSRef a -> featureArgs -> IO (JSRef a)
+domWindowShowModalDialog self url dialogArgs featureArgs
+  = ghcjs_dom_dom_window_show_modal_dialog
+      (unDOMWindow (toDOMWindow self))
+      (toJSString url)
+      dialogArgs
+      (toJSString featureArgs)
  
 foreign import javascript unsafe "$1[\"alert\"]($2)"
         ghcjs_dom_dom_window_alert :: JSRef DOMWindow -> JSString -> IO ()
@@ -337,6 +372,24 @@ domWindowWebkitConvertPointFromNodeToPage self node p
          (maybe jsNull (unNode . toNode) node)
          (maybe jsNull (unWebKitPoint . toWebKitPoint) p))
  
+foreign import javascript unsafe "$1[\"postMessage\"]($2, $3, $4)"
+        ghcjs_dom_dom_window_post_message ::
+        JSRef DOMWindow ->
+          JSRef SerializedScriptValue ->
+            JSRef MessagePort -> JSString -> IO ()
+ 
+domWindowPostMessage ::
+                     (IsDOMWindow self, IsSerializedScriptValue message,
+                      IsMessagePort messagePort, ToJSString targetOrigin) =>
+                       self -> Maybe message -> Maybe messagePort -> targetOrigin -> IO ()
+domWindowPostMessage self message messagePort targetOrigin
+  = ghcjs_dom_dom_window_post_message
+      (unDOMWindow (toDOMWindow self))
+      (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
+         message)
+      (maybe jsNull (unMessagePort . toMessagePort) messagePort)
+      (toJSString targetOrigin)
+ 
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_dispatch_event ::
@@ -470,6 +523,15 @@ domWindowGetClientInformation self
   = fmap Navigator . maybeJSNull <$>
       (ghcjs_dom_dom_window_get_client_information
          (unDOMWindow (toDOMWindow self)))
+ 
+foreign import javascript unsafe "$1[\"event\"]"
+        ghcjs_dom_dom_window_get_event ::
+        JSRef DOMWindow -> IO (JSRef Event)
+ 
+domWindowGetEvent :: (IsDOMWindow self) => self -> IO (Maybe Event)
+domWindowGetEvent self
+  = fmap Event . maybeJSNull <$>
+      (ghcjs_dom_dom_window_get_event (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"frameElement\"]"
         ghcjs_dom_dom_window_get_frame_element ::

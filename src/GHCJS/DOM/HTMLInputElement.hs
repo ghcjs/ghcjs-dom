@@ -13,6 +13,8 @@ module GHCJS.DOM.HTMLInputElement
         htmlInputElementSetRangeText,
         ghcjs_dom_html_input_element_set_range_text4,
         htmlInputElementSetRangeText4,
+        ghcjs_dom_html_input_element_set_selection_range,
+        htmlInputElementSetSelectionRange,
         ghcjs_dom_html_input_element_set_value_for_user,
         htmlInputElementSetValueForUser,
         ghcjs_dom_html_input_element_set_accept, htmlInputElementSetAccept,
@@ -126,6 +128,18 @@ module GHCJS.DOM.HTMLInputElement
         ghcjs_dom_html_input_element_get_validation_message,
         htmlInputElementGetValidationMessage,
         ghcjs_dom_html_input_element_get_labels, htmlInputElementGetLabels,
+        ghcjs_dom_html_input_element_set_selection_start,
+        htmlInputElementSetSelectionStart,
+        ghcjs_dom_html_input_element_get_selection_start,
+        htmlInputElementGetSelectionStart,
+        ghcjs_dom_html_input_element_set_selection_end,
+        htmlInputElementSetSelectionEnd,
+        ghcjs_dom_html_input_element_get_selection_end,
+        htmlInputElementGetSelectionEnd,
+        ghcjs_dom_html_input_element_set_selection_direction,
+        htmlInputElementSetSelectionDirection,
+        ghcjs_dom_html_input_element_get_selection_direction,
+        htmlInputElementGetSelectionDirection,
         ghcjs_dom_html_input_element_set_align, htmlInputElementSetAlign,
         ghcjs_dom_html_input_element_get_align, htmlInputElementGetAlign,
         ghcjs_dom_html_input_element_set_use_map,
@@ -245,6 +259,21 @@ htmlInputElementSetRangeText4 self replacement start end
       start
       end
       (toJSString selectionMode)
+ 
+foreign import javascript unsafe
+        "$1[\"setSelectionRange\"]($2, $3,\n$4)"
+        ghcjs_dom_html_input_element_set_selection_range ::
+        JSRef HTMLInputElement -> Int -> Int -> JSString -> IO ()
+ 
+htmlInputElementSetSelectionRange ::
+                                  (IsHTMLInputElement self, ToJSString direction) =>
+                                    self -> Int -> Int -> direction -> IO ()
+htmlInputElementSetSelectionRange self start end direction
+  = ghcjs_dom_html_input_element_set_selection_range
+      (unHTMLInputElement (toHTMLInputElement self))
+      start
+      end
+      (toJSString direction)
  
 foreign import javascript unsafe "$1[\"setValueForUser\"]($2)"
         ghcjs_dom_html_input_element_set_value_for_user ::
@@ -1013,6 +1042,72 @@ htmlInputElementGetLabels ::
 htmlInputElementGetLabels self
   = fmap NodeList . maybeJSNull <$>
       (ghcjs_dom_html_input_element_get_labels
+         (unHTMLInputElement (toHTMLInputElement self)))
+ 
+foreign import javascript unsafe "$1[\"selectionStart\"] = $2;"
+        ghcjs_dom_html_input_element_set_selection_start ::
+        JSRef HTMLInputElement -> Int -> IO ()
+ 
+htmlInputElementSetSelectionStart ::
+                                  (IsHTMLInputElement self) => self -> Int -> IO ()
+htmlInputElementSetSelectionStart self val
+  = ghcjs_dom_html_input_element_set_selection_start
+      (unHTMLInputElement (toHTMLInputElement self))
+      val
+ 
+foreign import javascript unsafe "$1[\"selectionStart\"]"
+        ghcjs_dom_html_input_element_get_selection_start ::
+        JSRef HTMLInputElement -> IO Int
+ 
+htmlInputElementGetSelectionStart ::
+                                  (IsHTMLInputElement self) => self -> IO Int
+htmlInputElementGetSelectionStart self
+  = ghcjs_dom_html_input_element_get_selection_start
+      (unHTMLInputElement (toHTMLInputElement self))
+ 
+foreign import javascript unsafe "$1[\"selectionEnd\"] = $2;"
+        ghcjs_dom_html_input_element_set_selection_end ::
+        JSRef HTMLInputElement -> Int -> IO ()
+ 
+htmlInputElementSetSelectionEnd ::
+                                (IsHTMLInputElement self) => self -> Int -> IO ()
+htmlInputElementSetSelectionEnd self val
+  = ghcjs_dom_html_input_element_set_selection_end
+      (unHTMLInputElement (toHTMLInputElement self))
+      val
+ 
+foreign import javascript unsafe "$1[\"selectionEnd\"]"
+        ghcjs_dom_html_input_element_get_selection_end ::
+        JSRef HTMLInputElement -> IO Int
+ 
+htmlInputElementGetSelectionEnd ::
+                                (IsHTMLInputElement self) => self -> IO Int
+htmlInputElementGetSelectionEnd self
+  = ghcjs_dom_html_input_element_get_selection_end
+      (unHTMLInputElement (toHTMLInputElement self))
+ 
+foreign import javascript unsafe "$1[\"selectionDirection\"] = $2;"
+        ghcjs_dom_html_input_element_set_selection_direction ::
+        JSRef HTMLInputElement -> JSString -> IO ()
+ 
+htmlInputElementSetSelectionDirection ::
+                                      (IsHTMLInputElement self, ToJSString val) =>
+                                        self -> val -> IO ()
+htmlInputElementSetSelectionDirection self val
+  = ghcjs_dom_html_input_element_set_selection_direction
+      (unHTMLInputElement (toHTMLInputElement self))
+      (toJSString val)
+ 
+foreign import javascript unsafe "$1[\"selectionDirection\"]"
+        ghcjs_dom_html_input_element_get_selection_direction ::
+        JSRef HTMLInputElement -> IO JSString
+ 
+htmlInputElementGetSelectionDirection ::
+                                      (IsHTMLInputElement self, FromJSString result) =>
+                                        self -> IO result
+htmlInputElementGetSelectionDirection self
+  = fromJSString <$>
+      (ghcjs_dom_html_input_element_get_selection_direction
          (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"align\"] = $2;"

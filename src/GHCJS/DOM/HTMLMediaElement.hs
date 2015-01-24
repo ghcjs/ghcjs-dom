@@ -92,6 +92,10 @@ module GHCJS.DOM.HTMLMediaElement
         htmlMediaElementSetMediaGroup,
         ghcjs_dom_html_media_element_get_media_group,
         htmlMediaElementGetMediaGroup,
+        ghcjs_dom_html_media_element_set_controller,
+        htmlMediaElementSetController,
+        ghcjs_dom_html_media_element_get_controller,
+        htmlMediaElementGetController,
         ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless,
         htmlMediaElementGetWebkitCurrentPlaybackTargetIsWireless,
         htmlMediaElementOnwebkitcurrentplaybacktargetiswirelesschanged,
@@ -688,6 +692,29 @@ htmlMediaElementGetMediaGroup ::
 htmlMediaElementGetMediaGroup self
   = fromJSString <$>
       (ghcjs_dom_html_media_element_get_media_group
+         (unHTMLMediaElement (toHTMLMediaElement self)))
+ 
+foreign import javascript unsafe "$1[\"controller\"] = $2;"
+        ghcjs_dom_html_media_element_set_controller ::
+        JSRef HTMLMediaElement -> JSRef MediaController -> IO ()
+ 
+htmlMediaElementSetController ::
+                              (IsHTMLMediaElement self, IsMediaController val) =>
+                                self -> Maybe val -> IO ()
+htmlMediaElementSetController self val
+  = ghcjs_dom_html_media_element_set_controller
+      (unHTMLMediaElement (toHTMLMediaElement self))
+      (maybe jsNull (unMediaController . toMediaController) val)
+ 
+foreign import javascript unsafe "$1[\"controller\"]"
+        ghcjs_dom_html_media_element_get_controller ::
+        JSRef HTMLMediaElement -> IO (JSRef MediaController)
+ 
+htmlMediaElementGetController ::
+                              (IsHTMLMediaElement self) => self -> IO (Maybe MediaController)
+htmlMediaElementGetController self
+  = fmap MediaController . maybeJSNull <$>
+      (ghcjs_dom_html_media_element_get_controller
          (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
