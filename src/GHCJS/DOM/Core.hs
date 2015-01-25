@@ -3,25 +3,25 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Core
        (DOMAttr, BarProp, Blob, CDATASection, CharacterData, Comment,
-        CSSRule, CSSRuleList, CSSStyleDeclaration, CSSStyleSheet, CSSValue,
-        Document, DocumentFragment, DocumentType, DOMApplicationCache,
-        DOMImplementation, DOMMimeType, DOMMimeTypeArray,
-        DOMNamedFlowCollection, DOMPlugin, DOMPluginArray,
-        DOMSecurityPolicy, DOMSelection, DOMSettableTokenList,
-        DOMStringList, DOMTokenList, DOMWindow, DOMWindowCSS, Element,
-        EntityReference, Event, EventTarget, File, FileList, Geolocation,
-        PositionError, History, HTMLAnchorElement, HTMLAppletElement,
-        HTMLAreaElement, HTMLBaseElement, HTMLBaseFontElement,
-        HTMLBodyElement, HTMLBRElement, HTMLButtonElement,
-        HTMLCanvasElement, HTMLCollection, HTMLDetailsElement,
-        HTMLDirectoryElement, HTMLDivElement, HTMLDListElement,
-        HTMLDocument, HTMLElement, HTMLEmbedElement, HTMLFieldSetElement,
-        HTMLFontElement, HTMLFormElement, HTMLFrameElement,
-        HTMLFrameSetElement, HTMLHeadElement, HTMLHeadingElement,
-        HTMLHRElement, HTMLHtmlElement, HTMLIFrameElement,
-        HTMLImageElement, HTMLInputElement, HTMLKeygenElement,
-        HTMLLabelElement, HTMLLegendElement, HTMLLIElement,
-        HTMLLinkElement, HTMLMapElement, HTMLMarqueeElement,
+        CSSPrimitiveValue, CSSRule, CSSRuleList, CSSStyleDeclaration,
+        CSSStyleSheet, CSSValue, Counter, Document, DocumentFragment,
+        DocumentType, DOMApplicationCache, DOMImplementation, DOMMimeType,
+        DOMMimeTypeArray, DOMNamedFlowCollection, DOMPlugin,
+        DOMPluginArray, DOMSecurityPolicy, DOMSelection,
+        DOMSettableTokenList, DOMStringList, DOMTokenList, DOMWindow,
+        DOMWindowCSS, Element, EntityReference, Event, EventTarget, File,
+        FileList, Geolocation, PositionError, History, HTMLAnchorElement,
+        HTMLAppletElement, HTMLAreaElement, HTMLBaseElement,
+        HTMLBaseFontElement, HTMLBodyElement, HTMLBRElement,
+        HTMLButtonElement, HTMLCanvasElement, HTMLCollection,
+        HTMLDetailsElement, HTMLDirectoryElement, HTMLDivElement,
+        HTMLDListElement, HTMLDocument, HTMLElement, HTMLEmbedElement,
+        HTMLFieldSetElement, HTMLFontElement, HTMLFormElement,
+        HTMLFrameElement, HTMLFrameSetElement, HTMLHeadElement,
+        HTMLHeadingElement, HTMLHRElement, HTMLHtmlElement,
+        HTMLIFrameElement, HTMLImageElement, HTMLInputElement,
+        HTMLKeygenElement, HTMLLabelElement, HTMLLegendElement,
+        HTMLLIElement, HTMLLinkElement, HTMLMapElement, HTMLMarqueeElement,
         HTMLMediaElement, HTMLAudioElement, HTMLMenuElement,
         HTMLMetaElement, HTMLModElement, HTMLObjectElement,
         HTMLOListElement, HTMLOptGroupElement, HTMLOptionElement,
@@ -34,14 +34,67 @@ module GHCJS.DOM.Core
         MediaController, KeyboardEvent, Location, MediaError, MediaList,
         MediaQueryList, MouseEvent, MessagePort, MutationEvent,
         NamedNodeMap, Navigator, Node, NodeFilter, NodeIterator, NodeList,
-        Notation, ProcessingInstruction, DOMRange, DOMScreen, StyleMedia,
-        StyleSheet, StyleSheetList, Storage, StorageInfo, Text(..),
-        TimeRanges(..), TreeWalker(..), ValidityState, UIEvent,
+        Notation, ProcessingInstruction, DOMRange, Rect, DOMScreen,
+        StyleMedia, StyleSheet, StyleSheetList, Storage, StorageInfo,
+        Text(..), TimeRanges(..), TreeWalker(..), ValidityState, UIEvent,
         WebKitNamedFlow, WebKitPoint, XMLHttpRequest, XMLHttpRequestUpload,
-        XPathExpression, XPathNSResolver, XPathResult, IsDOMAttr,
-        IsBarProp, IsBlob, IsCDATASection, IsCharacterData, IsComment,
-        IsCSSRule, IsCSSRuleList, IsCSSStyleDeclaration, IsCSSStyleSheet,
-        IsCSSValue, IsDocument, IsDocumentFragment, IsDocumentType,
+        XPathExpression, XPathNSResolver, XPathResult, RGBColor,
+        SVGAElement, SVGAltGlyphDefElement, SVGAltGlyphElement,
+        SVGAltGlyphItemElement, SVGAngle, SVGAnimateColorElement,
+        SVGAnimatedAngle, SVGAnimatedBoolean, SVGAnimatedEnumeration,
+        SVGAnimatedInteger, SVGAnimatedLength, SVGAnimatedLengthList,
+        SVGAnimatedNumber, SVGAnimatedNumberList,
+        SVGAnimatedPreserveAspectRatio, SVGAnimatedRect, SVGAnimatedString,
+        SVGAnimatedTransformList, SVGAnimateElement,
+        SVGAnimateMotionElement, SVGAnimateTransformElement,
+        SVGAnimationElement, SVGCircleElement, SVGClipPathElement,
+        SVGColor, SVGComponentTransferFunctionElement, SVGCursorElement,
+        SVGDefsElement, SVGDescElement, SVGDocument, SVGElement,
+        SVGElementInstance, SVGElementInstanceList, SVGEllipseElement,
+        SVGExternalResourcesRequired, SVGFEBlendElement,
+        SVGFEColorMatrixElement, SVGFEComponentTransferElement,
+        SVGFECompositeElement, SVGFEConvolveMatrixElement,
+        SVGFEDiffuseLightingElement, SVGFEDisplacementMapElement,
+        SVGFEDistantLightElement, SVGFEDropShadowElement,
+        SVGFEFloodElement, SVGFEFuncAElement, SVGFEFuncBElement,
+        SVGFEFuncGElement, SVGFEFuncRElement, SVGFEGaussianBlurElement,
+        SVGFEImageElement, SVGFEMergeElement, SVGFEMergeNodeElement,
+        SVGFEMorphologyElement, SVGFEOffsetElement, SVGFEPointLightElement,
+        SVGFESpecularLightingElement, SVGFESpotLightElement,
+        SVGFETileElement, SVGFETurbulenceElement, SVGFilterElement,
+        SVGFilterPrimitiveStandardAttributes, SVGFitToViewBox,
+        SVGFontElement, SVGFontFaceElement, SVGFontFaceFormatElement,
+        SVGFontFaceNameElement, SVGFontFaceSrcElement,
+        SVGFontFaceUriElement, SVGForeignObjectElement, SVGGElement,
+        SVGGlyphElement, SVGGlyphRefElement, SVGGradientElement,
+        SVGGraphicsElement, SVGHKernElement, SVGImageElement, SVGLength,
+        SVGLengthList, SVGLinearGradientElement, SVGLineElement,
+        SVGMarkerElement, SVGMaskElement, SVGMatrix, SVGMetadataElement,
+        SVGMissingGlyphElement, SVGMPathElement, SVGNumber, SVGNumberList,
+        SVGPaint, SVGPathElement, SVGPathSeg, SVGPathSegArcAbs,
+        SVGPathSegArcRel, SVGPathSegClosePath, SVGPathSegCurvetoCubicAbs,
+        SVGPathSegCurvetoCubicRel, SVGPathSegCurvetoCubicSmoothAbs,
+        SVGPathSegCurvetoCubicSmoothRel, SVGPathSegCurvetoQuadraticAbs,
+        SVGPathSegCurvetoQuadraticRel, SVGPathSegCurvetoQuadraticSmoothAbs,
+        SVGPathSegCurvetoQuadraticSmoothRel, SVGPathSegLinetoAbs,
+        SVGPathSegLinetoHorizontalAbs, SVGPathSegLinetoHorizontalRel,
+        SVGPathSegLinetoRel, SVGPathSegLinetoVerticalAbs,
+        SVGPathSegLinetoVerticalRel, SVGPathSegList, SVGPathSegMovetoAbs,
+        SVGPathSegMovetoRel, SVGPatternElement, SVGPoint, SVGPointList,
+        SVGPolygonElement, SVGPolylineElement, SVGPreserveAspectRatio,
+        SVGRadialGradientElement, SVGRect, SVGRectElement,
+        SVGRenderingIntent, SVGScriptElement, SVGSetElement,
+        SVGStopElement, SVGStringList, SVGStyleElement, SVGSVGElement,
+        SVGSwitchElement, SVGSymbolElement, SVGTests,
+        SVGTextContentElement, SVGTextElement, SVGTextPathElement,
+        SVGTextPositioningElement, SVGTitleElement, SVGTransform,
+        SVGTransformList, SVGTRefElement, SVGTSpanElement, SVGUnitTypes,
+        SVGURIReference, SVGUseElement, SVGViewElement, SVGViewSpec,
+        SVGVKernElement, SVGZoomAndPan, SVGZoomEvent, IsDOMAttr, IsBarProp,
+        IsBlob, IsCDATASection, IsCharacterData, IsComment,
+        IsCSSPrimitiveValue, IsCSSRule, IsCSSRuleList,
+        IsCSSStyleDeclaration, IsCSSStyleSheet, IsCSSValue, IsCounter,
+        IsDocument, IsDocumentFragment, IsDocumentType,
         IsDOMApplicationCache, IsDOMImplementation, IsDOMMimeType,
         IsDOMMimeTypeArray, IsDOMNamedFlowCollection, IsDOMPlugin,
         IsDOMPluginArray, IsDOMSecurityPolicy, IsDOMSelection,
@@ -74,12 +127,71 @@ module GHCJS.DOM.Core
         IsMediaError, IsMediaList, IsMediaQueryList, IsMouseEvent,
         IsMessagePort, IsMutationEvent, IsNamedNodeMap, IsNavigator,
         IsNode, IsNodeFilter, IsNodeIterator, IsNodeList, IsNotation,
-        IsProcessingInstruction, IsDOMRange, IsDOMScreen, IsStyleMedia,
-        IsStyleSheet, IsStyleSheetList, IsStorage, IsStorageInfo, IsText,
-        IsTimeRanges, IsTreeWalker, IsValidityState, IsUIEvent,
-        IsWebKitNamedFlow, IsWebKitPoint, IsXMLHttpRequest,
+        IsProcessingInstruction, IsDOMRange, IsRect, IsDOMScreen,
+        IsStyleMedia, IsStyleSheet, IsStyleSheetList, IsStorage,
+        IsStorageInfo, IsText, IsTimeRanges, IsTreeWalker, IsValidityState,
+        IsUIEvent, IsWebKitNamedFlow, IsWebKitPoint, IsXMLHttpRequest,
         IsXMLHttpRequestUpload, IsXPathExpression, IsXPathNSResolver,
-        IsXPathResult)
+        IsXPathResult, IsRGBColor, IsSVGAElement, IsSVGAltGlyphDefElement,
+        IsSVGAltGlyphElement, IsSVGAltGlyphItemElement, IsSVGAngle,
+        IsSVGAnimateColorElement, IsSVGAnimatedAngle, IsSVGAnimatedBoolean,
+        IsSVGAnimatedEnumeration, IsSVGAnimatedInteger,
+        IsSVGAnimatedLength, IsSVGAnimatedLengthList, IsSVGAnimatedNumber,
+        IsSVGAnimatedNumberList, IsSVGAnimatedPreserveAspectRatio,
+        IsSVGAnimatedRect, IsSVGAnimatedString, IsSVGAnimatedTransformList,
+        IsSVGAnimateElement, IsSVGAnimateMotionElement,
+        IsSVGAnimateTransformElement, IsSVGAnimationElement,
+        IsSVGCircleElement, IsSVGClipPathElement, IsSVGColor,
+        IsSVGComponentTransferFunctionElement, IsSVGCursorElement,
+        IsSVGDefsElement, IsSVGDescElement, IsSVGDocument, IsSVGElement,
+        IsSVGElementInstance, IsSVGElementInstanceList,
+        IsSVGEllipseElement, IsSVGExternalResourcesRequired,
+        IsSVGFEBlendElement, IsSVGFEColorMatrixElement,
+        IsSVGFEComponentTransferElement, IsSVGFECompositeElement,
+        IsSVGFEConvolveMatrixElement, IsSVGFEDiffuseLightingElement,
+        IsSVGFEDisplacementMapElement, IsSVGFEDistantLightElement,
+        IsSVGFEDropShadowElement, IsSVGFEFloodElement, IsSVGFEFuncAElement,
+        IsSVGFEFuncBElement, IsSVGFEFuncGElement, IsSVGFEFuncRElement,
+        IsSVGFEGaussianBlurElement, IsSVGFEImageElement,
+        IsSVGFEMergeElement, IsSVGFEMergeNodeElement,
+        IsSVGFEMorphologyElement, IsSVGFEOffsetElement,
+        IsSVGFEPointLightElement, IsSVGFESpecularLightingElement,
+        IsSVGFESpotLightElement, IsSVGFETileElement,
+        IsSVGFETurbulenceElement, IsSVGFilterElement,
+        IsSVGFilterPrimitiveStandardAttributes, IsSVGFitToViewBox,
+        IsSVGFontElement, IsSVGFontFaceElement, IsSVGFontFaceFormatElement,
+        IsSVGFontFaceNameElement, IsSVGFontFaceSrcElement,
+        IsSVGFontFaceUriElement, IsSVGForeignObjectElement, IsSVGGElement,
+        IsSVGGlyphElement, IsSVGGlyphRefElement, IsSVGGradientElement,
+        IsSVGGraphicsElement, IsSVGHKernElement, IsSVGImageElement,
+        IsSVGLength, IsSVGLengthList, IsSVGLinearGradientElement,
+        IsSVGLineElement, IsSVGMarkerElement, IsSVGMaskElement,
+        IsSVGMatrix, IsSVGMetadataElement, IsSVGMissingGlyphElement,
+        IsSVGMPathElement, IsSVGNumber, IsSVGNumberList, IsSVGPaint,
+        IsSVGPathElement, IsSVGPathSeg, IsSVGPathSegArcAbs,
+        IsSVGPathSegArcRel, IsSVGPathSegClosePath,
+        IsSVGPathSegCurvetoCubicAbs, IsSVGPathSegCurvetoCubicRel,
+        IsSVGPathSegCurvetoCubicSmoothAbs,
+        IsSVGPathSegCurvetoCubicSmoothRel, IsSVGPathSegCurvetoQuadraticAbs,
+        IsSVGPathSegCurvetoQuadraticRel,
+        IsSVGPathSegCurvetoQuadraticSmoothAbs,
+        IsSVGPathSegCurvetoQuadraticSmoothRel, IsSVGPathSegLinetoAbs,
+        IsSVGPathSegLinetoHorizontalAbs, IsSVGPathSegLinetoHorizontalRel,
+        IsSVGPathSegLinetoRel, IsSVGPathSegLinetoVerticalAbs,
+        IsSVGPathSegLinetoVerticalRel, IsSVGPathSegList,
+        IsSVGPathSegMovetoAbs, IsSVGPathSegMovetoRel, IsSVGPatternElement,
+        IsSVGPoint, IsSVGPointList, IsSVGPolygonElement,
+        IsSVGPolylineElement, IsSVGPreserveAspectRatio,
+        IsSVGRadialGradientElement, IsSVGRect, IsSVGRectElement,
+        IsSVGRenderingIntent, IsSVGScriptElement, IsSVGSetElement,
+        IsSVGStopElement, IsSVGStringList, IsSVGStyleElement,
+        IsSVGSVGElement, IsSVGSwitchElement, IsSVGSymbolElement,
+        IsSVGTests, IsSVGTextContentElement, IsSVGTextElement,
+        IsSVGTextPathElement, IsSVGTextPositioningElement,
+        IsSVGTitleElement, IsSVGTransform, IsSVGTransformList,
+        IsSVGTRefElement, IsSVGTSpanElement, IsSVGUnitTypes,
+        IsSVGURIReference, IsSVGUseElement, IsSVGViewElement,
+        IsSVGViewSpec, IsSVGVKernElement, IsSVGZoomAndPan, IsSVGZoomEvent)
        where
  
 data DOMAttr = DOMAttr
@@ -94,6 +206,8 @@ data CharacterData = CharacterData
  
 data Comment = Comment
  
+data CSSPrimitiveValue = CSSPrimitiveValue
+ 
 data CSSRule = CSSRule
  
 data CSSRuleList = CSSRuleList
@@ -103,6 +217,8 @@ data CSSStyleDeclaration = CSSStyleDeclaration
 data CSSStyleSheet = CSSStyleSheet
  
 data CSSValue = CSSValue
+ 
+data Counter = Counter
  
 data Document = Document
  
@@ -318,6 +434,8 @@ data ProcessingInstruction = ProcessingInstruction
  
 data DOMRange = DOMRange
  
+data Rect = Rect
+ 
 data DOMScreen = DOMScreen
  
 data StyleMedia = StyleMedia
@@ -354,6 +472,304 @@ data XPathNSResolver = XPathNSResolver
  
 data XPathResult = XPathResult
  
+data RGBColor = RGBColor
+ 
+data SVGAElement = SVGAElement
+ 
+data SVGAltGlyphDefElement = SVGAltGlyphDefElement
+ 
+data SVGAltGlyphElement = SVGAltGlyphElement
+ 
+data SVGAltGlyphItemElement = SVGAltGlyphItemElement
+ 
+data SVGAngle = SVGAngle
+ 
+data SVGAnimateColorElement = SVGAnimateColorElement
+ 
+data SVGAnimatedAngle = SVGAnimatedAngle
+ 
+data SVGAnimatedBoolean = SVGAnimatedBoolean
+ 
+data SVGAnimatedEnumeration = SVGAnimatedEnumeration
+ 
+data SVGAnimatedInteger = SVGAnimatedInteger
+ 
+data SVGAnimatedLength = SVGAnimatedLength
+ 
+data SVGAnimatedLengthList = SVGAnimatedLengthList
+ 
+data SVGAnimatedNumber = SVGAnimatedNumber
+ 
+data SVGAnimatedNumberList = SVGAnimatedNumberList
+ 
+data SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio
+ 
+data SVGAnimatedRect = SVGAnimatedRect
+ 
+data SVGAnimatedString = SVGAnimatedString
+ 
+data SVGAnimatedTransformList = SVGAnimatedTransformList
+ 
+data SVGAnimateElement = SVGAnimateElement
+ 
+data SVGAnimateMotionElement = SVGAnimateMotionElement
+ 
+data SVGAnimateTransformElement = SVGAnimateTransformElement
+ 
+data SVGAnimationElement = SVGAnimationElement
+ 
+data SVGCircleElement = SVGCircleElement
+ 
+data SVGClipPathElement = SVGClipPathElement
+ 
+data SVGColor = SVGColor
+ 
+data SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement
+ 
+data SVGCursorElement = SVGCursorElement
+ 
+data SVGDefsElement = SVGDefsElement
+ 
+data SVGDescElement = SVGDescElement
+ 
+data SVGDocument = SVGDocument
+ 
+data SVGElement = SVGElement
+ 
+data SVGElementInstance = SVGElementInstance
+ 
+data SVGElementInstanceList = SVGElementInstanceList
+ 
+data SVGEllipseElement = SVGEllipseElement
+ 
+data SVGExternalResourcesRequired = SVGExternalResourcesRequired
+ 
+data SVGFEBlendElement = SVGFEBlendElement
+ 
+data SVGFEColorMatrixElement = SVGFEColorMatrixElement
+ 
+data SVGFEComponentTransferElement = SVGFEComponentTransferElement
+ 
+data SVGFECompositeElement = SVGFECompositeElement
+ 
+data SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement
+ 
+data SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement
+ 
+data SVGFEDisplacementMapElement = SVGFEDisplacementMapElement
+ 
+data SVGFEDistantLightElement = SVGFEDistantLightElement
+ 
+data SVGFEDropShadowElement = SVGFEDropShadowElement
+ 
+data SVGFEFloodElement = SVGFEFloodElement
+ 
+data SVGFEFuncAElement = SVGFEFuncAElement
+ 
+data SVGFEFuncBElement = SVGFEFuncBElement
+ 
+data SVGFEFuncGElement = SVGFEFuncGElement
+ 
+data SVGFEFuncRElement = SVGFEFuncRElement
+ 
+data SVGFEGaussianBlurElement = SVGFEGaussianBlurElement
+ 
+data SVGFEImageElement = SVGFEImageElement
+ 
+data SVGFEMergeElement = SVGFEMergeElement
+ 
+data SVGFEMergeNodeElement = SVGFEMergeNodeElement
+ 
+data SVGFEMorphologyElement = SVGFEMorphologyElement
+ 
+data SVGFEOffsetElement = SVGFEOffsetElement
+ 
+data SVGFEPointLightElement = SVGFEPointLightElement
+ 
+data SVGFESpecularLightingElement = SVGFESpecularLightingElement
+ 
+data SVGFESpotLightElement = SVGFESpotLightElement
+ 
+data SVGFETileElement = SVGFETileElement
+ 
+data SVGFETurbulenceElement = SVGFETurbulenceElement
+ 
+data SVGFilterElement = SVGFilterElement
+ 
+data SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttributes
+ 
+data SVGFitToViewBox = SVGFitToViewBox
+ 
+data SVGFontElement = SVGFontElement
+ 
+data SVGFontFaceElement = SVGFontFaceElement
+ 
+data SVGFontFaceFormatElement = SVGFontFaceFormatElement
+ 
+data SVGFontFaceNameElement = SVGFontFaceNameElement
+ 
+data SVGFontFaceSrcElement = SVGFontFaceSrcElement
+ 
+data SVGFontFaceUriElement = SVGFontFaceUriElement
+ 
+data SVGForeignObjectElement = SVGForeignObjectElement
+ 
+data SVGGElement = SVGGElement
+ 
+data SVGGlyphElement = SVGGlyphElement
+ 
+data SVGGlyphRefElement = SVGGlyphRefElement
+ 
+data SVGGradientElement = SVGGradientElement
+ 
+data SVGGraphicsElement = SVGGraphicsElement
+ 
+data SVGHKernElement = SVGHKernElement
+ 
+data SVGImageElement = SVGImageElement
+ 
+data SVGLength = SVGLength
+ 
+data SVGLengthList = SVGLengthList
+ 
+data SVGLinearGradientElement = SVGLinearGradientElement
+ 
+data SVGLineElement = SVGLineElement
+ 
+data SVGMarkerElement = SVGMarkerElement
+ 
+data SVGMaskElement = SVGMaskElement
+ 
+data SVGMatrix = SVGMatrix
+ 
+data SVGMetadataElement = SVGMetadataElement
+ 
+data SVGMissingGlyphElement = SVGMissingGlyphElement
+ 
+data SVGMPathElement = SVGMPathElement
+ 
+data SVGNumber = SVGNumber
+ 
+data SVGNumberList = SVGNumberList
+ 
+data SVGPaint = SVGPaint
+ 
+data SVGPathElement = SVGPathElement
+ 
+data SVGPathSeg = SVGPathSeg
+ 
+data SVGPathSegArcAbs = SVGPathSegArcAbs
+ 
+data SVGPathSegArcRel = SVGPathSegArcRel
+ 
+data SVGPathSegClosePath = SVGPathSegClosePath
+ 
+data SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs
+ 
+data SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel
+ 
+data SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs
+ 
+data SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel
+ 
+data SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs
+ 
+data SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel
+ 
+data SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAbs
+ 
+data SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRel
+ 
+data SVGPathSegLinetoAbs = SVGPathSegLinetoAbs
+ 
+data SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs
+ 
+data SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel
+ 
+data SVGPathSegLinetoRel = SVGPathSegLinetoRel
+ 
+data SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs
+ 
+data SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel
+ 
+data SVGPathSegList = SVGPathSegList
+ 
+data SVGPathSegMovetoAbs = SVGPathSegMovetoAbs
+ 
+data SVGPathSegMovetoRel = SVGPathSegMovetoRel
+ 
+data SVGPatternElement = SVGPatternElement
+ 
+data SVGPoint = SVGPoint
+ 
+data SVGPointList = SVGPointList
+ 
+data SVGPolygonElement = SVGPolygonElement
+ 
+data SVGPolylineElement = SVGPolylineElement
+ 
+data SVGPreserveAspectRatio = SVGPreserveAspectRatio
+ 
+data SVGRadialGradientElement = SVGRadialGradientElement
+ 
+data SVGRect = SVGRect
+ 
+data SVGRectElement = SVGRectElement
+ 
+data SVGRenderingIntent = SVGRenderingIntent
+ 
+data SVGScriptElement = SVGScriptElement
+ 
+data SVGSetElement = SVGSetElement
+ 
+data SVGStopElement = SVGStopElement
+ 
+data SVGStringList = SVGStringList
+ 
+data SVGStyleElement = SVGStyleElement
+ 
+data SVGSVGElement = SVGSVGElement
+ 
+data SVGSwitchElement = SVGSwitchElement
+ 
+data SVGSymbolElement = SVGSymbolElement
+ 
+data SVGTests = SVGTests
+ 
+data SVGTextContentElement = SVGTextContentElement
+ 
+data SVGTextElement = SVGTextElement
+ 
+data SVGTextPathElement = SVGTextPathElement
+ 
+data SVGTextPositioningElement = SVGTextPositioningElement
+ 
+data SVGTitleElement = SVGTitleElement
+ 
+data SVGTransform = SVGTransform
+ 
+data SVGTransformList = SVGTransformList
+ 
+data SVGTRefElement = SVGTRefElement
+ 
+data SVGTSpanElement = SVGTSpanElement
+ 
+data SVGUnitTypes = SVGUnitTypes
+ 
+data SVGURIReference = SVGURIReference
+ 
+data SVGUseElement = SVGUseElement
+ 
+data SVGViewElement = SVGViewElement
+ 
+data SVGViewSpec = SVGViewSpec
+ 
+data SVGVKernElement = SVGVKernElement
+ 
+data SVGZoomAndPan = SVGZoomAndPan
+ 
+data SVGZoomEvent = SVGZoomEvent
+ 
 class (IsNode a) => IsDOMAttr a
  
 class IsBarProp a
@@ -366,6 +782,8 @@ class (IsNode a) => IsCharacterData a
  
 class (IsCharacterData a) => IsComment a
  
+class (IsCSSValue a) => IsCSSPrimitiveValue a
+ 
 class IsCSSRule a
  
 class IsCSSRuleList a
@@ -375,6 +793,8 @@ class IsCSSStyleDeclaration a
 class (IsStyleSheet a) => IsCSSStyleSheet a
  
 class IsCSSValue a
+ 
+class IsCounter a
  
 class (IsNode a) => IsDocument a
  
@@ -590,6 +1010,8 @@ class (IsCharacterData a) => IsProcessingInstruction a
  
 class IsDOMRange a
  
+class IsRect a
+ 
 class IsDOMScreen a
  
 class IsStyleMedia a
@@ -626,6 +1048,308 @@ class IsXPathNSResolver a
  
 class IsXPathResult a
  
+class IsRGBColor a
+ 
+class (IsSVGGraphicsElement a) => IsSVGAElement a
+ 
+class (IsSVGElement a) => IsSVGAltGlyphDefElement a
+ 
+class (IsSVGTextPositioningElement a) => IsSVGAltGlyphElement a
+ 
+class (IsSVGElement a) => IsSVGAltGlyphItemElement a
+ 
+class IsSVGAngle a
+ 
+class (IsSVGAnimationElement a) => IsSVGAnimateColorElement a
+ 
+class IsSVGAnimatedAngle a
+ 
+class IsSVGAnimatedBoolean a
+ 
+class IsSVGAnimatedEnumeration a
+ 
+class IsSVGAnimatedInteger a
+ 
+class IsSVGAnimatedLength a
+ 
+class IsSVGAnimatedLengthList a
+ 
+class IsSVGAnimatedNumber a
+ 
+class IsSVGAnimatedNumberList a
+ 
+class IsSVGAnimatedPreserveAspectRatio a
+ 
+class IsSVGAnimatedRect a
+ 
+class IsSVGAnimatedString a
+ 
+class IsSVGAnimatedTransformList a
+ 
+class (IsSVGAnimationElement a) => IsSVGAnimateElement a
+ 
+class (IsSVGAnimationElement a) => IsSVGAnimateMotionElement a
+ 
+class (IsSVGAnimationElement a) => IsSVGAnimateTransformElement a
+ 
+class (IsSVGElement a) => IsSVGAnimationElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGCircleElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGClipPathElement a
+ 
+class (IsCSSValue a) => IsSVGColor a
+ 
+class (IsSVGElement a) => IsSVGComponentTransferFunctionElement a
+ 
+class (IsSVGElement a) => IsSVGCursorElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGDefsElement a
+ 
+class (IsSVGElement a) => IsSVGDescElement a
+ 
+class (IsDocument a) => IsSVGDocument a
+ 
+class (IsElement a) => IsSVGElement a
+ 
+class (IsEventTarget a) => IsSVGElementInstance a
+ 
+class IsSVGElementInstanceList a
+ 
+class (IsSVGGraphicsElement a) => IsSVGEllipseElement a
+ 
+class IsSVGExternalResourcesRequired a
+ 
+class (IsSVGElement a) => IsSVGFEBlendElement a
+ 
+class (IsSVGElement a) => IsSVGFEColorMatrixElement a
+ 
+class (IsSVGElement a) => IsSVGFEComponentTransferElement a
+ 
+class (IsSVGElement a) => IsSVGFECompositeElement a
+ 
+class (IsSVGElement a) => IsSVGFEConvolveMatrixElement a
+ 
+class (IsSVGElement a) => IsSVGFEDiffuseLightingElement a
+ 
+class (IsSVGElement a) => IsSVGFEDisplacementMapElement a
+ 
+class (IsSVGElement a) => IsSVGFEDistantLightElement a
+ 
+class (IsSVGElement a) => IsSVGFEDropShadowElement a
+ 
+class (IsSVGElement a) => IsSVGFEFloodElement a
+ 
+class (IsSVGComponentTransferFunctionElement a) =>
+      IsSVGFEFuncAElement a
+ 
+class (IsSVGComponentTransferFunctionElement a) =>
+      IsSVGFEFuncBElement a
+ 
+class (IsSVGComponentTransferFunctionElement a) =>
+      IsSVGFEFuncGElement a
+ 
+class (IsSVGComponentTransferFunctionElement a) =>
+      IsSVGFEFuncRElement a
+ 
+class (IsSVGElement a) => IsSVGFEGaussianBlurElement a
+ 
+class (IsSVGElement a) => IsSVGFEImageElement a
+ 
+class (IsSVGElement a) => IsSVGFEMergeElement a
+ 
+class (IsSVGElement a) => IsSVGFEMergeNodeElement a
+ 
+class (IsSVGElement a) => IsSVGFEMorphologyElement a
+ 
+class (IsSVGElement a) => IsSVGFEOffsetElement a
+ 
+class (IsSVGElement a) => IsSVGFEPointLightElement a
+ 
+class (IsSVGElement a) => IsSVGFESpecularLightingElement a
+ 
+class (IsSVGElement a) => IsSVGFESpotLightElement a
+ 
+class (IsSVGElement a) => IsSVGFETileElement a
+ 
+class (IsSVGElement a) => IsSVGFETurbulenceElement a
+ 
+class (IsSVGElement a) => IsSVGFilterElement a
+ 
+class IsSVGFilterPrimitiveStandardAttributes a
+ 
+class IsSVGFitToViewBox a
+ 
+class (IsSVGElement a) => IsSVGFontElement a
+ 
+class (IsSVGElement a) => IsSVGFontFaceElement a
+ 
+class (IsSVGElement a) => IsSVGFontFaceFormatElement a
+ 
+class (IsSVGElement a) => IsSVGFontFaceNameElement a
+ 
+class (IsSVGElement a) => IsSVGFontFaceSrcElement a
+ 
+class (IsSVGElement a) => IsSVGFontFaceUriElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGForeignObjectElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGGElement a
+ 
+class (IsSVGElement a) => IsSVGGlyphElement a
+ 
+class (IsSVGElement a) => IsSVGGlyphRefElement a
+ 
+class (IsSVGElement a) => IsSVGGradientElement a
+ 
+class (IsSVGElement a) => IsSVGGraphicsElement a
+ 
+class (IsSVGElement a) => IsSVGHKernElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGImageElement a
+ 
+class IsSVGLength a
+ 
+class IsSVGLengthList a
+ 
+class (IsSVGGradientElement a) => IsSVGLinearGradientElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGLineElement a
+ 
+class (IsSVGElement a) => IsSVGMarkerElement a
+ 
+class (IsSVGElement a) => IsSVGMaskElement a
+ 
+class IsSVGMatrix a
+ 
+class (IsSVGElement a) => IsSVGMetadataElement a
+ 
+class (IsSVGElement a) => IsSVGMissingGlyphElement a
+ 
+class (IsSVGElement a) => IsSVGMPathElement a
+ 
+class IsSVGNumber a
+ 
+class IsSVGNumberList a
+ 
+class (IsSVGColor a) => IsSVGPaint a
+ 
+class (IsSVGGraphicsElement a) => IsSVGPathElement a
+ 
+class IsSVGPathSeg a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegArcAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegArcRel a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegClosePath a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoCubicAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoCubicRel a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoCubicSmoothAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoCubicSmoothRel a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoQuadraticAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoQuadraticRel a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoQuadraticSmoothAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegCurvetoQuadraticSmoothRel a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegLinetoAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegLinetoHorizontalAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegLinetoHorizontalRel a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegLinetoRel a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegLinetoVerticalAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegLinetoVerticalRel a
+ 
+class IsSVGPathSegList a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegMovetoAbs a
+ 
+class (IsSVGPathSeg a) => IsSVGPathSegMovetoRel a
+ 
+class (IsSVGElement a) => IsSVGPatternElement a
+ 
+class IsSVGPoint a
+ 
+class IsSVGPointList a
+ 
+class (IsSVGGraphicsElement a) => IsSVGPolygonElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGPolylineElement a
+ 
+class IsSVGPreserveAspectRatio a
+ 
+class (IsSVGGradientElement a) => IsSVGRadialGradientElement a
+ 
+class IsSVGRect a
+ 
+class (IsSVGGraphicsElement a) => IsSVGRectElement a
+ 
+class IsSVGRenderingIntent a
+ 
+class (IsSVGElement a) => IsSVGScriptElement a
+ 
+class (IsSVGAnimationElement a) => IsSVGSetElement a
+ 
+class (IsSVGElement a) => IsSVGStopElement a
+ 
+class IsSVGStringList a
+ 
+class (IsSVGElement a) => IsSVGStyleElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGSVGElement a
+ 
+class (IsSVGGraphicsElement a) => IsSVGSwitchElement a
+ 
+class (IsSVGElement a) => IsSVGSymbolElement a
+ 
+class IsSVGTests a
+ 
+class (IsSVGGraphicsElement a) => IsSVGTextContentElement a
+ 
+class (IsSVGTextPositioningElement a) => IsSVGTextElement a
+ 
+class (IsSVGTextContentElement a) => IsSVGTextPathElement a
+ 
+class (IsSVGTextContentElement a) => IsSVGTextPositioningElement a
+ 
+class (IsSVGElement a) => IsSVGTitleElement a
+ 
+class IsSVGTransform a
+ 
+class IsSVGTransformList a
+ 
+class (IsSVGTextPositioningElement a) => IsSVGTRefElement a
+ 
+class (IsSVGTextPositioningElement a) => IsSVGTSpanElement a
+ 
+class IsSVGUnitTypes a
+ 
+class IsSVGURIReference a
+ 
+class (IsSVGGraphicsElement a) => IsSVGUseElement a
+ 
+class (IsSVGElement a) => IsSVGViewElement a
+ 
+class IsSVGViewSpec a
+ 
+class (IsSVGElement a) => IsSVGVKernElement a
+ 
+class IsSVGZoomAndPan a
+ 
+class (IsUIEvent a) => IsSVGZoomEvent a
+ 
 instance IsDOMAttr DOMAttr
  
 instance IsNode DOMAttr
@@ -652,6 +1376,10 @@ instance IsCharacterData Comment
  
 instance IsNode Comment
  
+instance IsCSSPrimitiveValue CSSPrimitiveValue
+ 
+instance IsCSSValue CSSPrimitiveValue
+ 
 instance IsCSSRule CSSRule
  
 instance IsCSSRuleList CSSRuleList
@@ -663,6 +1391,8 @@ instance IsCSSStyleSheet CSSStyleSheet
 instance IsStyleSheet CSSStyleSheet
  
 instance IsCSSValue CSSValue
+ 
+instance IsCounter Counter
  
 instance IsDocument Document
  
@@ -1276,6 +2006,8 @@ instance IsNode ProcessingInstruction
  
 instance IsDOMRange DOMRange
  
+instance IsRect Rect
+ 
 instance IsDOMScreen DOMScreen
  
 instance IsStyleMedia StyleMedia
@@ -1317,6 +2049,980 @@ instance IsXPathExpression XPathExpression
 instance IsXPathNSResolver XPathNSResolver
  
 instance IsXPathResult XPathResult
+ 
+instance IsRGBColor RGBColor
+ 
+instance IsSVGAElement SVGAElement
+ 
+instance IsSVGGraphicsElement SVGAElement
+ 
+instance IsSVGElement SVGAElement
+ 
+instance IsElement SVGAElement
+ 
+instance IsNode SVGAElement
+ 
+instance IsSVGAltGlyphDefElement SVGAltGlyphDefElement
+ 
+instance IsSVGElement SVGAltGlyphDefElement
+ 
+instance IsElement SVGAltGlyphDefElement
+ 
+instance IsNode SVGAltGlyphDefElement
+ 
+instance IsSVGAltGlyphElement SVGAltGlyphElement
+ 
+instance IsSVGTextPositioningElement SVGAltGlyphElement
+ 
+instance IsSVGTextContentElement SVGAltGlyphElement
+ 
+instance IsSVGGraphicsElement SVGAltGlyphElement
+ 
+instance IsSVGElement SVGAltGlyphElement
+ 
+instance IsElement SVGAltGlyphElement
+ 
+instance IsNode SVGAltGlyphElement
+ 
+instance IsSVGAltGlyphItemElement SVGAltGlyphItemElement
+ 
+instance IsSVGElement SVGAltGlyphItemElement
+ 
+instance IsElement SVGAltGlyphItemElement
+ 
+instance IsNode SVGAltGlyphItemElement
+ 
+instance IsSVGAngle SVGAngle
+ 
+instance IsSVGAnimateColorElement SVGAnimateColorElement
+ 
+instance IsSVGAnimationElement SVGAnimateColorElement
+ 
+instance IsSVGElement SVGAnimateColorElement
+ 
+instance IsElement SVGAnimateColorElement
+ 
+instance IsNode SVGAnimateColorElement
+ 
+instance IsSVGAnimatedAngle SVGAnimatedAngle
+ 
+instance IsSVGAnimatedBoolean SVGAnimatedBoolean
+ 
+instance IsSVGAnimatedEnumeration SVGAnimatedEnumeration
+ 
+instance IsSVGAnimatedInteger SVGAnimatedInteger
+ 
+instance IsSVGAnimatedLength SVGAnimatedLength
+ 
+instance IsSVGAnimatedLengthList SVGAnimatedLengthList
+ 
+instance IsSVGAnimatedNumber SVGAnimatedNumber
+ 
+instance IsSVGAnimatedNumberList SVGAnimatedNumberList
+ 
+instance IsSVGAnimatedPreserveAspectRatio
+         SVGAnimatedPreserveAspectRatio
+ 
+instance IsSVGAnimatedRect SVGAnimatedRect
+ 
+instance IsSVGAnimatedString SVGAnimatedString
+ 
+instance IsSVGAnimatedTransformList SVGAnimatedTransformList
+ 
+instance IsSVGAnimateElement SVGAnimateElement
+ 
+instance IsSVGAnimationElement SVGAnimateElement
+ 
+instance IsSVGElement SVGAnimateElement
+ 
+instance IsElement SVGAnimateElement
+ 
+instance IsNode SVGAnimateElement
+ 
+instance IsSVGAnimateMotionElement SVGAnimateMotionElement
+ 
+instance IsSVGAnimationElement SVGAnimateMotionElement
+ 
+instance IsSVGElement SVGAnimateMotionElement
+ 
+instance IsElement SVGAnimateMotionElement
+ 
+instance IsNode SVGAnimateMotionElement
+ 
+instance IsSVGAnimateTransformElement SVGAnimateTransformElement
+ 
+instance IsSVGAnimationElement SVGAnimateTransformElement
+ 
+instance IsSVGElement SVGAnimateTransformElement
+ 
+instance IsElement SVGAnimateTransformElement
+ 
+instance IsNode SVGAnimateTransformElement
+ 
+instance IsSVGAnimationElement SVGAnimationElement
+ 
+instance IsSVGElement SVGAnimationElement
+ 
+instance IsElement SVGAnimationElement
+ 
+instance IsNode SVGAnimationElement
+ 
+instance IsSVGCircleElement SVGCircleElement
+ 
+instance IsSVGGraphicsElement SVGCircleElement
+ 
+instance IsSVGElement SVGCircleElement
+ 
+instance IsElement SVGCircleElement
+ 
+instance IsNode SVGCircleElement
+ 
+instance IsSVGClipPathElement SVGClipPathElement
+ 
+instance IsSVGGraphicsElement SVGClipPathElement
+ 
+instance IsSVGElement SVGClipPathElement
+ 
+instance IsElement SVGClipPathElement
+ 
+instance IsNode SVGClipPathElement
+ 
+instance IsSVGColor SVGColor
+ 
+instance IsCSSValue SVGColor
+ 
+instance IsSVGComponentTransferFunctionElement
+         SVGComponentTransferFunctionElement
+ 
+instance IsSVGElement SVGComponentTransferFunctionElement
+ 
+instance IsElement SVGComponentTransferFunctionElement
+ 
+instance IsNode SVGComponentTransferFunctionElement
+ 
+instance IsSVGCursorElement SVGCursorElement
+ 
+instance IsSVGElement SVGCursorElement
+ 
+instance IsElement SVGCursorElement
+ 
+instance IsNode SVGCursorElement
+ 
+instance IsSVGDefsElement SVGDefsElement
+ 
+instance IsSVGGraphicsElement SVGDefsElement
+ 
+instance IsSVGElement SVGDefsElement
+ 
+instance IsElement SVGDefsElement
+ 
+instance IsNode SVGDefsElement
+ 
+instance IsSVGDescElement SVGDescElement
+ 
+instance IsSVGElement SVGDescElement
+ 
+instance IsElement SVGDescElement
+ 
+instance IsNode SVGDescElement
+ 
+instance IsSVGDocument SVGDocument
+ 
+instance IsDocument SVGDocument
+ 
+instance IsNode SVGDocument
+ 
+instance IsSVGElement SVGElement
+ 
+instance IsElement SVGElement
+ 
+instance IsNode SVGElement
+ 
+instance IsSVGElementInstance SVGElementInstance
+ 
+instance IsEventTarget SVGElementInstance
+ 
+instance IsSVGElementInstanceList SVGElementInstanceList
+ 
+instance IsSVGEllipseElement SVGEllipseElement
+ 
+instance IsSVGGraphicsElement SVGEllipseElement
+ 
+instance IsSVGElement SVGEllipseElement
+ 
+instance IsElement SVGEllipseElement
+ 
+instance IsNode SVGEllipseElement
+ 
+instance IsSVGExternalResourcesRequired
+         SVGExternalResourcesRequired
+ 
+instance IsSVGFEBlendElement SVGFEBlendElement
+ 
+instance IsSVGElement SVGFEBlendElement
+ 
+instance IsElement SVGFEBlendElement
+ 
+instance IsNode SVGFEBlendElement
+ 
+instance IsSVGFEColorMatrixElement SVGFEColorMatrixElement
+ 
+instance IsSVGElement SVGFEColorMatrixElement
+ 
+instance IsElement SVGFEColorMatrixElement
+ 
+instance IsNode SVGFEColorMatrixElement
+ 
+instance IsSVGFEComponentTransferElement
+         SVGFEComponentTransferElement
+ 
+instance IsSVGElement SVGFEComponentTransferElement
+ 
+instance IsElement SVGFEComponentTransferElement
+ 
+instance IsNode SVGFEComponentTransferElement
+ 
+instance IsSVGFECompositeElement SVGFECompositeElement
+ 
+instance IsSVGElement SVGFECompositeElement
+ 
+instance IsElement SVGFECompositeElement
+ 
+instance IsNode SVGFECompositeElement
+ 
+instance IsSVGFEConvolveMatrixElement SVGFEConvolveMatrixElement
+ 
+instance IsSVGElement SVGFEConvolveMatrixElement
+ 
+instance IsElement SVGFEConvolveMatrixElement
+ 
+instance IsNode SVGFEConvolveMatrixElement
+ 
+instance IsSVGFEDiffuseLightingElement SVGFEDiffuseLightingElement
+ 
+instance IsSVGElement SVGFEDiffuseLightingElement
+ 
+instance IsElement SVGFEDiffuseLightingElement
+ 
+instance IsNode SVGFEDiffuseLightingElement
+ 
+instance IsSVGFEDisplacementMapElement SVGFEDisplacementMapElement
+ 
+instance IsSVGElement SVGFEDisplacementMapElement
+ 
+instance IsElement SVGFEDisplacementMapElement
+ 
+instance IsNode SVGFEDisplacementMapElement
+ 
+instance IsSVGFEDistantLightElement SVGFEDistantLightElement
+ 
+instance IsSVGElement SVGFEDistantLightElement
+ 
+instance IsElement SVGFEDistantLightElement
+ 
+instance IsNode SVGFEDistantLightElement
+ 
+instance IsSVGFEDropShadowElement SVGFEDropShadowElement
+ 
+instance IsSVGElement SVGFEDropShadowElement
+ 
+instance IsElement SVGFEDropShadowElement
+ 
+instance IsNode SVGFEDropShadowElement
+ 
+instance IsSVGFEFloodElement SVGFEFloodElement
+ 
+instance IsSVGElement SVGFEFloodElement
+ 
+instance IsElement SVGFEFloodElement
+ 
+instance IsNode SVGFEFloodElement
+ 
+instance IsSVGFEFuncAElement SVGFEFuncAElement
+ 
+instance IsSVGComponentTransferFunctionElement SVGFEFuncAElement
+ 
+instance IsSVGElement SVGFEFuncAElement
+ 
+instance IsElement SVGFEFuncAElement
+ 
+instance IsNode SVGFEFuncAElement
+ 
+instance IsSVGFEFuncBElement SVGFEFuncBElement
+ 
+instance IsSVGComponentTransferFunctionElement SVGFEFuncBElement
+ 
+instance IsSVGElement SVGFEFuncBElement
+ 
+instance IsElement SVGFEFuncBElement
+ 
+instance IsNode SVGFEFuncBElement
+ 
+instance IsSVGFEFuncGElement SVGFEFuncGElement
+ 
+instance IsSVGComponentTransferFunctionElement SVGFEFuncGElement
+ 
+instance IsSVGElement SVGFEFuncGElement
+ 
+instance IsElement SVGFEFuncGElement
+ 
+instance IsNode SVGFEFuncGElement
+ 
+instance IsSVGFEFuncRElement SVGFEFuncRElement
+ 
+instance IsSVGComponentTransferFunctionElement SVGFEFuncRElement
+ 
+instance IsSVGElement SVGFEFuncRElement
+ 
+instance IsElement SVGFEFuncRElement
+ 
+instance IsNode SVGFEFuncRElement
+ 
+instance IsSVGFEGaussianBlurElement SVGFEGaussianBlurElement
+ 
+instance IsSVGElement SVGFEGaussianBlurElement
+ 
+instance IsElement SVGFEGaussianBlurElement
+ 
+instance IsNode SVGFEGaussianBlurElement
+ 
+instance IsSVGFEImageElement SVGFEImageElement
+ 
+instance IsSVGElement SVGFEImageElement
+ 
+instance IsElement SVGFEImageElement
+ 
+instance IsNode SVGFEImageElement
+ 
+instance IsSVGFEMergeElement SVGFEMergeElement
+ 
+instance IsSVGElement SVGFEMergeElement
+ 
+instance IsElement SVGFEMergeElement
+ 
+instance IsNode SVGFEMergeElement
+ 
+instance IsSVGFEMergeNodeElement SVGFEMergeNodeElement
+ 
+instance IsSVGElement SVGFEMergeNodeElement
+ 
+instance IsElement SVGFEMergeNodeElement
+ 
+instance IsNode SVGFEMergeNodeElement
+ 
+instance IsSVGFEMorphologyElement SVGFEMorphologyElement
+ 
+instance IsSVGElement SVGFEMorphologyElement
+ 
+instance IsElement SVGFEMorphologyElement
+ 
+instance IsNode SVGFEMorphologyElement
+ 
+instance IsSVGFEOffsetElement SVGFEOffsetElement
+ 
+instance IsSVGElement SVGFEOffsetElement
+ 
+instance IsElement SVGFEOffsetElement
+ 
+instance IsNode SVGFEOffsetElement
+ 
+instance IsSVGFEPointLightElement SVGFEPointLightElement
+ 
+instance IsSVGElement SVGFEPointLightElement
+ 
+instance IsElement SVGFEPointLightElement
+ 
+instance IsNode SVGFEPointLightElement
+ 
+instance IsSVGFESpecularLightingElement
+         SVGFESpecularLightingElement
+ 
+instance IsSVGElement SVGFESpecularLightingElement
+ 
+instance IsElement SVGFESpecularLightingElement
+ 
+instance IsNode SVGFESpecularLightingElement
+ 
+instance IsSVGFESpotLightElement SVGFESpotLightElement
+ 
+instance IsSVGElement SVGFESpotLightElement
+ 
+instance IsElement SVGFESpotLightElement
+ 
+instance IsNode SVGFESpotLightElement
+ 
+instance IsSVGFETileElement SVGFETileElement
+ 
+instance IsSVGElement SVGFETileElement
+ 
+instance IsElement SVGFETileElement
+ 
+instance IsNode SVGFETileElement
+ 
+instance IsSVGFETurbulenceElement SVGFETurbulenceElement
+ 
+instance IsSVGElement SVGFETurbulenceElement
+ 
+instance IsElement SVGFETurbulenceElement
+ 
+instance IsNode SVGFETurbulenceElement
+ 
+instance IsSVGFilterElement SVGFilterElement
+ 
+instance IsSVGElement SVGFilterElement
+ 
+instance IsElement SVGFilterElement
+ 
+instance IsNode SVGFilterElement
+ 
+instance IsSVGFilterPrimitiveStandardAttributes
+         SVGFilterPrimitiveStandardAttributes
+ 
+instance IsSVGFitToViewBox SVGFitToViewBox
+ 
+instance IsSVGFontElement SVGFontElement
+ 
+instance IsSVGElement SVGFontElement
+ 
+instance IsElement SVGFontElement
+ 
+instance IsNode SVGFontElement
+ 
+instance IsSVGFontFaceElement SVGFontFaceElement
+ 
+instance IsSVGElement SVGFontFaceElement
+ 
+instance IsElement SVGFontFaceElement
+ 
+instance IsNode SVGFontFaceElement
+ 
+instance IsSVGFontFaceFormatElement SVGFontFaceFormatElement
+ 
+instance IsSVGElement SVGFontFaceFormatElement
+ 
+instance IsElement SVGFontFaceFormatElement
+ 
+instance IsNode SVGFontFaceFormatElement
+ 
+instance IsSVGFontFaceNameElement SVGFontFaceNameElement
+ 
+instance IsSVGElement SVGFontFaceNameElement
+ 
+instance IsElement SVGFontFaceNameElement
+ 
+instance IsNode SVGFontFaceNameElement
+ 
+instance IsSVGFontFaceSrcElement SVGFontFaceSrcElement
+ 
+instance IsSVGElement SVGFontFaceSrcElement
+ 
+instance IsElement SVGFontFaceSrcElement
+ 
+instance IsNode SVGFontFaceSrcElement
+ 
+instance IsSVGFontFaceUriElement SVGFontFaceUriElement
+ 
+instance IsSVGElement SVGFontFaceUriElement
+ 
+instance IsElement SVGFontFaceUriElement
+ 
+instance IsNode SVGFontFaceUriElement
+ 
+instance IsSVGForeignObjectElement SVGForeignObjectElement
+ 
+instance IsSVGGraphicsElement SVGForeignObjectElement
+ 
+instance IsSVGElement SVGForeignObjectElement
+ 
+instance IsElement SVGForeignObjectElement
+ 
+instance IsNode SVGForeignObjectElement
+ 
+instance IsSVGGElement SVGGElement
+ 
+instance IsSVGGraphicsElement SVGGElement
+ 
+instance IsSVGElement SVGGElement
+ 
+instance IsElement SVGGElement
+ 
+instance IsNode SVGGElement
+ 
+instance IsSVGGlyphElement SVGGlyphElement
+ 
+instance IsSVGElement SVGGlyphElement
+ 
+instance IsElement SVGGlyphElement
+ 
+instance IsNode SVGGlyphElement
+ 
+instance IsSVGGlyphRefElement SVGGlyphRefElement
+ 
+instance IsSVGElement SVGGlyphRefElement
+ 
+instance IsElement SVGGlyphRefElement
+ 
+instance IsNode SVGGlyphRefElement
+ 
+instance IsSVGGradientElement SVGGradientElement
+ 
+instance IsSVGElement SVGGradientElement
+ 
+instance IsElement SVGGradientElement
+ 
+instance IsNode SVGGradientElement
+ 
+instance IsSVGGraphicsElement SVGGraphicsElement
+ 
+instance IsSVGElement SVGGraphicsElement
+ 
+instance IsElement SVGGraphicsElement
+ 
+instance IsNode SVGGraphicsElement
+ 
+instance IsSVGHKernElement SVGHKernElement
+ 
+instance IsSVGElement SVGHKernElement
+ 
+instance IsElement SVGHKernElement
+ 
+instance IsNode SVGHKernElement
+ 
+instance IsSVGImageElement SVGImageElement
+ 
+instance IsSVGGraphicsElement SVGImageElement
+ 
+instance IsSVGElement SVGImageElement
+ 
+instance IsElement SVGImageElement
+ 
+instance IsNode SVGImageElement
+ 
+instance IsSVGLength SVGLength
+ 
+instance IsSVGLengthList SVGLengthList
+ 
+instance IsSVGLinearGradientElement SVGLinearGradientElement
+ 
+instance IsSVGGradientElement SVGLinearGradientElement
+ 
+instance IsSVGElement SVGLinearGradientElement
+ 
+instance IsElement SVGLinearGradientElement
+ 
+instance IsNode SVGLinearGradientElement
+ 
+instance IsSVGLineElement SVGLineElement
+ 
+instance IsSVGGraphicsElement SVGLineElement
+ 
+instance IsSVGElement SVGLineElement
+ 
+instance IsElement SVGLineElement
+ 
+instance IsNode SVGLineElement
+ 
+instance IsSVGMarkerElement SVGMarkerElement
+ 
+instance IsSVGElement SVGMarkerElement
+ 
+instance IsElement SVGMarkerElement
+ 
+instance IsNode SVGMarkerElement
+ 
+instance IsSVGMaskElement SVGMaskElement
+ 
+instance IsSVGElement SVGMaskElement
+ 
+instance IsElement SVGMaskElement
+ 
+instance IsNode SVGMaskElement
+ 
+instance IsSVGMatrix SVGMatrix
+ 
+instance IsSVGMetadataElement SVGMetadataElement
+ 
+instance IsSVGElement SVGMetadataElement
+ 
+instance IsElement SVGMetadataElement
+ 
+instance IsNode SVGMetadataElement
+ 
+instance IsSVGMissingGlyphElement SVGMissingGlyphElement
+ 
+instance IsSVGElement SVGMissingGlyphElement
+ 
+instance IsElement SVGMissingGlyphElement
+ 
+instance IsNode SVGMissingGlyphElement
+ 
+instance IsSVGMPathElement SVGMPathElement
+ 
+instance IsSVGElement SVGMPathElement
+ 
+instance IsElement SVGMPathElement
+ 
+instance IsNode SVGMPathElement
+ 
+instance IsSVGNumber SVGNumber
+ 
+instance IsSVGNumberList SVGNumberList
+ 
+instance IsSVGPaint SVGPaint
+ 
+instance IsSVGColor SVGPaint
+ 
+instance IsCSSValue SVGPaint
+ 
+instance IsSVGPathElement SVGPathElement
+ 
+instance IsSVGGraphicsElement SVGPathElement
+ 
+instance IsSVGElement SVGPathElement
+ 
+instance IsElement SVGPathElement
+ 
+instance IsNode SVGPathElement
+ 
+instance IsSVGPathSeg SVGPathSeg
+ 
+instance IsSVGPathSegArcAbs SVGPathSegArcAbs
+ 
+instance IsSVGPathSeg SVGPathSegArcAbs
+ 
+instance IsSVGPathSegArcRel SVGPathSegArcRel
+ 
+instance IsSVGPathSeg SVGPathSegArcRel
+ 
+instance IsSVGPathSegClosePath SVGPathSegClosePath
+ 
+instance IsSVGPathSeg SVGPathSegClosePath
+ 
+instance IsSVGPathSegCurvetoCubicAbs SVGPathSegCurvetoCubicAbs
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoCubicAbs
+ 
+instance IsSVGPathSegCurvetoCubicRel SVGPathSegCurvetoCubicRel
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoCubicRel
+ 
+instance IsSVGPathSegCurvetoCubicSmoothAbs
+         SVGPathSegCurvetoCubicSmoothAbs
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothAbs
+ 
+instance IsSVGPathSegCurvetoCubicSmoothRel
+         SVGPathSegCurvetoCubicSmoothRel
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothRel
+ 
+instance IsSVGPathSegCurvetoQuadraticAbs
+         SVGPathSegCurvetoQuadraticAbs
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoQuadraticAbs
+ 
+instance IsSVGPathSegCurvetoQuadraticRel
+         SVGPathSegCurvetoQuadraticRel
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoQuadraticRel
+ 
+instance IsSVGPathSegCurvetoQuadraticSmoothAbs
+         SVGPathSegCurvetoQuadraticSmoothAbs
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothAbs
+ 
+instance IsSVGPathSegCurvetoQuadraticSmoothRel
+         SVGPathSegCurvetoQuadraticSmoothRel
+ 
+instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothRel
+ 
+instance IsSVGPathSegLinetoAbs SVGPathSegLinetoAbs
+ 
+instance IsSVGPathSeg SVGPathSegLinetoAbs
+ 
+instance IsSVGPathSegLinetoHorizontalAbs
+         SVGPathSegLinetoHorizontalAbs
+ 
+instance IsSVGPathSeg SVGPathSegLinetoHorizontalAbs
+ 
+instance IsSVGPathSegLinetoHorizontalRel
+         SVGPathSegLinetoHorizontalRel
+ 
+instance IsSVGPathSeg SVGPathSegLinetoHorizontalRel
+ 
+instance IsSVGPathSegLinetoRel SVGPathSegLinetoRel
+ 
+instance IsSVGPathSeg SVGPathSegLinetoRel
+ 
+instance IsSVGPathSegLinetoVerticalAbs SVGPathSegLinetoVerticalAbs
+ 
+instance IsSVGPathSeg SVGPathSegLinetoVerticalAbs
+ 
+instance IsSVGPathSegLinetoVerticalRel SVGPathSegLinetoVerticalRel
+ 
+instance IsSVGPathSeg SVGPathSegLinetoVerticalRel
+ 
+instance IsSVGPathSegList SVGPathSegList
+ 
+instance IsSVGPathSegMovetoAbs SVGPathSegMovetoAbs
+ 
+instance IsSVGPathSeg SVGPathSegMovetoAbs
+ 
+instance IsSVGPathSegMovetoRel SVGPathSegMovetoRel
+ 
+instance IsSVGPathSeg SVGPathSegMovetoRel
+ 
+instance IsSVGPatternElement SVGPatternElement
+ 
+instance IsSVGElement SVGPatternElement
+ 
+instance IsElement SVGPatternElement
+ 
+instance IsNode SVGPatternElement
+ 
+instance IsSVGPoint SVGPoint
+ 
+instance IsSVGPointList SVGPointList
+ 
+instance IsSVGPolygonElement SVGPolygonElement
+ 
+instance IsSVGGraphicsElement SVGPolygonElement
+ 
+instance IsSVGElement SVGPolygonElement
+ 
+instance IsElement SVGPolygonElement
+ 
+instance IsNode SVGPolygonElement
+ 
+instance IsSVGPolylineElement SVGPolylineElement
+ 
+instance IsSVGGraphicsElement SVGPolylineElement
+ 
+instance IsSVGElement SVGPolylineElement
+ 
+instance IsElement SVGPolylineElement
+ 
+instance IsNode SVGPolylineElement
+ 
+instance IsSVGPreserveAspectRatio SVGPreserveAspectRatio
+ 
+instance IsSVGRadialGradientElement SVGRadialGradientElement
+ 
+instance IsSVGGradientElement SVGRadialGradientElement
+ 
+instance IsSVGElement SVGRadialGradientElement
+ 
+instance IsElement SVGRadialGradientElement
+ 
+instance IsNode SVGRadialGradientElement
+ 
+instance IsSVGRect SVGRect
+ 
+instance IsSVGRectElement SVGRectElement
+ 
+instance IsSVGGraphicsElement SVGRectElement
+ 
+instance IsSVGElement SVGRectElement
+ 
+instance IsElement SVGRectElement
+ 
+instance IsNode SVGRectElement
+ 
+instance IsSVGRenderingIntent SVGRenderingIntent
+ 
+instance IsSVGScriptElement SVGScriptElement
+ 
+instance IsSVGElement SVGScriptElement
+ 
+instance IsElement SVGScriptElement
+ 
+instance IsNode SVGScriptElement
+ 
+instance IsSVGSetElement SVGSetElement
+ 
+instance IsSVGAnimationElement SVGSetElement
+ 
+instance IsSVGElement SVGSetElement
+ 
+instance IsElement SVGSetElement
+ 
+instance IsNode SVGSetElement
+ 
+instance IsSVGStopElement SVGStopElement
+ 
+instance IsSVGElement SVGStopElement
+ 
+instance IsElement SVGStopElement
+ 
+instance IsNode SVGStopElement
+ 
+instance IsSVGStringList SVGStringList
+ 
+instance IsSVGStyleElement SVGStyleElement
+ 
+instance IsSVGElement SVGStyleElement
+ 
+instance IsElement SVGStyleElement
+ 
+instance IsNode SVGStyleElement
+ 
+instance IsSVGSVGElement SVGSVGElement
+ 
+instance IsSVGGraphicsElement SVGSVGElement
+ 
+instance IsSVGElement SVGSVGElement
+ 
+instance IsElement SVGSVGElement
+ 
+instance IsNode SVGSVGElement
+ 
+instance IsSVGSwitchElement SVGSwitchElement
+ 
+instance IsSVGGraphicsElement SVGSwitchElement
+ 
+instance IsSVGElement SVGSwitchElement
+ 
+instance IsElement SVGSwitchElement
+ 
+instance IsNode SVGSwitchElement
+ 
+instance IsSVGSymbolElement SVGSymbolElement
+ 
+instance IsSVGElement SVGSymbolElement
+ 
+instance IsElement SVGSymbolElement
+ 
+instance IsNode SVGSymbolElement
+ 
+instance IsSVGTests SVGTests
+ 
+instance IsSVGTextContentElement SVGTextContentElement
+ 
+instance IsSVGGraphicsElement SVGTextContentElement
+ 
+instance IsSVGElement SVGTextContentElement
+ 
+instance IsElement SVGTextContentElement
+ 
+instance IsNode SVGTextContentElement
+ 
+instance IsSVGTextElement SVGTextElement
+ 
+instance IsSVGTextPositioningElement SVGTextElement
+ 
+instance IsSVGTextContentElement SVGTextElement
+ 
+instance IsSVGGraphicsElement SVGTextElement
+ 
+instance IsSVGElement SVGTextElement
+ 
+instance IsElement SVGTextElement
+ 
+instance IsNode SVGTextElement
+ 
+instance IsSVGTextPathElement SVGTextPathElement
+ 
+instance IsSVGTextContentElement SVGTextPathElement
+ 
+instance IsSVGGraphicsElement SVGTextPathElement
+ 
+instance IsSVGElement SVGTextPathElement
+ 
+instance IsElement SVGTextPathElement
+ 
+instance IsNode SVGTextPathElement
+ 
+instance IsSVGTextPositioningElement SVGTextPositioningElement
+ 
+instance IsSVGTextContentElement SVGTextPositioningElement
+ 
+instance IsSVGGraphicsElement SVGTextPositioningElement
+ 
+instance IsSVGElement SVGTextPositioningElement
+ 
+instance IsElement SVGTextPositioningElement
+ 
+instance IsNode SVGTextPositioningElement
+ 
+instance IsSVGTitleElement SVGTitleElement
+ 
+instance IsSVGElement SVGTitleElement
+ 
+instance IsElement SVGTitleElement
+ 
+instance IsNode SVGTitleElement
+ 
+instance IsSVGTransform SVGTransform
+ 
+instance IsSVGTransformList SVGTransformList
+ 
+instance IsSVGTRefElement SVGTRefElement
+ 
+instance IsSVGTextPositioningElement SVGTRefElement
+ 
+instance IsSVGTextContentElement SVGTRefElement
+ 
+instance IsSVGGraphicsElement SVGTRefElement
+ 
+instance IsSVGElement SVGTRefElement
+ 
+instance IsElement SVGTRefElement
+ 
+instance IsNode SVGTRefElement
+ 
+instance IsSVGTSpanElement SVGTSpanElement
+ 
+instance IsSVGTextPositioningElement SVGTSpanElement
+ 
+instance IsSVGTextContentElement SVGTSpanElement
+ 
+instance IsSVGGraphicsElement SVGTSpanElement
+ 
+instance IsSVGElement SVGTSpanElement
+ 
+instance IsElement SVGTSpanElement
+ 
+instance IsNode SVGTSpanElement
+ 
+instance IsSVGUnitTypes SVGUnitTypes
+ 
+instance IsSVGURIReference SVGURIReference
+ 
+instance IsSVGUseElement SVGUseElement
+ 
+instance IsSVGGraphicsElement SVGUseElement
+ 
+instance IsSVGElement SVGUseElement
+ 
+instance IsElement SVGUseElement
+ 
+instance IsNode SVGUseElement
+ 
+instance IsSVGViewElement SVGViewElement
+ 
+instance IsSVGElement SVGViewElement
+ 
+instance IsElement SVGViewElement
+ 
+instance IsNode SVGViewElement
+ 
+instance IsSVGViewSpec SVGViewSpec
+ 
+instance IsSVGVKernElement SVGVKernElement
+ 
+instance IsSVGElement SVGVKernElement
+ 
+instance IsElement SVGVKernElement
+ 
+instance IsNode SVGVKernElement
+ 
+instance IsSVGZoomAndPan SVGZoomAndPan
+ 
+instance IsSVGZoomEvent SVGZoomEvent
+ 
+instance IsUIEvent SVGZoomEvent
+ 
+instance IsEvent SVGZoomEvent
 #else
 module GHCJS.DOM.Core (
   module Graphics.UI.Gtk.WebKit.DOM.Core

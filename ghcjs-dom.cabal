@@ -50,11 +50,13 @@ library
           GHCJS.DOM.Blob
           GHCJS.DOM.CharacterData
           GHCJS.DOM.Css
+          GHCJS.DOM.CSSPrimitiveValue
           GHCJS.DOM.CSSRule
           GHCJS.DOM.CSSRuleList
           GHCJS.DOM.CSSStyleDeclaration
           GHCJS.DOM.CSSStyleSheet
           GHCJS.DOM.CSSValue
+          GHCJS.DOM.Counter
           GHCJS.DOM.Document
           GHCJS.DOM.DocumentType
           GHCJS.DOM.DOMApplicationCache
@@ -149,12 +151,126 @@ library
           GHCJS.DOM.ProcessingInstruction
           GHCJS.DOM.Range
           GHCJS.DOM.Ranges
+          GHCJS.DOM.Rect
+          GHCJS.DOM.RGBColor
           GHCJS.DOM.Screen
           GHCJS.DOM.StyleMedia
           GHCJS.DOM.StyleSheet
           GHCJS.DOM.StyleSheetList
           GHCJS.DOM.Stylesheets
           GHCJS.DOM.Storage
+          GHCJS.DOM.SVGAElement
+          GHCJS.DOM.SVGAltGlyphElement
+          GHCJS.DOM.SVGAngle
+          GHCJS.DOM.SVGAnimatedAngle
+          GHCJS.DOM.SVGAnimatedBoolean
+          GHCJS.DOM.SVGAnimatedEnumeration
+          GHCJS.DOM.SVGAnimatedInteger
+          GHCJS.DOM.SVGAnimatedLength
+          GHCJS.DOM.SVGAnimatedLengthList
+          GHCJS.DOM.SVGAnimatedNumber
+          GHCJS.DOM.SVGAnimatedNumberList
+          GHCJS.DOM.SVGAnimatedPreserveAspectRatio
+          GHCJS.DOM.SVGAnimatedRect
+          GHCJS.DOM.SVGAnimatedString
+          GHCJS.DOM.SVGAnimatedTransformList
+          GHCJS.DOM.SVGAnimationElement
+          GHCJS.DOM.SVGCircleElement
+          GHCJS.DOM.SVGClipPathElement
+          GHCJS.DOM.SVGColor
+          GHCJS.DOM.SVGComponentTransferFunctionElement
+          GHCJS.DOM.SVGCursorElement
+          GHCJS.DOM.SVGDocument
+          GHCJS.DOM.SVGElement
+          GHCJS.DOM.SVGElementInstance
+          GHCJS.DOM.SVGElementInstanceList
+          GHCJS.DOM.SVGEllipseElement
+          GHCJS.DOM.SVGExternalResourcesRequired
+          GHCJS.DOM.SVGFEBlendElement
+          GHCJS.DOM.SVGFEColorMatrixElement
+          GHCJS.DOM.SVGFEComponentTransferElement
+          GHCJS.DOM.SVGFECompositeElement
+          GHCJS.DOM.SVGFEConvolveMatrixElement
+          GHCJS.DOM.SVGFEDiffuseLightingElement
+          GHCJS.DOM.SVGFEDisplacementMapElement
+          GHCJS.DOM.SVGFEDistantLightElement
+          GHCJS.DOM.SVGFEDropShadowElement
+          GHCJS.DOM.SVGFEGaussianBlurElement
+          GHCJS.DOM.SVGFEImageElement
+          GHCJS.DOM.SVGFEMergeNodeElement
+          GHCJS.DOM.SVGFEMorphologyElement
+          GHCJS.DOM.SVGFEOffsetElement
+          GHCJS.DOM.SVGFEPointLightElement
+          GHCJS.DOM.SVGFESpecularLightingElement
+          GHCJS.DOM.SVGFESpotLightElement
+          GHCJS.DOM.SVGFETileElement
+          GHCJS.DOM.SVGFETurbulenceElement
+          GHCJS.DOM.SVGFilterElement
+          GHCJS.DOM.SVGFilterPrimitiveStandardAttributes
+          GHCJS.DOM.SVGFitToViewBox
+          GHCJS.DOM.SVGForeignObjectElement
+          GHCJS.DOM.SVGGlyphRefElement
+          GHCJS.DOM.SVGGradientElement
+          GHCJS.DOM.SVGGraphicsElement
+          GHCJS.DOM.SVGImageElement
+          GHCJS.DOM.SVGLength
+          GHCJS.DOM.SVGLengthList
+          GHCJS.DOM.SVGLineElement
+          GHCJS.DOM.SVGLinearGradientElement
+          GHCJS.DOM.SVGMarkerElement
+          GHCJS.DOM.SVGMaskElement
+          GHCJS.DOM.SVGMatrix
+          GHCJS.DOM.SVGNumber
+          GHCJS.DOM.SVGNumberList
+          GHCJS.DOM.SVGPaint
+          GHCJS.DOM.SVGPathElement
+          GHCJS.DOM.SVGPathSeg
+          GHCJS.DOM.SVGPathSegArcAbs
+          GHCJS.DOM.SVGPathSegArcRel
+          GHCJS.DOM.SVGPathSegCurvetoCubicAbs
+          GHCJS.DOM.SVGPathSegCurvetoCubicRel
+          GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs
+          GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel
+          GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs
+          GHCJS.DOM.SVGPathSegCurvetoQuadraticRel
+          GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs
+          GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel
+          GHCJS.DOM.SVGPathSegLinetoAbs
+          GHCJS.DOM.SVGPathSegLinetoHorizontalAbs
+          GHCJS.DOM.SVGPathSegLinetoHorizontalRel
+          GHCJS.DOM.SVGPathSegLinetoRel
+          GHCJS.DOM.SVGPathSegLinetoVerticalAbs
+          GHCJS.DOM.SVGPathSegLinetoVerticalRel
+          GHCJS.DOM.SVGPathSegList
+          GHCJS.DOM.SVGPathSegMovetoAbs
+          GHCJS.DOM.SVGPathSegMovetoRel
+          GHCJS.DOM.SVGPatternElement
+          GHCJS.DOM.SVGPoint
+          GHCJS.DOM.SVGPointList
+          GHCJS.DOM.SVGPolygonElement
+          GHCJS.DOM.SVGPolylineElement
+          GHCJS.DOM.SVGPreserveAspectRatio
+          GHCJS.DOM.SVGRadialGradientElement
+          GHCJS.DOM.SVGRect
+          GHCJS.DOM.SVGRectElement
+          GHCJS.DOM.SVGRenderingIntent
+          GHCJS.DOM.SVGSVGElement
+          GHCJS.DOM.SVGStopElement
+          GHCJS.DOM.SVGStringList
+          GHCJS.DOM.SVGStyleElement
+          GHCJS.DOM.SVGTests
+          GHCJS.DOM.SVGTextContentElement
+          GHCJS.DOM.SVGTextPathElement
+          GHCJS.DOM.SVGTextPositioningElement
+          GHCJS.DOM.SVGTransform
+          GHCJS.DOM.SVGTransformList
+          GHCJS.DOM.SVGURIReference
+          GHCJS.DOM.SVGUnitTypes
+          GHCJS.DOM.SVGUseElement
+          GHCJS.DOM.SVGViewElement
+          GHCJS.DOM.SVGViewSpec
+          GHCJS.DOM.SVGZoomAndPan
+          GHCJS.DOM.SVGZoomEvent
           GHCJS.DOM.Text
           GHCJS.DOM.Traversal
           GHCJS.DOM.TreeWalker
