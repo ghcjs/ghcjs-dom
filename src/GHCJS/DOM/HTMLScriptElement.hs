@@ -29,20 +29,23 @@ module GHCJS.DOM.HTMLScriptElement
         HTMLScriptElement, IsHTMLScriptElement, castToHTMLScriptElement,
         gTypeHTMLScriptElement, toHTMLScriptElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"text\"] = $2;"
         ghcjs_dom_html_script_element_set_text ::
         JSRef HTMLScriptElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
 htmlScriptElementSetText ::
                          (IsHTMLScriptElement self, ToJSString val) => self -> val -> IO ()
 htmlScriptElementSetText self val
@@ -53,7 +56,8 @@ htmlScriptElementSetText self val
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_script_element_get_text ::
         JSRef HTMLScriptElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
 htmlScriptElementGetText ::
                          (IsHTMLScriptElement self, FromJSString result) =>
                            self -> IO result
@@ -65,7 +69,8 @@ htmlScriptElementGetText self
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
         ghcjs_dom_html_script_element_set_html_for ::
         JSRef HTMLScriptElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.htmlFor Mozilla HTMLScriptElement.htmlFor documentation> 
 htmlScriptElementSetHtmlFor ::
                             (IsHTMLScriptElement self, ToJSString val) => self -> val -> IO ()
 htmlScriptElementSetHtmlFor self val
@@ -76,7 +81,8 @@ htmlScriptElementSetHtmlFor self val
 foreign import javascript unsafe "$1[\"htmlFor\"]"
         ghcjs_dom_html_script_element_get_html_for ::
         JSRef HTMLScriptElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.htmlFor Mozilla HTMLScriptElement.htmlFor documentation> 
 htmlScriptElementGetHtmlFor ::
                             (IsHTMLScriptElement self, FromJSString result) =>
                               self -> IO result
@@ -88,7 +94,8 @@ htmlScriptElementGetHtmlFor self
 foreign import javascript unsafe "$1[\"event\"] = $2;"
         ghcjs_dom_html_script_element_set_event ::
         JSRef HTMLScriptElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.event Mozilla HTMLScriptElement.event documentation> 
 htmlScriptElementSetEvent ::
                           (IsHTMLScriptElement self, ToJSString val) => self -> val -> IO ()
 htmlScriptElementSetEvent self val
@@ -99,7 +106,8 @@ htmlScriptElementSetEvent self val
 foreign import javascript unsafe "$1[\"event\"]"
         ghcjs_dom_html_script_element_get_event ::
         JSRef HTMLScriptElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.event Mozilla HTMLScriptElement.event documentation> 
 htmlScriptElementGetEvent ::
                           (IsHTMLScriptElement self, FromJSString result) =>
                             self -> IO result
@@ -111,7 +119,8 @@ htmlScriptElementGetEvent self
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
         ghcjs_dom_html_script_element_set_charset ::
         JSRef HTMLScriptElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.charset Mozilla HTMLScriptElement.charset documentation> 
 htmlScriptElementSetCharset ::
                             (IsHTMLScriptElement self, ToJSString val) => self -> val -> IO ()
 htmlScriptElementSetCharset self val
@@ -122,7 +131,8 @@ htmlScriptElementSetCharset self val
 foreign import javascript unsafe "$1[\"charset\"]"
         ghcjs_dom_html_script_element_get_charset ::
         JSRef HTMLScriptElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.charset Mozilla HTMLScriptElement.charset documentation> 
 htmlScriptElementGetCharset ::
                             (IsHTMLScriptElement self, FromJSString result) =>
                               self -> IO result
@@ -134,7 +144,8 @@ htmlScriptElementGetCharset self
 foreign import javascript unsafe "$1[\"async\"] = $2;"
         ghcjs_dom_html_script_element_set_async ::
         JSRef HTMLScriptElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.async Mozilla HTMLScriptElement.async documentation> 
 htmlScriptElementSetAsync ::
                           (IsHTMLScriptElement self) => self -> Bool -> IO ()
 htmlScriptElementSetAsync self val
@@ -145,7 +156,8 @@ htmlScriptElementSetAsync self val
 foreign import javascript unsafe "($1[\"async\"] ? 1 : 0)"
         ghcjs_dom_html_script_element_get_async ::
         JSRef HTMLScriptElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.async Mozilla HTMLScriptElement.async documentation> 
 htmlScriptElementGetAsync ::
                           (IsHTMLScriptElement self) => self -> IO Bool
 htmlScriptElementGetAsync self
@@ -155,7 +167,8 @@ htmlScriptElementGetAsync self
 foreign import javascript unsafe "$1[\"defer\"] = $2;"
         ghcjs_dom_html_script_element_set_defer ::
         JSRef HTMLScriptElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.defer Mozilla HTMLScriptElement.defer documentation> 
 htmlScriptElementSetDefer ::
                           (IsHTMLScriptElement self) => self -> Bool -> IO ()
 htmlScriptElementSetDefer self val
@@ -166,7 +179,8 @@ htmlScriptElementSetDefer self val
 foreign import javascript unsafe "($1[\"defer\"] ? 1 : 0)"
         ghcjs_dom_html_script_element_get_defer ::
         JSRef HTMLScriptElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.defer Mozilla HTMLScriptElement.defer documentation> 
 htmlScriptElementGetDefer ::
                           (IsHTMLScriptElement self) => self -> IO Bool
 htmlScriptElementGetDefer self
@@ -176,7 +190,8 @@ htmlScriptElementGetDefer self
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_script_element_set_src ::
         JSRef HTMLScriptElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.src Mozilla HTMLScriptElement.src documentation> 
 htmlScriptElementSetSrc ::
                         (IsHTMLScriptElement self, ToJSString val) => self -> val -> IO ()
 htmlScriptElementSetSrc self val
@@ -187,7 +202,8 @@ htmlScriptElementSetSrc self val
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_script_element_get_src ::
         JSRef HTMLScriptElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.src Mozilla HTMLScriptElement.src documentation> 
 htmlScriptElementGetSrc ::
                         (IsHTMLScriptElement self, FromJSString result) =>
                           self -> IO result
@@ -199,7 +215,8 @@ htmlScriptElementGetSrc self
 foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
         ghcjs_dom_html_script_element_set_cross_origin ::
         JSRef HTMLScriptElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.crossOrigin Mozilla HTMLScriptElement.crossOrigin documentation> 
 htmlScriptElementSetCrossOrigin ::
                                 (IsHTMLScriptElement self, ToJSString val) => self -> val -> IO ()
 htmlScriptElementSetCrossOrigin self val
@@ -210,7 +227,8 @@ htmlScriptElementSetCrossOrigin self val
 foreign import javascript unsafe "$1[\"crossOrigin\"]"
         ghcjs_dom_html_script_element_get_cross_origin ::
         JSRef HTMLScriptElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.crossOrigin Mozilla HTMLScriptElement.crossOrigin documentation> 
 htmlScriptElementGetCrossOrigin ::
                                 (IsHTMLScriptElement self, FromJSString result) =>
                                   self -> IO result
@@ -222,7 +240,8 @@ htmlScriptElementGetCrossOrigin self
 foreign import javascript unsafe "$1[\"nonce\"] = $2;"
         ghcjs_dom_html_script_element_set_nonce ::
         JSRef HTMLScriptElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.nonce Mozilla HTMLScriptElement.nonce documentation> 
 htmlScriptElementSetNonce ::
                           (IsHTMLScriptElement self, ToJSString val) => self -> val -> IO ()
 htmlScriptElementSetNonce self val
@@ -233,7 +252,8 @@ htmlScriptElementSetNonce self val
 foreign import javascript unsafe "$1[\"nonce\"]"
         ghcjs_dom_html_script_element_get_nonce ::
         JSRef HTMLScriptElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.nonce Mozilla HTMLScriptElement.nonce documentation> 
 htmlScriptElementGetNonce ::
                           (IsHTMLScriptElement self, FromJSString result) =>
                             self -> IO result

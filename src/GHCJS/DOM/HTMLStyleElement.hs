@@ -12,20 +12,23 @@ module GHCJS.DOM.HTMLStyleElement
         HTMLStyleElement, IsHTMLStyleElement, castToHTMLStyleElement,
         gTypeHTMLStyleElement, toHTMLStyleElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_style_element_set_disabled ::
         JSRef HTMLStyleElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.disabled Mozilla HTMLStyleElement.disabled documentation> 
 htmlStyleElementSetDisabled ::
                             (IsHTMLStyleElement self) => self -> Bool -> IO ()
 htmlStyleElementSetDisabled self val
@@ -36,7 +39,8 @@ htmlStyleElementSetDisabled self val
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_style_element_get_disabled ::
         JSRef HTMLStyleElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.disabled Mozilla HTMLStyleElement.disabled documentation> 
 htmlStyleElementGetDisabled ::
                             (IsHTMLStyleElement self) => self -> IO Bool
 htmlStyleElementGetDisabled self
@@ -46,7 +50,8 @@ htmlStyleElementGetDisabled self
 foreign import javascript unsafe "$1[\"media\"] = $2;"
         ghcjs_dom_html_style_element_set_media ::
         JSRef HTMLStyleElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.media Mozilla HTMLStyleElement.media documentation> 
 htmlStyleElementSetMedia ::
                          (IsHTMLStyleElement self, ToJSString val) => self -> val -> IO ()
 htmlStyleElementSetMedia self val
@@ -57,7 +62,8 @@ htmlStyleElementSetMedia self val
 foreign import javascript unsafe "$1[\"media\"]"
         ghcjs_dom_html_style_element_get_media ::
         JSRef HTMLStyleElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.media Mozilla HTMLStyleElement.media documentation> 
 htmlStyleElementGetMedia ::
                          (IsHTMLStyleElement self, FromJSString result) => self -> IO result
 htmlStyleElementGetMedia self
@@ -68,13 +74,14 @@ htmlStyleElementGetMedia self
 foreign import javascript unsafe "$1[\"sheet\"]"
         ghcjs_dom_html_style_element_get_sheet ::
         JSRef HTMLStyleElement -> IO (JSRef StyleSheet)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.sheet Mozilla HTMLStyleElement.sheet documentation> 
 htmlStyleElementGetSheet ::
                          (IsHTMLStyleElement self) => self -> IO (Maybe StyleSheet)
 htmlStyleElementGetSheet self
-  = fmap StyleSheet . maybeJSNull <$>
-      (ghcjs_dom_html_style_element_get_sheet
-         (unHTMLStyleElement (toHTMLStyleElement self)))
+  = (ghcjs_dom_html_style_element_get_sheet
+       (unHTMLStyleElement (toHTMLStyleElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.HTMLStyleElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLStyleElement

@@ -17,20 +17,23 @@ module GHCJS.DOM.SVGFEDropShadowElement
         IsSVGFEDropShadowElement, castToSVGFEDropShadowElement,
         gTypeSVGFEDropShadowElement, toSVGFEDropShadowElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"setStdDeviation\"]($2, $3)"
         ghcjs_dom_svgfe_drop_shadow_element_set_std_deviation ::
         JSRef SVGFEDropShadowElement -> Float -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviation Mozilla SVGFEDropShadowElement.stdDeviation documentation> 
 svgfeDropShadowElementSetStdDeviation ::
                                       (IsSVGFEDropShadowElement self) =>
                                         self -> Float -> Float -> IO ()
@@ -44,65 +47,68 @@ svgfeDropShadowElementSetStdDeviation self stdDeviationX
 foreign import javascript unsafe "$1[\"in1\"]"
         ghcjs_dom_svgfe_drop_shadow_element_get_in1 ::
         JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedString)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.in1 Mozilla SVGFEDropShadowElement.in1 documentation> 
 svgfeDropShadowElementGetIn1 ::
                              (IsSVGFEDropShadowElement self) =>
                                self -> IO (Maybe SVGAnimatedString)
 svgfeDropShadowElementGetIn1 self
-  = fmap SVGAnimatedString . maybeJSNull <$>
-      (ghcjs_dom_svgfe_drop_shadow_element_get_in1
-         (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+  = (ghcjs_dom_svgfe_drop_shadow_element_get_in1
+       (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"dx\"]"
         ghcjs_dom_svgfe_drop_shadow_element_get_dx ::
         JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dx Mozilla SVGFEDropShadowElement.dx documentation> 
 svgfeDropShadowElementGetDx ::
                             (IsSVGFEDropShadowElement self) =>
                               self -> IO (Maybe SVGAnimatedNumber)
 svgfeDropShadowElementGetDx self
-  = fmap SVGAnimatedNumber . maybeJSNull <$>
-      (ghcjs_dom_svgfe_drop_shadow_element_get_dx
-         (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+  = (ghcjs_dom_svgfe_drop_shadow_element_get_dx
+       (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"dy\"]"
         ghcjs_dom_svgfe_drop_shadow_element_get_dy ::
         JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dy Mozilla SVGFEDropShadowElement.dy documentation> 
 svgfeDropShadowElementGetDy ::
                             (IsSVGFEDropShadowElement self) =>
                               self -> IO (Maybe SVGAnimatedNumber)
 svgfeDropShadowElementGetDy self
-  = fmap SVGAnimatedNumber . maybeJSNull <$>
-      (ghcjs_dom_svgfe_drop_shadow_element_get_dy
-         (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+  = (ghcjs_dom_svgfe_drop_shadow_element_get_dy
+       (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"stdDeviationX\"]"
         ghcjs_dom_svgfe_drop_shadow_element_get_std_deviation_x ::
         JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationX Mozilla SVGFEDropShadowElement.stdDeviationX documentation> 
 svgfeDropShadowElementGetStdDeviationX ::
                                        (IsSVGFEDropShadowElement self) =>
                                          self -> IO (Maybe SVGAnimatedNumber)
 svgfeDropShadowElementGetStdDeviationX self
-  = fmap SVGAnimatedNumber . maybeJSNull <$>
-      (ghcjs_dom_svgfe_drop_shadow_element_get_std_deviation_x
-         (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+  = (ghcjs_dom_svgfe_drop_shadow_element_get_std_deviation_x
+       (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"stdDeviationY\"]"
         ghcjs_dom_svgfe_drop_shadow_element_get_std_deviation_y ::
         JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationY Mozilla SVGFEDropShadowElement.stdDeviationY documentation> 
 svgfeDropShadowElementGetStdDeviationY ::
                                        (IsSVGFEDropShadowElement self) =>
                                          self -> IO (Maybe SVGAnimatedNumber)
 svgfeDropShadowElementGetStdDeviationY self
-  = fmap SVGAnimatedNumber . maybeJSNull <$>
-      (ghcjs_dom_svgfe_drop_shadow_element_get_std_deviation_y
-         (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+  = (ghcjs_dom_svgfe_drop_shadow_element_get_std_deviation_y
+       (unSVGFEDropShadowElement (toSVGFEDropShadowElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGFEDropShadowElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGFEDropShadowElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGFEDropShadowElement
 #endif

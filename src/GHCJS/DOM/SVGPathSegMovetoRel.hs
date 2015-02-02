@@ -10,20 +10,23 @@ module GHCJS.DOM.SVGPathSegMovetoRel
         castToSVGPathSegMovetoRel, gTypeSVGPathSegMovetoRel,
         toSVGPathSegMovetoRel)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_svg_path_seg_moveto_rel_set_x ::
         JSRef SVGPathSegMovetoRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.x Mozilla SVGPathSegMovetoRel.x documentation> 
 svgPathSegMovetoRelSetX ::
                         (IsSVGPathSegMovetoRel self) => self -> Float -> IO ()
 svgPathSegMovetoRelSetX self val
@@ -34,7 +37,8 @@ svgPathSegMovetoRelSetX self val
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_moveto_rel_get_x ::
         JSRef SVGPathSegMovetoRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.x Mozilla SVGPathSegMovetoRel.x documentation> 
 svgPathSegMovetoRelGetX ::
                         (IsSVGPathSegMovetoRel self) => self -> IO Float
 svgPathSegMovetoRelGetX self
@@ -44,7 +48,8 @@ svgPathSegMovetoRelGetX self
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_moveto_rel_set_y ::
         JSRef SVGPathSegMovetoRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.y Mozilla SVGPathSegMovetoRel.y documentation> 
 svgPathSegMovetoRelSetY ::
                         (IsSVGPathSegMovetoRel self) => self -> Float -> IO ()
 svgPathSegMovetoRelSetY self val
@@ -55,7 +60,8 @@ svgPathSegMovetoRelSetY self val
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_moveto_rel_get_y ::
         JSRef SVGPathSegMovetoRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.y Mozilla SVGPathSegMovetoRel.y documentation> 
 svgPathSegMovetoRelGetY ::
                         (IsSVGPathSegMovetoRel self) => self -> IO Float
 svgPathSegMovetoRelGetY self
@@ -63,7 +69,5 @@ svgPathSegMovetoRelGetY self
       (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self))
 #else
 module GHCJS.DOM.SVGPathSegMovetoRel (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPathSegMovetoRel
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPathSegMovetoRel
 #endif

@@ -7,20 +7,23 @@ module GHCJS.DOM.HTMLTitleElement
         HTMLTitleElement, IsHTMLTitleElement, castToHTMLTitleElement,
         gTypeHTMLTitleElement, toHTMLTitleElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"text\"] = $2;"
         ghcjs_dom_html_title_element_set_text ::
         JSRef HTMLTitleElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement.text Mozilla HTMLTitleElement.text documentation> 
 htmlTitleElementSetText ::
                         (IsHTMLTitleElement self, ToJSString val) => self -> val -> IO ()
 htmlTitleElementSetText self val
@@ -31,7 +34,8 @@ htmlTitleElementSetText self val
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_title_element_get_text ::
         JSRef HTMLTitleElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement.text Mozilla HTMLTitleElement.text documentation> 
 htmlTitleElementGetText ::
                         (IsHTMLTitleElement self, FromJSString result) => self -> IO result
 htmlTitleElementGetText self

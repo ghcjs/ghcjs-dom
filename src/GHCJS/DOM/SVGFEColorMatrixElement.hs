@@ -13,14 +13,16 @@ module GHCJS.DOM.SVGFEColorMatrixElement
         IsSVGFEColorMatrixElement, castToSVGFEColorMatrixElement,
         gTypeSVGFEColorMatrixElement, toSVGFEColorMatrixElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
 cSVG_FECOLORMATRIX_TYPE_UNKNOWN = 0
 cSVG_FECOLORMATRIX_TYPE_MATRIX = 1
@@ -31,29 +33,29 @@ cSVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA = 4
 foreign import javascript unsafe "$1[\"in1\"]"
         ghcjs_dom_svgfe_color_matrix_element_get_in1 ::
         JSRef SVGFEColorMatrixElement -> IO (JSRef SVGAnimatedString)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.in1 Mozilla SVGFEColorMatrixElement.in1 documentation> 
 svgfeColorMatrixElementGetIn1 ::
                               (IsSVGFEColorMatrixElement self) =>
                                 self -> IO (Maybe SVGAnimatedString)
 svgfeColorMatrixElementGetIn1 self
-  = fmap SVGAnimatedString . maybeJSNull <$>
-      (ghcjs_dom_svgfe_color_matrix_element_get_in1
-         (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
+  = (ghcjs_dom_svgfe_color_matrix_element_get_in1
+       (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"values\"]"
         ghcjs_dom_svgfe_color_matrix_element_get_values ::
         JSRef SVGFEColorMatrixElement -> IO (JSRef SVGAnimatedNumberList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.values Mozilla SVGFEColorMatrixElement.values documentation> 
 svgfeColorMatrixElementGetValues ::
                                  (IsSVGFEColorMatrixElement self) =>
                                    self -> IO (Maybe SVGAnimatedNumberList)
 svgfeColorMatrixElementGetValues self
-  = fmap SVGAnimatedNumberList . maybeJSNull <$>
-      (ghcjs_dom_svgfe_color_matrix_element_get_values
-         (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
+  = (ghcjs_dom_svgfe_color_matrix_element_get_values
+       (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGFEColorMatrixElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGFEColorMatrixElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGFEColorMatrixElement
 #endif

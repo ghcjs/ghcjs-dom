@@ -11,20 +11,23 @@ module GHCJS.DOM.SVGAnimatedNumber
         IsSVGAnimatedNumber, castToSVGAnimatedNumber,
         gTypeSVGAnimatedNumber, toSVGAnimatedNumber)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
         ghcjs_dom_svg_animated_number_set_base_val ::
         JSRef SVGAnimatedNumber -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber.baseVal Mozilla SVGAnimatedNumber.baseVal documentation> 
 svgAnimatedNumberSetBaseVal ::
                             (IsSVGAnimatedNumber self) => self -> Float -> IO ()
 svgAnimatedNumberSetBaseVal self val
@@ -35,7 +38,8 @@ svgAnimatedNumberSetBaseVal self val
 foreign import javascript unsafe "$1[\"baseVal\"]"
         ghcjs_dom_svg_animated_number_get_base_val ::
         JSRef SVGAnimatedNumber -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber.baseVal Mozilla SVGAnimatedNumber.baseVal documentation> 
 svgAnimatedNumberGetBaseVal ::
                             (IsSVGAnimatedNumber self) => self -> IO Float
 svgAnimatedNumberGetBaseVal self
@@ -45,7 +49,8 @@ svgAnimatedNumberGetBaseVal self
 foreign import javascript unsafe "$1[\"animVal\"]"
         ghcjs_dom_svg_animated_number_get_anim_val ::
         JSRef SVGAnimatedNumber -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber.animVal Mozilla SVGAnimatedNumber.animVal documentation> 
 svgAnimatedNumberGetAnimVal ::
                             (IsSVGAnimatedNumber self) => self -> IO Float
 svgAnimatedNumberGetAnimVal self
@@ -53,7 +58,5 @@ svgAnimatedNumberGetAnimVal self
       (unSVGAnimatedNumber (toSVGAnimatedNumber self))
 #else
 module GHCJS.DOM.SVGAnimatedNumber (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedNumber
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedNumber
 #endif

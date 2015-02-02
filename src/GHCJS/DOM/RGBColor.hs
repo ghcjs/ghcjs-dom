@@ -8,58 +8,62 @@ module GHCJS.DOM.RGBColor
         ghcjs_dom_rgb_color_get_alpha, rgbColorGetAlpha, RGBColor,
         IsRGBColor, castToRGBColor, gTypeRGBColor, toRGBColor)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"red\"]"
         ghcjs_dom_rgb_color_get_red ::
         JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.red Mozilla RGBColor.red documentation> 
 rgbColorGetRed ::
                (IsRGBColor self) => self -> IO (Maybe CSSPrimitiveValue)
 rgbColorGetRed self
-  = fmap CSSPrimitiveValue . maybeJSNull <$>
-      (ghcjs_dom_rgb_color_get_red (unRGBColor (toRGBColor self)))
+  = (ghcjs_dom_rgb_color_get_red (unRGBColor (toRGBColor self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"green\"]"
         ghcjs_dom_rgb_color_get_green ::
         JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.green Mozilla RGBColor.green documentation> 
 rgbColorGetGreen ::
                  (IsRGBColor self) => self -> IO (Maybe CSSPrimitiveValue)
 rgbColorGetGreen self
-  = fmap CSSPrimitiveValue . maybeJSNull <$>
-      (ghcjs_dom_rgb_color_get_green (unRGBColor (toRGBColor self)))
+  = (ghcjs_dom_rgb_color_get_green (unRGBColor (toRGBColor self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"blue\"]"
         ghcjs_dom_rgb_color_get_blue ::
         JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.blue Mozilla RGBColor.blue documentation> 
 rgbColorGetBlue ::
                 (IsRGBColor self) => self -> IO (Maybe CSSPrimitiveValue)
 rgbColorGetBlue self
-  = fmap CSSPrimitiveValue . maybeJSNull <$>
-      (ghcjs_dom_rgb_color_get_blue (unRGBColor (toRGBColor self)))
+  = (ghcjs_dom_rgb_color_get_blue (unRGBColor (toRGBColor self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"alpha\"]"
         ghcjs_dom_rgb_color_get_alpha ::
         JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.alpha Mozilla RGBColor.alpha documentation> 
 rgbColorGetAlpha ::
                  (IsRGBColor self) => self -> IO (Maybe CSSPrimitiveValue)
 rgbColorGetAlpha self
-  = fmap CSSPrimitiveValue . maybeJSNull <$>
-      (ghcjs_dom_rgb_color_get_alpha (unRGBColor (toRGBColor self)))
+  = (ghcjs_dom_rgb_color_get_alpha (unRGBColor (toRGBColor self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.RGBColor (
-  module Graphics.UI.Gtk.WebKit.DOM.RGBColor
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.RGBColor
 #endif

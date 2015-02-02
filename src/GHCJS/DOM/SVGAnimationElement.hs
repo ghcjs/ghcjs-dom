@@ -21,20 +21,23 @@ module GHCJS.DOM.SVGAnimationElement
         IsSVGAnimationElement, castToSVGAnimationElement,
         gTypeSVGAnimationElement, toSVGAnimationElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getStartTime\"]()"
         ghcjs_dom_svg_animation_element_get_start_time ::
         JSRef SVGAnimationElement -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.startTime Mozilla SVGAnimationElement.startTime documentation> 
 svgAnimationElementGetStartTime ::
                                 (IsSVGAnimationElement self) => self -> IO Float
 svgAnimationElementGetStartTime self
@@ -44,7 +47,8 @@ svgAnimationElementGetStartTime self
 foreign import javascript unsafe "$1[\"getCurrentTime\"]()"
         ghcjs_dom_svg_animation_element_get_current_time ::
         JSRef SVGAnimationElement -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.currentTime Mozilla SVGAnimationElement.currentTime documentation> 
 svgAnimationElementGetCurrentTime ::
                                   (IsSVGAnimationElement self) => self -> IO Float
 svgAnimationElementGetCurrentTime self
@@ -54,7 +58,8 @@ svgAnimationElementGetCurrentTime self
 foreign import javascript unsafe "$1[\"getSimpleDuration\"]()"
         ghcjs_dom_svg_animation_element_get_simple_duration ::
         JSRef SVGAnimationElement -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.simpleDuration Mozilla SVGAnimationElement.simpleDuration documentation> 
 svgAnimationElementGetSimpleDuration ::
                                      (IsSVGAnimationElement self) => self -> IO Float
 svgAnimationElementGetSimpleDuration self
@@ -64,7 +69,8 @@ svgAnimationElementGetSimpleDuration self
 foreign import javascript unsafe "$1[\"beginElement\"]()"
         ghcjs_dom_svg_animation_element_begin_element ::
         JSRef SVGAnimationElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.beginElement Mozilla SVGAnimationElement.beginElement documentation> 
 svgAnimationElementBeginElement ::
                                 (IsSVGAnimationElement self) => self -> IO ()
 svgAnimationElementBeginElement self
@@ -74,7 +80,8 @@ svgAnimationElementBeginElement self
 foreign import javascript unsafe "$1[\"beginElementAt\"]($2)"
         ghcjs_dom_svg_animation_element_begin_element_at ::
         JSRef SVGAnimationElement -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.beginElementAt Mozilla SVGAnimationElement.beginElementAt documentation> 
 svgAnimationElementBeginElementAt ::
                                   (IsSVGAnimationElement self) => self -> Float -> IO ()
 svgAnimationElementBeginElementAt self offset
@@ -85,7 +92,8 @@ svgAnimationElementBeginElementAt self offset
 foreign import javascript unsafe "$1[\"endElement\"]()"
         ghcjs_dom_svg_animation_element_end_element ::
         JSRef SVGAnimationElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.endElement Mozilla SVGAnimationElement.endElement documentation> 
 svgAnimationElementEndElement ::
                               (IsSVGAnimationElement self) => self -> IO ()
 svgAnimationElementEndElement self
@@ -95,7 +103,8 @@ svgAnimationElementEndElement self
 foreign import javascript unsafe "$1[\"endElementAt\"]($2)"
         ghcjs_dom_svg_animation_element_end_element_at ::
         JSRef SVGAnimationElement -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.endElementAt Mozilla SVGAnimationElement.endElementAt documentation> 
 svgAnimationElementEndElementAt ::
                                 (IsSVGAnimationElement self) => self -> Float -> IO ()
 svgAnimationElementEndElementAt self offset
@@ -106,16 +115,15 @@ svgAnimationElementEndElementAt self offset
 foreign import javascript unsafe "$1[\"targetElement\"]"
         ghcjs_dom_svg_animation_element_get_target_element ::
         JSRef SVGAnimationElement -> IO (JSRef SVGElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.targetElement Mozilla SVGAnimationElement.targetElement documentation> 
 svgAnimationElementGetTargetElement ::
                                     (IsSVGAnimationElement self) => self -> IO (Maybe SVGElement)
 svgAnimationElementGetTargetElement self
-  = fmap SVGElement . maybeJSNull <$>
-      (ghcjs_dom_svg_animation_element_get_target_element
-         (unSVGAnimationElement (toSVGAnimationElement self)))
+  = (ghcjs_dom_svg_animation_element_get_target_element
+       (unSVGAnimationElement (toSVGAnimationElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGAnimationElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGAnimationElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGAnimationElement
 #endif

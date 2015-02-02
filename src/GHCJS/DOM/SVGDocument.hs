@@ -7,42 +7,44 @@ module GHCJS.DOM.SVGDocument
         SVGDocument, IsSVGDocument, castToSVGDocument, gTypeSVGDocument,
         toSVGDocument)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"createEvent\"]($2)"
         ghcjs_dom_svg_document_create_event ::
         JSRef SVGDocument -> JSString -> IO (JSRef Event)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument.createEvent Mozilla SVGDocument.createEvent documentation> 
 svgDocumentCreateEvent ::
                        (IsSVGDocument self, ToJSString eventType) =>
                          self -> eventType -> IO (Maybe Event)
 svgDocumentCreateEvent self eventType
-  = fmap Event . maybeJSNull <$>
-      (ghcjs_dom_svg_document_create_event
-         (unSVGDocument (toSVGDocument self))
-         (toJSString eventType))
+  = (ghcjs_dom_svg_document_create_event
+       (unSVGDocument (toSVGDocument self))
+       (toJSString eventType))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"rootElement\"]"
         ghcjs_dom_svg_document_get_root_element ::
         JSRef SVGDocument -> IO (JSRef SVGSVGElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument.rootElement Mozilla SVGDocument.rootElement documentation> 
 svgDocumentGetRootElement ::
                           (IsSVGDocument self) => self -> IO (Maybe SVGSVGElement)
 svgDocumentGetRootElement self
-  = fmap SVGSVGElement . maybeJSNull <$>
-      (ghcjs_dom_svg_document_get_root_element
-         (unSVGDocument (toSVGDocument self)))
+  = (ghcjs_dom_svg_document_get_root_element
+       (unSVGDocument (toSVGDocument self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGDocument (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGDocument
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGDocument
 #endif

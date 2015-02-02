@@ -6,29 +6,33 @@ module GHCJS.DOM.FileList
         ghcjs_dom_file_list_get_length, fileListGetLength, FileList,
         IsFileList, castToFileList, gTypeFileList, toFileList)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_file_list_item ::
         JSRef FileList -> Word -> IO (JSRef File)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FileList.item Mozilla FileList.item documentation> 
 fileListItem ::
              (IsFileList self) => self -> Word -> IO (Maybe File)
 fileListItem self index
-  = fmap File . maybeJSNull <$>
-      (ghcjs_dom_file_list_item (unFileList (toFileList self)) index)
+  = (ghcjs_dom_file_list_item (unFileList (toFileList self)) index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_file_list_get_length :: JSRef FileList -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FileList.length Mozilla FileList.length documentation> 
 fileListGetLength :: (IsFileList self) => self -> IO Word
 fileListGetLength self
   = ghcjs_dom_file_list_get_length (unFileList (toFileList self))

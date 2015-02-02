@@ -9,14 +9,16 @@ module GHCJS.DOM.Geolocation
         Geolocation, IsGeolocation, castToGeolocation, gTypeGeolocation,
         toGeolocation)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
@@ -25,7 +27,8 @@ foreign import javascript unsafe
         JSRef Geolocation ->
           JSRef PositionCallback ->
             JSRef PositionErrorCallback -> JSRef PositionOptions -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation.currentPosition Mozilla Geolocation.currentPosition documentation> 
 geolocationGetCurrentPosition ::
                               (IsGeolocation self, IsPositionCallback successCallback,
                                IsPositionErrorCallback errorCallback,
@@ -49,7 +52,8 @@ foreign import javascript unsafe
         JSRef Geolocation ->
           JSRef PositionCallback ->
             JSRef PositionErrorCallback -> JSRef PositionOptions -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation.watchPosition Mozilla Geolocation.watchPosition documentation> 
 geolocationWatchPosition ::
                          (IsGeolocation self, IsPositionCallback successCallback,
                           IsPositionErrorCallback errorCallback,
@@ -69,7 +73,8 @@ geolocationWatchPosition self successCallback errorCallback options
 foreign import javascript unsafe "$1[\"clearWatch\"]($2)"
         ghcjs_dom_geolocation_clear_watch ::
         JSRef Geolocation -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation.clearWatch Mozilla Geolocation.clearWatch documentation> 
 geolocationClearWatch ::
                       (IsGeolocation self) => self -> Int -> IO ()
 geolocationClearWatch self watchID

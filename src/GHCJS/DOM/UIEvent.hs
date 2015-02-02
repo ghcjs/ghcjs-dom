@@ -14,13 +14,15 @@ module GHCJS.DOM.UIEvent
         ghcjs_dom_ui_event_get_which, uiEventGetWhich, UIEvent, IsUIEvent,
         castToUIEvent, gTypeUIEvent, toUIEvent)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
@@ -28,7 +30,8 @@ foreign import javascript unsafe
         ghcjs_dom_ui_event_init_ui_event ::
         JSRef UIEvent ->
           JSString -> Bool -> Bool -> JSRef DOMWindow -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.initUIEvent Mozilla UIEvent.initUIEvent documentation> 
 uiEventInitUIEvent ::
                    (IsUIEvent self, ToJSString type', IsDOMWindow view) =>
                      self -> type' -> Bool -> Bool -> Maybe view -> Int -> IO ()
@@ -43,64 +46,73 @@ uiEventInitUIEvent self type' canBubble cancelable view detail
 foreign import javascript unsafe "$1[\"view\"]"
         ghcjs_dom_ui_event_get_view ::
         JSRef UIEvent -> IO (JSRef DOMWindow)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.view Mozilla UIEvent.view documentation> 
 uiEventGetView :: (IsUIEvent self) => self -> IO (Maybe DOMWindow)
 uiEventGetView self
-  = fmap DOMWindow . maybeJSNull <$>
-      (ghcjs_dom_ui_event_get_view (unUIEvent (toUIEvent self)))
+  = (ghcjs_dom_ui_event_get_view (unUIEvent (toUIEvent self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"detail\"]"
         ghcjs_dom_ui_event_get_detail :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.detail Mozilla UIEvent.detail documentation> 
 uiEventGetDetail :: (IsUIEvent self) => self -> IO Int
 uiEventGetDetail self
   = ghcjs_dom_ui_event_get_detail (unUIEvent (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"keyCode\"]"
         ghcjs_dom_ui_event_get_key_code :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.keyCode Mozilla UIEvent.keyCode documentation> 
 uiEventGetKeyCode :: (IsUIEvent self) => self -> IO Int
 uiEventGetKeyCode self
   = ghcjs_dom_ui_event_get_key_code (unUIEvent (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"charCode\"]"
         ghcjs_dom_ui_event_get_char_code :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.charCode Mozilla UIEvent.charCode documentation> 
 uiEventGetCharCode :: (IsUIEvent self) => self -> IO Int
 uiEventGetCharCode self
   = ghcjs_dom_ui_event_get_char_code (unUIEvent (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"layerX\"]"
         ghcjs_dom_ui_event_get_layer_x :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.layerX Mozilla UIEvent.layerX documentation> 
 uiEventGetLayerX :: (IsUIEvent self) => self -> IO Int
 uiEventGetLayerX self
   = ghcjs_dom_ui_event_get_layer_x (unUIEvent (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"layerY\"]"
         ghcjs_dom_ui_event_get_layer_y :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.layerY Mozilla UIEvent.layerY documentation> 
 uiEventGetLayerY :: (IsUIEvent self) => self -> IO Int
 uiEventGetLayerY self
   = ghcjs_dom_ui_event_get_layer_y (unUIEvent (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"pageX\"]"
         ghcjs_dom_ui_event_get_page_x :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.pageX Mozilla UIEvent.pageX documentation> 
 uiEventGetPageX :: (IsUIEvent self) => self -> IO Int
 uiEventGetPageX self
   = ghcjs_dom_ui_event_get_page_x (unUIEvent (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"pageY\"]"
         ghcjs_dom_ui_event_get_page_y :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.pageY Mozilla UIEvent.pageY documentation> 
 uiEventGetPageY :: (IsUIEvent self) => self -> IO Int
 uiEventGetPageY self
   = ghcjs_dom_ui_event_get_page_y (unUIEvent (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"which\"]"
         ghcjs_dom_ui_event_get_which :: JSRef UIEvent -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.which Mozilla UIEvent.which documentation> 
 uiEventGetWhich :: (IsUIEvent self) => self -> IO Int
 uiEventGetWhich self
   = ghcjs_dom_ui_event_get_which (unUIEvent (toUIEvent self))

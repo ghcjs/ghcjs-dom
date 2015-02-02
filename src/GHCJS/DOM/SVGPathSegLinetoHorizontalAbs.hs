@@ -11,20 +11,23 @@ module GHCJS.DOM.SVGPathSegLinetoHorizontalAbs
         gTypeSVGPathSegLinetoHorizontalAbs,
         toSVGPathSegLinetoHorizontalAbs)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_svg_path_seg_lineto_horizontal_abs_set_x ::
         JSRef SVGPathSegLinetoHorizontalAbs -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalAbs.x Mozilla SVGPathSegLinetoHorizontalAbs.x documentation> 
 svgPathSegLinetoHorizontalAbsSetX ::
                                   (IsSVGPathSegLinetoHorizontalAbs self) => self -> Float -> IO ()
 svgPathSegLinetoHorizontalAbsSetX self val
@@ -36,7 +39,8 @@ svgPathSegLinetoHorizontalAbsSetX self val
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_lineto_horizontal_abs_get_x ::
         JSRef SVGPathSegLinetoHorizontalAbs -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalAbs.x Mozilla SVGPathSegLinetoHorizontalAbs.x documentation> 
 svgPathSegLinetoHorizontalAbsGetX ::
                                   (IsSVGPathSegLinetoHorizontalAbs self) => self -> IO Float
 svgPathSegLinetoHorizontalAbsGetX self
@@ -45,7 +49,5 @@ svgPathSegLinetoHorizontalAbsGetX self
          (toSVGPathSegLinetoHorizontalAbs self))
 #else
 module GHCJS.DOM.SVGPathSegLinetoHorizontalAbs (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPathSegLinetoHorizontalAbs
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPathSegLinetoHorizontalAbs
 #endif

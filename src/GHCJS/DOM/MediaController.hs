@@ -2,7 +2,8 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaController
-       (ghcjs_dom_media_controller_play, mediaControllerPlay,
+       (ghcjs_dom_media_controller_new, mediaControllerNew,
+        ghcjs_dom_media_controller_play, mediaControllerPlay,
         ghcjs_dom_media_controller_pause, mediaControllerPause,
         ghcjs_dom_media_controller_unpause, mediaControllerUnpause,
         ghcjs_dom_media_controller_dispatch_event,
@@ -36,19 +37,31 @@ module GHCJS.DOM.MediaController
         MediaController, IsMediaController, castToMediaController,
         gTypeMediaController, toMediaController)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
+ 
+foreign import javascript unsafe
+        "new window[\"MediaController\"]()" ghcjs_dom_media_controller_new
+        :: IO (JSRef MediaController)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController Mozilla MediaController documentation> 
+mediaControllerNew :: IO MediaController
+mediaControllerNew
+  = ghcjs_dom_media_controller_new >>= fromJSRefUnchecked
  
 foreign import javascript unsafe "$1[\"play\"]()"
         ghcjs_dom_media_controller_play :: JSRef MediaController -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.play Mozilla MediaController.play documentation> 
 mediaControllerPlay :: (IsMediaController self) => self -> IO ()
 mediaControllerPlay self
   = ghcjs_dom_media_controller_play
@@ -56,7 +69,8 @@ mediaControllerPlay self
  
 foreign import javascript unsafe "$1[\"pause\"]()"
         ghcjs_dom_media_controller_pause :: JSRef MediaController -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.pause Mozilla MediaController.pause documentation> 
 mediaControllerPause :: (IsMediaController self) => self -> IO ()
 mediaControllerPause self
   = ghcjs_dom_media_controller_pause
@@ -65,7 +79,8 @@ mediaControllerPause self
 foreign import javascript unsafe "$1[\"unpause\"]()"
         ghcjs_dom_media_controller_unpause ::
         JSRef MediaController -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.unpause Mozilla MediaController.unpause documentation> 
 mediaControllerUnpause :: (IsMediaController self) => self -> IO ()
 mediaControllerUnpause self
   = ghcjs_dom_media_controller_unpause
@@ -75,7 +90,8 @@ foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_media_controller_dispatch_event ::
         JSRef MediaController -> JSRef Event -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.dispatchEvent Mozilla MediaController.dispatchEvent documentation> 
 mediaControllerDispatchEvent ::
                              (IsMediaController self, IsEvent evt) =>
                                self -> Maybe evt -> IO Bool
@@ -87,29 +103,32 @@ mediaControllerDispatchEvent self evt
 foreign import javascript unsafe "$1[\"buffered\"]"
         ghcjs_dom_media_controller_get_buffered ::
         JSRef MediaController -> IO (JSRef TimeRanges)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.buffered Mozilla MediaController.buffered documentation> 
 mediaControllerGetBuffered ::
                            (IsMediaController self) => self -> IO (Maybe TimeRanges)
 mediaControllerGetBuffered self
-  = fmap TimeRanges . maybeJSNull <$>
-      (ghcjs_dom_media_controller_get_buffered
-         (unMediaController (toMediaController self)))
+  = (ghcjs_dom_media_controller_get_buffered
+       (unMediaController (toMediaController self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"seekable\"]"
         ghcjs_dom_media_controller_get_seekable ::
         JSRef MediaController -> IO (JSRef TimeRanges)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.seekable Mozilla MediaController.seekable documentation> 
 mediaControllerGetSeekable ::
                            (IsMediaController self) => self -> IO (Maybe TimeRanges)
 mediaControllerGetSeekable self
-  = fmap TimeRanges . maybeJSNull <$>
-      (ghcjs_dom_media_controller_get_seekable
-         (unMediaController (toMediaController self)))
+  = (ghcjs_dom_media_controller_get_seekable
+       (unMediaController (toMediaController self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"duration\"]"
         ghcjs_dom_media_controller_get_duration ::
         JSRef MediaController -> IO Double
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.duration Mozilla MediaController.duration documentation> 
 mediaControllerGetDuration ::
                            (IsMediaController self) => self -> IO Double
 mediaControllerGetDuration self
@@ -119,7 +138,8 @@ mediaControllerGetDuration self
 foreign import javascript unsafe "$1[\"currentTime\"] = $2;"
         ghcjs_dom_media_controller_set_current_time ::
         JSRef MediaController -> Double -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.currentTime Mozilla MediaController.currentTime documentation> 
 mediaControllerSetCurrentTime ::
                               (IsMediaController self) => self -> Double -> IO ()
 mediaControllerSetCurrentTime self val
@@ -130,7 +150,8 @@ mediaControllerSetCurrentTime self val
 foreign import javascript unsafe "$1[\"currentTime\"]"
         ghcjs_dom_media_controller_get_current_time ::
         JSRef MediaController -> IO Double
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.currentTime Mozilla MediaController.currentTime documentation> 
 mediaControllerGetCurrentTime ::
                               (IsMediaController self) => self -> IO Double
 mediaControllerGetCurrentTime self
@@ -140,7 +161,8 @@ mediaControllerGetCurrentTime self
 foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
         ghcjs_dom_media_controller_get_paused ::
         JSRef MediaController -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.paused Mozilla MediaController.paused documentation> 
 mediaControllerGetPaused ::
                          (IsMediaController self) => self -> IO Bool
 mediaControllerGetPaused self
@@ -150,18 +172,20 @@ mediaControllerGetPaused self
 foreign import javascript unsafe "$1[\"played\"]"
         ghcjs_dom_media_controller_get_played ::
         JSRef MediaController -> IO (JSRef TimeRanges)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.played Mozilla MediaController.played documentation> 
 mediaControllerGetPlayed ::
                          (IsMediaController self) => self -> IO (Maybe TimeRanges)
 mediaControllerGetPlayed self
-  = fmap TimeRanges . maybeJSNull <$>
-      (ghcjs_dom_media_controller_get_played
-         (unMediaController (toMediaController self)))
+  = (ghcjs_dom_media_controller_get_played
+       (unMediaController (toMediaController self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"playbackState\"]"
         ghcjs_dom_media_controller_get_playback_state ::
         JSRef MediaController -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.playbackState Mozilla MediaController.playbackState documentation> 
 mediaControllerGetPlaybackState ::
                                 (IsMediaController self, FromJSString result) => self -> IO result
 mediaControllerGetPlaybackState self
@@ -173,7 +197,8 @@ foreign import javascript unsafe
         "$1[\"defaultPlaybackRate\"] = $2;"
         ghcjs_dom_media_controller_set_default_playback_rate ::
         JSRef MediaController -> Double -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.defaultPlaybackRate Mozilla MediaController.defaultPlaybackRate documentation> 
 mediaControllerSetDefaultPlaybackRate ::
                                       (IsMediaController self) => self -> Double -> IO ()
 mediaControllerSetDefaultPlaybackRate self val
@@ -184,7 +209,8 @@ mediaControllerSetDefaultPlaybackRate self val
 foreign import javascript unsafe "$1[\"defaultPlaybackRate\"]"
         ghcjs_dom_media_controller_get_default_playback_rate ::
         JSRef MediaController -> IO Double
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.defaultPlaybackRate Mozilla MediaController.defaultPlaybackRate documentation> 
 mediaControllerGetDefaultPlaybackRate ::
                                       (IsMediaController self) => self -> IO Double
 mediaControllerGetDefaultPlaybackRate self
@@ -194,7 +220,8 @@ mediaControllerGetDefaultPlaybackRate self
 foreign import javascript unsafe "$1[\"playbackRate\"] = $2;"
         ghcjs_dom_media_controller_set_playback_rate ::
         JSRef MediaController -> Double -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.playbackRate Mozilla MediaController.playbackRate documentation> 
 mediaControllerSetPlaybackRate ::
                                (IsMediaController self) => self -> Double -> IO ()
 mediaControllerSetPlaybackRate self val
@@ -205,7 +232,8 @@ mediaControllerSetPlaybackRate self val
 foreign import javascript unsafe "$1[\"playbackRate\"]"
         ghcjs_dom_media_controller_get_playback_rate ::
         JSRef MediaController -> IO Double
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.playbackRate Mozilla MediaController.playbackRate documentation> 
 mediaControllerGetPlaybackRate ::
                                (IsMediaController self) => self -> IO Double
 mediaControllerGetPlaybackRate self
@@ -215,7 +243,8 @@ mediaControllerGetPlaybackRate self
 foreign import javascript unsafe "$1[\"volume\"] = $2;"
         ghcjs_dom_media_controller_set_volume ::
         JSRef MediaController -> Double -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.volume Mozilla MediaController.volume documentation> 
 mediaControllerSetVolume ::
                          (IsMediaController self) => self -> Double -> IO ()
 mediaControllerSetVolume self val
@@ -226,7 +255,8 @@ mediaControllerSetVolume self val
 foreign import javascript unsafe "$1[\"volume\"]"
         ghcjs_dom_media_controller_get_volume ::
         JSRef MediaController -> IO Double
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.volume Mozilla MediaController.volume documentation> 
 mediaControllerGetVolume ::
                          (IsMediaController self) => self -> IO Double
 mediaControllerGetVolume self
@@ -236,7 +266,8 @@ mediaControllerGetVolume self
 foreign import javascript unsafe "$1[\"muted\"] = $2;"
         ghcjs_dom_media_controller_set_muted ::
         JSRef MediaController -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.muted Mozilla MediaController.muted documentation> 
 mediaControllerSetMuted ::
                         (IsMediaController self) => self -> Bool -> IO ()
 mediaControllerSetMuted self val
@@ -247,7 +278,8 @@ mediaControllerSetMuted self val
 foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
         ghcjs_dom_media_controller_get_muted ::
         JSRef MediaController -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.muted Mozilla MediaController.muted documentation> 
 mediaControllerGetMuted ::
                         (IsMediaController self) => self -> IO Bool
 mediaControllerGetMuted self
@@ -255,7 +287,5 @@ mediaControllerGetMuted self
       (unMediaController (toMediaController self))
 #else
 module GHCJS.DOM.MediaController (
-  module Graphics.UI.Gtk.WebKit.DOM.MediaController
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.MediaController
 #endif

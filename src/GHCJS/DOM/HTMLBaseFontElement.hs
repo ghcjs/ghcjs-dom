@@ -17,20 +17,23 @@ module GHCJS.DOM.HTMLBaseFontElement
         IsHTMLBaseFontElement, castToHTMLBaseFontElement,
         gTypeHTMLBaseFontElement, toHTMLBaseFontElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"color\"] = $2;"
         ghcjs_dom_html_base_font_element_set_color ::
         JSRef HTMLBaseFontElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.color Mozilla HTMLBaseFontElement.color documentation> 
 htmlBaseFontElementSetColor ::
                             (IsHTMLBaseFontElement self, ToJSString val) =>
                               self -> val -> IO ()
@@ -42,7 +45,8 @@ htmlBaseFontElementSetColor self val
 foreign import javascript unsafe "$1[\"color\"]"
         ghcjs_dom_html_base_font_element_get_color ::
         JSRef HTMLBaseFontElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.color Mozilla HTMLBaseFontElement.color documentation> 
 htmlBaseFontElementGetColor ::
                             (IsHTMLBaseFontElement self, FromJSString result) =>
                               self -> IO result
@@ -54,7 +58,8 @@ htmlBaseFontElementGetColor self
 foreign import javascript unsafe "$1[\"face\"] = $2;"
         ghcjs_dom_html_base_font_element_set_face ::
         JSRef HTMLBaseFontElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.face Mozilla HTMLBaseFontElement.face documentation> 
 htmlBaseFontElementSetFace ::
                            (IsHTMLBaseFontElement self, ToJSString val) =>
                              self -> val -> IO ()
@@ -66,7 +71,8 @@ htmlBaseFontElementSetFace self val
 foreign import javascript unsafe "$1[\"face\"]"
         ghcjs_dom_html_base_font_element_get_face ::
         JSRef HTMLBaseFontElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.face Mozilla HTMLBaseFontElement.face documentation> 
 htmlBaseFontElementGetFace ::
                            (IsHTMLBaseFontElement self, FromJSString result) =>
                              self -> IO result
@@ -78,7 +84,8 @@ htmlBaseFontElementGetFace self
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_base_font_element_set_size ::
         JSRef HTMLBaseFontElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.size Mozilla HTMLBaseFontElement.size documentation> 
 htmlBaseFontElementSetSize ::
                            (IsHTMLBaseFontElement self) => self -> Int -> IO ()
 htmlBaseFontElementSetSize self val
@@ -89,7 +96,8 @@ htmlBaseFontElementSetSize self val
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_base_font_element_get_size ::
         JSRef HTMLBaseFontElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.size Mozilla HTMLBaseFontElement.size documentation> 
 htmlBaseFontElementGetSize ::
                            (IsHTMLBaseFontElement self) => self -> IO Int
 htmlBaseFontElementGetSize self

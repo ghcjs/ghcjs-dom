@@ -9,45 +9,50 @@ module GHCJS.DOM.DOMMimeTypeArray
         domMimeTypeArrayGetLength, DOMMimeTypeArray, IsDOMMimeTypeArray,
         castToDOMMimeTypeArray, gTypeDOMMimeTypeArray, toDOMMimeTypeArray)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_dom_mime_type_array_item ::
         JSRef DOMMimeTypeArray -> Word -> IO (JSRef DOMMimeType)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray.item Mozilla MimeTypeArray.item documentation> 
 domMimeTypeArrayItem ::
                      (IsDOMMimeTypeArray self) => self -> Word -> IO (Maybe DOMMimeType)
 domMimeTypeArrayItem self index
-  = fmap DOMMimeType . maybeJSNull <$>
-      (ghcjs_dom_dom_mime_type_array_item
-         (unDOMMimeTypeArray (toDOMMimeTypeArray self))
-         index)
+  = (ghcjs_dom_dom_mime_type_array_item
+       (unDOMMimeTypeArray (toDOMMimeTypeArray self))
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_dom_mime_type_array_named_item ::
         JSRef DOMMimeTypeArray -> JSString -> IO (JSRef DOMMimeType)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray.namedItem Mozilla MimeTypeArray.namedItem documentation> 
 domMimeTypeArrayNamedItem ::
                           (IsDOMMimeTypeArray self, ToJSString name) =>
                             self -> name -> IO (Maybe DOMMimeType)
 domMimeTypeArrayNamedItem self name
-  = fmap DOMMimeType . maybeJSNull <$>
-      (ghcjs_dom_dom_mime_type_array_named_item
-         (unDOMMimeTypeArray (toDOMMimeTypeArray self))
-         (toJSString name))
+  = (ghcjs_dom_dom_mime_type_array_named_item
+       (unDOMMimeTypeArray (toDOMMimeTypeArray self))
+       (toJSString name))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_mime_type_array_get_length ::
         JSRef DOMMimeTypeArray -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray.length Mozilla MimeTypeArray.length documentation> 
 domMimeTypeArrayGetLength ::
                           (IsDOMMimeTypeArray self) => self -> IO Word
 domMimeTypeArrayGetLength self

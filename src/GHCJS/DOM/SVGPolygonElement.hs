@@ -9,40 +9,42 @@ module GHCJS.DOM.SVGPolygonElement
         IsSVGPolygonElement, castToSVGPolygonElement,
         gTypeSVGPolygonElement, toSVGPolygonElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"points\"]"
         ghcjs_dom_svg_polygon_element_get_points ::
         JSRef SVGPolygonElement -> IO (JSRef SVGPointList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolygonElement.points Mozilla SVGPolygonElement.points documentation> 
 svgPolygonElementGetPoints ::
                            (IsSVGPolygonElement self) => self -> IO (Maybe SVGPointList)
 svgPolygonElementGetPoints self
-  = fmap SVGPointList . maybeJSNull <$>
-      (ghcjs_dom_svg_polygon_element_get_points
-         (unSVGPolygonElement (toSVGPolygonElement self)))
+  = (ghcjs_dom_svg_polygon_element_get_points
+       (unSVGPolygonElement (toSVGPolygonElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"animatedPoints\"]"
         ghcjs_dom_svg_polygon_element_get_animated_points ::
         JSRef SVGPolygonElement -> IO (JSRef SVGPointList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolygonElement.animatedPoints Mozilla SVGPolygonElement.animatedPoints documentation> 
 svgPolygonElementGetAnimatedPoints ::
                                    (IsSVGPolygonElement self) => self -> IO (Maybe SVGPointList)
 svgPolygonElementGetAnimatedPoints self
-  = fmap SVGPointList . maybeJSNull <$>
-      (ghcjs_dom_svg_polygon_element_get_animated_points
-         (unSVGPolygonElement (toSVGPolygonElement self)))
+  = (ghcjs_dom_svg_polygon_element_get_animated_points
+       (unSVGPolygonElement (toSVGPolygonElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGPolygonElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPolygonElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPolygonElement
 #endif

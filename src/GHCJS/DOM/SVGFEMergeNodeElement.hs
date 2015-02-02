@@ -7,30 +7,31 @@ module GHCJS.DOM.SVGFEMergeNodeElement
         IsSVGFEMergeNodeElement, castToSVGFEMergeNodeElement,
         gTypeSVGFEMergeNodeElement, toSVGFEMergeNodeElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"in1\"]"
         ghcjs_dom_svgfe_merge_node_element_get_in1 ::
         JSRef SVGFEMergeNodeElement -> IO (JSRef SVGAnimatedString)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeNodeElement.in1 Mozilla SVGFEMergeNodeElement.in1 documentation> 
 svgfeMergeNodeElementGetIn1 ::
                             (IsSVGFEMergeNodeElement self) =>
                               self -> IO (Maybe SVGAnimatedString)
 svgfeMergeNodeElementGetIn1 self
-  = fmap SVGAnimatedString . maybeJSNull <$>
-      (ghcjs_dom_svgfe_merge_node_element_get_in1
-         (unSVGFEMergeNodeElement (toSVGFEMergeNodeElement self)))
+  = (ghcjs_dom_svgfe_merge_node_element_get_in1
+       (unSVGFEMergeNodeElement (toSVGFEMergeNodeElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGFEMergeNodeElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGFEMergeNodeElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGFEMergeNodeElement
 #endif

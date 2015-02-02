@@ -9,20 +9,23 @@ module GHCJS.DOM.SVGPathSegLinetoVerticalRel
         IsSVGPathSegLinetoVerticalRel, castToSVGPathSegLinetoVerticalRel,
         gTypeSVGPathSegLinetoVerticalRel, toSVGPathSegLinetoVerticalRel)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_lineto_vertical_rel_set_y ::
         JSRef SVGPathSegLinetoVerticalRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalRel.y Mozilla SVGPathSegLinetoVerticalRel.y documentation> 
 svgPathSegLinetoVerticalRelSetY ::
                                 (IsSVGPathSegLinetoVerticalRel self) => self -> Float -> IO ()
 svgPathSegLinetoVerticalRelSetY self val
@@ -34,7 +37,8 @@ svgPathSegLinetoVerticalRelSetY self val
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_lineto_vertical_rel_get_y ::
         JSRef SVGPathSegLinetoVerticalRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalRel.y Mozilla SVGPathSegLinetoVerticalRel.y documentation> 
 svgPathSegLinetoVerticalRelGetY ::
                                 (IsSVGPathSegLinetoVerticalRel self) => self -> IO Float
 svgPathSegLinetoVerticalRelGetY self
@@ -43,7 +47,5 @@ svgPathSegLinetoVerticalRelGetY self
          (toSVGPathSegLinetoVerticalRel self))
 #else
 module GHCJS.DOM.SVGPathSegLinetoVerticalRel (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPathSegLinetoVerticalRel
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPathSegLinetoVerticalRel
 #endif

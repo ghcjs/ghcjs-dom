@@ -32,19 +32,22 @@ module GHCJS.DOM.HTMLDocument
         HTMLDocument, IsHTMLDocument, castToHTMLDocument,
         gTypeHTMLDocument, toHTMLDocument)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"open\"]()"
         ghcjs_dom_html_document_open :: JSRef HTMLDocument -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.open Mozilla HTMLDocument.open documentation> 
 htmlDocumentOpen :: (IsHTMLDocument self) => self -> IO ()
 htmlDocumentOpen self
   = ghcjs_dom_html_document_open
@@ -52,7 +55,8 @@ htmlDocumentOpen self
  
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_html_document_close :: JSRef HTMLDocument -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.close Mozilla HTMLDocument.close documentation> 
 htmlDocumentClose :: (IsHTMLDocument self) => self -> IO ()
 htmlDocumentClose self
   = ghcjs_dom_html_document_close
@@ -61,7 +65,8 @@ htmlDocumentClose self
 foreign import javascript unsafe "$1[\"write\"]($2)"
         ghcjs_dom_html_document_write ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.write Mozilla HTMLDocument.write documentation> 
 htmlDocumentWrite ::
                   (IsHTMLDocument self, ToJSString text) => self -> text -> IO ()
 htmlDocumentWrite self text
@@ -72,7 +77,8 @@ htmlDocumentWrite self text
 foreign import javascript unsafe "$1[\"writeln\"]($2)"
         ghcjs_dom_html_document_writeln ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.writeln Mozilla HTMLDocument.writeln documentation> 
 htmlDocumentWriteln ::
                     (IsHTMLDocument self, ToJSString text) => self -> text -> IO ()
 htmlDocumentWriteln self text
@@ -82,7 +88,8 @@ htmlDocumentWriteln self text
  
 foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_html_document_clear :: JSRef HTMLDocument -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.clear Mozilla HTMLDocument.clear documentation> 
 htmlDocumentClear :: (IsHTMLDocument self) => self -> IO ()
 htmlDocumentClear self
   = ghcjs_dom_html_document_clear
@@ -91,7 +98,8 @@ htmlDocumentClear self
 foreign import javascript unsafe "$1[\"captureEvents\"]()"
         ghcjs_dom_html_document_capture_events ::
         JSRef HTMLDocument -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.captureEvents Mozilla HTMLDocument.captureEvents documentation> 
 htmlDocumentCaptureEvents :: (IsHTMLDocument self) => self -> IO ()
 htmlDocumentCaptureEvents self
   = ghcjs_dom_html_document_capture_events
@@ -100,7 +108,8 @@ htmlDocumentCaptureEvents self
 foreign import javascript unsafe "$1[\"releaseEvents\"]()"
         ghcjs_dom_html_document_release_events ::
         JSRef HTMLDocument -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.releaseEvents Mozilla HTMLDocument.releaseEvents documentation> 
 htmlDocumentReleaseEvents :: (IsHTMLDocument self) => self -> IO ()
 htmlDocumentReleaseEvents self
   = ghcjs_dom_html_document_release_events
@@ -109,39 +118,43 @@ htmlDocumentReleaseEvents self
 foreign import javascript unsafe "$1[\"embeds\"]"
         ghcjs_dom_html_document_get_embeds ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.embeds Mozilla HTMLDocument.embeds documentation> 
 htmlDocumentGetEmbeds ::
                       (IsHTMLDocument self) => self -> IO (Maybe HTMLCollection)
 htmlDocumentGetEmbeds self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_document_get_embeds
-         (unHTMLDocument (toHTMLDocument self)))
+  = (ghcjs_dom_html_document_get_embeds
+       (unHTMLDocument (toHTMLDocument self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"plugins\"]"
         ghcjs_dom_html_document_get_plugins ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.plugins Mozilla HTMLDocument.plugins documentation> 
 htmlDocumentGetPlugins ::
                        (IsHTMLDocument self) => self -> IO (Maybe HTMLCollection)
 htmlDocumentGetPlugins self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_document_get_plugins
-         (unHTMLDocument (toHTMLDocument self)))
+  = (ghcjs_dom_html_document_get_plugins
+       (unHTMLDocument (toHTMLDocument self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"scripts\"]"
         ghcjs_dom_html_document_get_scripts ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.scripts Mozilla HTMLDocument.scripts documentation> 
 htmlDocumentGetScripts ::
                        (IsHTMLDocument self) => self -> IO (Maybe HTMLCollection)
 htmlDocumentGetScripts self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_document_get_scripts
-         (unHTMLDocument (toHTMLDocument self)))
+  = (ghcjs_dom_html_document_get_scripts
+       (unHTMLDocument (toHTMLDocument self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_document_get_width :: JSRef HTMLDocument -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.width Mozilla HTMLDocument.width documentation> 
 htmlDocumentGetWidth :: (IsHTMLDocument self) => self -> IO Int
 htmlDocumentGetWidth self
   = ghcjs_dom_html_document_get_width
@@ -149,7 +162,8 @@ htmlDocumentGetWidth self
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_document_get_height :: JSRef HTMLDocument -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.height Mozilla HTMLDocument.height documentation> 
 htmlDocumentGetHeight :: (IsHTMLDocument self) => self -> IO Int
 htmlDocumentGetHeight self
   = ghcjs_dom_html_document_get_height
@@ -158,7 +172,8 @@ htmlDocumentGetHeight self
 foreign import javascript unsafe "$1[\"dir\"] = $2;"
         ghcjs_dom_html_document_set_dir ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.dir Mozilla HTMLDocument.dir documentation> 
 htmlDocumentSetDir ::
                    (IsHTMLDocument self, ToJSString val) => self -> val -> IO ()
 htmlDocumentSetDir self val
@@ -169,7 +184,8 @@ htmlDocumentSetDir self val
 foreign import javascript unsafe "$1[\"dir\"]"
         ghcjs_dom_html_document_get_dir ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.dir Mozilla HTMLDocument.dir documentation> 
 htmlDocumentGetDir ::
                    (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetDir self
@@ -180,7 +196,8 @@ htmlDocumentGetDir self
 foreign import javascript unsafe "$1[\"designMode\"] = $2;"
         ghcjs_dom_html_document_set_design_mode ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.designMode Mozilla HTMLDocument.designMode documentation> 
 htmlDocumentSetDesignMode ::
                           (IsHTMLDocument self, ToJSString val) => self -> val -> IO ()
 htmlDocumentSetDesignMode self val
@@ -191,7 +208,8 @@ htmlDocumentSetDesignMode self val
 foreign import javascript unsafe "$1[\"designMode\"]"
         ghcjs_dom_html_document_get_design_mode ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.designMode Mozilla HTMLDocument.designMode documentation> 
 htmlDocumentGetDesignMode ::
                           (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetDesignMode self
@@ -202,7 +220,8 @@ htmlDocumentGetDesignMode self
 foreign import javascript unsafe "$1[\"compatMode\"]"
         ghcjs_dom_html_document_get_compat_mode ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.compatMode Mozilla HTMLDocument.compatMode documentation> 
 htmlDocumentGetCompatMode ::
                           (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetCompatMode self
@@ -213,7 +232,8 @@ htmlDocumentGetCompatMode self
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
         ghcjs_dom_html_document_set_bg_color ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
 htmlDocumentSetBgColor ::
                        (IsHTMLDocument self, ToJSString val) => self -> val -> IO ()
 htmlDocumentSetBgColor self val
@@ -224,7 +244,8 @@ htmlDocumentSetBgColor self val
 foreign import javascript unsafe "$1[\"bgColor\"]"
         ghcjs_dom_html_document_get_bg_color ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
 htmlDocumentGetBgColor ::
                        (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetBgColor self
@@ -235,7 +256,8 @@ htmlDocumentGetBgColor self
 foreign import javascript unsafe "$1[\"fgColor\"] = $2;"
         ghcjs_dom_html_document_set_fg_color ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
 htmlDocumentSetFgColor ::
                        (IsHTMLDocument self, ToJSString val) => self -> val -> IO ()
 htmlDocumentSetFgColor self val
@@ -246,7 +268,8 @@ htmlDocumentSetFgColor self val
 foreign import javascript unsafe "$1[\"fgColor\"]"
         ghcjs_dom_html_document_get_fg_color ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
 htmlDocumentGetFgColor ::
                        (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetFgColor self
@@ -257,7 +280,8 @@ htmlDocumentGetFgColor self
 foreign import javascript unsafe "$1[\"alinkColor\"] = $2;"
         ghcjs_dom_html_document_set_alink_color ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
 htmlDocumentSetAlinkColor ::
                           (IsHTMLDocument self, ToJSString val) => self -> val -> IO ()
 htmlDocumentSetAlinkColor self val
@@ -268,7 +292,8 @@ htmlDocumentSetAlinkColor self val
 foreign import javascript unsafe "$1[\"alinkColor\"]"
         ghcjs_dom_html_document_get_alink_color ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
 htmlDocumentGetAlinkColor ::
                           (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetAlinkColor self
@@ -279,7 +304,8 @@ htmlDocumentGetAlinkColor self
 foreign import javascript unsafe "$1[\"linkColor\"] = $2;"
         ghcjs_dom_html_document_set_link_color ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
 htmlDocumentSetLinkColor ::
                          (IsHTMLDocument self, ToJSString val) => self -> val -> IO ()
 htmlDocumentSetLinkColor self val
@@ -290,7 +316,8 @@ htmlDocumentSetLinkColor self val
 foreign import javascript unsafe "$1[\"linkColor\"]"
         ghcjs_dom_html_document_get_link_color ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
 htmlDocumentGetLinkColor ::
                          (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetLinkColor self
@@ -301,7 +328,8 @@ htmlDocumentGetLinkColor self
 foreign import javascript unsafe "$1[\"vlinkColor\"] = $2;"
         ghcjs_dom_html_document_set_vlink_color ::
         JSRef HTMLDocument -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
 htmlDocumentSetVlinkColor ::
                           (IsHTMLDocument self, ToJSString val) => self -> val -> IO ()
 htmlDocumentSetVlinkColor self val
@@ -312,7 +340,8 @@ htmlDocumentSetVlinkColor self val
 foreign import javascript unsafe "$1[\"vlinkColor\"]"
         ghcjs_dom_html_document_get_vlink_color ::
         JSRef HTMLDocument -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
 htmlDocumentGetVlinkColor ::
                           (IsHTMLDocument self, FromJSString result) => self -> IO result
 htmlDocumentGetVlinkColor self

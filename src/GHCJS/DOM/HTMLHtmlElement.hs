@@ -11,20 +11,23 @@ module GHCJS.DOM.HTMLHtmlElement
         htmlHtmlElementGetManifest, HTMLHtmlElement, IsHTMLHtmlElement,
         castToHTMLHtmlElement, gTypeHTMLHtmlElement, toHTMLHtmlElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"version\"] = $2;"
         ghcjs_dom_html_html_element_set_version ::
         JSRef HTMLHtmlElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.version Mozilla HTMLHtmlElement.version documentation> 
 htmlHtmlElementSetVersion ::
                           (IsHTMLHtmlElement self, ToJSString val) => self -> val -> IO ()
 htmlHtmlElementSetVersion self val
@@ -35,7 +38,8 @@ htmlHtmlElementSetVersion self val
 foreign import javascript unsafe "$1[\"version\"]"
         ghcjs_dom_html_html_element_get_version ::
         JSRef HTMLHtmlElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.version Mozilla HTMLHtmlElement.version documentation> 
 htmlHtmlElementGetVersion ::
                           (IsHTMLHtmlElement self, FromJSString result) => self -> IO result
 htmlHtmlElementGetVersion self
@@ -46,7 +50,8 @@ htmlHtmlElementGetVersion self
 foreign import javascript unsafe "$1[\"manifest\"] = $2;"
         ghcjs_dom_html_html_element_set_manifest ::
         JSRef HTMLHtmlElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.manifest Mozilla HTMLHtmlElement.manifest documentation> 
 htmlHtmlElementSetManifest ::
                            (IsHTMLHtmlElement self, ToJSString val) => self -> val -> IO ()
 htmlHtmlElementSetManifest self val
@@ -57,7 +62,8 @@ htmlHtmlElementSetManifest self val
 foreign import javascript unsafe "$1[\"manifest\"]"
         ghcjs_dom_html_html_element_get_manifest ::
         JSRef HTMLHtmlElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.manifest Mozilla HTMLHtmlElement.manifest documentation> 
 htmlHtmlElementGetManifest ::
                            (IsHTMLHtmlElement self, FromJSString result) => self -> IO result
 htmlHtmlElementGetManifest self

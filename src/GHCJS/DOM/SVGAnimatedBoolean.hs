@@ -11,20 +11,23 @@ module GHCJS.DOM.SVGAnimatedBoolean
         IsSVGAnimatedBoolean, castToSVGAnimatedBoolean,
         gTypeSVGAnimatedBoolean, toSVGAnimatedBoolean)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
         ghcjs_dom_svg_animated_boolean_set_base_val ::
         JSRef SVGAnimatedBoolean -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean.baseVal Mozilla SVGAnimatedBoolean.baseVal documentation> 
 svgAnimatedBooleanSetBaseVal ::
                              (IsSVGAnimatedBoolean self) => self -> Bool -> IO ()
 svgAnimatedBooleanSetBaseVal self val
@@ -35,7 +38,8 @@ svgAnimatedBooleanSetBaseVal self val
 foreign import javascript unsafe "($1[\"baseVal\"] ? 1 : 0)"
         ghcjs_dom_svg_animated_boolean_get_base_val ::
         JSRef SVGAnimatedBoolean -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean.baseVal Mozilla SVGAnimatedBoolean.baseVal documentation> 
 svgAnimatedBooleanGetBaseVal ::
                              (IsSVGAnimatedBoolean self) => self -> IO Bool
 svgAnimatedBooleanGetBaseVal self
@@ -45,7 +49,8 @@ svgAnimatedBooleanGetBaseVal self
 foreign import javascript unsafe "($1[\"animVal\"] ? 1 : 0)"
         ghcjs_dom_svg_animated_boolean_get_anim_val ::
         JSRef SVGAnimatedBoolean -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean.animVal Mozilla SVGAnimatedBoolean.animVal documentation> 
 svgAnimatedBooleanGetAnimVal ::
                              (IsSVGAnimatedBoolean self) => self -> IO Bool
 svgAnimatedBooleanGetAnimVal self
@@ -53,7 +58,5 @@ svgAnimatedBooleanGetAnimVal self
       (unSVGAnimatedBoolean (toSVGAnimatedBoolean self))
 #else
 module GHCJS.DOM.SVGAnimatedBoolean (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedBoolean
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedBoolean
 #endif

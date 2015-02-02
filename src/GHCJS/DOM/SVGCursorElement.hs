@@ -7,40 +7,42 @@ module GHCJS.DOM.SVGCursorElement
         SVGCursorElement, IsSVGCursorElement, castToSVGCursorElement,
         gTypeSVGCursorElement, toSVGCursorElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_cursor_element_get_x ::
         JSRef SVGCursorElement -> IO (JSRef SVGAnimatedLength)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCursorElement.x Mozilla SVGCursorElement.x documentation> 
 svgCursorElementGetX ::
                      (IsSVGCursorElement self) => self -> IO (Maybe SVGAnimatedLength)
 svgCursorElementGetX self
-  = fmap SVGAnimatedLength . maybeJSNull <$>
-      (ghcjs_dom_svg_cursor_element_get_x
-         (unSVGCursorElement (toSVGCursorElement self)))
+  = (ghcjs_dom_svg_cursor_element_get_x
+       (unSVGCursorElement (toSVGCursorElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_cursor_element_get_y ::
         JSRef SVGCursorElement -> IO (JSRef SVGAnimatedLength)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCursorElement.y Mozilla SVGCursorElement.y documentation> 
 svgCursorElementGetY ::
                      (IsSVGCursorElement self) => self -> IO (Maybe SVGAnimatedLength)
 svgCursorElementGetY self
-  = fmap SVGAnimatedLength . maybeJSNull <$>
-      (ghcjs_dom_svg_cursor_element_get_y
-         (unSVGCursorElement (toSVGCursorElement self)))
+  = (ghcjs_dom_svg_cursor_element_get_y
+       (unSVGCursorElement (toSVGCursorElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGCursorElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGCursorElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGCursorElement
 #endif

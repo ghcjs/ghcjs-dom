@@ -8,14 +8,16 @@ module GHCJS.DOM.PositionError
         PositionError, IsPositionError, castToPositionError,
         gTypePositionError, toPositionError)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
 cPERMISSION_DENIED = 1
 cPOSITION_UNAVAILABLE = 2
@@ -23,7 +25,8 @@ cTIMEOUT = 3
  
 foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_position_error_get_code :: JSRef PositionError -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.code Mozilla PositionError.code documentation> 
 positionErrorGetCode :: (IsPositionError self) => self -> IO Word
 positionErrorGetCode self
   = ghcjs_dom_position_error_get_code
@@ -32,7 +35,8 @@ positionErrorGetCode self
 foreign import javascript unsafe "$1[\"message\"]"
         ghcjs_dom_position_error_get_message ::
         JSRef PositionError -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.message Mozilla PositionError.message documentation> 
 positionErrorGetMessage ::
                         (IsPositionError self, FromJSString result) => self -> IO result
 positionErrorGetMessage self
@@ -41,7 +45,5 @@ positionErrorGetMessage self
          (unPositionError (toPositionError self)))
 #else
 module GHCJS.DOM.PositionError (
-  module Graphics.UI.Gtk.WebKit.DOM.PositionError
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.PositionError
 #endif

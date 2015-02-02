@@ -9,40 +9,42 @@ module GHCJS.DOM.SVGPolylineElement
         IsSVGPolylineElement, castToSVGPolylineElement,
         gTypeSVGPolylineElement, toSVGPolylineElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"points\"]"
         ghcjs_dom_svg_polyline_element_get_points ::
         JSRef SVGPolylineElement -> IO (JSRef SVGPointList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement.points Mozilla SVGPolylineElement.points documentation> 
 svgPolylineElementGetPoints ::
                             (IsSVGPolylineElement self) => self -> IO (Maybe SVGPointList)
 svgPolylineElementGetPoints self
-  = fmap SVGPointList . maybeJSNull <$>
-      (ghcjs_dom_svg_polyline_element_get_points
-         (unSVGPolylineElement (toSVGPolylineElement self)))
+  = (ghcjs_dom_svg_polyline_element_get_points
+       (unSVGPolylineElement (toSVGPolylineElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"animatedPoints\"]"
         ghcjs_dom_svg_polyline_element_get_animated_points ::
         JSRef SVGPolylineElement -> IO (JSRef SVGPointList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement.animatedPoints Mozilla SVGPolylineElement.animatedPoints documentation> 
 svgPolylineElementGetAnimatedPoints ::
                                     (IsSVGPolylineElement self) => self -> IO (Maybe SVGPointList)
 svgPolylineElementGetAnimatedPoints self
-  = fmap SVGPointList . maybeJSNull <$>
-      (ghcjs_dom_svg_polyline_element_get_animated_points
-         (unSVGPolylineElement (toSVGPolylineElement self)))
+  = (ghcjs_dom_svg_polyline_element_get_animated_points
+       (unSVGPolylineElement (toSVGPolylineElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGPolylineElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPolylineElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPolylineElement
 #endif

@@ -38,20 +38,23 @@ module GHCJS.DOM.HTMLAppletElement
         HTMLAppletElement, IsHTMLAppletElement, castToHTMLAppletElement,
         gTypeHTMLAppletElement, toHTMLAppletElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_applet_element_set_align ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.align Mozilla HTMLAppletElement.align documentation> 
 htmlAppletElementSetAlign ::
                           (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetAlign self val
@@ -62,7 +65,8 @@ htmlAppletElementSetAlign self val
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_applet_element_get_align ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.align Mozilla HTMLAppletElement.align documentation> 
 htmlAppletElementGetAlign ::
                           (IsHTMLAppletElement self, FromJSString result) =>
                             self -> IO result
@@ -74,7 +78,8 @@ htmlAppletElementGetAlign self
 foreign import javascript unsafe "$1[\"alt\"] = $2;"
         ghcjs_dom_html_applet_element_set_alt ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.alt Mozilla HTMLAppletElement.alt documentation> 
 htmlAppletElementSetAlt ::
                         (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetAlt self val
@@ -85,7 +90,8 @@ htmlAppletElementSetAlt self val
 foreign import javascript unsafe "$1[\"alt\"]"
         ghcjs_dom_html_applet_element_get_alt ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.alt Mozilla HTMLAppletElement.alt documentation> 
 htmlAppletElementGetAlt ::
                         (IsHTMLAppletElement self, FromJSString result) =>
                           self -> IO result
@@ -97,7 +103,8 @@ htmlAppletElementGetAlt self
 foreign import javascript unsafe "$1[\"archive\"] = $2;"
         ghcjs_dom_html_applet_element_set_archive ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.archive Mozilla HTMLAppletElement.archive documentation> 
 htmlAppletElementSetArchive ::
                             (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetArchive self val
@@ -108,7 +115,8 @@ htmlAppletElementSetArchive self val
 foreign import javascript unsafe "$1[\"archive\"]"
         ghcjs_dom_html_applet_element_get_archive ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.archive Mozilla HTMLAppletElement.archive documentation> 
 htmlAppletElementGetArchive ::
                             (IsHTMLAppletElement self, FromJSString result) =>
                               self -> IO result
@@ -120,7 +128,8 @@ htmlAppletElementGetArchive self
 foreign import javascript unsafe "$1[\"code\"] = $2;"
         ghcjs_dom_html_applet_element_set_code ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.code Mozilla HTMLAppletElement.code documentation> 
 htmlAppletElementSetCode ::
                          (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetCode self val
@@ -131,7 +140,8 @@ htmlAppletElementSetCode self val
 foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_html_applet_element_get_code ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.code Mozilla HTMLAppletElement.code documentation> 
 htmlAppletElementGetCode ::
                          (IsHTMLAppletElement self, FromJSString result) =>
                            self -> IO result
@@ -143,7 +153,8 @@ htmlAppletElementGetCode self
 foreign import javascript unsafe "$1[\"codeBase\"] = $2;"
         ghcjs_dom_html_applet_element_set_code_base ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.codeBase Mozilla HTMLAppletElement.codeBase documentation> 
 htmlAppletElementSetCodeBase ::
                              (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetCodeBase self val
@@ -154,7 +165,8 @@ htmlAppletElementSetCodeBase self val
 foreign import javascript unsafe "$1[\"codeBase\"]"
         ghcjs_dom_html_applet_element_get_code_base ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.codeBase Mozilla HTMLAppletElement.codeBase documentation> 
 htmlAppletElementGetCodeBase ::
                              (IsHTMLAppletElement self, FromJSString result) =>
                                self -> IO result
@@ -166,7 +178,8 @@ htmlAppletElementGetCodeBase self
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_applet_element_set_height ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.height Mozilla HTMLAppletElement.height documentation> 
 htmlAppletElementSetHeight ::
                            (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetHeight self val
@@ -177,7 +190,8 @@ htmlAppletElementSetHeight self val
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_applet_element_get_height ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.height Mozilla HTMLAppletElement.height documentation> 
 htmlAppletElementGetHeight ::
                            (IsHTMLAppletElement self, FromJSString result) =>
                              self -> IO result
@@ -189,7 +203,8 @@ htmlAppletElementGetHeight self
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
         ghcjs_dom_html_applet_element_set_hspace ::
         JSRef HTMLAppletElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.hspace Mozilla HTMLAppletElement.hspace documentation> 
 htmlAppletElementSetHspace ::
                            (IsHTMLAppletElement self) => self -> Int -> IO ()
 htmlAppletElementSetHspace self val
@@ -200,7 +215,8 @@ htmlAppletElementSetHspace self val
 foreign import javascript unsafe "$1[\"hspace\"]"
         ghcjs_dom_html_applet_element_get_hspace ::
         JSRef HTMLAppletElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.hspace Mozilla HTMLAppletElement.hspace documentation> 
 htmlAppletElementGetHspace ::
                            (IsHTMLAppletElement self) => self -> IO Int
 htmlAppletElementGetHspace self
@@ -210,7 +226,8 @@ htmlAppletElementGetHspace self
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_applet_element_set_name ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.name Mozilla HTMLAppletElement.name documentation> 
 htmlAppletElementSetName ::
                          (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetName self val
@@ -221,7 +238,8 @@ htmlAppletElementSetName self val
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_applet_element_get_name ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.name Mozilla HTMLAppletElement.name documentation> 
 htmlAppletElementGetName ::
                          (IsHTMLAppletElement self, FromJSString result) =>
                            self -> IO result
@@ -233,7 +251,8 @@ htmlAppletElementGetName self
 foreign import javascript unsafe "$1[\"object\"] = $2;"
         ghcjs_dom_html_applet_element_set_object ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.object Mozilla HTMLAppletElement.object documentation> 
 htmlAppletElementSetObject ::
                            (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetObject self val
@@ -244,7 +263,8 @@ htmlAppletElementSetObject self val
 foreign import javascript unsafe "$1[\"object\"]"
         ghcjs_dom_html_applet_element_get_object ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.object Mozilla HTMLAppletElement.object documentation> 
 htmlAppletElementGetObject ::
                            (IsHTMLAppletElement self, FromJSString result) =>
                              self -> IO result
@@ -256,7 +276,8 @@ htmlAppletElementGetObject self
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
         ghcjs_dom_html_applet_element_set_vspace ::
         JSRef HTMLAppletElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.vspace Mozilla HTMLAppletElement.vspace documentation> 
 htmlAppletElementSetVspace ::
                            (IsHTMLAppletElement self) => self -> Int -> IO ()
 htmlAppletElementSetVspace self val
@@ -267,7 +288,8 @@ htmlAppletElementSetVspace self val
 foreign import javascript unsafe "$1[\"vspace\"]"
         ghcjs_dom_html_applet_element_get_vspace ::
         JSRef HTMLAppletElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.vspace Mozilla HTMLAppletElement.vspace documentation> 
 htmlAppletElementGetVspace ::
                            (IsHTMLAppletElement self) => self -> IO Int
 htmlAppletElementGetVspace self
@@ -277,7 +299,8 @@ htmlAppletElementGetVspace self
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_applet_element_set_width ::
         JSRef HTMLAppletElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.width Mozilla HTMLAppletElement.width documentation> 
 htmlAppletElementSetWidth ::
                           (IsHTMLAppletElement self, ToJSString val) => self -> val -> IO ()
 htmlAppletElementSetWidth self val
@@ -288,7 +311,8 @@ htmlAppletElementSetWidth self val
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_applet_element_get_width ::
         JSRef HTMLAppletElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.width Mozilla HTMLAppletElement.width documentation> 
 htmlAppletElementGetWidth ::
                           (IsHTMLAppletElement self, FromJSString result) =>
                             self -> IO result

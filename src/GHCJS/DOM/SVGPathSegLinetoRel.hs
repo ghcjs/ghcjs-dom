@@ -10,20 +10,23 @@ module GHCJS.DOM.SVGPathSegLinetoRel
         castToSVGPathSegLinetoRel, gTypeSVGPathSegLinetoRel,
         toSVGPathSegLinetoRel)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_svg_path_seg_lineto_rel_set_x ::
         JSRef SVGPathSegLinetoRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoRel.x Mozilla SVGPathSegLinetoRel.x documentation> 
 svgPathSegLinetoRelSetX ::
                         (IsSVGPathSegLinetoRel self) => self -> Float -> IO ()
 svgPathSegLinetoRelSetX self val
@@ -34,7 +37,8 @@ svgPathSegLinetoRelSetX self val
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_lineto_rel_get_x ::
         JSRef SVGPathSegLinetoRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoRel.x Mozilla SVGPathSegLinetoRel.x documentation> 
 svgPathSegLinetoRelGetX ::
                         (IsSVGPathSegLinetoRel self) => self -> IO Float
 svgPathSegLinetoRelGetX self
@@ -44,7 +48,8 @@ svgPathSegLinetoRelGetX self
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_lineto_rel_set_y ::
         JSRef SVGPathSegLinetoRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoRel.y Mozilla SVGPathSegLinetoRel.y documentation> 
 svgPathSegLinetoRelSetY ::
                         (IsSVGPathSegLinetoRel self) => self -> Float -> IO ()
 svgPathSegLinetoRelSetY self val
@@ -55,7 +60,8 @@ svgPathSegLinetoRelSetY self val
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_lineto_rel_get_y ::
         JSRef SVGPathSegLinetoRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoRel.y Mozilla SVGPathSegLinetoRel.y documentation> 
 svgPathSegLinetoRelGetY ::
                         (IsSVGPathSegLinetoRel self) => self -> IO Float
 svgPathSegLinetoRelGetY self
@@ -63,7 +69,5 @@ svgPathSegLinetoRelGetY self
       (unSVGPathSegLinetoRel (toSVGPathSegLinetoRel self))
 #else
 module GHCJS.DOM.SVGPathSegLinetoRel (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPathSegLinetoRel
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPathSegLinetoRel
 #endif

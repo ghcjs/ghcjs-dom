@@ -7,20 +7,23 @@ module GHCJS.DOM.HTMLQuoteElement
         HTMLQuoteElement, IsHTMLQuoteElement, castToHTMLQuoteElement,
         gTypeHTMLQuoteElement, toHTMLQuoteElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"cite\"] = $2;"
         ghcjs_dom_html_quote_element_set_cite ::
         JSRef HTMLQuoteElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
 htmlQuoteElementSetCite ::
                         (IsHTMLQuoteElement self, ToJSString val) => self -> val -> IO ()
 htmlQuoteElementSetCite self val
@@ -31,7 +34,8 @@ htmlQuoteElementSetCite self val
 foreign import javascript unsafe "$1[\"cite\"]"
         ghcjs_dom_html_quote_element_get_cite ::
         JSRef HTMLQuoteElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
 htmlQuoteElementGetCite ::
                         (IsHTMLQuoteElement self, FromJSString result) => self -> IO result
 htmlQuoteElementGetCite self

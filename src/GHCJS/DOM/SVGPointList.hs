@@ -14,19 +14,22 @@ module GHCJS.DOM.SVGPointList
         svgPointListGetNumberOfItems, SVGPointList, IsSVGPointList,
         castToSVGPointList, gTypeSVGPointList, toSVGPointList)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_svg_point_list_clear :: JSRef SVGPointList -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.clear Mozilla SVGPointList.clear documentation> 
 svgPointListClear :: (IsSVGPointList self) => self -> IO ()
 svgPointListClear self
   = ghcjs_dom_svg_point_list_clear
@@ -35,85 +38,92 @@ svgPointListClear self
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
         ghcjs_dom_svg_point_list_initialize ::
         JSRef SVGPointList -> JSRef SVGPoint -> IO (JSRef SVGPoint)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.initialize Mozilla SVGPointList.initialize documentation> 
 svgPointListInitialize ::
                        (IsSVGPointList self, IsSVGPoint item) =>
                          self -> Maybe item -> IO (Maybe SVGPoint)
 svgPointListInitialize self item
-  = fmap SVGPoint . maybeJSNull <$>
-      (ghcjs_dom_svg_point_list_initialize
-         (unSVGPointList (toSVGPointList self))
-         (maybe jsNull (unSVGPoint . toSVGPoint) item))
+  = (ghcjs_dom_svg_point_list_initialize
+       (unSVGPointList (toSVGPointList self))
+       (maybe jsNull (unSVGPoint . toSVGPoint) item))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)"
         ghcjs_dom_svg_point_list_get_item ::
         JSRef SVGPointList -> Word -> IO (JSRef SVGPoint)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.item Mozilla SVGPointList.item documentation> 
 svgPointListGetItem ::
                     (IsSVGPointList self) => self -> Word -> IO (Maybe SVGPoint)
 svgPointListGetItem self index
-  = fmap SVGPoint . maybeJSNull <$>
-      (ghcjs_dom_svg_point_list_get_item
-         (unSVGPointList (toSVGPointList self))
-         index)
+  = (ghcjs_dom_svg_point_list_get_item
+       (unSVGPointList (toSVGPointList self))
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         ghcjs_dom_svg_point_list_insert_item_before ::
         JSRef SVGPointList -> JSRef SVGPoint -> Word -> IO (JSRef SVGPoint)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.insertItemBefore Mozilla SVGPointList.insertItemBefore documentation> 
 svgPointListInsertItemBefore ::
                              (IsSVGPointList self, IsSVGPoint item) =>
                                self -> Maybe item -> Word -> IO (Maybe SVGPoint)
 svgPointListInsertItemBefore self item index
-  = fmap SVGPoint . maybeJSNull <$>
-      (ghcjs_dom_svg_point_list_insert_item_before
-         (unSVGPointList (toSVGPointList self))
-         (maybe jsNull (unSVGPoint . toSVGPoint) item)
-         index)
+  = (ghcjs_dom_svg_point_list_insert_item_before
+       (unSVGPointList (toSVGPointList self))
+       (maybe jsNull (unSVGPoint . toSVGPoint) item)
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
         ghcjs_dom_svg_point_list_replace_item ::
         JSRef SVGPointList -> JSRef SVGPoint -> Word -> IO (JSRef SVGPoint)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.replaceItem Mozilla SVGPointList.replaceItem documentation> 
 svgPointListReplaceItem ::
                         (IsSVGPointList self, IsSVGPoint item) =>
                           self -> Maybe item -> Word -> IO (Maybe SVGPoint)
 svgPointListReplaceItem self item index
-  = fmap SVGPoint . maybeJSNull <$>
-      (ghcjs_dom_svg_point_list_replace_item
-         (unSVGPointList (toSVGPointList self))
-         (maybe jsNull (unSVGPoint . toSVGPoint) item)
-         index)
+  = (ghcjs_dom_svg_point_list_replace_item
+       (unSVGPointList (toSVGPointList self))
+       (maybe jsNull (unSVGPoint . toSVGPoint) item)
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
         ghcjs_dom_svg_point_list_remove_item ::
         JSRef SVGPointList -> Word -> IO (JSRef SVGPoint)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.removeItem Mozilla SVGPointList.removeItem documentation> 
 svgPointListRemoveItem ::
                        (IsSVGPointList self) => self -> Word -> IO (Maybe SVGPoint)
 svgPointListRemoveItem self index
-  = fmap SVGPoint . maybeJSNull <$>
-      (ghcjs_dom_svg_point_list_remove_item
-         (unSVGPointList (toSVGPointList self))
-         index)
+  = (ghcjs_dom_svg_point_list_remove_item
+       (unSVGPointList (toSVGPointList self))
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         ghcjs_dom_svg_point_list_append_item ::
         JSRef SVGPointList -> JSRef SVGPoint -> IO (JSRef SVGPoint)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.appendItem Mozilla SVGPointList.appendItem documentation> 
 svgPointListAppendItem ::
                        (IsSVGPointList self, IsSVGPoint item) =>
                          self -> Maybe item -> IO (Maybe SVGPoint)
 svgPointListAppendItem self item
-  = fmap SVGPoint . maybeJSNull <$>
-      (ghcjs_dom_svg_point_list_append_item
-         (unSVGPointList (toSVGPointList self))
-         (maybe jsNull (unSVGPoint . toSVGPoint) item))
+  = (ghcjs_dom_svg_point_list_append_item
+       (unSVGPointList (toSVGPointList self))
+       (maybe jsNull (unSVGPoint . toSVGPoint) item))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
         ghcjs_dom_svg_point_list_get_number_of_items ::
         JSRef SVGPointList -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.numberOfItems Mozilla SVGPointList.numberOfItems documentation> 
 svgPointListGetNumberOfItems ::
                              (IsSVGPointList self) => self -> IO Word
 svgPointListGetNumberOfItems self
@@ -121,7 +131,5 @@ svgPointListGetNumberOfItems self
       (unSVGPointList (toSVGPointList self))
 #else
 module GHCJS.DOM.SVGPointList (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPointList
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPointList
 #endif

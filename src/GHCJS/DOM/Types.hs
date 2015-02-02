@@ -8,51 +8,184 @@
 #endif
 module GHCJS.DOM.Types (
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-    maybeJSNull, propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
+  -- * Object
+    maybeJSNull, propagateGError, GType(..)
   , GObject(..), GObjectClass, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA
+
+  -- * DOMString
+  , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString
+
+  -- * Dictionary
+  , Dictionary(Dictionary), unDictionary, IsDictionary, toDictionary
+
+  -- * Promise
+  , Promise(Promise), unPromise, IsPromise, toPromise
+
+  -- * Date
+  , Date(Date), unDate, IsDate, toDate
+
+  -- * Arrays
+  , Array(Array), unArray, IsArray, toArray
+  , ObjectArray(ObjectArray), unObjectArray, IsObjectArray, toObjectArray
+  , ArrayBuffer(ArrayBuffer), unArrayBuffer, IsArrayBuffer, toArrayBuffer
+  , ArrayBufferView(ArrayBufferView), unArrayBufferView, IsArrayBufferView, toArrayBufferView
+  , Float32Array(Float32Array), unFloat32Array, IsFloat32Array, toFloat32Array
+  , Uint8Array(Uint8Array), unUint8Array, IsUint8Array, toUint8Array
+  , Int32Array(Int32Array), unInt32Array, IsInt32Array, toInt32Array
+  , Uint8ClampedArray(Uint8ClampedArray), unUint8ClampedArray, IsUint8ClampedArray, toUint8ClampedArray
+
+  -- * Geolocation
   , SerializedScriptValue(SerializedScriptValue), unSerializedScriptValue, IsSerializedScriptValue, toSerializedScriptValue
-  , PositionCallback(PositionCallback), unPositionCallback, IsPositionCallback, toPositionCallback
-  , PositionErrorCallback(PositionErrorCallback), unPositionErrorCallback, IsPositionErrorCallback, toPositionErrorCallback
   , PositionOptions(PositionOptions), unPositionOptions, IsPositionOptions, toPositionOptions
+  , Acceleration(Acceleration), unAcceleration, IsAcceleration, toAcceleration
+  , RotationRate(RotationRate), unRotationRate, IsRotationRate, toRotationRate
+
+  -- * Crypto
+  , Algorithm(Algorithm), unAlgorithm, IsAlgorithm, toAlgorithm
+  , CryptoOperationData(CryptoOperationData), unCryptoOperationData, IsCryptoOperationData, toCryptoOperationData
+
+  -- * CanvasStyle (fill & stroke style)
+  , CanvasStyle(CanvasStyle), unCanvasStyle, IsCanvasStyle, toCanvasStyle
+
+  , DOMCoreException(DOMCoreException), unDOMCoreException, IsDOMCoreException, toDOMCoreException
+  , DOMURLConstructor(DOMURLConstructor), unDOMURLConstructor, IsDOMURLConstructor, toDOMURLConstructor
+
+  -- * WebGL typedefs
+  , GLenum(..), GLboolean(..), GLbitfield(..), GLbyte(..), GLshort(..), GLint(..), GLsizei(..)
+  , GLintptr(..), GLsizeiptr(..), GLubyte(..), GLushort(..), GLuint(..), GLfloat(..), GLclampf(..)
+
+  -- * Inteface types from IDL files
 
 -- AUTO GENERATION STARTS HERE
+  , ANGLEInstancedArrays(ANGLEInstancedArrays), unANGLEInstancedArrays, IsANGLEInstancedArrays, toANGLEInstancedArrays, castToANGLEInstancedArrays, gTypeANGLEInstancedArrays
+  , AbstractView(AbstractView), unAbstractView, IsAbstractView, toAbstractView, castToAbstractView, gTypeAbstractView
+  , AbstractWorker(AbstractWorker), unAbstractWorker, IsAbstractWorker, toAbstractWorker, castToAbstractWorker, gTypeAbstractWorker
+  , AllAudioCapabilities(AllAudioCapabilities), unAllAudioCapabilities, IsAllAudioCapabilities, toAllAudioCapabilities, castToAllAudioCapabilities, gTypeAllAudioCapabilities
+  , AllVideoCapabilities(AllVideoCapabilities), unAllVideoCapabilities, IsAllVideoCapabilities, toAllVideoCapabilities, castToAllVideoCapabilities, gTypeAllVideoCapabilities
+  , AnalyserNode(AnalyserNode), unAnalyserNode, IsAnalyserNode, toAnalyserNode, castToAnalyserNode, gTypeAnalyserNode
+  , AnimationEvent(AnimationEvent), unAnimationEvent, IsAnimationEvent, toAnimationEvent, castToAnimationEvent, gTypeAnimationEvent
   , DOMAttr(DOMAttr), unDOMAttr, IsDOMAttr, toDOMAttr, castToDOMAttr, gTypeDOMAttr
+  , AudioBuffer(AudioBuffer), unAudioBuffer, IsAudioBuffer, toAudioBuffer, castToAudioBuffer, gTypeAudioBuffer
+  , AudioBufferCallback(AudioBufferCallback), unAudioBufferCallback, IsAudioBufferCallback, toAudioBufferCallback, castToAudioBufferCallback, gTypeAudioBufferCallback
+  , AudioBufferSourceNode(AudioBufferSourceNode), unAudioBufferSourceNode, IsAudioBufferSourceNode, toAudioBufferSourceNode, castToAudioBufferSourceNode, gTypeAudioBufferSourceNode
+  , AudioContext(AudioContext), unAudioContext, IsAudioContext, toAudioContext, castToAudioContext, gTypeAudioContext
+  , AudioDestinationNode(AudioDestinationNode), unAudioDestinationNode, IsAudioDestinationNode, toAudioDestinationNode, castToAudioDestinationNode, gTypeAudioDestinationNode
+  , AudioListener(AudioListener), unAudioListener, IsAudioListener, toAudioListener, castToAudioListener, gTypeAudioListener
+  , AudioNode(AudioNode), unAudioNode, IsAudioNode, toAudioNode, castToAudioNode, gTypeAudioNode
+  , AudioParam(AudioParam), unAudioParam, IsAudioParam, toAudioParam, castToAudioParam, gTypeAudioParam
+  , AudioProcessingEvent(AudioProcessingEvent), unAudioProcessingEvent, IsAudioProcessingEvent, toAudioProcessingEvent, castToAudioProcessingEvent, gTypeAudioProcessingEvent
+  , AudioStreamTrack(AudioStreamTrack), unAudioStreamTrack, IsAudioStreamTrack, toAudioStreamTrack, castToAudioStreamTrack, gTypeAudioStreamTrack
+  , AudioTrack(AudioTrack), unAudioTrack, IsAudioTrack, toAudioTrack, castToAudioTrack, gTypeAudioTrack
+  , AudioTrackList(AudioTrackList), unAudioTrackList, IsAudioTrackList, toAudioTrackList, castToAudioTrackList, gTypeAudioTrackList
+  , AutocompleteErrorEvent(AutocompleteErrorEvent), unAutocompleteErrorEvent, IsAutocompleteErrorEvent, toAutocompleteErrorEvent, castToAutocompleteErrorEvent, gTypeAutocompleteErrorEvent
   , BarProp(BarProp), unBarProp, IsBarProp, toBarProp, castToBarProp, gTypeBarProp
+  , BatteryManager(BatteryManager), unBatteryManager, IsBatteryManager, toBatteryManager, castToBatteryManager, gTypeBatteryManager
+  , BeforeLoadEvent(BeforeLoadEvent), unBeforeLoadEvent, IsBeforeLoadEvent, toBeforeLoadEvent, castToBeforeLoadEvent, gTypeBeforeLoadEvent
+  , BeforeUnloadEvent(BeforeUnloadEvent), unBeforeUnloadEvent, IsBeforeUnloadEvent, toBeforeUnloadEvent, castToBeforeUnloadEvent, gTypeBeforeUnloadEvent
+  , BiquadFilterNode(BiquadFilterNode), unBiquadFilterNode, IsBiquadFilterNode, toBiquadFilterNode, castToBiquadFilterNode, gTypeBiquadFilterNode
   , Blob(Blob), unBlob, IsBlob, toBlob, castToBlob, gTypeBlob
   , CDATASection(CDATASection), unCDATASection, IsCDATASection, toCDATASection, castToCDATASection, gTypeCDATASection
+  , CSSCharsetRule(CSSCharsetRule), unCSSCharsetRule, IsCSSCharsetRule, toCSSCharsetRule, castToCSSCharsetRule, gTypeCSSCharsetRule
+  , CSSFontFaceLoadEvent(CSSFontFaceLoadEvent), unCSSFontFaceLoadEvent, IsCSSFontFaceLoadEvent, toCSSFontFaceLoadEvent, castToCSSFontFaceLoadEvent, gTypeCSSFontFaceLoadEvent
+  , CSSFontFaceRule(CSSFontFaceRule), unCSSFontFaceRule, IsCSSFontFaceRule, toCSSFontFaceRule, castToCSSFontFaceRule, gTypeCSSFontFaceRule
+  , CSSImportRule(CSSImportRule), unCSSImportRule, IsCSSImportRule, toCSSImportRule, castToCSSImportRule, gTypeCSSImportRule
+  , CSSKeyframeRule(CSSKeyframeRule), unCSSKeyframeRule, IsCSSKeyframeRule, toCSSKeyframeRule, castToCSSKeyframeRule, gTypeCSSKeyframeRule
+  , CSSKeyframesRule(CSSKeyframesRule), unCSSKeyframesRule, IsCSSKeyframesRule, toCSSKeyframesRule, castToCSSKeyframesRule, gTypeCSSKeyframesRule
+  , CSSMediaRule(CSSMediaRule), unCSSMediaRule, IsCSSMediaRule, toCSSMediaRule, castToCSSMediaRule, gTypeCSSMediaRule
+  , CSSPageRule(CSSPageRule), unCSSPageRule, IsCSSPageRule, toCSSPageRule, castToCSSPageRule, gTypeCSSPageRule
   , CSSPrimitiveValue(CSSPrimitiveValue), unCSSPrimitiveValue, IsCSSPrimitiveValue, toCSSPrimitiveValue, castToCSSPrimitiveValue, gTypeCSSPrimitiveValue
   , CSSRule(CSSRule), unCSSRule, IsCSSRule, toCSSRule, castToCSSRule, gTypeCSSRule
   , CSSRuleList(CSSRuleList), unCSSRuleList, IsCSSRuleList, toCSSRuleList, castToCSSRuleList, gTypeCSSRuleList
   , CSSStyleDeclaration(CSSStyleDeclaration), unCSSStyleDeclaration, IsCSSStyleDeclaration, toCSSStyleDeclaration, castToCSSStyleDeclaration, gTypeCSSStyleDeclaration
+  , CSSStyleRule(CSSStyleRule), unCSSStyleRule, IsCSSStyleRule, toCSSStyleRule, castToCSSStyleRule, gTypeCSSStyleRule
   , CSSStyleSheet(CSSStyleSheet), unCSSStyleSheet, IsCSSStyleSheet, toCSSStyleSheet, castToCSSStyleSheet, gTypeCSSStyleSheet
+  , CSSSupportsRule(CSSSupportsRule), unCSSSupportsRule, IsCSSSupportsRule, toCSSSupportsRule, castToCSSSupportsRule, gTypeCSSSupportsRule
+  , CSSUnknownRule(CSSUnknownRule), unCSSUnknownRule, IsCSSUnknownRule, toCSSUnknownRule, castToCSSUnknownRule, gTypeCSSUnknownRule
   , CSSValue(CSSValue), unCSSValue, IsCSSValue, toCSSValue, castToCSSValue, gTypeCSSValue
+  , CSSValueList(CSSValueList), unCSSValueList, IsCSSValueList, toCSSValueList, castToCSSValueList, gTypeCSSValueList
+  , CanvasGradient(CanvasGradient), unCanvasGradient, IsCanvasGradient, toCanvasGradient, castToCanvasGradient, gTypeCanvasGradient
+  , CanvasPattern(CanvasPattern), unCanvasPattern, IsCanvasPattern, toCanvasPattern, castToCanvasPattern, gTypeCanvasPattern
+  , CanvasProxy(CanvasProxy), unCanvasProxy, IsCanvasProxy, toCanvasProxy, castToCanvasProxy, gTypeCanvasProxy
+  , CanvasRenderingContext(CanvasRenderingContext), unCanvasRenderingContext, IsCanvasRenderingContext, toCanvasRenderingContext, castToCanvasRenderingContext, gTypeCanvasRenderingContext
+  , CanvasRenderingContext2D(CanvasRenderingContext2D), unCanvasRenderingContext2D, IsCanvasRenderingContext2D, toCanvasRenderingContext2D, castToCanvasRenderingContext2D, gTypeCanvasRenderingContext2D
+  , CapabilityRange(CapabilityRange), unCapabilityRange, IsCapabilityRange, toCapabilityRange, castToCapabilityRange, gTypeCapabilityRange
+  , ChannelMergerNode(ChannelMergerNode), unChannelMergerNode, IsChannelMergerNode, toChannelMergerNode, castToChannelMergerNode, gTypeChannelMergerNode
+  , ChannelSplitterNode(ChannelSplitterNode), unChannelSplitterNode, IsChannelSplitterNode, toChannelSplitterNode, castToChannelSplitterNode, gTypeChannelSplitterNode
   , CharacterData(CharacterData), unCharacterData, IsCharacterData, toCharacterData, castToCharacterData, gTypeCharacterData
+  , ChildNode(ChildNode), unChildNode, IsChildNode, toChildNode, castToChildNode, gTypeChildNode
+  , ClientRect(ClientRect), unClientRect, IsClientRect, toClientRect, castToClientRect, gTypeClientRect
+  , ClientRectList(ClientRectList), unClientRectList, IsClientRectList, toClientRectList, castToClientRectList, gTypeClientRectList
+  , CloseEvent(CloseEvent), unCloseEvent, IsCloseEvent, toCloseEvent, castToCloseEvent, gTypeCloseEvent
+  , CommandLineAPIHost(CommandLineAPIHost), unCommandLineAPIHost, IsCommandLineAPIHost, toCommandLineAPIHost, castToCommandLineAPIHost, gTypeCommandLineAPIHost
   , Comment(Comment), unComment, IsComment, toComment, castToComment, gTypeComment
+  , CompositionEvent(CompositionEvent), unCompositionEvent, IsCompositionEvent, toCompositionEvent, castToCompositionEvent, gTypeCompositionEvent
+  , ConvolverNode(ConvolverNode), unConvolverNode, IsConvolverNode, toConvolverNode, castToConvolverNode, gTypeConvolverNode
+  , Coordinates(Coordinates), unCoordinates, IsCoordinates, toCoordinates, castToCoordinates, gTypeCoordinates
   , Counter(Counter), unCounter, IsCounter, toCounter, castToCounter, gTypeCounter
+  , Crypto(Crypto), unCrypto, IsCrypto, toCrypto, castToCrypto, gTypeCrypto
+  , CryptoKey(CryptoKey), unCryptoKey, IsCryptoKey, toCryptoKey, castToCryptoKey, gTypeCryptoKey
+  , CryptoKeyPair(CryptoKeyPair), unCryptoKeyPair, IsCryptoKeyPair, toCryptoKeyPair, castToCryptoKeyPair, gTypeCryptoKeyPair
+  , CustomEvent(CustomEvent), unCustomEvent, IsCustomEvent, toCustomEvent, castToCustomEvent, gTypeCustomEvent
   , DOMApplicationCache(DOMApplicationCache), unDOMApplicationCache, IsDOMApplicationCache, toDOMApplicationCache, castToDOMApplicationCache, gTypeDOMApplicationCache
+  , DOMError(DOMError), unDOMError, IsDOMError, toDOMError, castToDOMError, gTypeDOMError
+  , DOMFormData(DOMFormData), unDOMFormData, IsDOMFormData, toDOMFormData, castToDOMFormData, gTypeDOMFormData
   , DOMImplementation(DOMImplementation), unDOMImplementation, IsDOMImplementation, toDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
   , DOMMimeType(DOMMimeType), unDOMMimeType, IsDOMMimeType, toDOMMimeType, castToDOMMimeType, gTypeDOMMimeType
   , DOMMimeTypeArray(DOMMimeTypeArray), unDOMMimeTypeArray, IsDOMMimeTypeArray, toDOMMimeTypeArray, castToDOMMimeTypeArray, gTypeDOMMimeTypeArray
   , DOMNamedFlowCollection(DOMNamedFlowCollection), unDOMNamedFlowCollection, IsDOMNamedFlowCollection, toDOMNamedFlowCollection, castToDOMNamedFlowCollection, gTypeDOMNamedFlowCollection
+  , DOMParser(DOMParser), unDOMParser, IsDOMParser, toDOMParser, castToDOMParser, gTypeDOMParser
+  , DOMPath(DOMPath), unDOMPath, IsDOMPath, toDOMPath, castToDOMPath, gTypeDOMPath
   , DOMPlugin(DOMPlugin), unDOMPlugin, IsDOMPlugin, toDOMPlugin, castToDOMPlugin, gTypeDOMPlugin
   , DOMPluginArray(DOMPluginArray), unDOMPluginArray, IsDOMPluginArray, toDOMPluginArray, castToDOMPluginArray, gTypeDOMPluginArray
   , DOMSecurityPolicy(DOMSecurityPolicy), unDOMSecurityPolicy, IsDOMSecurityPolicy, toDOMSecurityPolicy, castToDOMSecurityPolicy, gTypeDOMSecurityPolicy
   , DOMSelection(DOMSelection), unDOMSelection, IsDOMSelection, toDOMSelection, castToDOMSelection, gTypeDOMSelection
   , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, IsDOMSettableTokenList, toDOMSettableTokenList, castToDOMSettableTokenList, gTypeDOMSettableTokenList
   , DOMStringList(DOMStringList), unDOMStringList, IsDOMStringList, toDOMStringList, castToDOMStringList, gTypeDOMStringList
+  , DOMStringMap(DOMStringMap), unDOMStringMap, IsDOMStringMap, toDOMStringMap, castToDOMStringMap, gTypeDOMStringMap
   , DOMTokenList(DOMTokenList), unDOMTokenList, IsDOMTokenList, toDOMTokenList, castToDOMTokenList, gTypeDOMTokenList
+  , DOMURL(DOMURL), unDOMURL, IsDOMURL, toDOMURL, castToDOMURL, gTypeDOMURL
   , DOMWindow(DOMWindow), unDOMWindow, IsDOMWindow, toDOMWindow, castToDOMWindow, gTypeDOMWindow
   , DOMWindowCSS(DOMWindowCSS), unDOMWindowCSS, IsDOMWindowCSS, toDOMWindowCSS, castToDOMWindowCSS, gTypeDOMWindowCSS
+  , DataCue(DataCue), unDataCue, IsDataCue, toDataCue, castToDataCue, gTypeDataCue
+  , DataTransfer(DataTransfer), unDataTransfer, IsDataTransfer, toDataTransfer, castToDataTransfer, gTypeDataTransfer
+  , DataTransferItem(DataTransferItem), unDataTransferItem, IsDataTransferItem, toDataTransferItem, castToDataTransferItem, gTypeDataTransferItem
+  , DataTransferItemList(DataTransferItemList), unDataTransferItemList, IsDataTransferItemList, toDataTransferItemList, castToDataTransferItemList, gTypeDataTransferItemList
+  , Database(Database), unDatabase, IsDatabase, toDatabase, castToDatabase, gTypeDatabase
+  , DatabaseCallback(DatabaseCallback), unDatabaseCallback, IsDatabaseCallback, toDatabaseCallback, castToDatabaseCallback, gTypeDatabaseCallback
+  , DatabaseSync(DatabaseSync), unDatabaseSync, IsDatabaseSync, toDatabaseSync, castToDatabaseSync, gTypeDatabaseSync
+  , DedicatedWorkerGlobalScope(DedicatedWorkerGlobalScope), unDedicatedWorkerGlobalScope, IsDedicatedWorkerGlobalScope, toDedicatedWorkerGlobalScope, castToDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope
+  , DelayNode(DelayNode), unDelayNode, IsDelayNode, toDelayNode, castToDelayNode, gTypeDelayNode
+  , DeviceMotionEvent(DeviceMotionEvent), unDeviceMotionEvent, IsDeviceMotionEvent, toDeviceMotionEvent, castToDeviceMotionEvent, gTypeDeviceMotionEvent
+  , DeviceOrientationEvent(DeviceOrientationEvent), unDeviceOrientationEvent, IsDeviceOrientationEvent, toDeviceOrientationEvent, castToDeviceOrientationEvent, gTypeDeviceOrientationEvent
+  , DeviceProximityEvent(DeviceProximityEvent), unDeviceProximityEvent, IsDeviceProximityEvent, toDeviceProximityEvent, castToDeviceProximityEvent, gTypeDeviceProximityEvent
   , Document(Document), unDocument, IsDocument, toDocument, castToDocument, gTypeDocument
   , DocumentFragment(DocumentFragment), unDocumentFragment, IsDocumentFragment, toDocumentFragment, castToDocumentFragment, gTypeDocumentFragment
   , DocumentType(DocumentType), unDocumentType, IsDocumentType, toDocumentType, castToDocumentType, gTypeDocumentType
+  , DynamicsCompressorNode(DynamicsCompressorNode), unDynamicsCompressorNode, IsDynamicsCompressorNode, toDynamicsCompressorNode, castToDynamicsCompressorNode, gTypeDynamicsCompressorNode
+  , EXTShaderTextureLOD(EXTShaderTextureLOD), unEXTShaderTextureLOD, IsEXTShaderTextureLOD, toEXTShaderTextureLOD, castToEXTShaderTextureLOD, gTypeEXTShaderTextureLOD
+  , EXTTextureFilterAnisotropic(EXTTextureFilterAnisotropic), unEXTTextureFilterAnisotropic, IsEXTTextureFilterAnisotropic, toEXTTextureFilterAnisotropic, castToEXTTextureFilterAnisotropic, gTypeEXTTextureFilterAnisotropic
   , Element(Element), unElement, IsElement, toElement, castToElement, gTypeElement
+  , Entity(Entity), unEntity, IsEntity, toEntity, castToEntity, gTypeEntity
   , EntityReference(EntityReference), unEntityReference, IsEntityReference, toEntityReference, castToEntityReference, gTypeEntityReference
+  , ErrorEvent(ErrorEvent), unErrorEvent, IsErrorEvent, toErrorEvent, castToErrorEvent, gTypeErrorEvent
   , Event(Event), unEvent, IsEvent, toEvent, castToEvent, gTypeEvent
+  , EventListener(EventListener), unEventListener, IsEventListener, toEventListener, castToEventListener, gTypeEventListener
+  , EventSource(EventSource), unEventSource, IsEventSource, toEventSource, castToEventSource, gTypeEventSource
   , EventTarget(EventTarget), unEventTarget, IsEventTarget, toEventTarget, castToEventTarget, gTypeEventTarget
   , File(File), unFile, IsFile, toFile, castToFile, gTypeFile
+  , FileError(FileError), unFileError, IsFileError, toFileError, castToFileError, gTypeFileError
   , FileList(FileList), unFileList, IsFileList, toFileList, castToFileList, gTypeFileList
+  , FileReader(FileReader), unFileReader, IsFileReader, toFileReader, castToFileReader, gTypeFileReader
+  , FileReaderSync(FileReaderSync), unFileReaderSync, IsFileReaderSync, toFileReaderSync, castToFileReaderSync, gTypeFileReaderSync
+  , FocusEvent(FocusEvent), unFocusEvent, IsFocusEvent, toFocusEvent, castToFocusEvent, gTypeFocusEvent
+  , FontLoader(FontLoader), unFontLoader, IsFontLoader, toFontLoader, castToFontLoader, gTypeFontLoader
+  , GainNode(GainNode), unGainNode, IsGainNode, toGainNode, castToGainNode, gTypeGainNode
+  , Gamepad(Gamepad), unGamepad, IsGamepad, toGamepad, castToGamepad, gTypeGamepad
+  , GamepadButton(GamepadButton), unGamepadButton, IsGamepadButton, toGamepadButton, castToGamepadButton, gTypeGamepadButton
+  , GamepadEvent(GamepadEvent), unGamepadEvent, IsGamepadEvent, toGamepadEvent, castToGamepadEvent, gTypeGamepadEvent
   , Geolocation(Geolocation), unGeolocation, IsGeolocation, toGeolocation, castToGeolocation, gTypeGeolocation
+  , Geoposition(Geoposition), unGeoposition, IsGeoposition, toGeoposition, castToGeoposition, gTypeGeoposition
+  , HTMLAllCollection(HTMLAllCollection), unHTMLAllCollection, IsHTMLAllCollection, toHTMLAllCollection, castToHTMLAllCollection, gTypeHTMLAllCollection
   , HTMLAnchorElement(HTMLAnchorElement), unHTMLAnchorElement, IsHTMLAnchorElement, toHTMLAnchorElement, castToHTMLAnchorElement, gTypeHTMLAnchorElement
   , HTMLAppletElement(HTMLAppletElement), unHTMLAppletElement, IsHTMLAppletElement, toHTMLAppletElement, castToHTMLAppletElement, gTypeHTMLAppletElement
   , HTMLAreaElement(HTMLAreaElement), unHTMLAreaElement, IsHTMLAreaElement, toHTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement
@@ -65,6 +198,7 @@ module GHCJS.DOM.Types (
   , HTMLCanvasElement(HTMLCanvasElement), unHTMLCanvasElement, IsHTMLCanvasElement, toHTMLCanvasElement, castToHTMLCanvasElement, gTypeHTMLCanvasElement
   , HTMLCollection(HTMLCollection), unHTMLCollection, IsHTMLCollection, toHTMLCollection, castToHTMLCollection, gTypeHTMLCollection
   , HTMLDListElement(HTMLDListElement), unHTMLDListElement, IsHTMLDListElement, toHTMLDListElement, castToHTMLDListElement, gTypeHTMLDListElement
+  , HTMLDataListElement(HTMLDataListElement), unHTMLDataListElement, IsHTMLDataListElement, toHTMLDataListElement, castToHTMLDataListElement, gTypeHTMLDataListElement
   , HTMLDetailsElement(HTMLDetailsElement), unHTMLDetailsElement, IsHTMLDetailsElement, toHTMLDetailsElement, castToHTMLDetailsElement, gTypeHTMLDetailsElement
   , HTMLDirectoryElement(HTMLDirectoryElement), unHTMLDirectoryElement, IsHTMLDirectoryElement, toHTMLDirectoryElement, castToHTMLDirectoryElement, gTypeHTMLDirectoryElement
   , HTMLDivElement(HTMLDivElement), unHTMLDivElement, IsHTMLDivElement, toHTMLDivElement, castToHTMLDivElement, gTypeHTMLDivElement
@@ -73,6 +207,7 @@ module GHCJS.DOM.Types (
   , HTMLEmbedElement(HTMLEmbedElement), unHTMLEmbedElement, IsHTMLEmbedElement, toHTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement
   , HTMLFieldSetElement(HTMLFieldSetElement), unHTMLFieldSetElement, IsHTMLFieldSetElement, toHTMLFieldSetElement, castToHTMLFieldSetElement, gTypeHTMLFieldSetElement
   , HTMLFontElement(HTMLFontElement), unHTMLFontElement, IsHTMLFontElement, toHTMLFontElement, castToHTMLFontElement, gTypeHTMLFontElement
+  , HTMLFormControlsCollection(HTMLFormControlsCollection), unHTMLFormControlsCollection, IsHTMLFormControlsCollection, toHTMLFormControlsCollection, castToHTMLFormControlsCollection, gTypeHTMLFormControlsCollection
   , HTMLFormElement(HTMLFormElement), unHTMLFormElement, IsHTMLFormElement, toHTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement
   , HTMLFrameElement(HTMLFrameElement), unHTMLFrameElement, IsHTMLFrameElement, toHTMLFrameElement, castToHTMLFrameElement, gTypeHTMLFrameElement
   , HTMLFrameSetElement(HTMLFrameSetElement), unHTMLFrameSetElement, IsHTMLFrameSetElement, toHTMLFrameSetElement, castToHTMLFrameSetElement, gTypeHTMLFrameSetElement
@@ -93,18 +228,23 @@ module GHCJS.DOM.Types (
   , HTMLMediaElement(HTMLMediaElement), unHTMLMediaElement, IsHTMLMediaElement, toHTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement
   , HTMLMenuElement(HTMLMenuElement), unHTMLMenuElement, IsHTMLMenuElement, toHTMLMenuElement, castToHTMLMenuElement, gTypeHTMLMenuElement
   , HTMLMetaElement(HTMLMetaElement), unHTMLMetaElement, IsHTMLMetaElement, toHTMLMetaElement, castToHTMLMetaElement, gTypeHTMLMetaElement
+  , HTMLMeterElement(HTMLMeterElement), unHTMLMeterElement, IsHTMLMeterElement, toHTMLMeterElement, castToHTMLMeterElement, gTypeHTMLMeterElement
   , HTMLModElement(HTMLModElement), unHTMLModElement, IsHTMLModElement, toHTMLModElement, castToHTMLModElement, gTypeHTMLModElement
   , HTMLOListElement(HTMLOListElement), unHTMLOListElement, IsHTMLOListElement, toHTMLOListElement, castToHTMLOListElement, gTypeHTMLOListElement
   , HTMLObjectElement(HTMLObjectElement), unHTMLObjectElement, IsHTMLObjectElement, toHTMLObjectElement, castToHTMLObjectElement, gTypeHTMLObjectElement
   , HTMLOptGroupElement(HTMLOptGroupElement), unHTMLOptGroupElement, IsHTMLOptGroupElement, toHTMLOptGroupElement, castToHTMLOptGroupElement, gTypeHTMLOptGroupElement
   , HTMLOptionElement(HTMLOptionElement), unHTMLOptionElement, IsHTMLOptionElement, toHTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement
   , HTMLOptionsCollection(HTMLOptionsCollection), unHTMLOptionsCollection, IsHTMLOptionsCollection, toHTMLOptionsCollection, castToHTMLOptionsCollection, gTypeHTMLOptionsCollection
+  , HTMLOutputElement(HTMLOutputElement), unHTMLOutputElement, IsHTMLOutputElement, toHTMLOutputElement, castToHTMLOutputElement, gTypeHTMLOutputElement
   , HTMLParagraphElement(HTMLParagraphElement), unHTMLParagraphElement, IsHTMLParagraphElement, toHTMLParagraphElement, castToHTMLParagraphElement, gTypeHTMLParagraphElement
   , HTMLParamElement(HTMLParamElement), unHTMLParamElement, IsHTMLParamElement, toHTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement
   , HTMLPreElement(HTMLPreElement), unHTMLPreElement, IsHTMLPreElement, toHTMLPreElement, castToHTMLPreElement, gTypeHTMLPreElement
+  , HTMLProgressElement(HTMLProgressElement), unHTMLProgressElement, IsHTMLProgressElement, toHTMLProgressElement, castToHTMLProgressElement, gTypeHTMLProgressElement
   , HTMLQuoteElement(HTMLQuoteElement), unHTMLQuoteElement, IsHTMLQuoteElement, toHTMLQuoteElement, castToHTMLQuoteElement, gTypeHTMLQuoteElement
   , HTMLScriptElement(HTMLScriptElement), unHTMLScriptElement, IsHTMLScriptElement, toHTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement
   , HTMLSelectElement(HTMLSelectElement), unHTMLSelectElement, IsHTMLSelectElement, toHTMLSelectElement, castToHTMLSelectElement, gTypeHTMLSelectElement
+  , HTMLSourceElement(HTMLSourceElement), unHTMLSourceElement, IsHTMLSourceElement, toHTMLSourceElement, castToHTMLSourceElement, gTypeHTMLSourceElement
+  , HTMLSpanElement(HTMLSpanElement), unHTMLSpanElement, IsHTMLSpanElement, toHTMLSpanElement, castToHTMLSpanElement, gTypeHTMLSpanElement
   , HTMLStyleElement(HTMLStyleElement), unHTMLStyleElement, IsHTMLStyleElement, toHTMLStyleElement, castToHTMLStyleElement, gTypeHTMLStyleElement
   , HTMLTableCaptionElement(HTMLTableCaptionElement), unHTMLTableCaptionElement, IsHTMLTableCaptionElement, toHTMLTableCaptionElement, castToHTMLTableCaptionElement, gTypeHTMLTableCaptionElement
   , HTMLTableCellElement(HTMLTableCellElement), unHTMLTableCellElement, IsHTMLTableCellElement, toHTMLTableCellElement, castToHTMLTableCellElement, gTypeHTMLTableCellElement
@@ -112,32 +252,140 @@ module GHCJS.DOM.Types (
   , HTMLTableElement(HTMLTableElement), unHTMLTableElement, IsHTMLTableElement, toHTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement
   , HTMLTableRowElement(HTMLTableRowElement), unHTMLTableRowElement, IsHTMLTableRowElement, toHTMLTableRowElement, castToHTMLTableRowElement, gTypeHTMLTableRowElement
   , HTMLTableSectionElement(HTMLTableSectionElement), unHTMLTableSectionElement, IsHTMLTableSectionElement, toHTMLTableSectionElement, castToHTMLTableSectionElement, gTypeHTMLTableSectionElement
+  , HTMLTemplateElement(HTMLTemplateElement), unHTMLTemplateElement, IsHTMLTemplateElement, toHTMLTemplateElement, castToHTMLTemplateElement, gTypeHTMLTemplateElement
   , HTMLTextAreaElement(HTMLTextAreaElement), unHTMLTextAreaElement, IsHTMLTextAreaElement, toHTMLTextAreaElement, castToHTMLTextAreaElement, gTypeHTMLTextAreaElement
   , HTMLTitleElement(HTMLTitleElement), unHTMLTitleElement, IsHTMLTitleElement, toHTMLTitleElement, castToHTMLTitleElement, gTypeHTMLTitleElement
+  , HTMLTrackElement(HTMLTrackElement), unHTMLTrackElement, IsHTMLTrackElement, toHTMLTrackElement, castToHTMLTrackElement, gTypeHTMLTrackElement
   , HTMLUListElement(HTMLUListElement), unHTMLUListElement, IsHTMLUListElement, toHTMLUListElement, castToHTMLUListElement, gTypeHTMLUListElement
+  , HTMLUnknownElement(HTMLUnknownElement), unHTMLUnknownElement, IsHTMLUnknownElement, toHTMLUnknownElement, castToHTMLUnknownElement, gTypeHTMLUnknownElement
   , HTMLVideoElement(HTMLVideoElement), unHTMLVideoElement, IsHTMLVideoElement, toHTMLVideoElement, castToHTMLVideoElement, gTypeHTMLVideoElement
+  , HashChangeEvent(HashChangeEvent), unHashChangeEvent, IsHashChangeEvent, toHashChangeEvent, castToHashChangeEvent, gTypeHashChangeEvent
   , History(History), unHistory, IsHistory, toHistory, castToHistory, gTypeHistory
+  , IDBAny(IDBAny), unIDBAny, IsIDBAny, toIDBAny, castToIDBAny, gTypeIDBAny
+  , IDBCursor(IDBCursor), unIDBCursor, IsIDBCursor, toIDBCursor, castToIDBCursor, gTypeIDBCursor
+  , IDBCursorWithValue(IDBCursorWithValue), unIDBCursorWithValue, IsIDBCursorWithValue, toIDBCursorWithValue, castToIDBCursorWithValue, gTypeIDBCursorWithValue
+  , IDBDatabase(IDBDatabase), unIDBDatabase, IsIDBDatabase, toIDBDatabase, castToIDBDatabase, gTypeIDBDatabase
+  , IDBFactory(IDBFactory), unIDBFactory, IsIDBFactory, toIDBFactory, castToIDBFactory, gTypeIDBFactory
+  , IDBIndex(IDBIndex), unIDBIndex, IsIDBIndex, toIDBIndex, castToIDBIndex, gTypeIDBIndex
+  , IDBKeyRange(IDBKeyRange), unIDBKeyRange, IsIDBKeyRange, toIDBKeyRange, castToIDBKeyRange, gTypeIDBKeyRange
+  , IDBObjectStore(IDBObjectStore), unIDBObjectStore, IsIDBObjectStore, toIDBObjectStore, castToIDBObjectStore, gTypeIDBObjectStore
+  , IDBOpenDBRequest(IDBOpenDBRequest), unIDBOpenDBRequest, IsIDBOpenDBRequest, toIDBOpenDBRequest, castToIDBOpenDBRequest, gTypeIDBOpenDBRequest
+  , IDBRequest(IDBRequest), unIDBRequest, IsIDBRequest, toIDBRequest, castToIDBRequest, gTypeIDBRequest
+  , IDBTransaction(IDBTransaction), unIDBTransaction, IsIDBTransaction, toIDBTransaction, castToIDBTransaction, gTypeIDBTransaction
+  , IDBVersionChangeEvent(IDBVersionChangeEvent), unIDBVersionChangeEvent, IsIDBVersionChangeEvent, toIDBVersionChangeEvent, castToIDBVersionChangeEvent, gTypeIDBVersionChangeEvent
+  , ImageData(ImageData), unImageData, IsImageData, toImageData, castToImageData, gTypeImageData
+  , InspectorFrontendHost(InspectorFrontendHost), unInspectorFrontendHost, IsInspectorFrontendHost, toInspectorFrontendHost, castToInspectorFrontendHost, gTypeInspectorFrontendHost
+  , InternalSettings(InternalSettings), unInternalSettings, IsInternalSettings, toInternalSettings, castToInternalSettings, gTypeInternalSettings
+  , Internals(Internals), unInternals, IsInternals, toInternals, castToInternals, gTypeInternals
   , KeyboardEvent(KeyboardEvent), unKeyboardEvent, IsKeyboardEvent, toKeyboardEvent, castToKeyboardEvent, gTypeKeyboardEvent
   , Location(Location), unLocation, IsLocation, toLocation, castToLocation, gTypeLocation
+  , MallocStatistics(MallocStatistics), unMallocStatistics, IsMallocStatistics, toMallocStatistics, castToMallocStatistics, gTypeMallocStatistics
   , MediaController(MediaController), unMediaController, IsMediaController, toMediaController, castToMediaController, gTypeMediaController
+  , MediaControlsHost(MediaControlsHost), unMediaControlsHost, IsMediaControlsHost, toMediaControlsHost, castToMediaControlsHost, gTypeMediaControlsHost
+  , MediaElementAudioSourceNode(MediaElementAudioSourceNode), unMediaElementAudioSourceNode, IsMediaElementAudioSourceNode, toMediaElementAudioSourceNode, castToMediaElementAudioSourceNode, gTypeMediaElementAudioSourceNode
   , MediaError(MediaError), unMediaError, IsMediaError, toMediaError, castToMediaError, gTypeMediaError
+  , MediaKeyError(MediaKeyError), unMediaKeyError, IsMediaKeyError, toMediaKeyError, castToMediaKeyError, gTypeMediaKeyError
+  , MediaKeyEvent(MediaKeyEvent), unMediaKeyEvent, IsMediaKeyEvent, toMediaKeyEvent, castToMediaKeyEvent, gTypeMediaKeyEvent
+  , MediaKeyMessageEvent(MediaKeyMessageEvent), unMediaKeyMessageEvent, IsMediaKeyMessageEvent, toMediaKeyMessageEvent, castToMediaKeyMessageEvent, gTypeMediaKeyMessageEvent
+  , MediaKeyNeededEvent(MediaKeyNeededEvent), unMediaKeyNeededEvent, IsMediaKeyNeededEvent, toMediaKeyNeededEvent, castToMediaKeyNeededEvent, gTypeMediaKeyNeededEvent
+  , MediaKeySession(MediaKeySession), unMediaKeySession, IsMediaKeySession, toMediaKeySession, castToMediaKeySession, gTypeMediaKeySession
+  , MediaKeys(MediaKeys), unMediaKeys, IsMediaKeys, toMediaKeys, castToMediaKeys, gTypeMediaKeys
   , MediaList(MediaList), unMediaList, IsMediaList, toMediaList, castToMediaList, gTypeMediaList
   , MediaQueryList(MediaQueryList), unMediaQueryList, IsMediaQueryList, toMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
+  , MediaQueryListListener(MediaQueryListListener), unMediaQueryListListener, IsMediaQueryListListener, toMediaQueryListListener, castToMediaQueryListListener, gTypeMediaQueryListListener
+  , MediaSource(MediaSource), unMediaSource, IsMediaSource, toMediaSource, castToMediaSource, gTypeMediaSource
+  , MediaSourceStates(MediaSourceStates), unMediaSourceStates, IsMediaSourceStates, toMediaSourceStates, castToMediaSourceStates, gTypeMediaSourceStates
+  , MediaStream(MediaStream), unMediaStream, IsMediaStream, toMediaStream, castToMediaStream, gTypeMediaStream
+  , MediaStreamAudioDestinationNode(MediaStreamAudioDestinationNode), unMediaStreamAudioDestinationNode, IsMediaStreamAudioDestinationNode, toMediaStreamAudioDestinationNode, castToMediaStreamAudioDestinationNode, gTypeMediaStreamAudioDestinationNode
+  , MediaStreamAudioSourceNode(MediaStreamAudioSourceNode), unMediaStreamAudioSourceNode, IsMediaStreamAudioSourceNode, toMediaStreamAudioSourceNode, castToMediaStreamAudioSourceNode, gTypeMediaStreamAudioSourceNode
+  , MediaStreamCapabilities(MediaStreamCapabilities), unMediaStreamCapabilities, IsMediaStreamCapabilities, toMediaStreamCapabilities, castToMediaStreamCapabilities, gTypeMediaStreamCapabilities
+  , MediaStreamEvent(MediaStreamEvent), unMediaStreamEvent, IsMediaStreamEvent, toMediaStreamEvent, castToMediaStreamEvent, gTypeMediaStreamEvent
+  , MediaStreamTrack(MediaStreamTrack), unMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack, castToMediaStreamTrack, gTypeMediaStreamTrack
+  , MediaStreamTrackEvent(MediaStreamTrackEvent), unMediaStreamTrackEvent, IsMediaStreamTrackEvent, toMediaStreamTrackEvent, castToMediaStreamTrackEvent, gTypeMediaStreamTrackEvent
+  , MediaStreamTrackSourcesCallback(MediaStreamTrackSourcesCallback), unMediaStreamTrackSourcesCallback, IsMediaStreamTrackSourcesCallback, toMediaStreamTrackSourcesCallback, castToMediaStreamTrackSourcesCallback, gTypeMediaStreamTrackSourcesCallback
+  , MediaTrackConstraint(MediaTrackConstraint), unMediaTrackConstraint, IsMediaTrackConstraint, toMediaTrackConstraint, castToMediaTrackConstraint, gTypeMediaTrackConstraint
+  , MediaTrackConstraintSet(MediaTrackConstraintSet), unMediaTrackConstraintSet, IsMediaTrackConstraintSet, toMediaTrackConstraintSet, castToMediaTrackConstraintSet, gTypeMediaTrackConstraintSet
+  , MediaTrackConstraints(MediaTrackConstraints), unMediaTrackConstraints, IsMediaTrackConstraints, toMediaTrackConstraints, castToMediaTrackConstraints, gTypeMediaTrackConstraints
+  , MemoryInfo(MemoryInfo), unMemoryInfo, IsMemoryInfo, toMemoryInfo, castToMemoryInfo, gTypeMemoryInfo
+  , MessageChannel(MessageChannel), unMessageChannel, IsMessageChannel, toMessageChannel, castToMessageChannel, gTypeMessageChannel
+  , MessageEvent(MessageEvent), unMessageEvent, IsMessageEvent, toMessageEvent, castToMessageEvent, gTypeMessageEvent
   , MessagePort(MessagePort), unMessagePort, IsMessagePort, toMessagePort, castToMessagePort, gTypeMessagePort
   , MouseEvent(MouseEvent), unMouseEvent, IsMouseEvent, toMouseEvent, castToMouseEvent, gTypeMouseEvent
   , MutationEvent(MutationEvent), unMutationEvent, IsMutationEvent, toMutationEvent, castToMutationEvent, gTypeMutationEvent
+  , MutationObserver(MutationObserver), unMutationObserver, IsMutationObserver, toMutationObserver, castToMutationObserver, gTypeMutationObserver
+  , MutationRecord(MutationRecord), unMutationRecord, IsMutationRecord, toMutationRecord, castToMutationRecord, gTypeMutationRecord
   , NamedNodeMap(NamedNodeMap), unNamedNodeMap, IsNamedNodeMap, toNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
   , Navigator(Navigator), unNavigator, IsNavigator, toNavigator, castToNavigator, gTypeNavigator
+  , NavigatorUserMediaError(NavigatorUserMediaError), unNavigatorUserMediaError, IsNavigatorUserMediaError, toNavigatorUserMediaError, castToNavigatorUserMediaError, gTypeNavigatorUserMediaError
+  , NavigatorUserMediaErrorCallback(NavigatorUserMediaErrorCallback), unNavigatorUserMediaErrorCallback, IsNavigatorUserMediaErrorCallback, toNavigatorUserMediaErrorCallback, castToNavigatorUserMediaErrorCallback, gTypeNavigatorUserMediaErrorCallback
+  , NavigatorUserMediaSuccessCallback(NavigatorUserMediaSuccessCallback), unNavigatorUserMediaSuccessCallback, IsNavigatorUserMediaSuccessCallback, toNavigatorUserMediaSuccessCallback, castToNavigatorUserMediaSuccessCallback, gTypeNavigatorUserMediaSuccessCallback
   , Node(Node), unNode, IsNode, toNode, castToNode, gTypeNode
   , NodeFilter(NodeFilter), unNodeFilter, IsNodeFilter, toNodeFilter, castToNodeFilter, gTypeNodeFilter
   , NodeIterator(NodeIterator), unNodeIterator, IsNodeIterator, toNodeIterator, castToNodeIterator, gTypeNodeIterator
   , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, castToNodeList, gTypeNodeList
   , Notation(Notation), unNotation, IsNotation, toNotation, castToNotation, gTypeNotation
+  , Notification(Notification), unNotification, IsNotification, toNotification, castToNotification, gTypeNotification
+  , NotificationCenter(NotificationCenter), unNotificationCenter, IsNotificationCenter, toNotificationCenter, castToNotificationCenter, gTypeNotificationCenter
+  , NotificationPermissionCallback(NotificationPermissionCallback), unNotificationPermissionCallback, IsNotificationPermissionCallback, toNotificationPermissionCallback, castToNotificationPermissionCallback, gTypeNotificationPermissionCallback
+  , OESElementIndexUint(OESElementIndexUint), unOESElementIndexUint, IsOESElementIndexUint, toOESElementIndexUint, castToOESElementIndexUint, gTypeOESElementIndexUint
+  , OESStandardDerivatives(OESStandardDerivatives), unOESStandardDerivatives, IsOESStandardDerivatives, toOESStandardDerivatives, castToOESStandardDerivatives, gTypeOESStandardDerivatives
+  , OESTextureFloat(OESTextureFloat), unOESTextureFloat, IsOESTextureFloat, toOESTextureFloat, castToOESTextureFloat, gTypeOESTextureFloat
+  , OESTextureFloatLinear(OESTextureFloatLinear), unOESTextureFloatLinear, IsOESTextureFloatLinear, toOESTextureFloatLinear, castToOESTextureFloatLinear, gTypeOESTextureFloatLinear
+  , OESTextureHalfFloat(OESTextureHalfFloat), unOESTextureHalfFloat, IsOESTextureHalfFloat, toOESTextureHalfFloat, castToOESTextureHalfFloat, gTypeOESTextureHalfFloat
+  , OESTextureHalfFloatLinear(OESTextureHalfFloatLinear), unOESTextureHalfFloatLinear, IsOESTextureHalfFloatLinear, toOESTextureHalfFloatLinear, castToOESTextureHalfFloatLinear, gTypeOESTextureHalfFloatLinear
+  , OESVertexArrayObject(OESVertexArrayObject), unOESVertexArrayObject, IsOESVertexArrayObject, toOESVertexArrayObject, castToOESVertexArrayObject, gTypeOESVertexArrayObject
+  , OfflineAudioCompletionEvent(OfflineAudioCompletionEvent), unOfflineAudioCompletionEvent, IsOfflineAudioCompletionEvent, toOfflineAudioCompletionEvent, castToOfflineAudioCompletionEvent, gTypeOfflineAudioCompletionEvent
+  , OfflineAudioContext(OfflineAudioContext), unOfflineAudioContext, IsOfflineAudioContext, toOfflineAudioContext, castToOfflineAudioContext, gTypeOfflineAudioContext
+  , OscillatorNode(OscillatorNode), unOscillatorNode, IsOscillatorNode, toOscillatorNode, castToOscillatorNode, gTypeOscillatorNode
+  , OverflowEvent(OverflowEvent), unOverflowEvent, IsOverflowEvent, toOverflowEvent, castToOverflowEvent, gTypeOverflowEvent
+  , PageTransitionEvent(PageTransitionEvent), unPageTransitionEvent, IsPageTransitionEvent, toPageTransitionEvent, castToPageTransitionEvent, gTypePageTransitionEvent
+  , PannerNode(PannerNode), unPannerNode, IsPannerNode, toPannerNode, castToPannerNode, gTypePannerNode
+  , Performance(Performance), unPerformance, IsPerformance, toPerformance, castToPerformance, gTypePerformance
+  , PerformanceEntry(PerformanceEntry), unPerformanceEntry, IsPerformanceEntry, toPerformanceEntry, castToPerformanceEntry, gTypePerformanceEntry
+  , PerformanceEntryList(PerformanceEntryList), unPerformanceEntryList, IsPerformanceEntryList, toPerformanceEntryList, castToPerformanceEntryList, gTypePerformanceEntryList
+  , PerformanceMark(PerformanceMark), unPerformanceMark, IsPerformanceMark, toPerformanceMark, castToPerformanceMark, gTypePerformanceMark
+  , PerformanceMeasure(PerformanceMeasure), unPerformanceMeasure, IsPerformanceMeasure, toPerformanceMeasure, castToPerformanceMeasure, gTypePerformanceMeasure
+  , PerformanceNavigation(PerformanceNavigation), unPerformanceNavigation, IsPerformanceNavigation, toPerformanceNavigation, castToPerformanceNavigation, gTypePerformanceNavigation
+  , PerformanceResourceTiming(PerformanceResourceTiming), unPerformanceResourceTiming, IsPerformanceResourceTiming, toPerformanceResourceTiming, castToPerformanceResourceTiming, gTypePerformanceResourceTiming
+  , PerformanceTiming(PerformanceTiming), unPerformanceTiming, IsPerformanceTiming, toPerformanceTiming, castToPerformanceTiming, gTypePerformanceTiming
+  , PeriodicWave(PeriodicWave), unPeriodicWave, IsPeriodicWave, toPeriodicWave, castToPeriodicWave, gTypePeriodicWave
+  , PopStateEvent(PopStateEvent), unPopStateEvent, IsPopStateEvent, toPopStateEvent, castToPopStateEvent, gTypePopStateEvent
+  , PositionCallback(PositionCallback), unPositionCallback, IsPositionCallback, toPositionCallback, castToPositionCallback, gTypePositionCallback
   , PositionError(PositionError), unPositionError, IsPositionError, toPositionError, castToPositionError, gTypePositionError
+  , PositionErrorCallback(PositionErrorCallback), unPositionErrorCallback, IsPositionErrorCallback, toPositionErrorCallback, castToPositionErrorCallback, gTypePositionErrorCallback
   , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, IsProcessingInstruction, toProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
+  , ProgressEvent(ProgressEvent), unProgressEvent, IsProgressEvent, toProgressEvent, castToProgressEvent, gTypeProgressEvent
+  , QuickTimePluginReplacement(QuickTimePluginReplacement), unQuickTimePluginReplacement, IsQuickTimePluginReplacement, toQuickTimePluginReplacement, castToQuickTimePluginReplacement, gTypeQuickTimePluginReplacement
   , RGBColor(RGBColor), unRGBColor, IsRGBColor, toRGBColor, castToRGBColor, gTypeRGBColor
+  , RTCConfiguration(RTCConfiguration), unRTCConfiguration, IsRTCConfiguration, toRTCConfiguration, castToRTCConfiguration, gTypeRTCConfiguration
+  , RTCDTMFSender(RTCDTMFSender), unRTCDTMFSender, IsRTCDTMFSender, toRTCDTMFSender, castToRTCDTMFSender, gTypeRTCDTMFSender
+  , RTCDTMFToneChangeEvent(RTCDTMFToneChangeEvent), unRTCDTMFToneChangeEvent, IsRTCDTMFToneChangeEvent, toRTCDTMFToneChangeEvent, castToRTCDTMFToneChangeEvent, gTypeRTCDTMFToneChangeEvent
+  , RTCDataChannel(RTCDataChannel), unRTCDataChannel, IsRTCDataChannel, toRTCDataChannel, castToRTCDataChannel, gTypeRTCDataChannel
+  , RTCDataChannelEvent(RTCDataChannelEvent), unRTCDataChannelEvent, IsRTCDataChannelEvent, toRTCDataChannelEvent, castToRTCDataChannelEvent, gTypeRTCDataChannelEvent
+  , RTCIceCandidate(RTCIceCandidate), unRTCIceCandidate, IsRTCIceCandidate, toRTCIceCandidate, castToRTCIceCandidate, gTypeRTCIceCandidate
+  , RTCIceCandidateEvent(RTCIceCandidateEvent), unRTCIceCandidateEvent, IsRTCIceCandidateEvent, toRTCIceCandidateEvent, castToRTCIceCandidateEvent, gTypeRTCIceCandidateEvent
+  , RTCIceServer(RTCIceServer), unRTCIceServer, IsRTCIceServer, toRTCIceServer, castToRTCIceServer, gTypeRTCIceServer
+  , RTCPeerConnection(RTCPeerConnection), unRTCPeerConnection, IsRTCPeerConnection, toRTCPeerConnection, castToRTCPeerConnection, gTypeRTCPeerConnection
+  , RTCPeerConnectionErrorCallback(RTCPeerConnectionErrorCallback), unRTCPeerConnectionErrorCallback, IsRTCPeerConnectionErrorCallback, toRTCPeerConnectionErrorCallback, castToRTCPeerConnectionErrorCallback, gTypeRTCPeerConnectionErrorCallback
+  , RTCSessionDescription(RTCSessionDescription), unRTCSessionDescription, IsRTCSessionDescription, toRTCSessionDescription, castToRTCSessionDescription, gTypeRTCSessionDescription
+  , RTCSessionDescriptionCallback(RTCSessionDescriptionCallback), unRTCSessionDescriptionCallback, IsRTCSessionDescriptionCallback, toRTCSessionDescriptionCallback, castToRTCSessionDescriptionCallback, gTypeRTCSessionDescriptionCallback
+  , RTCStatsCallback(RTCStatsCallback), unRTCStatsCallback, IsRTCStatsCallback, toRTCStatsCallback, castToRTCStatsCallback, gTypeRTCStatsCallback
+  , RTCStatsReport(RTCStatsReport), unRTCStatsReport, IsRTCStatsReport, toRTCStatsReport, castToRTCStatsReport, gTypeRTCStatsReport
+  , RTCStatsResponse(RTCStatsResponse), unRTCStatsResponse, IsRTCStatsResponse, toRTCStatsResponse, castToRTCStatsResponse, gTypeRTCStatsResponse
+  , RadioNodeList(RadioNodeList), unRadioNodeList, IsRadioNodeList, toRadioNodeList, castToRadioNodeList, gTypeRadioNodeList
   , DOMRange(DOMRange), unDOMRange, IsDOMRange, toDOMRange, castToDOMRange, gTypeDOMRange
   , Rect(Rect), unRect, IsRect, toRect, castToRect, gTypeRect
+  , RequestAnimationFrameCallback(RequestAnimationFrameCallback), unRequestAnimationFrameCallback, IsRequestAnimationFrameCallback, toRequestAnimationFrameCallback, castToRequestAnimationFrameCallback, gTypeRequestAnimationFrameCallback
+  , SQLError(SQLError), unSQLError, IsSQLError, toSQLError, castToSQLError, gTypeSQLError
+  , SQLResultSet(SQLResultSet), unSQLResultSet, IsSQLResultSet, toSQLResultSet, castToSQLResultSet, gTypeSQLResultSet
+  , SQLResultSetRowList(SQLResultSetRowList), unSQLResultSetRowList, IsSQLResultSetRowList, toSQLResultSetRowList, castToSQLResultSetRowList, gTypeSQLResultSetRowList
+  , SQLStatementCallback(SQLStatementCallback), unSQLStatementCallback, IsSQLStatementCallback, toSQLStatementCallback, castToSQLStatementCallback, gTypeSQLStatementCallback
+  , SQLStatementErrorCallback(SQLStatementErrorCallback), unSQLStatementErrorCallback, IsSQLStatementErrorCallback, toSQLStatementErrorCallback, castToSQLStatementErrorCallback, gTypeSQLStatementErrorCallback
+  , SQLTransaction(SQLTransaction), unSQLTransaction, IsSQLTransaction, toSQLTransaction, castToSQLTransaction, gTypeSQLTransaction
+  , SQLTransactionCallback(SQLTransactionCallback), unSQLTransactionCallback, IsSQLTransactionCallback, toSQLTransactionCallback, castToSQLTransactionCallback, gTypeSQLTransactionCallback
+  , SQLTransactionErrorCallback(SQLTransactionErrorCallback), unSQLTransactionErrorCallback, IsSQLTransactionErrorCallback, toSQLTransactionErrorCallback, castToSQLTransactionErrorCallback, gTypeSQLTransactionErrorCallback
+  , SQLTransactionSync(SQLTransactionSync), unSQLTransactionSync, IsSQLTransactionSync, toSQLTransactionSync, castToSQLTransactionSync, gTypeSQLTransactionSync
+  , SQLTransactionSyncCallback(SQLTransactionSyncCallback), unSQLTransactionSyncCallback, IsSQLTransactionSyncCallback, toSQLTransactionSyncCallback, castToSQLTransactionSyncCallback, gTypeSQLTransactionSyncCallback
   , SVGAElement(SVGAElement), unSVGAElement, IsSVGAElement, toSVGAElement, castToSVGAElement, gTypeSVGAElement
   , SVGAltGlyphDefElement(SVGAltGlyphDefElement), unSVGAltGlyphDefElement, IsSVGAltGlyphDefElement, toSVGAltGlyphDefElement, castToSVGAltGlyphDefElement, gTypeSVGAltGlyphDefElement
   , SVGAltGlyphElement(SVGAltGlyphElement), unSVGAltGlyphElement, IsSVGAltGlyphElement, toSVGAltGlyphElement, castToSVGAltGlyphElement, gTypeSVGAltGlyphElement
@@ -287,23 +535,110 @@ module GHCJS.DOM.Types (
   , SVGZoomAndPan(SVGZoomAndPan), unSVGZoomAndPan, IsSVGZoomAndPan, toSVGZoomAndPan, castToSVGZoomAndPan, gTypeSVGZoomAndPan
   , SVGZoomEvent(SVGZoomEvent), unSVGZoomEvent, IsSVGZoomEvent, toSVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent
   , DOMScreen(DOMScreen), unDOMScreen, IsDOMScreen, toDOMScreen, castToDOMScreen, gTypeDOMScreen
+  , ScriptProcessorNode(ScriptProcessorNode), unScriptProcessorNode, IsScriptProcessorNode, toScriptProcessorNode, castToScriptProcessorNode, gTypeScriptProcessorNode
+  , ScriptProfile(ScriptProfile), unScriptProfile, IsScriptProfile, toScriptProfile, castToScriptProfile, gTypeScriptProfile
+  , ScriptProfileNode(ScriptProfileNode), unScriptProfileNode, IsScriptProfileNode, toScriptProfileNode, castToScriptProfileNode, gTypeScriptProfileNode
+  , SecurityPolicyViolationEvent(SecurityPolicyViolationEvent), unSecurityPolicyViolationEvent, IsSecurityPolicyViolationEvent, toSecurityPolicyViolationEvent, castToSecurityPolicyViolationEvent, gTypeSecurityPolicyViolationEvent
+  , SharedWorker(SharedWorker), unSharedWorker, IsSharedWorker, toSharedWorker, castToSharedWorker, gTypeSharedWorker
+  , SharedWorkerGlobalScope(SharedWorkerGlobalScope), unSharedWorkerGlobalScope, IsSharedWorkerGlobalScope, toSharedWorkerGlobalScope, castToSharedWorkerGlobalScope, gTypeSharedWorkerGlobalScope
+  , SourceBuffer(SourceBuffer), unSourceBuffer, IsSourceBuffer, toSourceBuffer, castToSourceBuffer, gTypeSourceBuffer
+  , SourceBufferList(SourceBufferList), unSourceBufferList, IsSourceBufferList, toSourceBufferList, castToSourceBufferList, gTypeSourceBufferList
+  , SourceInfo(SourceInfo), unSourceInfo, IsSourceInfo, toSourceInfo, castToSourceInfo, gTypeSourceInfo
+  , SpeechSynthesis(SpeechSynthesis), unSpeechSynthesis, IsSpeechSynthesis, toSpeechSynthesis, castToSpeechSynthesis, gTypeSpeechSynthesis
+  , SpeechSynthesisEvent(SpeechSynthesisEvent), unSpeechSynthesisEvent, IsSpeechSynthesisEvent, toSpeechSynthesisEvent, castToSpeechSynthesisEvent, gTypeSpeechSynthesisEvent
+  , SpeechSynthesisUtterance(SpeechSynthesisUtterance), unSpeechSynthesisUtterance, IsSpeechSynthesisUtterance, toSpeechSynthesisUtterance, castToSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance
+  , SpeechSynthesisVoice(SpeechSynthesisVoice), unSpeechSynthesisVoice, IsSpeechSynthesisVoice, toSpeechSynthesisVoice, castToSpeechSynthesisVoice, gTypeSpeechSynthesisVoice
   , Storage(Storage), unStorage, IsStorage, toStorage, castToStorage, gTypeStorage
+  , StorageErrorCallback(StorageErrorCallback), unStorageErrorCallback, IsStorageErrorCallback, toStorageErrorCallback, castToStorageErrorCallback, gTypeStorageErrorCallback
+  , StorageEvent(StorageEvent), unStorageEvent, IsStorageEvent, toStorageEvent, castToStorageEvent, gTypeStorageEvent
   , StorageInfo(StorageInfo), unStorageInfo, IsStorageInfo, toStorageInfo, castToStorageInfo, gTypeStorageInfo
+  , StorageQuota(StorageQuota), unStorageQuota, IsStorageQuota, toStorageQuota, castToStorageQuota, gTypeStorageQuota
+  , StorageQuotaCallback(StorageQuotaCallback), unStorageQuotaCallback, IsStorageQuotaCallback, toStorageQuotaCallback, castToStorageQuotaCallback, gTypeStorageQuotaCallback
+  , StorageUsageCallback(StorageUsageCallback), unStorageUsageCallback, IsStorageUsageCallback, toStorageUsageCallback, castToStorageUsageCallback, gTypeStorageUsageCallback
+  , StringCallback(StringCallback), unStringCallback, IsStringCallback, toStringCallback, castToStringCallback, gTypeStringCallback
   , StyleMedia(StyleMedia), unStyleMedia, IsStyleMedia, toStyleMedia, castToStyleMedia, gTypeStyleMedia
   , StyleSheet(StyleSheet), unStyleSheet, IsStyleSheet, toStyleSheet, castToStyleSheet, gTypeStyleSheet
   , StyleSheetList(StyleSheetList), unStyleSheetList, IsStyleSheetList, toStyleSheetList, castToStyleSheetList, gTypeStyleSheetList
+  , SubtleCrypto(SubtleCrypto), unSubtleCrypto, IsSubtleCrypto, toSubtleCrypto, castToSubtleCrypto, gTypeSubtleCrypto
   , Text(Text), unText, IsText, toText, castToText, gTypeText
+  , TextEvent(TextEvent), unTextEvent, IsTextEvent, toTextEvent, castToTextEvent, gTypeTextEvent
+  , TextMetrics(TextMetrics), unTextMetrics, IsTextMetrics, toTextMetrics, castToTextMetrics, gTypeTextMetrics
+  , TextTrack(TextTrack), unTextTrack, IsTextTrack, toTextTrack, castToTextTrack, gTypeTextTrack
+  , TextTrackCue(TextTrackCue), unTextTrackCue, IsTextTrackCue, toTextTrackCue, castToTextTrackCue, gTypeTextTrackCue
+  , TextTrackCueList(TextTrackCueList), unTextTrackCueList, IsTextTrackCueList, toTextTrackCueList, castToTextTrackCueList, gTypeTextTrackCueList
+  , TextTrackList(TextTrackList), unTextTrackList, IsTextTrackList, toTextTrackList, castToTextTrackList, gTypeTextTrackList
   , TimeRanges(TimeRanges), unTimeRanges, IsTimeRanges, toTimeRanges, castToTimeRanges, gTypeTimeRanges
+  , Touch(Touch), unTouch, IsTouch, toTouch, castToTouch, gTypeTouch
+  , TouchEvent(TouchEvent), unTouchEvent, IsTouchEvent, toTouchEvent, castToTouchEvent, gTypeTouchEvent
+  , TouchList(TouchList), unTouchList, IsTouchList, toTouchList, castToTouchList, gTypeTouchList
+  , TrackEvent(TrackEvent), unTrackEvent, IsTrackEvent, toTrackEvent, castToTrackEvent, gTypeTrackEvent
+  , TransitionEvent(TransitionEvent), unTransitionEvent, IsTransitionEvent, toTransitionEvent, castToTransitionEvent, gTypeTransitionEvent
   , TreeWalker(TreeWalker), unTreeWalker, IsTreeWalker, toTreeWalker, castToTreeWalker, gTypeTreeWalker
+  , TypeConversions(TypeConversions), unTypeConversions, IsTypeConversions, toTypeConversions, castToTypeConversions, gTypeTypeConversions
   , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, castToUIEvent, gTypeUIEvent
+  , UIRequestEvent(UIRequestEvent), unUIRequestEvent, IsUIRequestEvent, toUIRequestEvent, castToUIRequestEvent, gTypeUIRequestEvent
+  , URLUtils(URLUtils), unURLUtils, IsURLUtils, toURLUtils, castToURLUtils, gTypeURLUtils
+  , UserMessageHandler(UserMessageHandler), unUserMessageHandler, IsUserMessageHandler, toUserMessageHandler, castToUserMessageHandler, gTypeUserMessageHandler
+  , UserMessageHandlersNamespace(UserMessageHandlersNamespace), unUserMessageHandlersNamespace, IsUserMessageHandlersNamespace, toUserMessageHandlersNamespace, castToUserMessageHandlersNamespace, gTypeUserMessageHandlersNamespace
+  , VTTCue(VTTCue), unVTTCue, IsVTTCue, toVTTCue, castToVTTCue, gTypeVTTCue
+  , VTTRegion(VTTRegion), unVTTRegion, IsVTTRegion, toVTTRegion, castToVTTRegion, gTypeVTTRegion
+  , VTTRegionList(VTTRegionList), unVTTRegionList, IsVTTRegionList, toVTTRegionList, castToVTTRegionList, gTypeVTTRegionList
   , ValidityState(ValidityState), unValidityState, IsValidityState, toValidityState, castToValidityState, gTypeValidityState
+  , VideoPlaybackQuality(VideoPlaybackQuality), unVideoPlaybackQuality, IsVideoPlaybackQuality, toVideoPlaybackQuality, castToVideoPlaybackQuality, gTypeVideoPlaybackQuality
+  , VideoStreamTrack(VideoStreamTrack), unVideoStreamTrack, IsVideoStreamTrack, toVideoStreamTrack, castToVideoStreamTrack, gTypeVideoStreamTrack
+  , VideoTrack(VideoTrack), unVideoTrack, IsVideoTrack, toVideoTrack, castToVideoTrack, gTypeVideoTrack
+  , VideoTrackList(VideoTrackList), unVideoTrackList, IsVideoTrackList, toVideoTrackList, castToVideoTrackList, gTypeVideoTrackList
+  , VoidCallback(VoidCallback), unVoidCallback, IsVoidCallback, toVoidCallback, castToVoidCallback, gTypeVoidCallback
+  , WaveShaperNode(WaveShaperNode), unWaveShaperNode, IsWaveShaperNode, toWaveShaperNode, castToWaveShaperNode, gTypeWaveShaperNode
+  , WebGLActiveInfo(WebGLActiveInfo), unWebGLActiveInfo, IsWebGLActiveInfo, toWebGLActiveInfo, castToWebGLActiveInfo, gTypeWebGLActiveInfo
+  , WebGLBuffer(WebGLBuffer), unWebGLBuffer, IsWebGLBuffer, toWebGLBuffer, castToWebGLBuffer, gTypeWebGLBuffer
+  , WebGLCompressedTextureATC(WebGLCompressedTextureATC), unWebGLCompressedTextureATC, IsWebGLCompressedTextureATC, toWebGLCompressedTextureATC, castToWebGLCompressedTextureATC, gTypeWebGLCompressedTextureATC
+  , WebGLCompressedTexturePVRTC(WebGLCompressedTexturePVRTC), unWebGLCompressedTexturePVRTC, IsWebGLCompressedTexturePVRTC, toWebGLCompressedTexturePVRTC, castToWebGLCompressedTexturePVRTC, gTypeWebGLCompressedTexturePVRTC
+  , WebGLCompressedTextureS3TC(WebGLCompressedTextureS3TC), unWebGLCompressedTextureS3TC, IsWebGLCompressedTextureS3TC, toWebGLCompressedTextureS3TC, castToWebGLCompressedTextureS3TC, gTypeWebGLCompressedTextureS3TC
+  , WebGLContextAttributes(WebGLContextAttributes), unWebGLContextAttributes, IsWebGLContextAttributes, toWebGLContextAttributes, castToWebGLContextAttributes, gTypeWebGLContextAttributes
+  , WebGLContextEvent(WebGLContextEvent), unWebGLContextEvent, IsWebGLContextEvent, toWebGLContextEvent, castToWebGLContextEvent, gTypeWebGLContextEvent
+  , WebGLDebugRendererInfo(WebGLDebugRendererInfo), unWebGLDebugRendererInfo, IsWebGLDebugRendererInfo, toWebGLDebugRendererInfo, castToWebGLDebugRendererInfo, gTypeWebGLDebugRendererInfo
+  , WebGLDebugShaders(WebGLDebugShaders), unWebGLDebugShaders, IsWebGLDebugShaders, toWebGLDebugShaders, castToWebGLDebugShaders, gTypeWebGLDebugShaders
+  , WebGLDepthTexture(WebGLDepthTexture), unWebGLDepthTexture, IsWebGLDepthTexture, toWebGLDepthTexture, castToWebGLDepthTexture, gTypeWebGLDepthTexture
+  , WebGLDrawBuffers(WebGLDrawBuffers), unWebGLDrawBuffers, IsWebGLDrawBuffers, toWebGLDrawBuffers, castToWebGLDrawBuffers, gTypeWebGLDrawBuffers
+  , WebGLFramebuffer(WebGLFramebuffer), unWebGLFramebuffer, IsWebGLFramebuffer, toWebGLFramebuffer, castToWebGLFramebuffer, gTypeWebGLFramebuffer
+  , WebGLLoseContext(WebGLLoseContext), unWebGLLoseContext, IsWebGLLoseContext, toWebGLLoseContext, castToWebGLLoseContext, gTypeWebGLLoseContext
+  , WebGLProgram(WebGLProgram), unWebGLProgram, IsWebGLProgram, toWebGLProgram, castToWebGLProgram, gTypeWebGLProgram
+  , WebGLRenderbuffer(WebGLRenderbuffer), unWebGLRenderbuffer, IsWebGLRenderbuffer, toWebGLRenderbuffer, castToWebGLRenderbuffer, gTypeWebGLRenderbuffer
+  , WebGLRenderingContext(WebGLRenderingContext), unWebGLRenderingContext, IsWebGLRenderingContext, toWebGLRenderingContext, castToWebGLRenderingContext, gTypeWebGLRenderingContext
+  , WebGLShader(WebGLShader), unWebGLShader, IsWebGLShader, toWebGLShader, castToWebGLShader, gTypeWebGLShader
+  , WebGLShaderPrecisionFormat(WebGLShaderPrecisionFormat), unWebGLShaderPrecisionFormat, IsWebGLShaderPrecisionFormat, toWebGLShaderPrecisionFormat, castToWebGLShaderPrecisionFormat, gTypeWebGLShaderPrecisionFormat
+  , WebGLTexture(WebGLTexture), unWebGLTexture, IsWebGLTexture, toWebGLTexture, castToWebGLTexture, gTypeWebGLTexture
+  , WebGLUniformLocation(WebGLUniformLocation), unWebGLUniformLocation, IsWebGLUniformLocation, toWebGLUniformLocation, castToWebGLUniformLocation, gTypeWebGLUniformLocation
+  , WebGLVertexArrayObjectOES(WebGLVertexArrayObjectOES), unWebGLVertexArrayObjectOES, IsWebGLVertexArrayObjectOES, toWebGLVertexArrayObjectOES, castToWebGLVertexArrayObjectOES, gTypeWebGLVertexArrayObjectOES
+  , WebKitAnimationEvent(WebKitAnimationEvent), unWebKitAnimationEvent, IsWebKitAnimationEvent, toWebKitAnimationEvent, castToWebKitAnimationEvent, gTypeWebKitAnimationEvent
+  , WebKitCSSFilterValue(WebKitCSSFilterValue), unWebKitCSSFilterValue, IsWebKitCSSFilterValue, toWebKitCSSFilterValue, castToWebKitCSSFilterValue, gTypeWebKitCSSFilterValue
+  , WebKitCSSMatrix(WebKitCSSMatrix), unWebKitCSSMatrix, IsWebKitCSSMatrix, toWebKitCSSMatrix, castToWebKitCSSMatrix, gTypeWebKitCSSMatrix
+  , WebKitCSSRegionRule(WebKitCSSRegionRule), unWebKitCSSRegionRule, IsWebKitCSSRegionRule, toWebKitCSSRegionRule, castToWebKitCSSRegionRule, gTypeWebKitCSSRegionRule
+  , WebKitCSSTransformValue(WebKitCSSTransformValue), unWebKitCSSTransformValue, IsWebKitCSSTransformValue, toWebKitCSSTransformValue, castToWebKitCSSTransformValue, gTypeWebKitCSSTransformValue
+  , WebKitCSSViewportRule(WebKitCSSViewportRule), unWebKitCSSViewportRule, IsWebKitCSSViewportRule, toWebKitCSSViewportRule, castToWebKitCSSViewportRule, gTypeWebKitCSSViewportRule
   , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, IsWebKitNamedFlow, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
+  , WebKitNamespace(WebKitNamespace), unWebKitNamespace, IsWebKitNamespace, toWebKitNamespace, castToWebKitNamespace, gTypeWebKitNamespace
+  , WebKitPlaybackTargetAvailabilityEvent(WebKitPlaybackTargetAvailabilityEvent), unWebKitPlaybackTargetAvailabilityEvent, IsWebKitPlaybackTargetAvailabilityEvent, toWebKitPlaybackTargetAvailabilityEvent, castToWebKitPlaybackTargetAvailabilityEvent, gTypeWebKitPlaybackTargetAvailabilityEvent
   , WebKitPoint(WebKitPoint), unWebKitPoint, IsWebKitPoint, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
+  , WebKitTransitionEvent(WebKitTransitionEvent), unWebKitTransitionEvent, IsWebKitTransitionEvent, toWebKitTransitionEvent, castToWebKitTransitionEvent, gTypeWebKitTransitionEvent
+  , WebSocket(WebSocket), unWebSocket, IsWebSocket, toWebSocket, castToWebSocket, gTypeWebSocket
+  , WheelEvent(WheelEvent), unWheelEvent, IsWheelEvent, toWheelEvent, castToWheelEvent, gTypeWheelEvent
+  , WindowBase64(WindowBase64), unWindowBase64, IsWindowBase64, toWindowBase64, castToWindowBase64, gTypeWindowBase64
+  , WindowTimers(WindowTimers), unWindowTimers, IsWindowTimers, toWindowTimers, castToWindowTimers, gTypeWindowTimers
+  , Worker(Worker), unWorker, IsWorker, toWorker, castToWorker, gTypeWorker
+  , WorkerGlobalScope(WorkerGlobalScope), unWorkerGlobalScope, IsWorkerGlobalScope, toWorkerGlobalScope, castToWorkerGlobalScope, gTypeWorkerGlobalScope
+  , WorkerLocation(WorkerLocation), unWorkerLocation, IsWorkerLocation, toWorkerLocation, castToWorkerLocation, gTypeWorkerLocation
+  , WorkerNavigator(WorkerNavigator), unWorkerNavigator, IsWorkerNavigator, toWorkerNavigator, castToWorkerNavigator, gTypeWorkerNavigator
   , XMLHttpRequest(XMLHttpRequest), unXMLHttpRequest, IsXMLHttpRequest, toXMLHttpRequest, castToXMLHttpRequest, gTypeXMLHttpRequest
+  , XMLHttpRequestProgressEvent(XMLHttpRequestProgressEvent), unXMLHttpRequestProgressEvent, IsXMLHttpRequestProgressEvent, toXMLHttpRequestProgressEvent, castToXMLHttpRequestProgressEvent, gTypeXMLHttpRequestProgressEvent
   , XMLHttpRequestUpload(XMLHttpRequestUpload), unXMLHttpRequestUpload, IsXMLHttpRequestUpload, toXMLHttpRequestUpload, castToXMLHttpRequestUpload, gTypeXMLHttpRequestUpload
+  , XMLSerializer(XMLSerializer), unXMLSerializer, IsXMLSerializer, toXMLSerializer, castToXMLSerializer, gTypeXMLSerializer
+  , XPathEvaluator(XPathEvaluator), unXPathEvaluator, IsXPathEvaluator, toXPathEvaluator, castToXPathEvaluator, gTypeXPathEvaluator
   , XPathExpression(XPathExpression), unXPathExpression, IsXPathExpression, toXPathExpression, castToXPathExpression, gTypeXPathExpression
   , XPathNSResolver(XPathNSResolver), unXPathNSResolver, IsXPathNSResolver, toXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
   , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
+  , XSLTProcessor(XSLTProcessor), unXSLTProcessor, IsXSLTProcessor, toXSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor
 -- AUTO GENERATION ENDS HERE
 #else
     propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
@@ -449,6 +784,8 @@ import System.Glib (propagateGError, GType(..))
 import System.Glib.UTFString
        (readUTFString, GlibString(..))
 #endif
+import Data.Int (Int8, Int16, Int32, Int64)
+import Data.Word (Word8, Word16, Word32, Word64)
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 maybeJSNull :: JSRef a -> Maybe (JSRef a)
@@ -538,6 +875,8 @@ type ToDOMString s = GlibString s
 type FromDOMString s = GlibString s
 #endif
 
+type IsDOMString s = (ToDOMString s, FromDOMString s)
+
 -- Custom types
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype SerializedScriptValue = SerializedScriptValue (JSRef SerializedScriptValue) deriving (Eq)
@@ -566,58 +905,6 @@ instance GObjectClass SerializedScriptValue where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype PositionCallback = PositionCallback (JSRef PositionCallback) deriving (Eq)
-
-unPositionCallback (PositionCallback o) = o
-
-instance ToJSRef PositionCallback where
-  toJSRef = return . unPositionCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef PositionCallback where
-  fromJSRef = return . fmap PositionCallback . maybeJSNull
-  {-# INLINE fromJSRef #-}
-
-class GObjectClass o => IsPositionCallback o
-toPositionCallback :: IsPositionCallback o => o -> PositionCallback
-toPositionCallback = unsafeCastGObject . toGObject
-
-instance IsPositionCallback PositionCallback
-instance GObjectClass PositionCallback where
-  toGObject = GObject . castRef . unPositionCallback
-  unsafeCastGObject = PositionCallback . castRef . unGObject
--- TODO add more IsPositionCallback instances
-#else
--- TODO work out how we can support PositionCallback in native code
-#endif
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype PositionErrorCallback = PositionErrorCallback (JSRef PositionErrorCallback) deriving (Eq)
-
-unPositionErrorCallback (PositionErrorCallback o) = o
-
-instance ToJSRef PositionErrorCallback where
-  toJSRef = return . unPositionErrorCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef PositionErrorCallback where
-  fromJSRef = return . fmap PositionErrorCallback . maybeJSNull
-  {-# INLINE fromJSRef #-}
-
-class GObjectClass o => IsPositionErrorCallback o
-toPositionErrorCallback :: IsPositionErrorCallback o => o -> PositionErrorCallback
-toPositionErrorCallback = unsafeCastGObject . toGObject
-
-instance IsPositionErrorCallback PositionErrorCallback
-instance GObjectClass PositionErrorCallback where
-  toGObject = GObject . castRef . unPositionErrorCallback
-  unsafeCastGObject = PositionErrorCallback . castRef . unGObject
--- TODO add more IsPositionErrorCallback instances
-#else
--- TODO work out how we can support PositionErrorCallback in native code
-#endif
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype PositionOptions = PositionOptions (JSRef PositionOptions) deriving (Eq)
 
 unPositionOptions (PositionOptions o) = o
@@ -643,9 +930,754 @@ instance GObjectClass PositionOptions where
 -- TODO work out how we can support PositionOptions in native code
 #endif
 
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Dictionary = Dictionary (JSRef Dictionary) deriving (Eq)
+
+unDictionary (Dictionary o) = o
+
+instance ToJSRef Dictionary where
+  toJSRef = return . unDictionary
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Dictionary where
+  fromJSRef = return . fmap Dictionary . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDictionary o
+toDictionary :: IsDictionary o => o -> Dictionary
+toDictionary = unsafeCastGObject . toGObject
+
+instance IsDictionary Dictionary
+instance GObjectClass Dictionary where
+  toGObject = GObject . castRef . unDictionary
+  unsafeCastGObject = Dictionary . castRef . unGObject
+-- TODO add more IsDictionary instances
+#else
+-- TODO work out how we can support Dictionary in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Promise = Promise (JSRef Promise) deriving (Eq)
+
+unPromise (Promise o) = o
+
+instance ToJSRef Promise where
+  toJSRef = return . unPromise
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Promise where
+  fromJSRef = return . fmap Promise . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPromise o
+toPromise :: IsPromise o => o -> Promise
+toPromise = unsafeCastGObject . toGObject
+
+instance IsPromise Promise
+instance GObjectClass Promise where
+  toGObject = GObject . castRef . unPromise
+  unsafeCastGObject = Promise . castRef . unGObject
+-- TODO add more IsPromise instances
+#else
+-- TODO work out how we can support Promise in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype ArrayBuffer = ArrayBuffer (JSRef ArrayBuffer) deriving (Eq)
+
+unArrayBuffer (ArrayBuffer o) = o
+
+instance ToJSRef ArrayBuffer where
+  toJSRef = return . unArrayBuffer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ArrayBuffer where
+  fromJSRef = return . fmap ArrayBuffer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsArrayBuffer o
+toArrayBuffer :: IsArrayBuffer o => o -> ArrayBuffer
+toArrayBuffer = unsafeCastGObject . toGObject
+
+instance IsArrayBuffer ArrayBuffer
+instance GObjectClass ArrayBuffer where
+  toGObject = GObject . castRef . unArrayBuffer
+  unsafeCastGObject = ArrayBuffer . castRef . unGObject
+-- TODO add more IsArrayBuffer instances
+#else
+-- TODO work out how we can support ArrayBuffer in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Float32Array = Float32Array (JSRef Float32Array) deriving (Eq)
+
+unFloat32Array (Float32Array o) = o
+
+instance ToJSRef Float32Array where
+  toJSRef = return . unFloat32Array
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Float32Array where
+  fromJSRef = return . fmap Float32Array . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsFloat32Array o
+toFloat32Array :: IsFloat32Array o => o -> Float32Array
+toFloat32Array = unsafeCastGObject . toGObject
+
+instance IsFloat32Array Float32Array
+instance GObjectClass Float32Array where
+  toGObject = GObject . castRef . unFloat32Array
+  unsafeCastGObject = Float32Array . castRef . unGObject
+-- TODO add more IsFloat32Array instances
+#else
+-- TODO work out how we can support Float32Array in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Uint8Array = Uint8Array (JSRef Uint8Array) deriving (Eq)
+
+unUint8Array (Uint8Array o) = o
+
+instance ToJSRef Uint8Array where
+  toJSRef = return . unUint8Array
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Uint8Array where
+  fromJSRef = return . fmap Uint8Array . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsUint8Array o
+toUint8Array :: IsUint8Array o => o -> Uint8Array
+toUint8Array = unsafeCastGObject . toGObject
+
+instance IsUint8Array Uint8Array
+instance GObjectClass Uint8Array where
+  toGObject = GObject . castRef . unUint8Array
+  unsafeCastGObject = Uint8Array . castRef . unGObject
+-- TODO add more IsUint8Array instances
+#else
+-- TODO work out how we can support Uint8Array in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Int32Array = Int32Array (JSRef Int32Array) deriving (Eq)
+
+unInt32Array (Int32Array o) = o
+
+instance ToJSRef Int32Array where
+  toJSRef = return . unInt32Array
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Int32Array where
+  fromJSRef = return . fmap Int32Array . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsInt32Array o
+toInt32Array :: IsInt32Array o => o -> Int32Array
+toInt32Array = unsafeCastGObject . toGObject
+
+instance IsInt32Array Int32Array
+instance GObjectClass Int32Array where
+  toGObject = GObject . castRef . unInt32Array
+  unsafeCastGObject = Int32Array . castRef . unGObject
+-- TODO add more IsInt32Array instances
+#else
+-- TODO work out how we can support Int32Array in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Uint8ClampedArray = Uint8ClampedArray (JSRef Uint8ClampedArray) deriving (Eq)
+
+unUint8ClampedArray (Uint8ClampedArray o) = o
+
+instance ToJSRef Uint8ClampedArray where
+  toJSRef = return . unUint8ClampedArray
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Uint8ClampedArray where
+  fromJSRef = return . fmap Uint8ClampedArray . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsUint8ClampedArray o
+toUint8ClampedArray :: IsUint8ClampedArray o => o -> Uint8ClampedArray
+toUint8ClampedArray = unsafeCastGObject . toGObject
+
+instance IsUint8ClampedArray Uint8ClampedArray
+instance GObjectClass Uint8ClampedArray where
+  toGObject = GObject . castRef . unUint8ClampedArray
+  unsafeCastGObject = Uint8ClampedArray . castRef . unGObject
+-- TODO add more IsUint8ClampedArray instances
+#else
+-- TODO work out how we can support Uint8ClampedArray in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype ObjectArray = ObjectArray (JSRef ObjectArray) deriving (Eq)
+
+unObjectArray (ObjectArray o) = o
+
+instance ToJSRef ObjectArray where
+  toJSRef = return . unObjectArray
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ObjectArray where
+  fromJSRef = return . fmap ObjectArray . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsObjectArray o
+toObjectArray :: IsObjectArray o => o -> ObjectArray
+toObjectArray = unsafeCastGObject . toGObject
+
+instance IsObjectArray ObjectArray
+instance GObjectClass ObjectArray where
+  toGObject = GObject . castRef . unObjectArray
+  unsafeCastGObject = ObjectArray . castRef . unGObject
+-- TODO add more IsObjectArray instances
+#else
+-- TODO work out how we can support ObjectArray in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype ArrayBufferView = ArrayBufferView (JSRef ArrayBufferView) deriving (Eq)
+
+unArrayBufferView (ArrayBufferView o) = o
+
+instance ToJSRef ArrayBufferView where
+  toJSRef = return . unArrayBufferView
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ArrayBufferView where
+  fromJSRef = return . fmap ArrayBufferView . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsArrayBufferView o
+toArrayBufferView :: IsArrayBufferView o => o -> ArrayBufferView
+toArrayBufferView = unsafeCastGObject . toGObject
+
+instance IsArrayBufferView ArrayBufferView
+instance GObjectClass ArrayBufferView where
+  toGObject = GObject . castRef . unArrayBufferView
+  unsafeCastGObject = ArrayBufferView . castRef . unGObject
+-- TODO add more IsArrayBufferView instances
+#else
+-- TODO work out how we can support ArrayBufferView in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Array = Array (JSRef Array) deriving (Eq)
+
+unArray (Array o) = o
+
+instance ToJSRef Array where
+  toJSRef = return . unArray
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Array where
+  fromJSRef = return . fmap Array . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsArray o
+toArray :: IsArray o => o -> Array
+toArray = unsafeCastGObject . toGObject
+
+instance IsArray Array
+instance GObjectClass Array where
+  toGObject = GObject . castRef . unArray
+  unsafeCastGObject = Array . castRef . unGObject
+-- TODO add more IsArray instances
+#else
+-- TODO work out how we can support Array in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Date = Date (JSRef Date) deriving (Eq)
+
+unDate (Date o) = o
+
+instance ToJSRef Date where
+  toJSRef = return . unDate
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Date where
+  fromJSRef = return . fmap Date . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDate o
+toDate :: IsDate o => o -> Date
+toDate = unsafeCastGObject . toGObject
+
+instance IsDate Date
+instance GObjectClass Date where
+  toGObject = GObject . castRef . unDate
+  unsafeCastGObject = Date . castRef . unGObject
+-- TODO add more IsDate instances
+#else
+-- TODO work out how we can support Date in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Acceleration = Acceleration (JSRef Acceleration) deriving (Eq)
+
+unAcceleration (Acceleration o) = o
+
+instance ToJSRef Acceleration where
+  toJSRef = return . unAcceleration
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Acceleration where
+  fromJSRef = return . fmap Acceleration . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAcceleration o
+toAcceleration :: IsAcceleration o => o -> Acceleration
+toAcceleration = unsafeCastGObject . toGObject
+
+instance IsAcceleration Acceleration
+instance GObjectClass Acceleration where
+  toGObject = GObject . castRef . unAcceleration
+  unsafeCastGObject = Acceleration . castRef . unGObject
+-- TODO add more IsAcceleration instances
+#else
+-- TODO work out how we can support Acceleration in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype RotationRate = RotationRate (JSRef RotationRate) deriving (Eq)
+
+unRotationRate (RotationRate o) = o
+
+instance ToJSRef RotationRate where
+  toJSRef = return . unRotationRate
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RotationRate where
+  fromJSRef = return . fmap RotationRate . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRotationRate o
+toRotationRate :: IsRotationRate o => o -> RotationRate
+toRotationRate = unsafeCastGObject . toGObject
+
+instance IsRotationRate RotationRate
+instance GObjectClass RotationRate where
+  toGObject = GObject . castRef . unRotationRate
+  unsafeCastGObject = RotationRate . castRef . unGObject
+-- TODO add more IsRotationRate instances
+#else
+-- TODO work out how we can support RotationRate in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype Algorithm = Algorithm (JSRef Algorithm) deriving (Eq)
+
+unAlgorithm (Algorithm o) = o
+
+instance ToJSRef Algorithm where
+  toJSRef = return . unAlgorithm
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Algorithm where
+  fromJSRef = return . fmap Algorithm . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAlgorithm o
+toAlgorithm :: IsAlgorithm o => o -> Algorithm
+toAlgorithm = unsafeCastGObject . toGObject
+
+instance IsAlgorithm Algorithm
+instance GObjectClass Algorithm where
+  toGObject = GObject . castRef . unAlgorithm
+  unsafeCastGObject = Algorithm . castRef . unGObject
+-- TODO add more IsAlgorithm instances
+#else
+-- TODO work out how we can support Algorithm in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype CryptoOperationData = CryptoOperationData (JSRef CryptoOperationData) deriving (Eq)
+
+unCryptoOperationData (CryptoOperationData o) = o
+
+instance ToJSRef CryptoOperationData where
+  toJSRef = return . unCryptoOperationData
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CryptoOperationData where
+  fromJSRef = return . fmap CryptoOperationData . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCryptoOperationData o
+toCryptoOperationData :: IsCryptoOperationData o => o -> CryptoOperationData
+toCryptoOperationData = unsafeCastGObject . toGObject
+
+instance IsCryptoOperationData CryptoOperationData
+instance GObjectClass CryptoOperationData where
+  toGObject = GObject . castRef . unCryptoOperationData
+  unsafeCastGObject = CryptoOperationData . castRef . unGObject
+instance IsCryptoOperationData ArrayBuffer
+instance IsCryptoOperationData ArrayBufferView
+#else
+-- TODO work out how we can support CryptoOperationData in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype CanvasStyle = CanvasStyle (JSRef CanvasStyle) deriving (Eq)
+
+unCanvasStyle (CanvasStyle o) = o
+
+instance ToJSRef CanvasStyle where
+  toJSRef = return . unCanvasStyle
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CanvasStyle where
+  fromJSRef = return . fmap CanvasStyle . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCanvasStyle o
+toCanvasStyle :: IsCanvasStyle o => o -> CanvasStyle
+toCanvasStyle = unsafeCastGObject . toGObject
+
+instance IsCanvasStyle CanvasStyle
+instance GObjectClass CanvasStyle where
+  toGObject = GObject . castRef . unCanvasStyle
+  unsafeCastGObject = CanvasStyle . castRef . unGObject
+instance IsCanvasStyle CanvasGradient
+instance IsCanvasStyle CanvasPattern
+#else
+-- TODO work out how we can support CanvasStyle in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype DOMCoreException = DOMCoreException (JSRef DOMCoreException) deriving (Eq)
+
+unDOMCoreException (DOMCoreException o) = o
+
+instance ToJSRef DOMCoreException where
+  toJSRef = return . unDOMCoreException
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMCoreException where
+  fromJSRef = return . fmap DOMCoreException . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMCoreException o
+toDOMCoreException :: IsDOMCoreException o => o -> DOMCoreException
+toDOMCoreException = unsafeCastGObject . toGObject
+
+instance IsDOMCoreException DOMCoreException
+instance GObjectClass DOMCoreException where
+  toGObject = GObject . castRef . unDOMCoreException
+  unsafeCastGObject = DOMCoreException . castRef . unGObject
+#else
+-- TODO work out how we can support DOMCoreException in native code
+#endif
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+newtype DOMURLConstructor = DOMURLConstructor (JSRef DOMURLConstructor) deriving (Eq)
+
+unDOMURLConstructor (DOMURLConstructor o) = o
+
+instance ToJSRef DOMURLConstructor where
+  toJSRef = return . unDOMURLConstructor
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMURLConstructor where
+  fromJSRef = return . fmap DOMURLConstructor . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMURLConstructor o
+toDOMURLConstructor :: IsDOMURLConstructor o => o -> DOMURLConstructor
+toDOMURLConstructor = unsafeCastGObject . toGObject
+
+instance IsDOMURLConstructor DOMURLConstructor
+instance GObjectClass DOMURLConstructor where
+  toGObject = GObject . castRef . unDOMURLConstructor
+  unsafeCastGObject = DOMURLConstructor . castRef . unGObject
+#else
+-- TODO work out how we can support DOMURLConstructor in native code
+#endif
+
+type GLenum = Word32
+type GLboolean = Bool
+type GLbitfield = Word32
+type GLbyte = Int8
+type GLshort = Int16
+type GLint = Int32
+type GLsizei = Int32
+type GLintptr = Int64
+type GLsizeiptr = Int64
+type GLubyte = Word8
+type GLushort = Word16
+type GLuint = Word32
+type GLfloat = Double
+type GLclampf = Double
+
 -- AUTO GENERATION STARTS HERE
 -- The remainder of this file is generated from IDL files using domconv-webkit-jsffi
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ANGLEInstancedArrays".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ANGLEInstancedArrays Mozilla ANGLEInstancedArrays documentation>
+newtype ANGLEInstancedArrays = ANGLEInstancedArrays (JSRef ANGLEInstancedArrays) deriving (Eq)
+
+unANGLEInstancedArrays (ANGLEInstancedArrays o) = o
+
+instance ToJSRef ANGLEInstancedArrays where
+  toJSRef = return . unANGLEInstancedArrays
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ANGLEInstancedArrays where
+  fromJSRef = return . fmap ANGLEInstancedArrays . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsANGLEInstancedArrays o
+toANGLEInstancedArrays :: IsANGLEInstancedArrays o => o -> ANGLEInstancedArrays
+toANGLEInstancedArrays = unsafeCastGObject . toGObject
+
+instance IsANGLEInstancedArrays ANGLEInstancedArrays
+instance GObjectClass ANGLEInstancedArrays where
+  toGObject = GObject . castRef . unANGLEInstancedArrays
+  unsafeCastGObject = ANGLEInstancedArrays . castRef . unGObject
+
+castToANGLEInstancedArrays :: GObjectClass obj => obj -> ANGLEInstancedArrays
+castToANGLEInstancedArrays = castTo gTypeANGLEInstancedArrays "ANGLEInstancedArrays"
+
+foreign import javascript unsafe "window[\"ANGLEInstancedArrays\"]" gTypeANGLEInstancedArrays' :: JSRef GType
+gTypeANGLEInstancedArrays = GType gTypeANGLEInstancedArrays'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AbstractView".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView Mozilla AbstractView documentation>
+newtype AbstractView = AbstractView (JSRef AbstractView) deriving (Eq)
+
+unAbstractView (AbstractView o) = o
+
+instance ToJSRef AbstractView where
+  toJSRef = return . unAbstractView
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AbstractView where
+  fromJSRef = return . fmap AbstractView . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAbstractView o
+toAbstractView :: IsAbstractView o => o -> AbstractView
+toAbstractView = unsafeCastGObject . toGObject
+
+instance IsAbstractView AbstractView
+instance GObjectClass AbstractView where
+  toGObject = GObject . castRef . unAbstractView
+  unsafeCastGObject = AbstractView . castRef . unGObject
+
+castToAbstractView :: GObjectClass obj => obj -> AbstractView
+castToAbstractView = castTo gTypeAbstractView "AbstractView"
+
+foreign import javascript unsafe "window[\"AbstractView\"]" gTypeAbstractView' :: JSRef GType
+gTypeAbstractView = GType gTypeAbstractView'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AbstractWorker".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractWorker Mozilla AbstractWorker documentation>
+newtype AbstractWorker = AbstractWorker (JSRef AbstractWorker) deriving (Eq)
+
+unAbstractWorker (AbstractWorker o) = o
+
+instance ToJSRef AbstractWorker where
+  toJSRef = return . unAbstractWorker
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AbstractWorker where
+  fromJSRef = return . fmap AbstractWorker . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAbstractWorker o
+toAbstractWorker :: IsAbstractWorker o => o -> AbstractWorker
+toAbstractWorker = unsafeCastGObject . toGObject
+
+instance IsAbstractWorker AbstractWorker
+instance GObjectClass AbstractWorker where
+  toGObject = GObject . castRef . unAbstractWorker
+  unsafeCastGObject = AbstractWorker . castRef . unGObject
+
+castToAbstractWorker :: GObjectClass obj => obj -> AbstractWorker
+castToAbstractWorker = castTo gTypeAbstractWorker "AbstractWorker"
+
+foreign import javascript unsafe "window[\"AbstractWorker\"]" gTypeAbstractWorker' :: JSRef GType
+gTypeAbstractWorker = GType gTypeAbstractWorker'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AllAudioCapabilities".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.MediaStreamCapabilities"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AllAudioCapabilities Mozilla AllAudioCapabilities documentation>
+newtype AllAudioCapabilities = AllAudioCapabilities (JSRef AllAudioCapabilities) deriving (Eq)
+
+unAllAudioCapabilities (AllAudioCapabilities o) = o
+
+instance ToJSRef AllAudioCapabilities where
+  toJSRef = return . unAllAudioCapabilities
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AllAudioCapabilities where
+  fromJSRef = return . fmap AllAudioCapabilities . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsMediaStreamCapabilities o => IsAllAudioCapabilities o
+toAllAudioCapabilities :: IsAllAudioCapabilities o => o -> AllAudioCapabilities
+toAllAudioCapabilities = unsafeCastGObject . toGObject
+
+instance IsAllAudioCapabilities AllAudioCapabilities
+instance IsMediaStreamCapabilities AllAudioCapabilities
+instance GObjectClass AllAudioCapabilities where
+  toGObject = GObject . castRef . unAllAudioCapabilities
+  unsafeCastGObject = AllAudioCapabilities . castRef . unGObject
+
+castToAllAudioCapabilities :: GObjectClass obj => obj -> AllAudioCapabilities
+castToAllAudioCapabilities = castTo gTypeAllAudioCapabilities "AllAudioCapabilities"
+
+foreign import javascript unsafe "window[\"AllAudioCapabilities\"]" gTypeAllAudioCapabilities' :: JSRef GType
+gTypeAllAudioCapabilities = GType gTypeAllAudioCapabilities'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AllVideoCapabilities".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.MediaStreamCapabilities"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities Mozilla AllVideoCapabilities documentation>
+newtype AllVideoCapabilities = AllVideoCapabilities (JSRef AllVideoCapabilities) deriving (Eq)
+
+unAllVideoCapabilities (AllVideoCapabilities o) = o
+
+instance ToJSRef AllVideoCapabilities where
+  toJSRef = return . unAllVideoCapabilities
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AllVideoCapabilities where
+  fromJSRef = return . fmap AllVideoCapabilities . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsMediaStreamCapabilities o => IsAllVideoCapabilities o
+toAllVideoCapabilities :: IsAllVideoCapabilities o => o -> AllVideoCapabilities
+toAllVideoCapabilities = unsafeCastGObject . toGObject
+
+instance IsAllVideoCapabilities AllVideoCapabilities
+instance IsMediaStreamCapabilities AllVideoCapabilities
+instance GObjectClass AllVideoCapabilities where
+  toGObject = GObject . castRef . unAllVideoCapabilities
+  unsafeCastGObject = AllVideoCapabilities . castRef . unGObject
+
+castToAllVideoCapabilities :: GObjectClass obj => obj -> AllVideoCapabilities
+castToAllVideoCapabilities = castTo gTypeAllVideoCapabilities "AllVideoCapabilities"
+
+foreign import javascript unsafe "window[\"AllVideoCapabilities\"]" gTypeAllVideoCapabilities' :: JSRef GType
+gTypeAllVideoCapabilities = GType gTypeAllVideoCapabilities'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AnalyserNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode Mozilla AnalyserNode documentation>
+newtype AnalyserNode = AnalyserNode (JSRef AnalyserNode) deriving (Eq)
+
+unAnalyserNode (AnalyserNode o) = o
+
+instance ToJSRef AnalyserNode where
+  toJSRef = return . unAnalyserNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AnalyserNode where
+  fromJSRef = return . fmap AnalyserNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsAnalyserNode o
+toAnalyserNode :: IsAnalyserNode o => o -> AnalyserNode
+toAnalyserNode = unsafeCastGObject . toGObject
+
+instance IsAnalyserNode AnalyserNode
+instance IsAudioNode AnalyserNode
+instance IsEventTarget AnalyserNode
+instance GObjectClass AnalyserNode where
+  toGObject = GObject . castRef . unAnalyserNode
+  unsafeCastGObject = AnalyserNode . castRef . unGObject
+
+castToAnalyserNode :: GObjectClass obj => obj -> AnalyserNode
+castToAnalyserNode = castTo gTypeAnalyserNode "AnalyserNode"
+
+foreign import javascript unsafe "window[\"AnalyserNode\"]" gTypeAnalyserNode' :: JSRef GType
+gTypeAnalyserNode = GType gTypeAnalyserNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AnimationEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent Mozilla AnimationEvent documentation>
+newtype AnimationEvent = AnimationEvent (JSRef AnimationEvent) deriving (Eq)
+
+unAnimationEvent (AnimationEvent o) = o
+
+instance ToJSRef AnimationEvent where
+  toJSRef = return . unAnimationEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AnimationEvent where
+  fromJSRef = return . fmap AnimationEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsAnimationEvent o
+toAnimationEvent :: IsAnimationEvent o => o -> AnimationEvent
+toAnimationEvent = unsafeCastGObject . toGObject
+
+instance IsAnimationEvent AnimationEvent
+instance IsEvent AnimationEvent
+instance GObjectClass AnimationEvent where
+  toGObject = GObject . castRef . unAnimationEvent
+  unsafeCastGObject = AnimationEvent . castRef . unGObject
+
+castToAnimationEvent :: GObjectClass obj => obj -> AnimationEvent
+castToAnimationEvent = castTo gTypeAnimationEvent "AnimationEvent"
+
+foreign import javascript unsafe "window[\"AnimationEvent\"]" gTypeAnimationEvent' :: JSRef GType
+gTypeAnimationEvent = GType gTypeAnimationEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMAttr".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMAttr Mozilla DOMAttr documentation>
 newtype DOMAttr = DOMAttr (JSRef DOMAttr) deriving (Eq)
 
 unDOMAttr (DOMAttr o) = o
@@ -679,6 +1711,479 @@ type IsDOMAttr o = DOMAttrClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioBuffer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer Mozilla AudioBuffer documentation>
+newtype AudioBuffer = AudioBuffer (JSRef AudioBuffer) deriving (Eq)
+
+unAudioBuffer (AudioBuffer o) = o
+
+instance ToJSRef AudioBuffer where
+  toJSRef = return . unAudioBuffer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioBuffer where
+  fromJSRef = return . fmap AudioBuffer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAudioBuffer o
+toAudioBuffer :: IsAudioBuffer o => o -> AudioBuffer
+toAudioBuffer = unsafeCastGObject . toGObject
+
+instance IsAudioBuffer AudioBuffer
+instance GObjectClass AudioBuffer where
+  toGObject = GObject . castRef . unAudioBuffer
+  unsafeCastGObject = AudioBuffer . castRef . unGObject
+
+castToAudioBuffer :: GObjectClass obj => obj -> AudioBuffer
+castToAudioBuffer = castTo gTypeAudioBuffer "AudioBuffer"
+
+foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer' :: JSRef GType
+gTypeAudioBuffer = GType gTypeAudioBuffer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioBufferCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation>
+newtype AudioBufferCallback = AudioBufferCallback (JSRef AudioBufferCallback) deriving (Eq)
+
+unAudioBufferCallback (AudioBufferCallback o) = o
+
+instance ToJSRef AudioBufferCallback where
+  toJSRef = return . unAudioBufferCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioBufferCallback where
+  fromJSRef = return . fmap AudioBufferCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAudioBufferCallback o
+toAudioBufferCallback :: IsAudioBufferCallback o => o -> AudioBufferCallback
+toAudioBufferCallback = unsafeCastGObject . toGObject
+
+instance IsAudioBufferCallback AudioBufferCallback
+instance GObjectClass AudioBufferCallback where
+  toGObject = GObject . castRef . unAudioBufferCallback
+  unsafeCastGObject = AudioBufferCallback . castRef . unGObject
+
+castToAudioBufferCallback :: GObjectClass obj => obj -> AudioBufferCallback
+castToAudioBufferCallback = castTo gTypeAudioBufferCallback "AudioBufferCallback"
+
+foreign import javascript unsafe "window[\"AudioBufferCallback\"]" gTypeAudioBufferCallback' :: JSRef GType
+gTypeAudioBufferCallback = GType gTypeAudioBufferCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioBufferSourceNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode Mozilla AudioBufferSourceNode documentation>
+newtype AudioBufferSourceNode = AudioBufferSourceNode (JSRef AudioBufferSourceNode) deriving (Eq)
+
+unAudioBufferSourceNode (AudioBufferSourceNode o) = o
+
+instance ToJSRef AudioBufferSourceNode where
+  toJSRef = return . unAudioBufferSourceNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioBufferSourceNode where
+  fromJSRef = return . fmap AudioBufferSourceNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsAudioBufferSourceNode o
+toAudioBufferSourceNode :: IsAudioBufferSourceNode o => o -> AudioBufferSourceNode
+toAudioBufferSourceNode = unsafeCastGObject . toGObject
+
+instance IsAudioBufferSourceNode AudioBufferSourceNode
+instance IsAudioNode AudioBufferSourceNode
+instance IsEventTarget AudioBufferSourceNode
+instance GObjectClass AudioBufferSourceNode where
+  toGObject = GObject . castRef . unAudioBufferSourceNode
+  unsafeCastGObject = AudioBufferSourceNode . castRef . unGObject
+
+castToAudioBufferSourceNode :: GObjectClass obj => obj -> AudioBufferSourceNode
+castToAudioBufferSourceNode = castTo gTypeAudioBufferSourceNode "AudioBufferSourceNode"
+
+foreign import javascript unsafe "window[\"AudioBufferSourceNode\"]" gTypeAudioBufferSourceNode' :: JSRef GType
+gTypeAudioBufferSourceNode = GType gTypeAudioBufferSourceNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioContext".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext Mozilla webkitAudioContext documentation>
+newtype AudioContext = AudioContext (JSRef AudioContext) deriving (Eq)
+
+unAudioContext (AudioContext o) = o
+
+instance ToJSRef AudioContext where
+  toJSRef = return . unAudioContext
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioContext where
+  fromJSRef = return . fmap AudioContext . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAudioContext o
+toAudioContext :: IsAudioContext o => o -> AudioContext
+toAudioContext = unsafeCastGObject . toGObject
+
+instance IsAudioContext AudioContext
+instance GObjectClass AudioContext where
+  toGObject = GObject . castRef . unAudioContext
+  unsafeCastGObject = AudioContext . castRef . unGObject
+
+castToAudioContext :: GObjectClass obj => obj -> AudioContext
+castToAudioContext = castTo gTypeAudioContext "AudioContext"
+
+foreign import javascript unsafe "window[\"webkitAudioContext\"]" gTypeAudioContext' :: JSRef GType
+gTypeAudioContext = GType gTypeAudioContext'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioDestinationNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioDestinationNode Mozilla AudioDestinationNode documentation>
+newtype AudioDestinationNode = AudioDestinationNode (JSRef AudioDestinationNode) deriving (Eq)
+
+unAudioDestinationNode (AudioDestinationNode o) = o
+
+instance ToJSRef AudioDestinationNode where
+  toJSRef = return . unAudioDestinationNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioDestinationNode where
+  fromJSRef = return . fmap AudioDestinationNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsAudioDestinationNode o
+toAudioDestinationNode :: IsAudioDestinationNode o => o -> AudioDestinationNode
+toAudioDestinationNode = unsafeCastGObject . toGObject
+
+instance IsAudioDestinationNode AudioDestinationNode
+instance IsAudioNode AudioDestinationNode
+instance IsEventTarget AudioDestinationNode
+instance GObjectClass AudioDestinationNode where
+  toGObject = GObject . castRef . unAudioDestinationNode
+  unsafeCastGObject = AudioDestinationNode . castRef . unGObject
+
+castToAudioDestinationNode :: GObjectClass obj => obj -> AudioDestinationNode
+castToAudioDestinationNode = castTo gTypeAudioDestinationNode "AudioDestinationNode"
+
+foreign import javascript unsafe "window[\"AudioDestinationNode\"]" gTypeAudioDestinationNode' :: JSRef GType
+gTypeAudioDestinationNode = GType gTypeAudioDestinationNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioListener".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener Mozilla AudioListener documentation>
+newtype AudioListener = AudioListener (JSRef AudioListener) deriving (Eq)
+
+unAudioListener (AudioListener o) = o
+
+instance ToJSRef AudioListener where
+  toJSRef = return . unAudioListener
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioListener where
+  fromJSRef = return . fmap AudioListener . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAudioListener o
+toAudioListener :: IsAudioListener o => o -> AudioListener
+toAudioListener = unsafeCastGObject . toGObject
+
+instance IsAudioListener AudioListener
+instance GObjectClass AudioListener where
+  toGObject = GObject . castRef . unAudioListener
+  unsafeCastGObject = AudioListener . castRef . unGObject
+
+castToAudioListener :: GObjectClass obj => obj -> AudioListener
+castToAudioListener = castTo gTypeAudioListener "AudioListener"
+
+foreign import javascript unsafe "window[\"AudioListener\"]" gTypeAudioListener' :: JSRef GType
+gTypeAudioListener = GType gTypeAudioListener'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode Mozilla AudioNode documentation>
+newtype AudioNode = AudioNode (JSRef AudioNode) deriving (Eq)
+
+unAudioNode (AudioNode o) = o
+
+instance ToJSRef AudioNode where
+  toJSRef = return . unAudioNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioNode where
+  fromJSRef = return . fmap AudioNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsAudioNode o
+toAudioNode :: IsAudioNode o => o -> AudioNode
+toAudioNode = unsafeCastGObject . toGObject
+
+instance IsAudioNode AudioNode
+instance IsEventTarget AudioNode
+instance GObjectClass AudioNode where
+  toGObject = GObject . castRef . unAudioNode
+  unsafeCastGObject = AudioNode . castRef . unGObject
+
+castToAudioNode :: GObjectClass obj => obj -> AudioNode
+castToAudioNode = castTo gTypeAudioNode "AudioNode"
+
+foreign import javascript unsafe "window[\"AudioNode\"]" gTypeAudioNode' :: JSRef GType
+gTypeAudioNode = GType gTypeAudioNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioParam".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam Mozilla AudioParam documentation>
+newtype AudioParam = AudioParam (JSRef AudioParam) deriving (Eq)
+
+unAudioParam (AudioParam o) = o
+
+instance ToJSRef AudioParam where
+  toJSRef = return . unAudioParam
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioParam where
+  fromJSRef = return . fmap AudioParam . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAudioParam o
+toAudioParam :: IsAudioParam o => o -> AudioParam
+toAudioParam = unsafeCastGObject . toGObject
+
+instance IsAudioParam AudioParam
+instance GObjectClass AudioParam where
+  toGObject = GObject . castRef . unAudioParam
+  unsafeCastGObject = AudioParam . castRef . unGObject
+
+castToAudioParam :: GObjectClass obj => obj -> AudioParam
+castToAudioParam = castTo gTypeAudioParam "AudioParam"
+
+foreign import javascript unsafe "window[\"AudioParam\"]" gTypeAudioParam' :: JSRef GType
+gTypeAudioParam = GType gTypeAudioParam'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioProcessingEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent Mozilla AudioProcessingEvent documentation>
+newtype AudioProcessingEvent = AudioProcessingEvent (JSRef AudioProcessingEvent) deriving (Eq)
+
+unAudioProcessingEvent (AudioProcessingEvent o) = o
+
+instance ToJSRef AudioProcessingEvent where
+  toJSRef = return . unAudioProcessingEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioProcessingEvent where
+  fromJSRef = return . fmap AudioProcessingEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsAudioProcessingEvent o
+toAudioProcessingEvent :: IsAudioProcessingEvent o => o -> AudioProcessingEvent
+toAudioProcessingEvent = unsafeCastGObject . toGObject
+
+instance IsAudioProcessingEvent AudioProcessingEvent
+instance IsEvent AudioProcessingEvent
+instance GObjectClass AudioProcessingEvent where
+  toGObject = GObject . castRef . unAudioProcessingEvent
+  unsafeCastGObject = AudioProcessingEvent . castRef . unGObject
+
+castToAudioProcessingEvent :: GObjectClass obj => obj -> AudioProcessingEvent
+castToAudioProcessingEvent = castTo gTypeAudioProcessingEvent "AudioProcessingEvent"
+
+foreign import javascript unsafe "window[\"AudioProcessingEvent\"]" gTypeAudioProcessingEvent' :: JSRef GType
+gTypeAudioProcessingEvent = GType gTypeAudioProcessingEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioStreamTrack".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.MediaStreamTrack"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioStreamTrack Mozilla AudioStreamTrack documentation>
+newtype AudioStreamTrack = AudioStreamTrack (JSRef AudioStreamTrack) deriving (Eq)
+
+unAudioStreamTrack (AudioStreamTrack o) = o
+
+instance ToJSRef AudioStreamTrack where
+  toJSRef = return . unAudioStreamTrack
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioStreamTrack where
+  fromJSRef = return . fmap AudioStreamTrack . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsMediaStreamTrack o => IsAudioStreamTrack o
+toAudioStreamTrack :: IsAudioStreamTrack o => o -> AudioStreamTrack
+toAudioStreamTrack = unsafeCastGObject . toGObject
+
+instance IsAudioStreamTrack AudioStreamTrack
+instance IsMediaStreamTrack AudioStreamTrack
+instance GObjectClass AudioStreamTrack where
+  toGObject = GObject . castRef . unAudioStreamTrack
+  unsafeCastGObject = AudioStreamTrack . castRef . unGObject
+
+castToAudioStreamTrack :: GObjectClass obj => obj -> AudioStreamTrack
+castToAudioStreamTrack = castTo gTypeAudioStreamTrack "AudioStreamTrack"
+
+foreign import javascript unsafe "window[\"AudioStreamTrack\"]" gTypeAudioStreamTrack' :: JSRef GType
+gTypeAudioStreamTrack = GType gTypeAudioStreamTrack'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioTrack".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack Mozilla AudioTrack documentation>
+newtype AudioTrack = AudioTrack (JSRef AudioTrack) deriving (Eq)
+
+unAudioTrack (AudioTrack o) = o
+
+instance ToJSRef AudioTrack where
+  toJSRef = return . unAudioTrack
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioTrack where
+  fromJSRef = return . fmap AudioTrack . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAudioTrack o
+toAudioTrack :: IsAudioTrack o => o -> AudioTrack
+toAudioTrack = unsafeCastGObject . toGObject
+
+instance IsAudioTrack AudioTrack
+instance GObjectClass AudioTrack where
+  toGObject = GObject . castRef . unAudioTrack
+  unsafeCastGObject = AudioTrack . castRef . unGObject
+
+castToAudioTrack :: GObjectClass obj => obj -> AudioTrack
+castToAudioTrack = castTo gTypeAudioTrack "AudioTrack"
+
+foreign import javascript unsafe "window[\"AudioTrack\"]" gTypeAudioTrack' :: JSRef GType
+gTypeAudioTrack = GType gTypeAudioTrack'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AudioTrackList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList Mozilla AudioTrackList documentation>
+newtype AudioTrackList = AudioTrackList (JSRef AudioTrackList) deriving (Eq)
+
+unAudioTrackList (AudioTrackList o) = o
+
+instance ToJSRef AudioTrackList where
+  toJSRef = return . unAudioTrackList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AudioTrackList where
+  fromJSRef = return . fmap AudioTrackList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsAudioTrackList o
+toAudioTrackList :: IsAudioTrackList o => o -> AudioTrackList
+toAudioTrackList = unsafeCastGObject . toGObject
+
+instance IsAudioTrackList AudioTrackList
+instance GObjectClass AudioTrackList where
+  toGObject = GObject . castRef . unAudioTrackList
+  unsafeCastGObject = AudioTrackList . castRef . unGObject
+
+castToAudioTrackList :: GObjectClass obj => obj -> AudioTrackList
+castToAudioTrackList = castTo gTypeAudioTrackList "AudioTrackList"
+
+foreign import javascript unsafe "window[\"AudioTrackList\"]" gTypeAudioTrackList' :: JSRef GType
+gTypeAudioTrackList = GType gTypeAudioTrackList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.AutocompleteErrorEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AutocompleteErrorEvent Mozilla AutocompleteErrorEvent documentation>
+newtype AutocompleteErrorEvent = AutocompleteErrorEvent (JSRef AutocompleteErrorEvent) deriving (Eq)
+
+unAutocompleteErrorEvent (AutocompleteErrorEvent o) = o
+
+instance ToJSRef AutocompleteErrorEvent where
+  toJSRef = return . unAutocompleteErrorEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef AutocompleteErrorEvent where
+  fromJSRef = return . fmap AutocompleteErrorEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsAutocompleteErrorEvent o
+toAutocompleteErrorEvent :: IsAutocompleteErrorEvent o => o -> AutocompleteErrorEvent
+toAutocompleteErrorEvent = unsafeCastGObject . toGObject
+
+instance IsAutocompleteErrorEvent AutocompleteErrorEvent
+instance IsEvent AutocompleteErrorEvent
+instance GObjectClass AutocompleteErrorEvent where
+  toGObject = GObject . castRef . unAutocompleteErrorEvent
+  unsafeCastGObject = AutocompleteErrorEvent . castRef . unGObject
+
+castToAutocompleteErrorEvent :: GObjectClass obj => obj -> AutocompleteErrorEvent
+castToAutocompleteErrorEvent = castTo gTypeAutocompleteErrorEvent "AutocompleteErrorEvent"
+
+foreign import javascript unsafe "window[\"AutocompleteErrorEvent\"]" gTypeAutocompleteErrorEvent' :: JSRef GType
+gTypeAutocompleteErrorEvent = GType gTypeAutocompleteErrorEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.BarProp".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/BarProp Mozilla BarProp documentation>
 newtype BarProp = BarProp (JSRef BarProp) deriving (Eq)
 
 unBarProp (BarProp o) = o
@@ -706,10 +2211,164 @@ castToBarProp = castTo gTypeBarProp "BarProp"
 foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp' :: JSRef GType
 gTypeBarProp = GType gTypeBarProp'
 #else
+type IsBarProp o = BarPropClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.BatteryManager".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager Mozilla BatteryManager documentation>
+newtype BatteryManager = BatteryManager (JSRef BatteryManager) deriving (Eq)
+
+unBatteryManager (BatteryManager o) = o
+
+instance ToJSRef BatteryManager where
+  toJSRef = return . unBatteryManager
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef BatteryManager where
+  fromJSRef = return . fmap BatteryManager . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsBatteryManager o
+toBatteryManager :: IsBatteryManager o => o -> BatteryManager
+toBatteryManager = unsafeCastGObject . toGObject
+
+instance IsBatteryManager BatteryManager
+instance GObjectClass BatteryManager where
+  toGObject = GObject . castRef . unBatteryManager
+  unsafeCastGObject = BatteryManager . castRef . unGObject
+
+castToBatteryManager :: GObjectClass obj => obj -> BatteryManager
+castToBatteryManager = castTo gTypeBatteryManager "BatteryManager"
+
+foreign import javascript unsafe "window[\"BatteryManager\"]" gTypeBatteryManager' :: JSRef GType
+gTypeBatteryManager = GType gTypeBatteryManager'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.BeforeLoadEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/BeforeLoadEvent Mozilla BeforeLoadEvent documentation>
+newtype BeforeLoadEvent = BeforeLoadEvent (JSRef BeforeLoadEvent) deriving (Eq)
+
+unBeforeLoadEvent (BeforeLoadEvent o) = o
+
+instance ToJSRef BeforeLoadEvent where
+  toJSRef = return . unBeforeLoadEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef BeforeLoadEvent where
+  fromJSRef = return . fmap BeforeLoadEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsBeforeLoadEvent o
+toBeforeLoadEvent :: IsBeforeLoadEvent o => o -> BeforeLoadEvent
+toBeforeLoadEvent = unsafeCastGObject . toGObject
+
+instance IsBeforeLoadEvent BeforeLoadEvent
+instance IsEvent BeforeLoadEvent
+instance GObjectClass BeforeLoadEvent where
+  toGObject = GObject . castRef . unBeforeLoadEvent
+  unsafeCastGObject = BeforeLoadEvent . castRef . unGObject
+
+castToBeforeLoadEvent :: GObjectClass obj => obj -> BeforeLoadEvent
+castToBeforeLoadEvent = castTo gTypeBeforeLoadEvent "BeforeLoadEvent"
+
+foreign import javascript unsafe "window[\"BeforeLoadEvent\"]" gTypeBeforeLoadEvent' :: JSRef GType
+gTypeBeforeLoadEvent = GType gTypeBeforeLoadEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.BeforeUnloadEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent Mozilla BeforeUnloadEvent documentation>
+newtype BeforeUnloadEvent = BeforeUnloadEvent (JSRef BeforeUnloadEvent) deriving (Eq)
+
+unBeforeUnloadEvent (BeforeUnloadEvent o) = o
+
+instance ToJSRef BeforeUnloadEvent where
+  toJSRef = return . unBeforeUnloadEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef BeforeUnloadEvent where
+  fromJSRef = return . fmap BeforeUnloadEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsBeforeUnloadEvent o
+toBeforeUnloadEvent :: IsBeforeUnloadEvent o => o -> BeforeUnloadEvent
+toBeforeUnloadEvent = unsafeCastGObject . toGObject
+
+instance IsBeforeUnloadEvent BeforeUnloadEvent
+instance IsEvent BeforeUnloadEvent
+instance GObjectClass BeforeUnloadEvent where
+  toGObject = GObject . castRef . unBeforeUnloadEvent
+  unsafeCastGObject = BeforeUnloadEvent . castRef . unGObject
+
+castToBeforeUnloadEvent :: GObjectClass obj => obj -> BeforeUnloadEvent
+castToBeforeUnloadEvent = castTo gTypeBeforeUnloadEvent "BeforeUnloadEvent"
+
+foreign import javascript unsafe "window[\"BeforeUnloadEvent\"]" gTypeBeforeUnloadEvent' :: JSRef GType
+gTypeBeforeUnloadEvent = GType gTypeBeforeUnloadEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.BiquadFilterNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode Mozilla BiquadFilterNode documentation>
+newtype BiquadFilterNode = BiquadFilterNode (JSRef BiquadFilterNode) deriving (Eq)
+
+unBiquadFilterNode (BiquadFilterNode o) = o
+
+instance ToJSRef BiquadFilterNode where
+  toJSRef = return . unBiquadFilterNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef BiquadFilterNode where
+  fromJSRef = return . fmap BiquadFilterNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsBiquadFilterNode o
+toBiquadFilterNode :: IsBiquadFilterNode o => o -> BiquadFilterNode
+toBiquadFilterNode = unsafeCastGObject . toGObject
+
+instance IsBiquadFilterNode BiquadFilterNode
+instance IsAudioNode BiquadFilterNode
+instance IsEventTarget BiquadFilterNode
+instance GObjectClass BiquadFilterNode where
+  toGObject = GObject . castRef . unBiquadFilterNode
+  unsafeCastGObject = BiquadFilterNode . castRef . unGObject
+
+castToBiquadFilterNode :: GObjectClass obj => obj -> BiquadFilterNode
+castToBiquadFilterNode = castTo gTypeBiquadFilterNode "BiquadFilterNode"
+
+foreign import javascript unsafe "window[\"BiquadFilterNode\"]" gTypeBiquadFilterNode' :: JSRef GType
+gTypeBiquadFilterNode = GType gTypeBiquadFilterNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Blob".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation>
 newtype Blob = Blob (JSRef Blob) deriving (Eq)
 
 unBlob (Blob o) = o
@@ -742,6 +2401,14 @@ type IsBlob o = BlobClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CDATASection".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Text"
+--     * "GHCJS.DOM.CharacterData"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CDATASection Mozilla CDATASection documentation>
 newtype CDATASection = CDATASection (JSRef CDATASection) deriving (Eq)
 
 unCDATASection (CDATASection o) = o
@@ -777,6 +2444,316 @@ type IsCDATASection o = CDATASectionClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSCharsetRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule Mozilla CSSCharsetRule documentation>
+newtype CSSCharsetRule = CSSCharsetRule (JSRef CSSCharsetRule) deriving (Eq)
+
+unCSSCharsetRule (CSSCharsetRule o) = o
+
+instance ToJSRef CSSCharsetRule where
+  toJSRef = return . unCSSCharsetRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSCharsetRule where
+  fromJSRef = return . fmap CSSCharsetRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSCharsetRule o
+toCSSCharsetRule :: IsCSSCharsetRule o => o -> CSSCharsetRule
+toCSSCharsetRule = unsafeCastGObject . toGObject
+
+instance IsCSSCharsetRule CSSCharsetRule
+instance IsCSSRule CSSCharsetRule
+instance GObjectClass CSSCharsetRule where
+  toGObject = GObject . castRef . unCSSCharsetRule
+  unsafeCastGObject = CSSCharsetRule . castRef . unGObject
+
+castToCSSCharsetRule :: GObjectClass obj => obj -> CSSCharsetRule
+castToCSSCharsetRule = castTo gTypeCSSCharsetRule "CSSCharsetRule"
+
+foreign import javascript unsafe "window[\"CSSCharsetRule\"]" gTypeCSSCharsetRule' :: JSRef GType
+gTypeCSSCharsetRule = GType gTypeCSSCharsetRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceLoadEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent Mozilla CSSFontFaceLoadEvent documentation>
+newtype CSSFontFaceLoadEvent = CSSFontFaceLoadEvent (JSRef CSSFontFaceLoadEvent) deriving (Eq)
+
+unCSSFontFaceLoadEvent (CSSFontFaceLoadEvent o) = o
+
+instance ToJSRef CSSFontFaceLoadEvent where
+  toJSRef = return . unCSSFontFaceLoadEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSFontFaceLoadEvent where
+  fromJSRef = return . fmap CSSFontFaceLoadEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsCSSFontFaceLoadEvent o
+toCSSFontFaceLoadEvent :: IsCSSFontFaceLoadEvent o => o -> CSSFontFaceLoadEvent
+toCSSFontFaceLoadEvent = unsafeCastGObject . toGObject
+
+instance IsCSSFontFaceLoadEvent CSSFontFaceLoadEvent
+instance IsEvent CSSFontFaceLoadEvent
+instance GObjectClass CSSFontFaceLoadEvent where
+  toGObject = GObject . castRef . unCSSFontFaceLoadEvent
+  unsafeCastGObject = CSSFontFaceLoadEvent . castRef . unGObject
+
+castToCSSFontFaceLoadEvent :: GObjectClass obj => obj -> CSSFontFaceLoadEvent
+castToCSSFontFaceLoadEvent = castTo gTypeCSSFontFaceLoadEvent "CSSFontFaceLoadEvent"
+
+foreign import javascript unsafe "window[\"CSSFontFaceLoadEvent\"]" gTypeCSSFontFaceLoadEvent' :: JSRef GType
+gTypeCSSFontFaceLoadEvent = GType gTypeCSSFontFaceLoadEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceRule Mozilla CSSFontFaceRule documentation>
+newtype CSSFontFaceRule = CSSFontFaceRule (JSRef CSSFontFaceRule) deriving (Eq)
+
+unCSSFontFaceRule (CSSFontFaceRule o) = o
+
+instance ToJSRef CSSFontFaceRule where
+  toJSRef = return . unCSSFontFaceRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSFontFaceRule where
+  fromJSRef = return . fmap CSSFontFaceRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSFontFaceRule o
+toCSSFontFaceRule :: IsCSSFontFaceRule o => o -> CSSFontFaceRule
+toCSSFontFaceRule = unsafeCastGObject . toGObject
+
+instance IsCSSFontFaceRule CSSFontFaceRule
+instance IsCSSRule CSSFontFaceRule
+instance GObjectClass CSSFontFaceRule where
+  toGObject = GObject . castRef . unCSSFontFaceRule
+  unsafeCastGObject = CSSFontFaceRule . castRef . unGObject
+
+castToCSSFontFaceRule :: GObjectClass obj => obj -> CSSFontFaceRule
+castToCSSFontFaceRule = castTo gTypeCSSFontFaceRule "CSSFontFaceRule"
+
+foreign import javascript unsafe "window[\"CSSFontFaceRule\"]" gTypeCSSFontFaceRule' :: JSRef GType
+gTypeCSSFontFaceRule = GType gTypeCSSFontFaceRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSImportRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule Mozilla CSSImportRule documentation>
+newtype CSSImportRule = CSSImportRule (JSRef CSSImportRule) deriving (Eq)
+
+unCSSImportRule (CSSImportRule o) = o
+
+instance ToJSRef CSSImportRule where
+  toJSRef = return . unCSSImportRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSImportRule where
+  fromJSRef = return . fmap CSSImportRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSImportRule o
+toCSSImportRule :: IsCSSImportRule o => o -> CSSImportRule
+toCSSImportRule = unsafeCastGObject . toGObject
+
+instance IsCSSImportRule CSSImportRule
+instance IsCSSRule CSSImportRule
+instance GObjectClass CSSImportRule where
+  toGObject = GObject . castRef . unCSSImportRule
+  unsafeCastGObject = CSSImportRule . castRef . unGObject
+
+castToCSSImportRule :: GObjectClass obj => obj -> CSSImportRule
+castToCSSImportRule = castTo gTypeCSSImportRule "CSSImportRule"
+
+foreign import javascript unsafe "window[\"CSSImportRule\"]" gTypeCSSImportRule' :: JSRef GType
+gTypeCSSImportRule = GType gTypeCSSImportRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframeRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule Mozilla CSSKeyframeRule documentation>
+newtype CSSKeyframeRule = CSSKeyframeRule (JSRef CSSKeyframeRule) deriving (Eq)
+
+unCSSKeyframeRule (CSSKeyframeRule o) = o
+
+instance ToJSRef CSSKeyframeRule where
+  toJSRef = return . unCSSKeyframeRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSKeyframeRule where
+  fromJSRef = return . fmap CSSKeyframeRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSKeyframeRule o
+toCSSKeyframeRule :: IsCSSKeyframeRule o => o -> CSSKeyframeRule
+toCSSKeyframeRule = unsafeCastGObject . toGObject
+
+instance IsCSSKeyframeRule CSSKeyframeRule
+instance IsCSSRule CSSKeyframeRule
+instance GObjectClass CSSKeyframeRule where
+  toGObject = GObject . castRef . unCSSKeyframeRule
+  unsafeCastGObject = CSSKeyframeRule . castRef . unGObject
+
+castToCSSKeyframeRule :: GObjectClass obj => obj -> CSSKeyframeRule
+castToCSSKeyframeRule = castTo gTypeCSSKeyframeRule "CSSKeyframeRule"
+
+foreign import javascript unsafe "window[\"CSSKeyframeRule\"]" gTypeCSSKeyframeRule' :: JSRef GType
+gTypeCSSKeyframeRule = GType gTypeCSSKeyframeRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframesRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule Mozilla CSSKeyframesRule documentation>
+newtype CSSKeyframesRule = CSSKeyframesRule (JSRef CSSKeyframesRule) deriving (Eq)
+
+unCSSKeyframesRule (CSSKeyframesRule o) = o
+
+instance ToJSRef CSSKeyframesRule where
+  toJSRef = return . unCSSKeyframesRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSKeyframesRule where
+  fromJSRef = return . fmap CSSKeyframesRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSKeyframesRule o
+toCSSKeyframesRule :: IsCSSKeyframesRule o => o -> CSSKeyframesRule
+toCSSKeyframesRule = unsafeCastGObject . toGObject
+
+instance IsCSSKeyframesRule CSSKeyframesRule
+instance IsCSSRule CSSKeyframesRule
+instance GObjectClass CSSKeyframesRule where
+  toGObject = GObject . castRef . unCSSKeyframesRule
+  unsafeCastGObject = CSSKeyframesRule . castRef . unGObject
+
+castToCSSKeyframesRule :: GObjectClass obj => obj -> CSSKeyframesRule
+castToCSSKeyframesRule = castTo gTypeCSSKeyframesRule "CSSKeyframesRule"
+
+foreign import javascript unsafe "window[\"CSSKeyframesRule\"]" gTypeCSSKeyframesRule' :: JSRef GType
+gTypeCSSKeyframesRule = GType gTypeCSSKeyframesRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSMediaRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule Mozilla CSSMediaRule documentation>
+newtype CSSMediaRule = CSSMediaRule (JSRef CSSMediaRule) deriving (Eq)
+
+unCSSMediaRule (CSSMediaRule o) = o
+
+instance ToJSRef CSSMediaRule where
+  toJSRef = return . unCSSMediaRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSMediaRule where
+  fromJSRef = return . fmap CSSMediaRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSMediaRule o
+toCSSMediaRule :: IsCSSMediaRule o => o -> CSSMediaRule
+toCSSMediaRule = unsafeCastGObject . toGObject
+
+instance IsCSSMediaRule CSSMediaRule
+instance IsCSSRule CSSMediaRule
+instance GObjectClass CSSMediaRule where
+  toGObject = GObject . castRef . unCSSMediaRule
+  unsafeCastGObject = CSSMediaRule . castRef . unGObject
+
+castToCSSMediaRule :: GObjectClass obj => obj -> CSSMediaRule
+castToCSSMediaRule = castTo gTypeCSSMediaRule "CSSMediaRule"
+
+foreign import javascript unsafe "window[\"CSSMediaRule\"]" gTypeCSSMediaRule' :: JSRef GType
+gTypeCSSMediaRule = GType gTypeCSSMediaRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSPageRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule Mozilla CSSPageRule documentation>
+newtype CSSPageRule = CSSPageRule (JSRef CSSPageRule) deriving (Eq)
+
+unCSSPageRule (CSSPageRule o) = o
+
+instance ToJSRef CSSPageRule where
+  toJSRef = return . unCSSPageRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSPageRule where
+  fromJSRef = return . fmap CSSPageRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSPageRule o
+toCSSPageRule :: IsCSSPageRule o => o -> CSSPageRule
+toCSSPageRule = unsafeCastGObject . toGObject
+
+instance IsCSSPageRule CSSPageRule
+instance IsCSSRule CSSPageRule
+instance GObjectClass CSSPageRule where
+  toGObject = GObject . castRef . unCSSPageRule
+  unsafeCastGObject = CSSPageRule . castRef . unGObject
+
+castToCSSPageRule :: GObjectClass obj => obj -> CSSPageRule
+castToCSSPageRule = castTo gTypeCSSPageRule "CSSPageRule"
+
+foreign import javascript unsafe "window[\"CSSPageRule\"]" gTypeCSSPageRule' :: JSRef GType
+gTypeCSSPageRule = GType gTypeCSSPageRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSPrimitiveValue".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSValue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue Mozilla CSSPrimitiveValue documentation>
 newtype CSSPrimitiveValue = CSSPrimitiveValue (JSRef CSSPrimitiveValue) deriving (Eq)
 
 unCSSPrimitiveValue (CSSPrimitiveValue o) = o
@@ -809,6 +2786,9 @@ gTypeCSSPrimitiveValue = GType gTypeCSSPrimitiveValue'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSRule".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule Mozilla CSSRule documentation>
 newtype CSSRule = CSSRule (JSRef CSSRule) deriving (Eq)
 
 unCSSRule (CSSRule o) = o
@@ -841,6 +2821,9 @@ type IsCSSRule o = CSSRuleClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSRuleList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList Mozilla CSSRuleList documentation>
 newtype CSSRuleList = CSSRuleList (JSRef CSSRuleList) deriving (Eq)
 
 unCSSRuleList (CSSRuleList o) = o
@@ -873,6 +2856,9 @@ type IsCSSRuleList o = CSSRuleListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSStyleDeclaration".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration Mozilla CSSStyleDeclaration documentation>
 newtype CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration) deriving (Eq)
 
 unCSSStyleDeclaration (CSSStyleDeclaration o) = o
@@ -905,6 +2891,50 @@ type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSStyleRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule Mozilla CSSStyleRule documentation>
+newtype CSSStyleRule = CSSStyleRule (JSRef CSSStyleRule) deriving (Eq)
+
+unCSSStyleRule (CSSStyleRule o) = o
+
+instance ToJSRef CSSStyleRule where
+  toJSRef = return . unCSSStyleRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSStyleRule where
+  fromJSRef = return . fmap CSSStyleRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSStyleRule o
+toCSSStyleRule :: IsCSSStyleRule o => o -> CSSStyleRule
+toCSSStyleRule = unsafeCastGObject . toGObject
+
+instance IsCSSStyleRule CSSStyleRule
+instance IsCSSRule CSSStyleRule
+instance GObjectClass CSSStyleRule where
+  toGObject = GObject . castRef . unCSSStyleRule
+  unsafeCastGObject = CSSStyleRule . castRef . unGObject
+
+castToCSSStyleRule :: GObjectClass obj => obj -> CSSStyleRule
+castToCSSStyleRule = castTo gTypeCSSStyleRule "CSSStyleRule"
+
+foreign import javascript unsafe "window[\"CSSStyleRule\"]" gTypeCSSStyleRule' :: JSRef GType
+gTypeCSSStyleRule = GType gTypeCSSStyleRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSStyleSheet".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.StyleSheet"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet Mozilla CSSStyleSheet documentation>
 newtype CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet) deriving (Eq)
 
 unCSSStyleSheet (CSSStyleSheet o) = o
@@ -938,6 +2968,85 @@ type IsCSSStyleSheet o = CSSStyleSheetClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSSupportsRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule Mozilla CSSSupportsRule documentation>
+newtype CSSSupportsRule = CSSSupportsRule (JSRef CSSSupportsRule) deriving (Eq)
+
+unCSSSupportsRule (CSSSupportsRule o) = o
+
+instance ToJSRef CSSSupportsRule where
+  toJSRef = return . unCSSSupportsRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSSupportsRule where
+  fromJSRef = return . fmap CSSSupportsRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSSupportsRule o
+toCSSSupportsRule :: IsCSSSupportsRule o => o -> CSSSupportsRule
+toCSSSupportsRule = unsafeCastGObject . toGObject
+
+instance IsCSSSupportsRule CSSSupportsRule
+instance IsCSSRule CSSSupportsRule
+instance GObjectClass CSSSupportsRule where
+  toGObject = GObject . castRef . unCSSSupportsRule
+  unsafeCastGObject = CSSSupportsRule . castRef . unGObject
+
+castToCSSSupportsRule :: GObjectClass obj => obj -> CSSSupportsRule
+castToCSSSupportsRule = castTo gTypeCSSSupportsRule "CSSSupportsRule"
+
+foreign import javascript unsafe "window[\"CSSSupportsRule\"]" gTypeCSSSupportsRule' :: JSRef GType
+gTypeCSSSupportsRule = GType gTypeCSSSupportsRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSUnknownRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSUnknownRule Mozilla CSSUnknownRule documentation>
+newtype CSSUnknownRule = CSSUnknownRule (JSRef CSSUnknownRule) deriving (Eq)
+
+unCSSUnknownRule (CSSUnknownRule o) = o
+
+instance ToJSRef CSSUnknownRule where
+  toJSRef = return . unCSSUnknownRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSUnknownRule where
+  fromJSRef = return . fmap CSSUnknownRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsCSSUnknownRule o
+toCSSUnknownRule :: IsCSSUnknownRule o => o -> CSSUnknownRule
+toCSSUnknownRule = unsafeCastGObject . toGObject
+
+instance IsCSSUnknownRule CSSUnknownRule
+instance IsCSSRule CSSUnknownRule
+instance GObjectClass CSSUnknownRule where
+  toGObject = GObject . castRef . unCSSUnknownRule
+  unsafeCastGObject = CSSUnknownRule . castRef . unGObject
+
+castToCSSUnknownRule :: GObjectClass obj => obj -> CSSUnknownRule
+castToCSSUnknownRule = castTo gTypeCSSUnknownRule "CSSUnknownRule"
+
+foreign import javascript unsafe "window[\"CSSUnknownRule\"]" gTypeCSSUnknownRule' :: JSRef GType
+gTypeCSSUnknownRule = GType gTypeCSSUnknownRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSValue".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue Mozilla CSSValue documentation>
 newtype CSSValue = CSSValue (JSRef CSSValue) deriving (Eq)
 
 unCSSValue (CSSValue o) = o
@@ -970,6 +3079,338 @@ type IsCSSValue o = CSSValueClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSSValueList".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSValue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSSValueList Mozilla CSSValueList documentation>
+newtype CSSValueList = CSSValueList (JSRef CSSValueList) deriving (Eq)
+
+unCSSValueList (CSSValueList o) = o
+
+instance ToJSRef CSSValueList where
+  toJSRef = return . unCSSValueList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSSValueList where
+  fromJSRef = return . fmap CSSValueList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSValue o => IsCSSValueList o
+toCSSValueList :: IsCSSValueList o => o -> CSSValueList
+toCSSValueList = unsafeCastGObject . toGObject
+
+instance IsCSSValueList CSSValueList
+instance IsCSSValue CSSValueList
+instance GObjectClass CSSValueList where
+  toGObject = GObject . castRef . unCSSValueList
+  unsafeCastGObject = CSSValueList . castRef . unGObject
+
+castToCSSValueList :: GObjectClass obj => obj -> CSSValueList
+castToCSSValueList = castTo gTypeCSSValueList "CSSValueList"
+
+foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList' :: JSRef GType
+gTypeCSSValueList = GType gTypeCSSValueList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CanvasGradient".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient Mozilla CanvasGradient documentation>
+newtype CanvasGradient = CanvasGradient (JSRef CanvasGradient) deriving (Eq)
+
+unCanvasGradient (CanvasGradient o) = o
+
+instance ToJSRef CanvasGradient where
+  toJSRef = return . unCanvasGradient
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CanvasGradient where
+  fromJSRef = return . fmap CanvasGradient . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCanvasGradient o
+toCanvasGradient :: IsCanvasGradient o => o -> CanvasGradient
+toCanvasGradient = unsafeCastGObject . toGObject
+
+instance IsCanvasGradient CanvasGradient
+instance GObjectClass CanvasGradient where
+  toGObject = GObject . castRef . unCanvasGradient
+  unsafeCastGObject = CanvasGradient . castRef . unGObject
+
+castToCanvasGradient :: GObjectClass obj => obj -> CanvasGradient
+castToCanvasGradient = castTo gTypeCanvasGradient "CanvasGradient"
+
+foreign import javascript unsafe "window[\"CanvasGradient\"]" gTypeCanvasGradient' :: JSRef GType
+gTypeCanvasGradient = GType gTypeCanvasGradient'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CanvasPattern".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern Mozilla CanvasPattern documentation>
+newtype CanvasPattern = CanvasPattern (JSRef CanvasPattern) deriving (Eq)
+
+unCanvasPattern (CanvasPattern o) = o
+
+instance ToJSRef CanvasPattern where
+  toJSRef = return . unCanvasPattern
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CanvasPattern where
+  fromJSRef = return . fmap CanvasPattern . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCanvasPattern o
+toCanvasPattern :: IsCanvasPattern o => o -> CanvasPattern
+toCanvasPattern = unsafeCastGObject . toGObject
+
+instance IsCanvasPattern CanvasPattern
+instance GObjectClass CanvasPattern where
+  toGObject = GObject . castRef . unCanvasPattern
+  unsafeCastGObject = CanvasPattern . castRef . unGObject
+
+castToCanvasPattern :: GObjectClass obj => obj -> CanvasPattern
+castToCanvasPattern = castTo gTypeCanvasPattern "CanvasPattern"
+
+foreign import javascript unsafe "window[\"CanvasPattern\"]" gTypeCanvasPattern' :: JSRef GType
+gTypeCanvasPattern = GType gTypeCanvasPattern'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CanvasProxy".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasProxy Mozilla CanvasProxy documentation>
+newtype CanvasProxy = CanvasProxy (JSRef CanvasProxy) deriving (Eq)
+
+unCanvasProxy (CanvasProxy o) = o
+
+instance ToJSRef CanvasProxy where
+  toJSRef = return . unCanvasProxy
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CanvasProxy where
+  fromJSRef = return . fmap CanvasProxy . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCanvasProxy o
+toCanvasProxy :: IsCanvasProxy o => o -> CanvasProxy
+toCanvasProxy = unsafeCastGObject . toGObject
+
+instance IsCanvasProxy CanvasProxy
+instance GObjectClass CanvasProxy where
+  toGObject = GObject . castRef . unCanvasProxy
+  unsafeCastGObject = CanvasProxy . castRef . unGObject
+
+castToCanvasProxy :: GObjectClass obj => obj -> CanvasProxy
+castToCanvasProxy = castTo gTypeCanvasProxy "CanvasProxy"
+
+foreign import javascript unsafe "window[\"CanvasProxy\"]" gTypeCanvasProxy' :: JSRef GType
+gTypeCanvasProxy = GType gTypeCanvasProxy'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext Mozilla CanvasRenderingContext documentation>
+newtype CanvasRenderingContext = CanvasRenderingContext (JSRef CanvasRenderingContext) deriving (Eq)
+
+unCanvasRenderingContext (CanvasRenderingContext o) = o
+
+instance ToJSRef CanvasRenderingContext where
+  toJSRef = return . unCanvasRenderingContext
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CanvasRenderingContext where
+  fromJSRef = return . fmap CanvasRenderingContext . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCanvasRenderingContext o
+toCanvasRenderingContext :: IsCanvasRenderingContext o => o -> CanvasRenderingContext
+toCanvasRenderingContext = unsafeCastGObject . toGObject
+
+instance IsCanvasRenderingContext CanvasRenderingContext
+instance GObjectClass CanvasRenderingContext where
+  toGObject = GObject . castRef . unCanvasRenderingContext
+  unsafeCastGObject = CanvasRenderingContext . castRef . unGObject
+
+castToCanvasRenderingContext :: GObjectClass obj => obj -> CanvasRenderingContext
+castToCanvasRenderingContext = castTo gTypeCanvasRenderingContext "CanvasRenderingContext"
+
+foreign import javascript unsafe "window[\"CanvasRenderingContext\"]" gTypeCanvasRenderingContext' :: JSRef GType
+gTypeCanvasRenderingContext = GType gTypeCanvasRenderingContext'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext2D".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CanvasRenderingContext"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D Mozilla CanvasRenderingContext2D documentation>
+newtype CanvasRenderingContext2D = CanvasRenderingContext2D (JSRef CanvasRenderingContext2D) deriving (Eq)
+
+unCanvasRenderingContext2D (CanvasRenderingContext2D o) = o
+
+instance ToJSRef CanvasRenderingContext2D where
+  toJSRef = return . unCanvasRenderingContext2D
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CanvasRenderingContext2D where
+  fromJSRef = return . fmap CanvasRenderingContext2D . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCanvasRenderingContext o => IsCanvasRenderingContext2D o
+toCanvasRenderingContext2D :: IsCanvasRenderingContext2D o => o -> CanvasRenderingContext2D
+toCanvasRenderingContext2D = unsafeCastGObject . toGObject
+
+instance IsCanvasRenderingContext2D CanvasRenderingContext2D
+instance IsCanvasRenderingContext CanvasRenderingContext2D
+instance GObjectClass CanvasRenderingContext2D where
+  toGObject = GObject . castRef . unCanvasRenderingContext2D
+  unsafeCastGObject = CanvasRenderingContext2D . castRef . unGObject
+
+castToCanvasRenderingContext2D :: GObjectClass obj => obj -> CanvasRenderingContext2D
+castToCanvasRenderingContext2D = castTo gTypeCanvasRenderingContext2D "CanvasRenderingContext2D"
+
+foreign import javascript unsafe "window[\"CanvasRenderingContext2D\"]" gTypeCanvasRenderingContext2D' :: JSRef GType
+gTypeCanvasRenderingContext2D = GType gTypeCanvasRenderingContext2D'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CapabilityRange".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange Mozilla CapabilityRange documentation>
+newtype CapabilityRange = CapabilityRange (JSRef CapabilityRange) deriving (Eq)
+
+unCapabilityRange (CapabilityRange o) = o
+
+instance ToJSRef CapabilityRange where
+  toJSRef = return . unCapabilityRange
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CapabilityRange where
+  fromJSRef = return . fmap CapabilityRange . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCapabilityRange o
+toCapabilityRange :: IsCapabilityRange o => o -> CapabilityRange
+toCapabilityRange = unsafeCastGObject . toGObject
+
+instance IsCapabilityRange CapabilityRange
+instance GObjectClass CapabilityRange where
+  toGObject = GObject . castRef . unCapabilityRange
+  unsafeCastGObject = CapabilityRange . castRef . unGObject
+
+castToCapabilityRange :: GObjectClass obj => obj -> CapabilityRange
+castToCapabilityRange = castTo gTypeCapabilityRange "CapabilityRange"
+
+foreign import javascript unsafe "window[\"CapabilityRange\"]" gTypeCapabilityRange' :: JSRef GType
+gTypeCapabilityRange = GType gTypeCapabilityRange'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ChannelMergerNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode Mozilla ChannelMergerNode documentation>
+newtype ChannelMergerNode = ChannelMergerNode (JSRef ChannelMergerNode) deriving (Eq)
+
+unChannelMergerNode (ChannelMergerNode o) = o
+
+instance ToJSRef ChannelMergerNode where
+  toJSRef = return . unChannelMergerNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ChannelMergerNode where
+  fromJSRef = return . fmap ChannelMergerNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsChannelMergerNode o
+toChannelMergerNode :: IsChannelMergerNode o => o -> ChannelMergerNode
+toChannelMergerNode = unsafeCastGObject . toGObject
+
+instance IsChannelMergerNode ChannelMergerNode
+instance IsAudioNode ChannelMergerNode
+instance IsEventTarget ChannelMergerNode
+instance GObjectClass ChannelMergerNode where
+  toGObject = GObject . castRef . unChannelMergerNode
+  unsafeCastGObject = ChannelMergerNode . castRef . unGObject
+
+castToChannelMergerNode :: GObjectClass obj => obj -> ChannelMergerNode
+castToChannelMergerNode = castTo gTypeChannelMergerNode "ChannelMergerNode"
+
+foreign import javascript unsafe "window[\"ChannelMergerNode\"]" gTypeChannelMergerNode' :: JSRef GType
+gTypeChannelMergerNode = GType gTypeChannelMergerNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ChannelSplitterNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode Mozilla ChannelSplitterNode documentation>
+newtype ChannelSplitterNode = ChannelSplitterNode (JSRef ChannelSplitterNode) deriving (Eq)
+
+unChannelSplitterNode (ChannelSplitterNode o) = o
+
+instance ToJSRef ChannelSplitterNode where
+  toJSRef = return . unChannelSplitterNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ChannelSplitterNode where
+  fromJSRef = return . fmap ChannelSplitterNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsChannelSplitterNode o
+toChannelSplitterNode :: IsChannelSplitterNode o => o -> ChannelSplitterNode
+toChannelSplitterNode = unsafeCastGObject . toGObject
+
+instance IsChannelSplitterNode ChannelSplitterNode
+instance IsAudioNode ChannelSplitterNode
+instance IsEventTarget ChannelSplitterNode
+instance GObjectClass ChannelSplitterNode where
+  toGObject = GObject . castRef . unChannelSplitterNode
+  unsafeCastGObject = ChannelSplitterNode . castRef . unGObject
+
+castToChannelSplitterNode :: GObjectClass obj => obj -> ChannelSplitterNode
+castToChannelSplitterNode = castTo gTypeChannelSplitterNode "ChannelSplitterNode"
+
+foreign import javascript unsafe "window[\"ChannelSplitterNode\"]" gTypeChannelSplitterNode' :: JSRef GType
+gTypeChannelSplitterNode = GType gTypeChannelSplitterNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CharacterData".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData Mozilla CharacterData documentation>
 newtype CharacterData = CharacterData (JSRef CharacterData) deriving (Eq)
 
 unCharacterData (CharacterData o) = o
@@ -1003,6 +3444,187 @@ type IsCharacterData o = CharacterDataClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ChildNode".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode Mozilla ChildNode documentation>
+newtype ChildNode = ChildNode (JSRef ChildNode) deriving (Eq)
+
+unChildNode (ChildNode o) = o
+
+instance ToJSRef ChildNode where
+  toJSRef = return . unChildNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ChildNode where
+  fromJSRef = return . fmap ChildNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsChildNode o
+toChildNode :: IsChildNode o => o -> ChildNode
+toChildNode = unsafeCastGObject . toGObject
+
+instance IsChildNode ChildNode
+instance GObjectClass ChildNode where
+  toGObject = GObject . castRef . unChildNode
+  unsafeCastGObject = ChildNode . castRef . unGObject
+
+castToChildNode :: GObjectClass obj => obj -> ChildNode
+castToChildNode = castTo gTypeChildNode "ChildNode"
+
+foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode' :: JSRef GType
+gTypeChildNode = GType gTypeChildNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ClientRect".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect Mozilla ClientRect documentation>
+newtype ClientRect = ClientRect (JSRef ClientRect) deriving (Eq)
+
+unClientRect (ClientRect o) = o
+
+instance ToJSRef ClientRect where
+  toJSRef = return . unClientRect
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ClientRect where
+  fromJSRef = return . fmap ClientRect . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsClientRect o
+toClientRect :: IsClientRect o => o -> ClientRect
+toClientRect = unsafeCastGObject . toGObject
+
+instance IsClientRect ClientRect
+instance GObjectClass ClientRect where
+  toGObject = GObject . castRef . unClientRect
+  unsafeCastGObject = ClientRect . castRef . unGObject
+
+castToClientRect :: GObjectClass obj => obj -> ClientRect
+castToClientRect = castTo gTypeClientRect "ClientRect"
+
+foreign import javascript unsafe "window[\"ClientRect\"]" gTypeClientRect' :: JSRef GType
+gTypeClientRect = GType gTypeClientRect'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ClientRectList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList Mozilla ClientRectList documentation>
+newtype ClientRectList = ClientRectList (JSRef ClientRectList) deriving (Eq)
+
+unClientRectList (ClientRectList o) = o
+
+instance ToJSRef ClientRectList where
+  toJSRef = return . unClientRectList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ClientRectList where
+  fromJSRef = return . fmap ClientRectList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsClientRectList o
+toClientRectList :: IsClientRectList o => o -> ClientRectList
+toClientRectList = unsafeCastGObject . toGObject
+
+instance IsClientRectList ClientRectList
+instance GObjectClass ClientRectList where
+  toGObject = GObject . castRef . unClientRectList
+  unsafeCastGObject = ClientRectList . castRef . unGObject
+
+castToClientRectList :: GObjectClass obj => obj -> ClientRectList
+castToClientRectList = castTo gTypeClientRectList "ClientRectList"
+
+foreign import javascript unsafe "window[\"ClientRectList\"]" gTypeClientRectList' :: JSRef GType
+gTypeClientRectList = GType gTypeClientRectList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CloseEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent Mozilla CloseEvent documentation>
+newtype CloseEvent = CloseEvent (JSRef CloseEvent) deriving (Eq)
+
+unCloseEvent (CloseEvent o) = o
+
+instance ToJSRef CloseEvent where
+  toJSRef = return . unCloseEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CloseEvent where
+  fromJSRef = return . fmap CloseEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsCloseEvent o
+toCloseEvent :: IsCloseEvent o => o -> CloseEvent
+toCloseEvent = unsafeCastGObject . toGObject
+
+instance IsCloseEvent CloseEvent
+instance IsEvent CloseEvent
+instance GObjectClass CloseEvent where
+  toGObject = GObject . castRef . unCloseEvent
+  unsafeCastGObject = CloseEvent . castRef . unGObject
+
+castToCloseEvent :: GObjectClass obj => obj -> CloseEvent
+castToCloseEvent = castTo gTypeCloseEvent "CloseEvent"
+
+foreign import javascript unsafe "window[\"CloseEvent\"]" gTypeCloseEvent' :: JSRef GType
+gTypeCloseEvent = GType gTypeCloseEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CommandLineAPIHost".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost Mozilla CommandLineAPIHost documentation>
+newtype CommandLineAPIHost = CommandLineAPIHost (JSRef CommandLineAPIHost) deriving (Eq)
+
+unCommandLineAPIHost (CommandLineAPIHost o) = o
+
+instance ToJSRef CommandLineAPIHost where
+  toJSRef = return . unCommandLineAPIHost
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CommandLineAPIHost where
+  fromJSRef = return . fmap CommandLineAPIHost . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCommandLineAPIHost o
+toCommandLineAPIHost :: IsCommandLineAPIHost o => o -> CommandLineAPIHost
+toCommandLineAPIHost = unsafeCastGObject . toGObject
+
+instance IsCommandLineAPIHost CommandLineAPIHost
+instance GObjectClass CommandLineAPIHost where
+  toGObject = GObject . castRef . unCommandLineAPIHost
+  unsafeCastGObject = CommandLineAPIHost . castRef . unGObject
+
+castToCommandLineAPIHost :: GObjectClass obj => obj -> CommandLineAPIHost
+castToCommandLineAPIHost = castTo gTypeCommandLineAPIHost "CommandLineAPIHost"
+
+foreign import javascript unsafe "window[\"CommandLineAPIHost\"]" gTypeCommandLineAPIHost' :: JSRef GType
+gTypeCommandLineAPIHost = GType gTypeCommandLineAPIHost'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Comment".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CharacterData"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Comment Mozilla Comment documentation>
 newtype Comment = Comment (JSRef Comment) deriving (Eq)
 
 unComment (Comment o) = o
@@ -1037,6 +3659,123 @@ type IsComment o = CommentClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CompositionEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent Mozilla CompositionEvent documentation>
+newtype CompositionEvent = CompositionEvent (JSRef CompositionEvent) deriving (Eq)
+
+unCompositionEvent (CompositionEvent o) = o
+
+instance ToJSRef CompositionEvent where
+  toJSRef = return . unCompositionEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CompositionEvent where
+  fromJSRef = return . fmap CompositionEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsUIEvent o => IsCompositionEvent o
+toCompositionEvent :: IsCompositionEvent o => o -> CompositionEvent
+toCompositionEvent = unsafeCastGObject . toGObject
+
+instance IsCompositionEvent CompositionEvent
+instance IsUIEvent CompositionEvent
+instance IsEvent CompositionEvent
+instance GObjectClass CompositionEvent where
+  toGObject = GObject . castRef . unCompositionEvent
+  unsafeCastGObject = CompositionEvent . castRef . unGObject
+
+castToCompositionEvent :: GObjectClass obj => obj -> CompositionEvent
+castToCompositionEvent = castTo gTypeCompositionEvent "CompositionEvent"
+
+foreign import javascript unsafe "window[\"CompositionEvent\"]" gTypeCompositionEvent' :: JSRef GType
+gTypeCompositionEvent = GType gTypeCompositionEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ConvolverNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode Mozilla ConvolverNode documentation>
+newtype ConvolverNode = ConvolverNode (JSRef ConvolverNode) deriving (Eq)
+
+unConvolverNode (ConvolverNode o) = o
+
+instance ToJSRef ConvolverNode where
+  toJSRef = return . unConvolverNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ConvolverNode where
+  fromJSRef = return . fmap ConvolverNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsConvolverNode o
+toConvolverNode :: IsConvolverNode o => o -> ConvolverNode
+toConvolverNode = unsafeCastGObject . toGObject
+
+instance IsConvolverNode ConvolverNode
+instance IsAudioNode ConvolverNode
+instance IsEventTarget ConvolverNode
+instance GObjectClass ConvolverNode where
+  toGObject = GObject . castRef . unConvolverNode
+  unsafeCastGObject = ConvolverNode . castRef . unGObject
+
+castToConvolverNode :: GObjectClass obj => obj -> ConvolverNode
+castToConvolverNode = castTo gTypeConvolverNode "ConvolverNode"
+
+foreign import javascript unsafe "window[\"ConvolverNode\"]" gTypeConvolverNode' :: JSRef GType
+gTypeConvolverNode = GType gTypeConvolverNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Coordinates".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates Mozilla Coordinates documentation>
+newtype Coordinates = Coordinates (JSRef Coordinates) deriving (Eq)
+
+unCoordinates (Coordinates o) = o
+
+instance ToJSRef Coordinates where
+  toJSRef = return . unCoordinates
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Coordinates where
+  fromJSRef = return . fmap Coordinates . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCoordinates o
+toCoordinates :: IsCoordinates o => o -> Coordinates
+toCoordinates = unsafeCastGObject . toGObject
+
+instance IsCoordinates Coordinates
+instance GObjectClass Coordinates where
+  toGObject = GObject . castRef . unCoordinates
+  unsafeCastGObject = Coordinates . castRef . unGObject
+
+castToCoordinates :: GObjectClass obj => obj -> Coordinates
+castToCoordinates = castTo gTypeCoordinates "Coordinates"
+
+foreign import javascript unsafe "window[\"Coordinates\"]" gTypeCoordinates' :: JSRef GType
+gTypeCoordinates = GType gTypeCoordinates'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Counter".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Counter Mozilla Counter documentation>
 newtype Counter = Counter (JSRef Counter) deriving (Eq)
 
 unCounter (Counter o) = o
@@ -1068,6 +3807,149 @@ gTypeCounter = GType gTypeCounter'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Crypto".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Crypto Mozilla Crypto documentation>
+newtype Crypto = Crypto (JSRef Crypto) deriving (Eq)
+
+unCrypto (Crypto o) = o
+
+instance ToJSRef Crypto where
+  toJSRef = return . unCrypto
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Crypto where
+  fromJSRef = return . fmap Crypto . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCrypto o
+toCrypto :: IsCrypto o => o -> Crypto
+toCrypto = unsafeCastGObject . toGObject
+
+instance IsCrypto Crypto
+instance GObjectClass Crypto where
+  toGObject = GObject . castRef . unCrypto
+  unsafeCastGObject = Crypto . castRef . unGObject
+
+castToCrypto :: GObjectClass obj => obj -> Crypto
+castToCrypto = castTo gTypeCrypto "Crypto"
+
+foreign import javascript unsafe "window[\"Crypto\"]" gTypeCrypto' :: JSRef GType
+gTypeCrypto = GType gTypeCrypto'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CryptoKey".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Key Mozilla Key documentation>
+newtype CryptoKey = CryptoKey (JSRef CryptoKey) deriving (Eq)
+
+unCryptoKey (CryptoKey o) = o
+
+instance ToJSRef CryptoKey where
+  toJSRef = return . unCryptoKey
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CryptoKey where
+  fromJSRef = return . fmap CryptoKey . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCryptoKey o
+toCryptoKey :: IsCryptoKey o => o -> CryptoKey
+toCryptoKey = unsafeCastGObject . toGObject
+
+instance IsCryptoKey CryptoKey
+instance GObjectClass CryptoKey where
+  toGObject = GObject . castRef . unCryptoKey
+  unsafeCastGObject = CryptoKey . castRef . unGObject
+
+castToCryptoKey :: GObjectClass obj => obj -> CryptoKey
+castToCryptoKey = castTo gTypeCryptoKey "CryptoKey"
+
+foreign import javascript unsafe "window[\"Key\"]" gTypeCryptoKey' :: JSRef GType
+gTypeCryptoKey = GType gTypeCryptoKey'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CryptoKeyPair".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/KeyPair Mozilla KeyPair documentation>
+newtype CryptoKeyPair = CryptoKeyPair (JSRef CryptoKeyPair) deriving (Eq)
+
+unCryptoKeyPair (CryptoKeyPair o) = o
+
+instance ToJSRef CryptoKeyPair where
+  toJSRef = return . unCryptoKeyPair
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CryptoKeyPair where
+  fromJSRef = return . fmap CryptoKeyPair . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsCryptoKeyPair o
+toCryptoKeyPair :: IsCryptoKeyPair o => o -> CryptoKeyPair
+toCryptoKeyPair = unsafeCastGObject . toGObject
+
+instance IsCryptoKeyPair CryptoKeyPair
+instance GObjectClass CryptoKeyPair where
+  toGObject = GObject . castRef . unCryptoKeyPair
+  unsafeCastGObject = CryptoKeyPair . castRef . unGObject
+
+castToCryptoKeyPair :: GObjectClass obj => obj -> CryptoKeyPair
+castToCryptoKeyPair = castTo gTypeCryptoKeyPair "CryptoKeyPair"
+
+foreign import javascript unsafe "window[\"KeyPair\"]" gTypeCryptoKeyPair' :: JSRef GType
+gTypeCryptoKeyPair = GType gTypeCryptoKeyPair'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CustomEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent Mozilla CustomEvent documentation>
+newtype CustomEvent = CustomEvent (JSRef CustomEvent) deriving (Eq)
+
+unCustomEvent (CustomEvent o) = o
+
+instance ToJSRef CustomEvent where
+  toJSRef = return . unCustomEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CustomEvent where
+  fromJSRef = return . fmap CustomEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsCustomEvent o
+toCustomEvent :: IsCustomEvent o => o -> CustomEvent
+toCustomEvent = unsafeCastGObject . toGObject
+
+instance IsCustomEvent CustomEvent
+instance IsEvent CustomEvent
+instance GObjectClass CustomEvent where
+  toGObject = GObject . castRef . unCustomEvent
+  unsafeCastGObject = CustomEvent . castRef . unGObject
+
+castToCustomEvent :: GObjectClass obj => obj -> CustomEvent
+castToCustomEvent = castTo gTypeCustomEvent "CustomEvent"
+
+foreign import javascript unsafe "window[\"CustomEvent\"]" gTypeCustomEvent' :: JSRef GType
+gTypeCustomEvent = GType gTypeCustomEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMApplicationCache".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache Mozilla DOMApplicationCache documentation>
 newtype DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache) deriving (Eq)
 
 unDOMApplicationCache (DOMApplicationCache o) = o
@@ -1100,6 +3982,77 @@ type IsDOMApplicationCache o = DOMApplicationCacheClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMError Mozilla DOMError documentation>
+newtype DOMError = DOMError (JSRef DOMError) deriving (Eq)
+
+unDOMError (DOMError o) = o
+
+instance ToJSRef DOMError where
+  toJSRef = return . unDOMError
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMError where
+  fromJSRef = return . fmap DOMError . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMError o
+toDOMError :: IsDOMError o => o -> DOMError
+toDOMError = unsafeCastGObject . toGObject
+
+instance IsDOMError DOMError
+instance GObjectClass DOMError where
+  toGObject = GObject . castRef . unDOMError
+  unsafeCastGObject = DOMError . castRef . unGObject
+
+castToDOMError :: GObjectClass obj => obj -> DOMError
+castToDOMError = castTo gTypeDOMError "DOMError"
+
+foreign import javascript unsafe "window[\"DOMError\"]" gTypeDOMError' :: JSRef GType
+gTypeDOMError = GType gTypeDOMError'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMFormData".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation>
+newtype DOMFormData = DOMFormData (JSRef DOMFormData) deriving (Eq)
+
+unDOMFormData (DOMFormData o) = o
+
+instance ToJSRef DOMFormData where
+  toJSRef = return . unDOMFormData
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMFormData where
+  fromJSRef = return . fmap DOMFormData . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMFormData o
+toDOMFormData :: IsDOMFormData o => o -> DOMFormData
+toDOMFormData = unsafeCastGObject . toGObject
+
+instance IsDOMFormData DOMFormData
+instance GObjectClass DOMFormData where
+  toGObject = GObject . castRef . unDOMFormData
+  unsafeCastGObject = DOMFormData . castRef . unGObject
+
+castToDOMFormData :: GObjectClass obj => obj -> DOMFormData
+castToDOMFormData = castTo gTypeDOMFormData "DOMFormData"
+
+foreign import javascript unsafe "window[\"FormData\"]" gTypeDOMFormData' :: JSRef GType
+gTypeDOMFormData = GType gTypeDOMFormData'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMImplementation".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation Mozilla DOMImplementation documentation>
 newtype DOMImplementation = DOMImplementation (JSRef DOMImplementation) deriving (Eq)
 
 unDOMImplementation (DOMImplementation o) = o
@@ -1132,6 +4085,9 @@ type IsDOMImplementation o = DOMImplementationClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMMimeType".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MimeType Mozilla MimeType documentation>
 newtype DOMMimeType = DOMMimeType (JSRef DOMMimeType) deriving (Eq)
 
 unDOMMimeType (DOMMimeType o) = o
@@ -1156,7 +4112,7 @@ instance GObjectClass DOMMimeType where
 castToDOMMimeType :: GObjectClass obj => obj -> DOMMimeType
 castToDOMMimeType = castTo gTypeDOMMimeType "DOMMimeType"
 
-foreign import javascript unsafe "window[\"DOMMimeType\"]" gTypeDOMMimeType' :: JSRef GType
+foreign import javascript unsafe "window[\"MimeType\"]" gTypeDOMMimeType' :: JSRef GType
 gTypeDOMMimeType = GType gTypeDOMMimeType'
 #else
 type IsDOMMimeType o = DOMMimeTypeClass o
@@ -1164,6 +4120,9 @@ type IsDOMMimeType o = DOMMimeTypeClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMMimeTypeArray".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray Mozilla MimeTypeArray documentation>
 newtype DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray) deriving (Eq)
 
 unDOMMimeTypeArray (DOMMimeTypeArray o) = o
@@ -1188,7 +4147,7 @@ instance GObjectClass DOMMimeTypeArray where
 castToDOMMimeTypeArray :: GObjectClass obj => obj -> DOMMimeTypeArray
 castToDOMMimeTypeArray = castTo gTypeDOMMimeTypeArray "DOMMimeTypeArray"
 
-foreign import javascript unsafe "window[\"DOMMimeTypeArray\"]" gTypeDOMMimeTypeArray' :: JSRef GType
+foreign import javascript unsafe "window[\"MimeTypeArray\"]" gTypeDOMMimeTypeArray' :: JSRef GType
 gTypeDOMMimeTypeArray = GType gTypeDOMMimeTypeArray'
 #else
 type IsDOMMimeTypeArray o = DOMMimeTypeArrayClass o
@@ -1196,6 +4155,9 @@ type IsDOMMimeTypeArray o = DOMMimeTypeArrayClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMNamedFlowCollection".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlowCollection Mozilla WebKitNamedFlowCollection documentation>
 newtype DOMNamedFlowCollection = DOMNamedFlowCollection (JSRef DOMNamedFlowCollection) deriving (Eq)
 
 unDOMNamedFlowCollection (DOMNamedFlowCollection o) = o
@@ -1220,13 +4182,85 @@ instance GObjectClass DOMNamedFlowCollection where
 castToDOMNamedFlowCollection :: GObjectClass obj => obj -> DOMNamedFlowCollection
 castToDOMNamedFlowCollection = castTo gTypeDOMNamedFlowCollection "DOMNamedFlowCollection"
 
-foreign import javascript unsafe "window[\"DOMNamedFlowCollection\"]" gTypeDOMNamedFlowCollection' :: JSRef GType
+foreign import javascript unsafe "window[\"WebKitNamedFlowCollection\"]" gTypeDOMNamedFlowCollection' :: JSRef GType
 gTypeDOMNamedFlowCollection = GType gTypeDOMNamedFlowCollection'
+#else
+type IsDOMNamedFlowCollection o = DOMNamedFlowCollectionClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMParser".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser Mozilla DOMParser documentation>
+newtype DOMParser = DOMParser (JSRef DOMParser) deriving (Eq)
+
+unDOMParser (DOMParser o) = o
+
+instance ToJSRef DOMParser where
+  toJSRef = return . unDOMParser
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMParser where
+  fromJSRef = return . fmap DOMParser . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMParser o
+toDOMParser :: IsDOMParser o => o -> DOMParser
+toDOMParser = unsafeCastGObject . toGObject
+
+instance IsDOMParser DOMParser
+instance GObjectClass DOMParser where
+  toGObject = GObject . castRef . unDOMParser
+  unsafeCastGObject = DOMParser . castRef . unGObject
+
+castToDOMParser :: GObjectClass obj => obj -> DOMParser
+castToDOMParser = castTo gTypeDOMParser "DOMParser"
+
+foreign import javascript unsafe "window[\"DOMParser\"]" gTypeDOMParser' :: JSRef GType
+gTypeDOMParser = GType gTypeDOMParser'
 #else
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMPath".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation>
+newtype DOMPath = DOMPath (JSRef DOMPath) deriving (Eq)
+
+unDOMPath (DOMPath o) = o
+
+instance ToJSRef DOMPath where
+  toJSRef = return . unDOMPath
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMPath where
+  fromJSRef = return . fmap DOMPath . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMPath o
+toDOMPath :: IsDOMPath o => o -> DOMPath
+toDOMPath = unsafeCastGObject . toGObject
+
+instance IsDOMPath DOMPath
+instance GObjectClass DOMPath where
+  toGObject = GObject . castRef . unDOMPath
+  unsafeCastGObject = DOMPath . castRef . unGObject
+
+castToDOMPath :: GObjectClass obj => obj -> DOMPath
+castToDOMPath = castTo gTypeDOMPath "DOMPath"
+
+foreign import javascript unsafe "window[\"Path2D\"]" gTypeDOMPath' :: JSRef GType
+gTypeDOMPath = GType gTypeDOMPath'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMPlugin".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Plugin Mozilla Plugin documentation>
 newtype DOMPlugin = DOMPlugin (JSRef DOMPlugin) deriving (Eq)
 
 unDOMPlugin (DOMPlugin o) = o
@@ -1251,7 +4285,7 @@ instance GObjectClass DOMPlugin where
 castToDOMPlugin :: GObjectClass obj => obj -> DOMPlugin
 castToDOMPlugin = castTo gTypeDOMPlugin "DOMPlugin"
 
-foreign import javascript unsafe "window[\"DOMPlugin\"]" gTypeDOMPlugin' :: JSRef GType
+foreign import javascript unsafe "window[\"Plugin\"]" gTypeDOMPlugin' :: JSRef GType
 gTypeDOMPlugin = GType gTypeDOMPlugin'
 #else
 type IsDOMPlugin o = DOMPluginClass o
@@ -1259,6 +4293,9 @@ type IsDOMPlugin o = DOMPluginClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMPluginArray".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray Mozilla PluginArray documentation>
 newtype DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray) deriving (Eq)
 
 unDOMPluginArray (DOMPluginArray o) = o
@@ -1283,7 +4320,7 @@ instance GObjectClass DOMPluginArray where
 castToDOMPluginArray :: GObjectClass obj => obj -> DOMPluginArray
 castToDOMPluginArray = castTo gTypeDOMPluginArray "DOMPluginArray"
 
-foreign import javascript unsafe "window[\"DOMPluginArray\"]" gTypeDOMPluginArray' :: JSRef GType
+foreign import javascript unsafe "window[\"PluginArray\"]" gTypeDOMPluginArray' :: JSRef GType
 gTypeDOMPluginArray = GType gTypeDOMPluginArray'
 #else
 type IsDOMPluginArray o = DOMPluginArrayClass o
@@ -1291,6 +4328,9 @@ type IsDOMPluginArray o = DOMPluginArrayClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMSecurityPolicy".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy Mozilla SecurityPolicy documentation>
 newtype DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy) deriving (Eq)
 
 unDOMSecurityPolicy (DOMSecurityPolicy o) = o
@@ -1315,13 +4355,17 @@ instance GObjectClass DOMSecurityPolicy where
 castToDOMSecurityPolicy :: GObjectClass obj => obj -> DOMSecurityPolicy
 castToDOMSecurityPolicy = castTo gTypeDOMSecurityPolicy "DOMSecurityPolicy"
 
-foreign import javascript unsafe "window[\"DOMSecurityPolicy\"]" gTypeDOMSecurityPolicy' :: JSRef GType
+foreign import javascript unsafe "window[\"SecurityPolicy\"]" gTypeDOMSecurityPolicy' :: JSRef GType
 gTypeDOMSecurityPolicy = GType gTypeDOMSecurityPolicy'
 #else
+type IsDOMSecurityPolicy o = DOMSecurityPolicyClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMSelection".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Selection Mozilla Selection documentation>
 newtype DOMSelection = DOMSelection (JSRef DOMSelection) deriving (Eq)
 
 unDOMSelection (DOMSelection o) = o
@@ -1346,7 +4390,7 @@ instance GObjectClass DOMSelection where
 castToDOMSelection :: GObjectClass obj => obj -> DOMSelection
 castToDOMSelection = castTo gTypeDOMSelection "DOMSelection"
 
-foreign import javascript unsafe "window[\"DOMSelection\"]" gTypeDOMSelection' :: JSRef GType
+foreign import javascript unsafe "window[\"Selection\"]" gTypeDOMSelection' :: JSRef GType
 gTypeDOMSelection = GType gTypeDOMSelection'
 #else
 type IsDOMSelection o = DOMSelectionClass o
@@ -1354,6 +4398,12 @@ type IsDOMSelection o = DOMSelectionClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMSettableTokenList".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.DOMTokenList"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList Mozilla DOMSettableTokenList documentation>
 newtype DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList) deriving (Eq)
 
 unDOMSettableTokenList (DOMSettableTokenList o) = o
@@ -1387,6 +4437,9 @@ type IsDOMSettableTokenList o = DOMSettableTokenListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMStringList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList Mozilla DOMStringList documentation>
 newtype DOMStringList = DOMStringList (JSRef DOMStringList) deriving (Eq)
 
 unDOMStringList (DOMStringList o) = o
@@ -1419,6 +4472,43 @@ type IsDOMStringList o = DOMStringListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMStringMap".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringMap Mozilla DOMStringMap documentation>
+newtype DOMStringMap = DOMStringMap (JSRef DOMStringMap) deriving (Eq)
+
+unDOMStringMap (DOMStringMap o) = o
+
+instance ToJSRef DOMStringMap where
+  toJSRef = return . unDOMStringMap
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMStringMap where
+  fromJSRef = return . fmap DOMStringMap . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMStringMap o
+toDOMStringMap :: IsDOMStringMap o => o -> DOMStringMap
+toDOMStringMap = unsafeCastGObject . toGObject
+
+instance IsDOMStringMap DOMStringMap
+instance GObjectClass DOMStringMap where
+  toGObject = GObject . castRef . unDOMStringMap
+  unsafeCastGObject = DOMStringMap . castRef . unGObject
+
+castToDOMStringMap :: GObjectClass obj => obj -> DOMStringMap
+castToDOMStringMap = castTo gTypeDOMStringMap "DOMStringMap"
+
+foreign import javascript unsafe "window[\"DOMStringMap\"]" gTypeDOMStringMap' :: JSRef GType
+gTypeDOMStringMap = GType gTypeDOMStringMap'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMTokenList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList Mozilla DOMTokenList documentation>
 newtype DOMTokenList = DOMTokenList (JSRef DOMTokenList) deriving (Eq)
 
 unDOMTokenList (DOMTokenList o) = o
@@ -1451,6 +4541,43 @@ type IsDOMTokenList o = DOMTokenListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMURL".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation>
+newtype DOMURL = DOMURL (JSRef DOMURL) deriving (Eq)
+
+unDOMURL (DOMURL o) = o
+
+instance ToJSRef DOMURL where
+  toJSRef = return . unDOMURL
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DOMURL where
+  fromJSRef = return . fmap DOMURL . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDOMURL o
+toDOMURL :: IsDOMURL o => o -> DOMURL
+toDOMURL = unsafeCastGObject . toGObject
+
+instance IsDOMURL DOMURL
+instance GObjectClass DOMURL where
+  toGObject = GObject . castRef . unDOMURL
+  unsafeCastGObject = DOMURL . castRef . unGObject
+
+castToDOMURL :: GObjectClass obj => obj -> DOMURL
+castToDOMURL = castTo gTypeDOMURL "DOMURL"
+
+foreign import javascript unsafe "window[\"URL\"]" gTypeDOMURL' :: JSRef GType
+gTypeDOMURL = GType gTypeDOMURL'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMWindow".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Window Mozilla Window documentation>
 newtype DOMWindow = DOMWindow (JSRef DOMWindow) deriving (Eq)
 
 unDOMWindow (DOMWindow o) = o
@@ -1475,7 +4602,7 @@ instance GObjectClass DOMWindow where
 castToDOMWindow :: GObjectClass obj => obj -> DOMWindow
 castToDOMWindow = castTo gTypeDOMWindow "DOMWindow"
 
-foreign import javascript unsafe "window[\"DOMWindow\"]" gTypeDOMWindow' :: JSRef GType
+foreign import javascript unsafe "window[\"Window\"]" gTypeDOMWindow' :: JSRef GType
 gTypeDOMWindow = GType gTypeDOMWindow'
 #else
 type IsDOMWindow o = DOMWindowClass o
@@ -1483,6 +4610,9 @@ type IsDOMWindow o = DOMWindowClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMWindowCSS".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSS Mozilla CSS documentation>
 newtype DOMWindowCSS = DOMWindowCSS (JSRef DOMWindowCSS) deriving (Eq)
 
 unDOMWindowCSS (DOMWindowCSS o) = o
@@ -1507,13 +4637,454 @@ instance GObjectClass DOMWindowCSS where
 castToDOMWindowCSS :: GObjectClass obj => obj -> DOMWindowCSS
 castToDOMWindowCSS = castTo gTypeDOMWindowCSS "DOMWindowCSS"
 
-foreign import javascript unsafe "window[\"DOMWindowCSS\"]" gTypeDOMWindowCSS' :: JSRef GType
+foreign import javascript unsafe "window[\"CSS\"]" gTypeDOMWindowCSS' :: JSRef GType
 gTypeDOMWindowCSS = GType gTypeDOMWindowCSS'
+#else
+type IsDOMWindowCSS o = DOMWindowCSSClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DataCue".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.TextTrackCue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation>
+newtype DataCue = DataCue (JSRef DataCue) deriving (Eq)
+
+unDataCue (DataCue o) = o
+
+instance ToJSRef DataCue where
+  toJSRef = return . unDataCue
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DataCue where
+  fromJSRef = return . fmap DataCue . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsTextTrackCue o => IsDataCue o
+toDataCue :: IsDataCue o => o -> DataCue
+toDataCue = unsafeCastGObject . toGObject
+
+instance IsDataCue DataCue
+instance IsTextTrackCue DataCue
+instance GObjectClass DataCue where
+  toGObject = GObject . castRef . unDataCue
+  unsafeCastGObject = DataCue . castRef . unGObject
+
+castToDataCue :: GObjectClass obj => obj -> DataCue
+castToDataCue = castTo gTypeDataCue "DataCue"
+
+foreign import javascript unsafe "window[\"WebKitDataCue\"]" gTypeDataCue' :: JSRef GType
+gTypeDataCue = GType gTypeDataCue'
 #else
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DataTransfer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer Mozilla DataTransfer documentation>
+newtype DataTransfer = DataTransfer (JSRef DataTransfer) deriving (Eq)
+
+unDataTransfer (DataTransfer o) = o
+
+instance ToJSRef DataTransfer where
+  toJSRef = return . unDataTransfer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DataTransfer where
+  fromJSRef = return . fmap DataTransfer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDataTransfer o
+toDataTransfer :: IsDataTransfer o => o -> DataTransfer
+toDataTransfer = unsafeCastGObject . toGObject
+
+instance IsDataTransfer DataTransfer
+instance GObjectClass DataTransfer where
+  toGObject = GObject . castRef . unDataTransfer
+  unsafeCastGObject = DataTransfer . castRef . unGObject
+
+castToDataTransfer :: GObjectClass obj => obj -> DataTransfer
+castToDataTransfer = castTo gTypeDataTransfer "DataTransfer"
+
+foreign import javascript unsafe "window[\"DataTransfer\"]" gTypeDataTransfer' :: JSRef GType
+gTypeDataTransfer = GType gTypeDataTransfer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DataTransferItem".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem Mozilla DataTransferItem documentation>
+newtype DataTransferItem = DataTransferItem (JSRef DataTransferItem) deriving (Eq)
+
+unDataTransferItem (DataTransferItem o) = o
+
+instance ToJSRef DataTransferItem where
+  toJSRef = return . unDataTransferItem
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DataTransferItem where
+  fromJSRef = return . fmap DataTransferItem . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDataTransferItem o
+toDataTransferItem :: IsDataTransferItem o => o -> DataTransferItem
+toDataTransferItem = unsafeCastGObject . toGObject
+
+instance IsDataTransferItem DataTransferItem
+instance GObjectClass DataTransferItem where
+  toGObject = GObject . castRef . unDataTransferItem
+  unsafeCastGObject = DataTransferItem . castRef . unGObject
+
+castToDataTransferItem :: GObjectClass obj => obj -> DataTransferItem
+castToDataTransferItem = castTo gTypeDataTransferItem "DataTransferItem"
+
+foreign import javascript unsafe "window[\"DataTransferItem\"]" gTypeDataTransferItem' :: JSRef GType
+gTypeDataTransferItem = GType gTypeDataTransferItem'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DataTransferItemList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList Mozilla DataTransferItemList documentation>
+newtype DataTransferItemList = DataTransferItemList (JSRef DataTransferItemList) deriving (Eq)
+
+unDataTransferItemList (DataTransferItemList o) = o
+
+instance ToJSRef DataTransferItemList where
+  toJSRef = return . unDataTransferItemList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DataTransferItemList where
+  fromJSRef = return . fmap DataTransferItemList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDataTransferItemList o
+toDataTransferItemList :: IsDataTransferItemList o => o -> DataTransferItemList
+toDataTransferItemList = unsafeCastGObject . toGObject
+
+instance IsDataTransferItemList DataTransferItemList
+instance GObjectClass DataTransferItemList where
+  toGObject = GObject . castRef . unDataTransferItemList
+  unsafeCastGObject = DataTransferItemList . castRef . unGObject
+
+castToDataTransferItemList :: GObjectClass obj => obj -> DataTransferItemList
+castToDataTransferItemList = castTo gTypeDataTransferItemList "DataTransferItemList"
+
+foreign import javascript unsafe "window[\"DataTransferItemList\"]" gTypeDataTransferItemList' :: JSRef GType
+gTypeDataTransferItemList = GType gTypeDataTransferItemList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Database".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Database Mozilla Database documentation>
+newtype Database = Database (JSRef Database) deriving (Eq)
+
+unDatabase (Database o) = o
+
+instance ToJSRef Database where
+  toJSRef = return . unDatabase
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Database where
+  fromJSRef = return . fmap Database . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDatabase o
+toDatabase :: IsDatabase o => o -> Database
+toDatabase = unsafeCastGObject . toGObject
+
+instance IsDatabase Database
+instance GObjectClass Database where
+  toGObject = GObject . castRef . unDatabase
+  unsafeCastGObject = Database . castRef . unGObject
+
+castToDatabase :: GObjectClass obj => obj -> Database
+castToDatabase = castTo gTypeDatabase "Database"
+
+foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase' :: JSRef GType
+gTypeDatabase = GType gTypeDatabase'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DatabaseCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseCallback Mozilla DatabaseCallback documentation>
+newtype DatabaseCallback = DatabaseCallback (JSRef DatabaseCallback) deriving (Eq)
+
+unDatabaseCallback (DatabaseCallback o) = o
+
+instance ToJSRef DatabaseCallback where
+  toJSRef = return . unDatabaseCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DatabaseCallback where
+  fromJSRef = return . fmap DatabaseCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDatabaseCallback o
+toDatabaseCallback :: IsDatabaseCallback o => o -> DatabaseCallback
+toDatabaseCallback = unsafeCastGObject . toGObject
+
+instance IsDatabaseCallback DatabaseCallback
+instance GObjectClass DatabaseCallback where
+  toGObject = GObject . castRef . unDatabaseCallback
+  unsafeCastGObject = DatabaseCallback . castRef . unGObject
+
+castToDatabaseCallback :: GObjectClass obj => obj -> DatabaseCallback
+castToDatabaseCallback = castTo gTypeDatabaseCallback "DatabaseCallback"
+
+foreign import javascript unsafe "window[\"DatabaseCallback\"]" gTypeDatabaseCallback' :: JSRef GType
+gTypeDatabaseCallback = GType gTypeDatabaseCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DatabaseSync".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseSync Mozilla DatabaseSync documentation>
+newtype DatabaseSync = DatabaseSync (JSRef DatabaseSync) deriving (Eq)
+
+unDatabaseSync (DatabaseSync o) = o
+
+instance ToJSRef DatabaseSync where
+  toJSRef = return . unDatabaseSync
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DatabaseSync where
+  fromJSRef = return . fmap DatabaseSync . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsDatabaseSync o
+toDatabaseSync :: IsDatabaseSync o => o -> DatabaseSync
+toDatabaseSync = unsafeCastGObject . toGObject
+
+instance IsDatabaseSync DatabaseSync
+instance GObjectClass DatabaseSync where
+  toGObject = GObject . castRef . unDatabaseSync
+  unsafeCastGObject = DatabaseSync . castRef . unGObject
+
+castToDatabaseSync :: GObjectClass obj => obj -> DatabaseSync
+castToDatabaseSync = castTo gTypeDatabaseSync "DatabaseSync"
+
+foreign import javascript unsafe "window[\"DatabaseSync\"]" gTypeDatabaseSync' :: JSRef GType
+gTypeDatabaseSync = GType gTypeDatabaseSync'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DedicatedWorkerGlobalScope".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.WorkerGlobalScope"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope Mozilla DedicatedWorkerGlobalScope documentation>
+newtype DedicatedWorkerGlobalScope = DedicatedWorkerGlobalScope (JSRef DedicatedWorkerGlobalScope) deriving (Eq)
+
+unDedicatedWorkerGlobalScope (DedicatedWorkerGlobalScope o) = o
+
+instance ToJSRef DedicatedWorkerGlobalScope where
+  toJSRef = return . unDedicatedWorkerGlobalScope
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DedicatedWorkerGlobalScope where
+  fromJSRef = return . fmap DedicatedWorkerGlobalScope . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsWorkerGlobalScope o => IsDedicatedWorkerGlobalScope o
+toDedicatedWorkerGlobalScope :: IsDedicatedWorkerGlobalScope o => o -> DedicatedWorkerGlobalScope
+toDedicatedWorkerGlobalScope = unsafeCastGObject . toGObject
+
+instance IsDedicatedWorkerGlobalScope DedicatedWorkerGlobalScope
+instance IsWorkerGlobalScope DedicatedWorkerGlobalScope
+instance GObjectClass DedicatedWorkerGlobalScope where
+  toGObject = GObject . castRef . unDedicatedWorkerGlobalScope
+  unsafeCastGObject = DedicatedWorkerGlobalScope . castRef . unGObject
+
+castToDedicatedWorkerGlobalScope :: GObjectClass obj => obj -> DedicatedWorkerGlobalScope
+castToDedicatedWorkerGlobalScope = castTo gTypeDedicatedWorkerGlobalScope "DedicatedWorkerGlobalScope"
+
+foreign import javascript unsafe "window[\"DedicatedWorkerGlobalScope\"]" gTypeDedicatedWorkerGlobalScope' :: JSRef GType
+gTypeDedicatedWorkerGlobalScope = GType gTypeDedicatedWorkerGlobalScope'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DelayNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DelayNode Mozilla DelayNode documentation>
+newtype DelayNode = DelayNode (JSRef DelayNode) deriving (Eq)
+
+unDelayNode (DelayNode o) = o
+
+instance ToJSRef DelayNode where
+  toJSRef = return . unDelayNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DelayNode where
+  fromJSRef = return . fmap DelayNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsDelayNode o
+toDelayNode :: IsDelayNode o => o -> DelayNode
+toDelayNode = unsafeCastGObject . toGObject
+
+instance IsDelayNode DelayNode
+instance IsAudioNode DelayNode
+instance IsEventTarget DelayNode
+instance GObjectClass DelayNode where
+  toGObject = GObject . castRef . unDelayNode
+  unsafeCastGObject = DelayNode . castRef . unGObject
+
+castToDelayNode :: GObjectClass obj => obj -> DelayNode
+castToDelayNode = castTo gTypeDelayNode "DelayNode"
+
+foreign import javascript unsafe "window[\"DelayNode\"]" gTypeDelayNode' :: JSRef GType
+gTypeDelayNode = GType gTypeDelayNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DeviceMotionEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent Mozilla DeviceMotionEvent documentation>
+newtype DeviceMotionEvent = DeviceMotionEvent (JSRef DeviceMotionEvent) deriving (Eq)
+
+unDeviceMotionEvent (DeviceMotionEvent o) = o
+
+instance ToJSRef DeviceMotionEvent where
+  toJSRef = return . unDeviceMotionEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DeviceMotionEvent where
+  fromJSRef = return . fmap DeviceMotionEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsDeviceMotionEvent o
+toDeviceMotionEvent :: IsDeviceMotionEvent o => o -> DeviceMotionEvent
+toDeviceMotionEvent = unsafeCastGObject . toGObject
+
+instance IsDeviceMotionEvent DeviceMotionEvent
+instance IsEvent DeviceMotionEvent
+instance GObjectClass DeviceMotionEvent where
+  toGObject = GObject . castRef . unDeviceMotionEvent
+  unsafeCastGObject = DeviceMotionEvent . castRef . unGObject
+
+castToDeviceMotionEvent :: GObjectClass obj => obj -> DeviceMotionEvent
+castToDeviceMotionEvent = castTo gTypeDeviceMotionEvent "DeviceMotionEvent"
+
+foreign import javascript unsafe "window[\"DeviceMotionEvent\"]" gTypeDeviceMotionEvent' :: JSRef GType
+gTypeDeviceMotionEvent = GType gTypeDeviceMotionEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DeviceOrientationEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent Mozilla DeviceOrientationEvent documentation>
+newtype DeviceOrientationEvent = DeviceOrientationEvent (JSRef DeviceOrientationEvent) deriving (Eq)
+
+unDeviceOrientationEvent (DeviceOrientationEvent o) = o
+
+instance ToJSRef DeviceOrientationEvent where
+  toJSRef = return . unDeviceOrientationEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DeviceOrientationEvent where
+  fromJSRef = return . fmap DeviceOrientationEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsDeviceOrientationEvent o
+toDeviceOrientationEvent :: IsDeviceOrientationEvent o => o -> DeviceOrientationEvent
+toDeviceOrientationEvent = unsafeCastGObject . toGObject
+
+instance IsDeviceOrientationEvent DeviceOrientationEvent
+instance IsEvent DeviceOrientationEvent
+instance GObjectClass DeviceOrientationEvent where
+  toGObject = GObject . castRef . unDeviceOrientationEvent
+  unsafeCastGObject = DeviceOrientationEvent . castRef . unGObject
+
+castToDeviceOrientationEvent :: GObjectClass obj => obj -> DeviceOrientationEvent
+castToDeviceOrientationEvent = castTo gTypeDeviceOrientationEvent "DeviceOrientationEvent"
+
+foreign import javascript unsafe "window[\"DeviceOrientationEvent\"]" gTypeDeviceOrientationEvent' :: JSRef GType
+gTypeDeviceOrientationEvent = GType gTypeDeviceOrientationEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DeviceProximityEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceProximityEvent Mozilla DeviceProximityEvent documentation>
+newtype DeviceProximityEvent = DeviceProximityEvent (JSRef DeviceProximityEvent) deriving (Eq)
+
+unDeviceProximityEvent (DeviceProximityEvent o) = o
+
+instance ToJSRef DeviceProximityEvent where
+  toJSRef = return . unDeviceProximityEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DeviceProximityEvent where
+  fromJSRef = return . fmap DeviceProximityEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsDeviceProximityEvent o
+toDeviceProximityEvent :: IsDeviceProximityEvent o => o -> DeviceProximityEvent
+toDeviceProximityEvent = unsafeCastGObject . toGObject
+
+instance IsDeviceProximityEvent DeviceProximityEvent
+instance IsEvent DeviceProximityEvent
+instance GObjectClass DeviceProximityEvent where
+  toGObject = GObject . castRef . unDeviceProximityEvent
+  unsafeCastGObject = DeviceProximityEvent . castRef . unGObject
+
+castToDeviceProximityEvent :: GObjectClass obj => obj -> DeviceProximityEvent
+castToDeviceProximityEvent = castTo gTypeDeviceProximityEvent "DeviceProximityEvent"
+
+foreign import javascript unsafe "window[\"DeviceProximityEvent\"]" gTypeDeviceProximityEvent' :: JSRef GType
+gTypeDeviceProximityEvent = GType gTypeDeviceProximityEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Document".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Document Mozilla Document documentation>
 newtype Document = Document (JSRef Document) deriving (Eq)
 
 unDocument (Document o) = o
@@ -1547,6 +5118,12 @@ type IsDocument o = DocumentClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DocumentFragment".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment Mozilla DocumentFragment documentation>
 newtype DocumentFragment = DocumentFragment (JSRef DocumentFragment) deriving (Eq)
 
 unDocumentFragment (DocumentFragment o) = o
@@ -1580,6 +5157,12 @@ type IsDocumentFragment o = DocumentFragmentClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DocumentType".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType Mozilla DocumentType documentation>
 newtype DocumentType = DocumentType (JSRef DocumentType) deriving (Eq)
 
 unDocumentType (DocumentType o) = o
@@ -1613,6 +5196,120 @@ type IsDocumentType o = DocumentTypeClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DynamicsCompressorNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode Mozilla DynamicsCompressorNode documentation>
+newtype DynamicsCompressorNode = DynamicsCompressorNode (JSRef DynamicsCompressorNode) deriving (Eq)
+
+unDynamicsCompressorNode (DynamicsCompressorNode o) = o
+
+instance ToJSRef DynamicsCompressorNode where
+  toJSRef = return . unDynamicsCompressorNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef DynamicsCompressorNode where
+  fromJSRef = return . fmap DynamicsCompressorNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsDynamicsCompressorNode o
+toDynamicsCompressorNode :: IsDynamicsCompressorNode o => o -> DynamicsCompressorNode
+toDynamicsCompressorNode = unsafeCastGObject . toGObject
+
+instance IsDynamicsCompressorNode DynamicsCompressorNode
+instance IsAudioNode DynamicsCompressorNode
+instance IsEventTarget DynamicsCompressorNode
+instance GObjectClass DynamicsCompressorNode where
+  toGObject = GObject . castRef . unDynamicsCompressorNode
+  unsafeCastGObject = DynamicsCompressorNode . castRef . unGObject
+
+castToDynamicsCompressorNode :: GObjectClass obj => obj -> DynamicsCompressorNode
+castToDynamicsCompressorNode = castTo gTypeDynamicsCompressorNode "DynamicsCompressorNode"
+
+foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynamicsCompressorNode' :: JSRef GType
+gTypeDynamicsCompressorNode = GType gTypeDynamicsCompressorNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EXTShaderTextureLOD".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EXTShaderTextureLOD Mozilla EXTShaderTextureLOD documentation>
+newtype EXTShaderTextureLOD = EXTShaderTextureLOD (JSRef EXTShaderTextureLOD) deriving (Eq)
+
+unEXTShaderTextureLOD (EXTShaderTextureLOD o) = o
+
+instance ToJSRef EXTShaderTextureLOD where
+  toJSRef = return . unEXTShaderTextureLOD
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef EXTShaderTextureLOD where
+  fromJSRef = return . fmap EXTShaderTextureLOD . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsEXTShaderTextureLOD o
+toEXTShaderTextureLOD :: IsEXTShaderTextureLOD o => o -> EXTShaderTextureLOD
+toEXTShaderTextureLOD = unsafeCastGObject . toGObject
+
+instance IsEXTShaderTextureLOD EXTShaderTextureLOD
+instance GObjectClass EXTShaderTextureLOD where
+  toGObject = GObject . castRef . unEXTShaderTextureLOD
+  unsafeCastGObject = EXTShaderTextureLOD . castRef . unGObject
+
+castToEXTShaderTextureLOD :: GObjectClass obj => obj -> EXTShaderTextureLOD
+castToEXTShaderTextureLOD = castTo gTypeEXTShaderTextureLOD "EXTShaderTextureLOD"
+
+foreign import javascript unsafe "window[\"EXTShaderTextureLOD\"]" gTypeEXTShaderTextureLOD' :: JSRef GType
+gTypeEXTShaderTextureLOD = GType gTypeEXTShaderTextureLOD'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EXTTextureFilterAnisotropic".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EXTTextureFilterAnisotropic Mozilla EXTTextureFilterAnisotropic documentation>
+newtype EXTTextureFilterAnisotropic = EXTTextureFilterAnisotropic (JSRef EXTTextureFilterAnisotropic) deriving (Eq)
+
+unEXTTextureFilterAnisotropic (EXTTextureFilterAnisotropic o) = o
+
+instance ToJSRef EXTTextureFilterAnisotropic where
+  toJSRef = return . unEXTTextureFilterAnisotropic
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef EXTTextureFilterAnisotropic where
+  fromJSRef = return . fmap EXTTextureFilterAnisotropic . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsEXTTextureFilterAnisotropic o
+toEXTTextureFilterAnisotropic :: IsEXTTextureFilterAnisotropic o => o -> EXTTextureFilterAnisotropic
+toEXTTextureFilterAnisotropic = unsafeCastGObject . toGObject
+
+instance IsEXTTextureFilterAnisotropic EXTTextureFilterAnisotropic
+instance GObjectClass EXTTextureFilterAnisotropic where
+  toGObject = GObject . castRef . unEXTTextureFilterAnisotropic
+  unsafeCastGObject = EXTTextureFilterAnisotropic . castRef . unGObject
+
+castToEXTTextureFilterAnisotropic :: GObjectClass obj => obj -> EXTTextureFilterAnisotropic
+castToEXTTextureFilterAnisotropic = castTo gTypeEXTTextureFilterAnisotropic "EXTTextureFilterAnisotropic"
+
+foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gTypeEXTTextureFilterAnisotropic' :: JSRef GType
+gTypeEXTTextureFilterAnisotropic = GType gTypeEXTTextureFilterAnisotropic'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Element".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Element Mozilla Element documentation>
 newtype Element = Element (JSRef Element) deriving (Eq)
 
 unElement (Element o) = o
@@ -1646,6 +5343,50 @@ type IsElement o = ElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Entity".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Entity Mozilla Entity documentation>
+newtype Entity = Entity (JSRef Entity) deriving (Eq)
+
+unEntity (Entity o) = o
+
+instance ToJSRef Entity where
+  toJSRef = return . unEntity
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Entity where
+  fromJSRef = return . fmap Entity . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsNode o => IsEntity o
+toEntity :: IsEntity o => o -> Entity
+toEntity = unsafeCastGObject . toGObject
+
+instance IsEntity Entity
+instance IsNode Entity
+instance GObjectClass Entity where
+  toGObject = GObject . castRef . unEntity
+  unsafeCastGObject = Entity . castRef . unGObject
+
+castToEntity :: GObjectClass obj => obj -> Entity
+castToEntity = castTo gTypeEntity "Entity"
+
+foreign import javascript unsafe "window[\"Entity\"]" gTypeEntity' :: JSRef GType
+gTypeEntity = GType gTypeEntity'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EntityReference".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EntityReference Mozilla EntityReference documentation>
 newtype EntityReference = EntityReference (JSRef EntityReference) deriving (Eq)
 
 unEntityReference (EntityReference o) = o
@@ -1679,6 +5420,47 @@ type IsEntityReference o = EntityReferenceClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ErrorEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent Mozilla ErrorEvent documentation>
+newtype ErrorEvent = ErrorEvent (JSRef ErrorEvent) deriving (Eq)
+
+unErrorEvent (ErrorEvent o) = o
+
+instance ToJSRef ErrorEvent where
+  toJSRef = return . unErrorEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ErrorEvent where
+  fromJSRef = return . fmap ErrorEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsErrorEvent o
+toErrorEvent :: IsErrorEvent o => o -> ErrorEvent
+toErrorEvent = unsafeCastGObject . toGObject
+
+instance IsErrorEvent ErrorEvent
+instance IsEvent ErrorEvent
+instance GObjectClass ErrorEvent where
+  toGObject = GObject . castRef . unErrorEvent
+  unsafeCastGObject = ErrorEvent . castRef . unGObject
+
+castToErrorEvent :: GObjectClass obj => obj -> ErrorEvent
+castToErrorEvent = castTo gTypeErrorEvent "ErrorEvent"
+
+foreign import javascript unsafe "window[\"ErrorEvent\"]" gTypeErrorEvent' :: JSRef GType
+gTypeErrorEvent = GType gTypeErrorEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Event".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Event Mozilla Event documentation>
 newtype Event = Event (JSRef Event) deriving (Eq)
 
 unEvent (Event o) = o
@@ -1711,6 +5493,77 @@ type IsEvent o = EventClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EventListener".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EventListener Mozilla EventListener documentation>
+newtype EventListener = EventListener (JSRef EventListener) deriving (Eq)
+
+unEventListener (EventListener o) = o
+
+instance ToJSRef EventListener where
+  toJSRef = return . unEventListener
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef EventListener where
+  fromJSRef = return . fmap EventListener . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsEventListener o
+toEventListener :: IsEventListener o => o -> EventListener
+toEventListener = unsafeCastGObject . toGObject
+
+instance IsEventListener EventListener
+instance GObjectClass EventListener where
+  toGObject = GObject . castRef . unEventListener
+  unsafeCastGObject = EventListener . castRef . unGObject
+
+castToEventListener :: GObjectClass obj => obj -> EventListener
+castToEventListener = castTo gTypeEventListener "EventListener"
+
+foreign import javascript unsafe "window[\"EventListener\"]" gTypeEventListener' :: JSRef GType
+gTypeEventListener = GType gTypeEventListener'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EventSource".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EventSource Mozilla EventSource documentation>
+newtype EventSource = EventSource (JSRef EventSource) deriving (Eq)
+
+unEventSource (EventSource o) = o
+
+instance ToJSRef EventSource where
+  toJSRef = return . unEventSource
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef EventSource where
+  fromJSRef = return . fmap EventSource . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsEventSource o
+toEventSource :: IsEventSource o => o -> EventSource
+toEventSource = unsafeCastGObject . toGObject
+
+instance IsEventSource EventSource
+instance GObjectClass EventSource where
+  toGObject = GObject . castRef . unEventSource
+  unsafeCastGObject = EventSource . castRef . unGObject
+
+castToEventSource :: GObjectClass obj => obj -> EventSource
+castToEventSource = castTo gTypeEventSource "EventSource"
+
+foreign import javascript unsafe "window[\"EventSource\"]" gTypeEventSource' :: JSRef GType
+gTypeEventSource = GType gTypeEventSource'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EventTarget".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget Mozilla EventTarget documentation>
 newtype EventTarget = EventTarget (JSRef EventTarget) deriving (Eq)
 
 unEventTarget (EventTarget o) = o
@@ -1743,6 +5596,12 @@ type IsEventTarget o = EventTargetClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.File".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Blob"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/File Mozilla File documentation>
 newtype File = File (JSRef File) deriving (Eq)
 
 unFile (File o) = o
@@ -1776,6 +5635,43 @@ type IsFile o = FileClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.FileError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FileError Mozilla FileError documentation>
+newtype FileError = FileError (JSRef FileError) deriving (Eq)
+
+unFileError (FileError o) = o
+
+instance ToJSRef FileError where
+  toJSRef = return . unFileError
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef FileError where
+  fromJSRef = return . fmap FileError . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsFileError o
+toFileError :: IsFileError o => o -> FileError
+toFileError = unsafeCastGObject . toGObject
+
+instance IsFileError FileError
+instance GObjectClass FileError where
+  toGObject = GObject . castRef . unFileError
+  unsafeCastGObject = FileError . castRef . unGObject
+
+castToFileError :: GObjectClass obj => obj -> FileError
+castToFileError = castTo gTypeFileError "FileError"
+
+foreign import javascript unsafe "window[\"FileError\"]" gTypeFileError' :: JSRef GType
+gTypeFileError = GType gTypeFileError'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.FileList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FileList Mozilla FileList documentation>
 newtype FileList = FileList (JSRef FileList) deriving (Eq)
 
 unFileList (FileList o) = o
@@ -1808,6 +5704,297 @@ type IsFileList o = FileListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.FileReader".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FileReader Mozilla FileReader documentation>
+newtype FileReader = FileReader (JSRef FileReader) deriving (Eq)
+
+unFileReader (FileReader o) = o
+
+instance ToJSRef FileReader where
+  toJSRef = return . unFileReader
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef FileReader where
+  fromJSRef = return . fmap FileReader . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsFileReader o
+toFileReader :: IsFileReader o => o -> FileReader
+toFileReader = unsafeCastGObject . toGObject
+
+instance IsFileReader FileReader
+instance GObjectClass FileReader where
+  toGObject = GObject . castRef . unFileReader
+  unsafeCastGObject = FileReader . castRef . unGObject
+
+castToFileReader :: GObjectClass obj => obj -> FileReader
+castToFileReader = castTo gTypeFileReader "FileReader"
+
+foreign import javascript unsafe "window[\"FileReader\"]" gTypeFileReader' :: JSRef GType
+gTypeFileReader = GType gTypeFileReader'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.FileReaderSync".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync Mozilla FileReaderSync documentation>
+newtype FileReaderSync = FileReaderSync (JSRef FileReaderSync) deriving (Eq)
+
+unFileReaderSync (FileReaderSync o) = o
+
+instance ToJSRef FileReaderSync where
+  toJSRef = return . unFileReaderSync
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef FileReaderSync where
+  fromJSRef = return . fmap FileReaderSync . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsFileReaderSync o
+toFileReaderSync :: IsFileReaderSync o => o -> FileReaderSync
+toFileReaderSync = unsafeCastGObject . toGObject
+
+instance IsFileReaderSync FileReaderSync
+instance GObjectClass FileReaderSync where
+  toGObject = GObject . castRef . unFileReaderSync
+  unsafeCastGObject = FileReaderSync . castRef . unGObject
+
+castToFileReaderSync :: GObjectClass obj => obj -> FileReaderSync
+castToFileReaderSync = castTo gTypeFileReaderSync "FileReaderSync"
+
+foreign import javascript unsafe "window[\"FileReaderSync\"]" gTypeFileReaderSync' :: JSRef GType
+gTypeFileReaderSync = GType gTypeFileReaderSync'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.FocusEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent Mozilla FocusEvent documentation>
+newtype FocusEvent = FocusEvent (JSRef FocusEvent) deriving (Eq)
+
+unFocusEvent (FocusEvent o) = o
+
+instance ToJSRef FocusEvent where
+  toJSRef = return . unFocusEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef FocusEvent where
+  fromJSRef = return . fmap FocusEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsUIEvent o => IsFocusEvent o
+toFocusEvent :: IsFocusEvent o => o -> FocusEvent
+toFocusEvent = unsafeCastGObject . toGObject
+
+instance IsFocusEvent FocusEvent
+instance IsUIEvent FocusEvent
+instance IsEvent FocusEvent
+instance GObjectClass FocusEvent where
+  toGObject = GObject . castRef . unFocusEvent
+  unsafeCastGObject = FocusEvent . castRef . unGObject
+
+castToFocusEvent :: GObjectClass obj => obj -> FocusEvent
+castToFocusEvent = castTo gTypeFocusEvent "FocusEvent"
+
+foreign import javascript unsafe "window[\"FocusEvent\"]" gTypeFocusEvent' :: JSRef GType
+gTypeFocusEvent = GType gTypeFocusEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.FontLoader".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader Mozilla FontLoader documentation>
+newtype FontLoader = FontLoader (JSRef FontLoader) deriving (Eq)
+
+unFontLoader (FontLoader o) = o
+
+instance ToJSRef FontLoader where
+  toJSRef = return . unFontLoader
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef FontLoader where
+  fromJSRef = return . fmap FontLoader . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsFontLoader o
+toFontLoader :: IsFontLoader o => o -> FontLoader
+toFontLoader = unsafeCastGObject . toGObject
+
+instance IsFontLoader FontLoader
+instance GObjectClass FontLoader where
+  toGObject = GObject . castRef . unFontLoader
+  unsafeCastGObject = FontLoader . castRef . unGObject
+
+castToFontLoader :: GObjectClass obj => obj -> FontLoader
+castToFontLoader = castTo gTypeFontLoader "FontLoader"
+
+foreign import javascript unsafe "window[\"FontLoader\"]" gTypeFontLoader' :: JSRef GType
+gTypeFontLoader = GType gTypeFontLoader'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.GainNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/GainNode Mozilla GainNode documentation>
+newtype GainNode = GainNode (JSRef GainNode) deriving (Eq)
+
+unGainNode (GainNode o) = o
+
+instance ToJSRef GainNode where
+  toJSRef = return . unGainNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef GainNode where
+  fromJSRef = return . fmap GainNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsGainNode o
+toGainNode :: IsGainNode o => o -> GainNode
+toGainNode = unsafeCastGObject . toGObject
+
+instance IsGainNode GainNode
+instance IsAudioNode GainNode
+instance IsEventTarget GainNode
+instance GObjectClass GainNode where
+  toGObject = GObject . castRef . unGainNode
+  unsafeCastGObject = GainNode . castRef . unGObject
+
+castToGainNode :: GObjectClass obj => obj -> GainNode
+castToGainNode = castTo gTypeGainNode "GainNode"
+
+foreign import javascript unsafe "window[\"GainNode\"]" gTypeGainNode' :: JSRef GType
+gTypeGainNode = GType gTypeGainNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Gamepad".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad Mozilla Gamepad documentation>
+newtype Gamepad = Gamepad (JSRef Gamepad) deriving (Eq)
+
+unGamepad (Gamepad o) = o
+
+instance ToJSRef Gamepad where
+  toJSRef = return . unGamepad
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Gamepad where
+  fromJSRef = return . fmap Gamepad . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsGamepad o
+toGamepad :: IsGamepad o => o -> Gamepad
+toGamepad = unsafeCastGObject . toGObject
+
+instance IsGamepad Gamepad
+instance GObjectClass Gamepad where
+  toGObject = GObject . castRef . unGamepad
+  unsafeCastGObject = Gamepad . castRef . unGObject
+
+castToGamepad :: GObjectClass obj => obj -> Gamepad
+castToGamepad = castTo gTypeGamepad "Gamepad"
+
+foreign import javascript unsafe "window[\"Gamepad\"]" gTypeGamepad' :: JSRef GType
+gTypeGamepad = GType gTypeGamepad'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.GamepadButton".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/GamepadButton Mozilla GamepadButton documentation>
+newtype GamepadButton = GamepadButton (JSRef GamepadButton) deriving (Eq)
+
+unGamepadButton (GamepadButton o) = o
+
+instance ToJSRef GamepadButton where
+  toJSRef = return . unGamepadButton
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef GamepadButton where
+  fromJSRef = return . fmap GamepadButton . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsGamepadButton o
+toGamepadButton :: IsGamepadButton o => o -> GamepadButton
+toGamepadButton = unsafeCastGObject . toGObject
+
+instance IsGamepadButton GamepadButton
+instance GObjectClass GamepadButton where
+  toGObject = GObject . castRef . unGamepadButton
+  unsafeCastGObject = GamepadButton . castRef . unGObject
+
+castToGamepadButton :: GObjectClass obj => obj -> GamepadButton
+castToGamepadButton = castTo gTypeGamepadButton "GamepadButton"
+
+foreign import javascript unsafe "window[\"GamepadButton\"]" gTypeGamepadButton' :: JSRef GType
+gTypeGamepadButton = GType gTypeGamepadButton'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.GamepadEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/GamepadEvent Mozilla GamepadEvent documentation>
+newtype GamepadEvent = GamepadEvent (JSRef GamepadEvent) deriving (Eq)
+
+unGamepadEvent (GamepadEvent o) = o
+
+instance ToJSRef GamepadEvent where
+  toJSRef = return . unGamepadEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef GamepadEvent where
+  fromJSRef = return . fmap GamepadEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsGamepadEvent o
+toGamepadEvent :: IsGamepadEvent o => o -> GamepadEvent
+toGamepadEvent = unsafeCastGObject . toGObject
+
+instance IsGamepadEvent GamepadEvent
+instance IsEvent GamepadEvent
+instance GObjectClass GamepadEvent where
+  toGObject = GObject . castRef . unGamepadEvent
+  unsafeCastGObject = GamepadEvent . castRef . unGObject
+
+castToGamepadEvent :: GObjectClass obj => obj -> GamepadEvent
+castToGamepadEvent = castTo gTypeGamepadEvent "GamepadEvent"
+
+foreign import javascript unsafe "window[\"GamepadEvent\"]" gTypeGamepadEvent' :: JSRef GType
+gTypeGamepadEvent = GType gTypeGamepadEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Geolocation".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation Mozilla Geolocation documentation>
 newtype Geolocation = Geolocation (JSRef Geolocation) deriving (Eq)
 
 unGeolocation (Geolocation o) = o
@@ -1840,6 +6027,82 @@ type IsGeolocation o = GeolocationClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Geoposition".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition Mozilla Geoposition documentation>
+newtype Geoposition = Geoposition (JSRef Geoposition) deriving (Eq)
+
+unGeoposition (Geoposition o) = o
+
+instance ToJSRef Geoposition where
+  toJSRef = return . unGeoposition
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Geoposition where
+  fromJSRef = return . fmap Geoposition . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsGeoposition o
+toGeoposition :: IsGeoposition o => o -> Geoposition
+toGeoposition = unsafeCastGObject . toGObject
+
+instance IsGeoposition Geoposition
+instance GObjectClass Geoposition where
+  toGObject = GObject . castRef . unGeoposition
+  unsafeCastGObject = Geoposition . castRef . unGObject
+
+castToGeoposition :: GObjectClass obj => obj -> Geoposition
+castToGeoposition = castTo gTypeGeoposition "Geoposition"
+
+foreign import javascript unsafe "window[\"Geoposition\"]" gTypeGeoposition' :: JSRef GType
+gTypeGeoposition = GType gTypeGeoposition'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLAllCollection".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection Mozilla HTMLAllCollection documentation>
+newtype HTMLAllCollection = HTMLAllCollection (JSRef HTMLAllCollection) deriving (Eq)
+
+unHTMLAllCollection (HTMLAllCollection o) = o
+
+instance ToJSRef HTMLAllCollection where
+  toJSRef = return . unHTMLAllCollection
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLAllCollection where
+  fromJSRef = return . fmap HTMLAllCollection . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsHTMLAllCollection o
+toHTMLAllCollection :: IsHTMLAllCollection o => o -> HTMLAllCollection
+toHTMLAllCollection = unsafeCastGObject . toGObject
+
+instance IsHTMLAllCollection HTMLAllCollection
+instance GObjectClass HTMLAllCollection where
+  toGObject = GObject . castRef . unHTMLAllCollection
+  unsafeCastGObject = HTMLAllCollection . castRef . unGObject
+
+castToHTMLAllCollection :: GObjectClass obj => obj -> HTMLAllCollection
+castToHTMLAllCollection = castTo gTypeHTMLAllCollection "HTMLAllCollection"
+
+foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCollection' :: JSRef GType
+gTypeHTMLAllCollection = GType gTypeHTMLAllCollection'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLAnchorElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement Mozilla HTMLAnchorElement documentation>
 newtype HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement) deriving (Eq)
 
 unHTMLAnchorElement (HTMLAnchorElement o) = o
@@ -1875,6 +6138,14 @@ type IsHTMLAnchorElement o = HTMLAnchorElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLAppletElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement Mozilla HTMLAppletElement documentation>
 newtype HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement) deriving (Eq)
 
 unHTMLAppletElement (HTMLAppletElement o) = o
@@ -1910,6 +6181,14 @@ type IsHTMLAppletElement o = HTMLAppletElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLAreaElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement Mozilla HTMLAreaElement documentation>
 newtype HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement) deriving (Eq)
 
 unHTMLAreaElement (HTMLAreaElement o) = o
@@ -1945,6 +6224,12 @@ type IsHTMLAreaElement o = HTMLAreaElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLAudioElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLMediaElement"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement Mozilla HTMLAudioElement documentation>
 newtype HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement) deriving (Eq)
 
 unHTMLAudioElement (HTMLAudioElement o) = o
@@ -1963,9 +6248,6 @@ toHTMLAudioElement = unsafeCastGObject . toGObject
 
 instance IsHTMLAudioElement HTMLAudioElement
 instance IsHTMLMediaElement HTMLAudioElement
-instance IsHTMLElement HTMLAudioElement
-instance IsElement HTMLAudioElement
-instance IsNode HTMLAudioElement
 instance GObjectClass HTMLAudioElement where
   toGObject = GObject . castRef . unHTMLAudioElement
   unsafeCastGObject = HTMLAudioElement . castRef . unGObject
@@ -1981,6 +6263,14 @@ type IsHTMLAudioElement o = HTMLAudioElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLBRElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement Mozilla HTMLBRElement documentation>
 newtype HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement) deriving (Eq)
 
 unHTMLBRElement (HTMLBRElement o) = o
@@ -2016,6 +6306,14 @@ type IsHTMLBRElement o = HTMLBRElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLBaseElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement Mozilla HTMLBaseElement documentation>
 newtype HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement) deriving (Eq)
 
 unHTMLBaseElement (HTMLBaseElement o) = o
@@ -2051,6 +6349,14 @@ type IsHTMLBaseElement o = HTMLBaseElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLBaseFontElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement Mozilla HTMLBaseFontElement documentation>
 newtype HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement) deriving (Eq)
 
 unHTMLBaseFontElement (HTMLBaseFontElement o) = o
@@ -2086,6 +6392,14 @@ type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLBodyElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement Mozilla HTMLBodyElement documentation>
 newtype HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement) deriving (Eq)
 
 unHTMLBodyElement (HTMLBodyElement o) = o
@@ -2121,6 +6435,14 @@ type IsHTMLBodyElement o = HTMLBodyElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLButtonElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement Mozilla HTMLButtonElement documentation>
 newtype HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement) deriving (Eq)
 
 unHTMLButtonElement (HTMLButtonElement o) = o
@@ -2156,6 +6478,14 @@ type IsHTMLButtonElement o = HTMLButtonElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLCanvasElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement Mozilla HTMLCanvasElement documentation>
 newtype HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement) deriving (Eq)
 
 unHTMLCanvasElement (HTMLCanvasElement o) = o
@@ -2191,6 +6521,9 @@ type IsHTMLCanvasElement o = HTMLCanvasElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLCollection".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection Mozilla HTMLCollection documentation>
 newtype HTMLCollection = HTMLCollection (JSRef HTMLCollection) deriving (Eq)
 
 unHTMLCollection (HTMLCollection o) = o
@@ -2223,6 +6556,14 @@ type IsHTMLCollection o = HTMLCollectionClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLDListElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement Mozilla HTMLDListElement documentation>
 newtype HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement) deriving (Eq)
 
 unHTMLDListElement (HTMLDListElement o) = o
@@ -2258,6 +6599,56 @@ type IsHTMLDListElement o = HTMLDListElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLDataListElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDataListElement Mozilla HTMLDataListElement documentation>
+newtype HTMLDataListElement = HTMLDataListElement (JSRef HTMLDataListElement) deriving (Eq)
+
+unHTMLDataListElement (HTMLDataListElement o) = o
+
+instance ToJSRef HTMLDataListElement where
+  toJSRef = return . unHTMLDataListElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLDataListElement where
+  fromJSRef = return . fmap HTMLDataListElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLDataListElement o
+toHTMLDataListElement :: IsHTMLDataListElement o => o -> HTMLDataListElement
+toHTMLDataListElement = unsafeCastGObject . toGObject
+
+instance IsHTMLDataListElement HTMLDataListElement
+instance IsHTMLElement HTMLDataListElement
+instance IsElement HTMLDataListElement
+instance IsNode HTMLDataListElement
+instance GObjectClass HTMLDataListElement where
+  toGObject = GObject . castRef . unHTMLDataListElement
+  unsafeCastGObject = HTMLDataListElement . castRef . unGObject
+
+castToHTMLDataListElement :: GObjectClass obj => obj -> HTMLDataListElement
+castToHTMLDataListElement = castTo gTypeHTMLDataListElement "HTMLDataListElement"
+
+foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLDataListElement' :: JSRef GType
+gTypeHTMLDataListElement = GType gTypeHTMLDataListElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLDetailsElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement Mozilla HTMLDetailsElement documentation>
 newtype HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement) deriving (Eq)
 
 unHTMLDetailsElement (HTMLDetailsElement o) = o
@@ -2293,6 +6684,14 @@ type IsHTMLDetailsElement o = HTMLDetailsElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLDirectoryElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement Mozilla HTMLDirectoryElement documentation>
 newtype HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement) deriving (Eq)
 
 unHTMLDirectoryElement (HTMLDirectoryElement o) = o
@@ -2328,6 +6727,14 @@ type IsHTMLDirectoryElement o = HTMLDirectoryElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLDivElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement Mozilla HTMLDivElement documentation>
 newtype HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement) deriving (Eq)
 
 unHTMLDivElement (HTMLDivElement o) = o
@@ -2363,6 +6770,13 @@ type IsHTMLDivElement o = HTMLDivElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLDocument".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Document"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument Mozilla HTMLDocument documentation>
 newtype HTMLDocument = HTMLDocument (JSRef HTMLDocument) deriving (Eq)
 
 unHTMLDocument (HTMLDocument o) = o
@@ -2397,6 +6811,13 @@ type IsHTMLDocument o = HTMLDocumentClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement Mozilla HTMLElement documentation>
 newtype HTMLElement = HTMLElement (JSRef HTMLElement) deriving (Eq)
 
 unHTMLElement (HTMLElement o) = o
@@ -2431,6 +6852,14 @@ type IsHTMLElement o = HTMLElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLEmbedElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement Mozilla HTMLEmbedElement documentation>
 newtype HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement) deriving (Eq)
 
 unHTMLEmbedElement (HTMLEmbedElement o) = o
@@ -2466,6 +6895,14 @@ type IsHTMLEmbedElement o = HTMLEmbedElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLFieldSetElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement Mozilla HTMLFieldSetElement documentation>
 newtype HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement) deriving (Eq)
 
 unHTMLFieldSetElement (HTMLFieldSetElement o) = o
@@ -2501,6 +6938,14 @@ type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLFontElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement Mozilla HTMLFontElement documentation>
 newtype HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement) deriving (Eq)
 
 unHTMLFontElement (HTMLFontElement o) = o
@@ -2536,6 +6981,52 @@ type IsHTMLFontElement o = HTMLFontElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLFormControlsCollection".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLCollection"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection Mozilla HTMLFormControlsCollection documentation>
+newtype HTMLFormControlsCollection = HTMLFormControlsCollection (JSRef HTMLFormControlsCollection) deriving (Eq)
+
+unHTMLFormControlsCollection (HTMLFormControlsCollection o) = o
+
+instance ToJSRef HTMLFormControlsCollection where
+  toJSRef = return . unHTMLFormControlsCollection
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLFormControlsCollection where
+  fromJSRef = return . fmap HTMLFormControlsCollection . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLCollection o => IsHTMLFormControlsCollection o
+toHTMLFormControlsCollection :: IsHTMLFormControlsCollection o => o -> HTMLFormControlsCollection
+toHTMLFormControlsCollection = unsafeCastGObject . toGObject
+
+instance IsHTMLFormControlsCollection HTMLFormControlsCollection
+instance IsHTMLCollection HTMLFormControlsCollection
+instance GObjectClass HTMLFormControlsCollection where
+  toGObject = GObject . castRef . unHTMLFormControlsCollection
+  unsafeCastGObject = HTMLFormControlsCollection . castRef . unGObject
+
+castToHTMLFormControlsCollection :: GObjectClass obj => obj -> HTMLFormControlsCollection
+castToHTMLFormControlsCollection = castTo gTypeHTMLFormControlsCollection "HTMLFormControlsCollection"
+
+foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeHTMLFormControlsCollection' :: JSRef GType
+gTypeHTMLFormControlsCollection = GType gTypeHTMLFormControlsCollection'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLFormElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement Mozilla HTMLFormElement documentation>
 newtype HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement) deriving (Eq)
 
 unHTMLFormElement (HTMLFormElement o) = o
@@ -2571,6 +7062,14 @@ type IsHTMLFormElement o = HTMLFormElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement Mozilla HTMLFrameElement documentation>
 newtype HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement) deriving (Eq)
 
 unHTMLFrameElement (HTMLFrameElement o) = o
@@ -2606,6 +7105,14 @@ type IsHTMLFrameElement o = HTMLFrameElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameSetElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement Mozilla HTMLFrameSetElement documentation>
 newtype HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement) deriving (Eq)
 
 unHTMLFrameSetElement (HTMLFrameSetElement o) = o
@@ -2641,6 +7148,14 @@ type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLHRElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement Mozilla HTMLHRElement documentation>
 newtype HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement) deriving (Eq)
 
 unHTMLHRElement (HTMLHRElement o) = o
@@ -2676,6 +7191,14 @@ type IsHTMLHRElement o = HTMLHRElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadElement Mozilla HTMLHeadElement documentation>
 newtype HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement) deriving (Eq)
 
 unHTMLHeadElement (HTMLHeadElement o) = o
@@ -2711,6 +7234,14 @@ type IsHTMLHeadElement o = HTMLHeadElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadingElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement Mozilla HTMLHeadingElement documentation>
 newtype HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement) deriving (Eq)
 
 unHTMLHeadingElement (HTMLHeadingElement o) = o
@@ -2746,6 +7277,14 @@ type IsHTMLHeadingElement o = HTMLHeadingElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLHtmlElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement Mozilla HTMLHtmlElement documentation>
 newtype HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement) deriving (Eq)
 
 unHTMLHtmlElement (HTMLHtmlElement o) = o
@@ -2781,6 +7320,14 @@ type IsHTMLHtmlElement o = HTMLHtmlElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLIFrameElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement Mozilla HTMLIFrameElement documentation>
 newtype HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement) deriving (Eq)
 
 unHTMLIFrameElement (HTMLIFrameElement o) = o
@@ -2816,6 +7363,14 @@ type IsHTMLIFrameElement o = HTMLIFrameElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLImageElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement Mozilla HTMLImageElement documentation>
 newtype HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement) deriving (Eq)
 
 unHTMLImageElement (HTMLImageElement o) = o
@@ -2851,6 +7406,14 @@ type IsHTMLImageElement o = HTMLImageElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLInputElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement Mozilla HTMLInputElement documentation>
 newtype HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement) deriving (Eq)
 
 unHTMLInputElement (HTMLInputElement o) = o
@@ -2886,6 +7449,14 @@ type IsHTMLInputElement o = HTMLInputElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLKeygenElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement Mozilla HTMLKeygenElement documentation>
 newtype HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement) deriving (Eq)
 
 unHTMLKeygenElement (HTMLKeygenElement o) = o
@@ -2921,6 +7492,14 @@ type IsHTMLKeygenElement o = HTMLKeygenElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLLIElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLIElement Mozilla HTMLLIElement documentation>
 newtype HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement) deriving (Eq)
 
 unHTMLLIElement (HTMLLIElement o) = o
@@ -2956,6 +7535,14 @@ type IsHTMLLIElement o = HTMLLIElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLLabelElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement Mozilla HTMLLabelElement documentation>
 newtype HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement) deriving (Eq)
 
 unHTMLLabelElement (HTMLLabelElement o) = o
@@ -2991,6 +7578,14 @@ type IsHTMLLabelElement o = HTMLLabelElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLLegendElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLegendElement Mozilla HTMLLegendElement documentation>
 newtype HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement) deriving (Eq)
 
 unHTMLLegendElement (HTMLLegendElement o) = o
@@ -3026,6 +7621,14 @@ type IsHTMLLegendElement o = HTMLLegendElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLLinkElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement Mozilla HTMLLinkElement documentation>
 newtype HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement) deriving (Eq)
 
 unHTMLLinkElement (HTMLLinkElement o) = o
@@ -3061,6 +7664,14 @@ type IsHTMLLinkElement o = HTMLLinkElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLMapElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMapElement Mozilla HTMLMapElement documentation>
 newtype HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement) deriving (Eq)
 
 unHTMLMapElement (HTMLMapElement o) = o
@@ -3096,6 +7707,14 @@ type IsHTMLMapElement o = HTMLMapElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLMarqueeElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement Mozilla HTMLMarqueeElement documentation>
 newtype HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement) deriving (Eq)
 
 unHTMLMarqueeElement (HTMLMarqueeElement o) = o
@@ -3131,6 +7750,9 @@ type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLMediaElement".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement Mozilla HTMLMediaElement documentation>
 newtype HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement) deriving (Eq)
 
 unHTMLMediaElement (HTMLMediaElement o) = o
@@ -3143,14 +7765,11 @@ instance FromJSRef HTMLMediaElement where
   fromJSRef = return . fmap HTMLMediaElement . maybeJSNull
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLMediaElement o
+class GObjectClass o => IsHTMLMediaElement o
 toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
 toHTMLMediaElement = unsafeCastGObject . toGObject
 
 instance IsHTMLMediaElement HTMLMediaElement
-instance IsHTMLElement HTMLMediaElement
-instance IsElement HTMLMediaElement
-instance IsNode HTMLMediaElement
 instance GObjectClass HTMLMediaElement where
   toGObject = GObject . castRef . unHTMLMediaElement
   unsafeCastGObject = HTMLMediaElement . castRef . unGObject
@@ -3166,6 +7785,14 @@ type IsHTMLMediaElement o = HTMLMediaElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLMenuElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMenuElement Mozilla HTMLMenuElement documentation>
 newtype HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement) deriving (Eq)
 
 unHTMLMenuElement (HTMLMenuElement o) = o
@@ -3201,6 +7828,14 @@ type IsHTMLMenuElement o = HTMLMenuElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLMetaElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement Mozilla HTMLMetaElement documentation>
 newtype HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement) deriving (Eq)
 
 unHTMLMetaElement (HTMLMetaElement o) = o
@@ -3236,6 +7871,56 @@ type IsHTMLMetaElement o = HTMLMetaElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLMeterElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement Mozilla HTMLMeterElement documentation>
+newtype HTMLMeterElement = HTMLMeterElement (JSRef HTMLMeterElement) deriving (Eq)
+
+unHTMLMeterElement (HTMLMeterElement o) = o
+
+instance ToJSRef HTMLMeterElement where
+  toJSRef = return . unHTMLMeterElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLMeterElement where
+  fromJSRef = return . fmap HTMLMeterElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLMeterElement o
+toHTMLMeterElement :: IsHTMLMeterElement o => o -> HTMLMeterElement
+toHTMLMeterElement = unsafeCastGObject . toGObject
+
+instance IsHTMLMeterElement HTMLMeterElement
+instance IsHTMLElement HTMLMeterElement
+instance IsElement HTMLMeterElement
+instance IsNode HTMLMeterElement
+instance GObjectClass HTMLMeterElement where
+  toGObject = GObject . castRef . unHTMLMeterElement
+  unsafeCastGObject = HTMLMeterElement . castRef . unGObject
+
+castToHTMLMeterElement :: GObjectClass obj => obj -> HTMLMeterElement
+castToHTMLMeterElement = castTo gTypeHTMLMeterElement "HTMLMeterElement"
+
+foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterElement' :: JSRef GType
+gTypeHTMLMeterElement = GType gTypeHTMLMeterElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLModElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement Mozilla HTMLModElement documentation>
 newtype HTMLModElement = HTMLModElement (JSRef HTMLModElement) deriving (Eq)
 
 unHTMLModElement (HTMLModElement o) = o
@@ -3271,6 +7956,14 @@ type IsHTMLModElement o = HTMLModElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLOListElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement Mozilla HTMLOListElement documentation>
 newtype HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement) deriving (Eq)
 
 unHTMLOListElement (HTMLOListElement o) = o
@@ -3306,6 +7999,14 @@ type IsHTMLOListElement o = HTMLOListElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLObjectElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement Mozilla HTMLObjectElement documentation>
 newtype HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement) deriving (Eq)
 
 unHTMLObjectElement (HTMLObjectElement o) = o
@@ -3341,6 +8042,14 @@ type IsHTMLObjectElement o = HTMLObjectElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLOptGroupElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement Mozilla HTMLOptGroupElement documentation>
 newtype HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement) deriving (Eq)
 
 unHTMLOptGroupElement (HTMLOptGroupElement o) = o
@@ -3376,6 +8085,14 @@ type IsHTMLOptGroupElement o = HTMLOptGroupElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement Mozilla HTMLOptionElement documentation>
 newtype HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement) deriving (Eq)
 
 unHTMLOptionElement (HTMLOptionElement o) = o
@@ -3411,6 +8128,12 @@ type IsHTMLOptionElement o = HTMLOptionElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionsCollection".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLCollection"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection Mozilla HTMLOptionsCollection documentation>
 newtype HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollection) deriving (Eq)
 
 unHTMLOptionsCollection (HTMLOptionsCollection o) = o
@@ -3444,6 +8167,56 @@ type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLOutputElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement Mozilla HTMLOutputElement documentation>
+newtype HTMLOutputElement = HTMLOutputElement (JSRef HTMLOutputElement) deriving (Eq)
+
+unHTMLOutputElement (HTMLOutputElement o) = o
+
+instance ToJSRef HTMLOutputElement where
+  toJSRef = return . unHTMLOutputElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLOutputElement where
+  fromJSRef = return . fmap HTMLOutputElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLOutputElement o
+toHTMLOutputElement :: IsHTMLOutputElement o => o -> HTMLOutputElement
+toHTMLOutputElement = unsafeCastGObject . toGObject
+
+instance IsHTMLOutputElement HTMLOutputElement
+instance IsHTMLElement HTMLOutputElement
+instance IsElement HTMLOutputElement
+instance IsNode HTMLOutputElement
+instance GObjectClass HTMLOutputElement where
+  toGObject = GObject . castRef . unHTMLOutputElement
+  unsafeCastGObject = HTMLOutputElement . castRef . unGObject
+
+castToHTMLOutputElement :: GObjectClass obj => obj -> HTMLOutputElement
+castToHTMLOutputElement = castTo gTypeHTMLOutputElement "HTMLOutputElement"
+
+foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutputElement' :: JSRef GType
+gTypeHTMLOutputElement = GType gTypeHTMLOutputElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLParagraphElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParagraphElement Mozilla HTMLParagraphElement documentation>
 newtype HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement) deriving (Eq)
 
 unHTMLParagraphElement (HTMLParagraphElement o) = o
@@ -3479,6 +8252,14 @@ type IsHTMLParagraphElement o = HTMLParagraphElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLParamElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement Mozilla HTMLParamElement documentation>
 newtype HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement) deriving (Eq)
 
 unHTMLParamElement (HTMLParamElement o) = o
@@ -3514,6 +8295,14 @@ type IsHTMLParamElement o = HTMLParamElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLPreElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLPreElement Mozilla HTMLPreElement documentation>
 newtype HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement) deriving (Eq)
 
 unHTMLPreElement (HTMLPreElement o) = o
@@ -3549,6 +8338,56 @@ type IsHTMLPreElement o = HTMLPreElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLProgressElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement Mozilla HTMLProgressElement documentation>
+newtype HTMLProgressElement = HTMLProgressElement (JSRef HTMLProgressElement) deriving (Eq)
+
+unHTMLProgressElement (HTMLProgressElement o) = o
+
+instance ToJSRef HTMLProgressElement where
+  toJSRef = return . unHTMLProgressElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLProgressElement where
+  fromJSRef = return . fmap HTMLProgressElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLProgressElement o
+toHTMLProgressElement :: IsHTMLProgressElement o => o -> HTMLProgressElement
+toHTMLProgressElement = unsafeCastGObject . toGObject
+
+instance IsHTMLProgressElement HTMLProgressElement
+instance IsHTMLElement HTMLProgressElement
+instance IsElement HTMLProgressElement
+instance IsNode HTMLProgressElement
+instance GObjectClass HTMLProgressElement where
+  toGObject = GObject . castRef . unHTMLProgressElement
+  unsafeCastGObject = HTMLProgressElement . castRef . unGObject
+
+castToHTMLProgressElement :: GObjectClass obj => obj -> HTMLProgressElement
+castToHTMLProgressElement = castTo gTypeHTMLProgressElement "HTMLProgressElement"
+
+foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProgressElement' :: JSRef GType
+gTypeHTMLProgressElement = GType gTypeHTMLProgressElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLQuoteElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement Mozilla HTMLQuoteElement documentation>
 newtype HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement) deriving (Eq)
 
 unHTMLQuoteElement (HTMLQuoteElement o) = o
@@ -3584,6 +8423,14 @@ type IsHTMLQuoteElement o = HTMLQuoteElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLScriptElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement Mozilla HTMLScriptElement documentation>
 newtype HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement) deriving (Eq)
 
 unHTMLScriptElement (HTMLScriptElement o) = o
@@ -3619,6 +8466,14 @@ type IsHTMLScriptElement o = HTMLScriptElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLSelectElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement Mozilla HTMLSelectElement documentation>
 newtype HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement) deriving (Eq)
 
 unHTMLSelectElement (HTMLSelectElement o) = o
@@ -3654,6 +8509,98 @@ type IsHTMLSelectElement o = HTMLSelectElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLSourceElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement Mozilla HTMLSourceElement documentation>
+newtype HTMLSourceElement = HTMLSourceElement (JSRef HTMLSourceElement) deriving (Eq)
+
+unHTMLSourceElement (HTMLSourceElement o) = o
+
+instance ToJSRef HTMLSourceElement where
+  toJSRef = return . unHTMLSourceElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLSourceElement where
+  fromJSRef = return . fmap HTMLSourceElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLSourceElement o
+toHTMLSourceElement :: IsHTMLSourceElement o => o -> HTMLSourceElement
+toHTMLSourceElement = unsafeCastGObject . toGObject
+
+instance IsHTMLSourceElement HTMLSourceElement
+instance IsHTMLElement HTMLSourceElement
+instance IsElement HTMLSourceElement
+instance IsNode HTMLSourceElement
+instance GObjectClass HTMLSourceElement where
+  toGObject = GObject . castRef . unHTMLSourceElement
+  unsafeCastGObject = HTMLSourceElement . castRef . unGObject
+
+castToHTMLSourceElement :: GObjectClass obj => obj -> HTMLSourceElement
+castToHTMLSourceElement = castTo gTypeHTMLSourceElement "HTMLSourceElement"
+
+foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSourceElement' :: JSRef GType
+gTypeHTMLSourceElement = GType gTypeHTMLSourceElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLSpanElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSpanElement Mozilla HTMLSpanElement documentation>
+newtype HTMLSpanElement = HTMLSpanElement (JSRef HTMLSpanElement) deriving (Eq)
+
+unHTMLSpanElement (HTMLSpanElement o) = o
+
+instance ToJSRef HTMLSpanElement where
+  toJSRef = return . unHTMLSpanElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLSpanElement where
+  fromJSRef = return . fmap HTMLSpanElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLSpanElement o
+toHTMLSpanElement :: IsHTMLSpanElement o => o -> HTMLSpanElement
+toHTMLSpanElement = unsafeCastGObject . toGObject
+
+instance IsHTMLSpanElement HTMLSpanElement
+instance IsHTMLElement HTMLSpanElement
+instance IsElement HTMLSpanElement
+instance IsNode HTMLSpanElement
+instance GObjectClass HTMLSpanElement where
+  toGObject = GObject . castRef . unHTMLSpanElement
+  unsafeCastGObject = HTMLSpanElement . castRef . unGObject
+
+castToHTMLSpanElement :: GObjectClass obj => obj -> HTMLSpanElement
+castToHTMLSpanElement = castTo gTypeHTMLSpanElement "HTMLSpanElement"
+
+foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElement' :: JSRef GType
+gTypeHTMLSpanElement = GType gTypeHTMLSpanElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLStyleElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement Mozilla HTMLStyleElement documentation>
 newtype HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement) deriving (Eq)
 
 unHTMLStyleElement (HTMLStyleElement o) = o
@@ -3689,6 +8636,14 @@ type IsHTMLStyleElement o = HTMLStyleElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCaptionElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement Mozilla HTMLTableCaptionElement documentation>
 newtype HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptionElement) deriving (Eq)
 
 unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
@@ -3724,6 +8679,14 @@ type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCellElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement Mozilla HTMLTableCellElement documentation>
 newtype HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement) deriving (Eq)
 
 unHTMLTableCellElement (HTMLTableCellElement o) = o
@@ -3759,6 +8722,14 @@ type IsHTMLTableCellElement o = HTMLTableCellElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTableColElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement Mozilla HTMLTableColElement documentation>
 newtype HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement) deriving (Eq)
 
 unHTMLTableColElement (HTMLTableColElement o) = o
@@ -3794,6 +8765,14 @@ type IsHTMLTableColElement o = HTMLTableColElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTableElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement Mozilla HTMLTableElement documentation>
 newtype HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement) deriving (Eq)
 
 unHTMLTableElement (HTMLTableElement o) = o
@@ -3829,6 +8808,14 @@ type IsHTMLTableElement o = HTMLTableElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTableRowElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement Mozilla HTMLTableRowElement documentation>
 newtype HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement) deriving (Eq)
 
 unHTMLTableRowElement (HTMLTableRowElement o) = o
@@ -3864,6 +8851,14 @@ type IsHTMLTableRowElement o = HTMLTableRowElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTableSectionElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement Mozilla HTMLTableSectionElement documentation>
 newtype HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionElement) deriving (Eq)
 
 unHTMLTableSectionElement (HTMLTableSectionElement o) = o
@@ -3899,6 +8894,56 @@ type IsHTMLTableSectionElement o = HTMLTableSectionElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTemplateElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTemplateElement Mozilla HTMLTemplateElement documentation>
+newtype HTMLTemplateElement = HTMLTemplateElement (JSRef HTMLTemplateElement) deriving (Eq)
+
+unHTMLTemplateElement (HTMLTemplateElement o) = o
+
+instance ToJSRef HTMLTemplateElement where
+  toJSRef = return . unHTMLTemplateElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLTemplateElement where
+  fromJSRef = return . fmap HTMLTemplateElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLTemplateElement o
+toHTMLTemplateElement :: IsHTMLTemplateElement o => o -> HTMLTemplateElement
+toHTMLTemplateElement = unsafeCastGObject . toGObject
+
+instance IsHTMLTemplateElement HTMLTemplateElement
+instance IsHTMLElement HTMLTemplateElement
+instance IsElement HTMLTemplateElement
+instance IsNode HTMLTemplateElement
+instance GObjectClass HTMLTemplateElement where
+  toGObject = GObject . castRef . unHTMLTemplateElement
+  unsafeCastGObject = HTMLTemplateElement . castRef . unGObject
+
+castToHTMLTemplateElement :: GObjectClass obj => obj -> HTMLTemplateElement
+castToHTMLTemplateElement = castTo gTypeHTMLTemplateElement "HTMLTemplateElement"
+
+foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemplateElement' :: JSRef GType
+gTypeHTMLTemplateElement = GType gTypeHTMLTemplateElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTextAreaElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement Mozilla HTMLTextAreaElement documentation>
 newtype HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement) deriving (Eq)
 
 unHTMLTextAreaElement (HTMLTextAreaElement o) = o
@@ -3934,6 +8979,14 @@ type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTitleElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement Mozilla HTMLTitleElement documentation>
 newtype HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement) deriving (Eq)
 
 unHTMLTitleElement (HTMLTitleElement o) = o
@@ -3969,6 +9022,56 @@ type IsHTMLTitleElement o = HTMLTitleElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLTrackElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement Mozilla HTMLTrackElement documentation>
+newtype HTMLTrackElement = HTMLTrackElement (JSRef HTMLTrackElement) deriving (Eq)
+
+unHTMLTrackElement (HTMLTrackElement o) = o
+
+instance ToJSRef HTMLTrackElement where
+  toJSRef = return . unHTMLTrackElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLTrackElement where
+  fromJSRef = return . fmap HTMLTrackElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLTrackElement o
+toHTMLTrackElement :: IsHTMLTrackElement o => o -> HTMLTrackElement
+toHTMLTrackElement = unsafeCastGObject . toGObject
+
+instance IsHTMLTrackElement HTMLTrackElement
+instance IsHTMLElement HTMLTrackElement
+instance IsElement HTMLTrackElement
+instance IsNode HTMLTrackElement
+instance GObjectClass HTMLTrackElement where
+  toGObject = GObject . castRef . unHTMLTrackElement
+  unsafeCastGObject = HTMLTrackElement . castRef . unGObject
+
+castToHTMLTrackElement :: GObjectClass obj => obj -> HTMLTrackElement
+castToHTMLTrackElement = castTo gTypeHTMLTrackElement "HTMLTrackElement"
+
+foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackElement' :: JSRef GType
+gTypeHTMLTrackElement = GType gTypeHTMLTrackElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLUListElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUListElement Mozilla HTMLUListElement documentation>
 newtype HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement) deriving (Eq)
 
 unHTMLUListElement (HTMLUListElement o) = o
@@ -4004,6 +9107,54 @@ type IsHTMLUListElement o = HTMLUListElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLUnknownElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUnknownElement Mozilla HTMLUnknownElement documentation>
+newtype HTMLUnknownElement = HTMLUnknownElement (JSRef HTMLUnknownElement) deriving (Eq)
+
+unHTMLUnknownElement (HTMLUnknownElement o) = o
+
+instance ToJSRef HTMLUnknownElement where
+  toJSRef = return . unHTMLUnknownElement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HTMLUnknownElement where
+  fromJSRef = return . fmap HTMLUnknownElement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsHTMLElement o => IsHTMLUnknownElement o
+toHTMLUnknownElement :: IsHTMLUnknownElement o => o -> HTMLUnknownElement
+toHTMLUnknownElement = unsafeCastGObject . toGObject
+
+instance IsHTMLUnknownElement HTMLUnknownElement
+instance IsHTMLElement HTMLUnknownElement
+instance IsElement HTMLUnknownElement
+instance IsNode HTMLUnknownElement
+instance GObjectClass HTMLUnknownElement where
+  toGObject = GObject . castRef . unHTMLUnknownElement
+  unsafeCastGObject = HTMLUnknownElement . castRef . unGObject
+
+castToHTMLUnknownElement :: GObjectClass obj => obj -> HTMLUnknownElement
+castToHTMLUnknownElement = castTo gTypeHTMLUnknownElement "HTMLUnknownElement"
+
+foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnknownElement' :: JSRef GType
+gTypeHTMLUnknownElement = GType gTypeHTMLUnknownElement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HTMLVideoElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLMediaElement"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement Mozilla HTMLVideoElement documentation>
 newtype HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement) deriving (Eq)
 
 unHTMLVideoElement (HTMLVideoElement o) = o
@@ -4022,9 +9173,6 @@ toHTMLVideoElement = unsafeCastGObject . toGObject
 
 instance IsHTMLVideoElement HTMLVideoElement
 instance IsHTMLMediaElement HTMLVideoElement
-instance IsHTMLElement HTMLVideoElement
-instance IsElement HTMLVideoElement
-instance IsNode HTMLVideoElement
 instance GObjectClass HTMLVideoElement where
   toGObject = GObject . castRef . unHTMLVideoElement
   unsafeCastGObject = HTMLVideoElement . castRef . unGObject
@@ -4040,6 +9188,47 @@ type IsHTMLVideoElement o = HTMLVideoElementClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.HashChangeEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent Mozilla HashChangeEvent documentation>
+newtype HashChangeEvent = HashChangeEvent (JSRef HashChangeEvent) deriving (Eq)
+
+unHashChangeEvent (HashChangeEvent o) = o
+
+instance ToJSRef HashChangeEvent where
+  toJSRef = return . unHashChangeEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef HashChangeEvent where
+  fromJSRef = return . fmap HashChangeEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsHashChangeEvent o
+toHashChangeEvent :: IsHashChangeEvent o => o -> HashChangeEvent
+toHashChangeEvent = unsafeCastGObject . toGObject
+
+instance IsHashChangeEvent HashChangeEvent
+instance IsEvent HashChangeEvent
+instance GObjectClass HashChangeEvent where
+  toGObject = GObject . castRef . unHashChangeEvent
+  unsafeCastGObject = HashChangeEvent . castRef . unGObject
+
+castToHashChangeEvent :: GObjectClass obj => obj -> HashChangeEvent
+castToHashChangeEvent = castTo gTypeHashChangeEvent "HashChangeEvent"
+
+foreign import javascript unsafe "window[\"HashChangeEvent\"]" gTypeHashChangeEvent' :: JSRef GType
+gTypeHashChangeEvent = GType gTypeHashChangeEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.History".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/History Mozilla History documentation>
 newtype History = History (JSRef History) deriving (Eq)
 
 unHistory (History o) = o
@@ -4072,6 +9261,585 @@ type IsHistory o = HistoryClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBAny".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBAny Mozilla IDBAny documentation>
+newtype IDBAny = IDBAny (JSRef IDBAny) deriving (Eq)
+
+unIDBAny (IDBAny o) = o
+
+instance ToJSRef IDBAny where
+  toJSRef = return . unIDBAny
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBAny where
+  fromJSRef = return . fmap IDBAny . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsIDBAny o
+toIDBAny :: IsIDBAny o => o -> IDBAny
+toIDBAny = unsafeCastGObject . toGObject
+
+instance IsIDBAny IDBAny
+instance GObjectClass IDBAny where
+  toGObject = GObject . castRef . unIDBAny
+  unsafeCastGObject = IDBAny . castRef . unGObject
+
+castToIDBAny :: GObjectClass obj => obj -> IDBAny
+castToIDBAny = castTo gTypeIDBAny "IDBAny"
+
+foreign import javascript unsafe "window[\"IDBAny\"]" gTypeIDBAny' :: JSRef GType
+gTypeIDBAny = GType gTypeIDBAny'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBCursor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor Mozilla IDBCursor documentation>
+newtype IDBCursor = IDBCursor (JSRef IDBCursor) deriving (Eq)
+
+unIDBCursor (IDBCursor o) = o
+
+instance ToJSRef IDBCursor where
+  toJSRef = return . unIDBCursor
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBCursor where
+  fromJSRef = return . fmap IDBCursor . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsIDBCursor o
+toIDBCursor :: IsIDBCursor o => o -> IDBCursor
+toIDBCursor = unsafeCastGObject . toGObject
+
+instance IsIDBCursor IDBCursor
+instance GObjectClass IDBCursor where
+  toGObject = GObject . castRef . unIDBCursor
+  unsafeCastGObject = IDBCursor . castRef . unGObject
+
+castToIDBCursor :: GObjectClass obj => obj -> IDBCursor
+castToIDBCursor = castTo gTypeIDBCursor "IDBCursor"
+
+foreign import javascript unsafe "window[\"IDBCursor\"]" gTypeIDBCursor' :: JSRef GType
+gTypeIDBCursor = GType gTypeIDBCursor'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBCursorWithValue".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.IDBCursor"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursorWithValue Mozilla IDBCursorWithValue documentation>
+newtype IDBCursorWithValue = IDBCursorWithValue (JSRef IDBCursorWithValue) deriving (Eq)
+
+unIDBCursorWithValue (IDBCursorWithValue o) = o
+
+instance ToJSRef IDBCursorWithValue where
+  toJSRef = return . unIDBCursorWithValue
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBCursorWithValue where
+  fromJSRef = return . fmap IDBCursorWithValue . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsIDBCursor o => IsIDBCursorWithValue o
+toIDBCursorWithValue :: IsIDBCursorWithValue o => o -> IDBCursorWithValue
+toIDBCursorWithValue = unsafeCastGObject . toGObject
+
+instance IsIDBCursorWithValue IDBCursorWithValue
+instance IsIDBCursor IDBCursorWithValue
+instance GObjectClass IDBCursorWithValue where
+  toGObject = GObject . castRef . unIDBCursorWithValue
+  unsafeCastGObject = IDBCursorWithValue . castRef . unGObject
+
+castToIDBCursorWithValue :: GObjectClass obj => obj -> IDBCursorWithValue
+castToIDBCursorWithValue = castTo gTypeIDBCursorWithValue "IDBCursorWithValue"
+
+foreign import javascript unsafe "window[\"IDBCursorWithValue\"]" gTypeIDBCursorWithValue' :: JSRef GType
+gTypeIDBCursorWithValue = GType gTypeIDBCursorWithValue'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBDatabase".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase Mozilla IDBDatabase documentation>
+newtype IDBDatabase = IDBDatabase (JSRef IDBDatabase) deriving (Eq)
+
+unIDBDatabase (IDBDatabase o) = o
+
+instance ToJSRef IDBDatabase where
+  toJSRef = return . unIDBDatabase
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBDatabase where
+  fromJSRef = return . fmap IDBDatabase . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsIDBDatabase o
+toIDBDatabase :: IsIDBDatabase o => o -> IDBDatabase
+toIDBDatabase = unsafeCastGObject . toGObject
+
+instance IsIDBDatabase IDBDatabase
+instance IsEventTarget IDBDatabase
+instance GObjectClass IDBDatabase where
+  toGObject = GObject . castRef . unIDBDatabase
+  unsafeCastGObject = IDBDatabase . castRef . unGObject
+
+castToIDBDatabase :: GObjectClass obj => obj -> IDBDatabase
+castToIDBDatabase = castTo gTypeIDBDatabase "IDBDatabase"
+
+foreign import javascript unsafe "window[\"IDBDatabase\"]" gTypeIDBDatabase' :: JSRef GType
+gTypeIDBDatabase = GType gTypeIDBDatabase'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBFactory".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory Mozilla IDBFactory documentation>
+newtype IDBFactory = IDBFactory (JSRef IDBFactory) deriving (Eq)
+
+unIDBFactory (IDBFactory o) = o
+
+instance ToJSRef IDBFactory where
+  toJSRef = return . unIDBFactory
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBFactory where
+  fromJSRef = return . fmap IDBFactory . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsIDBFactory o
+toIDBFactory :: IsIDBFactory o => o -> IDBFactory
+toIDBFactory = unsafeCastGObject . toGObject
+
+instance IsIDBFactory IDBFactory
+instance GObjectClass IDBFactory where
+  toGObject = GObject . castRef . unIDBFactory
+  unsafeCastGObject = IDBFactory . castRef . unGObject
+
+castToIDBFactory :: GObjectClass obj => obj -> IDBFactory
+castToIDBFactory = castTo gTypeIDBFactory "IDBFactory"
+
+foreign import javascript unsafe "window[\"IDBFactory\"]" gTypeIDBFactory' :: JSRef GType
+gTypeIDBFactory = GType gTypeIDBFactory'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBIndex".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex Mozilla IDBIndex documentation>
+newtype IDBIndex = IDBIndex (JSRef IDBIndex) deriving (Eq)
+
+unIDBIndex (IDBIndex o) = o
+
+instance ToJSRef IDBIndex where
+  toJSRef = return . unIDBIndex
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBIndex where
+  fromJSRef = return . fmap IDBIndex . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsIDBIndex o
+toIDBIndex :: IsIDBIndex o => o -> IDBIndex
+toIDBIndex = unsafeCastGObject . toGObject
+
+instance IsIDBIndex IDBIndex
+instance GObjectClass IDBIndex where
+  toGObject = GObject . castRef . unIDBIndex
+  unsafeCastGObject = IDBIndex . castRef . unGObject
+
+castToIDBIndex :: GObjectClass obj => obj -> IDBIndex
+castToIDBIndex = castTo gTypeIDBIndex "IDBIndex"
+
+foreign import javascript unsafe "window[\"IDBIndex\"]" gTypeIDBIndex' :: JSRef GType
+gTypeIDBIndex = GType gTypeIDBIndex'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBKeyRange".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange Mozilla IDBKeyRange documentation>
+newtype IDBKeyRange = IDBKeyRange (JSRef IDBKeyRange) deriving (Eq)
+
+unIDBKeyRange (IDBKeyRange o) = o
+
+instance ToJSRef IDBKeyRange where
+  toJSRef = return . unIDBKeyRange
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBKeyRange where
+  fromJSRef = return . fmap IDBKeyRange . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsIDBKeyRange o
+toIDBKeyRange :: IsIDBKeyRange o => o -> IDBKeyRange
+toIDBKeyRange = unsafeCastGObject . toGObject
+
+instance IsIDBKeyRange IDBKeyRange
+instance GObjectClass IDBKeyRange where
+  toGObject = GObject . castRef . unIDBKeyRange
+  unsafeCastGObject = IDBKeyRange . castRef . unGObject
+
+castToIDBKeyRange :: GObjectClass obj => obj -> IDBKeyRange
+castToIDBKeyRange = castTo gTypeIDBKeyRange "IDBKeyRange"
+
+foreign import javascript unsafe "window[\"IDBKeyRange\"]" gTypeIDBKeyRange' :: JSRef GType
+gTypeIDBKeyRange = GType gTypeIDBKeyRange'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBObjectStore".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore Mozilla IDBObjectStore documentation>
+newtype IDBObjectStore = IDBObjectStore (JSRef IDBObjectStore) deriving (Eq)
+
+unIDBObjectStore (IDBObjectStore o) = o
+
+instance ToJSRef IDBObjectStore where
+  toJSRef = return . unIDBObjectStore
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBObjectStore where
+  fromJSRef = return . fmap IDBObjectStore . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsIDBObjectStore o
+toIDBObjectStore :: IsIDBObjectStore o => o -> IDBObjectStore
+toIDBObjectStore = unsafeCastGObject . toGObject
+
+instance IsIDBObjectStore IDBObjectStore
+instance GObjectClass IDBObjectStore where
+  toGObject = GObject . castRef . unIDBObjectStore
+  unsafeCastGObject = IDBObjectStore . castRef . unGObject
+
+castToIDBObjectStore :: GObjectClass obj => obj -> IDBObjectStore
+castToIDBObjectStore = castTo gTypeIDBObjectStore "IDBObjectStore"
+
+foreign import javascript unsafe "window[\"IDBObjectStore\"]" gTypeIDBObjectStore' :: JSRef GType
+gTypeIDBObjectStore = GType gTypeIDBObjectStore'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBOpenDBRequest".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.IDBRequest"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBOpenDBRequest Mozilla IDBOpenDBRequest documentation>
+newtype IDBOpenDBRequest = IDBOpenDBRequest (JSRef IDBOpenDBRequest) deriving (Eq)
+
+unIDBOpenDBRequest (IDBOpenDBRequest o) = o
+
+instance ToJSRef IDBOpenDBRequest where
+  toJSRef = return . unIDBOpenDBRequest
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBOpenDBRequest where
+  fromJSRef = return . fmap IDBOpenDBRequest . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsIDBRequest o => IsIDBOpenDBRequest o
+toIDBOpenDBRequest :: IsIDBOpenDBRequest o => o -> IDBOpenDBRequest
+toIDBOpenDBRequest = unsafeCastGObject . toGObject
+
+instance IsIDBOpenDBRequest IDBOpenDBRequest
+instance IsIDBRequest IDBOpenDBRequest
+instance IsEventTarget IDBOpenDBRequest
+instance GObjectClass IDBOpenDBRequest where
+  toGObject = GObject . castRef . unIDBOpenDBRequest
+  unsafeCastGObject = IDBOpenDBRequest . castRef . unGObject
+
+castToIDBOpenDBRequest :: GObjectClass obj => obj -> IDBOpenDBRequest
+castToIDBOpenDBRequest = castTo gTypeIDBOpenDBRequest "IDBOpenDBRequest"
+
+foreign import javascript unsafe "window[\"IDBOpenDBRequest\"]" gTypeIDBOpenDBRequest' :: JSRef GType
+gTypeIDBOpenDBRequest = GType gTypeIDBOpenDBRequest'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBRequest".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest Mozilla IDBRequest documentation>
+newtype IDBRequest = IDBRequest (JSRef IDBRequest) deriving (Eq)
+
+unIDBRequest (IDBRequest o) = o
+
+instance ToJSRef IDBRequest where
+  toJSRef = return . unIDBRequest
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBRequest where
+  fromJSRef = return . fmap IDBRequest . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsIDBRequest o
+toIDBRequest :: IsIDBRequest o => o -> IDBRequest
+toIDBRequest = unsafeCastGObject . toGObject
+
+instance IsIDBRequest IDBRequest
+instance IsEventTarget IDBRequest
+instance GObjectClass IDBRequest where
+  toGObject = GObject . castRef . unIDBRequest
+  unsafeCastGObject = IDBRequest . castRef . unGObject
+
+castToIDBRequest :: GObjectClass obj => obj -> IDBRequest
+castToIDBRequest = castTo gTypeIDBRequest "IDBRequest"
+
+foreign import javascript unsafe "window[\"IDBRequest\"]" gTypeIDBRequest' :: JSRef GType
+gTypeIDBRequest = GType gTypeIDBRequest'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBTransaction".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction Mozilla IDBTransaction documentation>
+newtype IDBTransaction = IDBTransaction (JSRef IDBTransaction) deriving (Eq)
+
+unIDBTransaction (IDBTransaction o) = o
+
+instance ToJSRef IDBTransaction where
+  toJSRef = return . unIDBTransaction
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBTransaction where
+  fromJSRef = return . fmap IDBTransaction . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsIDBTransaction o
+toIDBTransaction :: IsIDBTransaction o => o -> IDBTransaction
+toIDBTransaction = unsafeCastGObject . toGObject
+
+instance IsIDBTransaction IDBTransaction
+instance IsEventTarget IDBTransaction
+instance GObjectClass IDBTransaction where
+  toGObject = GObject . castRef . unIDBTransaction
+  unsafeCastGObject = IDBTransaction . castRef . unGObject
+
+castToIDBTransaction :: GObjectClass obj => obj -> IDBTransaction
+castToIDBTransaction = castTo gTypeIDBTransaction "IDBTransaction"
+
+foreign import javascript unsafe "window[\"IDBTransaction\"]" gTypeIDBTransaction' :: JSRef GType
+gTypeIDBTransaction = GType gTypeIDBTransaction'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.IDBVersionChangeEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent Mozilla IDBVersionChangeEvent documentation>
+newtype IDBVersionChangeEvent = IDBVersionChangeEvent (JSRef IDBVersionChangeEvent) deriving (Eq)
+
+unIDBVersionChangeEvent (IDBVersionChangeEvent o) = o
+
+instance ToJSRef IDBVersionChangeEvent where
+  toJSRef = return . unIDBVersionChangeEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef IDBVersionChangeEvent where
+  fromJSRef = return . fmap IDBVersionChangeEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsIDBVersionChangeEvent o
+toIDBVersionChangeEvent :: IsIDBVersionChangeEvent o => o -> IDBVersionChangeEvent
+toIDBVersionChangeEvent = unsafeCastGObject . toGObject
+
+instance IsIDBVersionChangeEvent IDBVersionChangeEvent
+instance IsEvent IDBVersionChangeEvent
+instance GObjectClass IDBVersionChangeEvent where
+  toGObject = GObject . castRef . unIDBVersionChangeEvent
+  unsafeCastGObject = IDBVersionChangeEvent . castRef . unGObject
+
+castToIDBVersionChangeEvent :: GObjectClass obj => obj -> IDBVersionChangeEvent
+castToIDBVersionChangeEvent = castTo gTypeIDBVersionChangeEvent "IDBVersionChangeEvent"
+
+foreign import javascript unsafe "window[\"IDBVersionChangeEvent\"]" gTypeIDBVersionChangeEvent' :: JSRef GType
+gTypeIDBVersionChangeEvent = GType gTypeIDBVersionChangeEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ImageData".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation>
+newtype ImageData = ImageData (JSRef ImageData) deriving (Eq)
+
+unImageData (ImageData o) = o
+
+instance ToJSRef ImageData where
+  toJSRef = return . unImageData
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ImageData where
+  fromJSRef = return . fmap ImageData . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsImageData o
+toImageData :: IsImageData o => o -> ImageData
+toImageData = unsafeCastGObject . toGObject
+
+instance IsImageData ImageData
+instance GObjectClass ImageData where
+  toGObject = GObject . castRef . unImageData
+  unsafeCastGObject = ImageData . castRef . unGObject
+
+castToImageData :: GObjectClass obj => obj -> ImageData
+castToImageData = castTo gTypeImageData "ImageData"
+
+foreign import javascript unsafe "window[\"ImageData\"]" gTypeImageData' :: JSRef GType
+gTypeImageData = GType gTypeImageData'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.InspectorFrontendHost".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost Mozilla InspectorFrontendHost documentation>
+newtype InspectorFrontendHost = InspectorFrontendHost (JSRef InspectorFrontendHost) deriving (Eq)
+
+unInspectorFrontendHost (InspectorFrontendHost o) = o
+
+instance ToJSRef InspectorFrontendHost where
+  toJSRef = return . unInspectorFrontendHost
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef InspectorFrontendHost where
+  fromJSRef = return . fmap InspectorFrontendHost . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsInspectorFrontendHost o
+toInspectorFrontendHost :: IsInspectorFrontendHost o => o -> InspectorFrontendHost
+toInspectorFrontendHost = unsafeCastGObject . toGObject
+
+instance IsInspectorFrontendHost InspectorFrontendHost
+instance GObjectClass InspectorFrontendHost where
+  toGObject = GObject . castRef . unInspectorFrontendHost
+  unsafeCastGObject = InspectorFrontendHost . castRef . unGObject
+
+castToInspectorFrontendHost :: GObjectClass obj => obj -> InspectorFrontendHost
+castToInspectorFrontendHost = castTo gTypeInspectorFrontendHost "InspectorFrontendHost"
+
+foreign import javascript unsafe "window[\"InspectorFrontendHost\"]" gTypeInspectorFrontendHost' :: JSRef GType
+gTypeInspectorFrontendHost = GType gTypeInspectorFrontendHost'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.InternalSettings".
+-- Base interface functions are in:
+--
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings Mozilla InternalSettings documentation>
+newtype InternalSettings = InternalSettings (JSRef InternalSettings) deriving (Eq)
+
+unInternalSettings (InternalSettings o) = o
+
+instance ToJSRef InternalSettings where
+  toJSRef = return . unInternalSettings
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef InternalSettings where
+  fromJSRef = return . fmap InternalSettings . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsInternalSettings o
+toInternalSettings :: IsInternalSettings o => o -> InternalSettings
+toInternalSettings = unsafeCastGObject . toGObject
+
+instance IsInternalSettings InternalSettings
+instance GObjectClass InternalSettings where
+  toGObject = GObject . castRef . unInternalSettings
+  unsafeCastGObject = InternalSettings . castRef . unGObject
+
+castToInternalSettings :: GObjectClass obj => obj -> InternalSettings
+castToInternalSettings = castTo gTypeInternalSettings "InternalSettings"
+
+foreign import javascript unsafe "window[\"InternalSettings\"]" gTypeInternalSettings' :: JSRef GType
+gTypeInternalSettings = GType gTypeInternalSettings'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Internals".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Internals Mozilla Internals documentation>
+newtype Internals = Internals (JSRef Internals) deriving (Eq)
+
+unInternals (Internals o) = o
+
+instance ToJSRef Internals where
+  toJSRef = return . unInternals
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Internals where
+  fromJSRef = return . fmap Internals . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsInternals o
+toInternals :: IsInternals o => o -> Internals
+toInternals = unsafeCastGObject . toGObject
+
+instance IsInternals Internals
+instance GObjectClass Internals where
+  toGObject = GObject . castRef . unInternals
+  unsafeCastGObject = Internals . castRef . unGObject
+
+castToInternals :: GObjectClass obj => obj -> Internals
+castToInternals = castTo gTypeInternals "Internals"
+
+foreign import javascript unsafe "window[\"Internals\"]" gTypeInternals' :: JSRef GType
+gTypeInternals = GType gTypeInternals'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.KeyboardEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent Mozilla KeyboardEvent documentation>
 newtype KeyboardEvent = KeyboardEvent (JSRef KeyboardEvent) deriving (Eq)
 
 unKeyboardEvent (KeyboardEvent o) = o
@@ -4101,10 +9869,14 @@ castToKeyboardEvent = castTo gTypeKeyboardEvent "KeyboardEvent"
 foreign import javascript unsafe "window[\"KeyboardEvent\"]" gTypeKeyboardEvent' :: JSRef GType
 gTypeKeyboardEvent = GType gTypeKeyboardEvent'
 #else
+type IsKeyboardEvent o = KeyboardEventClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Location".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Location Mozilla Location documentation>
 newtype Location = Location (JSRef Location) deriving (Eq)
 
 unLocation (Location o) = o
@@ -4137,6 +9909,43 @@ type IsLocation o = LocationClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MallocStatistics".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MallocStatistics Mozilla MallocStatistics documentation>
+newtype MallocStatistics = MallocStatistics (JSRef MallocStatistics) deriving (Eq)
+
+unMallocStatistics (MallocStatistics o) = o
+
+instance ToJSRef MallocStatistics where
+  toJSRef = return . unMallocStatistics
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MallocStatistics where
+  fromJSRef = return . fmap MallocStatistics . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMallocStatistics o
+toMallocStatistics :: IsMallocStatistics o => o -> MallocStatistics
+toMallocStatistics = unsafeCastGObject . toGObject
+
+instance IsMallocStatistics MallocStatistics
+instance GObjectClass MallocStatistics where
+  toGObject = GObject . castRef . unMallocStatistics
+  unsafeCastGObject = MallocStatistics . castRef . unGObject
+
+castToMallocStatistics :: GObjectClass obj => obj -> MallocStatistics
+castToMallocStatistics = castTo gTypeMallocStatistics "MallocStatistics"
+
+foreign import javascript unsafe "window[\"MallocStatistics\"]" gTypeMallocStatistics' :: JSRef GType
+gTypeMallocStatistics = GType gTypeMallocStatistics'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaController".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaController Mozilla MediaController documentation>
 newtype MediaController = MediaController (JSRef MediaController) deriving (Eq)
 
 unMediaController (MediaController o) = o
@@ -4164,11 +9973,87 @@ castToMediaController = castTo gTypeMediaController "MediaController"
 foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaController' :: JSRef GType
 gTypeMediaController = GType gTypeMediaController'
 #else
-type IsMediaController o = MediaControllerClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaControlsHost".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost Mozilla MediaControlsHost documentation>
+newtype MediaControlsHost = MediaControlsHost (JSRef MediaControlsHost) deriving (Eq)
+
+unMediaControlsHost (MediaControlsHost o) = o
+
+instance ToJSRef MediaControlsHost where
+  toJSRef = return . unMediaControlsHost
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaControlsHost where
+  fromJSRef = return . fmap MediaControlsHost . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaControlsHost o
+toMediaControlsHost :: IsMediaControlsHost o => o -> MediaControlsHost
+toMediaControlsHost = unsafeCastGObject . toGObject
+
+instance IsMediaControlsHost MediaControlsHost
+instance GObjectClass MediaControlsHost where
+  toGObject = GObject . castRef . unMediaControlsHost
+  unsafeCastGObject = MediaControlsHost . castRef . unGObject
+
+castToMediaControlsHost :: GObjectClass obj => obj -> MediaControlsHost
+castToMediaControlsHost = castTo gTypeMediaControlsHost "MediaControlsHost"
+
+foreign import javascript unsafe "window[\"MediaControlsHost\"]" gTypeMediaControlsHost' :: JSRef GType
+gTypeMediaControlsHost = GType gTypeMediaControlsHost'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaElementAudioSourceNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaElementAudioSourceNode Mozilla MediaElementAudioSourceNode documentation>
+newtype MediaElementAudioSourceNode = MediaElementAudioSourceNode (JSRef MediaElementAudioSourceNode) deriving (Eq)
+
+unMediaElementAudioSourceNode (MediaElementAudioSourceNode o) = o
+
+instance ToJSRef MediaElementAudioSourceNode where
+  toJSRef = return . unMediaElementAudioSourceNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaElementAudioSourceNode where
+  fromJSRef = return . fmap MediaElementAudioSourceNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsMediaElementAudioSourceNode o
+toMediaElementAudioSourceNode :: IsMediaElementAudioSourceNode o => o -> MediaElementAudioSourceNode
+toMediaElementAudioSourceNode = unsafeCastGObject . toGObject
+
+instance IsMediaElementAudioSourceNode MediaElementAudioSourceNode
+instance IsAudioNode MediaElementAudioSourceNode
+instance IsEventTarget MediaElementAudioSourceNode
+instance GObjectClass MediaElementAudioSourceNode where
+  toGObject = GObject . castRef . unMediaElementAudioSourceNode
+  unsafeCastGObject = MediaElementAudioSourceNode . castRef . unGObject
+
+castToMediaElementAudioSourceNode :: GObjectClass obj => obj -> MediaElementAudioSourceNode
+castToMediaElementAudioSourceNode = castTo gTypeMediaElementAudioSourceNode "MediaElementAudioSourceNode"
+
+foreign import javascript unsafe "window[\"MediaElementAudioSourceNode\"]" gTypeMediaElementAudioSourceNode' :: JSRef GType
+gTypeMediaElementAudioSourceNode = GType gTypeMediaElementAudioSourceNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaError Mozilla MediaError documentation>
 newtype MediaError = MediaError (JSRef MediaError) deriving (Eq)
 
 unMediaError (MediaError o) = o
@@ -4201,6 +10086,225 @@ type IsMediaError o = MediaErrorClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaKeyError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError Mozilla WebKitMediaKeyError documentation>
+newtype MediaKeyError = MediaKeyError (JSRef MediaKeyError) deriving (Eq)
+
+unMediaKeyError (MediaKeyError o) = o
+
+instance ToJSRef MediaKeyError where
+  toJSRef = return . unMediaKeyError
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaKeyError where
+  fromJSRef = return . fmap MediaKeyError . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaKeyError o
+toMediaKeyError :: IsMediaKeyError o => o -> MediaKeyError
+toMediaKeyError = unsafeCastGObject . toGObject
+
+instance IsMediaKeyError MediaKeyError
+instance GObjectClass MediaKeyError where
+  toGObject = GObject . castRef . unMediaKeyError
+  unsafeCastGObject = MediaKeyError . castRef . unGObject
+
+castToMediaKeyError :: GObjectClass obj => obj -> MediaKeyError
+castToMediaKeyError = castTo gTypeMediaKeyError "MediaKeyError"
+
+foreign import javascript unsafe "window[\"WebKitMediaKeyError\"]" gTypeMediaKeyError' :: JSRef GType
+gTypeMediaKeyError = GType gTypeMediaKeyError'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaKeyEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent Mozilla MediaKeyEvent documentation>
+newtype MediaKeyEvent = MediaKeyEvent (JSRef MediaKeyEvent) deriving (Eq)
+
+unMediaKeyEvent (MediaKeyEvent o) = o
+
+instance ToJSRef MediaKeyEvent where
+  toJSRef = return . unMediaKeyEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaKeyEvent where
+  fromJSRef = return . fmap MediaKeyEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsMediaKeyEvent o
+toMediaKeyEvent :: IsMediaKeyEvent o => o -> MediaKeyEvent
+toMediaKeyEvent = unsafeCastGObject . toGObject
+
+instance IsMediaKeyEvent MediaKeyEvent
+instance IsEvent MediaKeyEvent
+instance GObjectClass MediaKeyEvent where
+  toGObject = GObject . castRef . unMediaKeyEvent
+  unsafeCastGObject = MediaKeyEvent . castRef . unGObject
+
+castToMediaKeyEvent :: GObjectClass obj => obj -> MediaKeyEvent
+castToMediaKeyEvent = castTo gTypeMediaKeyEvent "MediaKeyEvent"
+
+foreign import javascript unsafe "window[\"MediaKeyEvent\"]" gTypeMediaKeyEvent' :: JSRef GType
+gTypeMediaKeyEvent = GType gTypeMediaKeyEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaKeyMessageEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent Mozilla WebKitMediaKeyMessageEvent documentation>
+newtype MediaKeyMessageEvent = MediaKeyMessageEvent (JSRef MediaKeyMessageEvent) deriving (Eq)
+
+unMediaKeyMessageEvent (MediaKeyMessageEvent o) = o
+
+instance ToJSRef MediaKeyMessageEvent where
+  toJSRef = return . unMediaKeyMessageEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaKeyMessageEvent where
+  fromJSRef = return . fmap MediaKeyMessageEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsMediaKeyMessageEvent o
+toMediaKeyMessageEvent :: IsMediaKeyMessageEvent o => o -> MediaKeyMessageEvent
+toMediaKeyMessageEvent = unsafeCastGObject . toGObject
+
+instance IsMediaKeyMessageEvent MediaKeyMessageEvent
+instance IsEvent MediaKeyMessageEvent
+instance GObjectClass MediaKeyMessageEvent where
+  toGObject = GObject . castRef . unMediaKeyMessageEvent
+  unsafeCastGObject = MediaKeyMessageEvent . castRef . unGObject
+
+castToMediaKeyMessageEvent :: GObjectClass obj => obj -> MediaKeyMessageEvent
+castToMediaKeyMessageEvent = castTo gTypeMediaKeyMessageEvent "MediaKeyMessageEvent"
+
+foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeMediaKeyMessageEvent' :: JSRef GType
+gTypeMediaKeyMessageEvent = GType gTypeMediaKeyMessageEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaKeyNeededEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyNeededEvent Mozilla MediaKeyNeededEvent documentation>
+newtype MediaKeyNeededEvent = MediaKeyNeededEvent (JSRef MediaKeyNeededEvent) deriving (Eq)
+
+unMediaKeyNeededEvent (MediaKeyNeededEvent o) = o
+
+instance ToJSRef MediaKeyNeededEvent where
+  toJSRef = return . unMediaKeyNeededEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaKeyNeededEvent where
+  fromJSRef = return . fmap MediaKeyNeededEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsMediaKeyNeededEvent o
+toMediaKeyNeededEvent :: IsMediaKeyNeededEvent o => o -> MediaKeyNeededEvent
+toMediaKeyNeededEvent = unsafeCastGObject . toGObject
+
+instance IsMediaKeyNeededEvent MediaKeyNeededEvent
+instance IsEvent MediaKeyNeededEvent
+instance GObjectClass MediaKeyNeededEvent where
+  toGObject = GObject . castRef . unMediaKeyNeededEvent
+  unsafeCastGObject = MediaKeyNeededEvent . castRef . unGObject
+
+castToMediaKeyNeededEvent :: GObjectClass obj => obj -> MediaKeyNeededEvent
+castToMediaKeyNeededEvent = castTo gTypeMediaKeyNeededEvent "MediaKeyNeededEvent"
+
+foreign import javascript unsafe "window[\"MediaKeyNeededEvent\"]" gTypeMediaKeyNeededEvent' :: JSRef GType
+gTypeMediaKeyNeededEvent = GType gTypeMediaKeyNeededEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaKeySession".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession Mozilla WebKitMediaKeySession documentation>
+newtype MediaKeySession = MediaKeySession (JSRef MediaKeySession) deriving (Eq)
+
+unMediaKeySession (MediaKeySession o) = o
+
+instance ToJSRef MediaKeySession where
+  toJSRef = return . unMediaKeySession
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaKeySession where
+  fromJSRef = return . fmap MediaKeySession . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaKeySession o
+toMediaKeySession :: IsMediaKeySession o => o -> MediaKeySession
+toMediaKeySession = unsafeCastGObject . toGObject
+
+instance IsMediaKeySession MediaKeySession
+instance GObjectClass MediaKeySession where
+  toGObject = GObject . castRef . unMediaKeySession
+  unsafeCastGObject = MediaKeySession . castRef . unGObject
+
+castToMediaKeySession :: GObjectClass obj => obj -> MediaKeySession
+castToMediaKeySession = castTo gTypeMediaKeySession "MediaKeySession"
+
+foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeMediaKeySession' :: JSRef GType
+gTypeMediaKeySession = GType gTypeMediaKeySession'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaKeys".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation>
+newtype MediaKeys = MediaKeys (JSRef MediaKeys) deriving (Eq)
+
+unMediaKeys (MediaKeys o) = o
+
+instance ToJSRef MediaKeys where
+  toJSRef = return . unMediaKeys
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaKeys where
+  fromJSRef = return . fmap MediaKeys . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaKeys o
+toMediaKeys :: IsMediaKeys o => o -> MediaKeys
+toMediaKeys = unsafeCastGObject . toGObject
+
+instance IsMediaKeys MediaKeys
+instance GObjectClass MediaKeys where
+  toGObject = GObject . castRef . unMediaKeys
+  unsafeCastGObject = MediaKeys . castRef . unGObject
+
+castToMediaKeys :: GObjectClass obj => obj -> MediaKeys
+castToMediaKeys = castTo gTypeMediaKeys "MediaKeys"
+
+foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeMediaKeys' :: JSRef GType
+gTypeMediaKeys = GType gTypeMediaKeys'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaList Mozilla MediaList documentation>
 newtype MediaList = MediaList (JSRef MediaList) deriving (Eq)
 
 unMediaList (MediaList o) = o
@@ -4233,6 +10337,9 @@ type IsMediaList o = MediaListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaQueryList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList Mozilla MediaQueryList documentation>
 newtype MediaQueryList = MediaQueryList (JSRef MediaQueryList) deriving (Eq)
 
 unMediaQueryList (MediaQueryList o) = o
@@ -4265,6 +10372,615 @@ type IsMediaQueryList o = MediaQueryListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaQueryListListener".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation>
+newtype MediaQueryListListener = MediaQueryListListener (JSRef MediaQueryListListener) deriving (Eq)
+
+unMediaQueryListListener (MediaQueryListListener o) = o
+
+instance ToJSRef MediaQueryListListener where
+  toJSRef = return . unMediaQueryListListener
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaQueryListListener where
+  fromJSRef = return . fmap MediaQueryListListener . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaQueryListListener o
+toMediaQueryListListener :: IsMediaQueryListListener o => o -> MediaQueryListListener
+toMediaQueryListListener = unsafeCastGObject . toGObject
+
+instance IsMediaQueryListListener MediaQueryListListener
+instance GObjectClass MediaQueryListListener where
+  toGObject = GObject . castRef . unMediaQueryListListener
+  unsafeCastGObject = MediaQueryListListener . castRef . unGObject
+
+castToMediaQueryListListener :: GObjectClass obj => obj -> MediaQueryListListener
+castToMediaQueryListListener = castTo gTypeMediaQueryListListener "MediaQueryListListener"
+
+foreign import javascript unsafe "window[\"MediaQueryListListener\"]" gTypeMediaQueryListListener' :: JSRef GType
+gTypeMediaQueryListListener = GType gTypeMediaQueryListListener'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaSource".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource Mozilla MediaSource documentation>
+newtype MediaSource = MediaSource (JSRef MediaSource) deriving (Eq)
+
+unMediaSource (MediaSource o) = o
+
+instance ToJSRef MediaSource where
+  toJSRef = return . unMediaSource
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaSource where
+  fromJSRef = return . fmap MediaSource . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsMediaSource o
+toMediaSource :: IsMediaSource o => o -> MediaSource
+toMediaSource = unsafeCastGObject . toGObject
+
+instance IsMediaSource MediaSource
+instance IsEventTarget MediaSource
+instance GObjectClass MediaSource where
+  toGObject = GObject . castRef . unMediaSource
+  unsafeCastGObject = MediaSource . castRef . unGObject
+
+castToMediaSource :: GObjectClass obj => obj -> MediaSource
+castToMediaSource = castTo gTypeMediaSource "MediaSource"
+
+foreign import javascript unsafe "window[\"MediaSource\"]" gTypeMediaSource' :: JSRef GType
+gTypeMediaSource = GType gTypeMediaSource'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaSourceStates".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates Mozilla MediaSourceStates documentation>
+newtype MediaSourceStates = MediaSourceStates (JSRef MediaSourceStates) deriving (Eq)
+
+unMediaSourceStates (MediaSourceStates o) = o
+
+instance ToJSRef MediaSourceStates where
+  toJSRef = return . unMediaSourceStates
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaSourceStates where
+  fromJSRef = return . fmap MediaSourceStates . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaSourceStates o
+toMediaSourceStates :: IsMediaSourceStates o => o -> MediaSourceStates
+toMediaSourceStates = unsafeCastGObject . toGObject
+
+instance IsMediaSourceStates MediaSourceStates
+instance GObjectClass MediaSourceStates where
+  toGObject = GObject . castRef . unMediaSourceStates
+  unsafeCastGObject = MediaSourceStates . castRef . unGObject
+
+castToMediaSourceStates :: GObjectClass obj => obj -> MediaSourceStates
+castToMediaSourceStates = castTo gTypeMediaSourceStates "MediaSourceStates"
+
+foreign import javascript unsafe "window[\"MediaSourceStates\"]" gTypeMediaSourceStates' :: JSRef GType
+gTypeMediaSourceStates = GType gTypeMediaSourceStates'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStream".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation>
+newtype MediaStream = MediaStream (JSRef MediaStream) deriving (Eq)
+
+unMediaStream (MediaStream o) = o
+
+instance ToJSRef MediaStream where
+  toJSRef = return . unMediaStream
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStream where
+  fromJSRef = return . fmap MediaStream . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaStream o
+toMediaStream :: IsMediaStream o => o -> MediaStream
+toMediaStream = unsafeCastGObject . toGObject
+
+instance IsMediaStream MediaStream
+instance GObjectClass MediaStream where
+  toGObject = GObject . castRef . unMediaStream
+  unsafeCastGObject = MediaStream . castRef . unGObject
+
+castToMediaStream :: GObjectClass obj => obj -> MediaStream
+castToMediaStream = castTo gTypeMediaStream "MediaStream"
+
+foreign import javascript unsafe "window[\"webkitMediaStream\"]" gTypeMediaStream' :: JSRef GType
+gTypeMediaStream = GType gTypeMediaStream'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioDestinationNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode Mozilla MediaStreamAudioDestinationNode documentation>
+newtype MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode (JSRef MediaStreamAudioDestinationNode) deriving (Eq)
+
+unMediaStreamAudioDestinationNode (MediaStreamAudioDestinationNode o) = o
+
+instance ToJSRef MediaStreamAudioDestinationNode where
+  toJSRef = return . unMediaStreamAudioDestinationNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStreamAudioDestinationNode where
+  fromJSRef = return . fmap MediaStreamAudioDestinationNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsMediaStreamAudioDestinationNode o
+toMediaStreamAudioDestinationNode :: IsMediaStreamAudioDestinationNode o => o -> MediaStreamAudioDestinationNode
+toMediaStreamAudioDestinationNode = unsafeCastGObject . toGObject
+
+instance IsMediaStreamAudioDestinationNode MediaStreamAudioDestinationNode
+instance IsAudioNode MediaStreamAudioDestinationNode
+instance IsEventTarget MediaStreamAudioDestinationNode
+instance GObjectClass MediaStreamAudioDestinationNode where
+  toGObject = GObject . castRef . unMediaStreamAudioDestinationNode
+  unsafeCastGObject = MediaStreamAudioDestinationNode . castRef . unGObject
+
+castToMediaStreamAudioDestinationNode :: GObjectClass obj => obj -> MediaStreamAudioDestinationNode
+castToMediaStreamAudioDestinationNode = castTo gTypeMediaStreamAudioDestinationNode "MediaStreamAudioDestinationNode"
+
+foreign import javascript unsafe "window[\"MediaStreamAudioDestinationNode\"]" gTypeMediaStreamAudioDestinationNode' :: JSRef GType
+gTypeMediaStreamAudioDestinationNode = GType gTypeMediaStreamAudioDestinationNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioSourceNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode Mozilla MediaStreamAudioSourceNode documentation>
+newtype MediaStreamAudioSourceNode = MediaStreamAudioSourceNode (JSRef MediaStreamAudioSourceNode) deriving (Eq)
+
+unMediaStreamAudioSourceNode (MediaStreamAudioSourceNode o) = o
+
+instance ToJSRef MediaStreamAudioSourceNode where
+  toJSRef = return . unMediaStreamAudioSourceNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStreamAudioSourceNode where
+  fromJSRef = return . fmap MediaStreamAudioSourceNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsMediaStreamAudioSourceNode o
+toMediaStreamAudioSourceNode :: IsMediaStreamAudioSourceNode o => o -> MediaStreamAudioSourceNode
+toMediaStreamAudioSourceNode = unsafeCastGObject . toGObject
+
+instance IsMediaStreamAudioSourceNode MediaStreamAudioSourceNode
+instance IsAudioNode MediaStreamAudioSourceNode
+instance IsEventTarget MediaStreamAudioSourceNode
+instance GObjectClass MediaStreamAudioSourceNode where
+  toGObject = GObject . castRef . unMediaStreamAudioSourceNode
+  unsafeCastGObject = MediaStreamAudioSourceNode . castRef . unGObject
+
+castToMediaStreamAudioSourceNode :: GObjectClass obj => obj -> MediaStreamAudioSourceNode
+castToMediaStreamAudioSourceNode = castTo gTypeMediaStreamAudioSourceNode "MediaStreamAudioSourceNode"
+
+foreign import javascript unsafe "window[\"MediaStreamAudioSourceNode\"]" gTypeMediaStreamAudioSourceNode' :: JSRef GType
+gTypeMediaStreamAudioSourceNode = GType gTypeMediaStreamAudioSourceNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStreamCapabilities".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamCapabilities Mozilla MediaStreamCapabilities documentation>
+newtype MediaStreamCapabilities = MediaStreamCapabilities (JSRef MediaStreamCapabilities) deriving (Eq)
+
+unMediaStreamCapabilities (MediaStreamCapabilities o) = o
+
+instance ToJSRef MediaStreamCapabilities where
+  toJSRef = return . unMediaStreamCapabilities
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStreamCapabilities where
+  fromJSRef = return . fmap MediaStreamCapabilities . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaStreamCapabilities o
+toMediaStreamCapabilities :: IsMediaStreamCapabilities o => o -> MediaStreamCapabilities
+toMediaStreamCapabilities = unsafeCastGObject . toGObject
+
+instance IsMediaStreamCapabilities MediaStreamCapabilities
+instance GObjectClass MediaStreamCapabilities where
+  toGObject = GObject . castRef . unMediaStreamCapabilities
+  unsafeCastGObject = MediaStreamCapabilities . castRef . unGObject
+
+castToMediaStreamCapabilities :: GObjectClass obj => obj -> MediaStreamCapabilities
+castToMediaStreamCapabilities = castTo gTypeMediaStreamCapabilities "MediaStreamCapabilities"
+
+foreign import javascript unsafe "window[\"MediaStreamCapabilities\"]" gTypeMediaStreamCapabilities' :: JSRef GType
+gTypeMediaStreamCapabilities = GType gTypeMediaStreamCapabilities'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStreamEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamEvent Mozilla MediaStreamEvent documentation>
+newtype MediaStreamEvent = MediaStreamEvent (JSRef MediaStreamEvent) deriving (Eq)
+
+unMediaStreamEvent (MediaStreamEvent o) = o
+
+instance ToJSRef MediaStreamEvent where
+  toJSRef = return . unMediaStreamEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStreamEvent where
+  fromJSRef = return . fmap MediaStreamEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsMediaStreamEvent o
+toMediaStreamEvent :: IsMediaStreamEvent o => o -> MediaStreamEvent
+toMediaStreamEvent = unsafeCastGObject . toGObject
+
+instance IsMediaStreamEvent MediaStreamEvent
+instance IsEvent MediaStreamEvent
+instance GObjectClass MediaStreamEvent where
+  toGObject = GObject . castRef . unMediaStreamEvent
+  unsafeCastGObject = MediaStreamEvent . castRef . unGObject
+
+castToMediaStreamEvent :: GObjectClass obj => obj -> MediaStreamEvent
+castToMediaStreamEvent = castTo gTypeMediaStreamEvent "MediaStreamEvent"
+
+foreign import javascript unsafe "window[\"MediaStreamEvent\"]" gTypeMediaStreamEvent' :: JSRef GType
+gTypeMediaStreamEvent = GType gTypeMediaStreamEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrack".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack Mozilla MediaStreamTrack documentation>
+newtype MediaStreamTrack = MediaStreamTrack (JSRef MediaStreamTrack) deriving (Eq)
+
+unMediaStreamTrack (MediaStreamTrack o) = o
+
+instance ToJSRef MediaStreamTrack where
+  toJSRef = return . unMediaStreamTrack
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStreamTrack where
+  fromJSRef = return . fmap MediaStreamTrack . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaStreamTrack o
+toMediaStreamTrack :: IsMediaStreamTrack o => o -> MediaStreamTrack
+toMediaStreamTrack = unsafeCastGObject . toGObject
+
+instance IsMediaStreamTrack MediaStreamTrack
+instance GObjectClass MediaStreamTrack where
+  toGObject = GObject . castRef . unMediaStreamTrack
+  unsafeCastGObject = MediaStreamTrack . castRef . unGObject
+
+castToMediaStreamTrack :: GObjectClass obj => obj -> MediaStreamTrack
+castToMediaStreamTrack = castTo gTypeMediaStreamTrack "MediaStreamTrack"
+
+foreign import javascript unsafe "window[\"MediaStreamTrack\"]" gTypeMediaStreamTrack' :: JSRef GType
+gTypeMediaStreamTrack = GType gTypeMediaStreamTrack'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrackEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackEvent Mozilla MediaStreamTrackEvent documentation>
+newtype MediaStreamTrackEvent = MediaStreamTrackEvent (JSRef MediaStreamTrackEvent) deriving (Eq)
+
+unMediaStreamTrackEvent (MediaStreamTrackEvent o) = o
+
+instance ToJSRef MediaStreamTrackEvent where
+  toJSRef = return . unMediaStreamTrackEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStreamTrackEvent where
+  fromJSRef = return . fmap MediaStreamTrackEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsMediaStreamTrackEvent o
+toMediaStreamTrackEvent :: IsMediaStreamTrackEvent o => o -> MediaStreamTrackEvent
+toMediaStreamTrackEvent = unsafeCastGObject . toGObject
+
+instance IsMediaStreamTrackEvent MediaStreamTrackEvent
+instance IsEvent MediaStreamTrackEvent
+instance GObjectClass MediaStreamTrackEvent where
+  toGObject = GObject . castRef . unMediaStreamTrackEvent
+  unsafeCastGObject = MediaStreamTrackEvent . castRef . unGObject
+
+castToMediaStreamTrackEvent :: GObjectClass obj => obj -> MediaStreamTrackEvent
+castToMediaStreamTrackEvent = castTo gTypeMediaStreamTrackEvent "MediaStreamTrackEvent"
+
+foreign import javascript unsafe "window[\"MediaStreamTrackEvent\"]" gTypeMediaStreamTrackEvent' :: JSRef GType
+gTypeMediaStreamTrackEvent = GType gTypeMediaStreamTrackEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrackSourcesCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation>
+newtype MediaStreamTrackSourcesCallback = MediaStreamTrackSourcesCallback (JSRef MediaStreamTrackSourcesCallback) deriving (Eq)
+
+unMediaStreamTrackSourcesCallback (MediaStreamTrackSourcesCallback o) = o
+
+instance ToJSRef MediaStreamTrackSourcesCallback where
+  toJSRef = return . unMediaStreamTrackSourcesCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaStreamTrackSourcesCallback where
+  fromJSRef = return . fmap MediaStreamTrackSourcesCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaStreamTrackSourcesCallback o
+toMediaStreamTrackSourcesCallback :: IsMediaStreamTrackSourcesCallback o => o -> MediaStreamTrackSourcesCallback
+toMediaStreamTrackSourcesCallback = unsafeCastGObject . toGObject
+
+instance IsMediaStreamTrackSourcesCallback MediaStreamTrackSourcesCallback
+instance GObjectClass MediaStreamTrackSourcesCallback where
+  toGObject = GObject . castRef . unMediaStreamTrackSourcesCallback
+  unsafeCastGObject = MediaStreamTrackSourcesCallback . castRef . unGObject
+
+castToMediaStreamTrackSourcesCallback :: GObjectClass obj => obj -> MediaStreamTrackSourcesCallback
+castToMediaStreamTrackSourcesCallback = castTo gTypeMediaStreamTrackSourcesCallback "MediaStreamTrackSourcesCallback"
+
+foreign import javascript unsafe "window[\"MediaStreamTrackSourcesCallback\"]" gTypeMediaStreamTrackSourcesCallback' :: JSRef GType
+gTypeMediaStreamTrackSourcesCallback = GType gTypeMediaStreamTrackSourcesCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraint".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraint Mozilla MediaTrackConstraint documentation>
+newtype MediaTrackConstraint = MediaTrackConstraint (JSRef MediaTrackConstraint) deriving (Eq)
+
+unMediaTrackConstraint (MediaTrackConstraint o) = o
+
+instance ToJSRef MediaTrackConstraint where
+  toJSRef = return . unMediaTrackConstraint
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaTrackConstraint where
+  fromJSRef = return . fmap MediaTrackConstraint . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaTrackConstraint o
+toMediaTrackConstraint :: IsMediaTrackConstraint o => o -> MediaTrackConstraint
+toMediaTrackConstraint = unsafeCastGObject . toGObject
+
+instance IsMediaTrackConstraint MediaTrackConstraint
+instance GObjectClass MediaTrackConstraint where
+  toGObject = GObject . castRef . unMediaTrackConstraint
+  unsafeCastGObject = MediaTrackConstraint . castRef . unGObject
+
+castToMediaTrackConstraint :: GObjectClass obj => obj -> MediaTrackConstraint
+castToMediaTrackConstraint = castTo gTypeMediaTrackConstraint "MediaTrackConstraint"
+
+foreign import javascript unsafe "window[\"MediaTrackConstraint\"]" gTypeMediaTrackConstraint' :: JSRef GType
+gTypeMediaTrackConstraint = GType gTypeMediaTrackConstraint'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraintSet".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraintSet Mozilla MediaTrackConstraintSet documentation>
+newtype MediaTrackConstraintSet = MediaTrackConstraintSet (JSRef MediaTrackConstraintSet) deriving (Eq)
+
+unMediaTrackConstraintSet (MediaTrackConstraintSet o) = o
+
+instance ToJSRef MediaTrackConstraintSet where
+  toJSRef = return . unMediaTrackConstraintSet
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaTrackConstraintSet where
+  fromJSRef = return . fmap MediaTrackConstraintSet . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaTrackConstraintSet o
+toMediaTrackConstraintSet :: IsMediaTrackConstraintSet o => o -> MediaTrackConstraintSet
+toMediaTrackConstraintSet = unsafeCastGObject . toGObject
+
+instance IsMediaTrackConstraintSet MediaTrackConstraintSet
+instance GObjectClass MediaTrackConstraintSet where
+  toGObject = GObject . castRef . unMediaTrackConstraintSet
+  unsafeCastGObject = MediaTrackConstraintSet . castRef . unGObject
+
+castToMediaTrackConstraintSet :: GObjectClass obj => obj -> MediaTrackConstraintSet
+castToMediaTrackConstraintSet = castTo gTypeMediaTrackConstraintSet "MediaTrackConstraintSet"
+
+foreign import javascript unsafe "window[\"MediaTrackConstraintSet\"]" gTypeMediaTrackConstraintSet' :: JSRef GType
+gTypeMediaTrackConstraintSet = GType gTypeMediaTrackConstraintSet'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraints".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints Mozilla MediaTrackConstraints documentation>
+newtype MediaTrackConstraints = MediaTrackConstraints (JSRef MediaTrackConstraints) deriving (Eq)
+
+unMediaTrackConstraints (MediaTrackConstraints o) = o
+
+instance ToJSRef MediaTrackConstraints where
+  toJSRef = return . unMediaTrackConstraints
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MediaTrackConstraints where
+  fromJSRef = return . fmap MediaTrackConstraints . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMediaTrackConstraints o
+toMediaTrackConstraints :: IsMediaTrackConstraints o => o -> MediaTrackConstraints
+toMediaTrackConstraints = unsafeCastGObject . toGObject
+
+instance IsMediaTrackConstraints MediaTrackConstraints
+instance GObjectClass MediaTrackConstraints where
+  toGObject = GObject . castRef . unMediaTrackConstraints
+  unsafeCastGObject = MediaTrackConstraints . castRef . unGObject
+
+castToMediaTrackConstraints :: GObjectClass obj => obj -> MediaTrackConstraints
+castToMediaTrackConstraints = castTo gTypeMediaTrackConstraints "MediaTrackConstraints"
+
+foreign import javascript unsafe "window[\"MediaTrackConstraints\"]" gTypeMediaTrackConstraints' :: JSRef GType
+gTypeMediaTrackConstraints = GType gTypeMediaTrackConstraints'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MemoryInfo".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo Mozilla MemoryInfo documentation>
+newtype MemoryInfo = MemoryInfo (JSRef MemoryInfo) deriving (Eq)
+
+unMemoryInfo (MemoryInfo o) = o
+
+instance ToJSRef MemoryInfo where
+  toJSRef = return . unMemoryInfo
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MemoryInfo where
+  fromJSRef = return . fmap MemoryInfo . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMemoryInfo o
+toMemoryInfo :: IsMemoryInfo o => o -> MemoryInfo
+toMemoryInfo = unsafeCastGObject . toGObject
+
+instance IsMemoryInfo MemoryInfo
+instance GObjectClass MemoryInfo where
+  toGObject = GObject . castRef . unMemoryInfo
+  unsafeCastGObject = MemoryInfo . castRef . unGObject
+
+castToMemoryInfo :: GObjectClass obj => obj -> MemoryInfo
+castToMemoryInfo = castTo gTypeMemoryInfo "MemoryInfo"
+
+foreign import javascript unsafe "window[\"MemoryInfo\"]" gTypeMemoryInfo' :: JSRef GType
+gTypeMemoryInfo = GType gTypeMemoryInfo'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MessageChannel".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel Mozilla MessageChannel documentation>
+newtype MessageChannel = MessageChannel (JSRef MessageChannel) deriving (Eq)
+
+unMessageChannel (MessageChannel o) = o
+
+instance ToJSRef MessageChannel where
+  toJSRef = return . unMessageChannel
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MessageChannel where
+  fromJSRef = return . fmap MessageChannel . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMessageChannel o
+toMessageChannel :: IsMessageChannel o => o -> MessageChannel
+toMessageChannel = unsafeCastGObject . toGObject
+
+instance IsMessageChannel MessageChannel
+instance GObjectClass MessageChannel where
+  toGObject = GObject . castRef . unMessageChannel
+  unsafeCastGObject = MessageChannel . castRef . unGObject
+
+castToMessageChannel :: GObjectClass obj => obj -> MessageChannel
+castToMessageChannel = castTo gTypeMessageChannel "MessageChannel"
+
+foreign import javascript unsafe "window[\"MessageChannel\"]" gTypeMessageChannel' :: JSRef GType
+gTypeMessageChannel = GType gTypeMessageChannel'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MessageEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent Mozilla MessageEvent documentation>
+newtype MessageEvent = MessageEvent (JSRef MessageEvent) deriving (Eq)
+
+unMessageEvent (MessageEvent o) = o
+
+instance ToJSRef MessageEvent where
+  toJSRef = return . unMessageEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MessageEvent where
+  fromJSRef = return . fmap MessageEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsMessageEvent o
+toMessageEvent :: IsMessageEvent o => o -> MessageEvent
+toMessageEvent = unsafeCastGObject . toGObject
+
+instance IsMessageEvent MessageEvent
+instance IsEvent MessageEvent
+instance GObjectClass MessageEvent where
+  toGObject = GObject . castRef . unMessageEvent
+  unsafeCastGObject = MessageEvent . castRef . unGObject
+
+castToMessageEvent :: GObjectClass obj => obj -> MessageEvent
+castToMessageEvent = castTo gTypeMessageEvent "MessageEvent"
+
+foreign import javascript unsafe "window[\"MessageEvent\"]" gTypeMessageEvent' :: JSRef GType
+gTypeMessageEvent = GType gTypeMessageEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MessagePort".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort Mozilla MessagePort documentation>
 newtype MessagePort = MessagePort (JSRef MessagePort) deriving (Eq)
 
 unMessagePort (MessagePort o) = o
@@ -4297,6 +11013,13 @@ type IsMessagePort o = MessagePortClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MouseEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent Mozilla MouseEvent documentation>
 newtype MouseEvent = MouseEvent (JSRef MouseEvent) deriving (Eq)
 
 unMouseEvent (MouseEvent o) = o
@@ -4331,6 +11054,12 @@ type IsMouseEvent o = MouseEventClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MutationEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent Mozilla MutationEvent documentation>
 newtype MutationEvent = MutationEvent (JSRef MutationEvent) deriving (Eq)
 
 unMutationEvent (MutationEvent o) = o
@@ -4363,6 +11092,77 @@ gTypeMutationEvent = GType gTypeMutationEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MutationObserver".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver Mozilla MutationObserver documentation>
+newtype MutationObserver = MutationObserver (JSRef MutationObserver) deriving (Eq)
+
+unMutationObserver (MutationObserver o) = o
+
+instance ToJSRef MutationObserver where
+  toJSRef = return . unMutationObserver
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MutationObserver where
+  fromJSRef = return . fmap MutationObserver . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMutationObserver o
+toMutationObserver :: IsMutationObserver o => o -> MutationObserver
+toMutationObserver = unsafeCastGObject . toGObject
+
+instance IsMutationObserver MutationObserver
+instance GObjectClass MutationObserver where
+  toGObject = GObject . castRef . unMutationObserver
+  unsafeCastGObject = MutationObserver . castRef . unGObject
+
+castToMutationObserver :: GObjectClass obj => obj -> MutationObserver
+castToMutationObserver = castTo gTypeMutationObserver "MutationObserver"
+
+foreign import javascript unsafe "window[\"MutationObserver\"]" gTypeMutationObserver' :: JSRef GType
+gTypeMutationObserver = GType gTypeMutationObserver'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MutationRecord".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord Mozilla MutationRecord documentation>
+newtype MutationRecord = MutationRecord (JSRef MutationRecord) deriving (Eq)
+
+unMutationRecord (MutationRecord o) = o
+
+instance ToJSRef MutationRecord where
+  toJSRef = return . unMutationRecord
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MutationRecord where
+  fromJSRef = return . fmap MutationRecord . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsMutationRecord o
+toMutationRecord :: IsMutationRecord o => o -> MutationRecord
+toMutationRecord = unsafeCastGObject . toGObject
+
+instance IsMutationRecord MutationRecord
+instance GObjectClass MutationRecord where
+  toGObject = GObject . castRef . unMutationRecord
+  unsafeCastGObject = MutationRecord . castRef . unGObject
+
+castToMutationRecord :: GObjectClass obj => obj -> MutationRecord
+castToMutationRecord = castTo gTypeMutationRecord "MutationRecord"
+
+foreign import javascript unsafe "window[\"MutationRecord\"]" gTypeMutationRecord' :: JSRef GType
+gTypeMutationRecord = GType gTypeMutationRecord'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NamedNodeMap".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap Mozilla NamedNodeMap documentation>
 newtype NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap) deriving (Eq)
 
 unNamedNodeMap (NamedNodeMap o) = o
@@ -4395,6 +11195,9 @@ type IsNamedNodeMap o = NamedNodeMapClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Navigator".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Navigator Mozilla Navigator documentation>
 newtype Navigator = Navigator (JSRef Navigator) deriving (Eq)
 
 unNavigator (Navigator o) = o
@@ -4427,6 +11230,115 @@ type IsNavigator o = NavigatorClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaError".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.DOMError"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaError Mozilla NavigatorUserMediaError documentation>
+newtype NavigatorUserMediaError = NavigatorUserMediaError (JSRef NavigatorUserMediaError) deriving (Eq)
+
+unNavigatorUserMediaError (NavigatorUserMediaError o) = o
+
+instance ToJSRef NavigatorUserMediaError where
+  toJSRef = return . unNavigatorUserMediaError
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef NavigatorUserMediaError where
+  fromJSRef = return . fmap NavigatorUserMediaError . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsDOMError o => IsNavigatorUserMediaError o
+toNavigatorUserMediaError :: IsNavigatorUserMediaError o => o -> NavigatorUserMediaError
+toNavigatorUserMediaError = unsafeCastGObject . toGObject
+
+instance IsNavigatorUserMediaError NavigatorUserMediaError
+instance IsDOMError NavigatorUserMediaError
+instance GObjectClass NavigatorUserMediaError where
+  toGObject = GObject . castRef . unNavigatorUserMediaError
+  unsafeCastGObject = NavigatorUserMediaError . castRef . unGObject
+
+castToNavigatorUserMediaError :: GObjectClass obj => obj -> NavigatorUserMediaError
+castToNavigatorUserMediaError = castTo gTypeNavigatorUserMediaError "NavigatorUserMediaError"
+
+foreign import javascript unsafe "window[\"NavigatorUserMediaError\"]" gTypeNavigatorUserMediaError' :: JSRef GType
+gTypeNavigatorUserMediaError = GType gTypeNavigatorUserMediaError'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaErrorCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation>
+newtype NavigatorUserMediaErrorCallback = NavigatorUserMediaErrorCallback (JSRef NavigatorUserMediaErrorCallback) deriving (Eq)
+
+unNavigatorUserMediaErrorCallback (NavigatorUserMediaErrorCallback o) = o
+
+instance ToJSRef NavigatorUserMediaErrorCallback where
+  toJSRef = return . unNavigatorUserMediaErrorCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef NavigatorUserMediaErrorCallback where
+  fromJSRef = return . fmap NavigatorUserMediaErrorCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsNavigatorUserMediaErrorCallback o
+toNavigatorUserMediaErrorCallback :: IsNavigatorUserMediaErrorCallback o => o -> NavigatorUserMediaErrorCallback
+toNavigatorUserMediaErrorCallback = unsafeCastGObject . toGObject
+
+instance IsNavigatorUserMediaErrorCallback NavigatorUserMediaErrorCallback
+instance GObjectClass NavigatorUserMediaErrorCallback where
+  toGObject = GObject . castRef . unNavigatorUserMediaErrorCallback
+  unsafeCastGObject = NavigatorUserMediaErrorCallback . castRef . unGObject
+
+castToNavigatorUserMediaErrorCallback :: GObjectClass obj => obj -> NavigatorUserMediaErrorCallback
+castToNavigatorUserMediaErrorCallback = castTo gTypeNavigatorUserMediaErrorCallback "NavigatorUserMediaErrorCallback"
+
+foreign import javascript unsafe "window[\"NavigatorUserMediaErrorCallback\"]" gTypeNavigatorUserMediaErrorCallback' :: JSRef GType
+gTypeNavigatorUserMediaErrorCallback = GType gTypeNavigatorUserMediaErrorCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaSuccessCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaSuccessCallback Mozilla NavigatorUserMediaSuccessCallback documentation>
+newtype NavigatorUserMediaSuccessCallback = NavigatorUserMediaSuccessCallback (JSRef NavigatorUserMediaSuccessCallback) deriving (Eq)
+
+unNavigatorUserMediaSuccessCallback (NavigatorUserMediaSuccessCallback o) = o
+
+instance ToJSRef NavigatorUserMediaSuccessCallback where
+  toJSRef = return . unNavigatorUserMediaSuccessCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef NavigatorUserMediaSuccessCallback where
+  fromJSRef = return . fmap NavigatorUserMediaSuccessCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsNavigatorUserMediaSuccessCallback o
+toNavigatorUserMediaSuccessCallback :: IsNavigatorUserMediaSuccessCallback o => o -> NavigatorUserMediaSuccessCallback
+toNavigatorUserMediaSuccessCallback = unsafeCastGObject . toGObject
+
+instance IsNavigatorUserMediaSuccessCallback NavigatorUserMediaSuccessCallback
+instance GObjectClass NavigatorUserMediaSuccessCallback where
+  toGObject = GObject . castRef . unNavigatorUserMediaSuccessCallback
+  unsafeCastGObject = NavigatorUserMediaSuccessCallback . castRef . unGObject
+
+castToNavigatorUserMediaSuccessCallback :: GObjectClass obj => obj -> NavigatorUserMediaSuccessCallback
+castToNavigatorUserMediaSuccessCallback = castTo gTypeNavigatorUserMediaSuccessCallback "NavigatorUserMediaSuccessCallback"
+
+foreign import javascript unsafe "window[\"NavigatorUserMediaSuccessCallback\"]" gTypeNavigatorUserMediaSuccessCallback' :: JSRef GType
+gTypeNavigatorUserMediaSuccessCallback = GType gTypeNavigatorUserMediaSuccessCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Node".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Node Mozilla Node documentation>
 newtype Node = Node (JSRef Node) deriving (Eq)
 
 unNode (Node o) = o
@@ -4459,6 +11371,9 @@ type IsNode o = NodeClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NodeFilter".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter Mozilla NodeFilter documentation>
 newtype NodeFilter = NodeFilter (JSRef NodeFilter) deriving (Eq)
 
 unNodeFilter (NodeFilter o) = o
@@ -4491,6 +11406,9 @@ type IsNodeFilter o = NodeFilterClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NodeIterator".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator Mozilla NodeIterator documentation>
 newtype NodeIterator = NodeIterator (JSRef NodeIterator) deriving (Eq)
 
 unNodeIterator (NodeIterator o) = o
@@ -4523,6 +11441,9 @@ type IsNodeIterator o = NodeIteratorClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NodeList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NodeList Mozilla NodeList documentation>
 newtype NodeList = NodeList (JSRef NodeList) deriving (Eq)
 
 unNodeList (NodeList o) = o
@@ -4555,6 +11476,12 @@ type IsNodeList o = NodeListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Notation".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Notation Mozilla Notation documentation>
 newtype Notation = Notation (JSRef Notation) deriving (Eq)
 
 unNotation (Notation o) = o
@@ -4587,6 +11514,971 @@ gTypeNotation = GType gTypeNotation'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Notification".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Notification Mozilla Notification documentation>
+newtype Notification = Notification (JSRef Notification) deriving (Eq)
+
+unNotification (Notification o) = o
+
+instance ToJSRef Notification where
+  toJSRef = return . unNotification
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Notification where
+  fromJSRef = return . fmap Notification . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsNotification o
+toNotification :: IsNotification o => o -> Notification
+toNotification = unsafeCastGObject . toGObject
+
+instance IsNotification Notification
+instance GObjectClass Notification where
+  toGObject = GObject . castRef . unNotification
+  unsafeCastGObject = Notification . castRef . unGObject
+
+castToNotification :: GObjectClass obj => obj -> Notification
+castToNotification = castTo gTypeNotification "Notification"
+
+foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification' :: JSRef GType
+gTypeNotification = GType gTypeNotification'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NotificationCenter".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter Mozilla NotificationCenter documentation>
+newtype NotificationCenter = NotificationCenter (JSRef NotificationCenter) deriving (Eq)
+
+unNotificationCenter (NotificationCenter o) = o
+
+instance ToJSRef NotificationCenter where
+  toJSRef = return . unNotificationCenter
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef NotificationCenter where
+  fromJSRef = return . fmap NotificationCenter . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsNotificationCenter o
+toNotificationCenter :: IsNotificationCenter o => o -> NotificationCenter
+toNotificationCenter = unsafeCastGObject . toGObject
+
+instance IsNotificationCenter NotificationCenter
+instance GObjectClass NotificationCenter where
+  toGObject = GObject . castRef . unNotificationCenter
+  unsafeCastGObject = NotificationCenter . castRef . unGObject
+
+castToNotificationCenter :: GObjectClass obj => obj -> NotificationCenter
+castToNotificationCenter = castTo gTypeNotificationCenter "NotificationCenter"
+
+foreign import javascript unsafe "window[\"NotificationCenter\"]" gTypeNotificationCenter' :: JSRef GType
+gTypeNotificationCenter = GType gTypeNotificationCenter'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.NotificationPermissionCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationPermissionCallback Mozilla NotificationPermissionCallback documentation>
+newtype NotificationPermissionCallback = NotificationPermissionCallback (JSRef NotificationPermissionCallback) deriving (Eq)
+
+unNotificationPermissionCallback (NotificationPermissionCallback o) = o
+
+instance ToJSRef NotificationPermissionCallback where
+  toJSRef = return . unNotificationPermissionCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef NotificationPermissionCallback where
+  fromJSRef = return . fmap NotificationPermissionCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsNotificationPermissionCallback o
+toNotificationPermissionCallback :: IsNotificationPermissionCallback o => o -> NotificationPermissionCallback
+toNotificationPermissionCallback = unsafeCastGObject . toGObject
+
+instance IsNotificationPermissionCallback NotificationPermissionCallback
+instance GObjectClass NotificationPermissionCallback where
+  toGObject = GObject . castRef . unNotificationPermissionCallback
+  unsafeCastGObject = NotificationPermissionCallback . castRef . unGObject
+
+castToNotificationPermissionCallback :: GObjectClass obj => obj -> NotificationPermissionCallback
+castToNotificationPermissionCallback = castTo gTypeNotificationPermissionCallback "NotificationPermissionCallback"
+
+foreign import javascript unsafe "window[\"NotificationPermissionCallback\"]" gTypeNotificationPermissionCallback' :: JSRef GType
+gTypeNotificationPermissionCallback = GType gTypeNotificationPermissionCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OESElementIndexUint".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OESElementIndexUint Mozilla OESElementIndexUint documentation>
+newtype OESElementIndexUint = OESElementIndexUint (JSRef OESElementIndexUint) deriving (Eq)
+
+unOESElementIndexUint (OESElementIndexUint o) = o
+
+instance ToJSRef OESElementIndexUint where
+  toJSRef = return . unOESElementIndexUint
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OESElementIndexUint where
+  fromJSRef = return . fmap OESElementIndexUint . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsOESElementIndexUint o
+toOESElementIndexUint :: IsOESElementIndexUint o => o -> OESElementIndexUint
+toOESElementIndexUint = unsafeCastGObject . toGObject
+
+instance IsOESElementIndexUint OESElementIndexUint
+instance GObjectClass OESElementIndexUint where
+  toGObject = GObject . castRef . unOESElementIndexUint
+  unsafeCastGObject = OESElementIndexUint . castRef . unGObject
+
+castToOESElementIndexUint :: GObjectClass obj => obj -> OESElementIndexUint
+castToOESElementIndexUint = castTo gTypeOESElementIndexUint "OESElementIndexUint"
+
+foreign import javascript unsafe "window[\"OESElementIndexUint\"]" gTypeOESElementIndexUint' :: JSRef GType
+gTypeOESElementIndexUint = GType gTypeOESElementIndexUint'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OESStandardDerivatives".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OESStandardDerivatives Mozilla OESStandardDerivatives documentation>
+newtype OESStandardDerivatives = OESStandardDerivatives (JSRef OESStandardDerivatives) deriving (Eq)
+
+unOESStandardDerivatives (OESStandardDerivatives o) = o
+
+instance ToJSRef OESStandardDerivatives where
+  toJSRef = return . unOESStandardDerivatives
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OESStandardDerivatives where
+  fromJSRef = return . fmap OESStandardDerivatives . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsOESStandardDerivatives o
+toOESStandardDerivatives :: IsOESStandardDerivatives o => o -> OESStandardDerivatives
+toOESStandardDerivatives = unsafeCastGObject . toGObject
+
+instance IsOESStandardDerivatives OESStandardDerivatives
+instance GObjectClass OESStandardDerivatives where
+  toGObject = GObject . castRef . unOESStandardDerivatives
+  unsafeCastGObject = OESStandardDerivatives . castRef . unGObject
+
+castToOESStandardDerivatives :: GObjectClass obj => obj -> OESStandardDerivatives
+castToOESStandardDerivatives = castTo gTypeOESStandardDerivatives "OESStandardDerivatives"
+
+foreign import javascript unsafe "window[\"OESStandardDerivatives\"]" gTypeOESStandardDerivatives' :: JSRef GType
+gTypeOESStandardDerivatives = GType gTypeOESStandardDerivatives'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloat".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloat Mozilla OESTextureFloat documentation>
+newtype OESTextureFloat = OESTextureFloat (JSRef OESTextureFloat) deriving (Eq)
+
+unOESTextureFloat (OESTextureFloat o) = o
+
+instance ToJSRef OESTextureFloat where
+  toJSRef = return . unOESTextureFloat
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OESTextureFloat where
+  fromJSRef = return . fmap OESTextureFloat . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsOESTextureFloat o
+toOESTextureFloat :: IsOESTextureFloat o => o -> OESTextureFloat
+toOESTextureFloat = unsafeCastGObject . toGObject
+
+instance IsOESTextureFloat OESTextureFloat
+instance GObjectClass OESTextureFloat where
+  toGObject = GObject . castRef . unOESTextureFloat
+  unsafeCastGObject = OESTextureFloat . castRef . unGObject
+
+castToOESTextureFloat :: GObjectClass obj => obj -> OESTextureFloat
+castToOESTextureFloat = castTo gTypeOESTextureFloat "OESTextureFloat"
+
+foreign import javascript unsafe "window[\"OESTextureFloat\"]" gTypeOESTextureFloat' :: JSRef GType
+gTypeOESTextureFloat = GType gTypeOESTextureFloat'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloatLinear".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloatLinear Mozilla OESTextureFloatLinear documentation>
+newtype OESTextureFloatLinear = OESTextureFloatLinear (JSRef OESTextureFloatLinear) deriving (Eq)
+
+unOESTextureFloatLinear (OESTextureFloatLinear o) = o
+
+instance ToJSRef OESTextureFloatLinear where
+  toJSRef = return . unOESTextureFloatLinear
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OESTextureFloatLinear where
+  fromJSRef = return . fmap OESTextureFloatLinear . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsOESTextureFloatLinear o
+toOESTextureFloatLinear :: IsOESTextureFloatLinear o => o -> OESTextureFloatLinear
+toOESTextureFloatLinear = unsafeCastGObject . toGObject
+
+instance IsOESTextureFloatLinear OESTextureFloatLinear
+instance GObjectClass OESTextureFloatLinear where
+  toGObject = GObject . castRef . unOESTextureFloatLinear
+  unsafeCastGObject = OESTextureFloatLinear . castRef . unGObject
+
+castToOESTextureFloatLinear :: GObjectClass obj => obj -> OESTextureFloatLinear
+castToOESTextureFloatLinear = castTo gTypeOESTextureFloatLinear "OESTextureFloatLinear"
+
+foreign import javascript unsafe "window[\"OESTextureFloatLinear\"]" gTypeOESTextureFloatLinear' :: JSRef GType
+gTypeOESTextureFloatLinear = GType gTypeOESTextureFloatLinear'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloat".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloat Mozilla OESTextureHalfFloat documentation>
+newtype OESTextureHalfFloat = OESTextureHalfFloat (JSRef OESTextureHalfFloat) deriving (Eq)
+
+unOESTextureHalfFloat (OESTextureHalfFloat o) = o
+
+instance ToJSRef OESTextureHalfFloat where
+  toJSRef = return . unOESTextureHalfFloat
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OESTextureHalfFloat where
+  fromJSRef = return . fmap OESTextureHalfFloat . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsOESTextureHalfFloat o
+toOESTextureHalfFloat :: IsOESTextureHalfFloat o => o -> OESTextureHalfFloat
+toOESTextureHalfFloat = unsafeCastGObject . toGObject
+
+instance IsOESTextureHalfFloat OESTextureHalfFloat
+instance GObjectClass OESTextureHalfFloat where
+  toGObject = GObject . castRef . unOESTextureHalfFloat
+  unsafeCastGObject = OESTextureHalfFloat . castRef . unGObject
+
+castToOESTextureHalfFloat :: GObjectClass obj => obj -> OESTextureHalfFloat
+castToOESTextureHalfFloat = castTo gTypeOESTextureHalfFloat "OESTextureHalfFloat"
+
+foreign import javascript unsafe "window[\"OESTextureHalfFloat\"]" gTypeOESTextureHalfFloat' :: JSRef GType
+gTypeOESTextureHalfFloat = GType gTypeOESTextureHalfFloat'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloatLinear".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloatLinear Mozilla OESTextureHalfFloatLinear documentation>
+newtype OESTextureHalfFloatLinear = OESTextureHalfFloatLinear (JSRef OESTextureHalfFloatLinear) deriving (Eq)
+
+unOESTextureHalfFloatLinear (OESTextureHalfFloatLinear o) = o
+
+instance ToJSRef OESTextureHalfFloatLinear where
+  toJSRef = return . unOESTextureHalfFloatLinear
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OESTextureHalfFloatLinear where
+  fromJSRef = return . fmap OESTextureHalfFloatLinear . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsOESTextureHalfFloatLinear o
+toOESTextureHalfFloatLinear :: IsOESTextureHalfFloatLinear o => o -> OESTextureHalfFloatLinear
+toOESTextureHalfFloatLinear = unsafeCastGObject . toGObject
+
+instance IsOESTextureHalfFloatLinear OESTextureHalfFloatLinear
+instance GObjectClass OESTextureHalfFloatLinear where
+  toGObject = GObject . castRef . unOESTextureHalfFloatLinear
+  unsafeCastGObject = OESTextureHalfFloatLinear . castRef . unGObject
+
+castToOESTextureHalfFloatLinear :: GObjectClass obj => obj -> OESTextureHalfFloatLinear
+castToOESTextureHalfFloatLinear = castTo gTypeOESTextureHalfFloatLinear "OESTextureHalfFloatLinear"
+
+foreign import javascript unsafe "window[\"OESTextureHalfFloatLinear\"]" gTypeOESTextureHalfFloatLinear' :: JSRef GType
+gTypeOESTextureHalfFloatLinear = GType gTypeOESTextureHalfFloatLinear'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OESVertexArrayObject".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject Mozilla OESVertexArrayObject documentation>
+newtype OESVertexArrayObject = OESVertexArrayObject (JSRef OESVertexArrayObject) deriving (Eq)
+
+unOESVertexArrayObject (OESVertexArrayObject o) = o
+
+instance ToJSRef OESVertexArrayObject where
+  toJSRef = return . unOESVertexArrayObject
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OESVertexArrayObject where
+  fromJSRef = return . fmap OESVertexArrayObject . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsOESVertexArrayObject o
+toOESVertexArrayObject :: IsOESVertexArrayObject o => o -> OESVertexArrayObject
+toOESVertexArrayObject = unsafeCastGObject . toGObject
+
+instance IsOESVertexArrayObject OESVertexArrayObject
+instance GObjectClass OESVertexArrayObject where
+  toGObject = GObject . castRef . unOESVertexArrayObject
+  unsafeCastGObject = OESVertexArrayObject . castRef . unGObject
+
+castToOESVertexArrayObject :: GObjectClass obj => obj -> OESVertexArrayObject
+castToOESVertexArrayObject = castTo gTypeOESVertexArrayObject "OESVertexArrayObject"
+
+foreign import javascript unsafe "window[\"OESVertexArrayObject\"]" gTypeOESVertexArrayObject' :: JSRef GType
+gTypeOESVertexArrayObject = GType gTypeOESVertexArrayObject'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioCompletionEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioCompletionEvent Mozilla OfflineAudioCompletionEvent documentation>
+newtype OfflineAudioCompletionEvent = OfflineAudioCompletionEvent (JSRef OfflineAudioCompletionEvent) deriving (Eq)
+
+unOfflineAudioCompletionEvent (OfflineAudioCompletionEvent o) = o
+
+instance ToJSRef OfflineAudioCompletionEvent where
+  toJSRef = return . unOfflineAudioCompletionEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OfflineAudioCompletionEvent where
+  fromJSRef = return . fmap OfflineAudioCompletionEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsOfflineAudioCompletionEvent o
+toOfflineAudioCompletionEvent :: IsOfflineAudioCompletionEvent o => o -> OfflineAudioCompletionEvent
+toOfflineAudioCompletionEvent = unsafeCastGObject . toGObject
+
+instance IsOfflineAudioCompletionEvent OfflineAudioCompletionEvent
+instance IsEvent OfflineAudioCompletionEvent
+instance GObjectClass OfflineAudioCompletionEvent where
+  toGObject = GObject . castRef . unOfflineAudioCompletionEvent
+  unsafeCastGObject = OfflineAudioCompletionEvent . castRef . unGObject
+
+castToOfflineAudioCompletionEvent :: GObjectClass obj => obj -> OfflineAudioCompletionEvent
+castToOfflineAudioCompletionEvent = castTo gTypeOfflineAudioCompletionEvent "OfflineAudioCompletionEvent"
+
+foreign import javascript unsafe "window[\"OfflineAudioCompletionEvent\"]" gTypeOfflineAudioCompletionEvent' :: JSRef GType
+gTypeOfflineAudioCompletionEvent = GType gTypeOfflineAudioCompletionEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioContext".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioContext"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/webkitOfflineAudioContext Mozilla webkitOfflineAudioContext documentation>
+newtype OfflineAudioContext = OfflineAudioContext (JSRef OfflineAudioContext) deriving (Eq)
+
+unOfflineAudioContext (OfflineAudioContext o) = o
+
+instance ToJSRef OfflineAudioContext where
+  toJSRef = return . unOfflineAudioContext
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OfflineAudioContext where
+  fromJSRef = return . fmap OfflineAudioContext . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioContext o => IsOfflineAudioContext o
+toOfflineAudioContext :: IsOfflineAudioContext o => o -> OfflineAudioContext
+toOfflineAudioContext = unsafeCastGObject . toGObject
+
+instance IsOfflineAudioContext OfflineAudioContext
+instance IsAudioContext OfflineAudioContext
+instance GObjectClass OfflineAudioContext where
+  toGObject = GObject . castRef . unOfflineAudioContext
+  unsafeCastGObject = OfflineAudioContext . castRef . unGObject
+
+castToOfflineAudioContext :: GObjectClass obj => obj -> OfflineAudioContext
+castToOfflineAudioContext = castTo gTypeOfflineAudioContext "OfflineAudioContext"
+
+foreign import javascript unsafe "window[\"webkitOfflineAudioContext\"]" gTypeOfflineAudioContext' :: JSRef GType
+gTypeOfflineAudioContext = GType gTypeOfflineAudioContext'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OscillatorNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode Mozilla OscillatorNode documentation>
+newtype OscillatorNode = OscillatorNode (JSRef OscillatorNode) deriving (Eq)
+
+unOscillatorNode (OscillatorNode o) = o
+
+instance ToJSRef OscillatorNode where
+  toJSRef = return . unOscillatorNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OscillatorNode where
+  fromJSRef = return . fmap OscillatorNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsOscillatorNode o
+toOscillatorNode :: IsOscillatorNode o => o -> OscillatorNode
+toOscillatorNode = unsafeCastGObject . toGObject
+
+instance IsOscillatorNode OscillatorNode
+instance IsAudioNode OscillatorNode
+instance IsEventTarget OscillatorNode
+instance GObjectClass OscillatorNode where
+  toGObject = GObject . castRef . unOscillatorNode
+  unsafeCastGObject = OscillatorNode . castRef . unGObject
+
+castToOscillatorNode :: GObjectClass obj => obj -> OscillatorNode
+castToOscillatorNode = castTo gTypeOscillatorNode "OscillatorNode"
+
+foreign import javascript unsafe "window[\"OscillatorNode\"]" gTypeOscillatorNode' :: JSRef GType
+gTypeOscillatorNode = GType gTypeOscillatorNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.OverflowEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent Mozilla OverflowEvent documentation>
+newtype OverflowEvent = OverflowEvent (JSRef OverflowEvent) deriving (Eq)
+
+unOverflowEvent (OverflowEvent o) = o
+
+instance ToJSRef OverflowEvent where
+  toJSRef = return . unOverflowEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef OverflowEvent where
+  fromJSRef = return . fmap OverflowEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsOverflowEvent o
+toOverflowEvent :: IsOverflowEvent o => o -> OverflowEvent
+toOverflowEvent = unsafeCastGObject . toGObject
+
+instance IsOverflowEvent OverflowEvent
+instance IsEvent OverflowEvent
+instance GObjectClass OverflowEvent where
+  toGObject = GObject . castRef . unOverflowEvent
+  unsafeCastGObject = OverflowEvent . castRef . unGObject
+
+castToOverflowEvent :: GObjectClass obj => obj -> OverflowEvent
+castToOverflowEvent = castTo gTypeOverflowEvent "OverflowEvent"
+
+foreign import javascript unsafe "window[\"OverflowEvent\"]" gTypeOverflowEvent' :: JSRef GType
+gTypeOverflowEvent = GType gTypeOverflowEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PageTransitionEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PageTransitionEvent Mozilla PageTransitionEvent documentation>
+newtype PageTransitionEvent = PageTransitionEvent (JSRef PageTransitionEvent) deriving (Eq)
+
+unPageTransitionEvent (PageTransitionEvent o) = o
+
+instance ToJSRef PageTransitionEvent where
+  toJSRef = return . unPageTransitionEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PageTransitionEvent where
+  fromJSRef = return . fmap PageTransitionEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsPageTransitionEvent o
+toPageTransitionEvent :: IsPageTransitionEvent o => o -> PageTransitionEvent
+toPageTransitionEvent = unsafeCastGObject . toGObject
+
+instance IsPageTransitionEvent PageTransitionEvent
+instance IsEvent PageTransitionEvent
+instance GObjectClass PageTransitionEvent where
+  toGObject = GObject . castRef . unPageTransitionEvent
+  unsafeCastGObject = PageTransitionEvent . castRef . unGObject
+
+castToPageTransitionEvent :: GObjectClass obj => obj -> PageTransitionEvent
+castToPageTransitionEvent = castTo gTypePageTransitionEvent "PageTransitionEvent"
+
+foreign import javascript unsafe "window[\"PageTransitionEvent\"]" gTypePageTransitionEvent' :: JSRef GType
+gTypePageTransitionEvent = GType gTypePageTransitionEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PannerNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode Mozilla webkitAudioPannerNode documentation>
+newtype PannerNode = PannerNode (JSRef PannerNode) deriving (Eq)
+
+unPannerNode (PannerNode o) = o
+
+instance ToJSRef PannerNode where
+  toJSRef = return . unPannerNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PannerNode where
+  fromJSRef = return . fmap PannerNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsPannerNode o
+toPannerNode :: IsPannerNode o => o -> PannerNode
+toPannerNode = unsafeCastGObject . toGObject
+
+instance IsPannerNode PannerNode
+instance IsAudioNode PannerNode
+instance IsEventTarget PannerNode
+instance GObjectClass PannerNode where
+  toGObject = GObject . castRef . unPannerNode
+  unsafeCastGObject = PannerNode . castRef . unGObject
+
+castToPannerNode :: GObjectClass obj => obj -> PannerNode
+castToPannerNode = castTo gTypePannerNode "PannerNode"
+
+foreign import javascript unsafe "window[\"webkitAudioPannerNode\"]" gTypePannerNode' :: JSRef GType
+gTypePannerNode = GType gTypePannerNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Performance".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Performance Mozilla Performance documentation>
+newtype Performance = Performance (JSRef Performance) deriving (Eq)
+
+unPerformance (Performance o) = o
+
+instance ToJSRef Performance where
+  toJSRef = return . unPerformance
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Performance where
+  fromJSRef = return . fmap Performance . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPerformance o
+toPerformance :: IsPerformance o => o -> Performance
+toPerformance = unsafeCastGObject . toGObject
+
+instance IsPerformance Performance
+instance GObjectClass Performance where
+  toGObject = GObject . castRef . unPerformance
+  unsafeCastGObject = Performance . castRef . unGObject
+
+castToPerformance :: GObjectClass obj => obj -> Performance
+castToPerformance = castTo gTypePerformance "Performance"
+
+foreign import javascript unsafe "window[\"Performance\"]" gTypePerformance' :: JSRef GType
+gTypePerformance = GType gTypePerformance'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntry".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry Mozilla PerformanceEntry documentation>
+newtype PerformanceEntry = PerformanceEntry (JSRef PerformanceEntry) deriving (Eq)
+
+unPerformanceEntry (PerformanceEntry o) = o
+
+instance ToJSRef PerformanceEntry where
+  toJSRef = return . unPerformanceEntry
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PerformanceEntry where
+  fromJSRef = return . fmap PerformanceEntry . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPerformanceEntry o
+toPerformanceEntry :: IsPerformanceEntry o => o -> PerformanceEntry
+toPerformanceEntry = unsafeCastGObject . toGObject
+
+instance IsPerformanceEntry PerformanceEntry
+instance GObjectClass PerformanceEntry where
+  toGObject = GObject . castRef . unPerformanceEntry
+  unsafeCastGObject = PerformanceEntry . castRef . unGObject
+
+castToPerformanceEntry :: GObjectClass obj => obj -> PerformanceEntry
+castToPerformanceEntry = castTo gTypePerformanceEntry "PerformanceEntry"
+
+foreign import javascript unsafe "window[\"PerformanceEntry\"]" gTypePerformanceEntry' :: JSRef GType
+gTypePerformanceEntry = GType gTypePerformanceEntry'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntryList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntryList Mozilla PerformanceEntryList documentation>
+newtype PerformanceEntryList = PerformanceEntryList (JSRef PerformanceEntryList) deriving (Eq)
+
+unPerformanceEntryList (PerformanceEntryList o) = o
+
+instance ToJSRef PerformanceEntryList where
+  toJSRef = return . unPerformanceEntryList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PerformanceEntryList where
+  fromJSRef = return . fmap PerformanceEntryList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPerformanceEntryList o
+toPerformanceEntryList :: IsPerformanceEntryList o => o -> PerformanceEntryList
+toPerformanceEntryList = unsafeCastGObject . toGObject
+
+instance IsPerformanceEntryList PerformanceEntryList
+instance GObjectClass PerformanceEntryList where
+  toGObject = GObject . castRef . unPerformanceEntryList
+  unsafeCastGObject = PerformanceEntryList . castRef . unGObject
+
+castToPerformanceEntryList :: GObjectClass obj => obj -> PerformanceEntryList
+castToPerformanceEntryList = castTo gTypePerformanceEntryList "PerformanceEntryList"
+
+foreign import javascript unsafe "window[\"PerformanceEntryList\"]" gTypePerformanceEntryList' :: JSRef GType
+gTypePerformanceEntryList = GType gTypePerformanceEntryList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PerformanceMark".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.PerformanceEntry"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMark Mozilla PerformanceMark documentation>
+newtype PerformanceMark = PerformanceMark (JSRef PerformanceMark) deriving (Eq)
+
+unPerformanceMark (PerformanceMark o) = o
+
+instance ToJSRef PerformanceMark where
+  toJSRef = return . unPerformanceMark
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PerformanceMark where
+  fromJSRef = return . fmap PerformanceMark . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsPerformanceEntry o => IsPerformanceMark o
+toPerformanceMark :: IsPerformanceMark o => o -> PerformanceMark
+toPerformanceMark = unsafeCastGObject . toGObject
+
+instance IsPerformanceMark PerformanceMark
+instance IsPerformanceEntry PerformanceMark
+instance GObjectClass PerformanceMark where
+  toGObject = GObject . castRef . unPerformanceMark
+  unsafeCastGObject = PerformanceMark . castRef . unGObject
+
+castToPerformanceMark :: GObjectClass obj => obj -> PerformanceMark
+castToPerformanceMark = castTo gTypePerformanceMark "PerformanceMark"
+
+foreign import javascript unsafe "window[\"PerformanceMark\"]" gTypePerformanceMark' :: JSRef GType
+gTypePerformanceMark = GType gTypePerformanceMark'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PerformanceMeasure".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.PerformanceEntry"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure Mozilla PerformanceMeasure documentation>
+newtype PerformanceMeasure = PerformanceMeasure (JSRef PerformanceMeasure) deriving (Eq)
+
+unPerformanceMeasure (PerformanceMeasure o) = o
+
+instance ToJSRef PerformanceMeasure where
+  toJSRef = return . unPerformanceMeasure
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PerformanceMeasure where
+  fromJSRef = return . fmap PerformanceMeasure . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsPerformanceEntry o => IsPerformanceMeasure o
+toPerformanceMeasure :: IsPerformanceMeasure o => o -> PerformanceMeasure
+toPerformanceMeasure = unsafeCastGObject . toGObject
+
+instance IsPerformanceMeasure PerformanceMeasure
+instance IsPerformanceEntry PerformanceMeasure
+instance GObjectClass PerformanceMeasure where
+  toGObject = GObject . castRef . unPerformanceMeasure
+  unsafeCastGObject = PerformanceMeasure . castRef . unGObject
+
+castToPerformanceMeasure :: GObjectClass obj => obj -> PerformanceMeasure
+castToPerformanceMeasure = castTo gTypePerformanceMeasure "PerformanceMeasure"
+
+foreign import javascript unsafe "window[\"PerformanceMeasure\"]" gTypePerformanceMeasure' :: JSRef GType
+gTypePerformanceMeasure = GType gTypePerformanceMeasure'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PerformanceNavigation".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation Mozilla PerformanceNavigation documentation>
+newtype PerformanceNavigation = PerformanceNavigation (JSRef PerformanceNavigation) deriving (Eq)
+
+unPerformanceNavigation (PerformanceNavigation o) = o
+
+instance ToJSRef PerformanceNavigation where
+  toJSRef = return . unPerformanceNavigation
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PerformanceNavigation where
+  fromJSRef = return . fmap PerformanceNavigation . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPerformanceNavigation o
+toPerformanceNavigation :: IsPerformanceNavigation o => o -> PerformanceNavigation
+toPerformanceNavigation = unsafeCastGObject . toGObject
+
+instance IsPerformanceNavigation PerformanceNavigation
+instance GObjectClass PerformanceNavigation where
+  toGObject = GObject . castRef . unPerformanceNavigation
+  unsafeCastGObject = PerformanceNavigation . castRef . unGObject
+
+castToPerformanceNavigation :: GObjectClass obj => obj -> PerformanceNavigation
+castToPerformanceNavigation = castTo gTypePerformanceNavigation "PerformanceNavigation"
+
+foreign import javascript unsafe "window[\"PerformanceNavigation\"]" gTypePerformanceNavigation' :: JSRef GType
+gTypePerformanceNavigation = GType gTypePerformanceNavigation'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PerformanceResourceTiming".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.PerformanceEntry"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming Mozilla PerformanceResourceTiming documentation>
+newtype PerformanceResourceTiming = PerformanceResourceTiming (JSRef PerformanceResourceTiming) deriving (Eq)
+
+unPerformanceResourceTiming (PerformanceResourceTiming o) = o
+
+instance ToJSRef PerformanceResourceTiming where
+  toJSRef = return . unPerformanceResourceTiming
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PerformanceResourceTiming where
+  fromJSRef = return . fmap PerformanceResourceTiming . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsPerformanceEntry o => IsPerformanceResourceTiming o
+toPerformanceResourceTiming :: IsPerformanceResourceTiming o => o -> PerformanceResourceTiming
+toPerformanceResourceTiming = unsafeCastGObject . toGObject
+
+instance IsPerformanceResourceTiming PerformanceResourceTiming
+instance IsPerformanceEntry PerformanceResourceTiming
+instance GObjectClass PerformanceResourceTiming where
+  toGObject = GObject . castRef . unPerformanceResourceTiming
+  unsafeCastGObject = PerformanceResourceTiming . castRef . unGObject
+
+castToPerformanceResourceTiming :: GObjectClass obj => obj -> PerformanceResourceTiming
+castToPerformanceResourceTiming = castTo gTypePerformanceResourceTiming "PerformanceResourceTiming"
+
+foreign import javascript unsafe "window[\"PerformanceResourceTiming\"]" gTypePerformanceResourceTiming' :: JSRef GType
+gTypePerformanceResourceTiming = GType gTypePerformanceResourceTiming'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PerformanceTiming".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming Mozilla PerformanceTiming documentation>
+newtype PerformanceTiming = PerformanceTiming (JSRef PerformanceTiming) deriving (Eq)
+
+unPerformanceTiming (PerformanceTiming o) = o
+
+instance ToJSRef PerformanceTiming where
+  toJSRef = return . unPerformanceTiming
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PerformanceTiming where
+  fromJSRef = return . fmap PerformanceTiming . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPerformanceTiming o
+toPerformanceTiming :: IsPerformanceTiming o => o -> PerformanceTiming
+toPerformanceTiming = unsafeCastGObject . toGObject
+
+instance IsPerformanceTiming PerformanceTiming
+instance GObjectClass PerformanceTiming where
+  toGObject = GObject . castRef . unPerformanceTiming
+  unsafeCastGObject = PerformanceTiming . castRef . unGObject
+
+castToPerformanceTiming :: GObjectClass obj => obj -> PerformanceTiming
+castToPerformanceTiming = castTo gTypePerformanceTiming "PerformanceTiming"
+
+foreign import javascript unsafe "window[\"PerformanceTiming\"]" gTypePerformanceTiming' :: JSRef GType
+gTypePerformanceTiming = GType gTypePerformanceTiming'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PeriodicWave".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PeriodicWave Mozilla PeriodicWave documentation>
+newtype PeriodicWave = PeriodicWave (JSRef PeriodicWave) deriving (Eq)
+
+unPeriodicWave (PeriodicWave o) = o
+
+instance ToJSRef PeriodicWave where
+  toJSRef = return . unPeriodicWave
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PeriodicWave where
+  fromJSRef = return . fmap PeriodicWave . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPeriodicWave o
+toPeriodicWave :: IsPeriodicWave o => o -> PeriodicWave
+toPeriodicWave = unsafeCastGObject . toGObject
+
+instance IsPeriodicWave PeriodicWave
+instance GObjectClass PeriodicWave where
+  toGObject = GObject . castRef . unPeriodicWave
+  unsafeCastGObject = PeriodicWave . castRef . unGObject
+
+castToPeriodicWave :: GObjectClass obj => obj -> PeriodicWave
+castToPeriodicWave = castTo gTypePeriodicWave "PeriodicWave"
+
+foreign import javascript unsafe "window[\"PeriodicWave\"]" gTypePeriodicWave' :: JSRef GType
+gTypePeriodicWave = GType gTypePeriodicWave'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PopStateEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PopStateEvent Mozilla PopStateEvent documentation>
+newtype PopStateEvent = PopStateEvent (JSRef PopStateEvent) deriving (Eq)
+
+unPopStateEvent (PopStateEvent o) = o
+
+instance ToJSRef PopStateEvent where
+  toJSRef = return . unPopStateEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PopStateEvent where
+  fromJSRef = return . fmap PopStateEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsPopStateEvent o
+toPopStateEvent :: IsPopStateEvent o => o -> PopStateEvent
+toPopStateEvent = unsafeCastGObject . toGObject
+
+instance IsPopStateEvent PopStateEvent
+instance IsEvent PopStateEvent
+instance GObjectClass PopStateEvent where
+  toGObject = GObject . castRef . unPopStateEvent
+  unsafeCastGObject = PopStateEvent . castRef . unGObject
+
+castToPopStateEvent :: GObjectClass obj => obj -> PopStateEvent
+castToPopStateEvent = castTo gTypePopStateEvent "PopStateEvent"
+
+foreign import javascript unsafe "window[\"PopStateEvent\"]" gTypePopStateEvent' :: JSRef GType
+gTypePopStateEvent = GType gTypePopStateEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PositionCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation>
+newtype PositionCallback = PositionCallback (JSRef PositionCallback) deriving (Eq)
+
+unPositionCallback (PositionCallback o) = o
+
+instance ToJSRef PositionCallback where
+  toJSRef = return . unPositionCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PositionCallback where
+  fromJSRef = return . fmap PositionCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPositionCallback o
+toPositionCallback :: IsPositionCallback o => o -> PositionCallback
+toPositionCallback = unsafeCastGObject . toGObject
+
+instance IsPositionCallback PositionCallback
+instance GObjectClass PositionCallback where
+  toGObject = GObject . castRef . unPositionCallback
+  unsafeCastGObject = PositionCallback . castRef . unGObject
+
+castToPositionCallback :: GObjectClass obj => obj -> PositionCallback
+castToPositionCallback = castTo gTypePositionCallback "PositionCallback"
+
+foreign import javascript unsafe "window[\"PositionCallback\"]" gTypePositionCallback' :: JSRef GType
+gTypePositionCallback = GType gTypePositionCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PositionError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PositionError Mozilla PositionError documentation>
 newtype PositionError = PositionError (JSRef PositionError) deriving (Eq)
 
 unPositionError (PositionError o) = o
@@ -4614,11 +12506,51 @@ castToPositionError = castTo gTypePositionError "PositionError"
 foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError' :: JSRef GType
 gTypePositionError = GType gTypePositionError'
 #else
-type IsPositionError o = PositionErrorClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PositionErrorCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PositionErrorCallback Mozilla PositionErrorCallback documentation>
+newtype PositionErrorCallback = PositionErrorCallback (JSRef PositionErrorCallback) deriving (Eq)
+
+unPositionErrorCallback (PositionErrorCallback o) = o
+
+instance ToJSRef PositionErrorCallback where
+  toJSRef = return . unPositionErrorCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PositionErrorCallback where
+  fromJSRef = return . fmap PositionErrorCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsPositionErrorCallback o
+toPositionErrorCallback :: IsPositionErrorCallback o => o -> PositionErrorCallback
+toPositionErrorCallback = unsafeCastGObject . toGObject
+
+instance IsPositionErrorCallback PositionErrorCallback
+instance GObjectClass PositionErrorCallback where
+  toGObject = GObject . castRef . unPositionErrorCallback
+  unsafeCastGObject = PositionErrorCallback . castRef . unGObject
+
+castToPositionErrorCallback :: GObjectClass obj => obj -> PositionErrorCallback
+castToPositionErrorCallback = castTo gTypePositionErrorCallback "PositionErrorCallback"
+
+foreign import javascript unsafe "window[\"PositionErrorCallback\"]" gTypePositionErrorCallback' :: JSRef GType
+gTypePositionErrorCallback = GType gTypePositionErrorCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ProcessingInstruction".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CharacterData"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ProcessingInstruction Mozilla ProcessingInstruction documentation>
 newtype ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction) deriving (Eq)
 
 unProcessingInstruction (ProcessingInstruction o) = o
@@ -4653,6 +12585,81 @@ type IsProcessingInstruction o = ProcessingInstructionClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ProgressEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent Mozilla ProgressEvent documentation>
+newtype ProgressEvent = ProgressEvent (JSRef ProgressEvent) deriving (Eq)
+
+unProgressEvent (ProgressEvent o) = o
+
+instance ToJSRef ProgressEvent where
+  toJSRef = return . unProgressEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ProgressEvent where
+  fromJSRef = return . fmap ProgressEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsProgressEvent o
+toProgressEvent :: IsProgressEvent o => o -> ProgressEvent
+toProgressEvent = unsafeCastGObject . toGObject
+
+instance IsProgressEvent ProgressEvent
+instance IsEvent ProgressEvent
+instance GObjectClass ProgressEvent where
+  toGObject = GObject . castRef . unProgressEvent
+  unsafeCastGObject = ProgressEvent . castRef . unGObject
+
+castToProgressEvent :: GObjectClass obj => obj -> ProgressEvent
+castToProgressEvent = castTo gTypeProgressEvent "ProgressEvent"
+
+foreign import javascript unsafe "window[\"ProgressEvent\"]" gTypeProgressEvent' :: JSRef GType
+gTypeProgressEvent = GType gTypeProgressEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.QuickTimePluginReplacement".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement Mozilla QuickTimePluginReplacement documentation>
+newtype QuickTimePluginReplacement = QuickTimePluginReplacement (JSRef QuickTimePluginReplacement) deriving (Eq)
+
+unQuickTimePluginReplacement (QuickTimePluginReplacement o) = o
+
+instance ToJSRef QuickTimePluginReplacement where
+  toJSRef = return . unQuickTimePluginReplacement
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef QuickTimePluginReplacement where
+  fromJSRef = return . fmap QuickTimePluginReplacement . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsQuickTimePluginReplacement o
+toQuickTimePluginReplacement :: IsQuickTimePluginReplacement o => o -> QuickTimePluginReplacement
+toQuickTimePluginReplacement = unsafeCastGObject . toGObject
+
+instance IsQuickTimePluginReplacement QuickTimePluginReplacement
+instance GObjectClass QuickTimePluginReplacement where
+  toGObject = GObject . castRef . unQuickTimePluginReplacement
+  unsafeCastGObject = QuickTimePluginReplacement . castRef . unGObject
+
+castToQuickTimePluginReplacement :: GObjectClass obj => obj -> QuickTimePluginReplacement
+castToQuickTimePluginReplacement = castTo gTypeQuickTimePluginReplacement "QuickTimePluginReplacement"
+
+foreign import javascript unsafe "window[\"QuickTimePluginReplacement\"]" gTypeQuickTimePluginReplacement' :: JSRef GType
+gTypeQuickTimePluginReplacement = GType gTypeQuickTimePluginReplacement'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RGBColor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor Mozilla RGBColor documentation>
 newtype RGBColor = RGBColor (JSRef RGBColor) deriving (Eq)
 
 unRGBColor (RGBColor o) = o
@@ -4684,6 +12691,569 @@ gTypeRGBColor = GType gTypeRGBColor'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCConfiguration".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration Mozilla RTCConfiguration documentation>
+newtype RTCConfiguration = RTCConfiguration (JSRef RTCConfiguration) deriving (Eq)
+
+unRTCConfiguration (RTCConfiguration o) = o
+
+instance ToJSRef RTCConfiguration where
+  toJSRef = return . unRTCConfiguration
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCConfiguration where
+  fromJSRef = return . fmap RTCConfiguration . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCConfiguration o
+toRTCConfiguration :: IsRTCConfiguration o => o -> RTCConfiguration
+toRTCConfiguration = unsafeCastGObject . toGObject
+
+instance IsRTCConfiguration RTCConfiguration
+instance GObjectClass RTCConfiguration where
+  toGObject = GObject . castRef . unRTCConfiguration
+  unsafeCastGObject = RTCConfiguration . castRef . unGObject
+
+castToRTCConfiguration :: GObjectClass obj => obj -> RTCConfiguration
+castToRTCConfiguration = castTo gTypeRTCConfiguration "RTCConfiguration"
+
+foreign import javascript unsafe "window[\"RTCConfiguration\"]" gTypeRTCConfiguration' :: JSRef GType
+gTypeRTCConfiguration = GType gTypeRTCConfiguration'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFSender".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender Mozilla RTCDTMFSender documentation>
+newtype RTCDTMFSender = RTCDTMFSender (JSRef RTCDTMFSender) deriving (Eq)
+
+unRTCDTMFSender (RTCDTMFSender o) = o
+
+instance ToJSRef RTCDTMFSender where
+  toJSRef = return . unRTCDTMFSender
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCDTMFSender where
+  fromJSRef = return . fmap RTCDTMFSender . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCDTMFSender o
+toRTCDTMFSender :: IsRTCDTMFSender o => o -> RTCDTMFSender
+toRTCDTMFSender = unsafeCastGObject . toGObject
+
+instance IsRTCDTMFSender RTCDTMFSender
+instance GObjectClass RTCDTMFSender where
+  toGObject = GObject . castRef . unRTCDTMFSender
+  unsafeCastGObject = RTCDTMFSender . castRef . unGObject
+
+castToRTCDTMFSender :: GObjectClass obj => obj -> RTCDTMFSender
+castToRTCDTMFSender = castTo gTypeRTCDTMFSender "RTCDTMFSender"
+
+foreign import javascript unsafe "window[\"RTCDTMFSender\"]" gTypeRTCDTMFSender' :: JSRef GType
+gTypeRTCDTMFSender = GType gTypeRTCDTMFSender'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFToneChangeEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFToneChangeEvent Mozilla RTCDTMFToneChangeEvent documentation>
+newtype RTCDTMFToneChangeEvent = RTCDTMFToneChangeEvent (JSRef RTCDTMFToneChangeEvent) deriving (Eq)
+
+unRTCDTMFToneChangeEvent (RTCDTMFToneChangeEvent o) = o
+
+instance ToJSRef RTCDTMFToneChangeEvent where
+  toJSRef = return . unRTCDTMFToneChangeEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCDTMFToneChangeEvent where
+  fromJSRef = return . fmap RTCDTMFToneChangeEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsRTCDTMFToneChangeEvent o
+toRTCDTMFToneChangeEvent :: IsRTCDTMFToneChangeEvent o => o -> RTCDTMFToneChangeEvent
+toRTCDTMFToneChangeEvent = unsafeCastGObject . toGObject
+
+instance IsRTCDTMFToneChangeEvent RTCDTMFToneChangeEvent
+instance IsEvent RTCDTMFToneChangeEvent
+instance GObjectClass RTCDTMFToneChangeEvent where
+  toGObject = GObject . castRef . unRTCDTMFToneChangeEvent
+  unsafeCastGObject = RTCDTMFToneChangeEvent . castRef . unGObject
+
+castToRTCDTMFToneChangeEvent :: GObjectClass obj => obj -> RTCDTMFToneChangeEvent
+castToRTCDTMFToneChangeEvent = castTo gTypeRTCDTMFToneChangeEvent "RTCDTMFToneChangeEvent"
+
+foreign import javascript unsafe "window[\"RTCDTMFToneChangeEvent\"]" gTypeRTCDTMFToneChangeEvent' :: JSRef GType
+gTypeRTCDTMFToneChangeEvent = GType gTypeRTCDTMFToneChangeEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannel".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel Mozilla RTCDataChannel documentation>
+newtype RTCDataChannel = RTCDataChannel (JSRef RTCDataChannel) deriving (Eq)
+
+unRTCDataChannel (RTCDataChannel o) = o
+
+instance ToJSRef RTCDataChannel where
+  toJSRef = return . unRTCDataChannel
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCDataChannel where
+  fromJSRef = return . fmap RTCDataChannel . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCDataChannel o
+toRTCDataChannel :: IsRTCDataChannel o => o -> RTCDataChannel
+toRTCDataChannel = unsafeCastGObject . toGObject
+
+instance IsRTCDataChannel RTCDataChannel
+instance GObjectClass RTCDataChannel where
+  toGObject = GObject . castRef . unRTCDataChannel
+  unsafeCastGObject = RTCDataChannel . castRef . unGObject
+
+castToRTCDataChannel :: GObjectClass obj => obj -> RTCDataChannel
+castToRTCDataChannel = castTo gTypeRTCDataChannel "RTCDataChannel"
+
+foreign import javascript unsafe "window[\"RTCDataChannel\"]" gTypeRTCDataChannel' :: JSRef GType
+gTypeRTCDataChannel = GType gTypeRTCDataChannel'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelEvent Mozilla RTCDataChannelEvent documentation>
+newtype RTCDataChannelEvent = RTCDataChannelEvent (JSRef RTCDataChannelEvent) deriving (Eq)
+
+unRTCDataChannelEvent (RTCDataChannelEvent o) = o
+
+instance ToJSRef RTCDataChannelEvent where
+  toJSRef = return . unRTCDataChannelEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCDataChannelEvent where
+  fromJSRef = return . fmap RTCDataChannelEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsRTCDataChannelEvent o
+toRTCDataChannelEvent :: IsRTCDataChannelEvent o => o -> RTCDataChannelEvent
+toRTCDataChannelEvent = unsafeCastGObject . toGObject
+
+instance IsRTCDataChannelEvent RTCDataChannelEvent
+instance IsEvent RTCDataChannelEvent
+instance GObjectClass RTCDataChannelEvent where
+  toGObject = GObject . castRef . unRTCDataChannelEvent
+  unsafeCastGObject = RTCDataChannelEvent . castRef . unGObject
+
+castToRTCDataChannelEvent :: GObjectClass obj => obj -> RTCDataChannelEvent
+castToRTCDataChannelEvent = castTo gTypeRTCDataChannelEvent "RTCDataChannelEvent"
+
+foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataChannelEvent' :: JSRef GType
+gTypeRTCDataChannelEvent = GType gTypeRTCDataChannelEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidate".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate Mozilla RTCIceCandidate documentation>
+newtype RTCIceCandidate = RTCIceCandidate (JSRef RTCIceCandidate) deriving (Eq)
+
+unRTCIceCandidate (RTCIceCandidate o) = o
+
+instance ToJSRef RTCIceCandidate where
+  toJSRef = return . unRTCIceCandidate
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCIceCandidate where
+  fromJSRef = return . fmap RTCIceCandidate . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCIceCandidate o
+toRTCIceCandidate :: IsRTCIceCandidate o => o -> RTCIceCandidate
+toRTCIceCandidate = unsafeCastGObject . toGObject
+
+instance IsRTCIceCandidate RTCIceCandidate
+instance GObjectClass RTCIceCandidate where
+  toGObject = GObject . castRef . unRTCIceCandidate
+  unsafeCastGObject = RTCIceCandidate . castRef . unGObject
+
+castToRTCIceCandidate :: GObjectClass obj => obj -> RTCIceCandidate
+castToRTCIceCandidate = castTo gTypeRTCIceCandidate "RTCIceCandidate"
+
+foreign import javascript unsafe "window[\"RTCIceCandidate\"]" gTypeRTCIceCandidate' :: JSRef GType
+gTypeRTCIceCandidate = GType gTypeRTCIceCandidate'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidateEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateEvent Mozilla RTCIceCandidateEvent documentation>
+newtype RTCIceCandidateEvent = RTCIceCandidateEvent (JSRef RTCIceCandidateEvent) deriving (Eq)
+
+unRTCIceCandidateEvent (RTCIceCandidateEvent o) = o
+
+instance ToJSRef RTCIceCandidateEvent where
+  toJSRef = return . unRTCIceCandidateEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCIceCandidateEvent where
+  fromJSRef = return . fmap RTCIceCandidateEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsRTCIceCandidateEvent o
+toRTCIceCandidateEvent :: IsRTCIceCandidateEvent o => o -> RTCIceCandidateEvent
+toRTCIceCandidateEvent = unsafeCastGObject . toGObject
+
+instance IsRTCIceCandidateEvent RTCIceCandidateEvent
+instance IsEvent RTCIceCandidateEvent
+instance GObjectClass RTCIceCandidateEvent where
+  toGObject = GObject . castRef . unRTCIceCandidateEvent
+  unsafeCastGObject = RTCIceCandidateEvent . castRef . unGObject
+
+castToRTCIceCandidateEvent :: GObjectClass obj => obj -> RTCIceCandidateEvent
+castToRTCIceCandidateEvent = castTo gTypeRTCIceCandidateEvent "RTCIceCandidateEvent"
+
+foreign import javascript unsafe "window[\"RTCIceCandidateEvent\"]" gTypeRTCIceCandidateEvent' :: JSRef GType
+gTypeRTCIceCandidateEvent = GType gTypeRTCIceCandidateEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCIceServer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceServer Mozilla RTCIceServer documentation>
+newtype RTCIceServer = RTCIceServer (JSRef RTCIceServer) deriving (Eq)
+
+unRTCIceServer (RTCIceServer o) = o
+
+instance ToJSRef RTCIceServer where
+  toJSRef = return . unRTCIceServer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCIceServer where
+  fromJSRef = return . fmap RTCIceServer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCIceServer o
+toRTCIceServer :: IsRTCIceServer o => o -> RTCIceServer
+toRTCIceServer = unsafeCastGObject . toGObject
+
+instance IsRTCIceServer RTCIceServer
+instance GObjectClass RTCIceServer where
+  toGObject = GObject . castRef . unRTCIceServer
+  unsafeCastGObject = RTCIceServer . castRef . unGObject
+
+castToRTCIceServer :: GObjectClass obj => obj -> RTCIceServer
+castToRTCIceServer = castTo gTypeRTCIceServer "RTCIceServer"
+
+foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer' :: JSRef GType
+gTypeRTCIceServer = GType gTypeRTCIceServer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnection".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection Mozilla webkitRTCPeerConnection documentation>
+newtype RTCPeerConnection = RTCPeerConnection (JSRef RTCPeerConnection) deriving (Eq)
+
+unRTCPeerConnection (RTCPeerConnection o) = o
+
+instance ToJSRef RTCPeerConnection where
+  toJSRef = return . unRTCPeerConnection
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCPeerConnection where
+  fromJSRef = return . fmap RTCPeerConnection . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCPeerConnection o
+toRTCPeerConnection :: IsRTCPeerConnection o => o -> RTCPeerConnection
+toRTCPeerConnection = unsafeCastGObject . toGObject
+
+instance IsRTCPeerConnection RTCPeerConnection
+instance GObjectClass RTCPeerConnection where
+  toGObject = GObject . castRef . unRTCPeerConnection
+  unsafeCastGObject = RTCPeerConnection . castRef . unGObject
+
+castToRTCPeerConnection :: GObjectClass obj => obj -> RTCPeerConnection
+castToRTCPeerConnection = castTo gTypeRTCPeerConnection "RTCPeerConnection"
+
+foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCPeerConnection' :: JSRef GType
+gTypeRTCPeerConnection = GType gTypeRTCPeerConnection'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnectionErrorCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionErrorCallback Mozilla RTCPeerConnectionErrorCallback documentation>
+newtype RTCPeerConnectionErrorCallback = RTCPeerConnectionErrorCallback (JSRef RTCPeerConnectionErrorCallback) deriving (Eq)
+
+unRTCPeerConnectionErrorCallback (RTCPeerConnectionErrorCallback o) = o
+
+instance ToJSRef RTCPeerConnectionErrorCallback where
+  toJSRef = return . unRTCPeerConnectionErrorCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCPeerConnectionErrorCallback where
+  fromJSRef = return . fmap RTCPeerConnectionErrorCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCPeerConnectionErrorCallback o
+toRTCPeerConnectionErrorCallback :: IsRTCPeerConnectionErrorCallback o => o -> RTCPeerConnectionErrorCallback
+toRTCPeerConnectionErrorCallback = unsafeCastGObject . toGObject
+
+instance IsRTCPeerConnectionErrorCallback RTCPeerConnectionErrorCallback
+instance GObjectClass RTCPeerConnectionErrorCallback where
+  toGObject = GObject . castRef . unRTCPeerConnectionErrorCallback
+  unsafeCastGObject = RTCPeerConnectionErrorCallback . castRef . unGObject
+
+castToRTCPeerConnectionErrorCallback :: GObjectClass obj => obj -> RTCPeerConnectionErrorCallback
+castToRTCPeerConnectionErrorCallback = castTo gTypeRTCPeerConnectionErrorCallback "RTCPeerConnectionErrorCallback"
+
+foreign import javascript unsafe "window[\"RTCPeerConnectionErrorCallback\"]" gTypeRTCPeerConnectionErrorCallback' :: JSRef GType
+gTypeRTCPeerConnectionErrorCallback = GType gTypeRTCPeerConnectionErrorCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescription".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription Mozilla RTCSessionDescription documentation>
+newtype RTCSessionDescription = RTCSessionDescription (JSRef RTCSessionDescription) deriving (Eq)
+
+unRTCSessionDescription (RTCSessionDescription o) = o
+
+instance ToJSRef RTCSessionDescription where
+  toJSRef = return . unRTCSessionDescription
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCSessionDescription where
+  fromJSRef = return . fmap RTCSessionDescription . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCSessionDescription o
+toRTCSessionDescription :: IsRTCSessionDescription o => o -> RTCSessionDescription
+toRTCSessionDescription = unsafeCastGObject . toGObject
+
+instance IsRTCSessionDescription RTCSessionDescription
+instance GObjectClass RTCSessionDescription where
+  toGObject = GObject . castRef . unRTCSessionDescription
+  unsafeCastGObject = RTCSessionDescription . castRef . unGObject
+
+castToRTCSessionDescription :: GObjectClass obj => obj -> RTCSessionDescription
+castToRTCSessionDescription = castTo gTypeRTCSessionDescription "RTCSessionDescription"
+
+foreign import javascript unsafe "window[\"RTCSessionDescription\"]" gTypeRTCSessionDescription' :: JSRef GType
+gTypeRTCSessionDescription = GType gTypeRTCSessionDescription'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescriptionCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation>
+newtype RTCSessionDescriptionCallback = RTCSessionDescriptionCallback (JSRef RTCSessionDescriptionCallback) deriving (Eq)
+
+unRTCSessionDescriptionCallback (RTCSessionDescriptionCallback o) = o
+
+instance ToJSRef RTCSessionDescriptionCallback where
+  toJSRef = return . unRTCSessionDescriptionCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCSessionDescriptionCallback where
+  fromJSRef = return . fmap RTCSessionDescriptionCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCSessionDescriptionCallback o
+toRTCSessionDescriptionCallback :: IsRTCSessionDescriptionCallback o => o -> RTCSessionDescriptionCallback
+toRTCSessionDescriptionCallback = unsafeCastGObject . toGObject
+
+instance IsRTCSessionDescriptionCallback RTCSessionDescriptionCallback
+instance GObjectClass RTCSessionDescriptionCallback where
+  toGObject = GObject . castRef . unRTCSessionDescriptionCallback
+  unsafeCastGObject = RTCSessionDescriptionCallback . castRef . unGObject
+
+castToRTCSessionDescriptionCallback :: GObjectClass obj => obj -> RTCSessionDescriptionCallback
+castToRTCSessionDescriptionCallback = castTo gTypeRTCSessionDescriptionCallback "RTCSessionDescriptionCallback"
+
+foreign import javascript unsafe "window[\"RTCSessionDescriptionCallback\"]" gTypeRTCSessionDescriptionCallback' :: JSRef GType
+gTypeRTCSessionDescriptionCallback = GType gTypeRTCSessionDescriptionCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCStatsCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsCallback Mozilla RTCStatsCallback documentation>
+newtype RTCStatsCallback = RTCStatsCallback (JSRef RTCStatsCallback) deriving (Eq)
+
+unRTCStatsCallback (RTCStatsCallback o) = o
+
+instance ToJSRef RTCStatsCallback where
+  toJSRef = return . unRTCStatsCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCStatsCallback where
+  fromJSRef = return . fmap RTCStatsCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCStatsCallback o
+toRTCStatsCallback :: IsRTCStatsCallback o => o -> RTCStatsCallback
+toRTCStatsCallback = unsafeCastGObject . toGObject
+
+instance IsRTCStatsCallback RTCStatsCallback
+instance GObjectClass RTCStatsCallback where
+  toGObject = GObject . castRef . unRTCStatsCallback
+  unsafeCastGObject = RTCStatsCallback . castRef . unGObject
+
+castToRTCStatsCallback :: GObjectClass obj => obj -> RTCStatsCallback
+castToRTCStatsCallback = castTo gTypeRTCStatsCallback "RTCStatsCallback"
+
+foreign import javascript unsafe "window[\"RTCStatsCallback\"]" gTypeRTCStatsCallback' :: JSRef GType
+gTypeRTCStatsCallback = GType gTypeRTCStatsCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCStatsReport".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport Mozilla RTCStatsReport documentation>
+newtype RTCStatsReport = RTCStatsReport (JSRef RTCStatsReport) deriving (Eq)
+
+unRTCStatsReport (RTCStatsReport o) = o
+
+instance ToJSRef RTCStatsReport where
+  toJSRef = return . unRTCStatsReport
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCStatsReport where
+  fromJSRef = return . fmap RTCStatsReport . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCStatsReport o
+toRTCStatsReport :: IsRTCStatsReport o => o -> RTCStatsReport
+toRTCStatsReport = unsafeCastGObject . toGObject
+
+instance IsRTCStatsReport RTCStatsReport
+instance GObjectClass RTCStatsReport where
+  toGObject = GObject . castRef . unRTCStatsReport
+  unsafeCastGObject = RTCStatsReport . castRef . unGObject
+
+castToRTCStatsReport :: GObjectClass obj => obj -> RTCStatsReport
+castToRTCStatsReport = castTo gTypeRTCStatsReport "RTCStatsReport"
+
+foreign import javascript unsafe "window[\"RTCStatsReport\"]" gTypeRTCStatsReport' :: JSRef GType
+gTypeRTCStatsReport = GType gTypeRTCStatsReport'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RTCStatsResponse".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsResponse Mozilla RTCStatsResponse documentation>
+newtype RTCStatsResponse = RTCStatsResponse (JSRef RTCStatsResponse) deriving (Eq)
+
+unRTCStatsResponse (RTCStatsResponse o) = o
+
+instance ToJSRef RTCStatsResponse where
+  toJSRef = return . unRTCStatsResponse
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RTCStatsResponse where
+  fromJSRef = return . fmap RTCStatsResponse . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRTCStatsResponse o
+toRTCStatsResponse :: IsRTCStatsResponse o => o -> RTCStatsResponse
+toRTCStatsResponse = unsafeCastGObject . toGObject
+
+instance IsRTCStatsResponse RTCStatsResponse
+instance GObjectClass RTCStatsResponse where
+  toGObject = GObject . castRef . unRTCStatsResponse
+  unsafeCastGObject = RTCStatsResponse . castRef . unGObject
+
+castToRTCStatsResponse :: GObjectClass obj => obj -> RTCStatsResponse
+castToRTCStatsResponse = castTo gTypeRTCStatsResponse "RTCStatsResponse"
+
+foreign import javascript unsafe "window[\"RTCStatsResponse\"]" gTypeRTCStatsResponse' :: JSRef GType
+gTypeRTCStatsResponse = GType gTypeRTCStatsResponse'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RadioNodeList".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.NodeList"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RadioNodeList Mozilla RadioNodeList documentation>
+newtype RadioNodeList = RadioNodeList (JSRef RadioNodeList) deriving (Eq)
+
+unRadioNodeList (RadioNodeList o) = o
+
+instance ToJSRef RadioNodeList where
+  toJSRef = return . unRadioNodeList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RadioNodeList where
+  fromJSRef = return . fmap RadioNodeList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsNodeList o => IsRadioNodeList o
+toRadioNodeList :: IsRadioNodeList o => o -> RadioNodeList
+toRadioNodeList = unsafeCastGObject . toGObject
+
+instance IsRadioNodeList RadioNodeList
+instance IsNodeList RadioNodeList
+instance GObjectClass RadioNodeList where
+  toGObject = GObject . castRef . unRadioNodeList
+  unsafeCastGObject = RadioNodeList . castRef . unGObject
+
+castToRadioNodeList :: GObjectClass obj => obj -> RadioNodeList
+castToRadioNodeList = castTo gTypeRadioNodeList "RadioNodeList"
+
+foreign import javascript unsafe "window[\"RadioNodeList\"]" gTypeRadioNodeList' :: JSRef GType
+gTypeRadioNodeList = GType gTypeRadioNodeList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMRange".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMRange Mozilla DOMRange documentation>
 newtype DOMRange = DOMRange (JSRef DOMRange) deriving (Eq)
 
 unDOMRange (DOMRange o) = o
@@ -4716,6 +13286,9 @@ type IsDOMRange o = DOMRangeClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Rect".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Rect Mozilla Rect documentation>
 newtype Rect = Rect (JSRef Rect) deriving (Eq)
 
 unRect (Rect o) = o
@@ -4747,6 +13320,389 @@ gTypeRect = GType gTypeRect'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.RequestAnimationFrameCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation>
+newtype RequestAnimationFrameCallback = RequestAnimationFrameCallback (JSRef RequestAnimationFrameCallback) deriving (Eq)
+
+unRequestAnimationFrameCallback (RequestAnimationFrameCallback o) = o
+
+instance ToJSRef RequestAnimationFrameCallback where
+  toJSRef = return . unRequestAnimationFrameCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef RequestAnimationFrameCallback where
+  fromJSRef = return . fmap RequestAnimationFrameCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsRequestAnimationFrameCallback o
+toRequestAnimationFrameCallback :: IsRequestAnimationFrameCallback o => o -> RequestAnimationFrameCallback
+toRequestAnimationFrameCallback = unsafeCastGObject . toGObject
+
+instance IsRequestAnimationFrameCallback RequestAnimationFrameCallback
+instance GObjectClass RequestAnimationFrameCallback where
+  toGObject = GObject . castRef . unRequestAnimationFrameCallback
+  unsafeCastGObject = RequestAnimationFrameCallback . castRef . unGObject
+
+castToRequestAnimationFrameCallback :: GObjectClass obj => obj -> RequestAnimationFrameCallback
+castToRequestAnimationFrameCallback = castTo gTypeRequestAnimationFrameCallback "RequestAnimationFrameCallback"
+
+foreign import javascript unsafe "window[\"RequestAnimationFrameCallback\"]" gTypeRequestAnimationFrameCallback' :: JSRef GType
+gTypeRequestAnimationFrameCallback = GType gTypeRequestAnimationFrameCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLError Mozilla SQLError documentation>
+newtype SQLError = SQLError (JSRef SQLError) deriving (Eq)
+
+unSQLError (SQLError o) = o
+
+instance ToJSRef SQLError where
+  toJSRef = return . unSQLError
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLError where
+  fromJSRef = return . fmap SQLError . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLError o
+toSQLError :: IsSQLError o => o -> SQLError
+toSQLError = unsafeCastGObject . toGObject
+
+instance IsSQLError SQLError
+instance GObjectClass SQLError where
+  toGObject = GObject . castRef . unSQLError
+  unsafeCastGObject = SQLError . castRef . unGObject
+
+castToSQLError :: GObjectClass obj => obj -> SQLError
+castToSQLError = castTo gTypeSQLError "SQLError"
+
+foreign import javascript unsafe "window[\"SQLError\"]" gTypeSQLError' :: JSRef GType
+gTypeSQLError = GType gTypeSQLError'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLResultSet".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet Mozilla SQLResultSet documentation>
+newtype SQLResultSet = SQLResultSet (JSRef SQLResultSet) deriving (Eq)
+
+unSQLResultSet (SQLResultSet o) = o
+
+instance ToJSRef SQLResultSet where
+  toJSRef = return . unSQLResultSet
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLResultSet where
+  fromJSRef = return . fmap SQLResultSet . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLResultSet o
+toSQLResultSet :: IsSQLResultSet o => o -> SQLResultSet
+toSQLResultSet = unsafeCastGObject . toGObject
+
+instance IsSQLResultSet SQLResultSet
+instance GObjectClass SQLResultSet where
+  toGObject = GObject . castRef . unSQLResultSet
+  unsafeCastGObject = SQLResultSet . castRef . unGObject
+
+castToSQLResultSet :: GObjectClass obj => obj -> SQLResultSet
+castToSQLResultSet = castTo gTypeSQLResultSet "SQLResultSet"
+
+foreign import javascript unsafe "window[\"SQLResultSet\"]" gTypeSQLResultSet' :: JSRef GType
+gTypeSQLResultSet = GType gTypeSQLResultSet'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLResultSetRowList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList Mozilla SQLResultSetRowList documentation>
+newtype SQLResultSetRowList = SQLResultSetRowList (JSRef SQLResultSetRowList) deriving (Eq)
+
+unSQLResultSetRowList (SQLResultSetRowList o) = o
+
+instance ToJSRef SQLResultSetRowList where
+  toJSRef = return . unSQLResultSetRowList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLResultSetRowList where
+  fromJSRef = return . fmap SQLResultSetRowList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLResultSetRowList o
+toSQLResultSetRowList :: IsSQLResultSetRowList o => o -> SQLResultSetRowList
+toSQLResultSetRowList = unsafeCastGObject . toGObject
+
+instance IsSQLResultSetRowList SQLResultSetRowList
+instance GObjectClass SQLResultSetRowList where
+  toGObject = GObject . castRef . unSQLResultSetRowList
+  unsafeCastGObject = SQLResultSetRowList . castRef . unGObject
+
+castToSQLResultSetRowList :: GObjectClass obj => obj -> SQLResultSetRowList
+castToSQLResultSetRowList = castTo gTypeSQLResultSetRowList "SQLResultSetRowList"
+
+foreign import javascript unsafe "window[\"SQLResultSetRowList\"]" gTypeSQLResultSetRowList' :: JSRef GType
+gTypeSQLResultSetRowList = GType gTypeSQLResultSetRowList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLStatementCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementCallback Mozilla SQLStatementCallback documentation>
+newtype SQLStatementCallback = SQLStatementCallback (JSRef SQLStatementCallback) deriving (Eq)
+
+unSQLStatementCallback (SQLStatementCallback o) = o
+
+instance ToJSRef SQLStatementCallback where
+  toJSRef = return . unSQLStatementCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLStatementCallback where
+  fromJSRef = return . fmap SQLStatementCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLStatementCallback o
+toSQLStatementCallback :: IsSQLStatementCallback o => o -> SQLStatementCallback
+toSQLStatementCallback = unsafeCastGObject . toGObject
+
+instance IsSQLStatementCallback SQLStatementCallback
+instance GObjectClass SQLStatementCallback where
+  toGObject = GObject . castRef . unSQLStatementCallback
+  unsafeCastGObject = SQLStatementCallback . castRef . unGObject
+
+castToSQLStatementCallback :: GObjectClass obj => obj -> SQLStatementCallback
+castToSQLStatementCallback = castTo gTypeSQLStatementCallback "SQLStatementCallback"
+
+foreign import javascript unsafe "window[\"SQLStatementCallback\"]" gTypeSQLStatementCallback' :: JSRef GType
+gTypeSQLStatementCallback = GType gTypeSQLStatementCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLStatementErrorCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation>
+newtype SQLStatementErrorCallback = SQLStatementErrorCallback (JSRef SQLStatementErrorCallback) deriving (Eq)
+
+unSQLStatementErrorCallback (SQLStatementErrorCallback o) = o
+
+instance ToJSRef SQLStatementErrorCallback where
+  toJSRef = return . unSQLStatementErrorCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLStatementErrorCallback where
+  fromJSRef = return . fmap SQLStatementErrorCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLStatementErrorCallback o
+toSQLStatementErrorCallback :: IsSQLStatementErrorCallback o => o -> SQLStatementErrorCallback
+toSQLStatementErrorCallback = unsafeCastGObject . toGObject
+
+instance IsSQLStatementErrorCallback SQLStatementErrorCallback
+instance GObjectClass SQLStatementErrorCallback where
+  toGObject = GObject . castRef . unSQLStatementErrorCallback
+  unsafeCastGObject = SQLStatementErrorCallback . castRef . unGObject
+
+castToSQLStatementErrorCallback :: GObjectClass obj => obj -> SQLStatementErrorCallback
+castToSQLStatementErrorCallback = castTo gTypeSQLStatementErrorCallback "SQLStatementErrorCallback"
+
+foreign import javascript unsafe "window[\"SQLStatementErrorCallback\"]" gTypeSQLStatementErrorCallback' :: JSRef GType
+gTypeSQLStatementErrorCallback = GType gTypeSQLStatementErrorCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLTransaction".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransaction Mozilla SQLTransaction documentation>
+newtype SQLTransaction = SQLTransaction (JSRef SQLTransaction) deriving (Eq)
+
+unSQLTransaction (SQLTransaction o) = o
+
+instance ToJSRef SQLTransaction where
+  toJSRef = return . unSQLTransaction
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLTransaction where
+  fromJSRef = return . fmap SQLTransaction . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLTransaction o
+toSQLTransaction :: IsSQLTransaction o => o -> SQLTransaction
+toSQLTransaction = unsafeCastGObject . toGObject
+
+instance IsSQLTransaction SQLTransaction
+instance GObjectClass SQLTransaction where
+  toGObject = GObject . castRef . unSQLTransaction
+  unsafeCastGObject = SQLTransaction . castRef . unGObject
+
+castToSQLTransaction :: GObjectClass obj => obj -> SQLTransaction
+castToSQLTransaction = castTo gTypeSQLTransaction "SQLTransaction"
+
+foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransaction' :: JSRef GType
+gTypeSQLTransaction = GType gTypeSQLTransaction'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation>
+newtype SQLTransactionCallback = SQLTransactionCallback (JSRef SQLTransactionCallback) deriving (Eq)
+
+unSQLTransactionCallback (SQLTransactionCallback o) = o
+
+instance ToJSRef SQLTransactionCallback where
+  toJSRef = return . unSQLTransactionCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLTransactionCallback where
+  fromJSRef = return . fmap SQLTransactionCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLTransactionCallback o
+toSQLTransactionCallback :: IsSQLTransactionCallback o => o -> SQLTransactionCallback
+toSQLTransactionCallback = unsafeCastGObject . toGObject
+
+instance IsSQLTransactionCallback SQLTransactionCallback
+instance GObjectClass SQLTransactionCallback where
+  toGObject = GObject . castRef . unSQLTransactionCallback
+  unsafeCastGObject = SQLTransactionCallback . castRef . unGObject
+
+castToSQLTransactionCallback :: GObjectClass obj => obj -> SQLTransactionCallback
+castToSQLTransactionCallback = castTo gTypeSQLTransactionCallback "SQLTransactionCallback"
+
+foreign import javascript unsafe "window[\"SQLTransactionCallback\"]" gTypeSQLTransactionCallback' :: JSRef GType
+gTypeSQLTransactionCallback = GType gTypeSQLTransactionCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionErrorCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation>
+newtype SQLTransactionErrorCallback = SQLTransactionErrorCallback (JSRef SQLTransactionErrorCallback) deriving (Eq)
+
+unSQLTransactionErrorCallback (SQLTransactionErrorCallback o) = o
+
+instance ToJSRef SQLTransactionErrorCallback where
+  toJSRef = return . unSQLTransactionErrorCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLTransactionErrorCallback where
+  fromJSRef = return . fmap SQLTransactionErrorCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLTransactionErrorCallback o
+toSQLTransactionErrorCallback :: IsSQLTransactionErrorCallback o => o -> SQLTransactionErrorCallback
+toSQLTransactionErrorCallback = unsafeCastGObject . toGObject
+
+instance IsSQLTransactionErrorCallback SQLTransactionErrorCallback
+instance GObjectClass SQLTransactionErrorCallback where
+  toGObject = GObject . castRef . unSQLTransactionErrorCallback
+  unsafeCastGObject = SQLTransactionErrorCallback . castRef . unGObject
+
+castToSQLTransactionErrorCallback :: GObjectClass obj => obj -> SQLTransactionErrorCallback
+castToSQLTransactionErrorCallback = castTo gTypeSQLTransactionErrorCallback "SQLTransactionErrorCallback"
+
+foreign import javascript unsafe "window[\"SQLTransactionErrorCallback\"]" gTypeSQLTransactionErrorCallback' :: JSRef GType
+gTypeSQLTransactionErrorCallback = GType gTypeSQLTransactionErrorCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionSync".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionSync Mozilla SQLTransactionSync documentation>
+newtype SQLTransactionSync = SQLTransactionSync (JSRef SQLTransactionSync) deriving (Eq)
+
+unSQLTransactionSync (SQLTransactionSync o) = o
+
+instance ToJSRef SQLTransactionSync where
+  toJSRef = return . unSQLTransactionSync
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLTransactionSync where
+  fromJSRef = return . fmap SQLTransactionSync . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLTransactionSync o
+toSQLTransactionSync :: IsSQLTransactionSync o => o -> SQLTransactionSync
+toSQLTransactionSync = unsafeCastGObject . toGObject
+
+instance IsSQLTransactionSync SQLTransactionSync
+instance GObjectClass SQLTransactionSync where
+  toGObject = GObject . castRef . unSQLTransactionSync
+  unsafeCastGObject = SQLTransactionSync . castRef . unGObject
+
+castToSQLTransactionSync :: GObjectClass obj => obj -> SQLTransactionSync
+castToSQLTransactionSync = castTo gTypeSQLTransactionSync "SQLTransactionSync"
+
+foreign import javascript unsafe "window[\"SQLTransactionSync\"]" gTypeSQLTransactionSync' :: JSRef GType
+gTypeSQLTransactionSync = GType gTypeSQLTransactionSync'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionSyncCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionSyncCallback Mozilla SQLTransactionSyncCallback documentation>
+newtype SQLTransactionSyncCallback = SQLTransactionSyncCallback (JSRef SQLTransactionSyncCallback) deriving (Eq)
+
+unSQLTransactionSyncCallback (SQLTransactionSyncCallback o) = o
+
+instance ToJSRef SQLTransactionSyncCallback where
+  toJSRef = return . unSQLTransactionSyncCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SQLTransactionSyncCallback where
+  fromJSRef = return . fmap SQLTransactionSyncCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSQLTransactionSyncCallback o
+toSQLTransactionSyncCallback :: IsSQLTransactionSyncCallback o => o -> SQLTransactionSyncCallback
+toSQLTransactionSyncCallback = unsafeCastGObject . toGObject
+
+instance IsSQLTransactionSyncCallback SQLTransactionSyncCallback
+instance GObjectClass SQLTransactionSyncCallback where
+  toGObject = GObject . castRef . unSQLTransactionSyncCallback
+  unsafeCastGObject = SQLTransactionSyncCallback . castRef . unGObject
+
+castToSQLTransactionSyncCallback :: GObjectClass obj => obj -> SQLTransactionSyncCallback
+castToSQLTransactionSyncCallback = castTo gTypeSQLTransactionSyncCallback "SQLTransactionSyncCallback"
+
+foreign import javascript unsafe "window[\"SQLTransactionSyncCallback\"]" gTypeSQLTransactionSyncCallback' :: JSRef GType
+gTypeSQLTransactionSyncCallback = GType gTypeSQLTransactionSyncCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement Mozilla SVGAElement documentation>
 newtype SVGAElement = SVGAElement (JSRef SVGAElement) deriving (Eq)
 
 unSVGAElement (SVGAElement o) = o
@@ -4778,11 +13734,18 @@ castToSVGAElement = castTo gTypeSVGAElement "SVGAElement"
 foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement' :: JSRef GType
 gTypeSVGAElement = GType gTypeSVGAElement'
 #else
-type IsSVGAElement o = SVGAElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphDefElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphDefElement Mozilla SVGAltGlyphDefElement documentation>
 newtype SVGAltGlyphDefElement = SVGAltGlyphDefElement (JSRef SVGAltGlyphDefElement) deriving (Eq)
 
 unSVGAltGlyphDefElement (SVGAltGlyphDefElement o) = o
@@ -4813,11 +13776,21 @@ castToSVGAltGlyphDefElement = castTo gTypeSVGAltGlyphDefElement "SVGAltGlyphDefE
 foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAltGlyphDefElement' :: JSRef GType
 gTypeSVGAltGlyphDefElement = GType gTypeSVGAltGlyphDefElement'
 #else
-type IsSVGAltGlyphDefElement o = SVGAltGlyphDefElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGTextPositioningElement"
+--     * "GHCJS.DOM.SVGTextContentElement"
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement Mozilla SVGAltGlyphElement documentation>
 newtype SVGAltGlyphElement = SVGAltGlyphElement (JSRef SVGAltGlyphElement) deriving (Eq)
 
 unSVGAltGlyphElement (SVGAltGlyphElement o) = o
@@ -4851,11 +13824,18 @@ castToSVGAltGlyphElement = castTo gTypeSVGAltGlyphElement "SVGAltGlyphElement"
 foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGlyphElement' :: JSRef GType
 gTypeSVGAltGlyphElement = GType gTypeSVGAltGlyphElement'
 #else
-type IsSVGAltGlyphElement o = SVGAltGlyphElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphItemElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphItemElement Mozilla SVGAltGlyphItemElement documentation>
 newtype SVGAltGlyphItemElement = SVGAltGlyphItemElement (JSRef SVGAltGlyphItemElement) deriving (Eq)
 
 unSVGAltGlyphItemElement (SVGAltGlyphItemElement o) = o
@@ -4886,11 +13866,13 @@ castToSVGAltGlyphItemElement = castTo gTypeSVGAltGlyphItemElement "SVGAltGlyphIt
 foreign import javascript unsafe "window[\"SVGAltGlyphItemElement\"]" gTypeSVGAltGlyphItemElement' :: JSRef GType
 gTypeSVGAltGlyphItemElement = GType gTypeSVGAltGlyphItemElement'
 #else
-type IsSVGAltGlyphItemElement o = SVGAltGlyphItemElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAngle".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle Mozilla SVGAngle documentation>
 newtype SVGAngle = SVGAngle (JSRef SVGAngle) deriving (Eq)
 
 unSVGAngle (SVGAngle o) = o
@@ -4918,11 +13900,19 @@ castToSVGAngle = castTo gTypeSVGAngle "SVGAngle"
 foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle' :: JSRef GType
 gTypeSVGAngle = GType gTypeSVGAngle'
 #else
-type IsSVGAngle o = SVGAngleClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateColorElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGAnimationElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateColorElement Mozilla SVGAnimateColorElement documentation>
 newtype SVGAnimateColorElement = SVGAnimateColorElement (JSRef SVGAnimateColorElement) deriving (Eq)
 
 unSVGAnimateColorElement (SVGAnimateColorElement o) = o
@@ -4954,11 +13944,19 @@ castToSVGAnimateColorElement = castTo gTypeSVGAnimateColorElement "SVGAnimateCol
 foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAnimateColorElement' :: JSRef GType
 gTypeSVGAnimateColorElement = GType gTypeSVGAnimateColorElement'
 #else
-type IsSVGAnimateColorElement o = SVGAnimateColorElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGAnimationElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateElement Mozilla SVGAnimateElement documentation>
 newtype SVGAnimateElement = SVGAnimateElement (JSRef SVGAnimateElement) deriving (Eq)
 
 unSVGAnimateElement (SVGAnimateElement o) = o
@@ -4990,11 +13988,19 @@ castToSVGAnimateElement = castTo gTypeSVGAnimateElement "SVGAnimateElement"
 foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimateElement' :: JSRef GType
 gTypeSVGAnimateElement = GType gTypeSVGAnimateElement'
 #else
-type IsSVGAnimateElement o = SVGAnimateElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateMotionElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGAnimationElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateMotionElement Mozilla SVGAnimateMotionElement documentation>
 newtype SVGAnimateMotionElement = SVGAnimateMotionElement (JSRef SVGAnimateMotionElement) deriving (Eq)
 
 unSVGAnimateMotionElement (SVGAnimateMotionElement o) = o
@@ -5026,11 +14032,19 @@ castToSVGAnimateMotionElement = castTo gTypeSVGAnimateMotionElement "SVGAnimateM
 foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGAnimateMotionElement' :: JSRef GType
 gTypeSVGAnimateMotionElement = GType gTypeSVGAnimateMotionElement'
 #else
-type IsSVGAnimateMotionElement o = SVGAnimateMotionElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateTransformElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGAnimationElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateTransformElement Mozilla SVGAnimateTransformElement documentation>
 newtype SVGAnimateTransformElement = SVGAnimateTransformElement (JSRef SVGAnimateTransformElement) deriving (Eq)
 
 unSVGAnimateTransformElement (SVGAnimateTransformElement o) = o
@@ -5062,11 +14076,13 @@ castToSVGAnimateTransformElement = castTo gTypeSVGAnimateTransformElement "SVGAn
 foreign import javascript unsafe "window[\"SVGAnimateTransformElement\"]" gTypeSVGAnimateTransformElement' :: JSRef GType
 gTypeSVGAnimateTransformElement = GType gTypeSVGAnimateTransformElement'
 #else
-type IsSVGAnimateTransformElement o = SVGAnimateTransformElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedAngle".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedAngle Mozilla SVGAnimatedAngle documentation>
 newtype SVGAnimatedAngle = SVGAnimatedAngle (JSRef SVGAnimatedAngle) deriving (Eq)
 
 unSVGAnimatedAngle (SVGAnimatedAngle o) = o
@@ -5094,11 +14110,13 @@ castToSVGAnimatedAngle = castTo gTypeSVGAnimatedAngle "SVGAnimatedAngle"
 foreign import javascript unsafe "window[\"SVGAnimatedAngle\"]" gTypeSVGAnimatedAngle' :: JSRef GType
 gTypeSVGAnimatedAngle = GType gTypeSVGAnimatedAngle'
 #else
-type IsSVGAnimatedAngle o = SVGAnimatedAngleClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedBoolean".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean Mozilla SVGAnimatedBoolean documentation>
 newtype SVGAnimatedBoolean = SVGAnimatedBoolean (JSRef SVGAnimatedBoolean) deriving (Eq)
 
 unSVGAnimatedBoolean (SVGAnimatedBoolean o) = o
@@ -5126,11 +14144,13 @@ castToSVGAnimatedBoolean = castTo gTypeSVGAnimatedBoolean "SVGAnimatedBoolean"
 foreign import javascript unsafe "window[\"SVGAnimatedBoolean\"]" gTypeSVGAnimatedBoolean' :: JSRef GType
 gTypeSVGAnimatedBoolean = GType gTypeSVGAnimatedBoolean'
 #else
-type IsSVGAnimatedBoolean o = SVGAnimatedBooleanClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedEnumeration".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration Mozilla SVGAnimatedEnumeration documentation>
 newtype SVGAnimatedEnumeration = SVGAnimatedEnumeration (JSRef SVGAnimatedEnumeration) deriving (Eq)
 
 unSVGAnimatedEnumeration (SVGAnimatedEnumeration o) = o
@@ -5158,11 +14178,13 @@ castToSVGAnimatedEnumeration = castTo gTypeSVGAnimatedEnumeration "SVGAnimatedEn
 foreign import javascript unsafe "window[\"SVGAnimatedEnumeration\"]" gTypeSVGAnimatedEnumeration' :: JSRef GType
 gTypeSVGAnimatedEnumeration = GType gTypeSVGAnimatedEnumeration'
 #else
-type IsSVGAnimatedEnumeration o = SVGAnimatedEnumerationClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedInteger".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger Mozilla SVGAnimatedInteger documentation>
 newtype SVGAnimatedInteger = SVGAnimatedInteger (JSRef SVGAnimatedInteger) deriving (Eq)
 
 unSVGAnimatedInteger (SVGAnimatedInteger o) = o
@@ -5190,11 +14212,13 @@ castToSVGAnimatedInteger = castTo gTypeSVGAnimatedInteger "SVGAnimatedInteger"
 foreign import javascript unsafe "window[\"SVGAnimatedInteger\"]" gTypeSVGAnimatedInteger' :: JSRef GType
 gTypeSVGAnimatedInteger = GType gTypeSVGAnimatedInteger'
 #else
-type IsSVGAnimatedInteger o = SVGAnimatedIntegerClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLength".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength Mozilla SVGAnimatedLength documentation>
 newtype SVGAnimatedLength = SVGAnimatedLength (JSRef SVGAnimatedLength) deriving (Eq)
 
 unSVGAnimatedLength (SVGAnimatedLength o) = o
@@ -5222,11 +14246,13 @@ castToSVGAnimatedLength = castTo gTypeSVGAnimatedLength "SVGAnimatedLength"
 foreign import javascript unsafe "window[\"SVGAnimatedLength\"]" gTypeSVGAnimatedLength' :: JSRef GType
 gTypeSVGAnimatedLength = GType gTypeSVGAnimatedLength'
 #else
-type IsSVGAnimatedLength o = SVGAnimatedLengthClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLengthList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList Mozilla SVGAnimatedLengthList documentation>
 newtype SVGAnimatedLengthList = SVGAnimatedLengthList (JSRef SVGAnimatedLengthList) deriving (Eq)
 
 unSVGAnimatedLengthList (SVGAnimatedLengthList o) = o
@@ -5254,11 +14280,13 @@ castToSVGAnimatedLengthList = castTo gTypeSVGAnimatedLengthList "SVGAnimatedLeng
 foreign import javascript unsafe "window[\"SVGAnimatedLengthList\"]" gTypeSVGAnimatedLengthList' :: JSRef GType
 gTypeSVGAnimatedLengthList = GType gTypeSVGAnimatedLengthList'
 #else
-type IsSVGAnimatedLengthList o = SVGAnimatedLengthListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumber".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber Mozilla SVGAnimatedNumber documentation>
 newtype SVGAnimatedNumber = SVGAnimatedNumber (JSRef SVGAnimatedNumber) deriving (Eq)
 
 unSVGAnimatedNumber (SVGAnimatedNumber o) = o
@@ -5286,11 +14314,13 @@ castToSVGAnimatedNumber = castTo gTypeSVGAnimatedNumber "SVGAnimatedNumber"
 foreign import javascript unsafe "window[\"SVGAnimatedNumber\"]" gTypeSVGAnimatedNumber' :: JSRef GType
 gTypeSVGAnimatedNumber = GType gTypeSVGAnimatedNumber'
 #else
-type IsSVGAnimatedNumber o = SVGAnimatedNumberClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumberList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList Mozilla SVGAnimatedNumberList documentation>
 newtype SVGAnimatedNumberList = SVGAnimatedNumberList (JSRef SVGAnimatedNumberList) deriving (Eq)
 
 unSVGAnimatedNumberList (SVGAnimatedNumberList o) = o
@@ -5318,11 +14348,13 @@ castToSVGAnimatedNumberList = castTo gTypeSVGAnimatedNumberList "SVGAnimatedNumb
 foreign import javascript unsafe "window[\"SVGAnimatedNumberList\"]" gTypeSVGAnimatedNumberList' :: JSRef GType
 gTypeSVGAnimatedNumberList = GType gTypeSVGAnimatedNumberList'
 #else
-type IsSVGAnimatedNumberList o = SVGAnimatedNumberListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedPreserveAspectRatio".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio Mozilla SVGAnimatedPreserveAspectRatio documentation>
 newtype SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio (JSRef SVGAnimatedPreserveAspectRatio) deriving (Eq)
 
 unSVGAnimatedPreserveAspectRatio (SVGAnimatedPreserveAspectRatio o) = o
@@ -5350,11 +14382,13 @@ castToSVGAnimatedPreserveAspectRatio = castTo gTypeSVGAnimatedPreserveAspectRati
 foreign import javascript unsafe "window[\"SVGAnimatedPreserveAspectRatio\"]" gTypeSVGAnimatedPreserveAspectRatio' :: JSRef GType
 gTypeSVGAnimatedPreserveAspectRatio = GType gTypeSVGAnimatedPreserveAspectRatio'
 #else
-type IsSVGAnimatedPreserveAspectRatio o = SVGAnimatedPreserveAspectRatioClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedRect".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedRect Mozilla SVGAnimatedRect documentation>
 newtype SVGAnimatedRect = SVGAnimatedRect (JSRef SVGAnimatedRect) deriving (Eq)
 
 unSVGAnimatedRect (SVGAnimatedRect o) = o
@@ -5382,11 +14416,13 @@ castToSVGAnimatedRect = castTo gTypeSVGAnimatedRect "SVGAnimatedRect"
 foreign import javascript unsafe "window[\"SVGAnimatedRect\"]" gTypeSVGAnimatedRect' :: JSRef GType
 gTypeSVGAnimatedRect = GType gTypeSVGAnimatedRect'
 #else
-type IsSVGAnimatedRect o = SVGAnimatedRectClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedString".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString Mozilla SVGAnimatedString documentation>
 newtype SVGAnimatedString = SVGAnimatedString (JSRef SVGAnimatedString) deriving (Eq)
 
 unSVGAnimatedString (SVGAnimatedString o) = o
@@ -5414,11 +14450,13 @@ castToSVGAnimatedString = castTo gTypeSVGAnimatedString "SVGAnimatedString"
 foreign import javascript unsafe "window[\"SVGAnimatedString\"]" gTypeSVGAnimatedString' :: JSRef GType
 gTypeSVGAnimatedString = GType gTypeSVGAnimatedString'
 #else
-type IsSVGAnimatedString o = SVGAnimatedStringClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedTransformList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList Mozilla SVGAnimatedTransformList documentation>
 newtype SVGAnimatedTransformList = SVGAnimatedTransformList (JSRef SVGAnimatedTransformList) deriving (Eq)
 
 unSVGAnimatedTransformList (SVGAnimatedTransformList o) = o
@@ -5446,11 +14484,18 @@ castToSVGAnimatedTransformList = castTo gTypeSVGAnimatedTransformList "SVGAnimat
 foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVGAnimatedTransformList' :: JSRef GType
 gTypeSVGAnimatedTransformList = GType gTypeSVGAnimatedTransformList'
 #else
-type IsSVGAnimatedTransformList o = SVGAnimatedTransformListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGAnimationElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement Mozilla SVGAnimationElement documentation>
 newtype SVGAnimationElement = SVGAnimationElement (JSRef SVGAnimationElement) deriving (Eq)
 
 unSVGAnimationElement (SVGAnimationElement o) = o
@@ -5481,11 +14526,19 @@ castToSVGAnimationElement = castTo gTypeSVGAnimationElement "SVGAnimationElement
 foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnimationElement' :: JSRef GType
 gTypeSVGAnimationElement = GType gTypeSVGAnimationElement'
 #else
-type IsSVGAnimationElement o = SVGAnimationElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGCircleElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement Mozilla SVGCircleElement documentation>
 newtype SVGCircleElement = SVGCircleElement (JSRef SVGCircleElement) deriving (Eq)
 
 unSVGCircleElement (SVGCircleElement o) = o
@@ -5517,11 +14570,19 @@ castToSVGCircleElement = castTo gTypeSVGCircleElement "SVGCircleElement"
 foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleElement' :: JSRef GType
 gTypeSVGCircleElement = GType gTypeSVGCircleElement'
 #else
-type IsSVGCircleElement o = SVGCircleElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGClipPathElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGClipPathElement Mozilla SVGClipPathElement documentation>
 newtype SVGClipPathElement = SVGClipPathElement (JSRef SVGClipPathElement) deriving (Eq)
 
 unSVGClipPathElement (SVGClipPathElement o) = o
@@ -5553,11 +14614,16 @@ castToSVGClipPathElement = castTo gTypeSVGClipPathElement "SVGClipPathElement"
 foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPathElement' :: JSRef GType
 gTypeSVGClipPathElement = GType gTypeSVGClipPathElement'
 #else
-type IsSVGClipPathElement o = SVGClipPathElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGColor".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSValue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor Mozilla SVGColor documentation>
 newtype SVGColor = SVGColor (JSRef SVGColor) deriving (Eq)
 
 unSVGColor (SVGColor o) = o
@@ -5586,11 +14652,18 @@ castToSVGColor = castTo gTypeSVGColor "SVGColor"
 foreign import javascript unsafe "window[\"SVGColor\"]" gTypeSVGColor' :: JSRef GType
 gTypeSVGColor = GType gTypeSVGColor'
 #else
-type IsSVGColor o = SVGColorClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGComponentTransferFunctionElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement Mozilla SVGComponentTransferFunctionElement documentation>
 newtype SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement (JSRef SVGComponentTransferFunctionElement) deriving (Eq)
 
 unSVGComponentTransferFunctionElement (SVGComponentTransferFunctionElement o) = o
@@ -5621,11 +14694,18 @@ castToSVGComponentTransferFunctionElement = castTo gTypeSVGComponentTransferFunc
 foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"]" gTypeSVGComponentTransferFunctionElement' :: JSRef GType
 gTypeSVGComponentTransferFunctionElement = GType gTypeSVGComponentTransferFunctionElement'
 #else
-type IsSVGComponentTransferFunctionElement o = SVGComponentTransferFunctionElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGCursorElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGCursorElement Mozilla SVGCursorElement documentation>
 newtype SVGCursorElement = SVGCursorElement (JSRef SVGCursorElement) deriving (Eq)
 
 unSVGCursorElement (SVGCursorElement o) = o
@@ -5656,11 +14736,19 @@ castToSVGCursorElement = castTo gTypeSVGCursorElement "SVGCursorElement"
 foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorElement' :: JSRef GType
 gTypeSVGCursorElement = GType gTypeSVGCursorElement'
 #else
-type IsSVGCursorElement o = SVGCursorElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGDefsElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDefsElement Mozilla SVGDefsElement documentation>
 newtype SVGDefsElement = SVGDefsElement (JSRef SVGDefsElement) deriving (Eq)
 
 unSVGDefsElement (SVGDefsElement o) = o
@@ -5692,11 +14780,18 @@ castToSVGDefsElement = castTo gTypeSVGDefsElement "SVGDefsElement"
 foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElement' :: JSRef GType
 gTypeSVGDefsElement = GType gTypeSVGDefsElement'
 #else
-type IsSVGDefsElement o = SVGDefsElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGDescElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDescElement Mozilla SVGDescElement documentation>
 newtype SVGDescElement = SVGDescElement (JSRef SVGDescElement) deriving (Eq)
 
 unSVGDescElement (SVGDescElement o) = o
@@ -5727,11 +14822,17 @@ castToSVGDescElement = castTo gTypeSVGDescElement "SVGDescElement"
 foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElement' :: JSRef GType
 gTypeSVGDescElement = GType gTypeSVGDescElement'
 #else
-type IsSVGDescElement o = SVGDescElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGDocument".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Document"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument Mozilla SVGDocument documentation>
 newtype SVGDocument = SVGDocument (JSRef SVGDocument) deriving (Eq)
 
 unSVGDocument (SVGDocument o) = o
@@ -5761,11 +14862,17 @@ castToSVGDocument = castTo gTypeSVGDocument "SVGDocument"
 foreign import javascript unsafe "window[\"SVGDocument\"]" gTypeSVGDocument' :: JSRef GType
 gTypeSVGDocument = GType gTypeSVGDocument'
 #else
-type IsSVGDocument o = SVGDocumentClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement Mozilla SVGElement documentation>
 newtype SVGElement = SVGElement (JSRef SVGElement) deriving (Eq)
 
 unSVGElement (SVGElement o) = o
@@ -5795,11 +14902,16 @@ castToSVGElement = castTo gTypeSVGElement "SVGElement"
 foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement' :: JSRef GType
 gTypeSVGElement = GType gTypeSVGElement'
 #else
-type IsSVGElement o = SVGElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGElementInstance".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElementInstance Mozilla SVGElementInstance documentation>
 newtype SVGElementInstance = SVGElementInstance (JSRef SVGElementInstance) deriving (Eq)
 
 unSVGElementInstance (SVGElementInstance o) = o
@@ -5828,11 +14940,13 @@ castToSVGElementInstance = castTo gTypeSVGElementInstance "SVGElementInstance"
 foreign import javascript unsafe "window[\"SVGElementInstance\"]" gTypeSVGElementInstance' :: JSRef GType
 gTypeSVGElementInstance = GType gTypeSVGElementInstance'
 #else
-type IsSVGElementInstance o = SVGElementInstanceClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGElementInstanceList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElementInstanceList Mozilla SVGElementInstanceList documentation>
 newtype SVGElementInstanceList = SVGElementInstanceList (JSRef SVGElementInstanceList) deriving (Eq)
 
 unSVGElementInstanceList (SVGElementInstanceList o) = o
@@ -5860,11 +14974,19 @@ castToSVGElementInstanceList = castTo gTypeSVGElementInstanceList "SVGElementIns
 foreign import javascript unsafe "window[\"SVGElementInstanceList\"]" gTypeSVGElementInstanceList' :: JSRef GType
 gTypeSVGElementInstanceList = GType gTypeSVGElementInstanceList'
 #else
-type IsSVGElementInstanceList o = SVGElementInstanceListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGEllipseElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGEllipseElement Mozilla SVGEllipseElement documentation>
 newtype SVGEllipseElement = SVGEllipseElement (JSRef SVGEllipseElement) deriving (Eq)
 
 unSVGEllipseElement (SVGEllipseElement o) = o
@@ -5896,11 +15018,13 @@ castToSVGEllipseElement = castTo gTypeSVGEllipseElement "SVGEllipseElement"
 foreign import javascript unsafe "window[\"SVGEllipseElement\"]" gTypeSVGEllipseElement' :: JSRef GType
 gTypeSVGEllipseElement = GType gTypeSVGEllipseElement'
 #else
-type IsSVGEllipseElement o = SVGEllipseElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGExternalResourcesRequired".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGExternalResourcesRequired Mozilla SVGExternalResourcesRequired documentation>
 newtype SVGExternalResourcesRequired = SVGExternalResourcesRequired (JSRef SVGExternalResourcesRequired) deriving (Eq)
 
 unSVGExternalResourcesRequired (SVGExternalResourcesRequired o) = o
@@ -5928,11 +15052,18 @@ castToSVGExternalResourcesRequired = castTo gTypeSVGExternalResourcesRequired "S
 foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTypeSVGExternalResourcesRequired' :: JSRef GType
 gTypeSVGExternalResourcesRequired = GType gTypeSVGExternalResourcesRequired'
 #else
-type IsSVGExternalResourcesRequired o = SVGExternalResourcesRequiredClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEBlendElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement Mozilla SVGFEBlendElement documentation>
 newtype SVGFEBlendElement = SVGFEBlendElement (JSRef SVGFEBlendElement) deriving (Eq)
 
 unSVGFEBlendElement (SVGFEBlendElement o) = o
@@ -5963,11 +15094,18 @@ castToSVGFEBlendElement = castTo gTypeSVGFEBlendElement "SVGFEBlendElement"
 foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlendElement' :: JSRef GType
 gTypeSVGFEBlendElement = GType gTypeSVGFEBlendElement'
 #else
-type IsSVGFEBlendElement o = SVGFEBlendElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEColorMatrixElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement Mozilla SVGFEColorMatrixElement documentation>
 newtype SVGFEColorMatrixElement = SVGFEColorMatrixElement (JSRef SVGFEColorMatrixElement) deriving (Eq)
 
 unSVGFEColorMatrixElement (SVGFEColorMatrixElement o) = o
@@ -5998,11 +15136,18 @@ castToSVGFEColorMatrixElement = castTo gTypeSVGFEColorMatrixElement "SVGFEColorM
 foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGFEColorMatrixElement' :: JSRef GType
 gTypeSVGFEColorMatrixElement = GType gTypeSVGFEColorMatrixElement'
 #else
-type IsSVGFEColorMatrixElement o = SVGFEColorMatrixElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEComponentTransferElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEComponentTransferElement Mozilla SVGFEComponentTransferElement documentation>
 newtype SVGFEComponentTransferElement = SVGFEComponentTransferElement (JSRef SVGFEComponentTransferElement) deriving (Eq)
 
 unSVGFEComponentTransferElement (SVGFEComponentTransferElement o) = o
@@ -6033,11 +15178,18 @@ castToSVGFEComponentTransferElement = castTo gTypeSVGFEComponentTransferElement 
 foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTypeSVGFEComponentTransferElement' :: JSRef GType
 gTypeSVGFEComponentTransferElement = GType gTypeSVGFEComponentTransferElement'
 #else
-type IsSVGFEComponentTransferElement o = SVGFEComponentTransferElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFECompositeElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement Mozilla SVGFECompositeElement documentation>
 newtype SVGFECompositeElement = SVGFECompositeElement (JSRef SVGFECompositeElement) deriving (Eq)
 
 unSVGFECompositeElement (SVGFECompositeElement o) = o
@@ -6068,11 +15220,18 @@ castToSVGFECompositeElement = castTo gTypeSVGFECompositeElement "SVGFECompositeE
 foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFECompositeElement' :: JSRef GType
 gTypeSVGFECompositeElement = GType gTypeSVGFECompositeElement'
 #else
-type IsSVGFECompositeElement o = SVGFECompositeElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEConvolveMatrixElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement Mozilla SVGFEConvolveMatrixElement documentation>
 newtype SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement (JSRef SVGFEConvolveMatrixElement) deriving (Eq)
 
 unSVGFEConvolveMatrixElement (SVGFEConvolveMatrixElement o) = o
@@ -6103,11 +15262,18 @@ castToSVGFEConvolveMatrixElement = castTo gTypeSVGFEConvolveMatrixElement "SVGFE
 foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeSVGFEConvolveMatrixElement' :: JSRef GType
 gTypeSVGFEConvolveMatrixElement = GType gTypeSVGFEConvolveMatrixElement'
 #else
-type IsSVGFEConvolveMatrixElement o = SVGFEConvolveMatrixElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEDiffuseLightingElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement Mozilla SVGFEDiffuseLightingElement documentation>
 newtype SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement (JSRef SVGFEDiffuseLightingElement) deriving (Eq)
 
 unSVGFEDiffuseLightingElement (SVGFEDiffuseLightingElement o) = o
@@ -6138,11 +15304,18 @@ castToSVGFEDiffuseLightingElement = castTo gTypeSVGFEDiffuseLightingElement "SVG
 foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gTypeSVGFEDiffuseLightingElement' :: JSRef GType
 gTypeSVGFEDiffuseLightingElement = GType gTypeSVGFEDiffuseLightingElement'
 #else
-type IsSVGFEDiffuseLightingElement o = SVGFEDiffuseLightingElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEDisplacementMapElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement Mozilla SVGFEDisplacementMapElement documentation>
 newtype SVGFEDisplacementMapElement = SVGFEDisplacementMapElement (JSRef SVGFEDisplacementMapElement) deriving (Eq)
 
 unSVGFEDisplacementMapElement (SVGFEDisplacementMapElement o) = o
@@ -6173,11 +15346,18 @@ castToSVGFEDisplacementMapElement = castTo gTypeSVGFEDisplacementMapElement "SVG
 foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gTypeSVGFEDisplacementMapElement' :: JSRef GType
 gTypeSVGFEDisplacementMapElement = GType gTypeSVGFEDisplacementMapElement'
 #else
-type IsSVGFEDisplacementMapElement o = SVGFEDisplacementMapElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEDistantLightElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement Mozilla SVGFEDistantLightElement documentation>
 newtype SVGFEDistantLightElement = SVGFEDistantLightElement (JSRef SVGFEDistantLightElement) deriving (Eq)
 
 unSVGFEDistantLightElement (SVGFEDistantLightElement o) = o
@@ -6208,11 +15388,18 @@ castToSVGFEDistantLightElement = castTo gTypeSVGFEDistantLightElement "SVGFEDist
 foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVGFEDistantLightElement' :: JSRef GType
 gTypeSVGFEDistantLightElement = GType gTypeSVGFEDistantLightElement'
 #else
-type IsSVGFEDistantLightElement o = SVGFEDistantLightElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEDropShadowElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement Mozilla SVGFEDropShadowElement documentation>
 newtype SVGFEDropShadowElement = SVGFEDropShadowElement (JSRef SVGFEDropShadowElement) deriving (Eq)
 
 unSVGFEDropShadowElement (SVGFEDropShadowElement o) = o
@@ -6243,11 +15430,18 @@ castToSVGFEDropShadowElement = castTo gTypeSVGFEDropShadowElement "SVGFEDropShad
 foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFEDropShadowElement' :: JSRef GType
 gTypeSVGFEDropShadowElement = GType gTypeSVGFEDropShadowElement'
 #else
-type IsSVGFEDropShadowElement o = SVGFEDropShadowElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEFloodElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFloodElement Mozilla SVGFEFloodElement documentation>
 newtype SVGFEFloodElement = SVGFEFloodElement (JSRef SVGFEFloodElement) deriving (Eq)
 
 unSVGFEFloodElement (SVGFEFloodElement o) = o
@@ -6278,11 +15472,19 @@ castToSVGFEFloodElement = castTo gTypeSVGFEFloodElement "SVGFEFloodElement"
 foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFloodElement' :: JSRef GType
 gTypeSVGFEFloodElement = GType gTypeSVGFEFloodElement'
 #else
-type IsSVGFEFloodElement o = SVGFEFloodElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncAElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGComponentTransferFunctionElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncAElement Mozilla SVGFEFuncAElement documentation>
 newtype SVGFEFuncAElement = SVGFEFuncAElement (JSRef SVGFEFuncAElement) deriving (Eq)
 
 unSVGFEFuncAElement (SVGFEFuncAElement o) = o
@@ -6314,11 +15516,19 @@ castToSVGFEFuncAElement = castTo gTypeSVGFEFuncAElement "SVGFEFuncAElement"
 foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncAElement' :: JSRef GType
 gTypeSVGFEFuncAElement = GType gTypeSVGFEFuncAElement'
 #else
-type IsSVGFEFuncAElement o = SVGFEFuncAElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncBElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGComponentTransferFunctionElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncBElement Mozilla SVGFEFuncBElement documentation>
 newtype SVGFEFuncBElement = SVGFEFuncBElement (JSRef SVGFEFuncBElement) deriving (Eq)
 
 unSVGFEFuncBElement (SVGFEFuncBElement o) = o
@@ -6350,11 +15560,19 @@ castToSVGFEFuncBElement = castTo gTypeSVGFEFuncBElement "SVGFEFuncBElement"
 foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncBElement' :: JSRef GType
 gTypeSVGFEFuncBElement = GType gTypeSVGFEFuncBElement'
 #else
-type IsSVGFEFuncBElement o = SVGFEFuncBElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncGElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGComponentTransferFunctionElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncGElement Mozilla SVGFEFuncGElement documentation>
 newtype SVGFEFuncGElement = SVGFEFuncGElement (JSRef SVGFEFuncGElement) deriving (Eq)
 
 unSVGFEFuncGElement (SVGFEFuncGElement o) = o
@@ -6386,11 +15604,19 @@ castToSVGFEFuncGElement = castTo gTypeSVGFEFuncGElement "SVGFEFuncGElement"
 foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncGElement' :: JSRef GType
 gTypeSVGFEFuncGElement = GType gTypeSVGFEFuncGElement'
 #else
-type IsSVGFEFuncGElement o = SVGFEFuncGElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncRElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGComponentTransferFunctionElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncRElement Mozilla SVGFEFuncRElement documentation>
 newtype SVGFEFuncRElement = SVGFEFuncRElement (JSRef SVGFEFuncRElement) deriving (Eq)
 
 unSVGFEFuncRElement (SVGFEFuncRElement o) = o
@@ -6422,11 +15648,18 @@ castToSVGFEFuncRElement = castTo gTypeSVGFEFuncRElement "SVGFEFuncRElement"
 foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncRElement' :: JSRef GType
 gTypeSVGFEFuncRElement = GType gTypeSVGFEFuncRElement'
 #else
-type IsSVGFEFuncRElement o = SVGFEFuncRElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEGaussianBlurElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement Mozilla SVGFEGaussianBlurElement documentation>
 newtype SVGFEGaussianBlurElement = SVGFEGaussianBlurElement (JSRef SVGFEGaussianBlurElement) deriving (Eq)
 
 unSVGFEGaussianBlurElement (SVGFEGaussianBlurElement o) = o
@@ -6457,11 +15690,18 @@ castToSVGFEGaussianBlurElement = castTo gTypeSVGFEGaussianBlurElement "SVGFEGaus
 foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVGFEGaussianBlurElement' :: JSRef GType
 gTypeSVGFEGaussianBlurElement = GType gTypeSVGFEGaussianBlurElement'
 #else
-type IsSVGFEGaussianBlurElement o = SVGFEGaussianBlurElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEImageElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEImageElement Mozilla SVGFEImageElement documentation>
 newtype SVGFEImageElement = SVGFEImageElement (JSRef SVGFEImageElement) deriving (Eq)
 
 unSVGFEImageElement (SVGFEImageElement o) = o
@@ -6492,11 +15732,18 @@ castToSVGFEImageElement = castTo gTypeSVGFEImageElement "SVGFEImageElement"
 foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImageElement' :: JSRef GType
 gTypeSVGFEImageElement = GType gTypeSVGFEImageElement'
 #else
-type IsSVGFEImageElement o = SVGFEImageElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeElement Mozilla SVGFEMergeElement documentation>
 newtype SVGFEMergeElement = SVGFEMergeElement (JSRef SVGFEMergeElement) deriving (Eq)
 
 unSVGFEMergeElement (SVGFEMergeElement o) = o
@@ -6527,11 +15774,18 @@ castToSVGFEMergeElement = castTo gTypeSVGFEMergeElement "SVGFEMergeElement"
 foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMergeElement' :: JSRef GType
 gTypeSVGFEMergeElement = GType gTypeSVGFEMergeElement'
 #else
-type IsSVGFEMergeElement o = SVGFEMergeElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeNodeElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeNodeElement Mozilla SVGFEMergeNodeElement documentation>
 newtype SVGFEMergeNodeElement = SVGFEMergeNodeElement (JSRef SVGFEMergeNodeElement) deriving (Eq)
 
 unSVGFEMergeNodeElement (SVGFEMergeNodeElement o) = o
@@ -6562,11 +15816,18 @@ castToSVGFEMergeNodeElement = castTo gTypeSVGFEMergeNodeElement "SVGFEMergeNodeE
 foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEMergeNodeElement' :: JSRef GType
 gTypeSVGFEMergeNodeElement = GType gTypeSVGFEMergeNodeElement'
 #else
-type IsSVGFEMergeNodeElement o = SVGFEMergeNodeElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEMorphologyElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement Mozilla SVGFEMorphologyElement documentation>
 newtype SVGFEMorphologyElement = SVGFEMorphologyElement (JSRef SVGFEMorphologyElement) deriving (Eq)
 
 unSVGFEMorphologyElement (SVGFEMorphologyElement o) = o
@@ -6597,11 +15858,18 @@ castToSVGFEMorphologyElement = castTo gTypeSVGFEMorphologyElement "SVGFEMorpholo
 foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFEMorphologyElement' :: JSRef GType
 gTypeSVGFEMorphologyElement = GType gTypeSVGFEMorphologyElement'
 #else
-type IsSVGFEMorphologyElement o = SVGFEMorphologyElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEOffsetElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEOffsetElement Mozilla SVGFEOffsetElement documentation>
 newtype SVGFEOffsetElement = SVGFEOffsetElement (JSRef SVGFEOffsetElement) deriving (Eq)
 
 unSVGFEOffsetElement (SVGFEOffsetElement o) = o
@@ -6632,11 +15900,18 @@ castToSVGFEOffsetElement = castTo gTypeSVGFEOffsetElement "SVGFEOffsetElement"
 foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffsetElement' :: JSRef GType
 gTypeSVGFEOffsetElement = GType gTypeSVGFEOffsetElement'
 #else
-type IsSVGFEOffsetElement o = SVGFEOffsetElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFEPointLightElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement Mozilla SVGFEPointLightElement documentation>
 newtype SVGFEPointLightElement = SVGFEPointLightElement (JSRef SVGFEPointLightElement) deriving (Eq)
 
 unSVGFEPointLightElement (SVGFEPointLightElement o) = o
@@ -6667,11 +15942,18 @@ castToSVGFEPointLightElement = castTo gTypeSVGFEPointLightElement "SVGFEPointLig
 foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFEPointLightElement' :: JSRef GType
 gTypeSVGFEPointLightElement = GType gTypeSVGFEPointLightElement'
 #else
-type IsSVGFEPointLightElement o = SVGFEPointLightElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFESpecularLightingElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement Mozilla SVGFESpecularLightingElement documentation>
 newtype SVGFESpecularLightingElement = SVGFESpecularLightingElement (JSRef SVGFESpecularLightingElement) deriving (Eq)
 
 unSVGFESpecularLightingElement (SVGFESpecularLightingElement o) = o
@@ -6702,11 +15984,18 @@ castToSVGFESpecularLightingElement = castTo gTypeSVGFESpecularLightingElement "S
 foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTypeSVGFESpecularLightingElement' :: JSRef GType
 gTypeSVGFESpecularLightingElement = GType gTypeSVGFESpecularLightingElement'
 #else
-type IsSVGFESpecularLightingElement o = SVGFESpecularLightingElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFESpotLightElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement Mozilla SVGFESpotLightElement documentation>
 newtype SVGFESpotLightElement = SVGFESpotLightElement (JSRef SVGFESpotLightElement) deriving (Eq)
 
 unSVGFESpotLightElement (SVGFESpotLightElement o) = o
@@ -6737,11 +16026,18 @@ castToSVGFESpotLightElement = castTo gTypeSVGFESpotLightElement "SVGFESpotLightE
 foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFESpotLightElement' :: JSRef GType
 gTypeSVGFESpotLightElement = GType gTypeSVGFESpotLightElement'
 #else
-type IsSVGFESpotLightElement o = SVGFESpotLightElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFETileElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETileElement Mozilla SVGFETileElement documentation>
 newtype SVGFETileElement = SVGFETileElement (JSRef SVGFETileElement) deriving (Eq)
 
 unSVGFETileElement (SVGFETileElement o) = o
@@ -6772,11 +16068,18 @@ castToSVGFETileElement = castTo gTypeSVGFETileElement "SVGFETileElement"
 foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileElement' :: JSRef GType
 gTypeSVGFETileElement = GType gTypeSVGFETileElement'
 #else
-type IsSVGFETileElement o = SVGFETileElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFETurbulenceElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement Mozilla SVGFETurbulenceElement documentation>
 newtype SVGFETurbulenceElement = SVGFETurbulenceElement (JSRef SVGFETurbulenceElement) deriving (Eq)
 
 unSVGFETurbulenceElement (SVGFETurbulenceElement o) = o
@@ -6807,11 +16110,18 @@ castToSVGFETurbulenceElement = castTo gTypeSVGFETurbulenceElement "SVGFETurbulen
 foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFETurbulenceElement' :: JSRef GType
 gTypeSVGFETurbulenceElement = GType gTypeSVGFETurbulenceElement'
 #else
-type IsSVGFETurbulenceElement o = SVGFETurbulenceElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFilterElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement Mozilla SVGFilterElement documentation>
 newtype SVGFilterElement = SVGFilterElement (JSRef SVGFilterElement) deriving (Eq)
 
 unSVGFilterElement (SVGFilterElement o) = o
@@ -6842,11 +16152,13 @@ castToSVGFilterElement = castTo gTypeSVGFilterElement "SVGFilterElement"
 foreign import javascript unsafe "window[\"SVGFilterElement\"]" gTypeSVGFilterElement' :: JSRef GType
 gTypeSVGFilterElement = GType gTypeSVGFilterElement'
 #else
-type IsSVGFilterElement o = SVGFilterElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes Mozilla SVGFilterPrimitiveStandardAttributes documentation>
 newtype SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttributes (JSRef SVGFilterPrimitiveStandardAttributes) deriving (Eq)
 
 unSVGFilterPrimitiveStandardAttributes (SVGFilterPrimitiveStandardAttributes o) = o
@@ -6874,11 +16186,13 @@ castToSVGFilterPrimitiveStandardAttributes = castTo gTypeSVGFilterPrimitiveStand
 foreign import javascript unsafe "window[\"SVGFilterPrimitiveStandardAttributes\"]" gTypeSVGFilterPrimitiveStandardAttributes' :: JSRef GType
 gTypeSVGFilterPrimitiveStandardAttributes = GType gTypeSVGFilterPrimitiveStandardAttributes'
 #else
-type IsSVGFilterPrimitiveStandardAttributes o = SVGFilterPrimitiveStandardAttributesClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFitToViewBox".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox Mozilla SVGFitToViewBox documentation>
 newtype SVGFitToViewBox = SVGFitToViewBox (JSRef SVGFitToViewBox) deriving (Eq)
 
 unSVGFitToViewBox (SVGFitToViewBox o) = o
@@ -6906,11 +16220,18 @@ castToSVGFitToViewBox = castTo gTypeSVGFitToViewBox "SVGFitToViewBox"
 foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToViewBox' :: JSRef GType
 gTypeSVGFitToViewBox = GType gTypeSVGFitToViewBox'
 #else
-type IsSVGFitToViewBox o = SVGFitToViewBoxClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFontElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontElement Mozilla SVGFontElement documentation>
 newtype SVGFontElement = SVGFontElement (JSRef SVGFontElement) deriving (Eq)
 
 unSVGFontElement (SVGFontElement o) = o
@@ -6941,11 +16262,18 @@ castToSVGFontElement = castTo gTypeSVGFontElement "SVGFontElement"
 foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElement' :: JSRef GType
 gTypeSVGFontElement = GType gTypeSVGFontElement'
 #else
-type IsSVGFontElement o = SVGFontElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceElement Mozilla SVGFontFaceElement documentation>
 newtype SVGFontFaceElement = SVGFontFaceElement (JSRef SVGFontFaceElement) deriving (Eq)
 
 unSVGFontFaceElement (SVGFontFaceElement o) = o
@@ -6976,11 +16304,18 @@ castToSVGFontFaceElement = castTo gTypeSVGFontFaceElement "SVGFontFaceElement"
 foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFaceElement' :: JSRef GType
 gTypeSVGFontFaceElement = GType gTypeSVGFontFaceElement'
 #else
-type IsSVGFontFaceElement o = SVGFontFaceElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceFormatElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceFormatElement Mozilla SVGFontFaceFormatElement documentation>
 newtype SVGFontFaceFormatElement = SVGFontFaceFormatElement (JSRef SVGFontFaceFormatElement) deriving (Eq)
 
 unSVGFontFaceFormatElement (SVGFontFaceFormatElement o) = o
@@ -7011,11 +16346,18 @@ castToSVGFontFaceFormatElement = castTo gTypeSVGFontFaceFormatElement "SVGFontFa
 foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVGFontFaceFormatElement' :: JSRef GType
 gTypeSVGFontFaceFormatElement = GType gTypeSVGFontFaceFormatElement'
 #else
-type IsSVGFontFaceFormatElement o = SVGFontFaceFormatElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceNameElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceNameElement Mozilla SVGFontFaceNameElement documentation>
 newtype SVGFontFaceNameElement = SVGFontFaceNameElement (JSRef SVGFontFaceNameElement) deriving (Eq)
 
 unSVGFontFaceNameElement (SVGFontFaceNameElement o) = o
@@ -7046,11 +16388,18 @@ castToSVGFontFaceNameElement = castTo gTypeSVGFontFaceNameElement "SVGFontFaceNa
 foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFontFaceNameElement' :: JSRef GType
 gTypeSVGFontFaceNameElement = GType gTypeSVGFontFaceNameElement'
 #else
-type IsSVGFontFaceNameElement o = SVGFontFaceNameElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceSrcElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceSrcElement Mozilla SVGFontFaceSrcElement documentation>
 newtype SVGFontFaceSrcElement = SVGFontFaceSrcElement (JSRef SVGFontFaceSrcElement) deriving (Eq)
 
 unSVGFontFaceSrcElement (SVGFontFaceSrcElement o) = o
@@ -7081,11 +16430,18 @@ castToSVGFontFaceSrcElement = castTo gTypeSVGFontFaceSrcElement "SVGFontFaceSrcE
 foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFontFaceSrcElement' :: JSRef GType
 gTypeSVGFontFaceSrcElement = GType gTypeSVGFontFaceSrcElement'
 #else
-type IsSVGFontFaceSrcElement o = SVGFontFaceSrcElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceUriElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceUriElement Mozilla SVGFontFaceUriElement documentation>
 newtype SVGFontFaceUriElement = SVGFontFaceUriElement (JSRef SVGFontFaceUriElement) deriving (Eq)
 
 unSVGFontFaceUriElement (SVGFontFaceUriElement o) = o
@@ -7116,11 +16472,19 @@ castToSVGFontFaceUriElement = castTo gTypeSVGFontFaceUriElement "SVGFontFaceUriE
 foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFontFaceUriElement' :: JSRef GType
 gTypeSVGFontFaceUriElement = GType gTypeSVGFontFaceUriElement'
 #else
-type IsSVGFontFaceUriElement o = SVGFontFaceUriElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGForeignObjectElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGForeignObjectElement Mozilla SVGForeignObjectElement documentation>
 newtype SVGForeignObjectElement = SVGForeignObjectElement (JSRef SVGForeignObjectElement) deriving (Eq)
 
 unSVGForeignObjectElement (SVGForeignObjectElement o) = o
@@ -7152,11 +16516,19 @@ castToSVGForeignObjectElement = castTo gTypeSVGForeignObjectElement "SVGForeignO
 foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGForeignObjectElement' :: JSRef GType
 gTypeSVGForeignObjectElement = GType gTypeSVGForeignObjectElement'
 #else
-type IsSVGForeignObjectElement o = SVGForeignObjectElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGGElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGElement Mozilla SVGGElement documentation>
 newtype SVGGElement = SVGGElement (JSRef SVGGElement) deriving (Eq)
 
 unSVGGElement (SVGGElement o) = o
@@ -7188,11 +16560,18 @@ castToSVGGElement = castTo gTypeSVGGElement "SVGGElement"
 foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement' :: JSRef GType
 gTypeSVGGElement = GType gTypeSVGGElement'
 #else
-type IsSVGGElement o = SVGGElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphElement Mozilla SVGGlyphElement documentation>
 newtype SVGGlyphElement = SVGGlyphElement (JSRef SVGGlyphElement) deriving (Eq)
 
 unSVGGlyphElement (SVGGlyphElement o) = o
@@ -7223,11 +16602,18 @@ castToSVGGlyphElement = castTo gTypeSVGGlyphElement "SVGGlyphElement"
 foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElement' :: JSRef GType
 gTypeSVGGlyphElement = GType gTypeSVGGlyphElement'
 #else
-type IsSVGGlyphElement o = SVGGlyphElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphRefElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement Mozilla SVGGlyphRefElement documentation>
 newtype SVGGlyphRefElement = SVGGlyphRefElement (JSRef SVGGlyphRefElement) deriving (Eq)
 
 unSVGGlyphRefElement (SVGGlyphRefElement o) = o
@@ -7258,11 +16644,18 @@ castToSVGGlyphRefElement = castTo gTypeSVGGlyphRefElement "SVGGlyphRefElement"
 foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphRefElement' :: JSRef GType
 gTypeSVGGlyphRefElement = GType gTypeSVGGlyphRefElement'
 #else
-type IsSVGGlyphRefElement o = SVGGlyphRefElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGGradientElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement Mozilla SVGGradientElement documentation>
 newtype SVGGradientElement = SVGGradientElement (JSRef SVGGradientElement) deriving (Eq)
 
 unSVGGradientElement (SVGGradientElement o) = o
@@ -7293,11 +16686,18 @@ castToSVGGradientElement = castTo gTypeSVGGradientElement "SVGGradientElement"
 foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradientElement' :: JSRef GType
 gTypeSVGGradientElement = GType gTypeSVGGradientElement'
 #else
-type IsSVGGradientElement o = SVGGradientElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGGraphicsElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement Mozilla SVGGraphicsElement documentation>
 newtype SVGGraphicsElement = SVGGraphicsElement (JSRef SVGGraphicsElement) deriving (Eq)
 
 unSVGGraphicsElement (SVGGraphicsElement o) = o
@@ -7328,11 +16728,18 @@ castToSVGGraphicsElement = castTo gTypeSVGGraphicsElement "SVGGraphicsElement"
 foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphicsElement' :: JSRef GType
 gTypeSVGGraphicsElement = GType gTypeSVGGraphicsElement'
 #else
-type IsSVGGraphicsElement o = SVGGraphicsElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGHKernElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGHKernElement Mozilla SVGHKernElement documentation>
 newtype SVGHKernElement = SVGHKernElement (JSRef SVGHKernElement) deriving (Eq)
 
 unSVGHKernElement (SVGHKernElement o) = o
@@ -7363,11 +16770,19 @@ castToSVGHKernElement = castTo gTypeSVGHKernElement "SVGHKernElement"
 foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElement' :: JSRef GType
 gTypeSVGHKernElement = GType gTypeSVGHKernElement'
 #else
-type IsSVGHKernElement o = SVGHKernElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGImageElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement Mozilla SVGImageElement documentation>
 newtype SVGImageElement = SVGImageElement (JSRef SVGImageElement) deriving (Eq)
 
 unSVGImageElement (SVGImageElement o) = o
@@ -7399,11 +16814,13 @@ castToSVGImageElement = castTo gTypeSVGImageElement "SVGImageElement"
 foreign import javascript unsafe "window[\"SVGImageElement\"]" gTypeSVGImageElement' :: JSRef GType
 gTypeSVGImageElement = GType gTypeSVGImageElement'
 #else
-type IsSVGImageElement o = SVGImageElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGLength".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength Mozilla SVGLength documentation>
 newtype SVGLength = SVGLength (JSRef SVGLength) deriving (Eq)
 
 unSVGLength (SVGLength o) = o
@@ -7431,11 +16848,13 @@ castToSVGLength = castTo gTypeSVGLength "SVGLength"
 foreign import javascript unsafe "window[\"SVGLength\"]" gTypeSVGLength' :: JSRef GType
 gTypeSVGLength = GType gTypeSVGLength'
 #else
-type IsSVGLength o = SVGLengthClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGLengthList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList Mozilla SVGLengthList documentation>
 newtype SVGLengthList = SVGLengthList (JSRef SVGLengthList) deriving (Eq)
 
 unSVGLengthList (SVGLengthList o) = o
@@ -7463,11 +16882,19 @@ castToSVGLengthList = castTo gTypeSVGLengthList "SVGLengthList"
 foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList' :: JSRef GType
 gTypeSVGLengthList = GType gTypeSVGLengthList'
 #else
-type IsSVGLengthList o = SVGLengthListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGLineElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement Mozilla SVGLineElement documentation>
 newtype SVGLineElement = SVGLineElement (JSRef SVGLineElement) deriving (Eq)
 
 unSVGLineElement (SVGLineElement o) = o
@@ -7499,11 +16926,19 @@ castToSVGLineElement = castTo gTypeSVGLineElement "SVGLineElement"
 foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElement' :: JSRef GType
 gTypeSVGLineElement = GType gTypeSVGLineElement'
 #else
-type IsSVGLineElement o = SVGLineElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGLinearGradientElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGradientElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLinearGradientElement Mozilla SVGLinearGradientElement documentation>
 newtype SVGLinearGradientElement = SVGLinearGradientElement (JSRef SVGLinearGradientElement) deriving (Eq)
 
 unSVGLinearGradientElement (SVGLinearGradientElement o) = o
@@ -7535,11 +16970,18 @@ castToSVGLinearGradientElement = castTo gTypeSVGLinearGradientElement "SVGLinear
 foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVGLinearGradientElement' :: JSRef GType
 gTypeSVGLinearGradientElement = GType gTypeSVGLinearGradientElement'
 #else
-type IsSVGLinearGradientElement o = SVGLinearGradientElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGMPathElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMPathElement Mozilla SVGMPathElement documentation>
 newtype SVGMPathElement = SVGMPathElement (JSRef SVGMPathElement) deriving (Eq)
 
 unSVGMPathElement (SVGMPathElement o) = o
@@ -7570,11 +17012,18 @@ castToSVGMPathElement = castTo gTypeSVGMPathElement "SVGMPathElement"
 foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElement' :: JSRef GType
 gTypeSVGMPathElement = GType gTypeSVGMPathElement'
 #else
-type IsSVGMPathElement o = SVGMPathElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGMarkerElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement Mozilla SVGMarkerElement documentation>
 newtype SVGMarkerElement = SVGMarkerElement (JSRef SVGMarkerElement) deriving (Eq)
 
 unSVGMarkerElement (SVGMarkerElement o) = o
@@ -7605,11 +17054,18 @@ castToSVGMarkerElement = castTo gTypeSVGMarkerElement "SVGMarkerElement"
 foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerElement' :: JSRef GType
 gTypeSVGMarkerElement = GType gTypeSVGMarkerElement'
 #else
-type IsSVGMarkerElement o = SVGMarkerElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGMaskElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement Mozilla SVGMaskElement documentation>
 newtype SVGMaskElement = SVGMaskElement (JSRef SVGMaskElement) deriving (Eq)
 
 unSVGMaskElement (SVGMaskElement o) = o
@@ -7640,11 +17096,13 @@ castToSVGMaskElement = castTo gTypeSVGMaskElement "SVGMaskElement"
 foreign import javascript unsafe "window[\"SVGMaskElement\"]" gTypeSVGMaskElement' :: JSRef GType
 gTypeSVGMaskElement = GType gTypeSVGMaskElement'
 #else
-type IsSVGMaskElement o = SVGMaskElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGMatrix".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix Mozilla SVGMatrix documentation>
 newtype SVGMatrix = SVGMatrix (JSRef SVGMatrix) deriving (Eq)
 
 unSVGMatrix (SVGMatrix o) = o
@@ -7672,11 +17130,18 @@ castToSVGMatrix = castTo gTypeSVGMatrix "SVGMatrix"
 foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix' :: JSRef GType
 gTypeSVGMatrix = GType gTypeSVGMatrix'
 #else
-type IsSVGMatrix o = SVGMatrixClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGMetadataElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMetadataElement Mozilla SVGMetadataElement documentation>
 newtype SVGMetadataElement = SVGMetadataElement (JSRef SVGMetadataElement) deriving (Eq)
 
 unSVGMetadataElement (SVGMetadataElement o) = o
@@ -7707,11 +17172,18 @@ castToSVGMetadataElement = castTo gTypeSVGMetadataElement "SVGMetadataElement"
 foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetadataElement' :: JSRef GType
 gTypeSVGMetadataElement = GType gTypeSVGMetadataElement'
 #else
-type IsSVGMetadataElement o = SVGMetadataElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGMissingGlyphElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMissingGlyphElement Mozilla SVGMissingGlyphElement documentation>
 newtype SVGMissingGlyphElement = SVGMissingGlyphElement (JSRef SVGMissingGlyphElement) deriving (Eq)
 
 unSVGMissingGlyphElement (SVGMissingGlyphElement o) = o
@@ -7742,11 +17214,13 @@ castToSVGMissingGlyphElement = castTo gTypeSVGMissingGlyphElement "SVGMissingGly
 foreign import javascript unsafe "window[\"SVGMissingGlyphElement\"]" gTypeSVGMissingGlyphElement' :: JSRef GType
 gTypeSVGMissingGlyphElement = GType gTypeSVGMissingGlyphElement'
 #else
-type IsSVGMissingGlyphElement o = SVGMissingGlyphElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGNumber".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumber Mozilla SVGNumber documentation>
 newtype SVGNumber = SVGNumber (JSRef SVGNumber) deriving (Eq)
 
 unSVGNumber (SVGNumber o) = o
@@ -7774,11 +17248,13 @@ castToSVGNumber = castTo gTypeSVGNumber "SVGNumber"
 foreign import javascript unsafe "window[\"SVGNumber\"]" gTypeSVGNumber' :: JSRef GType
 gTypeSVGNumber = GType gTypeSVGNumber'
 #else
-type IsSVGNumber o = SVGNumberClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGNumberList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList Mozilla SVGNumberList documentation>
 newtype SVGNumberList = SVGNumberList (JSRef SVGNumberList) deriving (Eq)
 
 unSVGNumberList (SVGNumberList o) = o
@@ -7806,11 +17282,17 @@ castToSVGNumberList = castTo gTypeSVGNumberList "SVGNumberList"
 foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList' :: JSRef GType
 gTypeSVGNumberList = GType gTypeSVGNumberList'
 #else
-type IsSVGNumberList o = SVGNumberListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPaint".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGColor"
+--     * "GHCJS.DOM.CSSValue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint Mozilla SVGPaint documentation>
 newtype SVGPaint = SVGPaint (JSRef SVGPaint) deriving (Eq)
 
 unSVGPaint (SVGPaint o) = o
@@ -7840,11 +17322,19 @@ castToSVGPaint = castTo gTypeSVGPaint "SVGPaint"
 foreign import javascript unsafe "window[\"SVGPaint\"]" gTypeSVGPaint' :: JSRef GType
 gTypeSVGPaint = GType gTypeSVGPaint'
 #else
-type IsSVGPaint o = SVGPaintClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement Mozilla SVGPathElement documentation>
 newtype SVGPathElement = SVGPathElement (JSRef SVGPathElement) deriving (Eq)
 
 unSVGPathElement (SVGPathElement o) = o
@@ -7876,11 +17366,13 @@ castToSVGPathElement = castTo gTypeSVGPathElement "SVGPathElement"
 foreign import javascript unsafe "window[\"SVGPathElement\"]" gTypeSVGPathElement' :: JSRef GType
 gTypeSVGPathElement = GType gTypeSVGPathElement'
 #else
-type IsSVGPathElement o = SVGPathElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSeg".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg Mozilla SVGPathSeg documentation>
 newtype SVGPathSeg = SVGPathSeg (JSRef SVGPathSeg) deriving (Eq)
 
 unSVGPathSeg (SVGPathSeg o) = o
@@ -7908,11 +17400,16 @@ castToSVGPathSeg = castTo gTypeSVGPathSeg "SVGPathSeg"
 foreign import javascript unsafe "window[\"SVGPathSeg\"]" gTypeSVGPathSeg' :: JSRef GType
 gTypeSVGPathSeg = GType gTypeSVGPathSeg'
 #else
-type IsSVGPathSeg o = SVGPathSegClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs Mozilla SVGPathSegArcAbs documentation>
 newtype SVGPathSegArcAbs = SVGPathSegArcAbs (JSRef SVGPathSegArcAbs) deriving (Eq)
 
 unSVGPathSegArcAbs (SVGPathSegArcAbs o) = o
@@ -7941,11 +17438,16 @@ castToSVGPathSegArcAbs = castTo gTypeSVGPathSegArcAbs "SVGPathSegArcAbs"
 foreign import javascript unsafe "window[\"SVGPathSegArcAbs\"]" gTypeSVGPathSegArcAbs' :: JSRef GType
 gTypeSVGPathSegArcAbs = GType gTypeSVGPathSegArcAbs'
 #else
-type IsSVGPathSegArcAbs o = SVGPathSegArcAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel Mozilla SVGPathSegArcRel documentation>
 newtype SVGPathSegArcRel = SVGPathSegArcRel (JSRef SVGPathSegArcRel) deriving (Eq)
 
 unSVGPathSegArcRel (SVGPathSegArcRel o) = o
@@ -7974,11 +17476,16 @@ castToSVGPathSegArcRel = castTo gTypeSVGPathSegArcRel "SVGPathSegArcRel"
 foreign import javascript unsafe "window[\"SVGPathSegArcRel\"]" gTypeSVGPathSegArcRel' :: JSRef GType
 gTypeSVGPathSegArcRel = GType gTypeSVGPathSegArcRel'
 #else
-type IsSVGPathSegArcRel o = SVGPathSegArcRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegClosePath".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegClosePath Mozilla SVGPathSegClosePath documentation>
 newtype SVGPathSegClosePath = SVGPathSegClosePath (JSRef SVGPathSegClosePath) deriving (Eq)
 
 unSVGPathSegClosePath (SVGPathSegClosePath o) = o
@@ -8007,11 +17514,16 @@ castToSVGPathSegClosePath = castTo gTypeSVGPathSegClosePath "SVGPathSegClosePath
 foreign import javascript unsafe "window[\"SVGPathSegClosePath\"]" gTypeSVGPathSegClosePath' :: JSRef GType
 gTypeSVGPathSegClosePath = GType gTypeSVGPathSegClosePath'
 #else
-type IsSVGPathSegClosePath o = SVGPathSegClosePathClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs Mozilla SVGPathSegCurvetoCubicAbs documentation>
 newtype SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs (JSRef SVGPathSegCurvetoCubicAbs) deriving (Eq)
 
 unSVGPathSegCurvetoCubicAbs (SVGPathSegCurvetoCubicAbs o) = o
@@ -8040,11 +17552,16 @@ castToSVGPathSegCurvetoCubicAbs = castTo gTypeSVGPathSegCurvetoCubicAbs "SVGPath
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicAbs\"]" gTypeSVGPathSegCurvetoCubicAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicAbs = GType gTypeSVGPathSegCurvetoCubicAbs'
 #else
-type IsSVGPathSegCurvetoCubicAbs o = SVGPathSegCurvetoCubicAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicRel Mozilla SVGPathSegCurvetoCubicRel documentation>
 newtype SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel (JSRef SVGPathSegCurvetoCubicRel) deriving (Eq)
 
 unSVGPathSegCurvetoCubicRel (SVGPathSegCurvetoCubicRel o) = o
@@ -8073,11 +17590,16 @@ castToSVGPathSegCurvetoCubicRel = castTo gTypeSVGPathSegCurvetoCubicRel "SVGPath
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicRel\"]" gTypeSVGPathSegCurvetoCubicRel' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicRel = GType gTypeSVGPathSegCurvetoCubicRel'
 #else
-type IsSVGPathSegCurvetoCubicRel o = SVGPathSegCurvetoCubicRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothAbs Mozilla SVGPathSegCurvetoCubicSmoothAbs documentation>
 newtype SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs (JSRef SVGPathSegCurvetoCubicSmoothAbs) deriving (Eq)
 
 unSVGPathSegCurvetoCubicSmoothAbs (SVGPathSegCurvetoCubicSmoothAbs o) = o
@@ -8106,11 +17628,16 @@ castToSVGPathSegCurvetoCubicSmoothAbs = castTo gTypeSVGPathSegCurvetoCubicSmooth
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothAbs\"]" gTypeSVGPathSegCurvetoCubicSmoothAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicSmoothAbs = GType gTypeSVGPathSegCurvetoCubicSmoothAbs'
 #else
-type IsSVGPathSegCurvetoCubicSmoothAbs o = SVGPathSegCurvetoCubicSmoothAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel Mozilla SVGPathSegCurvetoCubicSmoothRel documentation>
 newtype SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel (JSRef SVGPathSegCurvetoCubicSmoothRel) deriving (Eq)
 
 unSVGPathSegCurvetoCubicSmoothRel (SVGPathSegCurvetoCubicSmoothRel o) = o
@@ -8139,11 +17666,16 @@ castToSVGPathSegCurvetoCubicSmoothRel = castTo gTypeSVGPathSegCurvetoCubicSmooth
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothRel\"]" gTypeSVGPathSegCurvetoCubicSmoothRel' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicSmoothRel = GType gTypeSVGPathSegCurvetoCubicSmoothRel'
 #else
-type IsSVGPathSegCurvetoCubicSmoothRel o = SVGPathSegCurvetoCubicSmoothRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs Mozilla SVGPathSegCurvetoQuadraticAbs documentation>
 newtype SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs (JSRef SVGPathSegCurvetoQuadraticAbs) deriving (Eq)
 
 unSVGPathSegCurvetoQuadraticAbs (SVGPathSegCurvetoQuadraticAbs o) = o
@@ -8172,11 +17704,16 @@ castToSVGPathSegCurvetoQuadraticAbs = castTo gTypeSVGPathSegCurvetoQuadraticAbs 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticAbs\"]" gTypeSVGPathSegCurvetoQuadraticAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticAbs = GType gTypeSVGPathSegCurvetoQuadraticAbs'
 #else
-type IsSVGPathSegCurvetoQuadraticAbs o = SVGPathSegCurvetoQuadraticAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticRel Mozilla SVGPathSegCurvetoQuadraticRel documentation>
 newtype SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel (JSRef SVGPathSegCurvetoQuadraticRel) deriving (Eq)
 
 unSVGPathSegCurvetoQuadraticRel (SVGPathSegCurvetoQuadraticRel o) = o
@@ -8205,11 +17742,16 @@ castToSVGPathSegCurvetoQuadraticRel = castTo gTypeSVGPathSegCurvetoQuadraticRel 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticRel\"]" gTypeSVGPathSegCurvetoQuadraticRel' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticRel = GType gTypeSVGPathSegCurvetoQuadraticRel'
 #else
-type IsSVGPathSegCurvetoQuadraticRel o = SVGPathSegCurvetoQuadraticRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs Mozilla SVGPathSegCurvetoQuadraticSmoothAbs documentation>
 newtype SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAbs (JSRef SVGPathSegCurvetoQuadraticSmoothAbs) deriving (Eq)
 
 unSVGPathSegCurvetoQuadraticSmoothAbs (SVGPathSegCurvetoQuadraticSmoothAbs o) = o
@@ -8238,11 +17780,16 @@ castToSVGPathSegCurvetoQuadraticSmoothAbs = castTo gTypeSVGPathSegCurvetoQuadrat
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"]" gTypeSVGPathSegCurvetoQuadraticSmoothAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticSmoothAbs = GType gTypeSVGPathSegCurvetoQuadraticSmoothAbs'
 #else
-type IsSVGPathSegCurvetoQuadraticSmoothAbs o = SVGPathSegCurvetoQuadraticSmoothAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothRel Mozilla SVGPathSegCurvetoQuadraticSmoothRel documentation>
 newtype SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRel (JSRef SVGPathSegCurvetoQuadraticSmoothRel) deriving (Eq)
 
 unSVGPathSegCurvetoQuadraticSmoothRel (SVGPathSegCurvetoQuadraticSmoothRel o) = o
@@ -8271,11 +17818,16 @@ castToSVGPathSegCurvetoQuadraticSmoothRel = castTo gTypeSVGPathSegCurvetoQuadrat
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothRel\"]" gTypeSVGPathSegCurvetoQuadraticSmoothRel' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticSmoothRel = GType gTypeSVGPathSegCurvetoQuadraticSmoothRel'
 #else
-type IsSVGPathSegCurvetoQuadraticSmoothRel o = SVGPathSegCurvetoQuadraticSmoothRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoAbs Mozilla SVGPathSegLinetoAbs documentation>
 newtype SVGPathSegLinetoAbs = SVGPathSegLinetoAbs (JSRef SVGPathSegLinetoAbs) deriving (Eq)
 
 unSVGPathSegLinetoAbs (SVGPathSegLinetoAbs o) = o
@@ -8304,11 +17856,16 @@ castToSVGPathSegLinetoAbs = castTo gTypeSVGPathSegLinetoAbs "SVGPathSegLinetoAbs
 foreign import javascript unsafe "window[\"SVGPathSegLinetoAbs\"]" gTypeSVGPathSegLinetoAbs' :: JSRef GType
 gTypeSVGPathSegLinetoAbs = GType gTypeSVGPathSegLinetoAbs'
 #else
-type IsSVGPathSegLinetoAbs o = SVGPathSegLinetoAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalAbs Mozilla SVGPathSegLinetoHorizontalAbs documentation>
 newtype SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs (JSRef SVGPathSegLinetoHorizontalAbs) deriving (Eq)
 
 unSVGPathSegLinetoHorizontalAbs (SVGPathSegLinetoHorizontalAbs o) = o
@@ -8337,11 +17894,16 @@ castToSVGPathSegLinetoHorizontalAbs = castTo gTypeSVGPathSegLinetoHorizontalAbs 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalAbs\"]" gTypeSVGPathSegLinetoHorizontalAbs' :: JSRef GType
 gTypeSVGPathSegLinetoHorizontalAbs = GType gTypeSVGPathSegLinetoHorizontalAbs'
 #else
-type IsSVGPathSegLinetoHorizontalAbs o = SVGPathSegLinetoHorizontalAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalRel Mozilla SVGPathSegLinetoHorizontalRel documentation>
 newtype SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel (JSRef SVGPathSegLinetoHorizontalRel) deriving (Eq)
 
 unSVGPathSegLinetoHorizontalRel (SVGPathSegLinetoHorizontalRel o) = o
@@ -8370,11 +17932,16 @@ castToSVGPathSegLinetoHorizontalRel = castTo gTypeSVGPathSegLinetoHorizontalRel 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalRel\"]" gTypeSVGPathSegLinetoHorizontalRel' :: JSRef GType
 gTypeSVGPathSegLinetoHorizontalRel = GType gTypeSVGPathSegLinetoHorizontalRel'
 #else
-type IsSVGPathSegLinetoHorizontalRel o = SVGPathSegLinetoHorizontalRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoRel Mozilla SVGPathSegLinetoRel documentation>
 newtype SVGPathSegLinetoRel = SVGPathSegLinetoRel (JSRef SVGPathSegLinetoRel) deriving (Eq)
 
 unSVGPathSegLinetoRel (SVGPathSegLinetoRel o) = o
@@ -8403,11 +17970,16 @@ castToSVGPathSegLinetoRel = castTo gTypeSVGPathSegLinetoRel "SVGPathSegLinetoRel
 foreign import javascript unsafe "window[\"SVGPathSegLinetoRel\"]" gTypeSVGPathSegLinetoRel' :: JSRef GType
 gTypeSVGPathSegLinetoRel = GType gTypeSVGPathSegLinetoRel'
 #else
-type IsSVGPathSegLinetoRel o = SVGPathSegLinetoRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalAbs Mozilla SVGPathSegLinetoVerticalAbs documentation>
 newtype SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs (JSRef SVGPathSegLinetoVerticalAbs) deriving (Eq)
 
 unSVGPathSegLinetoVerticalAbs (SVGPathSegLinetoVerticalAbs o) = o
@@ -8436,11 +18008,16 @@ castToSVGPathSegLinetoVerticalAbs = castTo gTypeSVGPathSegLinetoVerticalAbs "SVG
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalAbs\"]" gTypeSVGPathSegLinetoVerticalAbs' :: JSRef GType
 gTypeSVGPathSegLinetoVerticalAbs = GType gTypeSVGPathSegLinetoVerticalAbs'
 #else
-type IsSVGPathSegLinetoVerticalAbs o = SVGPathSegLinetoVerticalAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalRel Mozilla SVGPathSegLinetoVerticalRel documentation>
 newtype SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel (JSRef SVGPathSegLinetoVerticalRel) deriving (Eq)
 
 unSVGPathSegLinetoVerticalRel (SVGPathSegLinetoVerticalRel o) = o
@@ -8469,11 +18046,13 @@ castToSVGPathSegLinetoVerticalRel = castTo gTypeSVGPathSegLinetoVerticalRel "SVG
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalRel\"]" gTypeSVGPathSegLinetoVerticalRel' :: JSRef GType
 gTypeSVGPathSegLinetoVerticalRel = GType gTypeSVGPathSegLinetoVerticalRel'
 #else
-type IsSVGPathSegLinetoVerticalRel o = SVGPathSegLinetoVerticalRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList Mozilla SVGPathSegList documentation>
 newtype SVGPathSegList = SVGPathSegList (JSRef SVGPathSegList) deriving (Eq)
 
 unSVGPathSegList (SVGPathSegList o) = o
@@ -8501,11 +18080,16 @@ castToSVGPathSegList = castTo gTypeSVGPathSegList "SVGPathSegList"
 foreign import javascript unsafe "window[\"SVGPathSegList\"]" gTypeSVGPathSegList' :: JSRef GType
 gTypeSVGPathSegList = GType gTypeSVGPathSegList'
 #else
-type IsSVGPathSegList o = SVGPathSegListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoAbs".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoAbs Mozilla SVGPathSegMovetoAbs documentation>
 newtype SVGPathSegMovetoAbs = SVGPathSegMovetoAbs (JSRef SVGPathSegMovetoAbs) deriving (Eq)
 
 unSVGPathSegMovetoAbs (SVGPathSegMovetoAbs o) = o
@@ -8534,11 +18118,16 @@ castToSVGPathSegMovetoAbs = castTo gTypeSVGPathSegMovetoAbs "SVGPathSegMovetoAbs
 foreign import javascript unsafe "window[\"SVGPathSegMovetoAbs\"]" gTypeSVGPathSegMovetoAbs' :: JSRef GType
 gTypeSVGPathSegMovetoAbs = GType gTypeSVGPathSegMovetoAbs'
 #else
-type IsSVGPathSegMovetoAbs o = SVGPathSegMovetoAbsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoRel".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGPathSeg"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel Mozilla SVGPathSegMovetoRel documentation>
 newtype SVGPathSegMovetoRel = SVGPathSegMovetoRel (JSRef SVGPathSegMovetoRel) deriving (Eq)
 
 unSVGPathSegMovetoRel (SVGPathSegMovetoRel o) = o
@@ -8567,11 +18156,18 @@ castToSVGPathSegMovetoRel = castTo gTypeSVGPathSegMovetoRel "SVGPathSegMovetoRel
 foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathSegMovetoRel' :: JSRef GType
 gTypeSVGPathSegMovetoRel = GType gTypeSVGPathSegMovetoRel'
 #else
-type IsSVGPathSegMovetoRel o = SVGPathSegMovetoRelClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPatternElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement Mozilla SVGPatternElement documentation>
 newtype SVGPatternElement = SVGPatternElement (JSRef SVGPatternElement) deriving (Eq)
 
 unSVGPatternElement (SVGPatternElement o) = o
@@ -8602,11 +18198,13 @@ castToSVGPatternElement = castTo gTypeSVGPatternElement "SVGPatternElement"
 foreign import javascript unsafe "window[\"SVGPatternElement\"]" gTypeSVGPatternElement' :: JSRef GType
 gTypeSVGPatternElement = GType gTypeSVGPatternElement'
 #else
-type IsSVGPatternElement o = SVGPatternElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPoint".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint Mozilla SVGPoint documentation>
 newtype SVGPoint = SVGPoint (JSRef SVGPoint) deriving (Eq)
 
 unSVGPoint (SVGPoint o) = o
@@ -8634,11 +18232,13 @@ castToSVGPoint = castTo gTypeSVGPoint "SVGPoint"
 foreign import javascript unsafe "window[\"SVGPoint\"]" gTypeSVGPoint' :: JSRef GType
 gTypeSVGPoint = GType gTypeSVGPoint'
 #else
-type IsSVGPoint o = SVGPointClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPointList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList Mozilla SVGPointList documentation>
 newtype SVGPointList = SVGPointList (JSRef SVGPointList) deriving (Eq)
 
 unSVGPointList (SVGPointList o) = o
@@ -8666,11 +18266,19 @@ castToSVGPointList = castTo gTypeSVGPointList "SVGPointList"
 foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList' :: JSRef GType
 gTypeSVGPointList = GType gTypeSVGPointList'
 #else
-type IsSVGPointList o = SVGPointListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPolygonElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolygonElement Mozilla SVGPolygonElement documentation>
 newtype SVGPolygonElement = SVGPolygonElement (JSRef SVGPolygonElement) deriving (Eq)
 
 unSVGPolygonElement (SVGPolygonElement o) = o
@@ -8702,11 +18310,19 @@ castToSVGPolygonElement = castTo gTypeSVGPolygonElement "SVGPolygonElement"
 foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygonElement' :: JSRef GType
 gTypeSVGPolygonElement = GType gTypeSVGPolygonElement'
 #else
-type IsSVGPolygonElement o = SVGPolygonElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPolylineElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement Mozilla SVGPolylineElement documentation>
 newtype SVGPolylineElement = SVGPolylineElement (JSRef SVGPolylineElement) deriving (Eq)
 
 unSVGPolylineElement (SVGPolylineElement o) = o
@@ -8738,11 +18354,13 @@ castToSVGPolylineElement = castTo gTypeSVGPolylineElement "SVGPolylineElement"
 foreign import javascript unsafe "window[\"SVGPolylineElement\"]" gTypeSVGPolylineElement' :: JSRef GType
 gTypeSVGPolylineElement = GType gTypeSVGPolylineElement'
 #else
-type IsSVGPolylineElement o = SVGPolylineElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGPreserveAspectRatio".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio Mozilla SVGPreserveAspectRatio documentation>
 newtype SVGPreserveAspectRatio = SVGPreserveAspectRatio (JSRef SVGPreserveAspectRatio) deriving (Eq)
 
 unSVGPreserveAspectRatio (SVGPreserveAspectRatio o) = o
@@ -8770,11 +18388,19 @@ castToSVGPreserveAspectRatio = castTo gTypeSVGPreserveAspectRatio "SVGPreserveAs
 foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPreserveAspectRatio' :: JSRef GType
 gTypeSVGPreserveAspectRatio = GType gTypeSVGPreserveAspectRatio'
 #else
-type IsSVGPreserveAspectRatio o = SVGPreserveAspectRatioClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGRadialGradientElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGradientElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement Mozilla SVGRadialGradientElement documentation>
 newtype SVGRadialGradientElement = SVGRadialGradientElement (JSRef SVGRadialGradientElement) deriving (Eq)
 
 unSVGRadialGradientElement (SVGRadialGradientElement o) = o
@@ -8806,11 +18432,13 @@ castToSVGRadialGradientElement = castTo gTypeSVGRadialGradientElement "SVGRadial
 foreign import javascript unsafe "window[\"SVGRadialGradientElement\"]" gTypeSVGRadialGradientElement' :: JSRef GType
 gTypeSVGRadialGradientElement = GType gTypeSVGRadialGradientElement'
 #else
-type IsSVGRadialGradientElement o = SVGRadialGradientElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGRect".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect Mozilla SVGRect documentation>
 newtype SVGRect = SVGRect (JSRef SVGRect) deriving (Eq)
 
 unSVGRect (SVGRect o) = o
@@ -8838,11 +18466,19 @@ castToSVGRect = castTo gTypeSVGRect "SVGRect"
 foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect' :: JSRef GType
 gTypeSVGRect = GType gTypeSVGRect'
 #else
-type IsSVGRect o = SVGRectClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGRectElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement Mozilla SVGRectElement documentation>
 newtype SVGRectElement = SVGRectElement (JSRef SVGRectElement) deriving (Eq)
 
 unSVGRectElement (SVGRectElement o) = o
@@ -8874,11 +18510,13 @@ castToSVGRectElement = castTo gTypeSVGRectElement "SVGRectElement"
 foreign import javascript unsafe "window[\"SVGRectElement\"]" gTypeSVGRectElement' :: JSRef GType
 gTypeSVGRectElement = GType gTypeSVGRectElement'
 #else
-type IsSVGRectElement o = SVGRectElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGRenderingIntent".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRenderingIntent Mozilla SVGRenderingIntent documentation>
 newtype SVGRenderingIntent = SVGRenderingIntent (JSRef SVGRenderingIntent) deriving (Eq)
 
 unSVGRenderingIntent (SVGRenderingIntent o) = o
@@ -8906,11 +18544,19 @@ castToSVGRenderingIntent = castTo gTypeSVGRenderingIntent "SVGRenderingIntent"
 foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRenderingIntent' :: JSRef GType
 gTypeSVGRenderingIntent = GType gTypeSVGRenderingIntent'
 #else
-type IsSVGRenderingIntent o = SVGRenderingIntentClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGSVGElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement Mozilla SVGSVGElement documentation>
 newtype SVGSVGElement = SVGSVGElement (JSRef SVGSVGElement) deriving (Eq)
 
 unSVGSVGElement (SVGSVGElement o) = o
@@ -8942,11 +18588,18 @@ castToSVGSVGElement = castTo gTypeSVGSVGElement "SVGSVGElement"
 foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement' :: JSRef GType
 gTypeSVGSVGElement = GType gTypeSVGSVGElement'
 #else
-type IsSVGSVGElement o = SVGSVGElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGScriptElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGScriptElement Mozilla SVGScriptElement documentation>
 newtype SVGScriptElement = SVGScriptElement (JSRef SVGScriptElement) deriving (Eq)
 
 unSVGScriptElement (SVGScriptElement o) = o
@@ -8977,11 +18630,19 @@ castToSVGScriptElement = castTo gTypeSVGScriptElement "SVGScriptElement"
 foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptElement' :: JSRef GType
 gTypeSVGScriptElement = GType gTypeSVGScriptElement'
 #else
-type IsSVGScriptElement o = SVGScriptElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGSetElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGAnimationElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSetElement Mozilla SVGSetElement documentation>
 newtype SVGSetElement = SVGSetElement (JSRef SVGSetElement) deriving (Eq)
 
 unSVGSetElement (SVGSetElement o) = o
@@ -9013,11 +18674,18 @@ castToSVGSetElement = castTo gTypeSVGSetElement "SVGSetElement"
 foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement' :: JSRef GType
 gTypeSVGSetElement = GType gTypeSVGSetElement'
 #else
-type IsSVGSetElement o = SVGSetElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGStopElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement Mozilla SVGStopElement documentation>
 newtype SVGStopElement = SVGStopElement (JSRef SVGStopElement) deriving (Eq)
 
 unSVGStopElement (SVGStopElement o) = o
@@ -9048,11 +18716,13 @@ castToSVGStopElement = castTo gTypeSVGStopElement "SVGStopElement"
 foreign import javascript unsafe "window[\"SVGStopElement\"]" gTypeSVGStopElement' :: JSRef GType
 gTypeSVGStopElement = GType gTypeSVGStopElement'
 #else
-type IsSVGStopElement o = SVGStopElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGStringList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList Mozilla SVGStringList documentation>
 newtype SVGStringList = SVGStringList (JSRef SVGStringList) deriving (Eq)
 
 unSVGStringList (SVGStringList o) = o
@@ -9080,11 +18750,18 @@ castToSVGStringList = castTo gTypeSVGStringList "SVGStringList"
 foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList' :: JSRef GType
 gTypeSVGStringList = GType gTypeSVGStringList'
 #else
-type IsSVGStringList o = SVGStringListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGStyleElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement Mozilla SVGStyleElement documentation>
 newtype SVGStyleElement = SVGStyleElement (JSRef SVGStyleElement) deriving (Eq)
 
 unSVGStyleElement (SVGStyleElement o) = o
@@ -9115,11 +18792,19 @@ castToSVGStyleElement = castTo gTypeSVGStyleElement "SVGStyleElement"
 foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElement' :: JSRef GType
 gTypeSVGStyleElement = GType gTypeSVGStyleElement'
 #else
-type IsSVGStyleElement o = SVGStyleElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGSwitchElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSwitchElement Mozilla SVGSwitchElement documentation>
 newtype SVGSwitchElement = SVGSwitchElement (JSRef SVGSwitchElement) deriving (Eq)
 
 unSVGSwitchElement (SVGSwitchElement o) = o
@@ -9151,11 +18836,18 @@ castToSVGSwitchElement = castTo gTypeSVGSwitchElement "SVGSwitchElement"
 foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchElement' :: JSRef GType
 gTypeSVGSwitchElement = GType gTypeSVGSwitchElement'
 #else
-type IsSVGSwitchElement o = SVGSwitchElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGSymbolElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSymbolElement Mozilla SVGSymbolElement documentation>
 newtype SVGSymbolElement = SVGSymbolElement (JSRef SVGSymbolElement) deriving (Eq)
 
 unSVGSymbolElement (SVGSymbolElement o) = o
@@ -9186,11 +18878,21 @@ castToSVGSymbolElement = castTo gTypeSVGSymbolElement "SVGSymbolElement"
 foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolElement' :: JSRef GType
 gTypeSVGSymbolElement = GType gTypeSVGSymbolElement'
 #else
-type IsSVGSymbolElement o = SVGSymbolElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTRefElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGTextPositioningElement"
+--     * "GHCJS.DOM.SVGTextContentElement"
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTRefElement Mozilla SVGTRefElement documentation>
 newtype SVGTRefElement = SVGTRefElement (JSRef SVGTRefElement) deriving (Eq)
 
 unSVGTRefElement (SVGTRefElement o) = o
@@ -9224,11 +18926,21 @@ castToSVGTRefElement = castTo gTypeSVGTRefElement "SVGTRefElement"
 foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElement' :: JSRef GType
 gTypeSVGTRefElement = GType gTypeSVGTRefElement'
 #else
-type IsSVGTRefElement o = SVGTRefElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTSpanElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGTextPositioningElement"
+--     * "GHCJS.DOM.SVGTextContentElement"
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTSpanElement Mozilla SVGTSpanElement documentation>
 newtype SVGTSpanElement = SVGTSpanElement (JSRef SVGTSpanElement) deriving (Eq)
 
 unSVGTSpanElement (SVGTSpanElement o) = o
@@ -9262,11 +18974,13 @@ castToSVGTSpanElement = castTo gTypeSVGTSpanElement "SVGTSpanElement"
 foreign import javascript unsafe "window[\"SVGTSpanElement\"]" gTypeSVGTSpanElement' :: JSRef GType
 gTypeSVGTSpanElement = GType gTypeSVGTSpanElement'
 #else
-type IsSVGTSpanElement o = SVGTSpanElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTests".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests Mozilla SVGTests documentation>
 newtype SVGTests = SVGTests (JSRef SVGTests) deriving (Eq)
 
 unSVGTests (SVGTests o) = o
@@ -9294,11 +19008,19 @@ castToSVGTests = castTo gTypeSVGTests "SVGTests"
 foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests' :: JSRef GType
 gTypeSVGTests = GType gTypeSVGTests'
 #else
-type IsSVGTests o = SVGTestsClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTextContentElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement Mozilla SVGTextContentElement documentation>
 newtype SVGTextContentElement = SVGTextContentElement (JSRef SVGTextContentElement) deriving (Eq)
 
 unSVGTextContentElement (SVGTextContentElement o) = o
@@ -9330,11 +19052,21 @@ castToSVGTextContentElement = castTo gTypeSVGTextContentElement "SVGTextContentE
 foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTextContentElement' :: JSRef GType
 gTypeSVGTextContentElement = GType gTypeSVGTextContentElement'
 #else
-type IsSVGTextContentElement o = SVGTextContentElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTextElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGTextPositioningElement"
+--     * "GHCJS.DOM.SVGTextContentElement"
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextElement Mozilla SVGTextElement documentation>
 newtype SVGTextElement = SVGTextElement (JSRef SVGTextElement) deriving (Eq)
 
 unSVGTextElement (SVGTextElement o) = o
@@ -9368,11 +19100,20 @@ castToSVGTextElement = castTo gTypeSVGTextElement "SVGTextElement"
 foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElement' :: JSRef GType
 gTypeSVGTextElement = GType gTypeSVGTextElement'
 #else
-type IsSVGTextElement o = SVGTextElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTextPathElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGTextContentElement"
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement Mozilla SVGTextPathElement documentation>
 newtype SVGTextPathElement = SVGTextPathElement (JSRef SVGTextPathElement) deriving (Eq)
 
 unSVGTextPathElement (SVGTextPathElement o) = o
@@ -9405,11 +19146,20 @@ castToSVGTextPathElement = castTo gTypeSVGTextPathElement "SVGTextPathElement"
 foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPathElement' :: JSRef GType
 gTypeSVGTextPathElement = GType gTypeSVGTextPathElement'
 #else
-type IsSVGTextPathElement o = SVGTextPathElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTextPositioningElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGTextContentElement"
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement Mozilla SVGTextPositioningElement documentation>
 newtype SVGTextPositioningElement = SVGTextPositioningElement (JSRef SVGTextPositioningElement) deriving (Eq)
 
 unSVGTextPositioningElement (SVGTextPositioningElement o) = o
@@ -9442,11 +19192,18 @@ castToSVGTextPositioningElement = castTo gTypeSVGTextPositioningElement "SVGText
 foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSVGTextPositioningElement' :: JSRef GType
 gTypeSVGTextPositioningElement = GType gTypeSVGTextPositioningElement'
 #else
-type IsSVGTextPositioningElement o = SVGTextPositioningElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTitleElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTitleElement Mozilla SVGTitleElement documentation>
 newtype SVGTitleElement = SVGTitleElement (JSRef SVGTitleElement) deriving (Eq)
 
 unSVGTitleElement (SVGTitleElement o) = o
@@ -9477,11 +19234,13 @@ castToSVGTitleElement = castTo gTypeSVGTitleElement "SVGTitleElement"
 foreign import javascript unsafe "window[\"SVGTitleElement\"]" gTypeSVGTitleElement' :: JSRef GType
 gTypeSVGTitleElement = GType gTypeSVGTitleElement'
 #else
-type IsSVGTitleElement o = SVGTitleElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTransform".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform Mozilla SVGTransform documentation>
 newtype SVGTransform = SVGTransform (JSRef SVGTransform) deriving (Eq)
 
 unSVGTransform (SVGTransform o) = o
@@ -9509,11 +19268,13 @@ castToSVGTransform = castTo gTypeSVGTransform "SVGTransform"
 foreign import javascript unsafe "window[\"SVGTransform\"]" gTypeSVGTransform' :: JSRef GType
 gTypeSVGTransform = GType gTypeSVGTransform'
 #else
-type IsSVGTransform o = SVGTransformClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGTransformList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList Mozilla SVGTransformList documentation>
 newtype SVGTransformList = SVGTransformList (JSRef SVGTransformList) deriving (Eq)
 
 unSVGTransformList (SVGTransformList o) = o
@@ -9541,11 +19302,13 @@ castToSVGTransformList = castTo gTypeSVGTransformList "SVGTransformList"
 foreign import javascript unsafe "window[\"SVGTransformList\"]" gTypeSVGTransformList' :: JSRef GType
 gTypeSVGTransformList = GType gTypeSVGTransformList'
 #else
-type IsSVGTransformList o = SVGTransformListClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGURIReference".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGURIReference Mozilla SVGURIReference documentation>
 newtype SVGURIReference = SVGURIReference (JSRef SVGURIReference) deriving (Eq)
 
 unSVGURIReference (SVGURIReference o) = o
@@ -9573,11 +19336,13 @@ castToSVGURIReference = castTo gTypeSVGURIReference "SVGURIReference"
 foreign import javascript unsafe "window[\"SVGURIReference\"]" gTypeSVGURIReference' :: JSRef GType
 gTypeSVGURIReference = GType gTypeSVGURIReference'
 #else
-type IsSVGURIReference o = SVGURIReferenceClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGUnitTypes".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGUnitTypes Mozilla SVGUnitTypes documentation>
 newtype SVGUnitTypes = SVGUnitTypes (JSRef SVGUnitTypes) deriving (Eq)
 
 unSVGUnitTypes (SVGUnitTypes o) = o
@@ -9605,11 +19370,19 @@ castToSVGUnitTypes = castTo gTypeSVGUnitTypes "SVGUnitTypes"
 foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes' :: JSRef GType
 gTypeSVGUnitTypes = GType gTypeSVGUnitTypes'
 #else
-type IsSVGUnitTypes o = SVGUnitTypesClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGUseElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGGraphicsElement"
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement Mozilla SVGUseElement documentation>
 newtype SVGUseElement = SVGUseElement (JSRef SVGUseElement) deriving (Eq)
 
 unSVGUseElement (SVGUseElement o) = o
@@ -9641,11 +19414,18 @@ castToSVGUseElement = castTo gTypeSVGUseElement "SVGUseElement"
 foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement' :: JSRef GType
 gTypeSVGUseElement = GType gTypeSVGUseElement'
 #else
-type IsSVGUseElement o = SVGUseElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGVKernElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGVKernElement Mozilla SVGVKernElement documentation>
 newtype SVGVKernElement = SVGVKernElement (JSRef SVGVKernElement) deriving (Eq)
 
 unSVGVKernElement (SVGVKernElement o) = o
@@ -9676,11 +19456,18 @@ castToSVGVKernElement = castTo gTypeSVGVKernElement "SVGVKernElement"
 foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElement' :: JSRef GType
 gTypeSVGVKernElement = GType gTypeSVGVKernElement'
 #else
-type IsSVGVKernElement o = SVGVKernElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGViewElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SVGElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewElement Mozilla SVGViewElement documentation>
 newtype SVGViewElement = SVGViewElement (JSRef SVGViewElement) deriving (Eq)
 
 unSVGViewElement (SVGViewElement o) = o
@@ -9711,11 +19498,13 @@ castToSVGViewElement = castTo gTypeSVGViewElement "SVGViewElement"
 foreign import javascript unsafe "window[\"SVGViewElement\"]" gTypeSVGViewElement' :: JSRef GType
 gTypeSVGViewElement = GType gTypeSVGViewElement'
 #else
-type IsSVGViewElement o = SVGViewElementClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGViewSpec".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec Mozilla SVGViewSpec documentation>
 newtype SVGViewSpec = SVGViewSpec (JSRef SVGViewSpec) deriving (Eq)
 
 unSVGViewSpec (SVGViewSpec o) = o
@@ -9743,11 +19532,13 @@ castToSVGViewSpec = castTo gTypeSVGViewSpec "SVGViewSpec"
 foreign import javascript unsafe "window[\"SVGViewSpec\"]" gTypeSVGViewSpec' :: JSRef GType
 gTypeSVGViewSpec = GType gTypeSVGViewSpec'
 #else
-type IsSVGViewSpec o = SVGViewSpecClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGZoomAndPan".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan Mozilla SVGZoomAndPan documentation>
 newtype SVGZoomAndPan = SVGZoomAndPan (JSRef SVGZoomAndPan) deriving (Eq)
 
 unSVGZoomAndPan (SVGZoomAndPan o) = o
@@ -9775,11 +19566,17 @@ castToSVGZoomAndPan = castTo gTypeSVGZoomAndPan "SVGZoomAndPan"
 foreign import javascript unsafe "window[\"SVGZoomAndPan\"]" gTypeSVGZoomAndPan' :: JSRef GType
 gTypeSVGZoomAndPan = GType gTypeSVGZoomAndPan'
 #else
-type IsSVGZoomAndPan o = SVGZoomAndPanClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SVGZoomEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent Mozilla SVGZoomEvent documentation>
 newtype SVGZoomEvent = SVGZoomEvent (JSRef SVGZoomEvent) deriving (Eq)
 
 unSVGZoomEvent (SVGZoomEvent o) = o
@@ -9809,11 +19606,13 @@ castToSVGZoomEvent = castTo gTypeSVGZoomEvent "SVGZoomEvent"
 foreign import javascript unsafe "window[\"SVGZoomEvent\"]" gTypeSVGZoomEvent' :: JSRef GType
 gTypeSVGZoomEvent = GType gTypeSVGZoomEvent'
 #else
-type IsSVGZoomEvent o = SVGZoomEventClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.DOMScreen".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DOMScreen Mozilla DOMScreen documentation>
 newtype DOMScreen = DOMScreen (JSRef DOMScreen) deriving (Eq)
 
 unDOMScreen (DOMScreen o) = o
@@ -9846,6 +19645,481 @@ type IsDOMScreen o = DOMScreenClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ScriptProcessorNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode Mozilla ScriptProcessorNode documentation>
+newtype ScriptProcessorNode = ScriptProcessorNode (JSRef ScriptProcessorNode) deriving (Eq)
+
+unScriptProcessorNode (ScriptProcessorNode o) = o
+
+instance ToJSRef ScriptProcessorNode where
+  toJSRef = return . unScriptProcessorNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ScriptProcessorNode where
+  fromJSRef = return . fmap ScriptProcessorNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsScriptProcessorNode o
+toScriptProcessorNode :: IsScriptProcessorNode o => o -> ScriptProcessorNode
+toScriptProcessorNode = unsafeCastGObject . toGObject
+
+instance IsScriptProcessorNode ScriptProcessorNode
+instance IsAudioNode ScriptProcessorNode
+instance IsEventTarget ScriptProcessorNode
+instance GObjectClass ScriptProcessorNode where
+  toGObject = GObject . castRef . unScriptProcessorNode
+  unsafeCastGObject = ScriptProcessorNode . castRef . unGObject
+
+castToScriptProcessorNode :: GObjectClass obj => obj -> ScriptProcessorNode
+castToScriptProcessorNode = castTo gTypeScriptProcessorNode "ScriptProcessorNode"
+
+foreign import javascript unsafe "window[\"ScriptProcessorNode\"]" gTypeScriptProcessorNode' :: JSRef GType
+gTypeScriptProcessorNode = GType gTypeScriptProcessorNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ScriptProfile".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile Mozilla ScriptProfile documentation>
+newtype ScriptProfile = ScriptProfile (JSRef ScriptProfile) deriving (Eq)
+
+unScriptProfile (ScriptProfile o) = o
+
+instance ToJSRef ScriptProfile where
+  toJSRef = return . unScriptProfile
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ScriptProfile where
+  fromJSRef = return . fmap ScriptProfile . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsScriptProfile o
+toScriptProfile :: IsScriptProfile o => o -> ScriptProfile
+toScriptProfile = unsafeCastGObject . toGObject
+
+instance IsScriptProfile ScriptProfile
+instance GObjectClass ScriptProfile where
+  toGObject = GObject . castRef . unScriptProfile
+  unsafeCastGObject = ScriptProfile . castRef . unGObject
+
+castToScriptProfile :: GObjectClass obj => obj -> ScriptProfile
+castToScriptProfile = castTo gTypeScriptProfile "ScriptProfile"
+
+foreign import javascript unsafe "window[\"ScriptProfile\"]" gTypeScriptProfile' :: JSRef GType
+gTypeScriptProfile = GType gTypeScriptProfile'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ScriptProfileNode".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode Mozilla ScriptProfileNode documentation>
+newtype ScriptProfileNode = ScriptProfileNode (JSRef ScriptProfileNode) deriving (Eq)
+
+unScriptProfileNode (ScriptProfileNode o) = o
+
+instance ToJSRef ScriptProfileNode where
+  toJSRef = return . unScriptProfileNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ScriptProfileNode where
+  fromJSRef = return . fmap ScriptProfileNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsScriptProfileNode o
+toScriptProfileNode :: IsScriptProfileNode o => o -> ScriptProfileNode
+toScriptProfileNode = unsafeCastGObject . toGObject
+
+instance IsScriptProfileNode ScriptProfileNode
+instance GObjectClass ScriptProfileNode where
+  toGObject = GObject . castRef . unScriptProfileNode
+  unsafeCastGObject = ScriptProfileNode . castRef . unGObject
+
+castToScriptProfileNode :: GObjectClass obj => obj -> ScriptProfileNode
+castToScriptProfileNode = castTo gTypeScriptProfileNode "ScriptProfileNode"
+
+foreign import javascript unsafe "window[\"ScriptProfileNode\"]" gTypeScriptProfileNode' :: JSRef GType
+gTypeScriptProfileNode = GType gTypeScriptProfileNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicyViolationEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent Mozilla SecurityPolicyViolationEvent documentation>
+newtype SecurityPolicyViolationEvent = SecurityPolicyViolationEvent (JSRef SecurityPolicyViolationEvent) deriving (Eq)
+
+unSecurityPolicyViolationEvent (SecurityPolicyViolationEvent o) = o
+
+instance ToJSRef SecurityPolicyViolationEvent where
+  toJSRef = return . unSecurityPolicyViolationEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SecurityPolicyViolationEvent where
+  fromJSRef = return . fmap SecurityPolicyViolationEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsSecurityPolicyViolationEvent o
+toSecurityPolicyViolationEvent :: IsSecurityPolicyViolationEvent o => o -> SecurityPolicyViolationEvent
+toSecurityPolicyViolationEvent = unsafeCastGObject . toGObject
+
+instance IsSecurityPolicyViolationEvent SecurityPolicyViolationEvent
+instance IsEvent SecurityPolicyViolationEvent
+instance GObjectClass SecurityPolicyViolationEvent where
+  toGObject = GObject . castRef . unSecurityPolicyViolationEvent
+  unsafeCastGObject = SecurityPolicyViolationEvent . castRef . unGObject
+
+castToSecurityPolicyViolationEvent :: GObjectClass obj => obj -> SecurityPolicyViolationEvent
+castToSecurityPolicyViolationEvent = castTo gTypeSecurityPolicyViolationEvent "SecurityPolicyViolationEvent"
+
+foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTypeSecurityPolicyViolationEvent' :: JSRef GType
+gTypeSecurityPolicyViolationEvent = GType gTypeSecurityPolicyViolationEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SharedWorker".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker Mozilla SharedWorker documentation>
+newtype SharedWorker = SharedWorker (JSRef SharedWorker) deriving (Eq)
+
+unSharedWorker (SharedWorker o) = o
+
+instance ToJSRef SharedWorker where
+  toJSRef = return . unSharedWorker
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SharedWorker where
+  fromJSRef = return . fmap SharedWorker . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsSharedWorker o
+toSharedWorker :: IsSharedWorker o => o -> SharedWorker
+toSharedWorker = unsafeCastGObject . toGObject
+
+instance IsSharedWorker SharedWorker
+instance IsEventTarget SharedWorker
+instance GObjectClass SharedWorker where
+  toGObject = GObject . castRef . unSharedWorker
+  unsafeCastGObject = SharedWorker . castRef . unGObject
+
+castToSharedWorker :: GObjectClass obj => obj -> SharedWorker
+castToSharedWorker = castTo gTypeSharedWorker "SharedWorker"
+
+foreign import javascript unsafe "window[\"SharedWorker\"]" gTypeSharedWorker' :: JSRef GType
+gTypeSharedWorker = GType gTypeSharedWorker'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SharedWorkerGlobalScope".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.WorkerGlobalScope"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SharedWorkerGlobalScope Mozilla SharedWorkerGlobalScope documentation>
+newtype SharedWorkerGlobalScope = SharedWorkerGlobalScope (JSRef SharedWorkerGlobalScope) deriving (Eq)
+
+unSharedWorkerGlobalScope (SharedWorkerGlobalScope o) = o
+
+instance ToJSRef SharedWorkerGlobalScope where
+  toJSRef = return . unSharedWorkerGlobalScope
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SharedWorkerGlobalScope where
+  fromJSRef = return . fmap SharedWorkerGlobalScope . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsWorkerGlobalScope o => IsSharedWorkerGlobalScope o
+toSharedWorkerGlobalScope :: IsSharedWorkerGlobalScope o => o -> SharedWorkerGlobalScope
+toSharedWorkerGlobalScope = unsafeCastGObject . toGObject
+
+instance IsSharedWorkerGlobalScope SharedWorkerGlobalScope
+instance IsWorkerGlobalScope SharedWorkerGlobalScope
+instance GObjectClass SharedWorkerGlobalScope where
+  toGObject = GObject . castRef . unSharedWorkerGlobalScope
+  unsafeCastGObject = SharedWorkerGlobalScope . castRef . unGObject
+
+castToSharedWorkerGlobalScope :: GObjectClass obj => obj -> SharedWorkerGlobalScope
+castToSharedWorkerGlobalScope = castTo gTypeSharedWorkerGlobalScope "SharedWorkerGlobalScope"
+
+foreign import javascript unsafe "window[\"SharedWorkerGlobalScope\"]" gTypeSharedWorkerGlobalScope' :: JSRef GType
+gTypeSharedWorkerGlobalScope = GType gTypeSharedWorkerGlobalScope'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SourceBuffer".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer Mozilla SourceBuffer documentation>
+newtype SourceBuffer = SourceBuffer (JSRef SourceBuffer) deriving (Eq)
+
+unSourceBuffer (SourceBuffer o) = o
+
+instance ToJSRef SourceBuffer where
+  toJSRef = return . unSourceBuffer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SourceBuffer where
+  fromJSRef = return . fmap SourceBuffer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsSourceBuffer o
+toSourceBuffer :: IsSourceBuffer o => o -> SourceBuffer
+toSourceBuffer = unsafeCastGObject . toGObject
+
+instance IsSourceBuffer SourceBuffer
+instance IsEventTarget SourceBuffer
+instance GObjectClass SourceBuffer where
+  toGObject = GObject . castRef . unSourceBuffer
+  unsafeCastGObject = SourceBuffer . castRef . unGObject
+
+castToSourceBuffer :: GObjectClass obj => obj -> SourceBuffer
+castToSourceBuffer = castTo gTypeSourceBuffer "SourceBuffer"
+
+foreign import javascript unsafe "window[\"SourceBuffer\"]" gTypeSourceBuffer' :: JSRef GType
+gTypeSourceBuffer = GType gTypeSourceBuffer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SourceBufferList".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SourceBufferList Mozilla SourceBufferList documentation>
+newtype SourceBufferList = SourceBufferList (JSRef SourceBufferList) deriving (Eq)
+
+unSourceBufferList (SourceBufferList o) = o
+
+instance ToJSRef SourceBufferList where
+  toJSRef = return . unSourceBufferList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SourceBufferList where
+  fromJSRef = return . fmap SourceBufferList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsSourceBufferList o
+toSourceBufferList :: IsSourceBufferList o => o -> SourceBufferList
+toSourceBufferList = unsafeCastGObject . toGObject
+
+instance IsSourceBufferList SourceBufferList
+instance IsEventTarget SourceBufferList
+instance GObjectClass SourceBufferList where
+  toGObject = GObject . castRef . unSourceBufferList
+  unsafeCastGObject = SourceBufferList . castRef . unGObject
+
+castToSourceBufferList :: GObjectClass obj => obj -> SourceBufferList
+castToSourceBufferList = castTo gTypeSourceBufferList "SourceBufferList"
+
+foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBufferList' :: JSRef GType
+gTypeSourceBufferList = GType gTypeSourceBufferList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SourceInfo".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SourceInfo Mozilla SourceInfo documentation>
+newtype SourceInfo = SourceInfo (JSRef SourceInfo) deriving (Eq)
+
+unSourceInfo (SourceInfo o) = o
+
+instance ToJSRef SourceInfo where
+  toJSRef = return . unSourceInfo
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SourceInfo where
+  fromJSRef = return . fmap SourceInfo . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSourceInfo o
+toSourceInfo :: IsSourceInfo o => o -> SourceInfo
+toSourceInfo = unsafeCastGObject . toGObject
+
+instance IsSourceInfo SourceInfo
+instance GObjectClass SourceInfo where
+  toGObject = GObject . castRef . unSourceInfo
+  unsafeCastGObject = SourceInfo . castRef . unGObject
+
+castToSourceInfo :: GObjectClass obj => obj -> SourceInfo
+castToSourceInfo = castTo gTypeSourceInfo "SourceInfo"
+
+foreign import javascript unsafe "window[\"SourceInfo\"]" gTypeSourceInfo' :: JSRef GType
+gTypeSourceInfo = GType gTypeSourceInfo'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis Mozilla SpeechSynthesis documentation>
+newtype SpeechSynthesis = SpeechSynthesis (JSRef SpeechSynthesis) deriving (Eq)
+
+unSpeechSynthesis (SpeechSynthesis o) = o
+
+instance ToJSRef SpeechSynthesis where
+  toJSRef = return . unSpeechSynthesis
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SpeechSynthesis where
+  fromJSRef = return . fmap SpeechSynthesis . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSpeechSynthesis o
+toSpeechSynthesis :: IsSpeechSynthesis o => o -> SpeechSynthesis
+toSpeechSynthesis = unsafeCastGObject . toGObject
+
+instance IsSpeechSynthesis SpeechSynthesis
+instance GObjectClass SpeechSynthesis where
+  toGObject = GObject . castRef . unSpeechSynthesis
+  unsafeCastGObject = SpeechSynthesis . castRef . unGObject
+
+castToSpeechSynthesis :: GObjectClass obj => obj -> SpeechSynthesis
+castToSpeechSynthesis = castTo gTypeSpeechSynthesis "SpeechSynthesis"
+
+foreign import javascript unsafe "window[\"SpeechSynthesis\"]" gTypeSpeechSynthesis' :: JSRef GType
+gTypeSpeechSynthesis = GType gTypeSpeechSynthesis'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent Mozilla SpeechSynthesisEvent documentation>
+newtype SpeechSynthesisEvent = SpeechSynthesisEvent (JSRef SpeechSynthesisEvent) deriving (Eq)
+
+unSpeechSynthesisEvent (SpeechSynthesisEvent o) = o
+
+instance ToJSRef SpeechSynthesisEvent where
+  toJSRef = return . unSpeechSynthesisEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SpeechSynthesisEvent where
+  fromJSRef = return . fmap SpeechSynthesisEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsSpeechSynthesisEvent o
+toSpeechSynthesisEvent :: IsSpeechSynthesisEvent o => o -> SpeechSynthesisEvent
+toSpeechSynthesisEvent = unsafeCastGObject . toGObject
+
+instance IsSpeechSynthesisEvent SpeechSynthesisEvent
+instance IsEvent SpeechSynthesisEvent
+instance GObjectClass SpeechSynthesisEvent where
+  toGObject = GObject . castRef . unSpeechSynthesisEvent
+  unsafeCastGObject = SpeechSynthesisEvent . castRef . unGObject
+
+castToSpeechSynthesisEvent :: GObjectClass obj => obj -> SpeechSynthesisEvent
+castToSpeechSynthesisEvent = castTo gTypeSpeechSynthesisEvent "SpeechSynthesisEvent"
+
+foreign import javascript unsafe "window[\"SpeechSynthesisEvent\"]" gTypeSpeechSynthesisEvent' :: JSRef GType
+gTypeSpeechSynthesisEvent = GType gTypeSpeechSynthesisEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisUtterance".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance Mozilla SpeechSynthesisUtterance documentation>
+newtype SpeechSynthesisUtterance = SpeechSynthesisUtterance (JSRef SpeechSynthesisUtterance) deriving (Eq)
+
+unSpeechSynthesisUtterance (SpeechSynthesisUtterance o) = o
+
+instance ToJSRef SpeechSynthesisUtterance where
+  toJSRef = return . unSpeechSynthesisUtterance
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SpeechSynthesisUtterance where
+  fromJSRef = return . fmap SpeechSynthesisUtterance . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSpeechSynthesisUtterance o
+toSpeechSynthesisUtterance :: IsSpeechSynthesisUtterance o => o -> SpeechSynthesisUtterance
+toSpeechSynthesisUtterance = unsafeCastGObject . toGObject
+
+instance IsSpeechSynthesisUtterance SpeechSynthesisUtterance
+instance GObjectClass SpeechSynthesisUtterance where
+  toGObject = GObject . castRef . unSpeechSynthesisUtterance
+  unsafeCastGObject = SpeechSynthesisUtterance . castRef . unGObject
+
+castToSpeechSynthesisUtterance :: GObjectClass obj => obj -> SpeechSynthesisUtterance
+castToSpeechSynthesisUtterance = castTo gTypeSpeechSynthesisUtterance "SpeechSynthesisUtterance"
+
+foreign import javascript unsafe "window[\"SpeechSynthesisUtterance\"]" gTypeSpeechSynthesisUtterance' :: JSRef GType
+gTypeSpeechSynthesisUtterance = GType gTypeSpeechSynthesisUtterance'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisVoice".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice Mozilla SpeechSynthesisVoice documentation>
+newtype SpeechSynthesisVoice = SpeechSynthesisVoice (JSRef SpeechSynthesisVoice) deriving (Eq)
+
+unSpeechSynthesisVoice (SpeechSynthesisVoice o) = o
+
+instance ToJSRef SpeechSynthesisVoice where
+  toJSRef = return . unSpeechSynthesisVoice
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SpeechSynthesisVoice where
+  fromJSRef = return . fmap SpeechSynthesisVoice . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSpeechSynthesisVoice o
+toSpeechSynthesisVoice :: IsSpeechSynthesisVoice o => o -> SpeechSynthesisVoice
+toSpeechSynthesisVoice = unsafeCastGObject . toGObject
+
+instance IsSpeechSynthesisVoice SpeechSynthesisVoice
+instance GObjectClass SpeechSynthesisVoice where
+  toGObject = GObject . castRef . unSpeechSynthesisVoice
+  unsafeCastGObject = SpeechSynthesisVoice . castRef . unGObject
+
+castToSpeechSynthesisVoice :: GObjectClass obj => obj -> SpeechSynthesisVoice
+castToSpeechSynthesisVoice = castTo gTypeSpeechSynthesisVoice "SpeechSynthesisVoice"
+
+foreign import javascript unsafe "window[\"SpeechSynthesisVoice\"]" gTypeSpeechSynthesisVoice' :: JSRef GType
+gTypeSpeechSynthesisVoice = GType gTypeSpeechSynthesisVoice'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Storage".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Storage Mozilla Storage documentation>
 newtype Storage = Storage (JSRef Storage) deriving (Eq)
 
 unStorage (Storage o) = o
@@ -9878,6 +20152,81 @@ type IsStorage o = StorageClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StorageErrorCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation>
+newtype StorageErrorCallback = StorageErrorCallback (JSRef StorageErrorCallback) deriving (Eq)
+
+unStorageErrorCallback (StorageErrorCallback o) = o
+
+instance ToJSRef StorageErrorCallback where
+  toJSRef = return . unStorageErrorCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef StorageErrorCallback where
+  fromJSRef = return . fmap StorageErrorCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsStorageErrorCallback o
+toStorageErrorCallback :: IsStorageErrorCallback o => o -> StorageErrorCallback
+toStorageErrorCallback = unsafeCastGObject . toGObject
+
+instance IsStorageErrorCallback StorageErrorCallback
+instance GObjectClass StorageErrorCallback where
+  toGObject = GObject . castRef . unStorageErrorCallback
+  unsafeCastGObject = StorageErrorCallback . castRef . unGObject
+
+castToStorageErrorCallback :: GObjectClass obj => obj -> StorageErrorCallback
+castToStorageErrorCallback = castTo gTypeStorageErrorCallback "StorageErrorCallback"
+
+foreign import javascript unsafe "window[\"StorageErrorCallback\"]" gTypeStorageErrorCallback' :: JSRef GType
+gTypeStorageErrorCallback = GType gTypeStorageErrorCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StorageEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent Mozilla StorageEvent documentation>
+newtype StorageEvent = StorageEvent (JSRef StorageEvent) deriving (Eq)
+
+unStorageEvent (StorageEvent o) = o
+
+instance ToJSRef StorageEvent where
+  toJSRef = return . unStorageEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef StorageEvent where
+  fromJSRef = return . fmap StorageEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsStorageEvent o
+toStorageEvent :: IsStorageEvent o => o -> StorageEvent
+toStorageEvent = unsafeCastGObject . toGObject
+
+instance IsStorageEvent StorageEvent
+instance IsEvent StorageEvent
+instance GObjectClass StorageEvent where
+  toGObject = GObject . castRef . unStorageEvent
+  unsafeCastGObject = StorageEvent . castRef . unGObject
+
+castToStorageEvent :: GObjectClass obj => obj -> StorageEvent
+castToStorageEvent = castTo gTypeStorageEvent "StorageEvent"
+
+foreign import javascript unsafe "window[\"StorageEvent\"]" gTypeStorageEvent' :: JSRef GType
+gTypeStorageEvent = GType gTypeStorageEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StorageInfo".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo Mozilla StorageInfo documentation>
 newtype StorageInfo = StorageInfo (JSRef StorageInfo) deriving (Eq)
 
 unStorageInfo (StorageInfo o) = o
@@ -9905,10 +20254,150 @@ castToStorageInfo = castTo gTypeStorageInfo "StorageInfo"
 foreign import javascript unsafe "window[\"StorageInfo\"]" gTypeStorageInfo' :: JSRef GType
 gTypeStorageInfo = GType gTypeStorageInfo'
 #else
+type IsStorageInfo o = StorageInfoClass o
 #endif
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StorageQuota".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota Mozilla StorageQuota documentation>
+newtype StorageQuota = StorageQuota (JSRef StorageQuota) deriving (Eq)
+
+unStorageQuota (StorageQuota o) = o
+
+instance ToJSRef StorageQuota where
+  toJSRef = return . unStorageQuota
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef StorageQuota where
+  fromJSRef = return . fmap StorageQuota . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsStorageQuota o
+toStorageQuota :: IsStorageQuota o => o -> StorageQuota
+toStorageQuota = unsafeCastGObject . toGObject
+
+instance IsStorageQuota StorageQuota
+instance GObjectClass StorageQuota where
+  toGObject = GObject . castRef . unStorageQuota
+  unsafeCastGObject = StorageQuota . castRef . unGObject
+
+castToStorageQuota :: GObjectClass obj => obj -> StorageQuota
+castToStorageQuota = castTo gTypeStorageQuota "StorageQuota"
+
+foreign import javascript unsafe "window[\"StorageQuota\"]" gTypeStorageQuota' :: JSRef GType
+gTypeStorageQuota = GType gTypeStorageQuota'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StorageQuotaCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation>
+newtype StorageQuotaCallback = StorageQuotaCallback (JSRef StorageQuotaCallback) deriving (Eq)
+
+unStorageQuotaCallback (StorageQuotaCallback o) = o
+
+instance ToJSRef StorageQuotaCallback where
+  toJSRef = return . unStorageQuotaCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef StorageQuotaCallback where
+  fromJSRef = return . fmap StorageQuotaCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsStorageQuotaCallback o
+toStorageQuotaCallback :: IsStorageQuotaCallback o => o -> StorageQuotaCallback
+toStorageQuotaCallback = unsafeCastGObject . toGObject
+
+instance IsStorageQuotaCallback StorageQuotaCallback
+instance GObjectClass StorageQuotaCallback where
+  toGObject = GObject . castRef . unStorageQuotaCallback
+  unsafeCastGObject = StorageQuotaCallback . castRef . unGObject
+
+castToStorageQuotaCallback :: GObjectClass obj => obj -> StorageQuotaCallback
+castToStorageQuotaCallback = castTo gTypeStorageQuotaCallback "StorageQuotaCallback"
+
+foreign import javascript unsafe "window[\"StorageQuotaCallback\"]" gTypeStorageQuotaCallback' :: JSRef GType
+gTypeStorageQuotaCallback = GType gTypeStorageQuotaCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StorageUsageCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation>
+newtype StorageUsageCallback = StorageUsageCallback (JSRef StorageUsageCallback) deriving (Eq)
+
+unStorageUsageCallback (StorageUsageCallback o) = o
+
+instance ToJSRef StorageUsageCallback where
+  toJSRef = return . unStorageUsageCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef StorageUsageCallback where
+  fromJSRef = return . fmap StorageUsageCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsStorageUsageCallback o
+toStorageUsageCallback :: IsStorageUsageCallback o => o -> StorageUsageCallback
+toStorageUsageCallback = unsafeCastGObject . toGObject
+
+instance IsStorageUsageCallback StorageUsageCallback
+instance GObjectClass StorageUsageCallback where
+  toGObject = GObject . castRef . unStorageUsageCallback
+  unsafeCastGObject = StorageUsageCallback . castRef . unGObject
+
+castToStorageUsageCallback :: GObjectClass obj => obj -> StorageUsageCallback
+castToStorageUsageCallback = castTo gTypeStorageUsageCallback "StorageUsageCallback"
+
+foreign import javascript unsafe "window[\"StorageUsageCallback\"]" gTypeStorageUsageCallback' :: JSRef GType
+gTypeStorageUsageCallback = GType gTypeStorageUsageCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StringCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation>
+newtype StringCallback = StringCallback (JSRef StringCallback) deriving (Eq)
+
+unStringCallback (StringCallback o) = o
+
+instance ToJSRef StringCallback where
+  toJSRef = return . unStringCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef StringCallback where
+  fromJSRef = return . fmap StringCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsStringCallback o
+toStringCallback :: IsStringCallback o => o -> StringCallback
+toStringCallback = unsafeCastGObject . toGObject
+
+instance IsStringCallback StringCallback
+instance GObjectClass StringCallback where
+  toGObject = GObject . castRef . unStringCallback
+  unsafeCastGObject = StringCallback . castRef . unGObject
+
+castToStringCallback :: GObjectClass obj => obj -> StringCallback
+castToStringCallback = castTo gTypeStringCallback "StringCallback"
+
+foreign import javascript unsafe "window[\"StringCallback\"]" gTypeStringCallback' :: JSRef GType
+gTypeStringCallback = GType gTypeStringCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StyleMedia".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia Mozilla StyleMedia documentation>
 newtype StyleMedia = StyleMedia (JSRef StyleMedia) deriving (Eq)
 
 unStyleMedia (StyleMedia o) = o
@@ -9941,6 +20430,9 @@ type IsStyleMedia o = StyleMediaClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StyleSheet".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet Mozilla StyleSheet documentation>
 newtype StyleSheet = StyleSheet (JSRef StyleSheet) deriving (Eq)
 
 unStyleSheet (StyleSheet o) = o
@@ -9973,6 +20465,9 @@ type IsStyleSheet o = StyleSheetClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.StyleSheetList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList Mozilla StyleSheetList documentation>
 newtype StyleSheetList = StyleSheetList (JSRef StyleSheetList) deriving (Eq)
 
 unStyleSheetList (StyleSheetList o) = o
@@ -10005,6 +20500,47 @@ type IsStyleSheetList o = StyleSheetListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SubtleCrypto".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto Mozilla WebKitSubtleCrypto documentation>
+newtype SubtleCrypto = SubtleCrypto (JSRef SubtleCrypto) deriving (Eq)
+
+unSubtleCrypto (SubtleCrypto o) = o
+
+instance ToJSRef SubtleCrypto where
+  toJSRef = return . unSubtleCrypto
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SubtleCrypto where
+  fromJSRef = return . fmap SubtleCrypto . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsSubtleCrypto o
+toSubtleCrypto :: IsSubtleCrypto o => o -> SubtleCrypto
+toSubtleCrypto = unsafeCastGObject . toGObject
+
+instance IsSubtleCrypto SubtleCrypto
+instance GObjectClass SubtleCrypto where
+  toGObject = GObject . castRef . unSubtleCrypto
+  unsafeCastGObject = SubtleCrypto . castRef . unGObject
+
+castToSubtleCrypto :: GObjectClass obj => obj -> SubtleCrypto
+castToSubtleCrypto = castTo gTypeSubtleCrypto "SubtleCrypto"
+
+foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeSubtleCrypto' :: JSRef GType
+gTypeSubtleCrypto = GType gTypeSubtleCrypto'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Text".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CharacterData"
+--     * "GHCJS.DOM.Node"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Text Mozilla Text documentation>
 newtype Text = Text (JSRef Text) deriving (Eq)
 
 unText (Text o) = o
@@ -10039,6 +20575,219 @@ type IsText o = TextClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TextEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TextEvent Mozilla TextEvent documentation>
+newtype TextEvent = TextEvent (JSRef TextEvent) deriving (Eq)
+
+unTextEvent (TextEvent o) = o
+
+instance ToJSRef TextEvent where
+  toJSRef = return . unTextEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TextEvent where
+  fromJSRef = return . fmap TextEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsUIEvent o => IsTextEvent o
+toTextEvent :: IsTextEvent o => o -> TextEvent
+toTextEvent = unsafeCastGObject . toGObject
+
+instance IsTextEvent TextEvent
+instance IsUIEvent TextEvent
+instance IsEvent TextEvent
+instance GObjectClass TextEvent where
+  toGObject = GObject . castRef . unTextEvent
+  unsafeCastGObject = TextEvent . castRef . unGObject
+
+castToTextEvent :: GObjectClass obj => obj -> TextEvent
+castToTextEvent = castTo gTypeTextEvent "TextEvent"
+
+foreign import javascript unsafe "window[\"TextEvent\"]" gTypeTextEvent' :: JSRef GType
+gTypeTextEvent = GType gTypeTextEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TextMetrics".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics Mozilla TextMetrics documentation>
+newtype TextMetrics = TextMetrics (JSRef TextMetrics) deriving (Eq)
+
+unTextMetrics (TextMetrics o) = o
+
+instance ToJSRef TextMetrics where
+  toJSRef = return . unTextMetrics
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TextMetrics where
+  fromJSRef = return . fmap TextMetrics . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTextMetrics o
+toTextMetrics :: IsTextMetrics o => o -> TextMetrics
+toTextMetrics = unsafeCastGObject . toGObject
+
+instance IsTextMetrics TextMetrics
+instance GObjectClass TextMetrics where
+  toGObject = GObject . castRef . unTextMetrics
+  unsafeCastGObject = TextMetrics . castRef . unGObject
+
+castToTextMetrics :: GObjectClass obj => obj -> TextMetrics
+castToTextMetrics = castTo gTypeTextMetrics "TextMetrics"
+
+foreign import javascript unsafe "window[\"TextMetrics\"]" gTypeTextMetrics' :: JSRef GType
+gTypeTextMetrics = GType gTypeTextMetrics'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TextTrack".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack Mozilla TextTrack documentation>
+newtype TextTrack = TextTrack (JSRef TextTrack) deriving (Eq)
+
+unTextTrack (TextTrack o) = o
+
+instance ToJSRef TextTrack where
+  toJSRef = return . unTextTrack
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TextTrack where
+  fromJSRef = return . fmap TextTrack . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTextTrack o
+toTextTrack :: IsTextTrack o => o -> TextTrack
+toTextTrack = unsafeCastGObject . toGObject
+
+instance IsTextTrack TextTrack
+instance GObjectClass TextTrack where
+  toGObject = GObject . castRef . unTextTrack
+  unsafeCastGObject = TextTrack . castRef . unGObject
+
+castToTextTrack :: GObjectClass obj => obj -> TextTrack
+castToTextTrack = castTo gTypeTextTrack "TextTrack"
+
+foreign import javascript unsafe "window[\"TextTrack\"]" gTypeTextTrack' :: JSRef GType
+gTypeTextTrack = GType gTypeTextTrack'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TextTrackCue".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue Mozilla TextTrackCue documentation>
+newtype TextTrackCue = TextTrackCue (JSRef TextTrackCue) deriving (Eq)
+
+unTextTrackCue (TextTrackCue o) = o
+
+instance ToJSRef TextTrackCue where
+  toJSRef = return . unTextTrackCue
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TextTrackCue where
+  fromJSRef = return . fmap TextTrackCue . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTextTrackCue o
+toTextTrackCue :: IsTextTrackCue o => o -> TextTrackCue
+toTextTrackCue = unsafeCastGObject . toGObject
+
+instance IsTextTrackCue TextTrackCue
+instance GObjectClass TextTrackCue where
+  toGObject = GObject . castRef . unTextTrackCue
+  unsafeCastGObject = TextTrackCue . castRef . unGObject
+
+castToTextTrackCue :: GObjectClass obj => obj -> TextTrackCue
+castToTextTrackCue = castTo gTypeTextTrackCue "TextTrackCue"
+
+foreign import javascript unsafe "window[\"TextTrackCue\"]" gTypeTextTrackCue' :: JSRef GType
+gTypeTextTrackCue = GType gTypeTextTrackCue'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TextTrackCueList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCueList Mozilla TextTrackCueList documentation>
+newtype TextTrackCueList = TextTrackCueList (JSRef TextTrackCueList) deriving (Eq)
+
+unTextTrackCueList (TextTrackCueList o) = o
+
+instance ToJSRef TextTrackCueList where
+  toJSRef = return . unTextTrackCueList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TextTrackCueList where
+  fromJSRef = return . fmap TextTrackCueList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTextTrackCueList o
+toTextTrackCueList :: IsTextTrackCueList o => o -> TextTrackCueList
+toTextTrackCueList = unsafeCastGObject . toGObject
+
+instance IsTextTrackCueList TextTrackCueList
+instance GObjectClass TextTrackCueList where
+  toGObject = GObject . castRef . unTextTrackCueList
+  unsafeCastGObject = TextTrackCueList . castRef . unGObject
+
+castToTextTrackCueList :: GObjectClass obj => obj -> TextTrackCueList
+castToTextTrackCueList = castTo gTypeTextTrackCueList "TextTrackCueList"
+
+foreign import javascript unsafe "window[\"TextTrackCueList\"]" gTypeTextTrackCueList' :: JSRef GType
+gTypeTextTrackCueList = GType gTypeTextTrackCueList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TextTrackList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList Mozilla TextTrackList documentation>
+newtype TextTrackList = TextTrackList (JSRef TextTrackList) deriving (Eq)
+
+unTextTrackList (TextTrackList o) = o
+
+instance ToJSRef TextTrackList where
+  toJSRef = return . unTextTrackList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TextTrackList where
+  fromJSRef = return . fmap TextTrackList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTextTrackList o
+toTextTrackList :: IsTextTrackList o => o -> TextTrackList
+toTextTrackList = unsafeCastGObject . toGObject
+
+instance IsTextTrackList TextTrackList
+instance GObjectClass TextTrackList where
+  toGObject = GObject . castRef . unTextTrackList
+  unsafeCastGObject = TextTrackList . castRef . unGObject
+
+castToTextTrackList :: GObjectClass obj => obj -> TextTrackList
+castToTextTrackList = castTo gTypeTextTrackList "TextTrackList"
+
+foreign import javascript unsafe "window[\"TextTrackList\"]" gTypeTextTrackList' :: JSRef GType
+gTypeTextTrackList = GType gTypeTextTrackList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TimeRanges".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges Mozilla TimeRanges documentation>
 newtype TimeRanges = TimeRanges (JSRef TimeRanges) deriving (Eq)
 
 unTimeRanges (TimeRanges o) = o
@@ -10071,6 +20820,193 @@ type IsTimeRanges o = TimeRangesClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Touch".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Touch Mozilla Touch documentation>
+newtype Touch = Touch (JSRef Touch) deriving (Eq)
+
+unTouch (Touch o) = o
+
+instance ToJSRef Touch where
+  toJSRef = return . unTouch
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Touch where
+  fromJSRef = return . fmap Touch . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTouch o
+toTouch :: IsTouch o => o -> Touch
+toTouch = unsafeCastGObject . toGObject
+
+instance IsTouch Touch
+instance GObjectClass Touch where
+  toGObject = GObject . castRef . unTouch
+  unsafeCastGObject = Touch . castRef . unGObject
+
+castToTouch :: GObjectClass obj => obj -> Touch
+castToTouch = castTo gTypeTouch "Touch"
+
+foreign import javascript unsafe "window[\"Touch\"]" gTypeTouch' :: JSRef GType
+gTypeTouch = GType gTypeTouch'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TouchEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent Mozilla TouchEvent documentation>
+newtype TouchEvent = TouchEvent (JSRef TouchEvent) deriving (Eq)
+
+unTouchEvent (TouchEvent o) = o
+
+instance ToJSRef TouchEvent where
+  toJSRef = return . unTouchEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TouchEvent where
+  fromJSRef = return . fmap TouchEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsUIEvent o => IsTouchEvent o
+toTouchEvent :: IsTouchEvent o => o -> TouchEvent
+toTouchEvent = unsafeCastGObject . toGObject
+
+instance IsTouchEvent TouchEvent
+instance IsUIEvent TouchEvent
+instance IsEvent TouchEvent
+instance GObjectClass TouchEvent where
+  toGObject = GObject . castRef . unTouchEvent
+  unsafeCastGObject = TouchEvent . castRef . unGObject
+
+castToTouchEvent :: GObjectClass obj => obj -> TouchEvent
+castToTouchEvent = castTo gTypeTouchEvent "TouchEvent"
+
+foreign import javascript unsafe "window[\"TouchEvent\"]" gTypeTouchEvent' :: JSRef GType
+gTypeTouchEvent = GType gTypeTouchEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TouchList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TouchList Mozilla TouchList documentation>
+newtype TouchList = TouchList (JSRef TouchList) deriving (Eq)
+
+unTouchList (TouchList o) = o
+
+instance ToJSRef TouchList where
+  toJSRef = return . unTouchList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TouchList where
+  fromJSRef = return . fmap TouchList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTouchList o
+toTouchList :: IsTouchList o => o -> TouchList
+toTouchList = unsafeCastGObject . toGObject
+
+instance IsTouchList TouchList
+instance GObjectClass TouchList where
+  toGObject = GObject . castRef . unTouchList
+  unsafeCastGObject = TouchList . castRef . unGObject
+
+castToTouchList :: GObjectClass obj => obj -> TouchList
+castToTouchList = castTo gTypeTouchList "TouchList"
+
+foreign import javascript unsafe "window[\"TouchList\"]" gTypeTouchList' :: JSRef GType
+gTypeTouchList = GType gTypeTouchList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TrackEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TrackEvent Mozilla TrackEvent documentation>
+newtype TrackEvent = TrackEvent (JSRef TrackEvent) deriving (Eq)
+
+unTrackEvent (TrackEvent o) = o
+
+instance ToJSRef TrackEvent where
+  toJSRef = return . unTrackEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TrackEvent where
+  fromJSRef = return . fmap TrackEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsTrackEvent o
+toTrackEvent :: IsTrackEvent o => o -> TrackEvent
+toTrackEvent = unsafeCastGObject . toGObject
+
+instance IsTrackEvent TrackEvent
+instance IsEvent TrackEvent
+instance GObjectClass TrackEvent where
+  toGObject = GObject . castRef . unTrackEvent
+  unsafeCastGObject = TrackEvent . castRef . unGObject
+
+castToTrackEvent :: GObjectClass obj => obj -> TrackEvent
+castToTrackEvent = castTo gTypeTrackEvent "TrackEvent"
+
+foreign import javascript unsafe "window[\"TrackEvent\"]" gTypeTrackEvent' :: JSRef GType
+gTypeTrackEvent = GType gTypeTrackEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TransitionEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent Mozilla TransitionEvent documentation>
+newtype TransitionEvent = TransitionEvent (JSRef TransitionEvent) deriving (Eq)
+
+unTransitionEvent (TransitionEvent o) = o
+
+instance ToJSRef TransitionEvent where
+  toJSRef = return . unTransitionEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TransitionEvent where
+  fromJSRef = return . fmap TransitionEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsTransitionEvent o
+toTransitionEvent :: IsTransitionEvent o => o -> TransitionEvent
+toTransitionEvent = unsafeCastGObject . toGObject
+
+instance IsTransitionEvent TransitionEvent
+instance IsEvent TransitionEvent
+instance GObjectClass TransitionEvent where
+  toGObject = GObject . castRef . unTransitionEvent
+  unsafeCastGObject = TransitionEvent . castRef . unGObject
+
+castToTransitionEvent :: GObjectClass obj => obj -> TransitionEvent
+castToTransitionEvent = castTo gTypeTransitionEvent "TransitionEvent"
+
+foreign import javascript unsafe "window[\"TransitionEvent\"]" gTypeTransitionEvent' :: JSRef GType
+gTypeTransitionEvent = GType gTypeTransitionEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TreeWalker".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker Mozilla TreeWalker documentation>
 newtype TreeWalker = TreeWalker (JSRef TreeWalker) deriving (Eq)
 
 unTreeWalker (TreeWalker o) = o
@@ -10103,6 +21039,46 @@ type IsTreeWalker o = TreeWalkerClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.TypeConversions".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions Mozilla TypeConversions documentation>
+newtype TypeConversions = TypeConversions (JSRef TypeConversions) deriving (Eq)
+
+unTypeConversions (TypeConversions o) = o
+
+instance ToJSRef TypeConversions where
+  toJSRef = return . unTypeConversions
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef TypeConversions where
+  fromJSRef = return . fmap TypeConversions . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsTypeConversions o
+toTypeConversions :: IsTypeConversions o => o -> TypeConversions
+toTypeConversions = unsafeCastGObject . toGObject
+
+instance IsTypeConversions TypeConversions
+instance GObjectClass TypeConversions where
+  toGObject = GObject . castRef . unTypeConversions
+  unsafeCastGObject = TypeConversions . castRef . unGObject
+
+castToTypeConversions :: GObjectClass obj => obj -> TypeConversions
+castToTypeConversions = castTo gTypeTypeConversions "TypeConversions"
+
+foreign import javascript unsafe "window[\"TypeConversions\"]" gTypeTypeConversions' :: JSRef GType
+gTypeTypeConversions = GType gTypeTypeConversions'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.UIEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent Mozilla UIEvent documentation>
 newtype UIEvent = UIEvent (JSRef UIEvent) deriving (Eq)
 
 unUIEvent (UIEvent o) = o
@@ -10136,6 +21112,257 @@ type IsUIEvent o = UIEventClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.UIRequestEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/UIRequestEvent Mozilla UIRequestEvent documentation>
+newtype UIRequestEvent = UIRequestEvent (JSRef UIRequestEvent) deriving (Eq)
+
+unUIRequestEvent (UIRequestEvent o) = o
+
+instance ToJSRef UIRequestEvent where
+  toJSRef = return . unUIRequestEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef UIRequestEvent where
+  fromJSRef = return . fmap UIRequestEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsUIEvent o => IsUIRequestEvent o
+toUIRequestEvent :: IsUIRequestEvent o => o -> UIRequestEvent
+toUIRequestEvent = unsafeCastGObject . toGObject
+
+instance IsUIRequestEvent UIRequestEvent
+instance IsUIEvent UIRequestEvent
+instance IsEvent UIRequestEvent
+instance GObjectClass UIRequestEvent where
+  toGObject = GObject . castRef . unUIRequestEvent
+  unsafeCastGObject = UIRequestEvent . castRef . unGObject
+
+castToUIRequestEvent :: GObjectClass obj => obj -> UIRequestEvent
+castToUIRequestEvent = castTo gTypeUIRequestEvent "UIRequestEvent"
+
+foreign import javascript unsafe "window[\"UIRequestEvent\"]" gTypeUIRequestEvent' :: JSRef GType
+gTypeUIRequestEvent = GType gTypeUIRequestEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.URLUtils".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils Mozilla URLUtils documentation>
+newtype URLUtils = URLUtils (JSRef URLUtils) deriving (Eq)
+
+unURLUtils (URLUtils o) = o
+
+instance ToJSRef URLUtils where
+  toJSRef = return . unURLUtils
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef URLUtils where
+  fromJSRef = return . fmap URLUtils . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsURLUtils o
+toURLUtils :: IsURLUtils o => o -> URLUtils
+toURLUtils = unsafeCastGObject . toGObject
+
+instance IsURLUtils URLUtils
+instance GObjectClass URLUtils where
+  toGObject = GObject . castRef . unURLUtils
+  unsafeCastGObject = URLUtils . castRef . unGObject
+
+castToURLUtils :: GObjectClass obj => obj -> URLUtils
+castToURLUtils = castTo gTypeURLUtils "URLUtils"
+
+foreign import javascript unsafe "window[\"URLUtils\"]" gTypeURLUtils' :: JSRef GType
+gTypeURLUtils = GType gTypeURLUtils'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandler".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandler Mozilla UserMessageHandler documentation>
+newtype UserMessageHandler = UserMessageHandler (JSRef UserMessageHandler) deriving (Eq)
+
+unUserMessageHandler (UserMessageHandler o) = o
+
+instance ToJSRef UserMessageHandler where
+  toJSRef = return . unUserMessageHandler
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef UserMessageHandler where
+  fromJSRef = return . fmap UserMessageHandler . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsUserMessageHandler o
+toUserMessageHandler :: IsUserMessageHandler o => o -> UserMessageHandler
+toUserMessageHandler = unsafeCastGObject . toGObject
+
+instance IsUserMessageHandler UserMessageHandler
+instance GObjectClass UserMessageHandler where
+  toGObject = GObject . castRef . unUserMessageHandler
+  unsafeCastGObject = UserMessageHandler . castRef . unGObject
+
+castToUserMessageHandler :: GObjectClass obj => obj -> UserMessageHandler
+castToUserMessageHandler = castTo gTypeUserMessageHandler "UserMessageHandler"
+
+foreign import javascript unsafe "window[\"UserMessageHandler\"]" gTypeUserMessageHandler' :: JSRef GType
+gTypeUserMessageHandler = GType gTypeUserMessageHandler'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandlersNamespace".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandlersNamespace Mozilla UserMessageHandlersNamespace documentation>
+newtype UserMessageHandlersNamespace = UserMessageHandlersNamespace (JSRef UserMessageHandlersNamespace) deriving (Eq)
+
+unUserMessageHandlersNamespace (UserMessageHandlersNamespace o) = o
+
+instance ToJSRef UserMessageHandlersNamespace where
+  toJSRef = return . unUserMessageHandlersNamespace
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef UserMessageHandlersNamespace where
+  fromJSRef = return . fmap UserMessageHandlersNamespace . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsUserMessageHandlersNamespace o
+toUserMessageHandlersNamespace :: IsUserMessageHandlersNamespace o => o -> UserMessageHandlersNamespace
+toUserMessageHandlersNamespace = unsafeCastGObject . toGObject
+
+instance IsUserMessageHandlersNamespace UserMessageHandlersNamespace
+instance GObjectClass UserMessageHandlersNamespace where
+  toGObject = GObject . castRef . unUserMessageHandlersNamespace
+  unsafeCastGObject = UserMessageHandlersNamespace . castRef . unGObject
+
+castToUserMessageHandlersNamespace :: GObjectClass obj => obj -> UserMessageHandlersNamespace
+castToUserMessageHandlersNamespace = castTo gTypeUserMessageHandlersNamespace "UserMessageHandlersNamespace"
+
+foreign import javascript unsafe "window[\"UserMessageHandlersNamespace\"]" gTypeUserMessageHandlersNamespace' :: JSRef GType
+gTypeUserMessageHandlersNamespace = GType gTypeUserMessageHandlersNamespace'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VTTCue".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.TextTrackCue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue Mozilla VTTCue documentation>
+newtype VTTCue = VTTCue (JSRef VTTCue) deriving (Eq)
+
+unVTTCue (VTTCue o) = o
+
+instance ToJSRef VTTCue where
+  toJSRef = return . unVTTCue
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VTTCue where
+  fromJSRef = return . fmap VTTCue . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsTextTrackCue o => IsVTTCue o
+toVTTCue :: IsVTTCue o => o -> VTTCue
+toVTTCue = unsafeCastGObject . toGObject
+
+instance IsVTTCue VTTCue
+instance IsTextTrackCue VTTCue
+instance GObjectClass VTTCue where
+  toGObject = GObject . castRef . unVTTCue
+  unsafeCastGObject = VTTCue . castRef . unGObject
+
+castToVTTCue :: GObjectClass obj => obj -> VTTCue
+castToVTTCue = castTo gTypeVTTCue "VTTCue"
+
+foreign import javascript unsafe "window[\"VTTCue\"]" gTypeVTTCue' :: JSRef GType
+gTypeVTTCue = GType gTypeVTTCue'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VTTRegion".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion Mozilla VTTRegion documentation>
+newtype VTTRegion = VTTRegion (JSRef VTTRegion) deriving (Eq)
+
+unVTTRegion (VTTRegion o) = o
+
+instance ToJSRef VTTRegion where
+  toJSRef = return . unVTTRegion
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VTTRegion where
+  fromJSRef = return . fmap VTTRegion . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsVTTRegion o
+toVTTRegion :: IsVTTRegion o => o -> VTTRegion
+toVTTRegion = unsafeCastGObject . toGObject
+
+instance IsVTTRegion VTTRegion
+instance GObjectClass VTTRegion where
+  toGObject = GObject . castRef . unVTTRegion
+  unsafeCastGObject = VTTRegion . castRef . unGObject
+
+castToVTTRegion :: GObjectClass obj => obj -> VTTRegion
+castToVTTRegion = castTo gTypeVTTRegion "VTTRegion"
+
+foreign import javascript unsafe "window[\"VTTRegion\"]" gTypeVTTRegion' :: JSRef GType
+gTypeVTTRegion = GType gTypeVTTRegion'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VTTRegionList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList Mozilla VTTRegionList documentation>
+newtype VTTRegionList = VTTRegionList (JSRef VTTRegionList) deriving (Eq)
+
+unVTTRegionList (VTTRegionList o) = o
+
+instance ToJSRef VTTRegionList where
+  toJSRef = return . unVTTRegionList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VTTRegionList where
+  fromJSRef = return . fmap VTTRegionList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsVTTRegionList o
+toVTTRegionList :: IsVTTRegionList o => o -> VTTRegionList
+toVTTRegionList = unsafeCastGObject . toGObject
+
+instance IsVTTRegionList VTTRegionList
+instance GObjectClass VTTRegionList where
+  toGObject = GObject . castRef . unVTTRegionList
+  unsafeCastGObject = VTTRegionList . castRef . unGObject
+
+castToVTTRegionList :: GObjectClass obj => obj -> VTTRegionList
+castToVTTRegionList = castTo gTypeVTTRegionList "VTTRegionList"
+
+foreign import javascript unsafe "window[\"VTTRegionList\"]" gTypeVTTRegionList' :: JSRef GType
+gTypeVTTRegionList = GType gTypeVTTRegionList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ValidityState".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ValidityState Mozilla ValidityState documentation>
 newtype ValidityState = ValidityState (JSRef ValidityState) deriving (Eq)
 
 unValidityState (ValidityState o) = o
@@ -10168,6 +21395,1173 @@ type IsValidityState o = ValidityStateClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VideoPlaybackQuality".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality Mozilla VideoPlaybackQuality documentation>
+newtype VideoPlaybackQuality = VideoPlaybackQuality (JSRef VideoPlaybackQuality) deriving (Eq)
+
+unVideoPlaybackQuality (VideoPlaybackQuality o) = o
+
+instance ToJSRef VideoPlaybackQuality where
+  toJSRef = return . unVideoPlaybackQuality
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VideoPlaybackQuality where
+  fromJSRef = return . fmap VideoPlaybackQuality . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsVideoPlaybackQuality o
+toVideoPlaybackQuality :: IsVideoPlaybackQuality o => o -> VideoPlaybackQuality
+toVideoPlaybackQuality = unsafeCastGObject . toGObject
+
+instance IsVideoPlaybackQuality VideoPlaybackQuality
+instance GObjectClass VideoPlaybackQuality where
+  toGObject = GObject . castRef . unVideoPlaybackQuality
+  unsafeCastGObject = VideoPlaybackQuality . castRef . unGObject
+
+castToVideoPlaybackQuality :: GObjectClass obj => obj -> VideoPlaybackQuality
+castToVideoPlaybackQuality = castTo gTypeVideoPlaybackQuality "VideoPlaybackQuality"
+
+foreign import javascript unsafe "window[\"VideoPlaybackQuality\"]" gTypeVideoPlaybackQuality' :: JSRef GType
+gTypeVideoPlaybackQuality = GType gTypeVideoPlaybackQuality'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VideoStreamTrack".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.MediaStreamTrack"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VideoStreamTrack Mozilla VideoStreamTrack documentation>
+newtype VideoStreamTrack = VideoStreamTrack (JSRef VideoStreamTrack) deriving (Eq)
+
+unVideoStreamTrack (VideoStreamTrack o) = o
+
+instance ToJSRef VideoStreamTrack where
+  toJSRef = return . unVideoStreamTrack
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VideoStreamTrack where
+  fromJSRef = return . fmap VideoStreamTrack . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsMediaStreamTrack o => IsVideoStreamTrack o
+toVideoStreamTrack :: IsVideoStreamTrack o => o -> VideoStreamTrack
+toVideoStreamTrack = unsafeCastGObject . toGObject
+
+instance IsVideoStreamTrack VideoStreamTrack
+instance IsMediaStreamTrack VideoStreamTrack
+instance GObjectClass VideoStreamTrack where
+  toGObject = GObject . castRef . unVideoStreamTrack
+  unsafeCastGObject = VideoStreamTrack . castRef . unGObject
+
+castToVideoStreamTrack :: GObjectClass obj => obj -> VideoStreamTrack
+castToVideoStreamTrack = castTo gTypeVideoStreamTrack "VideoStreamTrack"
+
+foreign import javascript unsafe "window[\"VideoStreamTrack\"]" gTypeVideoStreamTrack' :: JSRef GType
+gTypeVideoStreamTrack = GType gTypeVideoStreamTrack'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VideoTrack".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack Mozilla VideoTrack documentation>
+newtype VideoTrack = VideoTrack (JSRef VideoTrack) deriving (Eq)
+
+unVideoTrack (VideoTrack o) = o
+
+instance ToJSRef VideoTrack where
+  toJSRef = return . unVideoTrack
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VideoTrack where
+  fromJSRef = return . fmap VideoTrack . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsVideoTrack o
+toVideoTrack :: IsVideoTrack o => o -> VideoTrack
+toVideoTrack = unsafeCastGObject . toGObject
+
+instance IsVideoTrack VideoTrack
+instance GObjectClass VideoTrack where
+  toGObject = GObject . castRef . unVideoTrack
+  unsafeCastGObject = VideoTrack . castRef . unGObject
+
+castToVideoTrack :: GObjectClass obj => obj -> VideoTrack
+castToVideoTrack = castTo gTypeVideoTrack "VideoTrack"
+
+foreign import javascript unsafe "window[\"VideoTrack\"]" gTypeVideoTrack' :: JSRef GType
+gTypeVideoTrack = GType gTypeVideoTrack'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VideoTrackList".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList Mozilla VideoTrackList documentation>
+newtype VideoTrackList = VideoTrackList (JSRef VideoTrackList) deriving (Eq)
+
+unVideoTrackList (VideoTrackList o) = o
+
+instance ToJSRef VideoTrackList where
+  toJSRef = return . unVideoTrackList
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VideoTrackList where
+  fromJSRef = return . fmap VideoTrackList . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsVideoTrackList o
+toVideoTrackList :: IsVideoTrackList o => o -> VideoTrackList
+toVideoTrackList = unsafeCastGObject . toGObject
+
+instance IsVideoTrackList VideoTrackList
+instance GObjectClass VideoTrackList where
+  toGObject = GObject . castRef . unVideoTrackList
+  unsafeCastGObject = VideoTrackList . castRef . unGObject
+
+castToVideoTrackList :: GObjectClass obj => obj -> VideoTrackList
+castToVideoTrackList = castTo gTypeVideoTrackList "VideoTrackList"
+
+foreign import javascript unsafe "window[\"VideoTrackList\"]" gTypeVideoTrackList' :: JSRef GType
+gTypeVideoTrackList = GType gTypeVideoTrackList'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.VoidCallback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/VoidCallback Mozilla VoidCallback documentation>
+newtype VoidCallback = VoidCallback (JSRef VoidCallback) deriving (Eq)
+
+unVoidCallback (VoidCallback o) = o
+
+instance ToJSRef VoidCallback where
+  toJSRef = return . unVoidCallback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef VoidCallback where
+  fromJSRef = return . fmap VoidCallback . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsVoidCallback o
+toVoidCallback :: IsVoidCallback o => o -> VoidCallback
+toVoidCallback = unsafeCastGObject . toGObject
+
+instance IsVoidCallback VoidCallback
+instance GObjectClass VoidCallback where
+  toGObject = GObject . castRef . unVoidCallback
+  unsafeCastGObject = VoidCallback . castRef . unGObject
+
+castToVoidCallback :: GObjectClass obj => obj -> VoidCallback
+castToVoidCallback = castTo gTypeVoidCallback "VoidCallback"
+
+foreign import javascript unsafe "window[\"VoidCallback\"]" gTypeVoidCallback' :: JSRef GType
+gTypeVoidCallback = GType gTypeVoidCallback'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WaveShaperNode".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.AudioNode"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode Mozilla WaveShaperNode documentation>
+newtype WaveShaperNode = WaveShaperNode (JSRef WaveShaperNode) deriving (Eq)
+
+unWaveShaperNode (WaveShaperNode o) = o
+
+instance ToJSRef WaveShaperNode where
+  toJSRef = return . unWaveShaperNode
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WaveShaperNode where
+  fromJSRef = return . fmap WaveShaperNode . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsAudioNode o => IsWaveShaperNode o
+toWaveShaperNode :: IsWaveShaperNode o => o -> WaveShaperNode
+toWaveShaperNode = unsafeCastGObject . toGObject
+
+instance IsWaveShaperNode WaveShaperNode
+instance IsAudioNode WaveShaperNode
+instance IsEventTarget WaveShaperNode
+instance GObjectClass WaveShaperNode where
+  toGObject = GObject . castRef . unWaveShaperNode
+  unsafeCastGObject = WaveShaperNode . castRef . unGObject
+
+castToWaveShaperNode :: GObjectClass obj => obj -> WaveShaperNode
+castToWaveShaperNode = castTo gTypeWaveShaperNode "WaveShaperNode"
+
+foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNode' :: JSRef GType
+gTypeWaveShaperNode = GType gTypeWaveShaperNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLActiveInfo".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo Mozilla WebGLActiveInfo documentation>
+newtype WebGLActiveInfo = WebGLActiveInfo (JSRef WebGLActiveInfo) deriving (Eq)
+
+unWebGLActiveInfo (WebGLActiveInfo o) = o
+
+instance ToJSRef WebGLActiveInfo where
+  toJSRef = return . unWebGLActiveInfo
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLActiveInfo where
+  fromJSRef = return . fmap WebGLActiveInfo . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLActiveInfo o
+toWebGLActiveInfo :: IsWebGLActiveInfo o => o -> WebGLActiveInfo
+toWebGLActiveInfo = unsafeCastGObject . toGObject
+
+instance IsWebGLActiveInfo WebGLActiveInfo
+instance GObjectClass WebGLActiveInfo where
+  toGObject = GObject . castRef . unWebGLActiveInfo
+  unsafeCastGObject = WebGLActiveInfo . castRef . unGObject
+
+castToWebGLActiveInfo :: GObjectClass obj => obj -> WebGLActiveInfo
+castToWebGLActiveInfo = castTo gTypeWebGLActiveInfo "WebGLActiveInfo"
+
+foreign import javascript unsafe "window[\"WebGLActiveInfo\"]" gTypeWebGLActiveInfo' :: JSRef GType
+gTypeWebGLActiveInfo = GType gTypeWebGLActiveInfo'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLBuffer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLBuffer Mozilla WebGLBuffer documentation>
+newtype WebGLBuffer = WebGLBuffer (JSRef WebGLBuffer) deriving (Eq)
+
+unWebGLBuffer (WebGLBuffer o) = o
+
+instance ToJSRef WebGLBuffer where
+  toJSRef = return . unWebGLBuffer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLBuffer where
+  fromJSRef = return . fmap WebGLBuffer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLBuffer o
+toWebGLBuffer :: IsWebGLBuffer o => o -> WebGLBuffer
+toWebGLBuffer = unsafeCastGObject . toGObject
+
+instance IsWebGLBuffer WebGLBuffer
+instance GObjectClass WebGLBuffer where
+  toGObject = GObject . castRef . unWebGLBuffer
+  unsafeCastGObject = WebGLBuffer . castRef . unGObject
+
+castToWebGLBuffer :: GObjectClass obj => obj -> WebGLBuffer
+castToWebGLBuffer = castTo gTypeWebGLBuffer "WebGLBuffer"
+
+foreign import javascript unsafe "window[\"WebGLBuffer\"]" gTypeWebGLBuffer' :: JSRef GType
+gTypeWebGLBuffer = GType gTypeWebGLBuffer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureATC".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureATC Mozilla WebGLCompressedTextureATC documentation>
+newtype WebGLCompressedTextureATC = WebGLCompressedTextureATC (JSRef WebGLCompressedTextureATC) deriving (Eq)
+
+unWebGLCompressedTextureATC (WebGLCompressedTextureATC o) = o
+
+instance ToJSRef WebGLCompressedTextureATC where
+  toJSRef = return . unWebGLCompressedTextureATC
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLCompressedTextureATC where
+  fromJSRef = return . fmap WebGLCompressedTextureATC . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLCompressedTextureATC o
+toWebGLCompressedTextureATC :: IsWebGLCompressedTextureATC o => o -> WebGLCompressedTextureATC
+toWebGLCompressedTextureATC = unsafeCastGObject . toGObject
+
+instance IsWebGLCompressedTextureATC WebGLCompressedTextureATC
+instance GObjectClass WebGLCompressedTextureATC where
+  toGObject = GObject . castRef . unWebGLCompressedTextureATC
+  unsafeCastGObject = WebGLCompressedTextureATC . castRef . unGObject
+
+castToWebGLCompressedTextureATC :: GObjectClass obj => obj -> WebGLCompressedTextureATC
+castToWebGLCompressedTextureATC = castTo gTypeWebGLCompressedTextureATC "WebGLCompressedTextureATC"
+
+foreign import javascript unsafe "window[\"WebGLCompressedTextureATC\"]" gTypeWebGLCompressedTextureATC' :: JSRef GType
+gTypeWebGLCompressedTextureATC = GType gTypeWebGLCompressedTextureATC'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTexturePVRTC".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTexturePVRTC Mozilla WebGLCompressedTexturePVRTC documentation>
+newtype WebGLCompressedTexturePVRTC = WebGLCompressedTexturePVRTC (JSRef WebGLCompressedTexturePVRTC) deriving (Eq)
+
+unWebGLCompressedTexturePVRTC (WebGLCompressedTexturePVRTC o) = o
+
+instance ToJSRef WebGLCompressedTexturePVRTC where
+  toJSRef = return . unWebGLCompressedTexturePVRTC
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLCompressedTexturePVRTC where
+  fromJSRef = return . fmap WebGLCompressedTexturePVRTC . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLCompressedTexturePVRTC o
+toWebGLCompressedTexturePVRTC :: IsWebGLCompressedTexturePVRTC o => o -> WebGLCompressedTexturePVRTC
+toWebGLCompressedTexturePVRTC = unsafeCastGObject . toGObject
+
+instance IsWebGLCompressedTexturePVRTC WebGLCompressedTexturePVRTC
+instance GObjectClass WebGLCompressedTexturePVRTC where
+  toGObject = GObject . castRef . unWebGLCompressedTexturePVRTC
+  unsafeCastGObject = WebGLCompressedTexturePVRTC . castRef . unGObject
+
+castToWebGLCompressedTexturePVRTC :: GObjectClass obj => obj -> WebGLCompressedTexturePVRTC
+castToWebGLCompressedTexturePVRTC = castTo gTypeWebGLCompressedTexturePVRTC "WebGLCompressedTexturePVRTC"
+
+foreign import javascript unsafe "window[\"WebGLCompressedTexturePVRTC\"]" gTypeWebGLCompressedTexturePVRTC' :: JSRef GType
+gTypeWebGLCompressedTexturePVRTC = GType gTypeWebGLCompressedTexturePVRTC'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureS3TC".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureS3TC Mozilla WebGLCompressedTextureS3TC documentation>
+newtype WebGLCompressedTextureS3TC = WebGLCompressedTextureS3TC (JSRef WebGLCompressedTextureS3TC) deriving (Eq)
+
+unWebGLCompressedTextureS3TC (WebGLCompressedTextureS3TC o) = o
+
+instance ToJSRef WebGLCompressedTextureS3TC where
+  toJSRef = return . unWebGLCompressedTextureS3TC
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLCompressedTextureS3TC where
+  fromJSRef = return . fmap WebGLCompressedTextureS3TC . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLCompressedTextureS3TC o
+toWebGLCompressedTextureS3TC :: IsWebGLCompressedTextureS3TC o => o -> WebGLCompressedTextureS3TC
+toWebGLCompressedTextureS3TC = unsafeCastGObject . toGObject
+
+instance IsWebGLCompressedTextureS3TC WebGLCompressedTextureS3TC
+instance GObjectClass WebGLCompressedTextureS3TC where
+  toGObject = GObject . castRef . unWebGLCompressedTextureS3TC
+  unsafeCastGObject = WebGLCompressedTextureS3TC . castRef . unGObject
+
+castToWebGLCompressedTextureS3TC :: GObjectClass obj => obj -> WebGLCompressedTextureS3TC
+castToWebGLCompressedTextureS3TC = castTo gTypeWebGLCompressedTextureS3TC "WebGLCompressedTextureS3TC"
+
+foreign import javascript unsafe "window[\"WebGLCompressedTextureS3TC\"]" gTypeWebGLCompressedTextureS3TC' :: JSRef GType
+gTypeWebGLCompressedTextureS3TC = GType gTypeWebGLCompressedTextureS3TC'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLContextAttributes".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes Mozilla WebGLContextAttributes documentation>
+newtype WebGLContextAttributes = WebGLContextAttributes (JSRef WebGLContextAttributes) deriving (Eq)
+
+unWebGLContextAttributes (WebGLContextAttributes o) = o
+
+instance ToJSRef WebGLContextAttributes where
+  toJSRef = return . unWebGLContextAttributes
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLContextAttributes where
+  fromJSRef = return . fmap WebGLContextAttributes . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLContextAttributes o
+toWebGLContextAttributes :: IsWebGLContextAttributes o => o -> WebGLContextAttributes
+toWebGLContextAttributes = unsafeCastGObject . toGObject
+
+instance IsWebGLContextAttributes WebGLContextAttributes
+instance GObjectClass WebGLContextAttributes where
+  toGObject = GObject . castRef . unWebGLContextAttributes
+  unsafeCastGObject = WebGLContextAttributes . castRef . unGObject
+
+castToWebGLContextAttributes :: GObjectClass obj => obj -> WebGLContextAttributes
+castToWebGLContextAttributes = castTo gTypeWebGLContextAttributes "WebGLContextAttributes"
+
+foreign import javascript unsafe "window[\"WebGLContextAttributes\"]" gTypeWebGLContextAttributes' :: JSRef GType
+gTypeWebGLContextAttributes = GType gTypeWebGLContextAttributes'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLContextEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextEvent Mozilla WebGLContextEvent documentation>
+newtype WebGLContextEvent = WebGLContextEvent (JSRef WebGLContextEvent) deriving (Eq)
+
+unWebGLContextEvent (WebGLContextEvent o) = o
+
+instance ToJSRef WebGLContextEvent where
+  toJSRef = return . unWebGLContextEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLContextEvent where
+  fromJSRef = return . fmap WebGLContextEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsWebGLContextEvent o
+toWebGLContextEvent :: IsWebGLContextEvent o => o -> WebGLContextEvent
+toWebGLContextEvent = unsafeCastGObject . toGObject
+
+instance IsWebGLContextEvent WebGLContextEvent
+instance IsEvent WebGLContextEvent
+instance GObjectClass WebGLContextEvent where
+  toGObject = GObject . castRef . unWebGLContextEvent
+  unsafeCastGObject = WebGLContextEvent . castRef . unGObject
+
+castToWebGLContextEvent :: GObjectClass obj => obj -> WebGLContextEvent
+castToWebGLContextEvent = castTo gTypeWebGLContextEvent "WebGLContextEvent"
+
+foreign import javascript unsafe "window[\"WebGLContextEvent\"]" gTypeWebGLContextEvent' :: JSRef GType
+gTypeWebGLContextEvent = GType gTypeWebGLContextEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugRendererInfo".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugRendererInfo Mozilla WebGLDebugRendererInfo documentation>
+newtype WebGLDebugRendererInfo = WebGLDebugRendererInfo (JSRef WebGLDebugRendererInfo) deriving (Eq)
+
+unWebGLDebugRendererInfo (WebGLDebugRendererInfo o) = o
+
+instance ToJSRef WebGLDebugRendererInfo where
+  toJSRef = return . unWebGLDebugRendererInfo
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLDebugRendererInfo where
+  fromJSRef = return . fmap WebGLDebugRendererInfo . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLDebugRendererInfo o
+toWebGLDebugRendererInfo :: IsWebGLDebugRendererInfo o => o -> WebGLDebugRendererInfo
+toWebGLDebugRendererInfo = unsafeCastGObject . toGObject
+
+instance IsWebGLDebugRendererInfo WebGLDebugRendererInfo
+instance GObjectClass WebGLDebugRendererInfo where
+  toGObject = GObject . castRef . unWebGLDebugRendererInfo
+  unsafeCastGObject = WebGLDebugRendererInfo . castRef . unGObject
+
+castToWebGLDebugRendererInfo :: GObjectClass obj => obj -> WebGLDebugRendererInfo
+castToWebGLDebugRendererInfo = castTo gTypeWebGLDebugRendererInfo "WebGLDebugRendererInfo"
+
+foreign import javascript unsafe "window[\"WebGLDebugRendererInfo\"]" gTypeWebGLDebugRendererInfo' :: JSRef GType
+gTypeWebGLDebugRendererInfo = GType gTypeWebGLDebugRendererInfo'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugShaders".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugShaders Mozilla WebGLDebugShaders documentation>
+newtype WebGLDebugShaders = WebGLDebugShaders (JSRef WebGLDebugShaders) deriving (Eq)
+
+unWebGLDebugShaders (WebGLDebugShaders o) = o
+
+instance ToJSRef WebGLDebugShaders where
+  toJSRef = return . unWebGLDebugShaders
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLDebugShaders where
+  fromJSRef = return . fmap WebGLDebugShaders . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLDebugShaders o
+toWebGLDebugShaders :: IsWebGLDebugShaders o => o -> WebGLDebugShaders
+toWebGLDebugShaders = unsafeCastGObject . toGObject
+
+instance IsWebGLDebugShaders WebGLDebugShaders
+instance GObjectClass WebGLDebugShaders where
+  toGObject = GObject . castRef . unWebGLDebugShaders
+  unsafeCastGObject = WebGLDebugShaders . castRef . unGObject
+
+castToWebGLDebugShaders :: GObjectClass obj => obj -> WebGLDebugShaders
+castToWebGLDebugShaders = castTo gTypeWebGLDebugShaders "WebGLDebugShaders"
+
+foreign import javascript unsafe "window[\"WebGLDebugShaders\"]" gTypeWebGLDebugShaders' :: JSRef GType
+gTypeWebGLDebugShaders = GType gTypeWebGLDebugShaders'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLDepthTexture".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDepthTexture Mozilla WebGLDepthTexture documentation>
+newtype WebGLDepthTexture = WebGLDepthTexture (JSRef WebGLDepthTexture) deriving (Eq)
+
+unWebGLDepthTexture (WebGLDepthTexture o) = o
+
+instance ToJSRef WebGLDepthTexture where
+  toJSRef = return . unWebGLDepthTexture
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLDepthTexture where
+  fromJSRef = return . fmap WebGLDepthTexture . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLDepthTexture o
+toWebGLDepthTexture :: IsWebGLDepthTexture o => o -> WebGLDepthTexture
+toWebGLDepthTexture = unsafeCastGObject . toGObject
+
+instance IsWebGLDepthTexture WebGLDepthTexture
+instance GObjectClass WebGLDepthTexture where
+  toGObject = GObject . castRef . unWebGLDepthTexture
+  unsafeCastGObject = WebGLDepthTexture . castRef . unGObject
+
+castToWebGLDepthTexture :: GObjectClass obj => obj -> WebGLDepthTexture
+castToWebGLDepthTexture = castTo gTypeWebGLDepthTexture "WebGLDepthTexture"
+
+foreign import javascript unsafe "window[\"WebGLDepthTexture\"]" gTypeWebGLDepthTexture' :: JSRef GType
+gTypeWebGLDepthTexture = GType gTypeWebGLDepthTexture'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLDrawBuffers".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDrawBuffers Mozilla WebGLDrawBuffers documentation>
+newtype WebGLDrawBuffers = WebGLDrawBuffers (JSRef WebGLDrawBuffers) deriving (Eq)
+
+unWebGLDrawBuffers (WebGLDrawBuffers o) = o
+
+instance ToJSRef WebGLDrawBuffers where
+  toJSRef = return . unWebGLDrawBuffers
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLDrawBuffers where
+  fromJSRef = return . fmap WebGLDrawBuffers . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLDrawBuffers o
+toWebGLDrawBuffers :: IsWebGLDrawBuffers o => o -> WebGLDrawBuffers
+toWebGLDrawBuffers = unsafeCastGObject . toGObject
+
+instance IsWebGLDrawBuffers WebGLDrawBuffers
+instance GObjectClass WebGLDrawBuffers where
+  toGObject = GObject . castRef . unWebGLDrawBuffers
+  unsafeCastGObject = WebGLDrawBuffers . castRef . unGObject
+
+castToWebGLDrawBuffers :: GObjectClass obj => obj -> WebGLDrawBuffers
+castToWebGLDrawBuffers = castTo gTypeWebGLDrawBuffers "WebGLDrawBuffers"
+
+foreign import javascript unsafe "window[\"WebGLDrawBuffers\"]" gTypeWebGLDrawBuffers' :: JSRef GType
+gTypeWebGLDrawBuffers = GType gTypeWebGLDrawBuffers'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLFramebuffer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLFramebuffer Mozilla WebGLFramebuffer documentation>
+newtype WebGLFramebuffer = WebGLFramebuffer (JSRef WebGLFramebuffer) deriving (Eq)
+
+unWebGLFramebuffer (WebGLFramebuffer o) = o
+
+instance ToJSRef WebGLFramebuffer where
+  toJSRef = return . unWebGLFramebuffer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLFramebuffer where
+  fromJSRef = return . fmap WebGLFramebuffer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLFramebuffer o
+toWebGLFramebuffer :: IsWebGLFramebuffer o => o -> WebGLFramebuffer
+toWebGLFramebuffer = unsafeCastGObject . toGObject
+
+instance IsWebGLFramebuffer WebGLFramebuffer
+instance GObjectClass WebGLFramebuffer where
+  toGObject = GObject . castRef . unWebGLFramebuffer
+  unsafeCastGObject = WebGLFramebuffer . castRef . unGObject
+
+castToWebGLFramebuffer :: GObjectClass obj => obj -> WebGLFramebuffer
+castToWebGLFramebuffer = castTo gTypeWebGLFramebuffer "WebGLFramebuffer"
+
+foreign import javascript unsafe "window[\"WebGLFramebuffer\"]" gTypeWebGLFramebuffer' :: JSRef GType
+gTypeWebGLFramebuffer = GType gTypeWebGLFramebuffer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLLoseContext".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext Mozilla WebGLLoseContext documentation>
+newtype WebGLLoseContext = WebGLLoseContext (JSRef WebGLLoseContext) deriving (Eq)
+
+unWebGLLoseContext (WebGLLoseContext o) = o
+
+instance ToJSRef WebGLLoseContext where
+  toJSRef = return . unWebGLLoseContext
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLLoseContext where
+  fromJSRef = return . fmap WebGLLoseContext . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLLoseContext o
+toWebGLLoseContext :: IsWebGLLoseContext o => o -> WebGLLoseContext
+toWebGLLoseContext = unsafeCastGObject . toGObject
+
+instance IsWebGLLoseContext WebGLLoseContext
+instance GObjectClass WebGLLoseContext where
+  toGObject = GObject . castRef . unWebGLLoseContext
+  unsafeCastGObject = WebGLLoseContext . castRef . unGObject
+
+castToWebGLLoseContext :: GObjectClass obj => obj -> WebGLLoseContext
+castToWebGLLoseContext = castTo gTypeWebGLLoseContext "WebGLLoseContext"
+
+foreign import javascript unsafe "window[\"WebGLLoseContext\"]" gTypeWebGLLoseContext' :: JSRef GType
+gTypeWebGLLoseContext = GType gTypeWebGLLoseContext'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLProgram".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLProgram Mozilla WebGLProgram documentation>
+newtype WebGLProgram = WebGLProgram (JSRef WebGLProgram) deriving (Eq)
+
+unWebGLProgram (WebGLProgram o) = o
+
+instance ToJSRef WebGLProgram where
+  toJSRef = return . unWebGLProgram
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLProgram where
+  fromJSRef = return . fmap WebGLProgram . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLProgram o
+toWebGLProgram :: IsWebGLProgram o => o -> WebGLProgram
+toWebGLProgram = unsafeCastGObject . toGObject
+
+instance IsWebGLProgram WebGLProgram
+instance GObjectClass WebGLProgram where
+  toGObject = GObject . castRef . unWebGLProgram
+  unsafeCastGObject = WebGLProgram . castRef . unGObject
+
+castToWebGLProgram :: GObjectClass obj => obj -> WebGLProgram
+castToWebGLProgram = castTo gTypeWebGLProgram "WebGLProgram"
+
+foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram' :: JSRef GType
+gTypeWebGLProgram = GType gTypeWebGLProgram'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderbuffer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderbuffer Mozilla WebGLRenderbuffer documentation>
+newtype WebGLRenderbuffer = WebGLRenderbuffer (JSRef WebGLRenderbuffer) deriving (Eq)
+
+unWebGLRenderbuffer (WebGLRenderbuffer o) = o
+
+instance ToJSRef WebGLRenderbuffer where
+  toJSRef = return . unWebGLRenderbuffer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLRenderbuffer where
+  fromJSRef = return . fmap WebGLRenderbuffer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLRenderbuffer o
+toWebGLRenderbuffer :: IsWebGLRenderbuffer o => o -> WebGLRenderbuffer
+toWebGLRenderbuffer = unsafeCastGObject . toGObject
+
+instance IsWebGLRenderbuffer WebGLRenderbuffer
+instance GObjectClass WebGLRenderbuffer where
+  toGObject = GObject . castRef . unWebGLRenderbuffer
+  unsafeCastGObject = WebGLRenderbuffer . castRef . unGObject
+
+castToWebGLRenderbuffer :: GObjectClass obj => obj -> WebGLRenderbuffer
+castToWebGLRenderbuffer = castTo gTypeWebGLRenderbuffer "WebGLRenderbuffer"
+
+foreign import javascript unsafe "window[\"WebGLRenderbuffer\"]" gTypeWebGLRenderbuffer' :: JSRef GType
+gTypeWebGLRenderbuffer = GType gTypeWebGLRenderbuffer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContext".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CanvasRenderingContext"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext Mozilla WebGLRenderingContext documentation>
+newtype WebGLRenderingContext = WebGLRenderingContext (JSRef WebGLRenderingContext) deriving (Eq)
+
+unWebGLRenderingContext (WebGLRenderingContext o) = o
+
+instance ToJSRef WebGLRenderingContext where
+  toJSRef = return . unWebGLRenderingContext
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLRenderingContext where
+  fromJSRef = return . fmap WebGLRenderingContext . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCanvasRenderingContext o => IsWebGLRenderingContext o
+toWebGLRenderingContext :: IsWebGLRenderingContext o => o -> WebGLRenderingContext
+toWebGLRenderingContext = unsafeCastGObject . toGObject
+
+instance IsWebGLRenderingContext WebGLRenderingContext
+instance IsCanvasRenderingContext WebGLRenderingContext
+instance GObjectClass WebGLRenderingContext where
+  toGObject = GObject . castRef . unWebGLRenderingContext
+  unsafeCastGObject = WebGLRenderingContext . castRef . unGObject
+
+castToWebGLRenderingContext :: GObjectClass obj => obj -> WebGLRenderingContext
+castToWebGLRenderingContext = castTo gTypeWebGLRenderingContext "WebGLRenderingContext"
+
+foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLRenderingContext' :: JSRef GType
+gTypeWebGLRenderingContext = GType gTypeWebGLRenderingContext'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLShader".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShader Mozilla WebGLShader documentation>
+newtype WebGLShader = WebGLShader (JSRef WebGLShader) deriving (Eq)
+
+unWebGLShader (WebGLShader o) = o
+
+instance ToJSRef WebGLShader where
+  toJSRef = return . unWebGLShader
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLShader where
+  fromJSRef = return . fmap WebGLShader . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLShader o
+toWebGLShader :: IsWebGLShader o => o -> WebGLShader
+toWebGLShader = unsafeCastGObject . toGObject
+
+instance IsWebGLShader WebGLShader
+instance GObjectClass WebGLShader where
+  toGObject = GObject . castRef . unWebGLShader
+  unsafeCastGObject = WebGLShader . castRef . unGObject
+
+castToWebGLShader :: GObjectClass obj => obj -> WebGLShader
+castToWebGLShader = castTo gTypeWebGLShader "WebGLShader"
+
+foreign import javascript unsafe "window[\"WebGLShader\"]" gTypeWebGLShader' :: JSRef GType
+gTypeWebGLShader = GType gTypeWebGLShader'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLShaderPrecisionFormat".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat Mozilla WebGLShaderPrecisionFormat documentation>
+newtype WebGLShaderPrecisionFormat = WebGLShaderPrecisionFormat (JSRef WebGLShaderPrecisionFormat) deriving (Eq)
+
+unWebGLShaderPrecisionFormat (WebGLShaderPrecisionFormat o) = o
+
+instance ToJSRef WebGLShaderPrecisionFormat where
+  toJSRef = return . unWebGLShaderPrecisionFormat
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLShaderPrecisionFormat where
+  fromJSRef = return . fmap WebGLShaderPrecisionFormat . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLShaderPrecisionFormat o
+toWebGLShaderPrecisionFormat :: IsWebGLShaderPrecisionFormat o => o -> WebGLShaderPrecisionFormat
+toWebGLShaderPrecisionFormat = unsafeCastGObject . toGObject
+
+instance IsWebGLShaderPrecisionFormat WebGLShaderPrecisionFormat
+instance GObjectClass WebGLShaderPrecisionFormat where
+  toGObject = GObject . castRef . unWebGLShaderPrecisionFormat
+  unsafeCastGObject = WebGLShaderPrecisionFormat . castRef . unGObject
+
+castToWebGLShaderPrecisionFormat :: GObjectClass obj => obj -> WebGLShaderPrecisionFormat
+castToWebGLShaderPrecisionFormat = castTo gTypeWebGLShaderPrecisionFormat "WebGLShaderPrecisionFormat"
+
+foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeWebGLShaderPrecisionFormat' :: JSRef GType
+gTypeWebGLShaderPrecisionFormat = GType gTypeWebGLShaderPrecisionFormat'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLTexture".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTexture Mozilla WebGLTexture documentation>
+newtype WebGLTexture = WebGLTexture (JSRef WebGLTexture) deriving (Eq)
+
+unWebGLTexture (WebGLTexture o) = o
+
+instance ToJSRef WebGLTexture where
+  toJSRef = return . unWebGLTexture
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLTexture where
+  fromJSRef = return . fmap WebGLTexture . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLTexture o
+toWebGLTexture :: IsWebGLTexture o => o -> WebGLTexture
+toWebGLTexture = unsafeCastGObject . toGObject
+
+instance IsWebGLTexture WebGLTexture
+instance GObjectClass WebGLTexture where
+  toGObject = GObject . castRef . unWebGLTexture
+  unsafeCastGObject = WebGLTexture . castRef . unGObject
+
+castToWebGLTexture :: GObjectClass obj => obj -> WebGLTexture
+castToWebGLTexture = castTo gTypeWebGLTexture "WebGLTexture"
+
+foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture' :: JSRef GType
+gTypeWebGLTexture = GType gTypeWebGLTexture'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLUniformLocation".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLUniformLocation Mozilla WebGLUniformLocation documentation>
+newtype WebGLUniformLocation = WebGLUniformLocation (JSRef WebGLUniformLocation) deriving (Eq)
+
+unWebGLUniformLocation (WebGLUniformLocation o) = o
+
+instance ToJSRef WebGLUniformLocation where
+  toJSRef = return . unWebGLUniformLocation
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLUniformLocation where
+  fromJSRef = return . fmap WebGLUniformLocation . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLUniformLocation o
+toWebGLUniformLocation :: IsWebGLUniformLocation o => o -> WebGLUniformLocation
+toWebGLUniformLocation = unsafeCastGObject . toGObject
+
+instance IsWebGLUniformLocation WebGLUniformLocation
+instance GObjectClass WebGLUniformLocation where
+  toGObject = GObject . castRef . unWebGLUniformLocation
+  unsafeCastGObject = WebGLUniformLocation . castRef . unGObject
+
+castToWebGLUniformLocation :: GObjectClass obj => obj -> WebGLUniformLocation
+castToWebGLUniformLocation = castTo gTypeWebGLUniformLocation "WebGLUniformLocation"
+
+foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUniformLocation' :: JSRef GType
+gTypeWebGLUniformLocation = GType gTypeWebGLUniformLocation'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObjectOES".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObjectOES Mozilla WebGLVertexArrayObjectOES documentation>
+newtype WebGLVertexArrayObjectOES = WebGLVertexArrayObjectOES (JSRef WebGLVertexArrayObjectOES) deriving (Eq)
+
+unWebGLVertexArrayObjectOES (WebGLVertexArrayObjectOES o) = o
+
+instance ToJSRef WebGLVertexArrayObjectOES where
+  toJSRef = return . unWebGLVertexArrayObjectOES
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLVertexArrayObjectOES where
+  fromJSRef = return . fmap WebGLVertexArrayObjectOES . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebGLVertexArrayObjectOES o
+toWebGLVertexArrayObjectOES :: IsWebGLVertexArrayObjectOES o => o -> WebGLVertexArrayObjectOES
+toWebGLVertexArrayObjectOES = unsafeCastGObject . toGObject
+
+instance IsWebGLVertexArrayObjectOES WebGLVertexArrayObjectOES
+instance GObjectClass WebGLVertexArrayObjectOES where
+  toGObject = GObject . castRef . unWebGLVertexArrayObjectOES
+  unsafeCastGObject = WebGLVertexArrayObjectOES . castRef . unGObject
+
+castToWebGLVertexArrayObjectOES :: GObjectClass obj => obj -> WebGLVertexArrayObjectOES
+castToWebGLVertexArrayObjectOES = castTo gTypeWebGLVertexArrayObjectOES "WebGLVertexArrayObjectOES"
+
+foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWebGLVertexArrayObjectOES' :: JSRef GType
+gTypeWebGLVertexArrayObjectOES = GType gTypeWebGLVertexArrayObjectOES'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitAnimationEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitAnimationEvent Mozilla WebKitAnimationEvent documentation>
+newtype WebKitAnimationEvent = WebKitAnimationEvent (JSRef WebKitAnimationEvent) deriving (Eq)
+
+unWebKitAnimationEvent (WebKitAnimationEvent o) = o
+
+instance ToJSRef WebKitAnimationEvent where
+  toJSRef = return . unWebKitAnimationEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitAnimationEvent where
+  fromJSRef = return . fmap WebKitAnimationEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsWebKitAnimationEvent o
+toWebKitAnimationEvent :: IsWebKitAnimationEvent o => o -> WebKitAnimationEvent
+toWebKitAnimationEvent = unsafeCastGObject . toGObject
+
+instance IsWebKitAnimationEvent WebKitAnimationEvent
+instance IsEvent WebKitAnimationEvent
+instance GObjectClass WebKitAnimationEvent where
+  toGObject = GObject . castRef . unWebKitAnimationEvent
+  unsafeCastGObject = WebKitAnimationEvent . castRef . unGObject
+
+castToWebKitAnimationEvent :: GObjectClass obj => obj -> WebKitAnimationEvent
+castToWebKitAnimationEvent = castTo gTypeWebKitAnimationEvent "WebKitAnimationEvent"
+
+foreign import javascript unsafe "window[\"WebKitAnimationEvent\"]" gTypeWebKitAnimationEvent' :: JSRef GType
+gTypeWebKitAnimationEvent = GType gTypeWebKitAnimationEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSFilterValue".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSValueList"
+--     * "GHCJS.DOM.CSSValue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue Mozilla WebKitCSSFilterValue documentation>
+newtype WebKitCSSFilterValue = WebKitCSSFilterValue (JSRef WebKitCSSFilterValue) deriving (Eq)
+
+unWebKitCSSFilterValue (WebKitCSSFilterValue o) = o
+
+instance ToJSRef WebKitCSSFilterValue where
+  toJSRef = return . unWebKitCSSFilterValue
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitCSSFilterValue where
+  fromJSRef = return . fmap WebKitCSSFilterValue . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSValueList o => IsWebKitCSSFilterValue o
+toWebKitCSSFilterValue :: IsWebKitCSSFilterValue o => o -> WebKitCSSFilterValue
+toWebKitCSSFilterValue = unsafeCastGObject . toGObject
+
+instance IsWebKitCSSFilterValue WebKitCSSFilterValue
+instance IsCSSValueList WebKitCSSFilterValue
+instance IsCSSValue WebKitCSSFilterValue
+instance GObjectClass WebKitCSSFilterValue where
+  toGObject = GObject . castRef . unWebKitCSSFilterValue
+  unsafeCastGObject = WebKitCSSFilterValue . castRef . unGObject
+
+castToWebKitCSSFilterValue :: GObjectClass obj => obj -> WebKitCSSFilterValue
+castToWebKitCSSFilterValue = castTo gTypeWebKitCSSFilterValue "WebKitCSSFilterValue"
+
+foreign import javascript unsafe "window[\"WebKitCSSFilterValue\"]" gTypeWebKitCSSFilterValue' :: JSRef GType
+gTypeWebKitCSSFilterValue = GType gTypeWebKitCSSFilterValue'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSMatrix".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix Mozilla WebKitCSSMatrix documentation>
+newtype WebKitCSSMatrix = WebKitCSSMatrix (JSRef WebKitCSSMatrix) deriving (Eq)
+
+unWebKitCSSMatrix (WebKitCSSMatrix o) = o
+
+instance ToJSRef WebKitCSSMatrix where
+  toJSRef = return . unWebKitCSSMatrix
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitCSSMatrix where
+  fromJSRef = return . fmap WebKitCSSMatrix . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebKitCSSMatrix o
+toWebKitCSSMatrix :: IsWebKitCSSMatrix o => o -> WebKitCSSMatrix
+toWebKitCSSMatrix = unsafeCastGObject . toGObject
+
+instance IsWebKitCSSMatrix WebKitCSSMatrix
+instance GObjectClass WebKitCSSMatrix where
+  toGObject = GObject . castRef . unWebKitCSSMatrix
+  unsafeCastGObject = WebKitCSSMatrix . castRef . unGObject
+
+castToWebKitCSSMatrix :: GObjectClass obj => obj -> WebKitCSSMatrix
+castToWebKitCSSMatrix = castTo gTypeWebKitCSSMatrix "WebKitCSSMatrix"
+
+foreign import javascript unsafe "window[\"WebKitCSSMatrix\"]" gTypeWebKitCSSMatrix' :: JSRef GType
+gTypeWebKitCSSMatrix = GType gTypeWebKitCSSMatrix'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSRegionRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSRegionRule Mozilla WebKitCSSRegionRule documentation>
+newtype WebKitCSSRegionRule = WebKitCSSRegionRule (JSRef WebKitCSSRegionRule) deriving (Eq)
+
+unWebKitCSSRegionRule (WebKitCSSRegionRule o) = o
+
+instance ToJSRef WebKitCSSRegionRule where
+  toJSRef = return . unWebKitCSSRegionRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitCSSRegionRule where
+  fromJSRef = return . fmap WebKitCSSRegionRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsWebKitCSSRegionRule o
+toWebKitCSSRegionRule :: IsWebKitCSSRegionRule o => o -> WebKitCSSRegionRule
+toWebKitCSSRegionRule = unsafeCastGObject . toGObject
+
+instance IsWebKitCSSRegionRule WebKitCSSRegionRule
+instance IsCSSRule WebKitCSSRegionRule
+instance GObjectClass WebKitCSSRegionRule where
+  toGObject = GObject . castRef . unWebKitCSSRegionRule
+  unsafeCastGObject = WebKitCSSRegionRule . castRef . unGObject
+
+castToWebKitCSSRegionRule :: GObjectClass obj => obj -> WebKitCSSRegionRule
+castToWebKitCSSRegionRule = castTo gTypeWebKitCSSRegionRule "WebKitCSSRegionRule"
+
+foreign import javascript unsafe "window[\"WebKitCSSRegionRule\"]" gTypeWebKitCSSRegionRule' :: JSRef GType
+gTypeWebKitCSSRegionRule = GType gTypeWebKitCSSRegionRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSTransformValue".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSValueList"
+--     * "GHCJS.DOM.CSSValue"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue Mozilla WebKitCSSTransformValue documentation>
+newtype WebKitCSSTransformValue = WebKitCSSTransformValue (JSRef WebKitCSSTransformValue) deriving (Eq)
+
+unWebKitCSSTransformValue (WebKitCSSTransformValue o) = o
+
+instance ToJSRef WebKitCSSTransformValue where
+  toJSRef = return . unWebKitCSSTransformValue
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitCSSTransformValue where
+  fromJSRef = return . fmap WebKitCSSTransformValue . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSValueList o => IsWebKitCSSTransformValue o
+toWebKitCSSTransformValue :: IsWebKitCSSTransformValue o => o -> WebKitCSSTransformValue
+toWebKitCSSTransformValue = unsafeCastGObject . toGObject
+
+instance IsWebKitCSSTransformValue WebKitCSSTransformValue
+instance IsCSSValueList WebKitCSSTransformValue
+instance IsCSSValue WebKitCSSTransformValue
+instance GObjectClass WebKitCSSTransformValue where
+  toGObject = GObject . castRef . unWebKitCSSTransformValue
+  unsafeCastGObject = WebKitCSSTransformValue . castRef . unGObject
+
+castToWebKitCSSTransformValue :: GObjectClass obj => obj -> WebKitCSSTransformValue
+castToWebKitCSSTransformValue = castTo gTypeWebKitCSSTransformValue "WebKitCSSTransformValue"
+
+foreign import javascript unsafe "window[\"WebKitCSSTransformValue\"]" gTypeWebKitCSSTransformValue' :: JSRef GType
+gTypeWebKitCSSTransformValue = GType gTypeWebKitCSSTransformValue'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSViewportRule".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CSSRule"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSViewportRule Mozilla WebKitCSSViewportRule documentation>
+newtype WebKitCSSViewportRule = WebKitCSSViewportRule (JSRef WebKitCSSViewportRule) deriving (Eq)
+
+unWebKitCSSViewportRule (WebKitCSSViewportRule o) = o
+
+instance ToJSRef WebKitCSSViewportRule where
+  toJSRef = return . unWebKitCSSViewportRule
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitCSSViewportRule where
+  fromJSRef = return . fmap WebKitCSSViewportRule . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsCSSRule o => IsWebKitCSSViewportRule o
+toWebKitCSSViewportRule :: IsWebKitCSSViewportRule o => o -> WebKitCSSViewportRule
+toWebKitCSSViewportRule = unsafeCastGObject . toGObject
+
+instance IsWebKitCSSViewportRule WebKitCSSViewportRule
+instance IsCSSRule WebKitCSSViewportRule
+instance GObjectClass WebKitCSSViewportRule where
+  toGObject = GObject . castRef . unWebKitCSSViewportRule
+  unsafeCastGObject = WebKitCSSViewportRule . castRef . unGObject
+
+castToWebKitCSSViewportRule :: GObjectClass obj => obj -> WebKitCSSViewportRule
+castToWebKitCSSViewportRule = castTo gTypeWebKitCSSViewportRule "WebKitCSSViewportRule"
+
+foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKitCSSViewportRule' :: JSRef GType
+gTypeWebKitCSSViewportRule = GType gTypeWebKitCSSViewportRule'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitNamedFlow".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow Mozilla WebKitNamedFlow documentation>
 newtype WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow) deriving (Eq)
 
 unWebKitNamedFlow (WebKitNamedFlow o) = o
@@ -10200,6 +22594,81 @@ type IsWebKitNamedFlow o = WebKitNamedFlowClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitNamespace".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamespace Mozilla WebKitNamespace documentation>
+newtype WebKitNamespace = WebKitNamespace (JSRef WebKitNamespace) deriving (Eq)
+
+unWebKitNamespace (WebKitNamespace o) = o
+
+instance ToJSRef WebKitNamespace where
+  toJSRef = return . unWebKitNamespace
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitNamespace where
+  fromJSRef = return . fmap WebKitNamespace . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebKitNamespace o
+toWebKitNamespace :: IsWebKitNamespace o => o -> WebKitNamespace
+toWebKitNamespace = unsafeCastGObject . toGObject
+
+instance IsWebKitNamespace WebKitNamespace
+instance GObjectClass WebKitNamespace where
+  toGObject = GObject . castRef . unWebKitNamespace
+  unsafeCastGObject = WebKitNamespace . castRef . unGObject
+
+castToWebKitNamespace :: GObjectClass obj => obj -> WebKitNamespace
+castToWebKitNamespace = castTo gTypeWebKitNamespace "WebKitNamespace"
+
+foreign import javascript unsafe "window[\"WebKitNamespace\"]" gTypeWebKitNamespace' :: JSRef GType
+gTypeWebKitNamespace = GType gTypeWebKitNamespace'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPlaybackTargetAvailabilityEvent Mozilla WebKitPlaybackTargetAvailabilityEvent documentation>
+newtype WebKitPlaybackTargetAvailabilityEvent = WebKitPlaybackTargetAvailabilityEvent (JSRef WebKitPlaybackTargetAvailabilityEvent) deriving (Eq)
+
+unWebKitPlaybackTargetAvailabilityEvent (WebKitPlaybackTargetAvailabilityEvent o) = o
+
+instance ToJSRef WebKitPlaybackTargetAvailabilityEvent where
+  toJSRef = return . unWebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitPlaybackTargetAvailabilityEvent where
+  fromJSRef = return . fmap WebKitPlaybackTargetAvailabilityEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsWebKitPlaybackTargetAvailabilityEvent o
+toWebKitPlaybackTargetAvailabilityEvent :: IsWebKitPlaybackTargetAvailabilityEvent o => o -> WebKitPlaybackTargetAvailabilityEvent
+toWebKitPlaybackTargetAvailabilityEvent = unsafeCastGObject . toGObject
+
+instance IsWebKitPlaybackTargetAvailabilityEvent WebKitPlaybackTargetAvailabilityEvent
+instance IsEvent WebKitPlaybackTargetAvailabilityEvent
+instance GObjectClass WebKitPlaybackTargetAvailabilityEvent where
+  toGObject = GObject . castRef . unWebKitPlaybackTargetAvailabilityEvent
+  unsafeCastGObject = WebKitPlaybackTargetAvailabilityEvent . castRef . unGObject
+
+castToWebKitPlaybackTargetAvailabilityEvent :: GObjectClass obj => obj -> WebKitPlaybackTargetAvailabilityEvent
+castToWebKitPlaybackTargetAvailabilityEvent = castTo gTypeWebKitPlaybackTargetAvailabilityEvent "WebKitPlaybackTargetAvailabilityEvent"
+
+foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEvent\"]" gTypeWebKitPlaybackTargetAvailabilityEvent' :: JSRef GType
+gTypeWebKitPlaybackTargetAvailabilityEvent = GType gTypeWebKitPlaybackTargetAvailabilityEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitPoint".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPoint Mozilla WebKitPoint documentation>
 newtype WebKitPoint = WebKitPoint (JSRef WebKitPoint) deriving (Eq)
 
 unWebKitPoint (WebKitPoint o) = o
@@ -10232,6 +22701,331 @@ type IsWebKitPoint o = WebKitPointClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebKitTransitionEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent Mozilla WebKitTransitionEvent documentation>
+newtype WebKitTransitionEvent = WebKitTransitionEvent (JSRef WebKitTransitionEvent) deriving (Eq)
+
+unWebKitTransitionEvent (WebKitTransitionEvent o) = o
+
+instance ToJSRef WebKitTransitionEvent where
+  toJSRef = return . unWebKitTransitionEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebKitTransitionEvent where
+  fromJSRef = return . fmap WebKitTransitionEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEvent o => IsWebKitTransitionEvent o
+toWebKitTransitionEvent :: IsWebKitTransitionEvent o => o -> WebKitTransitionEvent
+toWebKitTransitionEvent = unsafeCastGObject . toGObject
+
+instance IsWebKitTransitionEvent WebKitTransitionEvent
+instance IsEvent WebKitTransitionEvent
+instance GObjectClass WebKitTransitionEvent where
+  toGObject = GObject . castRef . unWebKitTransitionEvent
+  unsafeCastGObject = WebKitTransitionEvent . castRef . unGObject
+
+castToWebKitTransitionEvent :: GObjectClass obj => obj -> WebKitTransitionEvent
+castToWebKitTransitionEvent = castTo gTypeWebKitTransitionEvent "WebKitTransitionEvent"
+
+foreign import javascript unsafe "window[\"WebKitTransitionEvent\"]" gTypeWebKitTransitionEvent' :: JSRef GType
+gTypeWebKitTransitionEvent = GType gTypeWebKitTransitionEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebSocket".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation>
+newtype WebSocket = WebSocket (JSRef WebSocket) deriving (Eq)
+
+unWebSocket (WebSocket o) = o
+
+instance ToJSRef WebSocket where
+  toJSRef = return . unWebSocket
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebSocket where
+  fromJSRef = return . fmap WebSocket . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWebSocket o
+toWebSocket :: IsWebSocket o => o -> WebSocket
+toWebSocket = unsafeCastGObject . toGObject
+
+instance IsWebSocket WebSocket
+instance GObjectClass WebSocket where
+  toGObject = GObject . castRef . unWebSocket
+  unsafeCastGObject = WebSocket . castRef . unGObject
+
+castToWebSocket :: GObjectClass obj => obj -> WebSocket
+castToWebSocket = castTo gTypeWebSocket "WebSocket"
+
+foreign import javascript unsafe "window[\"WebSocket\"]" gTypeWebSocket' :: JSRef GType
+gTypeWebSocket = GType gTypeWebSocket'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WheelEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.MouseEvent"
+--     * "GHCJS.DOM.UIEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent Mozilla WheelEvent documentation>
+newtype WheelEvent = WheelEvent (JSRef WheelEvent) deriving (Eq)
+
+unWheelEvent (WheelEvent o) = o
+
+instance ToJSRef WheelEvent where
+  toJSRef = return . unWheelEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WheelEvent where
+  fromJSRef = return . fmap WheelEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsMouseEvent o => IsWheelEvent o
+toWheelEvent :: IsWheelEvent o => o -> WheelEvent
+toWheelEvent = unsafeCastGObject . toGObject
+
+instance IsWheelEvent WheelEvent
+instance IsMouseEvent WheelEvent
+instance IsUIEvent WheelEvent
+instance IsEvent WheelEvent
+instance GObjectClass WheelEvent where
+  toGObject = GObject . castRef . unWheelEvent
+  unsafeCastGObject = WheelEvent . castRef . unGObject
+
+castToWheelEvent :: GObjectClass obj => obj -> WheelEvent
+castToWheelEvent = castTo gTypeWheelEvent "WheelEvent"
+
+foreign import javascript unsafe "window[\"WheelEvent\"]" gTypeWheelEvent' :: JSRef GType
+gTypeWheelEvent = GType gTypeWheelEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WindowBase64".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64 Mozilla WindowBase64 documentation>
+newtype WindowBase64 = WindowBase64 (JSRef WindowBase64) deriving (Eq)
+
+unWindowBase64 (WindowBase64 o) = o
+
+instance ToJSRef WindowBase64 where
+  toJSRef = return . unWindowBase64
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WindowBase64 where
+  fromJSRef = return . fmap WindowBase64 . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWindowBase64 o
+toWindowBase64 :: IsWindowBase64 o => o -> WindowBase64
+toWindowBase64 = unsafeCastGObject . toGObject
+
+instance IsWindowBase64 WindowBase64
+instance GObjectClass WindowBase64 where
+  toGObject = GObject . castRef . unWindowBase64
+  unsafeCastGObject = WindowBase64 . castRef . unGObject
+
+castToWindowBase64 :: GObjectClass obj => obj -> WindowBase64
+castToWindowBase64 = castTo gTypeWindowBase64 "WindowBase64"
+
+foreign import javascript unsafe "window[\"WindowBase64\"]" gTypeWindowBase64' :: JSRef GType
+gTypeWindowBase64 = GType gTypeWindowBase64'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WindowTimers".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers Mozilla WindowTimers documentation>
+newtype WindowTimers = WindowTimers (JSRef WindowTimers) deriving (Eq)
+
+unWindowTimers (WindowTimers o) = o
+
+instance ToJSRef WindowTimers where
+  toJSRef = return . unWindowTimers
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WindowTimers where
+  fromJSRef = return . fmap WindowTimers . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWindowTimers o
+toWindowTimers :: IsWindowTimers o => o -> WindowTimers
+toWindowTimers = unsafeCastGObject . toGObject
+
+instance IsWindowTimers WindowTimers
+instance GObjectClass WindowTimers where
+  toGObject = GObject . castRef . unWindowTimers
+  unsafeCastGObject = WindowTimers . castRef . unGObject
+
+castToWindowTimers :: GObjectClass obj => obj -> WindowTimers
+castToWindowTimers = castTo gTypeWindowTimers "WindowTimers"
+
+foreign import javascript unsafe "window[\"WindowTimers\"]" gTypeWindowTimers' :: JSRef GType
+gTypeWindowTimers = GType gTypeWindowTimers'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Worker".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Worker Mozilla Worker documentation>
+newtype Worker = Worker (JSRef Worker) deriving (Eq)
+
+unWorker (Worker o) = o
+
+instance ToJSRef Worker where
+  toJSRef = return . unWorker
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Worker where
+  fromJSRef = return . fmap Worker . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsEventTarget o => IsWorker o
+toWorker :: IsWorker o => o -> Worker
+toWorker = unsafeCastGObject . toGObject
+
+instance IsWorker Worker
+instance IsEventTarget Worker
+instance GObjectClass Worker where
+  toGObject = GObject . castRef . unWorker
+  unsafeCastGObject = Worker . castRef . unGObject
+
+castToWorker :: GObjectClass obj => obj -> Worker
+castToWorker = castTo gTypeWorker "Worker"
+
+foreign import javascript unsafe "window[\"Worker\"]" gTypeWorker' :: JSRef GType
+gTypeWorker = GType gTypeWorker'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WorkerGlobalScope".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope Mozilla WorkerGlobalScope documentation>
+newtype WorkerGlobalScope = WorkerGlobalScope (JSRef WorkerGlobalScope) deriving (Eq)
+
+unWorkerGlobalScope (WorkerGlobalScope o) = o
+
+instance ToJSRef WorkerGlobalScope where
+  toJSRef = return . unWorkerGlobalScope
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WorkerGlobalScope where
+  fromJSRef = return . fmap WorkerGlobalScope . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWorkerGlobalScope o
+toWorkerGlobalScope :: IsWorkerGlobalScope o => o -> WorkerGlobalScope
+toWorkerGlobalScope = unsafeCastGObject . toGObject
+
+instance IsWorkerGlobalScope WorkerGlobalScope
+instance GObjectClass WorkerGlobalScope where
+  toGObject = GObject . castRef . unWorkerGlobalScope
+  unsafeCastGObject = WorkerGlobalScope . castRef . unGObject
+
+castToWorkerGlobalScope :: GObjectClass obj => obj -> WorkerGlobalScope
+castToWorkerGlobalScope = castTo gTypeWorkerGlobalScope "WorkerGlobalScope"
+
+foreign import javascript unsafe "window[\"WorkerGlobalScope\"]" gTypeWorkerGlobalScope' :: JSRef GType
+gTypeWorkerGlobalScope = GType gTypeWorkerGlobalScope'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WorkerLocation".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation Mozilla WorkerLocation documentation>
+newtype WorkerLocation = WorkerLocation (JSRef WorkerLocation) deriving (Eq)
+
+unWorkerLocation (WorkerLocation o) = o
+
+instance ToJSRef WorkerLocation where
+  toJSRef = return . unWorkerLocation
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WorkerLocation where
+  fromJSRef = return . fmap WorkerLocation . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWorkerLocation o
+toWorkerLocation :: IsWorkerLocation o => o -> WorkerLocation
+toWorkerLocation = unsafeCastGObject . toGObject
+
+instance IsWorkerLocation WorkerLocation
+instance GObjectClass WorkerLocation where
+  toGObject = GObject . castRef . unWorkerLocation
+  unsafeCastGObject = WorkerLocation . castRef . unGObject
+
+castToWorkerLocation :: GObjectClass obj => obj -> WorkerLocation
+castToWorkerLocation = castTo gTypeWorkerLocation "WorkerLocation"
+
+foreign import javascript unsafe "window[\"WorkerLocation\"]" gTypeWorkerLocation' :: JSRef GType
+gTypeWorkerLocation = GType gTypeWorkerLocation'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WorkerNavigator".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator Mozilla WorkerNavigator documentation>
+newtype WorkerNavigator = WorkerNavigator (JSRef WorkerNavigator) deriving (Eq)
+
+unWorkerNavigator (WorkerNavigator o) = o
+
+instance ToJSRef WorkerNavigator where
+  toJSRef = return . unWorkerNavigator
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WorkerNavigator where
+  fromJSRef = return . fmap WorkerNavigator . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsWorkerNavigator o
+toWorkerNavigator :: IsWorkerNavigator o => o -> WorkerNavigator
+toWorkerNavigator = unsafeCastGObject . toGObject
+
+instance IsWorkerNavigator WorkerNavigator
+instance GObjectClass WorkerNavigator where
+  toGObject = GObject . castRef . unWorkerNavigator
+  unsafeCastGObject = WorkerNavigator . castRef . unGObject
+
+castToWorkerNavigator :: GObjectClass obj => obj -> WorkerNavigator
+castToWorkerNavigator = castTo gTypeWorkerNavigator "WorkerNavigator"
+
+foreign import javascript unsafe "window[\"WorkerNavigator\"]" gTypeWorkerNavigator' :: JSRef GType
+gTypeWorkerNavigator = GType gTypeWorkerNavigator'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequest".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest Mozilla XMLHttpRequest documentation>
 newtype XMLHttpRequest = XMLHttpRequest (JSRef XMLHttpRequest) deriving (Eq)
 
 unXMLHttpRequest (XMLHttpRequest o) = o
@@ -10263,6 +23057,49 @@ gTypeXMLHttpRequest = GType gTypeXMLHttpRequest'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestProgressEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.ProgressEvent"
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent Mozilla XMLHttpRequestProgressEvent documentation>
+newtype XMLHttpRequestProgressEvent = XMLHttpRequestProgressEvent (JSRef XMLHttpRequestProgressEvent) deriving (Eq)
+
+unXMLHttpRequestProgressEvent (XMLHttpRequestProgressEvent o) = o
+
+instance ToJSRef XMLHttpRequestProgressEvent where
+  toJSRef = return . unXMLHttpRequestProgressEvent
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef XMLHttpRequestProgressEvent where
+  fromJSRef = return . fmap XMLHttpRequestProgressEvent . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class IsProgressEvent o => IsXMLHttpRequestProgressEvent o
+toXMLHttpRequestProgressEvent :: IsXMLHttpRequestProgressEvent o => o -> XMLHttpRequestProgressEvent
+toXMLHttpRequestProgressEvent = unsafeCastGObject . toGObject
+
+instance IsXMLHttpRequestProgressEvent XMLHttpRequestProgressEvent
+instance IsProgressEvent XMLHttpRequestProgressEvent
+instance IsEvent XMLHttpRequestProgressEvent
+instance GObjectClass XMLHttpRequestProgressEvent where
+  toGObject = GObject . castRef . unXMLHttpRequestProgressEvent
+  unsafeCastGObject = XMLHttpRequestProgressEvent . castRef . unGObject
+
+castToXMLHttpRequestProgressEvent :: GObjectClass obj => obj -> XMLHttpRequestProgressEvent
+castToXMLHttpRequestProgressEvent = castTo gTypeXMLHttpRequestProgressEvent "XMLHttpRequestProgressEvent"
+
+foreign import javascript unsafe "window[\"XMLHttpRequestProgressEvent\"]" gTypeXMLHttpRequestProgressEvent' :: JSRef GType
+gTypeXMLHttpRequestProgressEvent = GType gTypeXMLHttpRequestProgressEvent'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestUpload".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestUpload Mozilla XMLHttpRequestUpload documentation>
 newtype XMLHttpRequestUpload = XMLHttpRequestUpload (JSRef XMLHttpRequestUpload) deriving (Eq)
 
 unXMLHttpRequestUpload (XMLHttpRequestUpload o) = o
@@ -10294,6 +23131,77 @@ gTypeXMLHttpRequestUpload = GType gTypeXMLHttpRequestUpload'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XMLSerializer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer Mozilla XMLSerializer documentation>
+newtype XMLSerializer = XMLSerializer (JSRef XMLSerializer) deriving (Eq)
+
+unXMLSerializer (XMLSerializer o) = o
+
+instance ToJSRef XMLSerializer where
+  toJSRef = return . unXMLSerializer
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef XMLSerializer where
+  fromJSRef = return . fmap XMLSerializer . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsXMLSerializer o
+toXMLSerializer :: IsXMLSerializer o => o -> XMLSerializer
+toXMLSerializer = unsafeCastGObject . toGObject
+
+instance IsXMLSerializer XMLSerializer
+instance GObjectClass XMLSerializer where
+  toGObject = GObject . castRef . unXMLSerializer
+  unsafeCastGObject = XMLSerializer . castRef . unGObject
+
+castToXMLSerializer :: GObjectClass obj => obj -> XMLSerializer
+castToXMLSerializer = castTo gTypeXMLSerializer "XMLSerializer"
+
+foreign import javascript unsafe "window[\"XMLSerializer\"]" gTypeXMLSerializer' :: JSRef GType
+gTypeXMLSerializer = GType gTypeXMLSerializer'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XPathEvaluator".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator Mozilla XPathEvaluator documentation>
+newtype XPathEvaluator = XPathEvaluator (JSRef XPathEvaluator) deriving (Eq)
+
+unXPathEvaluator (XPathEvaluator o) = o
+
+instance ToJSRef XPathEvaluator where
+  toJSRef = return . unXPathEvaluator
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef XPathEvaluator where
+  fromJSRef = return . fmap XPathEvaluator . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsXPathEvaluator o
+toXPathEvaluator :: IsXPathEvaluator o => o -> XPathEvaluator
+toXPathEvaluator = unsafeCastGObject . toGObject
+
+instance IsXPathEvaluator XPathEvaluator
+instance GObjectClass XPathEvaluator where
+  toGObject = GObject . castRef . unXPathEvaluator
+  unsafeCastGObject = XPathEvaluator . castRef . unGObject
+
+castToXPathEvaluator :: GObjectClass obj => obj -> XPathEvaluator
+castToXPathEvaluator = castTo gTypeXPathEvaluator "XPathEvaluator"
+
+foreign import javascript unsafe "window[\"XPathEvaluator\"]" gTypeXPathEvaluator' :: JSRef GType
+gTypeXPathEvaluator = GType gTypeXPathEvaluator'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XPathExpression".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XPathExpression Mozilla XPathExpression documentation>
 newtype XPathExpression = XPathExpression (JSRef XPathExpression) deriving (Eq)
 
 unXPathExpression (XPathExpression o) = o
@@ -10326,6 +23234,9 @@ type IsXPathExpression o = XPathExpressionClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XPathNSResolver".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver Mozilla XPathNSResolver documentation>
 newtype XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver) deriving (Eq)
 
 unXPathNSResolver (XPathNSResolver o) = o
@@ -10358,6 +23269,9 @@ type IsXPathNSResolver o = XPathNSResolverClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XPathResult".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult Mozilla XPathResult documentation>
 newtype XPathResult = XPathResult (JSRef XPathResult) deriving (Eq)
 
 unXPathResult (XPathResult o) = o
@@ -10386,6 +23300,40 @@ foreign import javascript unsafe "window[\"XPathResult\"]" gTypeXPathResult' :: 
 gTypeXPathResult = GType gTypeXPathResult'
 #else
 type IsXPathResult o = XPathResultClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.XSLTProcessor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor Mozilla XSLTProcessor documentation>
+newtype XSLTProcessor = XSLTProcessor (JSRef XSLTProcessor) deriving (Eq)
+
+unXSLTProcessor (XSLTProcessor o) = o
+
+instance ToJSRef XSLTProcessor where
+  toJSRef = return . unXSLTProcessor
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef XSLTProcessor where
+  fromJSRef = return . fmap XSLTProcessor . maybeJSNull
+  {-# INLINE fromJSRef #-}
+
+class GObjectClass o => IsXSLTProcessor o
+toXSLTProcessor :: IsXSLTProcessor o => o -> XSLTProcessor
+toXSLTProcessor = unsafeCastGObject . toGObject
+
+instance IsXSLTProcessor XSLTProcessor
+instance GObjectClass XSLTProcessor where
+  toGObject = GObject . castRef . unXSLTProcessor
+  unsafeCastGObject = XSLTProcessor . castRef . unGObject
+
+castToXSLTProcessor :: GObjectClass obj => obj -> XSLTProcessor
+castToXSLTProcessor = castTo gTypeXSLTProcessor "XSLTProcessor"
+
+foreign import javascript unsafe "window[\"XSLTProcessor\"]" gTypeXSLTProcessor' :: JSRef GType
+gTypeXSLTProcessor = GType gTypeXSLTProcessor'
+#else
 #endif
 
 

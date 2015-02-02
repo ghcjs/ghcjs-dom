@@ -8,20 +8,23 @@ module GHCJS.DOM.HTMLDListElement
         htmldListElementGetCompact, HTMLDListElement, IsHTMLDListElement,
         castToHTMLDListElement, gTypeHTMLDListElement, toHTMLDListElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
         ghcjs_dom_htmld_list_element_set_compact ::
         JSRef HTMLDListElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 
 htmldListElementSetCompact ::
                            (IsHTMLDListElement self) => self -> Bool -> IO ()
 htmldListElementSetCompact self val
@@ -32,7 +35,8 @@ htmldListElementSetCompact self val
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         ghcjs_dom_htmld_list_element_get_compact ::
         JSRef HTMLDListElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 
 htmldListElementGetCompact ::
                            (IsHTMLDListElement self) => self -> IO Bool
 htmldListElementGetCompact self

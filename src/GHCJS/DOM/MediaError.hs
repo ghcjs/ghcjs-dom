@@ -3,27 +3,31 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaError
        (cMEDIA_ERR_ABORTED, cMEDIA_ERR_NETWORK, cMEDIA_ERR_DECODE,
-        cMEDIA_ERR_SRC_NOT_SUPPORTED, ghcjs_dom_media_error_get_code,
-        mediaErrorGetCode, MediaError, IsMediaError, castToMediaError,
-        gTypeMediaError, toMediaError)
+        cMEDIA_ERR_SRC_NOT_SUPPORTED, cMEDIA_ERR_ENCRYPTED,
+        ghcjs_dom_media_error_get_code, mediaErrorGetCode, MediaError,
+        IsMediaError, castToMediaError, gTypeMediaError, toMediaError)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
 cMEDIA_ERR_ABORTED = 1
 cMEDIA_ERR_NETWORK = 2
 cMEDIA_ERR_DECODE = 3
 cMEDIA_ERR_SRC_NOT_SUPPORTED = 4
+cMEDIA_ERR_ENCRYPTED = 5
  
 foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_media_error_get_code :: JSRef MediaError -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaError.code Mozilla MediaError.code documentation> 
 mediaErrorGetCode :: (IsMediaError self) => self -> IO Word
 mediaErrorGetCode self
   = ghcjs_dom_media_error_get_code (unMediaError (toMediaError self))

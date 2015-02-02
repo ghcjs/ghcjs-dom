@@ -15,21 +15,24 @@ module GHCJS.DOM.DOMImplementation
         IsDOMImplementation, castToDOMImplementation,
         gTypeDOMImplementation, toDOMImplementation)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "($1[\"hasFeature\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_dom_implementation_has_feature ::
         JSRef DOMImplementation -> JSString -> JSString -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.hasFeature Mozilla DOMImplementation.hasFeature documentation> 
 domImplementationHasFeature ::
                             (IsDOMImplementation self, ToJSString feature,
                              ToJSString version) =>
@@ -45,7 +48,8 @@ foreign import javascript unsafe
         ghcjs_dom_dom_implementation_create_document_type ::
         JSRef DOMImplementation ->
           JSString -> JSString -> JSString -> IO (JSRef DocumentType)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocumentType Mozilla DOMImplementation.createDocumentType documentation> 
 domImplementationCreateDocumentType ::
                                     (IsDOMImplementation self, ToJSString qualifiedName,
                                      ToJSString publicId, ToJSString systemId) =>
@@ -54,19 +58,20 @@ domImplementationCreateDocumentType ::
                                           publicId -> systemId -> IO (Maybe DocumentType)
 domImplementationCreateDocumentType self qualifiedName publicId
   systemId
-  = fmap DocumentType . maybeJSNull <$>
-      (ghcjs_dom_dom_implementation_create_document_type
-         (unDOMImplementation (toDOMImplementation self))
-         (toJSString qualifiedName)
-         (toJSString publicId)
-         (toJSString systemId))
+  = (ghcjs_dom_dom_implementation_create_document_type
+       (unDOMImplementation (toDOMImplementation self))
+       (toJSString qualifiedName)
+       (toJSString publicId)
+       (toJSString systemId))
+      >>= fromJSRef
  
 foreign import javascript unsafe
         "$1[\"createDocument\"]($2, $3, $4)"
         ghcjs_dom_dom_implementation_create_document ::
         JSRef DOMImplementation ->
           JSString -> JSString -> JSRef DocumentType -> IO (JSRef Document)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocument Mozilla DOMImplementation.createDocument documentation> 
 domImplementationCreateDocument ::
                                 (IsDOMImplementation self, ToJSString namespaceURI,
                                  ToJSString qualifiedName, IsDocumentType doctype) =>
@@ -75,42 +80,44 @@ domImplementationCreateDocument ::
                                       qualifiedName -> Maybe doctype -> IO (Maybe Document)
 domImplementationCreateDocument self namespaceURI qualifiedName
   doctype
-  = fmap Document . maybeJSNull <$>
-      (ghcjs_dom_dom_implementation_create_document
-         (unDOMImplementation (toDOMImplementation self))
-         (toJSString namespaceURI)
-         (toJSString qualifiedName)
-         (maybe jsNull (unDocumentType . toDocumentType) doctype))
+  = (ghcjs_dom_dom_implementation_create_document
+       (unDOMImplementation (toDOMImplementation self))
+       (toJSString namespaceURI)
+       (toJSString qualifiedName)
+       (maybe jsNull (unDocumentType . toDocumentType) doctype))
+      >>= fromJSRef
  
 foreign import javascript unsafe
         "$1[\"createCSSStyleSheet\"]($2,\n$3)"
         ghcjs_dom_dom_implementation_create_css_style_sheet ::
         JSRef DOMImplementation ->
           JSString -> JSString -> IO (JSRef CSSStyleSheet)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createCSSStyleSheet Mozilla DOMImplementation.createCSSStyleSheet documentation> 
 domImplementationCreateCSSStyleSheet ::
                                      (IsDOMImplementation self, ToJSString title,
                                       ToJSString media) =>
                                        self -> title -> media -> IO (Maybe CSSStyleSheet)
 domImplementationCreateCSSStyleSheet self title media
-  = fmap CSSStyleSheet . maybeJSNull <$>
-      (ghcjs_dom_dom_implementation_create_css_style_sheet
-         (unDOMImplementation (toDOMImplementation self))
-         (toJSString title)
-         (toJSString media))
+  = (ghcjs_dom_dom_implementation_create_css_style_sheet
+       (unDOMImplementation (toDOMImplementation self))
+       (toJSString title)
+       (toJSString media))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"
         ghcjs_dom_dom_implementation_create_html_document ::
         JSRef DOMImplementation -> JSString -> IO (JSRef HTMLDocument)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createHTMLDocument Mozilla DOMImplementation.createHTMLDocument documentation> 
 domImplementationCreateHTMLDocument ::
                                     (IsDOMImplementation self, ToJSString title) =>
                                       self -> title -> IO (Maybe HTMLDocument)
 domImplementationCreateHTMLDocument self title
-  = fmap HTMLDocument . maybeJSNull <$>
-      (ghcjs_dom_dom_implementation_create_html_document
-         (unDOMImplementation (toDOMImplementation self))
-         (toJSString title))
+  = (ghcjs_dom_dom_implementation_create_html_document
+       (unDOMImplementation (toDOMImplementation self))
+       (toJSString title))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.DOMImplementation (
   module Graphics.UI.Gtk.WebKit.DOM.DOMImplementation

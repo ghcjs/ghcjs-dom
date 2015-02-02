@@ -33,33 +33,37 @@ module GHCJS.DOM.HTMLTableRowElement
         IsHTMLTableRowElement, castToHTMLTableRowElement,
         gTypeHTMLTableRowElement, toHTMLTableRowElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"insertCell\"]($2)"
         ghcjs_dom_html_table_row_element_insert_cell ::
         JSRef HTMLTableRowElement -> Int -> IO (JSRef HTMLElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.insertCell Mozilla HTMLTableRowElement.insertCell documentation> 
 htmlTableRowElementInsertCell ::
                               (IsHTMLTableRowElement self) =>
                                 self -> Int -> IO (Maybe HTMLElement)
 htmlTableRowElementInsertCell self index
-  = fmap HTMLElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_row_element_insert_cell
-         (unHTMLTableRowElement (toHTMLTableRowElement self))
-         index)
+  = (ghcjs_dom_html_table_row_element_insert_cell
+       (unHTMLTableRowElement (toHTMLTableRowElement self))
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"deleteCell\"]($2)"
         ghcjs_dom_html_table_row_element_delete_cell ::
         JSRef HTMLTableRowElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.deleteCell Mozilla HTMLTableRowElement.deleteCell documentation> 
 htmlTableRowElementDeleteCell ::
                               (IsHTMLTableRowElement self) => self -> Int -> IO ()
 htmlTableRowElementDeleteCell self index
@@ -70,7 +74,8 @@ htmlTableRowElementDeleteCell self index
 foreign import javascript unsafe "$1[\"rowIndex\"]"
         ghcjs_dom_html_table_row_element_get_row_index ::
         JSRef HTMLTableRowElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.rowIndex Mozilla HTMLTableRowElement.rowIndex documentation> 
 htmlTableRowElementGetRowIndex ::
                                (IsHTMLTableRowElement self) => self -> IO Int
 htmlTableRowElementGetRowIndex self
@@ -80,7 +85,8 @@ htmlTableRowElementGetRowIndex self
 foreign import javascript unsafe "$1[\"sectionRowIndex\"]"
         ghcjs_dom_html_table_row_element_get_section_row_index ::
         JSRef HTMLTableRowElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.sectionRowIndex Mozilla HTMLTableRowElement.sectionRowIndex documentation> 
 htmlTableRowElementGetSectionRowIndex ::
                                       (IsHTMLTableRowElement self) => self -> IO Int
 htmlTableRowElementGetSectionRowIndex self
@@ -90,18 +96,20 @@ htmlTableRowElementGetSectionRowIndex self
 foreign import javascript unsafe "$1[\"cells\"]"
         ghcjs_dom_html_table_row_element_get_cells ::
         JSRef HTMLTableRowElement -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.cells Mozilla HTMLTableRowElement.cells documentation> 
 htmlTableRowElementGetCells ::
                             (IsHTMLTableRowElement self) => self -> IO (Maybe HTMLCollection)
 htmlTableRowElementGetCells self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_table_row_element_get_cells
-         (unHTMLTableRowElement (toHTMLTableRowElement self)))
+  = (ghcjs_dom_html_table_row_element_get_cells
+       (unHTMLTableRowElement (toHTMLTableRowElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_table_row_element_set_align ::
         JSRef HTMLTableRowElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.align Mozilla HTMLTableRowElement.align documentation> 
 htmlTableRowElementSetAlign ::
                             (IsHTMLTableRowElement self, ToJSString val) =>
                               self -> val -> IO ()
@@ -113,7 +121,8 @@ htmlTableRowElementSetAlign self val
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_row_element_get_align ::
         JSRef HTMLTableRowElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.align Mozilla HTMLTableRowElement.align documentation> 
 htmlTableRowElementGetAlign ::
                             (IsHTMLTableRowElement self, FromJSString result) =>
                               self -> IO result
@@ -125,7 +134,8 @@ htmlTableRowElementGetAlign self
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
         ghcjs_dom_html_table_row_element_set_bg_color ::
         JSRef HTMLTableRowElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
 htmlTableRowElementSetBgColor ::
                               (IsHTMLTableRowElement self, ToJSString val) =>
                                 self -> val -> IO ()
@@ -137,7 +147,8 @@ htmlTableRowElementSetBgColor self val
 foreign import javascript unsafe "$1[\"bgColor\"]"
         ghcjs_dom_html_table_row_element_get_bg_color ::
         JSRef HTMLTableRowElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
 htmlTableRowElementGetBgColor ::
                               (IsHTMLTableRowElement self, FromJSString result) =>
                                 self -> IO result
@@ -149,7 +160,8 @@ htmlTableRowElementGetBgColor self
 foreign import javascript unsafe "$1[\"ch\"] = $2;"
         ghcjs_dom_html_table_row_element_set_ch ::
         JSRef HTMLTableRowElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.ch Mozilla HTMLTableRowElement.ch documentation> 
 htmlTableRowElementSetCh ::
                          (IsHTMLTableRowElement self, ToJSString val) =>
                            self -> val -> IO ()
@@ -161,7 +173,8 @@ htmlTableRowElementSetCh self val
 foreign import javascript unsafe "$1[\"ch\"]"
         ghcjs_dom_html_table_row_element_get_ch ::
         JSRef HTMLTableRowElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.ch Mozilla HTMLTableRowElement.ch documentation> 
 htmlTableRowElementGetCh ::
                          (IsHTMLTableRowElement self, FromJSString result) =>
                            self -> IO result
@@ -173,7 +186,8 @@ htmlTableRowElementGetCh self
 foreign import javascript unsafe "$1[\"chOff\"] = $2;"
         ghcjs_dom_html_table_row_element_set_ch_off ::
         JSRef HTMLTableRowElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.chOff Mozilla HTMLTableRowElement.chOff documentation> 
 htmlTableRowElementSetChOff ::
                             (IsHTMLTableRowElement self, ToJSString val) =>
                               self -> val -> IO ()
@@ -185,7 +199,8 @@ htmlTableRowElementSetChOff self val
 foreign import javascript unsafe "$1[\"chOff\"]"
         ghcjs_dom_html_table_row_element_get_ch_off ::
         JSRef HTMLTableRowElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.chOff Mozilla HTMLTableRowElement.chOff documentation> 
 htmlTableRowElementGetChOff ::
                             (IsHTMLTableRowElement self, FromJSString result) =>
                               self -> IO result
@@ -197,7 +212,8 @@ htmlTableRowElementGetChOff self
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
         ghcjs_dom_html_table_row_element_set_v_align ::
         JSRef HTMLTableRowElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.vAlign Mozilla HTMLTableRowElement.vAlign documentation> 
 htmlTableRowElementSetVAlign ::
                              (IsHTMLTableRowElement self, ToJSString val) =>
                                self -> val -> IO ()
@@ -209,7 +225,8 @@ htmlTableRowElementSetVAlign self val
 foreign import javascript unsafe "$1[\"vAlign\"]"
         ghcjs_dom_html_table_row_element_get_v_align ::
         JSRef HTMLTableRowElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.vAlign Mozilla HTMLTableRowElement.vAlign documentation> 
 htmlTableRowElementGetVAlign ::
                              (IsHTMLTableRowElement self, FromJSString result) =>
                                self -> IO result

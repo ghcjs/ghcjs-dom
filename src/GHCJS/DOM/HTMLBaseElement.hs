@@ -9,20 +9,23 @@ module GHCJS.DOM.HTMLBaseElement
         HTMLBaseElement, IsHTMLBaseElement, castToHTMLBaseElement,
         gTypeHTMLBaseElement, toHTMLBaseElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"href\"] = $2;"
         ghcjs_dom_html_base_element_set_href ::
         JSRef HTMLBaseElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
 htmlBaseElementSetHref ::
                        (IsHTMLBaseElement self, ToJSString val) => self -> val -> IO ()
 htmlBaseElementSetHref self val
@@ -33,7 +36,8 @@ htmlBaseElementSetHref self val
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_html_base_element_get_href ::
         JSRef HTMLBaseElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
 htmlBaseElementGetHref ::
                        (IsHTMLBaseElement self, FromJSString result) => self -> IO result
 htmlBaseElementGetHref self
@@ -44,7 +48,8 @@ htmlBaseElementGetHref self
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         ghcjs_dom_html_base_element_set_target ::
         JSRef HTMLBaseElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.target Mozilla HTMLBaseElement.target documentation> 
 htmlBaseElementSetTarget ::
                          (IsHTMLBaseElement self, ToJSString val) => self -> val -> IO ()
 htmlBaseElementSetTarget self val
@@ -55,7 +60,8 @@ htmlBaseElementSetTarget self val
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_html_base_element_get_target ::
         JSRef HTMLBaseElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.target Mozilla HTMLBaseElement.target documentation> 
 htmlBaseElementGetTarget ::
                          (IsHTMLBaseElement self, FromJSString result) => self -> IO result
 htmlBaseElementGetTarget self

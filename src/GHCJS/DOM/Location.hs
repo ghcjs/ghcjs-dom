@@ -26,19 +26,22 @@ module GHCJS.DOM.Location
         locationGetAncestorOrigins, Location, IsLocation, castToLocation,
         gTypeLocation, toLocation)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"assign\"]($2)"
         ghcjs_dom_location_assign :: JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.assign Mozilla Location.assign documentation> 
 locationAssign ::
                (IsLocation self, ToJSString url) => self -> url -> IO ()
 locationAssign self url
@@ -47,7 +50,8 @@ locationAssign self url
  
 foreign import javascript unsafe "$1[\"replace\"]($2)"
         ghcjs_dom_location_replace :: JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.replace Mozilla Location.replace documentation> 
 locationReplace ::
                 (IsLocation self, ToJSString url) => self -> url -> IO ()
 locationReplace self url
@@ -56,14 +60,16 @@ locationReplace self url
  
 foreign import javascript unsafe "$1[\"reload\"]()"
         ghcjs_dom_location_reload :: JSRef Location -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.reload Mozilla Location.reload documentation> 
 locationReload :: (IsLocation self) => self -> IO ()
 locationReload self
   = ghcjs_dom_location_reload (unLocation (toLocation self))
  
 foreign import javascript unsafe "$1[\"href\"] = $2;"
         ghcjs_dom_location_set_href :: JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.href Mozilla Location.href documentation> 
 locationSetHref ::
                 (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetHref self val
@@ -72,7 +78,8 @@ locationSetHref self val
  
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_location_get_href :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.href Mozilla Location.href documentation> 
 locationGetHref ::
                 (IsLocation self, FromJSString result) => self -> IO result
 locationGetHref self
@@ -82,7 +89,8 @@ locationGetHref self
 foreign import javascript unsafe "$1[\"protocol\"] = $2;"
         ghcjs_dom_location_set_protocol ::
         JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 
 locationSetProtocol ::
                     (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetProtocol self val
@@ -91,7 +99,8 @@ locationSetProtocol self val
  
 foreign import javascript unsafe "$1[\"protocol\"]"
         ghcjs_dom_location_get_protocol :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 
 locationGetProtocol ::
                     (IsLocation self, FromJSString result) => self -> IO result
 locationGetProtocol self
@@ -100,7 +109,8 @@ locationGetProtocol self
  
 foreign import javascript unsafe "$1[\"host\"] = $2;"
         ghcjs_dom_location_set_host :: JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.host Mozilla Location.host documentation> 
 locationSetHost ::
                 (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetHost self val
@@ -109,7 +119,8 @@ locationSetHost self val
  
 foreign import javascript unsafe "$1[\"host\"]"
         ghcjs_dom_location_get_host :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.host Mozilla Location.host documentation> 
 locationGetHost ::
                 (IsLocation self, FromJSString result) => self -> IO result
 locationGetHost self
@@ -119,7 +130,8 @@ locationGetHost self
 foreign import javascript unsafe "$1[\"hostname\"] = $2;"
         ghcjs_dom_location_set_hostname ::
         JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hostname Mozilla Location.hostname documentation> 
 locationSetHostname ::
                     (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetHostname self val
@@ -128,7 +140,8 @@ locationSetHostname self val
  
 foreign import javascript unsafe "$1[\"hostname\"]"
         ghcjs_dom_location_get_hostname :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hostname Mozilla Location.hostname documentation> 
 locationGetHostname ::
                     (IsLocation self, FromJSString result) => self -> IO result
 locationGetHostname self
@@ -137,7 +150,8 @@ locationGetHostname self
  
 foreign import javascript unsafe "$1[\"port\"] = $2;"
         ghcjs_dom_location_set_port :: JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.port Mozilla Location.port documentation> 
 locationSetPort ::
                 (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetPort self val
@@ -146,7 +160,8 @@ locationSetPort self val
  
 foreign import javascript unsafe "$1[\"port\"]"
         ghcjs_dom_location_get_port :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.port Mozilla Location.port documentation> 
 locationGetPort ::
                 (IsLocation self, FromJSString result) => self -> IO result
 locationGetPort self
@@ -156,7 +171,8 @@ locationGetPort self
 foreign import javascript unsafe "$1[\"pathname\"] = $2;"
         ghcjs_dom_location_set_pathname ::
         JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.pathname Mozilla Location.pathname documentation> 
 locationSetPathname ::
                     (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetPathname self val
@@ -165,7 +181,8 @@ locationSetPathname self val
  
 foreign import javascript unsafe "$1[\"pathname\"]"
         ghcjs_dom_location_get_pathname :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.pathname Mozilla Location.pathname documentation> 
 locationGetPathname ::
                     (IsLocation self, FromJSString result) => self -> IO result
 locationGetPathname self
@@ -175,7 +192,8 @@ locationGetPathname self
 foreign import javascript unsafe "$1[\"search\"] = $2;"
         ghcjs_dom_location_set_search ::
         JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.search Mozilla Location.search documentation> 
 locationSetSearch ::
                   (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetSearch self val
@@ -184,7 +202,8 @@ locationSetSearch self val
  
 foreign import javascript unsafe "$1[\"search\"]"
         ghcjs_dom_location_get_search :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.search Mozilla Location.search documentation> 
 locationGetSearch ::
                   (IsLocation self, FromJSString result) => self -> IO result
 locationGetSearch self
@@ -193,7 +212,8 @@ locationGetSearch self
  
 foreign import javascript unsafe "$1[\"hash\"] = $2;"
         ghcjs_dom_location_set_hash :: JSRef Location -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hash Mozilla Location.hash documentation> 
 locationSetHash ::
                 (IsLocation self, ToJSString val) => self -> val -> IO ()
 locationSetHash self val
@@ -202,7 +222,8 @@ locationSetHash self val
  
 foreign import javascript unsafe "$1[\"hash\"]"
         ghcjs_dom_location_get_hash :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hash Mozilla Location.hash documentation> 
 locationGetHash ::
                 (IsLocation self, FromJSString result) => self -> IO result
 locationGetHash self
@@ -211,7 +232,8 @@ locationGetHash self
  
 foreign import javascript unsafe "$1[\"origin\"]"
         ghcjs_dom_location_get_origin :: JSRef Location -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.origin Mozilla Location.origin documentation> 
 locationGetOrigin ::
                   (IsLocation self, FromJSString result) => self -> IO result
 locationGetOrigin self
@@ -221,13 +243,14 @@ locationGetOrigin self
 foreign import javascript unsafe "$1[\"ancestorOrigins\"]"
         ghcjs_dom_location_get_ancestor_origins ::
         JSRef Location -> IO (JSRef DOMStringList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.ancestorOrigins Mozilla Location.ancestorOrigins documentation> 
 locationGetAncestorOrigins ::
                            (IsLocation self) => self -> IO (Maybe DOMStringList)
 locationGetAncestorOrigins self
-  = fmap DOMStringList . maybeJSNull <$>
-      (ghcjs_dom_location_get_ancestor_origins
-         (unLocation (toLocation self)))
+  = (ghcjs_dom_location_get_ancestor_origins
+       (unLocation (toLocation self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.Location (
   module Graphics.UI.Gtk.WebKit.DOM.Location

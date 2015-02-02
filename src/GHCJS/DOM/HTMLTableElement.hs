@@ -57,31 +57,35 @@ module GHCJS.DOM.HTMLTableElement
         htmlTableElementGetWidth, HTMLTableElement, IsHTMLTableElement,
         castToHTMLTableElement, gTypeHTMLTableElement, toHTMLTableElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"createTHead\"]()"
         ghcjs_dom_html_table_element_create_t_head ::
         JSRef HTMLTableElement -> IO (JSRef HTMLElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
 htmlTableElementCreateTHead ::
                             (IsHTMLTableElement self) => self -> IO (Maybe HTMLElement)
 htmlTableElementCreateTHead self
-  = fmap HTMLElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_create_t_head
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_create_t_head
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"deleteTHead\"]()"
         ghcjs_dom_html_table_element_delete_t_head ::
         JSRef HTMLTableElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteTHead Mozilla HTMLTableElement.deleteTHead documentation> 
 htmlTableElementDeleteTHead ::
                             (IsHTMLTableElement self) => self -> IO ()
 htmlTableElementDeleteTHead self
@@ -91,18 +95,20 @@ htmlTableElementDeleteTHead self
 foreign import javascript unsafe "$1[\"createTFoot\"]()"
         ghcjs_dom_html_table_element_create_t_foot ::
         JSRef HTMLTableElement -> IO (JSRef HTMLElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
 htmlTableElementCreateTFoot ::
                             (IsHTMLTableElement self) => self -> IO (Maybe HTMLElement)
 htmlTableElementCreateTFoot self
-  = fmap HTMLElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_create_t_foot
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_create_t_foot
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"deleteTFoot\"]()"
         ghcjs_dom_html_table_element_delete_t_foot ::
         JSRef HTMLTableElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteTFoot Mozilla HTMLTableElement.deleteTFoot documentation> 
 htmlTableElementDeleteTFoot ::
                             (IsHTMLTableElement self) => self -> IO ()
 htmlTableElementDeleteTFoot self
@@ -112,29 +118,32 @@ htmlTableElementDeleteTFoot self
 foreign import javascript unsafe "$1[\"createTBody\"]()"
         ghcjs_dom_html_table_element_create_t_body ::
         JSRef HTMLTableElement -> IO (JSRef HTMLElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
 htmlTableElementCreateTBody ::
                             (IsHTMLTableElement self) => self -> IO (Maybe HTMLElement)
 htmlTableElementCreateTBody self
-  = fmap HTMLElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_create_t_body
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_create_t_body
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"createCaption\"]()"
         ghcjs_dom_html_table_element_create_caption ::
         JSRef HTMLTableElement -> IO (JSRef HTMLElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
 htmlTableElementCreateCaption ::
                               (IsHTMLTableElement self) => self -> IO (Maybe HTMLElement)
 htmlTableElementCreateCaption self
-  = fmap HTMLElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_create_caption
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_create_caption
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"deleteCaption\"]()"
         ghcjs_dom_html_table_element_delete_caption ::
         JSRef HTMLTableElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteCaption Mozilla HTMLTableElement.deleteCaption documentation> 
 htmlTableElementDeleteCaption ::
                               (IsHTMLTableElement self) => self -> IO ()
 htmlTableElementDeleteCaption self
@@ -144,19 +153,21 @@ htmlTableElementDeleteCaption self
 foreign import javascript unsafe "$1[\"insertRow\"]($2)"
         ghcjs_dom_html_table_element_insert_row ::
         JSRef HTMLTableElement -> Int -> IO (JSRef HTMLElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
 htmlTableElementInsertRow ::
                           (IsHTMLTableElement self) => self -> Int -> IO (Maybe HTMLElement)
 htmlTableElementInsertRow self index
-  = fmap HTMLElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_insert_row
-         (unHTMLTableElement (toHTMLTableElement self))
-         index)
+  = (ghcjs_dom_html_table_element_insert_row
+       (unHTMLTableElement (toHTMLTableElement self))
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
         ghcjs_dom_html_table_element_delete_row ::
         JSRef HTMLTableElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteRow Mozilla HTMLTableElement.deleteRow documentation> 
 htmlTableElementDeleteRow ::
                           (IsHTMLTableElement self) => self -> Int -> IO ()
 htmlTableElementDeleteRow self index
@@ -167,7 +178,8 @@ htmlTableElementDeleteRow self index
 foreign import javascript unsafe "$1[\"caption\"] = $2;"
         ghcjs_dom_html_table_element_set_caption ::
         JSRef HTMLTableElement -> JSRef HTMLTableCaptionElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
 htmlTableElementSetCaption ::
                            (IsHTMLTableElement self, IsHTMLTableCaptionElement val) =>
                              self -> Maybe val -> IO ()
@@ -181,19 +193,21 @@ htmlTableElementSetCaption self val
 foreign import javascript unsafe "$1[\"caption\"]"
         ghcjs_dom_html_table_element_get_caption ::
         JSRef HTMLTableElement -> IO (JSRef HTMLTableCaptionElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
 htmlTableElementGetCaption ::
                            (IsHTMLTableElement self) =>
                              self -> IO (Maybe HTMLTableCaptionElement)
 htmlTableElementGetCaption self
-  = fmap HTMLTableCaptionElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_get_caption
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_get_caption
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"tHead\"] = $2;"
         ghcjs_dom_html_table_element_set_t_head ::
         JSRef HTMLTableElement -> JSRef HTMLTableSectionElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
 htmlTableElementSetTHead ::
                          (IsHTMLTableElement self, IsHTMLTableSectionElement val) =>
                            self -> Maybe val -> IO ()
@@ -207,19 +221,21 @@ htmlTableElementSetTHead self val
 foreign import javascript unsafe "$1[\"tHead\"]"
         ghcjs_dom_html_table_element_get_t_head ::
         JSRef HTMLTableElement -> IO (JSRef HTMLTableSectionElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
 htmlTableElementGetTHead ::
                          (IsHTMLTableElement self) =>
                            self -> IO (Maybe HTMLTableSectionElement)
 htmlTableElementGetTHead self
-  = fmap HTMLTableSectionElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_get_t_head
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_get_t_head
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"tFoot\"] = $2;"
         ghcjs_dom_html_table_element_set_t_foot ::
         JSRef HTMLTableElement -> JSRef HTMLTableSectionElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
 htmlTableElementSetTFoot ::
                          (IsHTMLTableElement self, IsHTMLTableSectionElement val) =>
                            self -> Maybe val -> IO ()
@@ -233,41 +249,45 @@ htmlTableElementSetTFoot self val
 foreign import javascript unsafe "$1[\"tFoot\"]"
         ghcjs_dom_html_table_element_get_t_foot ::
         JSRef HTMLTableElement -> IO (JSRef HTMLTableSectionElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
 htmlTableElementGetTFoot ::
                          (IsHTMLTableElement self) =>
                            self -> IO (Maybe HTMLTableSectionElement)
 htmlTableElementGetTFoot self
-  = fmap HTMLTableSectionElement . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_get_t_foot
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_get_t_foot
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"rows\"]"
         ghcjs_dom_html_table_element_get_rows ::
         JSRef HTMLTableElement -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rows Mozilla HTMLTableElement.rows documentation> 
 htmlTableElementGetRows ::
                         (IsHTMLTableElement self) => self -> IO (Maybe HTMLCollection)
 htmlTableElementGetRows self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_get_rows
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_get_rows
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"tBodies\"]"
         ghcjs_dom_html_table_element_get_t_bodies ::
         JSRef HTMLTableElement -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tBodies Mozilla HTMLTableElement.tBodies documentation> 
 htmlTableElementGetTBodies ::
                            (IsHTMLTableElement self) => self -> IO (Maybe HTMLCollection)
 htmlTableElementGetTBodies self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_table_element_get_t_bodies
-         (unHTMLTableElement (toHTMLTableElement self)))
+  = (ghcjs_dom_html_table_element_get_t_bodies
+       (unHTMLTableElement (toHTMLTableElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_table_element_set_align ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.align Mozilla HTMLTableElement.align documentation> 
 htmlTableElementSetAlign ::
                          (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetAlign self val
@@ -278,7 +298,8 @@ htmlTableElementSetAlign self val
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_element_get_align ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.align Mozilla HTMLTableElement.align documentation> 
 htmlTableElementGetAlign ::
                          (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetAlign self
@@ -289,7 +310,8 @@ htmlTableElementGetAlign self
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
         ghcjs_dom_html_table_element_set_bg_color ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
 htmlTableElementSetBgColor ::
                            (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetBgColor self val
@@ -300,7 +322,8 @@ htmlTableElementSetBgColor self val
 foreign import javascript unsafe "$1[\"bgColor\"]"
         ghcjs_dom_html_table_element_get_bg_color ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
 htmlTableElementGetBgColor ::
                            (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetBgColor self
@@ -311,7 +334,8 @@ htmlTableElementGetBgColor self
 foreign import javascript unsafe "$1[\"border\"] = $2;"
         ghcjs_dom_html_table_element_set_border ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.border Mozilla HTMLTableElement.border documentation> 
 htmlTableElementSetBorder ::
                           (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetBorder self val
@@ -322,7 +346,8 @@ htmlTableElementSetBorder self val
 foreign import javascript unsafe "$1[\"border\"]"
         ghcjs_dom_html_table_element_get_border ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.border Mozilla HTMLTableElement.border documentation> 
 htmlTableElementGetBorder ::
                           (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetBorder self
@@ -333,7 +358,8 @@ htmlTableElementGetBorder self
 foreign import javascript unsafe "$1[\"cellPadding\"] = $2;"
         ghcjs_dom_html_table_element_set_cell_padding ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
 htmlTableElementSetCellPadding ::
                                (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetCellPadding self val
@@ -344,7 +370,8 @@ htmlTableElementSetCellPadding self val
 foreign import javascript unsafe "$1[\"cellPadding\"]"
         ghcjs_dom_html_table_element_get_cell_padding ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
 htmlTableElementGetCellPadding ::
                                (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetCellPadding self
@@ -355,7 +382,8 @@ htmlTableElementGetCellPadding self
 foreign import javascript unsafe "$1[\"cellSpacing\"] = $2;"
         ghcjs_dom_html_table_element_set_cell_spacing ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
 htmlTableElementSetCellSpacing ::
                                (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetCellSpacing self val
@@ -366,7 +394,8 @@ htmlTableElementSetCellSpacing self val
 foreign import javascript unsafe "$1[\"cellSpacing\"]"
         ghcjs_dom_html_table_element_get_cell_spacing ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
 htmlTableElementGetCellSpacing ::
                                (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetCellSpacing self
@@ -377,7 +406,8 @@ htmlTableElementGetCellSpacing self
 foreign import javascript unsafe "$1[\"frame\"] = $2;"
         ghcjs_dom_html_table_element_set_frame ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.frame Mozilla HTMLTableElement.frame documentation> 
 htmlTableElementSetFrame ::
                          (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetFrame self val
@@ -388,7 +418,8 @@ htmlTableElementSetFrame self val
 foreign import javascript unsafe "$1[\"frame\"]"
         ghcjs_dom_html_table_element_get_frame ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.frame Mozilla HTMLTableElement.frame documentation> 
 htmlTableElementGetFrame ::
                          (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetFrame self
@@ -399,7 +430,8 @@ htmlTableElementGetFrame self
 foreign import javascript unsafe "$1[\"rules\"] = $2;"
         ghcjs_dom_html_table_element_set_rules ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rules Mozilla HTMLTableElement.rules documentation> 
 htmlTableElementSetRules ::
                          (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetRules self val
@@ -410,7 +442,8 @@ htmlTableElementSetRules self val
 foreign import javascript unsafe "$1[\"rules\"]"
         ghcjs_dom_html_table_element_get_rules ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rules Mozilla HTMLTableElement.rules documentation> 
 htmlTableElementGetRules ::
                          (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetRules self
@@ -421,7 +454,8 @@ htmlTableElementGetRules self
 foreign import javascript unsafe "$1[\"summary\"] = $2;"
         ghcjs_dom_html_table_element_set_summary ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.summary Mozilla HTMLTableElement.summary documentation> 
 htmlTableElementSetSummary ::
                            (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetSummary self val
@@ -432,7 +466,8 @@ htmlTableElementSetSummary self val
 foreign import javascript unsafe "$1[\"summary\"]"
         ghcjs_dom_html_table_element_get_summary ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.summary Mozilla HTMLTableElement.summary documentation> 
 htmlTableElementGetSummary ::
                            (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetSummary self
@@ -443,7 +478,8 @@ htmlTableElementGetSummary self
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_table_element_set_width ::
         JSRef HTMLTableElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.width Mozilla HTMLTableElement.width documentation> 
 htmlTableElementSetWidth ::
                          (IsHTMLTableElement self, ToJSString val) => self -> val -> IO ()
 htmlTableElementSetWidth self val
@@ -454,7 +490,8 @@ htmlTableElementSetWidth self val
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_table_element_get_width ::
         JSRef HTMLTableElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.width Mozilla HTMLTableElement.width documentation> 
 htmlTableElementGetWidth ::
                          (IsHTMLTableElement self, FromJSString result) => self -> IO result
 htmlTableElementGetWidth self

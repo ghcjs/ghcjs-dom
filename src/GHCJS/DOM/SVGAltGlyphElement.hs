@@ -13,20 +13,23 @@ module GHCJS.DOM.SVGAltGlyphElement
         IsSVGAltGlyphElement, castToSVGAltGlyphElement,
         gTypeSVGAltGlyphElement, toSVGAltGlyphElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"glyphRef\"] = $2;"
         ghcjs_dom_svg_alt_glyph_element_set_glyph_ref ::
         JSRef SVGAltGlyphElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.glyphRef Mozilla SVGAltGlyphElement.glyphRef documentation> 
 svgAltGlyphElementSetGlyphRef ::
                               (IsSVGAltGlyphElement self, ToJSString val) => self -> val -> IO ()
 svgAltGlyphElementSetGlyphRef self val
@@ -37,7 +40,8 @@ svgAltGlyphElementSetGlyphRef self val
 foreign import javascript unsafe "$1[\"glyphRef\"]"
         ghcjs_dom_svg_alt_glyph_element_get_glyph_ref ::
         JSRef SVGAltGlyphElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.glyphRef Mozilla SVGAltGlyphElement.glyphRef documentation> 
 svgAltGlyphElementGetGlyphRef ::
                               (IsSVGAltGlyphElement self, FromJSString result) =>
                                 self -> IO result
@@ -49,7 +53,8 @@ svgAltGlyphElementGetGlyphRef self
 foreign import javascript unsafe "$1[\"format\"] = $2;"
         ghcjs_dom_svg_alt_glyph_element_set_format ::
         JSRef SVGAltGlyphElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.format Mozilla SVGAltGlyphElement.format documentation> 
 svgAltGlyphElementSetFormat ::
                             (IsSVGAltGlyphElement self, ToJSString val) => self -> val -> IO ()
 svgAltGlyphElementSetFormat self val
@@ -60,7 +65,8 @@ svgAltGlyphElementSetFormat self val
 foreign import javascript unsafe "$1[\"format\"]"
         ghcjs_dom_svg_alt_glyph_element_get_format ::
         JSRef SVGAltGlyphElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.format Mozilla SVGAltGlyphElement.format documentation> 
 svgAltGlyphElementGetFormat ::
                             (IsSVGAltGlyphElement self, FromJSString result) =>
                               self -> IO result
@@ -70,7 +76,5 @@ svgAltGlyphElementGetFormat self
          (unSVGAltGlyphElement (toSVGAltGlyphElement self)))
 #else
 module GHCJS.DOM.SVGAltGlyphElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGAltGlyphElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGAltGlyphElement
 #endif

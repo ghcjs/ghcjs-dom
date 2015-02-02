@@ -6,6 +6,8 @@ module GHCJS.DOM.HTMLObjectElement
         htmlObjectElementCheckValidity,
         ghcjs_dom_html_object_element_set_custom_validity,
         htmlObjectElementSetCustomValidity,
+        ghcjs_dom_html_object_element_get_svg_document,
+        htmlObjectElementGetSVGDocument,
         ghcjs_dom_html_object_element_get_form, htmlObjectElementGetForm,
         ghcjs_dom_html_object_element_set_code, htmlObjectElementSetCode,
         ghcjs_dom_html_object_element_get_code, htmlObjectElementGetCode,
@@ -68,21 +70,24 @@ module GHCJS.DOM.HTMLObjectElement
         IsHTMLObjectElement, castToHTMLObjectElement,
         gTypeHTMLObjectElement, toHTMLObjectElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_object_element_check_validity ::
         JSRef HTMLObjectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.checkValidity Mozilla HTMLObjectElement.checkValidity documentation> 
 htmlObjectElementCheckValidity ::
                                (IsHTMLObjectElement self) => self -> IO Bool
 htmlObjectElementCheckValidity self
@@ -92,7 +97,8 @@ htmlObjectElementCheckValidity self
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_object_element_set_custom_validity ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.customValidity Mozilla HTMLObjectElement.customValidity documentation> 
 htmlObjectElementSetCustomValidity ::
                                    (IsHTMLObjectElement self, ToJSString error) =>
                                      self -> error -> IO ()
@@ -101,21 +107,35 @@ htmlObjectElementSetCustomValidity self error
       (unHTMLObjectElement (toHTMLObjectElement self))
       (toJSString error)
  
+foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
+        ghcjs_dom_html_object_element_get_svg_document ::
+        JSRef HTMLObjectElement -> IO (JSRef SVGDocument)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.svgDocument Mozilla HTMLObjectElement.svgDocument documentation> 
+htmlObjectElementGetSVGDocument ::
+                                (IsHTMLObjectElement self) => self -> IO (Maybe SVGDocument)
+htmlObjectElementGetSVGDocument self
+  = (ghcjs_dom_html_object_element_get_svg_document
+       (unHTMLObjectElement (toHTMLObjectElement self)))
+      >>= fromJSRef
+ 
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_object_element_get_form ::
         JSRef HTMLObjectElement -> IO (JSRef HTMLFormElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.form Mozilla HTMLObjectElement.form documentation> 
 htmlObjectElementGetForm ::
                          (IsHTMLObjectElement self) => self -> IO (Maybe HTMLFormElement)
 htmlObjectElementGetForm self
-  = fmap HTMLFormElement . maybeJSNull <$>
-      (ghcjs_dom_html_object_element_get_form
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+  = (ghcjs_dom_html_object_element_get_form
+       (unHTMLObjectElement (toHTMLObjectElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"code\"] = $2;"
         ghcjs_dom_html_object_element_set_code ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.code Mozilla HTMLObjectElement.code documentation> 
 htmlObjectElementSetCode ::
                          (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetCode self val
@@ -126,7 +146,8 @@ htmlObjectElementSetCode self val
 foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_html_object_element_get_code ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.code Mozilla HTMLObjectElement.code documentation> 
 htmlObjectElementGetCode ::
                          (IsHTMLObjectElement self, FromJSString result) =>
                            self -> IO result
@@ -138,7 +159,8 @@ htmlObjectElementGetCode self
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_object_element_set_align ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.align Mozilla HTMLObjectElement.align documentation> 
 htmlObjectElementSetAlign ::
                           (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetAlign self val
@@ -149,7 +171,8 @@ htmlObjectElementSetAlign self val
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_object_element_get_align ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.align Mozilla HTMLObjectElement.align documentation> 
 htmlObjectElementGetAlign ::
                           (IsHTMLObjectElement self, FromJSString result) =>
                             self -> IO result
@@ -161,7 +184,8 @@ htmlObjectElementGetAlign self
 foreign import javascript unsafe "$1[\"archive\"] = $2;"
         ghcjs_dom_html_object_element_set_archive ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.archive Mozilla HTMLObjectElement.archive documentation> 
 htmlObjectElementSetArchive ::
                             (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetArchive self val
@@ -172,7 +196,8 @@ htmlObjectElementSetArchive self val
 foreign import javascript unsafe "$1[\"archive\"]"
         ghcjs_dom_html_object_element_get_archive ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.archive Mozilla HTMLObjectElement.archive documentation> 
 htmlObjectElementGetArchive ::
                             (IsHTMLObjectElement self, FromJSString result) =>
                               self -> IO result
@@ -184,7 +209,8 @@ htmlObjectElementGetArchive self
 foreign import javascript unsafe "$1[\"border\"] = $2;"
         ghcjs_dom_html_object_element_set_border ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
 htmlObjectElementSetBorder ::
                            (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetBorder self val
@@ -195,7 +221,8 @@ htmlObjectElementSetBorder self val
 foreign import javascript unsafe "$1[\"border\"]"
         ghcjs_dom_html_object_element_get_border ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
 htmlObjectElementGetBorder ::
                            (IsHTMLObjectElement self, FromJSString result) =>
                              self -> IO result
@@ -207,7 +234,8 @@ htmlObjectElementGetBorder self
 foreign import javascript unsafe "$1[\"codeBase\"] = $2;"
         ghcjs_dom_html_object_element_set_code_base ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeBase Mozilla HTMLObjectElement.codeBase documentation> 
 htmlObjectElementSetCodeBase ::
                              (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetCodeBase self val
@@ -218,7 +246,8 @@ htmlObjectElementSetCodeBase self val
 foreign import javascript unsafe "$1[\"codeBase\"]"
         ghcjs_dom_html_object_element_get_code_base ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeBase Mozilla HTMLObjectElement.codeBase documentation> 
 htmlObjectElementGetCodeBase ::
                              (IsHTMLObjectElement self, FromJSString result) =>
                                self -> IO result
@@ -230,7 +259,8 @@ htmlObjectElementGetCodeBase self
 foreign import javascript unsafe "$1[\"codeType\"] = $2;"
         ghcjs_dom_html_object_element_set_code_type ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeType Mozilla HTMLObjectElement.codeType documentation> 
 htmlObjectElementSetCodeType ::
                              (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetCodeType self val
@@ -241,7 +271,8 @@ htmlObjectElementSetCodeType self val
 foreign import javascript unsafe "$1[\"codeType\"]"
         ghcjs_dom_html_object_element_get_code_type ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeType Mozilla HTMLObjectElement.codeType documentation> 
 htmlObjectElementGetCodeType ::
                              (IsHTMLObjectElement self, FromJSString result) =>
                                self -> IO result
@@ -253,7 +284,8 @@ htmlObjectElementGetCodeType self
 foreign import javascript unsafe "$1[\"data\"] = $2;"
         ghcjs_dom_html_object_element_set_data ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.data Mozilla HTMLObjectElement.data documentation> 
 htmlObjectElementSetData ::
                          (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetData self val
@@ -264,7 +296,8 @@ htmlObjectElementSetData self val
 foreign import javascript unsafe "$1[\"data\"]"
         ghcjs_dom_html_object_element_get_data ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.data Mozilla HTMLObjectElement.data documentation> 
 htmlObjectElementGetData ::
                          (IsHTMLObjectElement self, FromJSString result) =>
                            self -> IO result
@@ -276,7 +309,8 @@ htmlObjectElementGetData self
 foreign import javascript unsafe "$1[\"declare\"] = $2;"
         ghcjs_dom_html_object_element_set_declare ::
         JSRef HTMLObjectElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.declare Mozilla HTMLObjectElement.declare documentation> 
 htmlObjectElementSetDeclare ::
                             (IsHTMLObjectElement self) => self -> Bool -> IO ()
 htmlObjectElementSetDeclare self val
@@ -287,7 +321,8 @@ htmlObjectElementSetDeclare self val
 foreign import javascript unsafe "($1[\"declare\"] ? 1 : 0)"
         ghcjs_dom_html_object_element_get_declare ::
         JSRef HTMLObjectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.declare Mozilla HTMLObjectElement.declare documentation> 
 htmlObjectElementGetDeclare ::
                             (IsHTMLObjectElement self) => self -> IO Bool
 htmlObjectElementGetDeclare self
@@ -297,7 +332,8 @@ htmlObjectElementGetDeclare self
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_object_element_set_height ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.height Mozilla HTMLObjectElement.height documentation> 
 htmlObjectElementSetHeight ::
                            (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetHeight self val
@@ -308,7 +344,8 @@ htmlObjectElementSetHeight self val
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_object_element_get_height ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.height Mozilla HTMLObjectElement.height documentation> 
 htmlObjectElementGetHeight ::
                            (IsHTMLObjectElement self, FromJSString result) =>
                              self -> IO result
@@ -320,7 +357,8 @@ htmlObjectElementGetHeight self
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
         ghcjs_dom_html_object_element_set_hspace ::
         JSRef HTMLObjectElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.hspace Mozilla HTMLObjectElement.hspace documentation> 
 htmlObjectElementSetHspace ::
                            (IsHTMLObjectElement self) => self -> Int -> IO ()
 htmlObjectElementSetHspace self val
@@ -331,7 +369,8 @@ htmlObjectElementSetHspace self val
 foreign import javascript unsafe "$1[\"hspace\"]"
         ghcjs_dom_html_object_element_get_hspace ::
         JSRef HTMLObjectElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.hspace Mozilla HTMLObjectElement.hspace documentation> 
 htmlObjectElementGetHspace ::
                            (IsHTMLObjectElement self) => self -> IO Int
 htmlObjectElementGetHspace self
@@ -341,7 +380,8 @@ htmlObjectElementGetHspace self
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_object_element_set_name ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.name Mozilla HTMLObjectElement.name documentation> 
 htmlObjectElementSetName ::
                          (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetName self val
@@ -352,7 +392,8 @@ htmlObjectElementSetName self val
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_object_element_get_name ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.name Mozilla HTMLObjectElement.name documentation> 
 htmlObjectElementGetName ::
                          (IsHTMLObjectElement self, FromJSString result) =>
                            self -> IO result
@@ -364,7 +405,8 @@ htmlObjectElementGetName self
 foreign import javascript unsafe "$1[\"standby\"] = $2;"
         ghcjs_dom_html_object_element_set_standby ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.standby Mozilla HTMLObjectElement.standby documentation> 
 htmlObjectElementSetStandby ::
                             (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetStandby self val
@@ -375,7 +417,8 @@ htmlObjectElementSetStandby self val
 foreign import javascript unsafe "$1[\"standby\"]"
         ghcjs_dom_html_object_element_get_standby ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.standby Mozilla HTMLObjectElement.standby documentation> 
 htmlObjectElementGetStandby ::
                             (IsHTMLObjectElement self, FromJSString result) =>
                               self -> IO result
@@ -387,7 +430,8 @@ htmlObjectElementGetStandby self
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
         ghcjs_dom_html_object_element_set_use_map ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.useMap Mozilla HTMLObjectElement.useMap documentation> 
 htmlObjectElementSetUseMap ::
                            (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetUseMap self val
@@ -398,7 +442,8 @@ htmlObjectElementSetUseMap self val
 foreign import javascript unsafe "$1[\"useMap\"]"
         ghcjs_dom_html_object_element_get_use_map ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.useMap Mozilla HTMLObjectElement.useMap documentation> 
 htmlObjectElementGetUseMap ::
                            (IsHTMLObjectElement self, FromJSString result) =>
                              self -> IO result
@@ -410,7 +455,8 @@ htmlObjectElementGetUseMap self
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
         ghcjs_dom_html_object_element_set_vspace ::
         JSRef HTMLObjectElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.vspace Mozilla HTMLObjectElement.vspace documentation> 
 htmlObjectElementSetVspace ::
                            (IsHTMLObjectElement self) => self -> Int -> IO ()
 htmlObjectElementSetVspace self val
@@ -421,7 +467,8 @@ htmlObjectElementSetVspace self val
 foreign import javascript unsafe "$1[\"vspace\"]"
         ghcjs_dom_html_object_element_get_vspace ::
         JSRef HTMLObjectElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.vspace Mozilla HTMLObjectElement.vspace documentation> 
 htmlObjectElementGetVspace ::
                            (IsHTMLObjectElement self) => self -> IO Int
 htmlObjectElementGetVspace self
@@ -431,7 +478,8 @@ htmlObjectElementGetVspace self
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_object_element_set_width ::
         JSRef HTMLObjectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.width Mozilla HTMLObjectElement.width documentation> 
 htmlObjectElementSetWidth ::
                           (IsHTMLObjectElement self, ToJSString val) => self -> val -> IO ()
 htmlObjectElementSetWidth self val
@@ -442,7 +490,8 @@ htmlObjectElementSetWidth self val
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_object_element_get_width ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.width Mozilla HTMLObjectElement.width documentation> 
 htmlObjectElementGetWidth ::
                           (IsHTMLObjectElement self, FromJSString result) =>
                             self -> IO result
@@ -454,7 +503,8 @@ htmlObjectElementGetWidth self
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_object_element_get_will_validate ::
         JSRef HTMLObjectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.willValidate Mozilla HTMLObjectElement.willValidate documentation> 
 htmlObjectElementGetWillValidate ::
                                  (IsHTMLObjectElement self) => self -> IO Bool
 htmlObjectElementGetWillValidate self
@@ -464,18 +514,20 @@ htmlObjectElementGetWillValidate self
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_object_element_get_validity ::
         JSRef HTMLObjectElement -> IO (JSRef ValidityState)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.validity Mozilla HTMLObjectElement.validity documentation> 
 htmlObjectElementGetValidity ::
                              (IsHTMLObjectElement self) => self -> IO (Maybe ValidityState)
 htmlObjectElementGetValidity self
-  = fmap ValidityState . maybeJSNull <$>
-      (ghcjs_dom_html_object_element_get_validity
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+  = (ghcjs_dom_html_object_element_get_validity
+       (unHTMLObjectElement (toHTMLObjectElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_object_element_get_validation_message ::
         JSRef HTMLObjectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.validationMessage Mozilla HTMLObjectElement.validationMessage documentation> 
 htmlObjectElementGetValidationMessage ::
                                       (IsHTMLObjectElement self, FromJSString result) =>
                                         self -> IO result
@@ -487,13 +539,14 @@ htmlObjectElementGetValidationMessage self
 foreign import javascript unsafe "$1[\"contentDocument\"]"
         ghcjs_dom_html_object_element_get_content_document ::
         JSRef HTMLObjectElement -> IO (JSRef Document)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.contentDocument Mozilla HTMLObjectElement.contentDocument documentation> 
 htmlObjectElementGetContentDocument ::
                                     (IsHTMLObjectElement self) => self -> IO (Maybe Document)
 htmlObjectElementGetContentDocument self
-  = fmap Document . maybeJSNull <$>
-      (ghcjs_dom_html_object_element_get_content_document
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+  = (ghcjs_dom_html_object_element_get_content_document
+       (unHTMLObjectElement (toHTMLObjectElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.HTMLObjectElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLObjectElement

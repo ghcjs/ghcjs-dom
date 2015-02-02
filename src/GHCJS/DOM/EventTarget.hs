@@ -6,21 +6,24 @@ module GHCJS.DOM.EventTarget
         EventTarget, IsEventTarget, castToEventTarget, gTypeEventTarget,
         toEventTarget)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
         ghcjs_dom_event_target_dispatch_event ::
         JSRef EventTarget -> JSRef Event -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.dispatchEvent Mozilla EventTarget.dispatchEvent documentation> 
 eventTargetDispatchEvent ::
                          (IsEventTarget self, IsEvent event) =>
                            self -> Maybe event -> IO Bool
@@ -30,7 +33,5 @@ eventTargetDispatchEvent self event
       (maybe jsNull (unEvent . toEvent) event)
 #else
 module GHCJS.DOM.EventTarget (
-  module Graphics.UI.Gtk.WebKit.DOM.EventTarget
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.EventTarget
 #endif

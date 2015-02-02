@@ -13,19 +13,22 @@ module GHCJS.DOM.SVGPaint
         ghcjs_dom_svg_paint_get_uri, svgPaintGetUri, SVGPaint, IsSVGPaint,
         castToSVGPaint, gTypeSVGPaint, toSVGPaint)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"setUri\"]($2)"
         ghcjs_dom_svg_paint_set_uri :: JSRef SVGPaint -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.uri Mozilla SVGPaint.uri documentation> 
 svgPaintSetUri ::
                (IsSVGPaint self, ToJSString uri) => self -> uri -> IO ()
 svgPaintSetUri self uri
@@ -35,7 +38,8 @@ svgPaintSetUri self uri
 foreign import javascript unsafe "$1[\"setPaint\"]($2, $3, $4, $5)"
         ghcjs_dom_svg_paint_set_paint ::
         JSRef SVGPaint -> Word -> JSString -> JSString -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.paint Mozilla SVGPaint.paint documentation> 
 svgPaintSetPaint ::
                  (IsSVGPaint self, ToJSString uri, ToJSString rgbColor,
                   ToJSString iccColor) =>
@@ -59,14 +63,16 @@ cSVG_PAINTTYPE_URI = 107
  
 foreign import javascript unsafe "$1[\"paintType\"]"
         ghcjs_dom_svg_paint_get_paint_type :: JSRef SVGPaint -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.paintType Mozilla SVGPaint.paintType documentation> 
 svgPaintGetPaintType :: (IsSVGPaint self) => self -> IO Word
 svgPaintGetPaintType self
   = ghcjs_dom_svg_paint_get_paint_type (unSVGPaint (toSVGPaint self))
  
 foreign import javascript unsafe "$1[\"uri\"]"
         ghcjs_dom_svg_paint_get_uri :: JSRef SVGPaint -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.uri Mozilla SVGPaint.uri documentation> 
 svgPaintGetUri ::
                (IsSVGPaint self, FromJSString result) => self -> IO result
 svgPaintGetUri self
@@ -74,7 +80,5 @@ svgPaintGetUri self
       (ghcjs_dom_svg_paint_get_uri (unSVGPaint (toSVGPaint self)))
 #else
 module GHCJS.DOM.SVGPaint (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPaint
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPaint
 #endif

@@ -6,29 +6,30 @@ module GHCJS.DOM.SVGFETileElement
         SVGFETileElement, IsSVGFETileElement, castToSVGFETileElement,
         gTypeSVGFETileElement, toSVGFETileElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"in1\"]"
         ghcjs_dom_svgfe_tile_element_get_in1 ::
         JSRef SVGFETileElement -> IO (JSRef SVGAnimatedString)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETileElement.in1 Mozilla SVGFETileElement.in1 documentation> 
 svgfeTileElementGetIn1 ::
                        (IsSVGFETileElement self) => self -> IO (Maybe SVGAnimatedString)
 svgfeTileElementGetIn1 self
-  = fmap SVGAnimatedString . maybeJSNull <$>
-      (ghcjs_dom_svgfe_tile_element_get_in1
-         (unSVGFETileElement (toSVGFETileElement self)))
+  = (ghcjs_dom_svgfe_tile_element_get_in1
+       (unSVGFETileElement (toSVGFETileElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGFETileElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGFETileElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGFETileElement
 #endif

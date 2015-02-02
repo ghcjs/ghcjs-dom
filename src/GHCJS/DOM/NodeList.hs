@@ -6,29 +6,33 @@ module GHCJS.DOM.NodeList
         ghcjs_dom_node_list_get_length, nodeListGetLength, NodeList,
         IsNodeList, castToNodeList, gTypeNodeList, toNodeList)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_node_list_item ::
         JSRef NodeList -> Word -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.item Mozilla NodeList.item documentation> 
 nodeListItem ::
              (IsNodeList self) => self -> Word -> IO (Maybe Node)
 nodeListItem self index
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_list_item (unNodeList (toNodeList self)) index)
+  = (ghcjs_dom_node_list_item (unNodeList (toNodeList self)) index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_node_list_get_length :: JSRef NodeList -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.length Mozilla NodeList.length documentation> 
 nodeListGetLength :: (IsNodeList self) => self -> IO Word
 nodeListGetLength self
   = ghcjs_dom_node_list_get_length (unNodeList (toNodeList self))

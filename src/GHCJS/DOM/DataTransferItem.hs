@@ -1,0 +1,63 @@
+{-# LANGUAGE CPP #-}
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
+module GHCJS.DOM.DataTransferItem
+       (ghcjs_dom_data_transfer_item_get_as_string,
+        dataTransferItemGetAsString,
+        ghcjs_dom_data_transfer_item_get_as_file,
+        dataTransferItemGetAsFile, ghcjs_dom_data_transfer_item_get_kind,
+        dataTransferItemGetKind, DataTransferItem, IsDataTransferItem,
+        castToDataTransferItem, gTypeDataTransferItem, toDataTransferItem)
+       where
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
+import GHCJS.DOM.Types
+import Control.Applicative ((<$>))
+import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
+
+ 
+foreign import javascript unsafe "$1[\"getAsString\"]($2)"
+        ghcjs_dom_data_transfer_item_get_as_string ::
+        JSRef DataTransferItem -> JSRef StringCallback -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.asString Mozilla DataTransferItem.asString documentation> 
+dataTransferItemGetAsString ::
+                            (IsDataTransferItem self, IsStringCallback callback) =>
+                              self -> Maybe callback -> IO ()
+dataTransferItemGetAsString self callback
+  = ghcjs_dom_data_transfer_item_get_as_string
+      (unDataTransferItem (toDataTransferItem self))
+      (maybe jsNull (unStringCallback . toStringCallback) callback)
+ 
+foreign import javascript unsafe "$1[\"getAsFile\"]()"
+        ghcjs_dom_data_transfer_item_get_as_file ::
+        JSRef DataTransferItem -> IO (JSRef Blob)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.asFile Mozilla DataTransferItem.asFile documentation> 
+dataTransferItemGetAsFile ::
+                          (IsDataTransferItem self) => self -> IO (Maybe Blob)
+dataTransferItemGetAsFile self
+  = (ghcjs_dom_data_transfer_item_get_as_file
+       (unDataTransferItem (toDataTransferItem self)))
+      >>= fromJSRef
+ 
+foreign import javascript unsafe "$1[\"kind\"]"
+        ghcjs_dom_data_transfer_item_get_kind ::
+        JSRef DataTransferItem -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.kind Mozilla DataTransferItem.kind documentation> 
+dataTransferItemGetKind ::
+                        (IsDataTransferItem self, FromJSString result) => self -> IO result
+dataTransferItemGetKind self
+  = fromJSString <$>
+      (ghcjs_dom_data_transfer_item_get_kind
+         (unDataTransferItem (toDataTransferItem self)))
+#else
+module GHCJS.DOM.DataTransferItem (
+  ) where
+#endif

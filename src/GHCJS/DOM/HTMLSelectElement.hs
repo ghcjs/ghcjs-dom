@@ -57,46 +57,51 @@ module GHCJS.DOM.HTMLSelectElement
         castToHTMLSelectElement, gTypeHTMLSelectElement,
         toHTMLSelectElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_html_select_element_item ::
         JSRef HTMLSelectElement -> Word -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.item Mozilla HTMLSelectElement.item documentation> 
 htmlSelectElementItem ::
                       (IsHTMLSelectElement self) => self -> Word -> IO (Maybe Node)
 htmlSelectElementItem self index
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_html_select_element_item
-         (unHTMLSelectElement (toHTMLSelectElement self))
-         index)
+  = (ghcjs_dom_html_select_element_item
+       (unHTMLSelectElement (toHTMLSelectElement self))
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_html_select_element_named_item ::
         JSRef HTMLSelectElement -> JSString -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.namedItem Mozilla HTMLSelectElement.namedItem documentation> 
 htmlSelectElementNamedItem ::
                            (IsHTMLSelectElement self, ToJSString name) =>
                              self -> name -> IO (Maybe Node)
 htmlSelectElementNamedItem self name
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_html_select_element_named_item
-         (unHTMLSelectElement (toHTMLSelectElement self))
-         (toJSString name))
+  = (ghcjs_dom_html_select_element_named_item
+       (unHTMLSelectElement (toHTMLSelectElement self))
+       (toJSString name))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)"
         ghcjs_dom_html_select_element_add ::
         JSRef HTMLSelectElement ->
           JSRef HTMLElement -> JSRef HTMLElement -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.add Mozilla HTMLSelectElement.add documentation> 
 htmlSelectElementAdd ::
                      (IsHTMLSelectElement self, IsHTMLElement element,
                       IsHTMLElement before) =>
@@ -110,7 +115,8 @@ htmlSelectElementAdd self element before
 foreign import javascript unsafe "$1[\"remove\"]($2)"
         ghcjs_dom_html_select_element_remove ::
         JSRef HTMLSelectElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.remove Mozilla HTMLSelectElement.remove documentation> 
 htmlSelectElementRemove ::
                         (IsHTMLSelectElement self) => self -> Int -> IO ()
 htmlSelectElementRemove self index
@@ -122,7 +128,8 @@ foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_select_element_check_validity ::
         JSRef HTMLSelectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.checkValidity Mozilla HTMLSelectElement.checkValidity documentation> 
 htmlSelectElementCheckValidity ::
                                (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementCheckValidity self
@@ -132,7 +139,8 @@ htmlSelectElementCheckValidity self
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_select_element_set_custom_validity ::
         JSRef HTMLSelectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.customValidity Mozilla HTMLSelectElement.customValidity documentation> 
 htmlSelectElementSetCustomValidity ::
                                    (IsHTMLSelectElement self, ToJSString error) =>
                                      self -> error -> IO ()
@@ -144,7 +152,8 @@ htmlSelectElementSetCustomValidity self error
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_select_element_set_autofocus ::
         JSRef HTMLSelectElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.autofocus Mozilla HTMLSelectElement.autofocus documentation> 
 htmlSelectElementSetAutofocus ::
                               (IsHTMLSelectElement self) => self -> Bool -> IO ()
 htmlSelectElementSetAutofocus self val
@@ -155,7 +164,8 @@ htmlSelectElementSetAutofocus self val
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_autofocus ::
         JSRef HTMLSelectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.autofocus Mozilla HTMLSelectElement.autofocus documentation> 
 htmlSelectElementGetAutofocus ::
                               (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetAutofocus self
@@ -165,7 +175,8 @@ htmlSelectElementGetAutofocus self
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_select_element_set_disabled ::
         JSRef HTMLSelectElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.disabled Mozilla HTMLSelectElement.disabled documentation> 
 htmlSelectElementSetDisabled ::
                              (IsHTMLSelectElement self) => self -> Bool -> IO ()
 htmlSelectElementSetDisabled self val
@@ -176,7 +187,8 @@ htmlSelectElementSetDisabled self val
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_disabled ::
         JSRef HTMLSelectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.disabled Mozilla HTMLSelectElement.disabled documentation> 
 htmlSelectElementGetDisabled ::
                              (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetDisabled self
@@ -186,18 +198,20 @@ htmlSelectElementGetDisabled self
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_select_element_get_form ::
         JSRef HTMLSelectElement -> IO (JSRef HTMLFormElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.form Mozilla HTMLSelectElement.form documentation> 
 htmlSelectElementGetForm ::
                          (IsHTMLSelectElement self) => self -> IO (Maybe HTMLFormElement)
 htmlSelectElementGetForm self
-  = fmap HTMLFormElement . maybeJSNull <$>
-      (ghcjs_dom_html_select_element_get_form
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = (ghcjs_dom_html_select_element_get_form
+       (unHTMLSelectElement (toHTMLSelectElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"multiple\"] = $2;"
         ghcjs_dom_html_select_element_set_multiple ::
         JSRef HTMLSelectElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.multiple Mozilla HTMLSelectElement.multiple documentation> 
 htmlSelectElementSetMultiple ::
                              (IsHTMLSelectElement self) => self -> Bool -> IO ()
 htmlSelectElementSetMultiple self val
@@ -208,7 +222,8 @@ htmlSelectElementSetMultiple self val
 foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_multiple ::
         JSRef HTMLSelectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.multiple Mozilla HTMLSelectElement.multiple documentation> 
 htmlSelectElementGetMultiple ::
                              (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetMultiple self
@@ -218,7 +233,8 @@ htmlSelectElementGetMultiple self
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_select_element_set_name ::
         JSRef HTMLSelectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.name Mozilla HTMLSelectElement.name documentation> 
 htmlSelectElementSetName ::
                          (IsHTMLSelectElement self, ToJSString val) => self -> val -> IO ()
 htmlSelectElementSetName self val
@@ -229,7 +245,8 @@ htmlSelectElementSetName self val
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_select_element_get_name ::
         JSRef HTMLSelectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.name Mozilla HTMLSelectElement.name documentation> 
 htmlSelectElementGetName ::
                          (IsHTMLSelectElement self, FromJSString result) =>
                            self -> IO result
@@ -241,7 +258,8 @@ htmlSelectElementGetName self
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_select_element_set_required ::
         JSRef HTMLSelectElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.required Mozilla HTMLSelectElement.required documentation> 
 htmlSelectElementSetRequired ::
                              (IsHTMLSelectElement self) => self -> Bool -> IO ()
 htmlSelectElementSetRequired self val
@@ -252,7 +270,8 @@ htmlSelectElementSetRequired self val
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_required ::
         JSRef HTMLSelectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.required Mozilla HTMLSelectElement.required documentation> 
 htmlSelectElementGetRequired ::
                              (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetRequired self
@@ -262,7 +281,8 @@ htmlSelectElementGetRequired self
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_select_element_set_size ::
         JSRef HTMLSelectElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.size Mozilla HTMLSelectElement.size documentation> 
 htmlSelectElementSetSize ::
                          (IsHTMLSelectElement self) => self -> Int -> IO ()
 htmlSelectElementSetSize self val
@@ -273,7 +293,8 @@ htmlSelectElementSetSize self val
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_select_element_get_size ::
         JSRef HTMLSelectElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.size Mozilla HTMLSelectElement.size documentation> 
 htmlSelectElementGetSize ::
                          (IsHTMLSelectElement self) => self -> IO Int
 htmlSelectElementGetSize self
@@ -283,19 +304,21 @@ htmlSelectElementGetSize self
 foreign import javascript unsafe "$1[\"options\"]"
         ghcjs_dom_html_select_element_get_options ::
         JSRef HTMLSelectElement -> IO (JSRef HTMLOptionsCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.options Mozilla HTMLSelectElement.options documentation> 
 htmlSelectElementGetOptions ::
                             (IsHTMLSelectElement self) =>
                               self -> IO (Maybe HTMLOptionsCollection)
 htmlSelectElementGetOptions self
-  = fmap HTMLOptionsCollection . maybeJSNull <$>
-      (ghcjs_dom_html_select_element_get_options
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = (ghcjs_dom_html_select_element_get_options
+       (unHTMLSelectElement (toHTMLSelectElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"length\"] = $2;"
         ghcjs_dom_html_select_element_set_length ::
         JSRef HTMLSelectElement -> Word -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.length Mozilla HTMLSelectElement.length documentation> 
 htmlSelectElementSetLength ::
                            (IsHTMLSelectElement self) => self -> Word -> IO ()
 htmlSelectElementSetLength self val
@@ -306,7 +329,8 @@ htmlSelectElementSetLength self val
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_html_select_element_get_length ::
         JSRef HTMLSelectElement -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.length Mozilla HTMLSelectElement.length documentation> 
 htmlSelectElementGetLength ::
                            (IsHTMLSelectElement self) => self -> IO Word
 htmlSelectElementGetLength self
@@ -316,18 +340,20 @@ htmlSelectElementGetLength self
 foreign import javascript unsafe "$1[\"selectedOptions\"]"
         ghcjs_dom_html_select_element_get_selected_options ::
         JSRef HTMLSelectElement -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.selectedOptions Mozilla HTMLSelectElement.selectedOptions documentation> 
 htmlSelectElementGetSelectedOptions ::
                                     (IsHTMLSelectElement self) => self -> IO (Maybe HTMLCollection)
 htmlSelectElementGetSelectedOptions self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_select_element_get_selected_options
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = (ghcjs_dom_html_select_element_get_selected_options
+       (unHTMLSelectElement (toHTMLSelectElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"selectedIndex\"] = $2;"
         ghcjs_dom_html_select_element_set_selected_index ::
         JSRef HTMLSelectElement -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.selectedIndex Mozilla HTMLSelectElement.selectedIndex documentation> 
 htmlSelectElementSetSelectedIndex ::
                                   (IsHTMLSelectElement self) => self -> Int -> IO ()
 htmlSelectElementSetSelectedIndex self val
@@ -338,7 +364,8 @@ htmlSelectElementSetSelectedIndex self val
 foreign import javascript unsafe "$1[\"selectedIndex\"]"
         ghcjs_dom_html_select_element_get_selected_index ::
         JSRef HTMLSelectElement -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.selectedIndex Mozilla HTMLSelectElement.selectedIndex documentation> 
 htmlSelectElementGetSelectedIndex ::
                                   (IsHTMLSelectElement self) => self -> IO Int
 htmlSelectElementGetSelectedIndex self
@@ -348,7 +375,8 @@ htmlSelectElementGetSelectedIndex self
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_select_element_set_value ::
         JSRef HTMLSelectElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.value Mozilla HTMLSelectElement.value documentation> 
 htmlSelectElementSetValue ::
                           (IsHTMLSelectElement self, ToJSString val) => self -> val -> IO ()
 htmlSelectElementSetValue self val
@@ -359,7 +387,8 @@ htmlSelectElementSetValue self val
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_select_element_get_value ::
         JSRef HTMLSelectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.value Mozilla HTMLSelectElement.value documentation> 
 htmlSelectElementGetValue ::
                           (IsHTMLSelectElement self, FromJSString result) =>
                             self -> IO result
@@ -371,7 +400,8 @@ htmlSelectElementGetValue self
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_select_element_get_will_validate ::
         JSRef HTMLSelectElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.willValidate Mozilla HTMLSelectElement.willValidate documentation> 
 htmlSelectElementGetWillValidate ::
                                  (IsHTMLSelectElement self) => self -> IO Bool
 htmlSelectElementGetWillValidate self
@@ -381,18 +411,20 @@ htmlSelectElementGetWillValidate self
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_select_element_get_validity ::
         JSRef HTMLSelectElement -> IO (JSRef ValidityState)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.validity Mozilla HTMLSelectElement.validity documentation> 
 htmlSelectElementGetValidity ::
                              (IsHTMLSelectElement self) => self -> IO (Maybe ValidityState)
 htmlSelectElementGetValidity self
-  = fmap ValidityState . maybeJSNull <$>
-      (ghcjs_dom_html_select_element_get_validity
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = (ghcjs_dom_html_select_element_get_validity
+       (unHTMLSelectElement (toHTMLSelectElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_select_element_get_validation_message ::
         JSRef HTMLSelectElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.validationMessage Mozilla HTMLSelectElement.validationMessage documentation> 
 htmlSelectElementGetValidationMessage ::
                                       (IsHTMLSelectElement self, FromJSString result) =>
                                         self -> IO result
@@ -404,13 +436,14 @@ htmlSelectElementGetValidationMessage self
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_select_element_get_labels ::
         JSRef HTMLSelectElement -> IO (JSRef NodeList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.labels Mozilla HTMLSelectElement.labels documentation> 
 htmlSelectElementGetLabels ::
                            (IsHTMLSelectElement self) => self -> IO (Maybe NodeList)
 htmlSelectElementGetLabels self
-  = fmap NodeList . maybeJSNull <$>
-      (ghcjs_dom_html_select_element_get_labels
-         (unHTMLSelectElement (toHTMLSelectElement self)))
+  = (ghcjs_dom_html_select_element_get_labels
+       (unHTMLSelectElement (toHTMLSelectElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.HTMLSelectElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLSelectElement

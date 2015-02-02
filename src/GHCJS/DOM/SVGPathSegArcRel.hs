@@ -22,20 +22,23 @@ module GHCJS.DOM.SVGPathSegArcRel
         svgPathSegArcRelGetSweepFlag, SVGPathSegArcRel, IsSVGPathSegArcRel,
         castToSVGPathSegArcRel, gTypeSVGPathSegArcRel, toSVGPathSegArcRel)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_svg_path_seg_arc_rel_set_x ::
         JSRef SVGPathSegArcRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.x Mozilla SVGPathSegArcRel.x documentation> 
 svgPathSegArcRelSetX ::
                      (IsSVGPathSegArcRel self) => self -> Float -> IO ()
 svgPathSegArcRelSetX self val
@@ -46,7 +49,8 @@ svgPathSegArcRelSetX self val
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_arc_rel_get_x ::
         JSRef SVGPathSegArcRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.x Mozilla SVGPathSegArcRel.x documentation> 
 svgPathSegArcRelGetX ::
                      (IsSVGPathSegArcRel self) => self -> IO Float
 svgPathSegArcRelGetX self
@@ -56,7 +60,8 @@ svgPathSegArcRelGetX self
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_arc_rel_set_y ::
         JSRef SVGPathSegArcRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.y Mozilla SVGPathSegArcRel.y documentation> 
 svgPathSegArcRelSetY ::
                      (IsSVGPathSegArcRel self) => self -> Float -> IO ()
 svgPathSegArcRelSetY self val
@@ -67,7 +72,8 @@ svgPathSegArcRelSetY self val
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_arc_rel_get_y ::
         JSRef SVGPathSegArcRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.y Mozilla SVGPathSegArcRel.y documentation> 
 svgPathSegArcRelGetY ::
                      (IsSVGPathSegArcRel self) => self -> IO Float
 svgPathSegArcRelGetY self
@@ -77,7 +83,8 @@ svgPathSegArcRelGetY self
 foreign import javascript unsafe "$1[\"r1\"] = $2;"
         ghcjs_dom_svg_path_seg_arc_rel_set_r1 ::
         JSRef SVGPathSegArcRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r1 Mozilla SVGPathSegArcRel.r1 documentation> 
 svgPathSegArcRelSetR1 ::
                       (IsSVGPathSegArcRel self) => self -> Float -> IO ()
 svgPathSegArcRelSetR1 self val
@@ -88,7 +95,8 @@ svgPathSegArcRelSetR1 self val
 foreign import javascript unsafe "$1[\"r1\"]"
         ghcjs_dom_svg_path_seg_arc_rel_get_r1 ::
         JSRef SVGPathSegArcRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r1 Mozilla SVGPathSegArcRel.r1 documentation> 
 svgPathSegArcRelGetR1 ::
                       (IsSVGPathSegArcRel self) => self -> IO Float
 svgPathSegArcRelGetR1 self
@@ -98,7 +106,8 @@ svgPathSegArcRelGetR1 self
 foreign import javascript unsafe "$1[\"r2\"] = $2;"
         ghcjs_dom_svg_path_seg_arc_rel_set_r2 ::
         JSRef SVGPathSegArcRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r2 Mozilla SVGPathSegArcRel.r2 documentation> 
 svgPathSegArcRelSetR2 ::
                       (IsSVGPathSegArcRel self) => self -> Float -> IO ()
 svgPathSegArcRelSetR2 self val
@@ -109,7 +118,8 @@ svgPathSegArcRelSetR2 self val
 foreign import javascript unsafe "$1[\"r2\"]"
         ghcjs_dom_svg_path_seg_arc_rel_get_r2 ::
         JSRef SVGPathSegArcRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r2 Mozilla SVGPathSegArcRel.r2 documentation> 
 svgPathSegArcRelGetR2 ::
                       (IsSVGPathSegArcRel self) => self -> IO Float
 svgPathSegArcRelGetR2 self
@@ -119,7 +129,8 @@ svgPathSegArcRelGetR2 self
 foreign import javascript unsafe "$1[\"angle\"] = $2;"
         ghcjs_dom_svg_path_seg_arc_rel_set_angle ::
         JSRef SVGPathSegArcRel -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.angle Mozilla SVGPathSegArcRel.angle documentation> 
 svgPathSegArcRelSetAngle ::
                          (IsSVGPathSegArcRel self) => self -> Float -> IO ()
 svgPathSegArcRelSetAngle self val
@@ -130,7 +141,8 @@ svgPathSegArcRelSetAngle self val
 foreign import javascript unsafe "$1[\"angle\"]"
         ghcjs_dom_svg_path_seg_arc_rel_get_angle ::
         JSRef SVGPathSegArcRel -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.angle Mozilla SVGPathSegArcRel.angle documentation> 
 svgPathSegArcRelGetAngle ::
                          (IsSVGPathSegArcRel self) => self -> IO Float
 svgPathSegArcRelGetAngle self
@@ -140,7 +152,8 @@ svgPathSegArcRelGetAngle self
 foreign import javascript unsafe "$1[\"largeArcFlag\"] = $2;"
         ghcjs_dom_svg_path_seg_arc_rel_set_large_arc_flag ::
         JSRef SVGPathSegArcRel -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.largeArcFlag Mozilla SVGPathSegArcRel.largeArcFlag documentation> 
 svgPathSegArcRelSetLargeArcFlag ::
                                 (IsSVGPathSegArcRel self) => self -> Bool -> IO ()
 svgPathSegArcRelSetLargeArcFlag self val
@@ -151,7 +164,8 @@ svgPathSegArcRelSetLargeArcFlag self val
 foreign import javascript unsafe "($1[\"largeArcFlag\"] ? 1 : 0)"
         ghcjs_dom_svg_path_seg_arc_rel_get_large_arc_flag ::
         JSRef SVGPathSegArcRel -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.largeArcFlag Mozilla SVGPathSegArcRel.largeArcFlag documentation> 
 svgPathSegArcRelGetLargeArcFlag ::
                                 (IsSVGPathSegArcRel self) => self -> IO Bool
 svgPathSegArcRelGetLargeArcFlag self
@@ -161,7 +175,8 @@ svgPathSegArcRelGetLargeArcFlag self
 foreign import javascript unsafe "$1[\"sweepFlag\"] = $2;"
         ghcjs_dom_svg_path_seg_arc_rel_set_sweep_flag ::
         JSRef SVGPathSegArcRel -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.sweepFlag Mozilla SVGPathSegArcRel.sweepFlag documentation> 
 svgPathSegArcRelSetSweepFlag ::
                              (IsSVGPathSegArcRel self) => self -> Bool -> IO ()
 svgPathSegArcRelSetSweepFlag self val
@@ -172,7 +187,8 @@ svgPathSegArcRelSetSweepFlag self val
 foreign import javascript unsafe "($1[\"sweepFlag\"] ? 1 : 0)"
         ghcjs_dom_svg_path_seg_arc_rel_get_sweep_flag ::
         JSRef SVGPathSegArcRel -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.sweepFlag Mozilla SVGPathSegArcRel.sweepFlag documentation> 
 svgPathSegArcRelGetSweepFlag ::
                              (IsSVGPathSegArcRel self) => self -> IO Bool
 svgPathSegArcRelGetSweepFlag self
@@ -180,7 +196,5 @@ svgPathSegArcRelGetSweepFlag self
       (unSVGPathSegArcRel (toSVGPathSegArcRel self))
 #else
 module GHCJS.DOM.SVGPathSegArcRel (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPathSegArcRel
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPathSegArcRel
 #endif

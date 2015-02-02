@@ -11,20 +11,23 @@ module GHCJS.DOM.SVGColor
         ghcjs_dom_svg_color_get_rgb_color, svgColorGetRgbColor, SVGColor,
         IsSVGColor, castToSVGColor, gTypeSVGColor, toSVGColor)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"setRGBColor\"]($2)"
         ghcjs_dom_svg_color_set_rgb_color ::
         JSRef SVGColor -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.rgbColor Mozilla SVGColor.rgbColor documentation> 
 svgColorSetRGBColor ::
                     (IsSVGColor self, ToJSString rgbColor) => self -> rgbColor -> IO ()
 svgColorSetRGBColor self rgbColor
@@ -35,7 +38,8 @@ foreign import javascript unsafe
         "$1[\"setRGBColorICCColor\"]($2,\n$3)"
         ghcjs_dom_svg_color_set_rgb_color_icc_color ::
         JSRef SVGColor -> JSString -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.rgbColorICCColor Mozilla SVGColor.rgbColorICCColor documentation> 
 svgColorSetRGBColorICCColor ::
                             (IsSVGColor self, ToJSString rgbColor, ToJSString iccColor) =>
                               self -> rgbColor -> iccColor -> IO ()
@@ -48,7 +52,8 @@ svgColorSetRGBColorICCColor self rgbColor iccColor
 foreign import javascript unsafe "$1[\"setColor\"]($2, $3, $4)"
         ghcjs_dom_svg_color_set_color ::
         JSRef SVGColor -> Word -> JSString -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.color Mozilla SVGColor.color documentation> 
 svgColorSetColor ::
                  (IsSVGColor self, ToJSString rgbColor, ToJSString iccColor) =>
                    self -> Word -> rgbColor -> iccColor -> IO ()
@@ -64,7 +69,8 @@ cSVG_COLORTYPE_CURRENTCOLOR = 3
  
 foreign import javascript unsafe "$1[\"colorType\"]"
         ghcjs_dom_svg_color_get_color_type :: JSRef SVGColor -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.colorType Mozilla SVGColor.colorType documentation> 
 svgColorGetColorType :: (IsSVGColor self) => self -> IO Word
 svgColorGetColorType self
   = ghcjs_dom_svg_color_get_color_type (unSVGColor (toSVGColor self))
@@ -72,15 +78,15 @@ svgColorGetColorType self
 foreign import javascript unsafe "$1[\"rgbColor\"]"
         ghcjs_dom_svg_color_get_rgb_color ::
         JSRef SVGColor -> IO (JSRef RGBColor)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.rgbColor Mozilla SVGColor.rgbColor documentation> 
 svgColorGetRgbColor ::
                     (IsSVGColor self) => self -> IO (Maybe RGBColor)
 svgColorGetRgbColor self
-  = fmap RGBColor . maybeJSNull <$>
-      (ghcjs_dom_svg_color_get_rgb_color (unSVGColor (toSVGColor self)))
+  = (ghcjs_dom_svg_color_get_rgb_color
+       (unSVGColor (toSVGColor self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGColor (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGColor
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGColor
 #endif

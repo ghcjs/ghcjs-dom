@@ -7,21 +7,24 @@ module GHCJS.DOM.DOMWindowCSS
         DOMWindowCSS, IsDOMWindowCSS, castToDOMWindowCSS,
         gTypeDOMWindowCSS, toDOMWindowCSS)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "($1[\"supports\"]($2, $3) ? 1 : 0)"
         ghcjs_dom_dom_window_css_supports2 ::
         JSRef DOMWindowCSS -> JSString -> JSString -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports2 Mozilla CSS.supports2 documentation> 
 domWindowCSSSupports2 ::
                       (IsDOMWindowCSS self, ToJSString property, ToJSString value) =>
                         self -> property -> value -> IO Bool
@@ -34,7 +37,8 @@ domWindowCSSSupports2 self property value
 foreign import javascript unsafe "($1[\"supports\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_css_supports ::
         JSRef DOMWindowCSS -> JSString -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 domWindowCSSSupports ::
                      (IsDOMWindowCSS self, ToJSString conditionText) =>
                        self -> conditionText -> IO Bool

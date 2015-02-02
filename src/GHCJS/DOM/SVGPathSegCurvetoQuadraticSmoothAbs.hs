@@ -16,20 +16,23 @@ module GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs
         gTypeSVGPathSegCurvetoQuadraticSmoothAbs,
         toSVGPathSegCurvetoQuadraticSmoothAbs)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_abs_set_x ::
         JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.x Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.x documentation> 
 svgPathSegCurvetoQuadraticSmoothAbsSetX ::
                                         (IsSVGPathSegCurvetoQuadraticSmoothAbs self) =>
                                           self -> Float -> IO ()
@@ -42,7 +45,8 @@ svgPathSegCurvetoQuadraticSmoothAbsSetX self val
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_abs_get_x ::
         JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.x Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.x documentation> 
 svgPathSegCurvetoQuadraticSmoothAbsGetX ::
                                         (IsSVGPathSegCurvetoQuadraticSmoothAbs self) =>
                                           self -> IO Float
@@ -54,7 +58,8 @@ svgPathSegCurvetoQuadraticSmoothAbsGetX self
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_abs_set_y ::
         JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.y Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.y documentation> 
 svgPathSegCurvetoQuadraticSmoothAbsSetY ::
                                         (IsSVGPathSegCurvetoQuadraticSmoothAbs self) =>
                                           self -> Float -> IO ()
@@ -67,7 +72,8 @@ svgPathSegCurvetoQuadraticSmoothAbsSetY self val
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_abs_get_y ::
         JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.y Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.y documentation> 
 svgPathSegCurvetoQuadraticSmoothAbsGetY ::
                                         (IsSVGPathSegCurvetoQuadraticSmoothAbs self) =>
                                           self -> IO Float
@@ -77,7 +83,5 @@ svgPathSegCurvetoQuadraticSmoothAbsGetY self
          (toSVGPathSegCurvetoQuadraticSmoothAbs self))
 #else
 module GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPathSegCurvetoQuadraticSmoothAbs
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPathSegCurvetoQuadraticSmoothAbs
 #endif

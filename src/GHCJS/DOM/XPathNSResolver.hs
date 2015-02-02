@@ -7,20 +7,23 @@ module GHCJS.DOM.XPathNSResolver
         IsXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver,
         toXPathNSResolver)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
         ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri ::
         JSRef XPathNSResolver -> JSString -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver.lookupNamespaceURI Mozilla XPathNSResolver.lookupNamespaceURI documentation> 
 xPathNSResolverLookupNamespaceURI ::
                                   (IsXPathNSResolver self, ToJSString prefix,
                                    FromJSString result) =>

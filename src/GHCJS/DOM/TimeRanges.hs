@@ -8,20 +8,23 @@ module GHCJS.DOM.TimeRanges
         TimeRanges(..), IsTimeRanges, castToTimeRanges, gTypeTimeRanges,
         toTimeRanges)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"start\"]($2)"
         ghcjs_dom_time_ranges_start ::
         JSRef TimeRanges -> Word -> IO Double
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.start Mozilla TimeRanges.start documentation> 
 timeRangesStart :: (IsTimeRanges self) => self -> Word -> IO Double
 timeRangesStart self index
   = ghcjs_dom_time_ranges_start (unTimeRanges (toTimeRanges self))
@@ -29,7 +32,8 @@ timeRangesStart self index
  
 foreign import javascript unsafe "$1[\"end\"]($2)"
         ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Double
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.end Mozilla TimeRanges.end documentation> 
 timeRangesEnd :: (IsTimeRanges self) => self -> Word -> IO Double
 timeRangesEnd self index
   = ghcjs_dom_time_ranges_end (unTimeRanges (toTimeRanges self))
@@ -37,7 +41,8 @@ timeRangesEnd self index
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_time_ranges_get_length :: JSRef TimeRanges -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.length Mozilla TimeRanges.length documentation> 
 timeRangesGetLength :: (IsTimeRanges self) => self -> IO Word
 timeRangesGetLength self
   = ghcjs_dom_time_ranges_get_length

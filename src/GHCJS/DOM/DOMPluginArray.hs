@@ -9,45 +9,50 @@ module GHCJS.DOM.DOMPluginArray
         DOMPluginArray, IsDOMPluginArray, castToDOMPluginArray,
         gTypeDOMPluginArray, toDOMPluginArray)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_dom_plugin_array_item ::
         JSRef DOMPluginArray -> Word -> IO (JSRef DOMPlugin)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.item Mozilla PluginArray.item documentation> 
 domPluginArrayItem ::
                    (IsDOMPluginArray self) => self -> Word -> IO (Maybe DOMPlugin)
 domPluginArrayItem self index
-  = fmap DOMPlugin . maybeJSNull <$>
-      (ghcjs_dom_dom_plugin_array_item
-         (unDOMPluginArray (toDOMPluginArray self))
-         index)
+  = (ghcjs_dom_dom_plugin_array_item
+       (unDOMPluginArray (toDOMPluginArray self))
+       index)
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_dom_plugin_array_named_item ::
         JSRef DOMPluginArray -> JSString -> IO (JSRef DOMPlugin)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.namedItem Mozilla PluginArray.namedItem documentation> 
 domPluginArrayNamedItem ::
                         (IsDOMPluginArray self, ToJSString name) =>
                           self -> name -> IO (Maybe DOMPlugin)
 domPluginArrayNamedItem self name
-  = fmap DOMPlugin . maybeJSNull <$>
-      (ghcjs_dom_dom_plugin_array_named_item
-         (unDOMPluginArray (toDOMPluginArray self))
-         (toJSString name))
+  = (ghcjs_dom_dom_plugin_array_named_item
+       (unDOMPluginArray (toDOMPluginArray self))
+       (toJSString name))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"refresh\"]($2)"
         ghcjs_dom_dom_plugin_array_refresh ::
         JSRef DOMPluginArray -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.refresh Mozilla PluginArray.refresh documentation> 
 domPluginArrayRefresh ::
                       (IsDOMPluginArray self) => self -> Bool -> IO ()
 domPluginArrayRefresh self reload
@@ -58,7 +63,8 @@ domPluginArrayRefresh self reload
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_plugin_array_get_length ::
         JSRef DOMPluginArray -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.length Mozilla PluginArray.length documentation> 
 domPluginArrayGetLength ::
                         (IsDOMPluginArray self) => self -> IO Word
 domPluginArrayGetLength self

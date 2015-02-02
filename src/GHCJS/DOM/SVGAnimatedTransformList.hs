@@ -9,42 +9,44 @@ module GHCJS.DOM.SVGAnimatedTransformList
         IsSVGAnimatedTransformList, castToSVGAnimatedTransformList,
         gTypeSVGAnimatedTransformList, toSVGAnimatedTransformList)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"baseVal\"]"
         ghcjs_dom_svg_animated_transform_list_get_base_val ::
         JSRef SVGAnimatedTransformList -> IO (JSRef SVGTransformList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList.baseVal Mozilla SVGAnimatedTransformList.baseVal documentation> 
 svgAnimatedTransformListGetBaseVal ::
                                    (IsSVGAnimatedTransformList self) =>
                                      self -> IO (Maybe SVGTransformList)
 svgAnimatedTransformListGetBaseVal self
-  = fmap SVGTransformList . maybeJSNull <$>
-      (ghcjs_dom_svg_animated_transform_list_get_base_val
-         (unSVGAnimatedTransformList (toSVGAnimatedTransformList self)))
+  = (ghcjs_dom_svg_animated_transform_list_get_base_val
+       (unSVGAnimatedTransformList (toSVGAnimatedTransformList self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"animVal\"]"
         ghcjs_dom_svg_animated_transform_list_get_anim_val ::
         JSRef SVGAnimatedTransformList -> IO (JSRef SVGTransformList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList.animVal Mozilla SVGAnimatedTransformList.animVal documentation> 
 svgAnimatedTransformListGetAnimVal ::
                                    (IsSVGAnimatedTransformList self) =>
                                      self -> IO (Maybe SVGTransformList)
 svgAnimatedTransformListGetAnimVal self
-  = fmap SVGTransformList . maybeJSNull <$>
-      (ghcjs_dom_svg_animated_transform_list_get_anim_val
-         (unSVGAnimatedTransformList (toSVGAnimatedTransformList self)))
+  = (ghcjs_dom_svg_animated_transform_list_get_anim_val
+       (unSVGAnimatedTransformList (toSVGAnimatedTransformList self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGAnimatedTransformList (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedTransformList
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedTransformList
 #endif

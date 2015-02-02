@@ -17,14 +17,16 @@ module GHCJS.DOM.SVGPathSeg
         svgPathSegGetPathSegTypeAsLetter, SVGPathSeg, IsSVGPathSeg,
         castToSVGPathSeg, gTypeSVGPathSeg, toSVGPathSeg)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
 cPATHSEG_UNKNOWN = 0
 cPATHSEG_CLOSEPATH = 1
@@ -50,7 +52,8 @@ cPATHSEG_CURVETO_QUADRATIC_SMOOTH_REL = 19
 foreign import javascript unsafe "$1[\"pathSegType\"]"
         ghcjs_dom_svg_path_seg_get_path_seg_type ::
         JSRef SVGPathSeg -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegType Mozilla SVGPathSeg.pathSegType documentation> 
 svgPathSegGetPathSegType :: (IsSVGPathSeg self) => self -> IO Word
 svgPathSegGetPathSegType self
   = ghcjs_dom_svg_path_seg_get_path_seg_type
@@ -59,7 +62,8 @@ svgPathSegGetPathSegType self
 foreign import javascript unsafe "$1[\"pathSegTypeAsLetter\"]"
         ghcjs_dom_svg_path_seg_get_path_seg_type_as_letter ::
         JSRef SVGPathSeg -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegTypeAsLetter Mozilla SVGPathSeg.pathSegTypeAsLetter documentation> 
 svgPathSegGetPathSegTypeAsLetter ::
                                  (IsSVGPathSeg self, FromJSString result) => self -> IO result
 svgPathSegGetPathSegTypeAsLetter self
@@ -68,7 +72,5 @@ svgPathSegGetPathSegTypeAsLetter self
          (unSVGPathSeg (toSVGPathSeg self)))
 #else
 module GHCJS.DOM.SVGPathSeg (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGPathSeg
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGPathSeg
 #endif

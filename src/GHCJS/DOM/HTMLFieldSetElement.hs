@@ -27,21 +27,24 @@ module GHCJS.DOM.HTMLFieldSetElement
         IsHTMLFieldSetElement, castToHTMLFieldSetElement,
         gTypeHTMLFieldSetElement, toHTMLFieldSetElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
         ghcjs_dom_html_field_set_element_check_validity ::
         JSRef HTMLFieldSetElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.checkValidity Mozilla HTMLFieldSetElement.checkValidity documentation> 
 htmlFieldSetElementCheckValidity ::
                                  (IsHTMLFieldSetElement self) => self -> IO Bool
 htmlFieldSetElementCheckValidity self
@@ -51,7 +54,8 @@ htmlFieldSetElementCheckValidity self
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_field_set_element_set_custom_validity ::
         JSRef HTMLFieldSetElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.customValidity Mozilla HTMLFieldSetElement.customValidity documentation> 
 htmlFieldSetElementSetCustomValidity ::
                                      (IsHTMLFieldSetElement self, ToJSString error) =>
                                        self -> error -> IO ()
@@ -63,7 +67,8 @@ htmlFieldSetElementSetCustomValidity self error
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_field_set_element_set_disabled ::
         JSRef HTMLFieldSetElement -> Bool -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.disabled Mozilla HTMLFieldSetElement.disabled documentation> 
 htmlFieldSetElementSetDisabled ::
                                (IsHTMLFieldSetElement self) => self -> Bool -> IO ()
 htmlFieldSetElementSetDisabled self val
@@ -74,7 +79,8 @@ htmlFieldSetElementSetDisabled self val
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_field_set_element_get_disabled ::
         JSRef HTMLFieldSetElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.disabled Mozilla HTMLFieldSetElement.disabled documentation> 
 htmlFieldSetElementGetDisabled ::
                                (IsHTMLFieldSetElement self) => self -> IO Bool
 htmlFieldSetElementGetDisabled self
@@ -84,18 +90,20 @@ htmlFieldSetElementGetDisabled self
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_field_set_element_get_form ::
         JSRef HTMLFieldSetElement -> IO (JSRef HTMLFormElement)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.form Mozilla HTMLFieldSetElement.form documentation> 
 htmlFieldSetElementGetForm ::
                            (IsHTMLFieldSetElement self) => self -> IO (Maybe HTMLFormElement)
 htmlFieldSetElementGetForm self
-  = fmap HTMLFormElement . maybeJSNull <$>
-      (ghcjs_dom_html_field_set_element_get_form
-         (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+  = (ghcjs_dom_html_field_set_element_get_form
+       (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_field_set_element_set_name ::
         JSRef HTMLFieldSetElement -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.name Mozilla HTMLFieldSetElement.name documentation> 
 htmlFieldSetElementSetName ::
                            (IsHTMLFieldSetElement self, ToJSString val) =>
                              self -> val -> IO ()
@@ -107,7 +115,8 @@ htmlFieldSetElementSetName self val
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_field_set_element_get_name ::
         JSRef HTMLFieldSetElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.name Mozilla HTMLFieldSetElement.name documentation> 
 htmlFieldSetElementGetName ::
                            (IsHTMLFieldSetElement self, FromJSString result) =>
                              self -> IO result
@@ -119,18 +128,20 @@ htmlFieldSetElementGetName self
 foreign import javascript unsafe "$1[\"elements\"]"
         ghcjs_dom_html_field_set_element_get_elements ::
         JSRef HTMLFieldSetElement -> IO (JSRef HTMLCollection)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.elements Mozilla HTMLFieldSetElement.elements documentation> 
 htmlFieldSetElementGetElements ::
                                (IsHTMLFieldSetElement self) => self -> IO (Maybe HTMLCollection)
 htmlFieldSetElementGetElements self
-  = fmap HTMLCollection . maybeJSNull <$>
-      (ghcjs_dom_html_field_set_element_get_elements
-         (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+  = (ghcjs_dom_html_field_set_element_get_elements
+       (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_field_set_element_get_will_validate ::
         JSRef HTMLFieldSetElement -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.willValidate Mozilla HTMLFieldSetElement.willValidate documentation> 
 htmlFieldSetElementGetWillValidate ::
                                    (IsHTMLFieldSetElement self) => self -> IO Bool
 htmlFieldSetElementGetWillValidate self
@@ -140,18 +151,20 @@ htmlFieldSetElementGetWillValidate self
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_field_set_element_get_validity ::
         JSRef HTMLFieldSetElement -> IO (JSRef ValidityState)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.validity Mozilla HTMLFieldSetElement.validity documentation> 
 htmlFieldSetElementGetValidity ::
                                (IsHTMLFieldSetElement self) => self -> IO (Maybe ValidityState)
 htmlFieldSetElementGetValidity self
-  = fmap ValidityState . maybeJSNull <$>
-      (ghcjs_dom_html_field_set_element_get_validity
-         (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+  = (ghcjs_dom_html_field_set_element_get_validity
+       (unHTMLFieldSetElement (toHTMLFieldSetElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_field_set_element_get_validation_message ::
         JSRef HTMLFieldSetElement -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.validationMessage Mozilla HTMLFieldSetElement.validationMessage documentation> 
 htmlFieldSetElementGetValidationMessage ::
                                         (IsHTMLFieldSetElement self, FromJSString result) =>
                                           self -> IO result

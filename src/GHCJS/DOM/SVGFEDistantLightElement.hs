@@ -9,42 +9,44 @@ module GHCJS.DOM.SVGFEDistantLightElement
         IsSVGFEDistantLightElement, castToSVGFEDistantLightElement,
         gTypeSVGFEDistantLightElement, toSVGFEDistantLightElement)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"azimuth\"]"
         ghcjs_dom_svgfe_distant_light_element_get_azimuth ::
         JSRef SVGFEDistantLightElement -> IO (JSRef SVGAnimatedNumber)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.azimuth Mozilla SVGFEDistantLightElement.azimuth documentation> 
 svgfeDistantLightElementGetAzimuth ::
                                    (IsSVGFEDistantLightElement self) =>
                                      self -> IO (Maybe SVGAnimatedNumber)
 svgfeDistantLightElementGetAzimuth self
-  = fmap SVGAnimatedNumber . maybeJSNull <$>
-      (ghcjs_dom_svgfe_distant_light_element_get_azimuth
-         (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
+  = (ghcjs_dom_svgfe_distant_light_element_get_azimuth
+       (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"elevation\"]"
         ghcjs_dom_svgfe_distant_light_element_get_elevation ::
         JSRef SVGFEDistantLightElement -> IO (JSRef SVGAnimatedNumber)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.elevation Mozilla SVGFEDistantLightElement.elevation documentation> 
 svgfeDistantLightElementGetElevation ::
                                      (IsSVGFEDistantLightElement self) =>
                                        self -> IO (Maybe SVGAnimatedNumber)
 svgfeDistantLightElementGetElevation self
-  = fmap SVGAnimatedNumber . maybeJSNull <$>
-      (ghcjs_dom_svgfe_distant_light_element_get_elevation
-         (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
+  = (ghcjs_dom_svgfe_distant_light_element_get_elevation
+       (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
+      >>= fromJSRef
 #else
 module GHCJS.DOM.SVGFEDistantLightElement (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGFEDistantLightElement
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGFEDistantLightElement
 #endif

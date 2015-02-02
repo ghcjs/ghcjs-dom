@@ -26,20 +26,23 @@ module GHCJS.DOM.CSSPrimitiveValue
         IsCSSPrimitiveValue, castToCSSPrimitiveValue,
         gTypeCSSPrimitiveValue, toCSSPrimitiveValue)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"setFloatValue\"]($2, $3)"
         ghcjs_dom_css_primitive_value_set_float_value ::
         JSRef CSSPrimitiveValue -> Word -> Float -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.floatValue Mozilla CSSPrimitiveValue.floatValue documentation> 
 cssPrimitiveValueSetFloatValue ::
                                (IsCSSPrimitiveValue self) => self -> Word -> Float -> IO ()
 cssPrimitiveValueSetFloatValue self unitType floatValue
@@ -51,7 +54,8 @@ cssPrimitiveValueSetFloatValue self unitType floatValue
 foreign import javascript unsafe "$1[\"getFloatValue\"]($2)"
         ghcjs_dom_css_primitive_value_get_float_value ::
         JSRef CSSPrimitiveValue -> Word -> IO Float
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.floatValue Mozilla CSSPrimitiveValue.floatValue documentation> 
 cssPrimitiveValueGetFloatValue ::
                                (IsCSSPrimitiveValue self) => self -> Word -> IO Float
 cssPrimitiveValueGetFloatValue self unitType
@@ -62,7 +66,8 @@ cssPrimitiveValueGetFloatValue self unitType
 foreign import javascript unsafe "$1[\"setStringValue\"]($2, $3)"
         ghcjs_dom_css_primitive_value_set_string_value ::
         JSRef CSSPrimitiveValue -> Word -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.stringValue Mozilla CSSPrimitiveValue.stringValue documentation> 
 cssPrimitiveValueSetStringValue ::
                                 (IsCSSPrimitiveValue self, ToJSString stringValue) =>
                                   self -> Word -> stringValue -> IO ()
@@ -75,7 +80,8 @@ cssPrimitiveValueSetStringValue self stringType stringValue
 foreign import javascript unsafe "$1[\"getStringValue\"]()"
         ghcjs_dom_css_primitive_value_get_string_value ::
         JSRef CSSPrimitiveValue -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.stringValue Mozilla CSSPrimitiveValue.stringValue documentation> 
 cssPrimitiveValueGetStringValue ::
                                 (IsCSSPrimitiveValue self, FromJSString result) =>
                                   self -> IO result
@@ -87,35 +93,38 @@ cssPrimitiveValueGetStringValue self
 foreign import javascript unsafe "$1[\"getCounterValue\"]()"
         ghcjs_dom_css_primitive_value_get_counter_value ::
         JSRef CSSPrimitiveValue -> IO (JSRef Counter)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.counterValue Mozilla CSSPrimitiveValue.counterValue documentation> 
 cssPrimitiveValueGetCounterValue ::
                                  (IsCSSPrimitiveValue self) => self -> IO (Maybe Counter)
 cssPrimitiveValueGetCounterValue self
-  = fmap Counter . maybeJSNull <$>
-      (ghcjs_dom_css_primitive_value_get_counter_value
-         (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+  = (ghcjs_dom_css_primitive_value_get_counter_value
+       (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"getRectValue\"]()"
         ghcjs_dom_css_primitive_value_get_rect_value ::
         JSRef CSSPrimitiveValue -> IO (JSRef Rect)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.rectValue Mozilla CSSPrimitiveValue.rectValue documentation> 
 cssPrimitiveValueGetRectValue ::
                               (IsCSSPrimitiveValue self) => self -> IO (Maybe Rect)
 cssPrimitiveValueGetRectValue self
-  = fmap Rect . maybeJSNull <$>
-      (ghcjs_dom_css_primitive_value_get_rect_value
-         (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+  = (ghcjs_dom_css_primitive_value_get_rect_value
+       (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"getRGBColorValue\"]()"
         ghcjs_dom_css_primitive_value_get_rgb_color_value ::
         JSRef CSSPrimitiveValue -> IO (JSRef RGBColor)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.rgbColorValue Mozilla CSSPrimitiveValue.rgbColorValue documentation> 
 cssPrimitiveValueGetRGBColorValue ::
                                   (IsCSSPrimitiveValue self) => self -> IO (Maybe RGBColor)
 cssPrimitiveValueGetRGBColorValue self
-  = fmap RGBColor . maybeJSNull <$>
-      (ghcjs_dom_css_primitive_value_get_rgb_color_value
-         (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+  = (ghcjs_dom_css_primitive_value_get_rgb_color_value
+       (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+      >>= fromJSRef
 cCSS_UNKNOWN = 0
 cCSS_NUMBER = 1
 cCSS_PERCENTAGE = 2
@@ -150,7 +159,8 @@ cCSS_VMAX = 29
 foreign import javascript unsafe "$1[\"primitiveType\"]"
         ghcjs_dom_css_primitive_value_get_primitive_type ::
         JSRef CSSPrimitiveValue -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.primitiveType Mozilla CSSPrimitiveValue.primitiveType documentation> 
 cssPrimitiveValueGetPrimitiveType ::
                                   (IsCSSPrimitiveValue self) => self -> IO Word
 cssPrimitiveValueGetPrimitiveType self
@@ -158,7 +168,5 @@ cssPrimitiveValueGetPrimitiveType self
       (unCSSPrimitiveValue (toCSSPrimitiveValue self))
 #else
 module GHCJS.DOM.CSSPrimitiveValue (
-  module Graphics.UI.Gtk.WebKit.DOM.CSSPrimitiveValue
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.CSSPrimitiveValue
 #endif

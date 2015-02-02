@@ -46,85 +46,94 @@ module GHCJS.DOM.Node
         ghcjs_dom_node_get_parent_element, nodeGetParentElement, Node,
         IsNode, castToNode, gTypeNode, toNode)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"insertBefore\"]($2, $3)"
         ghcjs_dom_node_insert_before ::
         JSRef Node -> JSRef Node -> JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore Mozilla Node.insertBefore documentation> 
 nodeInsertBefore ::
                  (IsNode self, IsNode newChild, IsNode refChild) =>
                    self -> Maybe newChild -> Maybe refChild -> IO (Maybe Node)
 nodeInsertBefore self newChild refChild
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_insert_before (unNode (toNode self))
-         (maybe jsNull (unNode . toNode) newChild)
-         (maybe jsNull (unNode . toNode) refChild))
+  = (ghcjs_dom_node_insert_before (unNode (toNode self))
+       (maybe jsNull (unNode . toNode) newChild)
+       (maybe jsNull (unNode . toNode) refChild))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"replaceChild\"]($2, $3)"
         ghcjs_dom_node_replace_child ::
         JSRef Node -> JSRef Node -> JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.replaceChild Mozilla Node.replaceChild documentation> 
 nodeReplaceChild ::
                  (IsNode self, IsNode newChild, IsNode oldChild) =>
                    self -> Maybe newChild -> Maybe oldChild -> IO (Maybe Node)
 nodeReplaceChild self newChild oldChild
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_replace_child (unNode (toNode self))
-         (maybe jsNull (unNode . toNode) newChild)
-         (maybe jsNull (unNode . toNode) oldChild))
+  = (ghcjs_dom_node_replace_child (unNode (toNode self))
+       (maybe jsNull (unNode . toNode) newChild)
+       (maybe jsNull (unNode . toNode) oldChild))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"removeChild\"]($2)"
         ghcjs_dom_node_remove_child ::
         JSRef Node -> JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild Mozilla Node.removeChild documentation> 
 nodeRemoveChild ::
                 (IsNode self, IsNode oldChild) =>
                   self -> Maybe oldChild -> IO (Maybe Node)
 nodeRemoveChild self oldChild
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_remove_child (unNode (toNode self))
-         (maybe jsNull (unNode . toNode) oldChild))
+  = (ghcjs_dom_node_remove_child (unNode (toNode self))
+       (maybe jsNull (unNode . toNode) oldChild))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"appendChild\"]($2)"
         ghcjs_dom_node_append_child ::
         JSRef Node -> JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild Mozilla Node.appendChild documentation> 
 nodeAppendChild ::
                 (IsNode self, IsNode newChild) =>
                   self -> Maybe newChild -> IO (Maybe Node)
 nodeAppendChild self newChild
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_append_child (unNode (toNode self))
-         (maybe jsNull (unNode . toNode) newChild))
+  = (ghcjs_dom_node_append_child (unNode (toNode self))
+       (maybe jsNull (unNode . toNode) newChild))
+      >>= fromJSRef
  
 foreign import javascript unsafe
         "($1[\"hasChildNodes\"]() ? 1 : 0)" ghcjs_dom_node_has_child_nodes
         :: JSRef Node -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.hasChildNodes Mozilla Node.hasChildNodes documentation> 
 nodeHasChildNodes :: (IsNode self) => self -> IO Bool
 nodeHasChildNodes self
   = ghcjs_dom_node_has_child_nodes (unNode (toNode self))
  
 foreign import javascript unsafe "$1[\"cloneNode\"]($2)"
         ghcjs_dom_node_clone_node :: JSRef Node -> Bool -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode Mozilla Node.cloneNode documentation> 
 nodeCloneNode :: (IsNode self) => self -> Bool -> IO (Maybe Node)
 nodeCloneNode self deep
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_clone_node (unNode (toNode self)) deep)
+  = (ghcjs_dom_node_clone_node (unNode (toNode self)) deep) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"normalize\"]()"
         ghcjs_dom_node_normalize :: JSRef Node -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.normalize Mozilla Node.normalize documentation> 
 nodeNormalize :: (IsNode self) => self -> IO ()
 nodeNormalize self
   = ghcjs_dom_node_normalize (unNode (toNode self))
@@ -133,7 +142,8 @@ foreign import javascript unsafe
         "($1[\"isSupported\"]($2,\n$3) ? 1 : 0)"
         ghcjs_dom_node_is_supported ::
         JSRef Node -> JSString -> JSString -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSupported Mozilla Node.isSupported documentation> 
 nodeIsSupported ::
                 (IsNode self, ToJSString feature, ToJSString version) =>
                   self -> feature -> version -> IO Bool
@@ -144,7 +154,8 @@ nodeIsSupported self feature version
  
 foreign import javascript unsafe "($1[\"isSameNode\"]($2) ? 1 : 0)"
         ghcjs_dom_node_is_same_node :: JSRef Node -> JSRef Node -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSameNode Mozilla Node.isSameNode documentation> 
 nodeIsSameNode ::
                (IsNode self, IsNode other) => self -> Maybe other -> IO Bool
 nodeIsSameNode self other
@@ -154,7 +165,8 @@ nodeIsSameNode self other
 foreign import javascript unsafe
         "($1[\"isEqualNode\"]($2) ? 1 : 0)" ghcjs_dom_node_is_equal_node ::
         JSRef Node -> JSRef Node -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isEqualNode Mozilla Node.isEqualNode documentation> 
 nodeIsEqualNode ::
                 (IsNode self, IsNode other) => self -> Maybe other -> IO Bool
 nodeIsEqualNode self other
@@ -164,7 +176,8 @@ nodeIsEqualNode self other
 foreign import javascript unsafe "$1[\"lookupPrefix\"]($2)"
         ghcjs_dom_node_lookup_prefix ::
         JSRef Node -> JSString -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupPrefix Mozilla Node.lookupPrefix documentation> 
 nodeLookupPrefix ::
                  (IsNode self, ToJSString namespaceURI, FromJSString result) =>
                    self -> namespaceURI -> IO result
@@ -177,7 +190,8 @@ foreign import javascript unsafe
         "($1[\"isDefaultNamespace\"]($2) ? 1 : 0)"
         ghcjs_dom_node_is_default_namespace ::
         JSRef Node -> JSString -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isDefaultNamespace Mozilla Node.isDefaultNamespace documentation> 
 nodeIsDefaultNamespace ::
                        (IsNode self, ToJSString namespaceURI) =>
                          self -> namespaceURI -> IO Bool
@@ -188,7 +202,8 @@ nodeIsDefaultNamespace self namespaceURI
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
         ghcjs_dom_node_lookup_namespace_uri ::
         JSRef Node -> JSString -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupNamespaceURI Mozilla Node.lookupNamespaceURI documentation> 
 nodeLookupNamespaceURI ::
                        (IsNode self, ToJSString prefix, FromJSString result) =>
                          self -> prefix -> IO result
@@ -201,7 +216,8 @@ foreign import javascript unsafe
         "$1[\"compareDocumentPosition\"]($2)"
         ghcjs_dom_node_compare_document_position ::
         JSRef Node -> JSRef Node -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.compareDocumentPosition Mozilla Node.compareDocumentPosition documentation> 
 nodeCompareDocumentPosition ::
                             (IsNode self, IsNode other) => self -> Maybe other -> IO Word
 nodeCompareDocumentPosition self other
@@ -210,7 +226,8 @@ nodeCompareDocumentPosition self other
  
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         ghcjs_dom_node_contains :: JSRef Node -> JSRef Node -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.contains Mozilla Node.contains documentation> 
 nodeContains ::
              (IsNode self, IsNode other) => self -> Maybe other -> IO Bool
 nodeContains self other
@@ -220,7 +237,8 @@ nodeContains self other
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)" ghcjs_dom_node_dispatch_event
         :: JSRef Node -> JSRef Event -> IO Bool
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.dispatchEvent Mozilla Node.dispatchEvent documentation> 
 nodeDispatchEvent ::
                   (IsNode self, IsEvent event) => self -> Maybe event -> IO Bool
 nodeDispatchEvent self event
@@ -247,7 +265,8 @@ cDOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC = 32
  
 foreign import javascript unsafe "$1[\"nodeName\"]"
         ghcjs_dom_node_get_node_name :: JSRef Node -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeName Mozilla Node.nodeName documentation> 
 nodeGetNodeName ::
                 (IsNode self, FromJSString result) => self -> IO result
 nodeGetNodeName self
@@ -256,7 +275,8 @@ nodeGetNodeName self
  
 foreign import javascript unsafe "$1[\"nodeValue\"] = $2;"
         ghcjs_dom_node_set_node_value :: JSRef Node -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
 nodeSetNodeValue ::
                  (IsNode self, ToJSString val) => self -> val -> IO ()
 nodeSetNodeValue self val
@@ -265,7 +285,8 @@ nodeSetNodeValue self val
  
 foreign import javascript unsafe "$1[\"nodeValue\"]"
         ghcjs_dom_node_get_node_value :: JSRef Node -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
 nodeGetNodeValue ::
                  (IsNode self, FromJSString result) => self -> IO result
 nodeGetNodeValue self
@@ -274,73 +295,82 @@ nodeGetNodeValue self
  
 foreign import javascript unsafe "$1[\"nodeType\"]"
         ghcjs_dom_node_get_node_type :: JSRef Node -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeType Mozilla Node.nodeType documentation> 
 nodeGetNodeType :: (IsNode self) => self -> IO Word
 nodeGetNodeType self
   = ghcjs_dom_node_get_node_type (unNode (toNode self))
  
 foreign import javascript unsafe "$1[\"parentNode\"]"
         ghcjs_dom_node_get_parent_node :: JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.parentNode Mozilla Node.parentNode documentation> 
 nodeGetParentNode :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetParentNode self
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_get_parent_node (unNode (toNode self)))
+  = (ghcjs_dom_node_get_parent_node (unNode (toNode self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"childNodes\"]"
         ghcjs_dom_node_get_child_nodes :: JSRef Node -> IO (JSRef NodeList)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.childNodes Mozilla Node.childNodes documentation> 
 nodeGetChildNodes :: (IsNode self) => self -> IO (Maybe NodeList)
 nodeGetChildNodes self
-  = fmap NodeList . maybeJSNull <$>
-      (ghcjs_dom_node_get_child_nodes (unNode (toNode self)))
+  = (ghcjs_dom_node_get_child_nodes (unNode (toNode self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"firstChild\"]"
         ghcjs_dom_node_get_first_child :: JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.firstChild Mozilla Node.firstChild documentation> 
 nodeGetFirstChild :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetFirstChild self
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_get_first_child (unNode (toNode self)))
+  = (ghcjs_dom_node_get_first_child (unNode (toNode self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"lastChild\"]"
         ghcjs_dom_node_get_last_child :: JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lastChild Mozilla Node.lastChild documentation> 
 nodeGetLastChild :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetLastChild self
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_get_last_child (unNode (toNode self)))
+  = (ghcjs_dom_node_get_last_child (unNode (toNode self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"previousSibling\"]"
         ghcjs_dom_node_get_previous_sibling ::
         JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.previousSibling Mozilla Node.previousSibling documentation> 
 nodeGetPreviousSibling :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetPreviousSibling self
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_get_previous_sibling (unNode (toNode self)))
+  = (ghcjs_dom_node_get_previous_sibling (unNode (toNode self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"nextSibling\"]"
         ghcjs_dom_node_get_next_sibling :: JSRef Node -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nextSibling Mozilla Node.nextSibling documentation> 
 nodeGetNextSibling :: (IsNode self) => self -> IO (Maybe Node)
 nodeGetNextSibling self
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_node_get_next_sibling (unNode (toNode self)))
+  = (ghcjs_dom_node_get_next_sibling (unNode (toNode self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"ownerDocument\"]"
         ghcjs_dom_node_get_owner_document ::
         JSRef Node -> IO (JSRef Document)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.ownerDocument Mozilla Node.ownerDocument documentation> 
 nodeGetOwnerDocument ::
                      (IsNode self) => self -> IO (Maybe Document)
 nodeGetOwnerDocument self
-  = fmap Document . maybeJSNull <$>
-      (ghcjs_dom_node_get_owner_document (unNode (toNode self)))
+  = (ghcjs_dom_node_get_owner_document (unNode (toNode self))) >>=
+      fromJSRef
  
 foreign import javascript unsafe "$1[\"namespaceURI\"]"
         ghcjs_dom_node_get_namespace_uri :: JSRef Node -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.namespaceURI Mozilla Node.namespaceURI documentation> 
 nodeGetNamespaceURI ::
                     (IsNode self, FromJSString result) => self -> IO result
 nodeGetNamespaceURI self
@@ -349,7 +379,8 @@ nodeGetNamespaceURI self
  
 foreign import javascript unsafe "$1[\"prefix\"] = $2;"
         ghcjs_dom_node_set_prefix :: JSRef Node -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
 nodeSetPrefix ::
               (IsNode self, ToJSString val) => self -> val -> IO ()
 nodeSetPrefix self val
@@ -357,7 +388,8 @@ nodeSetPrefix self val
  
 foreign import javascript unsafe "$1[\"prefix\"]"
         ghcjs_dom_node_get_prefix :: JSRef Node -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
 nodeGetPrefix ::
               (IsNode self, FromJSString result) => self -> IO result
 nodeGetPrefix self
@@ -366,7 +398,8 @@ nodeGetPrefix self
  
 foreign import javascript unsafe "$1[\"localName\"]"
         ghcjs_dom_node_get_local_name :: JSRef Node -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.localName Mozilla Node.localName documentation> 
 nodeGetLocalName ::
                  (IsNode self, FromJSString result) => self -> IO result
 nodeGetLocalName self
@@ -375,7 +408,8 @@ nodeGetLocalName self
  
 foreign import javascript unsafe "$1[\"baseURI\"]"
         ghcjs_dom_node_get_base_uri :: JSRef Node -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.baseURI Mozilla Node.baseURI documentation> 
 nodeGetBaseURI ::
                (IsNode self, FromJSString result) => self -> IO result
 nodeGetBaseURI self
@@ -384,7 +418,8 @@ nodeGetBaseURI self
  
 foreign import javascript unsafe "$1[\"textContent\"] = $2;"
         ghcjs_dom_node_set_text_content :: JSRef Node -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 
 nodeSetTextContent ::
                    (IsNode self, ToJSString val) => self -> val -> IO ()
 nodeSetTextContent self val
@@ -393,7 +428,8 @@ nodeSetTextContent self val
  
 foreign import javascript unsafe "$1[\"textContent\"]"
         ghcjs_dom_node_get_text_content :: JSRef Node -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 
 nodeGetTextContent ::
                    (IsNode self, FromJSString result) => self -> IO result
 nodeGetTextContent self
@@ -403,11 +439,12 @@ nodeGetTextContent self
 foreign import javascript unsafe "$1[\"parentElement\"]"
         ghcjs_dom_node_get_parent_element ::
         JSRef Node -> IO (JSRef Element)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.parentElement Mozilla Node.parentElement documentation> 
 nodeGetParentElement :: (IsNode self) => self -> IO (Maybe Element)
 nodeGetParentElement self
-  = fmap Element . maybeJSNull <$>
-      (ghcjs_dom_node_get_parent_element (unNode (toNode self)))
+  = (ghcjs_dom_node_get_parent_element (unNode (toNode self))) >>=
+      fromJSRef
 #else
 module GHCJS.DOM.Node (
   module Graphics.UI.Gtk.WebKit.DOM.Node

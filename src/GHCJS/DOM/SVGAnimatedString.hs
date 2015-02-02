@@ -11,20 +11,23 @@ module GHCJS.DOM.SVGAnimatedString
         IsSVGAnimatedString, castToSVGAnimatedString,
         gTypeSVGAnimatedString, toSVGAnimatedString)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
         ghcjs_dom_svg_animated_string_set_base_val ::
         JSRef SVGAnimatedString -> JSString -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
 svgAnimatedStringSetBaseVal ::
                             (IsSVGAnimatedString self, ToJSString val) => self -> val -> IO ()
 svgAnimatedStringSetBaseVal self val
@@ -35,7 +38,8 @@ svgAnimatedStringSetBaseVal self val
 foreign import javascript unsafe "$1[\"baseVal\"]"
         ghcjs_dom_svg_animated_string_get_base_val ::
         JSRef SVGAnimatedString -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
 svgAnimatedStringGetBaseVal ::
                             (IsSVGAnimatedString self, FromJSString result) =>
                               self -> IO result
@@ -47,7 +51,8 @@ svgAnimatedStringGetBaseVal self
 foreign import javascript unsafe "$1[\"animVal\"]"
         ghcjs_dom_svg_animated_string_get_anim_val ::
         JSRef SVGAnimatedString -> IO JSString
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.animVal Mozilla SVGAnimatedString.animVal documentation> 
 svgAnimatedStringGetAnimVal ::
                             (IsSVGAnimatedString self, FromJSString result) =>
                               self -> IO result
@@ -57,7 +62,5 @@ svgAnimatedStringGetAnimVal self
          (unSVGAnimatedString (toSVGAnimatedString self)))
 #else
 module GHCJS.DOM.SVGAnimatedString (
-  module Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedString
   ) where
-import Graphics.UI.Gtk.WebKit.DOM.SVGAnimatedString
 #endif

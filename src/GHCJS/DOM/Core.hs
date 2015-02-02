@@ -2,143 +2,153 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Core
-       (DOMAttr, BarProp, Blob, CDATASection, CharacterData, Comment,
-        CSSPrimitiveValue, CSSRule, CSSRuleList, CSSStyleDeclaration,
-        CSSStyleSheet, CSSValue, Counter, Document, DocumentFragment,
-        DocumentType, DOMApplicationCache, DOMImplementation, DOMMimeType,
-        DOMMimeTypeArray, DOMNamedFlowCollection, DOMPlugin,
-        DOMPluginArray, DOMSecurityPolicy, DOMSelection,
-        DOMSettableTokenList, DOMStringList, DOMTokenList, DOMWindow,
-        DOMWindowCSS, Element, EntityReference, Event, EventTarget, File,
-        FileList, Geolocation, PositionError, History, HTMLAnchorElement,
-        HTMLAppletElement, HTMLAreaElement, HTMLBaseElement,
-        HTMLBaseFontElement, HTMLBodyElement, HTMLBRElement,
-        HTMLButtonElement, HTMLCanvasElement, HTMLCollection,
-        HTMLDetailsElement, HTMLDirectoryElement, HTMLDivElement,
-        HTMLDListElement, HTMLDocument, HTMLElement, HTMLEmbedElement,
-        HTMLFieldSetElement, HTMLFontElement, HTMLFormElement,
-        HTMLFrameElement, HTMLFrameSetElement, HTMLHeadElement,
-        HTMLHeadingElement, HTMLHRElement, HTMLHtmlElement,
-        HTMLIFrameElement, HTMLImageElement, HTMLInputElement,
-        HTMLKeygenElement, HTMLLabelElement, HTMLLegendElement,
-        HTMLLIElement, HTMLLinkElement, HTMLMapElement, HTMLMarqueeElement,
-        HTMLMediaElement, HTMLAudioElement, HTMLMenuElement,
-        HTMLMetaElement, HTMLModElement, HTMLObjectElement,
-        HTMLOListElement, HTMLOptGroupElement, HTMLOptionElement,
-        HTMLOptionsCollection, HTMLParagraphElement, HTMLParamElement,
-        HTMLPreElement, HTMLQuoteElement, HTMLScriptElement,
-        HTMLSelectElement, HTMLStyleElement, HTMLTableCaptionElement,
-        HTMLTableCellElement, HTMLTableColElement, HTMLTableElement,
-        HTMLTableRowElement, HTMLTableSectionElement, HTMLTextAreaElement,
-        HTMLTitleElement, HTMLUListElement, HTMLVideoElement,
-        MediaController, KeyboardEvent, Location, MediaError, MediaList,
-        MediaQueryList, MouseEvent, MessagePort, MutationEvent,
-        NamedNodeMap, Navigator, Node, NodeFilter, NodeIterator, NodeList,
-        Notation, ProcessingInstruction, DOMRange, Rect, DOMScreen,
-        StyleMedia, StyleSheet, StyleSheetList, Storage, StorageInfo,
-        Text(..), TimeRanges(..), TreeWalker(..), ValidityState, UIEvent,
-        WebKitNamedFlow, WebKitPoint, XMLHttpRequest, XMLHttpRequestUpload,
-        XPathExpression, XPathNSResolver, XPathResult, RGBColor,
-        SVGAElement, SVGAltGlyphDefElement, SVGAltGlyphElement,
-        SVGAltGlyphItemElement, SVGAngle, SVGAnimateColorElement,
-        SVGAnimatedAngle, SVGAnimatedBoolean, SVGAnimatedEnumeration,
-        SVGAnimatedInteger, SVGAnimatedLength, SVGAnimatedLengthList,
-        SVGAnimatedNumber, SVGAnimatedNumberList,
-        SVGAnimatedPreserveAspectRatio, SVGAnimatedRect, SVGAnimatedString,
-        SVGAnimatedTransformList, SVGAnimateElement,
-        SVGAnimateMotionElement, SVGAnimateTransformElement,
-        SVGAnimationElement, SVGCircleElement, SVGClipPathElement,
-        SVGColor, SVGComponentTransferFunctionElement, SVGCursorElement,
-        SVGDefsElement, SVGDescElement, SVGDocument, SVGElement,
-        SVGElementInstance, SVGElementInstanceList, SVGEllipseElement,
-        SVGExternalResourcesRequired, SVGFEBlendElement,
-        SVGFEColorMatrixElement, SVGFEComponentTransferElement,
-        SVGFECompositeElement, SVGFEConvolveMatrixElement,
-        SVGFEDiffuseLightingElement, SVGFEDisplacementMapElement,
-        SVGFEDistantLightElement, SVGFEDropShadowElement,
-        SVGFEFloodElement, SVGFEFuncAElement, SVGFEFuncBElement,
-        SVGFEFuncGElement, SVGFEFuncRElement, SVGFEGaussianBlurElement,
-        SVGFEImageElement, SVGFEMergeElement, SVGFEMergeNodeElement,
-        SVGFEMorphologyElement, SVGFEOffsetElement, SVGFEPointLightElement,
-        SVGFESpecularLightingElement, SVGFESpotLightElement,
-        SVGFETileElement, SVGFETurbulenceElement, SVGFilterElement,
-        SVGFilterPrimitiveStandardAttributes, SVGFitToViewBox,
-        SVGFontElement, SVGFontFaceElement, SVGFontFaceFormatElement,
-        SVGFontFaceNameElement, SVGFontFaceSrcElement,
-        SVGFontFaceUriElement, SVGForeignObjectElement, SVGGElement,
-        SVGGlyphElement, SVGGlyphRefElement, SVGGradientElement,
-        SVGGraphicsElement, SVGHKernElement, SVGImageElement, SVGLength,
-        SVGLengthList, SVGLinearGradientElement, SVGLineElement,
-        SVGMarkerElement, SVGMaskElement, SVGMatrix, SVGMetadataElement,
-        SVGMissingGlyphElement, SVGMPathElement, SVGNumber, SVGNumberList,
-        SVGPaint, SVGPathElement, SVGPathSeg, SVGPathSegArcAbs,
-        SVGPathSegArcRel, SVGPathSegClosePath, SVGPathSegCurvetoCubicAbs,
-        SVGPathSegCurvetoCubicRel, SVGPathSegCurvetoCubicSmoothAbs,
-        SVGPathSegCurvetoCubicSmoothRel, SVGPathSegCurvetoQuadraticAbs,
-        SVGPathSegCurvetoQuadraticRel, SVGPathSegCurvetoQuadraticSmoothAbs,
-        SVGPathSegCurvetoQuadraticSmoothRel, SVGPathSegLinetoAbs,
-        SVGPathSegLinetoHorizontalAbs, SVGPathSegLinetoHorizontalRel,
-        SVGPathSegLinetoRel, SVGPathSegLinetoVerticalAbs,
-        SVGPathSegLinetoVerticalRel, SVGPathSegList, SVGPathSegMovetoAbs,
-        SVGPathSegMovetoRel, SVGPatternElement, SVGPoint, SVGPointList,
-        SVGPolygonElement, SVGPolylineElement, SVGPreserveAspectRatio,
-        SVGRadialGradientElement, SVGRect, SVGRectElement,
-        SVGRenderingIntent, SVGScriptElement, SVGSetElement,
-        SVGStopElement, SVGStringList, SVGStyleElement, SVGSVGElement,
-        SVGSwitchElement, SVGSymbolElement, SVGTests,
-        SVGTextContentElement, SVGTextElement, SVGTextPathElement,
-        SVGTextPositioningElement, SVGTitleElement, SVGTransform,
-        SVGTransformList, SVGTRefElement, SVGTSpanElement, SVGUnitTypes,
-        SVGURIReference, SVGUseElement, SVGViewElement, SVGViewSpec,
-        SVGVKernElement, SVGZoomAndPan, SVGZoomEvent, IsDOMAttr, IsBarProp,
-        IsBlob, IsCDATASection, IsCharacterData, IsComment,
-        IsCSSPrimitiveValue, IsCSSRule, IsCSSRuleList,
-        IsCSSStyleDeclaration, IsCSSStyleSheet, IsCSSValue, IsCounter,
-        IsDocument, IsDocumentFragment, IsDocumentType,
-        IsDOMApplicationCache, IsDOMImplementation, IsDOMMimeType,
-        IsDOMMimeTypeArray, IsDOMNamedFlowCollection, IsDOMPlugin,
-        IsDOMPluginArray, IsDOMSecurityPolicy, IsDOMSelection,
-        IsDOMSettableTokenList, IsDOMStringList, IsDOMTokenList,
-        IsDOMWindow, IsDOMWindowCSS, IsElement, IsEntityReference, IsEvent,
-        IsEventTarget, IsFile, IsFileList, IsGeolocation, IsPositionError,
-        IsHistory, IsHTMLAnchorElement, IsHTMLAppletElement,
-        IsHTMLAreaElement, IsHTMLBaseElement, IsHTMLBaseFontElement,
-        IsHTMLBodyElement, IsHTMLBRElement, IsHTMLButtonElement,
-        IsHTMLCanvasElement, IsHTMLCollection, IsHTMLDetailsElement,
+       (IsCryptoKey, IsCryptoKeyPair, IsSubtleCrypto, IsCounter,
+        IsCSSCharsetRule, IsCSSFontFaceLoadEvent, IsCSSFontFaceRule,
+        IsCSSImportRule, IsCSSKeyframeRule, IsCSSKeyframesRule,
+        IsCSSMediaRule, IsCSSPageRule, IsCSSPrimitiveValue, IsCSSRule,
+        IsCSSRuleList, IsCSSStyleDeclaration, IsCSSStyleRule,
+        IsCSSStyleSheet, IsCSSSupportsRule, IsCSSUnknownRule, IsCSSValue,
+        IsCSSValueList, IsDOMWindowCSS, IsFontLoader, IsMediaList,
+        IsMediaQueryList, IsMediaQueryListListener, IsRect, IsRGBColor,
+        IsStyleMedia, IsStyleSheet, IsStyleSheetList,
+        IsWebKitCSSFilterValue, IsWebKitCSSMatrix, IsWebKitCSSRegionRule,
+        IsWebKitCSSTransformValue, IsWebKitCSSViewportRule,
+        IsAnimationEvent, IsDOMAttr, IsAutocompleteErrorEvent,
+        IsBeforeLoadEvent, IsBeforeUnloadEvent, IsCDATASection,
+        IsCharacterData, IsChildNode, IsClientRect, IsClientRectList,
+        IsComment, IsCompositionEvent, IsCustomEvent, IsDataTransfer,
+        IsDataTransferItem, IsDataTransferItemList, IsDeviceMotionEvent,
+        IsDeviceOrientationEvent, IsDocument, IsDocumentFragment,
+        IsDocumentType, IsDOMError, IsDOMImplementation,
+        IsDOMNamedFlowCollection, IsDOMStringList, IsDOMStringMap,
+        IsElement, IsEntity, IsEntityReference, IsErrorEvent, IsEvent,
+        IsEventListener, IsEventTarget, IsFocusEvent, IsHashChangeEvent,
+        IsKeyboardEvent, IsMessageChannel, IsMessageEvent, IsMessagePort,
+        IsMouseEvent, IsMutationEvent, IsMutationObserver,
+        IsMutationRecord, IsNamedNodeMap, IsNode, IsNodeFilter,
+        IsNodeIterator, IsNodeList, IsNotation, IsOverflowEvent,
+        IsPageTransitionEvent, IsPopStateEvent, IsProcessingInstruction,
+        IsProgressEvent, IsDOMRange, IsRequestAnimationFrameCallback,
+        IsSecurityPolicyViolationEvent, IsStringCallback, IsText,
+        IsTextEvent, IsTouch, IsTouchEvent, IsTouchList, IsTransitionEvent,
+        IsTreeWalker, IsUIEvent, IsWebKitAnimationEvent, IsWebKitNamedFlow,
+        IsWebKitTransitionEvent, IsWheelEvent, IsBlob, IsFile, IsFileError,
+        IsFileList, IsFileReader, IsFileReaderSync, IsANGLEInstancedArrays,
+        IsCanvasGradient, IsCanvasPattern, IsCanvasProxy,
+        IsCanvasRenderingContext, IsCanvasRenderingContext2D, IsDOMPath,
+        IsEXTShaderTextureLOD, IsEXTTextureFilterAnisotropic,
+        IsOESElementIndexUint, IsOESStandardDerivatives, IsOESTextureFloat,
+        IsOESTextureFloatLinear, IsOESTextureHalfFloat,
+        IsOESTextureHalfFloatLinear, IsOESVertexArrayObject,
+        IsWebGLActiveInfo, IsWebGLBuffer, IsWebGLCompressedTextureATC,
+        IsWebGLCompressedTexturePVRTC, IsWebGLCompressedTextureS3TC,
+        IsWebGLContextAttributes, IsWebGLContextEvent,
+        IsWebGLDebugRendererInfo, IsWebGLDebugShaders, IsWebGLDepthTexture,
+        IsWebGLDrawBuffers, IsWebGLFramebuffer, IsWebGLLoseContext,
+        IsWebGLProgram, IsWebGLRenderbuffer, IsWebGLRenderingContext,
+        IsWebGLShader, IsWebGLShaderPrecisionFormat, IsWebGLTexture,
+        IsWebGLUniformLocation, IsWebGLVertexArrayObjectOES, IsDOMFormData,
+        IsDOMSettableTokenList, IsDOMTokenList, IsDOMURL,
+        IsHTMLAllCollection, IsHTMLAnchorElement, IsHTMLAppletElement,
+        IsHTMLAreaElement, IsHTMLAudioElement, IsHTMLBaseElement,
+        IsHTMLBaseFontElement, IsHTMLBodyElement, IsHTMLBRElement,
+        IsHTMLButtonElement, IsHTMLCanvasElement, IsHTMLCollection,
+        IsHTMLDataListElement, IsHTMLDetailsElement,
         IsHTMLDirectoryElement, IsHTMLDivElement, IsHTMLDListElement,
         IsHTMLDocument, IsHTMLElement, IsHTMLEmbedElement,
-        IsHTMLFieldSetElement, IsHTMLFontElement, IsHTMLFormElement,
+        IsHTMLFieldSetElement, IsHTMLFontElement,
+        IsHTMLFormControlsCollection, IsHTMLFormElement,
         IsHTMLFrameElement, IsHTMLFrameSetElement, IsHTMLHeadElement,
         IsHTMLHeadingElement, IsHTMLHRElement, IsHTMLHtmlElement,
         IsHTMLIFrameElement, IsHTMLImageElement, IsHTMLInputElement,
         IsHTMLKeygenElement, IsHTMLLabelElement, IsHTMLLegendElement,
         IsHTMLLIElement, IsHTMLLinkElement, IsHTMLMapElement,
-        IsHTMLMarqueeElement, IsHTMLMediaElement, IsHTMLAudioElement,
-        IsHTMLMenuElement, IsHTMLMetaElement, IsHTMLModElement,
+        IsHTMLMarqueeElement, IsHTMLMediaElement, IsHTMLMenuElement,
+        IsHTMLMetaElement, IsHTMLMeterElement, IsHTMLModElement,
         IsHTMLObjectElement, IsHTMLOListElement, IsHTMLOptGroupElement,
-        IsHTMLOptionElement, IsHTMLOptionsCollection,
+        IsHTMLOptionElement, IsHTMLOptionsCollection, IsHTMLOutputElement,
         IsHTMLParagraphElement, IsHTMLParamElement, IsHTMLPreElement,
-        IsHTMLQuoteElement, IsHTMLScriptElement, IsHTMLSelectElement,
+        IsHTMLProgressElement, IsHTMLQuoteElement, IsHTMLScriptElement,
+        IsHTMLSelectElement, IsHTMLSourceElement, IsHTMLSpanElement,
         IsHTMLStyleElement, IsHTMLTableCaptionElement,
         IsHTMLTableCellElement, IsHTMLTableColElement, IsHTMLTableElement,
         IsHTMLTableRowElement, IsHTMLTableSectionElement,
-        IsHTMLTextAreaElement, IsHTMLTitleElement, IsHTMLUListElement,
-        IsHTMLVideoElement, IsMediaController, IsKeyboardEvent, IsLocation,
-        IsMediaError, IsMediaList, IsMediaQueryList, IsMouseEvent,
-        IsMessagePort, IsMutationEvent, IsNamedNodeMap, IsNavigator,
-        IsNode, IsNodeFilter, IsNodeIterator, IsNodeList, IsNotation,
-        IsProcessingInstruction, IsDOMRange, IsRect, IsDOMScreen,
-        IsStyleMedia, IsStyleSheet, IsStyleSheetList, IsStorage,
-        IsStorageInfo, IsText, IsTimeRanges, IsTreeWalker, IsValidityState,
-        IsUIEvent, IsWebKitNamedFlow, IsWebKitPoint, IsXMLHttpRequest,
-        IsXMLHttpRequestUpload, IsXPathExpression, IsXPathNSResolver,
-        IsXPathResult, IsRGBColor, IsSVGAElement, IsSVGAltGlyphDefElement,
-        IsSVGAltGlyphElement, IsSVGAltGlyphItemElement, IsSVGAngle,
-        IsSVGAnimateColorElement, IsSVGAnimatedAngle, IsSVGAnimatedBoolean,
-        IsSVGAnimatedEnumeration, IsSVGAnimatedInteger,
-        IsSVGAnimatedLength, IsSVGAnimatedLengthList, IsSVGAnimatedNumber,
-        IsSVGAnimatedNumberList, IsSVGAnimatedPreserveAspectRatio,
-        IsSVGAnimatedRect, IsSVGAnimatedString, IsSVGAnimatedTransformList,
+        IsHTMLTemplateElement, IsHTMLTextAreaElement, IsHTMLTitleElement,
+        IsHTMLTrackElement, IsHTMLUListElement, IsHTMLUnknownElement,
+        IsHTMLVideoElement, IsImageData, IsMediaController, IsMediaError,
+        IsMediaKeyError, IsMediaKeyEvent, IsRadioNodeList, IsTextMetrics,
+        IsTimeRanges, IsAudioTrack, IsAudioTrackList, IsDataCue,
+        IsTextTrack, IsTextTrackCue, IsTextTrackCueList, IsTextTrackList,
+        IsTrackEvent, IsVideoTrack, IsVideoTrackList, IsVTTCue,
+        IsVTTRegion, IsVTTRegionList, IsURLUtils, IsValidityState,
+        IsVoidCallback, IsCommandLineAPIHost, IsInspectorFrontendHost,
+        IsScriptProfile, IsScriptProfileNode, IsDOMApplicationCache,
+        IsWebKitPlaybackTargetAvailabilityEvent, IsBatteryManager,
+        IsNavigator, IsMediaKeyMessageEvent, IsMediaKeyNeededEvent,
+        IsMediaKeys, IsMediaKeySession, IsGamepad, IsGamepadButton,
+        IsGamepadEvent, IsNavigator, IsCoordinates, IsGeolocation,
+        IsGeoposition, IsNavigator, IsPositionCallback, IsPositionError,
+        IsPositionErrorCallback, IsDOMWindow, IsIDBAny, IsIDBCursor,
+        IsIDBCursorWithValue, IsIDBDatabase, IsIDBFactory, IsIDBIndex,
+        IsIDBKeyRange, IsIDBObjectStore, IsIDBOpenDBRequest, IsIDBRequest,
+        IsIDBTransaction, IsIDBVersionChangeEvent, IsUIRequestEvent,
+        IsMediaControlsHost, IsAudioTrack, IsDOMURL, IsMediaSource,
+        IsSourceBuffer, IsSourceBufferList, IsTextTrack,
+        IsVideoPlaybackQuality, IsVideoTrack, IsAllAudioCapabilities,
+        IsAllVideoCapabilities, IsAudioStreamTrack, IsCapabilityRange,
+        IsDOMURL, IsHTMLMediaElement, IsMediaSourceStates, IsMediaStream,
+        IsMediaStreamCapabilities, IsMediaStreamEvent, IsMediaStreamTrack,
+        IsMediaStreamTrackEvent, IsMediaStreamTrackSourcesCallback,
+        IsMediaTrackConstraint, IsMediaTrackConstraints,
+        IsMediaTrackConstraintSet, IsNavigator, IsNavigatorUserMediaError,
+        IsNavigatorUserMediaErrorCallback,
+        IsNavigatorUserMediaSuccessCallback, IsRTCConfiguration,
+        IsRTCDataChannel, IsRTCDataChannelEvent, IsRTCDTMFSender,
+        IsRTCDTMFToneChangeEvent, IsRTCIceCandidate,
+        IsRTCIceCandidateEvent, IsRTCIceServer, IsRTCPeerConnection,
+        IsRTCPeerConnectionErrorCallback, IsRTCSessionDescription,
+        IsRTCSessionDescriptionCallback, IsRTCStatsCallback,
+        IsRTCStatsReport, IsRTCStatsResponse, IsSourceInfo,
+        IsVideoStreamTrack, IsNavigator, IsDOMWindow, IsNotification,
+        IsNotificationCenter, IsNotificationPermissionCallback,
+        IsWorkerGlobalScope, IsQuickTimePluginReplacement,
+        IsDeviceProximityEvent, IsDOMWindow, IsNavigator,
+        IsStorageErrorCallback, IsStorageInfo, IsStorageQuota,
+        IsStorageQuotaCallback, IsStorageUsageCallback, IsWorkerNavigator,
+        IsDOMWindow, IsSpeechSynthesis, IsSpeechSynthesisEvent,
+        IsSpeechSynthesisUtterance, IsSpeechSynthesisVoice, IsNavigator,
+        IsAnalyserNode, IsAudioBuffer, IsAudioBufferCallback,
+        IsAudioBufferSourceNode, IsAudioContext, IsAudioDestinationNode,
+        IsAudioListener, IsAudioNode, IsAudioParam, IsAudioProcessingEvent,
+        IsBiquadFilterNode, IsChannelMergerNode, IsChannelSplitterNode,
+        IsConvolverNode, IsDelayNode, IsDynamicsCompressorNode, IsGainNode,
+        IsMediaElementAudioSourceNode, IsMediaStreamAudioDestinationNode,
+        IsMediaStreamAudioSourceNode, IsOfflineAudioCompletionEvent,
+        IsOfflineAudioContext, IsOscillatorNode, IsPannerNode,
+        IsPeriodicWave, IsScriptProcessorNode, IsWaveShaperNode,
+        IsDatabase, IsDatabaseCallback, IsDatabaseSync, IsDOMWindow,
+        IsSQLError, IsSQLResultSet, IsSQLResultSetRowList,
+        IsSQLStatementCallback, IsSQLStatementErrorCallback,
+        IsSQLTransaction, IsSQLTransactionCallback,
+        IsSQLTransactionErrorCallback, IsSQLTransactionSync,
+        IsSQLTransactionSyncCallback, IsWorkerGlobalScope, IsCloseEvent,
+        IsWebSocket, IsAbstractView, IsBarProp, IsCrypto,
+        IsDOMSecurityPolicy, IsDOMSelection, IsDOMWindow, IsEventSource,
+        IsHistory, IsLocation, IsNavigator, IsPerformance,
+        IsPerformanceEntry, IsPerformanceEntryList, IsPerformanceMark,
+        IsPerformanceMeasure, IsPerformanceNavigation,
+        IsPerformanceResourceTiming, IsPerformanceTiming, IsDOMScreen,
+        IsUserMessageHandler, IsUserMessageHandlersNamespace,
+        IsWebKitNamespace, IsWebKitPoint, IsWindowBase64, IsWindowTimers,
+        IsWorkerNavigator, IsDOMMimeType, IsDOMMimeTypeArray, IsDOMPlugin,
+        IsDOMPluginArray, IsStorage, IsStorageEvent, IsSVGAElement,
+        IsSVGAltGlyphDefElement, IsSVGAltGlyphElement,
+        IsSVGAltGlyphItemElement, IsSVGAngle, IsSVGAnimateColorElement,
+        IsSVGAnimatedAngle, IsSVGAnimatedBoolean, IsSVGAnimatedEnumeration,
+        IsSVGAnimatedInteger, IsSVGAnimatedLength, IsSVGAnimatedLengthList,
+        IsSVGAnimatedNumber, IsSVGAnimatedNumberList,
+        IsSVGAnimatedPreserveAspectRatio, IsSVGAnimatedRect,
+        IsSVGAnimatedString, IsSVGAnimatedTransformList,
         IsSVGAnimateElement, IsSVGAnimateMotionElement,
         IsSVGAnimateTransformElement, IsSVGAnimationElement,
         IsSVGCircleElement, IsSVGClipPathElement, IsSVGColor,
@@ -191,596 +201,40 @@ module GHCJS.DOM.Core
         IsSVGTitleElement, IsSVGTransform, IsSVGTransformList,
         IsSVGTRefElement, IsSVGTSpanElement, IsSVGUnitTypes,
         IsSVGURIReference, IsSVGUseElement, IsSVGViewElement,
-        IsSVGViewSpec, IsSVGVKernElement, IsSVGZoomAndPan, IsSVGZoomEvent)
+        IsSVGViewSpec, IsSVGVKernElement, IsSVGZoomAndPan, IsSVGZoomEvent,
+        IsInternals, IsInternalSettings, IsMallocStatistics, IsMemoryInfo,
+        IsTypeConversions, IsAbstractWorker, IsDedicatedWorkerGlobalScope,
+        IsSharedWorker, IsSharedWorkerGlobalScope, IsWorker,
+        IsWorkerGlobalScope, IsWorkerLocation, IsDOMParser,
+        IsXMLHttpRequest, IsXMLHttpRequestProgressEvent,
+        IsXMLHttpRequestUpload, IsXMLSerializer, IsXPathEvaluator,
+        IsXPathExpression, IsXPathNSResolver, IsXPathResult,
+        IsXSLTProcessor)
        where
  
-data DOMAttr = DOMAttr
+class IsCryptoKey a
  
-data BarProp = BarProp
+class IsCryptoKeyPair a
  
-data Blob = Blob
+class IsSubtleCrypto a
  
-data CDATASection = CDATASection
+class IsCounter a
  
-data CharacterData = CharacterData
+class (IsCSSRule a) => IsCSSCharsetRule a
  
-data Comment = Comment
+class (IsEvent a) => IsCSSFontFaceLoadEvent a
  
-data CSSPrimitiveValue = CSSPrimitiveValue
+class (IsCSSRule a) => IsCSSFontFaceRule a
  
-data CSSRule = CSSRule
+class (IsCSSRule a) => IsCSSImportRule a
  
-data CSSRuleList = CSSRuleList
+class (IsCSSRule a) => IsCSSKeyframeRule a
  
-data CSSStyleDeclaration = CSSStyleDeclaration
+class (IsCSSRule a) => IsCSSKeyframesRule a
  
-data CSSStyleSheet = CSSStyleSheet
+class (IsCSSRule a) => IsCSSMediaRule a
  
-data CSSValue = CSSValue
- 
-data Counter = Counter
- 
-data Document = Document
- 
-data DocumentFragment = DocumentFragment
- 
-data DocumentType = DocumentType
- 
-data DOMApplicationCache = DOMApplicationCache
- 
-data DOMImplementation = DOMImplementation
- 
-data DOMMimeType = DOMMimeType
- 
-data DOMMimeTypeArray = DOMMimeTypeArray
- 
-data DOMNamedFlowCollection = DOMNamedFlowCollection
- 
-data DOMPlugin = DOMPlugin
- 
-data DOMPluginArray = DOMPluginArray
- 
-data DOMSecurityPolicy = DOMSecurityPolicy
- 
-data DOMSelection = DOMSelection
- 
-data DOMSettableTokenList = DOMSettableTokenList
- 
-data DOMStringList = DOMStringList
- 
-data DOMTokenList = DOMTokenList
- 
-data DOMWindow = DOMWindow
- 
-data DOMWindowCSS = DOMWindowCSS
- 
-data Element = Element
- 
-data EntityReference = EntityReference
- 
-data Event = Event
- 
-data EventTarget = EventTarget
- 
-data File = File
- 
-data FileList = FileList
- 
-data Geolocation = Geolocation
- 
-data PositionError = PositionError
- 
-data History = History
- 
-data HTMLAnchorElement = HTMLAnchorElement
- 
-data HTMLAppletElement = HTMLAppletElement
- 
-data HTMLAreaElement = HTMLAreaElement
- 
-data HTMLBaseElement = HTMLBaseElement
- 
-data HTMLBaseFontElement = HTMLBaseFontElement
- 
-data HTMLBodyElement = HTMLBodyElement
- 
-data HTMLBRElement = HTMLBRElement
- 
-data HTMLButtonElement = HTMLButtonElement
- 
-data HTMLCanvasElement = HTMLCanvasElement
- 
-data HTMLCollection = HTMLCollection
- 
-data HTMLDetailsElement = HTMLDetailsElement
- 
-data HTMLDirectoryElement = HTMLDirectoryElement
- 
-data HTMLDivElement = HTMLDivElement
- 
-data HTMLDListElement = HTMLDListElement
- 
-data HTMLDocument = HTMLDocument
- 
-data HTMLElement = HTMLElement
- 
-data HTMLEmbedElement = HTMLEmbedElement
- 
-data HTMLFieldSetElement = HTMLFieldSetElement
- 
-data HTMLFontElement = HTMLFontElement
- 
-data HTMLFormElement = HTMLFormElement
- 
-data HTMLFrameElement = HTMLFrameElement
- 
-data HTMLFrameSetElement = HTMLFrameSetElement
- 
-data HTMLHeadElement = HTMLHeadElement
- 
-data HTMLHeadingElement = HTMLHeadingElement
- 
-data HTMLHRElement = HTMLHRElement
- 
-data HTMLHtmlElement = HTMLHtmlElement
- 
-data HTMLIFrameElement = HTMLIFrameElement
- 
-data HTMLImageElement = HTMLImageElement
- 
-data HTMLInputElement = HTMLInputElement
- 
-data HTMLKeygenElement = HTMLKeygenElement
- 
-data HTMLLabelElement = HTMLLabelElement
- 
-data HTMLLegendElement = HTMLLegendElement
- 
-data HTMLLIElement = HTMLLIElement
- 
-data HTMLLinkElement = HTMLLinkElement
- 
-data HTMLMapElement = HTMLMapElement
- 
-data HTMLMarqueeElement = HTMLMarqueeElement
- 
-data HTMLMediaElement = HTMLMediaElement
- 
-data HTMLAudioElement = HTMLAudioElement
- 
-data HTMLMenuElement = HTMLMenuElement
- 
-data HTMLMetaElement = HTMLMetaElement
- 
-data HTMLModElement = HTMLModElement
- 
-data HTMLObjectElement = HTMLObjectElement
- 
-data HTMLOListElement = HTMLOListElement
- 
-data HTMLOptGroupElement = HTMLOptGroupElement
- 
-data HTMLOptionElement = HTMLOptionElement
- 
-data HTMLOptionsCollection = HTMLOptionsCollection
- 
-data HTMLParagraphElement = HTMLParagraphElement
- 
-data HTMLParamElement = HTMLParamElement
- 
-data HTMLPreElement = HTMLPreElement
- 
-data HTMLQuoteElement = HTMLQuoteElement
- 
-data HTMLScriptElement = HTMLScriptElement
- 
-data HTMLSelectElement = HTMLSelectElement
- 
-data HTMLStyleElement = HTMLStyleElement
- 
-data HTMLTableCaptionElement = HTMLTableCaptionElement
- 
-data HTMLTableCellElement = HTMLTableCellElement
- 
-data HTMLTableColElement = HTMLTableColElement
- 
-data HTMLTableElement = HTMLTableElement
- 
-data HTMLTableRowElement = HTMLTableRowElement
- 
-data HTMLTableSectionElement = HTMLTableSectionElement
- 
-data HTMLTextAreaElement = HTMLTextAreaElement
- 
-data HTMLTitleElement = HTMLTitleElement
- 
-data HTMLUListElement = HTMLUListElement
- 
-data HTMLVideoElement = HTMLVideoElement
- 
-data MediaController = MediaController
- 
-data KeyboardEvent = KeyboardEvent
- 
-data Location = Location
- 
-data MediaError = MediaError
- 
-data MediaList = MediaList
- 
-data MediaQueryList = MediaQueryList
- 
-data MouseEvent = MouseEvent
- 
-data MessagePort = MessagePort
- 
-data MutationEvent = MutationEvent
- 
-data NamedNodeMap = NamedNodeMap
- 
-data Navigator = Navigator
- 
-data Node = Node
- 
-data NodeFilter = NodeFilter
- 
-data NodeIterator = NodeIterator
- 
-data NodeList = NodeList
- 
-data Notation = Notation
- 
-data ProcessingInstruction = ProcessingInstruction
- 
-data DOMRange = DOMRange
- 
-data Rect = Rect
- 
-data DOMScreen = DOMScreen
- 
-data StyleMedia = StyleMedia
- 
-data StyleSheet = StyleSheet
- 
-data StyleSheetList = StyleSheetList
- 
-data Storage = Storage
- 
-data StorageInfo = StorageInfo
- 
-data Text = Text
- 
-data TimeRanges = TimeRanges
- 
-data TreeWalker = TreeWalker
- 
-data ValidityState = ValidityState
- 
-data UIEvent = UIEvent
- 
-data WebKitNamedFlow = WebKitNamedFlow
- 
-data WebKitPoint = WebKitPoint
- 
-data XMLHttpRequest = XMLHttpRequest
- 
-data XMLHttpRequestUpload = XMLHttpRequestUpload
- 
-data XPathExpression = XPathExpression
- 
-data XPathNSResolver = XPathNSResolver
- 
-data XPathResult = XPathResult
- 
-data RGBColor = RGBColor
- 
-data SVGAElement = SVGAElement
- 
-data SVGAltGlyphDefElement = SVGAltGlyphDefElement
- 
-data SVGAltGlyphElement = SVGAltGlyphElement
- 
-data SVGAltGlyphItemElement = SVGAltGlyphItemElement
- 
-data SVGAngle = SVGAngle
- 
-data SVGAnimateColorElement = SVGAnimateColorElement
- 
-data SVGAnimatedAngle = SVGAnimatedAngle
- 
-data SVGAnimatedBoolean = SVGAnimatedBoolean
- 
-data SVGAnimatedEnumeration = SVGAnimatedEnumeration
- 
-data SVGAnimatedInteger = SVGAnimatedInteger
- 
-data SVGAnimatedLength = SVGAnimatedLength
- 
-data SVGAnimatedLengthList = SVGAnimatedLengthList
- 
-data SVGAnimatedNumber = SVGAnimatedNumber
- 
-data SVGAnimatedNumberList = SVGAnimatedNumberList
- 
-data SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio
- 
-data SVGAnimatedRect = SVGAnimatedRect
- 
-data SVGAnimatedString = SVGAnimatedString
- 
-data SVGAnimatedTransformList = SVGAnimatedTransformList
- 
-data SVGAnimateElement = SVGAnimateElement
- 
-data SVGAnimateMotionElement = SVGAnimateMotionElement
- 
-data SVGAnimateTransformElement = SVGAnimateTransformElement
- 
-data SVGAnimationElement = SVGAnimationElement
- 
-data SVGCircleElement = SVGCircleElement
- 
-data SVGClipPathElement = SVGClipPathElement
- 
-data SVGColor = SVGColor
- 
-data SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement
- 
-data SVGCursorElement = SVGCursorElement
- 
-data SVGDefsElement = SVGDefsElement
- 
-data SVGDescElement = SVGDescElement
- 
-data SVGDocument = SVGDocument
- 
-data SVGElement = SVGElement
- 
-data SVGElementInstance = SVGElementInstance
- 
-data SVGElementInstanceList = SVGElementInstanceList
- 
-data SVGEllipseElement = SVGEllipseElement
- 
-data SVGExternalResourcesRequired = SVGExternalResourcesRequired
- 
-data SVGFEBlendElement = SVGFEBlendElement
- 
-data SVGFEColorMatrixElement = SVGFEColorMatrixElement
- 
-data SVGFEComponentTransferElement = SVGFEComponentTransferElement
- 
-data SVGFECompositeElement = SVGFECompositeElement
- 
-data SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement
- 
-data SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement
- 
-data SVGFEDisplacementMapElement = SVGFEDisplacementMapElement
- 
-data SVGFEDistantLightElement = SVGFEDistantLightElement
- 
-data SVGFEDropShadowElement = SVGFEDropShadowElement
- 
-data SVGFEFloodElement = SVGFEFloodElement
- 
-data SVGFEFuncAElement = SVGFEFuncAElement
- 
-data SVGFEFuncBElement = SVGFEFuncBElement
- 
-data SVGFEFuncGElement = SVGFEFuncGElement
- 
-data SVGFEFuncRElement = SVGFEFuncRElement
- 
-data SVGFEGaussianBlurElement = SVGFEGaussianBlurElement
- 
-data SVGFEImageElement = SVGFEImageElement
- 
-data SVGFEMergeElement = SVGFEMergeElement
- 
-data SVGFEMergeNodeElement = SVGFEMergeNodeElement
- 
-data SVGFEMorphologyElement = SVGFEMorphologyElement
- 
-data SVGFEOffsetElement = SVGFEOffsetElement
- 
-data SVGFEPointLightElement = SVGFEPointLightElement
- 
-data SVGFESpecularLightingElement = SVGFESpecularLightingElement
- 
-data SVGFESpotLightElement = SVGFESpotLightElement
- 
-data SVGFETileElement = SVGFETileElement
- 
-data SVGFETurbulenceElement = SVGFETurbulenceElement
- 
-data SVGFilterElement = SVGFilterElement
- 
-data SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttributes
- 
-data SVGFitToViewBox = SVGFitToViewBox
- 
-data SVGFontElement = SVGFontElement
- 
-data SVGFontFaceElement = SVGFontFaceElement
- 
-data SVGFontFaceFormatElement = SVGFontFaceFormatElement
- 
-data SVGFontFaceNameElement = SVGFontFaceNameElement
- 
-data SVGFontFaceSrcElement = SVGFontFaceSrcElement
- 
-data SVGFontFaceUriElement = SVGFontFaceUriElement
- 
-data SVGForeignObjectElement = SVGForeignObjectElement
- 
-data SVGGElement = SVGGElement
- 
-data SVGGlyphElement = SVGGlyphElement
- 
-data SVGGlyphRefElement = SVGGlyphRefElement
- 
-data SVGGradientElement = SVGGradientElement
- 
-data SVGGraphicsElement = SVGGraphicsElement
- 
-data SVGHKernElement = SVGHKernElement
- 
-data SVGImageElement = SVGImageElement
- 
-data SVGLength = SVGLength
- 
-data SVGLengthList = SVGLengthList
- 
-data SVGLinearGradientElement = SVGLinearGradientElement
- 
-data SVGLineElement = SVGLineElement
- 
-data SVGMarkerElement = SVGMarkerElement
- 
-data SVGMaskElement = SVGMaskElement
- 
-data SVGMatrix = SVGMatrix
- 
-data SVGMetadataElement = SVGMetadataElement
- 
-data SVGMissingGlyphElement = SVGMissingGlyphElement
- 
-data SVGMPathElement = SVGMPathElement
- 
-data SVGNumber = SVGNumber
- 
-data SVGNumberList = SVGNumberList
- 
-data SVGPaint = SVGPaint
- 
-data SVGPathElement = SVGPathElement
- 
-data SVGPathSeg = SVGPathSeg
- 
-data SVGPathSegArcAbs = SVGPathSegArcAbs
- 
-data SVGPathSegArcRel = SVGPathSegArcRel
- 
-data SVGPathSegClosePath = SVGPathSegClosePath
- 
-data SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs
- 
-data SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel
- 
-data SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs
- 
-data SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel
- 
-data SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs
- 
-data SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel
- 
-data SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAbs
- 
-data SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRel
- 
-data SVGPathSegLinetoAbs = SVGPathSegLinetoAbs
- 
-data SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs
- 
-data SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel
- 
-data SVGPathSegLinetoRel = SVGPathSegLinetoRel
- 
-data SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs
- 
-data SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel
- 
-data SVGPathSegList = SVGPathSegList
- 
-data SVGPathSegMovetoAbs = SVGPathSegMovetoAbs
- 
-data SVGPathSegMovetoRel = SVGPathSegMovetoRel
- 
-data SVGPatternElement = SVGPatternElement
- 
-data SVGPoint = SVGPoint
- 
-data SVGPointList = SVGPointList
- 
-data SVGPolygonElement = SVGPolygonElement
- 
-data SVGPolylineElement = SVGPolylineElement
- 
-data SVGPreserveAspectRatio = SVGPreserveAspectRatio
- 
-data SVGRadialGradientElement = SVGRadialGradientElement
- 
-data SVGRect = SVGRect
- 
-data SVGRectElement = SVGRectElement
- 
-data SVGRenderingIntent = SVGRenderingIntent
- 
-data SVGScriptElement = SVGScriptElement
- 
-data SVGSetElement = SVGSetElement
- 
-data SVGStopElement = SVGStopElement
- 
-data SVGStringList = SVGStringList
- 
-data SVGStyleElement = SVGStyleElement
- 
-data SVGSVGElement = SVGSVGElement
- 
-data SVGSwitchElement = SVGSwitchElement
- 
-data SVGSymbolElement = SVGSymbolElement
- 
-data SVGTests = SVGTests
- 
-data SVGTextContentElement = SVGTextContentElement
- 
-data SVGTextElement = SVGTextElement
- 
-data SVGTextPathElement = SVGTextPathElement
- 
-data SVGTextPositioningElement = SVGTextPositioningElement
- 
-data SVGTitleElement = SVGTitleElement
- 
-data SVGTransform = SVGTransform
- 
-data SVGTransformList = SVGTransformList
- 
-data SVGTRefElement = SVGTRefElement
- 
-data SVGTSpanElement = SVGTSpanElement
- 
-data SVGUnitTypes = SVGUnitTypes
- 
-data SVGURIReference = SVGURIReference
- 
-data SVGUseElement = SVGUseElement
- 
-data SVGViewElement = SVGViewElement
- 
-data SVGViewSpec = SVGViewSpec
- 
-data SVGVKernElement = SVGVKernElement
- 
-data SVGZoomAndPan = SVGZoomAndPan
- 
-data SVGZoomEvent = SVGZoomEvent
- 
-class (IsNode a) => IsDOMAttr a
- 
-class IsBarProp a
- 
-class IsBlob a
- 
-class (IsText a) => IsCDATASection a
- 
-class (IsNode a) => IsCharacterData a
- 
-class (IsCharacterData a) => IsComment a
+class (IsCSSRule a) => IsCSSPageRule a
  
 class (IsCSSValue a) => IsCSSPrimitiveValue a
  
@@ -790,11 +244,83 @@ class IsCSSRuleList a
  
 class IsCSSStyleDeclaration a
  
+class (IsCSSRule a) => IsCSSStyleRule a
+ 
 class (IsStyleSheet a) => IsCSSStyleSheet a
+ 
+class (IsCSSRule a) => IsCSSSupportsRule a
+ 
+class (IsCSSRule a) => IsCSSUnknownRule a
  
 class IsCSSValue a
  
-class IsCounter a
+class (IsCSSValue a) => IsCSSValueList a
+ 
+class IsDOMWindowCSS a
+ 
+class IsFontLoader a
+ 
+class IsMediaList a
+ 
+class IsMediaQueryList a
+ 
+class IsMediaQueryListListener a
+ 
+class IsRect a
+ 
+class IsRGBColor a
+ 
+class IsStyleMedia a
+ 
+class IsStyleSheet a
+ 
+class IsStyleSheetList a
+ 
+class (IsCSSValueList a) => IsWebKitCSSFilterValue a
+ 
+class IsWebKitCSSMatrix a
+ 
+class (IsCSSRule a) => IsWebKitCSSRegionRule a
+ 
+class (IsCSSValueList a) => IsWebKitCSSTransformValue a
+ 
+class (IsCSSRule a) => IsWebKitCSSViewportRule a
+ 
+class (IsEvent a) => IsAnimationEvent a
+ 
+class (IsNode a) => IsDOMAttr a
+ 
+class (IsEvent a) => IsAutocompleteErrorEvent a
+ 
+class (IsEvent a) => IsBeforeLoadEvent a
+ 
+class (IsEvent a) => IsBeforeUnloadEvent a
+ 
+class (IsText a) => IsCDATASection a
+ 
+class (IsNode a) => IsCharacterData a
+ 
+class IsChildNode a
+ 
+class IsClientRect a
+ 
+class IsClientRectList a
+ 
+class (IsCharacterData a) => IsComment a
+ 
+class (IsUIEvent a) => IsCompositionEvent a
+ 
+class (IsEvent a) => IsCustomEvent a
+ 
+class IsDataTransfer a
+ 
+class IsDataTransferItem a
+ 
+class IsDataTransferItemList a
+ 
+class (IsEvent a) => IsDeviceMotionEvent a
+ 
+class (IsEvent a) => IsDeviceOrientationEvent a
  
 class (IsNode a) => IsDocument a
  
@@ -802,57 +328,207 @@ class (IsNode a) => IsDocumentFragment a
  
 class (IsNode a) => IsDocumentType a
  
-class IsDOMApplicationCache a
+class IsDOMError a
  
 class IsDOMImplementation a
  
-class IsDOMMimeType a
- 
-class IsDOMMimeTypeArray a
- 
 class IsDOMNamedFlowCollection a
- 
-class IsDOMPlugin a
- 
-class IsDOMPluginArray a
- 
-class IsDOMSecurityPolicy a
- 
-class IsDOMSelection a
- 
-class (IsDOMTokenList a) => IsDOMSettableTokenList a
  
 class IsDOMStringList a
  
-class IsDOMTokenList a
- 
-class IsDOMWindow a
- 
-class IsDOMWindowCSS a
+class IsDOMStringMap a
  
 class (IsNode a) => IsElement a
  
+class (IsNode a) => IsEntity a
+ 
 class (IsNode a) => IsEntityReference a
+ 
+class (IsEvent a) => IsErrorEvent a
  
 class IsEvent a
  
+class IsEventListener a
+ 
 class IsEventTarget a
+ 
+class (IsUIEvent a) => IsFocusEvent a
+ 
+class (IsEvent a) => IsHashChangeEvent a
+ 
+class (IsUIEvent a) => IsKeyboardEvent a
+ 
+class IsMessageChannel a
+ 
+class (IsEvent a) => IsMessageEvent a
+ 
+class IsMessagePort a
+ 
+class (IsUIEvent a) => IsMouseEvent a
+ 
+class (IsEvent a) => IsMutationEvent a
+ 
+class IsMutationObserver a
+ 
+class IsMutationRecord a
+ 
+class IsNamedNodeMap a
+ 
+class IsNode a
+ 
+class IsNodeFilter a
+ 
+class IsNodeIterator a
+ 
+class IsNodeList a
+ 
+class (IsNode a) => IsNotation a
+ 
+class (IsEvent a) => IsOverflowEvent a
+ 
+class (IsEvent a) => IsPageTransitionEvent a
+ 
+class (IsEvent a) => IsPopStateEvent a
+ 
+class (IsCharacterData a) => IsProcessingInstruction a
+ 
+class (IsEvent a) => IsProgressEvent a
+ 
+class IsDOMRange a
+ 
+class IsRequestAnimationFrameCallback a
+ 
+class (IsEvent a) => IsSecurityPolicyViolationEvent a
+ 
+class IsStringCallback a
+ 
+class (IsCharacterData a) => IsText a
+ 
+class (IsUIEvent a) => IsTextEvent a
+ 
+class IsTouch a
+ 
+class (IsUIEvent a) => IsTouchEvent a
+ 
+class IsTouchList a
+ 
+class (IsEvent a) => IsTransitionEvent a
+ 
+class IsTreeWalker a
+ 
+class (IsEvent a) => IsUIEvent a
+ 
+class (IsEvent a) => IsWebKitAnimationEvent a
+ 
+class IsWebKitNamedFlow a
+ 
+class (IsEvent a) => IsWebKitTransitionEvent a
+ 
+class (IsMouseEvent a) => IsWheelEvent a
+ 
+class IsBlob a
  
 class (IsBlob a) => IsFile a
  
+class IsFileError a
+ 
 class IsFileList a
  
-class IsGeolocation a
+class IsFileReader a
  
-class IsPositionError a
+class IsFileReaderSync a
  
-class IsHistory a
+class IsANGLEInstancedArrays a
+ 
+class IsCanvasGradient a
+ 
+class IsCanvasPattern a
+ 
+class IsCanvasProxy a
+ 
+class IsCanvasRenderingContext a
+ 
+class (IsCanvasRenderingContext a) => IsCanvasRenderingContext2D a
+ 
+class IsDOMPath a
+ 
+class IsEXTShaderTextureLOD a
+ 
+class IsEXTTextureFilterAnisotropic a
+ 
+class IsOESElementIndexUint a
+ 
+class IsOESStandardDerivatives a
+ 
+class IsOESTextureFloat a
+ 
+class IsOESTextureFloatLinear a
+ 
+class IsOESTextureHalfFloat a
+ 
+class IsOESTextureHalfFloatLinear a
+ 
+class IsOESVertexArrayObject a
+ 
+class IsWebGLActiveInfo a
+ 
+class IsWebGLBuffer a
+ 
+class IsWebGLCompressedTextureATC a
+ 
+class IsWebGLCompressedTexturePVRTC a
+ 
+class IsWebGLCompressedTextureS3TC a
+ 
+class IsWebGLContextAttributes a
+ 
+class (IsEvent a) => IsWebGLContextEvent a
+ 
+class IsWebGLDebugRendererInfo a
+ 
+class IsWebGLDebugShaders a
+ 
+class IsWebGLDepthTexture a
+ 
+class IsWebGLDrawBuffers a
+ 
+class IsWebGLFramebuffer a
+ 
+class IsWebGLLoseContext a
+ 
+class IsWebGLProgram a
+ 
+class IsWebGLRenderbuffer a
+ 
+class (IsCanvasRenderingContext a) => IsWebGLRenderingContext a
+ 
+class IsWebGLShader a
+ 
+class IsWebGLShaderPrecisionFormat a
+ 
+class IsWebGLTexture a
+ 
+class IsWebGLUniformLocation a
+ 
+class IsWebGLVertexArrayObjectOES a
+ 
+class IsDOMFormData a
+ 
+class (IsDOMTokenList a) => IsDOMSettableTokenList a
+ 
+class IsDOMTokenList a
+ 
+class IsDOMURL a
+ 
+class IsHTMLAllCollection a
  
 class (IsHTMLElement a) => IsHTMLAnchorElement a
  
 class (IsHTMLElement a) => IsHTMLAppletElement a
  
 class (IsHTMLElement a) => IsHTMLAreaElement a
+ 
+class (IsHTMLMediaElement a) => IsHTMLAudioElement a
  
 class (IsHTMLElement a) => IsHTMLBaseElement a
  
@@ -867,6 +543,8 @@ class (IsHTMLElement a) => IsHTMLButtonElement a
 class (IsHTMLElement a) => IsHTMLCanvasElement a
  
 class IsHTMLCollection a
+ 
+class (IsHTMLElement a) => IsHTMLDataListElement a
  
 class (IsHTMLElement a) => IsHTMLDetailsElement a
  
@@ -885,6 +563,8 @@ class (IsHTMLElement a) => IsHTMLEmbedElement a
 class (IsHTMLElement a) => IsHTMLFieldSetElement a
  
 class (IsHTMLElement a) => IsHTMLFontElement a
+ 
+class (IsHTMLCollection a) => IsHTMLFormControlsCollection a
  
 class (IsHTMLElement a) => IsHTMLFormElement a
  
@@ -922,11 +602,11 @@ class (IsHTMLElement a) => IsHTMLMarqueeElement a
  
 class (IsHTMLElement a) => IsHTMLMediaElement a
  
-class (IsHTMLMediaElement a) => IsHTMLAudioElement a
- 
 class (IsHTMLElement a) => IsHTMLMenuElement a
  
 class (IsHTMLElement a) => IsHTMLMetaElement a
+ 
+class (IsHTMLElement a) => IsHTMLMeterElement a
  
 class (IsHTMLElement a) => IsHTMLModElement a
  
@@ -940,17 +620,25 @@ class (IsHTMLElement a) => IsHTMLOptionElement a
  
 class (IsHTMLCollection a) => IsHTMLOptionsCollection a
  
+class (IsHTMLElement a) => IsHTMLOutputElement a
+ 
 class (IsHTMLElement a) => IsHTMLParagraphElement a
  
 class (IsHTMLElement a) => IsHTMLParamElement a
  
 class (IsHTMLElement a) => IsHTMLPreElement a
  
+class (IsHTMLElement a) => IsHTMLProgressElement a
+ 
 class (IsHTMLElement a) => IsHTMLQuoteElement a
  
 class (IsHTMLElement a) => IsHTMLScriptElement a
  
 class (IsHTMLElement a) => IsHTMLSelectElement a
+ 
+class (IsHTMLElement a) => IsHTMLSourceElement a
+ 
+class (IsHTMLElement a) => IsHTMLSpanElement a
  
 class (IsHTMLElement a) => IsHTMLStyleElement a
  
@@ -966,89 +654,429 @@ class (IsHTMLElement a) => IsHTMLTableRowElement a
  
 class (IsHTMLElement a) => IsHTMLTableSectionElement a
  
+class (IsHTMLElement a) => IsHTMLTemplateElement a
+ 
 class (IsHTMLElement a) => IsHTMLTextAreaElement a
  
 class (IsHTMLElement a) => IsHTMLTitleElement a
  
+class (IsHTMLElement a) => IsHTMLTrackElement a
+ 
 class (IsHTMLElement a) => IsHTMLUListElement a
+ 
+class (IsHTMLElement a) => IsHTMLUnknownElement a
  
 class (IsHTMLMediaElement a) => IsHTMLVideoElement a
  
+class IsImageData a
+ 
 class IsMediaController a
- 
-class (IsUIEvent a) => IsKeyboardEvent a
- 
-class IsLocation a
  
 class IsMediaError a
  
-class IsMediaList a
+class IsMediaKeyError a
  
-class IsMediaQueryList a
+class (IsEvent a) => IsMediaKeyEvent a
  
-class (IsUIEvent a) => IsMouseEvent a
+class (IsNodeList a) => IsRadioNodeList a
  
-class IsMessagePort a
- 
-class (IsEvent a) => IsMutationEvent a
- 
-class IsNamedNodeMap a
- 
-class IsNavigator a
- 
-class IsNode a
- 
-class IsNodeFilter a
- 
-class IsNodeIterator a
- 
-class IsNodeList a
- 
-class (IsNode a) => IsNotation a
- 
-class (IsCharacterData a) => IsProcessingInstruction a
- 
-class IsDOMRange a
- 
-class IsRect a
- 
-class IsDOMScreen a
- 
-class IsStyleMedia a
- 
-class IsStyleSheet a
- 
-class IsStyleSheetList a
- 
-class IsStorage a
- 
-class IsStorageInfo a
- 
-class (IsCharacterData a) => IsText a
+class IsTextMetrics a
  
 class IsTimeRanges a
  
-class IsTreeWalker a
+class IsAudioTrack a
+ 
+class IsAudioTrackList a
+ 
+class (IsTextTrackCue a) => IsDataCue a
+ 
+class IsTextTrack a
+ 
+class IsTextTrackCue a
+ 
+class IsTextTrackCueList a
+ 
+class IsTextTrackList a
+ 
+class (IsEvent a) => IsTrackEvent a
+ 
+class IsVideoTrack a
+ 
+class IsVideoTrackList a
+ 
+class (IsTextTrackCue a) => IsVTTCue a
+ 
+class IsVTTRegion a
+ 
+class IsVTTRegionList a
+ 
+class IsURLUtils a
  
 class IsValidityState a
  
-class (IsEvent a) => IsUIEvent a
+class IsVoidCallback a
  
-class IsWebKitNamedFlow a
+class IsCommandLineAPIHost a
+ 
+class IsInspectorFrontendHost a
+ 
+class IsScriptProfile a
+ 
+class IsScriptProfileNode a
+ 
+class IsDOMApplicationCache a
+ 
+class (IsEvent a) => IsWebKitPlaybackTargetAvailabilityEvent a
+ 
+class IsBatteryManager a
+ 
+class IsNavigator a
+ 
+class (IsEvent a) => IsMediaKeyMessageEvent a
+ 
+class (IsEvent a) => IsMediaKeyNeededEvent a
+ 
+class IsMediaKeys a
+ 
+class IsMediaKeySession a
+ 
+class IsGamepad a
+ 
+class IsGamepadButton a
+ 
+class (IsEvent a) => IsGamepadEvent a
+ 
+class IsNavigator a
+ 
+class IsCoordinates a
+ 
+class IsGeolocation a
+ 
+class IsGeoposition a
+ 
+class IsNavigator a
+ 
+class IsPositionCallback a
+ 
+class IsPositionError a
+ 
+class IsPositionErrorCallback a
+ 
+class IsDOMWindow a
+ 
+class IsIDBAny a
+ 
+class IsIDBCursor a
+ 
+class (IsIDBCursor a) => IsIDBCursorWithValue a
+ 
+class (IsEventTarget a) => IsIDBDatabase a
+ 
+class IsIDBFactory a
+ 
+class IsIDBIndex a
+ 
+class IsIDBKeyRange a
+ 
+class IsIDBObjectStore a
+ 
+class (IsIDBRequest a) => IsIDBOpenDBRequest a
+ 
+class (IsEventTarget a) => IsIDBRequest a
+ 
+class (IsEventTarget a) => IsIDBTransaction a
+ 
+class (IsEvent a) => IsIDBVersionChangeEvent a
+ 
+class (IsUIEvent a) => IsUIRequestEvent a
+ 
+class IsMediaControlsHost a
+ 
+class IsAudioTrack a
+ 
+class IsDOMURL a
+ 
+class (IsEventTarget a) => IsMediaSource a
+ 
+class (IsEventTarget a) => IsSourceBuffer a
+ 
+class (IsEventTarget a) => IsSourceBufferList a
+ 
+class IsTextTrack a
+ 
+class IsVideoPlaybackQuality a
+ 
+class IsVideoTrack a
+ 
+class (IsMediaStreamCapabilities a) => IsAllAudioCapabilities a
+ 
+class (IsMediaStreamCapabilities a) => IsAllVideoCapabilities a
+ 
+class (IsMediaStreamTrack a) => IsAudioStreamTrack a
+ 
+class IsCapabilityRange a
+ 
+class IsDOMURL a
+ 
+class IsHTMLMediaElement a
+ 
+class IsMediaSourceStates a
+ 
+class IsMediaStream a
+ 
+class IsMediaStreamCapabilities a
+ 
+class (IsEvent a) => IsMediaStreamEvent a
+ 
+class IsMediaStreamTrack a
+ 
+class (IsEvent a) => IsMediaStreamTrackEvent a
+ 
+class IsMediaStreamTrackSourcesCallback a
+ 
+class IsMediaTrackConstraint a
+ 
+class IsMediaTrackConstraints a
+ 
+class IsMediaTrackConstraintSet a
+ 
+class IsNavigator a
+ 
+class (IsDOMError a) => IsNavigatorUserMediaError a
+ 
+class IsNavigatorUserMediaErrorCallback a
+ 
+class IsNavigatorUserMediaSuccessCallback a
+ 
+class IsRTCConfiguration a
+ 
+class IsRTCDataChannel a
+ 
+class (IsEvent a) => IsRTCDataChannelEvent a
+ 
+class IsRTCDTMFSender a
+ 
+class (IsEvent a) => IsRTCDTMFToneChangeEvent a
+ 
+class IsRTCIceCandidate a
+ 
+class (IsEvent a) => IsRTCIceCandidateEvent a
+ 
+class IsRTCIceServer a
+ 
+class IsRTCPeerConnection a
+ 
+class IsRTCPeerConnectionErrorCallback a
+ 
+class IsRTCSessionDescription a
+ 
+class IsRTCSessionDescriptionCallback a
+ 
+class IsRTCStatsCallback a
+ 
+class IsRTCStatsReport a
+ 
+class IsRTCStatsResponse a
+ 
+class IsSourceInfo a
+ 
+class (IsMediaStreamTrack a) => IsVideoStreamTrack a
+ 
+class IsNavigator a
+ 
+class IsDOMWindow a
+ 
+class IsNotification a
+ 
+class IsNotificationCenter a
+ 
+class IsNotificationPermissionCallback a
+ 
+class IsWorkerGlobalScope a
+ 
+class IsQuickTimePluginReplacement a
+ 
+class (IsEvent a) => IsDeviceProximityEvent a
+ 
+class IsDOMWindow a
+ 
+class IsNavigator a
+ 
+class IsStorageErrorCallback a
+ 
+class IsStorageInfo a
+ 
+class IsStorageQuota a
+ 
+class IsStorageQuotaCallback a
+ 
+class IsStorageUsageCallback a
+ 
+class IsWorkerNavigator a
+ 
+class IsDOMWindow a
+ 
+class IsSpeechSynthesis a
+ 
+class (IsEvent a) => IsSpeechSynthesisEvent a
+ 
+class IsSpeechSynthesisUtterance a
+ 
+class IsSpeechSynthesisVoice a
+ 
+class IsNavigator a
+ 
+class (IsAudioNode a) => IsAnalyserNode a
+ 
+class IsAudioBuffer a
+ 
+class IsAudioBufferCallback a
+ 
+class (IsAudioNode a) => IsAudioBufferSourceNode a
+ 
+class IsAudioContext a
+ 
+class (IsAudioNode a) => IsAudioDestinationNode a
+ 
+class IsAudioListener a
+ 
+class (IsEventTarget a) => IsAudioNode a
+ 
+class IsAudioParam a
+ 
+class (IsEvent a) => IsAudioProcessingEvent a
+ 
+class (IsAudioNode a) => IsBiquadFilterNode a
+ 
+class (IsAudioNode a) => IsChannelMergerNode a
+ 
+class (IsAudioNode a) => IsChannelSplitterNode a
+ 
+class (IsAudioNode a) => IsConvolverNode a
+ 
+class (IsAudioNode a) => IsDelayNode a
+ 
+class (IsAudioNode a) => IsDynamicsCompressorNode a
+ 
+class (IsAudioNode a) => IsGainNode a
+ 
+class (IsAudioNode a) => IsMediaElementAudioSourceNode a
+ 
+class (IsAudioNode a) => IsMediaStreamAudioDestinationNode a
+ 
+class (IsAudioNode a) => IsMediaStreamAudioSourceNode a
+ 
+class (IsEvent a) => IsOfflineAudioCompletionEvent a
+ 
+class (IsAudioContext a) => IsOfflineAudioContext a
+ 
+class (IsAudioNode a) => IsOscillatorNode a
+ 
+class (IsAudioNode a) => IsPannerNode a
+ 
+class IsPeriodicWave a
+ 
+class (IsAudioNode a) => IsScriptProcessorNode a
+ 
+class (IsAudioNode a) => IsWaveShaperNode a
+ 
+class IsDatabase a
+ 
+class IsDatabaseCallback a
+ 
+class IsDatabaseSync a
+ 
+class IsDOMWindow a
+ 
+class IsSQLError a
+ 
+class IsSQLResultSet a
+ 
+class IsSQLResultSetRowList a
+ 
+class IsSQLStatementCallback a
+ 
+class IsSQLStatementErrorCallback a
+ 
+class IsSQLTransaction a
+ 
+class IsSQLTransactionCallback a
+ 
+class IsSQLTransactionErrorCallback a
+ 
+class IsSQLTransactionSync a
+ 
+class IsSQLTransactionSyncCallback a
+ 
+class IsWorkerGlobalScope a
+ 
+class (IsEvent a) => IsCloseEvent a
+ 
+class IsWebSocket a
+ 
+class IsAbstractView a
+ 
+class IsBarProp a
+ 
+class IsCrypto a
+ 
+class IsDOMSecurityPolicy a
+ 
+class IsDOMSelection a
+ 
+class IsDOMWindow a
+ 
+class IsEventSource a
+ 
+class IsHistory a
+ 
+class IsLocation a
+ 
+class IsNavigator a
+ 
+class IsPerformance a
+ 
+class IsPerformanceEntry a
+ 
+class IsPerformanceEntryList a
+ 
+class (IsPerformanceEntry a) => IsPerformanceMark a
+ 
+class (IsPerformanceEntry a) => IsPerformanceMeasure a
+ 
+class IsPerformanceNavigation a
+ 
+class (IsPerformanceEntry a) => IsPerformanceResourceTiming a
+ 
+class IsPerformanceTiming a
+ 
+class IsDOMScreen a
+ 
+class IsUserMessageHandler a
+ 
+class IsUserMessageHandlersNamespace a
+ 
+class IsWebKitNamespace a
  
 class IsWebKitPoint a
  
-class IsXMLHttpRequest a
+class IsWindowBase64 a
  
-class IsXMLHttpRequestUpload a
+class IsWindowTimers a
  
-class IsXPathExpression a
+class IsWorkerNavigator a
  
-class IsXPathNSResolver a
+class IsDOMMimeType a
  
-class IsXPathResult a
+class IsDOMMimeTypeArray a
  
-class IsRGBColor a
+class IsDOMPlugin a
+ 
+class IsDOMPluginArray a
+ 
+class IsStorage a
+ 
+class (IsEvent a) => IsStorageEvent a
  
 class (IsSVGGraphicsElement a) => IsSVGAElement a
  
@@ -1350,13 +1378,183 @@ class IsSVGZoomAndPan a
  
 class (IsUIEvent a) => IsSVGZoomEvent a
  
+class IsInternals a
+ 
+class (IsInternalSettingsGenerated a) => IsInternalSettings a
+ 
+class IsMallocStatistics a
+ 
+class IsMemoryInfo a
+ 
+class IsTypeConversions a
+ 
+class IsAbstractWorker a
+ 
+class (IsWorkerGlobalScope a) => IsDedicatedWorkerGlobalScope a
+ 
+class (IsEventTarget a) => IsSharedWorker a
+ 
+class (IsWorkerGlobalScope a) => IsSharedWorkerGlobalScope a
+ 
+class (IsEventTarget a) => IsWorker a
+ 
+class IsWorkerGlobalScope a
+ 
+class IsWorkerLocation a
+ 
+class IsDOMParser a
+ 
+class IsXMLHttpRequest a
+ 
+class (IsProgressEvent a) => IsXMLHttpRequestProgressEvent a
+ 
+class IsXMLHttpRequestUpload a
+ 
+class IsXMLSerializer a
+ 
+class IsXPathEvaluator a
+ 
+class IsXPathExpression a
+ 
+class IsXPathNSResolver a
+ 
+class IsXPathResult a
+ 
+class IsXSLTProcessor a
+ 
+instance IsCryptoKey CryptoKey
+ 
+instance IsCryptoKeyPair CryptoKeyPair
+ 
+instance IsSubtleCrypto SubtleCrypto
+ 
+instance IsCounter Counter
+ 
+instance IsCSSCharsetRule CSSCharsetRule
+ 
+instance IsCSSRule CSSCharsetRule
+ 
+instance IsCSSFontFaceLoadEvent CSSFontFaceLoadEvent
+ 
+instance IsEvent CSSFontFaceLoadEvent
+ 
+instance IsCSSFontFaceRule CSSFontFaceRule
+ 
+instance IsCSSRule CSSFontFaceRule
+ 
+instance IsCSSImportRule CSSImportRule
+ 
+instance IsCSSRule CSSImportRule
+ 
+instance IsCSSKeyframeRule CSSKeyframeRule
+ 
+instance IsCSSRule CSSKeyframeRule
+ 
+instance IsCSSKeyframesRule CSSKeyframesRule
+ 
+instance IsCSSRule CSSKeyframesRule
+ 
+instance IsCSSMediaRule CSSMediaRule
+ 
+instance IsCSSRule CSSMediaRule
+ 
+instance IsCSSPageRule CSSPageRule
+ 
+instance IsCSSRule CSSPageRule
+ 
+instance IsCSSPrimitiveValue CSSPrimitiveValue
+ 
+instance IsCSSValue CSSPrimitiveValue
+ 
+instance IsCSSRule CSSRule
+ 
+instance IsCSSRuleList CSSRuleList
+ 
+instance IsCSSStyleDeclaration CSSStyleDeclaration
+ 
+instance IsCSSStyleRule CSSStyleRule
+ 
+instance IsCSSRule CSSStyleRule
+ 
+instance IsCSSStyleSheet CSSStyleSheet
+ 
+instance IsStyleSheet CSSStyleSheet
+ 
+instance IsCSSSupportsRule CSSSupportsRule
+ 
+instance IsCSSRule CSSSupportsRule
+ 
+instance IsCSSUnknownRule CSSUnknownRule
+ 
+instance IsCSSRule CSSUnknownRule
+ 
+instance IsCSSValue CSSValue
+ 
+instance IsCSSValueList CSSValueList
+ 
+instance IsCSSValue CSSValueList
+ 
+instance IsDOMWindowCSS DOMWindowCSS
+ 
+instance IsFontLoader FontLoader
+ 
+instance IsMediaList MediaList
+ 
+instance IsMediaQueryList MediaQueryList
+ 
+instance IsMediaQueryListListener MediaQueryListListener
+ 
+instance IsRect Rect
+ 
+instance IsRGBColor RGBColor
+ 
+instance IsStyleMedia StyleMedia
+ 
+instance IsStyleSheet StyleSheet
+ 
+instance IsStyleSheetList StyleSheetList
+ 
+instance IsWebKitCSSFilterValue WebKitCSSFilterValue
+ 
+instance IsCSSValueList WebKitCSSFilterValue
+ 
+instance IsCSSValue WebKitCSSFilterValue
+ 
+instance IsWebKitCSSMatrix WebKitCSSMatrix
+ 
+instance IsWebKitCSSRegionRule WebKitCSSRegionRule
+ 
+instance IsCSSRule WebKitCSSRegionRule
+ 
+instance IsWebKitCSSTransformValue WebKitCSSTransformValue
+ 
+instance IsCSSValueList WebKitCSSTransformValue
+ 
+instance IsCSSValue WebKitCSSTransformValue
+ 
+instance IsWebKitCSSViewportRule WebKitCSSViewportRule
+ 
+instance IsCSSRule WebKitCSSViewportRule
+ 
+instance IsAnimationEvent AnimationEvent
+ 
+instance IsEvent AnimationEvent
+ 
 instance IsDOMAttr DOMAttr
  
 instance IsNode DOMAttr
  
-instance IsBarProp BarProp
+instance IsAutocompleteErrorEvent AutocompleteErrorEvent
  
-instance IsBlob Blob
+instance IsEvent AutocompleteErrorEvent
+ 
+instance IsBeforeLoadEvent BeforeLoadEvent
+ 
+instance IsEvent BeforeLoadEvent
+ 
+instance IsBeforeUnloadEvent BeforeUnloadEvent
+ 
+instance IsEvent BeforeUnloadEvent
  
 instance IsCDATASection CDATASection
  
@@ -1370,29 +1568,41 @@ instance IsCharacterData CharacterData
  
 instance IsNode CharacterData
  
+instance IsChildNode ChildNode
+ 
+instance IsClientRect ClientRect
+ 
+instance IsClientRectList ClientRectList
+ 
 instance IsComment Comment
  
 instance IsCharacterData Comment
  
 instance IsNode Comment
  
-instance IsCSSPrimitiveValue CSSPrimitiveValue
+instance IsCompositionEvent CompositionEvent
  
-instance IsCSSValue CSSPrimitiveValue
+instance IsUIEvent CompositionEvent
  
-instance IsCSSRule CSSRule
+instance IsEvent CompositionEvent
  
-instance IsCSSRuleList CSSRuleList
+instance IsCustomEvent CustomEvent
  
-instance IsCSSStyleDeclaration CSSStyleDeclaration
+instance IsEvent CustomEvent
  
-instance IsCSSStyleSheet CSSStyleSheet
+instance IsDataTransfer DataTransfer
  
-instance IsStyleSheet CSSStyleSheet
+instance IsDataTransferItem DataTransferItem
  
-instance IsCSSValue CSSValue
+instance IsDataTransferItemList DataTransferItemList
  
-instance IsCounter Counter
+instance IsDeviceMotionEvent DeviceMotionEvent
+ 
+instance IsEvent DeviceMotionEvent
+ 
+instance IsDeviceOrientationEvent DeviceOrientationEvent
+ 
+instance IsEvent DeviceOrientationEvent
  
 instance IsDocument Document
  
@@ -1406,59 +1616,279 @@ instance IsDocumentType DocumentType
  
 instance IsNode DocumentType
  
-instance IsDOMApplicationCache DOMApplicationCache
+instance IsDOMError DOMError
  
 instance IsDOMImplementation DOMImplementation
  
-instance IsDOMMimeType DOMMimeType
- 
-instance IsDOMMimeTypeArray DOMMimeTypeArray
- 
 instance IsDOMNamedFlowCollection DOMNamedFlowCollection
- 
-instance IsDOMPlugin DOMPlugin
- 
-instance IsDOMPluginArray DOMPluginArray
- 
-instance IsDOMSecurityPolicy DOMSecurityPolicy
- 
-instance IsDOMSelection DOMSelection
- 
-instance IsDOMSettableTokenList DOMSettableTokenList
- 
-instance IsDOMTokenList DOMSettableTokenList
  
 instance IsDOMStringList DOMStringList
  
-instance IsDOMTokenList DOMTokenList
- 
-instance IsDOMWindow DOMWindow
- 
-instance IsDOMWindowCSS DOMWindowCSS
+instance IsDOMStringMap DOMStringMap
  
 instance IsElement Element
  
 instance IsNode Element
  
+instance IsEntity Entity
+ 
+instance IsNode Entity
+ 
 instance IsEntityReference EntityReference
  
 instance IsNode EntityReference
  
+instance IsErrorEvent ErrorEvent
+ 
+instance IsEvent ErrorEvent
+ 
 instance IsEvent Event
  
+instance IsEventListener EventListener
+ 
 instance IsEventTarget EventTarget
+ 
+instance IsFocusEvent FocusEvent
+ 
+instance IsUIEvent FocusEvent
+ 
+instance IsEvent FocusEvent
+ 
+instance IsHashChangeEvent HashChangeEvent
+ 
+instance IsEvent HashChangeEvent
+ 
+instance IsKeyboardEvent KeyboardEvent
+ 
+instance IsUIEvent KeyboardEvent
+ 
+instance IsEvent KeyboardEvent
+ 
+instance IsMessageChannel MessageChannel
+ 
+instance IsMessageEvent MessageEvent
+ 
+instance IsEvent MessageEvent
+ 
+instance IsMessagePort MessagePort
+ 
+instance IsMouseEvent MouseEvent
+ 
+instance IsUIEvent MouseEvent
+ 
+instance IsEvent MouseEvent
+ 
+instance IsMutationEvent MutationEvent
+ 
+instance IsEvent MutationEvent
+ 
+instance IsMutationObserver MutationObserver
+ 
+instance IsMutationRecord MutationRecord
+ 
+instance IsNamedNodeMap NamedNodeMap
+ 
+instance IsNode Node
+ 
+instance IsNodeFilter NodeFilter
+ 
+instance IsNodeIterator NodeIterator
+ 
+instance IsNodeList NodeList
+ 
+instance IsNotation Notation
+ 
+instance IsNode Notation
+ 
+instance IsOverflowEvent OverflowEvent
+ 
+instance IsEvent OverflowEvent
+ 
+instance IsPageTransitionEvent PageTransitionEvent
+ 
+instance IsEvent PageTransitionEvent
+ 
+instance IsPopStateEvent PopStateEvent
+ 
+instance IsEvent PopStateEvent
+ 
+instance IsProcessingInstruction ProcessingInstruction
+ 
+instance IsCharacterData ProcessingInstruction
+ 
+instance IsNode ProcessingInstruction
+ 
+instance IsProgressEvent ProgressEvent
+ 
+instance IsEvent ProgressEvent
+ 
+instance IsDOMRange DOMRange
+ 
+instance IsRequestAnimationFrameCallback
+         RequestAnimationFrameCallback
+ 
+instance IsSecurityPolicyViolationEvent
+         SecurityPolicyViolationEvent
+ 
+instance IsEvent SecurityPolicyViolationEvent
+ 
+instance IsStringCallback StringCallback
+ 
+instance IsText Text
+ 
+instance IsCharacterData Text
+ 
+instance IsNode Text
+ 
+instance IsTextEvent TextEvent
+ 
+instance IsUIEvent TextEvent
+ 
+instance IsEvent TextEvent
+ 
+instance IsTouch Touch
+ 
+instance IsTouchEvent TouchEvent
+ 
+instance IsUIEvent TouchEvent
+ 
+instance IsEvent TouchEvent
+ 
+instance IsTouchList TouchList
+ 
+instance IsTransitionEvent TransitionEvent
+ 
+instance IsEvent TransitionEvent
+ 
+instance IsTreeWalker TreeWalker
+ 
+instance IsUIEvent UIEvent
+ 
+instance IsEvent UIEvent
+ 
+instance IsWebKitAnimationEvent WebKitAnimationEvent
+ 
+instance IsEvent WebKitAnimationEvent
+ 
+instance IsWebKitNamedFlow WebKitNamedFlow
+ 
+instance IsWebKitTransitionEvent WebKitTransitionEvent
+ 
+instance IsEvent WebKitTransitionEvent
+ 
+instance IsWheelEvent WheelEvent
+ 
+instance IsMouseEvent WheelEvent
+ 
+instance IsUIEvent WheelEvent
+ 
+instance IsEvent WheelEvent
+ 
+instance IsBlob Blob
  
 instance IsFile File
  
 instance IsBlob File
  
+instance IsFileError FileError
+ 
 instance IsFileList FileList
  
-instance IsGeolocation Geolocation
+instance IsFileReader FileReader
  
-instance IsPositionError PositionError
+instance IsFileReaderSync FileReaderSync
  
-instance IsHistory History
+instance IsANGLEInstancedArrays ANGLEInstancedArrays
+ 
+instance IsCanvasGradient CanvasGradient
+ 
+instance IsCanvasPattern CanvasPattern
+ 
+instance IsCanvasProxy CanvasProxy
+ 
+instance IsCanvasRenderingContext CanvasRenderingContext
+ 
+instance IsCanvasRenderingContext2D CanvasRenderingContext2D
+ 
+instance IsCanvasRenderingContext CanvasRenderingContext2D
+ 
+instance IsDOMPath DOMPath
+ 
+instance IsEXTShaderTextureLOD EXTShaderTextureLOD
+ 
+instance IsEXTTextureFilterAnisotropic EXTTextureFilterAnisotropic
+ 
+instance IsOESElementIndexUint OESElementIndexUint
+ 
+instance IsOESStandardDerivatives OESStandardDerivatives
+ 
+instance IsOESTextureFloat OESTextureFloat
+ 
+instance IsOESTextureFloatLinear OESTextureFloatLinear
+ 
+instance IsOESTextureHalfFloat OESTextureHalfFloat
+ 
+instance IsOESTextureHalfFloatLinear OESTextureHalfFloatLinear
+ 
+instance IsOESVertexArrayObject OESVertexArrayObject
+ 
+instance IsWebGLActiveInfo WebGLActiveInfo
+ 
+instance IsWebGLBuffer WebGLBuffer
+ 
+instance IsWebGLCompressedTextureATC WebGLCompressedTextureATC
+ 
+instance IsWebGLCompressedTexturePVRTC WebGLCompressedTexturePVRTC
+ 
+instance IsWebGLCompressedTextureS3TC WebGLCompressedTextureS3TC
+ 
+instance IsWebGLContextAttributes WebGLContextAttributes
+ 
+instance IsWebGLContextEvent WebGLContextEvent
+ 
+instance IsEvent WebGLContextEvent
+ 
+instance IsWebGLDebugRendererInfo WebGLDebugRendererInfo
+ 
+instance IsWebGLDebugShaders WebGLDebugShaders
+ 
+instance IsWebGLDepthTexture WebGLDepthTexture
+ 
+instance IsWebGLDrawBuffers WebGLDrawBuffers
+ 
+instance IsWebGLFramebuffer WebGLFramebuffer
+ 
+instance IsWebGLLoseContext WebGLLoseContext
+ 
+instance IsWebGLProgram WebGLProgram
+ 
+instance IsWebGLRenderbuffer WebGLRenderbuffer
+ 
+instance IsWebGLRenderingContext WebGLRenderingContext
+ 
+instance IsCanvasRenderingContext WebGLRenderingContext
+ 
+instance IsWebGLShader WebGLShader
+ 
+instance IsWebGLShaderPrecisionFormat WebGLShaderPrecisionFormat
+ 
+instance IsWebGLTexture WebGLTexture
+ 
+instance IsWebGLUniformLocation WebGLUniformLocation
+ 
+instance IsWebGLVertexArrayObjectOES WebGLVertexArrayObjectOES
+ 
+instance IsDOMFormData DOMFormData
+ 
+instance IsDOMSettableTokenList DOMSettableTokenList
+ 
+instance IsDOMTokenList DOMSettableTokenList
+ 
+instance IsDOMTokenList DOMTokenList
+ 
+instance IsDOMURL DOMURL
+ 
+instance IsHTMLAllCollection HTMLAllCollection
  
 instance IsHTMLAnchorElement HTMLAnchorElement
  
@@ -1483,6 +1913,10 @@ instance IsHTMLElement HTMLAreaElement
 instance IsElement HTMLAreaElement
  
 instance IsNode HTMLAreaElement
+ 
+instance IsHTMLAudioElement HTMLAudioElement
+ 
+instance IsHTMLMediaElement HTMLAudioElement
  
 instance IsHTMLBaseElement HTMLBaseElement
  
@@ -1533,6 +1967,14 @@ instance IsElement HTMLCanvasElement
 instance IsNode HTMLCanvasElement
  
 instance IsHTMLCollection HTMLCollection
+ 
+instance IsHTMLDataListElement HTMLDataListElement
+ 
+instance IsHTMLElement HTMLDataListElement
+ 
+instance IsElement HTMLDataListElement
+ 
+instance IsNode HTMLDataListElement
  
 instance IsHTMLDetailsElement HTMLDetailsElement
  
@@ -1601,6 +2043,10 @@ instance IsHTMLElement HTMLFontElement
 instance IsElement HTMLFontElement
  
 instance IsNode HTMLFontElement
+ 
+instance IsHTMLFormControlsCollection HTMLFormControlsCollection
+ 
+instance IsHTMLCollection HTMLFormControlsCollection
  
 instance IsHTMLFormElement HTMLFormElement
  
@@ -1740,22 +2186,6 @@ instance IsNode HTMLMarqueeElement
  
 instance IsHTMLMediaElement HTMLMediaElement
  
-instance IsHTMLElement HTMLMediaElement
- 
-instance IsElement HTMLMediaElement
- 
-instance IsNode HTMLMediaElement
- 
-instance IsHTMLAudioElement HTMLAudioElement
- 
-instance IsHTMLMediaElement HTMLAudioElement
- 
-instance IsHTMLElement HTMLAudioElement
- 
-instance IsElement HTMLAudioElement
- 
-instance IsNode HTMLAudioElement
- 
 instance IsHTMLMenuElement HTMLMenuElement
  
 instance IsHTMLElement HTMLMenuElement
@@ -1771,6 +2201,14 @@ instance IsHTMLElement HTMLMetaElement
 instance IsElement HTMLMetaElement
  
 instance IsNode HTMLMetaElement
+ 
+instance IsHTMLMeterElement HTMLMeterElement
+ 
+instance IsHTMLElement HTMLMeterElement
+ 
+instance IsElement HTMLMeterElement
+ 
+instance IsNode HTMLMeterElement
  
 instance IsHTMLModElement HTMLModElement
  
@@ -1816,6 +2254,14 @@ instance IsHTMLOptionsCollection HTMLOptionsCollection
  
 instance IsHTMLCollection HTMLOptionsCollection
  
+instance IsHTMLOutputElement HTMLOutputElement
+ 
+instance IsHTMLElement HTMLOutputElement
+ 
+instance IsElement HTMLOutputElement
+ 
+instance IsNode HTMLOutputElement
+ 
 instance IsHTMLParagraphElement HTMLParagraphElement
  
 instance IsHTMLElement HTMLParagraphElement
@@ -1840,6 +2286,14 @@ instance IsElement HTMLPreElement
  
 instance IsNode HTMLPreElement
  
+instance IsHTMLProgressElement HTMLProgressElement
+ 
+instance IsHTMLElement HTMLProgressElement
+ 
+instance IsElement HTMLProgressElement
+ 
+instance IsNode HTMLProgressElement
+ 
 instance IsHTMLQuoteElement HTMLQuoteElement
  
 instance IsHTMLElement HTMLQuoteElement
@@ -1863,6 +2317,22 @@ instance IsHTMLElement HTMLSelectElement
 instance IsElement HTMLSelectElement
  
 instance IsNode HTMLSelectElement
+ 
+instance IsHTMLSourceElement HTMLSourceElement
+ 
+instance IsHTMLElement HTMLSourceElement
+ 
+instance IsElement HTMLSourceElement
+ 
+instance IsNode HTMLSourceElement
+ 
+instance IsHTMLSpanElement HTMLSpanElement
+ 
+instance IsHTMLElement HTMLSpanElement
+ 
+instance IsElement HTMLSpanElement
+ 
+instance IsNode HTMLSpanElement
  
 instance IsHTMLStyleElement HTMLStyleElement
  
@@ -1920,6 +2390,14 @@ instance IsElement HTMLTableSectionElement
  
 instance IsNode HTMLTableSectionElement
  
+instance IsHTMLTemplateElement HTMLTemplateElement
+ 
+instance IsHTMLElement HTMLTemplateElement
+ 
+instance IsElement HTMLTemplateElement
+ 
+instance IsNode HTMLTemplateElement
+ 
 instance IsHTMLTextAreaElement HTMLTextAreaElement
  
 instance IsHTMLElement HTMLTextAreaElement
@@ -1936,6 +2414,14 @@ instance IsElement HTMLTitleElement
  
 instance IsNode HTMLTitleElement
  
+instance IsHTMLTrackElement HTMLTrackElement
+ 
+instance IsHTMLElement HTMLTrackElement
+ 
+instance IsElement HTMLTrackElement
+ 
+instance IsNode HTMLTrackElement
+ 
 instance IsHTMLUListElement HTMLUListElement
  
 instance IsHTMLElement HTMLUListElement
@@ -1944,113 +2430,588 @@ instance IsElement HTMLUListElement
  
 instance IsNode HTMLUListElement
  
+instance IsHTMLUnknownElement HTMLUnknownElement
+ 
+instance IsHTMLElement HTMLUnknownElement
+ 
+instance IsElement HTMLUnknownElement
+ 
+instance IsNode HTMLUnknownElement
+ 
 instance IsHTMLVideoElement HTMLVideoElement
  
 instance IsHTMLMediaElement HTMLVideoElement
  
-instance IsHTMLElement HTMLVideoElement
- 
-instance IsElement HTMLVideoElement
- 
-instance IsNode HTMLVideoElement
+instance IsImageData ImageData
  
 instance IsMediaController MediaController
  
-instance IsKeyboardEvent KeyboardEvent
- 
-instance IsUIEvent KeyboardEvent
- 
-instance IsEvent KeyboardEvent
- 
-instance IsLocation Location
- 
 instance IsMediaError MediaError
  
-instance IsMediaList MediaList
+instance IsMediaKeyError MediaKeyError
  
-instance IsMediaQueryList MediaQueryList
+instance IsMediaKeyEvent MediaKeyEvent
  
-instance IsMouseEvent MouseEvent
+instance IsEvent MediaKeyEvent
  
-instance IsUIEvent MouseEvent
+instance IsRadioNodeList RadioNodeList
  
-instance IsEvent MouseEvent
+instance IsNodeList RadioNodeList
  
-instance IsMessagePort MessagePort
- 
-instance IsMutationEvent MutationEvent
- 
-instance IsEvent MutationEvent
- 
-instance IsNamedNodeMap NamedNodeMap
- 
-instance IsNavigator Navigator
- 
-instance IsNode Node
- 
-instance IsNodeFilter NodeFilter
- 
-instance IsNodeIterator NodeIterator
- 
-instance IsNodeList NodeList
- 
-instance IsNotation Notation
- 
-instance IsNode Notation
- 
-instance IsProcessingInstruction ProcessingInstruction
- 
-instance IsCharacterData ProcessingInstruction
- 
-instance IsNode ProcessingInstruction
- 
-instance IsDOMRange DOMRange
- 
-instance IsRect Rect
- 
-instance IsDOMScreen DOMScreen
- 
-instance IsStyleMedia StyleMedia
- 
-instance IsStyleSheet StyleSheet
- 
-instance IsStyleSheetList StyleSheetList
- 
-instance IsStorage Storage
- 
-instance IsStorageInfo StorageInfo
- 
-instance IsText Text
- 
-instance IsCharacterData Text
- 
-instance IsNode Text
+instance IsTextMetrics TextMetrics
  
 instance IsTimeRanges TimeRanges
  
-instance IsTreeWalker TreeWalker
+instance IsAudioTrack AudioTrack
+ 
+instance IsAudioTrackList AudioTrackList
+ 
+instance IsDataCue DataCue
+ 
+instance IsTextTrackCue DataCue
+ 
+instance IsTextTrack TextTrack
+ 
+instance IsTextTrackCue TextTrackCue
+ 
+instance IsTextTrackCueList TextTrackCueList
+ 
+instance IsTextTrackList TextTrackList
+ 
+instance IsTrackEvent TrackEvent
+ 
+instance IsEvent TrackEvent
+ 
+instance IsVideoTrack VideoTrack
+ 
+instance IsVideoTrackList VideoTrackList
+ 
+instance IsVTTCue VTTCue
+ 
+instance IsTextTrackCue VTTCue
+ 
+instance IsVTTRegion VTTRegion
+ 
+instance IsVTTRegionList VTTRegionList
+ 
+instance IsURLUtils URLUtils
  
 instance IsValidityState ValidityState
  
-instance IsUIEvent UIEvent
+instance IsVoidCallback VoidCallback
  
-instance IsEvent UIEvent
+instance IsCommandLineAPIHost CommandLineAPIHost
  
-instance IsWebKitNamedFlow WebKitNamedFlow
+instance IsInspectorFrontendHost InspectorFrontendHost
+ 
+instance IsScriptProfile ScriptProfile
+ 
+instance IsScriptProfileNode ScriptProfileNode
+ 
+instance IsDOMApplicationCache DOMApplicationCache
+ 
+instance IsWebKitPlaybackTargetAvailabilityEvent
+         WebKitPlaybackTargetAvailabilityEvent
+ 
+instance IsEvent WebKitPlaybackTargetAvailabilityEvent
+ 
+instance IsBatteryManager BatteryManager
+ 
+instance IsNavigator Navigator
+ 
+instance IsMediaKeyMessageEvent MediaKeyMessageEvent
+ 
+instance IsEvent MediaKeyMessageEvent
+ 
+instance IsMediaKeyNeededEvent MediaKeyNeededEvent
+ 
+instance IsEvent MediaKeyNeededEvent
+ 
+instance IsMediaKeys MediaKeys
+ 
+instance IsMediaKeySession MediaKeySession
+ 
+instance IsGamepad Gamepad
+ 
+instance IsGamepadButton GamepadButton
+ 
+instance IsGamepadEvent GamepadEvent
+ 
+instance IsEvent GamepadEvent
+ 
+instance IsNavigator Navigator
+ 
+instance IsCoordinates Coordinates
+ 
+instance IsGeolocation Geolocation
+ 
+instance IsGeoposition Geoposition
+ 
+instance IsNavigator Navigator
+ 
+instance IsPositionCallback PositionCallback
+ 
+instance IsPositionError PositionError
+ 
+instance IsPositionErrorCallback PositionErrorCallback
+ 
+instance IsDOMWindow DOMWindow
+ 
+instance IsIDBAny IDBAny
+ 
+instance IsIDBCursor IDBCursor
+ 
+instance IsIDBCursorWithValue IDBCursorWithValue
+ 
+instance IsIDBCursor IDBCursorWithValue
+ 
+instance IsIDBDatabase IDBDatabase
+ 
+instance IsEventTarget IDBDatabase
+ 
+instance IsIDBFactory IDBFactory
+ 
+instance IsIDBIndex IDBIndex
+ 
+instance IsIDBKeyRange IDBKeyRange
+ 
+instance IsIDBObjectStore IDBObjectStore
+ 
+instance IsIDBOpenDBRequest IDBOpenDBRequest
+ 
+instance IsIDBRequest IDBOpenDBRequest
+ 
+instance IsEventTarget IDBOpenDBRequest
+ 
+instance IsIDBRequest IDBRequest
+ 
+instance IsEventTarget IDBRequest
+ 
+instance IsIDBTransaction IDBTransaction
+ 
+instance IsEventTarget IDBTransaction
+ 
+instance IsIDBVersionChangeEvent IDBVersionChangeEvent
+ 
+instance IsEvent IDBVersionChangeEvent
+ 
+instance IsUIRequestEvent UIRequestEvent
+ 
+instance IsUIEvent UIRequestEvent
+ 
+instance IsEvent UIRequestEvent
+ 
+instance IsMediaControlsHost MediaControlsHost
+ 
+instance IsAudioTrack AudioTrack
+ 
+instance IsDOMURL DOMURL
+ 
+instance IsMediaSource MediaSource
+ 
+instance IsEventTarget MediaSource
+ 
+instance IsSourceBuffer SourceBuffer
+ 
+instance IsEventTarget SourceBuffer
+ 
+instance IsSourceBufferList SourceBufferList
+ 
+instance IsEventTarget SourceBufferList
+ 
+instance IsTextTrack TextTrack
+ 
+instance IsVideoPlaybackQuality VideoPlaybackQuality
+ 
+instance IsVideoTrack VideoTrack
+ 
+instance IsAllAudioCapabilities AllAudioCapabilities
+ 
+instance IsMediaStreamCapabilities AllAudioCapabilities
+ 
+instance IsAllVideoCapabilities AllVideoCapabilities
+ 
+instance IsMediaStreamCapabilities AllVideoCapabilities
+ 
+instance IsAudioStreamTrack AudioStreamTrack
+ 
+instance IsMediaStreamTrack AudioStreamTrack
+ 
+instance IsCapabilityRange CapabilityRange
+ 
+instance IsDOMURL DOMURL
+ 
+instance IsHTMLMediaElement HTMLMediaElement
+ 
+instance IsMediaSourceStates MediaSourceStates
+ 
+instance IsMediaStream MediaStream
+ 
+instance IsMediaStreamCapabilities MediaStreamCapabilities
+ 
+instance IsMediaStreamEvent MediaStreamEvent
+ 
+instance IsEvent MediaStreamEvent
+ 
+instance IsMediaStreamTrack MediaStreamTrack
+ 
+instance IsMediaStreamTrackEvent MediaStreamTrackEvent
+ 
+instance IsEvent MediaStreamTrackEvent
+ 
+instance IsMediaStreamTrackSourcesCallback
+         MediaStreamTrackSourcesCallback
+ 
+instance IsMediaTrackConstraint MediaTrackConstraint
+ 
+instance IsMediaTrackConstraints MediaTrackConstraints
+ 
+instance IsMediaTrackConstraintSet MediaTrackConstraintSet
+ 
+instance IsNavigator Navigator
+ 
+instance IsNavigatorUserMediaError NavigatorUserMediaError
+ 
+instance IsDOMError NavigatorUserMediaError
+ 
+instance IsNavigatorUserMediaErrorCallback
+         NavigatorUserMediaErrorCallback
+ 
+instance IsNavigatorUserMediaSuccessCallback
+         NavigatorUserMediaSuccessCallback
+ 
+instance IsRTCConfiguration RTCConfiguration
+ 
+instance IsRTCDataChannel RTCDataChannel
+ 
+instance IsRTCDataChannelEvent RTCDataChannelEvent
+ 
+instance IsEvent RTCDataChannelEvent
+ 
+instance IsRTCDTMFSender RTCDTMFSender
+ 
+instance IsRTCDTMFToneChangeEvent RTCDTMFToneChangeEvent
+ 
+instance IsEvent RTCDTMFToneChangeEvent
+ 
+instance IsRTCIceCandidate RTCIceCandidate
+ 
+instance IsRTCIceCandidateEvent RTCIceCandidateEvent
+ 
+instance IsEvent RTCIceCandidateEvent
+ 
+instance IsRTCIceServer RTCIceServer
+ 
+instance IsRTCPeerConnection RTCPeerConnection
+ 
+instance IsRTCPeerConnectionErrorCallback
+         RTCPeerConnectionErrorCallback
+ 
+instance IsRTCSessionDescription RTCSessionDescription
+ 
+instance IsRTCSessionDescriptionCallback
+         RTCSessionDescriptionCallback
+ 
+instance IsRTCStatsCallback RTCStatsCallback
+ 
+instance IsRTCStatsReport RTCStatsReport
+ 
+instance IsRTCStatsResponse RTCStatsResponse
+ 
+instance IsSourceInfo SourceInfo
+ 
+instance IsVideoStreamTrack VideoStreamTrack
+ 
+instance IsMediaStreamTrack VideoStreamTrack
+ 
+instance IsNavigator Navigator
+ 
+instance IsDOMWindow DOMWindow
+ 
+instance IsNotification Notification
+ 
+instance IsNotificationCenter NotificationCenter
+ 
+instance IsNotificationPermissionCallback
+         NotificationPermissionCallback
+ 
+instance IsWorkerGlobalScope WorkerGlobalScope
+ 
+instance IsQuickTimePluginReplacement QuickTimePluginReplacement
+ 
+instance IsDeviceProximityEvent DeviceProximityEvent
+ 
+instance IsEvent DeviceProximityEvent
+ 
+instance IsDOMWindow DOMWindow
+ 
+instance IsNavigator Navigator
+ 
+instance IsStorageErrorCallback StorageErrorCallback
+ 
+instance IsStorageInfo StorageInfo
+ 
+instance IsStorageQuota StorageQuota
+ 
+instance IsStorageQuotaCallback StorageQuotaCallback
+ 
+instance IsStorageUsageCallback StorageUsageCallback
+ 
+instance IsWorkerNavigator WorkerNavigator
+ 
+instance IsDOMWindow DOMWindow
+ 
+instance IsSpeechSynthesis SpeechSynthesis
+ 
+instance IsSpeechSynthesisEvent SpeechSynthesisEvent
+ 
+instance IsEvent SpeechSynthesisEvent
+ 
+instance IsSpeechSynthesisUtterance SpeechSynthesisUtterance
+ 
+instance IsSpeechSynthesisVoice SpeechSynthesisVoice
+ 
+instance IsNavigator Navigator
+ 
+instance IsAnalyserNode AnalyserNode
+ 
+instance IsAudioNode AnalyserNode
+ 
+instance IsEventTarget AnalyserNode
+ 
+instance IsAudioBuffer AudioBuffer
+ 
+instance IsAudioBufferCallback AudioBufferCallback
+ 
+instance IsAudioBufferSourceNode AudioBufferSourceNode
+ 
+instance IsAudioNode AudioBufferSourceNode
+ 
+instance IsEventTarget AudioBufferSourceNode
+ 
+instance IsAudioContext AudioContext
+ 
+instance IsAudioDestinationNode AudioDestinationNode
+ 
+instance IsAudioNode AudioDestinationNode
+ 
+instance IsEventTarget AudioDestinationNode
+ 
+instance IsAudioListener AudioListener
+ 
+instance IsAudioNode AudioNode
+ 
+instance IsEventTarget AudioNode
+ 
+instance IsAudioParam AudioParam
+ 
+instance IsAudioProcessingEvent AudioProcessingEvent
+ 
+instance IsEvent AudioProcessingEvent
+ 
+instance IsBiquadFilterNode BiquadFilterNode
+ 
+instance IsAudioNode BiquadFilterNode
+ 
+instance IsEventTarget BiquadFilterNode
+ 
+instance IsChannelMergerNode ChannelMergerNode
+ 
+instance IsAudioNode ChannelMergerNode
+ 
+instance IsEventTarget ChannelMergerNode
+ 
+instance IsChannelSplitterNode ChannelSplitterNode
+ 
+instance IsAudioNode ChannelSplitterNode
+ 
+instance IsEventTarget ChannelSplitterNode
+ 
+instance IsConvolverNode ConvolverNode
+ 
+instance IsAudioNode ConvolverNode
+ 
+instance IsEventTarget ConvolverNode
+ 
+instance IsDelayNode DelayNode
+ 
+instance IsAudioNode DelayNode
+ 
+instance IsEventTarget DelayNode
+ 
+instance IsDynamicsCompressorNode DynamicsCompressorNode
+ 
+instance IsAudioNode DynamicsCompressorNode
+ 
+instance IsEventTarget DynamicsCompressorNode
+ 
+instance IsGainNode GainNode
+ 
+instance IsAudioNode GainNode
+ 
+instance IsEventTarget GainNode
+ 
+instance IsMediaElementAudioSourceNode MediaElementAudioSourceNode
+ 
+instance IsAudioNode MediaElementAudioSourceNode
+ 
+instance IsEventTarget MediaElementAudioSourceNode
+ 
+instance IsMediaStreamAudioDestinationNode
+         MediaStreamAudioDestinationNode
+ 
+instance IsAudioNode MediaStreamAudioDestinationNode
+ 
+instance IsEventTarget MediaStreamAudioDestinationNode
+ 
+instance IsMediaStreamAudioSourceNode MediaStreamAudioSourceNode
+ 
+instance IsAudioNode MediaStreamAudioSourceNode
+ 
+instance IsEventTarget MediaStreamAudioSourceNode
+ 
+instance IsOfflineAudioCompletionEvent OfflineAudioCompletionEvent
+ 
+instance IsEvent OfflineAudioCompletionEvent
+ 
+instance IsOfflineAudioContext OfflineAudioContext
+ 
+instance IsAudioContext OfflineAudioContext
+ 
+instance IsOscillatorNode OscillatorNode
+ 
+instance IsAudioNode OscillatorNode
+ 
+instance IsEventTarget OscillatorNode
+ 
+instance IsPannerNode PannerNode
+ 
+instance IsAudioNode PannerNode
+ 
+instance IsEventTarget PannerNode
+ 
+instance IsPeriodicWave PeriodicWave
+ 
+instance IsScriptProcessorNode ScriptProcessorNode
+ 
+instance IsAudioNode ScriptProcessorNode
+ 
+instance IsEventTarget ScriptProcessorNode
+ 
+instance IsWaveShaperNode WaveShaperNode
+ 
+instance IsAudioNode WaveShaperNode
+ 
+instance IsEventTarget WaveShaperNode
+ 
+instance IsDatabase Database
+ 
+instance IsDatabaseCallback DatabaseCallback
+ 
+instance IsDatabaseSync DatabaseSync
+ 
+instance IsDOMWindow DOMWindow
+ 
+instance IsSQLError SQLError
+ 
+instance IsSQLResultSet SQLResultSet
+ 
+instance IsSQLResultSetRowList SQLResultSetRowList
+ 
+instance IsSQLStatementCallback SQLStatementCallback
+ 
+instance IsSQLStatementErrorCallback SQLStatementErrorCallback
+ 
+instance IsSQLTransaction SQLTransaction
+ 
+instance IsSQLTransactionCallback SQLTransactionCallback
+ 
+instance IsSQLTransactionErrorCallback SQLTransactionErrorCallback
+ 
+instance IsSQLTransactionSync SQLTransactionSync
+ 
+instance IsSQLTransactionSyncCallback SQLTransactionSyncCallback
+ 
+instance IsWorkerGlobalScope WorkerGlobalScope
+ 
+instance IsCloseEvent CloseEvent
+ 
+instance IsEvent CloseEvent
+ 
+instance IsWebSocket WebSocket
+ 
+instance IsAbstractView AbstractView
+ 
+instance IsBarProp BarProp
+ 
+instance IsCrypto Crypto
+ 
+instance IsDOMSecurityPolicy DOMSecurityPolicy
+ 
+instance IsDOMSelection DOMSelection
+ 
+instance IsDOMWindow DOMWindow
+ 
+instance IsEventSource EventSource
+ 
+instance IsHistory History
+ 
+instance IsLocation Location
+ 
+instance IsNavigator Navigator
+ 
+instance IsPerformance Performance
+ 
+instance IsPerformanceEntry PerformanceEntry
+ 
+instance IsPerformanceEntryList PerformanceEntryList
+ 
+instance IsPerformanceMark PerformanceMark
+ 
+instance IsPerformanceEntry PerformanceMark
+ 
+instance IsPerformanceMeasure PerformanceMeasure
+ 
+instance IsPerformanceEntry PerformanceMeasure
+ 
+instance IsPerformanceNavigation PerformanceNavigation
+ 
+instance IsPerformanceResourceTiming PerformanceResourceTiming
+ 
+instance IsPerformanceEntry PerformanceResourceTiming
+ 
+instance IsPerformanceTiming PerformanceTiming
+ 
+instance IsDOMScreen DOMScreen
+ 
+instance IsUserMessageHandler UserMessageHandler
+ 
+instance IsUserMessageHandlersNamespace
+         UserMessageHandlersNamespace
+ 
+instance IsWebKitNamespace WebKitNamespace
  
 instance IsWebKitPoint WebKitPoint
  
-instance IsXMLHttpRequest XMLHttpRequest
+instance IsWindowBase64 WindowBase64
  
-instance IsXMLHttpRequestUpload XMLHttpRequestUpload
+instance IsWindowTimers WindowTimers
  
-instance IsXPathExpression XPathExpression
+instance IsWorkerNavigator WorkerNavigator
  
-instance IsXPathNSResolver XPathNSResolver
+instance IsDOMMimeType DOMMimeType
  
-instance IsXPathResult XPathResult
+instance IsDOMMimeTypeArray DOMMimeTypeArray
  
-instance IsRGBColor RGBColor
+instance IsDOMPlugin DOMPlugin
+ 
+instance IsDOMPluginArray DOMPluginArray
+ 
+instance IsStorage Storage
+ 
+instance IsStorageEvent StorageEvent
+ 
+instance IsEvent StorageEvent
  
 instance IsSVGAElement SVGAElement
  
@@ -3023,6 +3984,64 @@ instance IsSVGZoomEvent SVGZoomEvent
 instance IsUIEvent SVGZoomEvent
  
 instance IsEvent SVGZoomEvent
+ 
+instance IsInternals Internals
+ 
+instance IsInternalSettings InternalSettings
+ 
+instance IsInternalSettingsGenerated InternalSettings
+ 
+instance IsMallocStatistics MallocStatistics
+ 
+instance IsMemoryInfo MemoryInfo
+ 
+instance IsTypeConversions TypeConversions
+ 
+instance IsAbstractWorker AbstractWorker
+ 
+instance IsDedicatedWorkerGlobalScope DedicatedWorkerGlobalScope
+ 
+instance IsWorkerGlobalScope DedicatedWorkerGlobalScope
+ 
+instance IsSharedWorker SharedWorker
+ 
+instance IsEventTarget SharedWorker
+ 
+instance IsSharedWorkerGlobalScope SharedWorkerGlobalScope
+ 
+instance IsWorkerGlobalScope SharedWorkerGlobalScope
+ 
+instance IsWorker Worker
+ 
+instance IsEventTarget Worker
+ 
+instance IsWorkerGlobalScope WorkerGlobalScope
+ 
+instance IsWorkerLocation WorkerLocation
+ 
+instance IsDOMParser DOMParser
+ 
+instance IsXMLHttpRequest XMLHttpRequest
+ 
+instance IsXMLHttpRequestProgressEvent XMLHttpRequestProgressEvent
+ 
+instance IsProgressEvent XMLHttpRequestProgressEvent
+ 
+instance IsEvent XMLHttpRequestProgressEvent
+ 
+instance IsXMLHttpRequestUpload XMLHttpRequestUpload
+ 
+instance IsXMLSerializer XMLSerializer
+ 
+instance IsXPathEvaluator XPathEvaluator
+ 
+instance IsXPathExpression XPathExpression
+ 
+instance IsXPathNSResolver XPathNSResolver
+ 
+instance IsXPathResult XPathResult
+ 
+instance IsXSLTProcessor XSLTProcessor
 #else
 module GHCJS.DOM.Core (
   module Graphics.UI.Gtk.WebKit.DOM.Core

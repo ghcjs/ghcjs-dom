@@ -18,34 +18,38 @@ module GHCJS.DOM.HTMLOptionsCollection
         IsHTMLOptionsCollection, castToHTMLOptionsCollection,
         gTypeHTMLOptionsCollection, toHTMLOptionsCollection)
        where
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.Marshal
-import Data.Int
-import Data.Word
+import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
+import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Data.Int (Int64)
+import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventM
+import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_html_options_collection_named_item ::
         JSRef HTMLOptionsCollection -> JSString -> IO (JSRef Node)
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.namedItem Mozilla HTMLOptionsCollection.namedItem documentation> 
 htmlOptionsCollectionNamedItem ::
                                (IsHTMLOptionsCollection self, ToJSString name) =>
                                  self -> name -> IO (Maybe Node)
 htmlOptionsCollectionNamedItem self name
-  = fmap Node . maybeJSNull <$>
-      (ghcjs_dom_html_options_collection_named_item
-         (unHTMLOptionsCollection (toHTMLOptionsCollection self))
-         (toJSString name))
+  = (ghcjs_dom_html_options_collection_named_item
+       (unHTMLOptionsCollection (toHTMLOptionsCollection self))
+       (toJSString name))
+      >>= fromJSRef
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)"
         ghcjs_dom_html_options_collection_add ::
         JSRef HTMLOptionsCollection ->
           JSRef HTMLOptionElement -> Word -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.add Mozilla HTMLOptionsCollection.add documentation> 
 htmlOptionsCollectionAdd ::
                          (IsHTMLOptionsCollection self, IsHTMLOptionElement option) =>
                            self -> Maybe option -> Word -> IO ()
@@ -58,7 +62,8 @@ htmlOptionsCollectionAdd self option index
 foreign import javascript unsafe "$1[\"remove\"]($2)"
         ghcjs_dom_html_options_collection_remove ::
         JSRef HTMLOptionsCollection -> Word -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.remove Mozilla HTMLOptionsCollection.remove documentation> 
 htmlOptionsCollectionRemove ::
                             (IsHTMLOptionsCollection self) => self -> Word -> IO ()
 htmlOptionsCollectionRemove self index
@@ -69,7 +74,8 @@ htmlOptionsCollectionRemove self index
 foreign import javascript unsafe "$1[\"selectedIndex\"] = $2;"
         ghcjs_dom_html_options_collection_set_selected_index ::
         JSRef HTMLOptionsCollection -> Int -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.selectedIndex Mozilla HTMLOptionsCollection.selectedIndex documentation> 
 htmlOptionsCollectionSetSelectedIndex ::
                                       (IsHTMLOptionsCollection self) => self -> Int -> IO ()
 htmlOptionsCollectionSetSelectedIndex self val
@@ -80,7 +86,8 @@ htmlOptionsCollectionSetSelectedIndex self val
 foreign import javascript unsafe "$1[\"selectedIndex\"]"
         ghcjs_dom_html_options_collection_get_selected_index ::
         JSRef HTMLOptionsCollection -> IO Int
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.selectedIndex Mozilla HTMLOptionsCollection.selectedIndex documentation> 
 htmlOptionsCollectionGetSelectedIndex ::
                                       (IsHTMLOptionsCollection self) => self -> IO Int
 htmlOptionsCollectionGetSelectedIndex self
@@ -90,7 +97,8 @@ htmlOptionsCollectionGetSelectedIndex self
 foreign import javascript unsafe "$1[\"length\"] = $2;"
         ghcjs_dom_html_options_collection_set_length ::
         JSRef HTMLOptionsCollection -> Word -> IO ()
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.length Mozilla HTMLOptionsCollection.length documentation> 
 htmlOptionsCollectionSetLength ::
                                (IsHTMLOptionsCollection self) => self -> Word -> IO ()
 htmlOptionsCollectionSetLength self val
@@ -101,7 +109,8 @@ htmlOptionsCollectionSetLength self val
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_html_options_collection_get_length ::
         JSRef HTMLOptionsCollection -> IO Word
- 
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.length Mozilla HTMLOptionsCollection.length documentation> 
 htmlOptionsCollectionGetLength ::
                                (IsHTMLOptionsCollection self) => self -> IO Word
 htmlOptionsCollectionGetLength self
