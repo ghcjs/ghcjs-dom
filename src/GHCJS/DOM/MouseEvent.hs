@@ -28,6 +28,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -52,7 +53,7 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.initMouseEvent Mozilla MouseEvent.initMouseEvent documentation> 
 mouseEventInitMouseEvent ::
-                         (IsMouseEvent self, ToJSString type', IsDOMWindow view,
+                         (MonadIO m, IsMouseEvent self, ToJSString type', IsDOMWindow view,
                           IsEventTarget relatedTarget) =>
                            self ->
                              type' ->
@@ -67,108 +68,127 @@ mouseEventInitMouseEvent ::
                                                Bool ->
                                                  Bool ->
                                                    Bool ->
-                                                     Bool -> Word -> Maybe relatedTarget -> IO ()
+                                                     Bool -> Word -> Maybe relatedTarget -> m ()
 mouseEventInitMouseEvent self type' canBubble cancelable view
   detail screenX screenY clientX clientY ctrlKey altKey shiftKey
   metaKey button relatedTarget
-  = ghcjs_dom_mouse_event_init_mouse_event
-      (unMouseEvent (toMouseEvent self))
-      (toJSString type')
-      canBubble
-      cancelable
-      (maybe jsNull (unDOMWindow . toDOMWindow) view)
-      detail
-      screenX
-      screenY
-      clientX
-      clientY
-      ctrlKey
-      altKey
-      shiftKey
-      metaKey
-      button
-      (maybe jsNull (unEventTarget . toEventTarget) relatedTarget)
+  = liftIO
+      (ghcjs_dom_mouse_event_init_mouse_event
+         (unMouseEvent (toMouseEvent self))
+         (toJSString type')
+         canBubble
+         cancelable
+         (maybe jsNull (unDOMWindow . toDOMWindow) view)
+         detail
+         screenX
+         screenY
+         clientX
+         clientY
+         ctrlKey
+         altKey
+         shiftKey
+         metaKey
+         button
+         (maybe jsNull (unEventTarget . toEventTarget) relatedTarget))
  
 foreign import javascript unsafe "$1[\"screenX\"]"
         ghcjs_dom_mouse_event_get_screen_x :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.screenX Mozilla MouseEvent.screenX documentation> 
-mouseEventGetScreenX :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetScreenX ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetScreenX self
-  = ghcjs_dom_mouse_event_get_screen_x
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_screen_x
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"screenY\"]"
         ghcjs_dom_mouse_event_get_screen_y :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.screenY Mozilla MouseEvent.screenY documentation> 
-mouseEventGetScreenY :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetScreenY ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetScreenY self
-  = ghcjs_dom_mouse_event_get_screen_y
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_screen_y
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"clientX\"]"
         ghcjs_dom_mouse_event_get_client_x :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.clientX Mozilla MouseEvent.clientX documentation> 
-mouseEventGetClientX :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetClientX ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetClientX self
-  = ghcjs_dom_mouse_event_get_client_x
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_client_x
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"clientY\"]"
         ghcjs_dom_mouse_event_get_client_y :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.clientY Mozilla MouseEvent.clientY documentation> 
-mouseEventGetClientY :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetClientY ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetClientY self
-  = ghcjs_dom_mouse_event_get_client_y
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_client_y
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_ctrl_key :: JSRef MouseEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.ctrlKey Mozilla MouseEvent.ctrlKey documentation> 
-mouseEventGetCtrlKey :: (IsMouseEvent self) => self -> IO Bool
+mouseEventGetCtrlKey ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Bool
 mouseEventGetCtrlKey self
-  = ghcjs_dom_mouse_event_get_ctrl_key
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_ctrl_key
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_shift_key :: JSRef MouseEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.shiftKey Mozilla MouseEvent.shiftKey documentation> 
-mouseEventGetShiftKey :: (IsMouseEvent self) => self -> IO Bool
+mouseEventGetShiftKey ::
+                      (MonadIO m, IsMouseEvent self) => self -> m Bool
 mouseEventGetShiftKey self
-  = ghcjs_dom_mouse_event_get_shift_key
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_shift_key
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_alt_key :: JSRef MouseEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.altKey Mozilla MouseEvent.altKey documentation> 
-mouseEventGetAltKey :: (IsMouseEvent self) => self -> IO Bool
+mouseEventGetAltKey ::
+                    (MonadIO m, IsMouseEvent self) => self -> m Bool
 mouseEventGetAltKey self
-  = ghcjs_dom_mouse_event_get_alt_key
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_alt_key
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
         ghcjs_dom_mouse_event_get_meta_key :: JSRef MouseEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.metaKey Mozilla MouseEvent.metaKey documentation> 
-mouseEventGetMetaKey :: (IsMouseEvent self) => self -> IO Bool
+mouseEventGetMetaKey ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Bool
 mouseEventGetMetaKey self
-  = ghcjs_dom_mouse_event_get_meta_key
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_meta_key
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"button\"]"
         ghcjs_dom_mouse_event_get_button :: JSRef MouseEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.button Mozilla MouseEvent.button documentation> 
-mouseEventGetButton :: (IsMouseEvent self) => self -> IO Word
+mouseEventGetButton ::
+                    (MonadIO m, IsMouseEvent self) => self -> m Word
 mouseEventGetButton self
-  = ghcjs_dom_mouse_event_get_button
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_button
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"relatedTarget\"]"
         ghcjs_dom_mouse_event_get_related_target ::
@@ -176,63 +196,74 @@ foreign import javascript unsafe "$1[\"relatedTarget\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.relatedTarget Mozilla MouseEvent.relatedTarget documentation> 
 mouseEventGetRelatedTarget ::
-                           (IsMouseEvent self) => self -> IO (Maybe EventTarget)
+                           (MonadIO m, IsMouseEvent self) => self -> m (Maybe EventTarget)
 mouseEventGetRelatedTarget self
-  = (ghcjs_dom_mouse_event_get_related_target
-       (unMouseEvent (toMouseEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mouse_event_get_related_target
+          (unMouseEvent (toMouseEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"movementX\"]"
         ghcjs_dom_mouse_event_get_movement_x :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.movementX Mozilla MouseEvent.movementX documentation> 
-mouseEventGetMovementX :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetMovementX ::
+                       (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetMovementX self
-  = ghcjs_dom_mouse_event_get_movement_x
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_movement_x
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"movementY\"]"
         ghcjs_dom_mouse_event_get_movement_y :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.movementY Mozilla MouseEvent.movementY documentation> 
-mouseEventGetMovementY :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetMovementY ::
+                       (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetMovementY self
-  = ghcjs_dom_mouse_event_get_movement_y
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_movement_y
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"offsetX\"]"
         ghcjs_dom_mouse_event_get_offset_x :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.offsetX Mozilla MouseEvent.offsetX documentation> 
-mouseEventGetOffsetX :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetOffsetX ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetOffsetX self
-  = ghcjs_dom_mouse_event_get_offset_x
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_offset_x
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"offsetY\"]"
         ghcjs_dom_mouse_event_get_offset_y :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.offsetY Mozilla MouseEvent.offsetY documentation> 
-mouseEventGetOffsetY :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetOffsetY ::
+                     (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetOffsetY self
-  = ghcjs_dom_mouse_event_get_offset_y
-      (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_offset_y
+         (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_mouse_event_get_x :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.x Mozilla MouseEvent.x documentation> 
-mouseEventGetX :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetX :: (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetX self
-  = ghcjs_dom_mouse_event_get_x (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_x (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_mouse_event_get_y :: JSRef MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.y Mozilla MouseEvent.y documentation> 
-mouseEventGetY :: (IsMouseEvent self) => self -> IO Int
+mouseEventGetY :: (MonadIO m, IsMouseEvent self) => self -> m Int
 mouseEventGetY self
-  = ghcjs_dom_mouse_event_get_y (unMouseEvent (toMouseEvent self))
+  = liftIO
+      (ghcjs_dom_mouse_event_get_y (unMouseEvent (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"fromElement\"]"
         ghcjs_dom_mouse_event_get_from_element ::
@@ -240,11 +271,12 @@ foreign import javascript unsafe "$1[\"fromElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.fromElement Mozilla MouseEvent.fromElement documentation> 
 mouseEventGetFromElement ::
-                         (IsMouseEvent self) => self -> IO (Maybe Node)
+                         (MonadIO m, IsMouseEvent self) => self -> m (Maybe Node)
 mouseEventGetFromElement self
-  = (ghcjs_dom_mouse_event_get_from_element
-       (unMouseEvent (toMouseEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mouse_event_get_from_element
+          (unMouseEvent (toMouseEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"toElement\"]"
         ghcjs_dom_mouse_event_get_to_element ::
@@ -252,11 +284,12 @@ foreign import javascript unsafe "$1[\"toElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.toElement Mozilla MouseEvent.toElement documentation> 
 mouseEventGetToElement ::
-                       (IsMouseEvent self) => self -> IO (Maybe Node)
+                       (MonadIO m, IsMouseEvent self) => self -> m (Maybe Node)
 mouseEventGetToElement self
-  = (ghcjs_dom_mouse_event_get_to_element
-       (unMouseEvent (toMouseEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mouse_event_get_to_element
+          (unMouseEvent (toMouseEvent self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.MouseEvent (
   module Graphics.UI.Gtk.WebKit.DOM.MouseEvent

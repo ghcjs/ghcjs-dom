@@ -70,9 +70,9 @@ ghcjs_currentDocument = undefined
 #endif
 
 currentWindow :: IO (Maybe DOMWindow)
-currentWindow = fmap DOMWindow . maybeJSNull <$> ghcjs_currentWindow
+currentWindow = fmap DOMWindow . maybeJSNullOrUndefined <$> ghcjs_currentWindow
 currentDocument :: IO (Maybe Document)
-currentDocument = fmap Document . maybeJSNull <$> ghcjs_currentDocument
+currentDocument = fmap Document . maybeJSNullOrUndefined <$> ghcjs_currentDocument
 
 type WebView = DOMWindow
 castToWebView = id

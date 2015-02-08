@@ -38,6 +38,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -52,13 +53,15 @@ foreign import javascript unsafe "$1[\"setPosition\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.position Mozilla webkitAudioPannerNode.position documentation> 
 pannerNodeSetPosition ::
-                      (IsPannerNode self) => self -> Float -> Float -> Float -> IO ()
+                      (MonadIO m, IsPannerNode self) =>
+                        self -> Float -> Float -> Float -> m ()
 pannerNodeSetPosition self x y z
-  = ghcjs_dom_panner_node_set_position
-      (unPannerNode (toPannerNode self))
-      x
-      y
-      z
+  = liftIO
+      (ghcjs_dom_panner_node_set_position
+         (unPannerNode (toPannerNode self))
+         x
+         y
+         z)
  
 foreign import javascript unsafe
         "$1[\"setOrientation\"]($2, $3, $4)"
@@ -67,13 +70,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.orientation Mozilla webkitAudioPannerNode.orientation documentation> 
 pannerNodeSetOrientation ::
-                         (IsPannerNode self) => self -> Float -> Float -> Float -> IO ()
+                         (MonadIO m, IsPannerNode self) =>
+                           self -> Float -> Float -> Float -> m ()
 pannerNodeSetOrientation self x y z
-  = ghcjs_dom_panner_node_set_orientation
-      (unPannerNode (toPannerNode self))
-      x
-      y
-      z
+  = liftIO
+      (ghcjs_dom_panner_node_set_orientation
+         (unPannerNode (toPannerNode self))
+         x
+         y
+         z)
  
 foreign import javascript unsafe "$1[\"setVelocity\"]($2, $3, $4)"
         ghcjs_dom_panner_node_set_velocity ::
@@ -81,13 +86,15 @@ foreign import javascript unsafe "$1[\"setVelocity\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.velocity Mozilla webkitAudioPannerNode.velocity documentation> 
 pannerNodeSetVelocity ::
-                      (IsPannerNode self) => self -> Float -> Float -> Float -> IO ()
+                      (MonadIO m, IsPannerNode self) =>
+                        self -> Float -> Float -> Float -> m ()
 pannerNodeSetVelocity self x y z
-  = ghcjs_dom_panner_node_set_velocity
-      (unPannerNode (toPannerNode self))
-      x
-      y
-      z
+  = liftIO
+      (ghcjs_dom_panner_node_set_velocity
+         (unPannerNode (toPannerNode self))
+         x
+         y
+         z)
 cEQUALPOWER = 0
 cHRTF = 1
 cSOUNDFIELD = 2
@@ -101,11 +108,13 @@ foreign import javascript unsafe "$1[\"panningModel\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.panningModel Mozilla webkitAudioPannerNode.panningModel documentation> 
 pannerNodeSetPanningModel ::
-                          (IsPannerNode self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsPannerNode self, ToJSString val) =>
+                            self -> val -> m ()
 pannerNodeSetPanningModel self val
-  = ghcjs_dom_panner_node_set_panning_model
-      (unPannerNode (toPannerNode self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_panner_node_set_panning_model
+         (unPannerNode (toPannerNode self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"panningModel\"]"
         ghcjs_dom_panner_node_get_panning_model ::
@@ -113,11 +122,13 @@ foreign import javascript unsafe "$1[\"panningModel\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.panningModel Mozilla webkitAudioPannerNode.panningModel documentation> 
 pannerNodeGetPanningModel ::
-                          (IsPannerNode self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsPannerNode self, FromJSString result) =>
+                            self -> m result
 pannerNodeGetPanningModel self
-  = fromJSString <$>
-      (ghcjs_dom_panner_node_get_panning_model
-         (unPannerNode (toPannerNode self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_panner_node_get_panning_model
+            (unPannerNode (toPannerNode self))))
  
 foreign import javascript unsafe "$1[\"distanceModel\"] = $2;"
         ghcjs_dom_panner_node_set_distance_model ::
@@ -125,11 +136,13 @@ foreign import javascript unsafe "$1[\"distanceModel\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.distanceModel Mozilla webkitAudioPannerNode.distanceModel documentation> 
 pannerNodeSetDistanceModel ::
-                           (IsPannerNode self, ToJSString val) => self -> val -> IO ()
+                           (MonadIO m, IsPannerNode self, ToJSString val) =>
+                             self -> val -> m ()
 pannerNodeSetDistanceModel self val
-  = ghcjs_dom_panner_node_set_distance_model
-      (unPannerNode (toPannerNode self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_panner_node_set_distance_model
+         (unPannerNode (toPannerNode self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"distanceModel\"]"
         ghcjs_dom_panner_node_get_distance_model ::
@@ -137,11 +150,13 @@ foreign import javascript unsafe "$1[\"distanceModel\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.distanceModel Mozilla webkitAudioPannerNode.distanceModel documentation> 
 pannerNodeGetDistanceModel ::
-                           (IsPannerNode self, FromJSString result) => self -> IO result
+                           (MonadIO m, IsPannerNode self, FromJSString result) =>
+                             self -> m result
 pannerNodeGetDistanceModel self
-  = fromJSString <$>
-      (ghcjs_dom_panner_node_get_distance_model
-         (unPannerNode (toPannerNode self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_panner_node_get_distance_model
+            (unPannerNode (toPannerNode self))))
  
 foreign import javascript unsafe "$1[\"refDistance\"] = $2;"
         ghcjs_dom_panner_node_set_ref_distance ::
@@ -149,11 +164,12 @@ foreign import javascript unsafe "$1[\"refDistance\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.refDistance Mozilla webkitAudioPannerNode.refDistance documentation> 
 pannerNodeSetRefDistance ::
-                         (IsPannerNode self) => self -> Double -> IO ()
+                         (MonadIO m, IsPannerNode self) => self -> Double -> m ()
 pannerNodeSetRefDistance self val
-  = ghcjs_dom_panner_node_set_ref_distance
-      (unPannerNode (toPannerNode self))
-      val
+  = liftIO
+      (ghcjs_dom_panner_node_set_ref_distance
+         (unPannerNode (toPannerNode self))
+         val)
  
 foreign import javascript unsafe "$1[\"refDistance\"]"
         ghcjs_dom_panner_node_get_ref_distance ::
@@ -161,10 +177,11 @@ foreign import javascript unsafe "$1[\"refDistance\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.refDistance Mozilla webkitAudioPannerNode.refDistance documentation> 
 pannerNodeGetRefDistance ::
-                         (IsPannerNode self) => self -> IO Double
+                         (MonadIO m, IsPannerNode self) => self -> m Double
 pannerNodeGetRefDistance self
-  = ghcjs_dom_panner_node_get_ref_distance
-      (unPannerNode (toPannerNode self))
+  = liftIO
+      (ghcjs_dom_panner_node_get_ref_distance
+         (unPannerNode (toPannerNode self)))
  
 foreign import javascript unsafe "$1[\"maxDistance\"] = $2;"
         ghcjs_dom_panner_node_set_max_distance ::
@@ -172,11 +189,12 @@ foreign import javascript unsafe "$1[\"maxDistance\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.maxDistance Mozilla webkitAudioPannerNode.maxDistance documentation> 
 pannerNodeSetMaxDistance ::
-                         (IsPannerNode self) => self -> Double -> IO ()
+                         (MonadIO m, IsPannerNode self) => self -> Double -> m ()
 pannerNodeSetMaxDistance self val
-  = ghcjs_dom_panner_node_set_max_distance
-      (unPannerNode (toPannerNode self))
-      val
+  = liftIO
+      (ghcjs_dom_panner_node_set_max_distance
+         (unPannerNode (toPannerNode self))
+         val)
  
 foreign import javascript unsafe "$1[\"maxDistance\"]"
         ghcjs_dom_panner_node_get_max_distance ::
@@ -184,10 +202,11 @@ foreign import javascript unsafe "$1[\"maxDistance\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.maxDistance Mozilla webkitAudioPannerNode.maxDistance documentation> 
 pannerNodeGetMaxDistance ::
-                         (IsPannerNode self) => self -> IO Double
+                         (MonadIO m, IsPannerNode self) => self -> m Double
 pannerNodeGetMaxDistance self
-  = ghcjs_dom_panner_node_get_max_distance
-      (unPannerNode (toPannerNode self))
+  = liftIO
+      (ghcjs_dom_panner_node_get_max_distance
+         (unPannerNode (toPannerNode self)))
  
 foreign import javascript unsafe "$1[\"rolloffFactor\"] = $2;"
         ghcjs_dom_panner_node_set_rolloff_factor ::
@@ -195,11 +214,12 @@ foreign import javascript unsafe "$1[\"rolloffFactor\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.rolloffFactor Mozilla webkitAudioPannerNode.rolloffFactor documentation> 
 pannerNodeSetRolloffFactor ::
-                           (IsPannerNode self) => self -> Double -> IO ()
+                           (MonadIO m, IsPannerNode self) => self -> Double -> m ()
 pannerNodeSetRolloffFactor self val
-  = ghcjs_dom_panner_node_set_rolloff_factor
-      (unPannerNode (toPannerNode self))
-      val
+  = liftIO
+      (ghcjs_dom_panner_node_set_rolloff_factor
+         (unPannerNode (toPannerNode self))
+         val)
  
 foreign import javascript unsafe "$1[\"rolloffFactor\"]"
         ghcjs_dom_panner_node_get_rolloff_factor ::
@@ -207,10 +227,11 @@ foreign import javascript unsafe "$1[\"rolloffFactor\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.rolloffFactor Mozilla webkitAudioPannerNode.rolloffFactor documentation> 
 pannerNodeGetRolloffFactor ::
-                           (IsPannerNode self) => self -> IO Double
+                           (MonadIO m, IsPannerNode self) => self -> m Double
 pannerNodeGetRolloffFactor self
-  = ghcjs_dom_panner_node_get_rolloff_factor
-      (unPannerNode (toPannerNode self))
+  = liftIO
+      (ghcjs_dom_panner_node_get_rolloff_factor
+         (unPannerNode (toPannerNode self)))
  
 foreign import javascript unsafe "$1[\"coneInnerAngle\"] = $2;"
         ghcjs_dom_panner_node_set_cone_inner_angle ::
@@ -218,11 +239,12 @@ foreign import javascript unsafe "$1[\"coneInnerAngle\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneInnerAngle Mozilla webkitAudioPannerNode.coneInnerAngle documentation> 
 pannerNodeSetConeInnerAngle ::
-                            (IsPannerNode self) => self -> Double -> IO ()
+                            (MonadIO m, IsPannerNode self) => self -> Double -> m ()
 pannerNodeSetConeInnerAngle self val
-  = ghcjs_dom_panner_node_set_cone_inner_angle
-      (unPannerNode (toPannerNode self))
-      val
+  = liftIO
+      (ghcjs_dom_panner_node_set_cone_inner_angle
+         (unPannerNode (toPannerNode self))
+         val)
  
 foreign import javascript unsafe "$1[\"coneInnerAngle\"]"
         ghcjs_dom_panner_node_get_cone_inner_angle ::
@@ -230,10 +252,11 @@ foreign import javascript unsafe "$1[\"coneInnerAngle\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneInnerAngle Mozilla webkitAudioPannerNode.coneInnerAngle documentation> 
 pannerNodeGetConeInnerAngle ::
-                            (IsPannerNode self) => self -> IO Double
+                            (MonadIO m, IsPannerNode self) => self -> m Double
 pannerNodeGetConeInnerAngle self
-  = ghcjs_dom_panner_node_get_cone_inner_angle
-      (unPannerNode (toPannerNode self))
+  = liftIO
+      (ghcjs_dom_panner_node_get_cone_inner_angle
+         (unPannerNode (toPannerNode self)))
  
 foreign import javascript unsafe "$1[\"coneOuterAngle\"] = $2;"
         ghcjs_dom_panner_node_set_cone_outer_angle ::
@@ -241,11 +264,12 @@ foreign import javascript unsafe "$1[\"coneOuterAngle\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterAngle Mozilla webkitAudioPannerNode.coneOuterAngle documentation> 
 pannerNodeSetConeOuterAngle ::
-                            (IsPannerNode self) => self -> Double -> IO ()
+                            (MonadIO m, IsPannerNode self) => self -> Double -> m ()
 pannerNodeSetConeOuterAngle self val
-  = ghcjs_dom_panner_node_set_cone_outer_angle
-      (unPannerNode (toPannerNode self))
-      val
+  = liftIO
+      (ghcjs_dom_panner_node_set_cone_outer_angle
+         (unPannerNode (toPannerNode self))
+         val)
  
 foreign import javascript unsafe "$1[\"coneOuterAngle\"]"
         ghcjs_dom_panner_node_get_cone_outer_angle ::
@@ -253,10 +277,11 @@ foreign import javascript unsafe "$1[\"coneOuterAngle\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterAngle Mozilla webkitAudioPannerNode.coneOuterAngle documentation> 
 pannerNodeGetConeOuterAngle ::
-                            (IsPannerNode self) => self -> IO Double
+                            (MonadIO m, IsPannerNode self) => self -> m Double
 pannerNodeGetConeOuterAngle self
-  = ghcjs_dom_panner_node_get_cone_outer_angle
-      (unPannerNode (toPannerNode self))
+  = liftIO
+      (ghcjs_dom_panner_node_get_cone_outer_angle
+         (unPannerNode (toPannerNode self)))
  
 foreign import javascript unsafe "$1[\"coneOuterGain\"] = $2;"
         ghcjs_dom_panner_node_set_cone_outer_gain ::
@@ -264,11 +289,12 @@ foreign import javascript unsafe "$1[\"coneOuterGain\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterGain Mozilla webkitAudioPannerNode.coneOuterGain documentation> 
 pannerNodeSetConeOuterGain ::
-                           (IsPannerNode self) => self -> Double -> IO ()
+                           (MonadIO m, IsPannerNode self) => self -> Double -> m ()
 pannerNodeSetConeOuterGain self val
-  = ghcjs_dom_panner_node_set_cone_outer_gain
-      (unPannerNode (toPannerNode self))
-      val
+  = liftIO
+      (ghcjs_dom_panner_node_set_cone_outer_gain
+         (unPannerNode (toPannerNode self))
+         val)
  
 foreign import javascript unsafe "$1[\"coneOuterGain\"]"
         ghcjs_dom_panner_node_get_cone_outer_gain ::
@@ -276,10 +302,11 @@ foreign import javascript unsafe "$1[\"coneOuterGain\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterGain Mozilla webkitAudioPannerNode.coneOuterGain documentation> 
 pannerNodeGetConeOuterGain ::
-                           (IsPannerNode self) => self -> IO Double
+                           (MonadIO m, IsPannerNode self) => self -> m Double
 pannerNodeGetConeOuterGain self
-  = ghcjs_dom_panner_node_get_cone_outer_gain
-      (unPannerNode (toPannerNode self))
+  = liftIO
+      (ghcjs_dom_panner_node_get_cone_outer_gain
+         (unPannerNode (toPannerNode self)))
 #else
 module GHCJS.DOM.PannerNode (
   ) where

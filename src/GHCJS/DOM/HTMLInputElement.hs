@@ -172,6 +172,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -186,11 +187,12 @@ foreign import javascript unsafe "$1[\"stepUp\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.stepUp Mozilla HTMLInputElement.stepUp documentation> 
 htmlInputElementStepUp ::
-                       (IsHTMLInputElement self) => self -> Int -> IO ()
+                       (MonadIO m, IsHTMLInputElement self) => self -> Int -> m ()
 htmlInputElementStepUp self n
-  = ghcjs_dom_html_input_element_step_up
-      (unHTMLInputElement (toHTMLInputElement self))
-      n
+  = liftIO
+      (ghcjs_dom_html_input_element_step_up
+         (unHTMLInputElement (toHTMLInputElement self))
+         n)
  
 foreign import javascript unsafe "$1[\"stepDown\"]($2)"
         ghcjs_dom_html_input_element_step_down ::
@@ -198,11 +200,12 @@ foreign import javascript unsafe "$1[\"stepDown\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.stepDown Mozilla HTMLInputElement.stepDown documentation> 
 htmlInputElementStepDown ::
-                         (IsHTMLInputElement self) => self -> Int -> IO ()
+                         (MonadIO m, IsHTMLInputElement self) => self -> Int -> m ()
 htmlInputElementStepDown self n
-  = ghcjs_dom_html_input_element_step_down
-      (unHTMLInputElement (toHTMLInputElement self))
-      n
+  = liftIO
+      (ghcjs_dom_html_input_element_step_down
+         (unHTMLInputElement (toHTMLInputElement self))
+         n)
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
@@ -211,10 +214,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.checkValidity Mozilla HTMLInputElement.checkValidity documentation> 
 htmlInputElementCheckValidity ::
-                              (IsHTMLInputElement self) => self -> IO Bool
+                              (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementCheckValidity self
-  = ghcjs_dom_html_input_element_check_validity
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_check_validity
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_input_element_set_custom_validity ::
@@ -222,12 +226,13 @@ foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.customValidity Mozilla HTMLInputElement.customValidity documentation> 
 htmlInputElementSetCustomValidity ::
-                                  (IsHTMLInputElement self, ToJSString error) =>
-                                    self -> error -> IO ()
+                                  (MonadIO m, IsHTMLInputElement self, ToJSString error) =>
+                                    self -> error -> m ()
 htmlInputElementSetCustomValidity self error
-  = ghcjs_dom_html_input_element_set_custom_validity
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString error)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_custom_validity
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString error))
  
 foreign import javascript unsafe "$1[\"select\"]()"
         ghcjs_dom_html_input_element_select ::
@@ -235,10 +240,11 @@ foreign import javascript unsafe "$1[\"select\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.select Mozilla HTMLInputElement.select documentation> 
 htmlInputElementSelect ::
-                       (IsHTMLInputElement self) => self -> IO ()
+                       (MonadIO m, IsHTMLInputElement self) => self -> m ()
 htmlInputElementSelect self
-  = ghcjs_dom_html_input_element_select
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_select
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"setRangeText\"]($2)"
         ghcjs_dom_html_input_element_set_range_text ::
@@ -246,12 +252,13 @@ foreign import javascript unsafe "$1[\"setRangeText\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.rangeText Mozilla HTMLInputElement.rangeText documentation> 
 htmlInputElementSetRangeText ::
-                             (IsHTMLInputElement self, ToJSString replacement) =>
-                               self -> replacement -> IO ()
+                             (MonadIO m, IsHTMLInputElement self, ToJSString replacement) =>
+                               self -> replacement -> m ()
 htmlInputElementSetRangeText self replacement
-  = ghcjs_dom_html_input_element_set_range_text
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString replacement)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_range_text
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString replacement))
  
 foreign import javascript unsafe
         "$1[\"setRangeText\"]($2, $3, $4,\n$5)"
@@ -261,17 +268,18 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.rangeText4 Mozilla HTMLInputElement.rangeText4 documentation> 
 htmlInputElementSetRangeText4 ::
-                              (IsHTMLInputElement self, ToJSString replacement,
+                              (MonadIO m, IsHTMLInputElement self, ToJSString replacement,
                                ToJSString selectionMode) =>
-                                self -> replacement -> Word -> Word -> selectionMode -> IO ()
+                                self -> replacement -> Word -> Word -> selectionMode -> m ()
 htmlInputElementSetRangeText4 self replacement start end
   selectionMode
-  = ghcjs_dom_html_input_element_set_range_text4
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString replacement)
-      start
-      end
-      (toJSString selectionMode)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_range_text4
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString replacement)
+         start
+         end
+         (toJSString selectionMode))
  
 foreign import javascript unsafe
         "$1[\"setSelectionRange\"]($2, $3,\n$4)"
@@ -280,14 +288,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionRange Mozilla HTMLInputElement.selectionRange documentation> 
 htmlInputElementSetSelectionRange ::
-                                  (IsHTMLInputElement self, ToJSString direction) =>
-                                    self -> Int -> Int -> direction -> IO ()
+                                  (MonadIO m, IsHTMLInputElement self, ToJSString direction) =>
+                                    self -> Int -> Int -> direction -> m ()
 htmlInputElementSetSelectionRange self start end direction
-  = ghcjs_dom_html_input_element_set_selection_range
-      (unHTMLInputElement (toHTMLInputElement self))
-      start
-      end
-      (toJSString direction)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_selection_range
+         (unHTMLInputElement (toHTMLInputElement self))
+         start
+         end
+         (toJSString direction))
  
 foreign import javascript unsafe "$1[\"setValueForUser\"]($2)"
         ghcjs_dom_html_input_element_set_value_for_user ::
@@ -295,12 +304,13 @@ foreign import javascript unsafe "$1[\"setValueForUser\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueForUser Mozilla HTMLInputElement.valueForUser documentation> 
 htmlInputElementSetValueForUser ::
-                                (IsHTMLInputElement self, ToJSString value) =>
-                                  self -> value -> IO ()
+                                (MonadIO m, IsHTMLInputElement self, ToJSString value) =>
+                                  self -> value -> m ()
 htmlInputElementSetValueForUser self value
-  = ghcjs_dom_html_input_element_set_value_for_user
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString value)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_value_for_user
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString value))
  
 foreign import javascript unsafe "$1[\"accept\"] = $2;"
         ghcjs_dom_html_input_element_set_accept ::
@@ -308,11 +318,13 @@ foreign import javascript unsafe "$1[\"accept\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.accept Mozilla HTMLInputElement.accept documentation> 
 htmlInputElementSetAccept ::
-                          (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlInputElementSetAccept self val
-  = ghcjs_dom_html_input_element_set_accept
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_accept
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"accept\"]"
         ghcjs_dom_html_input_element_get_accept ::
@@ -320,11 +332,13 @@ foreign import javascript unsafe "$1[\"accept\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.accept Mozilla HTMLInputElement.accept documentation> 
 htmlInputElementGetAccept ::
-                          (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                            self -> m result
 htmlInputElementGetAccept self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_accept
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_accept
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"alt\"] = $2;"
         ghcjs_dom_html_input_element_set_alt ::
@@ -332,11 +346,13 @@ foreign import javascript unsafe "$1[\"alt\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.alt Mozilla HTMLInputElement.alt documentation> 
 htmlInputElementSetAlt ::
-                       (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlInputElementSetAlt self val
-  = ghcjs_dom_html_input_element_set_alt
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_alt
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"alt\"]"
         ghcjs_dom_html_input_element_get_alt ::
@@ -344,11 +360,13 @@ foreign import javascript unsafe "$1[\"alt\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.alt Mozilla HTMLInputElement.alt documentation> 
 htmlInputElementGetAlt ::
-                       (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                         self -> m result
 htmlInputElementGetAlt self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_alt
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_alt
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"autocomplete\"] = $2;"
         ghcjs_dom_html_input_element_set_autocomplete ::
@@ -356,11 +374,13 @@ foreign import javascript unsafe "$1[\"autocomplete\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocomplete Mozilla HTMLInputElement.autocomplete documentation> 
 htmlInputElementSetAutocomplete ::
-                                (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                                (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                  self -> val -> m ()
 htmlInputElementSetAutocomplete self val
-  = ghcjs_dom_html_input_element_set_autocomplete
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_autocomplete
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"autocomplete\"]"
         ghcjs_dom_html_input_element_get_autocomplete ::
@@ -368,11 +388,13 @@ foreign import javascript unsafe "$1[\"autocomplete\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocomplete Mozilla HTMLInputElement.autocomplete documentation> 
 htmlInputElementGetAutocomplete ::
-                                (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                                (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                  self -> m result
 htmlInputElementGetAutocomplete self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_autocomplete
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_autocomplete
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_input_element_set_autofocus ::
@@ -380,11 +402,12 @@ foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autofocus Mozilla HTMLInputElement.autofocus documentation> 
 htmlInputElementSetAutofocus ::
-                             (IsHTMLInputElement self) => self -> Bool -> IO ()
+                             (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetAutofocus self val
-  = ghcjs_dom_html_input_element_set_autofocus
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_autofocus
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_autofocus ::
@@ -392,10 +415,11 @@ foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autofocus Mozilla HTMLInputElement.autofocus documentation> 
 htmlInputElementGetAutofocus ::
-                             (IsHTMLInputElement self) => self -> IO Bool
+                             (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetAutofocus self
-  = ghcjs_dom_html_input_element_get_autofocus
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_autofocus
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"defaultChecked\"] = $2;"
         ghcjs_dom_html_input_element_set_default_checked ::
@@ -403,11 +427,12 @@ foreign import javascript unsafe "$1[\"defaultChecked\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultChecked Mozilla HTMLInputElement.defaultChecked documentation> 
 htmlInputElementSetDefaultChecked ::
-                                  (IsHTMLInputElement self) => self -> Bool -> IO ()
+                                  (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetDefaultChecked self val
-  = ghcjs_dom_html_input_element_set_default_checked
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_default_checked
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"defaultChecked\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_default_checked ::
@@ -415,10 +440,11 @@ foreign import javascript unsafe "($1[\"defaultChecked\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultChecked Mozilla HTMLInputElement.defaultChecked documentation> 
 htmlInputElementGetDefaultChecked ::
-                                  (IsHTMLInputElement self) => self -> IO Bool
+                                  (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetDefaultChecked self
-  = ghcjs_dom_html_input_element_get_default_checked
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_default_checked
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"checked\"] = $2;"
         ghcjs_dom_html_input_element_set_checked ::
@@ -426,11 +452,12 @@ foreign import javascript unsafe "$1[\"checked\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.checked Mozilla HTMLInputElement.checked documentation> 
 htmlInputElementSetChecked ::
-                           (IsHTMLInputElement self) => self -> Bool -> IO ()
+                           (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetChecked self val
-  = ghcjs_dom_html_input_element_set_checked
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_checked
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"checked\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_checked ::
@@ -438,10 +465,11 @@ foreign import javascript unsafe "($1[\"checked\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.checked Mozilla HTMLInputElement.checked documentation> 
 htmlInputElementGetChecked ::
-                           (IsHTMLInputElement self) => self -> IO Bool
+                           (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetChecked self
-  = ghcjs_dom_html_input_element_get_checked
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_checked
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"dirName\"] = $2;"
         ghcjs_dom_html_input_element_set_dir_name ::
@@ -449,11 +477,13 @@ foreign import javascript unsafe "$1[\"dirName\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.dirName Mozilla HTMLInputElement.dirName documentation> 
 htmlInputElementSetDirName ::
-                           (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                           (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                             self -> val -> m ()
 htmlInputElementSetDirName self val
-  = ghcjs_dom_html_input_element_set_dir_name
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_dir_name
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"dirName\"]"
         ghcjs_dom_html_input_element_get_dir_name ::
@@ -461,11 +491,13 @@ foreign import javascript unsafe "$1[\"dirName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.dirName Mozilla HTMLInputElement.dirName documentation> 
 htmlInputElementGetDirName ::
-                           (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                           (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                             self -> m result
 htmlInputElementGetDirName self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_dir_name
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_dir_name
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_input_element_set_disabled ::
@@ -473,11 +505,12 @@ foreign import javascript unsafe "$1[\"disabled\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.disabled Mozilla HTMLInputElement.disabled documentation> 
 htmlInputElementSetDisabled ::
-                            (IsHTMLInputElement self) => self -> Bool -> IO ()
+                            (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetDisabled self val
-  = ghcjs_dom_html_input_element_set_disabled
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_disabled
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_disabled ::
@@ -485,10 +518,11 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.disabled Mozilla HTMLInputElement.disabled documentation> 
 htmlInputElementGetDisabled ::
-                            (IsHTMLInputElement self) => self -> IO Bool
+                            (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetDisabled self
-  = ghcjs_dom_html_input_element_get_disabled
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_disabled
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_input_element_get_form ::
@@ -496,11 +530,13 @@ foreign import javascript unsafe "$1[\"form\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.form Mozilla HTMLInputElement.form documentation> 
 htmlInputElementGetForm ::
-                        (IsHTMLInputElement self) => self -> IO (Maybe HTMLFormElement)
+                        (MonadIO m, IsHTMLInputElement self) =>
+                          self -> m (Maybe HTMLFormElement)
 htmlInputElementGetForm self
-  = (ghcjs_dom_html_input_element_get_form
-       (unHTMLInputElement (toHTMLInputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_input_element_get_form
+          (unHTMLInputElement (toHTMLInputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"files\"] = $2;"
         ghcjs_dom_html_input_element_set_files ::
@@ -508,12 +544,13 @@ foreign import javascript unsafe "$1[\"files\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.files Mozilla HTMLInputElement.files documentation> 
 htmlInputElementSetFiles ::
-                         (IsHTMLInputElement self, IsFileList val) =>
-                           self -> Maybe val -> IO ()
+                         (MonadIO m, IsHTMLInputElement self, IsFileList val) =>
+                           self -> Maybe val -> m ()
 htmlInputElementSetFiles self val
-  = ghcjs_dom_html_input_element_set_files
-      (unHTMLInputElement (toHTMLInputElement self))
-      (maybe jsNull (unFileList . toFileList) val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_files
+         (unHTMLInputElement (toHTMLInputElement self))
+         (maybe jsNull (unFileList . toFileList) val))
  
 foreign import javascript unsafe "$1[\"files\"]"
         ghcjs_dom_html_input_element_get_files ::
@@ -521,11 +558,12 @@ foreign import javascript unsafe "$1[\"files\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.files Mozilla HTMLInputElement.files documentation> 
 htmlInputElementGetFiles ::
-                         (IsHTMLInputElement self) => self -> IO (Maybe FileList)
+                         (MonadIO m, IsHTMLInputElement self) => self -> m (Maybe FileList)
 htmlInputElementGetFiles self
-  = (ghcjs_dom_html_input_element_get_files
-       (unHTMLInputElement (toHTMLInputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_input_element_get_files
+          (unHTMLInputElement (toHTMLInputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"formAction\"] = $2;"
         ghcjs_dom_html_input_element_set_form_action ::
@@ -533,11 +571,13 @@ foreign import javascript unsafe "$1[\"formAction\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formAction Mozilla HTMLInputElement.formAction documentation> 
 htmlInputElementSetFormAction ::
-                              (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                              (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                self -> val -> m ()
 htmlInputElementSetFormAction self val
-  = ghcjs_dom_html_input_element_set_form_action
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_form_action
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formAction\"]"
         ghcjs_dom_html_input_element_get_form_action ::
@@ -545,11 +585,13 @@ foreign import javascript unsafe "$1[\"formAction\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formAction Mozilla HTMLInputElement.formAction documentation> 
 htmlInputElementGetFormAction ::
-                              (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                self -> m result
 htmlInputElementGetFormAction self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_form_action
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_form_action
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
         ghcjs_dom_html_input_element_set_form_enctype ::
@@ -557,11 +599,13 @@ foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formEnctype Mozilla HTMLInputElement.formEnctype documentation> 
 htmlInputElementSetFormEnctype ::
-                               (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlInputElementSetFormEnctype self val
-  = ghcjs_dom_html_input_element_set_form_enctype
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_form_enctype
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formEnctype\"]"
         ghcjs_dom_html_input_element_get_form_enctype ::
@@ -569,11 +613,13 @@ foreign import javascript unsafe "$1[\"formEnctype\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formEnctype Mozilla HTMLInputElement.formEnctype documentation> 
 htmlInputElementGetFormEnctype ::
-                               (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                 self -> m result
 htmlInputElementGetFormEnctype self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_form_enctype
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_form_enctype
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
         ghcjs_dom_html_input_element_set_form_method ::
@@ -581,11 +627,13 @@ foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formMethod Mozilla HTMLInputElement.formMethod documentation> 
 htmlInputElementSetFormMethod ::
-                              (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                              (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                self -> val -> m ()
 htmlInputElementSetFormMethod self val
-  = ghcjs_dom_html_input_element_set_form_method
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_form_method
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formMethod\"]"
         ghcjs_dom_html_input_element_get_form_method ::
@@ -593,11 +641,13 @@ foreign import javascript unsafe "$1[\"formMethod\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formMethod Mozilla HTMLInputElement.formMethod documentation> 
 htmlInputElementGetFormMethod ::
-                              (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                self -> m result
 htmlInputElementGetFormMethod self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_form_method
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_form_method
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         ghcjs_dom_html_input_element_set_form_no_validate ::
@@ -605,11 +655,12 @@ foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formNoValidate Mozilla HTMLInputElement.formNoValidate documentation> 
 htmlInputElementSetFormNoValidate ::
-                                  (IsHTMLInputElement self) => self -> Bool -> IO ()
+                                  (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetFormNoValidate self val
-  = ghcjs_dom_html_input_element_set_form_no_validate
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_form_no_validate
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_form_no_validate ::
@@ -617,10 +668,11 @@ foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formNoValidate Mozilla HTMLInputElement.formNoValidate documentation> 
 htmlInputElementGetFormNoValidate ::
-                                  (IsHTMLInputElement self) => self -> IO Bool
+                                  (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetFormNoValidate self
-  = ghcjs_dom_html_input_element_get_form_no_validate
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_form_no_validate
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"formTarget\"] = $2;"
         ghcjs_dom_html_input_element_set_form_target ::
@@ -628,11 +680,13 @@ foreign import javascript unsafe "$1[\"formTarget\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formTarget Mozilla HTMLInputElement.formTarget documentation> 
 htmlInputElementSetFormTarget ::
-                              (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                              (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                self -> val -> m ()
 htmlInputElementSetFormTarget self val
-  = ghcjs_dom_html_input_element_set_form_target
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_form_target
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formTarget\"]"
         ghcjs_dom_html_input_element_get_form_target ::
@@ -640,11 +694,13 @@ foreign import javascript unsafe "$1[\"formTarget\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formTarget Mozilla HTMLInputElement.formTarget documentation> 
 htmlInputElementGetFormTarget ::
-                              (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                self -> m result
 htmlInputElementGetFormTarget self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_form_target
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_form_target
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_input_element_set_height ::
@@ -652,11 +708,12 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.height Mozilla HTMLInputElement.height documentation> 
 htmlInputElementSetHeight ::
-                          (IsHTMLInputElement self) => self -> Word -> IO ()
+                          (MonadIO m, IsHTMLInputElement self) => self -> Word -> m ()
 htmlInputElementSetHeight self val
-  = ghcjs_dom_html_input_element_set_height
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_height
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_input_element_get_height ::
@@ -664,10 +721,11 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.height Mozilla HTMLInputElement.height documentation> 
 htmlInputElementGetHeight ::
-                          (IsHTMLInputElement self) => self -> IO Word
+                          (MonadIO m, IsHTMLInputElement self) => self -> m Word
 htmlInputElementGetHeight self
-  = ghcjs_dom_html_input_element_get_height
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_height
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"indeterminate\"] = $2;"
         ghcjs_dom_html_input_element_set_indeterminate ::
@@ -675,11 +733,12 @@ foreign import javascript unsafe "$1[\"indeterminate\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.indeterminate Mozilla HTMLInputElement.indeterminate documentation> 
 htmlInputElementSetIndeterminate ::
-                                 (IsHTMLInputElement self) => self -> Bool -> IO ()
+                                 (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetIndeterminate self val
-  = ghcjs_dom_html_input_element_set_indeterminate
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_indeterminate
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"indeterminate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_indeterminate ::
@@ -687,10 +746,11 @@ foreign import javascript unsafe "($1[\"indeterminate\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.indeterminate Mozilla HTMLInputElement.indeterminate documentation> 
 htmlInputElementGetIndeterminate ::
-                                 (IsHTMLInputElement self) => self -> IO Bool
+                                 (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetIndeterminate self
-  = ghcjs_dom_html_input_element_get_indeterminate
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_indeterminate
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"list\"]"
         ghcjs_dom_html_input_element_get_list ::
@@ -698,11 +758,13 @@ foreign import javascript unsafe "$1[\"list\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.list Mozilla HTMLInputElement.list documentation> 
 htmlInputElementGetList ::
-                        (IsHTMLInputElement self) => self -> IO (Maybe HTMLElement)
+                        (MonadIO m, IsHTMLInputElement self) =>
+                          self -> m (Maybe HTMLElement)
 htmlInputElementGetList self
-  = (ghcjs_dom_html_input_element_get_list
-       (unHTMLInputElement (toHTMLInputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_input_element_get_list
+          (unHTMLInputElement (toHTMLInputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"max\"] = $2;"
         ghcjs_dom_html_input_element_set_max ::
@@ -710,11 +772,13 @@ foreign import javascript unsafe "$1[\"max\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.max Mozilla HTMLInputElement.max documentation> 
 htmlInputElementSetMax ::
-                       (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlInputElementSetMax self val
-  = ghcjs_dom_html_input_element_set_max
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_max
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"max\"]"
         ghcjs_dom_html_input_element_get_max ::
@@ -722,11 +786,13 @@ foreign import javascript unsafe "$1[\"max\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.max Mozilla HTMLInputElement.max documentation> 
 htmlInputElementGetMax ::
-                       (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                         self -> m result
 htmlInputElementGetMax self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_max
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_max
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"maxLength\"] = $2;"
         ghcjs_dom_html_input_element_set_max_length ::
@@ -734,11 +800,12 @@ foreign import javascript unsafe "$1[\"maxLength\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.maxLength Mozilla HTMLInputElement.maxLength documentation> 
 htmlInputElementSetMaxLength ::
-                             (IsHTMLInputElement self) => self -> Int -> IO ()
+                             (MonadIO m, IsHTMLInputElement self) => self -> Int -> m ()
 htmlInputElementSetMaxLength self val
-  = ghcjs_dom_html_input_element_set_max_length
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_max_length
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"maxLength\"]"
         ghcjs_dom_html_input_element_get_max_length ::
@@ -746,10 +813,11 @@ foreign import javascript unsafe "$1[\"maxLength\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.maxLength Mozilla HTMLInputElement.maxLength documentation> 
 htmlInputElementGetMaxLength ::
-                             (IsHTMLInputElement self) => self -> IO Int
+                             (MonadIO m, IsHTMLInputElement self) => self -> m Int
 htmlInputElementGetMaxLength self
-  = ghcjs_dom_html_input_element_get_max_length
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_max_length
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"min\"] = $2;"
         ghcjs_dom_html_input_element_set_min ::
@@ -757,11 +825,13 @@ foreign import javascript unsafe "$1[\"min\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.min Mozilla HTMLInputElement.min documentation> 
 htmlInputElementSetMin ::
-                       (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlInputElementSetMin self val
-  = ghcjs_dom_html_input_element_set_min
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_min
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"min\"]"
         ghcjs_dom_html_input_element_get_min ::
@@ -769,11 +839,13 @@ foreign import javascript unsafe "$1[\"min\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.min Mozilla HTMLInputElement.min documentation> 
 htmlInputElementGetMin ::
-                       (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                         self -> m result
 htmlInputElementGetMin self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_min
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_min
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"multiple\"] = $2;"
         ghcjs_dom_html_input_element_set_multiple ::
@@ -781,11 +853,12 @@ foreign import javascript unsafe "$1[\"multiple\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.multiple Mozilla HTMLInputElement.multiple documentation> 
 htmlInputElementSetMultiple ::
-                            (IsHTMLInputElement self) => self -> Bool -> IO ()
+                            (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetMultiple self val
-  = ghcjs_dom_html_input_element_set_multiple
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_multiple
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_multiple ::
@@ -793,10 +866,11 @@ foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.multiple Mozilla HTMLInputElement.multiple documentation> 
 htmlInputElementGetMultiple ::
-                            (IsHTMLInputElement self) => self -> IO Bool
+                            (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetMultiple self
-  = ghcjs_dom_html_input_element_get_multiple
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_multiple
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_input_element_set_name ::
@@ -804,11 +878,13 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.name Mozilla HTMLInputElement.name documentation> 
 htmlInputElementSetName ::
-                        (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlInputElementSetName self val
-  = ghcjs_dom_html_input_element_set_name
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_name
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_input_element_get_name ::
@@ -816,11 +892,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.name Mozilla HTMLInputElement.name documentation> 
 htmlInputElementGetName ::
-                        (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                          self -> m result
 htmlInputElementGetName self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_name
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_name
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"pattern\"] = $2;"
         ghcjs_dom_html_input_element_set_pattern ::
@@ -828,11 +906,13 @@ foreign import javascript unsafe "$1[\"pattern\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.pattern Mozilla HTMLInputElement.pattern documentation> 
 htmlInputElementSetPattern ::
-                           (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                           (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                             self -> val -> m ()
 htmlInputElementSetPattern self val
-  = ghcjs_dom_html_input_element_set_pattern
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_pattern
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"pattern\"]"
         ghcjs_dom_html_input_element_get_pattern ::
@@ -840,11 +920,13 @@ foreign import javascript unsafe "$1[\"pattern\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.pattern Mozilla HTMLInputElement.pattern documentation> 
 htmlInputElementGetPattern ::
-                           (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                           (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                             self -> m result
 htmlInputElementGetPattern self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_pattern
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_pattern
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"placeholder\"] = $2;"
         ghcjs_dom_html_input_element_set_placeholder ::
@@ -852,11 +934,13 @@ foreign import javascript unsafe "$1[\"placeholder\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.placeholder Mozilla HTMLInputElement.placeholder documentation> 
 htmlInputElementSetPlaceholder ::
-                               (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlInputElementSetPlaceholder self val
-  = ghcjs_dom_html_input_element_set_placeholder
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_placeholder
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"placeholder\"]"
         ghcjs_dom_html_input_element_get_placeholder ::
@@ -864,11 +948,13 @@ foreign import javascript unsafe "$1[\"placeholder\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.placeholder Mozilla HTMLInputElement.placeholder documentation> 
 htmlInputElementGetPlaceholder ::
-                               (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                 self -> m result
 htmlInputElementGetPlaceholder self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_placeholder
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_placeholder
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"readOnly\"] = $2;"
         ghcjs_dom_html_input_element_set_read_only ::
@@ -876,11 +962,12 @@ foreign import javascript unsafe "$1[\"readOnly\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.readOnly Mozilla HTMLInputElement.readOnly documentation> 
 htmlInputElementSetReadOnly ::
-                            (IsHTMLInputElement self) => self -> Bool -> IO ()
+                            (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetReadOnly self val
-  = ghcjs_dom_html_input_element_set_read_only
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_read_only
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_read_only ::
@@ -888,10 +975,11 @@ foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.readOnly Mozilla HTMLInputElement.readOnly documentation> 
 htmlInputElementGetReadOnly ::
-                            (IsHTMLInputElement self) => self -> IO Bool
+                            (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetReadOnly self
-  = ghcjs_dom_html_input_element_get_read_only
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_read_only
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"required\"] = $2;"
         ghcjs_dom_html_input_element_set_required ::
@@ -899,11 +987,12 @@ foreign import javascript unsafe "$1[\"required\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.required Mozilla HTMLInputElement.required documentation> 
 htmlInputElementSetRequired ::
-                            (IsHTMLInputElement self) => self -> Bool -> IO ()
+                            (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetRequired self val
-  = ghcjs_dom_html_input_element_set_required
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_required
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_required ::
@@ -911,10 +1000,11 @@ foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.required Mozilla HTMLInputElement.required documentation> 
 htmlInputElementGetRequired ::
-                            (IsHTMLInputElement self) => self -> IO Bool
+                            (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetRequired self
-  = ghcjs_dom_html_input_element_get_required
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_required
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_html_input_element_set_size ::
@@ -922,11 +1012,12 @@ foreign import javascript unsafe "$1[\"size\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.size Mozilla HTMLInputElement.size documentation> 
 htmlInputElementSetSize ::
-                        (IsHTMLInputElement self) => self -> Word -> IO ()
+                        (MonadIO m, IsHTMLInputElement self) => self -> Word -> m ()
 htmlInputElementSetSize self val
-  = ghcjs_dom_html_input_element_set_size
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_size
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_html_input_element_get_size ::
@@ -934,10 +1025,11 @@ foreign import javascript unsafe "$1[\"size\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.size Mozilla HTMLInputElement.size documentation> 
 htmlInputElementGetSize ::
-                        (IsHTMLInputElement self) => self -> IO Word
+                        (MonadIO m, IsHTMLInputElement self) => self -> m Word
 htmlInputElementGetSize self
-  = ghcjs_dom_html_input_element_get_size
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_size
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_input_element_set_src ::
@@ -945,11 +1037,13 @@ foreign import javascript unsafe "$1[\"src\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.src Mozilla HTMLInputElement.src documentation> 
 htmlInputElementSetSrc ::
-                       (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlInputElementSetSrc self val
-  = ghcjs_dom_html_input_element_set_src
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_src
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_input_element_get_src ::
@@ -957,11 +1051,13 @@ foreign import javascript unsafe "$1[\"src\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.src Mozilla HTMLInputElement.src documentation> 
 htmlInputElementGetSrc ::
-                       (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                         self -> m result
 htmlInputElementGetSrc self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_src
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_src
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"step\"] = $2;"
         ghcjs_dom_html_input_element_set_step ::
@@ -969,11 +1065,13 @@ foreign import javascript unsafe "$1[\"step\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.step Mozilla HTMLInputElement.step documentation> 
 htmlInputElementSetStep ::
-                        (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlInputElementSetStep self val
-  = ghcjs_dom_html_input_element_set_step
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_step
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"step\"]"
         ghcjs_dom_html_input_element_get_step ::
@@ -981,11 +1079,13 @@ foreign import javascript unsafe "$1[\"step\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.step Mozilla HTMLInputElement.step documentation> 
 htmlInputElementGetStep ::
-                        (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                          self -> m result
 htmlInputElementGetStep self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_step
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_step
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
         ghcjs_dom_html_input_element_set_default_value ::
@@ -993,11 +1093,13 @@ foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultValue Mozilla HTMLInputElement.defaultValue documentation> 
 htmlInputElementSetDefaultValue ::
-                                (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                                (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                  self -> val -> m ()
 htmlInputElementSetDefaultValue self val
-  = ghcjs_dom_html_input_element_set_default_value
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_default_value
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"defaultValue\"]"
         ghcjs_dom_html_input_element_get_default_value ::
@@ -1005,11 +1107,13 @@ foreign import javascript unsafe "$1[\"defaultValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultValue Mozilla HTMLInputElement.defaultValue documentation> 
 htmlInputElementGetDefaultValue ::
-                                (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                                (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                  self -> m result
 htmlInputElementGetDefaultValue self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_default_value
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_default_value
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_input_element_set_value ::
@@ -1017,11 +1121,13 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
 htmlInputElementSetValue ::
-                         (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlInputElementSetValue self val
-  = ghcjs_dom_html_input_element_set_value
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_value
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_input_element_get_value ::
@@ -1029,11 +1135,13 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
 htmlInputElementGetValue ::
-                         (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                           self -> m result
 htmlInputElementGetValue self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_value
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_value
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"valueAsDate\"] = $2;"
         ghcjs_dom_html_input_element_set_value_as_date ::
@@ -1041,11 +1149,13 @@ foreign import javascript unsafe "$1[\"valueAsDate\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsDate Mozilla HTMLInputElement.valueAsDate documentation> 
 htmlInputElementSetValueAsDate ::
-                               (IsHTMLInputElement self, IsDate val) => self -> Maybe val -> IO ()
+                               (MonadIO m, IsHTMLInputElement self, IsDate val) =>
+                                 self -> Maybe val -> m ()
 htmlInputElementSetValueAsDate self val
-  = ghcjs_dom_html_input_element_set_value_as_date
-      (unHTMLInputElement (toHTMLInputElement self))
-      (maybe jsNull (unDate . toDate) val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_value_as_date
+         (unHTMLInputElement (toHTMLInputElement self))
+         (maybe jsNull (unDate . toDate) val))
  
 foreign import javascript unsafe "$1[\"valueAsDate\"]"
         ghcjs_dom_html_input_element_get_value_as_date ::
@@ -1053,11 +1163,12 @@ foreign import javascript unsafe "$1[\"valueAsDate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsDate Mozilla HTMLInputElement.valueAsDate documentation> 
 htmlInputElementGetValueAsDate ::
-                               (IsHTMLInputElement self) => self -> IO (Maybe Date)
+                               (MonadIO m, IsHTMLInputElement self) => self -> m (Maybe Date)
 htmlInputElementGetValueAsDate self
-  = (ghcjs_dom_html_input_element_get_value_as_date
-       (unHTMLInputElement (toHTMLInputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_input_element_get_value_as_date
+          (unHTMLInputElement (toHTMLInputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"valueAsNumber\"] = $2;"
         ghcjs_dom_html_input_element_set_value_as_number ::
@@ -1065,11 +1176,12 @@ foreign import javascript unsafe "$1[\"valueAsNumber\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsNumber Mozilla HTMLInputElement.valueAsNumber documentation> 
 htmlInputElementSetValueAsNumber ::
-                                 (IsHTMLInputElement self) => self -> Double -> IO ()
+                                 (MonadIO m, IsHTMLInputElement self) => self -> Double -> m ()
 htmlInputElementSetValueAsNumber self val
-  = ghcjs_dom_html_input_element_set_value_as_number
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_value_as_number
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"valueAsNumber\"]"
         ghcjs_dom_html_input_element_get_value_as_number ::
@@ -1077,10 +1189,11 @@ foreign import javascript unsafe "$1[\"valueAsNumber\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsNumber Mozilla HTMLInputElement.valueAsNumber documentation> 
 htmlInputElementGetValueAsNumber ::
-                                 (IsHTMLInputElement self) => self -> IO Double
+                                 (MonadIO m, IsHTMLInputElement self) => self -> m Double
 htmlInputElementGetValueAsNumber self
-  = ghcjs_dom_html_input_element_get_value_as_number
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_value_as_number
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_input_element_set_width ::
@@ -1088,11 +1201,12 @@ foreign import javascript unsafe "$1[\"width\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.width Mozilla HTMLInputElement.width documentation> 
 htmlInputElementSetWidth ::
-                         (IsHTMLInputElement self) => self -> Word -> IO ()
+                         (MonadIO m, IsHTMLInputElement self) => self -> Word -> m ()
 htmlInputElementSetWidth self val
-  = ghcjs_dom_html_input_element_set_width
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_width
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_input_element_get_width ::
@@ -1100,10 +1214,11 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.width Mozilla HTMLInputElement.width documentation> 
 htmlInputElementGetWidth ::
-                         (IsHTMLInputElement self) => self -> IO Word
+                         (MonadIO m, IsHTMLInputElement self) => self -> m Word
 htmlInputElementGetWidth self
-  = ghcjs_dom_html_input_element_get_width
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_width
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_will_validate ::
@@ -1111,10 +1226,11 @@ foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.willValidate Mozilla HTMLInputElement.willValidate documentation> 
 htmlInputElementGetWillValidate ::
-                                (IsHTMLInputElement self) => self -> IO Bool
+                                (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetWillValidate self
-  = ghcjs_dom_html_input_element_get_will_validate
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_will_validate
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_input_element_get_validity ::
@@ -1122,11 +1238,13 @@ foreign import javascript unsafe "$1[\"validity\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.validity Mozilla HTMLInputElement.validity documentation> 
 htmlInputElementGetValidity ::
-                            (IsHTMLInputElement self) => self -> IO (Maybe ValidityState)
+                            (MonadIO m, IsHTMLInputElement self) =>
+                              self -> m (Maybe ValidityState)
 htmlInputElementGetValidity self
-  = (ghcjs_dom_html_input_element_get_validity
-       (unHTMLInputElement (toHTMLInputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_input_element_get_validity
+          (unHTMLInputElement (toHTMLInputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_input_element_get_validation_message ::
@@ -1134,12 +1252,13 @@ foreign import javascript unsafe "$1[\"validationMessage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.validationMessage Mozilla HTMLInputElement.validationMessage documentation> 
 htmlInputElementGetValidationMessage ::
-                                     (IsHTMLInputElement self, FromJSString result) =>
-                                       self -> IO result
+                                     (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                       self -> m result
 htmlInputElementGetValidationMessage self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_validation_message
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_validation_message
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_input_element_get_labels ::
@@ -1147,11 +1266,12 @@ foreign import javascript unsafe "$1[\"labels\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.labels Mozilla HTMLInputElement.labels documentation> 
 htmlInputElementGetLabels ::
-                          (IsHTMLInputElement self) => self -> IO (Maybe NodeList)
+                          (MonadIO m, IsHTMLInputElement self) => self -> m (Maybe NodeList)
 htmlInputElementGetLabels self
-  = (ghcjs_dom_html_input_element_get_labels
-       (unHTMLInputElement (toHTMLInputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_input_element_get_labels
+          (unHTMLInputElement (toHTMLInputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"selectionStart\"] = $2;"
         ghcjs_dom_html_input_element_set_selection_start ::
@@ -1159,11 +1279,12 @@ foreign import javascript unsafe "$1[\"selectionStart\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionStart Mozilla HTMLInputElement.selectionStart documentation> 
 htmlInputElementSetSelectionStart ::
-                                  (IsHTMLInputElement self) => self -> Int -> IO ()
+                                  (MonadIO m, IsHTMLInputElement self) => self -> Int -> m ()
 htmlInputElementSetSelectionStart self val
-  = ghcjs_dom_html_input_element_set_selection_start
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_selection_start
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"selectionStart\"]"
         ghcjs_dom_html_input_element_get_selection_start ::
@@ -1171,10 +1292,11 @@ foreign import javascript unsafe "$1[\"selectionStart\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionStart Mozilla HTMLInputElement.selectionStart documentation> 
 htmlInputElementGetSelectionStart ::
-                                  (IsHTMLInputElement self) => self -> IO Int
+                                  (MonadIO m, IsHTMLInputElement self) => self -> m Int
 htmlInputElementGetSelectionStart self
-  = ghcjs_dom_html_input_element_get_selection_start
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_selection_start
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"selectionEnd\"] = $2;"
         ghcjs_dom_html_input_element_set_selection_end ::
@@ -1182,11 +1304,12 @@ foreign import javascript unsafe "$1[\"selectionEnd\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionEnd Mozilla HTMLInputElement.selectionEnd documentation> 
 htmlInputElementSetSelectionEnd ::
-                                (IsHTMLInputElement self) => self -> Int -> IO ()
+                                (MonadIO m, IsHTMLInputElement self) => self -> Int -> m ()
 htmlInputElementSetSelectionEnd self val
-  = ghcjs_dom_html_input_element_set_selection_end
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_selection_end
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"selectionEnd\"]"
         ghcjs_dom_html_input_element_get_selection_end ::
@@ -1194,10 +1317,11 @@ foreign import javascript unsafe "$1[\"selectionEnd\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionEnd Mozilla HTMLInputElement.selectionEnd documentation> 
 htmlInputElementGetSelectionEnd ::
-                                (IsHTMLInputElement self) => self -> IO Int
+                                (MonadIO m, IsHTMLInputElement self) => self -> m Int
 htmlInputElementGetSelectionEnd self
-  = ghcjs_dom_html_input_element_get_selection_end
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_selection_end
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"selectionDirection\"] = $2;"
         ghcjs_dom_html_input_element_set_selection_direction ::
@@ -1205,12 +1329,13 @@ foreign import javascript unsafe "$1[\"selectionDirection\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionDirection Mozilla HTMLInputElement.selectionDirection documentation> 
 htmlInputElementSetSelectionDirection ::
-                                      (IsHTMLInputElement self, ToJSString val) =>
-                                        self -> val -> IO ()
+                                      (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                        self -> val -> m ()
 htmlInputElementSetSelectionDirection self val
-  = ghcjs_dom_html_input_element_set_selection_direction
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_selection_direction
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"selectionDirection\"]"
         ghcjs_dom_html_input_element_get_selection_direction ::
@@ -1218,12 +1343,13 @@ foreign import javascript unsafe "$1[\"selectionDirection\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionDirection Mozilla HTMLInputElement.selectionDirection documentation> 
 htmlInputElementGetSelectionDirection ::
-                                      (IsHTMLInputElement self, FromJSString result) =>
-                                        self -> IO result
+                                      (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                        self -> m result
 htmlInputElementGetSelectionDirection self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_selection_direction
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_selection_direction
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_input_element_set_align ::
@@ -1231,11 +1357,13 @@ foreign import javascript unsafe "$1[\"align\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.align Mozilla HTMLInputElement.align documentation> 
 htmlInputElementSetAlign ::
-                         (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlInputElementSetAlign self val
-  = ghcjs_dom_html_input_element_set_align
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_align
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_input_element_get_align ::
@@ -1243,11 +1371,13 @@ foreign import javascript unsafe "$1[\"align\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.align Mozilla HTMLInputElement.align documentation> 
 htmlInputElementGetAlign ::
-                         (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                           self -> m result
 htmlInputElementGetAlign self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_align
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_align
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
         ghcjs_dom_html_input_element_set_use_map ::
@@ -1255,11 +1385,13 @@ foreign import javascript unsafe "$1[\"useMap\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.useMap Mozilla HTMLInputElement.useMap documentation> 
 htmlInputElementSetUseMap ::
-                          (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlInputElementSetUseMap self val
-  = ghcjs_dom_html_input_element_set_use_map
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_use_map
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"useMap\"]"
         ghcjs_dom_html_input_element_get_use_map ::
@@ -1267,11 +1399,13 @@ foreign import javascript unsafe "$1[\"useMap\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.useMap Mozilla HTMLInputElement.useMap documentation> 
 htmlInputElementGetUseMap ::
-                          (IsHTMLInputElement self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                            self -> m result
 htmlInputElementGetUseMap self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_use_map
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_use_map
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"incremental\"] = $2;"
         ghcjs_dom_html_input_element_set_incremental ::
@@ -1279,11 +1413,12 @@ foreign import javascript unsafe "$1[\"incremental\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.incremental Mozilla HTMLInputElement.incremental documentation> 
 htmlInputElementSetIncremental ::
-                               (IsHTMLInputElement self) => self -> Bool -> IO ()
+                               (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetIncremental self val
-  = ghcjs_dom_html_input_element_set_incremental
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_incremental
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"incremental\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_incremental ::
@@ -1291,10 +1426,11 @@ foreign import javascript unsafe "($1[\"incremental\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.incremental Mozilla HTMLInputElement.incremental documentation> 
 htmlInputElementGetIncremental ::
-                               (IsHTMLInputElement self) => self -> IO Bool
+                               (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetIncremental self
-  = ghcjs_dom_html_input_element_get_incremental
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_incremental
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
         ghcjs_dom_html_input_element_set_autocorrect ::
@@ -1302,11 +1438,12 @@ foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocorrect Mozilla HTMLInputElement.autocorrect documentation> 
 htmlInputElementSetAutocorrect ::
-                               (IsHTMLInputElement self) => self -> Bool -> IO ()
+                               (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetAutocorrect self val
-  = ghcjs_dom_html_input_element_set_autocorrect
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_autocorrect
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_autocorrect ::
@@ -1314,10 +1451,11 @@ foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocorrect Mozilla HTMLInputElement.autocorrect documentation> 
 htmlInputElementGetAutocorrect ::
-                               (IsHTMLInputElement self) => self -> IO Bool
+                               (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetAutocorrect self
-  = ghcjs_dom_html_input_element_get_autocorrect
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_autocorrect
+         (unHTMLInputElement (toHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
         ghcjs_dom_html_input_element_set_autocapitalize ::
@@ -1325,11 +1463,13 @@ foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocapitalize Mozilla HTMLInputElement.autocapitalize documentation> 
 htmlInputElementSetAutocapitalize ::
-                                  (IsHTMLInputElement self, ToJSString val) => self -> val -> IO ()
+                                  (MonadIO m, IsHTMLInputElement self, ToJSString val) =>
+                                    self -> val -> m ()
 htmlInputElementSetAutocapitalize self val
-  = ghcjs_dom_html_input_element_set_autocapitalize
-      (unHTMLInputElement (toHTMLInputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_input_element_set_autocapitalize
+         (unHTMLInputElement (toHTMLInputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"]"
         ghcjs_dom_html_input_element_get_autocapitalize ::
@@ -1337,12 +1477,13 @@ foreign import javascript unsafe "$1[\"autocapitalize\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocapitalize Mozilla HTMLInputElement.autocapitalize documentation> 
 htmlInputElementGetAutocapitalize ::
-                                  (IsHTMLInputElement self, FromJSString result) =>
-                                    self -> IO result
+                                  (MonadIO m, IsHTMLInputElement self, FromJSString result) =>
+                                    self -> m result
 htmlInputElementGetAutocapitalize self
-  = fromJSString <$>
-      (ghcjs_dom_html_input_element_get_autocapitalize
-         (unHTMLInputElement (toHTMLInputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_input_element_get_autocapitalize
+            (unHTMLInputElement (toHTMLInputElement self))))
  
 foreign import javascript unsafe "$1[\"capture\"] = $2;"
         ghcjs_dom_html_input_element_set_capture ::
@@ -1350,11 +1491,12 @@ foreign import javascript unsafe "$1[\"capture\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.capture Mozilla HTMLInputElement.capture documentation> 
 htmlInputElementSetCapture ::
-                           (IsHTMLInputElement self) => self -> Bool -> IO ()
+                           (MonadIO m, IsHTMLInputElement self) => self -> Bool -> m ()
 htmlInputElementSetCapture self val
-  = ghcjs_dom_html_input_element_set_capture
-      (unHTMLInputElement (toHTMLInputElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_input_element_set_capture
+         (unHTMLInputElement (toHTMLInputElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"capture\"] ? 1 : 0)"
         ghcjs_dom_html_input_element_get_capture ::
@@ -1362,10 +1504,11 @@ foreign import javascript unsafe "($1[\"capture\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.capture Mozilla HTMLInputElement.capture documentation> 
 htmlInputElementGetCapture ::
-                           (IsHTMLInputElement self) => self -> IO Bool
+                           (MonadIO m, IsHTMLInputElement self) => self -> m Bool
 htmlInputElementGetCapture self
-  = ghcjs_dom_html_input_element_get_capture
-      (unHTMLInputElement (toHTMLInputElement self))
+  = liftIO
+      (ghcjs_dom_html_input_element_get_capture
+         (unHTMLInputElement (toHTMLInputElement self)))
 #else
 module GHCJS.DOM.HTMLInputElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLInputElement

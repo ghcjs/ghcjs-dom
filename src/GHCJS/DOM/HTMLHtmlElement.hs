@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,11 +30,13 @@ foreign import javascript unsafe "$1[\"version\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.version Mozilla HTMLHtmlElement.version documentation> 
 htmlHtmlElementSetVersion ::
-                          (IsHTMLHtmlElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLHtmlElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlHtmlElementSetVersion self val
-  = ghcjs_dom_html_html_element_set_version
-      (unHTMLHtmlElement (toHTMLHtmlElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_html_element_set_version
+         (unHTMLHtmlElement (toHTMLHtmlElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"version\"]"
         ghcjs_dom_html_html_element_get_version ::
@@ -41,11 +44,13 @@ foreign import javascript unsafe "$1[\"version\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.version Mozilla HTMLHtmlElement.version documentation> 
 htmlHtmlElementGetVersion ::
-                          (IsHTMLHtmlElement self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsHTMLHtmlElement self, FromJSString result) =>
+                            self -> m result
 htmlHtmlElementGetVersion self
-  = fromJSString <$>
-      (ghcjs_dom_html_html_element_get_version
-         (unHTMLHtmlElement (toHTMLHtmlElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_html_element_get_version
+            (unHTMLHtmlElement (toHTMLHtmlElement self))))
  
 foreign import javascript unsafe "$1[\"manifest\"] = $2;"
         ghcjs_dom_html_html_element_set_manifest ::
@@ -53,11 +58,13 @@ foreign import javascript unsafe "$1[\"manifest\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.manifest Mozilla HTMLHtmlElement.manifest documentation> 
 htmlHtmlElementSetManifest ::
-                           (IsHTMLHtmlElement self, ToJSString val) => self -> val -> IO ()
+                           (MonadIO m, IsHTMLHtmlElement self, ToJSString val) =>
+                             self -> val -> m ()
 htmlHtmlElementSetManifest self val
-  = ghcjs_dom_html_html_element_set_manifest
-      (unHTMLHtmlElement (toHTMLHtmlElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_html_element_set_manifest
+         (unHTMLHtmlElement (toHTMLHtmlElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"manifest\"]"
         ghcjs_dom_html_html_element_get_manifest ::
@@ -65,11 +72,13 @@ foreign import javascript unsafe "$1[\"manifest\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.manifest Mozilla HTMLHtmlElement.manifest documentation> 
 htmlHtmlElementGetManifest ::
-                           (IsHTMLHtmlElement self, FromJSString result) => self -> IO result
+                           (MonadIO m, IsHTMLHtmlElement self, FromJSString result) =>
+                             self -> m result
 htmlHtmlElementGetManifest self
-  = fromJSString <$>
-      (ghcjs_dom_html_html_element_get_manifest
-         (unHTMLHtmlElement (toHTMLHtmlElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_html_element_get_manifest
+            (unHTMLHtmlElement (toHTMLHtmlElement self))))
 #else
 module GHCJS.DOM.HTMLHtmlElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLHtmlElement

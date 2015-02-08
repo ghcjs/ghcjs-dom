@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -23,47 +24,55 @@ import GHCJS.DOM.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 mediaStreamTrackSourcesCallbackNewSync ::
+                                       (MonadIO m) =>
                                          ([Maybe SourceInfo] -> IO Bool) ->
-                                           IO MediaStreamTrackSourcesCallback
+                                           m MediaStreamTrackSourcesCallback
 mediaStreamTrackSourcesCallbackNewSync callback
-  = MediaStreamTrackSourcesCallback . castRef <$>
-      syncCallback1 AlwaysRetain True
-        (\ sources ->
-           fromJSRefUnchecked sources >>= \ sources' -> callback sources')
+  = liftIO
+      (MediaStreamTrackSourcesCallback . castRef <$>
+         syncCallback1 AlwaysRetain True
+           (\ sources ->
+              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 mediaStreamTrackSourcesCallbackNewSync' ::
+                                        (MonadIO m) =>
                                           ForeignRetention ->
                                             Bool ->
                                               ([Maybe SourceInfo] -> IO Bool) ->
-                                                IO MediaStreamTrackSourcesCallback
+                                                m MediaStreamTrackSourcesCallback
 mediaStreamTrackSourcesCallbackNewSync' retention continueAsync
   callback
-  = MediaStreamTrackSourcesCallback . castRef <$>
-      syncCallback1 retention continueAsync
-        (\ sources ->
-           fromJSRefUnchecked sources >>= \ sources' -> callback sources')
+  = liftIO
+      (MediaStreamTrackSourcesCallback . castRef <$>
+         syncCallback1 retention continueAsync
+           (\ sources ->
+              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 mediaStreamTrackSourcesCallbackNewAsync ::
+                                        (MonadIO m) =>
                                           ([Maybe SourceInfo] -> IO Bool) ->
-                                            IO MediaStreamTrackSourcesCallback
+                                            m MediaStreamTrackSourcesCallback
 mediaStreamTrackSourcesCallbackNewAsync callback
-  = MediaStreamTrackSourcesCallback . castRef <$>
-      asyncCallback1 AlwaysRetain
-        (\ sources ->
-           fromJSRefUnchecked sources >>= \ sources' -> callback sources')
+  = liftIO
+      (MediaStreamTrackSourcesCallback . castRef <$>
+         asyncCallback1 AlwaysRetain
+           (\ sources ->
+              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 mediaStreamTrackSourcesCallbackNewAsync' ::
+                                         (MonadIO m) =>
                                            ForeignRetention ->
                                              ([Maybe SourceInfo] -> IO Bool) ->
-                                               IO MediaStreamTrackSourcesCallback
+                                               m MediaStreamTrackSourcesCallback
 mediaStreamTrackSourcesCallbackNewAsync' retention callback
-  = MediaStreamTrackSourcesCallback . castRef <$>
-      asyncCallback1 retention
-        (\ sources ->
-           fromJSRefUnchecked sources >>= \ sources' -> callback sources')
+  = liftIO
+      (MediaStreamTrackSourcesCallback . castRef <$>
+         asyncCallback1 retention
+           (\ sources ->
+              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
 #else
 module GHCJS.DOM.MediaStreamTrackSourcesCallback (
   ) where

@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,12 +37,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.in1 Mozilla SVGFEColorMatrixElement.in1 documentation> 
 svgfeColorMatrixElementGetIn1 ::
-                              (IsSVGFEColorMatrixElement self) =>
-                                self -> IO (Maybe SVGAnimatedString)
+                              (MonadIO m, IsSVGFEColorMatrixElement self) =>
+                                self -> m (Maybe SVGAnimatedString)
 svgfeColorMatrixElementGetIn1 self
-  = (ghcjs_dom_svgfe_color_matrix_element_get_in1
-       (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_color_matrix_element_get_in1
+          (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"values\"]"
         ghcjs_dom_svgfe_color_matrix_element_get_values ::
@@ -49,12 +51,13 @@ foreign import javascript unsafe "$1[\"values\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.values Mozilla SVGFEColorMatrixElement.values documentation> 
 svgfeColorMatrixElementGetValues ::
-                                 (IsSVGFEColorMatrixElement self) =>
-                                   self -> IO (Maybe SVGAnimatedNumberList)
+                                 (MonadIO m, IsSVGFEColorMatrixElement self) =>
+                                   self -> m (Maybe SVGAnimatedNumberList)
 svgfeColorMatrixElementGetValues self
-  = (ghcjs_dom_svgfe_color_matrix_element_get_values
-       (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_color_matrix_element_get_values
+          (unSVGFEColorMatrixElement (toSVGFEColorMatrixElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEColorMatrixElement (
   ) where

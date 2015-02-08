@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,12 +26,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeNodeElement.in1 Mozilla SVGFEMergeNodeElement.in1 documentation> 
 svgfeMergeNodeElementGetIn1 ::
-                            (IsSVGFEMergeNodeElement self) =>
-                              self -> IO (Maybe SVGAnimatedString)
+                            (MonadIO m, IsSVGFEMergeNodeElement self) =>
+                              self -> m (Maybe SVGAnimatedString)
 svgfeMergeNodeElementGetIn1 self
-  = (ghcjs_dom_svgfe_merge_node_element_get_in1
-       (unSVGFEMergeNodeElement (toSVGFEMergeNodeElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_merge_node_element_get_in1
+          (unSVGFEMergeNodeElement (toSVGFEMergeNodeElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEMergeNodeElement (
   ) where

@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"src\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.src Mozilla HTMLSourceElement.src documentation> 
 htmlSourceElementSetSrc ::
-                        (IsHTMLSourceElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLSourceElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlSourceElementSetSrc self val
-  = ghcjs_dom_html_source_element_set_src
-      (unHTMLSourceElement (toHTMLSourceElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_source_element_set_src
+         (unHTMLSourceElement (toHTMLSourceElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_source_element_get_src ::
@@ -39,12 +42,13 @@ foreign import javascript unsafe "$1[\"src\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.src Mozilla HTMLSourceElement.src documentation> 
 htmlSourceElementGetSrc ::
-                        (IsHTMLSourceElement self, FromJSString result) =>
-                          self -> IO result
+                        (MonadIO m, IsHTMLSourceElement self, FromJSString result) =>
+                          self -> m result
 htmlSourceElementGetSrc self
-  = fromJSString <$>
-      (ghcjs_dom_html_source_element_get_src
-         (unHTMLSourceElement (toHTMLSourceElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_source_element_get_src
+            (unHTMLSourceElement (toHTMLSourceElement self))))
  
 foreign import javascript unsafe "$1[\"media\"] = $2;"
         ghcjs_dom_html_source_element_set_media ::
@@ -52,11 +56,13 @@ foreign import javascript unsafe "$1[\"media\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.media Mozilla HTMLSourceElement.media documentation> 
 htmlSourceElementSetMedia ::
-                          (IsHTMLSourceElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLSourceElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlSourceElementSetMedia self val
-  = ghcjs_dom_html_source_element_set_media
-      (unHTMLSourceElement (toHTMLSourceElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_source_element_set_media
+         (unHTMLSourceElement (toHTMLSourceElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"media\"]"
         ghcjs_dom_html_source_element_get_media ::
@@ -64,12 +70,13 @@ foreign import javascript unsafe "$1[\"media\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.media Mozilla HTMLSourceElement.media documentation> 
 htmlSourceElementGetMedia ::
-                          (IsHTMLSourceElement self, FromJSString result) =>
-                            self -> IO result
+                          (MonadIO m, IsHTMLSourceElement self, FromJSString result) =>
+                            self -> m result
 htmlSourceElementGetMedia self
-  = fromJSString <$>
-      (ghcjs_dom_html_source_element_get_media
-         (unHTMLSourceElement (toHTMLSourceElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_source_element_get_media
+            (unHTMLSourceElement (toHTMLSourceElement self))))
 #else
 module GHCJS.DOM.HTMLSourceElement (
   ) where

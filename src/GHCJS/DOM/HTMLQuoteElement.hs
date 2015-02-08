@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"cite\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
 htmlQuoteElementSetCite ::
-                        (IsHTMLQuoteElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLQuoteElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlQuoteElementSetCite self val
-  = ghcjs_dom_html_quote_element_set_cite
-      (unHTMLQuoteElement (toHTMLQuoteElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_quote_element_set_cite
+         (unHTMLQuoteElement (toHTMLQuoteElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"cite\"]"
         ghcjs_dom_html_quote_element_get_cite ::
@@ -37,11 +40,13 @@ foreign import javascript unsafe "$1[\"cite\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
 htmlQuoteElementGetCite ::
-                        (IsHTMLQuoteElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLQuoteElement self, FromJSString result) =>
+                          self -> m result
 htmlQuoteElementGetCite self
-  = fromJSString <$>
-      (ghcjs_dom_html_quote_element_get_cite
-         (unHTMLQuoteElement (toHTMLQuoteElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_quote_element_get_cite
+            (unHTMLQuoteElement (toHTMLQuoteElement self))))
 #else
 module GHCJS.DOM.HTMLQuoteElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLQuoteElement

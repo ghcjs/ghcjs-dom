@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,11 +25,12 @@ foreign import javascript unsafe "$1[\"delayTime\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DelayNode.delayTime Mozilla DelayNode.delayTime documentation> 
 delayNodeGetDelayTime ::
-                      (IsDelayNode self) => self -> IO (Maybe AudioParam)
+                      (MonadIO m, IsDelayNode self) => self -> m (Maybe AudioParam)
 delayNodeGetDelayTime self
-  = (ghcjs_dom_delay_node_get_delay_time
-       (unDelayNode (toDelayNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_delay_node_get_delay_time
+          (unDelayNode (toDelayNode self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.DelayNode (
   ) where

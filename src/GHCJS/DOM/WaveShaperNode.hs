@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,12 +29,13 @@ foreign import javascript unsafe "$1[\"curve\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.curve Mozilla WaveShaperNode.curve documentation> 
 waveShaperNodeSetCurve ::
-                       (IsWaveShaperNode self, IsFloat32Array val) =>
-                         self -> Maybe val -> IO ()
+                       (MonadIO m, IsWaveShaperNode self, IsFloat32Array val) =>
+                         self -> Maybe val -> m ()
 waveShaperNodeSetCurve self val
-  = ghcjs_dom_wave_shaper_node_set_curve
-      (unWaveShaperNode (toWaveShaperNode self))
-      (maybe jsNull (unFloat32Array . toFloat32Array) val)
+  = liftIO
+      (ghcjs_dom_wave_shaper_node_set_curve
+         (unWaveShaperNode (toWaveShaperNode self))
+         (maybe jsNull (unFloat32Array . toFloat32Array) val))
  
 foreign import javascript unsafe "$1[\"curve\"]"
         ghcjs_dom_wave_shaper_node_get_curve ::
@@ -41,11 +43,13 @@ foreign import javascript unsafe "$1[\"curve\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.curve Mozilla WaveShaperNode.curve documentation> 
 waveShaperNodeGetCurve ::
-                       (IsWaveShaperNode self) => self -> IO (Maybe Float32Array)
+                       (MonadIO m, IsWaveShaperNode self) =>
+                         self -> m (Maybe Float32Array)
 waveShaperNodeGetCurve self
-  = (ghcjs_dom_wave_shaper_node_get_curve
-       (unWaveShaperNode (toWaveShaperNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_wave_shaper_node_get_curve
+          (unWaveShaperNode (toWaveShaperNode self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"oversample\"] = $2;"
         ghcjs_dom_wave_shaper_node_set_oversample ::
@@ -53,11 +57,13 @@ foreign import javascript unsafe "$1[\"oversample\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.oversample Mozilla WaveShaperNode.oversample documentation> 
 waveShaperNodeSetOversample ::
-                            (IsWaveShaperNode self) => self -> OverSampleType -> IO ()
+                            (MonadIO m, IsWaveShaperNode self) =>
+                              self -> OverSampleType -> m ()
 waveShaperNodeSetOversample self val
-  = ghcjs_dom_wave_shaper_node_set_oversample
-      (unWaveShaperNode (toWaveShaperNode self))
-      (ptoJSRef val)
+  = liftIO
+      (ghcjs_dom_wave_shaper_node_set_oversample
+         (unWaveShaperNode (toWaveShaperNode self))
+         (ptoJSRef val))
  
 foreign import javascript unsafe "$1[\"oversample\"]"
         ghcjs_dom_wave_shaper_node_get_oversample ::
@@ -65,11 +71,12 @@ foreign import javascript unsafe "$1[\"oversample\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.oversample Mozilla WaveShaperNode.oversample documentation> 
 waveShaperNodeGetOversample ::
-                            (IsWaveShaperNode self) => self -> IO OverSampleType
+                            (MonadIO m, IsWaveShaperNode self) => self -> m OverSampleType
 waveShaperNodeGetOversample self
-  = (ghcjs_dom_wave_shaper_node_get_oversample
-       (unWaveShaperNode (toWaveShaperNode self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_wave_shaper_node_get_oversample
+          (unWaveShaperNode (toWaveShaperNode self)))
+         >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.WaveShaperNode (
   ) where

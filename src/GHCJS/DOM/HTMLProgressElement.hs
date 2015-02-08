@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -33,11 +34,12 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.value Mozilla HTMLProgressElement.value documentation> 
 htmlProgressElementSetValue ::
-                            (IsHTMLProgressElement self) => self -> Double -> IO ()
+                            (MonadIO m, IsHTMLProgressElement self) => self -> Double -> m ()
 htmlProgressElementSetValue self val
-  = ghcjs_dom_html_progress_element_set_value
-      (unHTMLProgressElement (toHTMLProgressElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_progress_element_set_value
+         (unHTMLProgressElement (toHTMLProgressElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_progress_element_get_value ::
@@ -45,10 +47,11 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.value Mozilla HTMLProgressElement.value documentation> 
 htmlProgressElementGetValue ::
-                            (IsHTMLProgressElement self) => self -> IO Double
+                            (MonadIO m, IsHTMLProgressElement self) => self -> m Double
 htmlProgressElementGetValue self
-  = ghcjs_dom_html_progress_element_get_value
-      (unHTMLProgressElement (toHTMLProgressElement self))
+  = liftIO
+      (ghcjs_dom_html_progress_element_get_value
+         (unHTMLProgressElement (toHTMLProgressElement self)))
  
 foreign import javascript unsafe "$1[\"max\"] = $2;"
         ghcjs_dom_html_progress_element_set_max ::
@@ -56,11 +59,12 @@ foreign import javascript unsafe "$1[\"max\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.max Mozilla HTMLProgressElement.max documentation> 
 htmlProgressElementSetMax ::
-                          (IsHTMLProgressElement self) => self -> Double -> IO ()
+                          (MonadIO m, IsHTMLProgressElement self) => self -> Double -> m ()
 htmlProgressElementSetMax self val
-  = ghcjs_dom_html_progress_element_set_max
-      (unHTMLProgressElement (toHTMLProgressElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_progress_element_set_max
+         (unHTMLProgressElement (toHTMLProgressElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"max\"]"
         ghcjs_dom_html_progress_element_get_max ::
@@ -68,10 +72,11 @@ foreign import javascript unsafe "$1[\"max\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.max Mozilla HTMLProgressElement.max documentation> 
 htmlProgressElementGetMax ::
-                          (IsHTMLProgressElement self) => self -> IO Double
+                          (MonadIO m, IsHTMLProgressElement self) => self -> m Double
 htmlProgressElementGetMax self
-  = ghcjs_dom_html_progress_element_get_max
-      (unHTMLProgressElement (toHTMLProgressElement self))
+  = liftIO
+      (ghcjs_dom_html_progress_element_get_max
+         (unHTMLProgressElement (toHTMLProgressElement self)))
  
 foreign import javascript unsafe "$1[\"position\"]"
         ghcjs_dom_html_progress_element_get_position ::
@@ -79,10 +84,11 @@ foreign import javascript unsafe "$1[\"position\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.position Mozilla HTMLProgressElement.position documentation> 
 htmlProgressElementGetPosition ::
-                               (IsHTMLProgressElement self) => self -> IO Double
+                               (MonadIO m, IsHTMLProgressElement self) => self -> m Double
 htmlProgressElementGetPosition self
-  = ghcjs_dom_html_progress_element_get_position
-      (unHTMLProgressElement (toHTMLProgressElement self))
+  = liftIO
+      (ghcjs_dom_html_progress_element_get_position
+         (unHTMLProgressElement (toHTMLProgressElement self)))
  
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_progress_element_get_labels ::
@@ -90,11 +96,13 @@ foreign import javascript unsafe "$1[\"labels\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.labels Mozilla HTMLProgressElement.labels documentation> 
 htmlProgressElementGetLabels ::
-                             (IsHTMLProgressElement self) => self -> IO (Maybe NodeList)
+                             (MonadIO m, IsHTMLProgressElement self) =>
+                               self -> m (Maybe NodeList)
 htmlProgressElementGetLabels self
-  = (ghcjs_dom_html_progress_element_get_labels
-       (unHTMLProgressElement (toHTMLProgressElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_progress_element_get_labels
+          (unHTMLProgressElement (toHTMLProgressElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLProgressElement (
   ) where

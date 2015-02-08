@@ -16,6 +16,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,31 +31,37 @@ foreign import javascript unsafe "$1[\"getChannelData\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.channelData Mozilla AudioBuffer.channelData documentation> 
 audioBufferGetChannelData ::
-                          (IsAudioBuffer self) => self -> Word -> IO (Maybe Float32Array)
+                          (MonadIO m, IsAudioBuffer self) =>
+                            self -> Word -> m (Maybe Float32Array)
 audioBufferGetChannelData self channelIndex
-  = (ghcjs_dom_audio_buffer_get_channel_data
-       (unAudioBuffer (toAudioBuffer self))
-       channelIndex)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_buffer_get_channel_data
+          (unAudioBuffer (toAudioBuffer self))
+          channelIndex)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_audio_buffer_get_length :: JSRef AudioBuffer -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.length Mozilla AudioBuffer.length documentation> 
-audioBufferGetLength :: (IsAudioBuffer self) => self -> IO Int
+audioBufferGetLength ::
+                     (MonadIO m, IsAudioBuffer self) => self -> m Int
 audioBufferGetLength self
-  = ghcjs_dom_audio_buffer_get_length
-      (unAudioBuffer (toAudioBuffer self))
+  = liftIO
+      (ghcjs_dom_audio_buffer_get_length
+         (unAudioBuffer (toAudioBuffer self)))
  
 foreign import javascript unsafe "$1[\"duration\"]"
         ghcjs_dom_audio_buffer_get_duration ::
         JSRef AudioBuffer -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.duration Mozilla AudioBuffer.duration documentation> 
-audioBufferGetDuration :: (IsAudioBuffer self) => self -> IO Float
+audioBufferGetDuration ::
+                       (MonadIO m, IsAudioBuffer self) => self -> m Float
 audioBufferGetDuration self
-  = ghcjs_dom_audio_buffer_get_duration
-      (unAudioBuffer (toAudioBuffer self))
+  = liftIO
+      (ghcjs_dom_audio_buffer_get_duration
+         (unAudioBuffer (toAudioBuffer self)))
  
 foreign import javascript unsafe "$1[\"sampleRate\"]"
         ghcjs_dom_audio_buffer_get_sample_rate ::
@@ -62,10 +69,11 @@ foreign import javascript unsafe "$1[\"sampleRate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.sampleRate Mozilla AudioBuffer.sampleRate documentation> 
 audioBufferGetSampleRate ::
-                         (IsAudioBuffer self) => self -> IO Float
+                         (MonadIO m, IsAudioBuffer self) => self -> m Float
 audioBufferGetSampleRate self
-  = ghcjs_dom_audio_buffer_get_sample_rate
-      (unAudioBuffer (toAudioBuffer self))
+  = liftIO
+      (ghcjs_dom_audio_buffer_get_sample_rate
+         (unAudioBuffer (toAudioBuffer self)))
  
 foreign import javascript unsafe "$1[\"gain\"] = $2;"
         ghcjs_dom_audio_buffer_set_gain ::
@@ -73,20 +81,23 @@ foreign import javascript unsafe "$1[\"gain\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.gain Mozilla AudioBuffer.gain documentation> 
 audioBufferSetGain ::
-                   (IsAudioBuffer self) => self -> Float -> IO ()
+                   (MonadIO m, IsAudioBuffer self) => self -> Float -> m ()
 audioBufferSetGain self val
-  = ghcjs_dom_audio_buffer_set_gain
-      (unAudioBuffer (toAudioBuffer self))
-      val
+  = liftIO
+      (ghcjs_dom_audio_buffer_set_gain
+         (unAudioBuffer (toAudioBuffer self))
+         val)
  
 foreign import javascript unsafe "$1[\"gain\"]"
         ghcjs_dom_audio_buffer_get_gain :: JSRef AudioBuffer -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.gain Mozilla AudioBuffer.gain documentation> 
-audioBufferGetGain :: (IsAudioBuffer self) => self -> IO Float
+audioBufferGetGain ::
+                   (MonadIO m, IsAudioBuffer self) => self -> m Float
 audioBufferGetGain self
-  = ghcjs_dom_audio_buffer_get_gain
-      (unAudioBuffer (toAudioBuffer self))
+  = liftIO
+      (ghcjs_dom_audio_buffer_get_gain
+         (unAudioBuffer (toAudioBuffer self)))
  
 foreign import javascript unsafe "$1[\"numberOfChannels\"]"
         ghcjs_dom_audio_buffer_get_number_of_channels ::
@@ -94,10 +105,11 @@ foreign import javascript unsafe "$1[\"numberOfChannels\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.numberOfChannels Mozilla AudioBuffer.numberOfChannels documentation> 
 audioBufferGetNumberOfChannels ::
-                               (IsAudioBuffer self) => self -> IO Word
+                               (MonadIO m, IsAudioBuffer self) => self -> m Word
 audioBufferGetNumberOfChannels self
-  = ghcjs_dom_audio_buffer_get_number_of_channels
-      (unAudioBuffer (toAudioBuffer self))
+  = liftIO
+      (ghcjs_dom_audio_buffer_get_number_of_channels
+         (unAudioBuffer (toAudioBuffer self)))
 #else
 module GHCJS.DOM.AudioBuffer (
   ) where

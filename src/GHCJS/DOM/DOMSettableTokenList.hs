@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,13 +29,14 @@ foreign import javascript unsafe "$1[\"_get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList._get Mozilla DOMSettableTokenList._get documentation> 
 domSettableTokenList_get ::
-                         (IsDOMSettableTokenList self, FromJSString result) =>
-                           self -> Word -> IO result
+                         (MonadIO m, IsDOMSettableTokenList self, FromJSString result) =>
+                           self -> Word -> m result
 domSettableTokenList_get self index
-  = fromJSString <$>
-      (ghcjs_dom_dom_settable_token_list_get
-         (unDOMSettableTokenList (toDOMSettableTokenList self))
-         index)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_settable_token_list_get
+            (unDOMSettableTokenList (toDOMSettableTokenList self))
+            index))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_dom_settable_token_list_set_value ::
@@ -42,12 +44,13 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList.value Mozilla DOMSettableTokenList.value documentation> 
 domSettableTokenListSetValue ::
-                             (IsDOMSettableTokenList self, ToJSString val) =>
-                               self -> val -> IO ()
+                             (MonadIO m, IsDOMSettableTokenList self, ToJSString val) =>
+                               self -> val -> m ()
 domSettableTokenListSetValue self val
-  = ghcjs_dom_dom_settable_token_list_set_value
-      (unDOMSettableTokenList (toDOMSettableTokenList self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_dom_settable_token_list_set_value
+         (unDOMSettableTokenList (toDOMSettableTokenList self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_dom_settable_token_list_get_value ::
@@ -55,12 +58,13 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList.value Mozilla DOMSettableTokenList.value documentation> 
 domSettableTokenListGetValue ::
-                             (IsDOMSettableTokenList self, FromJSString result) =>
-                               self -> IO result
+                             (MonadIO m, IsDOMSettableTokenList self, FromJSString result) =>
+                               self -> m result
 domSettableTokenListGetValue self
-  = fromJSString <$>
-      (ghcjs_dom_dom_settable_token_list_get_value
-         (unDOMSettableTokenList (toDOMSettableTokenList self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_settable_token_list_get_value
+            (unDOMSettableTokenList (toDOMSettableTokenList self))))
 #else
 module GHCJS.DOM.DOMSettableTokenList (
   module Graphics.UI.Gtk.WebKit.DOM.DOMSettableTokenList

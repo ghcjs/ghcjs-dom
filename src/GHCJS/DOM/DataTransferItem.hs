@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,12 +28,13 @@ foreign import javascript unsafe "$1[\"getAsString\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.asString Mozilla DataTransferItem.asString documentation> 
 dataTransferItemGetAsString ::
-                            (IsDataTransferItem self, IsStringCallback callback) =>
-                              self -> Maybe callback -> IO ()
+                            (MonadIO m, IsDataTransferItem self, IsStringCallback callback) =>
+                              self -> Maybe callback -> m ()
 dataTransferItemGetAsString self callback
-  = ghcjs_dom_data_transfer_item_get_as_string
-      (unDataTransferItem (toDataTransferItem self))
-      (maybe jsNull (unStringCallback . toStringCallback) callback)
+  = liftIO
+      (ghcjs_dom_data_transfer_item_get_as_string
+         (unDataTransferItem (toDataTransferItem self))
+         (maybe jsNull (unStringCallback . toStringCallback) callback))
  
 foreign import javascript unsafe "$1[\"getAsFile\"]()"
         ghcjs_dom_data_transfer_item_get_as_file ::
@@ -40,11 +42,12 @@ foreign import javascript unsafe "$1[\"getAsFile\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.asFile Mozilla DataTransferItem.asFile documentation> 
 dataTransferItemGetAsFile ::
-                          (IsDataTransferItem self) => self -> IO (Maybe Blob)
+                          (MonadIO m, IsDataTransferItem self) => self -> m (Maybe Blob)
 dataTransferItemGetAsFile self
-  = (ghcjs_dom_data_transfer_item_get_as_file
-       (unDataTransferItem (toDataTransferItem self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_data_transfer_item_get_as_file
+          (unDataTransferItem (toDataTransferItem self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"kind\"]"
         ghcjs_dom_data_transfer_item_get_kind ::
@@ -52,11 +55,13 @@ foreign import javascript unsafe "$1[\"kind\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.kind Mozilla DataTransferItem.kind documentation> 
 dataTransferItemGetKind ::
-                        (IsDataTransferItem self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsDataTransferItem self, FromJSString result) =>
+                          self -> m result
 dataTransferItemGetKind self
-  = fromJSString <$>
-      (ghcjs_dom_data_transfer_item_get_kind
-         (unDataTransferItem (toDataTransferItem self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_data_transfer_item_get_kind
+            (unDataTransferItem (toDataTransferItem self))))
 #else
 module GHCJS.DOM.DataTransferItem (
   ) where

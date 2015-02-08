@@ -20,6 +20,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -34,12 +35,13 @@ foreign import javascript unsafe "$1[\"patternUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.patternUnits Mozilla SVGPatternElement.patternUnits documentation> 
 svgPatternElementGetPatternUnits ::
-                                 (IsSVGPatternElement self) =>
-                                   self -> IO (Maybe SVGAnimatedEnumeration)
+                                 (MonadIO m, IsSVGPatternElement self) =>
+                                   self -> m (Maybe SVGAnimatedEnumeration)
 svgPatternElementGetPatternUnits self
-  = (ghcjs_dom_svg_pattern_element_get_pattern_units
-       (unSVGPatternElement (toSVGPatternElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_pattern_element_get_pattern_units
+          (unSVGPatternElement (toSVGPatternElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"patternContentUnits\"]"
         ghcjs_dom_svg_pattern_element_get_pattern_content_units ::
@@ -47,12 +49,13 @@ foreign import javascript unsafe "$1[\"patternContentUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.patternContentUnits Mozilla SVGPatternElement.patternContentUnits documentation> 
 svgPatternElementGetPatternContentUnits ::
-                                        (IsSVGPatternElement self) =>
-                                          self -> IO (Maybe SVGAnimatedEnumeration)
+                                        (MonadIO m, IsSVGPatternElement self) =>
+                                          self -> m (Maybe SVGAnimatedEnumeration)
 svgPatternElementGetPatternContentUnits self
-  = (ghcjs_dom_svg_pattern_element_get_pattern_content_units
-       (unSVGPatternElement (toSVGPatternElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_pattern_element_get_pattern_content_units
+          (unSVGPatternElement (toSVGPatternElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"patternTransform\"]"
         ghcjs_dom_svg_pattern_element_get_pattern_transform ::
@@ -60,12 +63,13 @@ foreign import javascript unsafe "$1[\"patternTransform\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.patternTransform Mozilla SVGPatternElement.patternTransform documentation> 
 svgPatternElementGetPatternTransform ::
-                                     (IsSVGPatternElement self) =>
-                                       self -> IO (Maybe SVGAnimatedTransformList)
+                                     (MonadIO m, IsSVGPatternElement self) =>
+                                       self -> m (Maybe SVGAnimatedTransformList)
 svgPatternElementGetPatternTransform self
-  = (ghcjs_dom_svg_pattern_element_get_pattern_transform
-       (unSVGPatternElement (toSVGPatternElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_pattern_element_get_pattern_transform
+          (unSVGPatternElement (toSVGPatternElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_pattern_element_get_x ::
@@ -73,11 +77,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.x Mozilla SVGPatternElement.x documentation> 
 svgPatternElementGetX ::
-                      (IsSVGPatternElement self) => self -> IO (Maybe SVGAnimatedLength)
+                      (MonadIO m, IsSVGPatternElement self) =>
+                        self -> m (Maybe SVGAnimatedLength)
 svgPatternElementGetX self
-  = (ghcjs_dom_svg_pattern_element_get_x
-       (unSVGPatternElement (toSVGPatternElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_pattern_element_get_x
+          (unSVGPatternElement (toSVGPatternElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_pattern_element_get_y ::
@@ -85,11 +91,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.y Mozilla SVGPatternElement.y documentation> 
 svgPatternElementGetY ::
-                      (IsSVGPatternElement self) => self -> IO (Maybe SVGAnimatedLength)
+                      (MonadIO m, IsSVGPatternElement self) =>
+                        self -> m (Maybe SVGAnimatedLength)
 svgPatternElementGetY self
-  = (ghcjs_dom_svg_pattern_element_get_y
-       (unSVGPatternElement (toSVGPatternElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_pattern_element_get_y
+          (unSVGPatternElement (toSVGPatternElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_svg_pattern_element_get_width ::
@@ -97,11 +105,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.width Mozilla SVGPatternElement.width documentation> 
 svgPatternElementGetWidth ::
-                          (IsSVGPatternElement self) => self -> IO (Maybe SVGAnimatedLength)
+                          (MonadIO m, IsSVGPatternElement self) =>
+                            self -> m (Maybe SVGAnimatedLength)
 svgPatternElementGetWidth self
-  = (ghcjs_dom_svg_pattern_element_get_width
-       (unSVGPatternElement (toSVGPatternElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_pattern_element_get_width
+          (unSVGPatternElement (toSVGPatternElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_svg_pattern_element_get_height ::
@@ -109,11 +119,13 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.height Mozilla SVGPatternElement.height documentation> 
 svgPatternElementGetHeight ::
-                           (IsSVGPatternElement self) => self -> IO (Maybe SVGAnimatedLength)
+                           (MonadIO m, IsSVGPatternElement self) =>
+                             self -> m (Maybe SVGAnimatedLength)
 svgPatternElementGetHeight self
-  = (ghcjs_dom_svg_pattern_element_get_height
-       (unSVGPatternElement (toSVGPatternElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_pattern_element_get_height
+          (unSVGPatternElement (toSVGPatternElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGPatternElement (
   ) where

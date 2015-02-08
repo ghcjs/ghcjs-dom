@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,25 +37,26 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.initDeviceOrientationEvent Mozilla DeviceOrientationEvent.initDeviceOrientationEvent documentation> 
 deviceOrientationEventInitDeviceOrientationEvent ::
-                                                 (IsDeviceOrientationEvent self,
+                                                 (MonadIO m, IsDeviceOrientationEvent self,
                                                   ToJSString type') =>
                                                    self ->
                                                      type' ->
                                                        Bool ->
                                                          Bool ->
                                                            Double ->
-                                                             Double -> Double -> Bool -> IO ()
+                                                             Double -> Double -> Bool -> m ()
 deviceOrientationEventInitDeviceOrientationEvent self type' bubbles
   cancelable alpha beta gamma absolute
-  = ghcjs_dom_device_orientation_event_init_device_orientation_event
-      (unDeviceOrientationEvent (toDeviceOrientationEvent self))
-      (toJSString type')
-      bubbles
-      cancelable
-      alpha
-      beta
-      gamma
-      absolute
+  = liftIO
+      (ghcjs_dom_device_orientation_event_init_device_orientation_event
+         (unDeviceOrientationEvent (toDeviceOrientationEvent self))
+         (toJSString type')
+         bubbles
+         cancelable
+         alpha
+         beta
+         gamma
+         absolute)
  
 foreign import javascript unsafe "$1[\"alpha\"]"
         ghcjs_dom_device_orientation_event_get_alpha ::
@@ -62,10 +64,11 @@ foreign import javascript unsafe "$1[\"alpha\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.alpha Mozilla DeviceOrientationEvent.alpha documentation> 
 deviceOrientationEventGetAlpha ::
-                               (IsDeviceOrientationEvent self) => self -> IO Double
+                               (MonadIO m, IsDeviceOrientationEvent self) => self -> m Double
 deviceOrientationEventGetAlpha self
-  = ghcjs_dom_device_orientation_event_get_alpha
-      (unDeviceOrientationEvent (toDeviceOrientationEvent self))
+  = liftIO
+      (ghcjs_dom_device_orientation_event_get_alpha
+         (unDeviceOrientationEvent (toDeviceOrientationEvent self)))
  
 foreign import javascript unsafe "$1[\"beta\"]"
         ghcjs_dom_device_orientation_event_get_beta ::
@@ -73,10 +76,11 @@ foreign import javascript unsafe "$1[\"beta\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.beta Mozilla DeviceOrientationEvent.beta documentation> 
 deviceOrientationEventGetBeta ::
-                              (IsDeviceOrientationEvent self) => self -> IO Double
+                              (MonadIO m, IsDeviceOrientationEvent self) => self -> m Double
 deviceOrientationEventGetBeta self
-  = ghcjs_dom_device_orientation_event_get_beta
-      (unDeviceOrientationEvent (toDeviceOrientationEvent self))
+  = liftIO
+      (ghcjs_dom_device_orientation_event_get_beta
+         (unDeviceOrientationEvent (toDeviceOrientationEvent self)))
  
 foreign import javascript unsafe "$1[\"gamma\"]"
         ghcjs_dom_device_orientation_event_get_gamma ::
@@ -84,10 +88,11 @@ foreign import javascript unsafe "$1[\"gamma\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.gamma Mozilla DeviceOrientationEvent.gamma documentation> 
 deviceOrientationEventGetGamma ::
-                               (IsDeviceOrientationEvent self) => self -> IO Double
+                               (MonadIO m, IsDeviceOrientationEvent self) => self -> m Double
 deviceOrientationEventGetGamma self
-  = ghcjs_dom_device_orientation_event_get_gamma
-      (unDeviceOrientationEvent (toDeviceOrientationEvent self))
+  = liftIO
+      (ghcjs_dom_device_orientation_event_get_gamma
+         (unDeviceOrientationEvent (toDeviceOrientationEvent self)))
  
 foreign import javascript unsafe "($1[\"absolute\"] ? 1 : 0)"
         ghcjs_dom_device_orientation_event_get_absolute ::
@@ -95,10 +100,11 @@ foreign import javascript unsafe "($1[\"absolute\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.absolute Mozilla DeviceOrientationEvent.absolute documentation> 
 deviceOrientationEventGetAbsolute ::
-                                  (IsDeviceOrientationEvent self) => self -> IO Bool
+                                  (MonadIO m, IsDeviceOrientationEvent self) => self -> m Bool
 deviceOrientationEventGetAbsolute self
-  = ghcjs_dom_device_orientation_event_get_absolute
-      (unDeviceOrientationEvent (toDeviceOrientationEvent self))
+  = liftIO
+      (ghcjs_dom_device_orientation_event_get_absolute
+         (unDeviceOrientationEvent (toDeviceOrientationEvent self)))
 #else
 module GHCJS.DOM.DeviceOrientationEvent (
   ) where

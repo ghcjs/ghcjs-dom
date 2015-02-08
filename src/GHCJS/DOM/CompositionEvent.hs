@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,20 +29,20 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent.initCompositionEvent Mozilla CompositionEvent.initCompositionEvent documentation> 
 compositionEventInitCompositionEvent ::
-                                     (IsCompositionEvent self, ToJSString typeArg,
+                                     (MonadIO m, IsCompositionEvent self, ToJSString typeArg,
                                       IsDOMWindow viewArg, ToJSString dataArg) =>
                                        self ->
-                                         typeArg ->
-                                           Bool -> Bool -> Maybe viewArg -> dataArg -> IO ()
+                                         typeArg -> Bool -> Bool -> Maybe viewArg -> dataArg -> m ()
 compositionEventInitCompositionEvent self typeArg canBubbleArg
   cancelableArg viewArg dataArg
-  = ghcjs_dom_composition_event_init_composition_event
-      (unCompositionEvent (toCompositionEvent self))
-      (toJSString typeArg)
-      canBubbleArg
-      cancelableArg
-      (maybe jsNull (unDOMWindow . toDOMWindow) viewArg)
-      (toJSString dataArg)
+  = liftIO
+      (ghcjs_dom_composition_event_init_composition_event
+         (unCompositionEvent (toCompositionEvent self))
+         (toJSString typeArg)
+         canBubbleArg
+         cancelableArg
+         (maybe jsNull (unDOMWindow . toDOMWindow) viewArg)
+         (toJSString dataArg))
  
 foreign import javascript unsafe "$1[\"data\"]"
         ghcjs_dom_composition_event_get_data ::
@@ -49,11 +50,13 @@ foreign import javascript unsafe "$1[\"data\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent.data Mozilla CompositionEvent.data documentation> 
 compositionEventGetData ::
-                        (IsCompositionEvent self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsCompositionEvent self, FromJSString result) =>
+                          self -> m result
 compositionEventGetData self
-  = fromJSString <$>
-      (ghcjs_dom_composition_event_get_data
-         (unCompositionEvent (toCompositionEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_composition_event_get_data
+            (unCompositionEvent (toCompositionEvent self))))
 #else
 module GHCJS.DOM.CompositionEvent (
   ) where

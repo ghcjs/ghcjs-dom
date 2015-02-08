@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,28 +26,34 @@ foreign import javascript unsafe "$1[\"start\"]($2)"
         JSRef TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.start Mozilla TimeRanges.start documentation> 
-timeRangesStart :: (IsTimeRanges self) => self -> Word -> IO Double
+timeRangesStart ::
+                (MonadIO m, IsTimeRanges self) => self -> Word -> m Double
 timeRangesStart self index
-  = ghcjs_dom_time_ranges_start (unTimeRanges (toTimeRanges self))
-      index
+  = liftIO
+      (ghcjs_dom_time_ranges_start (unTimeRanges (toTimeRanges self))
+         index)
  
 foreign import javascript unsafe "$1[\"end\"]($2)"
         ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.end Mozilla TimeRanges.end documentation> 
-timeRangesEnd :: (IsTimeRanges self) => self -> Word -> IO Double
+timeRangesEnd ::
+              (MonadIO m, IsTimeRanges self) => self -> Word -> m Double
 timeRangesEnd self index
-  = ghcjs_dom_time_ranges_end (unTimeRanges (toTimeRanges self))
-      index
+  = liftIO
+      (ghcjs_dom_time_ranges_end (unTimeRanges (toTimeRanges self))
+         index)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_time_ranges_get_length :: JSRef TimeRanges -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.length Mozilla TimeRanges.length documentation> 
-timeRangesGetLength :: (IsTimeRanges self) => self -> IO Word
+timeRangesGetLength ::
+                    (MonadIO m, IsTimeRanges self) => self -> m Word
 timeRangesGetLength self
-  = ghcjs_dom_time_ranges_get_length
-      (unTimeRanges (toTimeRanges self))
+  = liftIO
+      (ghcjs_dom_time_ranges_get_length
+         (unTimeRanges (toTimeRanges self)))
 #else
 module GHCJS.DOM.TimeRanges (
   module Graphics.UI.Gtk.WebKit.DOM.TimeRanges

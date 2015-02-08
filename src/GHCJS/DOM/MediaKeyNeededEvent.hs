@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"initData\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyNeededEvent.initData Mozilla MediaKeyNeededEvent.initData documentation> 
 mediaKeyNeededEventGetInitData ::
-                               (IsMediaKeyNeededEvent self) => self -> IO (Maybe Uint8Array)
+                               (MonadIO m, IsMediaKeyNeededEvent self) =>
+                                 self -> m (Maybe Uint8Array)
 mediaKeyNeededEventGetInitData self
-  = (ghcjs_dom_media_key_needed_event_get_init_data
-       (unMediaKeyNeededEvent (toMediaKeyNeededEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_media_key_needed_event_get_init_data
+          (unMediaKeyNeededEvent (toMediaKeyNeededEvent self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.MediaKeyNeededEvent (
   ) where

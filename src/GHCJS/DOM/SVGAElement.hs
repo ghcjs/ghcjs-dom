@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,11 +25,13 @@ foreign import javascript unsafe "$1[\"target\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement.target Mozilla SVGAElement.target documentation> 
 svgaElementGetTarget ::
-                     (IsSVGAElement self) => self -> IO (Maybe SVGAnimatedString)
+                     (MonadIO m, IsSVGAElement self) =>
+                       self -> m (Maybe SVGAnimatedString)
 svgaElementGetTarget self
-  = (ghcjs_dom_svga_element_get_target
-       (unSVGAElement (toSVGAElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svga_element_get_target
+          (unSVGAElement (toSVGAElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGAElement (
   ) where

@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,10 +29,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.lengthComputable Mozilla ProgressEvent.lengthComputable documentation> 
 progressEventGetLengthComputable ::
-                                 (IsProgressEvent self) => self -> IO Bool
+                                 (MonadIO m, IsProgressEvent self) => self -> m Bool
 progressEventGetLengthComputable self
-  = ghcjs_dom_progress_event_get_length_computable
-      (unProgressEvent (toProgressEvent self))
+  = liftIO
+      (ghcjs_dom_progress_event_get_length_computable
+         (unProgressEvent (toProgressEvent self)))
  
 foreign import javascript unsafe "$1[\"loaded\"]"
         ghcjs_dom_progress_event_get_loaded ::
@@ -39,11 +41,12 @@ foreign import javascript unsafe "$1[\"loaded\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.loaded Mozilla ProgressEvent.loaded documentation> 
 progressEventGetLoaded ::
-                       (IsProgressEvent self) => self -> IO Word64
+                       (MonadIO m, IsProgressEvent self) => self -> m Word64
 progressEventGetLoaded self
-  = round <$>
-      (ghcjs_dom_progress_event_get_loaded
-         (unProgressEvent (toProgressEvent self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_progress_event_get_loaded
+            (unProgressEvent (toProgressEvent self))))
  
 foreign import javascript unsafe "$1[\"total\"]"
         ghcjs_dom_progress_event_get_total ::
@@ -51,11 +54,12 @@ foreign import javascript unsafe "$1[\"total\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.total Mozilla ProgressEvent.total documentation> 
 progressEventGetTotal ::
-                      (IsProgressEvent self) => self -> IO Word64
+                      (MonadIO m, IsProgressEvent self) => self -> m Word64
 progressEventGetTotal self
-  = round <$>
-      (ghcjs_dom_progress_event_get_total
-         (unProgressEvent (toProgressEvent self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_progress_event_get_total
+            (unProgressEvent (toProgressEvent self))))
 #else
 module GHCJS.DOM.ProgressEvent (
   ) where

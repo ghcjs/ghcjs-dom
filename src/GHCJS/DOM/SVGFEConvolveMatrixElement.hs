@@ -36,6 +36,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -54,12 +55,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.in1 Mozilla SVGFEConvolveMatrixElement.in1 documentation> 
 svgfeConvolveMatrixElementGetIn1 ::
-                                 (IsSVGFEConvolveMatrixElement self) =>
-                                   self -> IO (Maybe SVGAnimatedString)
+                                 (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                   self -> m (Maybe SVGAnimatedString)
 svgfeConvolveMatrixElementGetIn1 self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_in1
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_in1
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"orderX\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_order_x ::
@@ -67,12 +69,13 @@ foreign import javascript unsafe "$1[\"orderX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderX Mozilla SVGFEConvolveMatrixElement.orderX documentation> 
 svgfeConvolveMatrixElementGetOrderX ::
-                                    (IsSVGFEConvolveMatrixElement self) =>
-                                      self -> IO (Maybe SVGAnimatedInteger)
+                                    (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                      self -> m (Maybe SVGAnimatedInteger)
 svgfeConvolveMatrixElementGetOrderX self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_order_x
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_order_x
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"orderY\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_order_y ::
@@ -80,12 +83,13 @@ foreign import javascript unsafe "$1[\"orderY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderY Mozilla SVGFEConvolveMatrixElement.orderY documentation> 
 svgfeConvolveMatrixElementGetOrderY ::
-                                    (IsSVGFEConvolveMatrixElement self) =>
-                                      self -> IO (Maybe SVGAnimatedInteger)
+                                    (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                      self -> m (Maybe SVGAnimatedInteger)
 svgfeConvolveMatrixElementGetOrderY self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_order_y
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_order_y
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"kernelMatrix\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_matrix ::
@@ -94,12 +98,13 @@ foreign import javascript unsafe "$1[\"kernelMatrix\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelMatrix Mozilla SVGFEConvolveMatrixElement.kernelMatrix documentation> 
 svgfeConvolveMatrixElementGetKernelMatrix ::
-                                          (IsSVGFEConvolveMatrixElement self) =>
-                                            self -> IO (Maybe SVGAnimatedNumberList)
+                                          (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                            self -> m (Maybe SVGAnimatedNumberList)
 svgfeConvolveMatrixElementGetKernelMatrix self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_matrix
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_matrix
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"divisor\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_divisor ::
@@ -107,12 +112,13 @@ foreign import javascript unsafe "$1[\"divisor\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.divisor Mozilla SVGFEConvolveMatrixElement.divisor documentation> 
 svgfeConvolveMatrixElementGetDivisor ::
-                                     (IsSVGFEConvolveMatrixElement self) =>
-                                       self -> IO (Maybe SVGAnimatedNumber)
+                                     (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                       self -> m (Maybe SVGAnimatedNumber)
 svgfeConvolveMatrixElementGetDivisor self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_divisor
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_divisor
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"bias\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_bias ::
@@ -120,12 +126,13 @@ foreign import javascript unsafe "$1[\"bias\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.bias Mozilla SVGFEConvolveMatrixElement.bias documentation> 
 svgfeConvolveMatrixElementGetBias ::
-                                  (IsSVGFEConvolveMatrixElement self) =>
-                                    self -> IO (Maybe SVGAnimatedNumber)
+                                  (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                    self -> m (Maybe SVGAnimatedNumber)
 svgfeConvolveMatrixElementGetBias self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_bias
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_bias
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"targetX\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_target_x ::
@@ -133,12 +140,13 @@ foreign import javascript unsafe "$1[\"targetX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetX Mozilla SVGFEConvolveMatrixElement.targetX documentation> 
 svgfeConvolveMatrixElementGetTargetX ::
-                                     (IsSVGFEConvolveMatrixElement self) =>
-                                       self -> IO (Maybe SVGAnimatedInteger)
+                                     (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                       self -> m (Maybe SVGAnimatedInteger)
 svgfeConvolveMatrixElementGetTargetX self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_target_x
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_target_x
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"targetY\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_target_y ::
@@ -146,12 +154,13 @@ foreign import javascript unsafe "$1[\"targetY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetY Mozilla SVGFEConvolveMatrixElement.targetY documentation> 
 svgfeConvolveMatrixElementGetTargetY ::
-                                     (IsSVGFEConvolveMatrixElement self) =>
-                                       self -> IO (Maybe SVGAnimatedInteger)
+                                     (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                       self -> m (Maybe SVGAnimatedInteger)
 svgfeConvolveMatrixElementGetTargetY self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_target_y
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_target_y
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"edgeMode\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_edge_mode ::
@@ -160,12 +169,13 @@ foreign import javascript unsafe "$1[\"edgeMode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.edgeMode Mozilla SVGFEConvolveMatrixElement.edgeMode documentation> 
 svgfeConvolveMatrixElementGetEdgeMode ::
-                                      (IsSVGFEConvolveMatrixElement self) =>
-                                        self -> IO (Maybe SVGAnimatedEnumeration)
+                                      (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                        self -> m (Maybe SVGAnimatedEnumeration)
 svgfeConvolveMatrixElementGetEdgeMode self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_edge_mode
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_edge_mode
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"kernelUnitLengthX\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_unit_length_x ::
@@ -173,12 +183,13 @@ foreign import javascript unsafe "$1[\"kernelUnitLengthX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthX Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthX documentation> 
 svgfeConvolveMatrixElementGetKernelUnitLengthX ::
-                                               (IsSVGFEConvolveMatrixElement self) =>
-                                                 self -> IO (Maybe SVGAnimatedNumber)
+                                               (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                                 self -> m (Maybe SVGAnimatedNumber)
 svgfeConvolveMatrixElementGetKernelUnitLengthX self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_unit_length_x
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_unit_length_x
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"kernelUnitLengthY\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_unit_length_y ::
@@ -186,12 +197,13 @@ foreign import javascript unsafe "$1[\"kernelUnitLengthY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthY Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthY documentation> 
 svgfeConvolveMatrixElementGetKernelUnitLengthY ::
-                                               (IsSVGFEConvolveMatrixElement self) =>
-                                                 self -> IO (Maybe SVGAnimatedNumber)
+                                               (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                                 self -> m (Maybe SVGAnimatedNumber)
 svgfeConvolveMatrixElementGetKernelUnitLengthY self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_unit_length_y
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_kernel_unit_length_y
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"preserveAlpha\"]"
         ghcjs_dom_svgfe_convolve_matrix_element_get_preserve_alpha ::
@@ -199,12 +211,13 @@ foreign import javascript unsafe "$1[\"preserveAlpha\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.preserveAlpha Mozilla SVGFEConvolveMatrixElement.preserveAlpha documentation> 
 svgfeConvolveMatrixElementGetPreserveAlpha ::
-                                           (IsSVGFEConvolveMatrixElement self) =>
-                                             self -> IO (Maybe SVGAnimatedBoolean)
+                                           (MonadIO m, IsSVGFEConvolveMatrixElement self) =>
+                                             self -> m (Maybe SVGAnimatedBoolean)
 svgfeConvolveMatrixElementGetPreserveAlpha self
-  = (ghcjs_dom_svgfe_convolve_matrix_element_get_preserve_alpha
-       (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_convolve_matrix_element_get_preserve_alpha
+          (unSVGFEConvolveMatrixElement (toSVGFEConvolveMatrixElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEConvolveMatrixElement (
   ) where

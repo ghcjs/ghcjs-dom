@@ -22,6 +22,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -37,12 +38,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.newValueSpecifiedUnits Mozilla SVGAngle.newValueSpecifiedUnits documentation> 
 svgAngleNewValueSpecifiedUnits ::
-                               (IsSVGAngle self) => self -> Word -> Float -> IO ()
+                               (MonadIO m, IsSVGAngle self) => self -> Word -> Float -> m ()
 svgAngleNewValueSpecifiedUnits self unitType valueInSpecifiedUnits
-  = ghcjs_dom_svg_angle_new_value_specified_units
-      (unSVGAngle (toSVGAngle self))
-      unitType
-      valueInSpecifiedUnits
+  = liftIO
+      (ghcjs_dom_svg_angle_new_value_specified_units
+         (unSVGAngle (toSVGAngle self))
+         unitType
+         valueInSpecifiedUnits)
  
 foreign import javascript unsafe
         "$1[\"convertToSpecifiedUnits\"]($2)"
@@ -51,11 +53,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.convertToSpecifiedUnits Mozilla SVGAngle.convertToSpecifiedUnits documentation> 
 svgAngleConvertToSpecifiedUnits ::
-                                (IsSVGAngle self) => self -> Word -> IO ()
+                                (MonadIO m, IsSVGAngle self) => self -> Word -> m ()
 svgAngleConvertToSpecifiedUnits self unitType
-  = ghcjs_dom_svg_angle_convert_to_specified_units
-      (unSVGAngle (toSVGAngle self))
-      unitType
+  = liftIO
+      (ghcjs_dom_svg_angle_convert_to_specified_units
+         (unSVGAngle (toSVGAngle self))
+         unitType)
 cSVG_ANGLETYPE_UNKNOWN = 0
 cSVG_ANGLETYPE_UNSPECIFIED = 1
 cSVG_ANGLETYPE_DEG = 2
@@ -66,25 +69,30 @@ foreign import javascript unsafe "$1[\"unitType\"]"
         ghcjs_dom_svg_angle_get_unit_type :: JSRef SVGAngle -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.unitType Mozilla SVGAngle.unitType documentation> 
-svgAngleGetUnitType :: (IsSVGAngle self) => self -> IO Word
+svgAngleGetUnitType ::
+                    (MonadIO m, IsSVGAngle self) => self -> m Word
 svgAngleGetUnitType self
-  = ghcjs_dom_svg_angle_get_unit_type (unSVGAngle (toSVGAngle self))
+  = liftIO
+      (ghcjs_dom_svg_angle_get_unit_type (unSVGAngle (toSVGAngle self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_svg_angle_set_value :: JSRef SVGAngle -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.value Mozilla SVGAngle.value documentation> 
-svgAngleSetValue :: (IsSVGAngle self) => self -> Float -> IO ()
+svgAngleSetValue ::
+                 (MonadIO m, IsSVGAngle self) => self -> Float -> m ()
 svgAngleSetValue self val
-  = ghcjs_dom_svg_angle_set_value (unSVGAngle (toSVGAngle self)) val
+  = liftIO
+      (ghcjs_dom_svg_angle_set_value (unSVGAngle (toSVGAngle self)) val)
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_svg_angle_get_value :: JSRef SVGAngle -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.value Mozilla SVGAngle.value documentation> 
-svgAngleGetValue :: (IsSVGAngle self) => self -> IO Float
+svgAngleGetValue :: (MonadIO m, IsSVGAngle self) => self -> m Float
 svgAngleGetValue self
-  = ghcjs_dom_svg_angle_get_value (unSVGAngle (toSVGAngle self))
+  = liftIO
+      (ghcjs_dom_svg_angle_get_value (unSVGAngle (toSVGAngle self)))
  
 foreign import javascript unsafe
         "$1[\"valueInSpecifiedUnits\"] = $2;"
@@ -93,11 +101,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueInSpecifiedUnits Mozilla SVGAngle.valueInSpecifiedUnits documentation> 
 svgAngleSetValueInSpecifiedUnits ::
-                                 (IsSVGAngle self) => self -> Float -> IO ()
+                                 (MonadIO m, IsSVGAngle self) => self -> Float -> m ()
 svgAngleSetValueInSpecifiedUnits self val
-  = ghcjs_dom_svg_angle_set_value_in_specified_units
-      (unSVGAngle (toSVGAngle self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_angle_set_value_in_specified_units
+         (unSVGAngle (toSVGAngle self))
+         val)
  
 foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
         ghcjs_dom_svg_angle_get_value_in_specified_units ::
@@ -105,10 +114,11 @@ foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueInSpecifiedUnits Mozilla SVGAngle.valueInSpecifiedUnits documentation> 
 svgAngleGetValueInSpecifiedUnits ::
-                                 (IsSVGAngle self) => self -> IO Float
+                                 (MonadIO m, IsSVGAngle self) => self -> m Float
 svgAngleGetValueInSpecifiedUnits self
-  = ghcjs_dom_svg_angle_get_value_in_specified_units
-      (unSVGAngle (toSVGAngle self))
+  = liftIO
+      (ghcjs_dom_svg_angle_get_value_in_specified_units
+         (unSVGAngle (toSVGAngle self)))
  
 foreign import javascript unsafe "$1[\"valueAsString\"] = $2;"
         ghcjs_dom_svg_angle_set_value_as_string ::
@@ -116,11 +126,12 @@ foreign import javascript unsafe "$1[\"valueAsString\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueAsString Mozilla SVGAngle.valueAsString documentation> 
 svgAngleSetValueAsString ::
-                         (IsSVGAngle self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsSVGAngle self, ToJSString val) => self -> val -> m ()
 svgAngleSetValueAsString self val
-  = ghcjs_dom_svg_angle_set_value_as_string
-      (unSVGAngle (toSVGAngle self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_angle_set_value_as_string
+         (unSVGAngle (toSVGAngle self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"valueAsString\"]"
         ghcjs_dom_svg_angle_get_value_as_string ::
@@ -128,11 +139,13 @@ foreign import javascript unsafe "$1[\"valueAsString\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueAsString Mozilla SVGAngle.valueAsString documentation> 
 svgAngleGetValueAsString ::
-                         (IsSVGAngle self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsSVGAngle self, FromJSString result) =>
+                           self -> m result
 svgAngleGetValueAsString self
-  = fromJSString <$>
-      (ghcjs_dom_svg_angle_get_value_as_string
-         (unSVGAngle (toSVGAngle self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_angle_get_value_as_string
+            (unSVGAngle (toSVGAngle self))))
 #else
 module GHCJS.DOM.SVGAngle (
   ) where

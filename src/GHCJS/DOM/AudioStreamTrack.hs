@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,12 +26,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioStreamTrack Mozilla AudioStreamTrack documentation> 
 audioStreamTrackNew ::
-                    (IsDictionary audioConstraints) =>
-                      Maybe audioConstraints -> IO AudioStreamTrack
+                    (MonadIO m, IsDictionary audioConstraints) =>
+                      Maybe audioConstraints -> m AudioStreamTrack
 audioStreamTrackNew audioConstraints
-  = ghcjs_dom_audio_stream_track_new
-      (maybe jsNull (unDictionary . toDictionary) audioConstraints)
-      >>= fromJSRefUnchecked
+  = liftIO
+      (ghcjs_dom_audio_stream_track_new
+         (maybe jsNull (unDictionary . toDictionary) audioConstraints)
+         >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.AudioStreamTrack (
   ) where

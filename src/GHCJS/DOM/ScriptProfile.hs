@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,20 +27,24 @@ foreign import javascript unsafe "$1[\"title\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile.title Mozilla ScriptProfile.title documentation> 
 scriptProfileGetTitle ::
-                      (IsScriptProfile self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsScriptProfile self, FromJSString result) =>
+                        self -> m result
 scriptProfileGetTitle self
-  = fromJSString <$>
-      (ghcjs_dom_script_profile_get_title
-         (unScriptProfile (toScriptProfile self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_script_profile_get_title
+            (unScriptProfile (toScriptProfile self))))
  
 foreign import javascript unsafe "$1[\"uid\"]"
         ghcjs_dom_script_profile_get_uid :: JSRef ScriptProfile -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile.uid Mozilla ScriptProfile.uid documentation> 
-scriptProfileGetUid :: (IsScriptProfile self) => self -> IO Word
+scriptProfileGetUid ::
+                    (MonadIO m, IsScriptProfile self) => self -> m Word
 scriptProfileGetUid self
-  = ghcjs_dom_script_profile_get_uid
-      (unScriptProfile (toScriptProfile self))
+  = liftIO
+      (ghcjs_dom_script_profile_get_uid
+         (unScriptProfile (toScriptProfile self)))
  
 foreign import javascript unsafe "$1[\"rootNode\"]"
         ghcjs_dom_script_profile_get_root_node ::
@@ -47,11 +52,13 @@ foreign import javascript unsafe "$1[\"rootNode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile.rootNode Mozilla ScriptProfile.rootNode documentation> 
 scriptProfileGetRootNode ::
-                         (IsScriptProfile self) => self -> IO (Maybe ScriptProfileNode)
+                         (MonadIO m, IsScriptProfile self) =>
+                           self -> m (Maybe ScriptProfileNode)
 scriptProfileGetRootNode self
-  = (ghcjs_dom_script_profile_get_root_node
-       (unScriptProfile (toScriptProfile self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_script_profile_get_root_node
+          (unScriptProfile (toScriptProfile self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.ScriptProfile (
   ) where

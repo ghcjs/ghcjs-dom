@@ -14,7 +14,7 @@ module GHCJS.DOM.OscillatorNode
         oscillatorNodeGetPlaybackState,
         ghcjs_dom_oscillator_node_get_frequency,
         oscillatorNodeGetFrequency, ghcjs_dom_oscillator_node_get_detune,
-        oscillatorNodeGetDetune, oscillatorNodeOnended, OscillatorNode,
+        oscillatorNodeGetDetune, oscillatorNodeEnded, OscillatorNode,
         IsOscillatorNode, castToOscillatorNode, gTypeOscillatorNode,
         toOscillatorNode)
        where
@@ -22,6 +22,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,11 +37,12 @@ foreign import javascript unsafe "$1[\"start\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.start Mozilla OscillatorNode.start documentation> 
 oscillatorNodeStart ::
-                    (IsOscillatorNode self) => self -> Double -> IO ()
+                    (MonadIO m, IsOscillatorNode self) => self -> Double -> m ()
 oscillatorNodeStart self when
-  = ghcjs_dom_oscillator_node_start
-      (unOscillatorNode (toOscillatorNode self))
-      when
+  = liftIO
+      (ghcjs_dom_oscillator_node_start
+         (unOscillatorNode (toOscillatorNode self))
+         when)
  
 foreign import javascript unsafe "$1[\"stop\"]($2)"
         ghcjs_dom_oscillator_node_stop ::
@@ -48,11 +50,12 @@ foreign import javascript unsafe "$1[\"stop\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.stop Mozilla OscillatorNode.stop documentation> 
 oscillatorNodeStop ::
-                   (IsOscillatorNode self) => self -> Double -> IO ()
+                   (MonadIO m, IsOscillatorNode self) => self -> Double -> m ()
 oscillatorNodeStop self when
-  = ghcjs_dom_oscillator_node_stop
-      (unOscillatorNode (toOscillatorNode self))
-      when
+  = liftIO
+      (ghcjs_dom_oscillator_node_stop
+         (unOscillatorNode (toOscillatorNode self))
+         when)
  
 foreign import javascript unsafe "$1[\"noteOn\"]($2)"
         ghcjs_dom_oscillator_node_note_on ::
@@ -60,11 +63,12 @@ foreign import javascript unsafe "$1[\"noteOn\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.noteOn Mozilla OscillatorNode.noteOn documentation> 
 oscillatorNodeNoteOn ::
-                     (IsOscillatorNode self) => self -> Double -> IO ()
+                     (MonadIO m, IsOscillatorNode self) => self -> Double -> m ()
 oscillatorNodeNoteOn self when
-  = ghcjs_dom_oscillator_node_note_on
-      (unOscillatorNode (toOscillatorNode self))
-      when
+  = liftIO
+      (ghcjs_dom_oscillator_node_note_on
+         (unOscillatorNode (toOscillatorNode self))
+         when)
  
 foreign import javascript unsafe "$1[\"noteOff\"]($2)"
         ghcjs_dom_oscillator_node_note_off ::
@@ -72,11 +76,12 @@ foreign import javascript unsafe "$1[\"noteOff\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.noteOff Mozilla OscillatorNode.noteOff documentation> 
 oscillatorNodeNoteOff ::
-                      (IsOscillatorNode self) => self -> Double -> IO ()
+                      (MonadIO m, IsOscillatorNode self) => self -> Double -> m ()
 oscillatorNodeNoteOff self when
-  = ghcjs_dom_oscillator_node_note_off
-      (unOscillatorNode (toOscillatorNode self))
-      when
+  = liftIO
+      (ghcjs_dom_oscillator_node_note_off
+         (unOscillatorNode (toOscillatorNode self))
+         when)
  
 foreign import javascript unsafe "$1[\"setPeriodicWave\"]($2)"
         ghcjs_dom_oscillator_node_set_periodic_wave ::
@@ -84,12 +89,13 @@ foreign import javascript unsafe "$1[\"setPeriodicWave\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.periodicWave Mozilla OscillatorNode.periodicWave documentation> 
 oscillatorNodeSetPeriodicWave ::
-                              (IsOscillatorNode self, IsPeriodicWave wave) =>
-                                self -> Maybe wave -> IO ()
+                              (MonadIO m, IsOscillatorNode self, IsPeriodicWave wave) =>
+                                self -> Maybe wave -> m ()
 oscillatorNodeSetPeriodicWave self wave
-  = ghcjs_dom_oscillator_node_set_periodic_wave
-      (unOscillatorNode (toOscillatorNode self))
-      (maybe jsNull (unPeriodicWave . toPeriodicWave) wave)
+  = liftIO
+      (ghcjs_dom_oscillator_node_set_periodic_wave
+         (unOscillatorNode (toOscillatorNode self))
+         (maybe jsNull (unPeriodicWave . toPeriodicWave) wave))
 cSINE = 0
 cSQUARE = 1
 cSAWTOOTH = 2
@@ -106,10 +112,11 @@ foreign import javascript unsafe "$1[\"playbackState\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.playbackState Mozilla OscillatorNode.playbackState documentation> 
 oscillatorNodeGetPlaybackState ::
-                               (IsOscillatorNode self) => self -> IO Word
+                               (MonadIO m, IsOscillatorNode self) => self -> m Word
 oscillatorNodeGetPlaybackState self
-  = ghcjs_dom_oscillator_node_get_playback_state
-      (unOscillatorNode (toOscillatorNode self))
+  = liftIO
+      (ghcjs_dom_oscillator_node_get_playback_state
+         (unOscillatorNode (toOscillatorNode self)))
  
 foreign import javascript unsafe "$1[\"frequency\"]"
         ghcjs_dom_oscillator_node_get_frequency ::
@@ -117,11 +124,12 @@ foreign import javascript unsafe "$1[\"frequency\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.frequency Mozilla OscillatorNode.frequency documentation> 
 oscillatorNodeGetFrequency ::
-                           (IsOscillatorNode self) => self -> IO (Maybe AudioParam)
+                           (MonadIO m, IsOscillatorNode self) => self -> m (Maybe AudioParam)
 oscillatorNodeGetFrequency self
-  = (ghcjs_dom_oscillator_node_get_frequency
-       (unOscillatorNode (toOscillatorNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_oscillator_node_get_frequency
+          (unOscillatorNode (toOscillatorNode self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"detune\"]"
         ghcjs_dom_oscillator_node_get_detune ::
@@ -129,16 +137,17 @@ foreign import javascript unsafe "$1[\"detune\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.detune Mozilla OscillatorNode.detune documentation> 
 oscillatorNodeGetDetune ::
-                        (IsOscillatorNode self) => self -> IO (Maybe AudioParam)
+                        (MonadIO m, IsOscillatorNode self) => self -> m (Maybe AudioParam)
 oscillatorNodeGetDetune self
-  = (ghcjs_dom_oscillator_node_get_detune
-       (unOscillatorNode (toOscillatorNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_oscillator_node_get_detune
+          (unOscillatorNode (toOscillatorNode self)))
+         >>= fromJSRef)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.onended Mozilla OscillatorNode.onended documentation> 
-oscillatorNodeOnended ::
-                      (IsOscillatorNode self) => Signal self (EventM UIEvent self ())
-oscillatorNodeOnended = (connect "ended")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.ended Mozilla OscillatorNode.ended documentation> 
+oscillatorNodeEnded ::
+                    (IsOscillatorNode self, IsEventTarget self) => EventName self Event
+oscillatorNodeEnded = unsafeEventName (toJSString "ended")
 #else
 module GHCJS.DOM.OscillatorNode (
   ) where

@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"align\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement.align Mozilla HTMLHeadingElement.align documentation> 
 htmlHeadingElementSetAlign ::
-                           (IsHTMLHeadingElement self, ToJSString val) => self -> val -> IO ()
+                           (MonadIO m, IsHTMLHeadingElement self, ToJSString val) =>
+                             self -> val -> m ()
 htmlHeadingElementSetAlign self val
-  = ghcjs_dom_html_heading_element_set_align
-      (unHTMLHeadingElement (toHTMLHeadingElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_heading_element_set_align
+         (unHTMLHeadingElement (toHTMLHeadingElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_heading_element_get_align ::
@@ -39,12 +42,13 @@ foreign import javascript unsafe "$1[\"align\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement.align Mozilla HTMLHeadingElement.align documentation> 
 htmlHeadingElementGetAlign ::
-                           (IsHTMLHeadingElement self, FromJSString result) =>
-                             self -> IO result
+                           (MonadIO m, IsHTMLHeadingElement self, FromJSString result) =>
+                             self -> m result
 htmlHeadingElementGetAlign self
-  = fromJSString <$>
-      (ghcjs_dom_html_heading_element_get_align
-         (unHTMLHeadingElement (toHTMLHeadingElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_heading_element_get_align
+            (unHTMLHeadingElement (toHTMLHeadingElement self))))
 #else
 module GHCJS.DOM.HTMLHeadingElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLHeadingElement

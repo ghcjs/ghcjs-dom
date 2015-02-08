@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -37,9 +38,10 @@ foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_file_error_get_code :: JSRef FileError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileError.code Mozilla FileError.code documentation> 
-fileErrorGetCode :: (IsFileError self) => self -> IO Word
+fileErrorGetCode :: (MonadIO m, IsFileError self) => self -> m Word
 fileErrorGetCode self
-  = ghcjs_dom_file_error_get_code (unFileError (toFileError self))
+  = liftIO
+      (ghcjs_dom_file_error_get_code (unFileError (toFileError self)))
 #else
 module GHCJS.DOM.FileError (
   ) where

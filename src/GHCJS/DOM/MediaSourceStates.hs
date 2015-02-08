@@ -24,6 +24,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -38,11 +39,12 @@ foreign import javascript unsafe "$1[\"sourceType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.sourceType Mozilla MediaSourceStates.sourceType documentation> 
 mediaSourceStatesGetSourceType ::
-                               (IsMediaSourceStates self) => self -> IO SourceTypeEnum
+                               (MonadIO m, IsMediaSourceStates self) => self -> m SourceTypeEnum
 mediaSourceStatesGetSourceType self
-  = (ghcjs_dom_media_source_states_get_source_type
-       (unMediaSourceStates (toMediaSourceStates self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_source_states_get_source_type
+          (unMediaSourceStates (toMediaSourceStates self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"sourceId\"]"
         ghcjs_dom_media_source_states_get_source_id ::
@@ -50,12 +52,13 @@ foreign import javascript unsafe "$1[\"sourceId\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.sourceId Mozilla MediaSourceStates.sourceId documentation> 
 mediaSourceStatesGetSourceId ::
-                             (IsMediaSourceStates self, FromJSString result) =>
-                               self -> IO result
+                             (MonadIO m, IsMediaSourceStates self, FromJSString result) =>
+                               self -> m result
 mediaSourceStatesGetSourceId self
-  = fromJSString <$>
-      (ghcjs_dom_media_source_states_get_source_id
-         (unMediaSourceStates (toMediaSourceStates self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_media_source_states_get_source_id
+            (unMediaSourceStates (toMediaSourceStates self))))
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_media_source_states_get_width ::
@@ -63,11 +66,12 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.width Mozilla MediaSourceStates.width documentation> 
 mediaSourceStatesGetWidth ::
-                          (IsMediaSourceStates self) => self -> IO (Maybe Word)
+                          (MonadIO m, IsMediaSourceStates self) => self -> m (Maybe Word)
 mediaSourceStatesGetWidth self
-  = (ghcjs_dom_media_source_states_get_width
-       (unMediaSourceStates (toMediaSourceStates self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_source_states_get_width
+          (unMediaSourceStates (toMediaSourceStates self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_media_source_states_get_height ::
@@ -75,11 +79,12 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.height Mozilla MediaSourceStates.height documentation> 
 mediaSourceStatesGetHeight ::
-                           (IsMediaSourceStates self) => self -> IO (Maybe Word)
+                           (MonadIO m, IsMediaSourceStates self) => self -> m (Maybe Word)
 mediaSourceStatesGetHeight self
-  = (ghcjs_dom_media_source_states_get_height
-       (unMediaSourceStates (toMediaSourceStates self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_source_states_get_height
+          (unMediaSourceStates (toMediaSourceStates self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"frameRate\"]"
         ghcjs_dom_media_source_states_get_frame_rate ::
@@ -87,11 +92,12 @@ foreign import javascript unsafe "$1[\"frameRate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.frameRate Mozilla MediaSourceStates.frameRate documentation> 
 mediaSourceStatesGetFrameRate ::
-                              (IsMediaSourceStates self) => self -> IO (Maybe Float)
+                              (MonadIO m, IsMediaSourceStates self) => self -> m (Maybe Float)
 mediaSourceStatesGetFrameRate self
-  = (ghcjs_dom_media_source_states_get_frame_rate
-       (unMediaSourceStates (toMediaSourceStates self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_source_states_get_frame_rate
+          (unMediaSourceStates (toMediaSourceStates self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"aspectRatio\"]"
         ghcjs_dom_media_source_states_get_aspect_ratio ::
@@ -99,11 +105,12 @@ foreign import javascript unsafe "$1[\"aspectRatio\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.aspectRatio Mozilla MediaSourceStates.aspectRatio documentation> 
 mediaSourceStatesGetAspectRatio ::
-                                (IsMediaSourceStates self) => self -> IO (Maybe Float)
+                                (MonadIO m, IsMediaSourceStates self) => self -> m (Maybe Float)
 mediaSourceStatesGetAspectRatio self
-  = (ghcjs_dom_media_source_states_get_aspect_ratio
-       (unMediaSourceStates (toMediaSourceStates self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_source_states_get_aspect_ratio
+          (unMediaSourceStates (toMediaSourceStates self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"facingMode\"]"
         ghcjs_dom_media_source_states_get_facing_mode ::
@@ -111,11 +118,13 @@ foreign import javascript unsafe "$1[\"facingMode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.facingMode Mozilla MediaSourceStates.facingMode documentation> 
 mediaSourceStatesGetFacingMode ::
-                               (IsMediaSourceStates self) => self -> IO VideoFacingModeEnum
+                               (MonadIO m, IsMediaSourceStates self) =>
+                                 self -> m VideoFacingModeEnum
 mediaSourceStatesGetFacingMode self
-  = (ghcjs_dom_media_source_states_get_facing_mode
-       (unMediaSourceStates (toMediaSourceStates self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_source_states_get_facing_mode
+          (unMediaSourceStates (toMediaSourceStates self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"volume\"]"
         ghcjs_dom_media_source_states_get_volume ::
@@ -123,11 +132,12 @@ foreign import javascript unsafe "$1[\"volume\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.volume Mozilla MediaSourceStates.volume documentation> 
 mediaSourceStatesGetVolume ::
-                           (IsMediaSourceStates self) => self -> IO (Maybe Word)
+                           (MonadIO m, IsMediaSourceStates self) => self -> m (Maybe Word)
 mediaSourceStatesGetVolume self
-  = (ghcjs_dom_media_source_states_get_volume
-       (unMediaSourceStates (toMediaSourceStates self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_source_states_get_volume
+          (unMediaSourceStates (toMediaSourceStates self)))
+         >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.MediaSourceStates (
   ) where

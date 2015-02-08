@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,12 @@ foreign import javascript unsafe "$1[\"open\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement.open Mozilla HTMLDetailsElement.open documentation> 
 htmlDetailsElementSetOpen ::
-                          (IsHTMLDetailsElement self) => self -> Bool -> IO ()
+                          (MonadIO m, IsHTMLDetailsElement self) => self -> Bool -> m ()
 htmlDetailsElementSetOpen self val
-  = ghcjs_dom_html_details_element_set_open
-      (unHTMLDetailsElement (toHTMLDetailsElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_details_element_set_open
+         (unHTMLDetailsElement (toHTMLDetailsElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
         ghcjs_dom_html_details_element_get_open ::
@@ -38,10 +40,11 @@ foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement.open Mozilla HTMLDetailsElement.open documentation> 
 htmlDetailsElementGetOpen ::
-                          (IsHTMLDetailsElement self) => self -> IO Bool
+                          (MonadIO m, IsHTMLDetailsElement self) => self -> m Bool
 htmlDetailsElementGetOpen self
-  = ghcjs_dom_html_details_element_get_open
-      (unHTMLDetailsElement (toHTMLDetailsElement self))
+  = liftIO
+      (ghcjs_dom_html_details_element_get_open
+         (unHTMLDetailsElement (toHTMLDetailsElement self)))
 #else
 module GHCJS.DOM.HTMLDetailsElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLDetailsElement

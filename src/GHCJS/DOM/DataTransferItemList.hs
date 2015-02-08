@@ -16,6 +16,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,13 +31,14 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.item Mozilla DataTransferItemList.item documentation> 
 dataTransferItemListItem ::
-                         (IsDataTransferItemList self) =>
-                           self -> Word -> IO (Maybe DataTransferItem)
+                         (MonadIO m, IsDataTransferItemList self) =>
+                           self -> Word -> m (Maybe DataTransferItem)
 dataTransferItemListItem self index
-  = (ghcjs_dom_data_transfer_item_list_item
-       (unDataTransferItemList (toDataTransferItemList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_data_transfer_item_list_item
+          (unDataTransferItemList (toDataTransferItemList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_data_transfer_item_list_clear ::
@@ -44,10 +46,11 @@ foreign import javascript unsafe "$1[\"clear\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.clear Mozilla DataTransferItemList.clear documentation> 
 dataTransferItemListClear ::
-                          (IsDataTransferItemList self) => self -> IO ()
+                          (MonadIO m, IsDataTransferItemList self) => self -> m ()
 dataTransferItemListClear self
-  = ghcjs_dom_data_transfer_item_list_clear
-      (unDataTransferItemList (toDataTransferItemList self))
+  = liftIO
+      (ghcjs_dom_data_transfer_item_list_clear
+         (unDataTransferItemList (toDataTransferItemList self)))
  
 foreign import javascript unsafe "$1[\"add\"]($2)"
         ghcjs_dom_data_transfer_item_list_addFile ::
@@ -55,12 +58,13 @@ foreign import javascript unsafe "$1[\"add\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.addFile Mozilla DataTransferItemList.addFile documentation> 
 dataTransferItemListAddFile ::
-                            (IsDataTransferItemList self, IsFile file) =>
-                              self -> Maybe file -> IO ()
+                            (MonadIO m, IsDataTransferItemList self, IsFile file) =>
+                              self -> Maybe file -> m ()
 dataTransferItemListAddFile self file
-  = ghcjs_dom_data_transfer_item_list_addFile
-      (unDataTransferItemList (toDataTransferItemList self))
-      (maybe jsNull (unFile . toFile) file)
+  = liftIO
+      (ghcjs_dom_data_transfer_item_list_addFile
+         (unDataTransferItemList (toDataTransferItemList self))
+         (maybe jsNull (unFile . toFile) file))
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)"
         ghcjs_dom_data_transfer_item_list_add ::
@@ -68,14 +72,15 @@ foreign import javascript unsafe "$1[\"add\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.add Mozilla DataTransferItemList.add documentation> 
 dataTransferItemListAdd ::
-                        (IsDataTransferItemList self, ToJSString data',
+                        (MonadIO m, IsDataTransferItemList self, ToJSString data',
                          ToJSString type') =>
-                          self -> data' -> type' -> IO ()
+                          self -> data' -> type' -> m ()
 dataTransferItemListAdd self data' type'
-  = ghcjs_dom_data_transfer_item_list_add
-      (unDataTransferItemList (toDataTransferItemList self))
-      (toJSString data')
-      (toJSString type')
+  = liftIO
+      (ghcjs_dom_data_transfer_item_list_add
+         (unDataTransferItemList (toDataTransferItemList self))
+         (toJSString data')
+         (toJSString type'))
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_data_transfer_item_list_get_length ::
@@ -83,10 +88,11 @@ foreign import javascript unsafe "$1[\"length\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.length Mozilla DataTransferItemList.length documentation> 
 dataTransferItemListGetLength ::
-                              (IsDataTransferItemList self) => self -> IO Int
+                              (MonadIO m, IsDataTransferItemList self) => self -> m Int
 dataTransferItemListGetLength self
-  = ghcjs_dom_data_transfer_item_list_get_length
-      (unDataTransferItemList (toDataTransferItemList self))
+  = liftIO
+      (ghcjs_dom_data_transfer_item_list_get_length
+         (unDataTransferItemList (toDataTransferItemList self)))
 #else
 module GHCJS.DOM.DataTransferItemList (
   ) where

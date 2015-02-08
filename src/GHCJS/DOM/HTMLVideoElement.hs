@@ -39,6 +39,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -53,10 +54,11 @@ foreign import javascript unsafe "$1[\"webkitEnterFullscreen\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitEnterFullscreen Mozilla HTMLVideoElement.webkitEnterFullscreen documentation> 
 htmlVideoElementWebkitEnterFullscreen ::
-                                      (IsHTMLVideoElement self) => self -> IO ()
+                                      (MonadIO m, IsHTMLVideoElement self) => self -> m ()
 htmlVideoElementWebkitEnterFullscreen self
-  = ghcjs_dom_html_video_element_webkit_enter_fullscreen
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_webkit_enter_fullscreen
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"webkitExitFullscreen\"]()"
         ghcjs_dom_html_video_element_webkit_exit_fullscreen ::
@@ -64,10 +66,11 @@ foreign import javascript unsafe "$1[\"webkitExitFullscreen\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitExitFullscreen Mozilla HTMLVideoElement.webkitExitFullscreen documentation> 
 htmlVideoElementWebkitExitFullscreen ::
-                                     (IsHTMLVideoElement self) => self -> IO ()
+                                     (MonadIO m, IsHTMLVideoElement self) => self -> m ()
 htmlVideoElementWebkitExitFullscreen self
-  = ghcjs_dom_html_video_element_webkit_exit_fullscreen
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_webkit_exit_fullscreen
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"webkitEnterFullScreen\"]()"
         ghcjs_dom_html_video_element_webkit_enter_full_screen ::
@@ -75,10 +78,11 @@ foreign import javascript unsafe "$1[\"webkitEnterFullScreen\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitEnterFullScreen Mozilla HTMLVideoElement.webkitEnterFullScreen documentation> 
 htmlVideoElementWebkitEnterFullScreen ::
-                                      (IsHTMLVideoElement self) => self -> IO ()
+                                      (MonadIO m, IsHTMLVideoElement self) => self -> m ()
 htmlVideoElementWebkitEnterFullScreen self
-  = ghcjs_dom_html_video_element_webkit_enter_full_screen
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_webkit_enter_full_screen
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"webkitExitFullScreen\"]()"
         ghcjs_dom_html_video_element_webkit_exit_full_screen ::
@@ -86,10 +90,11 @@ foreign import javascript unsafe "$1[\"webkitExitFullScreen\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitExitFullScreen Mozilla HTMLVideoElement.webkitExitFullScreen documentation> 
 htmlVideoElementWebkitExitFullScreen ::
-                                     (IsHTMLVideoElement self) => self -> IO ()
+                                     (MonadIO m, IsHTMLVideoElement self) => self -> m ()
 htmlVideoElementWebkitExitFullScreen self
-  = ghcjs_dom_html_video_element_webkit_exit_full_screen
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_webkit_exit_full_screen
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_video_element_set_width ::
@@ -97,11 +102,12 @@ foreign import javascript unsafe "$1[\"width\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.width Mozilla HTMLVideoElement.width documentation> 
 htmlVideoElementSetWidth ::
-                         (IsHTMLVideoElement self) => self -> Word -> IO ()
+                         (MonadIO m, IsHTMLVideoElement self) => self -> Word -> m ()
 htmlVideoElementSetWidth self val
-  = ghcjs_dom_html_video_element_set_width
-      (unHTMLVideoElement (toHTMLVideoElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_video_element_set_width
+         (unHTMLVideoElement (toHTMLVideoElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_video_element_get_width ::
@@ -109,10 +115,11 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.width Mozilla HTMLVideoElement.width documentation> 
 htmlVideoElementGetWidth ::
-                         (IsHTMLVideoElement self) => self -> IO Word
+                         (MonadIO m, IsHTMLVideoElement self) => self -> m Word
 htmlVideoElementGetWidth self
-  = ghcjs_dom_html_video_element_get_width
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_width
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_video_element_set_height ::
@@ -120,11 +127,12 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.height Mozilla HTMLVideoElement.height documentation> 
 htmlVideoElementSetHeight ::
-                          (IsHTMLVideoElement self) => self -> Word -> IO ()
+                          (MonadIO m, IsHTMLVideoElement self) => self -> Word -> m ()
 htmlVideoElementSetHeight self val
-  = ghcjs_dom_html_video_element_set_height
-      (unHTMLVideoElement (toHTMLVideoElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_video_element_set_height
+         (unHTMLVideoElement (toHTMLVideoElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_video_element_get_height ::
@@ -132,10 +140,11 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.height Mozilla HTMLVideoElement.height documentation> 
 htmlVideoElementGetHeight ::
-                          (IsHTMLVideoElement self) => self -> IO Word
+                          (MonadIO m, IsHTMLVideoElement self) => self -> m Word
 htmlVideoElementGetHeight self
-  = ghcjs_dom_html_video_element_get_height
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_height
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"videoWidth\"]"
         ghcjs_dom_html_video_element_get_video_width ::
@@ -143,10 +152,11 @@ foreign import javascript unsafe "$1[\"videoWidth\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.videoWidth Mozilla HTMLVideoElement.videoWidth documentation> 
 htmlVideoElementGetVideoWidth ::
-                              (IsHTMLVideoElement self) => self -> IO Word
+                              (MonadIO m, IsHTMLVideoElement self) => self -> m Word
 htmlVideoElementGetVideoWidth self
-  = ghcjs_dom_html_video_element_get_video_width
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_video_width
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"videoHeight\"]"
         ghcjs_dom_html_video_element_get_video_height ::
@@ -154,10 +164,11 @@ foreign import javascript unsafe "$1[\"videoHeight\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.videoHeight Mozilla HTMLVideoElement.videoHeight documentation> 
 htmlVideoElementGetVideoHeight ::
-                               (IsHTMLVideoElement self) => self -> IO Word
+                               (MonadIO m, IsHTMLVideoElement self) => self -> m Word
 htmlVideoElementGetVideoHeight self
-  = ghcjs_dom_html_video_element_get_video_height
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_video_height
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"poster\"] = $2;"
         ghcjs_dom_html_video_element_set_poster ::
@@ -165,11 +176,13 @@ foreign import javascript unsafe "$1[\"poster\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.poster Mozilla HTMLVideoElement.poster documentation> 
 htmlVideoElementSetPoster ::
-                          (IsHTMLVideoElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLVideoElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlVideoElementSetPoster self val
-  = ghcjs_dom_html_video_element_set_poster
-      (unHTMLVideoElement (toHTMLVideoElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_video_element_set_poster
+         (unHTMLVideoElement (toHTMLVideoElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"poster\"]"
         ghcjs_dom_html_video_element_get_poster ::
@@ -177,11 +190,13 @@ foreign import javascript unsafe "$1[\"poster\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.poster Mozilla HTMLVideoElement.poster documentation> 
 htmlVideoElementGetPoster ::
-                          (IsHTMLVideoElement self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsHTMLVideoElement self, FromJSString result) =>
+                            self -> m result
 htmlVideoElementGetPoster self
-  = fromJSString <$>
-      (ghcjs_dom_html_video_element_get_poster
-         (unHTMLVideoElement (toHTMLVideoElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_video_element_get_poster
+            (unHTMLVideoElement (toHTMLVideoElement self))))
  
 foreign import javascript unsafe
         "($1[\"webkitSupportsFullscreen\"] ? 1 : 0)"
@@ -190,10 +205,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitSupportsFullscreen Mozilla HTMLVideoElement.webkitSupportsFullscreen documentation> 
 htmlVideoElementGetWebkitSupportsFullscreen ::
-                                            (IsHTMLVideoElement self) => self -> IO Bool
+                                            (MonadIO m, IsHTMLVideoElement self) => self -> m Bool
 htmlVideoElementGetWebkitSupportsFullscreen self
-  = ghcjs_dom_html_video_element_get_webkit_supports_fullscreen
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_webkit_supports_fullscreen
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe
         "($1[\"webkitDisplayingFullscreen\"] ? 1 : 0)"
@@ -202,10 +218,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitDisplayingFullscreen Mozilla HTMLVideoElement.webkitDisplayingFullscreen documentation> 
 htmlVideoElementGetWebkitDisplayingFullscreen ::
-                                              (IsHTMLVideoElement self) => self -> IO Bool
+                                              (MonadIO m, IsHTMLVideoElement self) => self -> m Bool
 htmlVideoElementGetWebkitDisplayingFullscreen self
-  = ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_webkit_displaying_fullscreen
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe
         "$1[\"webkitWirelessVideoPlaybackDisabled\"] = $2;"
@@ -214,12 +231,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitWirelessVideoPlaybackDisabled Mozilla HTMLVideoElement.webkitWirelessVideoPlaybackDisabled documentation> 
 htmlVideoElementSetWebkitWirelessVideoPlaybackDisabled ::
-                                                       (IsHTMLVideoElement self) =>
-                                                         self -> Bool -> IO ()
+                                                       (MonadIO m, IsHTMLVideoElement self) =>
+                                                         self -> Bool -> m ()
 htmlVideoElementSetWebkitWirelessVideoPlaybackDisabled self val
-  = ghcjs_dom_html_video_element_set_webkit_wireless_video_playback_disabled
-      (unHTMLVideoElement (toHTMLVideoElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_video_element_set_webkit_wireless_video_playback_disabled
+         (unHTMLVideoElement (toHTMLVideoElement self))
+         val)
  
 foreign import javascript unsafe
         "($1[\"webkitWirelessVideoPlaybackDisabled\"] ? 1 : 0)"
@@ -228,10 +246,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitWirelessVideoPlaybackDisabled Mozilla HTMLVideoElement.webkitWirelessVideoPlaybackDisabled documentation> 
 htmlVideoElementGetWebkitWirelessVideoPlaybackDisabled ::
-                                                       (IsHTMLVideoElement self) => self -> IO Bool
+                                                       (MonadIO m, IsHTMLVideoElement self) =>
+                                                         self -> m Bool
 htmlVideoElementGetWebkitWirelessVideoPlaybackDisabled self
-  = ghcjs_dom_html_video_element_get_webkit_wireless_video_playback_disabled
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_webkit_wireless_video_playback_disabled
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"webkitDecodedFrameCount\"]"
         ghcjs_dom_html_video_element_get_webkit_decoded_frame_count ::
@@ -239,10 +259,11 @@ foreign import javascript unsafe "$1[\"webkitDecodedFrameCount\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitDecodedFrameCount Mozilla HTMLVideoElement.webkitDecodedFrameCount documentation> 
 htmlVideoElementGetWebkitDecodedFrameCount ::
-                                           (IsHTMLVideoElement self) => self -> IO Word
+                                           (MonadIO m, IsHTMLVideoElement self) => self -> m Word
 htmlVideoElementGetWebkitDecodedFrameCount self
-  = ghcjs_dom_html_video_element_get_webkit_decoded_frame_count
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_webkit_decoded_frame_count
+         (unHTMLVideoElement (toHTMLVideoElement self)))
  
 foreign import javascript unsafe "$1[\"webkitDroppedFrameCount\"]"
         ghcjs_dom_html_video_element_get_webkit_dropped_frame_count ::
@@ -250,10 +271,11 @@ foreign import javascript unsafe "$1[\"webkitDroppedFrameCount\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitDroppedFrameCount Mozilla HTMLVideoElement.webkitDroppedFrameCount documentation> 
 htmlVideoElementGetWebkitDroppedFrameCount ::
-                                           (IsHTMLVideoElement self) => self -> IO Word
+                                           (MonadIO m, IsHTMLVideoElement self) => self -> m Word
 htmlVideoElementGetWebkitDroppedFrameCount self
-  = ghcjs_dom_html_video_element_get_webkit_dropped_frame_count
-      (unHTMLVideoElement (toHTMLVideoElement self))
+  = liftIO
+      (ghcjs_dom_html_video_element_get_webkit_dropped_frame_count
+         (unHTMLVideoElement (toHTMLVideoElement self)))
 #else
 module GHCJS.DOM.HTMLVideoElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLVideoElement

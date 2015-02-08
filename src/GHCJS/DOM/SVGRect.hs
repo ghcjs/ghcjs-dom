@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,65 +28,73 @@ foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_svg_rect_set_x :: JSRef SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.x Mozilla SVGRect.x documentation> 
-svgRectSetX :: (IsSVGRect self) => self -> Float -> IO ()
+svgRectSetX :: (MonadIO m, IsSVGRect self) => self -> Float -> m ()
 svgRectSetX self val
-  = ghcjs_dom_svg_rect_set_x (unSVGRect (toSVGRect self)) val
+  = liftIO
+      (ghcjs_dom_svg_rect_set_x (unSVGRect (toSVGRect self)) val)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_rect_get_x :: JSRef SVGRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.x Mozilla SVGRect.x documentation> 
-svgRectGetX :: (IsSVGRect self) => self -> IO Float
+svgRectGetX :: (MonadIO m, IsSVGRect self) => self -> m Float
 svgRectGetX self
-  = ghcjs_dom_svg_rect_get_x (unSVGRect (toSVGRect self))
+  = liftIO (ghcjs_dom_svg_rect_get_x (unSVGRect (toSVGRect self)))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_rect_set_y :: JSRef SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.y Mozilla SVGRect.y documentation> 
-svgRectSetY :: (IsSVGRect self) => self -> Float -> IO ()
+svgRectSetY :: (MonadIO m, IsSVGRect self) => self -> Float -> m ()
 svgRectSetY self val
-  = ghcjs_dom_svg_rect_set_y (unSVGRect (toSVGRect self)) val
+  = liftIO
+      (ghcjs_dom_svg_rect_set_y (unSVGRect (toSVGRect self)) val)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_rect_get_y :: JSRef SVGRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.y Mozilla SVGRect.y documentation> 
-svgRectGetY :: (IsSVGRect self) => self -> IO Float
+svgRectGetY :: (MonadIO m, IsSVGRect self) => self -> m Float
 svgRectGetY self
-  = ghcjs_dom_svg_rect_get_y (unSVGRect (toSVGRect self))
+  = liftIO (ghcjs_dom_svg_rect_get_y (unSVGRect (toSVGRect self)))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_svg_rect_set_width :: JSRef SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.width Mozilla SVGRect.width documentation> 
-svgRectSetWidth :: (IsSVGRect self) => self -> Float -> IO ()
+svgRectSetWidth ::
+                (MonadIO m, IsSVGRect self) => self -> Float -> m ()
 svgRectSetWidth self val
-  = ghcjs_dom_svg_rect_set_width (unSVGRect (toSVGRect self)) val
+  = liftIO
+      (ghcjs_dom_svg_rect_set_width (unSVGRect (toSVGRect self)) val)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_svg_rect_get_width :: JSRef SVGRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.width Mozilla SVGRect.width documentation> 
-svgRectGetWidth :: (IsSVGRect self) => self -> IO Float
+svgRectGetWidth :: (MonadIO m, IsSVGRect self) => self -> m Float
 svgRectGetWidth self
-  = ghcjs_dom_svg_rect_get_width (unSVGRect (toSVGRect self))
+  = liftIO
+      (ghcjs_dom_svg_rect_get_width (unSVGRect (toSVGRect self)))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_svg_rect_set_height :: JSRef SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.height Mozilla SVGRect.height documentation> 
-svgRectSetHeight :: (IsSVGRect self) => self -> Float -> IO ()
+svgRectSetHeight ::
+                 (MonadIO m, IsSVGRect self) => self -> Float -> m ()
 svgRectSetHeight self val
-  = ghcjs_dom_svg_rect_set_height (unSVGRect (toSVGRect self)) val
+  = liftIO
+      (ghcjs_dom_svg_rect_set_height (unSVGRect (toSVGRect self)) val)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_svg_rect_get_height :: JSRef SVGRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.height Mozilla SVGRect.height documentation> 
-svgRectGetHeight :: (IsSVGRect self) => self -> IO Float
+svgRectGetHeight :: (MonadIO m, IsSVGRect self) => self -> m Float
 svgRectGetHeight self
-  = ghcjs_dom_svg_rect_get_height (unSVGRect (toSVGRect self))
+  = liftIO
+      (ghcjs_dom_svg_rect_get_height (unSVGRect (toSVGRect self)))
 #else
 module GHCJS.DOM.SVGRect (
   ) where

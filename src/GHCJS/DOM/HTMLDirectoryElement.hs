@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,12 @@ foreign import javascript unsafe "$1[\"compact\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement.compact Mozilla HTMLDirectoryElement.compact documentation> 
 htmlDirectoryElementSetCompact ::
-                               (IsHTMLDirectoryElement self) => self -> Bool -> IO ()
+                               (MonadIO m, IsHTMLDirectoryElement self) => self -> Bool -> m ()
 htmlDirectoryElementSetCompact self val
-  = ghcjs_dom_html_directory_element_set_compact
-      (unHTMLDirectoryElement (toHTMLDirectoryElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_directory_element_set_compact
+         (unHTMLDirectoryElement (toHTMLDirectoryElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         ghcjs_dom_html_directory_element_get_compact ::
@@ -39,10 +41,11 @@ foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement.compact Mozilla HTMLDirectoryElement.compact documentation> 
 htmlDirectoryElementGetCompact ::
-                               (IsHTMLDirectoryElement self) => self -> IO Bool
+                               (MonadIO m, IsHTMLDirectoryElement self) => self -> m Bool
 htmlDirectoryElementGetCompact self
-  = ghcjs_dom_html_directory_element_get_compact
-      (unHTMLDirectoryElement (toHTMLDirectoryElement self))
+  = liftIO
+      (ghcjs_dom_html_directory_element_get_compact
+         (unHTMLDirectoryElement (toHTMLDirectoryElement self)))
 #else
 module GHCJS.DOM.HTMLDirectoryElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLDirectoryElement

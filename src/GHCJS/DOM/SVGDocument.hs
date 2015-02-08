@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,13 +26,14 @@ foreign import javascript unsafe "$1[\"createEvent\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument.createEvent Mozilla SVGDocument.createEvent documentation> 
 svgDocumentCreateEvent ::
-                       (IsSVGDocument self, ToJSString eventType) =>
-                         self -> eventType -> IO (Maybe Event)
+                       (MonadIO m, IsSVGDocument self, ToJSString eventType) =>
+                         self -> eventType -> m (Maybe Event)
 svgDocumentCreateEvent self eventType
-  = (ghcjs_dom_svg_document_create_event
-       (unSVGDocument (toSVGDocument self))
-       (toJSString eventType))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_document_create_event
+          (unSVGDocument (toSVGDocument self))
+          (toJSString eventType))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"rootElement\"]"
         ghcjs_dom_svg_document_get_root_element ::
@@ -39,11 +41,12 @@ foreign import javascript unsafe "$1[\"rootElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument.rootElement Mozilla SVGDocument.rootElement documentation> 
 svgDocumentGetRootElement ::
-                          (IsSVGDocument self) => self -> IO (Maybe SVGSVGElement)
+                          (MonadIO m, IsSVGDocument self) => self -> m (Maybe SVGSVGElement)
 svgDocumentGetRootElement self
-  = (ghcjs_dom_svg_document_get_root_element
-       (unSVGDocument (toSVGDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_document_get_root_element
+          (unSVGDocument (toSVGDocument self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGDocument (
   ) where

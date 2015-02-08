@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,18 +30,19 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent.initHashChangeEvent Mozilla HashChangeEvent.initHashChangeEvent documentation> 
 hashChangeEventInitHashChangeEvent ::
-                                   (IsHashChangeEvent self, ToJSString type', ToJSString oldURL,
-                                    ToJSString newURL) =>
-                                     self -> type' -> Bool -> Bool -> oldURL -> newURL -> IO ()
+                                   (MonadIO m, IsHashChangeEvent self, ToJSString type',
+                                    ToJSString oldURL, ToJSString newURL) =>
+                                     self -> type' -> Bool -> Bool -> oldURL -> newURL -> m ()
 hashChangeEventInitHashChangeEvent self type' canBubble cancelable
   oldURL newURL
-  = ghcjs_dom_hash_change_event_init_hash_change_event
-      (unHashChangeEvent (toHashChangeEvent self))
-      (toJSString type')
-      canBubble
-      cancelable
-      (toJSString oldURL)
-      (toJSString newURL)
+  = liftIO
+      (ghcjs_dom_hash_change_event_init_hash_change_event
+         (unHashChangeEvent (toHashChangeEvent self))
+         (toJSString type')
+         canBubble
+         cancelable
+         (toJSString oldURL)
+         (toJSString newURL))
  
 foreign import javascript unsafe "$1[\"oldURL\"]"
         ghcjs_dom_hash_change_event_get_old_url ::
@@ -48,11 +50,13 @@ foreign import javascript unsafe "$1[\"oldURL\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent.oldURL Mozilla HashChangeEvent.oldURL documentation> 
 hashChangeEventGetOldURL ::
-                         (IsHashChangeEvent self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHashChangeEvent self, FromJSString result) =>
+                           self -> m result
 hashChangeEventGetOldURL self
-  = fromJSString <$>
-      (ghcjs_dom_hash_change_event_get_old_url
-         (unHashChangeEvent (toHashChangeEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_hash_change_event_get_old_url
+            (unHashChangeEvent (toHashChangeEvent self))))
  
 foreign import javascript unsafe "$1[\"newURL\"]"
         ghcjs_dom_hash_change_event_get_new_url ::
@@ -60,11 +64,13 @@ foreign import javascript unsafe "$1[\"newURL\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent.newURL Mozilla HashChangeEvent.newURL documentation> 
 hashChangeEventGetNewURL ::
-                         (IsHashChangeEvent self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHashChangeEvent self, FromJSString result) =>
+                           self -> m result
 hashChangeEventGetNewURL self
-  = fromJSString <$>
-      (ghcjs_dom_hash_change_event_get_new_url
-         (unHashChangeEvent (toHashChangeEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_hash_change_event_get_new_url
+            (unHashChangeEvent (toHashChangeEvent self))))
 #else
 module GHCJS.DOM.HashChangeEvent (
   ) where

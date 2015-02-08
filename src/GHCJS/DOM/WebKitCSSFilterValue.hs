@@ -16,6 +16,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,13 +31,14 @@ foreign import javascript unsafe "$1[\"_get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue._get Mozilla WebKitCSSFilterValue._get documentation> 
 webKitCSSFilterValue_get ::
-                         (IsWebKitCSSFilterValue self) =>
-                           self -> Word -> IO (Maybe CSSValue)
+                         (MonadIO m, IsWebKitCSSFilterValue self) =>
+                           self -> Word -> m (Maybe CSSValue)
 webKitCSSFilterValue_get self index
-  = (ghcjs_dom_webkit_css_filter_value_get
-       (unWebKitCSSFilterValue (toWebKitCSSFilterValue self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_webkit_css_filter_value_get
+          (unWebKitCSSFilterValue (toWebKitCSSFilterValue self))
+          index)
+         >>= fromJSRef)
 cCSS_FILTER_REFERENCE = 1
 cCSS_FILTER_GRAYSCALE = 2
 cCSS_FILTER_SEPIA = 3
@@ -55,10 +57,11 @@ foreign import javascript unsafe "$1[\"operationType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue.operationType Mozilla WebKitCSSFilterValue.operationType documentation> 
 webKitCSSFilterValueGetOperationType ::
-                                     (IsWebKitCSSFilterValue self) => self -> IO Word
+                                     (MonadIO m, IsWebKitCSSFilterValue self) => self -> m Word
 webKitCSSFilterValueGetOperationType self
-  = ghcjs_dom_webkit_css_filter_value_get_operation_type
-      (unWebKitCSSFilterValue (toWebKitCSSFilterValue self))
+  = liftIO
+      (ghcjs_dom_webkit_css_filter_value_get_operation_type
+         (unWebKitCSSFilterValue (toWebKitCSSFilterValue self)))
 #else
 module GHCJS.DOM.WebKitCSSFilterValue (
   ) where

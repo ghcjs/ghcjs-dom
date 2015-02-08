@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"content\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTemplateElement.content Mozilla HTMLTemplateElement.content documentation> 
 htmlTemplateElementGetContent ::
-                              (IsHTMLTemplateElement self) => self -> IO (Maybe DocumentFragment)
+                              (MonadIO m, IsHTMLTemplateElement self) =>
+                                self -> m (Maybe DocumentFragment)
 htmlTemplateElementGetContent self
-  = (ghcjs_dom_html_template_element_get_content
-       (unHTMLTemplateElement (toHTMLTemplateElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_template_element_get_content
+          (unHTMLTemplateElement (toHTMLTemplateElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLTemplateElement (
   ) where

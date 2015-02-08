@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,12 +28,13 @@ foreign import javascript unsafe "$1[\"buffer\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.buffer Mozilla ConvolverNode.buffer documentation> 
 convolverNodeSetBuffer ::
-                       (IsConvolverNode self, IsAudioBuffer val) =>
-                         self -> Maybe val -> IO ()
+                       (MonadIO m, IsConvolverNode self, IsAudioBuffer val) =>
+                         self -> Maybe val -> m ()
 convolverNodeSetBuffer self val
-  = ghcjs_dom_convolver_node_set_buffer
-      (unConvolverNode (toConvolverNode self))
-      (maybe jsNull (unAudioBuffer . toAudioBuffer) val)
+  = liftIO
+      (ghcjs_dom_convolver_node_set_buffer
+         (unConvolverNode (toConvolverNode self))
+         (maybe jsNull (unAudioBuffer . toAudioBuffer) val))
  
 foreign import javascript unsafe "$1[\"buffer\"]"
         ghcjs_dom_convolver_node_get_buffer ::
@@ -40,11 +42,12 @@ foreign import javascript unsafe "$1[\"buffer\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.buffer Mozilla ConvolverNode.buffer documentation> 
 convolverNodeGetBuffer ::
-                       (IsConvolverNode self) => self -> IO (Maybe AudioBuffer)
+                       (MonadIO m, IsConvolverNode self) => self -> m (Maybe AudioBuffer)
 convolverNodeGetBuffer self
-  = (ghcjs_dom_convolver_node_get_buffer
-       (unConvolverNode (toConvolverNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_convolver_node_get_buffer
+          (unConvolverNode (toConvolverNode self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"normalize\"] = $2;"
         ghcjs_dom_convolver_node_set_normalize ::
@@ -52,11 +55,12 @@ foreign import javascript unsafe "$1[\"normalize\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 
 convolverNodeSetNormalize ::
-                          (IsConvolverNode self) => self -> Bool -> IO ()
+                          (MonadIO m, IsConvolverNode self) => self -> Bool -> m ()
 convolverNodeSetNormalize self val
-  = ghcjs_dom_convolver_node_set_normalize
-      (unConvolverNode (toConvolverNode self))
-      val
+  = liftIO
+      (ghcjs_dom_convolver_node_set_normalize
+         (unConvolverNode (toConvolverNode self))
+         val)
  
 foreign import javascript unsafe "($1[\"normalize\"] ? 1 : 0)"
         ghcjs_dom_convolver_node_get_normalize ::
@@ -64,10 +68,11 @@ foreign import javascript unsafe "($1[\"normalize\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 
 convolverNodeGetNormalize ::
-                          (IsConvolverNode self) => self -> IO Bool
+                          (MonadIO m, IsConvolverNode self) => self -> m Bool
 convolverNodeGetNormalize self
-  = ghcjs_dom_convolver_node_get_normalize
-      (unConvolverNode (toConvolverNode self))
+  = liftIO
+      (ghcjs_dom_convolver_node_get_normalize
+         (unConvolverNode (toConvolverNode self)))
 #else
 module GHCJS.DOM.ConvolverNode (
   ) where

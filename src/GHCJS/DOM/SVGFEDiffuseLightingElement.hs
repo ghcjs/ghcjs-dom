@@ -20,6 +20,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -34,13 +35,14 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement.in1 Mozilla SVGFEDiffuseLightingElement.in1 documentation> 
 svgfeDiffuseLightingElementGetIn1 ::
-                                  (IsSVGFEDiffuseLightingElement self) =>
-                                    self -> IO (Maybe SVGAnimatedString)
+                                  (MonadIO m, IsSVGFEDiffuseLightingElement self) =>
+                                    self -> m (Maybe SVGAnimatedString)
 svgfeDiffuseLightingElementGetIn1 self
-  = (ghcjs_dom_svgfe_diffuse_lighting_element_get_in1
-       (unSVGFEDiffuseLightingElement
-          (toSVGFEDiffuseLightingElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_diffuse_lighting_element_get_in1
+          (unSVGFEDiffuseLightingElement
+             (toSVGFEDiffuseLightingElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"surfaceScale\"]"
         ghcjs_dom_svgfe_diffuse_lighting_element_get_surface_scale ::
@@ -48,13 +50,14 @@ foreign import javascript unsafe "$1[\"surfaceScale\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement.surfaceScale Mozilla SVGFEDiffuseLightingElement.surfaceScale documentation> 
 svgfeDiffuseLightingElementGetSurfaceScale ::
-                                           (IsSVGFEDiffuseLightingElement self) =>
-                                             self -> IO (Maybe SVGAnimatedNumber)
+                                           (MonadIO m, IsSVGFEDiffuseLightingElement self) =>
+                                             self -> m (Maybe SVGAnimatedNumber)
 svgfeDiffuseLightingElementGetSurfaceScale self
-  = (ghcjs_dom_svgfe_diffuse_lighting_element_get_surface_scale
-       (unSVGFEDiffuseLightingElement
-          (toSVGFEDiffuseLightingElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_diffuse_lighting_element_get_surface_scale
+          (unSVGFEDiffuseLightingElement
+             (toSVGFEDiffuseLightingElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"diffuseConstant\"]"
         ghcjs_dom_svgfe_diffuse_lighting_element_get_diffuse_constant ::
@@ -62,13 +65,14 @@ foreign import javascript unsafe "$1[\"diffuseConstant\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement.diffuseConstant Mozilla SVGFEDiffuseLightingElement.diffuseConstant documentation> 
 svgfeDiffuseLightingElementGetDiffuseConstant ::
-                                              (IsSVGFEDiffuseLightingElement self) =>
-                                                self -> IO (Maybe SVGAnimatedNumber)
+                                              (MonadIO m, IsSVGFEDiffuseLightingElement self) =>
+                                                self -> m (Maybe SVGAnimatedNumber)
 svgfeDiffuseLightingElementGetDiffuseConstant self
-  = (ghcjs_dom_svgfe_diffuse_lighting_element_get_diffuse_constant
-       (unSVGFEDiffuseLightingElement
-          (toSVGFEDiffuseLightingElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_diffuse_lighting_element_get_diffuse_constant
+          (unSVGFEDiffuseLightingElement
+             (toSVGFEDiffuseLightingElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"kernelUnitLengthX\"]"
         ghcjs_dom_svgfe_diffuse_lighting_element_get_kernel_unit_length_x
@@ -77,13 +81,14 @@ foreign import javascript unsafe "$1[\"kernelUnitLengthX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement.kernelUnitLengthX Mozilla SVGFEDiffuseLightingElement.kernelUnitLengthX documentation> 
 svgfeDiffuseLightingElementGetKernelUnitLengthX ::
-                                                (IsSVGFEDiffuseLightingElement self) =>
-                                                  self -> IO (Maybe SVGAnimatedNumber)
+                                                (MonadIO m, IsSVGFEDiffuseLightingElement self) =>
+                                                  self -> m (Maybe SVGAnimatedNumber)
 svgfeDiffuseLightingElementGetKernelUnitLengthX self
-  = (ghcjs_dom_svgfe_diffuse_lighting_element_get_kernel_unit_length_x
-       (unSVGFEDiffuseLightingElement
-          (toSVGFEDiffuseLightingElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_diffuse_lighting_element_get_kernel_unit_length_x
+          (unSVGFEDiffuseLightingElement
+             (toSVGFEDiffuseLightingElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"kernelUnitLengthY\"]"
         ghcjs_dom_svgfe_diffuse_lighting_element_get_kernel_unit_length_y
@@ -92,13 +97,14 @@ foreign import javascript unsafe "$1[\"kernelUnitLengthY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement.kernelUnitLengthY Mozilla SVGFEDiffuseLightingElement.kernelUnitLengthY documentation> 
 svgfeDiffuseLightingElementGetKernelUnitLengthY ::
-                                                (IsSVGFEDiffuseLightingElement self) =>
-                                                  self -> IO (Maybe SVGAnimatedNumber)
+                                                (MonadIO m, IsSVGFEDiffuseLightingElement self) =>
+                                                  self -> m (Maybe SVGAnimatedNumber)
 svgfeDiffuseLightingElementGetKernelUnitLengthY self
-  = (ghcjs_dom_svgfe_diffuse_lighting_element_get_kernel_unit_length_y
-       (unSVGFEDiffuseLightingElement
-          (toSVGFEDiffuseLightingElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_diffuse_lighting_element_get_kernel_unit_length_y
+          (unSVGFEDiffuseLightingElement
+             (toSVGFEDiffuseLightingElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEDiffuseLightingElement (
   ) where

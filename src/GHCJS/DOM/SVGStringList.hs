@@ -18,6 +18,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,10 +31,12 @@ foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_svg_string_list_clear :: JSRef SVGStringList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.clear Mozilla SVGStringList.clear documentation> 
-svgStringListClear :: (IsSVGStringList self) => self -> IO ()
+svgStringListClear ::
+                   (MonadIO m, IsSVGStringList self) => self -> m ()
 svgStringListClear self
-  = ghcjs_dom_svg_string_list_clear
-      (unSVGStringList (toSVGStringList self))
+  = liftIO
+      (ghcjs_dom_svg_string_list_clear
+         (unSVGStringList (toSVGStringList self)))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
         ghcjs_dom_svg_string_list_initialize ::
@@ -41,13 +44,15 @@ foreign import javascript unsafe "$1[\"initialize\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.initialize Mozilla SVGStringList.initialize documentation> 
 svgStringListInitialize ::
-                        (IsSVGStringList self, ToJSString item, FromJSString result) =>
-                          self -> item -> IO result
+                        (MonadIO m, IsSVGStringList self, ToJSString item,
+                         FromJSString result) =>
+                          self -> item -> m result
 svgStringListInitialize self item
-  = fromJSString <$>
-      (ghcjs_dom_svg_string_list_initialize
-         (unSVGStringList (toSVGStringList self))
-         (toJSString item))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_string_list_initialize
+            (unSVGStringList (toSVGStringList self))
+            (toJSString item)))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)"
         ghcjs_dom_svg_string_list_get_item ::
@@ -55,13 +60,14 @@ foreign import javascript unsafe "$1[\"getItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.item Mozilla SVGStringList.item documentation> 
 svgStringListGetItem ::
-                     (IsSVGStringList self, FromJSString result) =>
-                       self -> Word -> IO result
+                     (MonadIO m, IsSVGStringList self, FromJSString result) =>
+                       self -> Word -> m result
 svgStringListGetItem self index
-  = fromJSString <$>
-      (ghcjs_dom_svg_string_list_get_item
-         (unSVGStringList (toSVGStringList self))
-         index)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_string_list_get_item
+            (unSVGStringList (toSVGStringList self))
+            index))
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         ghcjs_dom_svg_string_list_insert_item_before ::
@@ -69,14 +75,16 @@ foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.insertItemBefore Mozilla SVGStringList.insertItemBefore documentation> 
 svgStringListInsertItemBefore ::
-                              (IsSVGStringList self, ToJSString item, FromJSString result) =>
-                                self -> item -> Word -> IO result
+                              (MonadIO m, IsSVGStringList self, ToJSString item,
+                               FromJSString result) =>
+                                self -> item -> Word -> m result
 svgStringListInsertItemBefore self item index
-  = fromJSString <$>
-      (ghcjs_dom_svg_string_list_insert_item_before
-         (unSVGStringList (toSVGStringList self))
-         (toJSString item)
-         index)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_string_list_insert_item_before
+            (unSVGStringList (toSVGStringList self))
+            (toJSString item)
+            index))
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
         ghcjs_dom_svg_string_list_replace_item ::
@@ -84,14 +92,16 @@ foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.replaceItem Mozilla SVGStringList.replaceItem documentation> 
 svgStringListReplaceItem ::
-                         (IsSVGStringList self, ToJSString item, FromJSString result) =>
-                           self -> item -> Word -> IO result
+                         (MonadIO m, IsSVGStringList self, ToJSString item,
+                          FromJSString result) =>
+                           self -> item -> Word -> m result
 svgStringListReplaceItem self item index
-  = fromJSString <$>
-      (ghcjs_dom_svg_string_list_replace_item
-         (unSVGStringList (toSVGStringList self))
-         (toJSString item)
-         index)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_string_list_replace_item
+            (unSVGStringList (toSVGStringList self))
+            (toJSString item)
+            index))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
         ghcjs_dom_svg_string_list_remove_item ::
@@ -99,13 +109,14 @@ foreign import javascript unsafe "$1[\"removeItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.removeItem Mozilla SVGStringList.removeItem documentation> 
 svgStringListRemoveItem ::
-                        (IsSVGStringList self, FromJSString result) =>
-                          self -> Word -> IO result
+                        (MonadIO m, IsSVGStringList self, FromJSString result) =>
+                          self -> Word -> m result
 svgStringListRemoveItem self index
-  = fromJSString <$>
-      (ghcjs_dom_svg_string_list_remove_item
-         (unSVGStringList (toSVGStringList self))
-         index)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_string_list_remove_item
+            (unSVGStringList (toSVGStringList self))
+            index))
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         ghcjs_dom_svg_string_list_append_item ::
@@ -113,13 +124,15 @@ foreign import javascript unsafe "$1[\"appendItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.appendItem Mozilla SVGStringList.appendItem documentation> 
 svgStringListAppendItem ::
-                        (IsSVGStringList self, ToJSString item, FromJSString result) =>
-                          self -> item -> IO result
+                        (MonadIO m, IsSVGStringList self, ToJSString item,
+                         FromJSString result) =>
+                          self -> item -> m result
 svgStringListAppendItem self item
-  = fromJSString <$>
-      (ghcjs_dom_svg_string_list_append_item
-         (unSVGStringList (toSVGStringList self))
-         (toJSString item))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_string_list_append_item
+            (unSVGStringList (toSVGStringList self))
+            (toJSString item)))
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
         ghcjs_dom_svg_string_list_get_number_of_items ::
@@ -127,10 +140,11 @@ foreign import javascript unsafe "$1[\"numberOfItems\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.numberOfItems Mozilla SVGStringList.numberOfItems documentation> 
 svgStringListGetNumberOfItems ::
-                              (IsSVGStringList self) => self -> IO Word
+                              (MonadIO m, IsSVGStringList self) => self -> m Word
 svgStringListGetNumberOfItems self
-  = ghcjs_dom_svg_string_list_get_number_of_items
-      (unSVGStringList (toSVGStringList self))
+  = liftIO
+      (ghcjs_dom_svg_string_list_get_number_of_items
+         (unSVGStringList (toSVGStringList self)))
 #else
 module GHCJS.DOM.SVGStringList (
   ) where

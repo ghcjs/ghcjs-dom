@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,11 +30,13 @@ foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
 svgAnimatedStringSetBaseVal ::
-                            (IsSVGAnimatedString self, ToJSString val) => self -> val -> IO ()
+                            (MonadIO m, IsSVGAnimatedString self, ToJSString val) =>
+                              self -> val -> m ()
 svgAnimatedStringSetBaseVal self val
-  = ghcjs_dom_svg_animated_string_set_base_val
-      (unSVGAnimatedString (toSVGAnimatedString self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_animated_string_set_base_val
+         (unSVGAnimatedString (toSVGAnimatedString self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"baseVal\"]"
         ghcjs_dom_svg_animated_string_get_base_val ::
@@ -41,12 +44,13 @@ foreign import javascript unsafe "$1[\"baseVal\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
 svgAnimatedStringGetBaseVal ::
-                            (IsSVGAnimatedString self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsSVGAnimatedString self, FromJSString result) =>
+                              self -> m result
 svgAnimatedStringGetBaseVal self
-  = fromJSString <$>
-      (ghcjs_dom_svg_animated_string_get_base_val
-         (unSVGAnimatedString (toSVGAnimatedString self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_animated_string_get_base_val
+            (unSVGAnimatedString (toSVGAnimatedString self))))
  
 foreign import javascript unsafe "$1[\"animVal\"]"
         ghcjs_dom_svg_animated_string_get_anim_val ::
@@ -54,12 +58,13 @@ foreign import javascript unsafe "$1[\"animVal\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.animVal Mozilla SVGAnimatedString.animVal documentation> 
 svgAnimatedStringGetAnimVal ::
-                            (IsSVGAnimatedString self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsSVGAnimatedString self, FromJSString result) =>
+                              self -> m result
 svgAnimatedStringGetAnimVal self
-  = fromJSString <$>
-      (ghcjs_dom_svg_animated_string_get_anim_val
-         (unSVGAnimatedString (toSVGAnimatedString self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_animated_string_get_anim_val
+            (unSVGAnimatedString (toSVGAnimatedString self))))
 #else
 module GHCJS.DOM.SVGAnimatedString (
   ) where

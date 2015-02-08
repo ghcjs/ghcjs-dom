@@ -11,14 +11,15 @@ module GHCJS.DOM.IDBDatabase
         idbDatabaseGetName, ghcjs_dom_idb_database_get_version,
         idbDatabaseGetVersion,
         ghcjs_dom_idb_database_get_object_store_names,
-        idbDatabaseGetObjectStoreNames, idbDatabaseOnabort,
-        idbDatabaseOnerror, idbDatabaseOnversionchange, IDBDatabase,
-        IsIDBDatabase, castToIDBDatabase, gTypeIDBDatabase, toIDBDatabase)
+        idbDatabaseGetObjectStoreNames, idbDatabaseAbort, idbDatabaseError,
+        idbDatabaseVersionChange, IDBDatabase, IsIDBDatabase,
+        castToIDBDatabase, gTypeIDBDatabase, toIDBDatabase)
        where
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -35,14 +36,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.createObjectStore Mozilla IDBDatabase.createObjectStore documentation> 
 idbDatabaseCreateObjectStore ::
-                             (IsIDBDatabase self, ToJSString name, IsDictionary options) =>
-                               self -> name -> Maybe options -> IO (Maybe IDBObjectStore)
+                             (MonadIO m, IsIDBDatabase self, ToJSString name,
+                              IsDictionary options) =>
+                               self -> name -> Maybe options -> m (Maybe IDBObjectStore)
 idbDatabaseCreateObjectStore self name options
-  = (ghcjs_dom_idb_database_create_object_store
-       (unIDBDatabase (toIDBDatabase self))
-       (toJSString name)
-       (maybe jsNull (unDictionary . toDictionary) options))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_database_create_object_store
+          (unIDBDatabase (toIDBDatabase self))
+          (toJSString name)
+          (maybe jsNull (unDictionary . toDictionary) options))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"deleteObjectStore\"]($2)"
         ghcjs_dom_idb_database_delete_object_store ::
@@ -50,11 +53,13 @@ foreign import javascript unsafe "$1[\"deleteObjectStore\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.deleteObjectStore Mozilla IDBDatabase.deleteObjectStore documentation> 
 idbDatabaseDeleteObjectStore ::
-                             (IsIDBDatabase self, ToJSString name) => self -> name -> IO ()
+                             (MonadIO m, IsIDBDatabase self, ToJSString name) =>
+                               self -> name -> m ()
 idbDatabaseDeleteObjectStore self name
-  = ghcjs_dom_idb_database_delete_object_store
-      (unIDBDatabase (toIDBDatabase self))
-      (toJSString name)
+  = liftIO
+      (ghcjs_dom_idb_database_delete_object_store
+         (unIDBDatabase (toIDBDatabase self))
+         (toJSString name))
  
 foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
         ghcjs_dom_idb_database_transaction ::
@@ -63,14 +68,16 @@ foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
 idbDatabaseTransaction ::
-                       (IsIDBDatabase self, ToJSString storeName, ToJSString mode) =>
-                         self -> storeName -> mode -> IO (Maybe IDBTransaction)
+                       (MonadIO m, IsIDBDatabase self, ToJSString storeName,
+                        ToJSString mode) =>
+                         self -> storeName -> mode -> m (Maybe IDBTransaction)
 idbDatabaseTransaction self storeName mode
-  = (ghcjs_dom_idb_database_transaction
-       (unIDBDatabase (toIDBDatabase self))
-       (toJSString storeName)
-       (toJSString mode))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_database_transaction
+          (unIDBDatabase (toIDBDatabase self))
+          (toJSString storeName)
+          (toJSString mode))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
         ghcjs_dom_idb_database_transaction' ::
@@ -79,46 +86,53 @@ foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction' Mozilla IDBDatabase.transaction' documentation> 
 idbDatabaseTransaction' ::
-                        (IsIDBDatabase self, ToJSString storeNames, ToJSString mode) =>
-                          self -> [storeNames] -> mode -> IO (Maybe IDBTransaction)
+                        (MonadIO m, IsIDBDatabase self, ToJSString storeNames,
+                         ToJSString mode) =>
+                          self -> [storeNames] -> mode -> m (Maybe IDBTransaction)
 idbDatabaseTransaction' self storeNames mode
-  = (toJSRef storeNames >>=
-       \ storeNames' ->
-         ghcjs_dom_idb_database_transaction'
-           (unIDBDatabase (toIDBDatabase self))
-           storeNames'
-       (toJSString mode))
-      >>= fromJSRef
+  = liftIO
+      ((toJSRef storeNames >>=
+          \ storeNames' ->
+            ghcjs_dom_idb_database_transaction'
+              (unIDBDatabase (toIDBDatabase self))
+              storeNames'
+          (toJSString mode))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_idb_database_close :: JSRef IDBDatabase -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.close Mozilla IDBDatabase.close documentation> 
-idbDatabaseClose :: (IsIDBDatabase self) => self -> IO ()
+idbDatabaseClose :: (MonadIO m, IsIDBDatabase self) => self -> m ()
 idbDatabaseClose self
-  = ghcjs_dom_idb_database_close (unIDBDatabase (toIDBDatabase self))
+  = liftIO
+      (ghcjs_dom_idb_database_close (unIDBDatabase (toIDBDatabase self)))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_idb_database_get_name :: JSRef IDBDatabase -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.name Mozilla IDBDatabase.name documentation> 
 idbDatabaseGetName ::
-                   (IsIDBDatabase self, FromJSString result) => self -> IO result
+                   (MonadIO m, IsIDBDatabase self, FromJSString result) =>
+                     self -> m result
 idbDatabaseGetName self
-  = fromJSString <$>
-      (ghcjs_dom_idb_database_get_name
-         (unIDBDatabase (toIDBDatabase self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_idb_database_get_name
+            (unIDBDatabase (toIDBDatabase self))))
  
 foreign import javascript unsafe "$1[\"version\"]"
         ghcjs_dom_idb_database_get_version ::
         JSRef IDBDatabase -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.version Mozilla IDBDatabase.version documentation> 
-idbDatabaseGetVersion :: (IsIDBDatabase self) => self -> IO Word64
+idbDatabaseGetVersion ::
+                      (MonadIO m, IsIDBDatabase self) => self -> m Word64
 idbDatabaseGetVersion self
-  = round <$>
-      (ghcjs_dom_idb_database_get_version
-         (unIDBDatabase (toIDBDatabase self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_idb_database_get_version
+            (unIDBDatabase (toIDBDatabase self))))
  
 foreign import javascript unsafe "$1[\"objectStoreNames\"]"
         ghcjs_dom_idb_database_get_object_store_names ::
@@ -126,26 +140,29 @@ foreign import javascript unsafe "$1[\"objectStoreNames\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.objectStoreNames Mozilla IDBDatabase.objectStoreNames documentation> 
 idbDatabaseGetObjectStoreNames ::
-                               (IsIDBDatabase self) => self -> IO (Maybe DOMStringList)
+                               (MonadIO m, IsIDBDatabase self) => self -> m (Maybe DOMStringList)
 idbDatabaseGetObjectStoreNames self
-  = (ghcjs_dom_idb_database_get_object_store_names
-       (unIDBDatabase (toIDBDatabase self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_database_get_object_store_names
+          (unIDBDatabase (toIDBDatabase self)))
+         >>= fromJSRef)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.onabort Mozilla IDBDatabase.onabort documentation> 
-idbDatabaseOnabort ::
-                   (IsIDBDatabase self) => Signal self (EventM UIEvent self ())
-idbDatabaseOnabort = (connect "abort")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.abort Mozilla IDBDatabase.abort documentation> 
+idbDatabaseAbort ::
+                 (IsIDBDatabase self, IsEventTarget self) => EventName self Event
+idbDatabaseAbort = unsafeEventName (toJSString "abort")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.onerror Mozilla IDBDatabase.onerror documentation> 
-idbDatabaseOnerror ::
-                   (IsIDBDatabase self) => Signal self (EventM UIEvent self ())
-idbDatabaseOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.error Mozilla IDBDatabase.error documentation> 
+idbDatabaseError ::
+                 (IsIDBDatabase self, IsEventTarget self) => EventName self Event
+idbDatabaseError = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.onversionchange Mozilla IDBDatabase.onversionchange documentation> 
-idbDatabaseOnversionchange ::
-                           (IsIDBDatabase self) => Signal self (EventM UIEvent self ())
-idbDatabaseOnversionchange = (connect "versionchange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.versionChange Mozilla IDBDatabase.versionChange documentation> 
+idbDatabaseVersionChange ::
+                         (IsIDBDatabase self, IsEventTarget self) =>
+                           EventName self IDBVersionChangeEvent
+idbDatabaseVersionChange
+  = unsafeEventName (toJSString "versionchange")
 #else
 module GHCJS.DOM.IDBDatabase (
   ) where

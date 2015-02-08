@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,11 +30,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.hasExtension Mozilla SVGTests.hasExtension documentation> 
 svgTestsHasExtension ::
-                     (IsSVGTests self, ToJSString extension) =>
-                       self -> extension -> IO Bool
+                     (MonadIO m, IsSVGTests self, ToJSString extension) =>
+                       self -> extension -> m Bool
 svgTestsHasExtension self extension
-  = ghcjs_dom_svg_tests_has_extension (unSVGTests (toSVGTests self))
-      (toJSString extension)
+  = liftIO
+      (ghcjs_dom_svg_tests_has_extension (unSVGTests (toSVGTests self))
+         (toJSString extension))
  
 foreign import javascript unsafe "$1[\"requiredFeatures\"]"
         ghcjs_dom_svg_tests_get_required_features ::
@@ -41,11 +43,12 @@ foreign import javascript unsafe "$1[\"requiredFeatures\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredFeatures Mozilla SVGTests.requiredFeatures documentation> 
 svgTestsGetRequiredFeatures ::
-                            (IsSVGTests self) => self -> IO (Maybe SVGStringList)
+                            (MonadIO m, IsSVGTests self) => self -> m (Maybe SVGStringList)
 svgTestsGetRequiredFeatures self
-  = (ghcjs_dom_svg_tests_get_required_features
-       (unSVGTests (toSVGTests self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_tests_get_required_features
+          (unSVGTests (toSVGTests self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"requiredExtensions\"]"
         ghcjs_dom_svg_tests_get_required_extensions ::
@@ -53,11 +56,12 @@ foreign import javascript unsafe "$1[\"requiredExtensions\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredExtensions Mozilla SVGTests.requiredExtensions documentation> 
 svgTestsGetRequiredExtensions ::
-                              (IsSVGTests self) => self -> IO (Maybe SVGStringList)
+                              (MonadIO m, IsSVGTests self) => self -> m (Maybe SVGStringList)
 svgTestsGetRequiredExtensions self
-  = (ghcjs_dom_svg_tests_get_required_extensions
-       (unSVGTests (toSVGTests self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_tests_get_required_extensions
+          (unSVGTests (toSVGTests self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"systemLanguage\"]"
         ghcjs_dom_svg_tests_get_system_language ::
@@ -65,11 +69,12 @@ foreign import javascript unsafe "$1[\"systemLanguage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.systemLanguage Mozilla SVGTests.systemLanguage documentation> 
 svgTestsGetSystemLanguage ::
-                          (IsSVGTests self) => self -> IO (Maybe SVGStringList)
+                          (MonadIO m, IsSVGTests self) => self -> m (Maybe SVGStringList)
 svgTestsGetSystemLanguage self
-  = (ghcjs_dom_svg_tests_get_system_language
-       (unSVGTests (toSVGTests self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_tests_get_system_language
+          (unSVGTests (toSVGTests self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGTests (
   ) where

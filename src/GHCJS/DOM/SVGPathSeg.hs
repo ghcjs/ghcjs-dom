@@ -21,6 +21,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -54,10 +55,12 @@ foreign import javascript unsafe "$1[\"pathSegType\"]"
         JSRef SVGPathSeg -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegType Mozilla SVGPathSeg.pathSegType documentation> 
-svgPathSegGetPathSegType :: (IsSVGPathSeg self) => self -> IO Word
+svgPathSegGetPathSegType ::
+                         (MonadIO m, IsSVGPathSeg self) => self -> m Word
 svgPathSegGetPathSegType self
-  = ghcjs_dom_svg_path_seg_get_path_seg_type
-      (unSVGPathSeg (toSVGPathSeg self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_get_path_seg_type
+         (unSVGPathSeg (toSVGPathSeg self)))
  
 foreign import javascript unsafe "$1[\"pathSegTypeAsLetter\"]"
         ghcjs_dom_svg_path_seg_get_path_seg_type_as_letter ::
@@ -65,11 +68,13 @@ foreign import javascript unsafe "$1[\"pathSegTypeAsLetter\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegTypeAsLetter Mozilla SVGPathSeg.pathSegTypeAsLetter documentation> 
 svgPathSegGetPathSegTypeAsLetter ::
-                                 (IsSVGPathSeg self, FromJSString result) => self -> IO result
+                                 (MonadIO m, IsSVGPathSeg self, FromJSString result) =>
+                                   self -> m result
 svgPathSegGetPathSegTypeAsLetter self
-  = fromJSString <$>
-      (ghcjs_dom_svg_path_seg_get_path_seg_type_as_letter
-         (unSVGPathSeg (toSVGPathSeg self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_path_seg_get_path_seg_type_as_letter
+            (unSVGPathSeg (toSVGPathSeg self))))
 #else
 module GHCJS.DOM.SVGPathSeg (
   ) where

@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,12 @@ foreign import javascript unsafe "$1[\"compact\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 
 htmldListElementSetCompact ::
-                           (IsHTMLDListElement self) => self -> Bool -> IO ()
+                           (MonadIO m, IsHTMLDListElement self) => self -> Bool -> m ()
 htmldListElementSetCompact self val
-  = ghcjs_dom_htmld_list_element_set_compact
-      (unHTMLDListElement (toHTMLDListElement self))
-      val
+  = liftIO
+      (ghcjs_dom_htmld_list_element_set_compact
+         (unHTMLDListElement (toHTMLDListElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         ghcjs_dom_htmld_list_element_get_compact ::
@@ -38,10 +40,11 @@ foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 
 htmldListElementGetCompact ::
-                           (IsHTMLDListElement self) => self -> IO Bool
+                           (MonadIO m, IsHTMLDListElement self) => self -> m Bool
 htmldListElementGetCompact self
-  = ghcjs_dom_htmld_list_element_get_compact
-      (unHTMLDListElement (toHTMLDListElement self))
+  = liftIO
+      (ghcjs_dom_htmld_list_element_get_compact
+         (unHTMLDListElement (toHTMLDListElement self)))
 #else
 module GHCJS.DOM.HTMLDListElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLDListElement

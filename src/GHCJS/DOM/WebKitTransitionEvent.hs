@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,12 +30,14 @@ foreign import javascript unsafe "$1[\"propertyName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent.propertyName Mozilla WebKitTransitionEvent.propertyName documentation> 
 webKitTransitionEventGetPropertyName ::
-                                     (IsWebKitTransitionEvent self, FromJSString result) =>
-                                       self -> IO result
+                                     (MonadIO m, IsWebKitTransitionEvent self,
+                                      FromJSString result) =>
+                                       self -> m result
 webKitTransitionEventGetPropertyName self
-  = fromJSString <$>
-      (ghcjs_dom_webkit_transition_event_get_property_name
-         (unWebKitTransitionEvent (toWebKitTransitionEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_webkit_transition_event_get_property_name
+            (unWebKitTransitionEvent (toWebKitTransitionEvent self))))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
         ghcjs_dom_webkit_transition_event_get_elapsed_time ::
@@ -42,10 +45,11 @@ foreign import javascript unsafe "$1[\"elapsedTime\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent.elapsedTime Mozilla WebKitTransitionEvent.elapsedTime documentation> 
 webKitTransitionEventGetElapsedTime ::
-                                    (IsWebKitTransitionEvent self) => self -> IO Double
+                                    (MonadIO m, IsWebKitTransitionEvent self) => self -> m Double
 webKitTransitionEventGetElapsedTime self
-  = ghcjs_dom_webkit_transition_event_get_elapsed_time
-      (unWebKitTransitionEvent (toWebKitTransitionEvent self))
+  = liftIO
+      (ghcjs_dom_webkit_transition_event_get_elapsed_time
+         (unWebKitTransitionEvent (toWebKitTransitionEvent self)))
  
 foreign import javascript unsafe "$1[\"pseudoElement\"]"
         ghcjs_dom_webkit_transition_event_get_pseudo_element ::
@@ -53,12 +57,14 @@ foreign import javascript unsafe "$1[\"pseudoElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent.pseudoElement Mozilla WebKitTransitionEvent.pseudoElement documentation> 
 webKitTransitionEventGetPseudoElement ::
-                                      (IsWebKitTransitionEvent self, FromJSString result) =>
-                                        self -> IO result
+                                      (MonadIO m, IsWebKitTransitionEvent self,
+                                       FromJSString result) =>
+                                        self -> m result
 webKitTransitionEventGetPseudoElement self
-  = fromJSString <$>
-      (ghcjs_dom_webkit_transition_event_get_pseudo_element
-         (unWebKitTransitionEvent (toWebKitTransitionEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_webkit_transition_event_get_pseudo_element
+            (unWebKitTransitionEvent (toWebKitTransitionEvent self))))
 #else
 module GHCJS.DOM.WebKitTransitionEvent (
   ) where

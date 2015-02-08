@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"fontface\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.fontface Mozilla CSSFontFaceLoadEvent.fontface documentation> 
 cssFontFaceLoadEventGetFontface ::
-                                (IsCSSFontFaceLoadEvent self) => self -> IO (Maybe CSSFontFaceRule)
+                                (MonadIO m, IsCSSFontFaceLoadEvent self) =>
+                                  self -> m (Maybe CSSFontFaceRule)
 cssFontFaceLoadEventGetFontface self
-  = (ghcjs_dom_css_font_face_load_event_get_fontface
-       (unCSSFontFaceLoadEvent (toCSSFontFaceLoadEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_font_face_load_event_get_fontface
+          (unCSSFontFaceLoadEvent (toCSSFontFaceLoadEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"error\"]"
         ghcjs_dom_css_font_face_load_event_get_error ::
@@ -39,11 +42,13 @@ foreign import javascript unsafe "$1[\"error\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.error Mozilla CSSFontFaceLoadEvent.error documentation> 
 cssFontFaceLoadEventGetError ::
-                             (IsCSSFontFaceLoadEvent self) => self -> IO (Maybe DOMError)
+                             (MonadIO m, IsCSSFontFaceLoadEvent self) =>
+                               self -> m (Maybe DOMError)
 cssFontFaceLoadEventGetError self
-  = (ghcjs_dom_css_font_face_load_event_get_error
-       (unCSSFontFaceLoadEvent (toCSSFontFaceLoadEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_font_face_load_event_get_error
+          (unCSSFontFaceLoadEvent (toCSSFontFaceLoadEvent self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.CSSFontFaceLoadEvent (
   ) where

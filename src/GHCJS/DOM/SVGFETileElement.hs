@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,11 +25,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETileElement.in1 Mozilla SVGFETileElement.in1 documentation> 
 svgfeTileElementGetIn1 ::
-                       (IsSVGFETileElement self) => self -> IO (Maybe SVGAnimatedString)
+                       (MonadIO m, IsSVGFETileElement self) =>
+                         self -> m (Maybe SVGAnimatedString)
 svgfeTileElementGetIn1 self
-  = (ghcjs_dom_svgfe_tile_element_get_in1
-       (unSVGFETileElement (toSVGFETileElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_tile_element_get_in1
+          (unSVGFETileElement (toSVGFETileElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFETileElement (
   ) where

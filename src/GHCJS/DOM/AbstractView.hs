@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,12 @@ foreign import javascript unsafe "$1[\"document\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.document Mozilla AbstractView.document documentation> 
 abstractViewGetDocument ::
-                        (IsAbstractView self) => self -> IO (Maybe Document)
+                        (MonadIO m, IsAbstractView self) => self -> m (Maybe Document)
 abstractViewGetDocument self
-  = (ghcjs_dom_abstract_view_get_document
-       (unAbstractView (toAbstractView self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_abstract_view_get_document
+          (unAbstractView (toAbstractView self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"styleMedia\"]"
         ghcjs_dom_abstract_view_get_style_media ::
@@ -37,11 +39,12 @@ foreign import javascript unsafe "$1[\"styleMedia\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.styleMedia Mozilla AbstractView.styleMedia documentation> 
 abstractViewGetStyleMedia ::
-                          (IsAbstractView self) => self -> IO (Maybe StyleMedia)
+                          (MonadIO m, IsAbstractView self) => self -> m (Maybe StyleMedia)
 abstractViewGetStyleMedia self
-  = (ghcjs_dom_abstract_view_get_style_media
-       (unAbstractView (toAbstractView self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_abstract_view_get_style_media
+          (unAbstractView (toAbstractView self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.AbstractView (
   ) where

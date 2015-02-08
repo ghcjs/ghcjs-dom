@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,11 +30,13 @@ foreign import javascript unsafe "$1[\"propertyName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent.propertyName Mozilla TransitionEvent.propertyName documentation> 
 transitionEventGetPropertyName ::
-                               (IsTransitionEvent self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsTransitionEvent self, FromJSString result) =>
+                                 self -> m result
 transitionEventGetPropertyName self
-  = fromJSString <$>
-      (ghcjs_dom_transition_event_get_property_name
-         (unTransitionEvent (toTransitionEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_transition_event_get_property_name
+            (unTransitionEvent (toTransitionEvent self))))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
         ghcjs_dom_transition_event_get_elapsed_time ::
@@ -41,10 +44,11 @@ foreign import javascript unsafe "$1[\"elapsedTime\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent.elapsedTime Mozilla TransitionEvent.elapsedTime documentation> 
 transitionEventGetElapsedTime ::
-                              (IsTransitionEvent self) => self -> IO Double
+                              (MonadIO m, IsTransitionEvent self) => self -> m Double
 transitionEventGetElapsedTime self
-  = ghcjs_dom_transition_event_get_elapsed_time
-      (unTransitionEvent (toTransitionEvent self))
+  = liftIO
+      (ghcjs_dom_transition_event_get_elapsed_time
+         (unTransitionEvent (toTransitionEvent self)))
  
 foreign import javascript unsafe "$1[\"pseudoElement\"]"
         ghcjs_dom_transition_event_get_pseudo_element ::
@@ -52,11 +56,13 @@ foreign import javascript unsafe "$1[\"pseudoElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent.pseudoElement Mozilla TransitionEvent.pseudoElement documentation> 
 transitionEventGetPseudoElement ::
-                                (IsTransitionEvent self, FromJSString result) => self -> IO result
+                                (MonadIO m, IsTransitionEvent self, FromJSString result) =>
+                                  self -> m result
 transitionEventGetPseudoElement self
-  = fromJSString <$>
-      (ghcjs_dom_transition_event_get_pseudo_element
-         (unTransitionEvent (toTransitionEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_transition_event_get_pseudo_element
+            (unTransitionEvent (toTransitionEvent self))))
 #else
 module GHCJS.DOM.TransitionEvent (
   ) where

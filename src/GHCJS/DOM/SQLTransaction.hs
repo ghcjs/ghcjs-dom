@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,23 +30,24 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransaction.executeSql Mozilla SQLTransaction.executeSql documentation> 
 sqlTransactionExecuteSql ::
-                         (IsSQLTransaction self, ToJSString sqlStatement,
+                         (MonadIO m, IsSQLTransaction self, ToJSString sqlStatement,
                           IsObjectArray arguments, IsSQLStatementCallback callback,
                           IsSQLStatementErrorCallback errorCallback) =>
                            self ->
                              sqlStatement ->
-                               Maybe arguments -> Maybe callback -> Maybe errorCallback -> IO ()
+                               Maybe arguments -> Maybe callback -> Maybe errorCallback -> m ()
 sqlTransactionExecuteSql self sqlStatement arguments callback
   errorCallback
-  = ghcjs_dom_sql_transaction_execute_sql
-      (unSQLTransaction (toSQLTransaction self))
-      (toJSString sqlStatement)
-      (maybe jsNull (unObjectArray . toObjectArray) arguments)
-      (maybe jsNull (unSQLStatementCallback . toSQLStatementCallback)
-         callback)
-      (maybe jsNull
-         (unSQLStatementErrorCallback . toSQLStatementErrorCallback)
-         errorCallback)
+  = liftIO
+      (ghcjs_dom_sql_transaction_execute_sql
+         (unSQLTransaction (toSQLTransaction self))
+         (toJSString sqlStatement)
+         (maybe jsNull (unObjectArray . toObjectArray) arguments)
+         (maybe jsNull (unSQLStatementCallback . toSQLStatementCallback)
+            callback)
+         (maybe jsNull
+            (unSQLStatementErrorCallback . toSQLStatementErrorCallback)
+            errorCallback))
 #else
 module GHCJS.DOM.SQLTransaction (
   ) where

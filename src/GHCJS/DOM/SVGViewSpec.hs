@@ -21,6 +21,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -35,11 +36,13 @@ foreign import javascript unsafe "$1[\"transform\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.transform Mozilla SVGViewSpec.transform documentation> 
 svgViewSpecGetTransform ::
-                        (IsSVGViewSpec self) => self -> IO (Maybe SVGTransformList)
+                        (MonadIO m, IsSVGViewSpec self) =>
+                          self -> m (Maybe SVGTransformList)
 svgViewSpecGetTransform self
-  = (ghcjs_dom_svg_view_spec_get_transform
-       (unSVGViewSpec (toSVGViewSpec self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_view_spec_get_transform
+          (unSVGViewSpec (toSVGViewSpec self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"viewTarget\"]"
         ghcjs_dom_svg_view_spec_get_view_target ::
@@ -47,11 +50,12 @@ foreign import javascript unsafe "$1[\"viewTarget\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewTarget Mozilla SVGViewSpec.viewTarget documentation> 
 svgViewSpecGetViewTarget ::
-                         (IsSVGViewSpec self) => self -> IO (Maybe SVGElement)
+                         (MonadIO m, IsSVGViewSpec self) => self -> m (Maybe SVGElement)
 svgViewSpecGetViewTarget self
-  = (ghcjs_dom_svg_view_spec_get_view_target
-       (unSVGViewSpec (toSVGViewSpec self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_view_spec_get_view_target
+          (unSVGViewSpec (toSVGViewSpec self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"viewBoxString\"]"
         ghcjs_dom_svg_view_spec_get_view_box_string ::
@@ -59,11 +63,13 @@ foreign import javascript unsafe "$1[\"viewBoxString\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewBoxString Mozilla SVGViewSpec.viewBoxString documentation> 
 svgViewSpecGetViewBoxString ::
-                            (IsSVGViewSpec self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsSVGViewSpec self, FromJSString result) =>
+                              self -> m result
 svgViewSpecGetViewBoxString self
-  = fromJSString <$>
-      (ghcjs_dom_svg_view_spec_get_view_box_string
-         (unSVGViewSpec (toSVGViewSpec self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_view_spec_get_view_box_string
+            (unSVGViewSpec (toSVGViewSpec self))))
  
 foreign import javascript unsafe
         "$1[\"preserveAspectRatioString\"]"
@@ -72,12 +78,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.preserveAspectRatioString Mozilla SVGViewSpec.preserveAspectRatioString documentation> 
 svgViewSpecGetPreserveAspectRatioString ::
-                                        (IsSVGViewSpec self, FromJSString result) =>
-                                          self -> IO result
+                                        (MonadIO m, IsSVGViewSpec self, FromJSString result) =>
+                                          self -> m result
 svgViewSpecGetPreserveAspectRatioString self
-  = fromJSString <$>
-      (ghcjs_dom_svg_view_spec_get_preserve_aspect_ratio_string
-         (unSVGViewSpec (toSVGViewSpec self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_view_spec_get_preserve_aspect_ratio_string
+            (unSVGViewSpec (toSVGViewSpec self))))
  
 foreign import javascript unsafe "$1[\"transformString\"]"
         ghcjs_dom_svg_view_spec_get_transform_string ::
@@ -85,11 +92,13 @@ foreign import javascript unsafe "$1[\"transformString\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.transformString Mozilla SVGViewSpec.transformString documentation> 
 svgViewSpecGetTransformString ::
-                              (IsSVGViewSpec self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsSVGViewSpec self, FromJSString result) =>
+                                self -> m result
 svgViewSpecGetTransformString self
-  = fromJSString <$>
-      (ghcjs_dom_svg_view_spec_get_transform_string
-         (unSVGViewSpec (toSVGViewSpec self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_view_spec_get_transform_string
+            (unSVGViewSpec (toSVGViewSpec self))))
  
 foreign import javascript unsafe "$1[\"viewTargetString\"]"
         ghcjs_dom_svg_view_spec_get_view_target_string ::
@@ -97,11 +106,13 @@ foreign import javascript unsafe "$1[\"viewTargetString\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewTargetString Mozilla SVGViewSpec.viewTargetString documentation> 
 svgViewSpecGetViewTargetString ::
-                               (IsSVGViewSpec self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsSVGViewSpec self, FromJSString result) =>
+                                 self -> m result
 svgViewSpecGetViewTargetString self
-  = fromJSString <$>
-      (ghcjs_dom_svg_view_spec_get_view_target_string
-         (unSVGViewSpec (toSVGViewSpec self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_view_spec_get_view_target_string
+            (unSVGViewSpec (toSVGViewSpec self))))
  
 foreign import javascript unsafe "$1[\"zoomAndPan\"] = $2;"
         ghcjs_dom_svg_view_spec_set_zoom_and_pan ::
@@ -109,21 +120,24 @@ foreign import javascript unsafe "$1[\"zoomAndPan\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.zoomAndPan Mozilla SVGViewSpec.zoomAndPan documentation> 
 svgViewSpecSetZoomAndPan ::
-                         (IsSVGViewSpec self) => self -> Word -> IO ()
+                         (MonadIO m, IsSVGViewSpec self) => self -> Word -> m ()
 svgViewSpecSetZoomAndPan self val
-  = ghcjs_dom_svg_view_spec_set_zoom_and_pan
-      (unSVGViewSpec (toSVGViewSpec self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_view_spec_set_zoom_and_pan
+         (unSVGViewSpec (toSVGViewSpec self))
+         val)
  
 foreign import javascript unsafe "$1[\"zoomAndPan\"]"
         ghcjs_dom_svg_view_spec_get_zoom_and_pan ::
         JSRef SVGViewSpec -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.zoomAndPan Mozilla SVGViewSpec.zoomAndPan documentation> 
-svgViewSpecGetZoomAndPan :: (IsSVGViewSpec self) => self -> IO Word
+svgViewSpecGetZoomAndPan ::
+                         (MonadIO m, IsSVGViewSpec self) => self -> m Word
 svgViewSpecGetZoomAndPan self
-  = ghcjs_dom_svg_view_spec_get_zoom_and_pan
-      (unSVGViewSpec (toSVGViewSpec self))
+  = liftIO
+      (ghcjs_dom_svg_view_spec_get_zoom_and_pan
+         (unSVGViewSpec (toSVGViewSpec self)))
 #else
 module GHCJS.DOM.SVGViewSpec (
   ) where

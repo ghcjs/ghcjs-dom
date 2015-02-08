@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,14 +29,16 @@ foreign import javascript unsafe "$1[\"availability\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPlaybackTargetAvailabilityEvent.availability Mozilla WebKitPlaybackTargetAvailabilityEvent.availability documentation> 
 webKitPlaybackTargetAvailabilityEventGetAvailability ::
-                                                     (IsWebKitPlaybackTargetAvailabilityEvent self,
+                                                     (MonadIO m,
+                                                      IsWebKitPlaybackTargetAvailabilityEvent self,
                                                       FromJSString result) =>
-                                                       self -> IO result
+                                                       self -> m result
 webKitPlaybackTargetAvailabilityEventGetAvailability self
-  = fromJSString <$>
-      (ghcjs_dom_webkit_playback_target_availability_event_get_availability
-         (unWebKitPlaybackTargetAvailabilityEvent
-            (toWebKitPlaybackTargetAvailabilityEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_webkit_playback_target_availability_event_get_availability
+            (unWebKitPlaybackTargetAvailabilityEvent
+               (toWebKitPlaybackTargetAvailabilityEvent self))))
 #else
 module GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent (
   ) where

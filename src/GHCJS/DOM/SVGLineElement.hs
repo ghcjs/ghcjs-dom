@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"x1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.x1 Mozilla SVGLineElement.x1 documentation> 
 svgLineElementGetX1 ::
-                    (IsSVGLineElement self) => self -> IO (Maybe SVGAnimatedLength)
+                    (MonadIO m, IsSVGLineElement self) =>
+                      self -> m (Maybe SVGAnimatedLength)
 svgLineElementGetX1 self
-  = (ghcjs_dom_svg_line_element_get_x1
-       (unSVGLineElement (toSVGLineElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_line_element_get_x1
+          (unSVGLineElement (toSVGLineElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y1\"]"
         ghcjs_dom_svg_line_element_get_y1 ::
@@ -39,11 +42,13 @@ foreign import javascript unsafe "$1[\"y1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.y1 Mozilla SVGLineElement.y1 documentation> 
 svgLineElementGetY1 ::
-                    (IsSVGLineElement self) => self -> IO (Maybe SVGAnimatedLength)
+                    (MonadIO m, IsSVGLineElement self) =>
+                      self -> m (Maybe SVGAnimatedLength)
 svgLineElementGetY1 self
-  = (ghcjs_dom_svg_line_element_get_y1
-       (unSVGLineElement (toSVGLineElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_line_element_get_y1
+          (unSVGLineElement (toSVGLineElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"x2\"]"
         ghcjs_dom_svg_line_element_get_x2 ::
@@ -51,11 +56,13 @@ foreign import javascript unsafe "$1[\"x2\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.x2 Mozilla SVGLineElement.x2 documentation> 
 svgLineElementGetX2 ::
-                    (IsSVGLineElement self) => self -> IO (Maybe SVGAnimatedLength)
+                    (MonadIO m, IsSVGLineElement self) =>
+                      self -> m (Maybe SVGAnimatedLength)
 svgLineElementGetX2 self
-  = (ghcjs_dom_svg_line_element_get_x2
-       (unSVGLineElement (toSVGLineElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_line_element_get_x2
+          (unSVGLineElement (toSVGLineElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y2\"]"
         ghcjs_dom_svg_line_element_get_y2 ::
@@ -63,11 +70,13 @@ foreign import javascript unsafe "$1[\"y2\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.y2 Mozilla SVGLineElement.y2 documentation> 
 svgLineElementGetY2 ::
-                    (IsSVGLineElement self) => self -> IO (Maybe SVGAnimatedLength)
+                    (MonadIO m, IsSVGLineElement self) =>
+                      self -> m (Maybe SVGAnimatedLength)
 svgLineElementGetY2 self
-  = (ghcjs_dom_svg_line_element_get_y2
-       (unSVGLineElement (toSVGLineElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_line_element_get_y2
+          (unSVGLineElement (toSVGLineElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGLineElement (
   ) where

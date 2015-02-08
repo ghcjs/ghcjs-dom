@@ -20,6 +20,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -34,14 +35,15 @@ foreign import javascript unsafe "$1[\"setStdDeviation\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.stdDeviation Mozilla SVGFEGaussianBlurElement.stdDeviation documentation> 
 svgfeGaussianBlurElementSetStdDeviation ::
-                                        (IsSVGFEGaussianBlurElement self) =>
-                                          self -> Float -> Float -> IO ()
+                                        (MonadIO m, IsSVGFEGaussianBlurElement self) =>
+                                          self -> Float -> Float -> m ()
 svgfeGaussianBlurElementSetStdDeviation self stdDeviationX
   stdDeviationY
-  = ghcjs_dom_svgfe_gaussian_blur_element_set_std_deviation
-      (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self))
-      stdDeviationX
-      stdDeviationY
+  = liftIO
+      (ghcjs_dom_svgfe_gaussian_blur_element_set_std_deviation
+         (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self))
+         stdDeviationX
+         stdDeviationY)
 cSVG_EDGEMODE_UNKNOWN = 0
 cSVG_EDGEMODE_DUPLICATE = 1
 cSVG_EDGEMODE_WRAP = 2
@@ -53,12 +55,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.in1 Mozilla SVGFEGaussianBlurElement.in1 documentation> 
 svgfeGaussianBlurElementGetIn1 ::
-                               (IsSVGFEGaussianBlurElement self) =>
-                                 self -> IO (Maybe SVGAnimatedString)
+                               (MonadIO m, IsSVGFEGaussianBlurElement self) =>
+                                 self -> m (Maybe SVGAnimatedString)
 svgfeGaussianBlurElementGetIn1 self
-  = (ghcjs_dom_svgfe_gaussian_blur_element_get_in1
-       (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_gaussian_blur_element_get_in1
+          (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"stdDeviationX\"]"
         ghcjs_dom_svgfe_gaussian_blur_element_get_std_deviation_x ::
@@ -66,12 +69,13 @@ foreign import javascript unsafe "$1[\"stdDeviationX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.stdDeviationX Mozilla SVGFEGaussianBlurElement.stdDeviationX documentation> 
 svgfeGaussianBlurElementGetStdDeviationX ::
-                                         (IsSVGFEGaussianBlurElement self) =>
-                                           self -> IO (Maybe SVGAnimatedNumber)
+                                         (MonadIO m, IsSVGFEGaussianBlurElement self) =>
+                                           self -> m (Maybe SVGAnimatedNumber)
 svgfeGaussianBlurElementGetStdDeviationX self
-  = (ghcjs_dom_svgfe_gaussian_blur_element_get_std_deviation_x
-       (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_gaussian_blur_element_get_std_deviation_x
+          (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"stdDeviationY\"]"
         ghcjs_dom_svgfe_gaussian_blur_element_get_std_deviation_y ::
@@ -79,12 +83,13 @@ foreign import javascript unsafe "$1[\"stdDeviationY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.stdDeviationY Mozilla SVGFEGaussianBlurElement.stdDeviationY documentation> 
 svgfeGaussianBlurElementGetStdDeviationY ::
-                                         (IsSVGFEGaussianBlurElement self) =>
-                                           self -> IO (Maybe SVGAnimatedNumber)
+                                         (MonadIO m, IsSVGFEGaussianBlurElement self) =>
+                                           self -> m (Maybe SVGAnimatedNumber)
 svgfeGaussianBlurElementGetStdDeviationY self
-  = (ghcjs_dom_svgfe_gaussian_blur_element_get_std_deviation_y
-       (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_gaussian_blur_element_get_std_deviation_y
+          (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"edgeMode\"]"
         ghcjs_dom_svgfe_gaussian_blur_element_get_edge_mode ::
@@ -92,12 +97,13 @@ foreign import javascript unsafe "$1[\"edgeMode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.edgeMode Mozilla SVGFEGaussianBlurElement.edgeMode documentation> 
 svgfeGaussianBlurElementGetEdgeMode ::
-                                    (IsSVGFEGaussianBlurElement self) =>
-                                      self -> IO (Maybe SVGAnimatedEnumeration)
+                                    (MonadIO m, IsSVGFEGaussianBlurElement self) =>
+                                      self -> m (Maybe SVGAnimatedEnumeration)
 svgfeGaussianBlurElementGetEdgeMode self
-  = (ghcjs_dom_svgfe_gaussian_blur_element_get_edge_mode
-       (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_gaussian_blur_element_get_edge_mode
+          (unSVGFEGaussianBlurElement (toSVGFEGaussianBlurElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEGaussianBlurElement (
   ) where

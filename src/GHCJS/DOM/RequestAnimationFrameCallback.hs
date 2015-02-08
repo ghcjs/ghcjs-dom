@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -23,47 +24,55 @@ import GHCJS.DOM.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
 requestAnimationFrameCallbackNewSync ::
-                                       (Double -> IO Bool) -> IO RequestAnimationFrameCallback
+                                     (MonadIO m) =>
+                                       (Double -> IO Bool) -> m RequestAnimationFrameCallback
 requestAnimationFrameCallbackNewSync callback
-  = RequestAnimationFrameCallback . castRef <$>
-      syncCallback1 AlwaysRetain True
-        (\ highResTime ->
-           fromJSRefUnchecked highResTime >>=
-             \ highResTime' -> callback highResTime')
+  = liftIO
+      (RequestAnimationFrameCallback . castRef <$>
+         syncCallback1 AlwaysRetain True
+           (\ highResTime ->
+              fromJSRefUnchecked highResTime >>=
+                \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
 requestAnimationFrameCallbackNewSync' ::
+                                      (MonadIO m) =>
                                         ForeignRetention ->
                                           Bool ->
-                                            (Double -> IO Bool) -> IO RequestAnimationFrameCallback
+                                            (Double -> IO Bool) -> m RequestAnimationFrameCallback
 requestAnimationFrameCallbackNewSync' retention continueAsync
   callback
-  = RequestAnimationFrameCallback . castRef <$>
-      syncCallback1 retention continueAsync
-        (\ highResTime ->
-           fromJSRefUnchecked highResTime >>=
-             \ highResTime' -> callback highResTime')
+  = liftIO
+      (RequestAnimationFrameCallback . castRef <$>
+         syncCallback1 retention continueAsync
+           (\ highResTime ->
+              fromJSRefUnchecked highResTime >>=
+                \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
 requestAnimationFrameCallbackNewAsync ::
-                                        (Double -> IO Bool) -> IO RequestAnimationFrameCallback
+                                      (MonadIO m) =>
+                                        (Double -> IO Bool) -> m RequestAnimationFrameCallback
 requestAnimationFrameCallbackNewAsync callback
-  = RequestAnimationFrameCallback . castRef <$>
-      asyncCallback1 AlwaysRetain
-        (\ highResTime ->
-           fromJSRefUnchecked highResTime >>=
-             \ highResTime' -> callback highResTime')
+  = liftIO
+      (RequestAnimationFrameCallback . castRef <$>
+         asyncCallback1 AlwaysRetain
+           (\ highResTime ->
+              fromJSRefUnchecked highResTime >>=
+                \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
 requestAnimationFrameCallbackNewAsync' ::
+                                       (MonadIO m) =>
                                          ForeignRetention ->
-                                           (Double -> IO Bool) -> IO RequestAnimationFrameCallback
+                                           (Double -> IO Bool) -> m RequestAnimationFrameCallback
 requestAnimationFrameCallbackNewAsync' retention callback
-  = RequestAnimationFrameCallback . castRef <$>
-      asyncCallback1 retention
-        (\ highResTime ->
-           fromJSRefUnchecked highResTime >>=
-             \ highResTime' -> callback highResTime')
+  = liftIO
+      (RequestAnimationFrameCallback . castRef <$>
+         asyncCallback1 retention
+           (\ highResTime ->
+              fromJSRefUnchecked highResTime >>=
+                \ highResTime' -> callback highResTime'))
 #else
 module GHCJS.DOM.RequestAnimationFrameCallback (
   ) where

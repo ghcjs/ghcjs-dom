@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,13 +31,14 @@ foreign import javascript unsafe "$1[\"baseVal\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio.baseVal Mozilla SVGAnimatedPreserveAspectRatio.baseVal documentation> 
 svgAnimatedPreserveAspectRatioGetBaseVal ::
-                                         (IsSVGAnimatedPreserveAspectRatio self) =>
-                                           self -> IO (Maybe SVGPreserveAspectRatio)
+                                         (MonadIO m, IsSVGAnimatedPreserveAspectRatio self) =>
+                                           self -> m (Maybe SVGPreserveAspectRatio)
 svgAnimatedPreserveAspectRatioGetBaseVal self
-  = (ghcjs_dom_svg_animated_preserve_aspect_ratio_get_base_val
-       (unSVGAnimatedPreserveAspectRatio
-          (toSVGAnimatedPreserveAspectRatio self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_animated_preserve_aspect_ratio_get_base_val
+          (unSVGAnimatedPreserveAspectRatio
+             (toSVGAnimatedPreserveAspectRatio self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"animVal\"]"
         ghcjs_dom_svg_animated_preserve_aspect_ratio_get_anim_val ::
@@ -45,13 +47,14 @@ foreign import javascript unsafe "$1[\"animVal\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio.animVal Mozilla SVGAnimatedPreserveAspectRatio.animVal documentation> 
 svgAnimatedPreserveAspectRatioGetAnimVal ::
-                                         (IsSVGAnimatedPreserveAspectRatio self) =>
-                                           self -> IO (Maybe SVGPreserveAspectRatio)
+                                         (MonadIO m, IsSVGAnimatedPreserveAspectRatio self) =>
+                                           self -> m (Maybe SVGPreserveAspectRatio)
 svgAnimatedPreserveAspectRatioGetAnimVal self
-  = (ghcjs_dom_svg_animated_preserve_aspect_ratio_get_anim_val
-       (unSVGAnimatedPreserveAspectRatio
-          (toSVGAnimatedPreserveAspectRatio self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_animated_preserve_aspect_ratio_get_anim_val
+          (unSVGAnimatedPreserveAspectRatio
+             (toSVGAnimatedPreserveAspectRatio self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGAnimatedPreserveAspectRatio (
   ) where

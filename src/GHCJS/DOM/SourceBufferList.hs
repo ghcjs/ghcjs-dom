@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,13 +26,14 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBufferList.item Mozilla SourceBufferList.item documentation> 
 sourceBufferListItem ::
-                     (IsSourceBufferList self) =>
-                       self -> Word -> IO (Maybe SourceBuffer)
+                     (MonadIO m, IsSourceBufferList self) =>
+                       self -> Word -> m (Maybe SourceBuffer)
 sourceBufferListItem self index
-  = (ghcjs_dom_source_buffer_list_item
-       (unSourceBufferList (toSourceBufferList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_source_buffer_list_item
+          (unSourceBufferList (toSourceBufferList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_source_buffer_list_get_length ::
@@ -39,10 +41,11 @@ foreign import javascript unsafe "$1[\"length\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBufferList.length Mozilla SourceBufferList.length documentation> 
 sourceBufferListGetLength ::
-                          (IsSourceBufferList self) => self -> IO Word
+                          (MonadIO m, IsSourceBufferList self) => self -> m Word
 sourceBufferListGetLength self
-  = ghcjs_dom_source_buffer_list_get_length
-      (unSourceBufferList (toSourceBufferList self))
+  = liftIO
+      (ghcjs_dom_source_buffer_list_get_length
+         (unSourceBufferList (toSourceBufferList self)))
 #else
 module GHCJS.DOM.SourceBufferList (
   ) where

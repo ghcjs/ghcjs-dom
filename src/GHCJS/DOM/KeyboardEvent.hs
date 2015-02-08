@@ -24,6 +24,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,12 +40,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.modifierState Mozilla KeyboardEvent.modifierState documentation> 
 keyboardEventGetModifierState ::
-                              (IsKeyboardEvent self, ToJSString keyIdentifierArg) =>
-                                self -> keyIdentifierArg -> IO Bool
+                              (MonadIO m, IsKeyboardEvent self, ToJSString keyIdentifierArg) =>
+                                self -> keyIdentifierArg -> m Bool
 keyboardEventGetModifierState self keyIdentifierArg
-  = ghcjs_dom_keyboard_event_get_modifier_state
-      (unKeyboardEvent (toKeyboardEvent self))
-      (toJSString keyIdentifierArg)
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_modifier_state
+         (unKeyboardEvent (toKeyboardEvent self))
+         (toJSString keyIdentifierArg))
  
 foreign import javascript unsafe
         "$1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11, $12)"
@@ -58,30 +60,31 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.initKeyboardEvent Mozilla KeyboardEvent.initKeyboardEvent documentation> 
 keyboardEventInitKeyboardEvent ::
-                               (IsKeyboardEvent self, ToJSString type', IsDOMWindow view,
-                                ToJSString keyIdentifier) =>
+                               (MonadIO m, IsKeyboardEvent self, ToJSString type',
+                                IsDOMWindow view, ToJSString keyIdentifier) =>
                                  self ->
                                    type' ->
                                      Bool ->
                                        Bool ->
                                          Maybe view ->
                                            keyIdentifier ->
-                                             Word -> Bool -> Bool -> Bool -> Bool -> Bool -> IO ()
+                                             Word -> Bool -> Bool -> Bool -> Bool -> Bool -> m ()
 keyboardEventInitKeyboardEvent self type' canBubble cancelable view
   keyIdentifier location ctrlKey altKey shiftKey metaKey altGraphKey
-  = ghcjs_dom_keyboard_event_init_keyboard_event
-      (unKeyboardEvent (toKeyboardEvent self))
-      (toJSString type')
-      canBubble
-      cancelable
-      (maybe jsNull (unDOMWindow . toDOMWindow) view)
-      (toJSString keyIdentifier)
-      location
-      ctrlKey
-      altKey
-      shiftKey
-      metaKey
-      altGraphKey
+  = liftIO
+      (ghcjs_dom_keyboard_event_init_keyboard_event
+         (unKeyboardEvent (toKeyboardEvent self))
+         (toJSString type')
+         canBubble
+         cancelable
+         (maybe jsNull (unDOMWindow . toDOMWindow) view)
+         (toJSString keyIdentifier)
+         location
+         ctrlKey
+         altKey
+         shiftKey
+         metaKey
+         altGraphKey)
 cKEY_LOCATION_STANDARD = 0
 cKEY_LOCATION_LEFT = 1
 cKEY_LOCATION_RIGHT = 2
@@ -93,11 +96,13 @@ foreign import javascript unsafe "$1[\"keyIdentifier\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.keyIdentifier Mozilla KeyboardEvent.keyIdentifier documentation> 
 keyboardEventGetKeyIdentifier ::
-                              (IsKeyboardEvent self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsKeyboardEvent self, FromJSString result) =>
+                                self -> m result
 keyboardEventGetKeyIdentifier self
-  = fromJSString <$>
-      (ghcjs_dom_keyboard_event_get_key_identifier
-         (unKeyboardEvent (toKeyboardEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_keyboard_event_get_key_identifier
+            (unKeyboardEvent (toKeyboardEvent self))))
  
 foreign import javascript unsafe "$1[\"location\"]"
         ghcjs_dom_keyboard_event_get_location ::
@@ -105,10 +110,11 @@ foreign import javascript unsafe "$1[\"location\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.location Mozilla KeyboardEvent.location documentation> 
 keyboardEventGetLocation ::
-                         (IsKeyboardEvent self) => self -> IO Word
+                         (MonadIO m, IsKeyboardEvent self) => self -> m Word
 keyboardEventGetLocation self
-  = ghcjs_dom_keyboard_event_get_location
-      (unKeyboardEvent (toKeyboardEvent self))
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_location
+         (unKeyboardEvent (toKeyboardEvent self)))
  
 foreign import javascript unsafe "$1[\"keyLocation\"]"
         ghcjs_dom_keyboard_event_get_key_location ::
@@ -116,10 +122,11 @@ foreign import javascript unsafe "$1[\"keyLocation\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.keyLocation Mozilla KeyboardEvent.keyLocation documentation> 
 keyboardEventGetKeyLocation ::
-                            (IsKeyboardEvent self) => self -> IO Word
+                            (MonadIO m, IsKeyboardEvent self) => self -> m Word
 keyboardEventGetKeyLocation self
-  = ghcjs_dom_keyboard_event_get_key_location
-      (unKeyboardEvent (toKeyboardEvent self))
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_key_location
+         (unKeyboardEvent (toKeyboardEvent self)))
  
 foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_ctrl_key ::
@@ -127,10 +134,11 @@ foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.ctrlKey Mozilla KeyboardEvent.ctrlKey documentation> 
 keyboardEventGetCtrlKey ::
-                        (IsKeyboardEvent self) => self -> IO Bool
+                        (MonadIO m, IsKeyboardEvent self) => self -> m Bool
 keyboardEventGetCtrlKey self
-  = ghcjs_dom_keyboard_event_get_ctrl_key
-      (unKeyboardEvent (toKeyboardEvent self))
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_ctrl_key
+         (unKeyboardEvent (toKeyboardEvent self)))
  
 foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_shift_key ::
@@ -138,20 +146,23 @@ foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.shiftKey Mozilla KeyboardEvent.shiftKey documentation> 
 keyboardEventGetShiftKey ::
-                         (IsKeyboardEvent self) => self -> IO Bool
+                         (MonadIO m, IsKeyboardEvent self) => self -> m Bool
 keyboardEventGetShiftKey self
-  = ghcjs_dom_keyboard_event_get_shift_key
-      (unKeyboardEvent (toKeyboardEvent self))
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_shift_key
+         (unKeyboardEvent (toKeyboardEvent self)))
  
 foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_alt_key ::
         JSRef KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.altKey Mozilla KeyboardEvent.altKey documentation> 
-keyboardEventGetAltKey :: (IsKeyboardEvent self) => self -> IO Bool
+keyboardEventGetAltKey ::
+                       (MonadIO m, IsKeyboardEvent self) => self -> m Bool
 keyboardEventGetAltKey self
-  = ghcjs_dom_keyboard_event_get_alt_key
-      (unKeyboardEvent (toKeyboardEvent self))
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_alt_key
+         (unKeyboardEvent (toKeyboardEvent self)))
  
 foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_meta_key ::
@@ -159,10 +170,11 @@ foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.metaKey Mozilla KeyboardEvent.metaKey documentation> 
 keyboardEventGetMetaKey ::
-                        (IsKeyboardEvent self) => self -> IO Bool
+                        (MonadIO m, IsKeyboardEvent self) => self -> m Bool
 keyboardEventGetMetaKey self
-  = ghcjs_dom_keyboard_event_get_meta_key
-      (unKeyboardEvent (toKeyboardEvent self))
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_meta_key
+         (unKeyboardEvent (toKeyboardEvent self)))
  
 foreign import javascript unsafe "($1[\"altGraphKey\"] ? 1 : 0)"
         ghcjs_dom_keyboard_event_get_alt_graph_key ::
@@ -170,10 +182,11 @@ foreign import javascript unsafe "($1[\"altGraphKey\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.altGraphKey Mozilla KeyboardEvent.altGraphKey documentation> 
 keyboardEventGetAltGraphKey ::
-                            (IsKeyboardEvent self) => self -> IO Bool
+                            (MonadIO m, IsKeyboardEvent self) => self -> m Bool
 keyboardEventGetAltGraphKey self
-  = ghcjs_dom_keyboard_event_get_alt_graph_key
-      (unKeyboardEvent (toKeyboardEvent self))
+  = liftIO
+      (ghcjs_dom_keyboard_event_get_alt_graph_key
+         (unKeyboardEvent (toKeyboardEvent self)))
 #else
 module GHCJS.DOM.KeyboardEvent (
   module Graphics.UI.Gtk.WebKit.DOM.KeyboardEvent

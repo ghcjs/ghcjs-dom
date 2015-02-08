@@ -6,15 +6,13 @@ module GHCJS.DOM.DOMApplicationCache
         ghcjs_dom_dom_application_cache_swap_cache,
         domApplicationCacheSwapCache,
         ghcjs_dom_dom_application_cache_abort, domApplicationCacheAbort,
-        ghcjs_dom_dom_application_cache_dispatch_event,
-        domApplicationCacheDispatchEvent, cUNCACHED, cIDLE, cCHECKING,
-        cDOWNLOADING, cUPDATEREADY, cOBSOLETE,
+        cUNCACHED, cIDLE, cCHECKING, cDOWNLOADING, cUPDATEREADY, cOBSOLETE,
         ghcjs_dom_dom_application_cache_get_status,
-        domApplicationCacheGetStatus, domApplicationCacheOnchecking,
-        domApplicationCacheOnerror, domApplicationCacheOnnoupdate,
-        domApplicationCacheOndownloading, domApplicationCacheOnprogress,
-        domApplicationCacheOnupdateready, domApplicationCacheOncached,
-        domApplicationCacheOnobsolete, DOMApplicationCache,
+        domApplicationCacheGetStatus, domApplicationCacheChecking,
+        domApplicationCacheError, domApplicationCacheNoUpdate,
+        domApplicationCacheDownloading, domApplicationCacheProgress,
+        domApplicationCacheUpdateReady, domApplicationCacheCached,
+        domApplicationCacheObsolete, DOMApplicationCache,
         IsDOMApplicationCache, castToDOMApplicationCache,
         gTypeDOMApplicationCache, toDOMApplicationCache)
        where
@@ -22,6 +20,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,10 +35,11 @@ foreign import javascript unsafe "$1[\"update\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.update Mozilla DOMApplicationCache.update documentation> 
 domApplicationCacheUpdate ::
-                          (IsDOMApplicationCache self) => self -> IO ()
+                          (MonadIO m, IsDOMApplicationCache self) => self -> m ()
 domApplicationCacheUpdate self
-  = ghcjs_dom_dom_application_cache_update
-      (unDOMApplicationCache (toDOMApplicationCache self))
+  = liftIO
+      (ghcjs_dom_dom_application_cache_update
+         (unDOMApplicationCache (toDOMApplicationCache self)))
  
 foreign import javascript unsafe "$1[\"swapCache\"]()"
         ghcjs_dom_dom_application_cache_swap_cache ::
@@ -47,10 +47,11 @@ foreign import javascript unsafe "$1[\"swapCache\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.swapCache Mozilla DOMApplicationCache.swapCache documentation> 
 domApplicationCacheSwapCache ::
-                             (IsDOMApplicationCache self) => self -> IO ()
+                             (MonadIO m, IsDOMApplicationCache self) => self -> m ()
 domApplicationCacheSwapCache self
-  = ghcjs_dom_dom_application_cache_swap_cache
-      (unDOMApplicationCache (toDOMApplicationCache self))
+  = liftIO
+      (ghcjs_dom_dom_application_cache_swap_cache
+         (unDOMApplicationCache (toDOMApplicationCache self)))
  
 foreign import javascript unsafe "$1[\"abort\"]()"
         ghcjs_dom_dom_application_cache_abort ::
@@ -58,24 +59,11 @@ foreign import javascript unsafe "$1[\"abort\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.abort Mozilla DOMApplicationCache.abort documentation> 
 domApplicationCacheAbort ::
-                         (IsDOMApplicationCache self) => self -> IO ()
+                         (MonadIO m, IsDOMApplicationCache self) => self -> m ()
 domApplicationCacheAbort self
-  = ghcjs_dom_dom_application_cache_abort
-      (unDOMApplicationCache (toDOMApplicationCache self))
- 
-foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_application_cache_dispatch_event ::
-        JSRef DOMApplicationCache -> JSRef Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.dispatchEvent Mozilla DOMApplicationCache.dispatchEvent documentation> 
-domApplicationCacheDispatchEvent ::
-                                 (IsDOMApplicationCache self, IsEvent evt) =>
-                                   self -> Maybe evt -> IO Bool
-domApplicationCacheDispatchEvent self evt
-  = ghcjs_dom_dom_application_cache_dispatch_event
-      (unDOMApplicationCache (toDOMApplicationCache self))
-      (maybe jsNull (unEvent . toEvent) evt)
+  = liftIO
+      (ghcjs_dom_dom_application_cache_abort
+         (unDOMApplicationCache (toDOMApplicationCache self)))
 cUNCACHED = 0
 cIDLE = 1
 cCHECKING = 2
@@ -89,58 +77,65 @@ foreign import javascript unsafe "$1[\"status\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.status Mozilla DOMApplicationCache.status documentation> 
 domApplicationCacheGetStatus ::
-                             (IsDOMApplicationCache self) => self -> IO Word
+                             (MonadIO m, IsDOMApplicationCache self) => self -> m Word
 domApplicationCacheGetStatus self
-  = ghcjs_dom_dom_application_cache_get_status
-      (unDOMApplicationCache (toDOMApplicationCache self))
+  = liftIO
+      (ghcjs_dom_dom_application_cache_get_status
+         (unDOMApplicationCache (toDOMApplicationCache self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.onchecking Mozilla DOMApplicationCache.onchecking documentation> 
-domApplicationCacheOnchecking ::
-                              (IsDOMApplicationCache self) =>
-                                Signal self (EventM UIEvent self ())
-domApplicationCacheOnchecking = (connect "checking")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.checking Mozilla DOMApplicationCache.checking documentation> 
+domApplicationCacheChecking ::
+                            (IsDOMApplicationCache self, IsEventTarget self) =>
+                              EventName self Event
+domApplicationCacheChecking
+  = unsafeEventName (toJSString "checking")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.onerror Mozilla DOMApplicationCache.onerror documentation> 
-domApplicationCacheOnerror ::
-                           (IsDOMApplicationCache self) =>
-                             Signal self (EventM UIEvent self ())
-domApplicationCacheOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.error Mozilla DOMApplicationCache.error documentation> 
+domApplicationCacheError ::
+                         (IsDOMApplicationCache self, IsEventTarget self) =>
+                           EventName self UIEvent
+domApplicationCacheError = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.onnoupdate Mozilla DOMApplicationCache.onnoupdate documentation> 
-domApplicationCacheOnnoupdate ::
-                              (IsDOMApplicationCache self) =>
-                                Signal self (EventM UIEvent self ())
-domApplicationCacheOnnoupdate = (connect "noupdate")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.noUpdate Mozilla DOMApplicationCache.noUpdate documentation> 
+domApplicationCacheNoUpdate ::
+                            (IsDOMApplicationCache self, IsEventTarget self) =>
+                              EventName self Event
+domApplicationCacheNoUpdate
+  = unsafeEventName (toJSString "noupdate")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.ondownloading Mozilla DOMApplicationCache.ondownloading documentation> 
-domApplicationCacheOndownloading ::
-                                 (IsDOMApplicationCache self) =>
-                                   Signal self (EventM UIEvent self ())
-domApplicationCacheOndownloading = (connect "downloading")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.downloading Mozilla DOMApplicationCache.downloading documentation> 
+domApplicationCacheDownloading ::
+                               (IsDOMApplicationCache self, IsEventTarget self) =>
+                                 EventName self Event
+domApplicationCacheDownloading
+  = unsafeEventName (toJSString "downloading")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.onprogress Mozilla DOMApplicationCache.onprogress documentation> 
-domApplicationCacheOnprogress ::
-                              (IsDOMApplicationCache self) =>
-                                Signal self (EventM UIEvent self ())
-domApplicationCacheOnprogress = (connect "progress")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.progress Mozilla DOMApplicationCache.progress documentation> 
+domApplicationCacheProgress ::
+                            (IsDOMApplicationCache self, IsEventTarget self) =>
+                              EventName self ProgressEvent
+domApplicationCacheProgress
+  = unsafeEventName (toJSString "progress")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.onupdateready Mozilla DOMApplicationCache.onupdateready documentation> 
-domApplicationCacheOnupdateready ::
-                                 (IsDOMApplicationCache self) =>
-                                   Signal self (EventM UIEvent self ())
-domApplicationCacheOnupdateready = (connect "updateready")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.updateReady Mozilla DOMApplicationCache.updateReady documentation> 
+domApplicationCacheUpdateReady ::
+                               (IsDOMApplicationCache self, IsEventTarget self) =>
+                                 EventName self Event
+domApplicationCacheUpdateReady
+  = unsafeEventName (toJSString "updateready")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.oncached Mozilla DOMApplicationCache.oncached documentation> 
-domApplicationCacheOncached ::
-                            (IsDOMApplicationCache self) =>
-                              Signal self (EventM UIEvent self ())
-domApplicationCacheOncached = (connect "cached")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.cached Mozilla DOMApplicationCache.cached documentation> 
+domApplicationCacheCached ::
+                          (IsDOMApplicationCache self, IsEventTarget self) =>
+                            EventName self Event
+domApplicationCacheCached = unsafeEventName (toJSString "cached")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.onobsolete Mozilla DOMApplicationCache.onobsolete documentation> 
-domApplicationCacheOnobsolete ::
-                              (IsDOMApplicationCache self) =>
-                                Signal self (EventM UIEvent self ())
-domApplicationCacheOnobsolete = (connect "obsolete")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache.obsolete Mozilla DOMApplicationCache.obsolete documentation> 
+domApplicationCacheObsolete ::
+                            (IsDOMApplicationCache self, IsEventTarget self) =>
+                              EventName self Event
+domApplicationCacheObsolete
+  = unsafeEventName (toJSString "obsolete")
 #else
 module GHCJS.DOM.DOMApplicationCache (
   module Graphics.UI.Gtk.WebKit.DOM.DOMApplicationCache

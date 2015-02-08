@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,19 +25,21 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchList.item Mozilla TouchList.item documentation> 
 touchListItem ::
-              (IsTouchList self) => self -> Word -> IO (Maybe Touch)
+              (MonadIO m, IsTouchList self) => self -> Word -> m (Maybe Touch)
 touchListItem self index
-  = (ghcjs_dom_touch_list_item (unTouchList (toTouchList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_touch_list_item (unTouchList (toTouchList self)) index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_touch_list_get_length :: JSRef TouchList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchList.length Mozilla TouchList.length documentation> 
-touchListGetLength :: (IsTouchList self) => self -> IO Word
+touchListGetLength ::
+                   (MonadIO m, IsTouchList self) => self -> m Word
 touchListGetLength self
-  = ghcjs_dom_touch_list_get_length (unTouchList (toTouchList self))
+  = liftIO
+      (ghcjs_dom_touch_list_get_length (unTouchList (toTouchList self)))
 #else
 module GHCJS.DOM.TouchList (
   ) where

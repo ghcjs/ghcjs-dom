@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,12 +26,13 @@ foreign import javascript unsafe "$1[\"statusMessage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextEvent.statusMessage Mozilla WebGLContextEvent.statusMessage documentation> 
 webGLContextEventGetStatusMessage ::
-                                  (IsWebGLContextEvent self, FromJSString result) =>
-                                    self -> IO result
+                                  (MonadIO m, IsWebGLContextEvent self, FromJSString result) =>
+                                    self -> m result
 webGLContextEventGetStatusMessage self
-  = fromJSString <$>
-      (ghcjs_dom_web_gl_context_event_get_status_message
-         (unWebGLContextEvent (toWebGLContextEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_gl_context_event_get_status_message
+            (unWebGLContextEvent (toWebGLContextEvent self))))
 #else
 module GHCJS.DOM.WebGLContextEvent (
   ) where

@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,12 +29,14 @@ foreign import javascript unsafe "$1[\"position\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent.position Mozilla XMLHttpRequestProgressEvent.position documentation> 
 xmlHttpRequestProgressEventGetPosition ::
-                                       (IsXMLHttpRequestProgressEvent self) => self -> IO Word64
+                                       (MonadIO m, IsXMLHttpRequestProgressEvent self) =>
+                                         self -> m Word64
 xmlHttpRequestProgressEventGetPosition self
-  = round <$>
-      (ghcjs_dom_xml_http_request_progress_event_get_position
-         (unXMLHttpRequestProgressEvent
-            (toXMLHttpRequestProgressEvent self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_xml_http_request_progress_event_get_position
+            (unXMLHttpRequestProgressEvent
+               (toXMLHttpRequestProgressEvent self))))
  
 foreign import javascript unsafe "$1[\"totalSize\"]"
         ghcjs_dom_xml_http_request_progress_event_get_total_size ::
@@ -41,12 +44,14 @@ foreign import javascript unsafe "$1[\"totalSize\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent.totalSize Mozilla XMLHttpRequestProgressEvent.totalSize documentation> 
 xmlHttpRequestProgressEventGetTotalSize ::
-                                        (IsXMLHttpRequestProgressEvent self) => self -> IO Word64
+                                        (MonadIO m, IsXMLHttpRequestProgressEvent self) =>
+                                          self -> m Word64
 xmlHttpRequestProgressEventGetTotalSize self
-  = round <$>
-      (ghcjs_dom_xml_http_request_progress_event_get_total_size
-         (unXMLHttpRequestProgressEvent
-            (toXMLHttpRequestProgressEvent self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_xml_http_request_progress_event_get_total_size
+            (unXMLHttpRequestProgressEvent
+               (toXMLHttpRequestProgressEvent self))))
 #else
 module GHCJS.DOM.XMLHttpRequestProgressEvent (
   ) where

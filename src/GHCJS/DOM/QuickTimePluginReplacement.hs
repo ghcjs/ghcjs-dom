@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -33,12 +34,14 @@ foreign import javascript unsafe "$1[\"postEvent\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement.postEvent Mozilla QuickTimePluginReplacement.postEvent documentation> 
 quickTimePluginReplacementPostEvent ::
-                                    (IsQuickTimePluginReplacement self, ToJSString eventName) =>
-                                      self -> eventName -> IO ()
+                                    (MonadIO m, IsQuickTimePluginReplacement self,
+                                     ToJSString eventName) =>
+                                      self -> eventName -> m ()
 quickTimePluginReplacementPostEvent self eventName
-  = ghcjs_dom_quick_time_plugin_replacement_post_event
-      (unQuickTimePluginReplacement (toQuickTimePluginReplacement self))
-      (toJSString eventName)
+  = liftIO
+      (ghcjs_dom_quick_time_plugin_replacement_post_event
+         (unQuickTimePluginReplacement (toQuickTimePluginReplacement self))
+         (toJSString eventName))
  
 foreign import javascript unsafe "$1[\"movieSize\"]"
         ghcjs_dom_quick_time_plugin_replacement_get_movie_size ::
@@ -46,11 +49,14 @@ foreign import javascript unsafe "$1[\"movieSize\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement.movieSize Mozilla QuickTimePluginReplacement.movieSize documentation> 
 quickTimePluginReplacementGetMovieSize ::
-                                       (IsQuickTimePluginReplacement self) => self -> IO Word64
+                                       (MonadIO m, IsQuickTimePluginReplacement self) =>
+                                         self -> m Word64
 quickTimePluginReplacementGetMovieSize self
-  = round <$>
-      (ghcjs_dom_quick_time_plugin_replacement_get_movie_size
-         (unQuickTimePluginReplacement (toQuickTimePluginReplacement self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_quick_time_plugin_replacement_get_movie_size
+            (unQuickTimePluginReplacement
+               (toQuickTimePluginReplacement self))))
  
 foreign import javascript unsafe "$1[\"timedMetaData\"]"
         ghcjs_dom_quick_time_plugin_replacement_get_timed_meta_data ::
@@ -58,11 +64,12 @@ foreign import javascript unsafe "$1[\"timedMetaData\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement.timedMetaData Mozilla QuickTimePluginReplacement.timedMetaData documentation> 
 quickTimePluginReplacementGetTimedMetaData ::
-                                           (IsQuickTimePluginReplacement self) =>
-                                             self -> IO (JSRef a)
+                                           (MonadIO m, IsQuickTimePluginReplacement self) =>
+                                             self -> m (JSRef a)
 quickTimePluginReplacementGetTimedMetaData self
-  = ghcjs_dom_quick_time_plugin_replacement_get_timed_meta_data
-      (unQuickTimePluginReplacement (toQuickTimePluginReplacement self))
+  = liftIO
+      (ghcjs_dom_quick_time_plugin_replacement_get_timed_meta_data
+         (unQuickTimePluginReplacement (toQuickTimePluginReplacement self)))
  
 foreign import javascript unsafe "$1[\"accessLog\"]"
         ghcjs_dom_quick_time_plugin_replacement_get_access_log ::
@@ -70,10 +77,12 @@ foreign import javascript unsafe "$1[\"accessLog\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement.accessLog Mozilla QuickTimePluginReplacement.accessLog documentation> 
 quickTimePluginReplacementGetAccessLog ::
-                                       (IsQuickTimePluginReplacement self) => self -> IO (JSRef a)
+                                       (MonadIO m, IsQuickTimePluginReplacement self) =>
+                                         self -> m (JSRef a)
 quickTimePluginReplacementGetAccessLog self
-  = ghcjs_dom_quick_time_plugin_replacement_get_access_log
-      (unQuickTimePluginReplacement (toQuickTimePluginReplacement self))
+  = liftIO
+      (ghcjs_dom_quick_time_plugin_replacement_get_access_log
+         (unQuickTimePluginReplacement (toQuickTimePluginReplacement self)))
  
 foreign import javascript unsafe "$1[\"errorLog\"]"
         ghcjs_dom_quick_time_plugin_replacement_get_error_log ::
@@ -81,10 +90,12 @@ foreign import javascript unsafe "$1[\"errorLog\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement.errorLog Mozilla QuickTimePluginReplacement.errorLog documentation> 
 quickTimePluginReplacementGetErrorLog ::
-                                      (IsQuickTimePluginReplacement self) => self -> IO (JSRef a)
+                                      (MonadIO m, IsQuickTimePluginReplacement self) =>
+                                        self -> m (JSRef a)
 quickTimePluginReplacementGetErrorLog self
-  = ghcjs_dom_quick_time_plugin_replacement_get_error_log
-      (unQuickTimePluginReplacement (toQuickTimePluginReplacement self))
+  = liftIO
+      (ghcjs_dom_quick_time_plugin_replacement_get_error_log
+         (unQuickTimePluginReplacement (toQuickTimePluginReplacement self)))
 #else
 module GHCJS.DOM.QuickTimePluginReplacement (
   ) where

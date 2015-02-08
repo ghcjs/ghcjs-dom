@@ -39,7 +39,6 @@ module GHCJS.DOM.DOMWindow
         domWindowWebkitCancelAnimationFrame,
         ghcjs_dom_dom_window_webkit_cancel_request_animation_frame,
         domWindowWebkitCancelRequestAnimationFrame,
-        ghcjs_dom_dom_window_dispatch_event, domWindowDispatchEvent,
         ghcjs_dom_dom_window_capture_events, domWindowCaptureEvents,
         ghcjs_dom_dom_window_release_events, domWindowReleaseEvents,
         ghcjs_dom_dom_window_get_webkit_indexed_db,
@@ -103,47 +102,46 @@ module GHCJS.DOM.DOMWindow
         domWindowGetLocalStorage, ghcjs_dom_dom_window_get_orientation,
         domWindowGetOrientation, ghcjs_dom_dom_window_get_performance,
         domWindowGetPerformance, ghcjs_dom_dom_window_get_css,
-        domWindowGetCSS, domWindowOnabort, domWindowOnbeforeunload,
-        domWindowOnblur, domWindowOncanplay, domWindowOncanplaythrough,
-        domWindowOnchange, domWindowOnclick, domWindowOncontextmenu,
-        domWindowOndblclick, domWindowOndrag, domWindowOndragend,
-        domWindowOndragenter, domWindowOndragleave, domWindowOndragover,
-        domWindowOndragstart, domWindowOndrop, domWindowOndurationchange,
-        domWindowOnemptied, domWindowOnended, domWindowOnerror,
-        domWindowOnfocus, domWindowOnhashchange, domWindowOninput,
-        domWindowOninvalid, domWindowOnkeydown, domWindowOnkeypress,
-        domWindowOnkeyup, domWindowOnload, domWindowOnloadeddata,
-        domWindowOnloadedmetadata, domWindowOnloadstart,
-        domWindowOnmessage, domWindowOnmousedown, domWindowOnmouseenter,
-        domWindowOnmouseleave, domWindowOnmousemove, domWindowOnmouseout,
-        domWindowOnmouseover, domWindowOnmouseup, domWindowOnmousewheel,
-        domWindowOnoffline, domWindowOnonline, domWindowOnpagehide,
-        domWindowOnpageshow, domWindowOnpause, domWindowOnplay,
-        domWindowOnplaying, domWindowOnpopstate, domWindowOnprogress,
-        domWindowOnratechange, domWindowOnresize, domWindowOnscroll,
-        domWindowOnseeked, domWindowOnseeking, domWindowOnselect,
-        domWindowOnstalled, domWindowOnstorage, domWindowOnsubmit,
-        domWindowOnsuspend, domWindowOntimeupdate, domWindowOnunload,
-        domWindowOnvolumechange, domWindowOnwaiting, domWindowOnwheel,
-        domWindowOnreset, domWindowOnsearch, domWindowOnwebkitanimationend,
-        domWindowOnwebkitanimationiteration,
-        domWindowOnwebkitanimationstart, domWindowOnanimationend,
-        domWindowOnanimationiteration, domWindowOnanimationstart,
-        domWindowOnwebkittransitionend, domWindowOntransitionend,
-        domWindowOnorientationchange, domWindowOntouchstart,
-        domWindowOntouchmove, domWindowOntouchend, domWindowOntouchcancel,
-        domWindowOngesturestart, domWindowOngesturechange,
-        domWindowOngestureend, domWindowOndevicemotion,
-        domWindowOndeviceorientation, domWindowOnwebkitdeviceproximity,
-        domWindowOnwebkitwillrevealbottom, domWindowOnwebkitwillrevealleft,
-        domWindowOnwebkitwillrevealright, domWindowOnwebkitwillrevealtop,
-        DOMWindow, IsDOMWindow, castToDOMWindow, gTypeDOMWindow,
-        toDOMWindow)
+        domWindowGetCSS, domWindowAbort, domWindowBeforeUnload,
+        domWindowBlurEvent, domWindowCanPlay, domWindowCanPlayThrough,
+        domWindowChange, domWindowClick, domWindowContextMenu,
+        domWindowDblClick, domWindowDrag, domWindowDragEnd,
+        domWindowDragEnter, domWindowDragLeave, domWindowDragOver,
+        domWindowDragStart, domWindowDrop, domWindowDurationChange,
+        domWindowEmptied, domWindowEnded, domWindowError,
+        domWindowFocusEvent, domWindowHashChange, domWindowInput,
+        domWindowInvalid, domWindowKeyDown, domWindowKeyPress,
+        domWindowKeyUp, domWindowLoad, domWindowLoadedData,
+        domWindowLoadedMetadata, domWindowLoadStart, domWindowMessage,
+        domWindowMouseDown, domWindowMouseEnter, domWindowMouseLeave,
+        domWindowMouseMove, domWindowMouseOut, domWindowMouseOver,
+        domWindowMouseUp, domWindowMouseWheel, domWindowOffline,
+        domWindowOnline, domWindowPageHide, domWindowPageShow,
+        domWindowPause, domWindowPlay, domWindowPlaying, domWindowPopState,
+        domWindowProgress, domWindowRateChange, domWindowResize,
+        domWindowScrollEvent, domWindowSeeked, domWindowSeeking,
+        domWindowSelect, domWindowStalled, domWindowStorage,
+        domWindowSubmit, domWindowSuspend, domWindowTimeUpdate,
+        domWindowUnload, domWindowVolumeChange, domWindowWaiting,
+        domWindowWheel, domWindowReset, domWindowSearch,
+        domWindowWebKitAnimationEnd, domWindowWebKitAnimationIteration,
+        domWindowWebKitAnimationStart, domWindowAnimationEnd,
+        domWindowAnimationIteration, domWindowAnimationStart,
+        domWindowWebKitTransitionEnd, domWindowTransitionEnd,
+        domWindowOrientationChange, domWindowTouchStart,
+        domWindowTouchMove, domWindowTouchEnd, domWindowTouchCancel,
+        domWindowGestureStart, domWindowGestureChange, domWindowGestureEnd,
+        domWindowDeviceMotion, domWindowDeviceOrientation,
+        domWindowWebKitDeviceProximity, domWindowWebKitWillRevealBottom,
+        domWindowWebKitWillRevealLeft, domWindowWebKitWillRevealRight,
+        domWindowWebKitWillRevealTop, DOMWindow, IsDOMWindow,
+        castToDOMWindow, gTypeDOMWindow, toDOMWindow)
        where
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -162,24 +160,24 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.openDatabase Mozilla Window.openDatabase documentation> 
 domWindowOpenDatabase ::
-                      (IsDOMWindow self, ToJSString name, ToJSString version,
+                      (MonadIO m, IsDOMWindow self, ToJSString name, ToJSString version,
                        ToJSString displayName, IsDatabaseCallback creationCallback) =>
                         self ->
                           name ->
                             version ->
-                              displayName ->
-                                Word -> Maybe creationCallback -> IO (Maybe Database)
+                              displayName -> Word -> Maybe creationCallback -> m (Maybe Database)
 domWindowOpenDatabase self name version displayName estimatedSize
   creationCallback
-  = (ghcjs_dom_dom_window_open_database
-       (unDOMWindow (toDOMWindow self))
-       (toJSString name)
-       (toJSString version)
-       (toJSString displayName)
-       estimatedSize
-       (maybe jsNull (unDatabaseCallback . toDatabaseCallback)
-          creationCallback))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_open_database
+          (unDOMWindow (toDOMWindow self))
+          (toJSString name)
+          (toJSString version)
+          (toJSString displayName)
+          estimatedSize
+          (maybe jsNull (unDatabaseCallback . toDatabaseCallback)
+             creationCallback))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getSelection\"]()"
         ghcjs_dom_dom_window_get_selection ::
@@ -187,51 +185,57 @@ foreign import javascript unsafe "$1[\"getSelection\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.selection Mozilla Window.selection documentation> 
 domWindowGetSelection ::
-                      (IsDOMWindow self) => self -> IO (Maybe DOMSelection)
+                      (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMSelection)
 domWindowGetSelection self
-  = (ghcjs_dom_dom_window_get_selection
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_selection
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"focus\"]()"
         ghcjs_dom_dom_window_focus :: JSRef DOMWindow -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.focus Mozilla Window.focus documentation> 
-domWindowFocus :: (IsDOMWindow self) => self -> IO ()
+domWindowFocus :: (MonadIO m, IsDOMWindow self) => self -> m ()
 domWindowFocus self
-  = ghcjs_dom_dom_window_focus (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_focus (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"blur\"]()"
         ghcjs_dom_dom_window_blur :: JSRef DOMWindow -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.blur Mozilla Window.blur documentation> 
-domWindowBlur :: (IsDOMWindow self) => self -> IO ()
+domWindowBlur :: (MonadIO m, IsDOMWindow self) => self -> m ()
 domWindowBlur self
-  = ghcjs_dom_dom_window_blur (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_blur (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_dom_window_close :: JSRef DOMWindow -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.close Mozilla Window.close documentation> 
-domWindowClose :: (IsDOMWindow self) => self -> IO ()
+domWindowClose :: (MonadIO m, IsDOMWindow self) => self -> m ()
 domWindowClose self
-  = ghcjs_dom_dom_window_close (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_close (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"print\"]()"
         ghcjs_dom_dom_window_print :: JSRef DOMWindow -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.print Mozilla Window.print documentation> 
-domWindowPrint :: (IsDOMWindow self) => self -> IO ()
+domWindowPrint :: (MonadIO m, IsDOMWindow self) => self -> m ()
 domWindowPrint self
-  = ghcjs_dom_dom_window_print (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_print (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"stop\"]()"
         ghcjs_dom_dom_window_stop :: JSRef DOMWindow -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.stop Mozilla Window.stop documentation> 
-domWindowStop :: (IsDOMWindow self) => self -> IO ()
+domWindowStop :: (MonadIO m, IsDOMWindow self) => self -> m ()
 domWindowStop self
-  = ghcjs_dom_dom_window_stop (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_stop (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"open\"]($2, $3, $4)"
         ghcjs_dom_dom_window_open ::
@@ -240,15 +244,16 @@ foreign import javascript unsafe "$1[\"open\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.open Mozilla Window.open documentation> 
 domWindowOpen ::
-              (IsDOMWindow self, ToJSString url, ToJSString name,
+              (MonadIO m, IsDOMWindow self, ToJSString url, ToJSString name,
                ToJSString options) =>
-                self -> url -> name -> options -> IO (Maybe DOMWindow)
+                self -> url -> name -> options -> m (Maybe DOMWindow)
 domWindowOpen self url name options
-  = (ghcjs_dom_dom_window_open (unDOMWindow (toDOMWindow self))
-       (toJSString url)
-       (toJSString name)
-       (toJSString options))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_open (unDOMWindow (toDOMWindow self))
+          (toJSString url)
+          (toJSString name)
+          (toJSString options))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"showModalDialog\"]($2, $3,\n$4)"
@@ -257,24 +262,28 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.showModalDialog Mozilla Window.showModalDialog documentation> 
 domWindowShowModalDialog ::
-                         (IsDOMWindow self, ToJSString url, ToJSString featureArgs) =>
-                           self -> url -> JSRef a -> featureArgs -> IO (JSRef a)
+                         (MonadIO m, IsDOMWindow self, ToJSString url,
+                          ToJSString featureArgs) =>
+                           self -> url -> JSRef a -> featureArgs -> m (JSRef a)
 domWindowShowModalDialog self url dialogArgs featureArgs
-  = ghcjs_dom_dom_window_show_modal_dialog
-      (unDOMWindow (toDOMWindow self))
-      (toJSString url)
-      dialogArgs
-      (toJSString featureArgs)
+  = liftIO
+      (ghcjs_dom_dom_window_show_modal_dialog
+         (unDOMWindow (toDOMWindow self))
+         (toJSString url)
+         dialogArgs
+         (toJSString featureArgs))
  
 foreign import javascript unsafe "$1[\"alert\"]($2)"
         ghcjs_dom_dom_window_alert :: JSRef DOMWindow -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.alert Mozilla Window.alert documentation> 
 domWindowAlert ::
-               (IsDOMWindow self, ToJSString message) => self -> message -> IO ()
+               (MonadIO m, IsDOMWindow self, ToJSString message) =>
+                 self -> message -> m ()
 domWindowAlert self message
-  = ghcjs_dom_dom_window_alert (unDOMWindow (toDOMWindow self))
-      (toJSString message)
+  = liftIO
+      (ghcjs_dom_dom_window_alert (unDOMWindow (toDOMWindow self))
+         (toJSString message))
  
 foreign import javascript unsafe "($1[\"confirm\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_confirm ::
@@ -282,11 +291,12 @@ foreign import javascript unsafe "($1[\"confirm\"]($2) ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.confirm Mozilla Window.confirm documentation> 
 domWindowConfirm ::
-                 (IsDOMWindow self, ToJSString message) =>
-                   self -> message -> IO Bool
+                 (MonadIO m, IsDOMWindow self, ToJSString message) =>
+                   self -> message -> m Bool
 domWindowConfirm self message
-  = ghcjs_dom_dom_window_confirm (unDOMWindow (toDOMWindow self))
-      (toJSString message)
+  = liftIO
+      (ghcjs_dom_dom_window_confirm (unDOMWindow (toDOMWindow self))
+         (toJSString message))
  
 foreign import javascript unsafe "$1[\"prompt\"]($2, $3)"
         ghcjs_dom_dom_window_prompt ::
@@ -294,14 +304,15 @@ foreign import javascript unsafe "$1[\"prompt\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.prompt Mozilla Window.prompt documentation> 
 domWindowPrompt ::
-                (IsDOMWindow self, ToJSString message, ToJSString defaultValue,
-                 FromJSString result) =>
-                  self -> message -> defaultValue -> IO result
+                (MonadIO m, IsDOMWindow self, ToJSString message,
+                 ToJSString defaultValue, FromJSString result) =>
+                  self -> message -> defaultValue -> m result
 domWindowPrompt self message defaultValue
-  = fromJSString <$>
-      (ghcjs_dom_dom_window_prompt (unDOMWindow (toDOMWindow self))
-         (toJSString message)
-         (toJSString defaultValue))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_window_prompt (unDOMWindow (toDOMWindow self))
+            (toJSString message)
+            (toJSString defaultValue)))
  
 foreign import javascript unsafe
         "($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0)"
@@ -311,19 +322,20 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.find Mozilla Window.find documentation> 
 domWindowFind ::
-              (IsDOMWindow self, ToJSString string) =>
+              (MonadIO m, IsDOMWindow self, ToJSString string) =>
                 self ->
-                  string -> Bool -> Bool -> Bool -> Bool -> Bool -> Bool -> IO Bool
+                  string -> Bool -> Bool -> Bool -> Bool -> Bool -> Bool -> m Bool
 domWindowFind self string caseSensitive backwards wrap wholeWord
   searchInFrames showDialog
-  = ghcjs_dom_dom_window_find (unDOMWindow (toDOMWindow self))
-      (toJSString string)
-      caseSensitive
-      backwards
-      wrap
-      wholeWord
-      searchInFrames
-      showDialog
+  = liftIO
+      (ghcjs_dom_dom_window_find (unDOMWindow (toDOMWindow self))
+         (toJSString string)
+         caseSensitive
+         backwards
+         wrap
+         wholeWord
+         searchInFrames
+         showDialog)
  
 foreign import javascript unsafe "$1[\"scrollBy\"]($2, $3)"
         ghcjs_dom_dom_window_scroll_by ::
@@ -331,10 +343,11 @@ foreign import javascript unsafe "$1[\"scrollBy\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollBy Mozilla Window.scrollBy documentation> 
 domWindowScrollBy ::
-                  (IsDOMWindow self) => self -> Int -> Int -> IO ()
+                  (MonadIO m, IsDOMWindow self) => self -> Int -> Int -> m ()
 domWindowScrollBy self x y
-  = ghcjs_dom_dom_window_scroll_by (unDOMWindow (toDOMWindow self)) x
-      y
+  = liftIO
+      (ghcjs_dom_dom_window_scroll_by (unDOMWindow (toDOMWindow self)) x
+         y)
  
 foreign import javascript unsafe "$1[\"scrollTo\"]($2, $3)"
         ghcjs_dom_dom_window_scroll_to ::
@@ -342,10 +355,11 @@ foreign import javascript unsafe "$1[\"scrollTo\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollTo Mozilla Window.scrollTo documentation> 
 domWindowScrollTo ::
-                  (IsDOMWindow self) => self -> Int -> Int -> IO ()
+                  (MonadIO m, IsDOMWindow self) => self -> Int -> Int -> m ()
 domWindowScrollTo self x y
-  = ghcjs_dom_dom_window_scroll_to (unDOMWindow (toDOMWindow self)) x
-      y
+  = liftIO
+      (ghcjs_dom_dom_window_scroll_to (unDOMWindow (toDOMWindow self)) x
+         y)
  
 foreign import javascript unsafe "$1[\"scroll\"]($2, $3)"
         ghcjs_dom_dom_window_scroll ::
@@ -353,9 +367,10 @@ foreign import javascript unsafe "$1[\"scroll\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scroll Mozilla Window.scroll documentation> 
 domWindowScroll ::
-                (IsDOMWindow self) => self -> Int -> Int -> IO ()
+                (MonadIO m, IsDOMWindow self) => self -> Int -> Int -> m ()
 domWindowScroll self x y
-  = ghcjs_dom_dom_window_scroll (unDOMWindow (toDOMWindow self)) x y
+  = liftIO
+      (ghcjs_dom_dom_window_scroll (unDOMWindow (toDOMWindow self)) x y)
  
 foreign import javascript unsafe "$1[\"moveBy\"]($2, $3)"
         ghcjs_dom_dom_window_move_by ::
@@ -363,9 +378,10 @@ foreign import javascript unsafe "$1[\"moveBy\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.moveBy Mozilla Window.moveBy documentation> 
 domWindowMoveBy ::
-                (IsDOMWindow self) => self -> Float -> Float -> IO ()
+                (MonadIO m, IsDOMWindow self) => self -> Float -> Float -> m ()
 domWindowMoveBy self x y
-  = ghcjs_dom_dom_window_move_by (unDOMWindow (toDOMWindow self)) x y
+  = liftIO
+      (ghcjs_dom_dom_window_move_by (unDOMWindow (toDOMWindow self)) x y)
  
 foreign import javascript unsafe "$1[\"moveTo\"]($2, $3)"
         ghcjs_dom_dom_window_move_to ::
@@ -373,9 +389,10 @@ foreign import javascript unsafe "$1[\"moveTo\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.moveTo Mozilla Window.moveTo documentation> 
 domWindowMoveTo ::
-                (IsDOMWindow self) => self -> Float -> Float -> IO ()
+                (MonadIO m, IsDOMWindow self) => self -> Float -> Float -> m ()
 domWindowMoveTo self x y
-  = ghcjs_dom_dom_window_move_to (unDOMWindow (toDOMWindow self)) x y
+  = liftIO
+      (ghcjs_dom_dom_window_move_to (unDOMWindow (toDOMWindow self)) x y)
  
 foreign import javascript unsafe "$1[\"resizeBy\"]($2, $3)"
         ghcjs_dom_dom_window_resize_by ::
@@ -383,10 +400,11 @@ foreign import javascript unsafe "$1[\"resizeBy\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.resizeBy Mozilla Window.resizeBy documentation> 
 domWindowResizeBy ::
-                  (IsDOMWindow self) => self -> Float -> Float -> IO ()
+                  (MonadIO m, IsDOMWindow self) => self -> Float -> Float -> m ()
 domWindowResizeBy self x y
-  = ghcjs_dom_dom_window_resize_by (unDOMWindow (toDOMWindow self)) x
-      y
+  = liftIO
+      (ghcjs_dom_dom_window_resize_by (unDOMWindow (toDOMWindow self)) x
+         y)
  
 foreign import javascript unsafe "$1[\"resizeTo\"]($2, $3)"
         ghcjs_dom_dom_window_resize_to ::
@@ -394,11 +412,12 @@ foreign import javascript unsafe "$1[\"resizeTo\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.resizeTo Mozilla Window.resizeTo documentation> 
 domWindowResizeTo ::
-                  (IsDOMWindow self) => self -> Float -> Float -> IO ()
+                  (MonadIO m, IsDOMWindow self) => self -> Float -> Float -> m ()
 domWindowResizeTo self width height
-  = ghcjs_dom_dom_window_resize_to (unDOMWindow (toDOMWindow self))
-      width
-      height
+  = liftIO
+      (ghcjs_dom_dom_window_resize_to (unDOMWindow (toDOMWindow self))
+         width
+         height)
  
 foreign import javascript unsafe "$1[\"matchMedia\"]($2)"
         ghcjs_dom_dom_window_match_media ::
@@ -406,13 +425,13 @@ foreign import javascript unsafe "$1[\"matchMedia\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.matchMedia Mozilla Window.matchMedia documentation> 
 domWindowMatchMedia ::
-                    (IsDOMWindow self, ToJSString query) =>
-                      self -> query -> IO (Maybe MediaQueryList)
+                    (MonadIO m, IsDOMWindow self, ToJSString query) =>
+                      self -> query -> m (Maybe MediaQueryList)
 domWindowMatchMedia self query
-  = (ghcjs_dom_dom_window_match_media
-       (unDOMWindow (toDOMWindow self))
-       (toJSString query))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_match_media (unDOMWindow (toDOMWindow self))
+          (toJSString query))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getComputedStyle\"]($2, $3)"
         ghcjs_dom_dom_window_get_computed_style ::
@@ -421,15 +440,17 @@ foreign import javascript unsafe "$1[\"getComputedStyle\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.computedStyle Mozilla Window.computedStyle documentation> 
 domWindowGetComputedStyle ::
-                          (IsDOMWindow self, IsElement element, ToJSString pseudoElement) =>
+                          (MonadIO m, IsDOMWindow self, IsElement element,
+                           ToJSString pseudoElement) =>
                             self ->
-                              Maybe element -> pseudoElement -> IO (Maybe CSSStyleDeclaration)
+                              Maybe element -> pseudoElement -> m (Maybe CSSStyleDeclaration)
 domWindowGetComputedStyle self element pseudoElement
-  = (ghcjs_dom_dom_window_get_computed_style
-       (unDOMWindow (toDOMWindow self))
-       (maybe jsNull (unElement . toElement) element)
-       (toJSString pseudoElement))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_computed_style
+          (unDOMWindow (toDOMWindow self))
+          (maybe jsNull (unElement . toElement) element)
+          (toJSString pseudoElement))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"webkitConvertPointFromPageToNode\"]($2,\n$3)"
@@ -439,14 +460,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromPageToNode Mozilla Window.webkitConvertPointFromPageToNode documentation> 
 domWindowWebkitConvertPointFromPageToNode ::
-                                          (IsDOMWindow self, IsNode node, IsWebKitPoint p) =>
-                                            self -> Maybe node -> Maybe p -> IO (Maybe WebKitPoint)
+                                          (MonadIO m, IsDOMWindow self, IsNode node,
+                                           IsWebKitPoint p) =>
+                                            self -> Maybe node -> Maybe p -> m (Maybe WebKitPoint)
 domWindowWebkitConvertPointFromPageToNode self node p
-  = (ghcjs_dom_dom_window_webkit_convert_point_from_page_to_node
-       (unDOMWindow (toDOMWindow self))
-       (maybe jsNull (unNode . toNode) node)
-       (maybe jsNull (unWebKitPoint . toWebKitPoint) p))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_webkit_convert_point_from_page_to_node
+          (unDOMWindow (toDOMWindow self))
+          (maybe jsNull (unNode . toNode) node)
+          (maybe jsNull (unWebKitPoint . toWebKitPoint) p))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"webkitConvertPointFromNodeToPage\"]($2,\n$3)"
@@ -456,14 +479,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromNodeToPage Mozilla Window.webkitConvertPointFromNodeToPage documentation> 
 domWindowWebkitConvertPointFromNodeToPage ::
-                                          (IsDOMWindow self, IsNode node, IsWebKitPoint p) =>
-                                            self -> Maybe node -> Maybe p -> IO (Maybe WebKitPoint)
+                                          (MonadIO m, IsDOMWindow self, IsNode node,
+                                           IsWebKitPoint p) =>
+                                            self -> Maybe node -> Maybe p -> m (Maybe WebKitPoint)
 domWindowWebkitConvertPointFromNodeToPage self node p
-  = (ghcjs_dom_dom_window_webkit_convert_point_from_node_to_page
-       (unDOMWindow (toDOMWindow self))
-       (maybe jsNull (unNode . toNode) node)
-       (maybe jsNull (unWebKitPoint . toWebKitPoint) p))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_webkit_convert_point_from_node_to_page
+          (unDOMWindow (toDOMWindow self))
+          (maybe jsNull (unNode . toNode) node)
+          (maybe jsNull (unWebKitPoint . toWebKitPoint) p))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3, $4)"
         ghcjs_dom_dom_window_post_message ::
@@ -473,16 +498,16 @@ foreign import javascript unsafe "$1[\"postMessage\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage Mozilla Window.postMessage documentation> 
 domWindowPostMessage ::
-                     (IsDOMWindow self, IsSerializedScriptValue message,
+                     (MonadIO m, IsDOMWindow self, IsSerializedScriptValue message,
                       IsMessagePort messagePort, ToJSString targetOrigin) =>
-                       self -> Maybe message -> Maybe messagePort -> targetOrigin -> IO ()
+                       self -> Maybe message -> Maybe messagePort -> targetOrigin -> m ()
 domWindowPostMessage self message messagePort targetOrigin
-  = ghcjs_dom_dom_window_post_message
-      (unDOMWindow (toDOMWindow self))
-      (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
-         message)
-      (maybe jsNull (unMessagePort . toMessagePort) messagePort)
-      (toJSString targetOrigin)
+  = liftIO
+      (ghcjs_dom_dom_window_post_message (unDOMWindow (toDOMWindow self))
+         (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
+            message)
+         (maybe jsNull (unMessagePort . toMessagePort) messagePort)
+         (toJSString targetOrigin))
  
 foreign import javascript unsafe
         "$1[\"requestAnimationFrame\"]($2)"
@@ -491,14 +516,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.requestAnimationFrame Mozilla Window.requestAnimationFrame documentation> 
 domWindowRequestAnimationFrame ::
-                               (IsDOMWindow self, IsRequestAnimationFrameCallback callback) =>
-                                 self -> Maybe callback -> IO Int
+                               (MonadIO m, IsDOMWindow self,
+                                IsRequestAnimationFrameCallback callback) =>
+                                 self -> Maybe callback -> m Int
 domWindowRequestAnimationFrame self callback
-  = ghcjs_dom_dom_window_request_animation_frame
-      (unDOMWindow (toDOMWindow self))
-      (maybe jsNull
-         (unRequestAnimationFrameCallback . toRequestAnimationFrameCallback)
-         callback)
+  = liftIO
+      (ghcjs_dom_dom_window_request_animation_frame
+         (unDOMWindow (toDOMWindow self))
+         (maybe jsNull
+            (unRequestAnimationFrameCallback . toRequestAnimationFrameCallback)
+            callback))
  
 foreign import javascript unsafe "$1[\"cancelAnimationFrame\"]($2)"
         ghcjs_dom_dom_window_cancel_animation_frame ::
@@ -506,11 +533,12 @@ foreign import javascript unsafe "$1[\"cancelAnimationFrame\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.cancelAnimationFrame Mozilla Window.cancelAnimationFrame documentation> 
 domWindowCancelAnimationFrame ::
-                              (IsDOMWindow self) => self -> Int -> IO ()
+                              (MonadIO m, IsDOMWindow self) => self -> Int -> m ()
 domWindowCancelAnimationFrame self id
-  = ghcjs_dom_dom_window_cancel_animation_frame
-      (unDOMWindow (toDOMWindow self))
-      id
+  = liftIO
+      (ghcjs_dom_dom_window_cancel_animation_frame
+         (unDOMWindow (toDOMWindow self))
+         id)
  
 foreign import javascript unsafe
         "$1[\"webkitRequestAnimationFrame\"]($2)"
@@ -519,14 +547,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitRequestAnimationFrame Mozilla Window.webkitRequestAnimationFrame documentation> 
 domWindowWebkitRequestAnimationFrame ::
-                                     (IsDOMWindow self, IsRequestAnimationFrameCallback callback) =>
-                                       self -> Maybe callback -> IO Int
+                                     (MonadIO m, IsDOMWindow self,
+                                      IsRequestAnimationFrameCallback callback) =>
+                                       self -> Maybe callback -> m Int
 domWindowWebkitRequestAnimationFrame self callback
-  = ghcjs_dom_dom_window_webkit_request_animation_frame
-      (unDOMWindow (toDOMWindow self))
-      (maybe jsNull
-         (unRequestAnimationFrameCallback . toRequestAnimationFrameCallback)
-         callback)
+  = liftIO
+      (ghcjs_dom_dom_window_webkit_request_animation_frame
+         (unDOMWindow (toDOMWindow self))
+         (maybe jsNull
+            (unRequestAnimationFrameCallback . toRequestAnimationFrameCallback)
+            callback))
  
 foreign import javascript unsafe
         "$1[\"webkitCancelAnimationFrame\"]($2)"
@@ -535,11 +565,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitCancelAnimationFrame Mozilla Window.webkitCancelAnimationFrame documentation> 
 domWindowWebkitCancelAnimationFrame ::
-                                    (IsDOMWindow self) => self -> Int -> IO ()
+                                    (MonadIO m, IsDOMWindow self) => self -> Int -> m ()
 domWindowWebkitCancelAnimationFrame self id
-  = ghcjs_dom_dom_window_webkit_cancel_animation_frame
-      (unDOMWindow (toDOMWindow self))
-      id
+  = liftIO
+      (ghcjs_dom_dom_window_webkit_cancel_animation_frame
+         (unDOMWindow (toDOMWindow self))
+         id)
  
 foreign import javascript unsafe
         "$1[\"webkitCancelRequestAnimationFrame\"]($2)"
@@ -548,42 +579,34 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitCancelRequestAnimationFrame Mozilla Window.webkitCancelRequestAnimationFrame documentation> 
 domWindowWebkitCancelRequestAnimationFrame ::
-                                           (IsDOMWindow self) => self -> Int -> IO ()
+                                           (MonadIO m, IsDOMWindow self) => self -> Int -> m ()
 domWindowWebkitCancelRequestAnimationFrame self id
-  = ghcjs_dom_dom_window_webkit_cancel_request_animation_frame
-      (unDOMWindow (toDOMWindow self))
-      id
- 
-foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_window_dispatch_event ::
-        JSRef DOMWindow -> JSRef Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.dispatchEvent Mozilla Window.dispatchEvent documentation> 
-domWindowDispatchEvent ::
-                       (IsDOMWindow self, IsEvent evt) => self -> Maybe evt -> IO Bool
-domWindowDispatchEvent self evt
-  = ghcjs_dom_dom_window_dispatch_event
-      (unDOMWindow (toDOMWindow self))
-      (maybe jsNull (unEvent . toEvent) evt)
+  = liftIO
+      (ghcjs_dom_dom_window_webkit_cancel_request_animation_frame
+         (unDOMWindow (toDOMWindow self))
+         id)
  
 foreign import javascript unsafe "$1[\"captureEvents\"]()"
         ghcjs_dom_dom_window_capture_events :: JSRef DOMWindow -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.captureEvents Mozilla Window.captureEvents documentation> 
-domWindowCaptureEvents :: (IsDOMWindow self) => self -> IO ()
+domWindowCaptureEvents ::
+                       (MonadIO m, IsDOMWindow self) => self -> m ()
 domWindowCaptureEvents self
-  = ghcjs_dom_dom_window_capture_events
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_capture_events
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"releaseEvents\"]()"
         ghcjs_dom_dom_window_release_events :: JSRef DOMWindow -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.releaseEvents Mozilla Window.releaseEvents documentation> 
-domWindowReleaseEvents :: (IsDOMWindow self) => self -> IO ()
+domWindowReleaseEvents ::
+                       (MonadIO m, IsDOMWindow self) => self -> m ()
 domWindowReleaseEvents self
-  = ghcjs_dom_dom_window_release_events
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_release_events
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"webkitIndexedDB\"]"
         ghcjs_dom_dom_window_get_webkit_indexed_db ::
@@ -591,11 +614,12 @@ foreign import javascript unsafe "$1[\"webkitIndexedDB\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitIndexedDB Mozilla Window.webkitIndexedDB documentation> 
 domWindowGetWebkitIndexedDB ::
-                            (IsDOMWindow self) => self -> IO (Maybe IDBFactory)
+                            (MonadIO m, IsDOMWindow self) => self -> m (Maybe IDBFactory)
 domWindowGetWebkitIndexedDB self
-  = (ghcjs_dom_dom_window_get_webkit_indexed_db
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_webkit_indexed_db
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"indexedDB\"]"
         ghcjs_dom_dom_window_get_indexed_db ::
@@ -603,11 +627,12 @@ foreign import javascript unsafe "$1[\"indexedDB\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.indexedDB Mozilla Window.indexedDB documentation> 
 domWindowGetIndexedDB ::
-                      (IsDOMWindow self) => self -> IO (Maybe IDBFactory)
+                      (MonadIO m, IsDOMWindow self) => self -> m (Maybe IDBFactory)
 domWindowGetIndexedDB self
-  = (ghcjs_dom_dom_window_get_indexed_db
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_indexed_db
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitStorageInfo\"]"
         ghcjs_dom_dom_window_get_webkit_storage_info ::
@@ -615,11 +640,12 @@ foreign import javascript unsafe "$1[\"webkitStorageInfo\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitStorageInfo Mozilla Window.webkitStorageInfo documentation> 
 domWindowGetWebkitStorageInfo ::
-                              (IsDOMWindow self) => self -> IO (Maybe StorageInfo)
+                              (MonadIO m, IsDOMWindow self) => self -> m (Maybe StorageInfo)
 domWindowGetWebkitStorageInfo self
-  = (ghcjs_dom_dom_window_get_webkit_storage_info
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_webkit_storage_info
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"speechSynthesis\"]"
         ghcjs_dom_dom_window_get_speech_synthesis ::
@@ -627,11 +653,12 @@ foreign import javascript unsafe "$1[\"speechSynthesis\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.speechSynthesis Mozilla Window.speechSynthesis documentation> 
 domWindowGetSpeechSynthesis ::
-                            (IsDOMWindow self) => self -> IO (Maybe SpeechSynthesis)
+                            (MonadIO m, IsDOMWindow self) => self -> m (Maybe SpeechSynthesis)
 domWindowGetSpeechSynthesis self
-  = (ghcjs_dom_dom_window_get_speech_synthesis
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_speech_synthesis
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"screen\"]"
         ghcjs_dom_dom_window_get_screen ::
@@ -639,11 +666,11 @@ foreign import javascript unsafe "$1[\"screen\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screen Mozilla Window.screen documentation> 
 domWindowGetScreen ::
-                   (IsDOMWindow self) => self -> IO (Maybe DOMScreen)
+                   (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMScreen)
 domWindowGetScreen self
-  = (ghcjs_dom_dom_window_get_screen
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_screen (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"history\"]"
         ghcjs_dom_dom_window_get_history ::
@@ -651,11 +678,12 @@ foreign import javascript unsafe "$1[\"history\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.history Mozilla Window.history documentation> 
 domWindowGetHistory ::
-                    (IsDOMWindow self) => self -> IO (Maybe History)
+                    (MonadIO m, IsDOMWindow self) => self -> m (Maybe History)
 domWindowGetHistory self
-  = (ghcjs_dom_dom_window_get_history
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_history
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"locationbar\"]"
         ghcjs_dom_dom_window_get_locationbar ::
@@ -663,11 +691,12 @@ foreign import javascript unsafe "$1[\"locationbar\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.locationbar Mozilla Window.locationbar documentation> 
 domWindowGetLocationbar ::
-                        (IsDOMWindow self) => self -> IO (Maybe BarProp)
+                        (MonadIO m, IsDOMWindow self) => self -> m (Maybe BarProp)
 domWindowGetLocationbar self
-  = (ghcjs_dom_dom_window_get_locationbar
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_locationbar
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"menubar\"]"
         ghcjs_dom_dom_window_get_menubar ::
@@ -675,11 +704,12 @@ foreign import javascript unsafe "$1[\"menubar\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.menubar Mozilla Window.menubar documentation> 
 domWindowGetMenubar ::
-                    (IsDOMWindow self) => self -> IO (Maybe BarProp)
+                    (MonadIO m, IsDOMWindow self) => self -> m (Maybe BarProp)
 domWindowGetMenubar self
-  = (ghcjs_dom_dom_window_get_menubar
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_menubar
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"personalbar\"]"
         ghcjs_dom_dom_window_get_personalbar ::
@@ -687,11 +717,12 @@ foreign import javascript unsafe "$1[\"personalbar\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.personalbar Mozilla Window.personalbar documentation> 
 domWindowGetPersonalbar ::
-                        (IsDOMWindow self) => self -> IO (Maybe BarProp)
+                        (MonadIO m, IsDOMWindow self) => self -> m (Maybe BarProp)
 domWindowGetPersonalbar self
-  = (ghcjs_dom_dom_window_get_personalbar
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_personalbar
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"scrollbars\"]"
         ghcjs_dom_dom_window_get_scrollbars ::
@@ -699,11 +730,12 @@ foreign import javascript unsafe "$1[\"scrollbars\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollbars Mozilla Window.scrollbars documentation> 
 domWindowGetScrollbars ::
-                       (IsDOMWindow self) => self -> IO (Maybe BarProp)
+                       (MonadIO m, IsDOMWindow self) => self -> m (Maybe BarProp)
 domWindowGetScrollbars self
-  = (ghcjs_dom_dom_window_get_scrollbars
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_scrollbars
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"statusbar\"]"
         ghcjs_dom_dom_window_get_statusbar ::
@@ -711,11 +743,12 @@ foreign import javascript unsafe "$1[\"statusbar\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.statusbar Mozilla Window.statusbar documentation> 
 domWindowGetStatusbar ::
-                      (IsDOMWindow self) => self -> IO (Maybe BarProp)
+                      (MonadIO m, IsDOMWindow self) => self -> m (Maybe BarProp)
 domWindowGetStatusbar self
-  = (ghcjs_dom_dom_window_get_statusbar
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_statusbar
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"toolbar\"]"
         ghcjs_dom_dom_window_get_toolbar ::
@@ -723,11 +756,12 @@ foreign import javascript unsafe "$1[\"toolbar\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.toolbar Mozilla Window.toolbar documentation> 
 domWindowGetToolbar ::
-                    (IsDOMWindow self) => self -> IO (Maybe BarProp)
+                    (MonadIO m, IsDOMWindow self) => self -> m (Maybe BarProp)
 domWindowGetToolbar self
-  = (ghcjs_dom_dom_window_get_toolbar
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_toolbar
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"navigator\"]"
         ghcjs_dom_dom_window_get_navigator ::
@@ -735,11 +769,12 @@ foreign import javascript unsafe "$1[\"navigator\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.navigator Mozilla Window.navigator documentation> 
 domWindowGetNavigator ::
-                      (IsDOMWindow self) => self -> IO (Maybe Navigator)
+                      (MonadIO m, IsDOMWindow self) => self -> m (Maybe Navigator)
 domWindowGetNavigator self
-  = (ghcjs_dom_dom_window_get_navigator
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_navigator
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"clientInformation\"]"
         ghcjs_dom_dom_window_get_client_information ::
@@ -747,11 +782,12 @@ foreign import javascript unsafe "$1[\"clientInformation\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.clientInformation Mozilla Window.clientInformation documentation> 
 domWindowGetClientInformation ::
-                              (IsDOMWindow self) => self -> IO (Maybe Navigator)
+                              (MonadIO m, IsDOMWindow self) => self -> m (Maybe Navigator)
 domWindowGetClientInformation self
-  = (ghcjs_dom_dom_window_get_client_information
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_client_information
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"crypto\"]"
         ghcjs_dom_dom_window_get_crypto ::
@@ -759,11 +795,11 @@ foreign import javascript unsafe "$1[\"crypto\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.crypto Mozilla Window.crypto documentation> 
 domWindowGetCrypto ::
-                   (IsDOMWindow self) => self -> IO (Maybe Crypto)
+                   (MonadIO m, IsDOMWindow self) => self -> m (Maybe Crypto)
 domWindowGetCrypto self
-  = (ghcjs_dom_dom_window_get_crypto
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_crypto (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"location\"] = $2;"
         ghcjs_dom_dom_window_set_location ::
@@ -771,11 +807,12 @@ foreign import javascript unsafe "$1[\"location\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.location Mozilla Window.location documentation> 
 domWindowSetLocation ::
-                     (IsDOMWindow self, IsLocation val) => self -> Maybe val -> IO ()
+                     (MonadIO m, IsDOMWindow self, IsLocation val) =>
+                       self -> Maybe val -> m ()
 domWindowSetLocation self val
-  = ghcjs_dom_dom_window_set_location
-      (unDOMWindow (toDOMWindow self))
-      (maybe jsNull (unLocation . toLocation) val)
+  = liftIO
+      (ghcjs_dom_dom_window_set_location (unDOMWindow (toDOMWindow self))
+         (maybe jsNull (unLocation . toLocation) val))
  
 foreign import javascript unsafe "$1[\"location\"]"
         ghcjs_dom_dom_window_get_location ::
@@ -783,21 +820,24 @@ foreign import javascript unsafe "$1[\"location\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.location Mozilla Window.location documentation> 
 domWindowGetLocation ::
-                     (IsDOMWindow self) => self -> IO (Maybe Location)
+                     (MonadIO m, IsDOMWindow self) => self -> m (Maybe Location)
 domWindowGetLocation self
-  = (ghcjs_dom_dom_window_get_location
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_location
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"event\"]"
         ghcjs_dom_dom_window_get_event ::
         JSRef DOMWindow -> IO (JSRef Event)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.event Mozilla Window.event documentation> 
-domWindowGetEvent :: (IsDOMWindow self) => self -> IO (Maybe Event)
+domWindowGetEvent ::
+                  (MonadIO m, IsDOMWindow self) => self -> m (Maybe Event)
 domWindowGetEvent self
-  = (ghcjs_dom_dom_window_get_event (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_event (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"frameElement\"]"
         ghcjs_dom_dom_window_get_frame_element ::
@@ -805,11 +845,12 @@ foreign import javascript unsafe "$1[\"frameElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frameElement Mozilla Window.frameElement documentation> 
 domWindowGetFrameElement ::
-                         (IsDOMWindow self) => self -> IO (Maybe Element)
+                         (MonadIO m, IsDOMWindow self) => self -> m (Maybe Element)
 domWindowGetFrameElement self
-  = (ghcjs_dom_dom_window_get_frame_element
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_frame_element
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"offscreenBuffering\"] ? 1 : 0)"
@@ -818,134 +859,163 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.offscreenBuffering Mozilla Window.offscreenBuffering documentation> 
 domWindowGetOffscreenBuffering ::
-                               (IsDOMWindow self) => self -> IO Bool
+                               (MonadIO m, IsDOMWindow self) => self -> m Bool
 domWindowGetOffscreenBuffering self
-  = ghcjs_dom_dom_window_get_offscreen_buffering
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_offscreen_buffering
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"outerHeight\"]"
         ghcjs_dom_dom_window_get_outer_height :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.outerHeight Mozilla Window.outerHeight documentation> 
-domWindowGetOuterHeight :: (IsDOMWindow self) => self -> IO Int
+domWindowGetOuterHeight ::
+                        (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetOuterHeight self
-  = ghcjs_dom_dom_window_get_outer_height
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_outer_height
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"outerWidth\"]"
         ghcjs_dom_dom_window_get_outer_width :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.outerWidth Mozilla Window.outerWidth documentation> 
-domWindowGetOuterWidth :: (IsDOMWindow self) => self -> IO Int
+domWindowGetOuterWidth ::
+                       (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetOuterWidth self
-  = ghcjs_dom_dom_window_get_outer_width
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_outer_width
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"innerHeight\"]"
         ghcjs_dom_dom_window_get_inner_height :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.innerHeight Mozilla Window.innerHeight documentation> 
-domWindowGetInnerHeight :: (IsDOMWindow self) => self -> IO Int
+domWindowGetInnerHeight ::
+                        (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetInnerHeight self
-  = ghcjs_dom_dom_window_get_inner_height
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_inner_height
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"innerWidth\"]"
         ghcjs_dom_dom_window_get_inner_width :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.innerWidth Mozilla Window.innerWidth documentation> 
-domWindowGetInnerWidth :: (IsDOMWindow self) => self -> IO Int
+domWindowGetInnerWidth ::
+                       (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetInnerWidth self
-  = ghcjs_dom_dom_window_get_inner_width
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_inner_width
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"screenX\"]"
         ghcjs_dom_dom_window_get_screen_x :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenX Mozilla Window.screenX documentation> 
-domWindowGetScreenX :: (IsDOMWindow self) => self -> IO Int
+domWindowGetScreenX ::
+                    (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetScreenX self
-  = ghcjs_dom_dom_window_get_screen_x
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_screen_x
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"screenY\"]"
         ghcjs_dom_dom_window_get_screen_y :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenY Mozilla Window.screenY documentation> 
-domWindowGetScreenY :: (IsDOMWindow self) => self -> IO Int
+domWindowGetScreenY ::
+                    (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetScreenY self
-  = ghcjs_dom_dom_window_get_screen_y
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_screen_y
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"screenLeft\"]"
         ghcjs_dom_dom_window_get_screen_left :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenLeft Mozilla Window.screenLeft documentation> 
-domWindowGetScreenLeft :: (IsDOMWindow self) => self -> IO Int
+domWindowGetScreenLeft ::
+                       (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetScreenLeft self
-  = ghcjs_dom_dom_window_get_screen_left
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_screen_left
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"screenTop\"]"
         ghcjs_dom_dom_window_get_screen_top :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenTop Mozilla Window.screenTop documentation> 
-domWindowGetScreenTop :: (IsDOMWindow self) => self -> IO Int
+domWindowGetScreenTop ::
+                      (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetScreenTop self
-  = ghcjs_dom_dom_window_get_screen_top
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_screen_top
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"scrollX\"]"
         ghcjs_dom_dom_window_get_scroll_x :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollX Mozilla Window.scrollX documentation> 
-domWindowGetScrollX :: (IsDOMWindow self) => self -> IO Int
+domWindowGetScrollX ::
+                    (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetScrollX self
-  = ghcjs_dom_dom_window_get_scroll_x
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_scroll_x
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"scrollY\"]"
         ghcjs_dom_dom_window_get_scroll_y :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollY Mozilla Window.scrollY documentation> 
-domWindowGetScrollY :: (IsDOMWindow self) => self -> IO Int
+domWindowGetScrollY ::
+                    (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetScrollY self
-  = ghcjs_dom_dom_window_get_scroll_y
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_scroll_y
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"pageXOffset\"]"
         ghcjs_dom_dom_window_get_page_x_offset :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageXOffset Mozilla Window.pageXOffset documentation> 
-domWindowGetPageXOffset :: (IsDOMWindow self) => self -> IO Int
+domWindowGetPageXOffset ::
+                        (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetPageXOffset self
-  = ghcjs_dom_dom_window_get_page_x_offset
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_page_x_offset
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"pageYOffset\"]"
         ghcjs_dom_dom_window_get_page_y_offset :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageYOffset Mozilla Window.pageYOffset documentation> 
-domWindowGetPageYOffset :: (IsDOMWindow self) => self -> IO Int
+domWindowGetPageYOffset ::
+                        (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetPageYOffset self
-  = ghcjs_dom_dom_window_get_page_y_offset
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_page_y_offset
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "($1[\"closed\"] ? 1 : 0)"
         ghcjs_dom_dom_window_get_closed :: JSRef DOMWindow -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.closed Mozilla Window.closed documentation> 
-domWindowGetClosed :: (IsDOMWindow self) => self -> IO Bool
+domWindowGetClosed ::
+                   (MonadIO m, IsDOMWindow self) => self -> m Bool
 domWindowGetClosed self
-  = ghcjs_dom_dom_window_get_closed (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_closed (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_window_get_length :: JSRef DOMWindow -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.length Mozilla Window.length documentation> 
-domWindowGetLength :: (IsDOMWindow self) => self -> IO Word
+domWindowGetLength ::
+                   (MonadIO m, IsDOMWindow self) => self -> m Word
 domWindowGetLength self
-  = ghcjs_dom_dom_window_get_length (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_length (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_dom_window_set_name ::
@@ -953,20 +1023,24 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.name Mozilla Window.name documentation> 
 domWindowSetName ::
-                 (IsDOMWindow self, ToJSString val) => self -> val -> IO ()
+                 (MonadIO m, IsDOMWindow self, ToJSString val) =>
+                   self -> val -> m ()
 domWindowSetName self val
-  = ghcjs_dom_dom_window_set_name (unDOMWindow (toDOMWindow self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_dom_window_set_name (unDOMWindow (toDOMWindow self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_dom_window_get_name :: JSRef DOMWindow -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.name Mozilla Window.name documentation> 
 domWindowGetName ::
-                 (IsDOMWindow self, FromJSString result) => self -> IO result
+                 (MonadIO m, IsDOMWindow self, FromJSString result) =>
+                   self -> m result
 domWindowGetName self
-  = fromJSString <$>
-      (ghcjs_dom_dom_window_get_name (unDOMWindow (toDOMWindow self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_window_get_name (unDOMWindow (toDOMWindow self))))
  
 foreign import javascript unsafe "$1[\"status\"] = $2;"
         ghcjs_dom_dom_window_set_status ::
@@ -974,20 +1048,24 @@ foreign import javascript unsafe "$1[\"status\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.status Mozilla Window.status documentation> 
 domWindowSetStatus ::
-                   (IsDOMWindow self, ToJSString val) => self -> val -> IO ()
+                   (MonadIO m, IsDOMWindow self, ToJSString val) =>
+                     self -> val -> m ()
 domWindowSetStatus self val
-  = ghcjs_dom_dom_window_set_status (unDOMWindow (toDOMWindow self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_dom_window_set_status (unDOMWindow (toDOMWindow self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"status\"]"
         ghcjs_dom_dom_window_get_status :: JSRef DOMWindow -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.status Mozilla Window.status documentation> 
 domWindowGetStatus ::
-                   (IsDOMWindow self, FromJSString result) => self -> IO result
+                   (MonadIO m, IsDOMWindow self, FromJSString result) =>
+                     self -> m result
 domWindowGetStatus self
-  = fromJSString <$>
-      (ghcjs_dom_dom_window_get_status (unDOMWindow (toDOMWindow self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_window_get_status (unDOMWindow (toDOMWindow self))))
  
 foreign import javascript unsafe "$1[\"defaultStatus\"] = $2;"
         ghcjs_dom_dom_window_set_default_status ::
@@ -995,11 +1073,13 @@ foreign import javascript unsafe "$1[\"defaultStatus\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultStatus Mozilla Window.defaultStatus documentation> 
 domWindowSetDefaultStatus ::
-                          (IsDOMWindow self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsDOMWindow self, ToJSString val) =>
+                            self -> val -> m ()
 domWindowSetDefaultStatus self val
-  = ghcjs_dom_dom_window_set_default_status
-      (unDOMWindow (toDOMWindow self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_dom_window_set_default_status
+         (unDOMWindow (toDOMWindow self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"defaultStatus\"]"
         ghcjs_dom_dom_window_get_default_status ::
@@ -1007,11 +1087,13 @@ foreign import javascript unsafe "$1[\"defaultStatus\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultStatus Mozilla Window.defaultStatus documentation> 
 domWindowGetDefaultStatus ::
-                          (IsDOMWindow self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsDOMWindow self, FromJSString result) =>
+                            self -> m result
 domWindowGetDefaultStatus self
-  = fromJSString <$>
-      (ghcjs_dom_dom_window_get_default_status
-         (unDOMWindow (toDOMWindow self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_window_get_default_status
+            (unDOMWindow (toDOMWindow self))))
  
 foreign import javascript unsafe "$1[\"self\"]"
         ghcjs_dom_dom_window_get_self ::
@@ -1019,10 +1101,11 @@ foreign import javascript unsafe "$1[\"self\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.self Mozilla Window.self documentation> 
 domWindowGetSelf ::
-                 (IsDOMWindow self) => self -> IO (Maybe DOMWindow)
+                 (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMWindow)
 domWindowGetSelf self
-  = (ghcjs_dom_dom_window_get_self (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_self (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"window\"]"
         ghcjs_dom_dom_window_get_window ::
@@ -1030,11 +1113,11 @@ foreign import javascript unsafe "$1[\"window\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.window Mozilla Window.window documentation> 
 domWindowGetWindow ::
-                   (IsDOMWindow self) => self -> IO (Maybe DOMWindow)
+                   (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMWindow)
 domWindowGetWindow self
-  = (ghcjs_dom_dom_window_get_window
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_window (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"frames\"]"
         ghcjs_dom_dom_window_get_frames ::
@@ -1042,11 +1125,11 @@ foreign import javascript unsafe "$1[\"frames\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frames Mozilla Window.frames documentation> 
 domWindowGetFrames ::
-                   (IsDOMWindow self) => self -> IO (Maybe DOMWindow)
+                   (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMWindow)
 domWindowGetFrames self
-  = (ghcjs_dom_dom_window_get_frames
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_frames (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"opener\"]"
         ghcjs_dom_dom_window_get_opener ::
@@ -1054,11 +1137,11 @@ foreign import javascript unsafe "$1[\"opener\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.opener Mozilla Window.opener documentation> 
 domWindowGetOpener ::
-                   (IsDOMWindow self) => self -> IO (Maybe DOMWindow)
+                   (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMWindow)
 domWindowGetOpener self
-  = (ghcjs_dom_dom_window_get_opener
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_opener (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"parent\"]"
         ghcjs_dom_dom_window_get_parent ::
@@ -1066,11 +1149,11 @@ foreign import javascript unsafe "$1[\"parent\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.parent Mozilla Window.parent documentation> 
 domWindowGetParent ::
-                   (IsDOMWindow self) => self -> IO (Maybe DOMWindow)
+                   (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMWindow)
 domWindowGetParent self
-  = (ghcjs_dom_dom_window_get_parent
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_parent (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"top\"]"
         ghcjs_dom_dom_window_get_top ::
@@ -1078,10 +1161,11 @@ foreign import javascript unsafe "$1[\"top\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.top Mozilla Window.top documentation> 
 domWindowGetTop ::
-                (IsDOMWindow self) => self -> IO (Maybe DOMWindow)
+                (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMWindow)
 domWindowGetTop self
-  = (ghcjs_dom_dom_window_get_top (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_top (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"document\"]"
         ghcjs_dom_dom_window_get_document ::
@@ -1089,11 +1173,12 @@ foreign import javascript unsafe "$1[\"document\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.document Mozilla Window.document documentation> 
 domWindowGetDocument ::
-                     (IsDOMWindow self) => self -> IO (Maybe Document)
+                     (MonadIO m, IsDOMWindow self) => self -> m (Maybe Document)
 domWindowGetDocument self
-  = (ghcjs_dom_dom_window_get_document
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_document
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"styleMedia\"]"
         ghcjs_dom_dom_window_get_style_media ::
@@ -1101,11 +1186,12 @@ foreign import javascript unsafe "$1[\"styleMedia\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.styleMedia Mozilla Window.styleMedia documentation> 
 domWindowGetStyleMedia ::
-                       (IsDOMWindow self) => self -> IO (Maybe StyleMedia)
+                       (MonadIO m, IsDOMWindow self) => self -> m (Maybe StyleMedia)
 domWindowGetStyleMedia self
-  = (ghcjs_dom_dom_window_get_style_media
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_style_media
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"devicePixelRatio\"]"
         ghcjs_dom_dom_window_get_device_pixel_ratio ::
@@ -1113,10 +1199,11 @@ foreign import javascript unsafe "$1[\"devicePixelRatio\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.devicePixelRatio Mozilla Window.devicePixelRatio documentation> 
 domWindowGetDevicePixelRatio ::
-                             (IsDOMWindow self) => self -> IO Double
+                             (MonadIO m, IsDOMWindow self) => self -> m Double
 domWindowGetDevicePixelRatio self
-  = ghcjs_dom_dom_window_get_device_pixel_ratio
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_device_pixel_ratio
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"applicationCache\"]"
         ghcjs_dom_dom_window_get_application_cache ::
@@ -1124,11 +1211,13 @@ foreign import javascript unsafe "$1[\"applicationCache\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.applicationCache Mozilla Window.applicationCache documentation> 
 domWindowGetApplicationCache ::
-                             (IsDOMWindow self) => self -> IO (Maybe DOMApplicationCache)
+                             (MonadIO m, IsDOMWindow self) =>
+                               self -> m (Maybe DOMApplicationCache)
 domWindowGetApplicationCache self
-  = (ghcjs_dom_dom_window_get_application_cache
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_application_cache
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"sessionStorage\"]"
         ghcjs_dom_dom_window_get_session_storage ::
@@ -1136,11 +1225,12 @@ foreign import javascript unsafe "$1[\"sessionStorage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.sessionStorage Mozilla Window.sessionStorage documentation> 
 domWindowGetSessionStorage ::
-                           (IsDOMWindow self) => self -> IO (Maybe Storage)
+                           (MonadIO m, IsDOMWindow self) => self -> m (Maybe Storage)
 domWindowGetSessionStorage self
-  = (ghcjs_dom_dom_window_get_session_storage
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_session_storage
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"localStorage\"]"
         ghcjs_dom_dom_window_get_local_storage ::
@@ -1148,20 +1238,23 @@ foreign import javascript unsafe "$1[\"localStorage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.localStorage Mozilla Window.localStorage documentation> 
 domWindowGetLocalStorage ::
-                         (IsDOMWindow self) => self -> IO (Maybe Storage)
+                         (MonadIO m, IsDOMWindow self) => self -> m (Maybe Storage)
 domWindowGetLocalStorage self
-  = (ghcjs_dom_dom_window_get_local_storage
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_local_storage
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"orientation\"]"
         ghcjs_dom_dom_window_get_orientation :: JSRef DOMWindow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.orientation Mozilla Window.orientation documentation> 
-domWindowGetOrientation :: (IsDOMWindow self) => self -> IO Int
+domWindowGetOrientation ::
+                        (MonadIO m, IsDOMWindow self) => self -> m Int
 domWindowGetOrientation self
-  = ghcjs_dom_dom_window_get_orientation
-      (unDOMWindow (toDOMWindow self))
+  = liftIO
+      (ghcjs_dom_dom_window_get_orientation
+         (unDOMWindow (toDOMWindow self)))
  
 foreign import javascript unsafe "$1[\"performance\"]"
         ghcjs_dom_dom_window_get_performance ::
@@ -1169,11 +1262,12 @@ foreign import javascript unsafe "$1[\"performance\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.performance Mozilla Window.performance documentation> 
 domWindowGetPerformance ::
-                        (IsDOMWindow self) => self -> IO (Maybe Performance)
+                        (MonadIO m, IsDOMWindow self) => self -> m (Maybe Performance)
 domWindowGetPerformance self
-  = (ghcjs_dom_dom_window_get_performance
-       (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_window_get_performance
+          (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"CSS\"]"
         ghcjs_dom_dom_window_get_css ::
@@ -1181,459 +1275,497 @@ foreign import javascript unsafe "$1[\"CSS\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.css Mozilla Window.css documentation> 
 domWindowGetCSS ::
-                (IsDOMWindow self) => self -> IO (Maybe DOMWindowCSS)
+                (MonadIO m, IsDOMWindow self) => self -> m (Maybe DOMWindowCSS)
 domWindowGetCSS self
-  = (ghcjs_dom_dom_window_get_css (unDOMWindow (toDOMWindow self)))
-      >>= fromJSRef
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onabort Mozilla Window.onabort documentation> 
-domWindowOnabort ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnabort = (connect "abort")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onbeforeunload Mozilla Window.onbeforeunload documentation> 
-domWindowOnbeforeunload ::
-                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnbeforeunload = (connect "beforeunload")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onblur Mozilla Window.onblur documentation> 
-domWindowOnblur ::
-                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnblur = (connect "blur")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.oncanplay Mozilla Window.oncanplay documentation> 
-domWindowOncanplay ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOncanplay = (connect "canplay")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.oncanplaythrough Mozilla Window.oncanplaythrough documentation> 
-domWindowOncanplaythrough ::
-                          (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOncanplaythrough = (connect "canplaythrough")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onchange Mozilla Window.onchange documentation> 
-domWindowOnchange ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnchange = (connect "change")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onclick Mozilla Window.onclick documentation> 
-domWindowOnclick ::
-                 (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOnclick = (connect "click")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.oncontextmenu Mozilla Window.oncontextmenu documentation> 
-domWindowOncontextmenu ::
-                       (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOncontextmenu = (connect "contextmenu")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondblclick Mozilla Window.ondblclick documentation> 
-domWindowOndblclick ::
-                    (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndblclick = (connect "dblclick")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondrag Mozilla Window.ondrag documentation> 
-domWindowOndrag ::
-                (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndrag = (connect "drag")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondragend Mozilla Window.ondragend documentation> 
-domWindowOndragend ::
-                   (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndragend = (connect "dragend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondragenter Mozilla Window.ondragenter documentation> 
-domWindowOndragenter ::
-                     (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndragenter = (connect "dragenter")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondragleave Mozilla Window.ondragleave documentation> 
-domWindowOndragleave ::
-                     (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndragleave = (connect "dragleave")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondragover Mozilla Window.ondragover documentation> 
-domWindowOndragover ::
-                    (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndragover = (connect "dragover")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondragstart Mozilla Window.ondragstart documentation> 
-domWindowOndragstart ::
-                     (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndragstart = (connect "dragstart")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondrop Mozilla Window.ondrop documentation> 
-domWindowOndrop ::
-                (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOndrop = (connect "drop")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondurationchange Mozilla Window.ondurationchange documentation> 
-domWindowOndurationchange ::
-                          (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOndurationchange = (connect "durationchange")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onemptied Mozilla Window.onemptied documentation> 
-domWindowOnemptied ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnemptied = (connect "emptied")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onended Mozilla Window.onended documentation> 
-domWindowOnended ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnended = (connect "ended")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onerror Mozilla Window.onerror documentation> 
-domWindowOnerror ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnerror = (connect "error")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onfocus Mozilla Window.onfocus documentation> 
-domWindowOnfocus ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnfocus = (connect "focus")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onhashchange Mozilla Window.onhashchange documentation> 
-domWindowOnhashchange ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnhashchange = (connect "hashchange")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.oninput Mozilla Window.oninput documentation> 
-domWindowOninput ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOninput = (connect "input")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.oninvalid Mozilla Window.oninvalid documentation> 
-domWindowOninvalid ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOninvalid = (connect "invalid")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onkeydown Mozilla Window.onkeydown documentation> 
-domWindowOnkeydown ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnkeydown = (connect "keydown")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onkeypress Mozilla Window.onkeypress documentation> 
-domWindowOnkeypress ::
-                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnkeypress = (connect "keypress")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onkeyup Mozilla Window.onkeyup documentation> 
-domWindowOnkeyup ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnkeyup = (connect "keyup")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onload Mozilla Window.onload documentation> 
-domWindowOnload ::
-                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnload = (connect "load")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onloadeddata Mozilla Window.onloadeddata documentation> 
-domWindowOnloadeddata ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnloadeddata = (connect "loadeddata")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onloadedmetadata Mozilla Window.onloadedmetadata documentation> 
-domWindowOnloadedmetadata ::
-                          (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnloadedmetadata = (connect "loadedmetadata")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onloadstart Mozilla Window.onloadstart documentation> 
-domWindowOnloadstart ::
-                     (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnloadstart = (connect "loadstart")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmessage Mozilla Window.onmessage documentation> 
-domWindowOnmessage ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnmessage = (connect "message")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmousedown Mozilla Window.onmousedown documentation> 
-domWindowOnmousedown ::
-                     (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOnmousedown = (connect "mousedown")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmouseenter Mozilla Window.onmouseenter documentation> 
-domWindowOnmouseenter ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnmouseenter = (connect "mouseenter")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmouseleave Mozilla Window.onmouseleave documentation> 
-domWindowOnmouseleave ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnmouseleave = (connect "mouseleave")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmousemove Mozilla Window.onmousemove documentation> 
-domWindowOnmousemove ::
-                     (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOnmousemove = (connect "mousemove")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmouseout Mozilla Window.onmouseout documentation> 
-domWindowOnmouseout ::
-                    (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOnmouseout = (connect "mouseout")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmouseover Mozilla Window.onmouseover documentation> 
-domWindowOnmouseover ::
-                     (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOnmouseover = (connect "mouseover")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmouseup Mozilla Window.onmouseup documentation> 
-domWindowOnmouseup ::
-                   (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOnmouseup = (connect "mouseup")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onmousewheel Mozilla Window.onmousewheel documentation> 
-domWindowOnmousewheel ::
-                      (IsDOMWindow self) => Signal self (EventM MouseEvent self ())
-domWindowOnmousewheel = (connect "mousewheel")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onoffline Mozilla Window.onoffline documentation> 
-domWindowOnoffline ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnoffline = (connect "offline")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ononline Mozilla Window.ononline documentation> 
-domWindowOnonline ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnonline = (connect "online")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onpagehide Mozilla Window.onpagehide documentation> 
-domWindowOnpagehide ::
-                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnpagehide = (connect "pagehide")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onpageshow Mozilla Window.onpageshow documentation> 
-domWindowOnpageshow ::
-                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnpageshow = (connect "pageshow")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onpause Mozilla Window.onpause documentation> 
-domWindowOnpause ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnpause = (connect "pause")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onplay Mozilla Window.onplay documentation> 
-domWindowOnplay ::
-                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnplay = (connect "play")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onplaying Mozilla Window.onplaying documentation> 
-domWindowOnplaying ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnplaying = (connect "playing")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onpopstate Mozilla Window.onpopstate documentation> 
-domWindowOnpopstate ::
-                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnpopstate = (connect "popstate")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onprogress Mozilla Window.onprogress documentation> 
-domWindowOnprogress ::
-                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnprogress = (connect "progress")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onratechange Mozilla Window.onratechange documentation> 
-domWindowOnratechange ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnratechange = (connect "ratechange")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onresize Mozilla Window.onresize documentation> 
-domWindowOnresize ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnresize = (connect "resize")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onscroll Mozilla Window.onscroll documentation> 
-domWindowOnscroll ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnscroll = (connect "scroll")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onseeked Mozilla Window.onseeked documentation> 
-domWindowOnseeked ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnseeked = (connect "seeked")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onseeking Mozilla Window.onseeking documentation> 
-domWindowOnseeking ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnseeking = (connect "seeking")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onselect Mozilla Window.onselect documentation> 
-domWindowOnselect ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnselect = (connect "select")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onstalled Mozilla Window.onstalled documentation> 
-domWindowOnstalled ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnstalled = (connect "stalled")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onstorage Mozilla Window.onstorage documentation> 
-domWindowOnstorage ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnstorage = (connect "storage")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onsubmit Mozilla Window.onsubmit documentation> 
-domWindowOnsubmit ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnsubmit = (connect "submit")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onsuspend Mozilla Window.onsuspend documentation> 
-domWindowOnsuspend ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnsuspend = (connect "suspend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ontimeupdate Mozilla Window.ontimeupdate documentation> 
-domWindowOntimeupdate ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOntimeupdate = (connect "timeupdate")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onunload Mozilla Window.onunload documentation> 
-domWindowOnunload ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnunload = (connect "unload")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onvolumechange Mozilla Window.onvolumechange documentation> 
-domWindowOnvolumechange ::
-                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnvolumechange = (connect "volumechange")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwaiting Mozilla Window.onwaiting documentation> 
-domWindowOnwaiting ::
-                   (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwaiting = (connect "waiting")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwheel Mozilla Window.onwheel documentation> 
-domWindowOnwheel ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwheel = (connect "wheel")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onreset Mozilla Window.onreset documentation> 
-domWindowOnreset ::
-                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnreset = (connect "reset")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onsearch Mozilla Window.onsearch documentation> 
-domWindowOnsearch ::
-                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnsearch = (connect "search")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitanimationend Mozilla Window.onwebkitanimationend documentation> 
-domWindowOnwebkitanimationend ::
-                              (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitanimationend = (connect "webkitanimationend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitanimationiteration Mozilla Window.onwebkitanimationiteration documentation> 
-domWindowOnwebkitanimationiteration ::
-                                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitanimationiteration
-  = (connect "webkitanimationiteration")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitanimationstart Mozilla Window.onwebkitanimationstart documentation> 
-domWindowOnwebkitanimationstart ::
-                                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitanimationstart = (connect "webkitanimationstart")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onanimationend Mozilla Window.onanimationend documentation> 
-domWindowOnanimationend ::
-                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnanimationend = (connect "animationend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onanimationiteration Mozilla Window.onanimationiteration documentation> 
-domWindowOnanimationiteration ::
-                              (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnanimationiteration = (connect "animationiteration")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onanimationstart Mozilla Window.onanimationstart documentation> 
-domWindowOnanimationstart ::
-                          (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnanimationstart = (connect "animationstart")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkittransitionend Mozilla Window.onwebkittransitionend documentation> 
-domWindowOnwebkittransitionend ::
-                               (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkittransitionend = (connect "webkittransitionend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ontransitionend Mozilla Window.ontransitionend documentation> 
-domWindowOntransitionend ::
-                         (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOntransitionend = (connect "transitionend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onorientationchange Mozilla Window.onorientationchange documentation> 
-domWindowOnorientationchange ::
-                             (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnorientationchange = (connect "orientationchange")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ontouchstart Mozilla Window.ontouchstart documentation> 
-domWindowOntouchstart ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOntouchstart = (connect "touchstart")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ontouchmove Mozilla Window.ontouchmove documentation> 
-domWindowOntouchmove ::
-                     (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOntouchmove = (connect "touchmove")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ontouchend Mozilla Window.ontouchend documentation> 
-domWindowOntouchend ::
-                    (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOntouchend = (connect "touchend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ontouchcancel Mozilla Window.ontouchcancel documentation> 
-domWindowOntouchcancel ::
-                       (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOntouchcancel = (connect "touchcancel")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ongesturestart Mozilla Window.ongesturestart documentation> 
-domWindowOngesturestart ::
-                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOngesturestart = (connect "gesturestart")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ongesturechange Mozilla Window.ongesturechange documentation> 
-domWindowOngesturechange ::
-                         (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOngesturechange = (connect "gesturechange")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ongestureend Mozilla Window.ongestureend documentation> 
-domWindowOngestureend ::
-                      (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOngestureend = (connect "gestureend")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondevicemotion Mozilla Window.ondevicemotion documentation> 
-domWindowOndevicemotion ::
-                        (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOndevicemotion = (connect "devicemotion")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ondeviceorientation Mozilla Window.ondeviceorientation documentation> 
-domWindowOndeviceorientation ::
-                             (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOndeviceorientation = (connect "deviceorientation")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitdeviceproximity Mozilla Window.onwebkitdeviceproximity documentation> 
-domWindowOnwebkitdeviceproximity ::
-                                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitdeviceproximity
-  = (connect "webkitdeviceproximity")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitwillrevealbottom Mozilla Window.onwebkitwillrevealbottom documentation> 
-domWindowOnwebkitwillrevealbottom ::
-                                  (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitwillrevealbottom
-  = (connect "webkitwillrevealbottom")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitwillrevealleft Mozilla Window.onwebkitwillrevealleft documentation> 
-domWindowOnwebkitwillrevealleft ::
-                                (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitwillrevealleft = (connect "webkitwillrevealleft")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitwillrevealright Mozilla Window.onwebkitwillrevealright documentation> 
-domWindowOnwebkitwillrevealright ::
-                                 (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitwillrevealright
-  = (connect "webkitwillrevealright")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onwebkitwillrevealtop Mozilla Window.onwebkitwillrevealtop documentation> 
-domWindowOnwebkitwillrevealtop ::
-                               (IsDOMWindow self) => Signal self (EventM UIEvent self ())
-domWindowOnwebkitwillrevealtop = (connect "webkitwillrevealtop")
+  = liftIO
+      ((ghcjs_dom_dom_window_get_css (unDOMWindow (toDOMWindow self)))
+         >>= fromJSRef)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.abort Mozilla Window.abort documentation> 
+domWindowAbort ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowAbort = unsafeEventName (toJSString "abort")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.beforeUnload Mozilla Window.beforeUnload documentation> 
+domWindowBeforeUnload ::
+                      (IsDOMWindow self, IsEventTarget self) =>
+                        EventName self BeforeUnloadEvent
+domWindowBeforeUnload = unsafeEventName (toJSString "beforeunload")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.blurEvent Mozilla Window.blurEvent documentation> 
+domWindowBlurEvent ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self FocusEvent
+domWindowBlurEvent = unsafeEventName (toJSString "blur")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.canPlay Mozilla Window.canPlay documentation> 
+domWindowCanPlay ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowCanPlay = unsafeEventName (toJSString "canplay")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.canPlayThrough Mozilla Window.canPlayThrough documentation> 
+domWindowCanPlayThrough ::
+                        (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowCanPlayThrough
+  = unsafeEventName (toJSString "canplaythrough")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.change Mozilla Window.change documentation> 
+domWindowChange ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowChange = unsafeEventName (toJSString "change")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.click Mozilla Window.click documentation> 
+domWindowClick ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowClick = unsafeEventName (toJSString "click")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.contextMenu Mozilla Window.contextMenu documentation> 
+domWindowContextMenu ::
+                     (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowContextMenu = unsafeEventName (toJSString "contextmenu")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.dblClick Mozilla Window.dblClick documentation> 
+domWindowDblClick ::
+                  (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDblClick = unsafeEventName (toJSString "dblclick")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.drag Mozilla Window.drag documentation> 
+domWindowDrag ::
+              (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDrag = unsafeEventName (toJSString "drag")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.dragEnd Mozilla Window.dragEnd documentation> 
+domWindowDragEnd ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDragEnd = unsafeEventName (toJSString "dragend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.dragEnter Mozilla Window.dragEnter documentation> 
+domWindowDragEnter ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDragEnter = unsafeEventName (toJSString "dragenter")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.dragLeave Mozilla Window.dragLeave documentation> 
+domWindowDragLeave ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDragLeave = unsafeEventName (toJSString "dragleave")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.dragOver Mozilla Window.dragOver documentation> 
+domWindowDragOver ::
+                  (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDragOver = unsafeEventName (toJSString "dragover")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.dragStart Mozilla Window.dragStart documentation> 
+domWindowDragStart ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDragStart = unsafeEventName (toJSString "dragstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.drop Mozilla Window.drop documentation> 
+domWindowDrop ::
+              (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowDrop = unsafeEventName (toJSString "drop")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.durationChange Mozilla Window.durationChange documentation> 
+domWindowDurationChange ::
+                        (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowDurationChange
+  = unsafeEventName (toJSString "durationchange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.emptied Mozilla Window.emptied documentation> 
+domWindowEmptied ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowEmptied = unsafeEventName (toJSString "emptied")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.ended Mozilla Window.ended documentation> 
+domWindowEnded ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowEnded = unsafeEventName (toJSString "ended")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.error Mozilla Window.error documentation> 
+domWindowError ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowError = unsafeEventName (toJSString "error")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.focusEvent Mozilla Window.focusEvent documentation> 
+domWindowFocusEvent ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self FocusEvent
+domWindowFocusEvent = unsafeEventName (toJSString "focus")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.hashChange Mozilla Window.hashChange documentation> 
+domWindowHashChange ::
+                    (IsDOMWindow self, IsEventTarget self) =>
+                      EventName self HashChangeEvent
+domWindowHashChange = unsafeEventName (toJSString "hashchange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.input Mozilla Window.input documentation> 
+domWindowInput ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowInput = unsafeEventName (toJSString "input")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.invalid Mozilla Window.invalid documentation> 
+domWindowInvalid ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowInvalid = unsafeEventName (toJSString "invalid")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.keyDown Mozilla Window.keyDown documentation> 
+domWindowKeyDown ::
+                 (IsDOMWindow self, IsEventTarget self) =>
+                   EventName self KeyboardEvent
+domWindowKeyDown = unsafeEventName (toJSString "keydown")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.keyPress Mozilla Window.keyPress documentation> 
+domWindowKeyPress ::
+                  (IsDOMWindow self, IsEventTarget self) =>
+                    EventName self KeyboardEvent
+domWindowKeyPress = unsafeEventName (toJSString "keypress")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.keyUp Mozilla Window.keyUp documentation> 
+domWindowKeyUp ::
+               (IsDOMWindow self, IsEventTarget self) =>
+                 EventName self KeyboardEvent
+domWindowKeyUp = unsafeEventName (toJSString "keyup")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.load Mozilla Window.load documentation> 
+domWindowLoad ::
+              (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowLoad = unsafeEventName (toJSString "load")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.loadedData Mozilla Window.loadedData documentation> 
+domWindowLoadedData ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowLoadedData = unsafeEventName (toJSString "loadeddata")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.loadedMetadata Mozilla Window.loadedMetadata documentation> 
+domWindowLoadedMetadata ::
+                        (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowLoadedMetadata
+  = unsafeEventName (toJSString "loadedmetadata")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.loadStart Mozilla Window.loadStart documentation> 
+domWindowLoadStart ::
+                   (IsDOMWindow self, IsEventTarget self) =>
+                     EventName self ProgressEvent
+domWindowLoadStart = unsafeEventName (toJSString "loadstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.message Mozilla Window.message documentation> 
+domWindowMessage ::
+                 (IsDOMWindow self, IsEventTarget self) =>
+                   EventName self MessageEvent
+domWindowMessage = unsafeEventName (toJSString "message")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseDown Mozilla Window.mouseDown documentation> 
+domWindowMouseDown ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseDown = unsafeEventName (toJSString "mousedown")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseEnter Mozilla Window.mouseEnter documentation> 
+domWindowMouseEnter ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseEnter = unsafeEventName (toJSString "mouseenter")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseLeave Mozilla Window.mouseLeave documentation> 
+domWindowMouseLeave ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseLeave = unsafeEventName (toJSString "mouseleave")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseMove Mozilla Window.mouseMove documentation> 
+domWindowMouseMove ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseMove = unsafeEventName (toJSString "mousemove")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseOut Mozilla Window.mouseOut documentation> 
+domWindowMouseOut ::
+                  (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseOut = unsafeEventName (toJSString "mouseout")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseOver Mozilla Window.mouseOver documentation> 
+domWindowMouseOver ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseOver = unsafeEventName (toJSString "mouseover")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseUp Mozilla Window.mouseUp documentation> 
+domWindowMouseUp ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseUp = unsafeEventName (toJSString "mouseup")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.mouseWheel Mozilla Window.mouseWheel documentation> 
+domWindowMouseWheel ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self MouseEvent
+domWindowMouseWheel = unsafeEventName (toJSString "mousewheel")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.offline Mozilla Window.offline documentation> 
+domWindowOffline ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowOffline = unsafeEventName (toJSString "offline")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.online Mozilla Window.online documentation> 
+domWindowOnline ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowOnline = unsafeEventName (toJSString "online")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageHide Mozilla Window.pageHide documentation> 
+domWindowPageHide ::
+                  (IsDOMWindow self, IsEventTarget self) =>
+                    EventName self PageTransitionEvent
+domWindowPageHide = unsafeEventName (toJSString "pagehide")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageShow Mozilla Window.pageShow documentation> 
+domWindowPageShow ::
+                  (IsDOMWindow self, IsEventTarget self) =>
+                    EventName self PageTransitionEvent
+domWindowPageShow = unsafeEventName (toJSString "pageshow")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pause Mozilla Window.pause documentation> 
+domWindowPause ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowPause = unsafeEventName (toJSString "pause")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.play Mozilla Window.play documentation> 
+domWindowPlay ::
+              (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowPlay = unsafeEventName (toJSString "play")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.playing Mozilla Window.playing documentation> 
+domWindowPlaying ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowPlaying = unsafeEventName (toJSString "playing")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.popState Mozilla Window.popState documentation> 
+domWindowPopState ::
+                  (IsDOMWindow self, IsEventTarget self) =>
+                    EventName self PopStateEvent
+domWindowPopState = unsafeEventName (toJSString "popstate")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.progress Mozilla Window.progress documentation> 
+domWindowProgress ::
+                  (IsDOMWindow self, IsEventTarget self) =>
+                    EventName self ProgressEvent
+domWindowProgress = unsafeEventName (toJSString "progress")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.rateChange Mozilla Window.rateChange documentation> 
+domWindowRateChange ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowRateChange = unsafeEventName (toJSString "ratechange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.resize Mozilla Window.resize documentation> 
+domWindowResize ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowResize = unsafeEventName (toJSString "resize")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollEvent Mozilla Window.scrollEvent documentation> 
+domWindowScrollEvent ::
+                     (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowScrollEvent = unsafeEventName (toJSString "scroll")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.seeked Mozilla Window.seeked documentation> 
+domWindowSeeked ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowSeeked = unsafeEventName (toJSString "seeked")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.seeking Mozilla Window.seeking documentation> 
+domWindowSeeking ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowSeeking = unsafeEventName (toJSString "seeking")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.select Mozilla Window.select documentation> 
+domWindowSelect ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowSelect = unsafeEventName (toJSString "select")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.stalled Mozilla Window.stalled documentation> 
+domWindowStalled ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowStalled = unsafeEventName (toJSString "stalled")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.storage Mozilla Window.storage documentation> 
+domWindowStorage ::
+                 (IsDOMWindow self, IsEventTarget self) =>
+                   EventName self StorageEvent
+domWindowStorage = unsafeEventName (toJSString "storage")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.submit Mozilla Window.submit documentation> 
+domWindowSubmit ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowSubmit = unsafeEventName (toJSString "submit")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.suspend Mozilla Window.suspend documentation> 
+domWindowSuspend ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowSuspend = unsafeEventName (toJSString "suspend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.timeUpdate Mozilla Window.timeUpdate documentation> 
+domWindowTimeUpdate ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowTimeUpdate = unsafeEventName (toJSString "timeupdate")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.unload Mozilla Window.unload documentation> 
+domWindowUnload ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowUnload = unsafeEventName (toJSString "unload")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.volumeChange Mozilla Window.volumeChange documentation> 
+domWindowVolumeChange ::
+                      (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowVolumeChange = unsafeEventName (toJSString "volumechange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.waiting Mozilla Window.waiting documentation> 
+domWindowWaiting ::
+                 (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowWaiting = unsafeEventName (toJSString "waiting")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.wheel Mozilla Window.wheel documentation> 
+domWindowWheel ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self WheelEvent
+domWindowWheel = unsafeEventName (toJSString "wheel")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.reset Mozilla Window.reset documentation> 
+domWindowReset ::
+               (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowReset = unsafeEventName (toJSString "reset")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.search Mozilla Window.search documentation> 
+domWindowSearch ::
+                (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowSearch = unsafeEventName (toJSString "search")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitAnimationEnd Mozilla Window.webKitAnimationEnd documentation> 
+domWindowWebKitAnimationEnd ::
+                            (IsDOMWindow self, IsEventTarget self) =>
+                              EventName self AnimationEvent
+domWindowWebKitAnimationEnd
+  = unsafeEventName (toJSString "webkitanimationend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitAnimationIteration Mozilla Window.webKitAnimationIteration documentation> 
+domWindowWebKitAnimationIteration ::
+                                  (IsDOMWindow self, IsEventTarget self) =>
+                                    EventName self AnimationEvent
+domWindowWebKitAnimationIteration
+  = unsafeEventName (toJSString "webkitanimationiteration")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitAnimationStart Mozilla Window.webKitAnimationStart documentation> 
+domWindowWebKitAnimationStart ::
+                              (IsDOMWindow self, IsEventTarget self) =>
+                                EventName self AnimationEvent
+domWindowWebKitAnimationStart
+  = unsafeEventName (toJSString "webkitanimationstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.animationEnd Mozilla Window.animationEnd documentation> 
+domWindowAnimationEnd ::
+                      (IsDOMWindow self, IsEventTarget self) =>
+                        EventName self AnimationEvent
+domWindowAnimationEnd = unsafeEventName (toJSString "animationend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.animationIteration Mozilla Window.animationIteration documentation> 
+domWindowAnimationIteration ::
+                            (IsDOMWindow self, IsEventTarget self) =>
+                              EventName self AnimationEvent
+domWindowAnimationIteration
+  = unsafeEventName (toJSString "animationiteration")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.animationStart Mozilla Window.animationStart documentation> 
+domWindowAnimationStart ::
+                        (IsDOMWindow self, IsEventTarget self) =>
+                          EventName self AnimationEvent
+domWindowAnimationStart
+  = unsafeEventName (toJSString "animationstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitTransitionEnd Mozilla Window.webKitTransitionEnd documentation> 
+domWindowWebKitTransitionEnd ::
+                             (IsDOMWindow self, IsEventTarget self) =>
+                               EventName self TransitionEvent
+domWindowWebKitTransitionEnd
+  = unsafeEventName (toJSString "webkittransitionend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.transitionEnd Mozilla Window.transitionEnd documentation> 
+domWindowTransitionEnd ::
+                       (IsDOMWindow self, IsEventTarget self) =>
+                         EventName self TransitionEvent
+domWindowTransitionEnd
+  = unsafeEventName (toJSString "transitionend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.orientationChange Mozilla Window.orientationChange documentation> 
+domWindowOrientationChange ::
+                           (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowOrientationChange
+  = unsafeEventName (toJSString "orientationchange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.touchStart Mozilla Window.touchStart documentation> 
+domWindowTouchStart ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self TouchEvent
+domWindowTouchStart = unsafeEventName (toJSString "touchstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.touchMove Mozilla Window.touchMove documentation> 
+domWindowTouchMove ::
+                   (IsDOMWindow self, IsEventTarget self) => EventName self TouchEvent
+domWindowTouchMove = unsafeEventName (toJSString "touchmove")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.touchEnd Mozilla Window.touchEnd documentation> 
+domWindowTouchEnd ::
+                  (IsDOMWindow self, IsEventTarget self) => EventName self TouchEvent
+domWindowTouchEnd = unsafeEventName (toJSString "touchend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.touchCancel Mozilla Window.touchCancel documentation> 
+domWindowTouchCancel ::
+                     (IsDOMWindow self, IsEventTarget self) => EventName self TouchEvent
+domWindowTouchCancel = unsafeEventName (toJSString "touchcancel")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.gestureStart Mozilla Window.gestureStart documentation> 
+domWindowGestureStart ::
+                      (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowGestureStart = unsafeEventName (toJSString "gesturestart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.gestureChange Mozilla Window.gestureChange documentation> 
+domWindowGestureChange ::
+                       (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowGestureChange
+  = unsafeEventName (toJSString "gesturechange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.gestureEnd Mozilla Window.gestureEnd documentation> 
+domWindowGestureEnd ::
+                    (IsDOMWindow self, IsEventTarget self) => EventName self UIEvent
+domWindowGestureEnd = unsafeEventName (toJSString "gestureend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.deviceMotion Mozilla Window.deviceMotion documentation> 
+domWindowDeviceMotion ::
+                      (IsDOMWindow self, IsEventTarget self) =>
+                        EventName self DeviceMotionEvent
+domWindowDeviceMotion = unsafeEventName (toJSString "devicemotion")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.deviceOrientation Mozilla Window.deviceOrientation documentation> 
+domWindowDeviceOrientation ::
+                           (IsDOMWindow self, IsEventTarget self) =>
+                             EventName self DeviceOrientationEvent
+domWindowDeviceOrientation
+  = unsafeEventName (toJSString "deviceorientation")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitDeviceProximity Mozilla Window.webKitDeviceProximity documentation> 
+domWindowWebKitDeviceProximity ::
+                               (IsDOMWindow self, IsEventTarget self) =>
+                                 EventName self DeviceProximityEvent
+domWindowWebKitDeviceProximity
+  = unsafeEventName (toJSString "webkitdeviceproximity")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitWillRevealBottom Mozilla Window.webKitWillRevealBottom documentation> 
+domWindowWebKitWillRevealBottom ::
+                                (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowWebKitWillRevealBottom
+  = unsafeEventName (toJSString "webkitwillrevealbottom")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitWillRevealLeft Mozilla Window.webKitWillRevealLeft documentation> 
+domWindowWebKitWillRevealLeft ::
+                              (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowWebKitWillRevealLeft
+  = unsafeEventName (toJSString "webkitwillrevealleft")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitWillRevealRight Mozilla Window.webKitWillRevealRight documentation> 
+domWindowWebKitWillRevealRight ::
+                               (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowWebKitWillRevealRight
+  = unsafeEventName (toJSString "webkitwillrevealright")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webKitWillRevealTop Mozilla Window.webKitWillRevealTop documentation> 
+domWindowWebKitWillRevealTop ::
+                             (IsDOMWindow self, IsEventTarget self) => EventName self Event
+domWindowWebKitWillRevealTop
+  = unsafeEventName (toJSString "webkitwillrevealtop")
 #else
 module GHCJS.DOM.DOMWindow (
   module Graphics.UI.Gtk.WebKit.DOM.DOMWindow

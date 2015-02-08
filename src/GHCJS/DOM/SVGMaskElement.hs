@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,12 +32,13 @@ foreign import javascript unsafe "$1[\"maskUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.maskUnits Mozilla SVGMaskElement.maskUnits documentation> 
 svgMaskElementGetMaskUnits ::
-                           (IsSVGMaskElement self) =>
-                             self -> IO (Maybe SVGAnimatedEnumeration)
+                           (MonadIO m, IsSVGMaskElement self) =>
+                             self -> m (Maybe SVGAnimatedEnumeration)
 svgMaskElementGetMaskUnits self
-  = (ghcjs_dom_svg_mask_element_get_mask_units
-       (unSVGMaskElement (toSVGMaskElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_mask_element_get_mask_units
+          (unSVGMaskElement (toSVGMaskElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"maskContentUnits\"]"
         ghcjs_dom_svg_mask_element_get_mask_content_units ::
@@ -44,12 +46,13 @@ foreign import javascript unsafe "$1[\"maskContentUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.maskContentUnits Mozilla SVGMaskElement.maskContentUnits documentation> 
 svgMaskElementGetMaskContentUnits ::
-                                  (IsSVGMaskElement self) =>
-                                    self -> IO (Maybe SVGAnimatedEnumeration)
+                                  (MonadIO m, IsSVGMaskElement self) =>
+                                    self -> m (Maybe SVGAnimatedEnumeration)
 svgMaskElementGetMaskContentUnits self
-  = (ghcjs_dom_svg_mask_element_get_mask_content_units
-       (unSVGMaskElement (toSVGMaskElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_mask_element_get_mask_content_units
+          (unSVGMaskElement (toSVGMaskElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_mask_element_get_x ::
@@ -57,11 +60,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.x Mozilla SVGMaskElement.x documentation> 
 svgMaskElementGetX ::
-                   (IsSVGMaskElement self) => self -> IO (Maybe SVGAnimatedLength)
+                   (MonadIO m, IsSVGMaskElement self) =>
+                     self -> m (Maybe SVGAnimatedLength)
 svgMaskElementGetX self
-  = (ghcjs_dom_svg_mask_element_get_x
-       (unSVGMaskElement (toSVGMaskElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_mask_element_get_x
+          (unSVGMaskElement (toSVGMaskElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_mask_element_get_y ::
@@ -69,11 +74,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.y Mozilla SVGMaskElement.y documentation> 
 svgMaskElementGetY ::
-                   (IsSVGMaskElement self) => self -> IO (Maybe SVGAnimatedLength)
+                   (MonadIO m, IsSVGMaskElement self) =>
+                     self -> m (Maybe SVGAnimatedLength)
 svgMaskElementGetY self
-  = (ghcjs_dom_svg_mask_element_get_y
-       (unSVGMaskElement (toSVGMaskElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_mask_element_get_y
+          (unSVGMaskElement (toSVGMaskElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_svg_mask_element_get_width ::
@@ -81,11 +88,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.width Mozilla SVGMaskElement.width documentation> 
 svgMaskElementGetWidth ::
-                       (IsSVGMaskElement self) => self -> IO (Maybe SVGAnimatedLength)
+                       (MonadIO m, IsSVGMaskElement self) =>
+                         self -> m (Maybe SVGAnimatedLength)
 svgMaskElementGetWidth self
-  = (ghcjs_dom_svg_mask_element_get_width
-       (unSVGMaskElement (toSVGMaskElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_mask_element_get_width
+          (unSVGMaskElement (toSVGMaskElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_svg_mask_element_get_height ::
@@ -93,11 +102,13 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.height Mozilla SVGMaskElement.height documentation> 
 svgMaskElementGetHeight ::
-                        (IsSVGMaskElement self) => self -> IO (Maybe SVGAnimatedLength)
+                        (MonadIO m, IsSVGMaskElement self) =>
+                          self -> m (Maybe SVGAnimatedLength)
 svgMaskElementGetHeight self
-  = (ghcjs_dom_svg_mask_element_get_height
-       (unSVGMaskElement (toSVGMaskElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_mask_element_get_height
+          (unSVGMaskElement (toSVGMaskElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGMaskElement (
   ) where

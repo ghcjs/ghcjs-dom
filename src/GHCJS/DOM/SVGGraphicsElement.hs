@@ -22,6 +22,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,11 +37,12 @@ foreign import javascript unsafe "$1[\"getBBox\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.bBox Mozilla SVGGraphicsElement.bBox documentation> 
 svgGraphicsElementGetBBox ::
-                          (IsSVGGraphicsElement self) => self -> IO (Maybe SVGRect)
+                          (MonadIO m, IsSVGGraphicsElement self) => self -> m (Maybe SVGRect)
 svgGraphicsElementGetBBox self
-  = (ghcjs_dom_svg_graphics_element_get_b_box
-       (unSVGGraphicsElement (toSVGGraphicsElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_graphics_element_get_b_box
+          (unSVGGraphicsElement (toSVGGraphicsElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getCTM\"]()"
         ghcjs_dom_svg_graphics_element_get_ctm ::
@@ -48,11 +50,13 @@ foreign import javascript unsafe "$1[\"getCTM\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.ctm Mozilla SVGGraphicsElement.ctm documentation> 
 svgGraphicsElementGetCTM ::
-                         (IsSVGGraphicsElement self) => self -> IO (Maybe SVGMatrix)
+                         (MonadIO m, IsSVGGraphicsElement self) =>
+                           self -> m (Maybe SVGMatrix)
 svgGraphicsElementGetCTM self
-  = (ghcjs_dom_svg_graphics_element_get_ctm
-       (unSVGGraphicsElement (toSVGGraphicsElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_graphics_element_get_ctm
+          (unSVGGraphicsElement (toSVGGraphicsElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getScreenCTM\"]()"
         ghcjs_dom_svg_graphics_element_get_screen_ctm ::
@@ -60,11 +64,13 @@ foreign import javascript unsafe "$1[\"getScreenCTM\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.screenCTM Mozilla SVGGraphicsElement.screenCTM documentation> 
 svgGraphicsElementGetScreenCTM ::
-                               (IsSVGGraphicsElement self) => self -> IO (Maybe SVGMatrix)
+                               (MonadIO m, IsSVGGraphicsElement self) =>
+                                 self -> m (Maybe SVGMatrix)
 svgGraphicsElementGetScreenCTM self
-  = (ghcjs_dom_svg_graphics_element_get_screen_ctm
-       (unSVGGraphicsElement (toSVGGraphicsElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_graphics_element_get_screen_ctm
+          (unSVGGraphicsElement (toSVGGraphicsElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"getTransformToElement\"]($2)"
@@ -74,13 +80,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.transformToElement Mozilla SVGGraphicsElement.transformToElement documentation> 
 svgGraphicsElementGetTransformToElement ::
-                                        (IsSVGGraphicsElement self, IsSVGElement element) =>
-                                          self -> Maybe element -> IO (Maybe SVGMatrix)
+                                        (MonadIO m, IsSVGGraphicsElement self,
+                                         IsSVGElement element) =>
+                                          self -> Maybe element -> m (Maybe SVGMatrix)
 svgGraphicsElementGetTransformToElement self element
-  = (ghcjs_dom_svg_graphics_element_get_transform_to_element
-       (unSVGGraphicsElement (toSVGGraphicsElement self))
-       (maybe jsNull (unSVGElement . toSVGElement) element))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_graphics_element_get_transform_to_element
+          (unSVGGraphicsElement (toSVGGraphicsElement self))
+          (maybe jsNull (unSVGElement . toSVGElement) element))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"transform\"]"
         ghcjs_dom_svg_graphics_element_get_transform ::
@@ -88,12 +96,13 @@ foreign import javascript unsafe "$1[\"transform\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.transform Mozilla SVGGraphicsElement.transform documentation> 
 svgGraphicsElementGetTransform ::
-                               (IsSVGGraphicsElement self) =>
-                                 self -> IO (Maybe SVGAnimatedTransformList)
+                               (MonadIO m, IsSVGGraphicsElement self) =>
+                                 self -> m (Maybe SVGAnimatedTransformList)
 svgGraphicsElementGetTransform self
-  = (ghcjs_dom_svg_graphics_element_get_transform
-       (unSVGGraphicsElement (toSVGGraphicsElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_graphics_element_get_transform
+          (unSVGGraphicsElement (toSVGGraphicsElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"nearestViewportElement\"]"
         ghcjs_dom_svg_graphics_element_get_nearest_viewport_element ::
@@ -101,12 +110,13 @@ foreign import javascript unsafe "$1[\"nearestViewportElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.nearestViewportElement Mozilla SVGGraphicsElement.nearestViewportElement documentation> 
 svgGraphicsElementGetNearestViewportElement ::
-                                            (IsSVGGraphicsElement self) =>
-                                              self -> IO (Maybe SVGElement)
+                                            (MonadIO m, IsSVGGraphicsElement self) =>
+                                              self -> m (Maybe SVGElement)
 svgGraphicsElementGetNearestViewportElement self
-  = (ghcjs_dom_svg_graphics_element_get_nearest_viewport_element
-       (unSVGGraphicsElement (toSVGGraphicsElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_graphics_element_get_nearest_viewport_element
+          (unSVGGraphicsElement (toSVGGraphicsElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"farthestViewportElement\"]"
         ghcjs_dom_svg_graphics_element_get_farthest_viewport_element ::
@@ -114,12 +124,13 @@ foreign import javascript unsafe "$1[\"farthestViewportElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.farthestViewportElement Mozilla SVGGraphicsElement.farthestViewportElement documentation> 
 svgGraphicsElementGetFarthestViewportElement ::
-                                             (IsSVGGraphicsElement self) =>
-                                               self -> IO (Maybe SVGElement)
+                                             (MonadIO m, IsSVGGraphicsElement self) =>
+                                               self -> m (Maybe SVGElement)
 svgGraphicsElementGetFarthestViewportElement self
-  = (ghcjs_dom_svg_graphics_element_get_farthest_viewport_element
-       (unSVGGraphicsElement (toSVGGraphicsElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_graphics_element_get_farthest_viewport_element
+          (unSVGGraphicsElement (toSVGGraphicsElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGGraphicsElement (
   ) where

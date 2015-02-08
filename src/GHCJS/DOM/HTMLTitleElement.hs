@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"text\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement.text Mozilla HTMLTitleElement.text documentation> 
 htmlTitleElementSetText ::
-                        (IsHTMLTitleElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLTitleElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlTitleElementSetText self val
-  = ghcjs_dom_html_title_element_set_text
-      (unHTMLTitleElement (toHTMLTitleElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_title_element_set_text
+         (unHTMLTitleElement (toHTMLTitleElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_html_title_element_get_text ::
@@ -37,11 +40,13 @@ foreign import javascript unsafe "$1[\"text\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement.text Mozilla HTMLTitleElement.text documentation> 
 htmlTitleElementGetText ::
-                        (IsHTMLTitleElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLTitleElement self, FromJSString result) =>
+                          self -> m result
 htmlTitleElementGetText self
-  = fromJSString <$>
-      (ghcjs_dom_html_title_element_get_text
-         (unHTMLTitleElement (toHTMLTitleElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_title_element_get_text
+            (unHTMLTitleElement (toHTMLTitleElement self))))
 #else
 module GHCJS.DOM.HTMLTitleElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLTitleElement

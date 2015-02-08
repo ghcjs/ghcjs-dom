@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,11 +30,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.x Mozilla SVGImageElement.x documentation> 
 svgImageElementGetX ::
-                    (IsSVGImageElement self) => self -> IO (Maybe SVGAnimatedLength)
+                    (MonadIO m, IsSVGImageElement self) =>
+                      self -> m (Maybe SVGAnimatedLength)
 svgImageElementGetX self
-  = (ghcjs_dom_svg_image_element_get_x
-       (unSVGImageElement (toSVGImageElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_image_element_get_x
+          (unSVGImageElement (toSVGImageElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_image_element_get_y ::
@@ -41,11 +44,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.y Mozilla SVGImageElement.y documentation> 
 svgImageElementGetY ::
-                    (IsSVGImageElement self) => self -> IO (Maybe SVGAnimatedLength)
+                    (MonadIO m, IsSVGImageElement self) =>
+                      self -> m (Maybe SVGAnimatedLength)
 svgImageElementGetY self
-  = (ghcjs_dom_svg_image_element_get_y
-       (unSVGImageElement (toSVGImageElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_image_element_get_y
+          (unSVGImageElement (toSVGImageElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_svg_image_element_get_width ::
@@ -53,11 +58,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.width Mozilla SVGImageElement.width documentation> 
 svgImageElementGetWidth ::
-                        (IsSVGImageElement self) => self -> IO (Maybe SVGAnimatedLength)
+                        (MonadIO m, IsSVGImageElement self) =>
+                          self -> m (Maybe SVGAnimatedLength)
 svgImageElementGetWidth self
-  = (ghcjs_dom_svg_image_element_get_width
-       (unSVGImageElement (toSVGImageElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_image_element_get_width
+          (unSVGImageElement (toSVGImageElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_svg_image_element_get_height ::
@@ -65,11 +72,13 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.height Mozilla SVGImageElement.height documentation> 
 svgImageElementGetHeight ::
-                         (IsSVGImageElement self) => self -> IO (Maybe SVGAnimatedLength)
+                         (MonadIO m, IsSVGImageElement self) =>
+                           self -> m (Maybe SVGAnimatedLength)
 svgImageElementGetHeight self
-  = (ghcjs_dom_svg_image_element_get_height
-       (unSVGImageElement (toSVGImageElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_image_element_get_height
+          (unSVGImageElement (toSVGImageElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
         ghcjs_dom_svg_image_element_get_preserve_aspect_ratio ::
@@ -77,12 +86,13 @@ foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.preserveAspectRatio Mozilla SVGImageElement.preserveAspectRatio documentation> 
 svgImageElementGetPreserveAspectRatio ::
-                                      (IsSVGImageElement self) =>
-                                        self -> IO (Maybe SVGAnimatedPreserveAspectRatio)
+                                      (MonadIO m, IsSVGImageElement self) =>
+                                        self -> m (Maybe SVGAnimatedPreserveAspectRatio)
 svgImageElementGetPreserveAspectRatio self
-  = (ghcjs_dom_svg_image_element_get_preserve_aspect_ratio
-       (unSVGImageElement (toSVGImageElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_image_element_get_preserve_aspect_ratio
+          (unSVGImageElement (toSVGImageElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGImageElement (
   ) where

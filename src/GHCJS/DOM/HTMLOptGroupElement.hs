@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,11 +32,12 @@ foreign import javascript unsafe "$1[\"disabled\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.disabled Mozilla HTMLOptGroupElement.disabled documentation> 
 htmlOptGroupElementSetDisabled ::
-                               (IsHTMLOptGroupElement self) => self -> Bool -> IO ()
+                               (MonadIO m, IsHTMLOptGroupElement self) => self -> Bool -> m ()
 htmlOptGroupElementSetDisabled self val
-  = ghcjs_dom_html_opt_group_element_set_disabled
-      (unHTMLOptGroupElement (toHTMLOptGroupElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_opt_group_element_set_disabled
+         (unHTMLOptGroupElement (toHTMLOptGroupElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_opt_group_element_get_disabled ::
@@ -43,10 +45,11 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.disabled Mozilla HTMLOptGroupElement.disabled documentation> 
 htmlOptGroupElementGetDisabled ::
-                               (IsHTMLOptGroupElement self) => self -> IO Bool
+                               (MonadIO m, IsHTMLOptGroupElement self) => self -> m Bool
 htmlOptGroupElementGetDisabled self
-  = ghcjs_dom_html_opt_group_element_get_disabled
-      (unHTMLOptGroupElement (toHTMLOptGroupElement self))
+  = liftIO
+      (ghcjs_dom_html_opt_group_element_get_disabled
+         (unHTMLOptGroupElement (toHTMLOptGroupElement self)))
  
 foreign import javascript unsafe "$1[\"label\"] = $2;"
         ghcjs_dom_html_opt_group_element_set_label ::
@@ -54,12 +57,13 @@ foreign import javascript unsafe "$1[\"label\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.label Mozilla HTMLOptGroupElement.label documentation> 
 htmlOptGroupElementSetLabel ::
-                            (IsHTMLOptGroupElement self, ToJSString val) =>
-                              self -> val -> IO ()
+                            (MonadIO m, IsHTMLOptGroupElement self, ToJSString val) =>
+                              self -> val -> m ()
 htmlOptGroupElementSetLabel self val
-  = ghcjs_dom_html_opt_group_element_set_label
-      (unHTMLOptGroupElement (toHTMLOptGroupElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_opt_group_element_set_label
+         (unHTMLOptGroupElement (toHTMLOptGroupElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"label\"]"
         ghcjs_dom_html_opt_group_element_get_label ::
@@ -67,12 +71,13 @@ foreign import javascript unsafe "$1[\"label\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.label Mozilla HTMLOptGroupElement.label documentation> 
 htmlOptGroupElementGetLabel ::
-                            (IsHTMLOptGroupElement self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsHTMLOptGroupElement self, FromJSString result) =>
+                              self -> m result
 htmlOptGroupElementGetLabel self
-  = fromJSString <$>
-      (ghcjs_dom_html_opt_group_element_get_label
-         (unHTMLOptGroupElement (toHTMLOptGroupElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_opt_group_element_get_label
+            (unHTMLOptGroupElement (toHTMLOptGroupElement self))))
 #else
 module GHCJS.DOM.HTMLOptGroupElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLOptGroupElement

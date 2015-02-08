@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,13 +27,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports2 Mozilla CSS.supports2 documentation> 
 domWindowCSSSupports2 ::
-                      (IsDOMWindowCSS self, ToJSString property, ToJSString value) =>
-                        self -> property -> value -> IO Bool
+                      (MonadIO m, IsDOMWindowCSS self, ToJSString property,
+                       ToJSString value) =>
+                        self -> property -> value -> m Bool
 domWindowCSSSupports2 self property value
-  = ghcjs_dom_dom_window_css_supports2
-      (unDOMWindowCSS (toDOMWindowCSS self))
-      (toJSString property)
-      (toJSString value)
+  = liftIO
+      (ghcjs_dom_dom_window_css_supports2
+         (unDOMWindowCSS (toDOMWindowCSS self))
+         (toJSString property)
+         (toJSString value))
  
 foreign import javascript unsafe "($1[\"supports\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_window_css_supports ::
@@ -40,12 +43,13 @@ foreign import javascript unsafe "($1[\"supports\"]($2) ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 domWindowCSSSupports ::
-                     (IsDOMWindowCSS self, ToJSString conditionText) =>
-                       self -> conditionText -> IO Bool
+                     (MonadIO m, IsDOMWindowCSS self, ToJSString conditionText) =>
+                       self -> conditionText -> m Bool
 domWindowCSSSupports self conditionText
-  = ghcjs_dom_dom_window_css_supports
-      (unDOMWindowCSS (toDOMWindowCSS self))
-      (toJSString conditionText)
+  = liftIO
+      (ghcjs_dom_dom_window_css_supports
+         (unDOMWindowCSS (toDOMWindowCSS self))
+         (toJSString conditionText))
 #else
 module GHCJS.DOM.DOMWindowCSS (
   module Graphics.UI.Gtk.WebKit.DOM.DOMWindowCSS

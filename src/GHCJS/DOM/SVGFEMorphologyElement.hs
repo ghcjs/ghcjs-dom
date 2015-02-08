@@ -20,6 +20,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -34,12 +35,14 @@ foreign import javascript unsafe "$1[\"setRadius\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radius Mozilla SVGFEMorphologyElement.radius documentation> 
 svgfeMorphologyElementSetRadius ::
-                                (IsSVGFEMorphologyElement self) => self -> Float -> Float -> IO ()
+                                (MonadIO m, IsSVGFEMorphologyElement self) =>
+                                  self -> Float -> Float -> m ()
 svgfeMorphologyElementSetRadius self radiusX radiusY
-  = ghcjs_dom_svgfe_morphology_element_set_radius
-      (unSVGFEMorphologyElement (toSVGFEMorphologyElement self))
-      radiusX
-      radiusY
+  = liftIO
+      (ghcjs_dom_svgfe_morphology_element_set_radius
+         (unSVGFEMorphologyElement (toSVGFEMorphologyElement self))
+         radiusX
+         radiusY)
 cSVG_MORPHOLOGY_OPERATOR_UNKNOWN = 0
 cSVG_MORPHOLOGY_OPERATOR_ERODE = 1
 cSVG_MORPHOLOGY_OPERATOR_DILATE = 2
@@ -50,12 +53,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.in1 Mozilla SVGFEMorphologyElement.in1 documentation> 
 svgfeMorphologyElementGetIn1 ::
-                             (IsSVGFEMorphologyElement self) =>
-                               self -> IO (Maybe SVGAnimatedString)
+                             (MonadIO m, IsSVGFEMorphologyElement self) =>
+                               self -> m (Maybe SVGAnimatedString)
 svgfeMorphologyElementGetIn1 self
-  = (ghcjs_dom_svgfe_morphology_element_get_in1
-       (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_morphology_element_get_in1
+          (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"operator\"]"
         ghcjs_dom_svgfe_morphology_element_get_operator ::
@@ -63,12 +67,13 @@ foreign import javascript unsafe "$1[\"operator\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.operator Mozilla SVGFEMorphologyElement.operator documentation> 
 svgfeMorphologyElementGetOperator ::
-                                  (IsSVGFEMorphologyElement self) =>
-                                    self -> IO (Maybe SVGAnimatedEnumeration)
+                                  (MonadIO m, IsSVGFEMorphologyElement self) =>
+                                    self -> m (Maybe SVGAnimatedEnumeration)
 svgfeMorphologyElementGetOperator self
-  = (ghcjs_dom_svgfe_morphology_element_get_operator
-       (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_morphology_element_get_operator
+          (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"radiusX\"]"
         ghcjs_dom_svgfe_morphology_element_get_radius_x ::
@@ -76,12 +81,13 @@ foreign import javascript unsafe "$1[\"radiusX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusX Mozilla SVGFEMorphologyElement.radiusX documentation> 
 svgfeMorphologyElementGetRadiusX ::
-                                 (IsSVGFEMorphologyElement self) =>
-                                   self -> IO (Maybe SVGAnimatedNumber)
+                                 (MonadIO m, IsSVGFEMorphologyElement self) =>
+                                   self -> m (Maybe SVGAnimatedNumber)
 svgfeMorphologyElementGetRadiusX self
-  = (ghcjs_dom_svgfe_morphology_element_get_radius_x
-       (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_morphology_element_get_radius_x
+          (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"radiusY\"]"
         ghcjs_dom_svgfe_morphology_element_get_radius_y ::
@@ -89,12 +95,13 @@ foreign import javascript unsafe "$1[\"radiusY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusY Mozilla SVGFEMorphologyElement.radiusY documentation> 
 svgfeMorphologyElementGetRadiusY ::
-                                 (IsSVGFEMorphologyElement self) =>
-                                   self -> IO (Maybe SVGAnimatedNumber)
+                                 (MonadIO m, IsSVGFEMorphologyElement self) =>
+                                   self -> m (Maybe SVGAnimatedNumber)
 svgfeMorphologyElementGetRadiusY self
-  = (ghcjs_dom_svgfe_morphology_element_get_radius_y
-       (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_morphology_element_get_radius_y
+          (unSVGFEMorphologyElement (toSVGFEMorphologyElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEMorphologyElement (
   ) where

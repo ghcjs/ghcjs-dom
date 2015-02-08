@@ -1498,6 +1498,10 @@ instance IsDOMWindowCSS DOMWindowCSS
  
 instance IsFontLoader FontLoader
  
+instance IsEventTarget FontLoader
+ 
+instance IsEventTarget FontLoader
+ 
 instance IsMediaList MediaList
  
 instance IsMediaQueryList MediaQueryList
@@ -1544,6 +1548,8 @@ instance IsDOMAttr DOMAttr
  
 instance IsNode DOMAttr
  
+instance IsEventTarget DOMAttr
+ 
 instance IsAutocompleteErrorEvent AutocompleteErrorEvent
  
 instance IsEvent AutocompleteErrorEvent
@@ -1564,9 +1570,13 @@ instance IsCharacterData CDATASection
  
 instance IsNode CDATASection
  
+instance IsEventTarget CDATASection
+ 
 instance IsCharacterData CharacterData
  
 instance IsNode CharacterData
+ 
+instance IsEventTarget CharacterData
  
 instance IsChildNode ChildNode
  
@@ -1579,6 +1589,8 @@ instance IsComment Comment
 instance IsCharacterData Comment
  
 instance IsNode Comment
+ 
+instance IsEventTarget Comment
  
 instance IsCompositionEvent CompositionEvent
  
@@ -1608,13 +1620,19 @@ instance IsDocument Document
  
 instance IsNode Document
  
+instance IsEventTarget Document
+ 
 instance IsDocumentFragment DocumentFragment
  
 instance IsNode DocumentFragment
  
+instance IsEventTarget DocumentFragment
+ 
 instance IsDocumentType DocumentType
  
 instance IsNode DocumentType
+ 
+instance IsEventTarget DocumentType
  
 instance IsDOMError DOMError
  
@@ -1630,13 +1648,19 @@ instance IsElement Element
  
 instance IsNode Element
  
+instance IsEventTarget Element
+ 
 instance IsEntity Entity
  
 instance IsNode Entity
  
+instance IsEventTarget Entity
+ 
 instance IsEntityReference EntityReference
  
 instance IsNode EntityReference
+ 
+instance IsEventTarget EntityReference
  
 instance IsErrorEvent ErrorEvent
  
@@ -1645,6 +1669,8 @@ instance IsEvent ErrorEvent
 instance IsEvent Event
  
 instance IsEventListener EventListener
+ 
+instance IsEventTarget EventTarget
  
 instance IsEventTarget EventTarget
  
@@ -1672,6 +1698,10 @@ instance IsEvent MessageEvent
  
 instance IsMessagePort MessagePort
  
+instance IsEventTarget MessagePort
+ 
+instance IsEventTarget MessagePort
+ 
 instance IsMouseEvent MouseEvent
  
 instance IsUIEvent MouseEvent
@@ -1690,6 +1720,10 @@ instance IsNamedNodeMap NamedNodeMap
  
 instance IsNode Node
  
+instance IsEventTarget Node
+ 
+instance IsEventTarget Node
+ 
 instance IsNodeFilter NodeFilter
  
 instance IsNodeIterator NodeIterator
@@ -1699,6 +1733,8 @@ instance IsNodeList NodeList
 instance IsNotation Notation
  
 instance IsNode Notation
+ 
+instance IsEventTarget Notation
  
 instance IsOverflowEvent OverflowEvent
  
@@ -1717,6 +1753,8 @@ instance IsProcessingInstruction ProcessingInstruction
 instance IsCharacterData ProcessingInstruction
  
 instance IsNode ProcessingInstruction
+ 
+instance IsEventTarget ProcessingInstruction
  
 instance IsProgressEvent ProgressEvent
  
@@ -1739,6 +1777,8 @@ instance IsText Text
 instance IsCharacterData Text
  
 instance IsNode Text
+ 
+instance IsEventTarget Text
  
 instance IsTextEvent TextEvent
  
@@ -1772,6 +1812,10 @@ instance IsEvent WebKitAnimationEvent
  
 instance IsWebKitNamedFlow WebKitNamedFlow
  
+instance IsEventTarget WebKitNamedFlow
+ 
+instance IsEventTarget WebKitNamedFlow
+ 
 instance IsWebKitTransitionEvent WebKitTransitionEvent
  
 instance IsEvent WebKitTransitionEvent
@@ -1795,6 +1839,10 @@ instance IsFileError FileError
 instance IsFileList FileList
  
 instance IsFileReader FileReader
+ 
+instance IsEventTarget FileReader
+ 
+instance IsEventTarget FileReader
  
 instance IsFileReaderSync FileReaderSync
  
@@ -1898,6 +1946,8 @@ instance IsElement HTMLAnchorElement
  
 instance IsNode HTMLAnchorElement
  
+instance IsEventTarget HTMLAnchorElement
+ 
 instance IsHTMLAppletElement HTMLAppletElement
  
 instance IsHTMLElement HTMLAppletElement
@@ -1906,6 +1956,8 @@ instance IsElement HTMLAppletElement
  
 instance IsNode HTMLAppletElement
  
+instance IsEventTarget HTMLAppletElement
+ 
 instance IsHTMLAreaElement HTMLAreaElement
  
 instance IsHTMLElement HTMLAreaElement
@@ -1913,6 +1965,8 @@ instance IsHTMLElement HTMLAreaElement
 instance IsElement HTMLAreaElement
  
 instance IsNode HTMLAreaElement
+ 
+instance IsEventTarget HTMLAreaElement
  
 instance IsHTMLAudioElement HTMLAudioElement
  
@@ -1926,6 +1980,8 @@ instance IsElement HTMLBaseElement
  
 instance IsNode HTMLBaseElement
  
+instance IsEventTarget HTMLBaseElement
+ 
 instance IsHTMLBaseFontElement HTMLBaseFontElement
  
 instance IsHTMLElement HTMLBaseFontElement
@@ -1933,6 +1989,8 @@ instance IsHTMLElement HTMLBaseFontElement
 instance IsElement HTMLBaseFontElement
  
 instance IsNode HTMLBaseFontElement
+ 
+instance IsEventTarget HTMLBaseFontElement
  
 instance IsHTMLBodyElement HTMLBodyElement
  
@@ -1942,6 +2000,8 @@ instance IsElement HTMLBodyElement
  
 instance IsNode HTMLBodyElement
  
+instance IsEventTarget HTMLBodyElement
+ 
 instance IsHTMLBRElement HTMLBRElement
  
 instance IsHTMLElement HTMLBRElement
@@ -1949,6 +2009,8 @@ instance IsHTMLElement HTMLBRElement
 instance IsElement HTMLBRElement
  
 instance IsNode HTMLBRElement
+ 
+instance IsEventTarget HTMLBRElement
  
 instance IsHTMLButtonElement HTMLButtonElement
  
@@ -1958,6 +2020,8 @@ instance IsElement HTMLButtonElement
  
 instance IsNode HTMLButtonElement
  
+instance IsEventTarget HTMLButtonElement
+ 
 instance IsHTMLCanvasElement HTMLCanvasElement
  
 instance IsHTMLElement HTMLCanvasElement
@@ -1965,6 +2029,8 @@ instance IsHTMLElement HTMLCanvasElement
 instance IsElement HTMLCanvasElement
  
 instance IsNode HTMLCanvasElement
+ 
+instance IsEventTarget HTMLCanvasElement
  
 instance IsHTMLCollection HTMLCollection
  
@@ -1976,6 +2042,8 @@ instance IsElement HTMLDataListElement
  
 instance IsNode HTMLDataListElement
  
+instance IsEventTarget HTMLDataListElement
+ 
 instance IsHTMLDetailsElement HTMLDetailsElement
  
 instance IsHTMLElement HTMLDetailsElement
@@ -1983,6 +2051,8 @@ instance IsHTMLElement HTMLDetailsElement
 instance IsElement HTMLDetailsElement
  
 instance IsNode HTMLDetailsElement
+ 
+instance IsEventTarget HTMLDetailsElement
  
 instance IsHTMLDirectoryElement HTMLDirectoryElement
  
@@ -1992,6 +2062,8 @@ instance IsElement HTMLDirectoryElement
  
 instance IsNode HTMLDirectoryElement
  
+instance IsEventTarget HTMLDirectoryElement
+ 
 instance IsHTMLDivElement HTMLDivElement
  
 instance IsHTMLElement HTMLDivElement
@@ -1999,6 +2071,8 @@ instance IsHTMLElement HTMLDivElement
 instance IsElement HTMLDivElement
  
 instance IsNode HTMLDivElement
+ 
+instance IsEventTarget HTMLDivElement
  
 instance IsHTMLDListElement HTMLDListElement
  
@@ -2008,17 +2082,23 @@ instance IsElement HTMLDListElement
  
 instance IsNode HTMLDListElement
  
+instance IsEventTarget HTMLDListElement
+ 
 instance IsHTMLDocument HTMLDocument
  
 instance IsDocument HTMLDocument
  
 instance IsNode HTMLDocument
  
+instance IsEventTarget HTMLDocument
+ 
 instance IsHTMLElement HTMLElement
  
 instance IsElement HTMLElement
  
 instance IsNode HTMLElement
+ 
+instance IsEventTarget HTMLElement
  
 instance IsHTMLEmbedElement HTMLEmbedElement
  
@@ -2028,6 +2108,8 @@ instance IsElement HTMLEmbedElement
  
 instance IsNode HTMLEmbedElement
  
+instance IsEventTarget HTMLEmbedElement
+ 
 instance IsHTMLFieldSetElement HTMLFieldSetElement
  
 instance IsHTMLElement HTMLFieldSetElement
@@ -2036,6 +2118,8 @@ instance IsElement HTMLFieldSetElement
  
 instance IsNode HTMLFieldSetElement
  
+instance IsEventTarget HTMLFieldSetElement
+ 
 instance IsHTMLFontElement HTMLFontElement
  
 instance IsHTMLElement HTMLFontElement
@@ -2043,6 +2127,8 @@ instance IsHTMLElement HTMLFontElement
 instance IsElement HTMLFontElement
  
 instance IsNode HTMLFontElement
+ 
+instance IsEventTarget HTMLFontElement
  
 instance IsHTMLFormControlsCollection HTMLFormControlsCollection
  
@@ -2056,6 +2142,8 @@ instance IsElement HTMLFormElement
  
 instance IsNode HTMLFormElement
  
+instance IsEventTarget HTMLFormElement
+ 
 instance IsHTMLFrameElement HTMLFrameElement
  
 instance IsHTMLElement HTMLFrameElement
@@ -2063,6 +2151,8 @@ instance IsHTMLElement HTMLFrameElement
 instance IsElement HTMLFrameElement
  
 instance IsNode HTMLFrameElement
+ 
+instance IsEventTarget HTMLFrameElement
  
 instance IsHTMLFrameSetElement HTMLFrameSetElement
  
@@ -2072,6 +2162,8 @@ instance IsElement HTMLFrameSetElement
  
 instance IsNode HTMLFrameSetElement
  
+instance IsEventTarget HTMLFrameSetElement
+ 
 instance IsHTMLHeadElement HTMLHeadElement
  
 instance IsHTMLElement HTMLHeadElement
@@ -2079,6 +2171,8 @@ instance IsHTMLElement HTMLHeadElement
 instance IsElement HTMLHeadElement
  
 instance IsNode HTMLHeadElement
+ 
+instance IsEventTarget HTMLHeadElement
  
 instance IsHTMLHeadingElement HTMLHeadingElement
  
@@ -2088,6 +2182,8 @@ instance IsElement HTMLHeadingElement
  
 instance IsNode HTMLHeadingElement
  
+instance IsEventTarget HTMLHeadingElement
+ 
 instance IsHTMLHRElement HTMLHRElement
  
 instance IsHTMLElement HTMLHRElement
@@ -2095,6 +2191,8 @@ instance IsHTMLElement HTMLHRElement
 instance IsElement HTMLHRElement
  
 instance IsNode HTMLHRElement
+ 
+instance IsEventTarget HTMLHRElement
  
 instance IsHTMLHtmlElement HTMLHtmlElement
  
@@ -2104,6 +2202,8 @@ instance IsElement HTMLHtmlElement
  
 instance IsNode HTMLHtmlElement
  
+instance IsEventTarget HTMLHtmlElement
+ 
 instance IsHTMLIFrameElement HTMLIFrameElement
  
 instance IsHTMLElement HTMLIFrameElement
@@ -2111,6 +2211,8 @@ instance IsHTMLElement HTMLIFrameElement
 instance IsElement HTMLIFrameElement
  
 instance IsNode HTMLIFrameElement
+ 
+instance IsEventTarget HTMLIFrameElement
  
 instance IsHTMLImageElement HTMLImageElement
  
@@ -2120,6 +2222,8 @@ instance IsElement HTMLImageElement
  
 instance IsNode HTMLImageElement
  
+instance IsEventTarget HTMLImageElement
+ 
 instance IsHTMLInputElement HTMLInputElement
  
 instance IsHTMLElement HTMLInputElement
@@ -2127,6 +2231,8 @@ instance IsHTMLElement HTMLInputElement
 instance IsElement HTMLInputElement
  
 instance IsNode HTMLInputElement
+ 
+instance IsEventTarget HTMLInputElement
  
 instance IsHTMLKeygenElement HTMLKeygenElement
  
@@ -2136,6 +2242,8 @@ instance IsElement HTMLKeygenElement
  
 instance IsNode HTMLKeygenElement
  
+instance IsEventTarget HTMLKeygenElement
+ 
 instance IsHTMLLabelElement HTMLLabelElement
  
 instance IsHTMLElement HTMLLabelElement
@@ -2143,6 +2251,8 @@ instance IsHTMLElement HTMLLabelElement
 instance IsElement HTMLLabelElement
  
 instance IsNode HTMLLabelElement
+ 
+instance IsEventTarget HTMLLabelElement
  
 instance IsHTMLLegendElement HTMLLegendElement
  
@@ -2152,6 +2262,8 @@ instance IsElement HTMLLegendElement
  
 instance IsNode HTMLLegendElement
  
+instance IsEventTarget HTMLLegendElement
+ 
 instance IsHTMLLIElement HTMLLIElement
  
 instance IsHTMLElement HTMLLIElement
@@ -2159,6 +2271,8 @@ instance IsHTMLElement HTMLLIElement
 instance IsElement HTMLLIElement
  
 instance IsNode HTMLLIElement
+ 
+instance IsEventTarget HTMLLIElement
  
 instance IsHTMLLinkElement HTMLLinkElement
  
@@ -2168,6 +2282,8 @@ instance IsElement HTMLLinkElement
  
 instance IsNode HTMLLinkElement
  
+instance IsEventTarget HTMLLinkElement
+ 
 instance IsHTMLMapElement HTMLMapElement
  
 instance IsHTMLElement HTMLMapElement
@@ -2176,6 +2292,8 @@ instance IsElement HTMLMapElement
  
 instance IsNode HTMLMapElement
  
+instance IsEventTarget HTMLMapElement
+ 
 instance IsHTMLMarqueeElement HTMLMarqueeElement
  
 instance IsHTMLElement HTMLMarqueeElement
@@ -2183,6 +2301,8 @@ instance IsHTMLElement HTMLMarqueeElement
 instance IsElement HTMLMarqueeElement
  
 instance IsNode HTMLMarqueeElement
+ 
+instance IsEventTarget HTMLMarqueeElement
  
 instance IsHTMLMediaElement HTMLMediaElement
  
@@ -2194,6 +2314,8 @@ instance IsElement HTMLMenuElement
  
 instance IsNode HTMLMenuElement
  
+instance IsEventTarget HTMLMenuElement
+ 
 instance IsHTMLMetaElement HTMLMetaElement
  
 instance IsHTMLElement HTMLMetaElement
@@ -2201,6 +2323,8 @@ instance IsHTMLElement HTMLMetaElement
 instance IsElement HTMLMetaElement
  
 instance IsNode HTMLMetaElement
+ 
+instance IsEventTarget HTMLMetaElement
  
 instance IsHTMLMeterElement HTMLMeterElement
  
@@ -2210,6 +2334,8 @@ instance IsElement HTMLMeterElement
  
 instance IsNode HTMLMeterElement
  
+instance IsEventTarget HTMLMeterElement
+ 
 instance IsHTMLModElement HTMLModElement
  
 instance IsHTMLElement HTMLModElement
@@ -2217,6 +2343,8 @@ instance IsHTMLElement HTMLModElement
 instance IsElement HTMLModElement
  
 instance IsNode HTMLModElement
+ 
+instance IsEventTarget HTMLModElement
  
 instance IsHTMLObjectElement HTMLObjectElement
  
@@ -2226,6 +2354,8 @@ instance IsElement HTMLObjectElement
  
 instance IsNode HTMLObjectElement
  
+instance IsEventTarget HTMLObjectElement
+ 
 instance IsHTMLOListElement HTMLOListElement
  
 instance IsHTMLElement HTMLOListElement
@@ -2233,6 +2363,8 @@ instance IsHTMLElement HTMLOListElement
 instance IsElement HTMLOListElement
  
 instance IsNode HTMLOListElement
+ 
+instance IsEventTarget HTMLOListElement
  
 instance IsHTMLOptGroupElement HTMLOptGroupElement
  
@@ -2242,6 +2374,8 @@ instance IsElement HTMLOptGroupElement
  
 instance IsNode HTMLOptGroupElement
  
+instance IsEventTarget HTMLOptGroupElement
+ 
 instance IsHTMLOptionElement HTMLOptionElement
  
 instance IsHTMLElement HTMLOptionElement
@@ -2249,6 +2383,8 @@ instance IsHTMLElement HTMLOptionElement
 instance IsElement HTMLOptionElement
  
 instance IsNode HTMLOptionElement
+ 
+instance IsEventTarget HTMLOptionElement
  
 instance IsHTMLOptionsCollection HTMLOptionsCollection
  
@@ -2262,6 +2398,8 @@ instance IsElement HTMLOutputElement
  
 instance IsNode HTMLOutputElement
  
+instance IsEventTarget HTMLOutputElement
+ 
 instance IsHTMLParagraphElement HTMLParagraphElement
  
 instance IsHTMLElement HTMLParagraphElement
@@ -2269,6 +2407,8 @@ instance IsHTMLElement HTMLParagraphElement
 instance IsElement HTMLParagraphElement
  
 instance IsNode HTMLParagraphElement
+ 
+instance IsEventTarget HTMLParagraphElement
  
 instance IsHTMLParamElement HTMLParamElement
  
@@ -2278,6 +2418,8 @@ instance IsElement HTMLParamElement
  
 instance IsNode HTMLParamElement
  
+instance IsEventTarget HTMLParamElement
+ 
 instance IsHTMLPreElement HTMLPreElement
  
 instance IsHTMLElement HTMLPreElement
@@ -2285,6 +2427,8 @@ instance IsHTMLElement HTMLPreElement
 instance IsElement HTMLPreElement
  
 instance IsNode HTMLPreElement
+ 
+instance IsEventTarget HTMLPreElement
  
 instance IsHTMLProgressElement HTMLProgressElement
  
@@ -2294,6 +2438,8 @@ instance IsElement HTMLProgressElement
  
 instance IsNode HTMLProgressElement
  
+instance IsEventTarget HTMLProgressElement
+ 
 instance IsHTMLQuoteElement HTMLQuoteElement
  
 instance IsHTMLElement HTMLQuoteElement
@@ -2301,6 +2447,8 @@ instance IsHTMLElement HTMLQuoteElement
 instance IsElement HTMLQuoteElement
  
 instance IsNode HTMLQuoteElement
+ 
+instance IsEventTarget HTMLQuoteElement
  
 instance IsHTMLScriptElement HTMLScriptElement
  
@@ -2310,6 +2458,8 @@ instance IsElement HTMLScriptElement
  
 instance IsNode HTMLScriptElement
  
+instance IsEventTarget HTMLScriptElement
+ 
 instance IsHTMLSelectElement HTMLSelectElement
  
 instance IsHTMLElement HTMLSelectElement
@@ -2317,6 +2467,8 @@ instance IsHTMLElement HTMLSelectElement
 instance IsElement HTMLSelectElement
  
 instance IsNode HTMLSelectElement
+ 
+instance IsEventTarget HTMLSelectElement
  
 instance IsHTMLSourceElement HTMLSourceElement
  
@@ -2326,6 +2478,8 @@ instance IsElement HTMLSourceElement
  
 instance IsNode HTMLSourceElement
  
+instance IsEventTarget HTMLSourceElement
+ 
 instance IsHTMLSpanElement HTMLSpanElement
  
 instance IsHTMLElement HTMLSpanElement
@@ -2333,6 +2487,8 @@ instance IsHTMLElement HTMLSpanElement
 instance IsElement HTMLSpanElement
  
 instance IsNode HTMLSpanElement
+ 
+instance IsEventTarget HTMLSpanElement
  
 instance IsHTMLStyleElement HTMLStyleElement
  
@@ -2342,6 +2498,8 @@ instance IsElement HTMLStyleElement
  
 instance IsNode HTMLStyleElement
  
+instance IsEventTarget HTMLStyleElement
+ 
 instance IsHTMLTableCaptionElement HTMLTableCaptionElement
  
 instance IsHTMLElement HTMLTableCaptionElement
@@ -2349,6 +2507,8 @@ instance IsHTMLElement HTMLTableCaptionElement
 instance IsElement HTMLTableCaptionElement
  
 instance IsNode HTMLTableCaptionElement
+ 
+instance IsEventTarget HTMLTableCaptionElement
  
 instance IsHTMLTableCellElement HTMLTableCellElement
  
@@ -2358,6 +2518,8 @@ instance IsElement HTMLTableCellElement
  
 instance IsNode HTMLTableCellElement
  
+instance IsEventTarget HTMLTableCellElement
+ 
 instance IsHTMLTableColElement HTMLTableColElement
  
 instance IsHTMLElement HTMLTableColElement
@@ -2365,6 +2527,8 @@ instance IsHTMLElement HTMLTableColElement
 instance IsElement HTMLTableColElement
  
 instance IsNode HTMLTableColElement
+ 
+instance IsEventTarget HTMLTableColElement
  
 instance IsHTMLTableElement HTMLTableElement
  
@@ -2374,6 +2538,8 @@ instance IsElement HTMLTableElement
  
 instance IsNode HTMLTableElement
  
+instance IsEventTarget HTMLTableElement
+ 
 instance IsHTMLTableRowElement HTMLTableRowElement
  
 instance IsHTMLElement HTMLTableRowElement
@@ -2381,6 +2547,8 @@ instance IsHTMLElement HTMLTableRowElement
 instance IsElement HTMLTableRowElement
  
 instance IsNode HTMLTableRowElement
+ 
+instance IsEventTarget HTMLTableRowElement
  
 instance IsHTMLTableSectionElement HTMLTableSectionElement
  
@@ -2390,6 +2558,8 @@ instance IsElement HTMLTableSectionElement
  
 instance IsNode HTMLTableSectionElement
  
+instance IsEventTarget HTMLTableSectionElement
+ 
 instance IsHTMLTemplateElement HTMLTemplateElement
  
 instance IsHTMLElement HTMLTemplateElement
@@ -2397,6 +2567,8 @@ instance IsHTMLElement HTMLTemplateElement
 instance IsElement HTMLTemplateElement
  
 instance IsNode HTMLTemplateElement
+ 
+instance IsEventTarget HTMLTemplateElement
  
 instance IsHTMLTextAreaElement HTMLTextAreaElement
  
@@ -2406,6 +2578,8 @@ instance IsElement HTMLTextAreaElement
  
 instance IsNode HTMLTextAreaElement
  
+instance IsEventTarget HTMLTextAreaElement
+ 
 instance IsHTMLTitleElement HTMLTitleElement
  
 instance IsHTMLElement HTMLTitleElement
@@ -2413,6 +2587,8 @@ instance IsHTMLElement HTMLTitleElement
 instance IsElement HTMLTitleElement
  
 instance IsNode HTMLTitleElement
+ 
+instance IsEventTarget HTMLTitleElement
  
 instance IsHTMLTrackElement HTMLTrackElement
  
@@ -2422,6 +2598,8 @@ instance IsElement HTMLTrackElement
  
 instance IsNode HTMLTrackElement
  
+instance IsEventTarget HTMLTrackElement
+ 
 instance IsHTMLUListElement HTMLUListElement
  
 instance IsHTMLElement HTMLUListElement
@@ -2429,6 +2607,8 @@ instance IsHTMLElement HTMLUListElement
 instance IsElement HTMLUListElement
  
 instance IsNode HTMLUListElement
+ 
+instance IsEventTarget HTMLUListElement
  
 instance IsHTMLUnknownElement HTMLUnknownElement
  
@@ -2438,6 +2618,8 @@ instance IsElement HTMLUnknownElement
  
 instance IsNode HTMLUnknownElement
  
+instance IsEventTarget HTMLUnknownElement
+ 
 instance IsHTMLVideoElement HTMLVideoElement
  
 instance IsHTMLMediaElement HTMLVideoElement
@@ -2445,6 +2627,10 @@ instance IsHTMLMediaElement HTMLVideoElement
 instance IsImageData ImageData
  
 instance IsMediaController MediaController
+ 
+instance IsEventTarget MediaController
+ 
+instance IsEventTarget MediaController
  
 instance IsMediaError MediaError
  
@@ -2466,17 +2652,33 @@ instance IsAudioTrack AudioTrack
  
 instance IsAudioTrackList AudioTrackList
  
+instance IsEventTarget AudioTrackList
+ 
+instance IsEventTarget AudioTrackList
+ 
 instance IsDataCue DataCue
  
 instance IsTextTrackCue DataCue
  
+instance IsEventTarget DataCue
+ 
 instance IsTextTrack TextTrack
  
+instance IsEventTarget TextTrack
+ 
 instance IsTextTrackCue TextTrackCue
+ 
+instance IsEventTarget TextTrackCue
+ 
+instance IsEventTarget TextTrackCue
  
 instance IsTextTrackCueList TextTrackCueList
  
 instance IsTextTrackList TextTrackList
+ 
+instance IsEventTarget TextTrackList
+ 
+instance IsEventTarget TextTrackList
  
 instance IsTrackEvent TrackEvent
  
@@ -2486,9 +2688,15 @@ instance IsVideoTrack VideoTrack
  
 instance IsVideoTrackList VideoTrackList
  
+instance IsEventTarget VideoTrackList
+ 
+instance IsEventTarget VideoTrackList
+ 
 instance IsVTTCue VTTCue
  
 instance IsTextTrackCue VTTCue
+ 
+instance IsEventTarget VTTCue
  
 instance IsVTTRegion VTTRegion
  
@@ -2510,12 +2718,20 @@ instance IsScriptProfileNode ScriptProfileNode
  
 instance IsDOMApplicationCache DOMApplicationCache
  
+instance IsEventTarget DOMApplicationCache
+ 
+instance IsEventTarget DOMApplicationCache
+ 
 instance IsWebKitPlaybackTargetAvailabilityEvent
          WebKitPlaybackTargetAvailabilityEvent
  
 instance IsEvent WebKitPlaybackTargetAvailabilityEvent
  
 instance IsBatteryManager BatteryManager
+ 
+instance IsEventTarget BatteryManager
+ 
+instance IsEventTarget BatteryManager
  
 instance IsNavigator Navigator
  
@@ -2530,6 +2746,10 @@ instance IsEvent MediaKeyNeededEvent
 instance IsMediaKeys MediaKeys
  
 instance IsMediaKeySession MediaKeySession
+ 
+instance IsEventTarget MediaKeySession
+ 
+instance IsEventTarget MediaKeySession
  
 instance IsGamepad Gamepad
  
@@ -2557,6 +2777,8 @@ instance IsPositionErrorCallback PositionErrorCallback
  
 instance IsDOMWindow DOMWindow
  
+instance IsEventTarget DOMWindow
+ 
 instance IsIDBAny IDBAny
  
 instance IsIDBCursor IDBCursor
@@ -2566,6 +2788,8 @@ instance IsIDBCursorWithValue IDBCursorWithValue
 instance IsIDBCursor IDBCursorWithValue
  
 instance IsIDBDatabase IDBDatabase
+ 
+instance IsEventTarget IDBDatabase
  
 instance IsEventTarget IDBDatabase
  
@@ -2583,11 +2807,17 @@ instance IsIDBRequest IDBOpenDBRequest
  
 instance IsEventTarget IDBOpenDBRequest
  
+instance IsEventTarget IDBOpenDBRequest
+ 
 instance IsIDBRequest IDBRequest
  
 instance IsEventTarget IDBRequest
  
+instance IsEventTarget IDBRequest
+ 
 instance IsIDBTransaction IDBTransaction
+ 
+instance IsEventTarget IDBTransaction
  
 instance IsEventTarget IDBTransaction
  
@@ -2611,11 +2841,17 @@ instance IsMediaSource MediaSource
  
 instance IsEventTarget MediaSource
  
+instance IsEventTarget MediaSource
+ 
 instance IsSourceBuffer SourceBuffer
  
 instance IsEventTarget SourceBuffer
  
+instance IsEventTarget SourceBuffer
+ 
 instance IsSourceBufferList SourceBufferList
+ 
+instance IsEventTarget SourceBufferList
  
 instance IsEventTarget SourceBufferList
  
@@ -2637,6 +2873,8 @@ instance IsAudioStreamTrack AudioStreamTrack
  
 instance IsMediaStreamTrack AudioStreamTrack
  
+instance IsEventTarget AudioStreamTrack
+ 
 instance IsCapabilityRange CapabilityRange
  
 instance IsDOMURL DOMURL
@@ -2647,6 +2885,10 @@ instance IsMediaSourceStates MediaSourceStates
  
 instance IsMediaStream MediaStream
  
+instance IsEventTarget MediaStream
+ 
+instance IsEventTarget MediaStream
+ 
 instance IsMediaStreamCapabilities MediaStreamCapabilities
  
 instance IsMediaStreamEvent MediaStreamEvent
@@ -2654,6 +2896,10 @@ instance IsMediaStreamEvent MediaStreamEvent
 instance IsEvent MediaStreamEvent
  
 instance IsMediaStreamTrack MediaStreamTrack
+ 
+instance IsEventTarget MediaStreamTrack
+ 
+instance IsEventTarget MediaStreamTrack
  
 instance IsMediaStreamTrackEvent MediaStreamTrackEvent
  
@@ -2684,11 +2930,19 @@ instance IsRTCConfiguration RTCConfiguration
  
 instance IsRTCDataChannel RTCDataChannel
  
+instance IsEventTarget RTCDataChannel
+ 
+instance IsEventTarget RTCDataChannel
+ 
 instance IsRTCDataChannelEvent RTCDataChannelEvent
  
 instance IsEvent RTCDataChannelEvent
  
 instance IsRTCDTMFSender RTCDTMFSender
+ 
+instance IsEventTarget RTCDTMFSender
+ 
+instance IsEventTarget RTCDTMFSender
  
 instance IsRTCDTMFToneChangeEvent RTCDTMFToneChangeEvent
  
@@ -2703,6 +2957,10 @@ instance IsEvent RTCIceCandidateEvent
 instance IsRTCIceServer RTCIceServer
  
 instance IsRTCPeerConnection RTCPeerConnection
+ 
+instance IsEventTarget RTCPeerConnection
+ 
+instance IsEventTarget RTCPeerConnection
  
 instance IsRTCPeerConnectionErrorCallback
          RTCPeerConnectionErrorCallback
@@ -2724,11 +2982,19 @@ instance IsVideoStreamTrack VideoStreamTrack
  
 instance IsMediaStreamTrack VideoStreamTrack
  
+instance IsEventTarget VideoStreamTrack
+ 
 instance IsNavigator Navigator
  
 instance IsDOMWindow DOMWindow
  
+instance IsEventTarget DOMWindow
+ 
 instance IsNotification Notification
+ 
+instance IsEventTarget Notification
+ 
+instance IsEventTarget Notification
  
 instance IsNotificationCenter NotificationCenter
  
@@ -2737,6 +3003,8 @@ instance IsNotificationPermissionCallback
  
 instance IsWorkerGlobalScope WorkerGlobalScope
  
+instance IsEventTarget WorkerGlobalScope
+ 
 instance IsQuickTimePluginReplacement QuickTimePluginReplacement
  
 instance IsDeviceProximityEvent DeviceProximityEvent
@@ -2744,6 +3012,8 @@ instance IsDeviceProximityEvent DeviceProximityEvent
 instance IsEvent DeviceProximityEvent
  
 instance IsDOMWindow DOMWindow
+ 
+instance IsEventTarget DOMWindow
  
 instance IsNavigator Navigator
  
@@ -2761,6 +3031,8 @@ instance IsWorkerNavigator WorkerNavigator
  
 instance IsDOMWindow DOMWindow
  
+instance IsEventTarget DOMWindow
+ 
 instance IsSpeechSynthesis SpeechSynthesis
  
 instance IsSpeechSynthesisEvent SpeechSynthesisEvent
@@ -2768,6 +3040,10 @@ instance IsSpeechSynthesisEvent SpeechSynthesisEvent
 instance IsEvent SpeechSynthesisEvent
  
 instance IsSpeechSynthesisUtterance SpeechSynthesisUtterance
+ 
+instance IsEventTarget SpeechSynthesisUtterance
+ 
+instance IsEventTarget SpeechSynthesisUtterance
  
 instance IsSpeechSynthesisVoice SpeechSynthesisVoice
  
@@ -2791,6 +3067,10 @@ instance IsEventTarget AudioBufferSourceNode
  
 instance IsAudioContext AudioContext
  
+instance IsEventTarget AudioContext
+ 
+instance IsEventTarget AudioContext
+ 
 instance IsAudioDestinationNode AudioDestinationNode
  
 instance IsAudioNode AudioDestinationNode
@@ -2800,6 +3080,8 @@ instance IsEventTarget AudioDestinationNode
 instance IsAudioListener AudioListener
  
 instance IsAudioNode AudioNode
+ 
+instance IsEventTarget AudioNode
  
 instance IsEventTarget AudioNode
  
@@ -2878,6 +3160,10 @@ instance IsOfflineAudioContext OfflineAudioContext
  
 instance IsAudioContext OfflineAudioContext
  
+instance IsEventTarget OfflineAudioContext
+ 
+instance IsEventTarget OfflineAudioContext
+ 
 instance IsOscillatorNode OscillatorNode
  
 instance IsAudioNode OscillatorNode
@@ -2912,6 +3198,8 @@ instance IsDatabaseSync DatabaseSync
  
 instance IsDOMWindow DOMWindow
  
+instance IsEventTarget DOMWindow
+ 
 instance IsSQLError SQLError
  
 instance IsSQLResultSet SQLResultSet
@@ -2934,11 +3222,17 @@ instance IsSQLTransactionSyncCallback SQLTransactionSyncCallback
  
 instance IsWorkerGlobalScope WorkerGlobalScope
  
+instance IsEventTarget WorkerGlobalScope
+ 
 instance IsCloseEvent CloseEvent
  
 instance IsEvent CloseEvent
  
 instance IsWebSocket WebSocket
+ 
+instance IsEventTarget WebSocket
+ 
+instance IsEventTarget WebSocket
  
 instance IsAbstractView AbstractView
  
@@ -2952,7 +3246,15 @@ instance IsDOMSelection DOMSelection
  
 instance IsDOMWindow DOMWindow
  
+instance IsEventTarget DOMWindow
+ 
+instance IsEventTarget DOMWindow
+ 
 instance IsEventSource EventSource
+ 
+instance IsEventTarget EventSource
+ 
+instance IsEventTarget EventSource
  
 instance IsHistory History
  
@@ -2961,6 +3263,10 @@ instance IsLocation Location
 instance IsNavigator Navigator
  
 instance IsPerformance Performance
+ 
+instance IsEventTarget Performance
+ 
+instance IsEventTarget Performance
  
 instance IsPerformanceEntry PerformanceEntry
  
@@ -3023,6 +3329,8 @@ instance IsElement SVGAElement
  
 instance IsNode SVGAElement
  
+instance IsEventTarget SVGAElement
+ 
 instance IsSVGAltGlyphDefElement SVGAltGlyphDefElement
  
 instance IsSVGElement SVGAltGlyphDefElement
@@ -3030,6 +3338,8 @@ instance IsSVGElement SVGAltGlyphDefElement
 instance IsElement SVGAltGlyphDefElement
  
 instance IsNode SVGAltGlyphDefElement
+ 
+instance IsEventTarget SVGAltGlyphDefElement
  
 instance IsSVGAltGlyphElement SVGAltGlyphElement
  
@@ -3045,6 +3355,8 @@ instance IsElement SVGAltGlyphElement
  
 instance IsNode SVGAltGlyphElement
  
+instance IsEventTarget SVGAltGlyphElement
+ 
 instance IsSVGAltGlyphItemElement SVGAltGlyphItemElement
  
 instance IsSVGElement SVGAltGlyphItemElement
@@ -3052,6 +3364,8 @@ instance IsSVGElement SVGAltGlyphItemElement
 instance IsElement SVGAltGlyphItemElement
  
 instance IsNode SVGAltGlyphItemElement
+ 
+instance IsEventTarget SVGAltGlyphItemElement
  
 instance IsSVGAngle SVGAngle
  
@@ -3064,6 +3378,8 @@ instance IsSVGElement SVGAnimateColorElement
 instance IsElement SVGAnimateColorElement
  
 instance IsNode SVGAnimateColorElement
+ 
+instance IsEventTarget SVGAnimateColorElement
  
 instance IsSVGAnimatedAngle SVGAnimatedAngle
  
@@ -3100,6 +3416,8 @@ instance IsElement SVGAnimateElement
  
 instance IsNode SVGAnimateElement
  
+instance IsEventTarget SVGAnimateElement
+ 
 instance IsSVGAnimateMotionElement SVGAnimateMotionElement
  
 instance IsSVGAnimationElement SVGAnimateMotionElement
@@ -3109,6 +3427,8 @@ instance IsSVGElement SVGAnimateMotionElement
 instance IsElement SVGAnimateMotionElement
  
 instance IsNode SVGAnimateMotionElement
+ 
+instance IsEventTarget SVGAnimateMotionElement
  
 instance IsSVGAnimateTransformElement SVGAnimateTransformElement
  
@@ -3120,6 +3440,8 @@ instance IsElement SVGAnimateTransformElement
  
 instance IsNode SVGAnimateTransformElement
  
+instance IsEventTarget SVGAnimateTransformElement
+ 
 instance IsSVGAnimationElement SVGAnimationElement
  
 instance IsSVGElement SVGAnimationElement
@@ -3127,6 +3449,8 @@ instance IsSVGElement SVGAnimationElement
 instance IsElement SVGAnimationElement
  
 instance IsNode SVGAnimationElement
+ 
+instance IsEventTarget SVGAnimationElement
  
 instance IsSVGCircleElement SVGCircleElement
  
@@ -3138,6 +3462,8 @@ instance IsElement SVGCircleElement
  
 instance IsNode SVGCircleElement
  
+instance IsEventTarget SVGCircleElement
+ 
 instance IsSVGClipPathElement SVGClipPathElement
  
 instance IsSVGGraphicsElement SVGClipPathElement
@@ -3147,6 +3473,8 @@ instance IsSVGElement SVGClipPathElement
 instance IsElement SVGClipPathElement
  
 instance IsNode SVGClipPathElement
+ 
+instance IsEventTarget SVGClipPathElement
  
 instance IsSVGColor SVGColor
  
@@ -3161,6 +3489,8 @@ instance IsElement SVGComponentTransferFunctionElement
  
 instance IsNode SVGComponentTransferFunctionElement
  
+instance IsEventTarget SVGComponentTransferFunctionElement
+ 
 instance IsSVGCursorElement SVGCursorElement
  
 instance IsSVGElement SVGCursorElement
@@ -3168,6 +3498,8 @@ instance IsSVGElement SVGCursorElement
 instance IsElement SVGCursorElement
  
 instance IsNode SVGCursorElement
+ 
+instance IsEventTarget SVGCursorElement
  
 instance IsSVGDefsElement SVGDefsElement
  
@@ -3179,6 +3511,8 @@ instance IsElement SVGDefsElement
  
 instance IsNode SVGDefsElement
  
+instance IsEventTarget SVGDefsElement
+ 
 instance IsSVGDescElement SVGDescElement
  
 instance IsSVGElement SVGDescElement
@@ -3187,11 +3521,15 @@ instance IsElement SVGDescElement
  
 instance IsNode SVGDescElement
  
+instance IsEventTarget SVGDescElement
+ 
 instance IsSVGDocument SVGDocument
  
 instance IsDocument SVGDocument
  
 instance IsNode SVGDocument
+ 
+instance IsEventTarget SVGDocument
  
 instance IsSVGElement SVGElement
  
@@ -3199,7 +3537,11 @@ instance IsElement SVGElement
  
 instance IsNode SVGElement
  
+instance IsEventTarget SVGElement
+ 
 instance IsSVGElementInstance SVGElementInstance
+ 
+instance IsEventTarget SVGElementInstance
  
 instance IsEventTarget SVGElementInstance
  
@@ -3215,6 +3557,8 @@ instance IsElement SVGEllipseElement
  
 instance IsNode SVGEllipseElement
  
+instance IsEventTarget SVGEllipseElement
+ 
 instance IsSVGExternalResourcesRequired
          SVGExternalResourcesRequired
  
@@ -3226,6 +3570,8 @@ instance IsElement SVGFEBlendElement
  
 instance IsNode SVGFEBlendElement
  
+instance IsEventTarget SVGFEBlendElement
+ 
 instance IsSVGFEColorMatrixElement SVGFEColorMatrixElement
  
 instance IsSVGElement SVGFEColorMatrixElement
@@ -3233,6 +3579,8 @@ instance IsSVGElement SVGFEColorMatrixElement
 instance IsElement SVGFEColorMatrixElement
  
 instance IsNode SVGFEColorMatrixElement
+ 
+instance IsEventTarget SVGFEColorMatrixElement
  
 instance IsSVGFEComponentTransferElement
          SVGFEComponentTransferElement
@@ -3243,6 +3591,8 @@ instance IsElement SVGFEComponentTransferElement
  
 instance IsNode SVGFEComponentTransferElement
  
+instance IsEventTarget SVGFEComponentTransferElement
+ 
 instance IsSVGFECompositeElement SVGFECompositeElement
  
 instance IsSVGElement SVGFECompositeElement
@@ -3250,6 +3600,8 @@ instance IsSVGElement SVGFECompositeElement
 instance IsElement SVGFECompositeElement
  
 instance IsNode SVGFECompositeElement
+ 
+instance IsEventTarget SVGFECompositeElement
  
 instance IsSVGFEConvolveMatrixElement SVGFEConvolveMatrixElement
  
@@ -3259,6 +3611,8 @@ instance IsElement SVGFEConvolveMatrixElement
  
 instance IsNode SVGFEConvolveMatrixElement
  
+instance IsEventTarget SVGFEConvolveMatrixElement
+ 
 instance IsSVGFEDiffuseLightingElement SVGFEDiffuseLightingElement
  
 instance IsSVGElement SVGFEDiffuseLightingElement
@@ -3266,6 +3620,8 @@ instance IsSVGElement SVGFEDiffuseLightingElement
 instance IsElement SVGFEDiffuseLightingElement
  
 instance IsNode SVGFEDiffuseLightingElement
+ 
+instance IsEventTarget SVGFEDiffuseLightingElement
  
 instance IsSVGFEDisplacementMapElement SVGFEDisplacementMapElement
  
@@ -3275,6 +3631,8 @@ instance IsElement SVGFEDisplacementMapElement
  
 instance IsNode SVGFEDisplacementMapElement
  
+instance IsEventTarget SVGFEDisplacementMapElement
+ 
 instance IsSVGFEDistantLightElement SVGFEDistantLightElement
  
 instance IsSVGElement SVGFEDistantLightElement
@@ -3282,6 +3640,8 @@ instance IsSVGElement SVGFEDistantLightElement
 instance IsElement SVGFEDistantLightElement
  
 instance IsNode SVGFEDistantLightElement
+ 
+instance IsEventTarget SVGFEDistantLightElement
  
 instance IsSVGFEDropShadowElement SVGFEDropShadowElement
  
@@ -3291,6 +3651,8 @@ instance IsElement SVGFEDropShadowElement
  
 instance IsNode SVGFEDropShadowElement
  
+instance IsEventTarget SVGFEDropShadowElement
+ 
 instance IsSVGFEFloodElement SVGFEFloodElement
  
 instance IsSVGElement SVGFEFloodElement
@@ -3298,6 +3660,8 @@ instance IsSVGElement SVGFEFloodElement
 instance IsElement SVGFEFloodElement
  
 instance IsNode SVGFEFloodElement
+ 
+instance IsEventTarget SVGFEFloodElement
  
 instance IsSVGFEFuncAElement SVGFEFuncAElement
  
@@ -3309,6 +3673,8 @@ instance IsElement SVGFEFuncAElement
  
 instance IsNode SVGFEFuncAElement
  
+instance IsEventTarget SVGFEFuncAElement
+ 
 instance IsSVGFEFuncBElement SVGFEFuncBElement
  
 instance IsSVGComponentTransferFunctionElement SVGFEFuncBElement
@@ -3318,6 +3684,8 @@ instance IsSVGElement SVGFEFuncBElement
 instance IsElement SVGFEFuncBElement
  
 instance IsNode SVGFEFuncBElement
+ 
+instance IsEventTarget SVGFEFuncBElement
  
 instance IsSVGFEFuncGElement SVGFEFuncGElement
  
@@ -3329,6 +3697,8 @@ instance IsElement SVGFEFuncGElement
  
 instance IsNode SVGFEFuncGElement
  
+instance IsEventTarget SVGFEFuncGElement
+ 
 instance IsSVGFEFuncRElement SVGFEFuncRElement
  
 instance IsSVGComponentTransferFunctionElement SVGFEFuncRElement
@@ -3339,6 +3709,8 @@ instance IsElement SVGFEFuncRElement
  
 instance IsNode SVGFEFuncRElement
  
+instance IsEventTarget SVGFEFuncRElement
+ 
 instance IsSVGFEGaussianBlurElement SVGFEGaussianBlurElement
  
 instance IsSVGElement SVGFEGaussianBlurElement
@@ -3346,6 +3718,8 @@ instance IsSVGElement SVGFEGaussianBlurElement
 instance IsElement SVGFEGaussianBlurElement
  
 instance IsNode SVGFEGaussianBlurElement
+ 
+instance IsEventTarget SVGFEGaussianBlurElement
  
 instance IsSVGFEImageElement SVGFEImageElement
  
@@ -3355,6 +3729,8 @@ instance IsElement SVGFEImageElement
  
 instance IsNode SVGFEImageElement
  
+instance IsEventTarget SVGFEImageElement
+ 
 instance IsSVGFEMergeElement SVGFEMergeElement
  
 instance IsSVGElement SVGFEMergeElement
@@ -3362,6 +3738,8 @@ instance IsSVGElement SVGFEMergeElement
 instance IsElement SVGFEMergeElement
  
 instance IsNode SVGFEMergeElement
+ 
+instance IsEventTarget SVGFEMergeElement
  
 instance IsSVGFEMergeNodeElement SVGFEMergeNodeElement
  
@@ -3371,6 +3749,8 @@ instance IsElement SVGFEMergeNodeElement
  
 instance IsNode SVGFEMergeNodeElement
  
+instance IsEventTarget SVGFEMergeNodeElement
+ 
 instance IsSVGFEMorphologyElement SVGFEMorphologyElement
  
 instance IsSVGElement SVGFEMorphologyElement
@@ -3378,6 +3758,8 @@ instance IsSVGElement SVGFEMorphologyElement
 instance IsElement SVGFEMorphologyElement
  
 instance IsNode SVGFEMorphologyElement
+ 
+instance IsEventTarget SVGFEMorphologyElement
  
 instance IsSVGFEOffsetElement SVGFEOffsetElement
  
@@ -3387,6 +3769,8 @@ instance IsElement SVGFEOffsetElement
  
 instance IsNode SVGFEOffsetElement
  
+instance IsEventTarget SVGFEOffsetElement
+ 
 instance IsSVGFEPointLightElement SVGFEPointLightElement
  
 instance IsSVGElement SVGFEPointLightElement
@@ -3394,6 +3778,8 @@ instance IsSVGElement SVGFEPointLightElement
 instance IsElement SVGFEPointLightElement
  
 instance IsNode SVGFEPointLightElement
+ 
+instance IsEventTarget SVGFEPointLightElement
  
 instance IsSVGFESpecularLightingElement
          SVGFESpecularLightingElement
@@ -3404,6 +3790,8 @@ instance IsElement SVGFESpecularLightingElement
  
 instance IsNode SVGFESpecularLightingElement
  
+instance IsEventTarget SVGFESpecularLightingElement
+ 
 instance IsSVGFESpotLightElement SVGFESpotLightElement
  
 instance IsSVGElement SVGFESpotLightElement
@@ -3411,6 +3799,8 @@ instance IsSVGElement SVGFESpotLightElement
 instance IsElement SVGFESpotLightElement
  
 instance IsNode SVGFESpotLightElement
+ 
+instance IsEventTarget SVGFESpotLightElement
  
 instance IsSVGFETileElement SVGFETileElement
  
@@ -3420,6 +3810,8 @@ instance IsElement SVGFETileElement
  
 instance IsNode SVGFETileElement
  
+instance IsEventTarget SVGFETileElement
+ 
 instance IsSVGFETurbulenceElement SVGFETurbulenceElement
  
 instance IsSVGElement SVGFETurbulenceElement
@@ -3428,6 +3820,8 @@ instance IsElement SVGFETurbulenceElement
  
 instance IsNode SVGFETurbulenceElement
  
+instance IsEventTarget SVGFETurbulenceElement
+ 
 instance IsSVGFilterElement SVGFilterElement
  
 instance IsSVGElement SVGFilterElement
@@ -3435,6 +3829,8 @@ instance IsSVGElement SVGFilterElement
 instance IsElement SVGFilterElement
  
 instance IsNode SVGFilterElement
+ 
+instance IsEventTarget SVGFilterElement
  
 instance IsSVGFilterPrimitiveStandardAttributes
          SVGFilterPrimitiveStandardAttributes
@@ -3449,6 +3845,8 @@ instance IsElement SVGFontElement
  
 instance IsNode SVGFontElement
  
+instance IsEventTarget SVGFontElement
+ 
 instance IsSVGFontFaceElement SVGFontFaceElement
  
 instance IsSVGElement SVGFontFaceElement
@@ -3456,6 +3854,8 @@ instance IsSVGElement SVGFontFaceElement
 instance IsElement SVGFontFaceElement
  
 instance IsNode SVGFontFaceElement
+ 
+instance IsEventTarget SVGFontFaceElement
  
 instance IsSVGFontFaceFormatElement SVGFontFaceFormatElement
  
@@ -3465,6 +3865,8 @@ instance IsElement SVGFontFaceFormatElement
  
 instance IsNode SVGFontFaceFormatElement
  
+instance IsEventTarget SVGFontFaceFormatElement
+ 
 instance IsSVGFontFaceNameElement SVGFontFaceNameElement
  
 instance IsSVGElement SVGFontFaceNameElement
@@ -3472,6 +3874,8 @@ instance IsSVGElement SVGFontFaceNameElement
 instance IsElement SVGFontFaceNameElement
  
 instance IsNode SVGFontFaceNameElement
+ 
+instance IsEventTarget SVGFontFaceNameElement
  
 instance IsSVGFontFaceSrcElement SVGFontFaceSrcElement
  
@@ -3481,6 +3885,8 @@ instance IsElement SVGFontFaceSrcElement
  
 instance IsNode SVGFontFaceSrcElement
  
+instance IsEventTarget SVGFontFaceSrcElement
+ 
 instance IsSVGFontFaceUriElement SVGFontFaceUriElement
  
 instance IsSVGElement SVGFontFaceUriElement
@@ -3488,6 +3894,8 @@ instance IsSVGElement SVGFontFaceUriElement
 instance IsElement SVGFontFaceUriElement
  
 instance IsNode SVGFontFaceUriElement
+ 
+instance IsEventTarget SVGFontFaceUriElement
  
 instance IsSVGForeignObjectElement SVGForeignObjectElement
  
@@ -3499,6 +3907,8 @@ instance IsElement SVGForeignObjectElement
  
 instance IsNode SVGForeignObjectElement
  
+instance IsEventTarget SVGForeignObjectElement
+ 
 instance IsSVGGElement SVGGElement
  
 instance IsSVGGraphicsElement SVGGElement
@@ -3509,6 +3919,8 @@ instance IsElement SVGGElement
  
 instance IsNode SVGGElement
  
+instance IsEventTarget SVGGElement
+ 
 instance IsSVGGlyphElement SVGGlyphElement
  
 instance IsSVGElement SVGGlyphElement
@@ -3516,6 +3928,8 @@ instance IsSVGElement SVGGlyphElement
 instance IsElement SVGGlyphElement
  
 instance IsNode SVGGlyphElement
+ 
+instance IsEventTarget SVGGlyphElement
  
 instance IsSVGGlyphRefElement SVGGlyphRefElement
  
@@ -3525,6 +3939,8 @@ instance IsElement SVGGlyphRefElement
  
 instance IsNode SVGGlyphRefElement
  
+instance IsEventTarget SVGGlyphRefElement
+ 
 instance IsSVGGradientElement SVGGradientElement
  
 instance IsSVGElement SVGGradientElement
@@ -3532,6 +3948,8 @@ instance IsSVGElement SVGGradientElement
 instance IsElement SVGGradientElement
  
 instance IsNode SVGGradientElement
+ 
+instance IsEventTarget SVGGradientElement
  
 instance IsSVGGraphicsElement SVGGraphicsElement
  
@@ -3541,6 +3959,8 @@ instance IsElement SVGGraphicsElement
  
 instance IsNode SVGGraphicsElement
  
+instance IsEventTarget SVGGraphicsElement
+ 
 instance IsSVGHKernElement SVGHKernElement
  
 instance IsSVGElement SVGHKernElement
@@ -3548,6 +3968,8 @@ instance IsSVGElement SVGHKernElement
 instance IsElement SVGHKernElement
  
 instance IsNode SVGHKernElement
+ 
+instance IsEventTarget SVGHKernElement
  
 instance IsSVGImageElement SVGImageElement
  
@@ -3558,6 +3980,8 @@ instance IsSVGElement SVGImageElement
 instance IsElement SVGImageElement
  
 instance IsNode SVGImageElement
+ 
+instance IsEventTarget SVGImageElement
  
 instance IsSVGLength SVGLength
  
@@ -3573,6 +3997,8 @@ instance IsElement SVGLinearGradientElement
  
 instance IsNode SVGLinearGradientElement
  
+instance IsEventTarget SVGLinearGradientElement
+ 
 instance IsSVGLineElement SVGLineElement
  
 instance IsSVGGraphicsElement SVGLineElement
@@ -3583,6 +4009,8 @@ instance IsElement SVGLineElement
  
 instance IsNode SVGLineElement
  
+instance IsEventTarget SVGLineElement
+ 
 instance IsSVGMarkerElement SVGMarkerElement
  
 instance IsSVGElement SVGMarkerElement
@@ -3591,6 +4019,8 @@ instance IsElement SVGMarkerElement
  
 instance IsNode SVGMarkerElement
  
+instance IsEventTarget SVGMarkerElement
+ 
 instance IsSVGMaskElement SVGMaskElement
  
 instance IsSVGElement SVGMaskElement
@@ -3598,6 +4028,8 @@ instance IsSVGElement SVGMaskElement
 instance IsElement SVGMaskElement
  
 instance IsNode SVGMaskElement
+ 
+instance IsEventTarget SVGMaskElement
  
 instance IsSVGMatrix SVGMatrix
  
@@ -3609,6 +4041,8 @@ instance IsElement SVGMetadataElement
  
 instance IsNode SVGMetadataElement
  
+instance IsEventTarget SVGMetadataElement
+ 
 instance IsSVGMissingGlyphElement SVGMissingGlyphElement
  
 instance IsSVGElement SVGMissingGlyphElement
@@ -3617,6 +4051,8 @@ instance IsElement SVGMissingGlyphElement
  
 instance IsNode SVGMissingGlyphElement
  
+instance IsEventTarget SVGMissingGlyphElement
+ 
 instance IsSVGMPathElement SVGMPathElement
  
 instance IsSVGElement SVGMPathElement
@@ -3624,6 +4060,8 @@ instance IsSVGElement SVGMPathElement
 instance IsElement SVGMPathElement
  
 instance IsNode SVGMPathElement
+ 
+instance IsEventTarget SVGMPathElement
  
 instance IsSVGNumber SVGNumber
  
@@ -3644,6 +4082,8 @@ instance IsSVGElement SVGPathElement
 instance IsElement SVGPathElement
  
 instance IsNode SVGPathElement
+ 
+instance IsEventTarget SVGPathElement
  
 instance IsSVGPathSeg SVGPathSeg
  
@@ -3741,6 +4181,8 @@ instance IsElement SVGPatternElement
  
 instance IsNode SVGPatternElement
  
+instance IsEventTarget SVGPatternElement
+ 
 instance IsSVGPoint SVGPoint
  
 instance IsSVGPointList SVGPointList
@@ -3755,6 +4197,8 @@ instance IsElement SVGPolygonElement
  
 instance IsNode SVGPolygonElement
  
+instance IsEventTarget SVGPolygonElement
+ 
 instance IsSVGPolylineElement SVGPolylineElement
  
 instance IsSVGGraphicsElement SVGPolylineElement
@@ -3764,6 +4208,8 @@ instance IsSVGElement SVGPolylineElement
 instance IsElement SVGPolylineElement
  
 instance IsNode SVGPolylineElement
+ 
+instance IsEventTarget SVGPolylineElement
  
 instance IsSVGPreserveAspectRatio SVGPreserveAspectRatio
  
@@ -3777,6 +4223,8 @@ instance IsElement SVGRadialGradientElement
  
 instance IsNode SVGRadialGradientElement
  
+instance IsEventTarget SVGRadialGradientElement
+ 
 instance IsSVGRect SVGRect
  
 instance IsSVGRectElement SVGRectElement
@@ -3789,6 +4237,8 @@ instance IsElement SVGRectElement
  
 instance IsNode SVGRectElement
  
+instance IsEventTarget SVGRectElement
+ 
 instance IsSVGRenderingIntent SVGRenderingIntent
  
 instance IsSVGScriptElement SVGScriptElement
@@ -3798,6 +4248,8 @@ instance IsSVGElement SVGScriptElement
 instance IsElement SVGScriptElement
  
 instance IsNode SVGScriptElement
+ 
+instance IsEventTarget SVGScriptElement
  
 instance IsSVGSetElement SVGSetElement
  
@@ -3809,6 +4261,8 @@ instance IsElement SVGSetElement
  
 instance IsNode SVGSetElement
  
+instance IsEventTarget SVGSetElement
+ 
 instance IsSVGStopElement SVGStopElement
  
 instance IsSVGElement SVGStopElement
@@ -3816,6 +4270,8 @@ instance IsSVGElement SVGStopElement
 instance IsElement SVGStopElement
  
 instance IsNode SVGStopElement
+ 
+instance IsEventTarget SVGStopElement
  
 instance IsSVGStringList SVGStringList
  
@@ -3827,6 +4283,8 @@ instance IsElement SVGStyleElement
  
 instance IsNode SVGStyleElement
  
+instance IsEventTarget SVGStyleElement
+ 
 instance IsSVGSVGElement SVGSVGElement
  
 instance IsSVGGraphicsElement SVGSVGElement
@@ -3836,6 +4294,8 @@ instance IsSVGElement SVGSVGElement
 instance IsElement SVGSVGElement
  
 instance IsNode SVGSVGElement
+ 
+instance IsEventTarget SVGSVGElement
  
 instance IsSVGSwitchElement SVGSwitchElement
  
@@ -3847,6 +4307,8 @@ instance IsElement SVGSwitchElement
  
 instance IsNode SVGSwitchElement
  
+instance IsEventTarget SVGSwitchElement
+ 
 instance IsSVGSymbolElement SVGSymbolElement
  
 instance IsSVGElement SVGSymbolElement
@@ -3854,6 +4316,8 @@ instance IsSVGElement SVGSymbolElement
 instance IsElement SVGSymbolElement
  
 instance IsNode SVGSymbolElement
+ 
+instance IsEventTarget SVGSymbolElement
  
 instance IsSVGTests SVGTests
  
@@ -3866,6 +4330,8 @@ instance IsSVGElement SVGTextContentElement
 instance IsElement SVGTextContentElement
  
 instance IsNode SVGTextContentElement
+ 
+instance IsEventTarget SVGTextContentElement
  
 instance IsSVGTextElement SVGTextElement
  
@@ -3881,6 +4347,8 @@ instance IsElement SVGTextElement
  
 instance IsNode SVGTextElement
  
+instance IsEventTarget SVGTextElement
+ 
 instance IsSVGTextPathElement SVGTextPathElement
  
 instance IsSVGTextContentElement SVGTextPathElement
@@ -3892,6 +4360,8 @@ instance IsSVGElement SVGTextPathElement
 instance IsElement SVGTextPathElement
  
 instance IsNode SVGTextPathElement
+ 
+instance IsEventTarget SVGTextPathElement
  
 instance IsSVGTextPositioningElement SVGTextPositioningElement
  
@@ -3905,6 +4375,8 @@ instance IsElement SVGTextPositioningElement
  
 instance IsNode SVGTextPositioningElement
  
+instance IsEventTarget SVGTextPositioningElement
+ 
 instance IsSVGTitleElement SVGTitleElement
  
 instance IsSVGElement SVGTitleElement
@@ -3912,6 +4384,8 @@ instance IsSVGElement SVGTitleElement
 instance IsElement SVGTitleElement
  
 instance IsNode SVGTitleElement
+ 
+instance IsEventTarget SVGTitleElement
  
 instance IsSVGTransform SVGTransform
  
@@ -3931,6 +4405,8 @@ instance IsElement SVGTRefElement
  
 instance IsNode SVGTRefElement
  
+instance IsEventTarget SVGTRefElement
+ 
 instance IsSVGTSpanElement SVGTSpanElement
  
 instance IsSVGTextPositioningElement SVGTSpanElement
@@ -3944,6 +4420,8 @@ instance IsSVGElement SVGTSpanElement
 instance IsElement SVGTSpanElement
  
 instance IsNode SVGTSpanElement
+ 
+instance IsEventTarget SVGTSpanElement
  
 instance IsSVGUnitTypes SVGUnitTypes
  
@@ -3959,6 +4437,8 @@ instance IsElement SVGUseElement
  
 instance IsNode SVGUseElement
  
+instance IsEventTarget SVGUseElement
+ 
 instance IsSVGViewElement SVGViewElement
  
 instance IsSVGElement SVGViewElement
@@ -3966,6 +4446,8 @@ instance IsSVGElement SVGViewElement
 instance IsElement SVGViewElement
  
 instance IsNode SVGViewElement
+ 
+instance IsEventTarget SVGViewElement
  
 instance IsSVGViewSpec SVGViewSpec
  
@@ -3976,6 +4458,8 @@ instance IsSVGElement SVGVKernElement
 instance IsElement SVGVKernElement
  
 instance IsNode SVGVKernElement
+ 
+instance IsEventTarget SVGVKernElement
  
 instance IsSVGZoomAndPan SVGZoomAndPan
  
@@ -4003,6 +4487,8 @@ instance IsDedicatedWorkerGlobalScope DedicatedWorkerGlobalScope
  
 instance IsWorkerGlobalScope DedicatedWorkerGlobalScope
  
+instance IsEventTarget DedicatedWorkerGlobalScope
+ 
 instance IsSharedWorker SharedWorker
  
 instance IsEventTarget SharedWorker
@@ -4011,17 +4497,27 @@ instance IsSharedWorkerGlobalScope SharedWorkerGlobalScope
  
 instance IsWorkerGlobalScope SharedWorkerGlobalScope
  
+instance IsEventTarget SharedWorkerGlobalScope
+ 
 instance IsWorker Worker
  
 instance IsEventTarget Worker
  
 instance IsWorkerGlobalScope WorkerGlobalScope
  
+instance IsEventTarget WorkerGlobalScope
+ 
+instance IsEventTarget WorkerGlobalScope
+ 
 instance IsWorkerLocation WorkerLocation
  
 instance IsDOMParser DOMParser
  
 instance IsXMLHttpRequest XMLHttpRequest
+ 
+instance IsEventTarget XMLHttpRequest
+ 
+instance IsEventTarget XMLHttpRequest
  
 instance IsXMLHttpRequestProgressEvent XMLHttpRequestProgressEvent
  
@@ -4030,6 +4526,10 @@ instance IsProgressEvent XMLHttpRequestProgressEvent
 instance IsEvent XMLHttpRequestProgressEvent
  
 instance IsXMLHttpRequestUpload XMLHttpRequestUpload
+ 
+instance IsEventTarget XMLHttpRequestUpload
+ 
+instance IsEventTarget XMLHttpRequestUpload
  
 instance IsXMLSerializer XMLSerializer
  

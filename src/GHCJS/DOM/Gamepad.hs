@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,53 +29,62 @@ foreign import javascript unsafe "$1[\"id\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.id Mozilla Gamepad.id documentation> 
 gamepadGetId ::
-             (IsGamepad self, FromJSString result) => self -> IO result
+             (MonadIO m, IsGamepad self, FromJSString result) =>
+               self -> m result
 gamepadGetId self
-  = fromJSString <$>
-      (ghcjs_dom_gamepad_get_id (unGamepad (toGamepad self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_gamepad_get_id (unGamepad (toGamepad self))))
  
 foreign import javascript unsafe "$1[\"index\"]"
         ghcjs_dom_gamepad_get_index :: JSRef Gamepad -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.index Mozilla Gamepad.index documentation> 
-gamepadGetIndex :: (IsGamepad self) => self -> IO Word
+gamepadGetIndex :: (MonadIO m, IsGamepad self) => self -> m Word
 gamepadGetIndex self
-  = ghcjs_dom_gamepad_get_index (unGamepad (toGamepad self))
+  = liftIO (ghcjs_dom_gamepad_get_index (unGamepad (toGamepad self)))
  
 foreign import javascript unsafe "($1[\"connected\"] ? 1 : 0)"
         ghcjs_dom_gamepad_get_connected :: JSRef Gamepad -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.connected Mozilla Gamepad.connected documentation> 
-gamepadGetConnected :: (IsGamepad self) => self -> IO Bool
+gamepadGetConnected ::
+                    (MonadIO m, IsGamepad self) => self -> m Bool
 gamepadGetConnected self
-  = ghcjs_dom_gamepad_get_connected (unGamepad (toGamepad self))
+  = liftIO
+      (ghcjs_dom_gamepad_get_connected (unGamepad (toGamepad self)))
  
 foreign import javascript unsafe "$1[\"timestamp\"]"
         ghcjs_dom_gamepad_get_timestamp :: JSRef Gamepad -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.timestamp Mozilla Gamepad.timestamp documentation> 
-gamepadGetTimestamp :: (IsGamepad self) => self -> IO Double
+gamepadGetTimestamp ::
+                    (MonadIO m, IsGamepad self) => self -> m Double
 gamepadGetTimestamp self
-  = ghcjs_dom_gamepad_get_timestamp (unGamepad (toGamepad self))
+  = liftIO
+      (ghcjs_dom_gamepad_get_timestamp (unGamepad (toGamepad self)))
  
 foreign import javascript unsafe "$1[\"mapping\"]"
         ghcjs_dom_gamepad_get_mapping :: JSRef Gamepad -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.mapping Mozilla Gamepad.mapping documentation> 
 gamepadGetMapping ::
-                  (IsGamepad self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsGamepad self, FromJSString result) =>
+                    self -> m result
 gamepadGetMapping self
-  = fromJSString <$>
-      (ghcjs_dom_gamepad_get_mapping (unGamepad (toGamepad self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_gamepad_get_mapping (unGamepad (toGamepad self))))
  
 foreign import javascript unsafe "$1[\"axes\"]"
         ghcjs_dom_gamepad_get_axes :: JSRef Gamepad -> IO (JSRef [Double])
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.axes Mozilla Gamepad.axes documentation> 
-gamepadGetAxes :: (IsGamepad self) => self -> IO [Double]
+gamepadGetAxes :: (MonadIO m, IsGamepad self) => self -> m [Double]
 gamepadGetAxes self
-  = (ghcjs_dom_gamepad_get_axes (unGamepad (toGamepad self))) >>=
-      fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_gamepad_get_axes (unGamepad (toGamepad self))) >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"buttons\"]"
         ghcjs_dom_gamepad_get_buttons ::
@@ -82,10 +92,11 @@ foreign import javascript unsafe "$1[\"buttons\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.buttons Mozilla Gamepad.buttons documentation> 
 gamepadGetButtons ::
-                  (IsGamepad self) => self -> IO [Maybe GamepadButton]
+                  (MonadIO m, IsGamepad self) => self -> m [Maybe GamepadButton]
 gamepadGetButtons self
-  = (ghcjs_dom_gamepad_get_buttons (unGamepad (toGamepad self))) >>=
-      fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_gamepad_get_buttons (unGamepad (toGamepad self))) >>=
+         fromJSRefUnchecked)
 #else
 module GHCJS.DOM.Gamepad (
   ) where

@@ -22,6 +22,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,10 +37,11 @@ foreign import javascript unsafe "$1[\"clearConsoleMessages\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.clearConsoleMessages Mozilla CommandLineAPIHost.clearConsoleMessages documentation> 
 commandLineAPIHostClearConsoleMessages ::
-                                       (IsCommandLineAPIHost self) => self -> IO ()
+                                       (MonadIO m, IsCommandLineAPIHost self) => self -> m ()
 commandLineAPIHostClearConsoleMessages self
-  = ghcjs_dom_command_line_api_host_clear_console_messages
-      (unCommandLineAPIHost (toCommandLineAPIHost self))
+  = liftIO
+      (ghcjs_dom_command_line_api_host_clear_console_messages
+         (unCommandLineAPIHost (toCommandLineAPIHost self)))
  
 foreign import javascript unsafe "$1[\"copyText\"]($2)"
         ghcjs_dom_command_line_api_host_copy_text ::
@@ -47,12 +49,13 @@ foreign import javascript unsafe "$1[\"copyText\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.copyText Mozilla CommandLineAPIHost.copyText documentation> 
 commandLineAPIHostCopyText ::
-                           (IsCommandLineAPIHost self, ToJSString text) =>
-                             self -> text -> IO ()
+                           (MonadIO m, IsCommandLineAPIHost self, ToJSString text) =>
+                             self -> text -> m ()
 commandLineAPIHostCopyText self text
-  = ghcjs_dom_command_line_api_host_copy_text
-      (unCommandLineAPIHost (toCommandLineAPIHost self))
-      (toJSString text)
+  = liftIO
+      (ghcjs_dom_command_line_api_host_copy_text
+         (unCommandLineAPIHost (toCommandLineAPIHost self))
+         (toJSString text))
  
 foreign import javascript unsafe "$1[\"inspect\"]($2, $3)"
         ghcjs_dom_command_line_api_host_inspect ::
@@ -60,12 +63,14 @@ foreign import javascript unsafe "$1[\"inspect\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspect Mozilla CommandLineAPIHost.inspect documentation> 
 commandLineAPIHostInspect ::
-                          (IsCommandLineAPIHost self) => self -> JSRef a -> JSRef a -> IO ()
+                          (MonadIO m, IsCommandLineAPIHost self) =>
+                            self -> JSRef a -> JSRef a -> m ()
 commandLineAPIHostInspect self objectId hints
-  = ghcjs_dom_command_line_api_host_inspect
-      (unCommandLineAPIHost (toCommandLineAPIHost self))
-      objectId
-      hints
+  = liftIO
+      (ghcjs_dom_command_line_api_host_inspect
+         (unCommandLineAPIHost (toCommandLineAPIHost self))
+         objectId
+         hints)
  
 foreign import javascript unsafe "$1[\"inspectedObject\"]($2)"
         ghcjs_dom_command_line_api_host_inspected_object ::
@@ -73,11 +78,13 @@ foreign import javascript unsafe "$1[\"inspectedObject\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspectedObject Mozilla CommandLineAPIHost.inspectedObject documentation> 
 commandLineAPIHostInspectedObject ::
-                                  (IsCommandLineAPIHost self) => self -> Int -> IO (JSRef a)
+                                  (MonadIO m, IsCommandLineAPIHost self) =>
+                                    self -> Int -> m (JSRef a)
 commandLineAPIHostInspectedObject self num
-  = ghcjs_dom_command_line_api_host_inspected_object
-      (unCommandLineAPIHost (toCommandLineAPIHost self))
-      num
+  = liftIO
+      (ghcjs_dom_command_line_api_host_inspected_object
+         (unCommandLineAPIHost (toCommandLineAPIHost self))
+         num)
  
 foreign import javascript unsafe "$1[\"getEventListeners\"]($2)"
         ghcjs_dom_command_line_api_host_get_event_listeners ::
@@ -85,13 +92,14 @@ foreign import javascript unsafe "$1[\"getEventListeners\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.eventListeners Mozilla CommandLineAPIHost.eventListeners documentation> 
 commandLineAPIHostGetEventListeners ::
-                                    (IsCommandLineAPIHost self, IsNode node) =>
-                                      self -> Maybe node -> IO (Maybe Array)
+                                    (MonadIO m, IsCommandLineAPIHost self, IsNode node) =>
+                                      self -> Maybe node -> m (Maybe Array)
 commandLineAPIHostGetEventListeners self node
-  = (ghcjs_dom_command_line_api_host_get_event_listeners
-       (unCommandLineAPIHost (toCommandLineAPIHost self))
-       (maybe jsNull (unNode . toNode) node))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_command_line_api_host_get_event_listeners
+          (unCommandLineAPIHost (toCommandLineAPIHost self))
+          (maybe jsNull (unNode . toNode) node))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"databaseId\"]($2)"
         ghcjs_dom_command_line_api_host_database_id ::
@@ -99,13 +107,14 @@ foreign import javascript unsafe "$1[\"databaseId\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.databaseId Mozilla CommandLineAPIHost.databaseId documentation> 
 commandLineAPIHostDatabaseId ::
-                             (IsCommandLineAPIHost self, FromJSString result) =>
-                               self -> JSRef a -> IO result
+                             (MonadIO m, IsCommandLineAPIHost self, FromJSString result) =>
+                               self -> JSRef a -> m result
 commandLineAPIHostDatabaseId self database
-  = fromJSString <$>
-      (ghcjs_dom_command_line_api_host_database_id
-         (unCommandLineAPIHost (toCommandLineAPIHost self))
-         database)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_command_line_api_host_database_id
+            (unCommandLineAPIHost (toCommandLineAPIHost self))
+            database))
  
 foreign import javascript unsafe "$1[\"storageId\"]($2)"
         ghcjs_dom_command_line_api_host_storage_id ::
@@ -113,13 +122,14 @@ foreign import javascript unsafe "$1[\"storageId\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.storageId Mozilla CommandLineAPIHost.storageId documentation> 
 commandLineAPIHostStorageId ::
-                            (IsCommandLineAPIHost self, FromJSString result) =>
-                              self -> JSRef a -> IO result
+                            (MonadIO m, IsCommandLineAPIHost self, FromJSString result) =>
+                              self -> JSRef a -> m result
 commandLineAPIHostStorageId self storage
-  = fromJSString <$>
-      (ghcjs_dom_command_line_api_host_storage_id
-         (unCommandLineAPIHost (toCommandLineAPIHost self))
-         storage)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_command_line_api_host_storage_id
+            (unCommandLineAPIHost (toCommandLineAPIHost self))
+            storage))
 #else
 module GHCJS.DOM.CommandLineAPIHost (
   ) where

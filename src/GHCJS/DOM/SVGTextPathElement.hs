@@ -18,6 +18,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -38,11 +39,13 @@ foreign import javascript unsafe "$1[\"startOffset\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.startOffset Mozilla SVGTextPathElement.startOffset documentation> 
 svgTextPathElementGetStartOffset ::
-                                 (IsSVGTextPathElement self) => self -> IO (Maybe SVGAnimatedLength)
+                                 (MonadIO m, IsSVGTextPathElement self) =>
+                                   self -> m (Maybe SVGAnimatedLength)
 svgTextPathElementGetStartOffset self
-  = (ghcjs_dom_svg_text_path_element_get_start_offset
-       (unSVGTextPathElement (toSVGTextPathElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_path_element_get_start_offset
+          (unSVGTextPathElement (toSVGTextPathElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"method\"]"
         ghcjs_dom_svg_text_path_element_get_method ::
@@ -50,12 +53,13 @@ foreign import javascript unsafe "$1[\"method\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.method Mozilla SVGTextPathElement.method documentation> 
 svgTextPathElementGetMethod ::
-                            (IsSVGTextPathElement self) =>
-                              self -> IO (Maybe SVGAnimatedEnumeration)
+                            (MonadIO m, IsSVGTextPathElement self) =>
+                              self -> m (Maybe SVGAnimatedEnumeration)
 svgTextPathElementGetMethod self
-  = (ghcjs_dom_svg_text_path_element_get_method
-       (unSVGTextPathElement (toSVGTextPathElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_path_element_get_method
+          (unSVGTextPathElement (toSVGTextPathElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"spacing\"]"
         ghcjs_dom_svg_text_path_element_get_spacing ::
@@ -63,12 +67,13 @@ foreign import javascript unsafe "$1[\"spacing\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.spacing Mozilla SVGTextPathElement.spacing documentation> 
 svgTextPathElementGetSpacing ::
-                             (IsSVGTextPathElement self) =>
-                               self -> IO (Maybe SVGAnimatedEnumeration)
+                             (MonadIO m, IsSVGTextPathElement self) =>
+                               self -> m (Maybe SVGAnimatedEnumeration)
 svgTextPathElementGetSpacing self
-  = (ghcjs_dom_svg_text_path_element_get_spacing
-       (unSVGTextPathElement (toSVGTextPathElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_path_element_get_spacing
+          (unSVGTextPathElement (toSVGTextPathElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGTextPathElement (
   ) where

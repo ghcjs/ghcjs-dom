@@ -18,6 +18,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -32,11 +33,13 @@ foreign import javascript unsafe "$1[\"toString\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.toString Mozilla WorkerLocation.toString documentation> 
 workerLocationToString ::
-                       (IsWorkerLocation self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                         self -> m result
 workerLocationToString self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_to_string
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_to_string
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"href\"]"
         ghcjs_dom_worker_location_get_href ::
@@ -44,11 +47,13 @@ foreign import javascript unsafe "$1[\"href\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.href Mozilla WorkerLocation.href documentation> 
 workerLocationGetHref ::
-                      (IsWorkerLocation self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                        self -> m result
 workerLocationGetHref self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_href
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_href
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"protocol\"]"
         ghcjs_dom_worker_location_get_protocol ::
@@ -56,11 +61,13 @@ foreign import javascript unsafe "$1[\"protocol\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.protocol Mozilla WorkerLocation.protocol documentation> 
 workerLocationGetProtocol ::
-                          (IsWorkerLocation self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                            self -> m result
 workerLocationGetProtocol self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_protocol
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_protocol
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"host\"]"
         ghcjs_dom_worker_location_get_host ::
@@ -68,11 +75,13 @@ foreign import javascript unsafe "$1[\"host\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.host Mozilla WorkerLocation.host documentation> 
 workerLocationGetHost ::
-                      (IsWorkerLocation self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                        self -> m result
 workerLocationGetHost self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_host
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_host
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"hostname\"]"
         ghcjs_dom_worker_location_get_hostname ::
@@ -80,11 +89,13 @@ foreign import javascript unsafe "$1[\"hostname\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.hostname Mozilla WorkerLocation.hostname documentation> 
 workerLocationGetHostname ::
-                          (IsWorkerLocation self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                            self -> m result
 workerLocationGetHostname self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_hostname
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_hostname
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"port\"]"
         ghcjs_dom_worker_location_get_port ::
@@ -92,11 +103,13 @@ foreign import javascript unsafe "$1[\"port\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.port Mozilla WorkerLocation.port documentation> 
 workerLocationGetPort ::
-                      (IsWorkerLocation self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                        self -> m result
 workerLocationGetPort self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_port
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_port
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"pathname\"]"
         ghcjs_dom_worker_location_get_pathname ::
@@ -104,11 +117,13 @@ foreign import javascript unsafe "$1[\"pathname\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.pathname Mozilla WorkerLocation.pathname documentation> 
 workerLocationGetPathname ::
-                          (IsWorkerLocation self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                            self -> m result
 workerLocationGetPathname self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_pathname
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_pathname
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"search\"]"
         ghcjs_dom_worker_location_get_search ::
@@ -116,11 +131,13 @@ foreign import javascript unsafe "$1[\"search\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.search Mozilla WorkerLocation.search documentation> 
 workerLocationGetSearch ::
-                        (IsWorkerLocation self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                          self -> m result
 workerLocationGetSearch self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_search
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_search
+            (unWorkerLocation (toWorkerLocation self))))
  
 foreign import javascript unsafe "$1[\"hash\"]"
         ghcjs_dom_worker_location_get_hash ::
@@ -128,11 +145,13 @@ foreign import javascript unsafe "$1[\"hash\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.hash Mozilla WorkerLocation.hash documentation> 
 workerLocationGetHash ::
-                      (IsWorkerLocation self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsWorkerLocation self, FromJSString result) =>
+                        self -> m result
 workerLocationGetHash self
-  = fromJSString <$>
-      (ghcjs_dom_worker_location_get_hash
-         (unWorkerLocation (toWorkerLocation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_location_get_hash
+            (unWorkerLocation (toWorkerLocation self))))
 #else
 module GHCJS.DOM.WorkerLocation (
   ) where

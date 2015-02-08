@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,13 +27,14 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList.item Mozilla DOMStringList.item documentation> 
 domStringListItem ::
-                  (IsDOMStringList self, FromJSString result) =>
-                    self -> Word -> IO result
+                  (MonadIO m, IsDOMStringList self, FromJSString result) =>
+                    self -> Word -> m result
 domStringListItem self index
-  = fromJSString <$>
-      (ghcjs_dom_dom_string_list_item
-         (unDOMStringList (toDOMStringList self))
-         index)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_string_list_item
+            (unDOMStringList (toDOMStringList self))
+            index))
  
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
         ghcjs_dom_dom_string_list_contains ::
@@ -40,22 +42,25 @@ foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList.contains Mozilla DOMStringList.contains documentation> 
 domStringListContains ::
-                      (IsDOMStringList self, ToJSString string) =>
-                        self -> string -> IO Bool
+                      (MonadIO m, IsDOMStringList self, ToJSString string) =>
+                        self -> string -> m Bool
 domStringListContains self string
-  = ghcjs_dom_dom_string_list_contains
-      (unDOMStringList (toDOMStringList self))
-      (toJSString string)
+  = liftIO
+      (ghcjs_dom_dom_string_list_contains
+         (unDOMStringList (toDOMStringList self))
+         (toJSString string))
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_dom_string_list_get_length ::
         JSRef DOMStringList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList.length Mozilla DOMStringList.length documentation> 
-domStringListGetLength :: (IsDOMStringList self) => self -> IO Word
+domStringListGetLength ::
+                       (MonadIO m, IsDOMStringList self) => self -> m Word
 domStringListGetLength self
-  = ghcjs_dom_dom_string_list_get_length
-      (unDOMStringList (toDOMStringList self))
+  = liftIO
+      (ghcjs_dom_dom_string_list_get_length
+         (unDOMStringList (toDOMStringList self)))
 #else
 module GHCJS.DOM.DOMStringList (
   module Graphics.UI.Gtk.WebKit.DOM.DOMStringList

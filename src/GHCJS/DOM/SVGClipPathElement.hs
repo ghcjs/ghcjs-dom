@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,12 +26,13 @@ foreign import javascript unsafe "$1[\"clipPathUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGClipPathElement.clipPathUnits Mozilla SVGClipPathElement.clipPathUnits documentation> 
 svgClipPathElementGetClipPathUnits ::
-                                   (IsSVGClipPathElement self) =>
-                                     self -> IO (Maybe SVGAnimatedEnumeration)
+                                   (MonadIO m, IsSVGClipPathElement self) =>
+                                     self -> m (Maybe SVGAnimatedEnumeration)
 svgClipPathElementGetClipPathUnits self
-  = (ghcjs_dom_svg_clip_path_element_get_clip_path_units
-       (unSVGClipPathElement (toSVGClipPathElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_clip_path_element_get_clip_path_units
+          (unSVGClipPathElement (toSVGClipPathElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGClipPathElement (
   ) where

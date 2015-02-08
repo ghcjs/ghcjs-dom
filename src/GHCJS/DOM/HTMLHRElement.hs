@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,11 +32,13 @@ foreign import javascript unsafe "$1[\"align\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.align Mozilla HTMLHRElement.align documentation> 
 htmlhrElementSetAlign ::
-                      (IsHTMLHRElement self, ToJSString val) => self -> val -> IO ()
+                      (MonadIO m, IsHTMLHRElement self, ToJSString val) =>
+                        self -> val -> m ()
 htmlhrElementSetAlign self val
-  = ghcjs_dom_htmlhr_element_set_align
-      (unHTMLHRElement (toHTMLHRElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_htmlhr_element_set_align
+         (unHTMLHRElement (toHTMLHRElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_htmlhr_element_get_align ::
@@ -43,11 +46,13 @@ foreign import javascript unsafe "$1[\"align\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.align Mozilla HTMLHRElement.align documentation> 
 htmlhrElementGetAlign ::
-                      (IsHTMLHRElement self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsHTMLHRElement self, FromJSString result) =>
+                        self -> m result
 htmlhrElementGetAlign self
-  = fromJSString <$>
-      (ghcjs_dom_htmlhr_element_get_align
-         (unHTMLHRElement (toHTMLHRElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_htmlhr_element_get_align
+            (unHTMLHRElement (toHTMLHRElement self))))
  
 foreign import javascript unsafe "$1[\"noShade\"] = $2;"
         ghcjs_dom_htmlhr_element_set_no_shade ::
@@ -55,11 +60,12 @@ foreign import javascript unsafe "$1[\"noShade\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.noShade Mozilla HTMLHRElement.noShade documentation> 
 htmlhrElementSetNoShade ::
-                        (IsHTMLHRElement self) => self -> Bool -> IO ()
+                        (MonadIO m, IsHTMLHRElement self) => self -> Bool -> m ()
 htmlhrElementSetNoShade self val
-  = ghcjs_dom_htmlhr_element_set_no_shade
-      (unHTMLHRElement (toHTMLHRElement self))
-      val
+  = liftIO
+      (ghcjs_dom_htmlhr_element_set_no_shade
+         (unHTMLHRElement (toHTMLHRElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"noShade\"] ? 1 : 0)"
         ghcjs_dom_htmlhr_element_get_no_shade ::
@@ -67,10 +73,11 @@ foreign import javascript unsafe "($1[\"noShade\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.noShade Mozilla HTMLHRElement.noShade documentation> 
 htmlhrElementGetNoShade ::
-                        (IsHTMLHRElement self) => self -> IO Bool
+                        (MonadIO m, IsHTMLHRElement self) => self -> m Bool
 htmlhrElementGetNoShade self
-  = ghcjs_dom_htmlhr_element_get_no_shade
-      (unHTMLHRElement (toHTMLHRElement self))
+  = liftIO
+      (ghcjs_dom_htmlhr_element_get_no_shade
+         (unHTMLHRElement (toHTMLHRElement self)))
  
 foreign import javascript unsafe "$1[\"size\"] = $2;"
         ghcjs_dom_htmlhr_element_set_size ::
@@ -78,11 +85,13 @@ foreign import javascript unsafe "$1[\"size\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.size Mozilla HTMLHRElement.size documentation> 
 htmlhrElementSetSize ::
-                     (IsHTMLHRElement self, ToJSString val) => self -> val -> IO ()
+                     (MonadIO m, IsHTMLHRElement self, ToJSString val) =>
+                       self -> val -> m ()
 htmlhrElementSetSize self val
-  = ghcjs_dom_htmlhr_element_set_size
-      (unHTMLHRElement (toHTMLHRElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_htmlhr_element_set_size
+         (unHTMLHRElement (toHTMLHRElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"size\"]"
         ghcjs_dom_htmlhr_element_get_size ::
@@ -90,11 +99,13 @@ foreign import javascript unsafe "$1[\"size\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.size Mozilla HTMLHRElement.size documentation> 
 htmlhrElementGetSize ::
-                     (IsHTMLHRElement self, FromJSString result) => self -> IO result
+                     (MonadIO m, IsHTMLHRElement self, FromJSString result) =>
+                       self -> m result
 htmlhrElementGetSize self
-  = fromJSString <$>
-      (ghcjs_dom_htmlhr_element_get_size
-         (unHTMLHRElement (toHTMLHRElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_htmlhr_element_get_size
+            (unHTMLHRElement (toHTMLHRElement self))))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_htmlhr_element_set_width ::
@@ -102,11 +113,13 @@ foreign import javascript unsafe "$1[\"width\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.width Mozilla HTMLHRElement.width documentation> 
 htmlhrElementSetWidth ::
-                      (IsHTMLHRElement self, ToJSString val) => self -> val -> IO ()
+                      (MonadIO m, IsHTMLHRElement self, ToJSString val) =>
+                        self -> val -> m ()
 htmlhrElementSetWidth self val
-  = ghcjs_dom_htmlhr_element_set_width
-      (unHTMLHRElement (toHTMLHRElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_htmlhr_element_set_width
+         (unHTMLHRElement (toHTMLHRElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_htmlhr_element_get_width ::
@@ -114,11 +127,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.width Mozilla HTMLHRElement.width documentation> 
 htmlhrElementGetWidth ::
-                      (IsHTMLHRElement self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsHTMLHRElement self, FromJSString result) =>
+                        self -> m result
 htmlhrElementGetWidth self
-  = fromJSString <$>
-      (ghcjs_dom_htmlhr_element_get_width
-         (unHTMLHRElement (toHTMLHRElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_htmlhr_element_get_width
+            (unHTMLHRElement (toHTMLHRElement self))))
 #else
 module GHCJS.DOM.HTMLHRElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLHRElement

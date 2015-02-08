@@ -18,6 +18,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -32,13 +33,14 @@ foreign import javascript unsafe "$1[\"_get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue._get Mozilla WebKitCSSTransformValue._get documentation> 
 webKitCSSTransformValue_get ::
-                            (IsWebKitCSSTransformValue self) =>
-                              self -> Word -> IO (Maybe CSSValue)
+                            (MonadIO m, IsWebKitCSSTransformValue self) =>
+                              self -> Word -> m (Maybe CSSValue)
 webKitCSSTransformValue_get self index
-  = (ghcjs_dom_webkit_css_transform_value_get
-       (unWebKitCSSTransformValue (toWebKitCSSTransformValue self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_webkit_css_transform_value_get
+          (unWebKitCSSTransformValue (toWebKitCSSTransformValue self))
+          index)
+         >>= fromJSRef)
 cCSS_TRANSLATE = 1
 cCSS_TRANSLATEX = 2
 cCSS_TRANSLATEY = 3
@@ -67,10 +69,12 @@ foreign import javascript unsafe "$1[\"operationType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue.operationType Mozilla WebKitCSSTransformValue.operationType documentation> 
 webKitCSSTransformValueGetOperationType ::
-                                        (IsWebKitCSSTransformValue self) => self -> IO Word
+                                        (MonadIO m, IsWebKitCSSTransformValue self) =>
+                                          self -> m Word
 webKitCSSTransformValueGetOperationType self
-  = ghcjs_dom_webkit_css_transform_value_get_operation_type
-      (unWebKitCSSTransformValue (toWebKitCSSTransformValue self))
+  = liftIO
+      (ghcjs_dom_webkit_css_transform_value_get_operation_type
+         (unWebKitCSSTransformValue (toWebKitCSSTransformValue self)))
 #else
 module GHCJS.DOM.WebKitCSSTransformValue (
   ) where

@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,9 +29,11 @@ foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_media_error_get_code :: JSRef MediaError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaError.code Mozilla MediaError.code documentation> 
-mediaErrorGetCode :: (IsMediaError self) => self -> IO Word
+mediaErrorGetCode ::
+                  (MonadIO m, IsMediaError self) => self -> m Word
 mediaErrorGetCode self
-  = ghcjs_dom_media_error_get_code (unMediaError (toMediaError self))
+  = liftIO
+      (ghcjs_dom_media_error_get_code (unMediaError (toMediaError self)))
 #else
 module GHCJS.DOM.MediaError (
   module Graphics.UI.Gtk.WebKit.DOM.MediaError

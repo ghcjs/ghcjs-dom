@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,21 +26,24 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList.item Mozilla CSSRuleList.item documentation> 
 cssRuleListItem ::
-                (IsCSSRuleList self) => self -> Word -> IO (Maybe CSSRule)
+                (MonadIO m, IsCSSRuleList self) =>
+                  self -> Word -> m (Maybe CSSRule)
 cssRuleListItem self index
-  = (ghcjs_dom_css_rule_list_item
-       (unCSSRuleList (toCSSRuleList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_rule_list_item (unCSSRuleList (toCSSRuleList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_css_rule_list_get_length :: JSRef CSSRuleList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList.length Mozilla CSSRuleList.length documentation> 
-cssRuleListGetLength :: (IsCSSRuleList self) => self -> IO Word
+cssRuleListGetLength ::
+                     (MonadIO m, IsCSSRuleList self) => self -> m Word
 cssRuleListGetLength self
-  = ghcjs_dom_css_rule_list_get_length
-      (unCSSRuleList (toCSSRuleList self))
+  = liftIO
+      (ghcjs_dom_css_rule_list_get_length
+         (unCSSRuleList (toCSSRuleList self)))
 #else
 module GHCJS.DOM.CSSRuleList (
   module Graphics.UI.Gtk.WebKit.DOM.CSSRuleList

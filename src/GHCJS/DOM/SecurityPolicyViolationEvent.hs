@@ -26,6 +26,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -40,14 +41,15 @@ foreign import javascript unsafe "$1[\"documentURI\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.documentURI Mozilla SecurityPolicyViolationEvent.documentURI documentation> 
 securityPolicyViolationEventGetDocumentURI ::
-                                           (IsSecurityPolicyViolationEvent self,
+                                           (MonadIO m, IsSecurityPolicyViolationEvent self,
                                             FromJSString result) =>
-                                             self -> IO result
+                                             self -> m result
 securityPolicyViolationEventGetDocumentURI self
-  = fromJSString <$>
-      (ghcjs_dom_security_policy_violation_event_get_document_uri
-         (unSecurityPolicyViolationEvent
-            (toSecurityPolicyViolationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_security_policy_violation_event_get_document_uri
+            (unSecurityPolicyViolationEvent
+               (toSecurityPolicyViolationEvent self))))
  
 foreign import javascript unsafe "$1[\"referrer\"]"
         ghcjs_dom_security_policy_violation_event_get_referrer ::
@@ -55,14 +57,15 @@ foreign import javascript unsafe "$1[\"referrer\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.referrer Mozilla SecurityPolicyViolationEvent.referrer documentation> 
 securityPolicyViolationEventGetReferrer ::
-                                        (IsSecurityPolicyViolationEvent self,
+                                        (MonadIO m, IsSecurityPolicyViolationEvent self,
                                          FromJSString result) =>
-                                          self -> IO result
+                                          self -> m result
 securityPolicyViolationEventGetReferrer self
-  = fromJSString <$>
-      (ghcjs_dom_security_policy_violation_event_get_referrer
-         (unSecurityPolicyViolationEvent
-            (toSecurityPolicyViolationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_security_policy_violation_event_get_referrer
+            (unSecurityPolicyViolationEvent
+               (toSecurityPolicyViolationEvent self))))
  
 foreign import javascript unsafe "$1[\"blockedURI\"]"
         ghcjs_dom_security_policy_violation_event_get_blocked_uri ::
@@ -70,14 +73,15 @@ foreign import javascript unsafe "$1[\"blockedURI\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.blockedURI Mozilla SecurityPolicyViolationEvent.blockedURI documentation> 
 securityPolicyViolationEventGetBlockedURI ::
-                                          (IsSecurityPolicyViolationEvent self,
+                                          (MonadIO m, IsSecurityPolicyViolationEvent self,
                                            FromJSString result) =>
-                                            self -> IO result
+                                            self -> m result
 securityPolicyViolationEventGetBlockedURI self
-  = fromJSString <$>
-      (ghcjs_dom_security_policy_violation_event_get_blocked_uri
-         (unSecurityPolicyViolationEvent
-            (toSecurityPolicyViolationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_security_policy_violation_event_get_blocked_uri
+            (unSecurityPolicyViolationEvent
+               (toSecurityPolicyViolationEvent self))))
  
 foreign import javascript unsafe "$1[\"violatedDirective\"]"
         ghcjs_dom_security_policy_violation_event_get_violated_directive ::
@@ -85,14 +89,15 @@ foreign import javascript unsafe "$1[\"violatedDirective\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.violatedDirective Mozilla SecurityPolicyViolationEvent.violatedDirective documentation> 
 securityPolicyViolationEventGetViolatedDirective ::
-                                                 (IsSecurityPolicyViolationEvent self,
+                                                 (MonadIO m, IsSecurityPolicyViolationEvent self,
                                                   FromJSString result) =>
-                                                   self -> IO result
+                                                   self -> m result
 securityPolicyViolationEventGetViolatedDirective self
-  = fromJSString <$>
-      (ghcjs_dom_security_policy_violation_event_get_violated_directive
-         (unSecurityPolicyViolationEvent
-            (toSecurityPolicyViolationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_security_policy_violation_event_get_violated_directive
+            (unSecurityPolicyViolationEvent
+               (toSecurityPolicyViolationEvent self))))
  
 foreign import javascript unsafe "$1[\"effectiveDirective\"]"
         ghcjs_dom_security_policy_violation_event_get_effective_directive
@@ -100,14 +105,15 @@ foreign import javascript unsafe "$1[\"effectiveDirective\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.effectiveDirective Mozilla SecurityPolicyViolationEvent.effectiveDirective documentation> 
 securityPolicyViolationEventGetEffectiveDirective ::
-                                                  (IsSecurityPolicyViolationEvent self,
+                                                  (MonadIO m, IsSecurityPolicyViolationEvent self,
                                                    FromJSString result) =>
-                                                    self -> IO result
+                                                    self -> m result
 securityPolicyViolationEventGetEffectiveDirective self
-  = fromJSString <$>
-      (ghcjs_dom_security_policy_violation_event_get_effective_directive
-         (unSecurityPolicyViolationEvent
-            (toSecurityPolicyViolationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_security_policy_violation_event_get_effective_directive
+            (unSecurityPolicyViolationEvent
+               (toSecurityPolicyViolationEvent self))))
  
 foreign import javascript unsafe "$1[\"originalPolicy\"]"
         ghcjs_dom_security_policy_violation_event_get_original_policy ::
@@ -115,14 +121,15 @@ foreign import javascript unsafe "$1[\"originalPolicy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.originalPolicy Mozilla SecurityPolicyViolationEvent.originalPolicy documentation> 
 securityPolicyViolationEventGetOriginalPolicy ::
-                                              (IsSecurityPolicyViolationEvent self,
+                                              (MonadIO m, IsSecurityPolicyViolationEvent self,
                                                FromJSString result) =>
-                                                self -> IO result
+                                                self -> m result
 securityPolicyViolationEventGetOriginalPolicy self
-  = fromJSString <$>
-      (ghcjs_dom_security_policy_violation_event_get_original_policy
-         (unSecurityPolicyViolationEvent
-            (toSecurityPolicyViolationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_security_policy_violation_event_get_original_policy
+            (unSecurityPolicyViolationEvent
+               (toSecurityPolicyViolationEvent self))))
  
 foreign import javascript unsafe "$1[\"sourceFile\"]"
         ghcjs_dom_security_policy_violation_event_get_source_file ::
@@ -130,14 +137,15 @@ foreign import javascript unsafe "$1[\"sourceFile\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.sourceFile Mozilla SecurityPolicyViolationEvent.sourceFile documentation> 
 securityPolicyViolationEventGetSourceFile ::
-                                          (IsSecurityPolicyViolationEvent self,
+                                          (MonadIO m, IsSecurityPolicyViolationEvent self,
                                            FromJSString result) =>
-                                            self -> IO result
+                                            self -> m result
 securityPolicyViolationEventGetSourceFile self
-  = fromJSString <$>
-      (ghcjs_dom_security_policy_violation_event_get_source_file
-         (unSecurityPolicyViolationEvent
-            (toSecurityPolicyViolationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_security_policy_violation_event_get_source_file
+            (unSecurityPolicyViolationEvent
+               (toSecurityPolicyViolationEvent self))))
  
 foreign import javascript unsafe "$1[\"lineNumber\"]"
         ghcjs_dom_security_policy_violation_event_get_line_number ::
@@ -145,11 +153,13 @@ foreign import javascript unsafe "$1[\"lineNumber\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.lineNumber Mozilla SecurityPolicyViolationEvent.lineNumber documentation> 
 securityPolicyViolationEventGetLineNumber ::
-                                          (IsSecurityPolicyViolationEvent self) => self -> IO Int
+                                          (MonadIO m, IsSecurityPolicyViolationEvent self) =>
+                                            self -> m Int
 securityPolicyViolationEventGetLineNumber self
-  = ghcjs_dom_security_policy_violation_event_get_line_number
-      (unSecurityPolicyViolationEvent
-         (toSecurityPolicyViolationEvent self))
+  = liftIO
+      (ghcjs_dom_security_policy_violation_event_get_line_number
+         (unSecurityPolicyViolationEvent
+            (toSecurityPolicyViolationEvent self)))
 #else
 module GHCJS.DOM.SecurityPolicyViolationEvent (
   ) where

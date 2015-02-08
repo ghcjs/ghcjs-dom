@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,13 +27,14 @@ foreign import javascript unsafe "$1[\"open\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
 idbFactoryOpen ::
-               (IsIDBFactory self, ToJSString name) =>
-                 self -> name -> Word64 -> IO (Maybe IDBOpenDBRequest)
+               (MonadIO m, IsIDBFactory self, ToJSString name) =>
+                 self -> name -> Word64 -> m (Maybe IDBOpenDBRequest)
 idbFactoryOpen self name version
-  = (ghcjs_dom_idb_factory_open (unIDBFactory (toIDBFactory self))
-       (toJSString name)
-       (fromIntegral version))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_factory_open (unIDBFactory (toIDBFactory self))
+          (toJSString name)
+          (fromIntegral version))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"deleteDatabase\"]($2)"
         ghcjs_dom_idb_factory_delete_database ::
@@ -40,13 +42,14 @@ foreign import javascript unsafe "$1[\"deleteDatabase\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
 idbFactoryDeleteDatabase ::
-                         (IsIDBFactory self, ToJSString name) =>
-                           self -> name -> IO (Maybe IDBOpenDBRequest)
+                         (MonadIO m, IsIDBFactory self, ToJSString name) =>
+                           self -> name -> m (Maybe IDBOpenDBRequest)
 idbFactoryDeleteDatabase self name
-  = (ghcjs_dom_idb_factory_delete_database
-       (unIDBFactory (toIDBFactory self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_factory_delete_database
+          (unIDBFactory (toIDBFactory self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"cmp\"]($2, $3)"
         ghcjs_dom_idb_factory_cmp ::
@@ -54,11 +57,12 @@ foreign import javascript unsafe "$1[\"cmp\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.cmp Mozilla IDBFactory.cmp documentation> 
 idbFactoryCmp ::
-              (IsIDBFactory self) => self -> JSRef a -> JSRef a -> IO Int
+              (MonadIO m, IsIDBFactory self) =>
+                self -> JSRef a -> JSRef a -> m Int
 idbFactoryCmp self first second
-  = ghcjs_dom_idb_factory_cmp (unIDBFactory (toIDBFactory self))
-      first
-      second
+  = liftIO
+      (ghcjs_dom_idb_factory_cmp (unIDBFactory (toIDBFactory self)) first
+         second)
 #else
 module GHCJS.DOM.IDBFactory (
   ) where

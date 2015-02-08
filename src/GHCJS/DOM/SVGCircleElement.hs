@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,13 @@ foreign import javascript unsafe "$1[\"cx\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cx Mozilla SVGCircleElement.cx documentation> 
 svgCircleElementGetCx ::
-                      (IsSVGCircleElement self) => self -> IO (Maybe SVGAnimatedLength)
+                      (MonadIO m, IsSVGCircleElement self) =>
+                        self -> m (Maybe SVGAnimatedLength)
 svgCircleElementGetCx self
-  = (ghcjs_dom_svg_circle_element_get_cx
-       (unSVGCircleElement (toSVGCircleElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_circle_element_get_cx
+          (unSVGCircleElement (toSVGCircleElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"cy\"]"
         ghcjs_dom_svg_circle_element_get_cy ::
@@ -38,11 +41,13 @@ foreign import javascript unsafe "$1[\"cy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cy Mozilla SVGCircleElement.cy documentation> 
 svgCircleElementGetCy ::
-                      (IsSVGCircleElement self) => self -> IO (Maybe SVGAnimatedLength)
+                      (MonadIO m, IsSVGCircleElement self) =>
+                        self -> m (Maybe SVGAnimatedLength)
 svgCircleElementGetCy self
-  = (ghcjs_dom_svg_circle_element_get_cy
-       (unSVGCircleElement (toSVGCircleElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_circle_element_get_cy
+          (unSVGCircleElement (toSVGCircleElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"r\"]"
         ghcjs_dom_svg_circle_element_get_r ::
@@ -50,11 +55,13 @@ foreign import javascript unsafe "$1[\"r\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.r Mozilla SVGCircleElement.r documentation> 
 svgCircleElementGetR ::
-                     (IsSVGCircleElement self) => self -> IO (Maybe SVGAnimatedLength)
+                     (MonadIO m, IsSVGCircleElement self) =>
+                       self -> m (Maybe SVGAnimatedLength)
 svgCircleElementGetR self
-  = (ghcjs_dom_svg_circle_element_get_r
-       (unSVGCircleElement (toSVGCircleElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_circle_element_get_r
+          (unSVGCircleElement (toSVGCircleElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGCircleElement (
   ) where

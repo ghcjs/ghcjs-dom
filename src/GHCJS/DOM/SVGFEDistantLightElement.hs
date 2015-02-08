@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,12 +28,13 @@ foreign import javascript unsafe "$1[\"azimuth\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.azimuth Mozilla SVGFEDistantLightElement.azimuth documentation> 
 svgfeDistantLightElementGetAzimuth ::
-                                   (IsSVGFEDistantLightElement self) =>
-                                     self -> IO (Maybe SVGAnimatedNumber)
+                                   (MonadIO m, IsSVGFEDistantLightElement self) =>
+                                     self -> m (Maybe SVGAnimatedNumber)
 svgfeDistantLightElementGetAzimuth self
-  = (ghcjs_dom_svgfe_distant_light_element_get_azimuth
-       (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_distant_light_element_get_azimuth
+          (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"elevation\"]"
         ghcjs_dom_svgfe_distant_light_element_get_elevation ::
@@ -40,12 +42,13 @@ foreign import javascript unsafe "$1[\"elevation\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.elevation Mozilla SVGFEDistantLightElement.elevation documentation> 
 svgfeDistantLightElementGetElevation ::
-                                     (IsSVGFEDistantLightElement self) =>
-                                       self -> IO (Maybe SVGAnimatedNumber)
+                                     (MonadIO m, IsSVGFEDistantLightElement self) =>
+                                       self -> m (Maybe SVGAnimatedNumber)
 svgfeDistantLightElementGetElevation self
-  = (ghcjs_dom_svgfe_distant_light_element_get_elevation
-       (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_distant_light_element_get_elevation
+          (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEDistantLightElement (
   ) where

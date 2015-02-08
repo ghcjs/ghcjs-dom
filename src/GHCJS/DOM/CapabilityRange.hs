@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,10 +27,11 @@ foreign import javascript unsafe "$1[\"max\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.max Mozilla CapabilityRange.max documentation> 
 capabilityRangeGetMax ::
-                      (IsCapabilityRange self) => self -> IO (JSRef a)
+                      (MonadIO m, IsCapabilityRange self) => self -> m (JSRef a)
 capabilityRangeGetMax self
-  = ghcjs_dom_capability_range_get_max
-      (unCapabilityRange (toCapabilityRange self))
+  = liftIO
+      (ghcjs_dom_capability_range_get_max
+         (unCapabilityRange (toCapabilityRange self)))
  
 foreign import javascript unsafe "$1[\"min\"]"
         ghcjs_dom_capability_range_get_min ::
@@ -37,10 +39,11 @@ foreign import javascript unsafe "$1[\"min\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.min Mozilla CapabilityRange.min documentation> 
 capabilityRangeGetMin ::
-                      (IsCapabilityRange self) => self -> IO (JSRef a)
+                      (MonadIO m, IsCapabilityRange self) => self -> m (JSRef a)
 capabilityRangeGetMin self
-  = ghcjs_dom_capability_range_get_min
-      (unCapabilityRange (toCapabilityRange self))
+  = liftIO
+      (ghcjs_dom_capability_range_get_min
+         (unCapabilityRange (toCapabilityRange self)))
  
 foreign import javascript unsafe "($1[\"supported\"] ? 1 : 0)"
         ghcjs_dom_capability_range_get_supported ::
@@ -48,10 +51,11 @@ foreign import javascript unsafe "($1[\"supported\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.supported Mozilla CapabilityRange.supported documentation> 
 capabilityRangeGetSupported ::
-                            (IsCapabilityRange self) => self -> IO Bool
+                            (MonadIO m, IsCapabilityRange self) => self -> m Bool
 capabilityRangeGetSupported self
-  = ghcjs_dom_capability_range_get_supported
-      (unCapabilityRange (toCapabilityRange self))
+  = liftIO
+      (ghcjs_dom_capability_range_get_supported
+         (unCapabilityRange (toCapabilityRange self)))
 #else
 module GHCJS.DOM.CapabilityRange (
   ) where

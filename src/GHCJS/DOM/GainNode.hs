@@ -9,6 +9,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -23,10 +24,11 @@ foreign import javascript unsafe "$1[\"gain\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GainNode.gain Mozilla GainNode.gain documentation> 
 gainNodeGetGain ::
-                (IsGainNode self) => self -> IO (Maybe AudioParam)
+                (MonadIO m, IsGainNode self) => self -> m (Maybe AudioParam)
 gainNodeGetGain self
-  = (ghcjs_dom_gain_node_get_gain (unGainNode (toGainNode self))) >>=
-      fromJSRef
+  = liftIO
+      ((ghcjs_dom_gain_node_get_gain (unGainNode (toGainNode self))) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.GainNode (
   ) where

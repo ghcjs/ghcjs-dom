@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,13 @@ foreign import javascript unsafe "$1[\"suffixes\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.suffixes Mozilla MimeType.suffixes documentation> 
 domMimeTypeGetSuffixes ::
-                       (IsDOMMimeType self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsDOMMimeType self, FromJSString result) =>
+                         self -> m result
 domMimeTypeGetSuffixes self
-  = fromJSString <$>
-      (ghcjs_dom_dom_mime_type_get_suffixes
-         (unDOMMimeType (toDOMMimeType self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_mime_type_get_suffixes
+            (unDOMMimeType (toDOMMimeType self))))
  
 foreign import javascript unsafe "$1[\"description\"]"
         ghcjs_dom_dom_mime_type_get_description ::
@@ -38,11 +41,13 @@ foreign import javascript unsafe "$1[\"description\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.description Mozilla MimeType.description documentation> 
 domMimeTypeGetDescription ::
-                          (IsDOMMimeType self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsDOMMimeType self, FromJSString result) =>
+                            self -> m result
 domMimeTypeGetDescription self
-  = fromJSString <$>
-      (ghcjs_dom_dom_mime_type_get_description
-         (unDOMMimeType (toDOMMimeType self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_mime_type_get_description
+            (unDOMMimeType (toDOMMimeType self))))
  
 foreign import javascript unsafe "$1[\"enabledPlugin\"]"
         ghcjs_dom_dom_mime_type_get_enabled_plugin ::
@@ -50,11 +55,12 @@ foreign import javascript unsafe "$1[\"enabledPlugin\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.enabledPlugin Mozilla MimeType.enabledPlugin documentation> 
 domMimeTypeGetEnabledPlugin ::
-                            (IsDOMMimeType self) => self -> IO (Maybe DOMPlugin)
+                            (MonadIO m, IsDOMMimeType self) => self -> m (Maybe DOMPlugin)
 domMimeTypeGetEnabledPlugin self
-  = (ghcjs_dom_dom_mime_type_get_enabled_plugin
-       (unDOMMimeType (toDOMMimeType self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_mime_type_get_enabled_plugin
+          (unDOMMimeType (toDOMMimeType self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.DOMMimeType (
   module Graphics.UI.Gtk.WebKit.DOM.DOMMimeType

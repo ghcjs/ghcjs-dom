@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,10 +26,11 @@ foreign import javascript unsafe "($1[\"pressed\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GamepadButton.pressed Mozilla GamepadButton.pressed documentation> 
 gamepadButtonGetPressed ::
-                        (IsGamepadButton self) => self -> IO Bool
+                        (MonadIO m, IsGamepadButton self) => self -> m Bool
 gamepadButtonGetPressed self
-  = ghcjs_dom_gamepad_button_get_pressed
-      (unGamepadButton (toGamepadButton self))
+  = liftIO
+      (ghcjs_dom_gamepad_button_get_pressed
+         (unGamepadButton (toGamepadButton self)))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_gamepad_button_get_value ::
@@ -36,10 +38,11 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GamepadButton.value Mozilla GamepadButton.value documentation> 
 gamepadButtonGetValue ::
-                      (IsGamepadButton self) => self -> IO Double
+                      (MonadIO m, IsGamepadButton self) => self -> m Double
 gamepadButtonGetValue self
-  = ghcjs_dom_gamepad_button_get_value
-      (unGamepadButton (toGamepadButton self))
+  = liftIO
+      (ghcjs_dom_gamepad_button_get_value
+         (unGamepadButton (toGamepadButton self)))
 #else
 module GHCJS.DOM.GamepadButton (
   ) where

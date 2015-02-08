@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -21,62 +22,70 @@ import GHCJS.DOM.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
 sqlStatementErrorCallbackNewSync ::
+                                 (MonadIO m) =>
                                    (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
-                                     IO SQLStatementErrorCallback
+                                     m SQLStatementErrorCallback
 sqlStatementErrorCallbackNewSync callback
-  = SQLStatementErrorCallback . castRef <$>
-      syncCallback2 AlwaysRetain True
-        (\ transaction error ->
-           fromJSRefUnchecked error >>=
-             \ error' ->
-               fromJSRefUnchecked transaction >>=
-                 \ transaction' -> callback transaction'
-                 error')
+  = liftIO
+      (SQLStatementErrorCallback . castRef <$>
+         syncCallback2 AlwaysRetain True
+           (\ transaction error ->
+              fromJSRefUnchecked error >>=
+                \ error' ->
+                  fromJSRefUnchecked transaction >>=
+                    \ transaction' -> callback transaction'
+                    error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
 sqlStatementErrorCallbackNewSync' ::
+                                  (MonadIO m) =>
                                     ForeignRetention ->
                                       Bool ->
                                         (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
-                                          IO SQLStatementErrorCallback
+                                          m SQLStatementErrorCallback
 sqlStatementErrorCallbackNewSync' retention continueAsync callback
-  = SQLStatementErrorCallback . castRef <$>
-      syncCallback2 retention continueAsync
-        (\ transaction error ->
-           fromJSRefUnchecked error >>=
-             \ error' ->
-               fromJSRefUnchecked transaction >>=
-                 \ transaction' -> callback transaction'
-                 error')
+  = liftIO
+      (SQLStatementErrorCallback . castRef <$>
+         syncCallback2 retention continueAsync
+           (\ transaction error ->
+              fromJSRefUnchecked error >>=
+                \ error' ->
+                  fromJSRefUnchecked transaction >>=
+                    \ transaction' -> callback transaction'
+                    error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
 sqlStatementErrorCallbackNewAsync ::
+                                  (MonadIO m) =>
                                     (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
-                                      IO SQLStatementErrorCallback
+                                      m SQLStatementErrorCallback
 sqlStatementErrorCallbackNewAsync callback
-  = SQLStatementErrorCallback . castRef <$>
-      asyncCallback2 AlwaysRetain
-        (\ transaction error ->
-           fromJSRefUnchecked error >>=
-             \ error' ->
-               fromJSRefUnchecked transaction >>=
-                 \ transaction' -> callback transaction'
-                 error')
+  = liftIO
+      (SQLStatementErrorCallback . castRef <$>
+         asyncCallback2 AlwaysRetain
+           (\ transaction error ->
+              fromJSRefUnchecked error >>=
+                \ error' ->
+                  fromJSRefUnchecked transaction >>=
+                    \ transaction' -> callback transaction'
+                    error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
 sqlStatementErrorCallbackNewAsync' ::
+                                   (MonadIO m) =>
                                      ForeignRetention ->
                                        (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
-                                         IO SQLStatementErrorCallback
+                                         m SQLStatementErrorCallback
 sqlStatementErrorCallbackNewAsync' retention callback
-  = SQLStatementErrorCallback . castRef <$>
-      asyncCallback2 retention
-        (\ transaction error ->
-           fromJSRefUnchecked error >>=
-             \ error' ->
-               fromJSRefUnchecked transaction >>=
-                 \ transaction' -> callback transaction'
-                 error')
+  = liftIO
+      (SQLStatementErrorCallback . castRef <$>
+         asyncCallback2 retention
+           (\ transaction error ->
+              fromJSRefUnchecked error >>=
+                \ error' ->
+                  fromJSRefUnchecked transaction >>=
+                    \ transaction' -> callback transaction'
+                    error'))
 #else
 module GHCJS.DOM.SQLStatementErrorCallback (
   ) where

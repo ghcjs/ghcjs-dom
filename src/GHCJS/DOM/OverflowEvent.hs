@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,10 +31,12 @@ foreign import javascript unsafe "$1[\"orient\"]"
         JSRef OverflowEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.orient Mozilla OverflowEvent.orient documentation> 
-overflowEventGetOrient :: (IsOverflowEvent self) => self -> IO Word
+overflowEventGetOrient ::
+                       (MonadIO m, IsOverflowEvent self) => self -> m Word
 overflowEventGetOrient self
-  = ghcjs_dom_overflow_event_get_orient
-      (unOverflowEvent (toOverflowEvent self))
+  = liftIO
+      (ghcjs_dom_overflow_event_get_orient
+         (unOverflowEvent (toOverflowEvent self)))
  
 foreign import javascript unsafe
         "($1[\"horizontalOverflow\"] ? 1 : 0)"
@@ -42,10 +45,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.horizontalOverflow Mozilla OverflowEvent.horizontalOverflow documentation> 
 overflowEventGetHorizontalOverflow ::
-                                   (IsOverflowEvent self) => self -> IO Bool
+                                   (MonadIO m, IsOverflowEvent self) => self -> m Bool
 overflowEventGetHorizontalOverflow self
-  = ghcjs_dom_overflow_event_get_horizontal_overflow
-      (unOverflowEvent (toOverflowEvent self))
+  = liftIO
+      (ghcjs_dom_overflow_event_get_horizontal_overflow
+         (unOverflowEvent (toOverflowEvent self)))
  
 foreign import javascript unsafe
         "($1[\"verticalOverflow\"] ? 1 : 0)"
@@ -54,10 +58,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.verticalOverflow Mozilla OverflowEvent.verticalOverflow documentation> 
 overflowEventGetVerticalOverflow ::
-                                 (IsOverflowEvent self) => self -> IO Bool
+                                 (MonadIO m, IsOverflowEvent self) => self -> m Bool
 overflowEventGetVerticalOverflow self
-  = ghcjs_dom_overflow_event_get_vertical_overflow
-      (unOverflowEvent (toOverflowEvent self))
+  = liftIO
+      (ghcjs_dom_overflow_event_get_vertical_overflow
+         (unOverflowEvent (toOverflowEvent self)))
 #else
 module GHCJS.DOM.OverflowEvent (
   ) where

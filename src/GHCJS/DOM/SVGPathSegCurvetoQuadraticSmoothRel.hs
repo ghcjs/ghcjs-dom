@@ -20,6 +20,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -34,13 +35,14 @@ foreign import javascript unsafe "$1[\"x\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothRel.x Mozilla SVGPathSegCurvetoQuadraticSmoothRel.x documentation> 
 svgPathSegCurvetoQuadraticSmoothRelSetX ::
-                                        (IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
-                                          self -> Float -> IO ()
+                                        (MonadIO m, IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
+                                          self -> Float -> m ()
 svgPathSegCurvetoQuadraticSmoothRelSetX self val
-  = ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_set_x
-      (unSVGPathSegCurvetoQuadraticSmoothRel
-         (toSVGPathSegCurvetoQuadraticSmoothRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_set_x
+         (unSVGPathSegCurvetoQuadraticSmoothRel
+            (toSVGPathSegCurvetoQuadraticSmoothRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_get_x ::
@@ -48,12 +50,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothRel.x Mozilla SVGPathSegCurvetoQuadraticSmoothRel.x documentation> 
 svgPathSegCurvetoQuadraticSmoothRelGetX ::
-                                        (IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
-                                          self -> IO Float
+                                        (MonadIO m, IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
+                                          self -> m Float
 svgPathSegCurvetoQuadraticSmoothRelGetX self
-  = ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_get_x
-      (unSVGPathSegCurvetoQuadraticSmoothRel
-         (toSVGPathSegCurvetoQuadraticSmoothRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_get_x
+         (unSVGPathSegCurvetoQuadraticSmoothRel
+            (toSVGPathSegCurvetoQuadraticSmoothRel self)))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_set_y ::
@@ -61,13 +64,14 @@ foreign import javascript unsafe "$1[\"y\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothRel.y Mozilla SVGPathSegCurvetoQuadraticSmoothRel.y documentation> 
 svgPathSegCurvetoQuadraticSmoothRelSetY ::
-                                        (IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
-                                          self -> Float -> IO ()
+                                        (MonadIO m, IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
+                                          self -> Float -> m ()
 svgPathSegCurvetoQuadraticSmoothRelSetY self val
-  = ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_set_y
-      (unSVGPathSegCurvetoQuadraticSmoothRel
-         (toSVGPathSegCurvetoQuadraticSmoothRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_set_y
+         (unSVGPathSegCurvetoQuadraticSmoothRel
+            (toSVGPathSegCurvetoQuadraticSmoothRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_get_y ::
@@ -75,12 +79,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothRel.y Mozilla SVGPathSegCurvetoQuadraticSmoothRel.y documentation> 
 svgPathSegCurvetoQuadraticSmoothRelGetY ::
-                                        (IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
-                                          self -> IO Float
+                                        (MonadIO m, IsSVGPathSegCurvetoQuadraticSmoothRel self) =>
+                                          self -> m Float
 svgPathSegCurvetoQuadraticSmoothRelGetY self
-  = ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_get_y
-      (unSVGPathSegCurvetoQuadraticSmoothRel
-         (toSVGPathSegCurvetoQuadraticSmoothRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_quadratic_smooth_rel_get_y
+         (unSVGPathSegCurvetoQuadraticSmoothRel
+            (toSVGPathSegCurvetoQuadraticSmoothRel self)))
 #else
 module GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel (
   ) where

@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,17 +32,18 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseSync.changeVersion Mozilla DatabaseSync.changeVersion documentation> 
 databaseSyncChangeVersion ::
-                          (IsDatabaseSync self, ToJSString oldVersion, ToJSString newVersion,
-                           IsSQLTransactionSyncCallback callback) =>
-                            self -> oldVersion -> newVersion -> Maybe callback -> IO ()
+                          (MonadIO m, IsDatabaseSync self, ToJSString oldVersion,
+                           ToJSString newVersion, IsSQLTransactionSyncCallback callback) =>
+                            self -> oldVersion -> newVersion -> Maybe callback -> m ()
 databaseSyncChangeVersion self oldVersion newVersion callback
-  = ghcjs_dom_database_sync_change_version
-      (unDatabaseSync (toDatabaseSync self))
-      (toJSString oldVersion)
-      (toJSString newVersion)
-      (maybe jsNull
-         (unSQLTransactionSyncCallback . toSQLTransactionSyncCallback)
-         callback)
+  = liftIO
+      (ghcjs_dom_database_sync_change_version
+         (unDatabaseSync (toDatabaseSync self))
+         (toJSString oldVersion)
+         (toJSString newVersion)
+         (maybe jsNull
+            (unSQLTransactionSyncCallback . toSQLTransactionSyncCallback)
+            callback))
  
 foreign import javascript unsafe "$1[\"transaction\"]($2)"
         ghcjs_dom_database_sync_transaction ::
@@ -49,14 +51,16 @@ foreign import javascript unsafe "$1[\"transaction\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseSync.transaction Mozilla DatabaseSync.transaction documentation> 
 databaseSyncTransaction ::
-                        (IsDatabaseSync self, IsSQLTransactionSyncCallback callback) =>
-                          self -> Maybe callback -> IO ()
+                        (MonadIO m, IsDatabaseSync self,
+                         IsSQLTransactionSyncCallback callback) =>
+                          self -> Maybe callback -> m ()
 databaseSyncTransaction self callback
-  = ghcjs_dom_database_sync_transaction
-      (unDatabaseSync (toDatabaseSync self))
-      (maybe jsNull
-         (unSQLTransactionSyncCallback . toSQLTransactionSyncCallback)
-         callback)
+  = liftIO
+      (ghcjs_dom_database_sync_transaction
+         (unDatabaseSync (toDatabaseSync self))
+         (maybe jsNull
+            (unSQLTransactionSyncCallback . toSQLTransactionSyncCallback)
+            callback))
  
 foreign import javascript unsafe "$1[\"readTransaction\"]($2)"
         ghcjs_dom_database_sync_read_transaction ::
@@ -64,14 +68,16 @@ foreign import javascript unsafe "$1[\"readTransaction\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseSync.readTransaction Mozilla DatabaseSync.readTransaction documentation> 
 databaseSyncReadTransaction ::
-                            (IsDatabaseSync self, IsSQLTransactionSyncCallback callback) =>
-                              self -> Maybe callback -> IO ()
+                            (MonadIO m, IsDatabaseSync self,
+                             IsSQLTransactionSyncCallback callback) =>
+                              self -> Maybe callback -> m ()
 databaseSyncReadTransaction self callback
-  = ghcjs_dom_database_sync_read_transaction
-      (unDatabaseSync (toDatabaseSync self))
-      (maybe jsNull
-         (unSQLTransactionSyncCallback . toSQLTransactionSyncCallback)
-         callback)
+  = liftIO
+      (ghcjs_dom_database_sync_read_transaction
+         (unDatabaseSync (toDatabaseSync self))
+         (maybe jsNull
+            (unSQLTransactionSyncCallback . toSQLTransactionSyncCallback)
+            callback))
  
 foreign import javascript unsafe "$1[\"version\"]"
         ghcjs_dom_database_sync_get_version ::
@@ -79,11 +85,13 @@ foreign import javascript unsafe "$1[\"version\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseSync.version Mozilla DatabaseSync.version documentation> 
 databaseSyncGetVersion ::
-                       (IsDatabaseSync self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsDatabaseSync self, FromJSString result) =>
+                         self -> m result
 databaseSyncGetVersion self
-  = fromJSString <$>
-      (ghcjs_dom_database_sync_get_version
-         (unDatabaseSync (toDatabaseSync self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_database_sync_get_version
+            (unDatabaseSync (toDatabaseSync self))))
  
 foreign import javascript unsafe "$1[\"lastErrorMessage\"]"
         ghcjs_dom_database_sync_get_last_error_message ::
@@ -91,11 +99,13 @@ foreign import javascript unsafe "$1[\"lastErrorMessage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseSync.lastErrorMessage Mozilla DatabaseSync.lastErrorMessage documentation> 
 databaseSyncGetLastErrorMessage ::
-                                (IsDatabaseSync self, FromJSString result) => self -> IO result
+                                (MonadIO m, IsDatabaseSync self, FromJSString result) =>
+                                  self -> m result
 databaseSyncGetLastErrorMessage self
-  = fromJSString <$>
-      (ghcjs_dom_database_sync_get_last_error_message
-         (unDatabaseSync (toDatabaseSync self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_database_sync_get_last_error_message
+            (unDatabaseSync (toDatabaseSync self))))
 #else
 module GHCJS.DOM.DatabaseSync (
   ) where

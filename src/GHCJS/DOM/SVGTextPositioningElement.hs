@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -33,12 +34,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.x Mozilla SVGTextPositioningElement.x documentation> 
 svgTextPositioningElementGetX ::
-                              (IsSVGTextPositioningElement self) =>
-                                self -> IO (Maybe SVGAnimatedLengthList)
+                              (MonadIO m, IsSVGTextPositioningElement self) =>
+                                self -> m (Maybe SVGAnimatedLengthList)
 svgTextPositioningElementGetX self
-  = (ghcjs_dom_svg_text_positioning_element_get_x
-       (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_positioning_element_get_x
+          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_text_positioning_element_get_y ::
@@ -46,12 +48,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.y Mozilla SVGTextPositioningElement.y documentation> 
 svgTextPositioningElementGetY ::
-                              (IsSVGTextPositioningElement self) =>
-                                self -> IO (Maybe SVGAnimatedLengthList)
+                              (MonadIO m, IsSVGTextPositioningElement self) =>
+                                self -> m (Maybe SVGAnimatedLengthList)
 svgTextPositioningElementGetY self
-  = (ghcjs_dom_svg_text_positioning_element_get_y
-       (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_positioning_element_get_y
+          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"dx\"]"
         ghcjs_dom_svg_text_positioning_element_get_dx ::
@@ -59,12 +62,13 @@ foreign import javascript unsafe "$1[\"dx\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dx Mozilla SVGTextPositioningElement.dx documentation> 
 svgTextPositioningElementGetDx ::
-                               (IsSVGTextPositioningElement self) =>
-                                 self -> IO (Maybe SVGAnimatedLengthList)
+                               (MonadIO m, IsSVGTextPositioningElement self) =>
+                                 self -> m (Maybe SVGAnimatedLengthList)
 svgTextPositioningElementGetDx self
-  = (ghcjs_dom_svg_text_positioning_element_get_dx
-       (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_positioning_element_get_dx
+          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"dy\"]"
         ghcjs_dom_svg_text_positioning_element_get_dy ::
@@ -72,12 +76,13 @@ foreign import javascript unsafe "$1[\"dy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dy Mozilla SVGTextPositioningElement.dy documentation> 
 svgTextPositioningElementGetDy ::
-                               (IsSVGTextPositioningElement self) =>
-                                 self -> IO (Maybe SVGAnimatedLengthList)
+                               (MonadIO m, IsSVGTextPositioningElement self) =>
+                                 self -> m (Maybe SVGAnimatedLengthList)
 svgTextPositioningElementGetDy self
-  = (ghcjs_dom_svg_text_positioning_element_get_dy
-       (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_positioning_element_get_dy
+          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"rotate\"]"
         ghcjs_dom_svg_text_positioning_element_get_rotate ::
@@ -85,12 +90,13 @@ foreign import javascript unsafe "$1[\"rotate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.rotate Mozilla SVGTextPositioningElement.rotate documentation> 
 svgTextPositioningElementGetRotate ::
-                                   (IsSVGTextPositioningElement self) =>
-                                     self -> IO (Maybe SVGAnimatedNumberList)
+                                   (MonadIO m, IsSVGTextPositioningElement self) =>
+                                     self -> m (Maybe SVGAnimatedNumberList)
 svgTextPositioningElementGetRotate self
-  = (ghcjs_dom_svg_text_positioning_element_get_rotate
-       (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_text_positioning_element_get_rotate
+          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGTextPositioningElement (
   ) where

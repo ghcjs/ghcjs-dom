@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,9 +28,9 @@ foreign import javascript unsafe
         ghcjs_dom_document_fragment_new :: IO (JSRef DocumentFragment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment Mozilla DocumentFragment documentation> 
-documentFragmentNew :: IO DocumentFragment
+documentFragmentNew :: (MonadIO m) => m DocumentFragment
 documentFragmentNew
-  = ghcjs_dom_document_fragment_new >>= fromJSRefUnchecked
+  = liftIO (ghcjs_dom_document_fragment_new >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         ghcjs_dom_document_fragment_query_selector ::
@@ -37,13 +38,14 @@ foreign import javascript unsafe "$1[\"querySelector\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelector Mozilla DocumentFragment.querySelector documentation> 
 documentFragmentQuerySelector ::
-                              (IsDocumentFragment self, ToJSString selectors) =>
-                                self -> selectors -> IO (Maybe Element)
+                              (MonadIO m, IsDocumentFragment self, ToJSString selectors) =>
+                                self -> selectors -> m (Maybe Element)
 documentFragmentQuerySelector self selectors
-  = (ghcjs_dom_document_fragment_query_selector
-       (unDocumentFragment (toDocumentFragment self))
-       (toJSString selectors))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_fragment_query_selector
+          (unDocumentFragment (toDocumentFragment self))
+          (toJSString selectors))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         ghcjs_dom_document_fragment_query_selector_all ::
@@ -51,13 +53,14 @@ foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelectorAll Mozilla DocumentFragment.querySelectorAll documentation> 
 documentFragmentQuerySelectorAll ::
-                                 (IsDocumentFragment self, ToJSString selectors) =>
-                                   self -> selectors -> IO (Maybe NodeList)
+                                 (MonadIO m, IsDocumentFragment self, ToJSString selectors) =>
+                                   self -> selectors -> m (Maybe NodeList)
 documentFragmentQuerySelectorAll self selectors
-  = (ghcjs_dom_document_fragment_query_selector_all
-       (unDocumentFragment (toDocumentFragment self))
-       (toJSString selectors))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_fragment_query_selector_all
+          (unDocumentFragment (toDocumentFragment self))
+          (toJSString selectors))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.DocumentFragment (
   ) where

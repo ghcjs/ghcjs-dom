@@ -21,6 +21,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -35,12 +36,13 @@ foreign import javascript unsafe "$1[\"cx\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement.cx Mozilla SVGRadialGradientElement.cx documentation> 
 svgRadialGradientElementGetCx ::
-                              (IsSVGRadialGradientElement self) =>
-                                self -> IO (Maybe SVGAnimatedLength)
+                              (MonadIO m, IsSVGRadialGradientElement self) =>
+                                self -> m (Maybe SVGAnimatedLength)
 svgRadialGradientElementGetCx self
-  = (ghcjs_dom_svg_radial_gradient_element_get_cx
-       (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_radial_gradient_element_get_cx
+          (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"cy\"]"
         ghcjs_dom_svg_radial_gradient_element_get_cy ::
@@ -48,12 +50,13 @@ foreign import javascript unsafe "$1[\"cy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement.cy Mozilla SVGRadialGradientElement.cy documentation> 
 svgRadialGradientElementGetCy ::
-                              (IsSVGRadialGradientElement self) =>
-                                self -> IO (Maybe SVGAnimatedLength)
+                              (MonadIO m, IsSVGRadialGradientElement self) =>
+                                self -> m (Maybe SVGAnimatedLength)
 svgRadialGradientElementGetCy self
-  = (ghcjs_dom_svg_radial_gradient_element_get_cy
-       (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_radial_gradient_element_get_cy
+          (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"r\"]"
         ghcjs_dom_svg_radial_gradient_element_get_r ::
@@ -61,12 +64,13 @@ foreign import javascript unsafe "$1[\"r\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement.r Mozilla SVGRadialGradientElement.r documentation> 
 svgRadialGradientElementGetR ::
-                             (IsSVGRadialGradientElement self) =>
-                               self -> IO (Maybe SVGAnimatedLength)
+                             (MonadIO m, IsSVGRadialGradientElement self) =>
+                               self -> m (Maybe SVGAnimatedLength)
 svgRadialGradientElementGetR self
-  = (ghcjs_dom_svg_radial_gradient_element_get_r
-       (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_radial_gradient_element_get_r
+          (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"fx\"]"
         ghcjs_dom_svg_radial_gradient_element_get_fx ::
@@ -74,12 +78,13 @@ foreign import javascript unsafe "$1[\"fx\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement.fx Mozilla SVGRadialGradientElement.fx documentation> 
 svgRadialGradientElementGetFx ::
-                              (IsSVGRadialGradientElement self) =>
-                                self -> IO (Maybe SVGAnimatedLength)
+                              (MonadIO m, IsSVGRadialGradientElement self) =>
+                                self -> m (Maybe SVGAnimatedLength)
 svgRadialGradientElementGetFx self
-  = (ghcjs_dom_svg_radial_gradient_element_get_fx
-       (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_radial_gradient_element_get_fx
+          (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"fy\"]"
         ghcjs_dom_svg_radial_gradient_element_get_fy ::
@@ -87,12 +92,13 @@ foreign import javascript unsafe "$1[\"fy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement.fy Mozilla SVGRadialGradientElement.fy documentation> 
 svgRadialGradientElementGetFy ::
-                              (IsSVGRadialGradientElement self) =>
-                                self -> IO (Maybe SVGAnimatedLength)
+                              (MonadIO m, IsSVGRadialGradientElement self) =>
+                                self -> m (Maybe SVGAnimatedLength)
 svgRadialGradientElementGetFy self
-  = (ghcjs_dom_svg_radial_gradient_element_get_fy
-       (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_radial_gradient_element_get_fy
+          (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"fr\"]"
         ghcjs_dom_svg_radial_gradient_element_get_fr ::
@@ -100,12 +106,13 @@ foreign import javascript unsafe "$1[\"fr\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement.fr Mozilla SVGRadialGradientElement.fr documentation> 
 svgRadialGradientElementGetFr ::
-                              (IsSVGRadialGradientElement self) =>
-                                self -> IO (Maybe SVGAnimatedLength)
+                              (MonadIO m, IsSVGRadialGradientElement self) =>
+                                self -> m (Maybe SVGAnimatedLength)
 svgRadialGradientElementGetFr self
-  = (ghcjs_dom_svg_radial_gradient_element_get_fr
-       (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_radial_gradient_element_get_fr
+          (unSVGRadialGradientElement (toSVGRadialGradientElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGRadialGradientElement (
   ) where

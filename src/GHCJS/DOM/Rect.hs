@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,9 +25,11 @@ foreign import javascript unsafe "$1[\"top\"]"
         JSRef Rect -> IO (JSRef CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.top Mozilla Rect.top documentation> 
-rectGetTop :: (IsRect self) => self -> IO (Maybe CSSPrimitiveValue)
+rectGetTop ::
+           (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
 rectGetTop self
-  = (ghcjs_dom_rect_get_top (unRect (toRect self))) >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rect_get_top (unRect (toRect self))) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"right\"]"
         ghcjs_dom_rect_get_right ::
@@ -34,9 +37,10 @@ foreign import javascript unsafe "$1[\"right\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.right Mozilla Rect.right documentation> 
 rectGetRight ::
-             (IsRect self) => self -> IO (Maybe CSSPrimitiveValue)
+             (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
 rectGetRight self
-  = (ghcjs_dom_rect_get_right (unRect (toRect self))) >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rect_get_right (unRect (toRect self))) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"bottom\"]"
         ghcjs_dom_rect_get_bottom ::
@@ -44,9 +48,10 @@ foreign import javascript unsafe "$1[\"bottom\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.bottom Mozilla Rect.bottom documentation> 
 rectGetBottom ::
-              (IsRect self) => self -> IO (Maybe CSSPrimitiveValue)
+              (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
 rectGetBottom self
-  = (ghcjs_dom_rect_get_bottom (unRect (toRect self))) >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rect_get_bottom (unRect (toRect self))) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"left\"]"
         ghcjs_dom_rect_get_left ::
@@ -54,9 +59,10 @@ foreign import javascript unsafe "$1[\"left\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.left Mozilla Rect.left documentation> 
 rectGetLeft ::
-            (IsRect self) => self -> IO (Maybe CSSPrimitiveValue)
+            (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
 rectGetLeft self
-  = (ghcjs_dom_rect_get_left (unRect (toRect self))) >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rect_get_left (unRect (toRect self))) >>= fromJSRef)
 #else
 module GHCJS.DOM.Rect (
   ) where

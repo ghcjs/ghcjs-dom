@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,12 +25,13 @@ foreign import javascript unsafe "$1[\"getRandomValues\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.randomValues Mozilla Crypto.randomValues documentation> 
 cryptoGetRandomValues ::
-                      (IsCrypto self, IsArrayBufferView array) =>
-                        self -> Maybe array -> IO (Maybe ArrayBufferView)
+                      (MonadIO m, IsCrypto self, IsArrayBufferView array) =>
+                        self -> Maybe array -> m (Maybe ArrayBufferView)
 cryptoGetRandomValues self array
-  = (ghcjs_dom_crypto_get_random_values (unCrypto (toCrypto self))
-       (maybe jsNull (unArrayBufferView . toArrayBufferView) array))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_crypto_get_random_values (unCrypto (toCrypto self))
+          (maybe jsNull (unArrayBufferView . toArrayBufferView) array))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitSubtle\"]"
         ghcjs_dom_crypto_get_webkit_subtle ::
@@ -37,10 +39,11 @@ foreign import javascript unsafe "$1[\"webkitSubtle\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.webkitSubtle Mozilla Crypto.webkitSubtle documentation> 
 cryptoGetWebkitSubtle ::
-                      (IsCrypto self) => self -> IO (Maybe SubtleCrypto)
+                      (MonadIO m, IsCrypto self) => self -> m (Maybe SubtleCrypto)
 cryptoGetWebkitSubtle self
-  = (ghcjs_dom_crypto_get_webkit_subtle (unCrypto (toCrypto self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_crypto_get_webkit_subtle (unCrypto (toCrypto self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.Crypto (
   ) where

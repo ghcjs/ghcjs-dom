@@ -1,5 +1,5 @@
 name: ghcjs-dom
-version: 0.1.1.3
+version: 0.2.0.0
 cabal-version: >=1.10
 build-type: Simple
 license: MIT
@@ -38,7 +38,7 @@ flag gtk3
 
 library
     build-depends: base <5,
-                   mtl -any,
+                   transformers >=0.2 && <0.5,
                    text >= 0.11.0.6 && < 1.3
 
     default-language: Haskell2010

@@ -54,6 +54,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -69,10 +70,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.checkValidity Mozilla HTMLButtonElement.checkValidity documentation> 
 htmlButtonElementCheckValidity ::
-                               (IsHTMLButtonElement self) => self -> IO Bool
+                               (MonadIO m, IsHTMLButtonElement self) => self -> m Bool
 htmlButtonElementCheckValidity self
-  = ghcjs_dom_html_button_element_check_validity
-      (unHTMLButtonElement (toHTMLButtonElement self))
+  = liftIO
+      (ghcjs_dom_html_button_element_check_validity
+         (unHTMLButtonElement (toHTMLButtonElement self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_button_element_set_custom_validity ::
@@ -80,12 +82,13 @@ foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.customValidity Mozilla HTMLButtonElement.customValidity documentation> 
 htmlButtonElementSetCustomValidity ::
-                                   (IsHTMLButtonElement self, ToJSString error) =>
-                                     self -> error -> IO ()
+                                   (MonadIO m, IsHTMLButtonElement self, ToJSString error) =>
+                                     self -> error -> m ()
 htmlButtonElementSetCustomValidity self error
-  = ghcjs_dom_html_button_element_set_custom_validity
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSString error)
+  = liftIO
+      (ghcjs_dom_html_button_element_set_custom_validity
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         (toJSString error))
  
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         ghcjs_dom_html_button_element_set_autofocus ::
@@ -93,11 +96,12 @@ foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.autofocus Mozilla HTMLButtonElement.autofocus documentation> 
 htmlButtonElementSetAutofocus ::
-                              (IsHTMLButtonElement self) => self -> Bool -> IO ()
+                              (MonadIO m, IsHTMLButtonElement self) => self -> Bool -> m ()
 htmlButtonElementSetAutofocus self val
-  = ghcjs_dom_html_button_element_set_autofocus
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_button_element_set_autofocus
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_autofocus ::
@@ -105,10 +109,11 @@ foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.autofocus Mozilla HTMLButtonElement.autofocus documentation> 
 htmlButtonElementGetAutofocus ::
-                              (IsHTMLButtonElement self) => self -> IO Bool
+                              (MonadIO m, IsHTMLButtonElement self) => self -> m Bool
 htmlButtonElementGetAutofocus self
-  = ghcjs_dom_html_button_element_get_autofocus
-      (unHTMLButtonElement (toHTMLButtonElement self))
+  = liftIO
+      (ghcjs_dom_html_button_element_get_autofocus
+         (unHTMLButtonElement (toHTMLButtonElement self)))
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         ghcjs_dom_html_button_element_set_disabled ::
@@ -116,11 +121,12 @@ foreign import javascript unsafe "$1[\"disabled\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.disabled Mozilla HTMLButtonElement.disabled documentation> 
 htmlButtonElementSetDisabled ::
-                             (IsHTMLButtonElement self) => self -> Bool -> IO ()
+                             (MonadIO m, IsHTMLButtonElement self) => self -> Bool -> m ()
 htmlButtonElementSetDisabled self val
-  = ghcjs_dom_html_button_element_set_disabled
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_button_element_set_disabled
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_disabled ::
@@ -128,10 +134,11 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.disabled Mozilla HTMLButtonElement.disabled documentation> 
 htmlButtonElementGetDisabled ::
-                             (IsHTMLButtonElement self) => self -> IO Bool
+                             (MonadIO m, IsHTMLButtonElement self) => self -> m Bool
 htmlButtonElementGetDisabled self
-  = ghcjs_dom_html_button_element_get_disabled
-      (unHTMLButtonElement (toHTMLButtonElement self))
+  = liftIO
+      (ghcjs_dom_html_button_element_get_disabled
+         (unHTMLButtonElement (toHTMLButtonElement self)))
  
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_button_element_get_form ::
@@ -139,11 +146,13 @@ foreign import javascript unsafe "$1[\"form\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.form Mozilla HTMLButtonElement.form documentation> 
 htmlButtonElementGetForm ::
-                         (IsHTMLButtonElement self) => self -> IO (Maybe HTMLFormElement)
+                         (MonadIO m, IsHTMLButtonElement self) =>
+                           self -> m (Maybe HTMLFormElement)
 htmlButtonElementGetForm self
-  = (ghcjs_dom_html_button_element_get_form
-       (unHTMLButtonElement (toHTMLButtonElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_button_element_get_form
+          (unHTMLButtonElement (toHTMLButtonElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"formAction\"] = $2;"
         ghcjs_dom_html_button_element_set_form_action ::
@@ -151,11 +160,13 @@ foreign import javascript unsafe "$1[\"formAction\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formAction Mozilla HTMLButtonElement.formAction documentation> 
 htmlButtonElementSetFormAction ::
-                               (IsHTMLButtonElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLButtonElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlButtonElementSetFormAction self val
-  = ghcjs_dom_html_button_element_set_form_action
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_button_element_set_form_action
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formAction\"]"
         ghcjs_dom_html_button_element_get_form_action ::
@@ -163,12 +174,13 @@ foreign import javascript unsafe "$1[\"formAction\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formAction Mozilla HTMLButtonElement.formAction documentation> 
 htmlButtonElementGetFormAction ::
-                               (IsHTMLButtonElement self, FromJSString result) =>
-                                 self -> IO result
+                               (MonadIO m, IsHTMLButtonElement self, FromJSString result) =>
+                                 self -> m result
 htmlButtonElementGetFormAction self
-  = fromJSString <$>
-      (ghcjs_dom_html_button_element_get_form_action
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_button_element_get_form_action
+            (unHTMLButtonElement (toHTMLButtonElement self))))
  
 foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
         ghcjs_dom_html_button_element_set_form_enctype ::
@@ -176,11 +188,13 @@ foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formEnctype Mozilla HTMLButtonElement.formEnctype documentation> 
 htmlButtonElementSetFormEnctype ::
-                                (IsHTMLButtonElement self, ToJSString val) => self -> val -> IO ()
+                                (MonadIO m, IsHTMLButtonElement self, ToJSString val) =>
+                                  self -> val -> m ()
 htmlButtonElementSetFormEnctype self val
-  = ghcjs_dom_html_button_element_set_form_enctype
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_button_element_set_form_enctype
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formEnctype\"]"
         ghcjs_dom_html_button_element_get_form_enctype ::
@@ -188,12 +202,13 @@ foreign import javascript unsafe "$1[\"formEnctype\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formEnctype Mozilla HTMLButtonElement.formEnctype documentation> 
 htmlButtonElementGetFormEnctype ::
-                                (IsHTMLButtonElement self, FromJSString result) =>
-                                  self -> IO result
+                                (MonadIO m, IsHTMLButtonElement self, FromJSString result) =>
+                                  self -> m result
 htmlButtonElementGetFormEnctype self
-  = fromJSString <$>
-      (ghcjs_dom_html_button_element_get_form_enctype
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_button_element_get_form_enctype
+            (unHTMLButtonElement (toHTMLButtonElement self))))
  
 foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
         ghcjs_dom_html_button_element_set_form_method ::
@@ -201,11 +216,13 @@ foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formMethod Mozilla HTMLButtonElement.formMethod documentation> 
 htmlButtonElementSetFormMethod ::
-                               (IsHTMLButtonElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLButtonElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlButtonElementSetFormMethod self val
-  = ghcjs_dom_html_button_element_set_form_method
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_button_element_set_form_method
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formMethod\"]"
         ghcjs_dom_html_button_element_get_form_method ::
@@ -213,12 +230,13 @@ foreign import javascript unsafe "$1[\"formMethod\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formMethod Mozilla HTMLButtonElement.formMethod documentation> 
 htmlButtonElementGetFormMethod ::
-                               (IsHTMLButtonElement self, FromJSString result) =>
-                                 self -> IO result
+                               (MonadIO m, IsHTMLButtonElement self, FromJSString result) =>
+                                 self -> m result
 htmlButtonElementGetFormMethod self
-  = fromJSString <$>
-      (ghcjs_dom_html_button_element_get_form_method
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_button_element_get_form_method
+            (unHTMLButtonElement (toHTMLButtonElement self))))
  
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         ghcjs_dom_html_button_element_set_form_no_validate ::
@@ -226,11 +244,12 @@ foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formNoValidate Mozilla HTMLButtonElement.formNoValidate documentation> 
 htmlButtonElementSetFormNoValidate ::
-                                   (IsHTMLButtonElement self) => self -> Bool -> IO ()
+                                   (MonadIO m, IsHTMLButtonElement self) => self -> Bool -> m ()
 htmlButtonElementSetFormNoValidate self val
-  = ghcjs_dom_html_button_element_set_form_no_validate
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_button_element_set_form_no_validate
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_form_no_validate ::
@@ -238,10 +257,11 @@ foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formNoValidate Mozilla HTMLButtonElement.formNoValidate documentation> 
 htmlButtonElementGetFormNoValidate ::
-                                   (IsHTMLButtonElement self) => self -> IO Bool
+                                   (MonadIO m, IsHTMLButtonElement self) => self -> m Bool
 htmlButtonElementGetFormNoValidate self
-  = ghcjs_dom_html_button_element_get_form_no_validate
-      (unHTMLButtonElement (toHTMLButtonElement self))
+  = liftIO
+      (ghcjs_dom_html_button_element_get_form_no_validate
+         (unHTMLButtonElement (toHTMLButtonElement self)))
  
 foreign import javascript unsafe "$1[\"formTarget\"] = $2;"
         ghcjs_dom_html_button_element_set_form_target ::
@@ -249,11 +269,13 @@ foreign import javascript unsafe "$1[\"formTarget\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formTarget Mozilla HTMLButtonElement.formTarget documentation> 
 htmlButtonElementSetFormTarget ::
-                               (IsHTMLButtonElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLButtonElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlButtonElementSetFormTarget self val
-  = ghcjs_dom_html_button_element_set_form_target
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_button_element_set_form_target
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"formTarget\"]"
         ghcjs_dom_html_button_element_get_form_target ::
@@ -261,12 +283,13 @@ foreign import javascript unsafe "$1[\"formTarget\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formTarget Mozilla HTMLButtonElement.formTarget documentation> 
 htmlButtonElementGetFormTarget ::
-                               (IsHTMLButtonElement self, FromJSString result) =>
-                                 self -> IO result
+                               (MonadIO m, IsHTMLButtonElement self, FromJSString result) =>
+                                 self -> m result
 htmlButtonElementGetFormTarget self
-  = fromJSString <$>
-      (ghcjs_dom_html_button_element_get_form_target
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_button_element_get_form_target
+            (unHTMLButtonElement (toHTMLButtonElement self))))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_button_element_set_name ::
@@ -274,11 +297,13 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.name Mozilla HTMLButtonElement.name documentation> 
 htmlButtonElementSetName ::
-                         (IsHTMLButtonElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLButtonElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlButtonElementSetName self val
-  = ghcjs_dom_html_button_element_set_name
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_button_element_set_name
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_button_element_get_name ::
@@ -286,12 +311,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.name Mozilla HTMLButtonElement.name documentation> 
 htmlButtonElementGetName ::
-                         (IsHTMLButtonElement self, FromJSString result) =>
-                           self -> IO result
+                         (MonadIO m, IsHTMLButtonElement self, FromJSString result) =>
+                           self -> m result
 htmlButtonElementGetName self
-  = fromJSString <$>
-      (ghcjs_dom_html_button_element_get_name
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_button_element_get_name
+            (unHTMLButtonElement (toHTMLButtonElement self))))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_button_element_set_value ::
@@ -299,11 +325,13 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.value Mozilla HTMLButtonElement.value documentation> 
 htmlButtonElementSetValue ::
-                          (IsHTMLButtonElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLButtonElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlButtonElementSetValue self val
-  = ghcjs_dom_html_button_element_set_value
-      (unHTMLButtonElement (toHTMLButtonElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_button_element_set_value
+         (unHTMLButtonElement (toHTMLButtonElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_button_element_get_value ::
@@ -311,12 +339,13 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.value Mozilla HTMLButtonElement.value documentation> 
 htmlButtonElementGetValue ::
-                          (IsHTMLButtonElement self, FromJSString result) =>
-                            self -> IO result
+                          (MonadIO m, IsHTMLButtonElement self, FromJSString result) =>
+                            self -> m result
 htmlButtonElementGetValue self
-  = fromJSString <$>
-      (ghcjs_dom_html_button_element_get_value
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_button_element_get_value
+            (unHTMLButtonElement (toHTMLButtonElement self))))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_button_element_get_will_validate ::
@@ -324,10 +353,11 @@ foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.willValidate Mozilla HTMLButtonElement.willValidate documentation> 
 htmlButtonElementGetWillValidate ::
-                                 (IsHTMLButtonElement self) => self -> IO Bool
+                                 (MonadIO m, IsHTMLButtonElement self) => self -> m Bool
 htmlButtonElementGetWillValidate self
-  = ghcjs_dom_html_button_element_get_will_validate
-      (unHTMLButtonElement (toHTMLButtonElement self))
+  = liftIO
+      (ghcjs_dom_html_button_element_get_will_validate
+         (unHTMLButtonElement (toHTMLButtonElement self)))
  
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_button_element_get_validity ::
@@ -335,11 +365,13 @@ foreign import javascript unsafe "$1[\"validity\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.validity Mozilla HTMLButtonElement.validity documentation> 
 htmlButtonElementGetValidity ::
-                             (IsHTMLButtonElement self) => self -> IO (Maybe ValidityState)
+                             (MonadIO m, IsHTMLButtonElement self) =>
+                               self -> m (Maybe ValidityState)
 htmlButtonElementGetValidity self
-  = (ghcjs_dom_html_button_element_get_validity
-       (unHTMLButtonElement (toHTMLButtonElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_button_element_get_validity
+          (unHTMLButtonElement (toHTMLButtonElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_button_element_get_validation_message ::
@@ -347,12 +379,13 @@ foreign import javascript unsafe "$1[\"validationMessage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.validationMessage Mozilla HTMLButtonElement.validationMessage documentation> 
 htmlButtonElementGetValidationMessage ::
-                                      (IsHTMLButtonElement self, FromJSString result) =>
-                                        self -> IO result
+                                      (MonadIO m, IsHTMLButtonElement self, FromJSString result) =>
+                                        self -> m result
 htmlButtonElementGetValidationMessage self
-  = fromJSString <$>
-      (ghcjs_dom_html_button_element_get_validation_message
-         (unHTMLButtonElement (toHTMLButtonElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_button_element_get_validation_message
+            (unHTMLButtonElement (toHTMLButtonElement self))))
  
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_button_element_get_labels ::
@@ -360,11 +393,12 @@ foreign import javascript unsafe "$1[\"labels\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.labels Mozilla HTMLButtonElement.labels documentation> 
 htmlButtonElementGetLabels ::
-                           (IsHTMLButtonElement self) => self -> IO (Maybe NodeList)
+                           (MonadIO m, IsHTMLButtonElement self) => self -> m (Maybe NodeList)
 htmlButtonElementGetLabels self
-  = (ghcjs_dom_html_button_element_get_labels
-       (unHTMLButtonElement (toHTMLButtonElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_button_element_get_labels
+          (unHTMLButtonElement (toHTMLButtonElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLButtonElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLButtonElement

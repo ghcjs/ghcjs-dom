@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -23,20 +24,24 @@ foreign import javascript unsafe "$1[\"publicId\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notation.publicId Mozilla Notation.publicId documentation> 
 notationGetPublicId ::
-                    (IsNotation self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsNotation self, FromJSString result) =>
+                      self -> m result
 notationGetPublicId self
-  = fromJSString <$>
-      (ghcjs_dom_notation_get_public_id (unNotation (toNotation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_notation_get_public_id (unNotation (toNotation self))))
  
 foreign import javascript unsafe "$1[\"systemId\"]"
         ghcjs_dom_notation_get_system_id :: JSRef Notation -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notation.systemId Mozilla Notation.systemId documentation> 
 notationGetSystemId ::
-                    (IsNotation self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsNotation self, FromJSString result) =>
+                      self -> m result
 notationGetSystemId self
-  = fromJSString <$>
-      (ghcjs_dom_notation_get_system_id (unNotation (toNotation self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_notation_get_system_id (unNotation (toNotation self))))
 #else
 module GHCJS.DOM.Notation (
   ) where

@@ -22,6 +22,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -41,13 +42,14 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in1 Mozilla SVGFEDisplacementMapElement.in1 documentation> 
 svgfeDisplacementMapElementGetIn1 ::
-                                  (IsSVGFEDisplacementMapElement self) =>
-                                    self -> IO (Maybe SVGAnimatedString)
+                                  (MonadIO m, IsSVGFEDisplacementMapElement self) =>
+                                    self -> m (Maybe SVGAnimatedString)
 svgfeDisplacementMapElementGetIn1 self
-  = (ghcjs_dom_svgfe_displacement_map_element_get_in1
-       (unSVGFEDisplacementMapElement
-          (toSVGFEDisplacementMapElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_displacement_map_element_get_in1
+          (unSVGFEDisplacementMapElement
+             (toSVGFEDisplacementMapElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"in2\"]"
         ghcjs_dom_svgfe_displacement_map_element_get_in2 ::
@@ -55,13 +57,14 @@ foreign import javascript unsafe "$1[\"in2\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in2 Mozilla SVGFEDisplacementMapElement.in2 documentation> 
 svgfeDisplacementMapElementGetIn2 ::
-                                  (IsSVGFEDisplacementMapElement self) =>
-                                    self -> IO (Maybe SVGAnimatedString)
+                                  (MonadIO m, IsSVGFEDisplacementMapElement self) =>
+                                    self -> m (Maybe SVGAnimatedString)
 svgfeDisplacementMapElementGetIn2 self
-  = (ghcjs_dom_svgfe_displacement_map_element_get_in2
-       (unSVGFEDisplacementMapElement
-          (toSVGFEDisplacementMapElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_displacement_map_element_get_in2
+          (unSVGFEDisplacementMapElement
+             (toSVGFEDisplacementMapElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"scale\"]"
         ghcjs_dom_svgfe_displacement_map_element_get_scale ::
@@ -69,13 +72,14 @@ foreign import javascript unsafe "$1[\"scale\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.scale Mozilla SVGFEDisplacementMapElement.scale documentation> 
 svgfeDisplacementMapElementGetScale ::
-                                    (IsSVGFEDisplacementMapElement self) =>
-                                      self -> IO (Maybe SVGAnimatedNumber)
+                                    (MonadIO m, IsSVGFEDisplacementMapElement self) =>
+                                      self -> m (Maybe SVGAnimatedNumber)
 svgfeDisplacementMapElementGetScale self
-  = (ghcjs_dom_svgfe_displacement_map_element_get_scale
-       (unSVGFEDisplacementMapElement
-          (toSVGFEDisplacementMapElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_displacement_map_element_get_scale
+          (unSVGFEDisplacementMapElement
+             (toSVGFEDisplacementMapElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"xChannelSelector\"]"
         ghcjs_dom_svgfe_displacement_map_element_get_x_channel_selector ::
@@ -84,13 +88,14 @@ foreign import javascript unsafe "$1[\"xChannelSelector\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.xChannelSelector Mozilla SVGFEDisplacementMapElement.xChannelSelector documentation> 
 svgfeDisplacementMapElementGetXChannelSelector ::
-                                               (IsSVGFEDisplacementMapElement self) =>
-                                                 self -> IO (Maybe SVGAnimatedEnumeration)
+                                               (MonadIO m, IsSVGFEDisplacementMapElement self) =>
+                                                 self -> m (Maybe SVGAnimatedEnumeration)
 svgfeDisplacementMapElementGetXChannelSelector self
-  = (ghcjs_dom_svgfe_displacement_map_element_get_x_channel_selector
-       (unSVGFEDisplacementMapElement
-          (toSVGFEDisplacementMapElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_displacement_map_element_get_x_channel_selector
+          (unSVGFEDisplacementMapElement
+             (toSVGFEDisplacementMapElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"yChannelSelector\"]"
         ghcjs_dom_svgfe_displacement_map_element_get_y_channel_selector ::
@@ -99,13 +104,14 @@ foreign import javascript unsafe "$1[\"yChannelSelector\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.yChannelSelector Mozilla SVGFEDisplacementMapElement.yChannelSelector documentation> 
 svgfeDisplacementMapElementGetYChannelSelector ::
-                                               (IsSVGFEDisplacementMapElement self) =>
-                                                 self -> IO (Maybe SVGAnimatedEnumeration)
+                                               (MonadIO m, IsSVGFEDisplacementMapElement self) =>
+                                                 self -> m (Maybe SVGAnimatedEnumeration)
 svgfeDisplacementMapElementGetYChannelSelector self
-  = (ghcjs_dom_svgfe_displacement_map_element_get_y_channel_selector
-       (unSVGFEDisplacementMapElement
-          (toSVGFEDisplacementMapElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_displacement_map_element_get_y_channel_selector
+          (unSVGFEDisplacementMapElement
+             (toSVGFEDisplacementMapElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEDisplacementMapElement (
   ) where

@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -23,43 +24,51 @@ import GHCJS.DOM.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation> 
 rtcSessionDescriptionCallbackNewSync ::
+                                     (MonadIO m) =>
                                        (Maybe RTCSessionDescription -> IO Bool) ->
-                                         IO RTCSessionDescriptionCallback
+                                         m RTCSessionDescriptionCallback
 rtcSessionDescriptionCallbackNewSync callback
-  = RTCSessionDescriptionCallback . castRef <$>
-      syncCallback1 AlwaysRetain True
-        (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp')
+  = liftIO
+      (RTCSessionDescriptionCallback . castRef <$>
+         syncCallback1 AlwaysRetain True
+           (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation> 
 rtcSessionDescriptionCallbackNewSync' ::
+                                      (MonadIO m) =>
                                         ForeignRetention ->
                                           Bool ->
                                             (Maybe RTCSessionDescription -> IO Bool) ->
-                                              IO RTCSessionDescriptionCallback
+                                              m RTCSessionDescriptionCallback
 rtcSessionDescriptionCallbackNewSync' retention continueAsync
   callback
-  = RTCSessionDescriptionCallback . castRef <$>
-      syncCallback1 retention continueAsync
-        (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp')
+  = liftIO
+      (RTCSessionDescriptionCallback . castRef <$>
+         syncCallback1 retention continueAsync
+           (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation> 
 rtcSessionDescriptionCallbackNewAsync ::
+                                      (MonadIO m) =>
                                         (Maybe RTCSessionDescription -> IO Bool) ->
-                                          IO RTCSessionDescriptionCallback
+                                          m RTCSessionDescriptionCallback
 rtcSessionDescriptionCallbackNewAsync callback
-  = RTCSessionDescriptionCallback . castRef <$>
-      asyncCallback1 AlwaysRetain
-        (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp')
+  = liftIO
+      (RTCSessionDescriptionCallback . castRef <$>
+         asyncCallback1 AlwaysRetain
+           (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation> 
 rtcSessionDescriptionCallbackNewAsync' ::
+                                       (MonadIO m) =>
                                          ForeignRetention ->
                                            (Maybe RTCSessionDescription -> IO Bool) ->
-                                             IO RTCSessionDescriptionCallback
+                                             m RTCSessionDescriptionCallback
 rtcSessionDescriptionCallbackNewAsync' retention callback
-  = RTCSessionDescriptionCallback . castRef <$>
-      asyncCallback1 retention
-        (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp')
+  = liftIO
+      (RTCSessionDescriptionCallback . castRef <$>
+         asyncCallback1 retention
+           (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
 #else
 module GHCJS.DOM.RTCSessionDescriptionCallback (
   ) where

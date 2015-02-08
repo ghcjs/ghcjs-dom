@@ -25,6 +25,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,13 +40,14 @@ foreign import javascript unsafe "$1[\"drawBuffersWEBGL\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDrawBuffers.drawBuffersWEBGL Mozilla WebGLDrawBuffers.drawBuffersWEBGL documentation> 
 webGLDrawBuffersDrawBuffersWEBGL ::
-                                 (IsWebGLDrawBuffers self) => self -> [GLenum] -> IO ()
+                                 (MonadIO m, IsWebGLDrawBuffers self) => self -> [GLenum] -> m ()
 webGLDrawBuffersDrawBuffersWEBGL self buffers
-  = toJSRef buffers >>=
-      \ buffers' ->
-        ghcjs_dom_web_gl_draw_buffers_draw_buffers_webgl
-          (unWebGLDrawBuffers (toWebGLDrawBuffers self))
-          buffers'
+  = liftIO
+      (toJSRef buffers >>=
+         \ buffers' ->
+           ghcjs_dom_web_gl_draw_buffers_draw_buffers_webgl
+             (unWebGLDrawBuffers (toWebGLDrawBuffers self))
+             buffers')
 cCOLOR_ATTACHMENT0_WEBGL = 36064
 cCOLOR_ATTACHMENT1_WEBGL = 36065
 cCOLOR_ATTACHMENT2_WEBGL = 36066

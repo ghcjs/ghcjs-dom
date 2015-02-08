@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"encoding\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule.encoding Mozilla CSSCharsetRule.encoding documentation> 
 cssCharsetRuleSetEncoding ::
-                          (IsCSSCharsetRule self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsCSSCharsetRule self, ToJSString val) =>
+                            self -> val -> m ()
 cssCharsetRuleSetEncoding self val
-  = ghcjs_dom_css_charset_rule_set_encoding
-      (unCSSCharsetRule (toCSSCharsetRule self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_css_charset_rule_set_encoding
+         (unCSSCharsetRule (toCSSCharsetRule self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"encoding\"]"
         ghcjs_dom_css_charset_rule_get_encoding ::
@@ -37,11 +40,13 @@ foreign import javascript unsafe "$1[\"encoding\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule.encoding Mozilla CSSCharsetRule.encoding documentation> 
 cssCharsetRuleGetEncoding ::
-                          (IsCSSCharsetRule self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsCSSCharsetRule self, FromJSString result) =>
+                            self -> m result
 cssCharsetRuleGetEncoding self
-  = fromJSString <$>
-      (ghcjs_dom_css_charset_rule_get_encoding
-         (unCSSCharsetRule (toCSSCharsetRule self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_charset_rule_get_encoding
+            (unCSSCharsetRule (toCSSCharsetRule self))))
 #else
 module GHCJS.DOM.CSSCharsetRule (
   ) where

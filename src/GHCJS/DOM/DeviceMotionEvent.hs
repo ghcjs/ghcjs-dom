@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,7 +40,7 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.initDeviceMotionEvent Mozilla DeviceMotionEvent.initDeviceMotionEvent documentation> 
 deviceMotionEventInitDeviceMotionEvent ::
-                                       (IsDeviceMotionEvent self, ToJSString type',
+                                       (MonadIO m, IsDeviceMotionEvent self, ToJSString type',
                                         IsAcceleration acceleration,
                                         IsAcceleration accelerationIncludingGravity,
                                         IsRotationRate rotationRate) =>
@@ -49,20 +50,21 @@ deviceMotionEventInitDeviceMotionEvent ::
                                                Bool ->
                                                  Maybe acceleration ->
                                                    Maybe accelerationIncludingGravity ->
-                                                     Maybe rotationRate -> Double -> IO ()
+                                                     Maybe rotationRate -> Double -> m ()
 deviceMotionEventInitDeviceMotionEvent self type' bubbles
   cancelable acceleration accelerationIncludingGravity rotationRate
   interval
-  = ghcjs_dom_device_motion_event_init_device_motion_event
-      (unDeviceMotionEvent (toDeviceMotionEvent self))
-      (toJSString type')
-      bubbles
-      cancelable
-      (maybe jsNull (unAcceleration . toAcceleration) acceleration)
-      (maybe jsNull (unAcceleration . toAcceleration)
-         accelerationIncludingGravity)
-      (maybe jsNull (unRotationRate . toRotationRate) rotationRate)
-      interval
+  = liftIO
+      (ghcjs_dom_device_motion_event_init_device_motion_event
+         (unDeviceMotionEvent (toDeviceMotionEvent self))
+         (toJSString type')
+         bubbles
+         cancelable
+         (maybe jsNull (unAcceleration . toAcceleration) acceleration)
+         (maybe jsNull (unAcceleration . toAcceleration)
+            accelerationIncludingGravity)
+         (maybe jsNull (unRotationRate . toRotationRate) rotationRate)
+         interval)
  
 foreign import javascript unsafe "$1[\"acceleration\"]"
         ghcjs_dom_device_motion_event_get_acceleration ::
@@ -70,11 +72,13 @@ foreign import javascript unsafe "$1[\"acceleration\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.acceleration Mozilla DeviceMotionEvent.acceleration documentation> 
 deviceMotionEventGetAcceleration ::
-                                 (IsDeviceMotionEvent self) => self -> IO (Maybe Acceleration)
+                                 (MonadIO m, IsDeviceMotionEvent self) =>
+                                   self -> m (Maybe Acceleration)
 deviceMotionEventGetAcceleration self
-  = (ghcjs_dom_device_motion_event_get_acceleration
-       (unDeviceMotionEvent (toDeviceMotionEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_device_motion_event_get_acceleration
+          (unDeviceMotionEvent (toDeviceMotionEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"accelerationIncludingGravity\"]"
@@ -83,12 +87,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.accelerationIncludingGravity Mozilla DeviceMotionEvent.accelerationIncludingGravity documentation> 
 deviceMotionEventGetAccelerationIncludingGravity ::
-                                                 (IsDeviceMotionEvent self) =>
-                                                   self -> IO (Maybe Acceleration)
+                                                 (MonadIO m, IsDeviceMotionEvent self) =>
+                                                   self -> m (Maybe Acceleration)
 deviceMotionEventGetAccelerationIncludingGravity self
-  = (ghcjs_dom_device_motion_event_get_acceleration_including_gravity
-       (unDeviceMotionEvent (toDeviceMotionEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_device_motion_event_get_acceleration_including_gravity
+          (unDeviceMotionEvent (toDeviceMotionEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"rotationRate\"]"
         ghcjs_dom_device_motion_event_get_rotation_rate ::
@@ -96,11 +101,13 @@ foreign import javascript unsafe "$1[\"rotationRate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.rotationRate Mozilla DeviceMotionEvent.rotationRate documentation> 
 deviceMotionEventGetRotationRate ::
-                                 (IsDeviceMotionEvent self) => self -> IO (Maybe RotationRate)
+                                 (MonadIO m, IsDeviceMotionEvent self) =>
+                                   self -> m (Maybe RotationRate)
 deviceMotionEventGetRotationRate self
-  = (ghcjs_dom_device_motion_event_get_rotation_rate
-       (unDeviceMotionEvent (toDeviceMotionEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_device_motion_event_get_rotation_rate
+          (unDeviceMotionEvent (toDeviceMotionEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"interval\"]"
         ghcjs_dom_device_motion_event_get_interval ::
@@ -108,10 +115,11 @@ foreign import javascript unsafe "$1[\"interval\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.interval Mozilla DeviceMotionEvent.interval documentation> 
 deviceMotionEventGetInterval ::
-                             (IsDeviceMotionEvent self) => self -> IO Double
+                             (MonadIO m, IsDeviceMotionEvent self) => self -> m Double
 deviceMotionEventGetInterval self
-  = ghcjs_dom_device_motion_event_get_interval
-      (unDeviceMotionEvent (toDeviceMotionEvent self))
+  = liftIO
+      (ghcjs_dom_device_motion_event_get_interval
+         (unDeviceMotionEvent (toDeviceMotionEvent self)))
 #else
 module GHCJS.DOM.DeviceMotionEvent (
   ) where

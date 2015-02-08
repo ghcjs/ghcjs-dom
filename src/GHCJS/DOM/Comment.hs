@@ -9,6 +9,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -21,9 +22,10 @@ foreign import javascript unsafe "new window[\"Comment\"]($1)"
         ghcjs_dom_comment_new :: JSString -> IO (JSRef Comment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Comment Mozilla Comment documentation> 
-commentNew :: (ToJSString data') => data' -> IO Comment
+commentNew :: (MonadIO m, ToJSString data') => data' -> m Comment
 commentNew data'
-  = ghcjs_dom_comment_new (toJSString data') >>= fromJSRefUnchecked
+  = liftIO
+      (ghcjs_dom_comment_new (toJSString data') >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.Comment (
   ) where

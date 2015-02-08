@@ -83,6 +83,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -97,11 +98,12 @@ foreign import javascript unsafe "$1[\"suspendRedraw\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.suspendRedraw Mozilla SVGSVGElement.suspendRedraw documentation> 
 svgsvgElementSuspendRedraw ::
-                           (IsSVGSVGElement self) => self -> Word -> IO Word
+                           (MonadIO m, IsSVGSVGElement self) => self -> Word -> m Word
 svgsvgElementSuspendRedraw self maxWaitMilliseconds
-  = ghcjs_dom_svgsvg_element_suspend_redraw
-      (unSVGSVGElement (toSVGSVGElement self))
-      maxWaitMilliseconds
+  = liftIO
+      (ghcjs_dom_svgsvg_element_suspend_redraw
+         (unSVGSVGElement (toSVGSVGElement self))
+         maxWaitMilliseconds)
  
 foreign import javascript unsafe "$1[\"unsuspendRedraw\"]($2)"
         ghcjs_dom_svgsvg_element_unsuspend_redraw ::
@@ -109,11 +111,12 @@ foreign import javascript unsafe "$1[\"unsuspendRedraw\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.unsuspendRedraw Mozilla SVGSVGElement.unsuspendRedraw documentation> 
 svgsvgElementUnsuspendRedraw ::
-                             (IsSVGSVGElement self) => self -> Word -> IO ()
+                             (MonadIO m, IsSVGSVGElement self) => self -> Word -> m ()
 svgsvgElementUnsuspendRedraw self suspendHandleId
-  = ghcjs_dom_svgsvg_element_unsuspend_redraw
-      (unSVGSVGElement (toSVGSVGElement self))
-      suspendHandleId
+  = liftIO
+      (ghcjs_dom_svgsvg_element_unsuspend_redraw
+         (unSVGSVGElement (toSVGSVGElement self))
+         suspendHandleId)
  
 foreign import javascript unsafe "$1[\"unsuspendRedrawAll\"]()"
         ghcjs_dom_svgsvg_element_unsuspend_redraw_all ::
@@ -121,20 +124,23 @@ foreign import javascript unsafe "$1[\"unsuspendRedrawAll\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.unsuspendRedrawAll Mozilla SVGSVGElement.unsuspendRedrawAll documentation> 
 svgsvgElementUnsuspendRedrawAll ::
-                                (IsSVGSVGElement self) => self -> IO ()
+                                (MonadIO m, IsSVGSVGElement self) => self -> m ()
 svgsvgElementUnsuspendRedrawAll self
-  = ghcjs_dom_svgsvg_element_unsuspend_redraw_all
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_unsuspend_redraw_all
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"forceRedraw\"]()"
         ghcjs_dom_svgsvg_element_force_redraw ::
         JSRef SVGSVGElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.forceRedraw Mozilla SVGSVGElement.forceRedraw documentation> 
-svgsvgElementForceRedraw :: (IsSVGSVGElement self) => self -> IO ()
+svgsvgElementForceRedraw ::
+                         (MonadIO m, IsSVGSVGElement self) => self -> m ()
 svgsvgElementForceRedraw self
-  = ghcjs_dom_svgsvg_element_force_redraw
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_force_redraw
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"pauseAnimations\"]()"
         ghcjs_dom_svgsvg_element_pause_animations ::
@@ -142,10 +148,11 @@ foreign import javascript unsafe "$1[\"pauseAnimations\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.pauseAnimations Mozilla SVGSVGElement.pauseAnimations documentation> 
 svgsvgElementPauseAnimations ::
-                             (IsSVGSVGElement self) => self -> IO ()
+                             (MonadIO m, IsSVGSVGElement self) => self -> m ()
 svgsvgElementPauseAnimations self
-  = ghcjs_dom_svgsvg_element_pause_animations
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_pause_animations
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"unpauseAnimations\"]()"
         ghcjs_dom_svgsvg_element_unpause_animations ::
@@ -153,10 +160,11 @@ foreign import javascript unsafe "$1[\"unpauseAnimations\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.unpauseAnimations Mozilla SVGSVGElement.unpauseAnimations documentation> 
 svgsvgElementUnpauseAnimations ::
-                               (IsSVGSVGElement self) => self -> IO ()
+                               (MonadIO m, IsSVGSVGElement self) => self -> m ()
 svgsvgElementUnpauseAnimations self
-  = ghcjs_dom_svgsvg_element_unpause_animations
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_unpause_animations
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe
         "($1[\"animationsPaused\"]() ? 1 : 0)"
@@ -165,10 +173,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.animationsPaused Mozilla SVGSVGElement.animationsPaused documentation> 
 svgsvgElementAnimationsPaused ::
-                              (IsSVGSVGElement self) => self -> IO Bool
+                              (MonadIO m, IsSVGSVGElement self) => self -> m Bool
 svgsvgElementAnimationsPaused self
-  = ghcjs_dom_svgsvg_element_animations_paused
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_animations_paused
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"getCurrentTime\"]()"
         ghcjs_dom_svgsvg_element_get_current_time ::
@@ -176,10 +185,11 @@ foreign import javascript unsafe "$1[\"getCurrentTime\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentTime Mozilla SVGSVGElement.currentTime documentation> 
 svgsvgElementGetCurrentTime ::
-                            (IsSVGSVGElement self) => self -> IO Float
+                            (MonadIO m, IsSVGSVGElement self) => self -> m Float
 svgsvgElementGetCurrentTime self
-  = ghcjs_dom_svgsvg_element_get_current_time
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_get_current_time
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"setCurrentTime\"]($2)"
         ghcjs_dom_svgsvg_element_set_current_time ::
@@ -187,11 +197,12 @@ foreign import javascript unsafe "$1[\"setCurrentTime\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentTime Mozilla SVGSVGElement.currentTime documentation> 
 svgsvgElementSetCurrentTime ::
-                            (IsSVGSVGElement self) => self -> Float -> IO ()
+                            (MonadIO m, IsSVGSVGElement self) => self -> Float -> m ()
 svgsvgElementSetCurrentTime self seconds
-  = ghcjs_dom_svgsvg_element_set_current_time
-      (unSVGSVGElement (toSVGSVGElement self))
-      seconds
+  = liftIO
+      (ghcjs_dom_svgsvg_element_set_current_time
+         (unSVGSVGElement (toSVGSVGElement self))
+         seconds)
  
 foreign import javascript unsafe
         "$1[\"getIntersectionList\"]($2,\n$3)"
@@ -201,16 +212,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.intersectionList Mozilla SVGSVGElement.intersectionList documentation> 
 svgsvgElementGetIntersectionList ::
-                                 (IsSVGSVGElement self, IsSVGRect rect,
+                                 (MonadIO m, IsSVGSVGElement self, IsSVGRect rect,
                                   IsSVGElement referenceElement) =>
                                    self ->
-                                     Maybe rect -> Maybe referenceElement -> IO (Maybe NodeList)
+                                     Maybe rect -> Maybe referenceElement -> m (Maybe NodeList)
 svgsvgElementGetIntersectionList self rect referenceElement
-  = (ghcjs_dom_svgsvg_element_get_intersection_list
-       (unSVGSVGElement (toSVGSVGElement self))
-       (maybe jsNull (unSVGRect . toSVGRect) rect)
-       (maybe jsNull (unSVGElement . toSVGElement) referenceElement))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_intersection_list
+          (unSVGSVGElement (toSVGSVGElement self))
+          (maybe jsNull (unSVGRect . toSVGRect) rect)
+          (maybe jsNull (unSVGElement . toSVGElement) referenceElement))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getEnclosureList\"]($2, $3)"
         ghcjs_dom_svgsvg_element_get_enclosure_list ::
@@ -219,15 +231,16 @@ foreign import javascript unsafe "$1[\"getEnclosureList\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.enclosureList Mozilla SVGSVGElement.enclosureList documentation> 
 svgsvgElementGetEnclosureList ::
-                              (IsSVGSVGElement self, IsSVGRect rect,
+                              (MonadIO m, IsSVGSVGElement self, IsSVGRect rect,
                                IsSVGElement referenceElement) =>
-                                self -> Maybe rect -> Maybe referenceElement -> IO (Maybe NodeList)
+                                self -> Maybe rect -> Maybe referenceElement -> m (Maybe NodeList)
 svgsvgElementGetEnclosureList self rect referenceElement
-  = (ghcjs_dom_svgsvg_element_get_enclosure_list
-       (unSVGSVGElement (toSVGSVGElement self))
-       (maybe jsNull (unSVGRect . toSVGRect) rect)
-       (maybe jsNull (unSVGElement . toSVGElement) referenceElement))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_enclosure_list
+          (unSVGSVGElement (toSVGSVGElement self))
+          (maybe jsNull (unSVGRect . toSVGRect) rect)
+          (maybe jsNull (unSVGElement . toSVGElement) referenceElement))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"checkIntersection\"]($2,\n$3) ? 1 : 0)"
@@ -236,13 +249,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.checkIntersection Mozilla SVGSVGElement.checkIntersection documentation> 
 svgsvgElementCheckIntersection ::
-                               (IsSVGSVGElement self, IsSVGElement element, IsSVGRect rect) =>
-                                 self -> Maybe element -> Maybe rect -> IO Bool
+                               (MonadIO m, IsSVGSVGElement self, IsSVGElement element,
+                                IsSVGRect rect) =>
+                                 self -> Maybe element -> Maybe rect -> m Bool
 svgsvgElementCheckIntersection self element rect
-  = ghcjs_dom_svgsvg_element_check_intersection
-      (unSVGSVGElement (toSVGSVGElement self))
-      (maybe jsNull (unSVGElement . toSVGElement) element)
-      (maybe jsNull (unSVGRect . toSVGRect) rect)
+  = liftIO
+      (ghcjs_dom_svgsvg_element_check_intersection
+         (unSVGSVGElement (toSVGSVGElement self))
+         (maybe jsNull (unSVGElement . toSVGElement) element)
+         (maybe jsNull (unSVGRect . toSVGRect) rect))
  
 foreign import javascript unsafe
         "($1[\"checkEnclosure\"]($2,\n$3) ? 1 : 0)"
@@ -251,23 +266,27 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.checkEnclosure Mozilla SVGSVGElement.checkEnclosure documentation> 
 svgsvgElementCheckEnclosure ::
-                            (IsSVGSVGElement self, IsSVGElement element, IsSVGRect rect) =>
-                              self -> Maybe element -> Maybe rect -> IO Bool
+                            (MonadIO m, IsSVGSVGElement self, IsSVGElement element,
+                             IsSVGRect rect) =>
+                              self -> Maybe element -> Maybe rect -> m Bool
 svgsvgElementCheckEnclosure self element rect
-  = ghcjs_dom_svgsvg_element_check_enclosure
-      (unSVGSVGElement (toSVGSVGElement self))
-      (maybe jsNull (unSVGElement . toSVGElement) element)
-      (maybe jsNull (unSVGRect . toSVGRect) rect)
+  = liftIO
+      (ghcjs_dom_svgsvg_element_check_enclosure
+         (unSVGSVGElement (toSVGSVGElement self))
+         (maybe jsNull (unSVGElement . toSVGElement) element)
+         (maybe jsNull (unSVGRect . toSVGRect) rect))
  
 foreign import javascript unsafe "$1[\"deselectAll\"]()"
         ghcjs_dom_svgsvg_element_deselect_all ::
         JSRef SVGSVGElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.deselectAll Mozilla SVGSVGElement.deselectAll documentation> 
-svgsvgElementDeselectAll :: (IsSVGSVGElement self) => self -> IO ()
+svgsvgElementDeselectAll ::
+                         (MonadIO m, IsSVGSVGElement self) => self -> m ()
 svgsvgElementDeselectAll self
-  = ghcjs_dom_svgsvg_element_deselect_all
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_deselect_all
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"createSVGNumber\"]()"
         ghcjs_dom_svgsvg_element_create_svg_number ::
@@ -275,11 +294,12 @@ foreign import javascript unsafe "$1[\"createSVGNumber\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGNumber Mozilla SVGSVGElement.createSVGNumber documentation> 
 svgsvgElementCreateSVGNumber ::
-                             (IsSVGSVGElement self) => self -> IO (Maybe SVGNumber)
+                             (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGNumber)
 svgsvgElementCreateSVGNumber self
-  = (ghcjs_dom_svgsvg_element_create_svg_number
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_number
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createSVGLength\"]()"
         ghcjs_dom_svgsvg_element_create_svg_length ::
@@ -287,11 +307,12 @@ foreign import javascript unsafe "$1[\"createSVGLength\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGLength Mozilla SVGSVGElement.createSVGLength documentation> 
 svgsvgElementCreateSVGLength ::
-                             (IsSVGSVGElement self) => self -> IO (Maybe SVGLength)
+                             (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGLength)
 svgsvgElementCreateSVGLength self
-  = (ghcjs_dom_svgsvg_element_create_svg_length
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_length
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createSVGAngle\"]()"
         ghcjs_dom_svgsvg_element_create_svg_angle ::
@@ -299,11 +320,12 @@ foreign import javascript unsafe "$1[\"createSVGAngle\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGAngle Mozilla SVGSVGElement.createSVGAngle documentation> 
 svgsvgElementCreateSVGAngle ::
-                            (IsSVGSVGElement self) => self -> IO (Maybe SVGAngle)
+                            (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGAngle)
 svgsvgElementCreateSVGAngle self
-  = (ghcjs_dom_svgsvg_element_create_svg_angle
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_angle
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createSVGPoint\"]()"
         ghcjs_dom_svgsvg_element_create_svg_point ::
@@ -311,11 +333,12 @@ foreign import javascript unsafe "$1[\"createSVGPoint\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGPoint Mozilla SVGSVGElement.createSVGPoint documentation> 
 svgsvgElementCreateSVGPoint ::
-                            (IsSVGSVGElement self) => self -> IO (Maybe SVGPoint)
+                            (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGPoint)
 svgsvgElementCreateSVGPoint self
-  = (ghcjs_dom_svgsvg_element_create_svg_point
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_point
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createSVGMatrix\"]()"
         ghcjs_dom_svgsvg_element_create_svg_matrix ::
@@ -323,11 +346,12 @@ foreign import javascript unsafe "$1[\"createSVGMatrix\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGMatrix Mozilla SVGSVGElement.createSVGMatrix documentation> 
 svgsvgElementCreateSVGMatrix ::
-                             (IsSVGSVGElement self) => self -> IO (Maybe SVGMatrix)
+                             (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGMatrix)
 svgsvgElementCreateSVGMatrix self
-  = (ghcjs_dom_svgsvg_element_create_svg_matrix
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_matrix
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createSVGRect\"]()"
         ghcjs_dom_svgsvg_element_create_svg_rect ::
@@ -335,11 +359,12 @@ foreign import javascript unsafe "$1[\"createSVGRect\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGRect Mozilla SVGSVGElement.createSVGRect documentation> 
 svgsvgElementCreateSVGRect ::
-                           (IsSVGSVGElement self) => self -> IO (Maybe SVGRect)
+                           (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGRect)
 svgsvgElementCreateSVGRect self
-  = (ghcjs_dom_svgsvg_element_create_svg_rect
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_rect
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createSVGTransform\"]()"
         ghcjs_dom_svgsvg_element_create_svg_transform ::
@@ -347,11 +372,12 @@ foreign import javascript unsafe "$1[\"createSVGTransform\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGTransform Mozilla SVGSVGElement.createSVGTransform documentation> 
 svgsvgElementCreateSVGTransform ::
-                                (IsSVGSVGElement self) => self -> IO (Maybe SVGTransform)
+                                (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGTransform)
 svgsvgElementCreateSVGTransform self
-  = (ghcjs_dom_svgsvg_element_create_svg_transform
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_transform
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createSVGTransformFromMatrix\"]($2)"
@@ -360,13 +386,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGTransformFromMatrix Mozilla SVGSVGElement.createSVGTransformFromMatrix documentation> 
 svgsvgElementCreateSVGTransformFromMatrix ::
-                                          (IsSVGSVGElement self, IsSVGMatrix matrix) =>
-                                            self -> Maybe matrix -> IO (Maybe SVGTransform)
+                                          (MonadIO m, IsSVGSVGElement self, IsSVGMatrix matrix) =>
+                                            self -> Maybe matrix -> m (Maybe SVGTransform)
 svgsvgElementCreateSVGTransformFromMatrix self matrix
-  = (ghcjs_dom_svgsvg_element_create_svg_transform_from_matrix
-       (unSVGSVGElement (toSVGSVGElement self))
-       (maybe jsNull (unSVGMatrix . toSVGMatrix) matrix))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_create_svg_transform_from_matrix
+          (unSVGSVGElement (toSVGSVGElement self))
+          (maybe jsNull (unSVGMatrix . toSVGMatrix) matrix))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getElementById\"]($2)"
         ghcjs_dom_svgsvg_element_get_element_by_id ::
@@ -374,13 +401,14 @@ foreign import javascript unsafe "$1[\"getElementById\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.elementById Mozilla SVGSVGElement.elementById documentation> 
 svgsvgElementGetElementById ::
-                            (IsSVGSVGElement self, ToJSString elementId) =>
-                              self -> elementId -> IO (Maybe Element)
+                            (MonadIO m, IsSVGSVGElement self, ToJSString elementId) =>
+                              self -> elementId -> m (Maybe Element)
 svgsvgElementGetElementById self elementId
-  = (ghcjs_dom_svgsvg_element_get_element_by_id
-       (unSVGSVGElement (toSVGSVGElement self))
-       (toJSString elementId))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_element_by_id
+          (unSVGSVGElement (toSVGSVGElement self))
+          (toJSString elementId))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svgsvg_element_get_x ::
@@ -388,11 +416,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.x Mozilla SVGSVGElement.x documentation> 
 svgsvgElementGetX ::
-                  (IsSVGSVGElement self) => self -> IO (Maybe SVGAnimatedLength)
+                  (MonadIO m, IsSVGSVGElement self) =>
+                    self -> m (Maybe SVGAnimatedLength)
 svgsvgElementGetX self
-  = (ghcjs_dom_svgsvg_element_get_x
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_x
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svgsvg_element_get_y ::
@@ -400,11 +430,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.y Mozilla SVGSVGElement.y documentation> 
 svgsvgElementGetY ::
-                  (IsSVGSVGElement self) => self -> IO (Maybe SVGAnimatedLength)
+                  (MonadIO m, IsSVGSVGElement self) =>
+                    self -> m (Maybe SVGAnimatedLength)
 svgsvgElementGetY self
-  = (ghcjs_dom_svgsvg_element_get_y
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_y
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_svgsvg_element_get_width ::
@@ -412,11 +444,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.width Mozilla SVGSVGElement.width documentation> 
 svgsvgElementGetWidth ::
-                      (IsSVGSVGElement self) => self -> IO (Maybe SVGAnimatedLength)
+                      (MonadIO m, IsSVGSVGElement self) =>
+                        self -> m (Maybe SVGAnimatedLength)
 svgsvgElementGetWidth self
-  = (ghcjs_dom_svgsvg_element_get_width
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_width
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_svgsvg_element_get_height ::
@@ -424,11 +458,13 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.height Mozilla SVGSVGElement.height documentation> 
 svgsvgElementGetHeight ::
-                       (IsSVGSVGElement self) => self -> IO (Maybe SVGAnimatedLength)
+                       (MonadIO m, IsSVGSVGElement self) =>
+                         self -> m (Maybe SVGAnimatedLength)
 svgsvgElementGetHeight self
-  = (ghcjs_dom_svgsvg_element_get_height
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_height
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"contentScriptType\"] = $2;"
         ghcjs_dom_svgsvg_element_set_content_script_type ::
@@ -436,11 +472,13 @@ foreign import javascript unsafe "$1[\"contentScriptType\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentScriptType Mozilla SVGSVGElement.contentScriptType documentation> 
 svgsvgElementSetContentScriptType ::
-                                  (IsSVGSVGElement self, ToJSString val) => self -> val -> IO ()
+                                  (MonadIO m, IsSVGSVGElement self, ToJSString val) =>
+                                    self -> val -> m ()
 svgsvgElementSetContentScriptType self val
-  = ghcjs_dom_svgsvg_element_set_content_script_type
-      (unSVGSVGElement (toSVGSVGElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svgsvg_element_set_content_script_type
+         (unSVGSVGElement (toSVGSVGElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"contentScriptType\"]"
         ghcjs_dom_svgsvg_element_get_content_script_type ::
@@ -448,11 +486,13 @@ foreign import javascript unsafe "$1[\"contentScriptType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentScriptType Mozilla SVGSVGElement.contentScriptType documentation> 
 svgsvgElementGetContentScriptType ::
-                                  (IsSVGSVGElement self, FromJSString result) => self -> IO result
+                                  (MonadIO m, IsSVGSVGElement self, FromJSString result) =>
+                                    self -> m result
 svgsvgElementGetContentScriptType self
-  = fromJSString <$>
-      (ghcjs_dom_svgsvg_element_get_content_script_type
-         (unSVGSVGElement (toSVGSVGElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svgsvg_element_get_content_script_type
+            (unSVGSVGElement (toSVGSVGElement self))))
  
 foreign import javascript unsafe "$1[\"contentStyleType\"] = $2;"
         ghcjs_dom_svgsvg_element_set_content_style_type ::
@@ -460,11 +500,13 @@ foreign import javascript unsafe "$1[\"contentStyleType\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentStyleType Mozilla SVGSVGElement.contentStyleType documentation> 
 svgsvgElementSetContentStyleType ::
-                                 (IsSVGSVGElement self, ToJSString val) => self -> val -> IO ()
+                                 (MonadIO m, IsSVGSVGElement self, ToJSString val) =>
+                                   self -> val -> m ()
 svgsvgElementSetContentStyleType self val
-  = ghcjs_dom_svgsvg_element_set_content_style_type
-      (unSVGSVGElement (toSVGSVGElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svgsvg_element_set_content_style_type
+         (unSVGSVGElement (toSVGSVGElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"contentStyleType\"]"
         ghcjs_dom_svgsvg_element_get_content_style_type ::
@@ -472,11 +514,13 @@ foreign import javascript unsafe "$1[\"contentStyleType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentStyleType Mozilla SVGSVGElement.contentStyleType documentation> 
 svgsvgElementGetContentStyleType ::
-                                 (IsSVGSVGElement self, FromJSString result) => self -> IO result
+                                 (MonadIO m, IsSVGSVGElement self, FromJSString result) =>
+                                   self -> m result
 svgsvgElementGetContentStyleType self
-  = fromJSString <$>
-      (ghcjs_dom_svgsvg_element_get_content_style_type
-         (unSVGSVGElement (toSVGSVGElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svgsvg_element_get_content_style_type
+            (unSVGSVGElement (toSVGSVGElement self))))
  
 foreign import javascript unsafe "$1[\"viewport\"]"
         ghcjs_dom_svgsvg_element_get_viewport ::
@@ -484,11 +528,12 @@ foreign import javascript unsafe "$1[\"viewport\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.viewport Mozilla SVGSVGElement.viewport documentation> 
 svgsvgElementGetViewport ::
-                         (IsSVGSVGElement self) => self -> IO (Maybe SVGRect)
+                         (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGRect)
 svgsvgElementGetViewport self
-  = (ghcjs_dom_svgsvg_element_get_viewport
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_viewport
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"pixelUnitToMillimeterX\"]"
         ghcjs_dom_svgsvg_element_get_pixel_unit_to_millimeter_x ::
@@ -496,10 +541,11 @@ foreign import javascript unsafe "$1[\"pixelUnitToMillimeterX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.pixelUnitToMillimeterX Mozilla SVGSVGElement.pixelUnitToMillimeterX documentation> 
 svgsvgElementGetPixelUnitToMillimeterX ::
-                                       (IsSVGSVGElement self) => self -> IO Float
+                                       (MonadIO m, IsSVGSVGElement self) => self -> m Float
 svgsvgElementGetPixelUnitToMillimeterX self
-  = ghcjs_dom_svgsvg_element_get_pixel_unit_to_millimeter_x
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_get_pixel_unit_to_millimeter_x
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"pixelUnitToMillimeterY\"]"
         ghcjs_dom_svgsvg_element_get_pixel_unit_to_millimeter_y ::
@@ -507,10 +553,11 @@ foreign import javascript unsafe "$1[\"pixelUnitToMillimeterY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.pixelUnitToMillimeterY Mozilla SVGSVGElement.pixelUnitToMillimeterY documentation> 
 svgsvgElementGetPixelUnitToMillimeterY ::
-                                       (IsSVGSVGElement self) => self -> IO Float
+                                       (MonadIO m, IsSVGSVGElement self) => self -> m Float
 svgsvgElementGetPixelUnitToMillimeterY self
-  = ghcjs_dom_svgsvg_element_get_pixel_unit_to_millimeter_y
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_get_pixel_unit_to_millimeter_y
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"screenPixelToMillimeterX\"]"
         ghcjs_dom_svgsvg_element_get_screen_pixel_to_millimeter_x ::
@@ -518,10 +565,11 @@ foreign import javascript unsafe "$1[\"screenPixelToMillimeterX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.screenPixelToMillimeterX Mozilla SVGSVGElement.screenPixelToMillimeterX documentation> 
 svgsvgElementGetScreenPixelToMillimeterX ::
-                                         (IsSVGSVGElement self) => self -> IO Float
+                                         (MonadIO m, IsSVGSVGElement self) => self -> m Float
 svgsvgElementGetScreenPixelToMillimeterX self
-  = ghcjs_dom_svgsvg_element_get_screen_pixel_to_millimeter_x
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_get_screen_pixel_to_millimeter_x
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"screenPixelToMillimeterY\"]"
         ghcjs_dom_svgsvg_element_get_screen_pixel_to_millimeter_y ::
@@ -529,10 +577,11 @@ foreign import javascript unsafe "$1[\"screenPixelToMillimeterY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.screenPixelToMillimeterY Mozilla SVGSVGElement.screenPixelToMillimeterY documentation> 
 svgsvgElementGetScreenPixelToMillimeterY ::
-                                         (IsSVGSVGElement self) => self -> IO Float
+                                         (MonadIO m, IsSVGSVGElement self) => self -> m Float
 svgsvgElementGetScreenPixelToMillimeterY self
-  = ghcjs_dom_svgsvg_element_get_screen_pixel_to_millimeter_y
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_get_screen_pixel_to_millimeter_y
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "($1[\"useCurrentView\"] ? 1 : 0)"
         ghcjs_dom_svgsvg_element_get_use_current_view ::
@@ -540,10 +589,11 @@ foreign import javascript unsafe "($1[\"useCurrentView\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.useCurrentView Mozilla SVGSVGElement.useCurrentView documentation> 
 svgsvgElementGetUseCurrentView ::
-                               (IsSVGSVGElement self) => self -> IO Bool
+                               (MonadIO m, IsSVGSVGElement self) => self -> m Bool
 svgsvgElementGetUseCurrentView self
-  = ghcjs_dom_svgsvg_element_get_use_current_view
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_get_use_current_view
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"currentView\"]"
         ghcjs_dom_svgsvg_element_get_current_view ::
@@ -551,11 +601,12 @@ foreign import javascript unsafe "$1[\"currentView\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentView Mozilla SVGSVGElement.currentView documentation> 
 svgsvgElementGetCurrentView ::
-                            (IsSVGSVGElement self) => self -> IO (Maybe SVGViewSpec)
+                            (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGViewSpec)
 svgsvgElementGetCurrentView self
-  = (ghcjs_dom_svgsvg_element_get_current_view
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_current_view
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"currentScale\"] = $2;"
         ghcjs_dom_svgsvg_element_set_current_scale ::
@@ -563,11 +614,12 @@ foreign import javascript unsafe "$1[\"currentScale\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentScale Mozilla SVGSVGElement.currentScale documentation> 
 svgsvgElementSetCurrentScale ::
-                             (IsSVGSVGElement self) => self -> Float -> IO ()
+                             (MonadIO m, IsSVGSVGElement self) => self -> Float -> m ()
 svgsvgElementSetCurrentScale self val
-  = ghcjs_dom_svgsvg_element_set_current_scale
-      (unSVGSVGElement (toSVGSVGElement self))
-      val
+  = liftIO
+      (ghcjs_dom_svgsvg_element_set_current_scale
+         (unSVGSVGElement (toSVGSVGElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"currentScale\"]"
         ghcjs_dom_svgsvg_element_get_current_scale ::
@@ -575,10 +627,11 @@ foreign import javascript unsafe "$1[\"currentScale\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentScale Mozilla SVGSVGElement.currentScale documentation> 
 svgsvgElementGetCurrentScale ::
-                             (IsSVGSVGElement self) => self -> IO Float
+                             (MonadIO m, IsSVGSVGElement self) => self -> m Float
 svgsvgElementGetCurrentScale self
-  = ghcjs_dom_svgsvg_element_get_current_scale
-      (unSVGSVGElement (toSVGSVGElement self))
+  = liftIO
+      (ghcjs_dom_svgsvg_element_get_current_scale
+         (unSVGSVGElement (toSVGSVGElement self)))
  
 foreign import javascript unsafe "$1[\"currentTranslate\"]"
         ghcjs_dom_svgsvg_element_get_current_translate ::
@@ -586,11 +639,12 @@ foreign import javascript unsafe "$1[\"currentTranslate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentTranslate Mozilla SVGSVGElement.currentTranslate documentation> 
 svgsvgElementGetCurrentTranslate ::
-                                 (IsSVGSVGElement self) => self -> IO (Maybe SVGPoint)
+                                 (MonadIO m, IsSVGSVGElement self) => self -> m (Maybe SVGPoint)
 svgsvgElementGetCurrentTranslate self
-  = (ghcjs_dom_svgsvg_element_get_current_translate
-       (unSVGSVGElement (toSVGSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgsvg_element_get_current_translate
+          (unSVGSVGElement (toSVGSVGElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGSVGElement (
   ) where

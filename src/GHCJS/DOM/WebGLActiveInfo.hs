@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,10 +26,11 @@ foreign import javascript unsafe "$1[\"size\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo.size Mozilla WebGLActiveInfo.size documentation> 
 webGLActiveInfoGetSize ::
-                       (IsWebGLActiveInfo self) => self -> IO Int
+                       (MonadIO m, IsWebGLActiveInfo self) => self -> m Int
 webGLActiveInfoGetSize self
-  = ghcjs_dom_web_gl_active_info_get_size
-      (unWebGLActiveInfo (toWebGLActiveInfo self))
+  = liftIO
+      (ghcjs_dom_web_gl_active_info_get_size
+         (unWebGLActiveInfo (toWebGLActiveInfo self)))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_web_gl_active_info_get_name ::
@@ -36,11 +38,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo.name Mozilla WebGLActiveInfo.name documentation> 
 webGLActiveInfoGetName ::
-                       (IsWebGLActiveInfo self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsWebGLActiveInfo self, FromJSString result) =>
+                         self -> m result
 webGLActiveInfoGetName self
-  = fromJSString <$>
-      (ghcjs_dom_web_gl_active_info_get_name
-         (unWebGLActiveInfo (toWebGLActiveInfo self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_gl_active_info_get_name
+            (unWebGLActiveInfo (toWebGLActiveInfo self))))
 #else
 module GHCJS.DOM.WebGLActiveInfo (
   ) where

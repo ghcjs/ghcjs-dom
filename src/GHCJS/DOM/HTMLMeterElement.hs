@@ -24,6 +24,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -38,11 +39,12 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.value Mozilla HTMLMeterElement.value documentation> 
 htmlMeterElementSetValue ::
-                         (IsHTMLMeterElement self) => self -> Double -> IO ()
+                         (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
 htmlMeterElementSetValue self val
-  = ghcjs_dom_html_meter_element_set_value
-      (unHTMLMeterElement (toHTMLMeterElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_meter_element_set_value
+         (unHTMLMeterElement (toHTMLMeterElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_meter_element_get_value ::
@@ -50,10 +52,11 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.value Mozilla HTMLMeterElement.value documentation> 
 htmlMeterElementGetValue ::
-                         (IsHTMLMeterElement self) => self -> IO Double
+                         (MonadIO m, IsHTMLMeterElement self) => self -> m Double
 htmlMeterElementGetValue self
-  = ghcjs_dom_html_meter_element_get_value
-      (unHTMLMeterElement (toHTMLMeterElement self))
+  = liftIO
+      (ghcjs_dom_html_meter_element_get_value
+         (unHTMLMeterElement (toHTMLMeterElement self)))
  
 foreign import javascript unsafe "$1[\"min\"] = $2;"
         ghcjs_dom_html_meter_element_set_min ::
@@ -61,11 +64,12 @@ foreign import javascript unsafe "$1[\"min\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.min Mozilla HTMLMeterElement.min documentation> 
 htmlMeterElementSetMin ::
-                       (IsHTMLMeterElement self) => self -> Double -> IO ()
+                       (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
 htmlMeterElementSetMin self val
-  = ghcjs_dom_html_meter_element_set_min
-      (unHTMLMeterElement (toHTMLMeterElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_meter_element_set_min
+         (unHTMLMeterElement (toHTMLMeterElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"min\"]"
         ghcjs_dom_html_meter_element_get_min ::
@@ -73,10 +77,11 @@ foreign import javascript unsafe "$1[\"min\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.min Mozilla HTMLMeterElement.min documentation> 
 htmlMeterElementGetMin ::
-                       (IsHTMLMeterElement self) => self -> IO Double
+                       (MonadIO m, IsHTMLMeterElement self) => self -> m Double
 htmlMeterElementGetMin self
-  = ghcjs_dom_html_meter_element_get_min
-      (unHTMLMeterElement (toHTMLMeterElement self))
+  = liftIO
+      (ghcjs_dom_html_meter_element_get_min
+         (unHTMLMeterElement (toHTMLMeterElement self)))
  
 foreign import javascript unsafe "$1[\"max\"] = $2;"
         ghcjs_dom_html_meter_element_set_max ::
@@ -84,11 +89,12 @@ foreign import javascript unsafe "$1[\"max\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.max Mozilla HTMLMeterElement.max documentation> 
 htmlMeterElementSetMax ::
-                       (IsHTMLMeterElement self) => self -> Double -> IO ()
+                       (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
 htmlMeterElementSetMax self val
-  = ghcjs_dom_html_meter_element_set_max
-      (unHTMLMeterElement (toHTMLMeterElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_meter_element_set_max
+         (unHTMLMeterElement (toHTMLMeterElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"max\"]"
         ghcjs_dom_html_meter_element_get_max ::
@@ -96,10 +102,11 @@ foreign import javascript unsafe "$1[\"max\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.max Mozilla HTMLMeterElement.max documentation> 
 htmlMeterElementGetMax ::
-                       (IsHTMLMeterElement self) => self -> IO Double
+                       (MonadIO m, IsHTMLMeterElement self) => self -> m Double
 htmlMeterElementGetMax self
-  = ghcjs_dom_html_meter_element_get_max
-      (unHTMLMeterElement (toHTMLMeterElement self))
+  = liftIO
+      (ghcjs_dom_html_meter_element_get_max
+         (unHTMLMeterElement (toHTMLMeterElement self)))
  
 foreign import javascript unsafe "$1[\"low\"] = $2;"
         ghcjs_dom_html_meter_element_set_low ::
@@ -107,11 +114,12 @@ foreign import javascript unsafe "$1[\"low\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.low Mozilla HTMLMeterElement.low documentation> 
 htmlMeterElementSetLow ::
-                       (IsHTMLMeterElement self) => self -> Double -> IO ()
+                       (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
 htmlMeterElementSetLow self val
-  = ghcjs_dom_html_meter_element_set_low
-      (unHTMLMeterElement (toHTMLMeterElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_meter_element_set_low
+         (unHTMLMeterElement (toHTMLMeterElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"low\"]"
         ghcjs_dom_html_meter_element_get_low ::
@@ -119,10 +127,11 @@ foreign import javascript unsafe "$1[\"low\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.low Mozilla HTMLMeterElement.low documentation> 
 htmlMeterElementGetLow ::
-                       (IsHTMLMeterElement self) => self -> IO Double
+                       (MonadIO m, IsHTMLMeterElement self) => self -> m Double
 htmlMeterElementGetLow self
-  = ghcjs_dom_html_meter_element_get_low
-      (unHTMLMeterElement (toHTMLMeterElement self))
+  = liftIO
+      (ghcjs_dom_html_meter_element_get_low
+         (unHTMLMeterElement (toHTMLMeterElement self)))
  
 foreign import javascript unsafe "$1[\"high\"] = $2;"
         ghcjs_dom_html_meter_element_set_high ::
@@ -130,11 +139,12 @@ foreign import javascript unsafe "$1[\"high\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.high Mozilla HTMLMeterElement.high documentation> 
 htmlMeterElementSetHigh ::
-                        (IsHTMLMeterElement self) => self -> Double -> IO ()
+                        (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
 htmlMeterElementSetHigh self val
-  = ghcjs_dom_html_meter_element_set_high
-      (unHTMLMeterElement (toHTMLMeterElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_meter_element_set_high
+         (unHTMLMeterElement (toHTMLMeterElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"high\"]"
         ghcjs_dom_html_meter_element_get_high ::
@@ -142,10 +152,11 @@ foreign import javascript unsafe "$1[\"high\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.high Mozilla HTMLMeterElement.high documentation> 
 htmlMeterElementGetHigh ::
-                        (IsHTMLMeterElement self) => self -> IO Double
+                        (MonadIO m, IsHTMLMeterElement self) => self -> m Double
 htmlMeterElementGetHigh self
-  = ghcjs_dom_html_meter_element_get_high
-      (unHTMLMeterElement (toHTMLMeterElement self))
+  = liftIO
+      (ghcjs_dom_html_meter_element_get_high
+         (unHTMLMeterElement (toHTMLMeterElement self)))
  
 foreign import javascript unsafe "$1[\"optimum\"] = $2;"
         ghcjs_dom_html_meter_element_set_optimum ::
@@ -153,11 +164,12 @@ foreign import javascript unsafe "$1[\"optimum\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.optimum Mozilla HTMLMeterElement.optimum documentation> 
 htmlMeterElementSetOptimum ::
-                           (IsHTMLMeterElement self) => self -> Double -> IO ()
+                           (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
 htmlMeterElementSetOptimum self val
-  = ghcjs_dom_html_meter_element_set_optimum
-      (unHTMLMeterElement (toHTMLMeterElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_meter_element_set_optimum
+         (unHTMLMeterElement (toHTMLMeterElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"optimum\"]"
         ghcjs_dom_html_meter_element_get_optimum ::
@@ -165,10 +177,11 @@ foreign import javascript unsafe "$1[\"optimum\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.optimum Mozilla HTMLMeterElement.optimum documentation> 
 htmlMeterElementGetOptimum ::
-                           (IsHTMLMeterElement self) => self -> IO Double
+                           (MonadIO m, IsHTMLMeterElement self) => self -> m Double
 htmlMeterElementGetOptimum self
-  = ghcjs_dom_html_meter_element_get_optimum
-      (unHTMLMeterElement (toHTMLMeterElement self))
+  = liftIO
+      (ghcjs_dom_html_meter_element_get_optimum
+         (unHTMLMeterElement (toHTMLMeterElement self)))
  
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_meter_element_get_labels ::
@@ -176,11 +189,12 @@ foreign import javascript unsafe "$1[\"labels\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.labels Mozilla HTMLMeterElement.labels documentation> 
 htmlMeterElementGetLabels ::
-                          (IsHTMLMeterElement self) => self -> IO (Maybe NodeList)
+                          (MonadIO m, IsHTMLMeterElement self) => self -> m (Maybe NodeList)
 htmlMeterElementGetLabels self
-  = (ghcjs_dom_html_meter_element_get_labels
-       (unHTMLMeterElement (toHTMLMeterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_meter_element_get_labels
+          (unHTMLMeterElement (toHTMLMeterElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLMeterElement (
   ) where

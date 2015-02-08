@@ -23,6 +23,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -37,11 +38,12 @@ foreign import javascript unsafe "$1[\"parentNode\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.parentNode Mozilla TreeWalker.parentNode documentation> 
 treeWalkerParentNode ::
-                     (IsTreeWalker self) => self -> IO (Maybe Node)
+                     (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerParentNode self
-  = (ghcjs_dom_tree_walker_parent_node
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_parent_node
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"firstChild\"]()"
         ghcjs_dom_tree_walker_first_child ::
@@ -49,11 +51,12 @@ foreign import javascript unsafe "$1[\"firstChild\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.firstChild Mozilla TreeWalker.firstChild documentation> 
 treeWalkerFirstChild ::
-                     (IsTreeWalker self) => self -> IO (Maybe Node)
+                     (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerFirstChild self
-  = (ghcjs_dom_tree_walker_first_child
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_first_child
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"lastChild\"]()"
         ghcjs_dom_tree_walker_last_child ::
@@ -61,11 +64,12 @@ foreign import javascript unsafe "$1[\"lastChild\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.lastChild Mozilla TreeWalker.lastChild documentation> 
 treeWalkerLastChild ::
-                    (IsTreeWalker self) => self -> IO (Maybe Node)
+                    (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerLastChild self
-  = (ghcjs_dom_tree_walker_last_child
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_last_child
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"previousSibling\"]()"
         ghcjs_dom_tree_walker_previous_sibling ::
@@ -73,11 +77,12 @@ foreign import javascript unsafe "$1[\"previousSibling\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousSibling Mozilla TreeWalker.previousSibling documentation> 
 treeWalkerPreviousSibling ::
-                          (IsTreeWalker self) => self -> IO (Maybe Node)
+                          (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerPreviousSibling self
-  = (ghcjs_dom_tree_walker_previous_sibling
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_previous_sibling
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"nextSibling\"]()"
         ghcjs_dom_tree_walker_next_sibling ::
@@ -85,11 +90,12 @@ foreign import javascript unsafe "$1[\"nextSibling\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.nextSibling Mozilla TreeWalker.nextSibling documentation> 
 treeWalkerNextSibling ::
-                      (IsTreeWalker self) => self -> IO (Maybe Node)
+                      (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerNextSibling self
-  = (ghcjs_dom_tree_walker_next_sibling
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_next_sibling
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"previousNode\"]()"
         ghcjs_dom_tree_walker_previous_node ::
@@ -97,11 +103,12 @@ foreign import javascript unsafe "$1[\"previousNode\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousNode Mozilla TreeWalker.previousNode documentation> 
 treeWalkerPreviousNode ::
-                       (IsTreeWalker self) => self -> IO (Maybe Node)
+                       (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerPreviousNode self
-  = (ghcjs_dom_tree_walker_previous_node
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_previous_node
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"nextNode\"]()"
         ghcjs_dom_tree_walker_next_node ::
@@ -109,32 +116,37 @@ foreign import javascript unsafe "$1[\"nextNode\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.nextNode Mozilla TreeWalker.nextNode documentation> 
 treeWalkerNextNode ::
-                   (IsTreeWalker self) => self -> IO (Maybe Node)
+                   (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerNextNode self
-  = (ghcjs_dom_tree_walker_next_node
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_next_node
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"root\"]"
         ghcjs_dom_tree_walker_get_root ::
         JSRef TreeWalker -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.root Mozilla TreeWalker.root documentation> 
-treeWalkerGetRoot :: (IsTreeWalker self) => self -> IO (Maybe Node)
+treeWalkerGetRoot ::
+                  (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerGetRoot self
-  = (ghcjs_dom_tree_walker_get_root
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_get_root
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"whatToShow\"]"
         ghcjs_dom_tree_walker_get_what_to_show ::
         JSRef TreeWalker -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.whatToShow Mozilla TreeWalker.whatToShow documentation> 
-treeWalkerGetWhatToShow :: (IsTreeWalker self) => self -> IO Word
+treeWalkerGetWhatToShow ::
+                        (MonadIO m, IsTreeWalker self) => self -> m Word
 treeWalkerGetWhatToShow self
-  = ghcjs_dom_tree_walker_get_what_to_show
-      (unTreeWalker (toTreeWalker self))
+  = liftIO
+      (ghcjs_dom_tree_walker_get_what_to_show
+         (unTreeWalker (toTreeWalker self)))
  
 foreign import javascript unsafe "$1[\"filter\"]"
         ghcjs_dom_tree_walker_get_filter ::
@@ -142,11 +154,12 @@ foreign import javascript unsafe "$1[\"filter\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.filter Mozilla TreeWalker.filter documentation> 
 treeWalkerGetFilter ::
-                    (IsTreeWalker self) => self -> IO (Maybe NodeFilter)
+                    (MonadIO m, IsTreeWalker self) => self -> m (Maybe NodeFilter)
 treeWalkerGetFilter self
-  = (ghcjs_dom_tree_walker_get_filter
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_get_filter
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"expandEntityReferences\"] ? 1 : 0)"
@@ -155,10 +168,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.expandEntityReferences Mozilla TreeWalker.expandEntityReferences documentation> 
 treeWalkerGetExpandEntityReferences ::
-                                    (IsTreeWalker self) => self -> IO Bool
+                                    (MonadIO m, IsTreeWalker self) => self -> m Bool
 treeWalkerGetExpandEntityReferences self
-  = ghcjs_dom_tree_walker_get_expand_entity_references
-      (unTreeWalker (toTreeWalker self))
+  = liftIO
+      (ghcjs_dom_tree_walker_get_expand_entity_references
+         (unTreeWalker (toTreeWalker self)))
  
 foreign import javascript unsafe "$1[\"currentNode\"] = $2;"
         ghcjs_dom_tree_walker_set_current_node ::
@@ -166,11 +180,13 @@ foreign import javascript unsafe "$1[\"currentNode\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.currentNode Mozilla TreeWalker.currentNode documentation> 
 treeWalkerSetCurrentNode ::
-                         (IsTreeWalker self, IsNode val) => self -> Maybe val -> IO ()
+                         (MonadIO m, IsTreeWalker self, IsNode val) =>
+                           self -> Maybe val -> m ()
 treeWalkerSetCurrentNode self val
-  = ghcjs_dom_tree_walker_set_current_node
-      (unTreeWalker (toTreeWalker self))
-      (maybe jsNull (unNode . toNode) val)
+  = liftIO
+      (ghcjs_dom_tree_walker_set_current_node
+         (unTreeWalker (toTreeWalker self))
+         (maybe jsNull (unNode . toNode) val))
  
 foreign import javascript unsafe "$1[\"currentNode\"]"
         ghcjs_dom_tree_walker_get_current_node ::
@@ -178,11 +194,12 @@ foreign import javascript unsafe "$1[\"currentNode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.currentNode Mozilla TreeWalker.currentNode documentation> 
 treeWalkerGetCurrentNode ::
-                         (IsTreeWalker self) => self -> IO (Maybe Node)
+                         (MonadIO m, IsTreeWalker self) => self -> m (Maybe Node)
 treeWalkerGetCurrentNode self
-  = (ghcjs_dom_tree_walker_get_current_node
-       (unTreeWalker (toTreeWalker self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_tree_walker_get_current_node
+          (unTreeWalker (toTreeWalker self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.TreeWalker (
   module Graphics.UI.Gtk.WebKit.DOM.TreeWalker

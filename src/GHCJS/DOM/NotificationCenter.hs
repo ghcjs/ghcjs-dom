@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,16 +32,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter.createNotification Mozilla NotificationCenter.createNotification documentation> 
 notificationCenterCreateNotification ::
-                                     (IsNotificationCenter self, ToJSString iconUrl,
+                                     (MonadIO m, IsNotificationCenter self, ToJSString iconUrl,
                                       ToJSString title, ToJSString body) =>
-                                       self -> iconUrl -> title -> body -> IO (Maybe Notification)
+                                       self -> iconUrl -> title -> body -> m (Maybe Notification)
 notificationCenterCreateNotification self iconUrl title body
-  = (ghcjs_dom_notification_center_create_notification
-       (unNotificationCenter (toNotificationCenter self))
-       (toJSString iconUrl)
-       (toJSString title)
-       (toJSString body))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_notification_center_create_notification
+          (unNotificationCenter (toNotificationCenter self))
+          (toJSString iconUrl)
+          (toJSString title)
+          (toJSString body))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"checkPermission\"]()"
         ghcjs_dom_notification_center_check_permission ::
@@ -48,10 +50,11 @@ foreign import javascript unsafe "$1[\"checkPermission\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter.checkPermission Mozilla NotificationCenter.checkPermission documentation> 
 notificationCenterCheckPermission ::
-                                  (IsNotificationCenter self) => self -> IO Int
+                                  (MonadIO m, IsNotificationCenter self) => self -> m Int
 notificationCenterCheckPermission self
-  = ghcjs_dom_notification_center_check_permission
-      (unNotificationCenter (toNotificationCenter self))
+  = liftIO
+      (ghcjs_dom_notification_center_check_permission
+         (unNotificationCenter (toNotificationCenter self)))
  
 foreign import javascript unsafe "$1[\"requestPermission\"]($2)"
         ghcjs_dom_notification_center_request_permission ::
@@ -59,12 +62,14 @@ foreign import javascript unsafe "$1[\"requestPermission\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter.requestPermission Mozilla NotificationCenter.requestPermission documentation> 
 notificationCenterRequestPermission ::
-                                    (IsNotificationCenter self, IsVoidCallback callback) =>
-                                      self -> Maybe callback -> IO ()
+                                    (MonadIO m, IsNotificationCenter self,
+                                     IsVoidCallback callback) =>
+                                      self -> Maybe callback -> m ()
 notificationCenterRequestPermission self callback
-  = ghcjs_dom_notification_center_request_permission
-      (unNotificationCenter (toNotificationCenter self))
-      (maybe jsNull (unVoidCallback . toVoidCallback) callback)
+  = liftIO
+      (ghcjs_dom_notification_center_request_permission
+         (unNotificationCenter (toNotificationCenter self))
+         (maybe jsNull (unVoidCallback . toVoidCallback) callback))
 #else
 module GHCJS.DOM.NotificationCenter (
   ) where

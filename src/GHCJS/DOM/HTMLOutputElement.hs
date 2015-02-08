@@ -32,6 +32,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -47,10 +48,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.checkValidity Mozilla HTMLOutputElement.checkValidity documentation> 
 htmlOutputElementCheckValidity ::
-                               (IsHTMLOutputElement self) => self -> IO Bool
+                               (MonadIO m, IsHTMLOutputElement self) => self -> m Bool
 htmlOutputElementCheckValidity self
-  = ghcjs_dom_html_output_element_check_validity
-      (unHTMLOutputElement (toHTMLOutputElement self))
+  = liftIO
+      (ghcjs_dom_html_output_element_check_validity
+         (unHTMLOutputElement (toHTMLOutputElement self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         ghcjs_dom_html_output_element_set_custom_validity ::
@@ -58,12 +60,13 @@ foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.customValidity Mozilla HTMLOutputElement.customValidity documentation> 
 htmlOutputElementSetCustomValidity ::
-                                   (IsHTMLOutputElement self, ToJSString error) =>
-                                     self -> error -> IO ()
+                                   (MonadIO m, IsHTMLOutputElement self, ToJSString error) =>
+                                     self -> error -> m ()
 htmlOutputElementSetCustomValidity self error
-  = ghcjs_dom_html_output_element_set_custom_validity
-      (unHTMLOutputElement (toHTMLOutputElement self))
-      (toJSString error)
+  = liftIO
+      (ghcjs_dom_html_output_element_set_custom_validity
+         (unHTMLOutputElement (toHTMLOutputElement self))
+         (toJSString error))
  
 foreign import javascript unsafe "$1[\"htmlFor\"]"
         ghcjs_dom_html_output_element_get_html_for ::
@@ -71,12 +74,13 @@ foreign import javascript unsafe "$1[\"htmlFor\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.htmlFor Mozilla HTMLOutputElement.htmlFor documentation> 
 htmlOutputElementGetHtmlFor ::
-                            (IsHTMLOutputElement self) =>
-                              self -> IO (Maybe DOMSettableTokenList)
+                            (MonadIO m, IsHTMLOutputElement self) =>
+                              self -> m (Maybe DOMSettableTokenList)
 htmlOutputElementGetHtmlFor self
-  = (ghcjs_dom_html_output_element_get_html_for
-       (unHTMLOutputElement (toHTMLOutputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_output_element_get_html_for
+          (unHTMLOutputElement (toHTMLOutputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"form\"]"
         ghcjs_dom_html_output_element_get_form ::
@@ -84,11 +88,13 @@ foreign import javascript unsafe "$1[\"form\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.form Mozilla HTMLOutputElement.form documentation> 
 htmlOutputElementGetForm ::
-                         (IsHTMLOutputElement self) => self -> IO (Maybe HTMLFormElement)
+                         (MonadIO m, IsHTMLOutputElement self) =>
+                           self -> m (Maybe HTMLFormElement)
 htmlOutputElementGetForm self
-  = (ghcjs_dom_html_output_element_get_form
-       (unHTMLOutputElement (toHTMLOutputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_output_element_get_form
+          (unHTMLOutputElement (toHTMLOutputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_output_element_set_name ::
@@ -96,11 +102,13 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.name Mozilla HTMLOutputElement.name documentation> 
 htmlOutputElementSetName ::
-                         (IsHTMLOutputElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLOutputElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlOutputElementSetName self val
-  = ghcjs_dom_html_output_element_set_name
-      (unHTMLOutputElement (toHTMLOutputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_output_element_set_name
+         (unHTMLOutputElement (toHTMLOutputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_output_element_get_name ::
@@ -108,12 +116,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.name Mozilla HTMLOutputElement.name documentation> 
 htmlOutputElementGetName ::
-                         (IsHTMLOutputElement self, FromJSString result) =>
-                           self -> IO result
+                         (MonadIO m, IsHTMLOutputElement self, FromJSString result) =>
+                           self -> m result
 htmlOutputElementGetName self
-  = fromJSString <$>
-      (ghcjs_dom_html_output_element_get_name
-         (unHTMLOutputElement (toHTMLOutputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_output_element_get_name
+            (unHTMLOutputElement (toHTMLOutputElement self))))
  
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
         ghcjs_dom_html_output_element_set_default_value ::
@@ -121,11 +130,13 @@ foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
 htmlOutputElementSetDefaultValue ::
-                                 (IsHTMLOutputElement self, ToJSString val) => self -> val -> IO ()
+                                 (MonadIO m, IsHTMLOutputElement self, ToJSString val) =>
+                                   self -> val -> m ()
 htmlOutputElementSetDefaultValue self val
-  = ghcjs_dom_html_output_element_set_default_value
-      (unHTMLOutputElement (toHTMLOutputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_output_element_set_default_value
+         (unHTMLOutputElement (toHTMLOutputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"defaultValue\"]"
         ghcjs_dom_html_output_element_get_default_value ::
@@ -133,12 +144,13 @@ foreign import javascript unsafe "$1[\"defaultValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
 htmlOutputElementGetDefaultValue ::
-                                 (IsHTMLOutputElement self, FromJSString result) =>
-                                   self -> IO result
+                                 (MonadIO m, IsHTMLOutputElement self, FromJSString result) =>
+                                   self -> m result
 htmlOutputElementGetDefaultValue self
-  = fromJSString <$>
-      (ghcjs_dom_html_output_element_get_default_value
-         (unHTMLOutputElement (toHTMLOutputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_output_element_get_default_value
+            (unHTMLOutputElement (toHTMLOutputElement self))))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_output_element_set_value ::
@@ -146,11 +158,13 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
 htmlOutputElementSetValue ::
-                          (IsHTMLOutputElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLOutputElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlOutputElementSetValue self val
-  = ghcjs_dom_html_output_element_set_value
-      (unHTMLOutputElement (toHTMLOutputElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_output_element_set_value
+         (unHTMLOutputElement (toHTMLOutputElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_output_element_get_value ::
@@ -158,12 +172,13 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
 htmlOutputElementGetValue ::
-                          (IsHTMLOutputElement self, FromJSString result) =>
-                            self -> IO result
+                          (MonadIO m, IsHTMLOutputElement self, FromJSString result) =>
+                            self -> m result
 htmlOutputElementGetValue self
-  = fromJSString <$>
-      (ghcjs_dom_html_output_element_get_value
-         (unHTMLOutputElement (toHTMLOutputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_output_element_get_value
+            (unHTMLOutputElement (toHTMLOutputElement self))))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         ghcjs_dom_html_output_element_get_will_validate ::
@@ -171,10 +186,11 @@ foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.willValidate Mozilla HTMLOutputElement.willValidate documentation> 
 htmlOutputElementGetWillValidate ::
-                                 (IsHTMLOutputElement self) => self -> IO Bool
+                                 (MonadIO m, IsHTMLOutputElement self) => self -> m Bool
 htmlOutputElementGetWillValidate self
-  = ghcjs_dom_html_output_element_get_will_validate
-      (unHTMLOutputElement (toHTMLOutputElement self))
+  = liftIO
+      (ghcjs_dom_html_output_element_get_will_validate
+         (unHTMLOutputElement (toHTMLOutputElement self)))
  
 foreign import javascript unsafe "$1[\"validity\"]"
         ghcjs_dom_html_output_element_get_validity ::
@@ -182,11 +198,13 @@ foreign import javascript unsafe "$1[\"validity\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.validity Mozilla HTMLOutputElement.validity documentation> 
 htmlOutputElementGetValidity ::
-                             (IsHTMLOutputElement self) => self -> IO (Maybe ValidityState)
+                             (MonadIO m, IsHTMLOutputElement self) =>
+                               self -> m (Maybe ValidityState)
 htmlOutputElementGetValidity self
-  = (ghcjs_dom_html_output_element_get_validity
-       (unHTMLOutputElement (toHTMLOutputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_output_element_get_validity
+          (unHTMLOutputElement (toHTMLOutputElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         ghcjs_dom_html_output_element_get_validation_message ::
@@ -194,12 +212,13 @@ foreign import javascript unsafe "$1[\"validationMessage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.validationMessage Mozilla HTMLOutputElement.validationMessage documentation> 
 htmlOutputElementGetValidationMessage ::
-                                      (IsHTMLOutputElement self, FromJSString result) =>
-                                        self -> IO result
+                                      (MonadIO m, IsHTMLOutputElement self, FromJSString result) =>
+                                        self -> m result
 htmlOutputElementGetValidationMessage self
-  = fromJSString <$>
-      (ghcjs_dom_html_output_element_get_validation_message
-         (unHTMLOutputElement (toHTMLOutputElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_output_element_get_validation_message
+            (unHTMLOutputElement (toHTMLOutputElement self))))
  
 foreign import javascript unsafe "$1[\"labels\"]"
         ghcjs_dom_html_output_element_get_labels ::
@@ -207,11 +226,12 @@ foreign import javascript unsafe "$1[\"labels\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.labels Mozilla HTMLOutputElement.labels documentation> 
 htmlOutputElementGetLabels ::
-                           (IsHTMLOutputElement self) => self -> IO (Maybe NodeList)
+                           (MonadIO m, IsHTMLOutputElement self) => self -> m (Maybe NodeList)
 htmlOutputElementGetLabels self
-  = (ghcjs_dom_html_output_element_get_labels
-       (unHTMLOutputElement (toHTMLOutputElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_output_element_get_labels
+          (unHTMLOutputElement (toHTMLOutputElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLOutputElement (
   ) where

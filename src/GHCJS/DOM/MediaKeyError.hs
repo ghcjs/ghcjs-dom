@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -33,10 +34,12 @@ foreign import javascript unsafe "$1[\"code\"]"
         JSRef MediaKeyError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError.code Mozilla WebKitMediaKeyError.code documentation> 
-mediaKeyErrorGetCode :: (IsMediaKeyError self) => self -> IO Word
+mediaKeyErrorGetCode ::
+                     (MonadIO m, IsMediaKeyError self) => self -> m Word
 mediaKeyErrorGetCode self
-  = ghcjs_dom_media_key_error_get_code
-      (unMediaKeyError (toMediaKeyError self))
+  = liftIO
+      (ghcjs_dom_media_key_error_get_code
+         (unMediaKeyError (toMediaKeyError self)))
  
 foreign import javascript unsafe "$1[\"systemCode\"]"
         ghcjs_dom_media_key_error_get_system_code ::
@@ -44,10 +47,11 @@ foreign import javascript unsafe "$1[\"systemCode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError.systemCode Mozilla WebKitMediaKeyError.systemCode documentation> 
 mediaKeyErrorGetSystemCode ::
-                           (IsMediaKeyError self) => self -> IO Word
+                           (MonadIO m, IsMediaKeyError self) => self -> m Word
 mediaKeyErrorGetSystemCode self
-  = ghcjs_dom_media_key_error_get_system_code
-      (unMediaKeyError (toMediaKeyError self))
+  = liftIO
+      (ghcjs_dom_media_key_error_get_system_code
+         (unMediaKeyError (toMediaKeyError self)))
 #else
 module GHCJS.DOM.MediaKeyError (
   ) where

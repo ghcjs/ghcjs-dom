@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -34,18 +35,20 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.frequencyResponse Mozilla BiquadFilterNode.frequencyResponse documentation> 
 biquadFilterNodeGetFrequencyResponse ::
-                                     (IsBiquadFilterNode self, IsFloat32Array frequencyHz,
-                                      IsFloat32Array magResponse, IsFloat32Array phaseResponse) =>
+                                     (MonadIO m, IsBiquadFilterNode self,
+                                      IsFloat32Array frequencyHz, IsFloat32Array magResponse,
+                                      IsFloat32Array phaseResponse) =>
                                        self ->
                                          Maybe frequencyHz ->
-                                           Maybe magResponse -> Maybe phaseResponse -> IO ()
+                                           Maybe magResponse -> Maybe phaseResponse -> m ()
 biquadFilterNodeGetFrequencyResponse self frequencyHz magResponse
   phaseResponse
-  = ghcjs_dom_biquad_filter_node_get_frequency_response
-      (unBiquadFilterNode (toBiquadFilterNode self))
-      (maybe jsNull (unFloat32Array . toFloat32Array) frequencyHz)
-      (maybe jsNull (unFloat32Array . toFloat32Array) magResponse)
-      (maybe jsNull (unFloat32Array . toFloat32Array) phaseResponse)
+  = liftIO
+      (ghcjs_dom_biquad_filter_node_get_frequency_response
+         (unBiquadFilterNode (toBiquadFilterNode self))
+         (maybe jsNull (unFloat32Array . toFloat32Array) frequencyHz)
+         (maybe jsNull (unFloat32Array . toFloat32Array) magResponse)
+         (maybe jsNull (unFloat32Array . toFloat32Array) phaseResponse))
 cLOWPASS = 0
 cHIGHPASS = 1
 cBANDPASS = 2
@@ -61,11 +64,13 @@ foreign import javascript unsafe "$1[\"frequency\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.frequency Mozilla BiquadFilterNode.frequency documentation> 
 biquadFilterNodeGetFrequency ::
-                             (IsBiquadFilterNode self) => self -> IO (Maybe AudioParam)
+                             (MonadIO m, IsBiquadFilterNode self) =>
+                               self -> m (Maybe AudioParam)
 biquadFilterNodeGetFrequency self
-  = (ghcjs_dom_biquad_filter_node_get_frequency
-       (unBiquadFilterNode (toBiquadFilterNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_biquad_filter_node_get_frequency
+          (unBiquadFilterNode (toBiquadFilterNode self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"detune\"]"
         ghcjs_dom_biquad_filter_node_get_detune ::
@@ -73,11 +78,13 @@ foreign import javascript unsafe "$1[\"detune\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.detune Mozilla BiquadFilterNode.detune documentation> 
 biquadFilterNodeGetDetune ::
-                          (IsBiquadFilterNode self) => self -> IO (Maybe AudioParam)
+                          (MonadIO m, IsBiquadFilterNode self) =>
+                            self -> m (Maybe AudioParam)
 biquadFilterNodeGetDetune self
-  = (ghcjs_dom_biquad_filter_node_get_detune
-       (unBiquadFilterNode (toBiquadFilterNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_biquad_filter_node_get_detune
+          (unBiquadFilterNode (toBiquadFilterNode self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"Q\"]"
         ghcjs_dom_biquad_filter_node_get_q ::
@@ -85,11 +92,13 @@ foreign import javascript unsafe "$1[\"Q\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.q Mozilla BiquadFilterNode.q documentation> 
 biquadFilterNodeGetQ ::
-                     (IsBiquadFilterNode self) => self -> IO (Maybe AudioParam)
+                     (MonadIO m, IsBiquadFilterNode self) =>
+                       self -> m (Maybe AudioParam)
 biquadFilterNodeGetQ self
-  = (ghcjs_dom_biquad_filter_node_get_q
-       (unBiquadFilterNode (toBiquadFilterNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_biquad_filter_node_get_q
+          (unBiquadFilterNode (toBiquadFilterNode self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"gain\"]"
         ghcjs_dom_biquad_filter_node_get_gain ::
@@ -97,11 +106,13 @@ foreign import javascript unsafe "$1[\"gain\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.gain Mozilla BiquadFilterNode.gain documentation> 
 biquadFilterNodeGetGain ::
-                        (IsBiquadFilterNode self) => self -> IO (Maybe AudioParam)
+                        (MonadIO m, IsBiquadFilterNode self) =>
+                          self -> m (Maybe AudioParam)
 biquadFilterNodeGetGain self
-  = (ghcjs_dom_biquad_filter_node_get_gain
-       (unBiquadFilterNode (toBiquadFilterNode self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_biquad_filter_node_get_gain
+          (unBiquadFilterNode (toBiquadFilterNode self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.BiquadFilterNode (
   ) where

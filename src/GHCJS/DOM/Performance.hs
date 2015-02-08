@@ -20,7 +20,7 @@ module GHCJS.DOM.Performance
         performanceWebkitClearMeasures, ghcjs_dom_performance_now,
         performanceNow, ghcjs_dom_performance_get_navigation,
         performanceGetNavigation, ghcjs_dom_performance_get_timing,
-        performanceGetTiming, performanceOnwebkitresourcetimingbufferfull,
+        performanceGetTiming, performanceWebKitResourceTimingBufferFull,
         Performance, IsPerformance, castToPerformance, gTypePerformance,
         toPerformance)
        where
@@ -28,6 +28,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -42,11 +43,13 @@ foreign import javascript unsafe "$1[\"webkitGetEntries\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntries Mozilla Performance.webkitGetEntries documentation> 
 performanceWebkitGetEntries ::
-                            (IsPerformance self) => self -> IO (Maybe PerformanceEntryList)
+                            (MonadIO m, IsPerformance self) =>
+                              self -> m (Maybe PerformanceEntryList)
 performanceWebkitGetEntries self
-  = (ghcjs_dom_performance_webkit_get_entries
-       (unPerformance (toPerformance self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_performance_webkit_get_entries
+          (unPerformance (toPerformance self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"webkitGetEntriesByType\"]($2)"
@@ -55,13 +58,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByType Mozilla Performance.webkitGetEntriesByType documentation> 
 performanceWebkitGetEntriesByType ::
-                                  (IsPerformance self, ToJSString entryType) =>
-                                    self -> entryType -> IO (Maybe PerformanceEntryList)
+                                  (MonadIO m, IsPerformance self, ToJSString entryType) =>
+                                    self -> entryType -> m (Maybe PerformanceEntryList)
 performanceWebkitGetEntriesByType self entryType
-  = (ghcjs_dom_performance_webkit_get_entries_by_type
-       (unPerformance (toPerformance self))
-       (toJSString entryType))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_performance_webkit_get_entries_by_type
+          (unPerformance (toPerformance self))
+          (toJSString entryType))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"webkitGetEntriesByName\"]($2,\n$3)"
@@ -71,14 +75,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByName Mozilla Performance.webkitGetEntriesByName documentation> 
 performanceWebkitGetEntriesByName ::
-                                  (IsPerformance self, ToJSString name, ToJSString entryType) =>
-                                    self -> name -> entryType -> IO (Maybe PerformanceEntryList)
+                                  (MonadIO m, IsPerformance self, ToJSString name,
+                                   ToJSString entryType) =>
+                                    self -> name -> entryType -> m (Maybe PerformanceEntryList)
 performanceWebkitGetEntriesByName self name entryType
-  = (ghcjs_dom_performance_webkit_get_entries_by_name
-       (unPerformance (toPerformance self))
-       (toJSString name)
-       (toJSString entryType))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_performance_webkit_get_entries_by_name
+          (unPerformance (toPerformance self))
+          (toJSString name)
+          (toJSString entryType))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"webkitClearResourceTimings\"]()"
@@ -87,10 +93,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitClearResourceTimings Mozilla Performance.webkitClearResourceTimings documentation> 
 performanceWebkitClearResourceTimings ::
-                                      (IsPerformance self) => self -> IO ()
+                                      (MonadIO m, IsPerformance self) => self -> m ()
 performanceWebkitClearResourceTimings self
-  = ghcjs_dom_performance_webkit_clear_resource_timings
-      (unPerformance (toPerformance self))
+  = liftIO
+      (ghcjs_dom_performance_webkit_clear_resource_timings
+         (unPerformance (toPerformance self)))
  
 foreign import javascript unsafe
         "$1[\"webkitSetResourceTimingBufferSize\"]($2)"
@@ -99,11 +106,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitSetResourceTimingBufferSize Mozilla Performance.webkitSetResourceTimingBufferSize documentation> 
 performanceWebkitSetResourceTimingBufferSize ::
-                                             (IsPerformance self) => self -> Word -> IO ()
+                                             (MonadIO m, IsPerformance self) => self -> Word -> m ()
 performanceWebkitSetResourceTimingBufferSize self maxSize
-  = ghcjs_dom_performance_webkit_set_resource_timing_buffer_size
-      (unPerformance (toPerformance self))
-      maxSize
+  = liftIO
+      (ghcjs_dom_performance_webkit_set_resource_timing_buffer_size
+         (unPerformance (toPerformance self))
+         maxSize)
  
 foreign import javascript unsafe "$1[\"webkitMark\"]($2)"
         ghcjs_dom_performance_webkit_mark ::
@@ -111,12 +119,13 @@ foreign import javascript unsafe "$1[\"webkitMark\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitMark Mozilla Performance.webkitMark documentation> 
 performanceWebkitMark ::
-                      (IsPerformance self, ToJSString markName) =>
-                        self -> markName -> IO ()
+                      (MonadIO m, IsPerformance self, ToJSString markName) =>
+                        self -> markName -> m ()
 performanceWebkitMark self markName
-  = ghcjs_dom_performance_webkit_mark
-      (unPerformance (toPerformance self))
-      (toJSString markName)
+  = liftIO
+      (ghcjs_dom_performance_webkit_mark
+         (unPerformance (toPerformance self))
+         (toJSString markName))
  
 foreign import javascript unsafe "$1[\"webkitClearMarks\"]($2)"
         ghcjs_dom_performance_webkit_clear_marks ::
@@ -124,12 +133,13 @@ foreign import javascript unsafe "$1[\"webkitClearMarks\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitClearMarks Mozilla Performance.webkitClearMarks documentation> 
 performanceWebkitClearMarks ::
-                            (IsPerformance self, ToJSString markName) =>
-                              self -> markName -> IO ()
+                            (MonadIO m, IsPerformance self, ToJSString markName) =>
+                              self -> markName -> m ()
 performanceWebkitClearMarks self markName
-  = ghcjs_dom_performance_webkit_clear_marks
-      (unPerformance (toPerformance self))
-      (toJSString markName)
+  = liftIO
+      (ghcjs_dom_performance_webkit_clear_marks
+         (unPerformance (toPerformance self))
+         (toJSString markName))
  
 foreign import javascript unsafe
         "$1[\"webkitMeasure\"]($2, $3, $4)"
@@ -138,15 +148,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitMeasure Mozilla Performance.webkitMeasure documentation> 
 performanceWebkitMeasure ::
-                         (IsPerformance self, ToJSString measureName, ToJSString startMark,
-                          ToJSString endMark) =>
-                           self -> measureName -> startMark -> endMark -> IO ()
+                         (MonadIO m, IsPerformance self, ToJSString measureName,
+                          ToJSString startMark, ToJSString endMark) =>
+                           self -> measureName -> startMark -> endMark -> m ()
 performanceWebkitMeasure self measureName startMark endMark
-  = ghcjs_dom_performance_webkit_measure
-      (unPerformance (toPerformance self))
-      (toJSString measureName)
-      (toJSString startMark)
-      (toJSString endMark)
+  = liftIO
+      (ghcjs_dom_performance_webkit_measure
+         (unPerformance (toPerformance self))
+         (toJSString measureName)
+         (toJSString startMark)
+         (toJSString endMark))
  
 foreign import javascript unsafe "$1[\"webkitClearMeasures\"]($2)"
         ghcjs_dom_performance_webkit_clear_measures ::
@@ -154,20 +165,23 @@ foreign import javascript unsafe "$1[\"webkitClearMeasures\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitClearMeasures Mozilla Performance.webkitClearMeasures documentation> 
 performanceWebkitClearMeasures ::
-                               (IsPerformance self, ToJSString measureName) =>
-                                 self -> measureName -> IO ()
+                               (MonadIO m, IsPerformance self, ToJSString measureName) =>
+                                 self -> measureName -> m ()
 performanceWebkitClearMeasures self measureName
-  = ghcjs_dom_performance_webkit_clear_measures
-      (unPerformance (toPerformance self))
-      (toJSString measureName)
+  = liftIO
+      (ghcjs_dom_performance_webkit_clear_measures
+         (unPerformance (toPerformance self))
+         (toJSString measureName))
  
 foreign import javascript unsafe "$1[\"now\"]()"
         ghcjs_dom_performance_now :: JSRef Performance -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.now Mozilla Performance.now documentation> 
-performanceNow :: (IsPerformance self) => self -> IO Double
+performanceNow ::
+               (MonadIO m, IsPerformance self) => self -> m Double
 performanceNow self
-  = ghcjs_dom_performance_now (unPerformance (toPerformance self))
+  = liftIO
+      (ghcjs_dom_performance_now (unPerformance (toPerformance self)))
  
 foreign import javascript unsafe "$1[\"navigation\"]"
         ghcjs_dom_performance_get_navigation ::
@@ -175,11 +189,13 @@ foreign import javascript unsafe "$1[\"navigation\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.navigation Mozilla Performance.navigation documentation> 
 performanceGetNavigation ::
-                         (IsPerformance self) => self -> IO (Maybe PerformanceNavigation)
+                         (MonadIO m, IsPerformance self) =>
+                           self -> m (Maybe PerformanceNavigation)
 performanceGetNavigation self
-  = (ghcjs_dom_performance_get_navigation
-       (unPerformance (toPerformance self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_performance_get_navigation
+          (unPerformance (toPerformance self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"timing\"]"
         ghcjs_dom_performance_get_timing ::
@@ -187,18 +203,20 @@ foreign import javascript unsafe "$1[\"timing\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.timing Mozilla Performance.timing documentation> 
 performanceGetTiming ::
-                     (IsPerformance self) => self -> IO (Maybe PerformanceTiming)
+                     (MonadIO m, IsPerformance self) =>
+                       self -> m (Maybe PerformanceTiming)
 performanceGetTiming self
-  = (ghcjs_dom_performance_get_timing
-       (unPerformance (toPerformance self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_performance_get_timing
+          (unPerformance (toPerformance self)))
+         >>= fromJSRef)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.onwebkitresourcetimingbufferfull Mozilla Performance.onwebkitresourcetimingbufferfull documentation> 
-performanceOnwebkitresourcetimingbufferfull ::
-                                            (IsPerformance self) =>
-                                              Signal self (EventM UIEvent self ())
-performanceOnwebkitresourcetimingbufferfull
-  = (connect "webkitresourcetimingbufferfull")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webKitResourceTimingBufferFull Mozilla Performance.webKitResourceTimingBufferFull documentation> 
+performanceWebKitResourceTimingBufferFull ::
+                                          (IsPerformance self, IsEventTarget self) =>
+                                            EventName self Event
+performanceWebKitResourceTimingBufferFull
+  = unsafeEventName (toJSString "webkitresourcetimingbufferfull")
 #else
 module GHCJS.DOM.Performance (
   ) where

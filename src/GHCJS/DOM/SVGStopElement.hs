@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,11 +25,13 @@ foreign import javascript unsafe "$1[\"offset\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement.offset Mozilla SVGStopElement.offset documentation> 
 svgStopElementGetOffset ::
-                        (IsSVGStopElement self) => self -> IO (Maybe SVGAnimatedNumber)
+                        (MonadIO m, IsSVGStopElement self) =>
+                          self -> m (Maybe SVGAnimatedNumber)
 svgStopElementGetOffset self
-  = (ghcjs_dom_svg_stop_element_get_offset
-       (unSVGStopElement (toSVGStopElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_stop_element_get_offset
+          (unSVGStopElement (toSVGStopElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGStopElement (
   ) where

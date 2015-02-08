@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,16 +27,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.initCustomEvent Mozilla CustomEvent.initCustomEvent documentation> 
 customEventInitCustomEvent ::
-                           (IsCustomEvent self, ToJSString typeArg) =>
-                             self -> typeArg -> Bool -> Bool -> JSRef a -> IO ()
+                           (MonadIO m, IsCustomEvent self, ToJSString typeArg) =>
+                             self -> typeArg -> Bool -> Bool -> JSRef a -> m ()
 customEventInitCustomEvent self typeArg canBubbleArg cancelableArg
   detailArg
-  = ghcjs_dom_custom_event_init_custom_event
-      (unCustomEvent (toCustomEvent self))
-      (toJSString typeArg)
-      canBubbleArg
-      cancelableArg
-      detailArg
+  = liftIO
+      (ghcjs_dom_custom_event_init_custom_event
+         (unCustomEvent (toCustomEvent self))
+         (toJSString typeArg)
+         canBubbleArg
+         cancelableArg
+         detailArg)
  
 foreign import javascript unsafe "$1[\"detail\"]"
         ghcjs_dom_custom_event_get_detail ::
@@ -43,10 +45,11 @@ foreign import javascript unsafe "$1[\"detail\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.detail Mozilla CustomEvent.detail documentation> 
 customEventGetDetail ::
-                     (IsCustomEvent self) => self -> IO (JSRef a)
+                     (MonadIO m, IsCustomEvent self) => self -> m (JSRef a)
 customEventGetDetail self
-  = ghcjs_dom_custom_event_get_detail
-      (unCustomEvent (toCustomEvent self))
+  = liftIO
+      (ghcjs_dom_custom_event_get_detail
+         (unCustomEvent (toCustomEvent self)))
 #else
 module GHCJS.DOM.CustomEvent (
   ) where

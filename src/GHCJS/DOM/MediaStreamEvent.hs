@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,11 +25,13 @@ foreign import javascript unsafe "$1[\"stream\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamEvent.stream Mozilla MediaStreamEvent.stream documentation> 
 mediaStreamEventGetStream ::
-                          (IsMediaStreamEvent self) => self -> IO (Maybe MediaStream)
+                          (MonadIO m, IsMediaStreamEvent self) =>
+                            self -> m (Maybe MediaStream)
 mediaStreamEventGetStream self
-  = (ghcjs_dom_media_stream_event_get_stream
-       (unMediaStreamEvent (toMediaStreamEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_media_stream_event_get_stream
+          (unMediaStreamEvent (toMediaStreamEvent self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.MediaStreamEvent (
   ) where

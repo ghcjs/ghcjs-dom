@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,10 +30,11 @@ foreign import javascript unsafe "$1[\"charIndex\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.charIndex Mozilla SpeechSynthesisEvent.charIndex documentation> 
 speechSynthesisEventGetCharIndex ::
-                                 (IsSpeechSynthesisEvent self) => self -> IO Word
+                                 (MonadIO m, IsSpeechSynthesisEvent self) => self -> m Word
 speechSynthesisEventGetCharIndex self
-  = ghcjs_dom_speech_synthesis_event_get_char_index
-      (unSpeechSynthesisEvent (toSpeechSynthesisEvent self))
+  = liftIO
+      (ghcjs_dom_speech_synthesis_event_get_char_index
+         (unSpeechSynthesisEvent (toSpeechSynthesisEvent self)))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
         ghcjs_dom_speech_synthesis_event_get_elapsed_time ::
@@ -40,10 +42,11 @@ foreign import javascript unsafe "$1[\"elapsedTime\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.elapsedTime Mozilla SpeechSynthesisEvent.elapsedTime documentation> 
 speechSynthesisEventGetElapsedTime ::
-                                   (IsSpeechSynthesisEvent self) => self -> IO Float
+                                   (MonadIO m, IsSpeechSynthesisEvent self) => self -> m Float
 speechSynthesisEventGetElapsedTime self
-  = ghcjs_dom_speech_synthesis_event_get_elapsed_time
-      (unSpeechSynthesisEvent (toSpeechSynthesisEvent self))
+  = liftIO
+      (ghcjs_dom_speech_synthesis_event_get_elapsed_time
+         (unSpeechSynthesisEvent (toSpeechSynthesisEvent self)))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_speech_synthesis_event_get_name ::
@@ -51,12 +54,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.name Mozilla SpeechSynthesisEvent.name documentation> 
 speechSynthesisEventGetName ::
-                            (IsSpeechSynthesisEvent self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsSpeechSynthesisEvent self, FromJSString result) =>
+                              self -> m result
 speechSynthesisEventGetName self
-  = fromJSString <$>
-      (ghcjs_dom_speech_synthesis_event_get_name
-         (unSpeechSynthesisEvent (toSpeechSynthesisEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_speech_synthesis_event_get_name
+            (unSpeechSynthesisEvent (toSpeechSynthesisEvent self))))
 #else
 module GHCJS.DOM.SpeechSynthesisEvent (
   ) where

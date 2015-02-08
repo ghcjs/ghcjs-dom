@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -34,14 +35,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.hasFeature Mozilla DOMImplementation.hasFeature documentation> 
 domImplementationHasFeature ::
-                            (IsDOMImplementation self, ToJSString feature,
+                            (MonadIO m, IsDOMImplementation self, ToJSString feature,
                              ToJSString version) =>
-                              self -> feature -> version -> IO Bool
+                              self -> feature -> version -> m Bool
 domImplementationHasFeature self feature version
-  = ghcjs_dom_dom_implementation_has_feature
-      (unDOMImplementation (toDOMImplementation self))
-      (toJSString feature)
-      (toJSString version)
+  = liftIO
+      (ghcjs_dom_dom_implementation_has_feature
+         (unDOMImplementation (toDOMImplementation self))
+         (toJSString feature)
+         (toJSString version))
  
 foreign import javascript unsafe
         "$1[\"createDocumentType\"]($2, $3,\n$4)"
@@ -51,19 +53,20 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocumentType Mozilla DOMImplementation.createDocumentType documentation> 
 domImplementationCreateDocumentType ::
-                                    (IsDOMImplementation self, ToJSString qualifiedName,
+                                    (MonadIO m, IsDOMImplementation self, ToJSString qualifiedName,
                                      ToJSString publicId, ToJSString systemId) =>
                                       self ->
                                         qualifiedName ->
-                                          publicId -> systemId -> IO (Maybe DocumentType)
+                                          publicId -> systemId -> m (Maybe DocumentType)
 domImplementationCreateDocumentType self qualifiedName publicId
   systemId
-  = (ghcjs_dom_dom_implementation_create_document_type
-       (unDOMImplementation (toDOMImplementation self))
-       (toJSString qualifiedName)
-       (toJSString publicId)
-       (toJSString systemId))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_implementation_create_document_type
+          (unDOMImplementation (toDOMImplementation self))
+          (toJSString qualifiedName)
+          (toJSString publicId)
+          (toJSString systemId))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createDocument\"]($2, $3, $4)"
@@ -73,19 +76,20 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocument Mozilla DOMImplementation.createDocument documentation> 
 domImplementationCreateDocument ::
-                                (IsDOMImplementation self, ToJSString namespaceURI,
+                                (MonadIO m, IsDOMImplementation self, ToJSString namespaceURI,
                                  ToJSString qualifiedName, IsDocumentType doctype) =>
                                   self ->
                                     namespaceURI ->
-                                      qualifiedName -> Maybe doctype -> IO (Maybe Document)
+                                      qualifiedName -> Maybe doctype -> m (Maybe Document)
 domImplementationCreateDocument self namespaceURI qualifiedName
   doctype
-  = (ghcjs_dom_dom_implementation_create_document
-       (unDOMImplementation (toDOMImplementation self))
-       (toJSString namespaceURI)
-       (toJSString qualifiedName)
-       (maybe jsNull (unDocumentType . toDocumentType) doctype))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_implementation_create_document
+          (unDOMImplementation (toDOMImplementation self))
+          (toJSString namespaceURI)
+          (toJSString qualifiedName)
+          (maybe jsNull (unDocumentType . toDocumentType) doctype))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createCSSStyleSheet\"]($2,\n$3)"
@@ -95,15 +99,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createCSSStyleSheet Mozilla DOMImplementation.createCSSStyleSheet documentation> 
 domImplementationCreateCSSStyleSheet ::
-                                     (IsDOMImplementation self, ToJSString title,
+                                     (MonadIO m, IsDOMImplementation self, ToJSString title,
                                       ToJSString media) =>
-                                       self -> title -> media -> IO (Maybe CSSStyleSheet)
+                                       self -> title -> media -> m (Maybe CSSStyleSheet)
 domImplementationCreateCSSStyleSheet self title media
-  = (ghcjs_dom_dom_implementation_create_css_style_sheet
-       (unDOMImplementation (toDOMImplementation self))
-       (toJSString title)
-       (toJSString media))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_implementation_create_css_style_sheet
+          (unDOMImplementation (toDOMImplementation self))
+          (toJSString title)
+          (toJSString media))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"
         ghcjs_dom_dom_implementation_create_html_document ::
@@ -111,13 +116,14 @@ foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createHTMLDocument Mozilla DOMImplementation.createHTMLDocument documentation> 
 domImplementationCreateHTMLDocument ::
-                                    (IsDOMImplementation self, ToJSString title) =>
-                                      self -> title -> IO (Maybe HTMLDocument)
+                                    (MonadIO m, IsDOMImplementation self, ToJSString title) =>
+                                      self -> title -> m (Maybe HTMLDocument)
 domImplementationCreateHTMLDocument self title
-  = (ghcjs_dom_dom_implementation_create_html_document
-       (unDOMImplementation (toDOMImplementation self))
-       (toJSString title))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_dom_implementation_create_html_document
+          (unDOMImplementation (toDOMImplementation self))
+          (toJSString title))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.DOMImplementation (
   module Graphics.UI.Gtk.WebKit.DOM.DOMImplementation

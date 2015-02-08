@@ -23,6 +23,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -37,12 +38,14 @@ foreign import javascript unsafe "$1[\"setFilterRes\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterRes Mozilla SVGFilterElement.filterRes documentation> 
 svgFilterElementSetFilterRes ::
-                             (IsSVGFilterElement self) => self -> Word -> Word -> IO ()
+                             (MonadIO m, IsSVGFilterElement self) =>
+                               self -> Word -> Word -> m ()
 svgFilterElementSetFilterRes self filterResX filterResY
-  = ghcjs_dom_svg_filter_element_set_filter_res
-      (unSVGFilterElement (toSVGFilterElement self))
-      filterResX
-      filterResY
+  = liftIO
+      (ghcjs_dom_svg_filter_element_set_filter_res
+         (unSVGFilterElement (toSVGFilterElement self))
+         filterResX
+         filterResY)
  
 foreign import javascript unsafe "$1[\"filterUnits\"]"
         ghcjs_dom_svg_filter_element_get_filter_units ::
@@ -50,12 +53,13 @@ foreign import javascript unsafe "$1[\"filterUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterUnits Mozilla SVGFilterElement.filterUnits documentation> 
 svgFilterElementGetFilterUnits ::
-                               (IsSVGFilterElement self) =>
-                                 self -> IO (Maybe SVGAnimatedEnumeration)
+                               (MonadIO m, IsSVGFilterElement self) =>
+                                 self -> m (Maybe SVGAnimatedEnumeration)
 svgFilterElementGetFilterUnits self
-  = (ghcjs_dom_svg_filter_element_get_filter_units
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_filter_units
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"primitiveUnits\"]"
         ghcjs_dom_svg_filter_element_get_primitive_units ::
@@ -63,12 +67,13 @@ foreign import javascript unsafe "$1[\"primitiveUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.primitiveUnits Mozilla SVGFilterElement.primitiveUnits documentation> 
 svgFilterElementGetPrimitiveUnits ::
-                                  (IsSVGFilterElement self) =>
-                                    self -> IO (Maybe SVGAnimatedEnumeration)
+                                  (MonadIO m, IsSVGFilterElement self) =>
+                                    self -> m (Maybe SVGAnimatedEnumeration)
 svgFilterElementGetPrimitiveUnits self
-  = (ghcjs_dom_svg_filter_element_get_primitive_units
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_primitive_units
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_filter_element_get_x ::
@@ -76,11 +81,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.x Mozilla SVGFilterElement.x documentation> 
 svgFilterElementGetX ::
-                     (IsSVGFilterElement self) => self -> IO (Maybe SVGAnimatedLength)
+                     (MonadIO m, IsSVGFilterElement self) =>
+                       self -> m (Maybe SVGAnimatedLength)
 svgFilterElementGetX self
-  = (ghcjs_dom_svg_filter_element_get_x
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_x
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_filter_element_get_y ::
@@ -88,11 +95,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.y Mozilla SVGFilterElement.y documentation> 
 svgFilterElementGetY ::
-                     (IsSVGFilterElement self) => self -> IO (Maybe SVGAnimatedLength)
+                     (MonadIO m, IsSVGFilterElement self) =>
+                       self -> m (Maybe SVGAnimatedLength)
 svgFilterElementGetY self
-  = (ghcjs_dom_svg_filter_element_get_y
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_y
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_svg_filter_element_get_width ::
@@ -100,11 +109,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.width Mozilla SVGFilterElement.width documentation> 
 svgFilterElementGetWidth ::
-                         (IsSVGFilterElement self) => self -> IO (Maybe SVGAnimatedLength)
+                         (MonadIO m, IsSVGFilterElement self) =>
+                           self -> m (Maybe SVGAnimatedLength)
 svgFilterElementGetWidth self
-  = (ghcjs_dom_svg_filter_element_get_width
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_width
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_svg_filter_element_get_height ::
@@ -112,11 +123,13 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.height Mozilla SVGFilterElement.height documentation> 
 svgFilterElementGetHeight ::
-                          (IsSVGFilterElement self) => self -> IO (Maybe SVGAnimatedLength)
+                          (MonadIO m, IsSVGFilterElement self) =>
+                            self -> m (Maybe SVGAnimatedLength)
 svgFilterElementGetHeight self
-  = (ghcjs_dom_svg_filter_element_get_height
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_height
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"filterResX\"]"
         ghcjs_dom_svg_filter_element_get_filter_res_x ::
@@ -124,11 +137,13 @@ foreign import javascript unsafe "$1[\"filterResX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterResX Mozilla SVGFilterElement.filterResX documentation> 
 svgFilterElementGetFilterResX ::
-                              (IsSVGFilterElement self) => self -> IO (Maybe SVGAnimatedInteger)
+                              (MonadIO m, IsSVGFilterElement self) =>
+                                self -> m (Maybe SVGAnimatedInteger)
 svgFilterElementGetFilterResX self
-  = (ghcjs_dom_svg_filter_element_get_filter_res_x
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_filter_res_x
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"filterResY\"]"
         ghcjs_dom_svg_filter_element_get_filter_res_y ::
@@ -136,11 +151,13 @@ foreign import javascript unsafe "$1[\"filterResY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterResY Mozilla SVGFilterElement.filterResY documentation> 
 svgFilterElementGetFilterResY ::
-                              (IsSVGFilterElement self) => self -> IO (Maybe SVGAnimatedInteger)
+                              (MonadIO m, IsSVGFilterElement self) =>
+                                self -> m (Maybe SVGAnimatedInteger)
 svgFilterElementGetFilterResY self
-  = (ghcjs_dom_svg_filter_element_get_filter_res_y
-       (unSVGFilterElement (toSVGFilterElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_filter_element_get_filter_res_y
+          (unSVGFilterElement (toSVGFilterElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFilterElement (
   ) where

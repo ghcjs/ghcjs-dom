@@ -31,6 +31,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -45,14 +46,15 @@ foreign import javascript unsafe "$1[\"put\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.put Mozilla IDBObjectStore.put documentation> 
 idbObjectStorePut ::
-                  (IsIDBObjectStore self) =>
-                    self -> JSRef a -> JSRef a -> IO (Maybe IDBRequest)
+                  (MonadIO m, IsIDBObjectStore self) =>
+                    self -> JSRef a -> JSRef a -> m (Maybe IDBRequest)
 idbObjectStorePut self value key
-  = (ghcjs_dom_idb_object_store_put
-       (unIDBObjectStore (toIDBObjectStore self))
-       value
-       key)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_put
+          (unIDBObjectStore (toIDBObjectStore self))
+          value
+          key)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)"
         ghcjs_dom_idb_object_store_add ::
@@ -60,14 +62,15 @@ foreign import javascript unsafe "$1[\"add\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.add Mozilla IDBObjectStore.add documentation> 
 idbObjectStoreAdd ::
-                  (IsIDBObjectStore self) =>
-                    self -> JSRef a -> JSRef a -> IO (Maybe IDBRequest)
+                  (MonadIO m, IsIDBObjectStore self) =>
+                    self -> JSRef a -> JSRef a -> m (Maybe IDBRequest)
 idbObjectStoreAdd self value key
-  = (ghcjs_dom_idb_object_store_add
-       (unIDBObjectStore (toIDBObjectStore self))
-       value
-       key)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_add
+          (unIDBObjectStore (toIDBObjectStore self))
+          value
+          key)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"delete\"]($2)"
         ghcjs_dom_idb_object_store_deleteRange ::
@@ -75,13 +78,14 @@ foreign import javascript unsafe "$1[\"delete\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.deleteRange Mozilla IDBObjectStore.deleteRange documentation> 
 idbObjectStoreDeleteRange ::
-                          (IsIDBObjectStore self, IsIDBKeyRange keyRange) =>
-                            self -> Maybe keyRange -> IO (Maybe IDBRequest)
+                          (MonadIO m, IsIDBObjectStore self, IsIDBKeyRange keyRange) =>
+                            self -> Maybe keyRange -> m (Maybe IDBRequest)
 idbObjectStoreDeleteRange self keyRange
-  = (ghcjs_dom_idb_object_store_deleteRange
-       (unIDBObjectStore (toIDBObjectStore self))
-       (maybe jsNull (unIDBKeyRange . toIDBKeyRange) keyRange))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_deleteRange
+          (unIDBObjectStore (toIDBObjectStore self))
+          (maybe jsNull (unIDBKeyRange . toIDBKeyRange) keyRange))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"delete\"]($2)"
         ghcjs_dom_idb_object_store_delete ::
@@ -89,12 +93,14 @@ foreign import javascript unsafe "$1[\"delete\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
 idbObjectStoreDelete ::
-                     (IsIDBObjectStore self) => self -> JSRef a -> IO (Maybe IDBRequest)
+                     (MonadIO m, IsIDBObjectStore self) =>
+                       self -> JSRef a -> m (Maybe IDBRequest)
 idbObjectStoreDelete self key
-  = (ghcjs_dom_idb_object_store_delete
-       (unIDBObjectStore (toIDBObjectStore self))
-       key)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_delete
+          (unIDBObjectStore (toIDBObjectStore self))
+          key)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"get\"]($2)"
         ghcjs_dom_idb_object_store_getRange ::
@@ -102,13 +108,14 @@ foreign import javascript unsafe "$1[\"get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.range Mozilla IDBObjectStore.range documentation> 
 idbObjectStoreGetRange ::
-                       (IsIDBObjectStore self, IsIDBKeyRange key) =>
-                         self -> Maybe key -> IO (Maybe IDBRequest)
+                       (MonadIO m, IsIDBObjectStore self, IsIDBKeyRange key) =>
+                         self -> Maybe key -> m (Maybe IDBRequest)
 idbObjectStoreGetRange self key
-  = (ghcjs_dom_idb_object_store_getRange
-       (unIDBObjectStore (toIDBObjectStore self))
-       (maybe jsNull (unIDBKeyRange . toIDBKeyRange) key))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_getRange
+          (unIDBObjectStore (toIDBObjectStore self))
+          (maybe jsNull (unIDBKeyRange . toIDBKeyRange) key))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"get\"]($2)"
         ghcjs_dom_idb_object_store_get ::
@@ -116,12 +123,14 @@ foreign import javascript unsafe "$1[\"get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
 idbObjectStoreGet ::
-                  (IsIDBObjectStore self) => self -> JSRef a -> IO (Maybe IDBRequest)
+                  (MonadIO m, IsIDBObjectStore self) =>
+                    self -> JSRef a -> m (Maybe IDBRequest)
 idbObjectStoreGet self key
-  = (ghcjs_dom_idb_object_store_get
-       (unIDBObjectStore (toIDBObjectStore self))
-       key)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_get
+          (unIDBObjectStore (toIDBObjectStore self))
+          key)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_idb_object_store_clear ::
@@ -129,11 +138,12 @@ foreign import javascript unsafe "$1[\"clear\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.clear Mozilla IDBObjectStore.clear documentation> 
 idbObjectStoreClear ::
-                    (IsIDBObjectStore self) => self -> IO (Maybe IDBRequest)
+                    (MonadIO m, IsIDBObjectStore self) => self -> m (Maybe IDBRequest)
 idbObjectStoreClear self
-  = (ghcjs_dom_idb_object_store_clear
-       (unIDBObjectStore (toIDBObjectStore self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_clear
+          (unIDBObjectStore (toIDBObjectStore self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
         ghcjs_dom_idb_object_store_open_cursorRange ::
@@ -142,15 +152,16 @@ foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.openCursorRange Mozilla IDBObjectStore.openCursorRange documentation> 
 idbObjectStoreOpenCursorRange ::
-                              (IsIDBObjectStore self, IsIDBKeyRange range,
+                              (MonadIO m, IsIDBObjectStore self, IsIDBKeyRange range,
                                ToJSString direction) =>
-                                self -> Maybe range -> direction -> IO (Maybe IDBRequest)
+                                self -> Maybe range -> direction -> m (Maybe IDBRequest)
 idbObjectStoreOpenCursorRange self range direction
-  = (ghcjs_dom_idb_object_store_open_cursorRange
-       (unIDBObjectStore (toIDBObjectStore self))
-       (maybe jsNull (unIDBKeyRange . toIDBKeyRange) range)
-       (toJSString direction))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_open_cursorRange
+          (unIDBObjectStore (toIDBObjectStore self))
+          (maybe jsNull (unIDBKeyRange . toIDBKeyRange) range)
+          (toJSString direction))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
         ghcjs_dom_idb_object_store_open_cursor ::
@@ -159,14 +170,15 @@ foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.openCursor Mozilla IDBObjectStore.openCursor documentation> 
 idbObjectStoreOpenCursor ::
-                         (IsIDBObjectStore self, ToJSString direction) =>
-                           self -> JSRef a -> direction -> IO (Maybe IDBRequest)
+                         (MonadIO m, IsIDBObjectStore self, ToJSString direction) =>
+                           self -> JSRef a -> direction -> m (Maybe IDBRequest)
 idbObjectStoreOpenCursor self key direction
-  = (ghcjs_dom_idb_object_store_open_cursor
-       (unIDBObjectStore (toIDBObjectStore self))
-       key
-       (toJSString direction))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_open_cursor
+          (unIDBObjectStore (toIDBObjectStore self))
+          key
+          (toJSString direction))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createIndex\"]($2, $3, $4)"
         ghcjs_dom_idb_object_store_create_index' ::
@@ -176,18 +188,19 @@ foreign import javascript unsafe "$1[\"createIndex\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.createIndex' Mozilla IDBObjectStore.createIndex' documentation> 
 idbObjectStoreCreateIndex' ::
-                           (IsIDBObjectStore self, ToJSString name, ToJSString keyPath,
-                            IsDictionary options) =>
-                             self -> name -> [keyPath] -> Maybe options -> IO (Maybe IDBIndex)
+                           (MonadIO m, IsIDBObjectStore self, ToJSString name,
+                            ToJSString keyPath, IsDictionary options) =>
+                             self -> name -> [keyPath] -> Maybe options -> m (Maybe IDBIndex)
 idbObjectStoreCreateIndex' self name keyPath options
-  = (toJSRef keyPath >>=
-       \ keyPath' ->
-         ghcjs_dom_idb_object_store_create_index'
-           (unIDBObjectStore (toIDBObjectStore self))
-           (toJSString name)
-           keyPath'
-       (maybe jsNull (unDictionary . toDictionary) options))
-      >>= fromJSRef
+  = liftIO
+      ((toJSRef keyPath >>=
+          \ keyPath' ->
+            ghcjs_dom_idb_object_store_create_index'
+              (unIDBObjectStore (toIDBObjectStore self))
+              (toJSString name)
+              keyPath'
+          (maybe jsNull (unDictionary . toDictionary) options))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createIndex\"]($2, $3, $4)"
         ghcjs_dom_idb_object_store_create_index ::
@@ -196,16 +209,17 @@ foreign import javascript unsafe "$1[\"createIndex\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.createIndex Mozilla IDBObjectStore.createIndex documentation> 
 idbObjectStoreCreateIndex ::
-                          (IsIDBObjectStore self, ToJSString name, ToJSString keyPath,
-                           IsDictionary options) =>
-                            self -> name -> keyPath -> Maybe options -> IO (Maybe IDBIndex)
+                          (MonadIO m, IsIDBObjectStore self, ToJSString name,
+                           ToJSString keyPath, IsDictionary options) =>
+                            self -> name -> keyPath -> Maybe options -> m (Maybe IDBIndex)
 idbObjectStoreCreateIndex self name keyPath options
-  = (ghcjs_dom_idb_object_store_create_index
-       (unIDBObjectStore (toIDBObjectStore self))
-       (toJSString name)
-       (toJSString keyPath)
-       (maybe jsNull (unDictionary . toDictionary) options))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_create_index
+          (unIDBObjectStore (toIDBObjectStore self))
+          (toJSString name)
+          (toJSString keyPath)
+          (maybe jsNull (unDictionary . toDictionary) options))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"index\"]($2)"
         ghcjs_dom_idb_object_store_index ::
@@ -213,13 +227,14 @@ foreign import javascript unsafe "$1[\"index\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.index Mozilla IDBObjectStore.index documentation> 
 idbObjectStoreIndex ::
-                    (IsIDBObjectStore self, ToJSString name) =>
-                      self -> name -> IO (Maybe IDBIndex)
+                    (MonadIO m, IsIDBObjectStore self, ToJSString name) =>
+                      self -> name -> m (Maybe IDBIndex)
 idbObjectStoreIndex self name
-  = (ghcjs_dom_idb_object_store_index
-       (unIDBObjectStore (toIDBObjectStore self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_index
+          (unIDBObjectStore (toIDBObjectStore self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"deleteIndex\"]($2)"
         ghcjs_dom_idb_object_store_delete_index ::
@@ -227,11 +242,13 @@ foreign import javascript unsafe "$1[\"deleteIndex\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.deleteIndex Mozilla IDBObjectStore.deleteIndex documentation> 
 idbObjectStoreDeleteIndex ::
-                          (IsIDBObjectStore self, ToJSString name) => self -> name -> IO ()
+                          (MonadIO m, IsIDBObjectStore self, ToJSString name) =>
+                            self -> name -> m ()
 idbObjectStoreDeleteIndex self name
-  = ghcjs_dom_idb_object_store_delete_index
-      (unIDBObjectStore (toIDBObjectStore self))
-      (toJSString name)
+  = liftIO
+      (ghcjs_dom_idb_object_store_delete_index
+         (unIDBObjectStore (toIDBObjectStore self))
+         (toJSString name))
  
 foreign import javascript unsafe "$1[\"count\"]($2)"
         ghcjs_dom_idb_object_store_countRange ::
@@ -239,13 +256,14 @@ foreign import javascript unsafe "$1[\"count\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.countRange Mozilla IDBObjectStore.countRange documentation> 
 idbObjectStoreCountRange ::
-                         (IsIDBObjectStore self, IsIDBKeyRange range) =>
-                           self -> Maybe range -> IO (Maybe IDBRequest)
+                         (MonadIO m, IsIDBObjectStore self, IsIDBKeyRange range) =>
+                           self -> Maybe range -> m (Maybe IDBRequest)
 idbObjectStoreCountRange self range
-  = (ghcjs_dom_idb_object_store_countRange
-       (unIDBObjectStore (toIDBObjectStore self))
-       (maybe jsNull (unIDBKeyRange . toIDBKeyRange) range))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_countRange
+          (unIDBObjectStore (toIDBObjectStore self))
+          (maybe jsNull (unIDBKeyRange . toIDBKeyRange) range))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"count\"]($2)"
         ghcjs_dom_idb_object_store_count ::
@@ -253,12 +271,14 @@ foreign import javascript unsafe "$1[\"count\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
 idbObjectStoreCount ::
-                    (IsIDBObjectStore self) => self -> JSRef a -> IO (Maybe IDBRequest)
+                    (MonadIO m, IsIDBObjectStore self) =>
+                      self -> JSRef a -> m (Maybe IDBRequest)
 idbObjectStoreCount self key
-  = (ghcjs_dom_idb_object_store_count
-       (unIDBObjectStore (toIDBObjectStore self))
-       key)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_count
+          (unIDBObjectStore (toIDBObjectStore self))
+          key)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_idb_object_store_get_name ::
@@ -266,11 +286,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.name Mozilla IDBObjectStore.name documentation> 
 idbObjectStoreGetName ::
-                      (IsIDBObjectStore self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsIDBObjectStore self, FromJSString result) =>
+                        self -> m result
 idbObjectStoreGetName self
-  = fromJSString <$>
-      (ghcjs_dom_idb_object_store_get_name
-         (unIDBObjectStore (toIDBObjectStore self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_idb_object_store_get_name
+            (unIDBObjectStore (toIDBObjectStore self))))
  
 foreign import javascript unsafe "$1[\"keyPath\"]"
         ghcjs_dom_idb_object_store_get_key_path ::
@@ -278,11 +300,12 @@ foreign import javascript unsafe "$1[\"keyPath\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.keyPath Mozilla IDBObjectStore.keyPath documentation> 
 idbObjectStoreGetKeyPath ::
-                         (IsIDBObjectStore self) => self -> IO (Maybe IDBAny)
+                         (MonadIO m, IsIDBObjectStore self) => self -> m (Maybe IDBAny)
 idbObjectStoreGetKeyPath self
-  = (ghcjs_dom_idb_object_store_get_key_path
-       (unIDBObjectStore (toIDBObjectStore self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_get_key_path
+          (unIDBObjectStore (toIDBObjectStore self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"indexNames\"]"
         ghcjs_dom_idb_object_store_get_index_names ::
@@ -290,11 +313,13 @@ foreign import javascript unsafe "$1[\"indexNames\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.indexNames Mozilla IDBObjectStore.indexNames documentation> 
 idbObjectStoreGetIndexNames ::
-                            (IsIDBObjectStore self) => self -> IO (Maybe DOMStringList)
+                            (MonadIO m, IsIDBObjectStore self) =>
+                              self -> m (Maybe DOMStringList)
 idbObjectStoreGetIndexNames self
-  = (ghcjs_dom_idb_object_store_get_index_names
-       (unIDBObjectStore (toIDBObjectStore self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_get_index_names
+          (unIDBObjectStore (toIDBObjectStore self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"transaction\"]"
         ghcjs_dom_idb_object_store_get_transaction ::
@@ -302,11 +327,13 @@ foreign import javascript unsafe "$1[\"transaction\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.transaction Mozilla IDBObjectStore.transaction documentation> 
 idbObjectStoreGetTransaction ::
-                             (IsIDBObjectStore self) => self -> IO (Maybe IDBTransaction)
+                             (MonadIO m, IsIDBObjectStore self) =>
+                               self -> m (Maybe IDBTransaction)
 idbObjectStoreGetTransaction self
-  = (ghcjs_dom_idb_object_store_get_transaction
-       (unIDBObjectStore (toIDBObjectStore self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_idb_object_store_get_transaction
+          (unIDBObjectStore (toIDBObjectStore self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "($1[\"autoIncrement\"] ? 1 : 0)"
         ghcjs_dom_idb_object_store_get_auto_increment ::
@@ -314,10 +341,11 @@ foreign import javascript unsafe "($1[\"autoIncrement\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.autoIncrement Mozilla IDBObjectStore.autoIncrement documentation> 
 idbObjectStoreGetAutoIncrement ::
-                               (IsIDBObjectStore self) => self -> IO Bool
+                               (MonadIO m, IsIDBObjectStore self) => self -> m Bool
 idbObjectStoreGetAutoIncrement self
-  = ghcjs_dom_idb_object_store_get_auto_increment
-      (unIDBObjectStore (toIDBObjectStore self))
+  = liftIO
+      (ghcjs_dom_idb_object_store_get_auto_increment
+         (unIDBObjectStore (toIDBObjectStore self)))
 #else
 module GHCJS.DOM.IDBObjectStore (
   ) where

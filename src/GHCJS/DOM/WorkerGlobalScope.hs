@@ -9,11 +9,9 @@ module GHCJS.DOM.WorkerGlobalScope
         ghcjs_dom_worker_global_scope_close, workerGlobalScopeClose,
         ghcjs_dom_worker_global_scope_import_scripts,
         workerGlobalScopeImportScripts,
-        ghcjs_dom_worker_global_scope_dispatch_event,
-        workerGlobalScopeDispatchEvent,
         ghcjs_dom_worker_global_scope_get_location,
-        workerGlobalScopeGetLocation, workerGlobalScopeOnerror,
-        workerGlobalScopeOnoffline, workerGlobalScopeOnonline,
+        workerGlobalScopeGetLocation, workerGlobalScopeError,
+        workerGlobalScopeOffline, workerGlobalScopeOnline,
         ghcjs_dom_worker_global_scope_get_navigator,
         workerGlobalScopeGetNavigator,
         ghcjs_dom_worker_global_scope_set_webkit_url,
@@ -27,6 +25,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -45,24 +44,26 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.openDatabase Mozilla WorkerGlobalScope.openDatabase documentation> 
 workerGlobalScopeOpenDatabase ::
-                              (IsWorkerGlobalScope self, ToJSString name, ToJSString version,
-                               ToJSString displayName, IsDatabaseCallback creationCallback) =>
+                              (MonadIO m, IsWorkerGlobalScope self, ToJSString name,
+                               ToJSString version, ToJSString displayName,
+                               IsDatabaseCallback creationCallback) =>
                                 self ->
                                   name ->
                                     version ->
                                       displayName ->
-                                        Word -> Maybe creationCallback -> IO (Maybe Database)
+                                        Word -> Maybe creationCallback -> m (Maybe Database)
 workerGlobalScopeOpenDatabase self name version displayName
   estimatedSize creationCallback
-  = (ghcjs_dom_worker_global_scope_open_database
-       (unWorkerGlobalScope (toWorkerGlobalScope self))
-       (toJSString name)
-       (toJSString version)
-       (toJSString displayName)
-       estimatedSize
-       (maybe jsNull (unDatabaseCallback . toDatabaseCallback)
-          creationCallback))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_worker_global_scope_open_database
+          (unWorkerGlobalScope (toWorkerGlobalScope self))
+          (toJSString name)
+          (toJSString version)
+          (toJSString displayName)
+          estimatedSize
+          (maybe jsNull (unDatabaseCallback . toDatabaseCallback)
+             creationCallback))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"openDatabaseSync\"]($2, $3,\n$4, $5, $6)"
@@ -75,25 +76,26 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.openDatabaseSync Mozilla WorkerGlobalScope.openDatabaseSync documentation> 
 workerGlobalScopeOpenDatabaseSync ::
-                                  (IsWorkerGlobalScope self, ToJSString name, ToJSString version,
-                                   ToJSString displayName, IsDatabaseCallback creationCallback) =>
+                                  (MonadIO m, IsWorkerGlobalScope self, ToJSString name,
+                                   ToJSString version, ToJSString displayName,
+                                   IsDatabaseCallback creationCallback) =>
                                     self ->
                                       name ->
                                         version ->
                                           displayName ->
-                                            Word ->
-                                              Maybe creationCallback -> IO (Maybe DatabaseSync)
+                                            Word -> Maybe creationCallback -> m (Maybe DatabaseSync)
 workerGlobalScopeOpenDatabaseSync self name version displayName
   estimatedSize creationCallback
-  = (ghcjs_dom_worker_global_scope_open_database_sync
-       (unWorkerGlobalScope (toWorkerGlobalScope self))
-       (toJSString name)
-       (toJSString version)
-       (toJSString displayName)
-       estimatedSize
-       (maybe jsNull (unDatabaseCallback . toDatabaseCallback)
-          creationCallback))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_worker_global_scope_open_database_sync
+          (unWorkerGlobalScope (toWorkerGlobalScope self))
+          (toJSString name)
+          (toJSString version)
+          (toJSString displayName)
+          estimatedSize
+          (maybe jsNull (unDatabaseCallback . toDatabaseCallback)
+             creationCallback))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_worker_global_scope_close ::
@@ -101,10 +103,11 @@ foreign import javascript unsafe "$1[\"close\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.close Mozilla WorkerGlobalScope.close documentation> 
 workerGlobalScopeClose ::
-                       (IsWorkerGlobalScope self) => self -> IO ()
+                       (MonadIO m, IsWorkerGlobalScope self) => self -> m ()
 workerGlobalScopeClose self
-  = ghcjs_dom_worker_global_scope_close
-      (unWorkerGlobalScope (toWorkerGlobalScope self))
+  = liftIO
+      (ghcjs_dom_worker_global_scope_close
+         (unWorkerGlobalScope (toWorkerGlobalScope self)))
  
 foreign import javascript unsafe "$1[\"importScripts\"]()"
         ghcjs_dom_worker_global_scope_import_scripts ::
@@ -112,24 +115,11 @@ foreign import javascript unsafe "$1[\"importScripts\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.importScripts Mozilla WorkerGlobalScope.importScripts documentation> 
 workerGlobalScopeImportScripts ::
-                               (IsWorkerGlobalScope self) => self -> IO ()
+                               (MonadIO m, IsWorkerGlobalScope self) => self -> m ()
 workerGlobalScopeImportScripts self
-  = ghcjs_dom_worker_global_scope_import_scripts
-      (unWorkerGlobalScope (toWorkerGlobalScope self))
- 
-foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_worker_global_scope_dispatch_event ::
-        JSRef WorkerGlobalScope -> JSRef Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.dispatchEvent Mozilla WorkerGlobalScope.dispatchEvent documentation> 
-workerGlobalScopeDispatchEvent ::
-                               (IsWorkerGlobalScope self, IsEvent event) =>
-                                 self -> Maybe event -> IO Bool
-workerGlobalScopeDispatchEvent self event
-  = ghcjs_dom_worker_global_scope_dispatch_event
-      (unWorkerGlobalScope (toWorkerGlobalScope self))
-      (maybe jsNull (unEvent . toEvent) event)
+  = liftIO
+      (ghcjs_dom_worker_global_scope_import_scripts
+         (unWorkerGlobalScope (toWorkerGlobalScope self)))
  
 foreign import javascript unsafe "$1[\"location\"]"
         ghcjs_dom_worker_global_scope_get_location ::
@@ -137,26 +127,31 @@ foreign import javascript unsafe "$1[\"location\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 
 workerGlobalScopeGetLocation ::
-                             (IsWorkerGlobalScope self) => self -> IO (Maybe WorkerLocation)
+                             (MonadIO m, IsWorkerGlobalScope self) =>
+                               self -> m (Maybe WorkerLocation)
 workerGlobalScopeGetLocation self
-  = (ghcjs_dom_worker_global_scope_get_location
-       (unWorkerGlobalScope (toWorkerGlobalScope self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_worker_global_scope_get_location
+          (unWorkerGlobalScope (toWorkerGlobalScope self)))
+         >>= fromJSRef)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.onerror Mozilla WorkerGlobalScope.onerror documentation> 
-workerGlobalScopeOnerror ::
-                         (IsWorkerGlobalScope self) => Signal self (EventM UIEvent self ())
-workerGlobalScopeOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.error Mozilla WorkerGlobalScope.error documentation> 
+workerGlobalScopeError ::
+                       (IsWorkerGlobalScope self, IsEventTarget self) =>
+                         EventName self UIEvent
+workerGlobalScopeError = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.onoffline Mozilla WorkerGlobalScope.onoffline documentation> 
-workerGlobalScopeOnoffline ::
-                           (IsWorkerGlobalScope self) => Signal self (EventM UIEvent self ())
-workerGlobalScopeOnoffline = (connect "offline")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.offline Mozilla WorkerGlobalScope.offline documentation> 
+workerGlobalScopeOffline ::
+                         (IsWorkerGlobalScope self, IsEventTarget self) =>
+                           EventName self Event
+workerGlobalScopeOffline = unsafeEventName (toJSString "offline")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.ononline Mozilla WorkerGlobalScope.ononline documentation> 
-workerGlobalScopeOnonline ::
-                          (IsWorkerGlobalScope self) => Signal self (EventM UIEvent self ())
-workerGlobalScopeOnonline = (connect "online")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.online Mozilla WorkerGlobalScope.online documentation> 
+workerGlobalScopeOnline ::
+                        (IsWorkerGlobalScope self, IsEventTarget self) =>
+                          EventName self Event
+workerGlobalScopeOnline = unsafeEventName (toJSString "online")
  
 foreign import javascript unsafe "$1[\"navigator\"]"
         ghcjs_dom_worker_global_scope_get_navigator ::
@@ -164,11 +159,13 @@ foreign import javascript unsafe "$1[\"navigator\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 
 workerGlobalScopeGetNavigator ::
-                              (IsWorkerGlobalScope self) => self -> IO (Maybe WorkerNavigator)
+                              (MonadIO m, IsWorkerGlobalScope self) =>
+                                self -> m (Maybe WorkerNavigator)
 workerGlobalScopeGetNavigator self
-  = (ghcjs_dom_worker_global_scope_get_navigator
-       (unWorkerGlobalScope (toWorkerGlobalScope self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_worker_global_scope_get_navigator
+          (unWorkerGlobalScope (toWorkerGlobalScope self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitURL\"] = $2;"
         ghcjs_dom_worker_global_scope_set_webkit_url ::
@@ -176,12 +173,13 @@ foreign import javascript unsafe "$1[\"webkitURL\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.webkitURL Mozilla WorkerGlobalScope.webkitURL documentation> 
 workerGlobalScopeSetWebkitURL ::
-                              (IsWorkerGlobalScope self, IsDOMURLConstructor val) =>
-                                self -> Maybe val -> IO ()
+                              (MonadIO m, IsWorkerGlobalScope self, IsDOMURLConstructor val) =>
+                                self -> Maybe val -> m ()
 workerGlobalScopeSetWebkitURL self val
-  = ghcjs_dom_worker_global_scope_set_webkit_url
-      (unWorkerGlobalScope (toWorkerGlobalScope self))
-      (maybe jsNull (unDOMURLConstructor . toDOMURLConstructor) val)
+  = liftIO
+      (ghcjs_dom_worker_global_scope_set_webkit_url
+         (unWorkerGlobalScope (toWorkerGlobalScope self))
+         (maybe jsNull (unDOMURLConstructor . toDOMURLConstructor) val))
  
 foreign import javascript unsafe "$1[\"webkitURL\"]"
         ghcjs_dom_worker_global_scope_get_webkit_url ::
@@ -189,11 +187,13 @@ foreign import javascript unsafe "$1[\"webkitURL\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.webkitURL Mozilla WorkerGlobalScope.webkitURL documentation> 
 workerGlobalScopeGetWebkitURL ::
-                              (IsWorkerGlobalScope self) => self -> IO (Maybe DOMURLConstructor)
+                              (MonadIO m, IsWorkerGlobalScope self) =>
+                                self -> m (Maybe DOMURLConstructor)
 workerGlobalScopeGetWebkitURL self
-  = (ghcjs_dom_worker_global_scope_get_webkit_url
-       (unWorkerGlobalScope (toWorkerGlobalScope self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_worker_global_scope_get_webkit_url
+          (unWorkerGlobalScope (toWorkerGlobalScope self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.WorkerGlobalScope (
   ) where

@@ -28,6 +28,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -42,10 +43,11 @@ foreign import javascript unsafe "$1[\"setOrientToAuto\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientToAuto Mozilla SVGMarkerElement.orientToAuto documentation> 
 svgMarkerElementSetOrientToAuto ::
-                                (IsSVGMarkerElement self) => self -> IO ()
+                                (MonadIO m, IsSVGMarkerElement self) => self -> m ()
 svgMarkerElementSetOrientToAuto self
-  = ghcjs_dom_svg_marker_element_set_orient_to_auto
-      (unSVGMarkerElement (toSVGMarkerElement self))
+  = liftIO
+      (ghcjs_dom_svg_marker_element_set_orient_to_auto
+         (unSVGMarkerElement (toSVGMarkerElement self)))
  
 foreign import javascript unsafe "$1[\"setOrientToAngle\"]($2)"
         ghcjs_dom_svg_marker_element_set_orient_to_angle ::
@@ -53,12 +55,13 @@ foreign import javascript unsafe "$1[\"setOrientToAngle\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientToAngle Mozilla SVGMarkerElement.orientToAngle documentation> 
 svgMarkerElementSetOrientToAngle ::
-                                 (IsSVGMarkerElement self, IsSVGAngle angle) =>
-                                   self -> Maybe angle -> IO ()
+                                 (MonadIO m, IsSVGMarkerElement self, IsSVGAngle angle) =>
+                                   self -> Maybe angle -> m ()
 svgMarkerElementSetOrientToAngle self angle
-  = ghcjs_dom_svg_marker_element_set_orient_to_angle
-      (unSVGMarkerElement (toSVGMarkerElement self))
-      (maybe jsNull (unSVGAngle . toSVGAngle) angle)
+  = liftIO
+      (ghcjs_dom_svg_marker_element_set_orient_to_angle
+         (unSVGMarkerElement (toSVGMarkerElement self))
+         (maybe jsNull (unSVGAngle . toSVGAngle) angle))
 cSVG_MARKERUNITS_UNKNOWN = 0
 cSVG_MARKERUNITS_USERSPACEONUSE = 1
 cSVG_MARKERUNITS_STROKEWIDTH = 2
@@ -72,11 +75,13 @@ foreign import javascript unsafe "$1[\"refX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refX Mozilla SVGMarkerElement.refX documentation> 
 svgMarkerElementGetRefX ::
-                        (IsSVGMarkerElement self) => self -> IO (Maybe SVGAnimatedLength)
+                        (MonadIO m, IsSVGMarkerElement self) =>
+                          self -> m (Maybe SVGAnimatedLength)
 svgMarkerElementGetRefX self
-  = (ghcjs_dom_svg_marker_element_get_ref_x
-       (unSVGMarkerElement (toSVGMarkerElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_marker_element_get_ref_x
+          (unSVGMarkerElement (toSVGMarkerElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"refY\"]"
         ghcjs_dom_svg_marker_element_get_ref_y ::
@@ -84,11 +89,13 @@ foreign import javascript unsafe "$1[\"refY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refY Mozilla SVGMarkerElement.refY documentation> 
 svgMarkerElementGetRefY ::
-                        (IsSVGMarkerElement self) => self -> IO (Maybe SVGAnimatedLength)
+                        (MonadIO m, IsSVGMarkerElement self) =>
+                          self -> m (Maybe SVGAnimatedLength)
 svgMarkerElementGetRefY self
-  = (ghcjs_dom_svg_marker_element_get_ref_y
-       (unSVGMarkerElement (toSVGMarkerElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_marker_element_get_ref_y
+          (unSVGMarkerElement (toSVGMarkerElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"markerUnits\"]"
         ghcjs_dom_svg_marker_element_get_marker_units ::
@@ -96,12 +103,13 @@ foreign import javascript unsafe "$1[\"markerUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerUnits Mozilla SVGMarkerElement.markerUnits documentation> 
 svgMarkerElementGetMarkerUnits ::
-                               (IsSVGMarkerElement self) =>
-                                 self -> IO (Maybe SVGAnimatedEnumeration)
+                               (MonadIO m, IsSVGMarkerElement self) =>
+                                 self -> m (Maybe SVGAnimatedEnumeration)
 svgMarkerElementGetMarkerUnits self
-  = (ghcjs_dom_svg_marker_element_get_marker_units
-       (unSVGMarkerElement (toSVGMarkerElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_marker_element_get_marker_units
+          (unSVGMarkerElement (toSVGMarkerElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"markerWidth\"]"
         ghcjs_dom_svg_marker_element_get_marker_width ::
@@ -109,11 +117,13 @@ foreign import javascript unsafe "$1[\"markerWidth\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerWidth Mozilla SVGMarkerElement.markerWidth documentation> 
 svgMarkerElementGetMarkerWidth ::
-                               (IsSVGMarkerElement self) => self -> IO (Maybe SVGAnimatedLength)
+                               (MonadIO m, IsSVGMarkerElement self) =>
+                                 self -> m (Maybe SVGAnimatedLength)
 svgMarkerElementGetMarkerWidth self
-  = (ghcjs_dom_svg_marker_element_get_marker_width
-       (unSVGMarkerElement (toSVGMarkerElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_marker_element_get_marker_width
+          (unSVGMarkerElement (toSVGMarkerElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"markerHeight\"]"
         ghcjs_dom_svg_marker_element_get_marker_height ::
@@ -121,11 +131,13 @@ foreign import javascript unsafe "$1[\"markerHeight\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerHeight Mozilla SVGMarkerElement.markerHeight documentation> 
 svgMarkerElementGetMarkerHeight ::
-                                (IsSVGMarkerElement self) => self -> IO (Maybe SVGAnimatedLength)
+                                (MonadIO m, IsSVGMarkerElement self) =>
+                                  self -> m (Maybe SVGAnimatedLength)
 svgMarkerElementGetMarkerHeight self
-  = (ghcjs_dom_svg_marker_element_get_marker_height
-       (unSVGMarkerElement (toSVGMarkerElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_marker_element_get_marker_height
+          (unSVGMarkerElement (toSVGMarkerElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"orientType\"]"
         ghcjs_dom_svg_marker_element_get_orient_type ::
@@ -133,12 +145,13 @@ foreign import javascript unsafe "$1[\"orientType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientType Mozilla SVGMarkerElement.orientType documentation> 
 svgMarkerElementGetOrientType ::
-                              (IsSVGMarkerElement self) =>
-                                self -> IO (Maybe SVGAnimatedEnumeration)
+                              (MonadIO m, IsSVGMarkerElement self) =>
+                                self -> m (Maybe SVGAnimatedEnumeration)
 svgMarkerElementGetOrientType self
-  = (ghcjs_dom_svg_marker_element_get_orient_type
-       (unSVGMarkerElement (toSVGMarkerElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_marker_element_get_orient_type
+          (unSVGMarkerElement (toSVGMarkerElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"orientAngle\"]"
         ghcjs_dom_svg_marker_element_get_orient_angle ::
@@ -146,11 +159,13 @@ foreign import javascript unsafe "$1[\"orientAngle\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientAngle Mozilla SVGMarkerElement.orientAngle documentation> 
 svgMarkerElementGetOrientAngle ::
-                               (IsSVGMarkerElement self) => self -> IO (Maybe SVGAnimatedAngle)
+                               (MonadIO m, IsSVGMarkerElement self) =>
+                                 self -> m (Maybe SVGAnimatedAngle)
 svgMarkerElementGetOrientAngle self
-  = (ghcjs_dom_svg_marker_element_get_orient_angle
-       (unSVGMarkerElement (toSVGMarkerElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_marker_element_get_orient_angle
+          (unSVGMarkerElement (toSVGMarkerElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGMarkerElement (
   ) where

@@ -21,6 +21,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -35,11 +36,13 @@ foreign import javascript unsafe "$1[\"webkitTemporaryStorage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitTemporaryStorage Mozilla WorkerNavigator.webkitTemporaryStorage documentation> 
 workerNavigatorGetWebkitTemporaryStorage ::
-                                         (IsWorkerNavigator self) => self -> IO (Maybe StorageQuota)
+                                         (MonadIO m, IsWorkerNavigator self) =>
+                                           self -> m (Maybe StorageQuota)
 workerNavigatorGetWebkitTemporaryStorage self
-  = (ghcjs_dom_worker_navigator_get_webkit_temporary_storage
-       (unWorkerNavigator (toWorkerNavigator self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_worker_navigator_get_webkit_temporary_storage
+          (unWorkerNavigator (toWorkerNavigator self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
         ghcjs_dom_worker_navigator_get_webkit_persistent_storage ::
@@ -47,12 +50,13 @@ foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitPersistentStorage Mozilla WorkerNavigator.webkitPersistentStorage documentation> 
 workerNavigatorGetWebkitPersistentStorage ::
-                                          (IsWorkerNavigator self) =>
-                                            self -> IO (Maybe StorageQuota)
+                                          (MonadIO m, IsWorkerNavigator self) =>
+                                            self -> m (Maybe StorageQuota)
 workerNavigatorGetWebkitPersistentStorage self
-  = (ghcjs_dom_worker_navigator_get_webkit_persistent_storage
-       (unWorkerNavigator (toWorkerNavigator self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_worker_navigator_get_webkit_persistent_storage
+          (unWorkerNavigator (toWorkerNavigator self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"appName\"]"
         ghcjs_dom_worker_navigator_get_app_name ::
@@ -60,11 +64,13 @@ foreign import javascript unsafe "$1[\"appName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.appName Mozilla WorkerNavigator.appName documentation> 
 workerNavigatorGetAppName ::
-                          (IsWorkerNavigator self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
+                            self -> m result
 workerNavigatorGetAppName self
-  = fromJSString <$>
-      (ghcjs_dom_worker_navigator_get_app_name
-         (unWorkerNavigator (toWorkerNavigator self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_navigator_get_app_name
+            (unWorkerNavigator (toWorkerNavigator self))))
  
 foreign import javascript unsafe "$1[\"appVersion\"]"
         ghcjs_dom_worker_navigator_get_app_version ::
@@ -72,11 +78,13 @@ foreign import javascript unsafe "$1[\"appVersion\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.appVersion Mozilla WorkerNavigator.appVersion documentation> 
 workerNavigatorGetAppVersion ::
-                             (IsWorkerNavigator self, FromJSString result) => self -> IO result
+                             (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
+                               self -> m result
 workerNavigatorGetAppVersion self
-  = fromJSString <$>
-      (ghcjs_dom_worker_navigator_get_app_version
-         (unWorkerNavigator (toWorkerNavigator self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_navigator_get_app_version
+            (unWorkerNavigator (toWorkerNavigator self))))
  
 foreign import javascript unsafe "$1[\"platform\"]"
         ghcjs_dom_worker_navigator_get_platform ::
@@ -84,11 +92,13 @@ foreign import javascript unsafe "$1[\"platform\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.platform Mozilla WorkerNavigator.platform documentation> 
 workerNavigatorGetPlatform ::
-                           (IsWorkerNavigator self, FromJSString result) => self -> IO result
+                           (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
+                             self -> m result
 workerNavigatorGetPlatform self
-  = fromJSString <$>
-      (ghcjs_dom_worker_navigator_get_platform
-         (unWorkerNavigator (toWorkerNavigator self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_navigator_get_platform
+            (unWorkerNavigator (toWorkerNavigator self))))
  
 foreign import javascript unsafe "$1[\"userAgent\"]"
         ghcjs_dom_worker_navigator_get_user_agent ::
@@ -96,11 +106,13 @@ foreign import javascript unsafe "$1[\"userAgent\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.userAgent Mozilla WorkerNavigator.userAgent documentation> 
 workerNavigatorGetUserAgent ::
-                            (IsWorkerNavigator self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
+                              self -> m result
 workerNavigatorGetUserAgent self
-  = fromJSString <$>
-      (ghcjs_dom_worker_navigator_get_user_agent
-         (unWorkerNavigator (toWorkerNavigator self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_worker_navigator_get_user_agent
+            (unWorkerNavigator (toWorkerNavigator self))))
  
 foreign import javascript unsafe "($1[\"onLine\"] ? 1 : 0)"
         ghcjs_dom_worker_navigator_get_on_line ::
@@ -108,10 +120,11 @@ foreign import javascript unsafe "($1[\"onLine\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.onLine Mozilla WorkerNavigator.onLine documentation> 
 workerNavigatorGetOnLine ::
-                         (IsWorkerNavigator self) => self -> IO Bool
+                         (MonadIO m, IsWorkerNavigator self) => self -> m Bool
 workerNavigatorGetOnLine self
-  = ghcjs_dom_worker_navigator_get_on_line
-      (unWorkerNavigator (toWorkerNavigator self))
+  = liftIO
+      (ghcjs_dom_worker_navigator_get_on_line
+         (unWorkerNavigator (toWorkerNavigator self)))
 #else
 module GHCJS.DOM.WorkerNavigator (
   ) where

@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,12 +30,14 @@ foreign import javascript unsafe "$1[\"x\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalAbs.x Mozilla SVGPathSegLinetoHorizontalAbs.x documentation> 
 svgPathSegLinetoHorizontalAbsSetX ::
-                                  (IsSVGPathSegLinetoHorizontalAbs self) => self -> Float -> IO ()
+                                  (MonadIO m, IsSVGPathSegLinetoHorizontalAbs self) =>
+                                    self -> Float -> m ()
 svgPathSegLinetoHorizontalAbsSetX self val
-  = ghcjs_dom_svg_path_seg_lineto_horizontal_abs_set_x
-      (unSVGPathSegLinetoHorizontalAbs
-         (toSVGPathSegLinetoHorizontalAbs self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_lineto_horizontal_abs_set_x
+         (unSVGPathSegLinetoHorizontalAbs
+            (toSVGPathSegLinetoHorizontalAbs self))
+         val)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_lineto_horizontal_abs_get_x ::
@@ -42,11 +45,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalAbs.x Mozilla SVGPathSegLinetoHorizontalAbs.x documentation> 
 svgPathSegLinetoHorizontalAbsGetX ::
-                                  (IsSVGPathSegLinetoHorizontalAbs self) => self -> IO Float
+                                  (MonadIO m, IsSVGPathSegLinetoHorizontalAbs self) =>
+                                    self -> m Float
 svgPathSegLinetoHorizontalAbsGetX self
-  = ghcjs_dom_svg_path_seg_lineto_horizontal_abs_get_x
-      (unSVGPathSegLinetoHorizontalAbs
-         (toSVGPathSegLinetoHorizontalAbs self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_lineto_horizontal_abs_get_x
+         (unSVGPathSegLinetoHorizontalAbs
+            (toSVGPathSegLinetoHorizontalAbs self)))
 #else
 module GHCJS.DOM.SVGPathSegLinetoHorizontalAbs (
   ) where

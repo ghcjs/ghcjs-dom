@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,13 +30,15 @@ foreign import javascript unsafe "$1[\"stat\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.stat Mozilla RTCStatsReport.stat documentation> 
 rtcStatsReportStat ::
-                   (IsRTCStatsReport self, ToJSString name, FromJSString result) =>
-                     self -> name -> IO result
+                   (MonadIO m, IsRTCStatsReport self, ToJSString name,
+                    FromJSString result) =>
+                     self -> name -> m result
 rtcStatsReportStat self name
-  = fromJSString <$>
-      (ghcjs_dom_rtc_stats_report_stat
-         (unRTCStatsReport (toRTCStatsReport self))
-         (toJSString name))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_stats_report_stat
+            (unRTCStatsReport (toRTCStatsReport self))
+            (toJSString name)))
  
 foreign import javascript unsafe "$1[\"names\"]()"
         ghcjs_dom_rtc_stats_report_names ::
@@ -43,11 +46,13 @@ foreign import javascript unsafe "$1[\"names\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.names Mozilla RTCStatsReport.names documentation> 
 rtcStatsReportNames ::
-                    (IsRTCStatsReport self, FromJSString result) => self -> IO [result]
+                    (MonadIO m, IsRTCStatsReport self, FromJSString result) =>
+                      self -> m [result]
 rtcStatsReportNames self
-  = (ghcjs_dom_rtc_stats_report_names
-       (unRTCStatsReport (toRTCStatsReport self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_rtc_stats_report_names
+          (unRTCStatsReport (toRTCStatsReport self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"timestamp\"]"
         ghcjs_dom_rtc_stats_report_get_timestamp ::
@@ -55,11 +60,12 @@ foreign import javascript unsafe "$1[\"timestamp\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.timestamp Mozilla RTCStatsReport.timestamp documentation> 
 rtcStatsReportGetTimestamp ::
-                           (IsRTCStatsReport self) => self -> IO (Maybe Date)
+                           (MonadIO m, IsRTCStatsReport self) => self -> m (Maybe Date)
 rtcStatsReportGetTimestamp self
-  = (ghcjs_dom_rtc_stats_report_get_timestamp
-       (unRTCStatsReport (toRTCStatsReport self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rtc_stats_report_get_timestamp
+          (unRTCStatsReport (toRTCStatsReport self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"id\"]"
         ghcjs_dom_rtc_stats_report_get_id ::
@@ -67,11 +73,13 @@ foreign import javascript unsafe "$1[\"id\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.id Mozilla RTCStatsReport.id documentation> 
 rtcStatsReportGetId ::
-                    (IsRTCStatsReport self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsRTCStatsReport self, FromJSString result) =>
+                      self -> m result
 rtcStatsReportGetId self
-  = fromJSString <$>
-      (ghcjs_dom_rtc_stats_report_get_id
-         (unRTCStatsReport (toRTCStatsReport self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_stats_report_get_id
+            (unRTCStatsReport (toRTCStatsReport self))))
  
 foreign import javascript unsafe "$1[\"local\"]"
         ghcjs_dom_rtc_stats_report_get_local ::
@@ -79,11 +87,13 @@ foreign import javascript unsafe "$1[\"local\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.local Mozilla RTCStatsReport.local documentation> 
 rtcStatsReportGetLocal ::
-                       (IsRTCStatsReport self) => self -> IO (Maybe RTCStatsReport)
+                       (MonadIO m, IsRTCStatsReport self) =>
+                         self -> m (Maybe RTCStatsReport)
 rtcStatsReportGetLocal self
-  = (ghcjs_dom_rtc_stats_report_get_local
-       (unRTCStatsReport (toRTCStatsReport self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rtc_stats_report_get_local
+          (unRTCStatsReport (toRTCStatsReport self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"remote\"]"
         ghcjs_dom_rtc_stats_report_get_remote ::
@@ -91,11 +101,13 @@ foreign import javascript unsafe "$1[\"remote\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.remote Mozilla RTCStatsReport.remote documentation> 
 rtcStatsReportGetRemote ::
-                        (IsRTCStatsReport self) => self -> IO (Maybe RTCStatsReport)
+                        (MonadIO m, IsRTCStatsReport self) =>
+                          self -> m (Maybe RTCStatsReport)
 rtcStatsReportGetRemote self
-  = (ghcjs_dom_rtc_stats_report_get_remote
-       (unRTCStatsReport (toRTCStatsReport self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rtc_stats_report_get_remote
+          (unRTCStatsReport (toRTCStatsReport self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.RTCStatsReport (
   ) where

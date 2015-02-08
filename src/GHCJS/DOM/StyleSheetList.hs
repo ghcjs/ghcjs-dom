@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,12 +27,14 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList.item Mozilla StyleSheetList.item documentation> 
 styleSheetListItem ::
-                   (IsStyleSheetList self) => self -> Word -> IO (Maybe StyleSheet)
+                   (MonadIO m, IsStyleSheetList self) =>
+                     self -> Word -> m (Maybe StyleSheet)
 styleSheetListItem self index
-  = (ghcjs_dom_style_sheet_list_item
-       (unStyleSheetList (toStyleSheetList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_style_sheet_list_item
+          (unStyleSheetList (toStyleSheetList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"_get\"]($2)"
         ghcjs_dom_style_sheet_list_get ::
@@ -39,13 +42,14 @@ foreign import javascript unsafe "$1[\"_get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList._get Mozilla StyleSheetList._get documentation> 
 styleSheetList_get ::
-                   (IsStyleSheetList self, ToJSString name) =>
-                     self -> name -> IO (Maybe CSSStyleSheet)
+                   (MonadIO m, IsStyleSheetList self, ToJSString name) =>
+                     self -> name -> m (Maybe CSSStyleSheet)
 styleSheetList_get self name
-  = (ghcjs_dom_style_sheet_list_get
-       (unStyleSheetList (toStyleSheetList self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_style_sheet_list_get
+          (unStyleSheetList (toStyleSheetList self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_style_sheet_list_get_length ::
@@ -53,10 +57,11 @@ foreign import javascript unsafe "$1[\"length\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList.length Mozilla StyleSheetList.length documentation> 
 styleSheetListGetLength ::
-                        (IsStyleSheetList self) => self -> IO Word
+                        (MonadIO m, IsStyleSheetList self) => self -> m Word
 styleSheetListGetLength self
-  = ghcjs_dom_style_sheet_list_get_length
-      (unStyleSheetList (toStyleSheetList self))
+  = liftIO
+      (ghcjs_dom_style_sheet_list_get_length
+         (unStyleSheetList (toStyleSheetList self)))
 #else
 module GHCJS.DOM.StyleSheetList (
   module Graphics.UI.Gtk.WebKit.DOM.StyleSheetList

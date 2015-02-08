@@ -22,6 +22,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -42,12 +43,13 @@ foreign import javascript unsafe "$1[\"baseFrequencyX\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyX Mozilla SVGFETurbulenceElement.baseFrequencyX documentation> 
 svgfeTurbulenceElementGetBaseFrequencyX ::
-                                        (IsSVGFETurbulenceElement self) =>
-                                          self -> IO (Maybe SVGAnimatedNumber)
+                                        (MonadIO m, IsSVGFETurbulenceElement self) =>
+                                          self -> m (Maybe SVGAnimatedNumber)
 svgfeTurbulenceElementGetBaseFrequencyX self
-  = (ghcjs_dom_svgfe_turbulence_element_get_base_frequency_x
-       (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_turbulence_element_get_base_frequency_x
+          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"baseFrequencyY\"]"
         ghcjs_dom_svgfe_turbulence_element_get_base_frequency_y ::
@@ -55,12 +57,13 @@ foreign import javascript unsafe "$1[\"baseFrequencyY\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyY Mozilla SVGFETurbulenceElement.baseFrequencyY documentation> 
 svgfeTurbulenceElementGetBaseFrequencyY ::
-                                        (IsSVGFETurbulenceElement self) =>
-                                          self -> IO (Maybe SVGAnimatedNumber)
+                                        (MonadIO m, IsSVGFETurbulenceElement self) =>
+                                          self -> m (Maybe SVGAnimatedNumber)
 svgfeTurbulenceElementGetBaseFrequencyY self
-  = (ghcjs_dom_svgfe_turbulence_element_get_base_frequency_y
-       (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_turbulence_element_get_base_frequency_y
+          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"numOctaves\"]"
         ghcjs_dom_svgfe_turbulence_element_get_num_octaves ::
@@ -68,12 +71,13 @@ foreign import javascript unsafe "$1[\"numOctaves\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.numOctaves Mozilla SVGFETurbulenceElement.numOctaves documentation> 
 svgfeTurbulenceElementGetNumOctaves ::
-                                    (IsSVGFETurbulenceElement self) =>
-                                      self -> IO (Maybe SVGAnimatedInteger)
+                                    (MonadIO m, IsSVGFETurbulenceElement self) =>
+                                      self -> m (Maybe SVGAnimatedInteger)
 svgfeTurbulenceElementGetNumOctaves self
-  = (ghcjs_dom_svgfe_turbulence_element_get_num_octaves
-       (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_turbulence_element_get_num_octaves
+          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"seed\"]"
         ghcjs_dom_svgfe_turbulence_element_get_seed ::
@@ -81,12 +85,13 @@ foreign import javascript unsafe "$1[\"seed\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.seed Mozilla SVGFETurbulenceElement.seed documentation> 
 svgfeTurbulenceElementGetSeed ::
-                              (IsSVGFETurbulenceElement self) =>
-                                self -> IO (Maybe SVGAnimatedNumber)
+                              (MonadIO m, IsSVGFETurbulenceElement self) =>
+                                self -> m (Maybe SVGAnimatedNumber)
 svgfeTurbulenceElementGetSeed self
-  = (ghcjs_dom_svgfe_turbulence_element_get_seed
-       (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_turbulence_element_get_seed
+          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"stitchTiles\"]"
         ghcjs_dom_svgfe_turbulence_element_get_stitch_tiles ::
@@ -94,12 +99,13 @@ foreign import javascript unsafe "$1[\"stitchTiles\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.stitchTiles Mozilla SVGFETurbulenceElement.stitchTiles documentation> 
 svgfeTurbulenceElementGetStitchTiles ::
-                                     (IsSVGFETurbulenceElement self) =>
-                                       self -> IO (Maybe SVGAnimatedEnumeration)
+                                     (MonadIO m, IsSVGFETurbulenceElement self) =>
+                                       self -> m (Maybe SVGAnimatedEnumeration)
 svgfeTurbulenceElementGetStitchTiles self
-  = (ghcjs_dom_svgfe_turbulence_element_get_stitch_tiles
-       (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_turbulence_element_get_stitch_tiles
+          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFETurbulenceElement (
   ) where

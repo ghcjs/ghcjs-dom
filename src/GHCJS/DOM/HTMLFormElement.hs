@@ -53,6 +53,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -67,31 +68,37 @@ foreign import javascript unsafe "$1[\"_get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement._get Mozilla HTMLFormElement._get documentation> 
 htmlFormElement_get ::
-                    (IsHTMLFormElement self) => self -> Word -> IO (Maybe Element)
+                    (MonadIO m, IsHTMLFormElement self) =>
+                      self -> Word -> m (Maybe Element)
 htmlFormElement_get self index
-  = (ghcjs_dom_html_form_element_get
-       (unHTMLFormElement (toHTMLFormElement self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_form_element_get
+          (unHTMLFormElement (toHTMLFormElement self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"submit\"]()"
         ghcjs_dom_html_form_element_submit ::
         JSRef HTMLFormElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.submit Mozilla HTMLFormElement.submit documentation> 
-htmlFormElementSubmit :: (IsHTMLFormElement self) => self -> IO ()
+htmlFormElementSubmit ::
+                      (MonadIO m, IsHTMLFormElement self) => self -> m ()
 htmlFormElementSubmit self
-  = ghcjs_dom_html_form_element_submit
-      (unHTMLFormElement (toHTMLFormElement self))
+  = liftIO
+      (ghcjs_dom_html_form_element_submit
+         (unHTMLFormElement (toHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"reset\"]()"
         ghcjs_dom_html_form_element_reset :: JSRef HTMLFormElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.reset Mozilla HTMLFormElement.reset documentation> 
-htmlFormElementReset :: (IsHTMLFormElement self) => self -> IO ()
+htmlFormElementReset ::
+                     (MonadIO m, IsHTMLFormElement self) => self -> m ()
 htmlFormElementReset self
-  = ghcjs_dom_html_form_element_reset
-      (unHTMLFormElement (toHTMLFormElement self))
+  = liftIO
+      (ghcjs_dom_html_form_element_reset
+         (unHTMLFormElement (toHTMLFormElement self)))
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)"
@@ -100,10 +107,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.checkValidity Mozilla HTMLFormElement.checkValidity documentation> 
 htmlFormElementCheckValidity ::
-                             (IsHTMLFormElement self) => self -> IO Bool
+                             (MonadIO m, IsHTMLFormElement self) => self -> m Bool
 htmlFormElementCheckValidity self
-  = ghcjs_dom_html_form_element_check_validity
-      (unHTMLFormElement (toHTMLFormElement self))
+  = liftIO
+      (ghcjs_dom_html_form_element_check_validity
+         (unHTMLFormElement (toHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"requestAutocomplete\"]()"
         ghcjs_dom_html_form_element_request_autocomplete ::
@@ -111,10 +119,11 @@ foreign import javascript unsafe "$1[\"requestAutocomplete\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.requestAutocomplete Mozilla HTMLFormElement.requestAutocomplete documentation> 
 htmlFormElementRequestAutocomplete ::
-                                   (IsHTMLFormElement self) => self -> IO ()
+                                   (MonadIO m, IsHTMLFormElement self) => self -> m ()
 htmlFormElementRequestAutocomplete self
-  = ghcjs_dom_html_form_element_request_autocomplete
-      (unHTMLFormElement (toHTMLFormElement self))
+  = liftIO
+      (ghcjs_dom_html_form_element_request_autocomplete
+         (unHTMLFormElement (toHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"acceptCharset\"] = $2;"
         ghcjs_dom_html_form_element_set_accept_charset ::
@@ -122,11 +131,13 @@ foreign import javascript unsafe "$1[\"acceptCharset\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.acceptCharset Mozilla HTMLFormElement.acceptCharset documentation> 
 htmlFormElementSetAcceptCharset ::
-                                (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                                (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                                  self -> val -> m ()
 htmlFormElementSetAcceptCharset self val
-  = ghcjs_dom_html_form_element_set_accept_charset
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_accept_charset
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"acceptCharset\"]"
         ghcjs_dom_html_form_element_get_accept_charset ::
@@ -134,11 +145,13 @@ foreign import javascript unsafe "$1[\"acceptCharset\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.acceptCharset Mozilla HTMLFormElement.acceptCharset documentation> 
 htmlFormElementGetAcceptCharset ::
-                                (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                                (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                                  self -> m result
 htmlFormElementGetAcceptCharset self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_accept_charset
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_accept_charset
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"action\"] = $2;"
         ghcjs_dom_html_form_element_set_action ::
@@ -146,11 +159,13 @@ foreign import javascript unsafe "$1[\"action\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.action Mozilla HTMLFormElement.action documentation> 
 htmlFormElementSetAction ::
-                         (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlFormElementSetAction self val
-  = ghcjs_dom_html_form_element_set_action
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_action
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"action\"]"
         ghcjs_dom_html_form_element_get_action ::
@@ -158,11 +173,13 @@ foreign import javascript unsafe "$1[\"action\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.action Mozilla HTMLFormElement.action documentation> 
 htmlFormElementGetAction ::
-                         (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                           self -> m result
 htmlFormElementGetAction self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_action
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_action
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"autocomplete\"] = $2;"
         ghcjs_dom_html_form_element_set_autocomplete ::
@@ -170,11 +187,13 @@ foreign import javascript unsafe "$1[\"autocomplete\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocomplete Mozilla HTMLFormElement.autocomplete documentation> 
 htmlFormElementSetAutocomplete ::
-                               (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlFormElementSetAutocomplete self val
-  = ghcjs_dom_html_form_element_set_autocomplete
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_autocomplete
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"autocomplete\"]"
         ghcjs_dom_html_form_element_get_autocomplete ::
@@ -182,11 +201,13 @@ foreign import javascript unsafe "$1[\"autocomplete\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocomplete Mozilla HTMLFormElement.autocomplete documentation> 
 htmlFormElementGetAutocomplete ::
-                               (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                                 self -> m result
 htmlFormElementGetAutocomplete self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_autocomplete
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_autocomplete
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"enctype\"] = $2;"
         ghcjs_dom_html_form_element_set_enctype ::
@@ -194,11 +215,13 @@ foreign import javascript unsafe "$1[\"enctype\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
 htmlFormElementSetEnctype ::
-                          (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlFormElementSetEnctype self val
-  = ghcjs_dom_html_form_element_set_enctype
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_enctype
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"enctype\"]"
         ghcjs_dom_html_form_element_get_enctype ::
@@ -206,11 +229,13 @@ foreign import javascript unsafe "$1[\"enctype\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
 htmlFormElementGetEnctype ::
-                          (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                            self -> m result
 htmlFormElementGetEnctype self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_enctype
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_enctype
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"encoding\"] = $2;"
         ghcjs_dom_html_form_element_set_encoding ::
@@ -218,11 +243,13 @@ foreign import javascript unsafe "$1[\"encoding\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
 htmlFormElementSetEncoding ::
-                           (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                           (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                             self -> val -> m ()
 htmlFormElementSetEncoding self val
-  = ghcjs_dom_html_form_element_set_encoding
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_encoding
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"encoding\"]"
         ghcjs_dom_html_form_element_get_encoding ::
@@ -230,11 +257,13 @@ foreign import javascript unsafe "$1[\"encoding\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
 htmlFormElementGetEncoding ::
-                           (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                           (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                             self -> m result
 htmlFormElementGetEncoding self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_encoding
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_encoding
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"method\"] = $2;"
         ghcjs_dom_html_form_element_set_method ::
@@ -242,11 +271,13 @@ foreign import javascript unsafe "$1[\"method\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
 htmlFormElementSetMethod ::
-                         (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlFormElementSetMethod self val
-  = ghcjs_dom_html_form_element_set_method
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_method
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"method\"]"
         ghcjs_dom_html_form_element_get_method ::
@@ -254,11 +285,13 @@ foreign import javascript unsafe "$1[\"method\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
 htmlFormElementGetMethod ::
-                         (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                           self -> m result
 htmlFormElementGetMethod self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_method
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_method
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_form_element_set_name ::
@@ -266,11 +299,13 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.name Mozilla HTMLFormElement.name documentation> 
 htmlFormElementSetName ::
-                       (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlFormElementSetName self val
-  = ghcjs_dom_html_form_element_set_name
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_name
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_form_element_get_name ::
@@ -278,11 +313,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.name Mozilla HTMLFormElement.name documentation> 
 htmlFormElementGetName ::
-                       (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                         self -> m result
 htmlFormElementGetName self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_name
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_name
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"noValidate\"] = $2;"
         ghcjs_dom_html_form_element_set_no_validate ::
@@ -290,11 +327,12 @@ foreign import javascript unsafe "$1[\"noValidate\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.noValidate Mozilla HTMLFormElement.noValidate documentation> 
 htmlFormElementSetNoValidate ::
-                             (IsHTMLFormElement self) => self -> Bool -> IO ()
+                             (MonadIO m, IsHTMLFormElement self) => self -> Bool -> m ()
 htmlFormElementSetNoValidate self val
-  = ghcjs_dom_html_form_element_set_no_validate
-      (unHTMLFormElement (toHTMLFormElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_form_element_set_no_validate
+         (unHTMLFormElement (toHTMLFormElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"noValidate\"] ? 1 : 0)"
         ghcjs_dom_html_form_element_get_no_validate ::
@@ -302,10 +340,11 @@ foreign import javascript unsafe "($1[\"noValidate\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.noValidate Mozilla HTMLFormElement.noValidate documentation> 
 htmlFormElementGetNoValidate ::
-                             (IsHTMLFormElement self) => self -> IO Bool
+                             (MonadIO m, IsHTMLFormElement self) => self -> m Bool
 htmlFormElementGetNoValidate self
-  = ghcjs_dom_html_form_element_get_no_validate
-      (unHTMLFormElement (toHTMLFormElement self))
+  = liftIO
+      (ghcjs_dom_html_form_element_get_no_validate
+         (unHTMLFormElement (toHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         ghcjs_dom_html_form_element_set_target ::
@@ -313,11 +352,13 @@ foreign import javascript unsafe "$1[\"target\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.target Mozilla HTMLFormElement.target documentation> 
 htmlFormElementSetTarget ::
-                         (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlFormElementSetTarget self val
-  = ghcjs_dom_html_form_element_set_target
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_target
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"target\"]"
         ghcjs_dom_html_form_element_get_target ::
@@ -325,11 +366,13 @@ foreign import javascript unsafe "$1[\"target\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.target Mozilla HTMLFormElement.target documentation> 
 htmlFormElementGetTarget ::
-                         (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                           self -> m result
 htmlFormElementGetTarget self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_target
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_target
+            (unHTMLFormElement (toHTMLFormElement self))))
  
 foreign import javascript unsafe "$1[\"elements\"]"
         ghcjs_dom_html_form_element_get_elements ::
@@ -337,11 +380,13 @@ foreign import javascript unsafe "$1[\"elements\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.elements Mozilla HTMLFormElement.elements documentation> 
 htmlFormElementGetElements ::
-                           (IsHTMLFormElement self) => self -> IO (Maybe HTMLCollection)
+                           (MonadIO m, IsHTMLFormElement self) =>
+                             self -> m (Maybe HTMLCollection)
 htmlFormElementGetElements self
-  = (ghcjs_dom_html_form_element_get_elements
-       (unHTMLFormElement (toHTMLFormElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_form_element_get_elements
+          (unHTMLFormElement (toHTMLFormElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_html_form_element_get_length ::
@@ -349,10 +394,11 @@ foreign import javascript unsafe "$1[\"length\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.length Mozilla HTMLFormElement.length documentation> 
 htmlFormElementGetLength ::
-                         (IsHTMLFormElement self) => self -> IO Int
+                         (MonadIO m, IsHTMLFormElement self) => self -> m Int
 htmlFormElementGetLength self
-  = ghcjs_dom_html_form_element_get_length
-      (unHTMLFormElement (toHTMLFormElement self))
+  = liftIO
+      (ghcjs_dom_html_form_element_get_length
+         (unHTMLFormElement (toHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
         ghcjs_dom_html_form_element_set_autocorrect ::
@@ -360,11 +406,12 @@ foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocorrect Mozilla HTMLFormElement.autocorrect documentation> 
 htmlFormElementSetAutocorrect ::
-                              (IsHTMLFormElement self) => self -> Bool -> IO ()
+                              (MonadIO m, IsHTMLFormElement self) => self -> Bool -> m ()
 htmlFormElementSetAutocorrect self val
-  = ghcjs_dom_html_form_element_set_autocorrect
-      (unHTMLFormElement (toHTMLFormElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_form_element_set_autocorrect
+         (unHTMLFormElement (toHTMLFormElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
         ghcjs_dom_html_form_element_get_autocorrect ::
@@ -372,10 +419,11 @@ foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocorrect Mozilla HTMLFormElement.autocorrect documentation> 
 htmlFormElementGetAutocorrect ::
-                              (IsHTMLFormElement self) => self -> IO Bool
+                              (MonadIO m, IsHTMLFormElement self) => self -> m Bool
 htmlFormElementGetAutocorrect self
-  = ghcjs_dom_html_form_element_get_autocorrect
-      (unHTMLFormElement (toHTMLFormElement self))
+  = liftIO
+      (ghcjs_dom_html_form_element_get_autocorrect
+         (unHTMLFormElement (toHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
         ghcjs_dom_html_form_element_set_autocapitalize ::
@@ -383,11 +431,13 @@ foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocapitalize Mozilla HTMLFormElement.autocapitalize documentation> 
 htmlFormElementSetAutocapitalize ::
-                                 (IsHTMLFormElement self, ToJSString val) => self -> val -> IO ()
+                                 (MonadIO m, IsHTMLFormElement self, ToJSString val) =>
+                                   self -> val -> m ()
 htmlFormElementSetAutocapitalize self val
-  = ghcjs_dom_html_form_element_set_autocapitalize
-      (unHTMLFormElement (toHTMLFormElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_form_element_set_autocapitalize
+         (unHTMLFormElement (toHTMLFormElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"]"
         ghcjs_dom_html_form_element_get_autocapitalize ::
@@ -395,11 +445,13 @@ foreign import javascript unsafe "$1[\"autocapitalize\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocapitalize Mozilla HTMLFormElement.autocapitalize documentation> 
 htmlFormElementGetAutocapitalize ::
-                                 (IsHTMLFormElement self, FromJSString result) => self -> IO result
+                                 (MonadIO m, IsHTMLFormElement self, FromJSString result) =>
+                                   self -> m result
 htmlFormElementGetAutocapitalize self
-  = fromJSString <$>
-      (ghcjs_dom_html_form_element_get_autocapitalize
-         (unHTMLFormElement (toHTMLFormElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_form_element_get_autocapitalize
+            (unHTMLFormElement (toHTMLFormElement self))))
 #else
 module GHCJS.DOM.HTMLFormElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLFormElement

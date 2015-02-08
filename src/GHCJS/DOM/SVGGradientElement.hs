@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -35,12 +36,13 @@ foreign import javascript unsafe "$1[\"gradientUnits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientUnits Mozilla SVGGradientElement.gradientUnits documentation> 
 svgGradientElementGetGradientUnits ::
-                                   (IsSVGGradientElement self) =>
-                                     self -> IO (Maybe SVGAnimatedEnumeration)
+                                   (MonadIO m, IsSVGGradientElement self) =>
+                                     self -> m (Maybe SVGAnimatedEnumeration)
 svgGradientElementGetGradientUnits self
-  = (ghcjs_dom_svg_gradient_element_get_gradient_units
-       (unSVGGradientElement (toSVGGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_gradient_element_get_gradient_units
+          (unSVGGradientElement (toSVGGradientElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"gradientTransform\"]"
         ghcjs_dom_svg_gradient_element_get_gradient_transform ::
@@ -48,12 +50,13 @@ foreign import javascript unsafe "$1[\"gradientTransform\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientTransform Mozilla SVGGradientElement.gradientTransform documentation> 
 svgGradientElementGetGradientTransform ::
-                                       (IsSVGGradientElement self) =>
-                                         self -> IO (Maybe SVGAnimatedTransformList)
+                                       (MonadIO m, IsSVGGradientElement self) =>
+                                         self -> m (Maybe SVGAnimatedTransformList)
 svgGradientElementGetGradientTransform self
-  = (ghcjs_dom_svg_gradient_element_get_gradient_transform
-       (unSVGGradientElement (toSVGGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_gradient_element_get_gradient_transform
+          (unSVGGradientElement (toSVGGradientElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"spreadMethod\"]"
         ghcjs_dom_svg_gradient_element_get_spread_method ::
@@ -61,12 +64,13 @@ foreign import javascript unsafe "$1[\"spreadMethod\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.spreadMethod Mozilla SVGGradientElement.spreadMethod documentation> 
 svgGradientElementGetSpreadMethod ::
-                                  (IsSVGGradientElement self) =>
-                                    self -> IO (Maybe SVGAnimatedEnumeration)
+                                  (MonadIO m, IsSVGGradientElement self) =>
+                                    self -> m (Maybe SVGAnimatedEnumeration)
 svgGradientElementGetSpreadMethod self
-  = (ghcjs_dom_svg_gradient_element_get_spread_method
-       (unSVGGradientElement (toSVGGradientElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_gradient_element_get_spread_method
+          (unSVGGradientElement (toSVGGradientElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGGradientElement (
   ) where

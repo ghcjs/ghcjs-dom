@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,12 +26,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback.handleEvent Mozilla StringCallback.handleEvent documentation> 
 stringCallbackHandleEvent ::
-                          (IsStringCallback self, ToJSString data') =>
-                            self -> data' -> IO Bool
+                          (MonadIO m, IsStringCallback self, ToJSString data') =>
+                            self -> data' -> m Bool
 stringCallbackHandleEvent self data'
-  = ghcjs_dom_string_callback_handle_event
-      (unStringCallback (toStringCallback self))
-      (toJSString data')
+  = liftIO
+      (ghcjs_dom_string_callback_handle_event
+         (unStringCallback (toStringCallback self))
+         (toJSString data'))
 #else
 module GHCJS.DOM.StringCallback (
   ) where

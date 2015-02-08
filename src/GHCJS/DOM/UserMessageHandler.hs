@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,13 +26,15 @@ foreign import javascript unsafe "$1[\"postMessage\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandler.postMessage Mozilla UserMessageHandler.postMessage documentation> 
 userMessageHandlerPostMessage ::
-                              (IsUserMessageHandler self, IsSerializedScriptValue message) =>
-                                self -> Maybe message -> IO ()
+                              (MonadIO m, IsUserMessageHandler self,
+                               IsSerializedScriptValue message) =>
+                                self -> Maybe message -> m ()
 userMessageHandlerPostMessage self message
-  = ghcjs_dom_user_message_handler_post_message
-      (unUserMessageHandler (toUserMessageHandler self))
-      (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
-         message)
+  = liftIO
+      (ghcjs_dom_user_message_handler_post_message
+         (unUserMessageHandler (toUserMessageHandler self))
+         (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
+            message))
 #else
 module GHCJS.DOM.UserMessageHandler (
   ) where

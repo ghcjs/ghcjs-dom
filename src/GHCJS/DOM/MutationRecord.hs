@@ -23,6 +23,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -37,11 +38,12 @@ foreign import javascript unsafe "$1[\"target\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.target Mozilla MutationRecord.target documentation> 
 mutationRecordGetTarget ::
-                        (IsMutationRecord self) => self -> IO (Maybe Node)
+                        (MonadIO m, IsMutationRecord self) => self -> m (Maybe Node)
 mutationRecordGetTarget self
-  = (ghcjs_dom_mutation_record_get_target
-       (unMutationRecord (toMutationRecord self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mutation_record_get_target
+          (unMutationRecord (toMutationRecord self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"addedNodes\"]"
         ghcjs_dom_mutation_record_get_added_nodes ::
@@ -49,11 +51,12 @@ foreign import javascript unsafe "$1[\"addedNodes\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.addedNodes Mozilla MutationRecord.addedNodes documentation> 
 mutationRecordGetAddedNodes ::
-                            (IsMutationRecord self) => self -> IO (Maybe NodeList)
+                            (MonadIO m, IsMutationRecord self) => self -> m (Maybe NodeList)
 mutationRecordGetAddedNodes self
-  = (ghcjs_dom_mutation_record_get_added_nodes
-       (unMutationRecord (toMutationRecord self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mutation_record_get_added_nodes
+          (unMutationRecord (toMutationRecord self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removedNodes\"]"
         ghcjs_dom_mutation_record_get_removed_nodes ::
@@ -61,11 +64,12 @@ foreign import javascript unsafe "$1[\"removedNodes\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.removedNodes Mozilla MutationRecord.removedNodes documentation> 
 mutationRecordGetRemovedNodes ::
-                              (IsMutationRecord self) => self -> IO (Maybe NodeList)
+                              (MonadIO m, IsMutationRecord self) => self -> m (Maybe NodeList)
 mutationRecordGetRemovedNodes self
-  = (ghcjs_dom_mutation_record_get_removed_nodes
-       (unMutationRecord (toMutationRecord self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mutation_record_get_removed_nodes
+          (unMutationRecord (toMutationRecord self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"previousSibling\"]"
         ghcjs_dom_mutation_record_get_previous_sibling ::
@@ -73,11 +77,12 @@ foreign import javascript unsafe "$1[\"previousSibling\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.previousSibling Mozilla MutationRecord.previousSibling documentation> 
 mutationRecordGetPreviousSibling ::
-                                 (IsMutationRecord self) => self -> IO (Maybe Node)
+                                 (MonadIO m, IsMutationRecord self) => self -> m (Maybe Node)
 mutationRecordGetPreviousSibling self
-  = (ghcjs_dom_mutation_record_get_previous_sibling
-       (unMutationRecord (toMutationRecord self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mutation_record_get_previous_sibling
+          (unMutationRecord (toMutationRecord self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"nextSibling\"]"
         ghcjs_dom_mutation_record_get_next_sibling ::
@@ -85,11 +90,12 @@ foreign import javascript unsafe "$1[\"nextSibling\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.nextSibling Mozilla MutationRecord.nextSibling documentation> 
 mutationRecordGetNextSibling ::
-                             (IsMutationRecord self) => self -> IO (Maybe Node)
+                             (MonadIO m, IsMutationRecord self) => self -> m (Maybe Node)
 mutationRecordGetNextSibling self
-  = (ghcjs_dom_mutation_record_get_next_sibling
-       (unMutationRecord (toMutationRecord self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mutation_record_get_next_sibling
+          (unMutationRecord (toMutationRecord self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"attributeName\"]"
         ghcjs_dom_mutation_record_get_attribute_name ::
@@ -97,11 +103,13 @@ foreign import javascript unsafe "$1[\"attributeName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeName Mozilla MutationRecord.attributeName documentation> 
 mutationRecordGetAttributeName ::
-                               (IsMutationRecord self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsMutationRecord self, FromJSString result) =>
+                                 self -> m result
 mutationRecordGetAttributeName self
-  = fromJSString <$>
-      (ghcjs_dom_mutation_record_get_attribute_name
-         (unMutationRecord (toMutationRecord self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_mutation_record_get_attribute_name
+            (unMutationRecord (toMutationRecord self))))
  
 foreign import javascript unsafe "$1[\"attributeNamespace\"]"
         ghcjs_dom_mutation_record_get_attribute_namespace ::
@@ -109,12 +117,13 @@ foreign import javascript unsafe "$1[\"attributeNamespace\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeNamespace Mozilla MutationRecord.attributeNamespace documentation> 
 mutationRecordGetAttributeNamespace ::
-                                    (IsMutationRecord self, FromJSString result) =>
-                                      self -> IO result
+                                    (MonadIO m, IsMutationRecord self, FromJSString result) =>
+                                      self -> m result
 mutationRecordGetAttributeNamespace self
-  = fromJSString <$>
-      (ghcjs_dom_mutation_record_get_attribute_namespace
-         (unMutationRecord (toMutationRecord self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_mutation_record_get_attribute_namespace
+            (unMutationRecord (toMutationRecord self))))
  
 foreign import javascript unsafe "$1[\"oldValue\"]"
         ghcjs_dom_mutation_record_get_old_value ::
@@ -122,11 +131,13 @@ foreign import javascript unsafe "$1[\"oldValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.oldValue Mozilla MutationRecord.oldValue documentation> 
 mutationRecordGetOldValue ::
-                          (IsMutationRecord self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsMutationRecord self, FromJSString result) =>
+                            self -> m result
 mutationRecordGetOldValue self
-  = fromJSString <$>
-      (ghcjs_dom_mutation_record_get_old_value
-         (unMutationRecord (toMutationRecord self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_mutation_record_get_old_value
+            (unMutationRecord (toMutationRecord self))))
 #else
 module GHCJS.DOM.MutationRecord (
   ) where

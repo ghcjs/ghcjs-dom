@@ -24,6 +24,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,8 +37,9 @@ foreign import javascript unsafe "new window[\"MediaSource\"]()"
         ghcjs_dom_media_source_new :: IO (JSRef MediaSource)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource Mozilla MediaSource documentation> 
-mediaSourceNew :: IO MediaSource
-mediaSourceNew = ghcjs_dom_media_source_new >>= fromJSRefUnchecked
+mediaSourceNew :: (MonadIO m) => m MediaSource
+mediaSourceNew
+  = liftIO (ghcjs_dom_media_source_new >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"addSourceBuffer\"]($2)"
         ghcjs_dom_media_source_add_source_buffer ::
@@ -45,13 +47,14 @@ foreign import javascript unsafe "$1[\"addSourceBuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
 mediaSourceAddSourceBuffer ::
-                           (IsMediaSource self, ToJSString type') =>
-                             self -> type' -> IO (Maybe SourceBuffer)
+                           (MonadIO m, IsMediaSource self, ToJSString type') =>
+                             self -> type' -> m (Maybe SourceBuffer)
 mediaSourceAddSourceBuffer self type'
-  = (ghcjs_dom_media_source_add_source_buffer
-       (unMediaSource (toMediaSource self))
-       (toJSString type'))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_media_source_add_source_buffer
+          (unMediaSource (toMediaSource self))
+          (toJSString type'))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeSourceBuffer\"]($2)"
         ghcjs_dom_media_source_remove_source_buffer ::
@@ -59,12 +62,13 @@ foreign import javascript unsafe "$1[\"removeSourceBuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.removeSourceBuffer Mozilla MediaSource.removeSourceBuffer documentation> 
 mediaSourceRemoveSourceBuffer ::
-                              (IsMediaSource self, IsSourceBuffer buffer) =>
-                                self -> Maybe buffer -> IO ()
+                              (MonadIO m, IsMediaSource self, IsSourceBuffer buffer) =>
+                                self -> Maybe buffer -> m ()
 mediaSourceRemoveSourceBuffer self buffer
-  = ghcjs_dom_media_source_remove_source_buffer
-      (unMediaSource (toMediaSource self))
-      (maybe jsNull (unSourceBuffer . toSourceBuffer) buffer)
+  = liftIO
+      (ghcjs_dom_media_source_remove_source_buffer
+         (unMediaSource (toMediaSource self))
+         (maybe jsNull (unSourceBuffer . toSourceBuffer) buffer))
  
 foreign import javascript unsafe "$1[\"endOfStream\"]($2)"
         ghcjs_dom_media_source_end_of_stream ::
@@ -72,11 +76,12 @@ foreign import javascript unsafe "$1[\"endOfStream\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.endOfStream Mozilla MediaSource.endOfStream documentation> 
 mediaSourceEndOfStream ::
-                       (IsMediaSource self) => self -> EndOfStreamError -> IO ()
+                       (MonadIO m, IsMediaSource self) => self -> EndOfStreamError -> m ()
 mediaSourceEndOfStream self error
-  = ghcjs_dom_media_source_end_of_stream
-      (unMediaSource (toMediaSource self))
-      (ptoJSRef error)
+  = liftIO
+      (ghcjs_dom_media_source_end_of_stream
+         (unMediaSource (toMediaSource self))
+         (ptoJSRef error))
  
 foreign import javascript unsafe
         "($1[\"isTypeSupported\"]($2) ? 1 : 0)"
@@ -85,11 +90,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.isTypeSupported Mozilla MediaSource.isTypeSupported documentation> 
 mediaSourceIsTypeSupported ::
-                           (IsMediaSource self, ToJSString type') => self -> type' -> IO Bool
+                           (MonadIO m, IsMediaSource self, ToJSString type') =>
+                             self -> type' -> m Bool
 mediaSourceIsTypeSupported self type'
-  = ghcjs_dom_media_source_is_type_supported
-      (unMediaSource (toMediaSource self))
-      (toJSString type')
+  = liftIO
+      (ghcjs_dom_media_source_is_type_supported
+         (unMediaSource (toMediaSource self))
+         (toJSString type'))
  
 foreign import javascript unsafe "$1[\"sourceBuffers\"]"
         ghcjs_dom_media_source_get_source_buffers ::
@@ -97,11 +104,13 @@ foreign import javascript unsafe "$1[\"sourceBuffers\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.sourceBuffers Mozilla MediaSource.sourceBuffers documentation> 
 mediaSourceGetSourceBuffers ::
-                            (IsMediaSource self) => self -> IO (Maybe SourceBufferList)
+                            (MonadIO m, IsMediaSource self) =>
+                              self -> m (Maybe SourceBufferList)
 mediaSourceGetSourceBuffers self
-  = (ghcjs_dom_media_source_get_source_buffers
-       (unMediaSource (toMediaSource self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_media_source_get_source_buffers
+          (unMediaSource (toMediaSource self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"activeSourceBuffers\"]"
         ghcjs_dom_media_source_get_active_source_buffers ::
@@ -109,11 +118,13 @@ foreign import javascript unsafe "$1[\"activeSourceBuffers\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.activeSourceBuffers Mozilla MediaSource.activeSourceBuffers documentation> 
 mediaSourceGetActiveSourceBuffers ::
-                                  (IsMediaSource self) => self -> IO (Maybe SourceBufferList)
+                                  (MonadIO m, IsMediaSource self) =>
+                                    self -> m (Maybe SourceBufferList)
 mediaSourceGetActiveSourceBuffers self
-  = (ghcjs_dom_media_source_get_active_source_buffers
-       (unMediaSource (toMediaSource self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_media_source_get_active_source_buffers
+          (unMediaSource (toMediaSource self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"duration\"] = $2;"
         ghcjs_dom_media_source_set_duration ::
@@ -121,21 +132,24 @@ foreign import javascript unsafe "$1[\"duration\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.duration Mozilla MediaSource.duration documentation> 
 mediaSourceSetDuration ::
-                       (IsMediaSource self) => self -> Double -> IO ()
+                       (MonadIO m, IsMediaSource self) => self -> Double -> m ()
 mediaSourceSetDuration self val
-  = ghcjs_dom_media_source_set_duration
-      (unMediaSource (toMediaSource self))
-      val
+  = liftIO
+      (ghcjs_dom_media_source_set_duration
+         (unMediaSource (toMediaSource self))
+         val)
  
 foreign import javascript unsafe "$1[\"duration\"]"
         ghcjs_dom_media_source_get_duration ::
         JSRef MediaSource -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.duration Mozilla MediaSource.duration documentation> 
-mediaSourceGetDuration :: (IsMediaSource self) => self -> IO Double
+mediaSourceGetDuration ::
+                       (MonadIO m, IsMediaSource self) => self -> m Double
 mediaSourceGetDuration self
-  = ghcjs_dom_media_source_get_duration
-      (unMediaSource (toMediaSource self))
+  = liftIO
+      (ghcjs_dom_media_source_get_duration
+         (unMediaSource (toMediaSource self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_media_source_get_ready_state ::
@@ -143,11 +157,13 @@ foreign import javascript unsafe "$1[\"readyState\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.readyState Mozilla MediaSource.readyState documentation> 
 mediaSourceGetReadyState ::
-                         (IsMediaSource self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsMediaSource self, FromJSString result) =>
+                           self -> m result
 mediaSourceGetReadyState self
-  = fromJSString <$>
-      (ghcjs_dom_media_source_get_ready_state
-         (unMediaSource (toMediaSource self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_media_source_get_ready_state
+            (unMediaSource (toMediaSource self))))
 #else
 module GHCJS.DOM.MediaSource (
   ) where

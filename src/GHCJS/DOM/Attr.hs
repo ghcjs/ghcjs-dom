@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,38 +27,44 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.name Mozilla Attr.name documentation> 
 attrGetName ::
-            (IsDOMAttr self, FromJSString result) => self -> IO result
+            (MonadIO m, IsDOMAttr self, FromJSString result) =>
+              self -> m result
 attrGetName self
-  = fromJSString <$>
-      (ghcjs_dom_attr_get_name (unDOMAttr (toDOMAttr self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_attr_get_name (unDOMAttr (toDOMAttr self))))
  
 foreign import javascript unsafe "($1[\"specified\"] ? 1 : 0)"
         ghcjs_dom_attr_get_specified :: JSRef DOMAttr -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.specified Mozilla Attr.specified documentation> 
-attrGetSpecified :: (IsDOMAttr self) => self -> IO Bool
+attrGetSpecified :: (MonadIO m, IsDOMAttr self) => self -> m Bool
 attrGetSpecified self
-  = ghcjs_dom_attr_get_specified (unDOMAttr (toDOMAttr self))
+  = liftIO
+      (ghcjs_dom_attr_get_specified (unDOMAttr (toDOMAttr self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_attr_set_value :: JSRef DOMAttr -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
 attrSetValue ::
-             (IsDOMAttr self, ToJSString val) => self -> val -> IO ()
+             (MonadIO m, IsDOMAttr self, ToJSString val) => self -> val -> m ()
 attrSetValue self val
-  = ghcjs_dom_attr_set_value (unDOMAttr (toDOMAttr self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_attr_set_value (unDOMAttr (toDOMAttr self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_attr_get_value :: JSRef DOMAttr -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
 attrGetValue ::
-             (IsDOMAttr self, FromJSString result) => self -> IO result
+             (MonadIO m, IsDOMAttr self, FromJSString result) =>
+               self -> m result
 attrGetValue self
-  = fromJSString <$>
-      (ghcjs_dom_attr_get_value (unDOMAttr (toDOMAttr self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_attr_get_value (unDOMAttr (toDOMAttr self))))
  
 foreign import javascript unsafe "$1[\"ownerElement\"]"
         ghcjs_dom_attr_get_owner_element ::
@@ -65,18 +72,19 @@ foreign import javascript unsafe "$1[\"ownerElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
 attrGetOwnerElement ::
-                    (IsDOMAttr self) => self -> IO (Maybe Element)
+                    (MonadIO m, IsDOMAttr self) => self -> m (Maybe Element)
 attrGetOwnerElement self
-  = (ghcjs_dom_attr_get_owner_element (unDOMAttr (toDOMAttr self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_attr_get_owner_element (unDOMAttr (toDOMAttr self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "($1[\"isId\"] ? 1 : 0)"
         ghcjs_dom_attr_get_is_id :: JSRef DOMAttr -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.isId Mozilla Attr.isId documentation> 
-attrGetIsId :: (IsDOMAttr self) => self -> IO Bool
+attrGetIsId :: (MonadIO m, IsDOMAttr self) => self -> m Bool
 attrGetIsId self
-  = ghcjs_dom_attr_get_is_id (unDOMAttr (toDOMAttr self))
+  = liftIO (ghcjs_dom_attr_get_is_id (unDOMAttr (toDOMAttr self)))
 #else
 module GHCJS.DOM.Attr (
   module Graphics.UI.Gtk.WebKit.DOM.Attr

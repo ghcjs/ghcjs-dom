@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,12 +26,13 @@ foreign import javascript unsafe "$1[\"style\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSViewportRule.style Mozilla WebKitCSSViewportRule.style documentation> 
 webKitCSSViewportRuleGetStyle ::
-                              (IsWebKitCSSViewportRule self) =>
-                                self -> IO (Maybe CSSStyleDeclaration)
+                              (MonadIO m, IsWebKitCSSViewportRule self) =>
+                                self -> m (Maybe CSSStyleDeclaration)
 webKitCSSViewportRuleGetStyle self
-  = (ghcjs_dom_webkit_css_viewport_rule_get_style
-       (unWebKitCSSViewportRule (toWebKitCSSViewportRule self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_webkit_css_viewport_rule_get_style
+          (unWebKitCSSViewportRule (toWebKitCSSViewportRule self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.WebKitCSSViewportRule (
   ) where

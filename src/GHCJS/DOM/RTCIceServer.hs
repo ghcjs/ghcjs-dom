@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,13 @@ foreign import javascript unsafe "$1[\"urls\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceServer.urls Mozilla RTCIceServer.urls documentation> 
 rtcIceServerGetUrls ::
-                    (IsRTCIceServer self, FromJSString result) => self -> IO [result]
+                    (MonadIO m, IsRTCIceServer self, FromJSString result) =>
+                      self -> m [result]
 rtcIceServerGetUrls self
-  = (ghcjs_dom_rtc_ice_server_get_urls
-       (unRTCIceServer (toRTCIceServer self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_rtc_ice_server_get_urls
+          (unRTCIceServer (toRTCIceServer self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"username\"]"
         ghcjs_dom_rtc_ice_server_get_username ::
@@ -38,11 +41,13 @@ foreign import javascript unsafe "$1[\"username\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceServer.username Mozilla RTCIceServer.username documentation> 
 rtcIceServerGetUsername ::
-                        (IsRTCIceServer self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsRTCIceServer self, FromJSString result) =>
+                          self -> m result
 rtcIceServerGetUsername self
-  = fromJSString <$>
-      (ghcjs_dom_rtc_ice_server_get_username
-         (unRTCIceServer (toRTCIceServer self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_ice_server_get_username
+            (unRTCIceServer (toRTCIceServer self))))
  
 foreign import javascript unsafe "$1[\"credential\"]"
         ghcjs_dom_rtc_ice_server_get_credential ::
@@ -50,11 +55,13 @@ foreign import javascript unsafe "$1[\"credential\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceServer.credential Mozilla RTCIceServer.credential documentation> 
 rtcIceServerGetCredential ::
-                          (IsRTCIceServer self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsRTCIceServer self, FromJSString result) =>
+                            self -> m result
 rtcIceServerGetCredential self
-  = fromJSString <$>
-      (ghcjs_dom_rtc_ice_server_get_credential
-         (unRTCIceServer (toRTCIceServer self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_ice_server_get_credential
+            (unRTCIceServer (toRTCIceServer self))))
 #else
 module GHCJS.DOM.RTCIceServer (
   ) where

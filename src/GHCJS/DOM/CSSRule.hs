@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -45,20 +46,23 @@ foreign import javascript unsafe "$1[\"cssText\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
 cssRuleSetCssText ::
-                  (IsCSSRule self, ToJSString val) => self -> val -> IO ()
+                  (MonadIO m, IsCSSRule self, ToJSString val) => self -> val -> m ()
 cssRuleSetCssText self val
-  = ghcjs_dom_css_rule_set_css_text (unCSSRule (toCSSRule self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_css_rule_set_css_text (unCSSRule (toCSSRule self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"cssText\"]"
         ghcjs_dom_css_rule_get_css_text :: JSRef CSSRule -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
 cssRuleGetCssText ::
-                  (IsCSSRule self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsCSSRule self, FromJSString result) =>
+                    self -> m result
 cssRuleGetCssText self
-  = fromJSString <$>
-      (ghcjs_dom_css_rule_get_css_text (unCSSRule (toCSSRule self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_rule_get_css_text (unCSSRule (toCSSRule self))))
  
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
         ghcjs_dom_css_rule_get_parent_style_sheet ::
@@ -66,11 +70,12 @@ foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentStyleSheet Mozilla CSSRule.parentStyleSheet documentation> 
 cssRuleGetParentStyleSheet ::
-                           (IsCSSRule self) => self -> IO (Maybe CSSStyleSheet)
+                           (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSStyleSheet)
 cssRuleGetParentStyleSheet self
-  = (ghcjs_dom_css_rule_get_parent_style_sheet
-       (unCSSRule (toCSSRule self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_rule_get_parent_style_sheet
+          (unCSSRule (toCSSRule self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"parentRule\"]"
         ghcjs_dom_css_rule_get_parent_rule ::
@@ -78,10 +83,11 @@ foreign import javascript unsafe "$1[\"parentRule\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentRule Mozilla CSSRule.parentRule documentation> 
 cssRuleGetParentRule ::
-                     (IsCSSRule self) => self -> IO (Maybe CSSRule)
+                     (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSRule)
 cssRuleGetParentRule self
-  = (ghcjs_dom_css_rule_get_parent_rule (unCSSRule (toCSSRule self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_rule_get_parent_rule (unCSSRule (toCSSRule self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.CSSRule (
   module Graphics.UI.Gtk.WebKit.DOM.CSSRule

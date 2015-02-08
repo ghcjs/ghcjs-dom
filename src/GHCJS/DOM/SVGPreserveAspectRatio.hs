@@ -28,6 +28,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -56,11 +57,12 @@ foreign import javascript unsafe "$1[\"align\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.align Mozilla SVGPreserveAspectRatio.align documentation> 
 svgPreserveAspectRatioSetAlign ::
-                               (IsSVGPreserveAspectRatio self) => self -> Word -> IO ()
+                               (MonadIO m, IsSVGPreserveAspectRatio self) => self -> Word -> m ()
 svgPreserveAspectRatioSetAlign self val
-  = ghcjs_dom_svg_preserve_aspect_ratio_set_align
-      (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_preserve_aspect_ratio_set_align
+         (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self))
+         val)
  
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_svg_preserve_aspect_ratio_get_align ::
@@ -68,10 +70,11 @@ foreign import javascript unsafe "$1[\"align\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.align Mozilla SVGPreserveAspectRatio.align documentation> 
 svgPreserveAspectRatioGetAlign ::
-                               (IsSVGPreserveAspectRatio self) => self -> IO Word
+                               (MonadIO m, IsSVGPreserveAspectRatio self) => self -> m Word
 svgPreserveAspectRatioGetAlign self
-  = ghcjs_dom_svg_preserve_aspect_ratio_get_align
-      (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self))
+  = liftIO
+      (ghcjs_dom_svg_preserve_aspect_ratio_get_align
+         (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self)))
  
 foreign import javascript unsafe "$1[\"meetOrSlice\"] = $2;"
         ghcjs_dom_svg_preserve_aspect_ratio_set_meet_or_slice ::
@@ -79,11 +82,13 @@ foreign import javascript unsafe "$1[\"meetOrSlice\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.meetOrSlice Mozilla SVGPreserveAspectRatio.meetOrSlice documentation> 
 svgPreserveAspectRatioSetMeetOrSlice ::
-                                     (IsSVGPreserveAspectRatio self) => self -> Word -> IO ()
+                                     (MonadIO m, IsSVGPreserveAspectRatio self) =>
+                                       self -> Word -> m ()
 svgPreserveAspectRatioSetMeetOrSlice self val
-  = ghcjs_dom_svg_preserve_aspect_ratio_set_meet_or_slice
-      (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_preserve_aspect_ratio_set_meet_or_slice
+         (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self))
+         val)
  
 foreign import javascript unsafe "$1[\"meetOrSlice\"]"
         ghcjs_dom_svg_preserve_aspect_ratio_get_meet_or_slice ::
@@ -91,10 +96,11 @@ foreign import javascript unsafe "$1[\"meetOrSlice\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.meetOrSlice Mozilla SVGPreserveAspectRatio.meetOrSlice documentation> 
 svgPreserveAspectRatioGetMeetOrSlice ::
-                                     (IsSVGPreserveAspectRatio self) => self -> IO Word
+                                     (MonadIO m, IsSVGPreserveAspectRatio self) => self -> m Word
 svgPreserveAspectRatioGetMeetOrSlice self
-  = ghcjs_dom_svg_preserve_aspect_ratio_get_meet_or_slice
-      (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self))
+  = liftIO
+      (ghcjs_dom_svg_preserve_aspect_ratio_get_meet_or_slice
+         (unSVGPreserveAspectRatio (toSVGPreserveAspectRatio self)))
 #else
 module GHCJS.DOM.SVGPreserveAspectRatio (
   ) where

@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,13 +25,14 @@ foreign import javascript unsafe "$1[\"addColorStop\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient.addColorStop Mozilla CanvasGradient.addColorStop documentation> 
 canvasGradientAddColorStop ::
-                           (IsCanvasGradient self, ToJSString color) =>
-                             self -> Float -> color -> IO ()
+                           (MonadIO m, IsCanvasGradient self, ToJSString color) =>
+                             self -> Float -> color -> m ()
 canvasGradientAddColorStop self offset color
-  = ghcjs_dom_canvas_gradient_add_color_stop
-      (unCanvasGradient (toCanvasGradient self))
-      offset
-      (toJSString color)
+  = liftIO
+      (ghcjs_dom_canvas_gradient_add_color_stop
+         (unCanvasGradient (toCanvasGradient self))
+         offset
+         (toJSString color))
 #else
 module GHCJS.DOM.CanvasGradient (
   ) where

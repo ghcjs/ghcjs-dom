@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEOffsetElement.in1 Mozilla SVGFEOffsetElement.in1 documentation> 
 svgfeOffsetElementGetIn1 ::
-                         (IsSVGFEOffsetElement self) => self -> IO (Maybe SVGAnimatedString)
+                         (MonadIO m, IsSVGFEOffsetElement self) =>
+                           self -> m (Maybe SVGAnimatedString)
 svgfeOffsetElementGetIn1 self
-  = (ghcjs_dom_svgfe_offset_element_get_in1
-       (unSVGFEOffsetElement (toSVGFEOffsetElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_offset_element_get_in1
+          (unSVGFEOffsetElement (toSVGFEOffsetElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"dx\"]"
         ghcjs_dom_svgfe_offset_element_get_dx ::
@@ -38,11 +41,13 @@ foreign import javascript unsafe "$1[\"dx\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEOffsetElement.dx Mozilla SVGFEOffsetElement.dx documentation> 
 svgfeOffsetElementGetDx ::
-                        (IsSVGFEOffsetElement self) => self -> IO (Maybe SVGAnimatedNumber)
+                        (MonadIO m, IsSVGFEOffsetElement self) =>
+                          self -> m (Maybe SVGAnimatedNumber)
 svgfeOffsetElementGetDx self
-  = (ghcjs_dom_svgfe_offset_element_get_dx
-       (unSVGFEOffsetElement (toSVGFEOffsetElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_offset_element_get_dx
+          (unSVGFEOffsetElement (toSVGFEOffsetElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"dy\"]"
         ghcjs_dom_svgfe_offset_element_get_dy ::
@@ -50,11 +55,13 @@ foreign import javascript unsafe "$1[\"dy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEOffsetElement.dy Mozilla SVGFEOffsetElement.dy documentation> 
 svgfeOffsetElementGetDy ::
-                        (IsSVGFEOffsetElement self) => self -> IO (Maybe SVGAnimatedNumber)
+                        (MonadIO m, IsSVGFEOffsetElement self) =>
+                          self -> m (Maybe SVGAnimatedNumber)
 svgfeOffsetElementGetDy self
-  = (ghcjs_dom_svgfe_offset_element_get_dy
-       (unSVGFEOffsetElement (toSVGFEOffsetElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_offset_element_get_dy
+          (unSVGFEOffsetElement (toSVGFEOffsetElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEOffsetElement (
   ) where

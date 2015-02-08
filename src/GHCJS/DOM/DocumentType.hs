@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,11 +30,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.name Mozilla DocumentType.name documentation> 
 documentTypeGetName ::
-                    (IsDocumentType self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsDocumentType self, FromJSString result) =>
+                      self -> m result
 documentTypeGetName self
-  = fromJSString <$>
-      (ghcjs_dom_document_type_get_name
-         (unDocumentType (toDocumentType self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_type_get_name
+            (unDocumentType (toDocumentType self))))
  
 foreign import javascript unsafe "$1[\"entities\"]"
         ghcjs_dom_document_type_get_entities ::
@@ -41,11 +44,12 @@ foreign import javascript unsafe "$1[\"entities\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.entities Mozilla DocumentType.entities documentation> 
 documentTypeGetEntities ::
-                        (IsDocumentType self) => self -> IO (Maybe NamedNodeMap)
+                        (MonadIO m, IsDocumentType self) => self -> m (Maybe NamedNodeMap)
 documentTypeGetEntities self
-  = (ghcjs_dom_document_type_get_entities
-       (unDocumentType (toDocumentType self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_type_get_entities
+          (unDocumentType (toDocumentType self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"notations\"]"
         ghcjs_dom_document_type_get_notations ::
@@ -53,11 +57,12 @@ foreign import javascript unsafe "$1[\"notations\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.notations Mozilla DocumentType.notations documentation> 
 documentTypeGetNotations ::
-                         (IsDocumentType self) => self -> IO (Maybe NamedNodeMap)
+                         (MonadIO m, IsDocumentType self) => self -> m (Maybe NamedNodeMap)
 documentTypeGetNotations self
-  = (ghcjs_dom_document_type_get_notations
-       (unDocumentType (toDocumentType self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_type_get_notations
+          (unDocumentType (toDocumentType self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"publicId\"]"
         ghcjs_dom_document_type_get_public_id ::
@@ -65,11 +70,13 @@ foreign import javascript unsafe "$1[\"publicId\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.publicId Mozilla DocumentType.publicId documentation> 
 documentTypeGetPublicId ::
-                        (IsDocumentType self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsDocumentType self, FromJSString result) =>
+                          self -> m result
 documentTypeGetPublicId self
-  = fromJSString <$>
-      (ghcjs_dom_document_type_get_public_id
-         (unDocumentType (toDocumentType self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_type_get_public_id
+            (unDocumentType (toDocumentType self))))
  
 foreign import javascript unsafe "$1[\"systemId\"]"
         ghcjs_dom_document_type_get_system_id ::
@@ -77,11 +84,13 @@ foreign import javascript unsafe "$1[\"systemId\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.systemId Mozilla DocumentType.systemId documentation> 
 documentTypeGetSystemId ::
-                        (IsDocumentType self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsDocumentType self, FromJSString result) =>
+                          self -> m result
 documentTypeGetSystemId self
-  = fromJSString <$>
-      (ghcjs_dom_document_type_get_system_id
-         (unDocumentType (toDocumentType self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_type_get_system_id
+            (unDocumentType (toDocumentType self))))
  
 foreign import javascript unsafe "$1[\"internalSubset\"]"
         ghcjs_dom_document_type_get_internal_subset ::
@@ -89,11 +98,13 @@ foreign import javascript unsafe "$1[\"internalSubset\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.internalSubset Mozilla DocumentType.internalSubset documentation> 
 documentTypeGetInternalSubset ::
-                              (IsDocumentType self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsDocumentType self, FromJSString result) =>
+                                self -> m result
 documentTypeGetInternalSubset self
-  = fromJSString <$>
-      (ghcjs_dom_document_type_get_internal_subset
-         (unDocumentType (toDocumentType self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_type_get_internal_subset
+            (unDocumentType (toDocumentType self))))
 #else
 module GHCJS.DOM.DocumentType (
   module Graphics.UI.Gtk.WebKit.DOM.DocumentType

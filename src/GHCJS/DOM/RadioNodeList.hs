@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,12 +27,13 @@ foreign import javascript unsafe "$1[\"_get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RadioNodeList._get Mozilla RadioNodeList._get documentation> 
 radioNodeList_get ::
-                  (IsRadioNodeList self) => self -> Word -> IO (Maybe Node)
+                  (MonadIO m, IsRadioNodeList self) => self -> Word -> m (Maybe Node)
 radioNodeList_get self index
-  = (ghcjs_dom_radio_node_list_get
-       (unRadioNodeList (toRadioNodeList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_radio_node_list_get
+          (unRadioNodeList (toRadioNodeList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_radio_node_list_set_value ::
@@ -39,11 +41,13 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RadioNodeList.value Mozilla RadioNodeList.value documentation> 
 radioNodeListSetValue ::
-                      (IsRadioNodeList self, ToJSString val) => self -> val -> IO ()
+                      (MonadIO m, IsRadioNodeList self, ToJSString val) =>
+                        self -> val -> m ()
 radioNodeListSetValue self val
-  = ghcjs_dom_radio_node_list_set_value
-      (unRadioNodeList (toRadioNodeList self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_radio_node_list_set_value
+         (unRadioNodeList (toRadioNodeList self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_radio_node_list_get_value ::
@@ -51,11 +55,13 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RadioNodeList.value Mozilla RadioNodeList.value documentation> 
 radioNodeListGetValue ::
-                      (IsRadioNodeList self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsRadioNodeList self, FromJSString result) =>
+                        self -> m result
 radioNodeListGetValue self
-  = fromJSString <$>
-      (ghcjs_dom_radio_node_list_get_value
-         (unRadioNodeList (toRadioNodeList self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_radio_node_list_get_value
+            (unRadioNodeList (toRadioNodeList self))))
 #else
 module GHCJS.DOM.RadioNodeList (
   ) where

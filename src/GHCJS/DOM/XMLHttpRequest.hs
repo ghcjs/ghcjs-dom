@@ -13,13 +13,11 @@ module GHCJS.DOM.XMLHttpRequest
         ghcjs_dom_xml_http_request_get_response_header,
         xmlHttpRequestGetResponseHeader,
         ghcjs_dom_xml_http_request_override_mime_type,
-        xmlHttpRequestOverrideMimeType,
-        ghcjs_dom_xml_http_request_dispatch_event,
-        xmlHttpRequestDispatchEvent, cUNSENT, cOPENED, cHEADERS_RECEIVED,
-        cLOADING, cDONE, xmlHttpRequestOnabort, xmlHttpRequestOnerror,
-        xmlHttpRequestOnload, xmlHttpRequestOnloadend,
-        xmlHttpRequestOnloadstart, xmlHttpRequestOnprogress,
-        xmlHttpRequestOntimeout, xmlHttpRequestOnreadystatechange,
+        xmlHttpRequestOverrideMimeType, cUNSENT, cOPENED,
+        cHEADERS_RECEIVED, cLOADING, cDONE, xmlHttpRequestAbortEvent,
+        xmlHttpRequestError, xmlHttpRequestLoad, xmlHttpRequestLoadEnd,
+        xmlHttpRequestLoadStart, xmlHttpRequestProgress,
+        xmlHttpRequestTimeout, xmlHttpRequestReadyStateChange,
         ghcjs_dom_xml_http_request_set_timeout, xmlHttpRequestSetTimeout,
         ghcjs_dom_xml_http_request_get_timeout, xmlHttpRequestGetTimeout,
         ghcjs_dom_xml_http_request_get_ready_state,
@@ -49,6 +47,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -61,9 +60,9 @@ foreign import javascript unsafe "new window[\"XMLHttpRequest\"]()"
         ghcjs_dom_xml_http_request_new :: IO (JSRef XMLHttpRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest Mozilla XMLHttpRequest documentation> 
-xmlHttpRequestNew :: IO XMLHttpRequest
+xmlHttpRequestNew :: (MonadIO m) => m XMLHttpRequest
 xmlHttpRequestNew
-  = ghcjs_dom_xml_http_request_new >>= fromJSRefUnchecked
+  = liftIO (ghcjs_dom_xml_http_request_new >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"open\"]($2, $3, $4, $5, $6)"
         ghcjs_dom_xml_http_request_open ::
@@ -72,17 +71,18 @@ foreign import javascript unsafe "$1[\"open\"]($2, $3, $4, $5, $6)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.open Mozilla XMLHttpRequest.open documentation> 
 xmlHttpRequestOpen ::
-                   (IsXMLHttpRequest self, ToJSString method, ToJSString url,
-                    ToJSString user, ToJSString password) =>
-                     self -> method -> url -> Bool -> user -> password -> IO ()
+                   (MonadIO m, IsXMLHttpRequest self, ToJSString method,
+                    ToJSString url, ToJSString user, ToJSString password) =>
+                     self -> method -> url -> Bool -> user -> password -> m ()
 xmlHttpRequestOpen self method url async user password
-  = ghcjs_dom_xml_http_request_open
-      (unXMLHttpRequest (toXMLHttpRequest self))
-      (toJSString method)
-      (toJSString url)
-      async
-      (toJSString user)
-      (toJSString password)
+  = liftIO
+      (ghcjs_dom_xml_http_request_open
+         (unXMLHttpRequest (toXMLHttpRequest self))
+         (toJSString method)
+         (toJSString url)
+         async
+         (toJSString user)
+         (toJSString password))
  
 foreign import javascript unsafe "$1[\"setRequestHeader\"]($2, $3)"
         ghcjs_dom_xml_http_request_set_request_header ::
@@ -90,31 +90,37 @@ foreign import javascript unsafe "$1[\"setRequestHeader\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.requestHeader Mozilla XMLHttpRequest.requestHeader documentation> 
 xmlHttpRequestSetRequestHeader ::
-                               (IsXMLHttpRequest self, ToJSString header, ToJSString value) =>
-                                 self -> header -> value -> IO ()
+                               (MonadIO m, IsXMLHttpRequest self, ToJSString header,
+                                ToJSString value) =>
+                                 self -> header -> value -> m ()
 xmlHttpRequestSetRequestHeader self header value
-  = ghcjs_dom_xml_http_request_set_request_header
-      (unXMLHttpRequest (toXMLHttpRequest self))
-      (toJSString header)
-      (toJSString value)
+  = liftIO
+      (ghcjs_dom_xml_http_request_set_request_header
+         (unXMLHttpRequest (toXMLHttpRequest self))
+         (toJSString header)
+         (toJSString value))
  
 foreign import javascript unsafe "$1[\"send\"]()"
         ghcjs_dom_xml_http_request_send :: JSRef XMLHttpRequest -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.send Mozilla XMLHttpRequest.send documentation> 
-xmlHttpRequestSend :: (IsXMLHttpRequest self) => self -> IO ()
+xmlHttpRequestSend ::
+                   (MonadIO m, IsXMLHttpRequest self) => self -> m ()
 xmlHttpRequestSend self
-  = ghcjs_dom_xml_http_request_send
-      (unXMLHttpRequest (toXMLHttpRequest self))
+  = liftIO
+      (ghcjs_dom_xml_http_request_send
+         (unXMLHttpRequest (toXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"abort\"]()"
         ghcjs_dom_xml_http_request_abort :: JSRef XMLHttpRequest -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.abort Mozilla XMLHttpRequest.abort documentation> 
-xmlHttpRequestAbort :: (IsXMLHttpRequest self) => self -> IO ()
+xmlHttpRequestAbort ::
+                    (MonadIO m, IsXMLHttpRequest self) => self -> m ()
 xmlHttpRequestAbort self
-  = ghcjs_dom_xml_http_request_abort
-      (unXMLHttpRequest (toXMLHttpRequest self))
+  = liftIO
+      (ghcjs_dom_xml_http_request_abort
+         (unXMLHttpRequest (toXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"getAllResponseHeaders\"]()"
         ghcjs_dom_xml_http_request_get_all_response_headers ::
@@ -122,12 +128,13 @@ foreign import javascript unsafe "$1[\"getAllResponseHeaders\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.allResponseHeaders Mozilla XMLHttpRequest.allResponseHeaders documentation> 
 xmlHttpRequestGetAllResponseHeaders ::
-                                    (IsXMLHttpRequest self, FromJSString result) =>
-                                      self -> IO result
+                                    (MonadIO m, IsXMLHttpRequest self, FromJSString result) =>
+                                      self -> m result
 xmlHttpRequestGetAllResponseHeaders self
-  = fromJSString <$>
-      (ghcjs_dom_xml_http_request_get_all_response_headers
-         (unXMLHttpRequest (toXMLHttpRequest self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_xml_http_request_get_all_response_headers
+            (unXMLHttpRequest (toXMLHttpRequest self))))
  
 foreign import javascript unsafe "$1[\"getResponseHeader\"]($2)"
         ghcjs_dom_xml_http_request_get_response_header ::
@@ -135,13 +142,15 @@ foreign import javascript unsafe "$1[\"getResponseHeader\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseHeader Mozilla XMLHttpRequest.responseHeader documentation> 
 xmlHttpRequestGetResponseHeader ::
-                                (IsXMLHttpRequest self, ToJSString header, FromJSString result) =>
-                                  self -> header -> IO result
+                                (MonadIO m, IsXMLHttpRequest self, ToJSString header,
+                                 FromJSString result) =>
+                                  self -> header -> m result
 xmlHttpRequestGetResponseHeader self header
-  = fromJSString <$>
-      (ghcjs_dom_xml_http_request_get_response_header
-         (unXMLHttpRequest (toXMLHttpRequest self))
-         (toJSString header))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_xml_http_request_get_response_header
+            (unXMLHttpRequest (toXMLHttpRequest self))
+            (toJSString header)))
  
 foreign import javascript unsafe "$1[\"overrideMimeType\"]($2)"
         ghcjs_dom_xml_http_request_override_mime_type ::
@@ -149,71 +158,66 @@ foreign import javascript unsafe "$1[\"overrideMimeType\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.overrideMimeType Mozilla XMLHttpRequest.overrideMimeType documentation> 
 xmlHttpRequestOverrideMimeType ::
-                               (IsXMLHttpRequest self, ToJSString override) =>
-                                 self -> override -> IO ()
+                               (MonadIO m, IsXMLHttpRequest self, ToJSString override) =>
+                                 self -> override -> m ()
 xmlHttpRequestOverrideMimeType self override
-  = ghcjs_dom_xml_http_request_override_mime_type
-      (unXMLHttpRequest (toXMLHttpRequest self))
-      (toJSString override)
- 
-foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_xml_http_request_dispatch_event ::
-        JSRef XMLHttpRequest -> JSRef Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.dispatchEvent Mozilla XMLHttpRequest.dispatchEvent documentation> 
-xmlHttpRequestDispatchEvent ::
-                            (IsXMLHttpRequest self, IsEvent evt) =>
-                              self -> Maybe evt -> IO Bool
-xmlHttpRequestDispatchEvent self evt
-  = ghcjs_dom_xml_http_request_dispatch_event
-      (unXMLHttpRequest (toXMLHttpRequest self))
-      (maybe jsNull (unEvent . toEvent) evt)
+  = liftIO
+      (ghcjs_dom_xml_http_request_override_mime_type
+         (unXMLHttpRequest (toXMLHttpRequest self))
+         (toJSString override))
 cUNSENT = 0
 cOPENED = 1
 cHEADERS_RECEIVED = 2
 cLOADING = 3
 cDONE = 4
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onabort Mozilla XMLHttpRequest.onabort documentation> 
-xmlHttpRequestOnabort ::
-                      (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOnabort = (connect "abort")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.abortEvent Mozilla XMLHttpRequest.abortEvent documentation> 
+xmlHttpRequestAbortEvent ::
+                         (IsXMLHttpRequest self, IsEventTarget self) =>
+                           EventName self XMLHttpRequestProgressEvent
+xmlHttpRequestAbortEvent = unsafeEventName (toJSString "abort")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onerror Mozilla XMLHttpRequest.onerror documentation> 
-xmlHttpRequestOnerror ::
-                      (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.error Mozilla XMLHttpRequest.error documentation> 
+xmlHttpRequestError ::
+                    (IsXMLHttpRequest self, IsEventTarget self) =>
+                      EventName self XMLHttpRequestProgressEvent
+xmlHttpRequestError = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onload Mozilla XMLHttpRequest.onload documentation> 
-xmlHttpRequestOnload ::
-                     (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOnload = (connect "load")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.load Mozilla XMLHttpRequest.load documentation> 
+xmlHttpRequestLoad ::
+                   (IsXMLHttpRequest self, IsEventTarget self) =>
+                     EventName self XMLHttpRequestProgressEvent
+xmlHttpRequestLoad = unsafeEventName (toJSString "load")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onloadend Mozilla XMLHttpRequest.onloadend documentation> 
-xmlHttpRequestOnloadend ::
-                        (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOnloadend = (connect "loadend")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.loadEnd Mozilla XMLHttpRequest.loadEnd documentation> 
+xmlHttpRequestLoadEnd ::
+                      (IsXMLHttpRequest self, IsEventTarget self) =>
+                        EventName self ProgressEvent
+xmlHttpRequestLoadEnd = unsafeEventName (toJSString "loadend")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onloadstart Mozilla XMLHttpRequest.onloadstart documentation> 
-xmlHttpRequestOnloadstart ::
-                          (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOnloadstart = (connect "loadstart")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.loadStart Mozilla XMLHttpRequest.loadStart documentation> 
+xmlHttpRequestLoadStart ::
+                        (IsXMLHttpRequest self, IsEventTarget self) =>
+                          EventName self ProgressEvent
+xmlHttpRequestLoadStart = unsafeEventName (toJSString "loadstart")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onprogress Mozilla XMLHttpRequest.onprogress documentation> 
-xmlHttpRequestOnprogress ::
-                         (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOnprogress = (connect "progress")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.progress Mozilla XMLHttpRequest.progress documentation> 
+xmlHttpRequestProgress ::
+                       (IsXMLHttpRequest self, IsEventTarget self) =>
+                         EventName self XMLHttpRequestProgressEvent
+xmlHttpRequestProgress = unsafeEventName (toJSString "progress")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.ontimeout Mozilla XMLHttpRequest.ontimeout documentation> 
-xmlHttpRequestOntimeout ::
-                        (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOntimeout = (connect "timeout")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.timeout Mozilla XMLHttpRequest.timeout documentation> 
+xmlHttpRequestTimeout ::
+                      (IsXMLHttpRequest self, IsEventTarget self) =>
+                        EventName self ProgressEvent
+xmlHttpRequestTimeout = unsafeEventName (toJSString "timeout")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onreadystatechange Mozilla XMLHttpRequest.onreadystatechange documentation> 
-xmlHttpRequestOnreadystatechange ::
-                                 (IsXMLHttpRequest self) => Signal self (EventM UIEvent self ())
-xmlHttpRequestOnreadystatechange = (connect "readystatechange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.readyStateChange Mozilla XMLHttpRequest.readyStateChange documentation> 
+xmlHttpRequestReadyStateChange ::
+                               (IsXMLHttpRequest self, IsEventTarget self) => EventName self Event
+xmlHttpRequestReadyStateChange
+  = unsafeEventName (toJSString "readystatechange")
  
 foreign import javascript unsafe "$1[\"timeout\"] = $2;"
         ghcjs_dom_xml_http_request_set_timeout ::
@@ -221,11 +225,12 @@ foreign import javascript unsafe "$1[\"timeout\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.timeout Mozilla XMLHttpRequest.timeout documentation> 
 xmlHttpRequestSetTimeout ::
-                         (IsXMLHttpRequest self) => self -> Word -> IO ()
+                         (MonadIO m, IsXMLHttpRequest self) => self -> Word -> m ()
 xmlHttpRequestSetTimeout self val
-  = ghcjs_dom_xml_http_request_set_timeout
-      (unXMLHttpRequest (toXMLHttpRequest self))
-      val
+  = liftIO
+      (ghcjs_dom_xml_http_request_set_timeout
+         (unXMLHttpRequest (toXMLHttpRequest self))
+         val)
  
 foreign import javascript unsafe "$1[\"timeout\"]"
         ghcjs_dom_xml_http_request_get_timeout ::
@@ -233,10 +238,11 @@ foreign import javascript unsafe "$1[\"timeout\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.timeout Mozilla XMLHttpRequest.timeout documentation> 
 xmlHttpRequestGetTimeout ::
-                         (IsXMLHttpRequest self) => self -> IO Word
+                         (MonadIO m, IsXMLHttpRequest self) => self -> m Word
 xmlHttpRequestGetTimeout self
-  = ghcjs_dom_xml_http_request_get_timeout
-      (unXMLHttpRequest (toXMLHttpRequest self))
+  = liftIO
+      (ghcjs_dom_xml_http_request_get_timeout
+         (unXMLHttpRequest (toXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_xml_http_request_get_ready_state ::
@@ -244,10 +250,11 @@ foreign import javascript unsafe "$1[\"readyState\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.readyState Mozilla XMLHttpRequest.readyState documentation> 
 xmlHttpRequestGetReadyState ::
-                            (IsXMLHttpRequest self) => self -> IO Word
+                            (MonadIO m, IsXMLHttpRequest self) => self -> m Word
 xmlHttpRequestGetReadyState self
-  = ghcjs_dom_xml_http_request_get_ready_state
-      (unXMLHttpRequest (toXMLHttpRequest self))
+  = liftIO
+      (ghcjs_dom_xml_http_request_get_ready_state
+         (unXMLHttpRequest (toXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"withCredentials\"] = $2;"
         ghcjs_dom_xml_http_request_set_with_credentials ::
@@ -255,11 +262,12 @@ foreign import javascript unsafe "$1[\"withCredentials\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.withCredentials Mozilla XMLHttpRequest.withCredentials documentation> 
 xmlHttpRequestSetWithCredentials ::
-                                 (IsXMLHttpRequest self) => self -> Bool -> IO ()
+                                 (MonadIO m, IsXMLHttpRequest self) => self -> Bool -> m ()
 xmlHttpRequestSetWithCredentials self val
-  = ghcjs_dom_xml_http_request_set_with_credentials
-      (unXMLHttpRequest (toXMLHttpRequest self))
-      val
+  = liftIO
+      (ghcjs_dom_xml_http_request_set_with_credentials
+         (unXMLHttpRequest (toXMLHttpRequest self))
+         val)
  
 foreign import javascript unsafe
         "($1[\"withCredentials\"] ? 1 : 0)"
@@ -268,10 +276,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.withCredentials Mozilla XMLHttpRequest.withCredentials documentation> 
 xmlHttpRequestGetWithCredentials ::
-                                 (IsXMLHttpRequest self) => self -> IO Bool
+                                 (MonadIO m, IsXMLHttpRequest self) => self -> m Bool
 xmlHttpRequestGetWithCredentials self
-  = ghcjs_dom_xml_http_request_get_with_credentials
-      (unXMLHttpRequest (toXMLHttpRequest self))
+  = liftIO
+      (ghcjs_dom_xml_http_request_get_with_credentials
+         (unXMLHttpRequest (toXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"upload\"]"
         ghcjs_dom_xml_http_request_get_upload ::
@@ -279,11 +288,13 @@ foreign import javascript unsafe "$1[\"upload\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.upload Mozilla XMLHttpRequest.upload documentation> 
 xmlHttpRequestGetUpload ::
-                        (IsXMLHttpRequest self) => self -> IO (Maybe XMLHttpRequestUpload)
+                        (MonadIO m, IsXMLHttpRequest self) =>
+                          self -> m (Maybe XMLHttpRequestUpload)
 xmlHttpRequestGetUpload self
-  = (ghcjs_dom_xml_http_request_get_upload
-       (unXMLHttpRequest (toXMLHttpRequest self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xml_http_request_get_upload
+          (unXMLHttpRequest (toXMLHttpRequest self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"responseText\"]"
         ghcjs_dom_xml_http_request_get_response_text ::
@@ -291,11 +302,13 @@ foreign import javascript unsafe "$1[\"responseText\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseText Mozilla XMLHttpRequest.responseText documentation> 
 xmlHttpRequestGetResponseText ::
-                              (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsXMLHttpRequest self, FromJSString result) =>
+                                self -> m result
 xmlHttpRequestGetResponseText self
-  = fromJSString <$>
-      (ghcjs_dom_xml_http_request_get_response_text
-         (unXMLHttpRequest (toXMLHttpRequest self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_xml_http_request_get_response_text
+            (unXMLHttpRequest (toXMLHttpRequest self))))
  
 foreign import javascript unsafe "$1[\"responseXML\"]"
         ghcjs_dom_xml_http_request_get_response_xml ::
@@ -303,11 +316,12 @@ foreign import javascript unsafe "$1[\"responseXML\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseXML Mozilla XMLHttpRequest.responseXML documentation> 
 xmlHttpRequestGetResponseXML ::
-                             (IsXMLHttpRequest self) => self -> IO (Maybe Document)
+                             (MonadIO m, IsXMLHttpRequest self) => self -> m (Maybe Document)
 xmlHttpRequestGetResponseXML self
-  = (ghcjs_dom_xml_http_request_get_response_xml
-       (unXMLHttpRequest (toXMLHttpRequest self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xml_http_request_get_response_xml
+          (unXMLHttpRequest (toXMLHttpRequest self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"responseType\"] = $2;"
         ghcjs_dom_xml_http_request_set_response_type ::
@@ -315,11 +329,13 @@ foreign import javascript unsafe "$1[\"responseType\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseType Mozilla XMLHttpRequest.responseType documentation> 
 xmlHttpRequestSetResponseType ::
-                              (IsXMLHttpRequest self, ToJSString val) => self -> val -> IO ()
+                              (MonadIO m, IsXMLHttpRequest self, ToJSString val) =>
+                                self -> val -> m ()
 xmlHttpRequestSetResponseType self val
-  = ghcjs_dom_xml_http_request_set_response_type
-      (unXMLHttpRequest (toXMLHttpRequest self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_xml_http_request_set_response_type
+         (unXMLHttpRequest (toXMLHttpRequest self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"responseType\"]"
         ghcjs_dom_xml_http_request_get_response_type ::
@@ -327,11 +343,13 @@ foreign import javascript unsafe "$1[\"responseType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseType Mozilla XMLHttpRequest.responseType documentation> 
 xmlHttpRequestGetResponseType ::
-                              (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsXMLHttpRequest self, FromJSString result) =>
+                                self -> m result
 xmlHttpRequestGetResponseType self
-  = fromJSString <$>
-      (ghcjs_dom_xml_http_request_get_response_type
-         (unXMLHttpRequest (toXMLHttpRequest self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_xml_http_request_get_response_type
+            (unXMLHttpRequest (toXMLHttpRequest self))))
  
 foreign import javascript unsafe "$1[\"response\"]"
         ghcjs_dom_xml_http_request_get_response ::
@@ -339,10 +357,12 @@ foreign import javascript unsafe "$1[\"response\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.response Mozilla XMLHttpRequest.response documentation> 
 xmlHttpRequestGetResponse ::
-                          (IsXMLHttpRequest self) => self -> IO (JSRef GObject)
+                          (MonadIO m, IsXMLHttpRequest self) => self -> m (Maybe GObject)
 xmlHttpRequestGetResponse self
-  = ghcjs_dom_xml_http_request_get_response
-      (unXMLHttpRequest (toXMLHttpRequest self))
+  = liftIO
+      ((ghcjs_dom_xml_http_request_get_response
+          (unXMLHttpRequest (toXMLHttpRequest self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"status\"]"
         ghcjs_dom_xml_http_request_get_status ::
@@ -350,10 +370,11 @@ foreign import javascript unsafe "$1[\"status\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.status Mozilla XMLHttpRequest.status documentation> 
 xmlHttpRequestGetStatus ::
-                        (IsXMLHttpRequest self) => self -> IO Word
+                        (MonadIO m, IsXMLHttpRequest self) => self -> m Word
 xmlHttpRequestGetStatus self
-  = ghcjs_dom_xml_http_request_get_status
-      (unXMLHttpRequest (toXMLHttpRequest self))
+  = liftIO
+      (ghcjs_dom_xml_http_request_get_status
+         (unXMLHttpRequest (toXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"statusText\"]"
         ghcjs_dom_xml_http_request_get_status_text ::
@@ -361,11 +382,13 @@ foreign import javascript unsafe "$1[\"statusText\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.statusText Mozilla XMLHttpRequest.statusText documentation> 
 xmlHttpRequestGetStatusText ::
-                            (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsXMLHttpRequest self, FromJSString result) =>
+                              self -> m result
 xmlHttpRequestGetStatusText self
-  = fromJSString <$>
-      (ghcjs_dom_xml_http_request_get_status_text
-         (unXMLHttpRequest (toXMLHttpRequest self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_xml_http_request_get_status_text
+            (unXMLHttpRequest (toXMLHttpRequest self))))
  
 foreign import javascript unsafe "$1[\"responseURL\"]"
         ghcjs_dom_xml_http_request_get_response_url ::
@@ -373,11 +396,13 @@ foreign import javascript unsafe "$1[\"responseURL\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseURL Mozilla XMLHttpRequest.responseURL documentation> 
 xmlHttpRequestGetResponseURL ::
-                             (IsXMLHttpRequest self, FromJSString result) => self -> IO result
+                             (MonadIO m, IsXMLHttpRequest self, FromJSString result) =>
+                               self -> m result
 xmlHttpRequestGetResponseURL self
-  = fromJSString <$>
-      (ghcjs_dom_xml_http_request_get_response_url
-         (unXMLHttpRequest (toXMLHttpRequest self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_xml_http_request_get_response_url
+            (unXMLHttpRequest (toXMLHttpRequest self))))
 #else
 module GHCJS.DOM.XMLHttpRequest (
   ) where

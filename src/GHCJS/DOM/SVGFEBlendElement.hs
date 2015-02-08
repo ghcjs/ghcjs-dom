@@ -15,6 +15,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -35,11 +36,13 @@ foreign import javascript unsafe "$1[\"in1\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.in1 Mozilla SVGFEBlendElement.in1 documentation> 
 svgfeBlendElementGetIn1 ::
-                        (IsSVGFEBlendElement self) => self -> IO (Maybe SVGAnimatedString)
+                        (MonadIO m, IsSVGFEBlendElement self) =>
+                          self -> m (Maybe SVGAnimatedString)
 svgfeBlendElementGetIn1 self
-  = (ghcjs_dom_svgfe_blend_element_get_in1
-       (unSVGFEBlendElement (toSVGFEBlendElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_blend_element_get_in1
+          (unSVGFEBlendElement (toSVGFEBlendElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"in2\"]"
         ghcjs_dom_svgfe_blend_element_get_in2 ::
@@ -47,11 +50,13 @@ foreign import javascript unsafe "$1[\"in2\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.in2 Mozilla SVGFEBlendElement.in2 documentation> 
 svgfeBlendElementGetIn2 ::
-                        (IsSVGFEBlendElement self) => self -> IO (Maybe SVGAnimatedString)
+                        (MonadIO m, IsSVGFEBlendElement self) =>
+                          self -> m (Maybe SVGAnimatedString)
 svgfeBlendElementGetIn2 self
-  = (ghcjs_dom_svgfe_blend_element_get_in2
-       (unSVGFEBlendElement (toSVGFEBlendElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_blend_element_get_in2
+          (unSVGFEBlendElement (toSVGFEBlendElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"mode\"]"
         ghcjs_dom_svgfe_blend_element_get_mode ::
@@ -59,12 +64,13 @@ foreign import javascript unsafe "$1[\"mode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.mode Mozilla SVGFEBlendElement.mode documentation> 
 svgfeBlendElementGetMode ::
-                         (IsSVGFEBlendElement self) =>
-                           self -> IO (Maybe SVGAnimatedEnumeration)
+                         (MonadIO m, IsSVGFEBlendElement self) =>
+                           self -> m (Maybe SVGAnimatedEnumeration)
 svgfeBlendElementGetMode self
-  = (ghcjs_dom_svgfe_blend_element_get_mode
-       (unSVGFEBlendElement (toSVGFEBlendElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svgfe_blend_element_get_mode
+          (unSVGFEBlendElement (toSVGFEBlendElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEBlendElement (
   ) where

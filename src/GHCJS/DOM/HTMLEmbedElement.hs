@@ -21,6 +21,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -35,11 +36,13 @@ foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.svgDocument Mozilla HTMLEmbedElement.svgDocument documentation> 
 htmlEmbedElementGetSVGDocument ::
-                               (IsHTMLEmbedElement self) => self -> IO (Maybe SVGDocument)
+                               (MonadIO m, IsHTMLEmbedElement self) =>
+                                 self -> m (Maybe SVGDocument)
 htmlEmbedElementGetSVGDocument self
-  = (ghcjs_dom_html_embed_element_get_svg_document
-       (unHTMLEmbedElement (toHTMLEmbedElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_embed_element_get_svg_document
+          (unHTMLEmbedElement (toHTMLEmbedElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"align\"] = $2;"
         ghcjs_dom_html_embed_element_set_align ::
@@ -47,11 +50,13 @@ foreign import javascript unsafe "$1[\"align\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.align Mozilla HTMLEmbedElement.align documentation> 
 htmlEmbedElementSetAlign ::
-                         (IsHTMLEmbedElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLEmbedElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlEmbedElementSetAlign self val
-  = ghcjs_dom_html_embed_element_set_align
-      (unHTMLEmbedElement (toHTMLEmbedElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_embed_element_set_align
+         (unHTMLEmbedElement (toHTMLEmbedElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_embed_element_get_align ::
@@ -59,11 +64,13 @@ foreign import javascript unsafe "$1[\"align\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.align Mozilla HTMLEmbedElement.align documentation> 
 htmlEmbedElementGetAlign ::
-                         (IsHTMLEmbedElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLEmbedElement self, FromJSString result) =>
+                           self -> m result
 htmlEmbedElementGetAlign self
-  = fromJSString <$>
-      (ghcjs_dom_html_embed_element_get_align
-         (unHTMLEmbedElement (toHTMLEmbedElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_embed_element_get_align
+            (unHTMLEmbedElement (toHTMLEmbedElement self))))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         ghcjs_dom_html_embed_element_set_height ::
@@ -71,11 +78,12 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.height Mozilla HTMLEmbedElement.height documentation> 
 htmlEmbedElementSetHeight ::
-                          (IsHTMLEmbedElement self) => self -> Int -> IO ()
+                          (MonadIO m, IsHTMLEmbedElement self) => self -> Int -> m ()
 htmlEmbedElementSetHeight self val
-  = ghcjs_dom_html_embed_element_set_height
-      (unHTMLEmbedElement (toHTMLEmbedElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_embed_element_set_height
+         (unHTMLEmbedElement (toHTMLEmbedElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_embed_element_get_height ::
@@ -83,10 +91,11 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.height Mozilla HTMLEmbedElement.height documentation> 
 htmlEmbedElementGetHeight ::
-                          (IsHTMLEmbedElement self) => self -> IO Int
+                          (MonadIO m, IsHTMLEmbedElement self) => self -> m Int
 htmlEmbedElementGetHeight self
-  = ghcjs_dom_html_embed_element_get_height
-      (unHTMLEmbedElement (toHTMLEmbedElement self))
+  = liftIO
+      (ghcjs_dom_html_embed_element_get_height
+         (unHTMLEmbedElement (toHTMLEmbedElement self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_embed_element_set_name ::
@@ -94,11 +103,13 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.name Mozilla HTMLEmbedElement.name documentation> 
 htmlEmbedElementSetName ::
-                        (IsHTMLEmbedElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLEmbedElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlEmbedElementSetName self val
-  = ghcjs_dom_html_embed_element_set_name
-      (unHTMLEmbedElement (toHTMLEmbedElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_embed_element_set_name
+         (unHTMLEmbedElement (toHTMLEmbedElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_embed_element_get_name ::
@@ -106,11 +117,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.name Mozilla HTMLEmbedElement.name documentation> 
 htmlEmbedElementGetName ::
-                        (IsHTMLEmbedElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLEmbedElement self, FromJSString result) =>
+                          self -> m result
 htmlEmbedElementGetName self
-  = fromJSString <$>
-      (ghcjs_dom_html_embed_element_get_name
-         (unHTMLEmbedElement (toHTMLEmbedElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_embed_element_get_name
+            (unHTMLEmbedElement (toHTMLEmbedElement self))))
  
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_embed_element_set_src ::
@@ -118,11 +131,13 @@ foreign import javascript unsafe "$1[\"src\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.src Mozilla HTMLEmbedElement.src documentation> 
 htmlEmbedElementSetSrc ::
-                       (IsHTMLEmbedElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLEmbedElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlEmbedElementSetSrc self val
-  = ghcjs_dom_html_embed_element_set_src
-      (unHTMLEmbedElement (toHTMLEmbedElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_embed_element_set_src
+         (unHTMLEmbedElement (toHTMLEmbedElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_embed_element_get_src ::
@@ -130,11 +145,13 @@ foreign import javascript unsafe "$1[\"src\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.src Mozilla HTMLEmbedElement.src documentation> 
 htmlEmbedElementGetSrc ::
-                       (IsHTMLEmbedElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLEmbedElement self, FromJSString result) =>
+                         self -> m result
 htmlEmbedElementGetSrc self
-  = fromJSString <$>
-      (ghcjs_dom_html_embed_element_get_src
-         (unHTMLEmbedElement (toHTMLEmbedElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_embed_element_get_src
+            (unHTMLEmbedElement (toHTMLEmbedElement self))))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_embed_element_set_width ::
@@ -142,11 +159,12 @@ foreign import javascript unsafe "$1[\"width\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.width Mozilla HTMLEmbedElement.width documentation> 
 htmlEmbedElementSetWidth ::
-                         (IsHTMLEmbedElement self) => self -> Int -> IO ()
+                         (MonadIO m, IsHTMLEmbedElement self) => self -> Int -> m ()
 htmlEmbedElementSetWidth self val
-  = ghcjs_dom_html_embed_element_set_width
-      (unHTMLEmbedElement (toHTMLEmbedElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_embed_element_set_width
+         (unHTMLEmbedElement (toHTMLEmbedElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_embed_element_get_width ::
@@ -154,10 +172,11 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.width Mozilla HTMLEmbedElement.width documentation> 
 htmlEmbedElementGetWidth ::
-                         (IsHTMLEmbedElement self) => self -> IO Int
+                         (MonadIO m, IsHTMLEmbedElement self) => self -> m Int
 htmlEmbedElementGetWidth self
-  = ghcjs_dom_html_embed_element_get_width
-      (unHTMLEmbedElement (toHTMLEmbedElement self))
+  = liftIO
+      (ghcjs_dom_html_embed_element_get_width
+         (unHTMLEmbedElement (toHTMLEmbedElement self)))
 #else
 module GHCJS.DOM.HTMLEmbedElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLEmbedElement

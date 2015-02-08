@@ -41,6 +41,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -53,8 +54,8 @@ foreign import javascript unsafe "new window[\"Range\"]()"
         ghcjs_dom_range_new :: IO (JSRef DOMRange)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range Mozilla Range documentation> 
-rangeNew :: IO DOMRange
-rangeNew = ghcjs_dom_range_new >>= fromJSRefUnchecked
+rangeNew :: (MonadIO m) => m DOMRange
+rangeNew = liftIO (ghcjs_dom_range_new >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"setStart\"]($2, $3)"
         ghcjs_dom_range_set_start ::
@@ -62,12 +63,13 @@ foreign import javascript unsafe "$1[\"setStart\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.start Mozilla Range.start documentation> 
 rangeSetStart ::
-              (IsDOMRange self, IsNode refNode) =>
-                self -> Maybe refNode -> Int -> IO ()
+              (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                self -> Maybe refNode -> Int -> m ()
 rangeSetStart self refNode offset
-  = ghcjs_dom_range_set_start (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
-      offset
+  = liftIO
+      (ghcjs_dom_range_set_start (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode)
+         offset)
  
 foreign import javascript unsafe "$1[\"setEnd\"]($2, $3)"
         ghcjs_dom_range_set_end ::
@@ -75,12 +77,13 @@ foreign import javascript unsafe "$1[\"setEnd\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.end Mozilla Range.end documentation> 
 rangeSetEnd ::
-            (IsDOMRange self, IsNode refNode) =>
-              self -> Maybe refNode -> Int -> IO ()
+            (MonadIO m, IsDOMRange self, IsNode refNode) =>
+              self -> Maybe refNode -> Int -> m ()
 rangeSetEnd self refNode offset
-  = ghcjs_dom_range_set_end (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
-      offset
+  = liftIO
+      (ghcjs_dom_range_set_end (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode)
+         offset)
  
 foreign import javascript unsafe "$1[\"setStartBefore\"]($2)"
         ghcjs_dom_range_set_start_before ::
@@ -88,10 +91,12 @@ foreign import javascript unsafe "$1[\"setStartBefore\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startBefore Mozilla Range.startBefore documentation> 
 rangeSetStartBefore ::
-                    (IsDOMRange self, IsNode refNode) => self -> Maybe refNode -> IO ()
+                    (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                      self -> Maybe refNode -> m ()
 rangeSetStartBefore self refNode
-  = ghcjs_dom_range_set_start_before (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_set_start_before (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe "$1[\"setStartAfter\"]($2)"
         ghcjs_dom_range_set_start_after ::
@@ -99,10 +104,12 @@ foreign import javascript unsafe "$1[\"setStartAfter\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startAfter Mozilla Range.startAfter documentation> 
 rangeSetStartAfter ::
-                   (IsDOMRange self, IsNode refNode) => self -> Maybe refNode -> IO ()
+                   (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                     self -> Maybe refNode -> m ()
 rangeSetStartAfter self refNode
-  = ghcjs_dom_range_set_start_after (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_set_start_after (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe "$1[\"setEndBefore\"]($2)"
         ghcjs_dom_range_set_end_before ::
@@ -110,10 +117,12 @@ foreign import javascript unsafe "$1[\"setEndBefore\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endBefore Mozilla Range.endBefore documentation> 
 rangeSetEndBefore ::
-                  (IsDOMRange self, IsNode refNode) => self -> Maybe refNode -> IO ()
+                  (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                    self -> Maybe refNode -> m ()
 rangeSetEndBefore self refNode
-  = ghcjs_dom_range_set_end_before (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_set_end_before (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe "$1[\"setEndAfter\"]($2)"
         ghcjs_dom_range_set_end_after ::
@@ -121,18 +130,22 @@ foreign import javascript unsafe "$1[\"setEndAfter\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endAfter Mozilla Range.endAfter documentation> 
 rangeSetEndAfter ::
-                 (IsDOMRange self, IsNode refNode) => self -> Maybe refNode -> IO ()
+                 (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                   self -> Maybe refNode -> m ()
 rangeSetEndAfter self refNode
-  = ghcjs_dom_range_set_end_after (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_set_end_after (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe "$1[\"collapse\"]($2)"
         ghcjs_dom_range_collapse :: JSRef DOMRange -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.collapse Mozilla Range.collapse documentation> 
-rangeCollapse :: (IsDOMRange self) => self -> Bool -> IO ()
+rangeCollapse ::
+              (MonadIO m, IsDOMRange self) => self -> Bool -> m ()
 rangeCollapse self toStart
-  = ghcjs_dom_range_collapse (unDOMRange (toDOMRange self)) toStart
+  = liftIO
+      (ghcjs_dom_range_collapse (unDOMRange (toDOMRange self)) toStart)
  
 foreign import javascript unsafe "$1[\"selectNode\"]($2)"
         ghcjs_dom_range_select_node ::
@@ -140,10 +153,12 @@ foreign import javascript unsafe "$1[\"selectNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.selectNode Mozilla Range.selectNode documentation> 
 rangeSelectNode ::
-                (IsDOMRange self, IsNode refNode) => self -> Maybe refNode -> IO ()
+                (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                  self -> Maybe refNode -> m ()
 rangeSelectNode self refNode
-  = ghcjs_dom_range_select_node (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_select_node (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe "$1[\"selectNodeContents\"]($2)"
         ghcjs_dom_range_select_node_contents ::
@@ -151,11 +166,13 @@ foreign import javascript unsafe "$1[\"selectNodeContents\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.selectNodeContents Mozilla Range.selectNodeContents documentation> 
 rangeSelectNodeContents ::
-                        (IsDOMRange self, IsNode refNode) => self -> Maybe refNode -> IO ()
+                        (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                          self -> Maybe refNode -> m ()
 rangeSelectNodeContents self refNode
-  = ghcjs_dom_range_select_node_contents
-      (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_select_node_contents
+         (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe
         "$1[\"compareBoundaryPoints\"]($2,\n$3)"
@@ -164,21 +181,23 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareBoundaryPoints Mozilla Range.compareBoundaryPoints documentation> 
 rangeCompareBoundaryPoints ::
-                           (IsDOMRange self, IsDOMRange sourceRange) =>
-                             self -> Word -> Maybe sourceRange -> IO Int
+                           (MonadIO m, IsDOMRange self, IsDOMRange sourceRange) =>
+                             self -> Word -> Maybe sourceRange -> m Int
 rangeCompareBoundaryPoints self how sourceRange
-  = ghcjs_dom_range_compare_boundary_points
-      (unDOMRange (toDOMRange self))
-      how
-      (maybe jsNull (unDOMRange . toDOMRange) sourceRange)
+  = liftIO
+      (ghcjs_dom_range_compare_boundary_points
+         (unDOMRange (toDOMRange self))
+         how
+         (maybe jsNull (unDOMRange . toDOMRange) sourceRange))
  
 foreign import javascript unsafe "$1[\"deleteContents\"]()"
         ghcjs_dom_range_delete_contents :: JSRef DOMRange -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.deleteContents Mozilla Range.deleteContents documentation> 
-rangeDeleteContents :: (IsDOMRange self) => self -> IO ()
+rangeDeleteContents :: (MonadIO m, IsDOMRange self) => self -> m ()
 rangeDeleteContents self
-  = ghcjs_dom_range_delete_contents (unDOMRange (toDOMRange self))
+  = liftIO
+      (ghcjs_dom_range_delete_contents (unDOMRange (toDOMRange self)))
  
 foreign import javascript unsafe "$1[\"extractContents\"]()"
         ghcjs_dom_range_extract_contents ::
@@ -186,10 +205,11 @@ foreign import javascript unsafe "$1[\"extractContents\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.extractContents Mozilla Range.extractContents documentation> 
 rangeExtractContents ::
-                     (IsDOMRange self) => self -> IO (Maybe DocumentFragment)
+                     (MonadIO m, IsDOMRange self) => self -> m (Maybe DocumentFragment)
 rangeExtractContents self
-  = (ghcjs_dom_range_extract_contents (unDOMRange (toDOMRange self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_range_extract_contents (unDOMRange (toDOMRange self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"cloneContents\"]()"
         ghcjs_dom_range_clone_contents ::
@@ -197,10 +217,11 @@ foreign import javascript unsafe "$1[\"cloneContents\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneContents Mozilla Range.cloneContents documentation> 
 rangeCloneContents ::
-                   (IsDOMRange self) => self -> IO (Maybe DocumentFragment)
+                   (MonadIO m, IsDOMRange self) => self -> m (Maybe DocumentFragment)
 rangeCloneContents self
-  = (ghcjs_dom_range_clone_contents (unDOMRange (toDOMRange self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_range_clone_contents (unDOMRange (toDOMRange self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"insertNode\"]($2)"
         ghcjs_dom_range_insert_node ::
@@ -208,10 +229,12 @@ foreign import javascript unsafe "$1[\"insertNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.insertNode Mozilla Range.insertNode documentation> 
 rangeInsertNode ::
-                (IsDOMRange self, IsNode newNode) => self -> Maybe newNode -> IO ()
+                (MonadIO m, IsDOMRange self, IsNode newNode) =>
+                  self -> Maybe newNode -> m ()
 rangeInsertNode self newNode
-  = ghcjs_dom_range_insert_node (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) newNode)
+  = liftIO
+      (ghcjs_dom_range_insert_node (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) newNode))
  
 foreign import javascript unsafe "$1[\"surroundContents\"]($2)"
         ghcjs_dom_range_surround_contents ::
@@ -219,39 +242,44 @@ foreign import javascript unsafe "$1[\"surroundContents\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.surroundContents Mozilla Range.surroundContents documentation> 
 rangeSurroundContents ::
-                      (IsDOMRange self, IsNode newParent) =>
-                        self -> Maybe newParent -> IO ()
+                      (MonadIO m, IsDOMRange self, IsNode newParent) =>
+                        self -> Maybe newParent -> m ()
 rangeSurroundContents self newParent
-  = ghcjs_dom_range_surround_contents (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) newParent)
+  = liftIO
+      (ghcjs_dom_range_surround_contents (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) newParent))
  
 foreign import javascript unsafe "$1[\"cloneRange\"]()"
         ghcjs_dom_range_clone_range ::
         JSRef DOMRange -> IO (JSRef DOMRange)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneRange Mozilla Range.cloneRange documentation> 
-rangeCloneRange :: (IsDOMRange self) => self -> IO (Maybe DOMRange)
+rangeCloneRange ::
+                (MonadIO m, IsDOMRange self) => self -> m (Maybe DOMRange)
 rangeCloneRange self
-  = (ghcjs_dom_range_clone_range (unDOMRange (toDOMRange self))) >>=
-      fromJSRef
+  = liftIO
+      ((ghcjs_dom_range_clone_range (unDOMRange (toDOMRange self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"toString\"]()"
         ghcjs_dom_range_to_string :: JSRef DOMRange -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.toString Mozilla Range.toString documentation> 
 rangeToString ::
-              (IsDOMRange self, FromJSString result) => self -> IO result
+              (MonadIO m, IsDOMRange self, FromJSString result) =>
+                self -> m result
 rangeToString self
-  = fromJSString <$>
-      (ghcjs_dom_range_to_string (unDOMRange (toDOMRange self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_range_to_string (unDOMRange (toDOMRange self))))
  
 foreign import javascript unsafe "$1[\"detach\"]()"
         ghcjs_dom_range_detach :: JSRef DOMRange -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.detach Mozilla Range.detach documentation> 
-rangeDetach :: (IsDOMRange self) => self -> IO ()
+rangeDetach :: (MonadIO m, IsDOMRange self) => self -> m ()
 rangeDetach self
-  = ghcjs_dom_range_detach (unDOMRange (toDOMRange self))
+  = liftIO (ghcjs_dom_range_detach (unDOMRange (toDOMRange self)))
  
 foreign import javascript unsafe
         "$1[\"createContextualFragment\"]($2)"
@@ -260,13 +288,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
 rangeCreateContextualFragment ::
-                              (IsDOMRange self, ToJSString html) =>
-                                self -> html -> IO (Maybe DocumentFragment)
+                              (MonadIO m, IsDOMRange self, ToJSString html) =>
+                                self -> html -> m (Maybe DocumentFragment)
 rangeCreateContextualFragment self html
-  = (ghcjs_dom_range_create_contextual_fragment
-       (unDOMRange (toDOMRange self))
-       (toJSString html))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_range_create_contextual_fragment
+          (unDOMRange (toDOMRange self))
+          (toJSString html))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"intersectsNode\"]($2) ? 1 : 0)"
@@ -275,11 +304,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.intersectsNode Mozilla Range.intersectsNode documentation> 
 rangeIntersectsNode ::
-                    (IsDOMRange self, IsNode refNode) =>
-                      self -> Maybe refNode -> IO Bool
+                    (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                      self -> Maybe refNode -> m Bool
 rangeIntersectsNode self refNode
-  = ghcjs_dom_range_intersects_node (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_intersects_node (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe "$1[\"compareNode\"]($2)"
         ghcjs_dom_range_compare_node ::
@@ -287,11 +317,12 @@ foreign import javascript unsafe "$1[\"compareNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareNode Mozilla Range.compareNode documentation> 
 rangeCompareNode ::
-                 (IsDOMRange self, IsNode refNode) =>
-                   self -> Maybe refNode -> IO Int
+                 (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                   self -> Maybe refNode -> m Int
 rangeCompareNode self refNode
-  = ghcjs_dom_range_compare_node (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
+  = liftIO
+      (ghcjs_dom_range_compare_node (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode))
  
 foreign import javascript unsafe "$1[\"comparePoint\"]($2, $3)"
         ghcjs_dom_range_compare_point ::
@@ -299,12 +330,13 @@ foreign import javascript unsafe "$1[\"comparePoint\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.comparePoint Mozilla Range.comparePoint documentation> 
 rangeComparePoint ::
-                  (IsDOMRange self, IsNode refNode) =>
-                    self -> Maybe refNode -> Int -> IO Int
+                  (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                    self -> Maybe refNode -> Int -> m Int
 rangeComparePoint self refNode offset
-  = ghcjs_dom_range_compare_point (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
-      offset
+  = liftIO
+      (ghcjs_dom_range_compare_point (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode)
+         offset)
  
 foreign import javascript unsafe
         "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)"
@@ -313,22 +345,25 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.isPointInRange Mozilla Range.isPointInRange documentation> 
 rangeIsPointInRange ::
-                    (IsDOMRange self, IsNode refNode) =>
-                      self -> Maybe refNode -> Int -> IO Bool
+                    (MonadIO m, IsDOMRange self, IsNode refNode) =>
+                      self -> Maybe refNode -> Int -> m Bool
 rangeIsPointInRange self refNode offset
-  = ghcjs_dom_range_is_point_in_range (unDOMRange (toDOMRange self))
-      (maybe jsNull (unNode . toNode) refNode)
-      offset
+  = liftIO
+      (ghcjs_dom_range_is_point_in_range (unDOMRange (toDOMRange self))
+         (maybe jsNull (unNode . toNode) refNode)
+         offset)
  
 foreign import javascript unsafe "$1[\"expand\"]($2)"
         ghcjs_dom_range_expand :: JSRef DOMRange -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.expand Mozilla Range.expand documentation> 
 rangeExpand ::
-            (IsDOMRange self, ToJSString unit) => self -> unit -> IO ()
+            (MonadIO m, IsDOMRange self, ToJSString unit) =>
+              self -> unit -> m ()
 rangeExpand self unit
-  = ghcjs_dom_range_expand (unDOMRange (toDOMRange self))
-      (toJSString unit)
+  = liftIO
+      (ghcjs_dom_range_expand (unDOMRange (toDOMRange self))
+         (toJSString unit))
 cSTART_TO_START = 0
 cSTART_TO_END = 1
 cEND_TO_END = 2
@@ -344,19 +379,22 @@ foreign import javascript unsafe "$1[\"startContainer\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startContainer Mozilla Range.startContainer documentation> 
 rangeGetStartContainer ::
-                       (IsDOMRange self) => self -> IO (Maybe Node)
+                       (MonadIO m, IsDOMRange self) => self -> m (Maybe Node)
 rangeGetStartContainer self
-  = (ghcjs_dom_range_get_start_container
-       (unDOMRange (toDOMRange self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_range_get_start_container
+          (unDOMRange (toDOMRange self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"startOffset\"]"
         ghcjs_dom_range_get_start_offset :: JSRef DOMRange -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startOffset Mozilla Range.startOffset documentation> 
-rangeGetStartOffset :: (IsDOMRange self) => self -> IO Int
+rangeGetStartOffset ::
+                    (MonadIO m, IsDOMRange self) => self -> m Int
 rangeGetStartOffset self
-  = ghcjs_dom_range_get_start_offset (unDOMRange (toDOMRange self))
+  = liftIO
+      (ghcjs_dom_range_get_start_offset (unDOMRange (toDOMRange self)))
  
 foreign import javascript unsafe "$1[\"endContainer\"]"
         ghcjs_dom_range_get_end_container ::
@@ -364,27 +402,29 @@ foreign import javascript unsafe "$1[\"endContainer\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endContainer Mozilla Range.endContainer documentation> 
 rangeGetEndContainer ::
-                     (IsDOMRange self) => self -> IO (Maybe Node)
+                     (MonadIO m, IsDOMRange self) => self -> m (Maybe Node)
 rangeGetEndContainer self
-  = (ghcjs_dom_range_get_end_container
-       (unDOMRange (toDOMRange self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_range_get_end_container (unDOMRange (toDOMRange self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"endOffset\"]"
         ghcjs_dom_range_get_end_offset :: JSRef DOMRange -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endOffset Mozilla Range.endOffset documentation> 
-rangeGetEndOffset :: (IsDOMRange self) => self -> IO Int
+rangeGetEndOffset :: (MonadIO m, IsDOMRange self) => self -> m Int
 rangeGetEndOffset self
-  = ghcjs_dom_range_get_end_offset (unDOMRange (toDOMRange self))
+  = liftIO
+      (ghcjs_dom_range_get_end_offset (unDOMRange (toDOMRange self)))
  
 foreign import javascript unsafe "($1[\"collapsed\"] ? 1 : 0)"
         ghcjs_dom_range_get_collapsed :: JSRef DOMRange -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.collapsed Mozilla Range.collapsed documentation> 
-rangeGetCollapsed :: (IsDOMRange self) => self -> IO Bool
+rangeGetCollapsed :: (MonadIO m, IsDOMRange self) => self -> m Bool
 rangeGetCollapsed self
-  = ghcjs_dom_range_get_collapsed (unDOMRange (toDOMRange self))
+  = liftIO
+      (ghcjs_dom_range_get_collapsed (unDOMRange (toDOMRange self)))
  
 foreign import javascript unsafe "$1[\"commonAncestorContainer\"]"
         ghcjs_dom_range_get_common_ancestor_container ::
@@ -392,21 +432,24 @@ foreign import javascript unsafe "$1[\"commonAncestorContainer\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.commonAncestorContainer Mozilla Range.commonAncestorContainer documentation> 
 rangeGetCommonAncestorContainer ::
-                                (IsDOMRange self) => self -> IO (Maybe Node)
+                                (MonadIO m, IsDOMRange self) => self -> m (Maybe Node)
 rangeGetCommonAncestorContainer self
-  = (ghcjs_dom_range_get_common_ancestor_container
-       (unDOMRange (toDOMRange self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_range_get_common_ancestor_container
+          (unDOMRange (toDOMRange self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"text\"]"
         ghcjs_dom_range_get_text :: JSRef DOMRange -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.text Mozilla Range.text documentation> 
 rangeGetText ::
-             (IsDOMRange self, FromJSString result) => self -> IO result
+             (MonadIO m, IsDOMRange self, FromJSString result) =>
+               self -> m result
 rangeGetText self
-  = fromJSString <$>
-      (ghcjs_dom_range_get_text (unDOMRange (toDOMRange self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_range_get_text (unDOMRange (toDOMRange self))))
 #else
 module GHCJS.DOM.Range (
   module Graphics.UI.Gtk.WebKit.DOM.Range

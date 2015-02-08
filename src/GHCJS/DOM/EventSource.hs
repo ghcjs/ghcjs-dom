@@ -3,20 +3,19 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.EventSource
        (ghcjs_dom_event_source_new, eventSourceNew,
-        ghcjs_dom_event_source_close, eventSourceClose,
-        ghcjs_dom_event_source_dispatch_event, eventSourceDispatchEvent,
-        cCONNECTING, cOPEN, cCLOSED, ghcjs_dom_event_source_get_url,
-        eventSourceGetUrl, ghcjs_dom_event_source_get_with_credentials,
+        ghcjs_dom_event_source_close, eventSourceClose, cCONNECTING, cOPEN,
+        cCLOSED, ghcjs_dom_event_source_get_url, eventSourceGetUrl,
+        ghcjs_dom_event_source_get_with_credentials,
         eventSourceGetWithCredentials,
         ghcjs_dom_event_source_get_ready_state, eventSourceGetReadyState,
-        eventSourceOnopen, eventSourceOnmessage, eventSourceOnerror,
-        EventSource, IsEventSource, castToEventSource, gTypeEventSource,
-        toEventSource)
+        eventSourceOpen, eventSourceMessage, eventSourceError, EventSource,
+        IsEventSource, castToEventSource, gTypeEventSource, toEventSource)
        where
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,33 +30,22 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource Mozilla EventSource documentation> 
 eventSourceNew ::
-               (ToJSString url, IsDictionary eventSourceInit) =>
-                 url -> Maybe eventSourceInit -> IO EventSource
+               (MonadIO m, ToJSString url, IsDictionary eventSourceInit) =>
+                 url -> Maybe eventSourceInit -> m EventSource
 eventSourceNew url eventSourceInit
-  = ghcjs_dom_event_source_new (toJSString url)
-      (maybe jsNull (unDictionary . toDictionary) eventSourceInit)
-      >>= fromJSRefUnchecked
+  = liftIO
+      (ghcjs_dom_event_source_new (toJSString url)
+         (maybe jsNull (unDictionary . toDictionary) eventSourceInit)
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_event_source_close :: JSRef EventSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.close Mozilla EventSource.close documentation> 
-eventSourceClose :: (IsEventSource self) => self -> IO ()
+eventSourceClose :: (MonadIO m, IsEventSource self) => self -> m ()
 eventSourceClose self
-  = ghcjs_dom_event_source_close (unEventSource (toEventSource self))
- 
-foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_event_source_dispatch_event ::
-        JSRef EventSource -> JSRef Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.dispatchEvent Mozilla EventSource.dispatchEvent documentation> 
-eventSourceDispatchEvent ::
-                         (IsEventSource self, IsEvent evt) => self -> Maybe evt -> IO Bool
-eventSourceDispatchEvent self evt
-  = ghcjs_dom_event_source_dispatch_event
-      (unEventSource (toEventSource self))
-      (maybe jsNull (unEvent . toEvent) evt)
+  = liftIO
+      (ghcjs_dom_event_source_close (unEventSource (toEventSource self)))
 cCONNECTING = 0
 cOPEN = 1
 cCLOSED = 2
@@ -67,11 +55,13 @@ foreign import javascript unsafe "$1[\"url\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.url Mozilla EventSource.url documentation> 
 eventSourceGetUrl ::
-                  (IsEventSource self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsEventSource self, FromJSString result) =>
+                    self -> m result
 eventSourceGetUrl self
-  = fromJSString <$>
-      (ghcjs_dom_event_source_get_url
-         (unEventSource (toEventSource self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_event_source_get_url
+            (unEventSource (toEventSource self))))
  
 foreign import javascript unsafe
         "($1[\"withCredentials\"] ? 1 : 0)"
@@ -80,35 +70,39 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.withCredentials Mozilla EventSource.withCredentials documentation> 
 eventSourceGetWithCredentials ::
-                              (IsEventSource self) => self -> IO Bool
+                              (MonadIO m, IsEventSource self) => self -> m Bool
 eventSourceGetWithCredentials self
-  = ghcjs_dom_event_source_get_with_credentials
-      (unEventSource (toEventSource self))
+  = liftIO
+      (ghcjs_dom_event_source_get_with_credentials
+         (unEventSource (toEventSource self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_event_source_get_ready_state ::
         JSRef EventSource -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.readyState Mozilla EventSource.readyState documentation> 
-eventSourceGetReadyState :: (IsEventSource self) => self -> IO Word
+eventSourceGetReadyState ::
+                         (MonadIO m, IsEventSource self) => self -> m Word
 eventSourceGetReadyState self
-  = ghcjs_dom_event_source_get_ready_state
-      (unEventSource (toEventSource self))
+  = liftIO
+      (ghcjs_dom_event_source_get_ready_state
+         (unEventSource (toEventSource self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.onopen Mozilla EventSource.onopen documentation> 
-eventSourceOnopen ::
-                  (IsEventSource self) => Signal self (EventM UIEvent self ())
-eventSourceOnopen = (connect "open")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.open Mozilla EventSource.open documentation> 
+eventSourceOpen ::
+                (IsEventSource self, IsEventTarget self) => EventName self Event
+eventSourceOpen = unsafeEventName (toJSString "open")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.onmessage Mozilla EventSource.onmessage documentation> 
-eventSourceOnmessage ::
-                     (IsEventSource self) => Signal self (EventM UIEvent self ())
-eventSourceOnmessage = (connect "message")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.message Mozilla EventSource.message documentation> 
+eventSourceMessage ::
+                   (IsEventSource self, IsEventTarget self) =>
+                     EventName self MessageEvent
+eventSourceMessage = unsafeEventName (toJSString "message")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.onerror Mozilla EventSource.onerror documentation> 
-eventSourceOnerror ::
-                   (IsEventSource self) => Signal self (EventM UIEvent self ())
-eventSourceOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.error Mozilla EventSource.error documentation> 
+eventSourceError ::
+                 (IsEventSource self, IsEventTarget self) => EventName self UIEvent
+eventSourceError = unsafeEventName (toJSString "error")
 #else
 module GHCJS.DOM.EventSource (
   ) where

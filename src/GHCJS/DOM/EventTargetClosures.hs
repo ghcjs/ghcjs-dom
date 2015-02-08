@@ -2,49 +2,34 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
 module GHCJS.DOM.EventTargetClosures
-       (eventTargetAddEventListener) where
+       (eventListenerNew) where
 
+import Control.Applicative ((<$>))
 import GHCJS.Types
 import GHCJS.Foreign
 import GHCJS.DOM.Types
 
-#ifdef ghcjs_HOST_OS
-foreign import javascript unsafe
-        "($1[\"addEventListener\"]($2, $3, $4) ? 1 : 0)"
-        ghcjs_dom_event_target_add_event_listener ::
-        JSRef GObject -> JSString -> JSRef a -> Bool -> IO Bool
+eventListenerNew :: IsEvent event => (event -> IO ()) -> IO EventListener
+eventListenerNew callback = EventListener . castRef <$> syncCallback1 AlwaysRetain True (callback . unsafeCastGObject . GObject)
 
-foreign import javascript unsafe
-        "($1[\"removeEventListener\"]($2, $3, $4) ? 1 : 0)"
-        ghcjs_dom_event_target_remove_event_listener ::
-        JSRef GObject -> JSString -> JSRef a -> Bool -> IO Bool
-#else
-ghcjs_dom_event_target_add_event_listener ::
-        JSRef GObject -> JSString -> JSRef a -> Bool -> IO Bool
-ghcjs_dom_event_target_add_event_listener = undefined
-
-ghcjs_dom_event_target_remove_event_listener ::
-        JSRef GObject -> JSString -> JSRef a -> Bool -> IO Bool
-ghcjs_dom_event_target_remove_event_listener = undefined
-#endif
-
-eventTargetAddEventListener ::
-                         (GObjectClass self, ToJSString eventName, IsEvent event) =>
-                           self -> eventName -> Bool -> (self -> event -> IO ()) -> IO (IO ())
-eventTargetAddEventListener self eventName bubble user = do
-    callback <- syncCallback1 AlwaysRetain True $ \e -> user self (unsafeCastGObject $ GObject e)
-    ghcjs_dom_event_target_add_event_listener
-        (unGObject (toGObject self))
-        (toJSString eventName)
-        callback
-        bubble
-    return $ do
-        ghcjs_dom_event_target_remove_event_listener
-            (unGObject (toGObject self))
-            (toJSString eventName)
-            callback
-            bubble
-        release callback
+--eventTargetAddTypedEventListener ::
+--                         (IsEventTarget self, ToJSString eventName, IsEvent event) =>
+--                           self -> eventName -> Bool -> (self -> event -> IO ()) -> IO (IO ())
+--eventTargetAddTypedEventListener self eventName bubble user = do
+--    callback <- syncCallback1 AlwaysRetain True $ \e -> user self (unsafeCastGObject $ GObject e)
+--
+--    ghcjs_dom_event_target_add_event_listener
+--        (unGObject (toGObject self))
+--        (toJSString eventName)
+--        callback
+--        bubble
+--    return $ do
+--        ghcjs_dom_event_target_remove_event_listener
+--            (unGObject (toGObject self))
+--            (toJSString eventName)
+--            callback
+--            bubble
+--        release callback
 #else
 module GHCJS.DOM.EventTargetClosures (
   module Graphics.UI.Gtk.WebKit.DOM.EventTargetClosures

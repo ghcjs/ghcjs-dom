@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,12 +29,13 @@ foreign import javascript unsafe "$1[\"mandatory\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints.mandatory Mozilla MediaTrackConstraints.mandatory documentation> 
 mediaTrackConstraintsGetMandatory ::
-                                  (IsMediaTrackConstraints self) =>
-                                    self -> IO (Maybe MediaTrackConstraintSet)
+                                  (MonadIO m, IsMediaTrackConstraints self) =>
+                                    self -> m (Maybe MediaTrackConstraintSet)
 mediaTrackConstraintsGetMandatory self
-  = (ghcjs_dom_media_track_constraints_get_mandatory
-       (unMediaTrackConstraints (toMediaTrackConstraints self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_track_constraints_get_mandatory
+          (unMediaTrackConstraints (toMediaTrackConstraints self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"optional\"]"
         ghcjs_dom_media_track_constraints_get_optional ::
@@ -42,12 +44,13 @@ foreign import javascript unsafe "$1[\"optional\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints.optional Mozilla MediaTrackConstraints.optional documentation> 
 mediaTrackConstraintsGetOptional ::
-                                 (IsMediaTrackConstraints self) =>
-                                   self -> IO (Maybe [Maybe MediaTrackConstraint])
+                                 (MonadIO m, IsMediaTrackConstraints self) =>
+                                   self -> m (Maybe [Maybe MediaTrackConstraint])
 mediaTrackConstraintsGetOptional self
-  = (ghcjs_dom_media_track_constraints_get_optional
-       (unMediaTrackConstraints (toMediaTrackConstraints self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_media_track_constraints_get_optional
+          (unMediaTrackConstraints (toMediaTrackConstraints self)))
+         >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.MediaTrackConstraints (
   ) where

@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -32,19 +33,22 @@ foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_sql_error_get_code :: JSRef SQLError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLError.code Mozilla SQLError.code documentation> 
-sqlErrorGetCode :: (IsSQLError self) => self -> IO Word
+sqlErrorGetCode :: (MonadIO m, IsSQLError self) => self -> m Word
 sqlErrorGetCode self
-  = ghcjs_dom_sql_error_get_code (unSQLError (toSQLError self))
+  = liftIO
+      (ghcjs_dom_sql_error_get_code (unSQLError (toSQLError self)))
  
 foreign import javascript unsafe "$1[\"message\"]"
         ghcjs_dom_sql_error_get_message :: JSRef SQLError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLError.message Mozilla SQLError.message documentation> 
 sqlErrorGetMessage ::
-                   (IsSQLError self, FromJSString result) => self -> IO result
+                   (MonadIO m, IsSQLError self, FromJSString result) =>
+                     self -> m result
 sqlErrorGetMessage self
-  = fromJSString <$>
-      (ghcjs_dom_sql_error_get_message (unSQLError (toSQLError self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_sql_error_get_message (unSQLError (toSQLError self))))
 #else
 module GHCJS.DOM.SQLError (
   ) where

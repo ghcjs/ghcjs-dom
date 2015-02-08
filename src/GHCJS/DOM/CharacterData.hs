@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,14 +32,15 @@ foreign import javascript unsafe "$1[\"substringData\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
 characterDataSubstringData ::
-                           (IsCharacterData self, FromJSString result) =>
-                             self -> Word -> Word -> IO result
+                           (MonadIO m, IsCharacterData self, FromJSString result) =>
+                             self -> Word -> Word -> m result
 characterDataSubstringData self offset length
-  = fromJSString <$>
-      (ghcjs_dom_character_data_substring_data
-         (unCharacterData (toCharacterData self))
-         offset
-         length)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_character_data_substring_data
+            (unCharacterData (toCharacterData self))
+            offset
+            length))
  
 foreign import javascript unsafe "$1[\"appendData\"]($2)"
         ghcjs_dom_character_data_append_data ::
@@ -46,11 +48,13 @@ foreign import javascript unsafe "$1[\"appendData\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.appendData Mozilla CharacterData.appendData documentation> 
 characterDataAppendData ::
-                        (IsCharacterData self, ToJSString data') => self -> data' -> IO ()
+                        (MonadIO m, IsCharacterData self, ToJSString data') =>
+                          self -> data' -> m ()
 characterDataAppendData self data'
-  = ghcjs_dom_character_data_append_data
-      (unCharacterData (toCharacterData self))
-      (toJSString data')
+  = liftIO
+      (ghcjs_dom_character_data_append_data
+         (unCharacterData (toCharacterData self))
+         (toJSString data'))
  
 foreign import javascript unsafe "$1[\"insertData\"]($2, $3)"
         ghcjs_dom_character_data_insert_data ::
@@ -58,13 +62,14 @@ foreign import javascript unsafe "$1[\"insertData\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.insertData Mozilla CharacterData.insertData documentation> 
 characterDataInsertData ::
-                        (IsCharacterData self, ToJSString data') =>
-                          self -> Word -> data' -> IO ()
+                        (MonadIO m, IsCharacterData self, ToJSString data') =>
+                          self -> Word -> data' -> m ()
 characterDataInsertData self offset data'
-  = ghcjs_dom_character_data_insert_data
-      (unCharacterData (toCharacterData self))
-      offset
-      (toJSString data')
+  = liftIO
+      (ghcjs_dom_character_data_insert_data
+         (unCharacterData (toCharacterData self))
+         offset
+         (toJSString data'))
  
 foreign import javascript unsafe "$1[\"deleteData\"]($2, $3)"
         ghcjs_dom_character_data_delete_data ::
@@ -72,12 +77,13 @@ foreign import javascript unsafe "$1[\"deleteData\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.deleteData Mozilla CharacterData.deleteData documentation> 
 characterDataDeleteData ::
-                        (IsCharacterData self) => self -> Word -> Word -> IO ()
+                        (MonadIO m, IsCharacterData self) => self -> Word -> Word -> m ()
 characterDataDeleteData self offset length
-  = ghcjs_dom_character_data_delete_data
-      (unCharacterData (toCharacterData self))
-      offset
-      length
+  = liftIO
+      (ghcjs_dom_character_data_delete_data
+         (unCharacterData (toCharacterData self))
+         offset
+         length)
  
 foreign import javascript unsafe "$1[\"replaceData\"]($2, $3, $4)"
         ghcjs_dom_character_data_replace_data ::
@@ -85,14 +91,15 @@ foreign import javascript unsafe "$1[\"replaceData\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.replaceData Mozilla CharacterData.replaceData documentation> 
 characterDataReplaceData ::
-                         (IsCharacterData self, ToJSString data') =>
-                           self -> Word -> Word -> data' -> IO ()
+                         (MonadIO m, IsCharacterData self, ToJSString data') =>
+                           self -> Word -> Word -> data' -> m ()
 characterDataReplaceData self offset length data'
-  = ghcjs_dom_character_data_replace_data
-      (unCharacterData (toCharacterData self))
-      offset
-      length
-      (toJSString data')
+  = liftIO
+      (ghcjs_dom_character_data_replace_data
+         (unCharacterData (toCharacterData self))
+         offset
+         length
+         (toJSString data'))
  
 foreign import javascript unsafe "$1[\"data\"] = $2;"
         ghcjs_dom_character_data_set_data ::
@@ -100,11 +107,13 @@ foreign import javascript unsafe "$1[\"data\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 characterDataSetData ::
-                     (IsCharacterData self, ToJSString val) => self -> val -> IO ()
+                     (MonadIO m, IsCharacterData self, ToJSString val) =>
+                       self -> val -> m ()
 characterDataSetData self val
-  = ghcjs_dom_character_data_set_data
-      (unCharacterData (toCharacterData self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_character_data_set_data
+         (unCharacterData (toCharacterData self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"data\"]"
         ghcjs_dom_character_data_get_data ::
@@ -112,21 +121,25 @@ foreign import javascript unsafe "$1[\"data\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 characterDataGetData ::
-                     (IsCharacterData self, FromJSString result) => self -> IO result
+                     (MonadIO m, IsCharacterData self, FromJSString result) =>
+                       self -> m result
 characterDataGetData self
-  = fromJSString <$>
-      (ghcjs_dom_character_data_get_data
-         (unCharacterData (toCharacterData self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_character_data_get_data
+            (unCharacterData (toCharacterData self))))
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_character_data_get_length ::
         JSRef CharacterData -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.length Mozilla CharacterData.length documentation> 
-characterDataGetLength :: (IsCharacterData self) => self -> IO Word
+characterDataGetLength ::
+                       (MonadIO m, IsCharacterData self) => self -> m Word
 characterDataGetLength self
-  = ghcjs_dom_character_data_get_length
-      (unCharacterData (toCharacterData self))
+  = liftIO
+      (ghcjs_dom_character_data_get_length
+         (unCharacterData (toCharacterData self)))
 #else
 module GHCJS.DOM.CharacterData (
   module Graphics.UI.Gtk.WebKit.DOM.CharacterData

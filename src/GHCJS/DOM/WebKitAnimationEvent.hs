@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,12 +28,14 @@ foreign import javascript unsafe "$1[\"animationName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitAnimationEvent.animationName Mozilla WebKitAnimationEvent.animationName documentation> 
 webKitAnimationEventGetAnimationName ::
-                                     (IsWebKitAnimationEvent self, FromJSString result) =>
-                                       self -> IO result
+                                     (MonadIO m, IsWebKitAnimationEvent self,
+                                      FromJSString result) =>
+                                       self -> m result
 webKitAnimationEventGetAnimationName self
-  = fromJSString <$>
-      (ghcjs_dom_webkit_animation_event_get_animation_name
-         (unWebKitAnimationEvent (toWebKitAnimationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_webkit_animation_event_get_animation_name
+            (unWebKitAnimationEvent (toWebKitAnimationEvent self))))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
         ghcjs_dom_webkit_animation_event_get_elapsed_time ::
@@ -40,10 +43,11 @@ foreign import javascript unsafe "$1[\"elapsedTime\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitAnimationEvent.elapsedTime Mozilla WebKitAnimationEvent.elapsedTime documentation> 
 webKitAnimationEventGetElapsedTime ::
-                                   (IsWebKitAnimationEvent self) => self -> IO Double
+                                   (MonadIO m, IsWebKitAnimationEvent self) => self -> m Double
 webKitAnimationEventGetElapsedTime self
-  = ghcjs_dom_webkit_animation_event_get_elapsed_time
-      (unWebKitAnimationEvent (toWebKitAnimationEvent self))
+  = liftIO
+      (ghcjs_dom_webkit_animation_event_get_elapsed_time
+         (unWebKitAnimationEvent (toWebKitAnimationEvent self)))
 #else
 module GHCJS.DOM.WebKitAnimationEvent (
   ) where

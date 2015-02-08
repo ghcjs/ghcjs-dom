@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,13 +27,14 @@ foreign import javascript unsafe "$1[\"renderedBuffer\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioCompletionEvent.renderedBuffer Mozilla OfflineAudioCompletionEvent.renderedBuffer documentation> 
 offlineAudioCompletionEventGetRenderedBuffer ::
-                                             (IsOfflineAudioCompletionEvent self) =>
-                                               self -> IO (Maybe AudioBuffer)
+                                             (MonadIO m, IsOfflineAudioCompletionEvent self) =>
+                                               self -> m (Maybe AudioBuffer)
 offlineAudioCompletionEventGetRenderedBuffer self
-  = (ghcjs_dom_offline_audio_completion_event_get_rendered_buffer
-       (unOfflineAudioCompletionEvent
-          (toOfflineAudioCompletionEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_offline_audio_completion_event_get_rendered_buffer
+          (unOfflineAudioCompletionEvent
+             (toOfflineAudioCompletionEvent self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.OfflineAudioCompletionEvent (
   ) where

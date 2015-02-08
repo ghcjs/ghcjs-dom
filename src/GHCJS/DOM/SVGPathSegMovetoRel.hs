@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,11 +29,12 @@ foreign import javascript unsafe "$1[\"x\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.x Mozilla SVGPathSegMovetoRel.x documentation> 
 svgPathSegMovetoRelSetX ::
-                        (IsSVGPathSegMovetoRel self) => self -> Float -> IO ()
+                        (MonadIO m, IsSVGPathSegMovetoRel self) => self -> Float -> m ()
 svgPathSegMovetoRelSetX self val
-  = ghcjs_dom_svg_path_seg_moveto_rel_set_x
-      (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_moveto_rel_set_x
+         (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_moveto_rel_get_x ::
@@ -40,10 +42,11 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.x Mozilla SVGPathSegMovetoRel.x documentation> 
 svgPathSegMovetoRelGetX ::
-                        (IsSVGPathSegMovetoRel self) => self -> IO Float
+                        (MonadIO m, IsSVGPathSegMovetoRel self) => self -> m Float
 svgPathSegMovetoRelGetX self
-  = ghcjs_dom_svg_path_seg_moveto_rel_get_x
-      (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_moveto_rel_get_x
+         (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self)))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_moveto_rel_set_y ::
@@ -51,11 +54,12 @@ foreign import javascript unsafe "$1[\"y\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.y Mozilla SVGPathSegMovetoRel.y documentation> 
 svgPathSegMovetoRelSetY ::
-                        (IsSVGPathSegMovetoRel self) => self -> Float -> IO ()
+                        (MonadIO m, IsSVGPathSegMovetoRel self) => self -> Float -> m ()
 svgPathSegMovetoRelSetY self val
-  = ghcjs_dom_svg_path_seg_moveto_rel_set_y
-      (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_moveto_rel_set_y
+         (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_moveto_rel_get_y ::
@@ -63,10 +67,11 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.y Mozilla SVGPathSegMovetoRel.y documentation> 
 svgPathSegMovetoRelGetY ::
-                        (IsSVGPathSegMovetoRel self) => self -> IO Float
+                        (MonadIO m, IsSVGPathSegMovetoRel self) => self -> m Float
 svgPathSegMovetoRelGetY self
-  = ghcjs_dom_svg_path_seg_moveto_rel_get_y
-      (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_moveto_rel_get_y
+         (unSVGPathSegMovetoRel (toSVGPathSegMovetoRel self)))
 #else
 module GHCJS.DOM.SVGPathSegMovetoRel (
   ) where

@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,11 +32,13 @@ foreign import javascript unsafe "$1[\"glyphRef\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.glyphRef Mozilla SVGAltGlyphElement.glyphRef documentation> 
 svgAltGlyphElementSetGlyphRef ::
-                              (IsSVGAltGlyphElement self, ToJSString val) => self -> val -> IO ()
+                              (MonadIO m, IsSVGAltGlyphElement self, ToJSString val) =>
+                                self -> val -> m ()
 svgAltGlyphElementSetGlyphRef self val
-  = ghcjs_dom_svg_alt_glyph_element_set_glyph_ref
-      (unSVGAltGlyphElement (toSVGAltGlyphElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_alt_glyph_element_set_glyph_ref
+         (unSVGAltGlyphElement (toSVGAltGlyphElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"glyphRef\"]"
         ghcjs_dom_svg_alt_glyph_element_get_glyph_ref ::
@@ -43,12 +46,13 @@ foreign import javascript unsafe "$1[\"glyphRef\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.glyphRef Mozilla SVGAltGlyphElement.glyphRef documentation> 
 svgAltGlyphElementGetGlyphRef ::
-                              (IsSVGAltGlyphElement self, FromJSString result) =>
-                                self -> IO result
+                              (MonadIO m, IsSVGAltGlyphElement self, FromJSString result) =>
+                                self -> m result
 svgAltGlyphElementGetGlyphRef self
-  = fromJSString <$>
-      (ghcjs_dom_svg_alt_glyph_element_get_glyph_ref
-         (unSVGAltGlyphElement (toSVGAltGlyphElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_alt_glyph_element_get_glyph_ref
+            (unSVGAltGlyphElement (toSVGAltGlyphElement self))))
  
 foreign import javascript unsafe "$1[\"format\"] = $2;"
         ghcjs_dom_svg_alt_glyph_element_set_format ::
@@ -56,11 +60,13 @@ foreign import javascript unsafe "$1[\"format\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.format Mozilla SVGAltGlyphElement.format documentation> 
 svgAltGlyphElementSetFormat ::
-                            (IsSVGAltGlyphElement self, ToJSString val) => self -> val -> IO ()
+                            (MonadIO m, IsSVGAltGlyphElement self, ToJSString val) =>
+                              self -> val -> m ()
 svgAltGlyphElementSetFormat self val
-  = ghcjs_dom_svg_alt_glyph_element_set_format
-      (unSVGAltGlyphElement (toSVGAltGlyphElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_alt_glyph_element_set_format
+         (unSVGAltGlyphElement (toSVGAltGlyphElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"format\"]"
         ghcjs_dom_svg_alt_glyph_element_get_format ::
@@ -68,12 +74,13 @@ foreign import javascript unsafe "$1[\"format\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.format Mozilla SVGAltGlyphElement.format documentation> 
 svgAltGlyphElementGetFormat ::
-                            (IsSVGAltGlyphElement self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsSVGAltGlyphElement self, FromJSString result) =>
+                              self -> m result
 svgAltGlyphElementGetFormat self
-  = fromJSString <$>
-      (ghcjs_dom_svg_alt_glyph_element_get_format
-         (unSVGAltGlyphElement (toSVGAltGlyphElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_alt_glyph_element_get_format
+            (unSVGAltGlyphElement (toSVGAltGlyphElement self))))
 #else
 module GHCJS.DOM.SVGAltGlyphElement (
   ) where

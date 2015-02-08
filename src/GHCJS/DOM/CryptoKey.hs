@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -23,10 +24,12 @@ foreign import javascript unsafe "($1[\"extractable\"] ? 1 : 0)"
         ghcjs_dom_crypto_key_get_extractable :: JSRef CryptoKey -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Key.extractable Mozilla Key.extractable documentation> 
-cryptoKeyGetExtractable :: (IsCryptoKey self) => self -> IO Bool
+cryptoKeyGetExtractable ::
+                        (MonadIO m, IsCryptoKey self) => self -> m Bool
 cryptoKeyGetExtractable self
-  = ghcjs_dom_crypto_key_get_extractable
-      (unCryptoKey (toCryptoKey self))
+  = liftIO
+      (ghcjs_dom_crypto_key_get_extractable
+         (unCryptoKey (toCryptoKey self)))
  
 foreign import javascript unsafe "$1[\"algorithm\"]"
         ghcjs_dom_crypto_key_get_algorithm ::
@@ -34,22 +37,24 @@ foreign import javascript unsafe "$1[\"algorithm\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Key.algorithm Mozilla Key.algorithm documentation> 
 cryptoKeyGetAlgorithm ::
-                      (IsCryptoKey self) => self -> IO (Maybe Algorithm)
+                      (MonadIO m, IsCryptoKey self) => self -> m (Maybe Algorithm)
 cryptoKeyGetAlgorithm self
-  = (ghcjs_dom_crypto_key_get_algorithm
-       (unCryptoKey (toCryptoKey self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_crypto_key_get_algorithm
+          (unCryptoKey (toCryptoKey self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"usages\"]"
         ghcjs_dom_crypto_key_get_usages ::
         JSRef CryptoKey -> IO (JSRef [KeyUsage])
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Key.usages Mozilla Key.usages documentation> 
-cryptoKeyGetUsages :: (IsCryptoKey self) => self -> IO [KeyUsage]
+cryptoKeyGetUsages ::
+                   (MonadIO m, IsCryptoKey self) => self -> m [KeyUsage]
 cryptoKeyGetUsages self
-  = (ghcjs_dom_crypto_key_get_usages
-       (unCryptoKey (toCryptoKey self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_crypto_key_get_usages (unCryptoKey (toCryptoKey self)))
+         >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.CryptoKey (
   ) where

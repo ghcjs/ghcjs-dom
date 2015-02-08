@@ -22,6 +22,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,11 +37,12 @@ foreign import javascript unsafe "$1[\"nextNode\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
 nodeIteratorNextNode ::
-                     (IsNodeIterator self) => self -> IO (Maybe Node)
+                     (MonadIO m, IsNodeIterator self) => self -> m (Maybe Node)
 nodeIteratorNextNode self
-  = (ghcjs_dom_node_iterator_next_node
-       (unNodeIterator (toNodeIterator self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_node_iterator_next_node
+          (unNodeIterator (toNodeIterator self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"previousNode\"]()"
         ghcjs_dom_node_iterator_previous_node ::
@@ -48,20 +50,23 @@ foreign import javascript unsafe "$1[\"previousNode\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
 nodeIteratorPreviousNode ::
-                         (IsNodeIterator self) => self -> IO (Maybe Node)
+                         (MonadIO m, IsNodeIterator self) => self -> m (Maybe Node)
 nodeIteratorPreviousNode self
-  = (ghcjs_dom_node_iterator_previous_node
-       (unNodeIterator (toNodeIterator self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_node_iterator_previous_node
+          (unNodeIterator (toNodeIterator self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"detach\"]()"
         ghcjs_dom_node_iterator_detach :: JSRef NodeIterator -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.detach Mozilla NodeIterator.detach documentation> 
-nodeIteratorDetach :: (IsNodeIterator self) => self -> IO ()
+nodeIteratorDetach ::
+                   (MonadIO m, IsNodeIterator self) => self -> m ()
 nodeIteratorDetach self
-  = ghcjs_dom_node_iterator_detach
-      (unNodeIterator (toNodeIterator self))
+  = liftIO
+      (ghcjs_dom_node_iterator_detach
+         (unNodeIterator (toNodeIterator self)))
  
 foreign import javascript unsafe "$1[\"root\"]"
         ghcjs_dom_node_iterator_get_root ::
@@ -69,11 +74,12 @@ foreign import javascript unsafe "$1[\"root\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.root Mozilla NodeIterator.root documentation> 
 nodeIteratorGetRoot ::
-                    (IsNodeIterator self) => self -> IO (Maybe Node)
+                    (MonadIO m, IsNodeIterator self) => self -> m (Maybe Node)
 nodeIteratorGetRoot self
-  = (ghcjs_dom_node_iterator_get_root
-       (unNodeIterator (toNodeIterator self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_node_iterator_get_root
+          (unNodeIterator (toNodeIterator self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"whatToShow\"]"
         ghcjs_dom_node_iterator_get_what_to_show ::
@@ -81,10 +87,11 @@ foreign import javascript unsafe "$1[\"whatToShow\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.whatToShow Mozilla NodeIterator.whatToShow documentation> 
 nodeIteratorGetWhatToShow ::
-                          (IsNodeIterator self) => self -> IO Word
+                          (MonadIO m, IsNodeIterator self) => self -> m Word
 nodeIteratorGetWhatToShow self
-  = ghcjs_dom_node_iterator_get_what_to_show
-      (unNodeIterator (toNodeIterator self))
+  = liftIO
+      (ghcjs_dom_node_iterator_get_what_to_show
+         (unNodeIterator (toNodeIterator self)))
  
 foreign import javascript unsafe "$1[\"filter\"]"
         ghcjs_dom_node_iterator_get_filter ::
@@ -92,11 +99,12 @@ foreign import javascript unsafe "$1[\"filter\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.filter Mozilla NodeIterator.filter documentation> 
 nodeIteratorGetFilter ::
-                      (IsNodeIterator self) => self -> IO (Maybe NodeFilter)
+                      (MonadIO m, IsNodeIterator self) => self -> m (Maybe NodeFilter)
 nodeIteratorGetFilter self
-  = (ghcjs_dom_node_iterator_get_filter
-       (unNodeIterator (toNodeIterator self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_node_iterator_get_filter
+          (unNodeIterator (toNodeIterator self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"expandEntityReferences\"] ? 1 : 0)"
@@ -105,10 +113,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.expandEntityReferences Mozilla NodeIterator.expandEntityReferences documentation> 
 nodeIteratorGetExpandEntityReferences ::
-                                      (IsNodeIterator self) => self -> IO Bool
+                                      (MonadIO m, IsNodeIterator self) => self -> m Bool
 nodeIteratorGetExpandEntityReferences self
-  = ghcjs_dom_node_iterator_get_expand_entity_references
-      (unNodeIterator (toNodeIterator self))
+  = liftIO
+      (ghcjs_dom_node_iterator_get_expand_entity_references
+         (unNodeIterator (toNodeIterator self)))
  
 foreign import javascript unsafe "$1[\"referenceNode\"]"
         ghcjs_dom_node_iterator_get_reference_node ::
@@ -116,11 +125,12 @@ foreign import javascript unsafe "$1[\"referenceNode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.referenceNode Mozilla NodeIterator.referenceNode documentation> 
 nodeIteratorGetReferenceNode ::
-                             (IsNodeIterator self) => self -> IO (Maybe Node)
+                             (MonadIO m, IsNodeIterator self) => self -> m (Maybe Node)
 nodeIteratorGetReferenceNode self
-  = (ghcjs_dom_node_iterator_get_reference_node
-       (unNodeIterator (toNodeIterator self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_node_iterator_get_reference_node
+          (unNodeIterator (toNodeIterator self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"pointerBeforeReferenceNode\"] ? 1 : 0)"
@@ -129,10 +139,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.pointerBeforeReferenceNode Mozilla NodeIterator.pointerBeforeReferenceNode documentation> 
 nodeIteratorGetPointerBeforeReferenceNode ::
-                                          (IsNodeIterator self) => self -> IO Bool
+                                          (MonadIO m, IsNodeIterator self) => self -> m Bool
 nodeIteratorGetPointerBeforeReferenceNode self
-  = ghcjs_dom_node_iterator_get_pointer_before_reference_node
-      (unNodeIterator (toNodeIterator self))
+  = liftIO
+      (ghcjs_dom_node_iterator_get_pointer_before_reference_node
+         (unNodeIterator (toNodeIterator self)))
 #else
 module GHCJS.DOM.NodeIterator (
   module Graphics.UI.Gtk.WebKit.DOM.NodeIterator

@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -29,18 +30,20 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.queryUsageAndQuota Mozilla StorageInfo.queryUsageAndQuota documentation> 
 storageInfoQueryUsageAndQuota ::
-                              (IsStorageInfo self, IsStorageUsageCallback usageCallback,
+                              (MonadIO m, IsStorageInfo self,
+                               IsStorageUsageCallback usageCallback,
                                IsStorageErrorCallback errorCallback) =>
-                                self -> Word -> Maybe usageCallback -> Maybe errorCallback -> IO ()
+                                self -> Word -> Maybe usageCallback -> Maybe errorCallback -> m ()
 storageInfoQueryUsageAndQuota self storageType usageCallback
   errorCallback
-  = ghcjs_dom_storage_info_query_usage_and_quota
-      (unStorageInfo (toStorageInfo self))
-      storageType
-      (maybe jsNull (unStorageUsageCallback . toStorageUsageCallback)
-         usageCallback)
-      (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
-         errorCallback)
+  = liftIO
+      (ghcjs_dom_storage_info_query_usage_and_quota
+         (unStorageInfo (toStorageInfo self))
+         storageType
+         (maybe jsNull (unStorageUsageCallback . toStorageUsageCallback)
+            usageCallback)
+         (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
+            errorCallback))
  
 foreign import javascript unsafe
         "$1[\"requestQuota\"]($2, $3, $4,\n$5)"
@@ -52,21 +55,23 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.requestQuota Mozilla StorageInfo.requestQuota documentation> 
 storageInfoRequestQuota ::
-                        (IsStorageInfo self, IsStorageQuotaCallback quotaCallback,
+                        (MonadIO m, IsStorageInfo self,
+                         IsStorageQuotaCallback quotaCallback,
                          IsStorageErrorCallback errorCallback) =>
                           self ->
                             Word ->
-                              Word64 -> Maybe quotaCallback -> Maybe errorCallback -> IO ()
+                              Word64 -> Maybe quotaCallback -> Maybe errorCallback -> m ()
 storageInfoRequestQuota self storageType newQuotaInBytes
   quotaCallback errorCallback
-  = ghcjs_dom_storage_info_request_quota
-      (unStorageInfo (toStorageInfo self))
-      storageType
-      (fromIntegral newQuotaInBytes)
-      (maybe jsNull (unStorageQuotaCallback . toStorageQuotaCallback)
-         quotaCallback)
-      (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
-         errorCallback)
+  = liftIO
+      (ghcjs_dom_storage_info_request_quota
+         (unStorageInfo (toStorageInfo self))
+         storageType
+         (fromIntegral newQuotaInBytes)
+         (maybe jsNull (unStorageQuotaCallback . toStorageQuotaCallback)
+            quotaCallback)
+         (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
+            errorCallback))
 cTEMPORARY = 0
 cPERSISTENT = 1
 #else

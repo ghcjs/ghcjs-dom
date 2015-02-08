@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,9 +27,9 @@ foreign import javascript unsafe "new window[\"XPathEvaluator\"]()"
         ghcjs_dom_xpath_evaluator_new :: IO (JSRef XPathEvaluator)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator Mozilla XPathEvaluator documentation> 
-xPathEvaluatorNew :: IO XPathEvaluator
+xPathEvaluatorNew :: (MonadIO m) => m XPathEvaluator
 xPathEvaluatorNew
-  = ghcjs_dom_xpath_evaluator_new >>= fromJSRefUnchecked
+  = liftIO (ghcjs_dom_xpath_evaluator_new >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
         ghcjs_dom_xpath_evaluator_create_expression ::
@@ -37,15 +38,16 @@ foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createExpression Mozilla XPathEvaluator.createExpression documentation> 
 xPathEvaluatorCreateExpression ::
-                               (IsXPathEvaluator self, ToJSString expression,
+                               (MonadIO m, IsXPathEvaluator self, ToJSString expression,
                                 IsXPathNSResolver resolver) =>
-                                 self -> expression -> Maybe resolver -> IO (Maybe XPathExpression)
+                                 self -> expression -> Maybe resolver -> m (Maybe XPathExpression)
 xPathEvaluatorCreateExpression self expression resolver
-  = (ghcjs_dom_xpath_evaluator_create_expression
-       (unXPathEvaluator (toXPathEvaluator self))
-       (toJSString expression)
-       (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xpath_evaluator_create_expression
+          (unXPathEvaluator (toXPathEvaluator self))
+          (toJSString expression)
+          (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
         ghcjs_dom_xpath_evaluator_create_ns_resolver ::
@@ -53,13 +55,14 @@ foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createNSResolver Mozilla XPathEvaluator.createNSResolver documentation> 
 xPathEvaluatorCreateNSResolver ::
-                               (IsXPathEvaluator self, IsNode nodeResolver) =>
-                                 self -> Maybe nodeResolver -> IO (Maybe XPathNSResolver)
+                               (MonadIO m, IsXPathEvaluator self, IsNode nodeResolver) =>
+                                 self -> Maybe nodeResolver -> m (Maybe XPathNSResolver)
 xPathEvaluatorCreateNSResolver self nodeResolver
-  = (ghcjs_dom_xpath_evaluator_create_ns_resolver
-       (unXPathEvaluator (toXPathEvaluator self))
-       (maybe jsNull (unNode . toNode) nodeResolver))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xpath_evaluator_create_ns_resolver
+          (unXPathEvaluator (toXPathEvaluator self))
+          (maybe jsNull (unNode . toNode) nodeResolver))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)"
@@ -72,22 +75,24 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.evaluate Mozilla XPathEvaluator.evaluate documentation> 
 xPathEvaluatorEvaluate ::
-                       (IsXPathEvaluator self, ToJSString expression, IsNode contextNode,
-                        IsXPathNSResolver resolver, IsXPathResult inResult) =>
+                       (MonadIO m, IsXPathEvaluator self, ToJSString expression,
+                        IsNode contextNode, IsXPathNSResolver resolver,
+                        IsXPathResult inResult) =>
                          self ->
                            expression ->
                              Maybe contextNode ->
-                               Maybe resolver -> Word -> Maybe inResult -> IO (Maybe XPathResult)
+                               Maybe resolver -> Word -> Maybe inResult -> m (Maybe XPathResult)
 xPathEvaluatorEvaluate self expression contextNode resolver type'
   inResult
-  = (ghcjs_dom_xpath_evaluator_evaluate
-       (unXPathEvaluator (toXPathEvaluator self))
-       (toJSString expression)
-       (maybe jsNull (unNode . toNode) contextNode)
-       (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver)
-       type'
-       (maybe jsNull (unXPathResult . toXPathResult) inResult))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xpath_evaluator_evaluate
+          (unXPathEvaluator (toXPathEvaluator self))
+          (toJSString expression)
+          (maybe jsNull (unNode . toNode) contextNode)
+          (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver)
+          type'
+          (maybe jsNull (unXPathResult . toXPathResult) inResult))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.XPathEvaluator (
   ) where

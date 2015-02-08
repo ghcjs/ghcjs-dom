@@ -16,6 +16,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,11 +31,12 @@ foreign import javascript unsafe "$1[\"disabled\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.disabled Mozilla HTMLStyleElement.disabled documentation> 
 htmlStyleElementSetDisabled ::
-                            (IsHTMLStyleElement self) => self -> Bool -> IO ()
+                            (MonadIO m, IsHTMLStyleElement self) => self -> Bool -> m ()
 htmlStyleElementSetDisabled self val
-  = ghcjs_dom_html_style_element_set_disabled
-      (unHTMLStyleElement (toHTMLStyleElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_style_element_set_disabled
+         (unHTMLStyleElement (toHTMLStyleElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
         ghcjs_dom_html_style_element_get_disabled ::
@@ -42,10 +44,11 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.disabled Mozilla HTMLStyleElement.disabled documentation> 
 htmlStyleElementGetDisabled ::
-                            (IsHTMLStyleElement self) => self -> IO Bool
+                            (MonadIO m, IsHTMLStyleElement self) => self -> m Bool
 htmlStyleElementGetDisabled self
-  = ghcjs_dom_html_style_element_get_disabled
-      (unHTMLStyleElement (toHTMLStyleElement self))
+  = liftIO
+      (ghcjs_dom_html_style_element_get_disabled
+         (unHTMLStyleElement (toHTMLStyleElement self)))
  
 foreign import javascript unsafe "$1[\"media\"] = $2;"
         ghcjs_dom_html_style_element_set_media ::
@@ -53,11 +56,13 @@ foreign import javascript unsafe "$1[\"media\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.media Mozilla HTMLStyleElement.media documentation> 
 htmlStyleElementSetMedia ::
-                         (IsHTMLStyleElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLStyleElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlStyleElementSetMedia self val
-  = ghcjs_dom_html_style_element_set_media
-      (unHTMLStyleElement (toHTMLStyleElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_style_element_set_media
+         (unHTMLStyleElement (toHTMLStyleElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"media\"]"
         ghcjs_dom_html_style_element_get_media ::
@@ -65,11 +70,13 @@ foreign import javascript unsafe "$1[\"media\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.media Mozilla HTMLStyleElement.media documentation> 
 htmlStyleElementGetMedia ::
-                         (IsHTMLStyleElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLStyleElement self, FromJSString result) =>
+                           self -> m result
 htmlStyleElementGetMedia self
-  = fromJSString <$>
-      (ghcjs_dom_html_style_element_get_media
-         (unHTMLStyleElement (toHTMLStyleElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_style_element_get_media
+            (unHTMLStyleElement (toHTMLStyleElement self))))
  
 foreign import javascript unsafe "$1[\"sheet\"]"
         ghcjs_dom_html_style_element_get_sheet ::
@@ -77,11 +84,13 @@ foreign import javascript unsafe "$1[\"sheet\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.sheet Mozilla HTMLStyleElement.sheet documentation> 
 htmlStyleElementGetSheet ::
-                         (IsHTMLStyleElement self) => self -> IO (Maybe StyleSheet)
+                         (MonadIO m, IsHTMLStyleElement self) =>
+                           self -> m (Maybe StyleSheet)
 htmlStyleElementGetSheet self
-  = (ghcjs_dom_html_style_element_get_sheet
-       (unHTMLStyleElement (toHTMLStyleElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_style_element_get_sheet
+          (unHTMLStyleElement (toHTMLStyleElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLStyleElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLStyleElement

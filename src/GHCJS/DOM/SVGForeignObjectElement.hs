@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -31,12 +32,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGForeignObjectElement.x Mozilla SVGForeignObjectElement.x documentation> 
 svgForeignObjectElementGetX ::
-                            (IsSVGForeignObjectElement self) =>
-                              self -> IO (Maybe SVGAnimatedLength)
+                            (MonadIO m, IsSVGForeignObjectElement self) =>
+                              self -> m (Maybe SVGAnimatedLength)
 svgForeignObjectElementGetX self
-  = (ghcjs_dom_svg_foreign_object_element_get_x
-       (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_foreign_object_element_get_x
+          (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_foreign_object_element_get_y ::
@@ -44,12 +46,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGForeignObjectElement.y Mozilla SVGForeignObjectElement.y documentation> 
 svgForeignObjectElementGetY ::
-                            (IsSVGForeignObjectElement self) =>
-                              self -> IO (Maybe SVGAnimatedLength)
+                            (MonadIO m, IsSVGForeignObjectElement self) =>
+                              self -> m (Maybe SVGAnimatedLength)
 svgForeignObjectElementGetY self
-  = (ghcjs_dom_svg_foreign_object_element_get_y
-       (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_foreign_object_element_get_y
+          (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_svg_foreign_object_element_get_width ::
@@ -57,12 +60,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGForeignObjectElement.width Mozilla SVGForeignObjectElement.width documentation> 
 svgForeignObjectElementGetWidth ::
-                                (IsSVGForeignObjectElement self) =>
-                                  self -> IO (Maybe SVGAnimatedLength)
+                                (MonadIO m, IsSVGForeignObjectElement self) =>
+                                  self -> m (Maybe SVGAnimatedLength)
 svgForeignObjectElementGetWidth self
-  = (ghcjs_dom_svg_foreign_object_element_get_width
-       (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_foreign_object_element_get_width
+          (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_svg_foreign_object_element_get_height ::
@@ -70,12 +74,13 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGForeignObjectElement.height Mozilla SVGForeignObjectElement.height documentation> 
 svgForeignObjectElementGetHeight ::
-                                 (IsSVGForeignObjectElement self) =>
-                                   self -> IO (Maybe SVGAnimatedLength)
+                                 (MonadIO m, IsSVGForeignObjectElement self) =>
+                                   self -> m (Maybe SVGAnimatedLength)
 svgForeignObjectElementGetHeight self
-  = (ghcjs_dom_svg_foreign_object_element_get_height
-       (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_foreign_object_element_get_height
+          (unSVGForeignObjectElement (toSVGForeignObjectElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGForeignObjectElement (
   ) where

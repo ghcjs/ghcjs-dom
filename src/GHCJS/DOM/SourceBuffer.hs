@@ -25,6 +25,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,12 +40,13 @@ foreign import javascript unsafe "$1[\"appendBuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.appendBuffer Mozilla SourceBuffer.appendBuffer documentation> 
 sourceBufferAppendBuffer ::
-                         (IsSourceBuffer self, IsArrayBuffer data') =>
-                           self -> Maybe data' -> IO ()
+                         (MonadIO m, IsSourceBuffer self, IsArrayBuffer data') =>
+                           self -> Maybe data' -> m ()
 sourceBufferAppendBuffer self data'
-  = ghcjs_dom_source_buffer_append_buffer
-      (unSourceBuffer (toSourceBuffer self))
-      (maybe jsNull (unArrayBuffer . toArrayBuffer) data')
+  = liftIO
+      (ghcjs_dom_source_buffer_append_buffer
+         (unSourceBuffer (toSourceBuffer self))
+         (maybe jsNull (unArrayBuffer . toArrayBuffer) data'))
  
 foreign import javascript unsafe "$1[\"appendBuffer\"]($2)"
         ghcjs_dom_source_buffer_append_bufferView ::
@@ -52,21 +54,24 @@ foreign import javascript unsafe "$1[\"appendBuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.appendBufferView Mozilla SourceBuffer.appendBufferView documentation> 
 sourceBufferAppendBufferView ::
-                             (IsSourceBuffer self, IsArrayBufferView data') =>
-                               self -> Maybe data' -> IO ()
+                             (MonadIO m, IsSourceBuffer self, IsArrayBufferView data') =>
+                               self -> Maybe data' -> m ()
 sourceBufferAppendBufferView self data'
-  = ghcjs_dom_source_buffer_append_bufferView
-      (unSourceBuffer (toSourceBuffer self))
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
+  = liftIO
+      (ghcjs_dom_source_buffer_append_bufferView
+         (unSourceBuffer (toSourceBuffer self))
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) data'))
  
 foreign import javascript unsafe "$1[\"abort\"]()"
         ghcjs_dom_source_buffer_abort :: JSRef SourceBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.abort Mozilla SourceBuffer.abort documentation> 
-sourceBufferAbort :: (IsSourceBuffer self) => self -> IO ()
+sourceBufferAbort ::
+                  (MonadIO m, IsSourceBuffer self) => self -> m ()
 sourceBufferAbort self
-  = ghcjs_dom_source_buffer_abort
-      (unSourceBuffer (toSourceBuffer self))
+  = liftIO
+      (ghcjs_dom_source_buffer_abort
+         (unSourceBuffer (toSourceBuffer self)))
  
 foreign import javascript unsafe "$1[\"remove\"]($2, $3)"
         ghcjs_dom_source_buffer_remove ::
@@ -74,22 +79,26 @@ foreign import javascript unsafe "$1[\"remove\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.remove Mozilla SourceBuffer.remove documentation> 
 sourceBufferRemove ::
-                   (IsSourceBuffer self) => self -> Double -> Double -> IO ()
+                   (MonadIO m, IsSourceBuffer self) =>
+                     self -> Double -> Double -> m ()
 sourceBufferRemove self start end
-  = ghcjs_dom_source_buffer_remove
-      (unSourceBuffer (toSourceBuffer self))
-      start
-      end
+  = liftIO
+      (ghcjs_dom_source_buffer_remove
+         (unSourceBuffer (toSourceBuffer self))
+         start
+         end)
  
 foreign import javascript unsafe "($1[\"updating\"] ? 1 : 0)"
         ghcjs_dom_source_buffer_get_updating ::
         JSRef SourceBuffer -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.updating Mozilla SourceBuffer.updating documentation> 
-sourceBufferGetUpdating :: (IsSourceBuffer self) => self -> IO Bool
+sourceBufferGetUpdating ::
+                        (MonadIO m, IsSourceBuffer self) => self -> m Bool
 sourceBufferGetUpdating self
-  = ghcjs_dom_source_buffer_get_updating
-      (unSourceBuffer (toSourceBuffer self))
+  = liftIO
+      (ghcjs_dom_source_buffer_get_updating
+         (unSourceBuffer (toSourceBuffer self)))
  
 foreign import javascript unsafe "$1[\"buffered\"]"
         ghcjs_dom_source_buffer_get_buffered ::
@@ -97,11 +106,12 @@ foreign import javascript unsafe "$1[\"buffered\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.buffered Mozilla SourceBuffer.buffered documentation> 
 sourceBufferGetBuffered ::
-                        (IsSourceBuffer self) => self -> IO (Maybe TimeRanges)
+                        (MonadIO m, IsSourceBuffer self) => self -> m (Maybe TimeRanges)
 sourceBufferGetBuffered self
-  = (ghcjs_dom_source_buffer_get_buffered
-       (unSourceBuffer (toSourceBuffer self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_source_buffer_get_buffered
+          (unSourceBuffer (toSourceBuffer self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"timestampOffset\"] = $2;"
         ghcjs_dom_source_buffer_set_timestamp_offset ::
@@ -109,11 +119,12 @@ foreign import javascript unsafe "$1[\"timestampOffset\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.timestampOffset Mozilla SourceBuffer.timestampOffset documentation> 
 sourceBufferSetTimestampOffset ::
-                               (IsSourceBuffer self) => self -> Double -> IO ()
+                               (MonadIO m, IsSourceBuffer self) => self -> Double -> m ()
 sourceBufferSetTimestampOffset self val
-  = ghcjs_dom_source_buffer_set_timestamp_offset
-      (unSourceBuffer (toSourceBuffer self))
-      val
+  = liftIO
+      (ghcjs_dom_source_buffer_set_timestamp_offset
+         (unSourceBuffer (toSourceBuffer self))
+         val)
  
 foreign import javascript unsafe "$1[\"timestampOffset\"]"
         ghcjs_dom_source_buffer_get_timestamp_offset ::
@@ -121,10 +132,11 @@ foreign import javascript unsafe "$1[\"timestampOffset\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.timestampOffset Mozilla SourceBuffer.timestampOffset documentation> 
 sourceBufferGetTimestampOffset ::
-                               (IsSourceBuffer self) => self -> IO Double
+                               (MonadIO m, IsSourceBuffer self) => self -> m Double
 sourceBufferGetTimestampOffset self
-  = ghcjs_dom_source_buffer_get_timestamp_offset
-      (unSourceBuffer (toSourceBuffer self))
+  = liftIO
+      (ghcjs_dom_source_buffer_get_timestamp_offset
+         (unSourceBuffer (toSourceBuffer self)))
  
 foreign import javascript unsafe "$1[\"audioTracks\"]"
         ghcjs_dom_source_buffer_get_audio_tracks ::
@@ -132,11 +144,13 @@ foreign import javascript unsafe "$1[\"audioTracks\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.audioTracks Mozilla SourceBuffer.audioTracks documentation> 
 sourceBufferGetAudioTracks ::
-                           (IsSourceBuffer self) => self -> IO (Maybe AudioTrackList)
+                           (MonadIO m, IsSourceBuffer self) =>
+                             self -> m (Maybe AudioTrackList)
 sourceBufferGetAudioTracks self
-  = (ghcjs_dom_source_buffer_get_audio_tracks
-       (unSourceBuffer (toSourceBuffer self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_source_buffer_get_audio_tracks
+          (unSourceBuffer (toSourceBuffer self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"videoTracks\"]"
         ghcjs_dom_source_buffer_get_video_tracks ::
@@ -144,11 +158,13 @@ foreign import javascript unsafe "$1[\"videoTracks\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.videoTracks Mozilla SourceBuffer.videoTracks documentation> 
 sourceBufferGetVideoTracks ::
-                           (IsSourceBuffer self) => self -> IO (Maybe VideoTrackList)
+                           (MonadIO m, IsSourceBuffer self) =>
+                             self -> m (Maybe VideoTrackList)
 sourceBufferGetVideoTracks self
-  = (ghcjs_dom_source_buffer_get_video_tracks
-       (unSourceBuffer (toSourceBuffer self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_source_buffer_get_video_tracks
+          (unSourceBuffer (toSourceBuffer self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"textTracks\"]"
         ghcjs_dom_source_buffer_get_text_tracks ::
@@ -156,11 +172,12 @@ foreign import javascript unsafe "$1[\"textTracks\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.textTracks Mozilla SourceBuffer.textTracks documentation> 
 sourceBufferGetTextTracks ::
-                          (IsSourceBuffer self) => self -> IO (Maybe TextTrackList)
+                          (MonadIO m, IsSourceBuffer self) => self -> m (Maybe TextTrackList)
 sourceBufferGetTextTracks self
-  = (ghcjs_dom_source_buffer_get_text_tracks
-       (unSourceBuffer (toSourceBuffer self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_source_buffer_get_text_tracks
+          (unSourceBuffer (toSourceBuffer self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SourceBuffer (
   ) where

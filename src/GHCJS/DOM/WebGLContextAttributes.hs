@@ -34,6 +34,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -48,11 +49,12 @@ foreign import javascript unsafe "$1[\"alpha\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.alpha Mozilla WebGLContextAttributes.alpha documentation> 
 webGLContextAttributesSetAlpha ::
-                               (IsWebGLContextAttributes self) => self -> Bool -> IO ()
+                               (MonadIO m, IsWebGLContextAttributes self) => self -> Bool -> m ()
 webGLContextAttributesSetAlpha self val
-  = ghcjs_dom_web_gl_context_attributes_set_alpha
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
-      val
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_set_alpha
+         (unWebGLContextAttributes (toWebGLContextAttributes self))
+         val)
  
 foreign import javascript unsafe "($1[\"alpha\"] ? 1 : 0)"
         ghcjs_dom_web_gl_context_attributes_get_alpha ::
@@ -60,10 +62,11 @@ foreign import javascript unsafe "($1[\"alpha\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.alpha Mozilla WebGLContextAttributes.alpha documentation> 
 webGLContextAttributesGetAlpha ::
-                               (IsWebGLContextAttributes self) => self -> IO Bool
+                               (MonadIO m, IsWebGLContextAttributes self) => self -> m Bool
 webGLContextAttributesGetAlpha self
-  = ghcjs_dom_web_gl_context_attributes_get_alpha
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_get_alpha
+         (unWebGLContextAttributes (toWebGLContextAttributes self)))
  
 foreign import javascript unsafe "$1[\"depth\"] = $2;"
         ghcjs_dom_web_gl_context_attributes_set_depth ::
@@ -71,11 +74,12 @@ foreign import javascript unsafe "$1[\"depth\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.depth Mozilla WebGLContextAttributes.depth documentation> 
 webGLContextAttributesSetDepth ::
-                               (IsWebGLContextAttributes self) => self -> Bool -> IO ()
+                               (MonadIO m, IsWebGLContextAttributes self) => self -> Bool -> m ()
 webGLContextAttributesSetDepth self val
-  = ghcjs_dom_web_gl_context_attributes_set_depth
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
-      val
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_set_depth
+         (unWebGLContextAttributes (toWebGLContextAttributes self))
+         val)
  
 foreign import javascript unsafe "($1[\"depth\"] ? 1 : 0)"
         ghcjs_dom_web_gl_context_attributes_get_depth ::
@@ -83,10 +87,11 @@ foreign import javascript unsafe "($1[\"depth\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.depth Mozilla WebGLContextAttributes.depth documentation> 
 webGLContextAttributesGetDepth ::
-                               (IsWebGLContextAttributes self) => self -> IO Bool
+                               (MonadIO m, IsWebGLContextAttributes self) => self -> m Bool
 webGLContextAttributesGetDepth self
-  = ghcjs_dom_web_gl_context_attributes_get_depth
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_get_depth
+         (unWebGLContextAttributes (toWebGLContextAttributes self)))
  
 foreign import javascript unsafe "$1[\"stencil\"] = $2;"
         ghcjs_dom_web_gl_context_attributes_set_stencil ::
@@ -94,11 +99,12 @@ foreign import javascript unsafe "$1[\"stencil\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.stencil Mozilla WebGLContextAttributes.stencil documentation> 
 webGLContextAttributesSetStencil ::
-                                 (IsWebGLContextAttributes self) => self -> Bool -> IO ()
+                                 (MonadIO m, IsWebGLContextAttributes self) => self -> Bool -> m ()
 webGLContextAttributesSetStencil self val
-  = ghcjs_dom_web_gl_context_attributes_set_stencil
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
-      val
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_set_stencil
+         (unWebGLContextAttributes (toWebGLContextAttributes self))
+         val)
  
 foreign import javascript unsafe "($1[\"stencil\"] ? 1 : 0)"
         ghcjs_dom_web_gl_context_attributes_get_stencil ::
@@ -106,10 +112,11 @@ foreign import javascript unsafe "($1[\"stencil\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.stencil Mozilla WebGLContextAttributes.stencil documentation> 
 webGLContextAttributesGetStencil ::
-                                 (IsWebGLContextAttributes self) => self -> IO Bool
+                                 (MonadIO m, IsWebGLContextAttributes self) => self -> m Bool
 webGLContextAttributesGetStencil self
-  = ghcjs_dom_web_gl_context_attributes_get_stencil
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_get_stencil
+         (unWebGLContextAttributes (toWebGLContextAttributes self)))
  
 foreign import javascript unsafe "$1[\"antialias\"] = $2;"
         ghcjs_dom_web_gl_context_attributes_set_antialias ::
@@ -117,11 +124,13 @@ foreign import javascript unsafe "$1[\"antialias\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.antialias Mozilla WebGLContextAttributes.antialias documentation> 
 webGLContextAttributesSetAntialias ::
-                                   (IsWebGLContextAttributes self) => self -> Bool -> IO ()
+                                   (MonadIO m, IsWebGLContextAttributes self) =>
+                                     self -> Bool -> m ()
 webGLContextAttributesSetAntialias self val
-  = ghcjs_dom_web_gl_context_attributes_set_antialias
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
-      val
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_set_antialias
+         (unWebGLContextAttributes (toWebGLContextAttributes self))
+         val)
  
 foreign import javascript unsafe "($1[\"antialias\"] ? 1 : 0)"
         ghcjs_dom_web_gl_context_attributes_get_antialias ::
@@ -129,10 +138,11 @@ foreign import javascript unsafe "($1[\"antialias\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.antialias Mozilla WebGLContextAttributes.antialias documentation> 
 webGLContextAttributesGetAntialias ::
-                                   (IsWebGLContextAttributes self) => self -> IO Bool
+                                   (MonadIO m, IsWebGLContextAttributes self) => self -> m Bool
 webGLContextAttributesGetAntialias self
-  = ghcjs_dom_web_gl_context_attributes_get_antialias
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_get_antialias
+         (unWebGLContextAttributes (toWebGLContextAttributes self)))
  
 foreign import javascript unsafe "$1[\"premultipliedAlpha\"] = $2;"
         ghcjs_dom_web_gl_context_attributes_set_premultiplied_alpha ::
@@ -140,11 +150,13 @@ foreign import javascript unsafe "$1[\"premultipliedAlpha\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.premultipliedAlpha Mozilla WebGLContextAttributes.premultipliedAlpha documentation> 
 webGLContextAttributesSetPremultipliedAlpha ::
-                                            (IsWebGLContextAttributes self) => self -> Bool -> IO ()
+                                            (MonadIO m, IsWebGLContextAttributes self) =>
+                                              self -> Bool -> m ()
 webGLContextAttributesSetPremultipliedAlpha self val
-  = ghcjs_dom_web_gl_context_attributes_set_premultiplied_alpha
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
-      val
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_set_premultiplied_alpha
+         (unWebGLContextAttributes (toWebGLContextAttributes self))
+         val)
  
 foreign import javascript unsafe
         "($1[\"premultipliedAlpha\"] ? 1 : 0)"
@@ -153,10 +165,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.premultipliedAlpha Mozilla WebGLContextAttributes.premultipliedAlpha documentation> 
 webGLContextAttributesGetPremultipliedAlpha ::
-                                            (IsWebGLContextAttributes self) => self -> IO Bool
+                                            (MonadIO m, IsWebGLContextAttributes self) =>
+                                              self -> m Bool
 webGLContextAttributesGetPremultipliedAlpha self
-  = ghcjs_dom_web_gl_context_attributes_get_premultiplied_alpha
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_get_premultiplied_alpha
+         (unWebGLContextAttributes (toWebGLContextAttributes self)))
  
 foreign import javascript unsafe
         "$1[\"preserveDrawingBuffer\"] = $2;"
@@ -165,12 +179,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.preserveDrawingBuffer Mozilla WebGLContextAttributes.preserveDrawingBuffer documentation> 
 webGLContextAttributesSetPreserveDrawingBuffer ::
-                                               (IsWebGLContextAttributes self) =>
-                                                 self -> Bool -> IO ()
+                                               (MonadIO m, IsWebGLContextAttributes self) =>
+                                                 self -> Bool -> m ()
 webGLContextAttributesSetPreserveDrawingBuffer self val
-  = ghcjs_dom_web_gl_context_attributes_set_preserve_drawing_buffer
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
-      val
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_set_preserve_drawing_buffer
+         (unWebGLContextAttributes (toWebGLContextAttributes self))
+         val)
  
 foreign import javascript unsafe
         "($1[\"preserveDrawingBuffer\"] ? 1 : 0)"
@@ -179,10 +194,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes.preserveDrawingBuffer Mozilla WebGLContextAttributes.preserveDrawingBuffer documentation> 
 webGLContextAttributesGetPreserveDrawingBuffer ::
-                                               (IsWebGLContextAttributes self) => self -> IO Bool
+                                               (MonadIO m, IsWebGLContextAttributes self) =>
+                                                 self -> m Bool
 webGLContextAttributesGetPreserveDrawingBuffer self
-  = ghcjs_dom_web_gl_context_attributes_get_preserve_drawing_buffer
-      (unWebGLContextAttributes (toWebGLContextAttributes self))
+  = liftIO
+      (ghcjs_dom_web_gl_context_attributes_get_preserve_drawing_buffer
+         (unWebGLContextAttributes (toWebGLContextAttributes self)))
 #else
 module GHCJS.DOM.WebGLContextAttributes (
   ) where

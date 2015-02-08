@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,10 +28,12 @@ foreign import javascript unsafe "$1[\"code\"]"
         ghcjs_dom_position_error_get_code :: JSRef PositionError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.code Mozilla PositionError.code documentation> 
-positionErrorGetCode :: (IsPositionError self) => self -> IO Word
+positionErrorGetCode ::
+                     (MonadIO m, IsPositionError self) => self -> m Word
 positionErrorGetCode self
-  = ghcjs_dom_position_error_get_code
-      (unPositionError (toPositionError self))
+  = liftIO
+      (ghcjs_dom_position_error_get_code
+         (unPositionError (toPositionError self)))
  
 foreign import javascript unsafe "$1[\"message\"]"
         ghcjs_dom_position_error_get_message ::
@@ -38,11 +41,13 @@ foreign import javascript unsafe "$1[\"message\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.message Mozilla PositionError.message documentation> 
 positionErrorGetMessage ::
-                        (IsPositionError self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsPositionError self, FromJSString result) =>
+                          self -> m result
 positionErrorGetMessage self
-  = fromJSString <$>
-      (ghcjs_dom_position_error_get_message
-         (unPositionError (toPositionError self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_position_error_get_message
+            (unPositionError (toPositionError self))))
 #else
 module GHCJS.DOM.PositionError (
   ) where

@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"points\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement.points Mozilla SVGPolylineElement.points documentation> 
 svgPolylineElementGetPoints ::
-                            (IsSVGPolylineElement self) => self -> IO (Maybe SVGPointList)
+                            (MonadIO m, IsSVGPolylineElement self) =>
+                              self -> m (Maybe SVGPointList)
 svgPolylineElementGetPoints self
-  = (ghcjs_dom_svg_polyline_element_get_points
-       (unSVGPolylineElement (toSVGPolylineElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_polyline_element_get_points
+          (unSVGPolylineElement (toSVGPolylineElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"animatedPoints\"]"
         ghcjs_dom_svg_polyline_element_get_animated_points ::
@@ -39,11 +42,13 @@ foreign import javascript unsafe "$1[\"animatedPoints\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement.animatedPoints Mozilla SVGPolylineElement.animatedPoints documentation> 
 svgPolylineElementGetAnimatedPoints ::
-                                    (IsSVGPolylineElement self) => self -> IO (Maybe SVGPointList)
+                                    (MonadIO m, IsSVGPolylineElement self) =>
+                                      self -> m (Maybe SVGPointList)
 svgPolylineElementGetAnimatedPoints self
-  = (ghcjs_dom_svg_polyline_element_get_animated_points
-       (unSVGPolylineElement (toSVGPolylineElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_polyline_element_get_animated_points
+          (unSVGPolylineElement (toSVGPolylineElement self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGPolylineElement (
   ) where

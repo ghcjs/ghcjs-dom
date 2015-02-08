@@ -14,6 +14,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,11 +29,13 @@ foreign import javascript unsafe "$1[\"cite\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.cite Mozilla HTMLModElement.cite documentation> 
 htmlModElementSetCite ::
-                      (IsHTMLModElement self, ToJSString val) => self -> val -> IO ()
+                      (MonadIO m, IsHTMLModElement self, ToJSString val) =>
+                        self -> val -> m ()
 htmlModElementSetCite self val
-  = ghcjs_dom_html_mod_element_set_cite
-      (unHTMLModElement (toHTMLModElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_mod_element_set_cite
+         (unHTMLModElement (toHTMLModElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"cite\"]"
         ghcjs_dom_html_mod_element_get_cite ::
@@ -40,11 +43,13 @@ foreign import javascript unsafe "$1[\"cite\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.cite Mozilla HTMLModElement.cite documentation> 
 htmlModElementGetCite ::
-                      (IsHTMLModElement self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsHTMLModElement self, FromJSString result) =>
+                        self -> m result
 htmlModElementGetCite self
-  = fromJSString <$>
-      (ghcjs_dom_html_mod_element_get_cite
-         (unHTMLModElement (toHTMLModElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_mod_element_get_cite
+            (unHTMLModElement (toHTMLModElement self))))
  
 foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
         ghcjs_dom_html_mod_element_set_date_time ::
@@ -52,11 +57,13 @@ foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.dateTime Mozilla HTMLModElement.dateTime documentation> 
 htmlModElementSetDateTime ::
-                          (IsHTMLModElement self, ToJSString val) => self -> val -> IO ()
+                          (MonadIO m, IsHTMLModElement self, ToJSString val) =>
+                            self -> val -> m ()
 htmlModElementSetDateTime self val
-  = ghcjs_dom_html_mod_element_set_date_time
-      (unHTMLModElement (toHTMLModElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_mod_element_set_date_time
+         (unHTMLModElement (toHTMLModElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"dateTime\"]"
         ghcjs_dom_html_mod_element_get_date_time ::
@@ -64,11 +71,13 @@ foreign import javascript unsafe "$1[\"dateTime\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.dateTime Mozilla HTMLModElement.dateTime documentation> 
 htmlModElementGetDateTime ::
-                          (IsHTMLModElement self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsHTMLModElement self, FromJSString result) =>
+                            self -> m result
 htmlModElementGetDateTime self
-  = fromJSString <$>
-      (ghcjs_dom_html_mod_element_get_date_time
-         (unHTMLModElement (toHTMLModElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_mod_element_get_date_time
+            (unHTMLModElement (toHTMLModElement self))))
 #else
 module GHCJS.DOM.HTMLModElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLModElement

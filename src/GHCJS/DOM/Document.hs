@@ -127,6 +127,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -139,8 +140,9 @@ foreign import javascript unsafe "new window[\"Document\"]()"
         ghcjs_dom_document_new :: IO (JSRef Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document Mozilla Document documentation> 
-documentNew :: IO Document
-documentNew = ghcjs_dom_document_new >>= fromJSRefUnchecked
+documentNew :: (MonadIO m) => m Document
+documentNew
+  = liftIO (ghcjs_dom_document_new >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"createElement\"]($2)"
         ghcjs_dom_document_create_element ::
@@ -148,12 +150,13 @@ foreign import javascript unsafe "$1[\"createElement\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElement Mozilla Document.createElement documentation> 
 documentCreateElement ::
-                      (IsDocument self, ToJSString tagName) =>
-                        self -> tagName -> IO (Maybe Element)
+                      (MonadIO m, IsDocument self, ToJSString tagName) =>
+                        self -> tagName -> m (Maybe Element)
 documentCreateElement self tagName
-  = (ghcjs_dom_document_create_element (unDocument (toDocument self))
-       (toJSString tagName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_element (unDocument (toDocument self))
+          (toJSString tagName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createDocumentFragment\"]()"
         ghcjs_dom_document_create_document_fragment ::
@@ -161,11 +164,12 @@ foreign import javascript unsafe "$1[\"createDocumentFragment\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createDocumentFragment Mozilla Document.createDocumentFragment documentation> 
 documentCreateDocumentFragment ::
-                               (IsDocument self) => self -> IO (Maybe DocumentFragment)
+                               (MonadIO m, IsDocument self) => self -> m (Maybe DocumentFragment)
 documentCreateDocumentFragment self
-  = (ghcjs_dom_document_create_document_fragment
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_document_fragment
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createTextNode\"]($2)"
         ghcjs_dom_document_create_text_node ::
@@ -173,13 +177,14 @@ foreign import javascript unsafe "$1[\"createTextNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTextNode Mozilla Document.createTextNode documentation> 
 documentCreateTextNode ::
-                       (IsDocument self, ToJSString data') =>
-                         self -> data' -> IO (Maybe Text)
+                       (MonadIO m, IsDocument self, ToJSString data') =>
+                         self -> data' -> m (Maybe Text)
 documentCreateTextNode self data'
-  = (ghcjs_dom_document_create_text_node
-       (unDocument (toDocument self))
-       (toJSString data'))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_text_node
+          (unDocument (toDocument self))
+          (toJSString data'))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createComment\"]($2)"
         ghcjs_dom_document_create_comment ::
@@ -187,12 +192,13 @@ foreign import javascript unsafe "$1[\"createComment\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createComment Mozilla Document.createComment documentation> 
 documentCreateComment ::
-                      (IsDocument self, ToJSString data') =>
-                        self -> data' -> IO (Maybe Comment)
+                      (MonadIO m, IsDocument self, ToJSString data') =>
+                        self -> data' -> m (Maybe Comment)
 documentCreateComment self data'
-  = (ghcjs_dom_document_create_comment (unDocument (toDocument self))
-       (toJSString data'))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_comment (unDocument (toDocument self))
+          (toJSString data'))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createCDATASection\"]($2)"
         ghcjs_dom_document_create_cdata_section ::
@@ -200,13 +206,14 @@ foreign import javascript unsafe "$1[\"createCDATASection\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createCDATASection Mozilla Document.createCDATASection documentation> 
 documentCreateCDATASection ::
-                           (IsDocument self, ToJSString data') =>
-                             self -> data' -> IO (Maybe CDATASection)
+                           (MonadIO m, IsDocument self, ToJSString data') =>
+                             self -> data' -> m (Maybe CDATASection)
 documentCreateCDATASection self data'
-  = (ghcjs_dom_document_create_cdata_section
-       (unDocument (toDocument self))
-       (toJSString data'))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_cdata_section
+          (unDocument (toDocument self))
+          (toJSString data'))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createProcessingInstruction\"]($2,\n$3)"
@@ -216,14 +223,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createProcessingInstruction Mozilla Document.createProcessingInstruction documentation> 
 documentCreateProcessingInstruction ::
-                                    (IsDocument self, ToJSString target, ToJSString data') =>
-                                      self -> target -> data' -> IO (Maybe ProcessingInstruction)
+                                    (MonadIO m, IsDocument self, ToJSString target,
+                                     ToJSString data') =>
+                                      self -> target -> data' -> m (Maybe ProcessingInstruction)
 documentCreateProcessingInstruction self target data'
-  = (ghcjs_dom_document_create_processing_instruction
-       (unDocument (toDocument self))
-       (toJSString target)
-       (toJSString data'))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_processing_instruction
+          (unDocument (toDocument self))
+          (toJSString target)
+          (toJSString data'))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createAttribute\"]($2)"
         ghcjs_dom_document_create_attribute ::
@@ -231,13 +240,14 @@ foreign import javascript unsafe "$1[\"createAttribute\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttribute Mozilla Document.createAttribute documentation> 
 documentCreateAttribute ::
-                        (IsDocument self, ToJSString name) =>
-                          self -> name -> IO (Maybe DOMAttr)
+                        (MonadIO m, IsDocument self, ToJSString name) =>
+                          self -> name -> m (Maybe DOMAttr)
 documentCreateAttribute self name
-  = (ghcjs_dom_document_create_attribute
-       (unDocument (toDocument self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_attribute
+          (unDocument (toDocument self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createEntityReference\"]($2)"
@@ -246,13 +256,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEntityReference Mozilla Document.createEntityReference documentation> 
 documentCreateEntityReference ::
-                              (IsDocument self, ToJSString name) =>
-                                self -> name -> IO (Maybe EntityReference)
+                              (MonadIO m, IsDocument self, ToJSString name) =>
+                                self -> name -> m (Maybe EntityReference)
 documentCreateEntityReference self name
-  = (ghcjs_dom_document_create_entity_reference
-       (unDocument (toDocument self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_entity_reference
+          (unDocument (toDocument self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
         ghcjs_dom_document_get_elements_by_tag_name ::
@@ -260,13 +271,14 @@ foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementsByTagName Mozilla Document.elementsByTagName documentation> 
 documentGetElementsByTagName ::
-                             (IsDocument self, ToJSString tagname) =>
-                               self -> tagname -> IO (Maybe NodeList)
+                             (MonadIO m, IsDocument self, ToJSString tagname) =>
+                               self -> tagname -> m (Maybe NodeList)
 documentGetElementsByTagName self tagname
-  = (ghcjs_dom_document_get_elements_by_tag_name
-       (unDocument (toDocument self))
-       (toJSString tagname))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_elements_by_tag_name
+          (unDocument (toDocument self))
+          (toJSString tagname))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"importNode\"]($2, $3)"
         ghcjs_dom_document_import_node ::
@@ -274,13 +286,14 @@ foreign import javascript unsafe "$1[\"importNode\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.importNode Mozilla Document.importNode documentation> 
 documentImportNode ::
-                   (IsDocument self, IsNode importedNode) =>
-                     self -> Maybe importedNode -> Bool -> IO (Maybe Node)
+                   (MonadIO m, IsDocument self, IsNode importedNode) =>
+                     self -> Maybe importedNode -> Bool -> m (Maybe Node)
 documentImportNode self importedNode deep
-  = (ghcjs_dom_document_import_node (unDocument (toDocument self))
-       (maybe jsNull (unNode . toNode) importedNode)
-       deep)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_import_node (unDocument (toDocument self))
+          (maybe jsNull (unNode . toNode) importedNode)
+          deep)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createElementNS\"]($2, $3)"
         ghcjs_dom_document_create_element_ns ::
@@ -288,15 +301,16 @@ foreign import javascript unsafe "$1[\"createElementNS\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElementNS Mozilla Document.createElementNS documentation> 
 documentCreateElementNS ::
-                        (IsDocument self, ToJSString namespaceURI,
+                        (MonadIO m, IsDocument self, ToJSString namespaceURI,
                          ToJSString qualifiedName) =>
-                          self -> namespaceURI -> qualifiedName -> IO (Maybe Element)
+                          self -> namespaceURI -> qualifiedName -> m (Maybe Element)
 documentCreateElementNS self namespaceURI qualifiedName
-  = (ghcjs_dom_document_create_element_ns
-       (unDocument (toDocument self))
-       (toJSString namespaceURI)
-       (toJSString qualifiedName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_element_ns
+          (unDocument (toDocument self))
+          (toJSString namespaceURI)
+          (toJSString qualifiedName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createAttributeNS\"]($2, $3)"
@@ -305,15 +319,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttributeNS Mozilla Document.createAttributeNS documentation> 
 documentCreateAttributeNS ::
-                          (IsDocument self, ToJSString namespaceURI,
+                          (MonadIO m, IsDocument self, ToJSString namespaceURI,
                            ToJSString qualifiedName) =>
-                            self -> namespaceURI -> qualifiedName -> IO (Maybe DOMAttr)
+                            self -> namespaceURI -> qualifiedName -> m (Maybe DOMAttr)
 documentCreateAttributeNS self namespaceURI qualifiedName
-  = (ghcjs_dom_document_create_attribute_ns
-       (unDocument (toDocument self))
-       (toJSString namespaceURI)
-       (toJSString qualifiedName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_attribute_ns
+          (unDocument (toDocument self))
+          (toJSString namespaceURI)
+          (toJSString qualifiedName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"getElementsByTagNameNS\"]($2,\n$3)"
@@ -322,14 +337,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementsByTagNameNS Mozilla Document.elementsByTagNameNS documentation> 
 documentGetElementsByTagNameNS ::
-                               (IsDocument self, ToJSString namespaceURI, ToJSString localName) =>
-                                 self -> namespaceURI -> localName -> IO (Maybe NodeList)
+                               (MonadIO m, IsDocument self, ToJSString namespaceURI,
+                                ToJSString localName) =>
+                                 self -> namespaceURI -> localName -> m (Maybe NodeList)
 documentGetElementsByTagNameNS self namespaceURI localName
-  = (ghcjs_dom_document_get_elements_by_tag_name_ns
-       (unDocument (toDocument self))
-       (toJSString namespaceURI)
-       (toJSString localName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_elements_by_tag_name_ns
+          (unDocument (toDocument self))
+          (toJSString namespaceURI)
+          (toJSString localName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getElementById\"]($2)"
         ghcjs_dom_document_get_element_by_id ::
@@ -337,13 +354,14 @@ foreign import javascript unsafe "$1[\"getElementById\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementById Mozilla Document.elementById documentation> 
 documentGetElementById ::
-                       (IsDocument self, ToJSString elementId) =>
-                         self -> elementId -> IO (Maybe Element)
+                       (MonadIO m, IsDocument self, ToJSString elementId) =>
+                         self -> elementId -> m (Maybe Element)
 documentGetElementById self elementId
-  = (ghcjs_dom_document_get_element_by_id
-       (unDocument (toDocument self))
-       (toJSString elementId))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_element_by_id
+          (unDocument (toDocument self))
+          (toJSString elementId))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"adoptNode\"]($2)"
         ghcjs_dom_document_adopt_node ::
@@ -351,12 +369,13 @@ foreign import javascript unsafe "$1[\"adoptNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.adoptNode Mozilla Document.adoptNode documentation> 
 documentAdoptNode ::
-                  (IsDocument self, IsNode source) =>
-                    self -> Maybe source -> IO (Maybe Node)
+                  (MonadIO m, IsDocument self, IsNode source) =>
+                    self -> Maybe source -> m (Maybe Node)
 documentAdoptNode self source
-  = (ghcjs_dom_document_adopt_node (unDocument (toDocument self))
-       (maybe jsNull (unNode . toNode) source))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_adopt_node (unDocument (toDocument self))
+          (maybe jsNull (unNode . toNode) source))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createEvent\"]($2)"
         ghcjs_dom_document_create_event ::
@@ -364,12 +383,13 @@ foreign import javascript unsafe "$1[\"createEvent\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEvent Mozilla Document.createEvent documentation> 
 documentCreateEvent ::
-                    (IsDocument self, ToJSString eventType) =>
-                      self -> eventType -> IO (Maybe Event)
+                    (MonadIO m, IsDocument self, ToJSString eventType) =>
+                      self -> eventType -> m (Maybe Event)
 documentCreateEvent self eventType
-  = (ghcjs_dom_document_create_event (unDocument (toDocument self))
-       (toJSString eventType))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_event (unDocument (toDocument self))
+          (toJSString eventType))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createRange\"]()"
         ghcjs_dom_document_create_range ::
@@ -377,10 +397,11 @@ foreign import javascript unsafe "$1[\"createRange\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createRange Mozilla Document.createRange documentation> 
 documentCreateRange ::
-                    (IsDocument self) => self -> IO (Maybe DOMRange)
+                    (MonadIO m, IsDocument self) => self -> m (Maybe DOMRange)
 documentCreateRange self
-  = (ghcjs_dom_document_create_range (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_range (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createNodeIterator\"]($2, $3,\n$4, $5)"
@@ -391,19 +412,20 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNodeIterator Mozilla Document.createNodeIterator documentation> 
 documentCreateNodeIterator ::
-                           (IsDocument self, IsNode root, IsNodeFilter filter) =>
+                           (MonadIO m, IsDocument self, IsNode root, IsNodeFilter filter) =>
                              self ->
                                Maybe root ->
-                                 Word -> Maybe filter -> Bool -> IO (Maybe NodeIterator)
+                                 Word -> Maybe filter -> Bool -> m (Maybe NodeIterator)
 documentCreateNodeIterator self root whatToShow filter
   expandEntityReferences
-  = (ghcjs_dom_document_create_node_iterator
-       (unDocument (toDocument self))
-       (maybe jsNull (unNode . toNode) root)
-       whatToShow
-       (maybe jsNull (unNodeFilter . toNodeFilter) filter)
-       expandEntityReferences)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_node_iterator
+          (unDocument (toDocument self))
+          (maybe jsNull (unNode . toNode) root)
+          whatToShow
+          (maybe jsNull (unNodeFilter . toNodeFilter) filter)
+          expandEntityReferences)
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createTreeWalker\"]($2, $3,\n$4, $5)"
@@ -414,18 +436,19 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTreeWalker Mozilla Document.createTreeWalker documentation> 
 documentCreateTreeWalker ::
-                         (IsDocument self, IsNode root, IsNodeFilter filter) =>
+                         (MonadIO m, IsDocument self, IsNode root, IsNodeFilter filter) =>
                            self ->
-                             Maybe root -> Word -> Maybe filter -> Bool -> IO (Maybe TreeWalker)
+                             Maybe root -> Word -> Maybe filter -> Bool -> m (Maybe TreeWalker)
 documentCreateTreeWalker self root whatToShow filter
   expandEntityReferences
-  = (ghcjs_dom_document_create_tree_walker
-       (unDocument (toDocument self))
-       (maybe jsNull (unNode . toNode) root)
-       whatToShow
-       (maybe jsNull (unNodeFilter . toNodeFilter) filter)
-       expandEntityReferences)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_tree_walker
+          (unDocument (toDocument self))
+          (maybe jsNull (unNode . toNode) root)
+          whatToShow
+          (maybe jsNull (unNodeFilter . toNodeFilter) filter)
+          expandEntityReferences)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getOverrideStyle\"]($2, $3)"
         ghcjs_dom_document_get_override_style ::
@@ -434,15 +457,17 @@ foreign import javascript unsafe "$1[\"getOverrideStyle\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.overrideStyle Mozilla Document.overrideStyle documentation> 
 documentGetOverrideStyle ::
-                         (IsDocument self, IsElement element, ToJSString pseudoElement) =>
+                         (MonadIO m, IsDocument self, IsElement element,
+                          ToJSString pseudoElement) =>
                            self ->
-                             Maybe element -> pseudoElement -> IO (Maybe CSSStyleDeclaration)
+                             Maybe element -> pseudoElement -> m (Maybe CSSStyleDeclaration)
 documentGetOverrideStyle self element pseudoElement
-  = (ghcjs_dom_document_get_override_style
-       (unDocument (toDocument self))
-       (maybe jsNull (unElement . toElement) element)
-       (toJSString pseudoElement))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_override_style
+          (unDocument (toDocument self))
+          (maybe jsNull (unElement . toElement) element)
+          (toJSString pseudoElement))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
         ghcjs_dom_document_create_expression ::
@@ -451,15 +476,16 @@ foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createExpression Mozilla Document.createExpression documentation> 
 documentCreateExpression ::
-                         (IsDocument self, ToJSString expression,
+                         (MonadIO m, IsDocument self, ToJSString expression,
                           IsXPathNSResolver resolver) =>
-                           self -> expression -> Maybe resolver -> IO (Maybe XPathExpression)
+                           self -> expression -> Maybe resolver -> m (Maybe XPathExpression)
 documentCreateExpression self expression resolver
-  = (ghcjs_dom_document_create_expression
-       (unDocument (toDocument self))
-       (toJSString expression)
-       (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_expression
+          (unDocument (toDocument self))
+          (toJSString expression)
+          (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
         ghcjs_dom_document_create_ns_resolver ::
@@ -467,13 +493,14 @@ foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNSResolver Mozilla Document.createNSResolver documentation> 
 documentCreateNSResolver ::
-                         (IsDocument self, IsNode nodeResolver) =>
-                           self -> Maybe nodeResolver -> IO (Maybe XPathNSResolver)
+                         (MonadIO m, IsDocument self, IsNode nodeResolver) =>
+                           self -> Maybe nodeResolver -> m (Maybe XPathNSResolver)
 documentCreateNSResolver self nodeResolver
-  = (ghcjs_dom_document_create_ns_resolver
-       (unDocument (toDocument self))
-       (maybe jsNull (unNode . toNode) nodeResolver))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_ns_resolver
+          (unDocument (toDocument self))
+          (maybe jsNull (unNode . toNode) nodeResolver))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" ghcjs_dom_document_evaluate
@@ -486,21 +513,23 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.evaluate Mozilla Document.evaluate documentation> 
 documentEvaluate ::
-                 (IsDocument self, ToJSString expression, IsNode contextNode,
-                  IsXPathNSResolver resolver, IsXPathResult inResult) =>
+                 (MonadIO m, IsDocument self, ToJSString expression,
+                  IsNode contextNode, IsXPathNSResolver resolver,
+                  IsXPathResult inResult) =>
                    self ->
                      expression ->
                        Maybe contextNode ->
-                         Maybe resolver -> Word -> Maybe inResult -> IO (Maybe XPathResult)
+                         Maybe resolver -> Word -> Maybe inResult -> m (Maybe XPathResult)
 documentEvaluate self expression contextNode resolver type'
   inResult
-  = (ghcjs_dom_document_evaluate (unDocument (toDocument self))
-       (toJSString expression)
-       (maybe jsNull (unNode . toNode) contextNode)
-       (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver)
-       type'
-       (maybe jsNull (unXPathResult . toXPathResult) inResult))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_evaluate (unDocument (toDocument self))
+          (toJSString expression)
+          (maybe jsNull (unNode . toNode) contextNode)
+          (maybe jsNull (unXPathNSResolver . toXPathNSResolver) resolver)
+          type'
+          (maybe jsNull (unXPathResult . toXPathResult) inResult))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"execCommand\"]($2, $3,\n$4) ? 1 : 0)"
@@ -509,13 +538,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.execCommand Mozilla Document.execCommand documentation> 
 documentExecCommand ::
-                    (IsDocument self, ToJSString command, ToJSString value) =>
-                      self -> command -> Bool -> value -> IO Bool
+                    (MonadIO m, IsDocument self, ToJSString command,
+                     ToJSString value) =>
+                      self -> command -> Bool -> value -> m Bool
 documentExecCommand self command userInterface value
-  = ghcjs_dom_document_exec_command (unDocument (toDocument self))
-      (toJSString command)
-      userInterface
-      (toJSString value)
+  = liftIO
+      (ghcjs_dom_document_exec_command (unDocument (toDocument self))
+         (toJSString command)
+         userInterface
+         (toJSString value))
  
 foreign import javascript unsafe
         "($1[\"queryCommandEnabled\"]($2) ? 1 : 0)"
@@ -524,11 +555,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandEnabled Mozilla Document.queryCommandEnabled documentation> 
 documentQueryCommandEnabled ::
-                            (IsDocument self, ToJSString command) => self -> command -> IO Bool
+                            (MonadIO m, IsDocument self, ToJSString command) =>
+                              self -> command -> m Bool
 documentQueryCommandEnabled self command
-  = ghcjs_dom_document_query_command_enabled
-      (unDocument (toDocument self))
-      (toJSString command)
+  = liftIO
+      (ghcjs_dom_document_query_command_enabled
+         (unDocument (toDocument self))
+         (toJSString command))
  
 foreign import javascript unsafe
         "($1[\"queryCommandIndeterm\"]($2) ? 1 : 0)"
@@ -537,11 +570,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandIndeterm Mozilla Document.queryCommandIndeterm documentation> 
 documentQueryCommandIndeterm ::
-                             (IsDocument self, ToJSString command) => self -> command -> IO Bool
+                             (MonadIO m, IsDocument self, ToJSString command) =>
+                               self -> command -> m Bool
 documentQueryCommandIndeterm self command
-  = ghcjs_dom_document_query_command_indeterm
-      (unDocument (toDocument self))
-      (toJSString command)
+  = liftIO
+      (ghcjs_dom_document_query_command_indeterm
+         (unDocument (toDocument self))
+         (toJSString command))
  
 foreign import javascript unsafe
         "($1[\"queryCommandState\"]($2) ? 1 : 0)"
@@ -550,11 +585,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandState Mozilla Document.queryCommandState documentation> 
 documentQueryCommandState ::
-                          (IsDocument self, ToJSString command) => self -> command -> IO Bool
+                          (MonadIO m, IsDocument self, ToJSString command) =>
+                            self -> command -> m Bool
 documentQueryCommandState self command
-  = ghcjs_dom_document_query_command_state
-      (unDocument (toDocument self))
-      (toJSString command)
+  = liftIO
+      (ghcjs_dom_document_query_command_state
+         (unDocument (toDocument self))
+         (toJSString command))
  
 foreign import javascript unsafe
         "($1[\"queryCommandSupported\"]($2) ? 1 : 0)"
@@ -563,11 +600,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandSupported Mozilla Document.queryCommandSupported documentation> 
 documentQueryCommandSupported ::
-                              (IsDocument self, ToJSString command) => self -> command -> IO Bool
+                              (MonadIO m, IsDocument self, ToJSString command) =>
+                                self -> command -> m Bool
 documentQueryCommandSupported self command
-  = ghcjs_dom_document_query_command_supported
-      (unDocument (toDocument self))
-      (toJSString command)
+  = liftIO
+      (ghcjs_dom_document_query_command_supported
+         (unDocument (toDocument self))
+         (toJSString command))
  
 foreign import javascript unsafe "$1[\"queryCommandValue\"]($2)"
         ghcjs_dom_document_query_command_value ::
@@ -575,13 +614,15 @@ foreign import javascript unsafe "$1[\"queryCommandValue\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandValue Mozilla Document.queryCommandValue documentation> 
 documentQueryCommandValue ::
-                          (IsDocument self, ToJSString command, FromJSString result) =>
-                            self -> command -> IO result
+                          (MonadIO m, IsDocument self, ToJSString command,
+                           FromJSString result) =>
+                            self -> command -> m result
 documentQueryCommandValue self command
-  = fromJSString <$>
-      (ghcjs_dom_document_query_command_value
-         (unDocument (toDocument self))
-         (toJSString command))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_query_command_value
+            (unDocument (toDocument self))
+            (toJSString command)))
  
 foreign import javascript unsafe "$1[\"getElementsByName\"]($2)"
         ghcjs_dom_document_get_elements_by_name ::
@@ -589,13 +630,14 @@ foreign import javascript unsafe "$1[\"getElementsByName\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementsByName Mozilla Document.elementsByName documentation> 
 documentGetElementsByName ::
-                          (IsDocument self, ToJSString elementName) =>
-                            self -> elementName -> IO (Maybe NodeList)
+                          (MonadIO m, IsDocument self, ToJSString elementName) =>
+                            self -> elementName -> m (Maybe NodeList)
 documentGetElementsByName self elementName
-  = (ghcjs_dom_document_get_elements_by_name
-       (unDocument (toDocument self))
-       (toJSString elementName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_elements_by_name
+          (unDocument (toDocument self))
+          (toJSString elementName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"elementFromPoint\"]($2, $3)"
         ghcjs_dom_document_element_from_point ::
@@ -603,13 +645,15 @@ foreign import javascript unsafe "$1[\"elementFromPoint\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementFromPoint Mozilla Document.elementFromPoint documentation> 
 documentElementFromPoint ::
-                         (IsDocument self) => self -> Int -> Int -> IO (Maybe Element)
+                         (MonadIO m, IsDocument self) =>
+                           self -> Int -> Int -> m (Maybe Element)
 documentElementFromPoint self x y
-  = (ghcjs_dom_document_element_from_point
-       (unDocument (toDocument self))
-       x
-       y)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_element_from_point
+          (unDocument (toDocument self))
+          x
+          y)
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"caretRangeFromPoint\"]($2,\n$3)"
@@ -618,13 +662,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.caretRangeFromPoint Mozilla Document.caretRangeFromPoint documentation> 
 documentCaretRangeFromPoint ::
-                            (IsDocument self) => self -> Int -> Int -> IO (Maybe DOMRange)
+                            (MonadIO m, IsDocument self) =>
+                              self -> Int -> Int -> m (Maybe DOMRange)
 documentCaretRangeFromPoint self x y
-  = (ghcjs_dom_document_caret_range_from_point
-       (unDocument (toDocument self))
-       x
-       y)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_caret_range_from_point
+          (unDocument (toDocument self))
+          x
+          y)
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createCSSStyleDeclaration\"]()"
@@ -633,11 +679,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createCSSStyleDeclaration Mozilla Document.createCSSStyleDeclaration documentation> 
 documentCreateCSSStyleDeclaration ::
-                                  (IsDocument self) => self -> IO (Maybe CSSStyleDeclaration)
+                                  (MonadIO m, IsDocument self) =>
+                                    self -> m (Maybe CSSStyleDeclaration)
 documentCreateCSSStyleDeclaration self
-  = (ghcjs_dom_document_create_css_style_declaration
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_css_style_declaration
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"getCSSCanvasContext\"]($2,\n$3, $4, $5)"
@@ -648,18 +696,19 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cssCanvasContext Mozilla Document.cssCanvasContext documentation> 
 documentGetCSSCanvasContext ::
-                            (IsDocument self, ToJSString contextId, ToJSString name) =>
+                            (MonadIO m, IsDocument self, ToJSString contextId,
+                             ToJSString name) =>
                               self ->
-                                contextId ->
-                                  name -> Int -> Int -> IO (Maybe CanvasRenderingContext)
+                                contextId -> name -> Int -> Int -> m (Maybe CanvasRenderingContext)
 documentGetCSSCanvasContext self contextId name width height
-  = (ghcjs_dom_document_get_css_canvas_context
-       (unDocument (toDocument self))
-       (toJSString contextId)
-       (toJSString name)
-       width
-       height)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_css_canvas_context
+          (unDocument (toDocument self))
+          (toJSString contextId)
+          (toJSString name)
+          width
+          height)
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"getElementsByClassName\"]($2)"
@@ -668,21 +717,23 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementsByClassName Mozilla Document.elementsByClassName documentation> 
 documentGetElementsByClassName ::
-                               (IsDocument self, ToJSString tagname) =>
-                                 self -> tagname -> IO (Maybe NodeList)
+                               (MonadIO m, IsDocument self, ToJSString tagname) =>
+                                 self -> tagname -> m (Maybe NodeList)
 documentGetElementsByClassName self tagname
-  = (ghcjs_dom_document_get_elements_by_class_name
-       (unDocument (toDocument self))
-       (toJSString tagname))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_elements_by_class_name
+          (unDocument (toDocument self))
+          (toJSString tagname))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "($1[\"hasFocus\"]() ? 1 : 0)"
         ghcjs_dom_document_has_focus :: JSRef Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.hasFocus Mozilla Document.hasFocus documentation> 
-documentHasFocus :: (IsDocument self) => self -> IO Bool
+documentHasFocus :: (MonadIO m, IsDocument self) => self -> m Bool
 documentHasFocus self
-  = ghcjs_dom_document_has_focus (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_has_focus (unDocument (toDocument self)))
  
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         ghcjs_dom_document_query_selector ::
@@ -690,12 +741,13 @@ foreign import javascript unsafe "$1[\"querySelector\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelector Mozilla Document.querySelector documentation> 
 documentQuerySelector ::
-                      (IsDocument self, ToJSString selectors) =>
-                        self -> selectors -> IO (Maybe Element)
+                      (MonadIO m, IsDocument self, ToJSString selectors) =>
+                        self -> selectors -> m (Maybe Element)
 documentQuerySelector self selectors
-  = (ghcjs_dom_document_query_selector (unDocument (toDocument self))
-       (toJSString selectors))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_query_selector (unDocument (toDocument self))
+          (toJSString selectors))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         ghcjs_dom_document_query_selector_all ::
@@ -703,13 +755,14 @@ foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelectorAll Mozilla Document.querySelectorAll documentation> 
 documentQuerySelectorAll ::
-                         (IsDocument self, ToJSString selectors) =>
-                           self -> selectors -> IO (Maybe NodeList)
+                         (MonadIO m, IsDocument self, ToJSString selectors) =>
+                           self -> selectors -> m (Maybe NodeList)
 documentQuerySelectorAll self selectors
-  = (ghcjs_dom_document_query_selector_all
-       (unDocument (toDocument self))
-       (toJSString selectors))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_query_selector_all
+          (unDocument (toDocument self))
+          (toJSString selectors))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitCancelFullScreen\"]()"
         ghcjs_dom_document_webkit_cancel_full_screen ::
@@ -717,29 +770,34 @@ foreign import javascript unsafe "$1[\"webkitCancelFullScreen\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitCancelFullScreen Mozilla Document.webkitCancelFullScreen documentation> 
 documentWebkitCancelFullScreen ::
-                               (IsDocument self) => self -> IO ()
+                               (MonadIO m, IsDocument self) => self -> m ()
 documentWebkitCancelFullScreen self
-  = ghcjs_dom_document_webkit_cancel_full_screen
-      (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_webkit_cancel_full_screen
+         (unDocument (toDocument self)))
  
 foreign import javascript unsafe "$1[\"webkitExitFullscreen\"]()"
         ghcjs_dom_document_webkit_exit_fullscreen ::
         JSRef Document -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitExitFullscreen Mozilla Document.webkitExitFullscreen documentation> 
-documentWebkitExitFullscreen :: (IsDocument self) => self -> IO ()
+documentWebkitExitFullscreen ::
+                             (MonadIO m, IsDocument self) => self -> m ()
 documentWebkitExitFullscreen self
-  = ghcjs_dom_document_webkit_exit_fullscreen
-      (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_webkit_exit_fullscreen
+         (unDocument (toDocument self)))
  
 foreign import javascript unsafe "$1[\"exitPointerLock\"]()"
         ghcjs_dom_document_exit_pointer_lock :: JSRef Document -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.exitPointerLock Mozilla Document.exitPointerLock documentation> 
-documentExitPointerLock :: (IsDocument self) => self -> IO ()
+documentExitPointerLock ::
+                        (MonadIO m, IsDocument self) => self -> m ()
 documentExitPointerLock self
-  = ghcjs_dom_document_exit_pointer_lock
-      (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_exit_pointer_lock
+         (unDocument (toDocument self)))
  
 foreign import javascript unsafe "$1[\"webkitGetNamedFlows\"]()"
         ghcjs_dom_document_webkit_get_named_flows ::
@@ -747,11 +805,13 @@ foreign import javascript unsafe "$1[\"webkitGetNamedFlows\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitGetNamedFlows Mozilla Document.webkitGetNamedFlows documentation> 
 documentWebkitGetNamedFlows ::
-                            (IsDocument self) => self -> IO (Maybe DOMNamedFlowCollection)
+                            (MonadIO m, IsDocument self) =>
+                              self -> m (Maybe DOMNamedFlowCollection)
 documentWebkitGetNamedFlows self
-  = (ghcjs_dom_document_webkit_get_named_flows
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_webkit_get_named_flows
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createTouch\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12)"
@@ -766,30 +826,32 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouch Mozilla Document.createTouch documentation> 
 documentCreateTouch ::
-                    (IsDocument self, IsDOMWindow window, IsEventTarget target) =>
+                    (MonadIO m, IsDocument self, IsDOMWindow window,
+                     IsEventTarget target) =>
                       self ->
                         Maybe window ->
                           Maybe target ->
                             Int ->
                               Int ->
                                 Int ->
-                                  Int -> Int -> Int -> Int -> Float -> Float -> IO (Maybe Touch)
+                                  Int -> Int -> Int -> Int -> Float -> Float -> m (Maybe Touch)
 documentCreateTouch self window target identifier pageX pageY
   screenX screenY webkitRadiusX webkitRadiusY webkitRotationAngle
   webkitForce
-  = (ghcjs_dom_document_create_touch (unDocument (toDocument self))
-       (maybe jsNull (unDOMWindow . toDOMWindow) window)
-       (maybe jsNull (unEventTarget . toEventTarget) target)
-       identifier
-       pageX
-       pageY
-       screenX
-       screenY
-       webkitRadiusX
-       webkitRadiusY
-       webkitRotationAngle
-       webkitForce)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_touch (unDocument (toDocument self))
+          (maybe jsNull (unDOMWindow . toDOMWindow) window)
+          (maybe jsNull (unEventTarget . toEventTarget) target)
+          identifier
+          pageX
+          pageY
+          screenX
+          screenY
+          webkitRadiusX
+          webkitRadiusY
+          webkitRotationAngle
+          webkitForce)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createTouchList\"]()"
         ghcjs_dom_document_create_touch_list ::
@@ -797,11 +859,12 @@ foreign import javascript unsafe "$1[\"createTouchList\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouchList Mozilla Document.createTouchList documentation> 
 documentCreateTouchList ::
-                        (IsDocument self) => self -> IO (Maybe TouchList)
+                        (MonadIO m, IsDocument self) => self -> m (Maybe TouchList)
 documentCreateTouchList self
-  = (ghcjs_dom_document_create_touch_list
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_create_touch_list
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"doctype\"]"
         ghcjs_dom_document_get_doctype ::
@@ -809,10 +872,11 @@ foreign import javascript unsafe "$1[\"doctype\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.doctype Mozilla Document.doctype documentation> 
 documentGetDoctype ::
-                   (IsDocument self) => self -> IO (Maybe DocumentType)
+                   (MonadIO m, IsDocument self) => self -> m (Maybe DocumentType)
 documentGetDoctype self
-  = (ghcjs_dom_document_get_doctype (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_doctype (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"implementation\"]"
         ghcjs_dom_document_get_implementation ::
@@ -820,11 +884,12 @@ foreign import javascript unsafe "$1[\"implementation\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.implementation Mozilla Document.implementation documentation> 
 documentGetImplementation ::
-                          (IsDocument self) => self -> IO (Maybe DOMImplementation)
+                          (MonadIO m, IsDocument self) => self -> m (Maybe DOMImplementation)
 documentGetImplementation self
-  = (ghcjs_dom_document_get_implementation
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_implementation
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"documentElement\"]"
         ghcjs_dom_document_get_document_element ::
@@ -832,11 +897,12 @@ foreign import javascript unsafe "$1[\"documentElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentElement Mozilla Document.documentElement documentation> 
 documentGetDocumentElement ::
-                           (IsDocument self) => self -> IO (Maybe Element)
+                           (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 documentGetDocumentElement self
-  = (ghcjs_dom_document_get_document_element
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_document_element
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"inputEncoding\"]"
         ghcjs_dom_document_get_input_encoding ::
@@ -844,11 +910,13 @@ foreign import javascript unsafe "$1[\"inputEncoding\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.inputEncoding Mozilla Document.inputEncoding documentation> 
 documentGetInputEncoding ::
-                         (IsDocument self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsDocument self, FromJSString result) =>
+                           self -> m result
 documentGetInputEncoding self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_input_encoding
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_input_encoding
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"xmlEncoding\"]"
         ghcjs_dom_document_get_xml_encoding ::
@@ -856,11 +924,13 @@ foreign import javascript unsafe "$1[\"xmlEncoding\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlEncoding Mozilla Document.xmlEncoding documentation> 
 documentGetXmlEncoding ::
-                       (IsDocument self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsDocument self, FromJSString result) =>
+                         self -> m result
 documentGetXmlEncoding self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_xml_encoding
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_xml_encoding
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"xmlVersion\"] = $2;"
         ghcjs_dom_document_set_xml_version ::
@@ -868,20 +938,24 @@ foreign import javascript unsafe "$1[\"xmlVersion\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlVersion Mozilla Document.xmlVersion documentation> 
 documentSetXmlVersion ::
-                      (IsDocument self, ToJSString val) => self -> val -> IO ()
+                      (MonadIO m, IsDocument self, ToJSString val) => self -> val -> m ()
 documentSetXmlVersion self val
-  = ghcjs_dom_document_set_xml_version (unDocument (toDocument self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_document_set_xml_version (unDocument (toDocument self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"xmlVersion\"]"
         ghcjs_dom_document_get_xml_version :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlVersion Mozilla Document.xmlVersion documentation> 
 documentGetXmlVersion ::
-                      (IsDocument self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsDocument self, FromJSString result) =>
+                        self -> m result
 documentGetXmlVersion self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_xml_version (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_xml_version
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"xmlStandalone\"] = $2;"
         ghcjs_dom_document_set_xml_standalone ::
@@ -889,20 +963,23 @@ foreign import javascript unsafe "$1[\"xmlStandalone\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlStandalone Mozilla Document.xmlStandalone documentation> 
 documentSetXmlStandalone ::
-                         (IsDocument self) => self -> Bool -> IO ()
+                         (MonadIO m, IsDocument self) => self -> Bool -> m ()
 documentSetXmlStandalone self val
-  = ghcjs_dom_document_set_xml_standalone
-      (unDocument (toDocument self))
-      val
+  = liftIO
+      (ghcjs_dom_document_set_xml_standalone
+         (unDocument (toDocument self))
+         val)
  
 foreign import javascript unsafe "($1[\"xmlStandalone\"] ? 1 : 0)"
         ghcjs_dom_document_get_xml_standalone :: JSRef Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlStandalone Mozilla Document.xmlStandalone documentation> 
-documentGetXmlStandalone :: (IsDocument self) => self -> IO Bool
+documentGetXmlStandalone ::
+                         (MonadIO m, IsDocument self) => self -> m Bool
 documentGetXmlStandalone self
-  = ghcjs_dom_document_get_xml_standalone
-      (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_get_xml_standalone
+         (unDocument (toDocument self)))
  
 foreign import javascript unsafe "$1[\"documentURI\"] = $2;"
         ghcjs_dom_document_set_document_uri ::
@@ -910,11 +987,11 @@ foreign import javascript unsafe "$1[\"documentURI\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentURI Mozilla Document.documentURI documentation> 
 documentSetDocumentURI ::
-                       (IsDocument self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsDocument self, ToJSString val) => self -> val -> m ()
 documentSetDocumentURI self val
-  = ghcjs_dom_document_set_document_uri
-      (unDocument (toDocument self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_document_set_document_uri (unDocument (toDocument self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"documentURI\"]"
         ghcjs_dom_document_get_document_uri ::
@@ -922,11 +999,13 @@ foreign import javascript unsafe "$1[\"documentURI\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentURI Mozilla Document.documentURI documentation> 
 documentGetDocumentURI ::
-                       (IsDocument self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsDocument self, FromJSString result) =>
+                         self -> m result
 documentGetDocumentURI self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_document_uri
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_document_uri
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"defaultView\"]"
         ghcjs_dom_document_get_default_view ::
@@ -934,11 +1013,12 @@ foreign import javascript unsafe "$1[\"defaultView\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultView Mozilla Document.defaultView documentation> 
 documentGetDefaultView ::
-                       (IsDocument self) => self -> IO (Maybe DOMWindow)
+                       (MonadIO m, IsDocument self) => self -> m (Maybe DOMWindow)
 documentGetDefaultView self
-  = (ghcjs_dom_document_get_default_view
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_default_view
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"styleSheets\"]"
         ghcjs_dom_document_get_style_sheets ::
@@ -946,61 +1026,71 @@ foreign import javascript unsafe "$1[\"styleSheets\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.styleSheets Mozilla Document.styleSheets documentation> 
 documentGetStyleSheets ::
-                       (IsDocument self) => self -> IO (Maybe StyleSheetList)
+                       (MonadIO m, IsDocument self) => self -> m (Maybe StyleSheetList)
 documentGetStyleSheets self
-  = (ghcjs_dom_document_get_style_sheets
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_style_sheets
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"title\"] = $2;"
         ghcjs_dom_document_set_title :: JSRef Document -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
 documentSetTitle ::
-                 (IsDocument self, ToJSString val) => self -> val -> IO ()
+                 (MonadIO m, IsDocument self, ToJSString val) => self -> val -> m ()
 documentSetTitle self val
-  = ghcjs_dom_document_set_title (unDocument (toDocument self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_document_set_title (unDocument (toDocument self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"title\"]"
         ghcjs_dom_document_get_title :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
 documentGetTitle ::
-                 (IsDocument self, FromJSString result) => self -> IO result
+                 (MonadIO m, IsDocument self, FromJSString result) =>
+                   self -> m result
 documentGetTitle self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_title (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_title (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"referrer\"]"
         ghcjs_dom_document_get_referrer :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.referrer Mozilla Document.referrer documentation> 
 documentGetReferrer ::
-                    (IsDocument self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsDocument self, FromJSString result) =>
+                      self -> m result
 documentGetReferrer self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_referrer (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_referrer (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"domain\"]"
         ghcjs_dom_document_get_domain :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
 documentGetDomain ::
-                  (IsDocument self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsDocument self, FromJSString result) =>
+                    self -> m result
 documentGetDomain self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_domain (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_domain (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"URL\"]"
         ghcjs_dom_document_get_url :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.url Mozilla Document.url documentation> 
 documentGetURL ::
-               (IsDocument self, FromJSString result) => self -> IO result
+               (MonadIO m, IsDocument self, FromJSString result) =>
+                 self -> m result
 documentGetURL self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_url (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_url (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"cookie\"] = $2;"
         ghcjs_dom_document_set_cookie ::
@@ -1008,20 +1098,23 @@ foreign import javascript unsafe "$1[\"cookie\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
 documentSetCookie ::
-                  (IsDocument self, ToJSString val) => self -> val -> IO ()
+                  (MonadIO m, IsDocument self, ToJSString val) => self -> val -> m ()
 documentSetCookie self val
-  = ghcjs_dom_document_set_cookie (unDocument (toDocument self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_document_set_cookie (unDocument (toDocument self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"cookie\"]"
         ghcjs_dom_document_get_cookie :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
 documentGetCookie ::
-                  (IsDocument self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsDocument self, FromJSString result) =>
+                    self -> m result
 documentGetCookie self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_cookie (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_cookie (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"body\"] = $2;"
         ghcjs_dom_document_set_body ::
@@ -1029,10 +1122,12 @@ foreign import javascript unsafe "$1[\"body\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
 documentSetBody ::
-                (IsDocument self, IsHTMLElement val) => self -> Maybe val -> IO ()
+                (MonadIO m, IsDocument self, IsHTMLElement val) =>
+                  self -> Maybe val -> m ()
 documentSetBody self val
-  = ghcjs_dom_document_set_body (unDocument (toDocument self))
-      (maybe jsNull (unHTMLElement . toHTMLElement) val)
+  = liftIO
+      (ghcjs_dom_document_set_body (unDocument (toDocument self))
+         (maybe jsNull (unHTMLElement . toHTMLElement) val))
  
 foreign import javascript unsafe "$1[\"body\"]"
         ghcjs_dom_document_get_body ::
@@ -1040,10 +1135,11 @@ foreign import javascript unsafe "$1[\"body\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
 documentGetBody ::
-                (IsDocument self) => self -> IO (Maybe HTMLElement)
+                (MonadIO m, IsDocument self) => self -> m (Maybe HTMLElement)
 documentGetBody self
-  = (ghcjs_dom_document_get_body (unDocument (toDocument self))) >>=
-      fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_body (unDocument (toDocument self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"head\"]"
         ghcjs_dom_document_get_head ::
@@ -1051,10 +1147,11 @@ foreign import javascript unsafe "$1[\"head\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.head Mozilla Document.head documentation> 
 documentGetHead ::
-                (IsDocument self) => self -> IO (Maybe HTMLHeadElement)
+                (MonadIO m, IsDocument self) => self -> m (Maybe HTMLHeadElement)
 documentGetHead self
-  = (ghcjs_dom_document_get_head (unDocument (toDocument self))) >>=
-      fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_head (unDocument (toDocument self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"images\"]"
         ghcjs_dom_document_get_images ::
@@ -1062,10 +1159,11 @@ foreign import javascript unsafe "$1[\"images\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.images Mozilla Document.images documentation> 
 documentGetImages ::
-                  (IsDocument self) => self -> IO (Maybe HTMLCollection)
+                  (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 documentGetImages self
-  = (ghcjs_dom_document_get_images (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_images (unDocument (toDocument self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"applets\"]"
         ghcjs_dom_document_get_applets ::
@@ -1073,10 +1171,11 @@ foreign import javascript unsafe "$1[\"applets\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.applets Mozilla Document.applets documentation> 
 documentGetApplets ::
-                   (IsDocument self) => self -> IO (Maybe HTMLCollection)
+                   (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 documentGetApplets self
-  = (ghcjs_dom_document_get_applets (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_applets (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"links\"]"
         ghcjs_dom_document_get_links ::
@@ -1084,10 +1183,11 @@ foreign import javascript unsafe "$1[\"links\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.links Mozilla Document.links documentation> 
 documentGetLinks ::
-                 (IsDocument self) => self -> IO (Maybe HTMLCollection)
+                 (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 documentGetLinks self
-  = (ghcjs_dom_document_get_links (unDocument (toDocument self))) >>=
-      fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_links (unDocument (toDocument self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"forms\"]"
         ghcjs_dom_document_get_forms ::
@@ -1095,10 +1195,11 @@ foreign import javascript unsafe "$1[\"forms\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.forms Mozilla Document.forms documentation> 
 documentGetForms ::
-                 (IsDocument self) => self -> IO (Maybe HTMLCollection)
+                 (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 documentGetForms self
-  = (ghcjs_dom_document_get_forms (unDocument (toDocument self))) >>=
-      fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_forms (unDocument (toDocument self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"anchors\"]"
         ghcjs_dom_document_get_anchors ::
@@ -1106,10 +1207,11 @@ foreign import javascript unsafe "$1[\"anchors\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.anchors Mozilla Document.anchors documentation> 
 documentGetAnchors ::
-                   (IsDocument self) => self -> IO (Maybe HTMLCollection)
+                   (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 documentGetAnchors self
-  = (ghcjs_dom_document_get_anchors (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_anchors (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"lastModified\"]"
         ghcjs_dom_document_get_last_modified ::
@@ -1117,11 +1219,13 @@ foreign import javascript unsafe "$1[\"lastModified\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.lastModified Mozilla Document.lastModified documentation> 
 documentGetLastModified ::
-                        (IsDocument self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsDocument self, FromJSString result) =>
+                          self -> m result
 documentGetLastModified self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_last_modified
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_last_modified
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
         ghcjs_dom_document_set_charset ::
@@ -1129,20 +1233,23 @@ foreign import javascript unsafe "$1[\"charset\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.charset Mozilla Document.charset documentation> 
 documentSetCharset ::
-                   (IsDocument self, ToJSString val) => self -> val -> IO ()
+                   (MonadIO m, IsDocument self, ToJSString val) => self -> val -> m ()
 documentSetCharset self val
-  = ghcjs_dom_document_set_charset (unDocument (toDocument self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_document_set_charset (unDocument (toDocument self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"charset\"]"
         ghcjs_dom_document_get_charset :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.charset Mozilla Document.charset documentation> 
 documentGetCharset ::
-                   (IsDocument self, FromJSString result) => self -> IO result
+                   (MonadIO m, IsDocument self, FromJSString result) =>
+                     self -> m result
 documentGetCharset self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_charset (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_charset (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"defaultCharset\"]"
         ghcjs_dom_document_get_default_charset ::
@@ -1150,21 +1257,26 @@ foreign import javascript unsafe "$1[\"defaultCharset\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultCharset Mozilla Document.defaultCharset documentation> 
 documentGetDefaultCharset ::
-                          (IsDocument self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsDocument self, FromJSString result) =>
+                            self -> m result
 documentGetDefaultCharset self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_default_charset
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_default_charset
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_document_get_ready_state :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.readyState Mozilla Document.readyState documentation> 
 documentGetReadyState ::
-                      (IsDocument self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsDocument self, FromJSString result) =>
+                        self -> m result
 documentGetReadyState self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_ready_state (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_ready_state
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"characterSet\"]"
         ghcjs_dom_document_get_character_set ::
@@ -1172,11 +1284,13 @@ foreign import javascript unsafe "$1[\"characterSet\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.characterSet Mozilla Document.characterSet documentation> 
 documentGetCharacterSet ::
-                        (IsDocument self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsDocument self, FromJSString result) =>
+                          self -> m result
 documentGetCharacterSet self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_character_set
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_character_set
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"preferredStylesheetSet\"]"
         ghcjs_dom_document_get_preferred_stylesheet_set ::
@@ -1184,11 +1298,13 @@ foreign import javascript unsafe "$1[\"preferredStylesheetSet\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.preferredStylesheetSet Mozilla Document.preferredStylesheetSet documentation> 
 documentGetPreferredStylesheetSet ::
-                                  (IsDocument self, FromJSString result) => self -> IO result
+                                  (MonadIO m, IsDocument self, FromJSString result) =>
+                                    self -> m result
 documentGetPreferredStylesheetSet self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_preferred_stylesheet_set
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_preferred_stylesheet_set
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe
         "$1[\"selectedStylesheetSet\"] = $2;"
@@ -1197,11 +1313,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.selectedStylesheetSet Mozilla Document.selectedStylesheetSet documentation> 
 documentSetSelectedStylesheetSet ::
-                                 (IsDocument self, ToJSString val) => self -> val -> IO ()
+                                 (MonadIO m, IsDocument self, ToJSString val) => self -> val -> m ()
 documentSetSelectedStylesheetSet self val
-  = ghcjs_dom_document_set_selected_stylesheet_set
-      (unDocument (toDocument self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_document_set_selected_stylesheet_set
+         (unDocument (toDocument self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"selectedStylesheetSet\"]"
         ghcjs_dom_document_get_selected_stylesheet_set ::
@@ -1209,11 +1326,13 @@ foreign import javascript unsafe "$1[\"selectedStylesheetSet\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.selectedStylesheetSet Mozilla Document.selectedStylesheetSet documentation> 
 documentGetSelectedStylesheetSet ::
-                                 (IsDocument self, FromJSString result) => self -> IO result
+                                 (MonadIO m, IsDocument self, FromJSString result) =>
+                                   self -> m result
 documentGetSelectedStylesheetSet self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_selected_stylesheet_set
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_selected_stylesheet_set
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "$1[\"activeElement\"]"
         ghcjs_dom_document_get_active_element ::
@@ -1221,21 +1340,25 @@ foreign import javascript unsafe "$1[\"activeElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.activeElement Mozilla Document.activeElement documentation> 
 documentGetActiveElement ::
-                         (IsDocument self) => self -> IO (Maybe Element)
+                         (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 documentGetActiveElement self
-  = (ghcjs_dom_document_get_active_element
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_active_element
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"compatMode\"]"
         ghcjs_dom_document_get_compat_mode :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.compatMode Mozilla Document.compatMode documentation> 
 documentGetCompatMode ::
-                      (IsDocument self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsDocument self, FromJSString result) =>
+                        self -> m result
 documentGetCompatMode self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_compat_mode (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_compat_mode
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe
         "($1[\"webkitIsFullScreen\"] ? 1 : 0)"
@@ -1244,10 +1367,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitIsFullScreen Mozilla Document.webkitIsFullScreen documentation> 
 documentGetWebkitIsFullScreen ::
-                              (IsDocument self) => self -> IO Bool
+                              (MonadIO m, IsDocument self) => self -> m Bool
 documentGetWebkitIsFullScreen self
-  = ghcjs_dom_document_get_webkit_is_full_screen
-      (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_get_webkit_is_full_screen
+         (unDocument (toDocument self)))
  
 foreign import javascript unsafe
         "($1[\"webkitFullScreenKeyboardInputAllowed\"] ? 1 : 0)"
@@ -1256,10 +1380,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullScreenKeyboardInputAllowed Mozilla Document.webkitFullScreenKeyboardInputAllowed documentation> 
 documentGetWebkitFullScreenKeyboardInputAllowed ::
-                                                (IsDocument self) => self -> IO Bool
+                                                (MonadIO m, IsDocument self) => self -> m Bool
 documentGetWebkitFullScreenKeyboardInputAllowed self
-  = ghcjs_dom_document_get_webkit_full_screen_keyboard_input_allowed
-      (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_get_webkit_full_screen_keyboard_input_allowed
+         (unDocument (toDocument self)))
  
 foreign import javascript unsafe
         "$1[\"webkitCurrentFullScreenElement\"]"
@@ -1268,11 +1393,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitCurrentFullScreenElement Mozilla Document.webkitCurrentFullScreenElement documentation> 
 documentGetWebkitCurrentFullScreenElement ::
-                                          (IsDocument self) => self -> IO (Maybe Element)
+                                          (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 documentGetWebkitCurrentFullScreenElement self
-  = (ghcjs_dom_document_get_webkit_current_full_screen_element
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_webkit_current_full_screen_element
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"webkitFullscreenEnabled\"] ? 1 : 0)"
@@ -1281,10 +1407,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullscreenEnabled Mozilla Document.webkitFullscreenEnabled documentation> 
 documentGetWebkitFullscreenEnabled ::
-                                   (IsDocument self) => self -> IO Bool
+                                   (MonadIO m, IsDocument self) => self -> m Bool
 documentGetWebkitFullscreenEnabled self
-  = ghcjs_dom_document_get_webkit_fullscreen_enabled
-      (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_get_webkit_fullscreen_enabled
+         (unDocument (toDocument self)))
  
 foreign import javascript unsafe "$1[\"webkitFullscreenElement\"]"
         ghcjs_dom_document_get_webkit_fullscreen_element ::
@@ -1292,11 +1419,12 @@ foreign import javascript unsafe "$1[\"webkitFullscreenElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullscreenElement Mozilla Document.webkitFullscreenElement documentation> 
 documentGetWebkitFullscreenElement ::
-                                   (IsDocument self) => self -> IO (Maybe Element)
+                                   (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 documentGetWebkitFullscreenElement self
-  = (ghcjs_dom_document_get_webkit_fullscreen_element
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_webkit_fullscreen_element
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"pointerLockElement\"]"
         ghcjs_dom_document_get_pointer_lock_element ::
@@ -1304,11 +1432,12 @@ foreign import javascript unsafe "$1[\"pointerLockElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.pointerLockElement Mozilla Document.pointerLockElement documentation> 
 documentGetPointerLockElement ::
-                              (IsDocument self) => self -> IO (Maybe Element)
+                              (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 documentGetPointerLockElement self
-  = (ghcjs_dom_document_get_pointer_lock_element
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_pointer_lock_element
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"visibilityState\"]"
         ghcjs_dom_document_get_visibility_state ::
@@ -1316,19 +1445,22 @@ foreign import javascript unsafe "$1[\"visibilityState\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.visibilityState Mozilla Document.visibilityState documentation> 
 documentGetVisibilityState ::
-                           (IsDocument self, FromJSString result) => self -> IO result
+                           (MonadIO m, IsDocument self, FromJSString result) =>
+                             self -> m result
 documentGetVisibilityState self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_visibility_state
-         (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_visibility_state
+            (unDocument (toDocument self))))
  
 foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
         ghcjs_dom_document_get_hidden :: JSRef Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.hidden Mozilla Document.hidden documentation> 
-documentGetHidden :: (IsDocument self) => self -> IO Bool
+documentGetHidden :: (MonadIO m, IsDocument self) => self -> m Bool
 documentGetHidden self
-  = ghcjs_dom_document_get_hidden (unDocument (toDocument self))
+  = liftIO
+      (ghcjs_dom_document_get_hidden (unDocument (toDocument self)))
  
 foreign import javascript unsafe "$1[\"securityPolicy\"]"
         ghcjs_dom_document_get_security_policy ::
@@ -1336,11 +1468,12 @@ foreign import javascript unsafe "$1[\"securityPolicy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.securityPolicy Mozilla Document.securityPolicy documentation> 
 documentGetSecurityPolicy ::
-                          (IsDocument self) => self -> IO (Maybe DOMSecurityPolicy)
+                          (MonadIO m, IsDocument self) => self -> m (Maybe DOMSecurityPolicy)
 documentGetSecurityPolicy self
-  = (ghcjs_dom_document_get_security_policy
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_security_policy
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"currentScript\"]"
         ghcjs_dom_document_get_current_script ::
@@ -1348,21 +1481,24 @@ foreign import javascript unsafe "$1[\"currentScript\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.currentScript Mozilla Document.currentScript documentation> 
 documentGetCurrentScript ::
-                         (IsDocument self) => self -> IO (Maybe HTMLScriptElement)
+                         (MonadIO m, IsDocument self) => self -> m (Maybe HTMLScriptElement)
 documentGetCurrentScript self
-  = (ghcjs_dom_document_get_current_script
-       (unDocument (toDocument self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_document_get_current_script
+          (unDocument (toDocument self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"origin\"]"
         ghcjs_dom_document_get_origin :: JSRef Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.origin Mozilla Document.origin documentation> 
 documentGetOrigin ::
-                  (IsDocument self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsDocument self, FromJSString result) =>
+                    self -> m result
 documentGetOrigin self
-  = fromJSString <$>
-      (ghcjs_dom_document_get_origin (unDocument (toDocument self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_document_get_origin (unDocument (toDocument self))))
 #else
 module GHCJS.DOM.Document (
   module Graphics.UI.Gtk.WebKit.DOM.Document

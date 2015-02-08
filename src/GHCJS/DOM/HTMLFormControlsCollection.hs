@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,13 +28,14 @@ foreign import javascript unsafe "$1[\"_get\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection._get Mozilla HTMLFormControlsCollection._get documentation> 
 htmlFormControlsCollection_get ::
-                               (IsHTMLFormControlsCollection self) =>
-                                 self -> Word -> IO (Maybe Node)
+                               (MonadIO m, IsHTMLFormControlsCollection self) =>
+                                 self -> Word -> m (Maybe Node)
 htmlFormControlsCollection_get self index
-  = (ghcjs_dom_html_form_controls_collection_get
-       (unHTMLFormControlsCollection (toHTMLFormControlsCollection self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_form_controls_collection_get
+          (unHTMLFormControlsCollection (toHTMLFormControlsCollection self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         ghcjs_dom_html_form_controls_collection_named_item ::
@@ -41,13 +43,15 @@ foreign import javascript unsafe "$1[\"namedItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection.namedItem Mozilla HTMLFormControlsCollection.namedItem documentation> 
 htmlFormControlsCollectionNamedItem ::
-                                    (IsHTMLFormControlsCollection self, ToJSString name) =>
-                                      self -> name -> IO (Maybe Node)
+                                    (MonadIO m, IsHTMLFormControlsCollection self,
+                                     ToJSString name) =>
+                                      self -> name -> m (Maybe Node)
 htmlFormControlsCollectionNamedItem self name
-  = (ghcjs_dom_html_form_controls_collection_named_item
-       (unHTMLFormControlsCollection (toHTMLFormControlsCollection self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_form_controls_collection_named_item
+          (unHTMLFormControlsCollection (toHTMLFormControlsCollection self))
+          (toJSString name))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLFormControlsCollection (
   ) where

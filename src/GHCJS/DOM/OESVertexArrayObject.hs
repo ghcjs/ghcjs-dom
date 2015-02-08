@@ -18,6 +18,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -32,12 +33,13 @@ foreign import javascript unsafe "$1[\"createVertexArrayOES\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.createVertexArrayOES Mozilla OESVertexArrayObject.createVertexArrayOES documentation> 
 oesVertexArrayObjectCreateVertexArrayOES ::
-                                         (IsOESVertexArrayObject self) =>
-                                           self -> IO (Maybe WebGLVertexArrayObjectOES)
+                                         (MonadIO m, IsOESVertexArrayObject self) =>
+                                           self -> m (Maybe WebGLVertexArrayObjectOES)
 oesVertexArrayObjectCreateVertexArrayOES self
-  = (ghcjs_dom_oes_vertex_array_object_create_vertex_array_oes
-       (unOESVertexArrayObject (toOESVertexArrayObject self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_oes_vertex_array_object_create_vertex_array_oes
+          (unOESVertexArrayObject (toOESVertexArrayObject self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"deleteVertexArrayOES\"]($2)"
         ghcjs_dom_oes_vertex_array_object_delete_vertex_array_oes ::
@@ -46,15 +48,16 @@ foreign import javascript unsafe "$1[\"deleteVertexArrayOES\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.deleteVertexArrayOES Mozilla OESVertexArrayObject.deleteVertexArrayOES documentation> 
 oesVertexArrayObjectDeleteVertexArrayOES ::
-                                         (IsOESVertexArrayObject self,
+                                         (MonadIO m, IsOESVertexArrayObject self,
                                           IsWebGLVertexArrayObjectOES arrayObject) =>
-                                           self -> Maybe arrayObject -> IO ()
+                                           self -> Maybe arrayObject -> m ()
 oesVertexArrayObjectDeleteVertexArrayOES self arrayObject
-  = ghcjs_dom_oes_vertex_array_object_delete_vertex_array_oes
-      (unOESVertexArrayObject (toOESVertexArrayObject self))
-      (maybe jsNull
-         (unWebGLVertexArrayObjectOES . toWebGLVertexArrayObjectOES)
-         arrayObject)
+  = liftIO
+      (ghcjs_dom_oes_vertex_array_object_delete_vertex_array_oes
+         (unOESVertexArrayObject (toOESVertexArrayObject self))
+         (maybe jsNull
+            (unWebGLVertexArrayObjectOES . toWebGLVertexArrayObjectOES)
+            arrayObject))
  
 foreign import javascript unsafe
         "($1[\"isVertexArrayOES\"]($2) ? 1 : 0)"
@@ -64,15 +67,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.isVertexArrayOES Mozilla OESVertexArrayObject.isVertexArrayOES documentation> 
 oesVertexArrayObjectIsVertexArrayOES ::
-                                     (IsOESVertexArrayObject self,
+                                     (MonadIO m, IsOESVertexArrayObject self,
                                       IsWebGLVertexArrayObjectOES arrayObject) =>
-                                       self -> Maybe arrayObject -> IO Bool
+                                       self -> Maybe arrayObject -> m Bool
 oesVertexArrayObjectIsVertexArrayOES self arrayObject
-  = ghcjs_dom_oes_vertex_array_object_is_vertex_array_oes
-      (unOESVertexArrayObject (toOESVertexArrayObject self))
-      (maybe jsNull
-         (unWebGLVertexArrayObjectOES . toWebGLVertexArrayObjectOES)
-         arrayObject)
+  = liftIO
+      (ghcjs_dom_oes_vertex_array_object_is_vertex_array_oes
+         (unOESVertexArrayObject (toOESVertexArrayObject self))
+         (maybe jsNull
+            (unWebGLVertexArrayObjectOES . toWebGLVertexArrayObjectOES)
+            arrayObject))
  
 foreign import javascript unsafe "$1[\"bindVertexArrayOES\"]($2)"
         ghcjs_dom_oes_vertex_array_object_bind_vertex_array_oes ::
@@ -81,15 +85,16 @@ foreign import javascript unsafe "$1[\"bindVertexArrayOES\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.bindVertexArrayOES Mozilla OESVertexArrayObject.bindVertexArrayOES documentation> 
 oesVertexArrayObjectBindVertexArrayOES ::
-                                       (IsOESVertexArrayObject self,
+                                       (MonadIO m, IsOESVertexArrayObject self,
                                         IsWebGLVertexArrayObjectOES arrayObject) =>
-                                         self -> Maybe arrayObject -> IO ()
+                                         self -> Maybe arrayObject -> m ()
 oesVertexArrayObjectBindVertexArrayOES self arrayObject
-  = ghcjs_dom_oes_vertex_array_object_bind_vertex_array_oes
-      (unOESVertexArrayObject (toOESVertexArrayObject self))
-      (maybe jsNull
-         (unWebGLVertexArrayObjectOES . toWebGLVertexArrayObjectOES)
-         arrayObject)
+  = liftIO
+      (ghcjs_dom_oes_vertex_array_object_bind_vertex_array_oes
+         (unOESVertexArrayObject (toOESVertexArrayObject self))
+         (maybe jsNull
+            (unWebGLVertexArrayObjectOES . toWebGLVertexArrayObjectOES)
+            arrayObject))
 cVERTEX_ARRAY_BINDING_OES = 34229
 #else
 module GHCJS.DOM.OESVertexArrayObject (

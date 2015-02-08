@@ -9,6 +9,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -21,9 +22,10 @@ foreign import javascript unsafe "($1[\"visible\"] ? 1 : 0)"
         ghcjs_dom_bar_prop_get_visible :: JSRef BarProp -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BarProp.visible Mozilla BarProp.visible documentation> 
-barPropGetVisible :: (IsBarProp self) => self -> IO Bool
+barPropGetVisible :: (MonadIO m, IsBarProp self) => self -> m Bool
 barPropGetVisible self
-  = ghcjs_dom_bar_prop_get_visible (unBarProp (toBarProp self))
+  = liftIO
+      (ghcjs_dom_bar_prop_get_visible (unBarProp (toBarProp self)))
 #else
 module GHCJS.DOM.BarProp (
   module Graphics.UI.Gtk.WebKit.DOM.BarProp

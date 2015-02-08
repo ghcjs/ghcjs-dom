@@ -397,6 +397,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -411,11 +412,13 @@ foreign import javascript unsafe "$1[\"activeTexture\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.activeTexture Mozilla WebGLRenderingContext.activeTexture documentation> 
 webGLRenderingContextActiveTexture ::
-                                   (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> GLenum -> m ()
 webGLRenderingContextActiveTexture self texture
-  = ghcjs_dom_web_gl_rendering_context_active_texture
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      texture
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_active_texture
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         texture)
  
 foreign import javascript unsafe "$1[\"attachShader\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_attach_shader ::
@@ -424,14 +427,15 @@ foreign import javascript unsafe "$1[\"attachShader\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.attachShader Mozilla WebGLRenderingContext.attachShader documentation> 
 webGLRenderingContextAttachShader ::
-                                  (IsWebGLRenderingContext self, IsWebGLProgram program,
+                                  (MonadIO m, IsWebGLRenderingContext self, IsWebGLProgram program,
                                    IsWebGLShader shader) =>
-                                    self -> Maybe program -> Maybe shader -> IO ()
+                                    self -> Maybe program -> Maybe shader -> m ()
 webGLRenderingContextAttachShader self program shader
-  = ghcjs_dom_web_gl_rendering_context_attach_shader
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-      (maybe jsNull (unWebGLShader . toWebGLShader) shader)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_attach_shader
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+         (maybe jsNull (unWebGLShader . toWebGLShader) shader))
  
 foreign import javascript unsafe
         "$1[\"bindAttribLocation\"]($2, $3,\n$4)"
@@ -441,15 +445,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bindAttribLocation Mozilla WebGLRenderingContext.bindAttribLocation documentation> 
 webGLRenderingContextBindAttribLocation ::
-                                        (IsWebGLRenderingContext self, IsWebGLProgram program,
-                                         ToJSString name) =>
-                                          self -> Maybe program -> GLuint -> name -> IO ()
+                                        (MonadIO m, IsWebGLRenderingContext self,
+                                         IsWebGLProgram program, ToJSString name) =>
+                                          self -> Maybe program -> GLuint -> name -> m ()
 webGLRenderingContextBindAttribLocation self program index name
-  = ghcjs_dom_web_gl_rendering_context_bind_attrib_location
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-      index
-      (toJSString name)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_bind_attrib_location
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+         index
+         (toJSString name))
  
 foreign import javascript unsafe "$1[\"bindBuffer\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_bind_buffer ::
@@ -457,13 +462,14 @@ foreign import javascript unsafe "$1[\"bindBuffer\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bindBuffer Mozilla WebGLRenderingContext.bindBuffer documentation> 
 webGLRenderingContextBindBuffer ::
-                                (IsWebGLRenderingContext self, IsWebGLBuffer buffer) =>
-                                  self -> GLenum -> Maybe buffer -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self, IsWebGLBuffer buffer) =>
+                                  self -> GLenum -> Maybe buffer -> m ()
 webGLRenderingContextBindBuffer self target buffer
-  = ghcjs_dom_web_gl_rendering_context_bind_buffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (maybe jsNull (unWebGLBuffer . toWebGLBuffer) buffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_bind_buffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (maybe jsNull (unWebGLBuffer . toWebGLBuffer) buffer))
  
 foreign import javascript unsafe "$1[\"bindFramebuffer\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_bind_framebuffer ::
@@ -472,15 +478,16 @@ foreign import javascript unsafe "$1[\"bindFramebuffer\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bindFramebuffer Mozilla WebGLRenderingContext.bindFramebuffer documentation> 
 webGLRenderingContextBindFramebuffer ::
-                                     (IsWebGLRenderingContext self,
+                                     (MonadIO m, IsWebGLRenderingContext self,
                                       IsWebGLFramebuffer framebuffer) =>
-                                       self -> GLenum -> Maybe framebuffer -> IO ()
+                                       self -> GLenum -> Maybe framebuffer -> m ()
 webGLRenderingContextBindFramebuffer self target framebuffer
-  = ghcjs_dom_web_gl_rendering_context_bind_framebuffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (maybe jsNull (unWebGLFramebuffer . toWebGLFramebuffer)
-         framebuffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_bind_framebuffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (maybe jsNull (unWebGLFramebuffer . toWebGLFramebuffer)
+            framebuffer))
  
 foreign import javascript unsafe "$1[\"bindRenderbuffer\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_bind_renderbuffer ::
@@ -489,15 +496,16 @@ foreign import javascript unsafe "$1[\"bindRenderbuffer\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bindRenderbuffer Mozilla WebGLRenderingContext.bindRenderbuffer documentation> 
 webGLRenderingContextBindRenderbuffer ::
-                                      (IsWebGLRenderingContext self,
+                                      (MonadIO m, IsWebGLRenderingContext self,
                                        IsWebGLRenderbuffer renderbuffer) =>
-                                        self -> GLenum -> Maybe renderbuffer -> IO ()
+                                        self -> GLenum -> Maybe renderbuffer -> m ()
 webGLRenderingContextBindRenderbuffer self target renderbuffer
-  = ghcjs_dom_web_gl_rendering_context_bind_renderbuffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
-         renderbuffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_bind_renderbuffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
+            renderbuffer))
  
 foreign import javascript unsafe "$1[\"bindTexture\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_bind_texture ::
@@ -506,13 +514,15 @@ foreign import javascript unsafe "$1[\"bindTexture\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bindTexture Mozilla WebGLRenderingContext.bindTexture documentation> 
 webGLRenderingContextBindTexture ::
-                                 (IsWebGLRenderingContext self, IsWebGLTexture texture) =>
-                                   self -> GLenum -> Maybe texture -> IO ()
+                                 (MonadIO m, IsWebGLRenderingContext self,
+                                  IsWebGLTexture texture) =>
+                                   self -> GLenum -> Maybe texture -> m ()
 webGLRenderingContextBindTexture self target texture
-  = ghcjs_dom_web_gl_rendering_context_bind_texture
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (maybe jsNull (unWebGLTexture . toWebGLTexture) texture)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_bind_texture
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (maybe jsNull (unWebGLTexture . toWebGLTexture) texture))
  
 foreign import javascript unsafe
         "$1[\"blendColor\"]($2, $3, $4, $5)"
@@ -522,15 +532,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.blendColor Mozilla WebGLRenderingContext.blendColor documentation> 
 webGLRenderingContextBlendColor ::
-                                (IsWebGLRenderingContext self) =>
-                                  self -> GLclampf -> GLclampf -> GLclampf -> GLclampf -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self) =>
+                                  self -> GLclampf -> GLclampf -> GLclampf -> GLclampf -> m ()
 webGLRenderingContextBlendColor self red green blue alpha
-  = ghcjs_dom_web_gl_rendering_context_blend_color
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      red
-      green
-      blue
-      alpha
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_blend_color
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         red
+         green
+         blue
+         alpha)
  
 foreign import javascript unsafe "$1[\"blendEquation\"]($2)"
         ghcjs_dom_web_gl_rendering_context_blend_equation ::
@@ -538,11 +549,13 @@ foreign import javascript unsafe "$1[\"blendEquation\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.blendEquation Mozilla WebGLRenderingContext.blendEquation documentation> 
 webGLRenderingContextBlendEquation ::
-                                   (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> GLenum -> m ()
 webGLRenderingContextBlendEquation self mode
-  = ghcjs_dom_web_gl_rendering_context_blend_equation
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      mode
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_blend_equation
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         mode)
  
 foreign import javascript unsafe
         "$1[\"blendEquationSeparate\"]($2,\n$3)"
@@ -551,13 +564,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.blendEquationSeparate Mozilla WebGLRenderingContext.blendEquationSeparate documentation> 
 webGLRenderingContextBlendEquationSeparate ::
-                                           (IsWebGLRenderingContext self) =>
-                                             self -> GLenum -> GLenum -> IO ()
+                                           (MonadIO m, IsWebGLRenderingContext self) =>
+                                             self -> GLenum -> GLenum -> m ()
 webGLRenderingContextBlendEquationSeparate self modeRGB modeAlpha
-  = ghcjs_dom_web_gl_rendering_context_blend_equation_separate
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      modeRGB
-      modeAlpha
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_blend_equation_separate
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         modeRGB
+         modeAlpha)
  
 foreign import javascript unsafe "$1[\"blendFunc\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_blend_func ::
@@ -565,12 +579,14 @@ foreign import javascript unsafe "$1[\"blendFunc\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.blendFunc Mozilla WebGLRenderingContext.blendFunc documentation> 
 webGLRenderingContextBlendFunc ::
-                               (IsWebGLRenderingContext self) => self -> GLenum -> GLenum -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self) =>
+                                 self -> GLenum -> GLenum -> m ()
 webGLRenderingContextBlendFunc self sfactor dfactor
-  = ghcjs_dom_web_gl_rendering_context_blend_func
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      sfactor
-      dfactor
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_blend_func
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         sfactor
+         dfactor)
  
 foreign import javascript unsafe
         "$1[\"blendFuncSeparate\"]($2, $3,\n$4, $5)"
@@ -580,16 +596,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.blendFuncSeparate Mozilla WebGLRenderingContext.blendFuncSeparate documentation> 
 webGLRenderingContextBlendFuncSeparate ::
-                                       (IsWebGLRenderingContext self) =>
-                                         self -> GLenum -> GLenum -> GLenum -> GLenum -> IO ()
+                                       (MonadIO m, IsWebGLRenderingContext self) =>
+                                         self -> GLenum -> GLenum -> GLenum -> GLenum -> m ()
 webGLRenderingContextBlendFuncSeparate self srcRGB dstRGB srcAlpha
   dstAlpha
-  = ghcjs_dom_web_gl_rendering_context_blend_func_separate
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      srcRGB
-      dstRGB
-      srcAlpha
-      dstAlpha
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_blend_func_separate
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         srcRGB
+         dstRGB
+         srcAlpha
+         dstAlpha)
  
 foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_buffer_data ::
@@ -598,14 +615,15 @@ foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bufferData Mozilla WebGLRenderingContext.bufferData documentation> 
 webGLRenderingContextBufferData ::
-                                (IsWebGLRenderingContext self, IsArrayBuffer data') =>
-                                  self -> GLenum -> Maybe data' -> GLenum -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self, IsArrayBuffer data') =>
+                                  self -> GLenum -> Maybe data' -> GLenum -> m ()
 webGLRenderingContextBufferData self target data' usage
-  = ghcjs_dom_web_gl_rendering_context_buffer_data
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (maybe jsNull (unArrayBuffer . toArrayBuffer) data')
-      usage
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_buffer_data
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (maybe jsNull (unArrayBuffer . toArrayBuffer) data')
+         usage)
  
 foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_buffer_dataView ::
@@ -614,14 +632,16 @@ foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bufferDataView Mozilla WebGLRenderingContext.bufferDataView documentation> 
 webGLRenderingContextBufferDataView ::
-                                    (IsWebGLRenderingContext self, IsArrayBufferView data') =>
-                                      self -> GLenum -> Maybe data' -> GLenum -> IO ()
+                                    (MonadIO m, IsWebGLRenderingContext self,
+                                     IsArrayBufferView data') =>
+                                      self -> GLenum -> Maybe data' -> GLenum -> m ()
 webGLRenderingContextBufferDataView self target data' usage
-  = ghcjs_dom_web_gl_rendering_context_buffer_dataView
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
-      usage
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_buffer_dataView
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
+         usage)
  
 foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_buffer_dataPtr ::
@@ -629,14 +649,15 @@ foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bufferDataPtr Mozilla WebGLRenderingContext.bufferDataPtr documentation> 
 webGLRenderingContextBufferDataPtr ::
-                                   (IsWebGLRenderingContext self) =>
-                                     self -> GLenum -> GLsizeiptr -> GLenum -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> GLenum -> GLsizeiptr -> GLenum -> m ()
 webGLRenderingContextBufferDataPtr self target size usage
-  = ghcjs_dom_web_gl_rendering_context_buffer_dataPtr
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (fromIntegral size)
-      usage
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_buffer_dataPtr
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (fromIntegral size)
+         usage)
  
 foreign import javascript unsafe
         "$1[\"bufferSubData\"]($2, $3, $4)"
@@ -646,14 +667,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bufferSubData Mozilla WebGLRenderingContext.bufferSubData documentation> 
 webGLRenderingContextBufferSubData ::
-                                   (IsWebGLRenderingContext self, IsArrayBuffer data') =>
-                                     self -> GLenum -> GLintptr -> Maybe data' -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self, IsArrayBuffer data') =>
+                                     self -> GLenum -> GLintptr -> Maybe data' -> m ()
 webGLRenderingContextBufferSubData self target offset data'
-  = ghcjs_dom_web_gl_rendering_context_buffer_sub_data
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (fromIntegral offset)
-      (maybe jsNull (unArrayBuffer . toArrayBuffer) data')
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_buffer_sub_data
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (fromIntegral offset)
+         (maybe jsNull (unArrayBuffer . toArrayBuffer) data'))
  
 foreign import javascript unsafe
         "$1[\"bufferSubData\"]($2, $3, $4)"
@@ -663,14 +685,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bufferSubDataView Mozilla WebGLRenderingContext.bufferSubDataView documentation> 
 webGLRenderingContextBufferSubDataView ::
-                                       (IsWebGLRenderingContext self, IsArrayBufferView data') =>
-                                         self -> GLenum -> GLintptr -> Maybe data' -> IO ()
+                                       (MonadIO m, IsWebGLRenderingContext self,
+                                        IsArrayBufferView data') =>
+                                         self -> GLenum -> GLintptr -> Maybe data' -> m ()
 webGLRenderingContextBufferSubDataView self target offset data'
-  = ghcjs_dom_web_gl_rendering_context_buffer_sub_dataView
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      (fromIntegral offset)
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_buffer_sub_dataView
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         (fromIntegral offset)
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) data'))
  
 foreign import javascript unsafe
         "$1[\"checkFramebufferStatus\"]($2)"
@@ -679,12 +703,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.checkFramebufferStatus Mozilla WebGLRenderingContext.checkFramebufferStatus documentation> 
 webGLRenderingContextCheckFramebufferStatus ::
-                                            (IsWebGLRenderingContext self) =>
-                                              self -> GLenum -> IO GLenum
+                                            (MonadIO m, IsWebGLRenderingContext self) =>
+                                              self -> GLenum -> m GLenum
 webGLRenderingContextCheckFramebufferStatus self target
-  = ghcjs_dom_web_gl_rendering_context_check_framebuffer_status
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_check_framebuffer_status
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target)
  
 foreign import javascript unsafe "$1[\"clear\"]($2)"
         ghcjs_dom_web_gl_rendering_context_clear ::
@@ -692,11 +717,13 @@ foreign import javascript unsafe "$1[\"clear\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.clear Mozilla WebGLRenderingContext.clear documentation> 
 webGLRenderingContextClear ::
-                           (IsWebGLRenderingContext self) => self -> GLbitfield -> IO ()
+                           (MonadIO m, IsWebGLRenderingContext self) =>
+                             self -> GLbitfield -> m ()
 webGLRenderingContextClear self mask
-  = ghcjs_dom_web_gl_rendering_context_clear
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      mask
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_clear
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         mask)
  
 foreign import javascript unsafe
         "$1[\"clearColor\"]($2, $3, $4, $5)"
@@ -706,15 +733,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.clearColor Mozilla WebGLRenderingContext.clearColor documentation> 
 webGLRenderingContextClearColor ::
-                                (IsWebGLRenderingContext self) =>
-                                  self -> GLclampf -> GLclampf -> GLclampf -> GLclampf -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self) =>
+                                  self -> GLclampf -> GLclampf -> GLclampf -> GLclampf -> m ()
 webGLRenderingContextClearColor self red green blue alpha
-  = ghcjs_dom_web_gl_rendering_context_clear_color
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      red
-      green
-      blue
-      alpha
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_clear_color
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         red
+         green
+         blue
+         alpha)
  
 foreign import javascript unsafe "$1[\"clearDepth\"]($2)"
         ghcjs_dom_web_gl_rendering_context_clear_depth ::
@@ -722,11 +750,13 @@ foreign import javascript unsafe "$1[\"clearDepth\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.clearDepth Mozilla WebGLRenderingContext.clearDepth documentation> 
 webGLRenderingContextClearDepth ::
-                                (IsWebGLRenderingContext self) => self -> GLclampf -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self) =>
+                                  self -> GLclampf -> m ()
 webGLRenderingContextClearDepth self depth
-  = ghcjs_dom_web_gl_rendering_context_clear_depth
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      depth
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_clear_depth
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         depth)
  
 foreign import javascript unsafe "$1[\"clearStencil\"]($2)"
         ghcjs_dom_web_gl_rendering_context_clear_stencil ::
@@ -734,11 +764,12 @@ foreign import javascript unsafe "$1[\"clearStencil\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.clearStencil Mozilla WebGLRenderingContext.clearStencil documentation> 
 webGLRenderingContextClearStencil ::
-                                  (IsWebGLRenderingContext self) => self -> GLint -> IO ()
+                                  (MonadIO m, IsWebGLRenderingContext self) => self -> GLint -> m ()
 webGLRenderingContextClearStencil self s
-  = ghcjs_dom_web_gl_rendering_context_clear_stencil
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      s
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_clear_stencil
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         s)
  
 foreign import javascript unsafe
         "$1[\"colorMask\"]($2, $3, $4, $5)"
@@ -748,15 +779,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.colorMask Mozilla WebGLRenderingContext.colorMask documentation> 
 webGLRenderingContextColorMask ::
-                               (IsWebGLRenderingContext self) =>
-                                 self -> GLboolean -> GLboolean -> GLboolean -> GLboolean -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self) =>
+                                 self -> GLboolean -> GLboolean -> GLboolean -> GLboolean -> m ()
 webGLRenderingContextColorMask self red green blue alpha
-  = ghcjs_dom_web_gl_rendering_context_color_mask
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      red
-      green
-      blue
-      alpha
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_color_mask
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         red
+         green
+         blue
+         alpha)
  
 foreign import javascript unsafe "$1[\"compileShader\"]($2)"
         ghcjs_dom_web_gl_rendering_context_compile_shader ::
@@ -764,12 +796,14 @@ foreign import javascript unsafe "$1[\"compileShader\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.compileShader Mozilla WebGLRenderingContext.compileShader documentation> 
 webGLRenderingContextCompileShader ::
-                                   (IsWebGLRenderingContext self, IsWebGLShader shader) =>
-                                     self -> Maybe shader -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self,
+                                    IsWebGLShader shader) =>
+                                     self -> Maybe shader -> m ()
 webGLRenderingContextCompileShader self shader
-  = ghcjs_dom_web_gl_rendering_context_compile_shader
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLShader . toWebGLShader) shader)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_compile_shader
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLShader . toWebGLShader) shader))
  
 foreign import javascript unsafe
         "$1[\"compressedTexImage2D\"]($2,\n$3, $4, $5, $6, $7, $8)"
@@ -782,24 +816,26 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.compressedTexImage2D Mozilla WebGLRenderingContext.compressedTexImage2D documentation> 
 webGLRenderingContextCompressedTexImage2D ::
-                                          (IsWebGLRenderingContext self, IsArrayBufferView data') =>
+                                          (MonadIO m, IsWebGLRenderingContext self,
+                                           IsArrayBufferView data') =>
                                             self ->
                                               GLenum ->
                                                 GLint ->
                                                   GLenum ->
                                                     GLsizei ->
-                                                      GLsizei -> GLint -> Maybe data' -> IO ()
+                                                      GLsizei -> GLint -> Maybe data' -> m ()
 webGLRenderingContextCompressedTexImage2D self target level
   internalformat width height border data'
-  = ghcjs_dom_web_gl_rendering_context_compressed_tex_image2_d
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      internalformat
-      width
-      height
-      border
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_compressed_tex_image2_d
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         internalformat
+         width
+         height
+         border
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) data'))
  
 foreign import javascript unsafe
         "$1[\"compressedTexSubImage2D\"]($2,\n$3, $4, $5, $6, $7, $8, $9)"
@@ -813,7 +849,7 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.compressedTexSubImage2D Mozilla WebGLRenderingContext.compressedTexSubImage2D documentation> 
 webGLRenderingContextCompressedTexSubImage2D ::
-                                             (IsWebGLRenderingContext self,
+                                             (MonadIO m, IsWebGLRenderingContext self,
                                               IsArrayBufferView data') =>
                                                self ->
                                                  GLenum ->
@@ -821,19 +857,20 @@ webGLRenderingContextCompressedTexSubImage2D ::
                                                      GLint ->
                                                        GLint ->
                                                          GLsizei ->
-                                                           GLsizei -> GLenum -> Maybe data' -> IO ()
+                                                           GLsizei -> GLenum -> Maybe data' -> m ()
 webGLRenderingContextCompressedTexSubImage2D self target level
   xoffset yoffset width height format data'
-  = ghcjs_dom_web_gl_rendering_context_compressed_tex_sub_image2_d
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      xoffset
-      yoffset
-      width
-      height
-      format
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_compressed_tex_sub_image2_d
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         xoffset
+         yoffset
+         width
+         height
+         format
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) data'))
  
 foreign import javascript unsafe
         "$1[\"copyTexImage2D\"]($2, $3, $4,\n$5, $6, $7, $8, $9)"
@@ -845,24 +882,25 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.copyTexImage2D Mozilla WebGLRenderingContext.copyTexImage2D documentation> 
 webGLRenderingContextCopyTexImage2D ::
-                                    (IsWebGLRenderingContext self) =>
+                                    (MonadIO m, IsWebGLRenderingContext self) =>
                                       self ->
                                         GLenum ->
                                           GLint ->
                                             GLenum ->
-                                              GLint -> GLint -> GLsizei -> GLsizei -> GLint -> IO ()
+                                              GLint -> GLint -> GLsizei -> GLsizei -> GLint -> m ()
 webGLRenderingContextCopyTexImage2D self target level
   internalformat x y width height border
-  = ghcjs_dom_web_gl_rendering_context_copy_tex_image2_d
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      internalformat
-      x
-      y
-      width
-      height
-      border
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_copy_tex_image2_d
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         internalformat
+         x
+         y
+         width
+         height
+         border)
  
 foreign import javascript unsafe
         "$1[\"copyTexSubImage2D\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
@@ -874,25 +912,26 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.copyTexSubImage2D Mozilla WebGLRenderingContext.copyTexSubImage2D documentation> 
 webGLRenderingContextCopyTexSubImage2D ::
-                                       (IsWebGLRenderingContext self) =>
+                                       (MonadIO m, IsWebGLRenderingContext self) =>
                                          self ->
                                            GLenum ->
                                              GLint ->
                                                GLint ->
                                                  GLint ->
-                                                   GLint -> GLint -> GLsizei -> GLsizei -> IO ()
+                                                   GLint -> GLint -> GLsizei -> GLsizei -> m ()
 webGLRenderingContextCopyTexSubImage2D self target level xoffset
   yoffset x y width height
-  = ghcjs_dom_web_gl_rendering_context_copy_tex_sub_image2_d
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      xoffset
-      yoffset
-      x
-      y
-      width
-      height
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_copy_tex_sub_image2_d
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         xoffset
+         yoffset
+         x
+         y
+         width
+         height)
  
 foreign import javascript unsafe "$1[\"createBuffer\"]()"
         ghcjs_dom_web_gl_rendering_context_create_buffer ::
@@ -900,11 +939,13 @@ foreign import javascript unsafe "$1[\"createBuffer\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.createBuffer Mozilla WebGLRenderingContext.createBuffer documentation> 
 webGLRenderingContextCreateBuffer ::
-                                  (IsWebGLRenderingContext self) => self -> IO (Maybe WebGLBuffer)
+                                  (MonadIO m, IsWebGLRenderingContext self) =>
+                                    self -> m (Maybe WebGLBuffer)
 webGLRenderingContextCreateBuffer self
-  = (ghcjs_dom_web_gl_rendering_context_create_buffer
-       (unWebGLRenderingContext (toWebGLRenderingContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_create_buffer
+          (unWebGLRenderingContext (toWebGLRenderingContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createFramebuffer\"]()"
         ghcjs_dom_web_gl_rendering_context_create_framebuffer ::
@@ -912,12 +953,13 @@ foreign import javascript unsafe "$1[\"createFramebuffer\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.createFramebuffer Mozilla WebGLRenderingContext.createFramebuffer documentation> 
 webGLRenderingContextCreateFramebuffer ::
-                                       (IsWebGLRenderingContext self) =>
-                                         self -> IO (Maybe WebGLFramebuffer)
+                                       (MonadIO m, IsWebGLRenderingContext self) =>
+                                         self -> m (Maybe WebGLFramebuffer)
 webGLRenderingContextCreateFramebuffer self
-  = (ghcjs_dom_web_gl_rendering_context_create_framebuffer
-       (unWebGLRenderingContext (toWebGLRenderingContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_create_framebuffer
+          (unWebGLRenderingContext (toWebGLRenderingContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createProgram\"]()"
         ghcjs_dom_web_gl_rendering_context_create_program ::
@@ -925,11 +967,13 @@ foreign import javascript unsafe "$1[\"createProgram\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.createProgram Mozilla WebGLRenderingContext.createProgram documentation> 
 webGLRenderingContextCreateProgram ::
-                                   (IsWebGLRenderingContext self) => self -> IO (Maybe WebGLProgram)
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> m (Maybe WebGLProgram)
 webGLRenderingContextCreateProgram self
-  = (ghcjs_dom_web_gl_rendering_context_create_program
-       (unWebGLRenderingContext (toWebGLRenderingContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_create_program
+          (unWebGLRenderingContext (toWebGLRenderingContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createRenderbuffer\"]()"
         ghcjs_dom_web_gl_rendering_context_create_renderbuffer ::
@@ -937,12 +981,13 @@ foreign import javascript unsafe "$1[\"createRenderbuffer\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.createRenderbuffer Mozilla WebGLRenderingContext.createRenderbuffer documentation> 
 webGLRenderingContextCreateRenderbuffer ::
-                                        (IsWebGLRenderingContext self) =>
-                                          self -> IO (Maybe WebGLRenderbuffer)
+                                        (MonadIO m, IsWebGLRenderingContext self) =>
+                                          self -> m (Maybe WebGLRenderbuffer)
 webGLRenderingContextCreateRenderbuffer self
-  = (ghcjs_dom_web_gl_rendering_context_create_renderbuffer
-       (unWebGLRenderingContext (toWebGLRenderingContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_create_renderbuffer
+          (unWebGLRenderingContext (toWebGLRenderingContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createShader\"]($2)"
         ghcjs_dom_web_gl_rendering_context_create_shader ::
@@ -950,13 +995,14 @@ foreign import javascript unsafe "$1[\"createShader\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.createShader Mozilla WebGLRenderingContext.createShader documentation> 
 webGLRenderingContextCreateShader ::
-                                  (IsWebGLRenderingContext self) =>
-                                    self -> GLenum -> IO (Maybe WebGLShader)
+                                  (MonadIO m, IsWebGLRenderingContext self) =>
+                                    self -> GLenum -> m (Maybe WebGLShader)
 webGLRenderingContextCreateShader self type'
-  = (ghcjs_dom_web_gl_rendering_context_create_shader
-       (unWebGLRenderingContext (toWebGLRenderingContext self))
-       type')
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_create_shader
+          (unWebGLRenderingContext (toWebGLRenderingContext self))
+          type')
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createTexture\"]()"
         ghcjs_dom_web_gl_rendering_context_create_texture ::
@@ -964,11 +1010,13 @@ foreign import javascript unsafe "$1[\"createTexture\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.createTexture Mozilla WebGLRenderingContext.createTexture documentation> 
 webGLRenderingContextCreateTexture ::
-                                   (IsWebGLRenderingContext self) => self -> IO (Maybe WebGLTexture)
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> m (Maybe WebGLTexture)
 webGLRenderingContextCreateTexture self
-  = (ghcjs_dom_web_gl_rendering_context_create_texture
-       (unWebGLRenderingContext (toWebGLRenderingContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_create_texture
+          (unWebGLRenderingContext (toWebGLRenderingContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"cullFace\"]($2)"
         ghcjs_dom_web_gl_rendering_context_cull_face ::
@@ -976,11 +1024,12 @@ foreign import javascript unsafe "$1[\"cullFace\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.cullFace Mozilla WebGLRenderingContext.cullFace documentation> 
 webGLRenderingContextCullFace ::
-                              (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                              (MonadIO m, IsWebGLRenderingContext self) => self -> GLenum -> m ()
 webGLRenderingContextCullFace self mode
-  = ghcjs_dom_web_gl_rendering_context_cull_face
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      mode
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_cull_face
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         mode)
  
 foreign import javascript unsafe "$1[\"deleteBuffer\"]($2)"
         ghcjs_dom_web_gl_rendering_context_delete_buffer ::
@@ -988,12 +1037,13 @@ foreign import javascript unsafe "$1[\"deleteBuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.deleteBuffer Mozilla WebGLRenderingContext.deleteBuffer documentation> 
 webGLRenderingContextDeleteBuffer ::
-                                  (IsWebGLRenderingContext self, IsWebGLBuffer buffer) =>
-                                    self -> Maybe buffer -> IO ()
+                                  (MonadIO m, IsWebGLRenderingContext self, IsWebGLBuffer buffer) =>
+                                    self -> Maybe buffer -> m ()
 webGLRenderingContextDeleteBuffer self buffer
-  = ghcjs_dom_web_gl_rendering_context_delete_buffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLBuffer . toWebGLBuffer) buffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_delete_buffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLBuffer . toWebGLBuffer) buffer))
  
 foreign import javascript unsafe "$1[\"deleteFramebuffer\"]($2)"
         ghcjs_dom_web_gl_rendering_context_delete_framebuffer ::
@@ -1001,14 +1051,15 @@ foreign import javascript unsafe "$1[\"deleteFramebuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.deleteFramebuffer Mozilla WebGLRenderingContext.deleteFramebuffer documentation> 
 webGLRenderingContextDeleteFramebuffer ::
-                                       (IsWebGLRenderingContext self,
+                                       (MonadIO m, IsWebGLRenderingContext self,
                                         IsWebGLFramebuffer framebuffer) =>
-                                         self -> Maybe framebuffer -> IO ()
+                                         self -> Maybe framebuffer -> m ()
 webGLRenderingContextDeleteFramebuffer self framebuffer
-  = ghcjs_dom_web_gl_rendering_context_delete_framebuffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLFramebuffer . toWebGLFramebuffer)
-         framebuffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_delete_framebuffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLFramebuffer . toWebGLFramebuffer)
+            framebuffer))
  
 foreign import javascript unsafe "$1[\"deleteProgram\"]($2)"
         ghcjs_dom_web_gl_rendering_context_delete_program ::
@@ -1016,12 +1067,14 @@ foreign import javascript unsafe "$1[\"deleteProgram\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.deleteProgram Mozilla WebGLRenderingContext.deleteProgram documentation> 
 webGLRenderingContextDeleteProgram ::
-                                   (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                     self -> Maybe program -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self,
+                                    IsWebGLProgram program) =>
+                                     self -> Maybe program -> m ()
 webGLRenderingContextDeleteProgram self program
-  = ghcjs_dom_web_gl_rendering_context_delete_program
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_delete_program
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program))
  
 foreign import javascript unsafe "$1[\"deleteRenderbuffer\"]($2)"
         ghcjs_dom_web_gl_rendering_context_delete_renderbuffer ::
@@ -1029,14 +1082,15 @@ foreign import javascript unsafe "$1[\"deleteRenderbuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.deleteRenderbuffer Mozilla WebGLRenderingContext.deleteRenderbuffer documentation> 
 webGLRenderingContextDeleteRenderbuffer ::
-                                        (IsWebGLRenderingContext self,
+                                        (MonadIO m, IsWebGLRenderingContext self,
                                          IsWebGLRenderbuffer renderbuffer) =>
-                                          self -> Maybe renderbuffer -> IO ()
+                                          self -> Maybe renderbuffer -> m ()
 webGLRenderingContextDeleteRenderbuffer self renderbuffer
-  = ghcjs_dom_web_gl_rendering_context_delete_renderbuffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
-         renderbuffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_delete_renderbuffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
+            renderbuffer))
  
 foreign import javascript unsafe "$1[\"deleteShader\"]($2)"
         ghcjs_dom_web_gl_rendering_context_delete_shader ::
@@ -1044,12 +1098,13 @@ foreign import javascript unsafe "$1[\"deleteShader\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.deleteShader Mozilla WebGLRenderingContext.deleteShader documentation> 
 webGLRenderingContextDeleteShader ::
-                                  (IsWebGLRenderingContext self, IsWebGLShader shader) =>
-                                    self -> Maybe shader -> IO ()
+                                  (MonadIO m, IsWebGLRenderingContext self, IsWebGLShader shader) =>
+                                    self -> Maybe shader -> m ()
 webGLRenderingContextDeleteShader self shader
-  = ghcjs_dom_web_gl_rendering_context_delete_shader
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLShader . toWebGLShader) shader)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_delete_shader
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLShader . toWebGLShader) shader))
  
 foreign import javascript unsafe "$1[\"deleteTexture\"]($2)"
         ghcjs_dom_web_gl_rendering_context_delete_texture ::
@@ -1057,12 +1112,14 @@ foreign import javascript unsafe "$1[\"deleteTexture\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.deleteTexture Mozilla WebGLRenderingContext.deleteTexture documentation> 
 webGLRenderingContextDeleteTexture ::
-                                   (IsWebGLRenderingContext self, IsWebGLTexture texture) =>
-                                     self -> Maybe texture -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self,
+                                    IsWebGLTexture texture) =>
+                                     self -> Maybe texture -> m ()
 webGLRenderingContextDeleteTexture self texture
-  = ghcjs_dom_web_gl_rendering_context_delete_texture
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLTexture . toWebGLTexture) texture)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_delete_texture
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLTexture . toWebGLTexture) texture))
  
 foreign import javascript unsafe "$1[\"depthFunc\"]($2)"
         ghcjs_dom_web_gl_rendering_context_depth_func ::
@@ -1070,11 +1127,12 @@ foreign import javascript unsafe "$1[\"depthFunc\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.depthFunc Mozilla WebGLRenderingContext.depthFunc documentation> 
 webGLRenderingContextDepthFunc ::
-                               (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self) => self -> GLenum -> m ()
 webGLRenderingContextDepthFunc self func
-  = ghcjs_dom_web_gl_rendering_context_depth_func
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      func
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_depth_func
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         func)
  
 foreign import javascript unsafe "$1[\"depthMask\"]($2)"
         ghcjs_dom_web_gl_rendering_context_depth_mask ::
@@ -1082,11 +1140,13 @@ foreign import javascript unsafe "$1[\"depthMask\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.depthMask Mozilla WebGLRenderingContext.depthMask documentation> 
 webGLRenderingContextDepthMask ::
-                               (IsWebGLRenderingContext self) => self -> GLboolean -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self) =>
+                                 self -> GLboolean -> m ()
 webGLRenderingContextDepthMask self flag
-  = ghcjs_dom_web_gl_rendering_context_depth_mask
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      flag
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_depth_mask
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         flag)
  
 foreign import javascript unsafe "$1[\"depthRange\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_depth_range ::
@@ -1094,13 +1154,14 @@ foreign import javascript unsafe "$1[\"depthRange\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.depthRange Mozilla WebGLRenderingContext.depthRange documentation> 
 webGLRenderingContextDepthRange ::
-                                (IsWebGLRenderingContext self) =>
-                                  self -> GLclampf -> GLclampf -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self) =>
+                                  self -> GLclampf -> GLclampf -> m ()
 webGLRenderingContextDepthRange self zNear zFar
-  = ghcjs_dom_web_gl_rendering_context_depth_range
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      zNear
-      zFar
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_depth_range
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         zNear
+         zFar)
  
 foreign import javascript unsafe "$1[\"detachShader\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_detach_shader ::
@@ -1109,14 +1170,15 @@ foreign import javascript unsafe "$1[\"detachShader\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.detachShader Mozilla WebGLRenderingContext.detachShader documentation> 
 webGLRenderingContextDetachShader ::
-                                  (IsWebGLRenderingContext self, IsWebGLProgram program,
+                                  (MonadIO m, IsWebGLRenderingContext self, IsWebGLProgram program,
                                    IsWebGLShader shader) =>
-                                    self -> Maybe program -> Maybe shader -> IO ()
+                                    self -> Maybe program -> Maybe shader -> m ()
 webGLRenderingContextDetachShader self program shader
-  = ghcjs_dom_web_gl_rendering_context_detach_shader
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-      (maybe jsNull (unWebGLShader . toWebGLShader) shader)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_detach_shader
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+         (maybe jsNull (unWebGLShader . toWebGLShader) shader))
  
 foreign import javascript unsafe "$1[\"disable\"]($2)"
         ghcjs_dom_web_gl_rendering_context_disable ::
@@ -1124,11 +1186,12 @@ foreign import javascript unsafe "$1[\"disable\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.disable Mozilla WebGLRenderingContext.disable documentation> 
 webGLRenderingContextDisable ::
-                             (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                             (MonadIO m, IsWebGLRenderingContext self) => self -> GLenum -> m ()
 webGLRenderingContextDisable self cap
-  = ghcjs_dom_web_gl_rendering_context_disable
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      cap
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_disable
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         cap)
  
 foreign import javascript unsafe
         "$1[\"disableVertexAttribArray\"]($2)"
@@ -1137,12 +1200,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.disableVertexAttribArray Mozilla WebGLRenderingContext.disableVertexAttribArray documentation> 
 webGLRenderingContextDisableVertexAttribArray ::
-                                              (IsWebGLRenderingContext self) =>
-                                                self -> GLuint -> IO ()
+                                              (MonadIO m, IsWebGLRenderingContext self) =>
+                                                self -> GLuint -> m ()
 webGLRenderingContextDisableVertexAttribArray self index
-  = ghcjs_dom_web_gl_rendering_context_disable_vertex_attrib_array
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      index
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_disable_vertex_attrib_array
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         index)
  
 foreign import javascript unsafe "$1[\"drawArrays\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_draw_arrays ::
@@ -1150,14 +1214,15 @@ foreign import javascript unsafe "$1[\"drawArrays\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.drawArrays Mozilla WebGLRenderingContext.drawArrays documentation> 
 webGLRenderingContextDrawArrays ::
-                                (IsWebGLRenderingContext self) =>
-                                  self -> GLenum -> GLint -> GLsizei -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self) =>
+                                  self -> GLenum -> GLint -> GLsizei -> m ()
 webGLRenderingContextDrawArrays self mode first count
-  = ghcjs_dom_web_gl_rendering_context_draw_arrays
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      mode
-      first
-      count
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_draw_arrays
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         mode
+         first
+         count)
  
 foreign import javascript unsafe
         "$1[\"drawElements\"]($2, $3, $4,\n$5)"
@@ -1167,15 +1232,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.drawElements Mozilla WebGLRenderingContext.drawElements documentation> 
 webGLRenderingContextDrawElements ::
-                                  (IsWebGLRenderingContext self) =>
-                                    self -> GLenum -> GLsizei -> GLenum -> GLintptr -> IO ()
+                                  (MonadIO m, IsWebGLRenderingContext self) =>
+                                    self -> GLenum -> GLsizei -> GLenum -> GLintptr -> m ()
 webGLRenderingContextDrawElements self mode count type' offset
-  = ghcjs_dom_web_gl_rendering_context_draw_elements
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      mode
-      count
-      type'
-      (fromIntegral offset)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_draw_elements
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         mode
+         count
+         type'
+         (fromIntegral offset))
  
 foreign import javascript unsafe "$1[\"enable\"]($2)"
         ghcjs_dom_web_gl_rendering_context_enable ::
@@ -1183,11 +1249,12 @@ foreign import javascript unsafe "$1[\"enable\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.enable Mozilla WebGLRenderingContext.enable documentation> 
 webGLRenderingContextEnable ::
-                            (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                            (MonadIO m, IsWebGLRenderingContext self) => self -> GLenum -> m ()
 webGLRenderingContextEnable self cap
-  = ghcjs_dom_web_gl_rendering_context_enable
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      cap
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_enable
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         cap)
  
 foreign import javascript unsafe
         "$1[\"enableVertexAttribArray\"]($2)"
@@ -1196,12 +1263,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.enableVertexAttribArray Mozilla WebGLRenderingContext.enableVertexAttribArray documentation> 
 webGLRenderingContextEnableVertexAttribArray ::
-                                             (IsWebGLRenderingContext self) =>
-                                               self -> GLuint -> IO ()
+                                             (MonadIO m, IsWebGLRenderingContext self) =>
+                                               self -> GLuint -> m ()
 webGLRenderingContextEnableVertexAttribArray self index
-  = ghcjs_dom_web_gl_rendering_context_enable_vertex_attrib_array
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      index
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_enable_vertex_attrib_array
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         index)
  
 foreign import javascript unsafe "$1[\"finish\"]()"
         ghcjs_dom_web_gl_rendering_context_finish ::
@@ -1209,10 +1277,11 @@ foreign import javascript unsafe "$1[\"finish\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.finish Mozilla WebGLRenderingContext.finish documentation> 
 webGLRenderingContextFinish ::
-                            (IsWebGLRenderingContext self) => self -> IO ()
+                            (MonadIO m, IsWebGLRenderingContext self) => self -> m ()
 webGLRenderingContextFinish self
-  = ghcjs_dom_web_gl_rendering_context_finish
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_finish
+         (unWebGLRenderingContext (toWebGLRenderingContext self)))
  
 foreign import javascript unsafe "$1[\"flush\"]()"
         ghcjs_dom_web_gl_rendering_context_flush ::
@@ -1220,10 +1289,11 @@ foreign import javascript unsafe "$1[\"flush\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.flush Mozilla WebGLRenderingContext.flush documentation> 
 webGLRenderingContextFlush ::
-                           (IsWebGLRenderingContext self) => self -> IO ()
+                           (MonadIO m, IsWebGLRenderingContext self) => self -> m ()
 webGLRenderingContextFlush self
-  = ghcjs_dom_web_gl_rendering_context_flush
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_flush
+         (unWebGLRenderingContext (toWebGLRenderingContext self)))
  
 foreign import javascript unsafe
         "$1[\"framebufferRenderbuffer\"]($2,\n$3, $4, $5)"
@@ -1233,20 +1303,21 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.framebufferRenderbuffer Mozilla WebGLRenderingContext.framebufferRenderbuffer documentation> 
 webGLRenderingContextFramebufferRenderbuffer ::
-                                             (IsWebGLRenderingContext self,
+                                             (MonadIO m, IsWebGLRenderingContext self,
                                               IsWebGLRenderbuffer renderbuffer) =>
                                                self ->
                                                  GLenum ->
-                                                   GLenum -> GLenum -> Maybe renderbuffer -> IO ()
+                                                   GLenum -> GLenum -> Maybe renderbuffer -> m ()
 webGLRenderingContextFramebufferRenderbuffer self target attachment
   renderbuffertarget renderbuffer
-  = ghcjs_dom_web_gl_rendering_context_framebuffer_renderbuffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      attachment
-      renderbuffertarget
-      (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
-         renderbuffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_framebuffer_renderbuffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         attachment
+         renderbuffertarget
+         (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
+            renderbuffer))
  
 foreign import javascript unsafe
         "$1[\"framebufferTexture2D\"]($2,\n$3, $4, $5, $6)"
@@ -1256,19 +1327,21 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.framebufferTexture2D Mozilla WebGLRenderingContext.framebufferTexture2D documentation> 
 webGLRenderingContextFramebufferTexture2D ::
-                                          (IsWebGLRenderingContext self, IsWebGLTexture texture) =>
+                                          (MonadIO m, IsWebGLRenderingContext self,
+                                           IsWebGLTexture texture) =>
                                             self ->
                                               GLenum ->
-                                                GLenum -> GLenum -> Maybe texture -> GLint -> IO ()
+                                                GLenum -> GLenum -> Maybe texture -> GLint -> m ()
 webGLRenderingContextFramebufferTexture2D self target attachment
   textarget texture level
-  = ghcjs_dom_web_gl_rendering_context_framebuffer_texture2_d
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      attachment
-      textarget
-      (maybe jsNull (unWebGLTexture . toWebGLTexture) texture)
-      level
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_framebuffer_texture2_d
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         attachment
+         textarget
+         (maybe jsNull (unWebGLTexture . toWebGLTexture) texture)
+         level)
  
 foreign import javascript unsafe "$1[\"frontFace\"]($2)"
         ghcjs_dom_web_gl_rendering_context_front_face ::
@@ -1276,11 +1349,12 @@ foreign import javascript unsafe "$1[\"frontFace\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.frontFace Mozilla WebGLRenderingContext.frontFace documentation> 
 webGLRenderingContextFrontFace ::
-                               (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self) => self -> GLenum -> m ()
 webGLRenderingContextFrontFace self mode
-  = ghcjs_dom_web_gl_rendering_context_front_face
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      mode
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_front_face
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         mode)
  
 foreign import javascript unsafe "$1[\"generateMipmap\"]($2)"
         ghcjs_dom_web_gl_rendering_context_generate_mipmap ::
@@ -1288,11 +1362,13 @@ foreign import javascript unsafe "$1[\"generateMipmap\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.generateMipmap Mozilla WebGLRenderingContext.generateMipmap documentation> 
 webGLRenderingContextGenerateMipmap ::
-                                    (IsWebGLRenderingContext self) => self -> GLenum -> IO ()
+                                    (MonadIO m, IsWebGLRenderingContext self) =>
+                                      self -> GLenum -> m ()
 webGLRenderingContextGenerateMipmap self target
-  = ghcjs_dom_web_gl_rendering_context_generate_mipmap
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_generate_mipmap
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target)
  
 foreign import javascript unsafe "$1[\"getActiveAttrib\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_get_active_attrib ::
@@ -1301,14 +1377,16 @@ foreign import javascript unsafe "$1[\"getActiveAttrib\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.activeAttrib Mozilla WebGLRenderingContext.activeAttrib documentation> 
 webGLRenderingContextGetActiveAttrib ::
-                                     (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                       self -> Maybe program -> GLuint -> IO (Maybe WebGLActiveInfo)
+                                     (MonadIO m, IsWebGLRenderingContext self,
+                                      IsWebGLProgram program) =>
+                                       self -> Maybe program -> GLuint -> m (Maybe WebGLActiveInfo)
 webGLRenderingContextGetActiveAttrib self program index
-  = (ghcjs_dom_web_gl_rendering_context_get_active_attrib
-       (unWebGLRenderingContext (toWebGLRenderingContext self))
-       (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_get_active_attrib
+          (unWebGLRenderingContext (toWebGLRenderingContext self))
+          (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getActiveUniform\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_get_active_uniform ::
@@ -1317,15 +1395,16 @@ foreign import javascript unsafe "$1[\"getActiveUniform\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.activeUniform Mozilla WebGLRenderingContext.activeUniform documentation> 
 webGLRenderingContextGetActiveUniform ::
-                                      (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                        self ->
-                                          Maybe program -> GLuint -> IO (Maybe WebGLActiveInfo)
+                                      (MonadIO m, IsWebGLRenderingContext self,
+                                       IsWebGLProgram program) =>
+                                        self -> Maybe program -> GLuint -> m (Maybe WebGLActiveInfo)
 webGLRenderingContextGetActiveUniform self program index
-  = (ghcjs_dom_web_gl_rendering_context_get_active_uniform
-       (unWebGLRenderingContext (toWebGLRenderingContext self))
-       (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_get_active_uniform
+          (unWebGLRenderingContext (toWebGLRenderingContext self))
+          (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getAttachedShaders\"]($2)"
         ghcjs_dom_web_gl_rendering_context_get_attached_shaders ::
@@ -1333,12 +1412,14 @@ foreign import javascript unsafe "$1[\"getAttachedShaders\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.attachedShaders Mozilla WebGLRenderingContext.attachedShaders documentation> 
 webGLRenderingContextGetAttachedShaders ::
-                                        (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                          self -> Maybe program -> IO ()
+                                        (MonadIO m, IsWebGLRenderingContext self,
+                                         IsWebGLProgram program) =>
+                                          self -> Maybe program -> m ()
 webGLRenderingContextGetAttachedShaders self program
-  = ghcjs_dom_web_gl_rendering_context_get_attached_shaders
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_attached_shaders
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program))
  
 foreign import javascript unsafe
         "$1[\"getAttribLocation\"]($2, $3)"
@@ -1348,14 +1429,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.attribLocation Mozilla WebGLRenderingContext.attribLocation documentation> 
 webGLRenderingContextGetAttribLocation ::
-                                       (IsWebGLRenderingContext self, IsWebGLProgram program,
-                                        ToJSString name) =>
-                                         self -> Maybe program -> name -> IO GLint
+                                       (MonadIO m, IsWebGLRenderingContext self,
+                                        IsWebGLProgram program, ToJSString name) =>
+                                         self -> Maybe program -> name -> m GLint
 webGLRenderingContextGetAttribLocation self program name
-  = ghcjs_dom_web_gl_rendering_context_get_attrib_location
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-      (toJSString name)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_attrib_location
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+         (toJSString name))
  
 foreign import javascript unsafe
         "$1[\"getBufferParameter\"]($2, $3)"
@@ -1364,13 +1446,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.bufferParameter Mozilla WebGLRenderingContext.bufferParameter documentation> 
 webGLRenderingContextGetBufferParameter ::
-                                        (IsWebGLRenderingContext self) =>
-                                          self -> GLenum -> GLenum -> IO (JSRef a)
+                                        (MonadIO m, IsWebGLRenderingContext self) =>
+                                          self -> GLenum -> GLenum -> m (JSRef a)
 webGLRenderingContextGetBufferParameter self target pname
-  = ghcjs_dom_web_gl_rendering_context_get_buffer_parameter
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_buffer_parameter
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         pname)
  
 foreign import javascript unsafe "$1[\"getContextAttributes\"]()"
         ghcjs_dom_web_gl_rendering_context_get_context_attributes ::
@@ -1378,12 +1461,13 @@ foreign import javascript unsafe "$1[\"getContextAttributes\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.contextAttributes Mozilla WebGLRenderingContext.contextAttributes documentation> 
 webGLRenderingContextGetContextAttributes ::
-                                          (IsWebGLRenderingContext self) =>
-                                            self -> IO (Maybe WebGLContextAttributes)
+                                          (MonadIO m, IsWebGLRenderingContext self) =>
+                                            self -> m (Maybe WebGLContextAttributes)
 webGLRenderingContextGetContextAttributes self
-  = (ghcjs_dom_web_gl_rendering_context_get_context_attributes
-       (unWebGLRenderingContext (toWebGLRenderingContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_get_context_attributes
+          (unWebGLRenderingContext (toWebGLRenderingContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getError\"]()"
         ghcjs_dom_web_gl_rendering_context_get_error ::
@@ -1391,10 +1475,11 @@ foreign import javascript unsafe "$1[\"getError\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.error Mozilla WebGLRenderingContext.error documentation> 
 webGLRenderingContextGetError ::
-                              (IsWebGLRenderingContext self) => self -> IO GLenum
+                              (MonadIO m, IsWebGLRenderingContext self) => self -> m GLenum
 webGLRenderingContextGetError self
-  = ghcjs_dom_web_gl_rendering_context_get_error
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_error
+         (unWebGLRenderingContext (toWebGLRenderingContext self)))
  
 foreign import javascript unsafe "$1[\"getExtension\"]($2)"
         ghcjs_dom_web_gl_rendering_context_get_extension ::
@@ -1402,12 +1487,13 @@ foreign import javascript unsafe "$1[\"getExtension\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.extension Mozilla WebGLRenderingContext.extension documentation> 
 webGLRenderingContextGetExtension ::
-                                  (IsWebGLRenderingContext self, ToJSString name) =>
-                                    self -> name -> IO (JSRef a)
+                                  (MonadIO m, IsWebGLRenderingContext self, ToJSString name) =>
+                                    self -> name -> m (JSRef a)
 webGLRenderingContextGetExtension self name
-  = ghcjs_dom_web_gl_rendering_context_get_extension
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (toJSString name)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_extension
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (toJSString name))
  
 foreign import javascript unsafe
         "$1[\"getFramebufferAttachmentParameter\"]($2,\n$3, $4)"
@@ -1418,17 +1504,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.framebufferAttachmentParameter Mozilla WebGLRenderingContext.framebufferAttachmentParameter documentation> 
 webGLRenderingContextGetFramebufferAttachmentParameter ::
-                                                       (IsWebGLRenderingContext self) =>
+                                                       (MonadIO m, IsWebGLRenderingContext self) =>
                                                          self ->
-                                                           GLenum ->
-                                                             GLenum -> GLenum -> IO (JSRef a)
+                                                           GLenum -> GLenum -> GLenum -> m (JSRef a)
 webGLRenderingContextGetFramebufferAttachmentParameter self target
   attachment pname
-  = ghcjs_dom_web_gl_rendering_context_get_framebuffer_attachment_parameter
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      attachment
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_framebuffer_attachment_parameter
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         attachment
+         pname)
  
 foreign import javascript unsafe "$1[\"getParameter\"]($2)"
         ghcjs_dom_web_gl_rendering_context_get_parameter ::
@@ -1436,11 +1522,13 @@ foreign import javascript unsafe "$1[\"getParameter\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.parameter Mozilla WebGLRenderingContext.parameter documentation> 
 webGLRenderingContextGetParameter ::
-                                  (IsWebGLRenderingContext self) => self -> GLenum -> IO (JSRef a)
+                                  (MonadIO m, IsWebGLRenderingContext self) =>
+                                    self -> GLenum -> m (JSRef a)
 webGLRenderingContextGetParameter self pname
-  = ghcjs_dom_web_gl_rendering_context_get_parameter
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_parameter
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         pname)
  
 foreign import javascript unsafe
         "$1[\"getProgramParameter\"]($2,\n$3)"
@@ -1450,13 +1538,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.programParameter Mozilla WebGLRenderingContext.programParameter documentation> 
 webGLRenderingContextGetProgramParameter ::
-                                         (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                           self -> Maybe program -> GLenum -> IO (JSRef a)
+                                         (MonadIO m, IsWebGLRenderingContext self,
+                                          IsWebGLProgram program) =>
+                                           self -> Maybe program -> GLenum -> m (JSRef a)
 webGLRenderingContextGetProgramParameter self program pname
-  = ghcjs_dom_web_gl_rendering_context_get_program_parameter
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_program_parameter
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+         pname)
  
 foreign import javascript unsafe "$1[\"getProgramInfoLog\"]($2)"
         ghcjs_dom_web_gl_rendering_context_get_program_info_log ::
@@ -1464,14 +1554,15 @@ foreign import javascript unsafe "$1[\"getProgramInfoLog\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.programInfoLog Mozilla WebGLRenderingContext.programInfoLog documentation> 
 webGLRenderingContextGetProgramInfoLog ::
-                                       (IsWebGLRenderingContext self, IsWebGLProgram program,
-                                        FromJSString result) =>
-                                         self -> Maybe program -> IO result
+                                       (MonadIO m, IsWebGLRenderingContext self,
+                                        IsWebGLProgram program, FromJSString result) =>
+                                         self -> Maybe program -> m result
 webGLRenderingContextGetProgramInfoLog self program
-  = fromJSString <$>
-      (ghcjs_dom_web_gl_rendering_context_get_program_info_log
-         (unWebGLRenderingContext (toWebGLRenderingContext self))
-         (maybe jsNull (unWebGLProgram . toWebGLProgram) program))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_gl_rendering_context_get_program_info_log
+            (unWebGLRenderingContext (toWebGLRenderingContext self))
+            (maybe jsNull (unWebGLProgram . toWebGLProgram) program)))
  
 foreign import javascript unsafe
         "$1[\"getRenderbufferParameter\"]($2,\n$3)"
@@ -1480,13 +1571,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.renderbufferParameter Mozilla WebGLRenderingContext.renderbufferParameter documentation> 
 webGLRenderingContextGetRenderbufferParameter ::
-                                              (IsWebGLRenderingContext self) =>
-                                                self -> GLenum -> GLenum -> IO (JSRef a)
+                                              (MonadIO m, IsWebGLRenderingContext self) =>
+                                                self -> GLenum -> GLenum -> m (JSRef a)
 webGLRenderingContextGetRenderbufferParameter self target pname
-  = ghcjs_dom_web_gl_rendering_context_get_renderbuffer_parameter
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_renderbuffer_parameter
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         pname)
  
 foreign import javascript unsafe
         "$1[\"getShaderParameter\"]($2, $3)"
@@ -1496,13 +1588,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.shaderParameter Mozilla WebGLRenderingContext.shaderParameter documentation> 
 webGLRenderingContextGetShaderParameter ::
-                                        (IsWebGLRenderingContext self, IsWebGLShader shader) =>
-                                          self -> Maybe shader -> GLenum -> IO (JSRef a)
+                                        (MonadIO m, IsWebGLRenderingContext self,
+                                         IsWebGLShader shader) =>
+                                          self -> Maybe shader -> GLenum -> m (JSRef a)
 webGLRenderingContextGetShaderParameter self shader pname
-  = ghcjs_dom_web_gl_rendering_context_get_shader_parameter
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLShader . toWebGLShader) shader)
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_shader_parameter
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLShader . toWebGLShader) shader)
+         pname)
  
 foreign import javascript unsafe "$1[\"getShaderInfoLog\"]($2)"
         ghcjs_dom_web_gl_rendering_context_get_shader_info_log ::
@@ -1510,14 +1604,15 @@ foreign import javascript unsafe "$1[\"getShaderInfoLog\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.shaderInfoLog Mozilla WebGLRenderingContext.shaderInfoLog documentation> 
 webGLRenderingContextGetShaderInfoLog ::
-                                      (IsWebGLRenderingContext self, IsWebGLShader shader,
-                                       FromJSString result) =>
-                                        self -> Maybe shader -> IO result
+                                      (MonadIO m, IsWebGLRenderingContext self,
+                                       IsWebGLShader shader, FromJSString result) =>
+                                        self -> Maybe shader -> m result
 webGLRenderingContextGetShaderInfoLog self shader
-  = fromJSString <$>
-      (ghcjs_dom_web_gl_rendering_context_get_shader_info_log
-         (unWebGLRenderingContext (toWebGLRenderingContext self))
-         (maybe jsNull (unWebGLShader . toWebGLShader) shader))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_gl_rendering_context_get_shader_info_log
+            (unWebGLRenderingContext (toWebGLRenderingContext self))
+            (maybe jsNull (unWebGLShader . toWebGLShader) shader)))
  
 foreign import javascript unsafe
         "$1[\"getShaderPrecisionFormat\"]($2,\n$3)"
@@ -1527,17 +1622,18 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.shaderPrecisionFormat Mozilla WebGLRenderingContext.shaderPrecisionFormat documentation> 
 webGLRenderingContextGetShaderPrecisionFormat ::
-                                              (IsWebGLRenderingContext self) =>
+                                              (MonadIO m, IsWebGLRenderingContext self) =>
                                                 self ->
                                                   GLenum ->
-                                                    GLenum -> IO (Maybe WebGLShaderPrecisionFormat)
+                                                    GLenum -> m (Maybe WebGLShaderPrecisionFormat)
 webGLRenderingContextGetShaderPrecisionFormat self shadertype
   precisiontype
-  = (ghcjs_dom_web_gl_rendering_context_get_shader_precision_format
-       (unWebGLRenderingContext (toWebGLRenderingContext self))
-       shadertype
-       precisiontype)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_get_shader_precision_format
+          (unWebGLRenderingContext (toWebGLRenderingContext self))
+          shadertype
+          precisiontype)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getShaderSource\"]($2)"
         ghcjs_dom_web_gl_rendering_context_get_shader_source ::
@@ -1545,14 +1641,15 @@ foreign import javascript unsafe "$1[\"getShaderSource\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.shaderSource Mozilla WebGLRenderingContext.shaderSource documentation> 
 webGLRenderingContextGetShaderSource ::
-                                     (IsWebGLRenderingContext self, IsWebGLShader shader,
+                                     (MonadIO m, IsWebGLRenderingContext self, IsWebGLShader shader,
                                       FromJSString result) =>
-                                       self -> Maybe shader -> IO result
+                                       self -> Maybe shader -> m result
 webGLRenderingContextGetShaderSource self shader
-  = fromJSString <$>
-      (ghcjs_dom_web_gl_rendering_context_get_shader_source
-         (unWebGLRenderingContext (toWebGLRenderingContext self))
-         (maybe jsNull (unWebGLShader . toWebGLShader) shader))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_gl_rendering_context_get_shader_source
+            (unWebGLRenderingContext (toWebGLRenderingContext self))
+            (maybe jsNull (unWebGLShader . toWebGLShader) shader)))
  
 foreign import javascript unsafe "$1[\"getSupportedExtensions\"]()"
         ghcjs_dom_web_gl_rendering_context_get_supported_extensions ::
@@ -1560,12 +1657,14 @@ foreign import javascript unsafe "$1[\"getSupportedExtensions\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.supportedExtensions Mozilla WebGLRenderingContext.supportedExtensions documentation> 
 webGLRenderingContextGetSupportedExtensions ::
-                                            (IsWebGLRenderingContext self, FromJSString result) =>
-                                              self -> IO [result]
+                                            (MonadIO m, IsWebGLRenderingContext self,
+                                             FromJSString result) =>
+                                              self -> m [result]
 webGLRenderingContextGetSupportedExtensions self
-  = (ghcjs_dom_web_gl_rendering_context_get_supported_extensions
-       (unWebGLRenderingContext (toWebGLRenderingContext self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_get_supported_extensions
+          (unWebGLRenderingContext (toWebGLRenderingContext self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"getTexParameter\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_get_tex_parameter ::
@@ -1573,13 +1672,14 @@ foreign import javascript unsafe "$1[\"getTexParameter\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texParameter Mozilla WebGLRenderingContext.texParameter documentation> 
 webGLRenderingContextGetTexParameter ::
-                                     (IsWebGLRenderingContext self) =>
-                                       self -> GLenum -> GLenum -> IO (JSRef a)
+                                     (MonadIO m, IsWebGLRenderingContext self) =>
+                                       self -> GLenum -> GLenum -> m (JSRef a)
 webGLRenderingContextGetTexParameter self target pname
-  = ghcjs_dom_web_gl_rendering_context_get_tex_parameter
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_tex_parameter
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         pname)
  
 foreign import javascript unsafe "$1[\"getUniform\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_get_uniform ::
@@ -1588,15 +1688,16 @@ foreign import javascript unsafe "$1[\"getUniform\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform Mozilla WebGLRenderingContext.uniform documentation> 
 webGLRenderingContextGetUniform ::
-                                (IsWebGLRenderingContext self, IsWebGLProgram program,
+                                (MonadIO m, IsWebGLRenderingContext self, IsWebGLProgram program,
                                  IsWebGLUniformLocation location) =>
-                                  self -> Maybe program -> Maybe location -> IO (JSRef a)
+                                  self -> Maybe program -> Maybe location -> m (JSRef a)
 webGLRenderingContextGetUniform self program location
-  = ghcjs_dom_web_gl_rendering_context_get_uniform
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_uniform
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location))
  
 foreign import javascript unsafe
         "$1[\"getUniformLocation\"]($2, $3)"
@@ -1606,16 +1707,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniformLocation Mozilla WebGLRenderingContext.uniformLocation documentation> 
 webGLRenderingContextGetUniformLocation ::
-                                        (IsWebGLRenderingContext self, IsWebGLProgram program,
-                                         ToJSString name) =>
+                                        (MonadIO m, IsWebGLRenderingContext self,
+                                         IsWebGLProgram program, ToJSString name) =>
                                           self ->
-                                            Maybe program -> name -> IO (Maybe WebGLUniformLocation)
+                                            Maybe program -> name -> m (Maybe WebGLUniformLocation)
 webGLRenderingContextGetUniformLocation self program name
-  = (ghcjs_dom_web_gl_rendering_context_get_uniform_location
-       (unWebGLRenderingContext (toWebGLRenderingContext self))
-       (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_web_gl_rendering_context_get_uniform_location
+          (unWebGLRenderingContext (toWebGLRenderingContext self))
+          (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getVertexAttrib\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_get_vertex_attrib ::
@@ -1623,13 +1725,14 @@ foreign import javascript unsafe "$1[\"getVertexAttrib\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib Mozilla WebGLRenderingContext.vertexAttrib documentation> 
 webGLRenderingContextGetVertexAttrib ::
-                                     (IsWebGLRenderingContext self) =>
-                                       self -> GLuint -> GLenum -> IO (JSRef a)
+                                     (MonadIO m, IsWebGLRenderingContext self) =>
+                                       self -> GLuint -> GLenum -> m (JSRef a)
 webGLRenderingContextGetVertexAttrib self index pname
-  = ghcjs_dom_web_gl_rendering_context_get_vertex_attrib
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      index
-      pname
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_vertex_attrib
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         index
+         pname)
  
 foreign import javascript unsafe
         "$1[\"getVertexAttribOffset\"]($2,\n$3)"
@@ -1638,14 +1741,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttribOffset Mozilla WebGLRenderingContext.vertexAttribOffset documentation> 
 webGLRenderingContextGetVertexAttribOffset ::
-                                           (IsWebGLRenderingContext self) =>
-                                             self -> GLuint -> GLenum -> IO GLsizeiptr
+                                           (MonadIO m, IsWebGLRenderingContext self) =>
+                                             self -> GLuint -> GLenum -> m GLsizeiptr
 webGLRenderingContextGetVertexAttribOffset self index pname
-  = round <$>
-      (ghcjs_dom_web_gl_rendering_context_get_vertex_attrib_offset
-         (unWebGLRenderingContext (toWebGLRenderingContext self))
-         index
-         pname)
+  = liftIO
+      (round <$>
+         (ghcjs_dom_web_gl_rendering_context_get_vertex_attrib_offset
+            (unWebGLRenderingContext (toWebGLRenderingContext self))
+            index
+            pname))
  
 foreign import javascript unsafe "$1[\"hint\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_hint ::
@@ -1653,12 +1757,14 @@ foreign import javascript unsafe "$1[\"hint\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.hint Mozilla WebGLRenderingContext.hint documentation> 
 webGLRenderingContextHint ::
-                          (IsWebGLRenderingContext self) => self -> GLenum -> GLenum -> IO ()
+                          (MonadIO m, IsWebGLRenderingContext self) =>
+                            self -> GLenum -> GLenum -> m ()
 webGLRenderingContextHint self target mode
-  = ghcjs_dom_web_gl_rendering_context_hint
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      mode
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_hint
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         mode)
  
 foreign import javascript unsafe "$1[\"isBuffer\"]($2)"
         ghcjs_dom_web_gl_rendering_context_is_buffer ::
@@ -1666,12 +1772,13 @@ foreign import javascript unsafe "$1[\"isBuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isBuffer Mozilla WebGLRenderingContext.isBuffer documentation> 
 webGLRenderingContextIsBuffer ::
-                              (IsWebGLRenderingContext self, IsWebGLBuffer buffer) =>
-                                self -> Maybe buffer -> IO GLboolean
+                              (MonadIO m, IsWebGLRenderingContext self, IsWebGLBuffer buffer) =>
+                                self -> Maybe buffer -> m GLboolean
 webGLRenderingContextIsBuffer self buffer
-  = ghcjs_dom_web_gl_rendering_context_is_buffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLBuffer . toWebGLBuffer) buffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_buffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLBuffer . toWebGLBuffer) buffer))
  
 foreign import javascript unsafe "$1[\"isContextLost\"]()"
         ghcjs_dom_web_gl_rendering_context_is_context_lost ::
@@ -1679,10 +1786,11 @@ foreign import javascript unsafe "$1[\"isContextLost\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isContextLost Mozilla WebGLRenderingContext.isContextLost documentation> 
 webGLRenderingContextIsContextLost ::
-                                   (IsWebGLRenderingContext self) => self -> IO GLboolean
+                                   (MonadIO m, IsWebGLRenderingContext self) => self -> m GLboolean
 webGLRenderingContextIsContextLost self
-  = ghcjs_dom_web_gl_rendering_context_is_context_lost
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_context_lost
+         (unWebGLRenderingContext (toWebGLRenderingContext self)))
  
 foreign import javascript unsafe "$1[\"isEnabled\"]($2)"
         ghcjs_dom_web_gl_rendering_context_is_enabled ::
@@ -1690,11 +1798,13 @@ foreign import javascript unsafe "$1[\"isEnabled\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isEnabled Mozilla WebGLRenderingContext.isEnabled documentation> 
 webGLRenderingContextIsEnabled ::
-                               (IsWebGLRenderingContext self) => self -> GLenum -> IO GLboolean
+                               (MonadIO m, IsWebGLRenderingContext self) =>
+                                 self -> GLenum -> m GLboolean
 webGLRenderingContextIsEnabled self cap
-  = ghcjs_dom_web_gl_rendering_context_is_enabled
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      cap
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_enabled
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         cap)
  
 foreign import javascript unsafe "$1[\"isFramebuffer\"]($2)"
         ghcjs_dom_web_gl_rendering_context_is_framebuffer ::
@@ -1703,13 +1813,15 @@ foreign import javascript unsafe "$1[\"isFramebuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isFramebuffer Mozilla WebGLRenderingContext.isFramebuffer documentation> 
 webGLRenderingContextIsFramebuffer ::
-                                   (IsWebGLRenderingContext self, IsWebGLFramebuffer framebuffer) =>
-                                     self -> Maybe framebuffer -> IO GLboolean
+                                   (MonadIO m, IsWebGLRenderingContext self,
+                                    IsWebGLFramebuffer framebuffer) =>
+                                     self -> Maybe framebuffer -> m GLboolean
 webGLRenderingContextIsFramebuffer self framebuffer
-  = ghcjs_dom_web_gl_rendering_context_is_framebuffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLFramebuffer . toWebGLFramebuffer)
-         framebuffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_framebuffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLFramebuffer . toWebGLFramebuffer)
+            framebuffer))
  
 foreign import javascript unsafe "$1[\"isProgram\"]($2)"
         ghcjs_dom_web_gl_rendering_context_is_program ::
@@ -1717,12 +1829,14 @@ foreign import javascript unsafe "$1[\"isProgram\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isProgram Mozilla WebGLRenderingContext.isProgram documentation> 
 webGLRenderingContextIsProgram ::
-                               (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                 self -> Maybe program -> IO GLboolean
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLProgram program) =>
+                                 self -> Maybe program -> m GLboolean
 webGLRenderingContextIsProgram self program
-  = ghcjs_dom_web_gl_rendering_context_is_program
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_program
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program))
  
 foreign import javascript unsafe "$1[\"isRenderbuffer\"]($2)"
         ghcjs_dom_web_gl_rendering_context_is_renderbuffer ::
@@ -1731,14 +1845,15 @@ foreign import javascript unsafe "$1[\"isRenderbuffer\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isRenderbuffer Mozilla WebGLRenderingContext.isRenderbuffer documentation> 
 webGLRenderingContextIsRenderbuffer ::
-                                    (IsWebGLRenderingContext self,
+                                    (MonadIO m, IsWebGLRenderingContext self,
                                      IsWebGLRenderbuffer renderbuffer) =>
-                                      self -> Maybe renderbuffer -> IO GLboolean
+                                      self -> Maybe renderbuffer -> m GLboolean
 webGLRenderingContextIsRenderbuffer self renderbuffer
-  = ghcjs_dom_web_gl_rendering_context_is_renderbuffer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
-         renderbuffer)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_renderbuffer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLRenderbuffer . toWebGLRenderbuffer)
+            renderbuffer))
  
 foreign import javascript unsafe "$1[\"isShader\"]($2)"
         ghcjs_dom_web_gl_rendering_context_is_shader ::
@@ -1746,12 +1861,13 @@ foreign import javascript unsafe "$1[\"isShader\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isShader Mozilla WebGLRenderingContext.isShader documentation> 
 webGLRenderingContextIsShader ::
-                              (IsWebGLRenderingContext self, IsWebGLShader shader) =>
-                                self -> Maybe shader -> IO GLboolean
+                              (MonadIO m, IsWebGLRenderingContext self, IsWebGLShader shader) =>
+                                self -> Maybe shader -> m GLboolean
 webGLRenderingContextIsShader self shader
-  = ghcjs_dom_web_gl_rendering_context_is_shader
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLShader . toWebGLShader) shader)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_shader
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLShader . toWebGLShader) shader))
  
 foreign import javascript unsafe "$1[\"isTexture\"]($2)"
         ghcjs_dom_web_gl_rendering_context_is_texture ::
@@ -1759,12 +1875,14 @@ foreign import javascript unsafe "$1[\"isTexture\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.isTexture Mozilla WebGLRenderingContext.isTexture documentation> 
 webGLRenderingContextIsTexture ::
-                               (IsWebGLRenderingContext self, IsWebGLTexture texture) =>
-                                 self -> Maybe texture -> IO GLboolean
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLTexture texture) =>
+                                 self -> Maybe texture -> m GLboolean
 webGLRenderingContextIsTexture self texture
-  = ghcjs_dom_web_gl_rendering_context_is_texture
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLTexture . toWebGLTexture) texture)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_is_texture
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLTexture . toWebGLTexture) texture))
  
 foreign import javascript unsafe "$1[\"lineWidth\"]($2)"
         ghcjs_dom_web_gl_rendering_context_line_width ::
@@ -1772,11 +1890,13 @@ foreign import javascript unsafe "$1[\"lineWidth\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.lineWidth Mozilla WebGLRenderingContext.lineWidth documentation> 
 webGLRenderingContextLineWidth ::
-                               (IsWebGLRenderingContext self) => self -> GLfloat -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self) =>
+                                 self -> GLfloat -> m ()
 webGLRenderingContextLineWidth self width
-  = ghcjs_dom_web_gl_rendering_context_line_width
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      width
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_line_width
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         width)
  
 foreign import javascript unsafe "$1[\"linkProgram\"]($2)"
         ghcjs_dom_web_gl_rendering_context_link_program ::
@@ -1784,12 +1904,14 @@ foreign import javascript unsafe "$1[\"linkProgram\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.linkProgram Mozilla WebGLRenderingContext.linkProgram documentation> 
 webGLRenderingContextLinkProgram ::
-                                 (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                   self -> Maybe program -> IO ()
+                                 (MonadIO m, IsWebGLRenderingContext self,
+                                  IsWebGLProgram program) =>
+                                   self -> Maybe program -> m ()
 webGLRenderingContextLinkProgram self program
-  = ghcjs_dom_web_gl_rendering_context_link_program
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_link_program
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program))
  
 foreign import javascript unsafe "$1[\"pixelStorei\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_pixel_storei ::
@@ -1797,12 +1919,14 @@ foreign import javascript unsafe "$1[\"pixelStorei\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.pixelStorei Mozilla WebGLRenderingContext.pixelStorei documentation> 
 webGLRenderingContextPixelStorei ::
-                                 (IsWebGLRenderingContext self) => self -> GLenum -> GLint -> IO ()
+                                 (MonadIO m, IsWebGLRenderingContext self) =>
+                                   self -> GLenum -> GLint -> m ()
 webGLRenderingContextPixelStorei self pname param
-  = ghcjs_dom_web_gl_rendering_context_pixel_storei
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      pname
-      param
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_pixel_storei
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         pname
+         param)
  
 foreign import javascript unsafe "$1[\"polygonOffset\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_polygon_offset ::
@@ -1810,13 +1934,14 @@ foreign import javascript unsafe "$1[\"polygonOffset\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.polygonOffset Mozilla WebGLRenderingContext.polygonOffset documentation> 
 webGLRenderingContextPolygonOffset ::
-                                   (IsWebGLRenderingContext self) =>
-                                     self -> GLfloat -> GLfloat -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> GLfloat -> GLfloat -> m ()
 webGLRenderingContextPolygonOffset self factor units
-  = ghcjs_dom_web_gl_rendering_context_polygon_offset
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      factor
-      units
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_polygon_offset
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         factor
+         units)
  
 foreign import javascript unsafe
         "$1[\"readPixels\"]($2, $3, $4, $5,\n$6, $7, $8)"
@@ -1829,23 +1954,25 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.readPixels Mozilla WebGLRenderingContext.readPixels documentation> 
 webGLRenderingContextReadPixels ::
-                                (IsWebGLRenderingContext self, IsArrayBufferView pixels) =>
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsArrayBufferView pixels) =>
                                   self ->
                                     GLint ->
                                       GLint ->
                                         GLsizei ->
-                                          GLsizei -> GLenum -> GLenum -> Maybe pixels -> IO ()
+                                          GLsizei -> GLenum -> GLenum -> Maybe pixels -> m ()
 webGLRenderingContextReadPixels self x y width height format type'
   pixels
-  = ghcjs_dom_web_gl_rendering_context_read_pixels
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      x
-      y
-      width
-      height
-      format
-      type'
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) pixels)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_read_pixels
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         x
+         y
+         width
+         height
+         format
+         type'
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) pixels))
  
 foreign import javascript unsafe "$1[\"releaseShaderCompiler\"]()"
         ghcjs_dom_web_gl_rendering_context_release_shader_compiler ::
@@ -1853,10 +1980,11 @@ foreign import javascript unsafe "$1[\"releaseShaderCompiler\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.releaseShaderCompiler Mozilla WebGLRenderingContext.releaseShaderCompiler documentation> 
 webGLRenderingContextReleaseShaderCompiler ::
-                                           (IsWebGLRenderingContext self) => self -> IO ()
+                                           (MonadIO m, IsWebGLRenderingContext self) => self -> m ()
 webGLRenderingContextReleaseShaderCompiler self
-  = ghcjs_dom_web_gl_rendering_context_release_shader_compiler
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_release_shader_compiler
+         (unWebGLRenderingContext (toWebGLRenderingContext self)))
  
 foreign import javascript unsafe
         "$1[\"renderbufferStorage\"]($2,\n$3, $4, $5)"
@@ -1866,16 +1994,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.renderbufferStorage Mozilla WebGLRenderingContext.renderbufferStorage documentation> 
 webGLRenderingContextRenderbufferStorage ::
-                                         (IsWebGLRenderingContext self) =>
-                                           self -> GLenum -> GLenum -> GLsizei -> GLsizei -> IO ()
+                                         (MonadIO m, IsWebGLRenderingContext self) =>
+                                           self -> GLenum -> GLenum -> GLsizei -> GLsizei -> m ()
 webGLRenderingContextRenderbufferStorage self target internalformat
   width height
-  = ghcjs_dom_web_gl_rendering_context_renderbuffer_storage
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      internalformat
-      width
-      height
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_renderbuffer_storage
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         internalformat
+         width
+         height)
  
 foreign import javascript unsafe "$1[\"sampleCoverage\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_sample_coverage ::
@@ -1883,13 +2012,14 @@ foreign import javascript unsafe "$1[\"sampleCoverage\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.sampleCoverage Mozilla WebGLRenderingContext.sampleCoverage documentation> 
 webGLRenderingContextSampleCoverage ::
-                                    (IsWebGLRenderingContext self) =>
-                                      self -> GLclampf -> GLboolean -> IO ()
+                                    (MonadIO m, IsWebGLRenderingContext self) =>
+                                      self -> GLclampf -> GLboolean -> m ()
 webGLRenderingContextSampleCoverage self value invert
-  = ghcjs_dom_web_gl_rendering_context_sample_coverage
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      value
-      invert
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_sample_coverage
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         value
+         invert)
  
 foreign import javascript unsafe "$1[\"scissor\"]($2, $3, $4, $5)"
         ghcjs_dom_web_gl_rendering_context_scissor ::
@@ -1898,15 +2028,16 @@ foreign import javascript unsafe "$1[\"scissor\"]($2, $3, $4, $5)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.scissor Mozilla WebGLRenderingContext.scissor documentation> 
 webGLRenderingContextScissor ::
-                             (IsWebGLRenderingContext self) =>
-                               self -> GLint -> GLint -> GLsizei -> GLsizei -> IO ()
+                             (MonadIO m, IsWebGLRenderingContext self) =>
+                               self -> GLint -> GLint -> GLsizei -> GLsizei -> m ()
 webGLRenderingContextScissor self x y width height
-  = ghcjs_dom_web_gl_rendering_context_scissor
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      x
-      y
-      width
-      height
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_scissor
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         x
+         y
+         width
+         height)
  
 foreign import javascript unsafe "$1[\"shaderSource\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_shader_source ::
@@ -1915,14 +2046,15 @@ foreign import javascript unsafe "$1[\"shaderSource\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.shaderSource Mozilla WebGLRenderingContext.shaderSource documentation> 
 webGLRenderingContextShaderSource ::
-                                  (IsWebGLRenderingContext self, IsWebGLShader shader,
+                                  (MonadIO m, IsWebGLRenderingContext self, IsWebGLShader shader,
                                    ToJSString string) =>
-                                    self -> Maybe shader -> string -> IO ()
+                                    self -> Maybe shader -> string -> m ()
 webGLRenderingContextShaderSource self shader string
-  = ghcjs_dom_web_gl_rendering_context_shader_source
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLShader . toWebGLShader) shader)
-      (toJSString string)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_shader_source
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLShader . toWebGLShader) shader)
+         (toJSString string))
  
 foreign import javascript unsafe "$1[\"stencilFunc\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_stencil_func ::
@@ -1930,14 +2062,15 @@ foreign import javascript unsafe "$1[\"stencilFunc\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.stencilFunc Mozilla WebGLRenderingContext.stencilFunc documentation> 
 webGLRenderingContextStencilFunc ::
-                                 (IsWebGLRenderingContext self) =>
-                                   self -> GLenum -> GLint -> GLuint -> IO ()
+                                 (MonadIO m, IsWebGLRenderingContext self) =>
+                                   self -> GLenum -> GLint -> GLuint -> m ()
 webGLRenderingContextStencilFunc self func ref mask
-  = ghcjs_dom_web_gl_rendering_context_stencil_func
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      func
-      ref
-      mask
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_stencil_func
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         func
+         ref
+         mask)
  
 foreign import javascript unsafe
         "$1[\"stencilFuncSeparate\"]($2,\n$3, $4, $5)"
@@ -1947,15 +2080,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.stencilFuncSeparate Mozilla WebGLRenderingContext.stencilFuncSeparate documentation> 
 webGLRenderingContextStencilFuncSeparate ::
-                                         (IsWebGLRenderingContext self) =>
-                                           self -> GLenum -> GLenum -> GLint -> GLuint -> IO ()
+                                         (MonadIO m, IsWebGLRenderingContext self) =>
+                                           self -> GLenum -> GLenum -> GLint -> GLuint -> m ()
 webGLRenderingContextStencilFuncSeparate self face func ref mask
-  = ghcjs_dom_web_gl_rendering_context_stencil_func_separate
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      face
-      func
-      ref
-      mask
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_stencil_func_separate
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         face
+         func
+         ref
+         mask)
  
 foreign import javascript unsafe "$1[\"stencilMask\"]($2)"
         ghcjs_dom_web_gl_rendering_context_stencil_mask ::
@@ -1963,11 +2097,12 @@ foreign import javascript unsafe "$1[\"stencilMask\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.stencilMask Mozilla WebGLRenderingContext.stencilMask documentation> 
 webGLRenderingContextStencilMask ::
-                                 (IsWebGLRenderingContext self) => self -> GLuint -> IO ()
+                                 (MonadIO m, IsWebGLRenderingContext self) => self -> GLuint -> m ()
 webGLRenderingContextStencilMask self mask
-  = ghcjs_dom_web_gl_rendering_context_stencil_mask
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      mask
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_stencil_mask
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         mask)
  
 foreign import javascript unsafe
         "$1[\"stencilMaskSeparate\"]($2,\n$3)"
@@ -1976,13 +2111,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.stencilMaskSeparate Mozilla WebGLRenderingContext.stencilMaskSeparate documentation> 
 webGLRenderingContextStencilMaskSeparate ::
-                                         (IsWebGLRenderingContext self) =>
-                                           self -> GLenum -> GLuint -> IO ()
+                                         (MonadIO m, IsWebGLRenderingContext self) =>
+                                           self -> GLenum -> GLuint -> m ()
 webGLRenderingContextStencilMaskSeparate self face mask
-  = ghcjs_dom_web_gl_rendering_context_stencil_mask_separate
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      face
-      mask
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_stencil_mask_separate
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         face
+         mask)
  
 foreign import javascript unsafe "$1[\"stencilOp\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_stencil_op ::
@@ -1990,14 +2126,15 @@ foreign import javascript unsafe "$1[\"stencilOp\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.stencilOp Mozilla WebGLRenderingContext.stencilOp documentation> 
 webGLRenderingContextStencilOp ::
-                               (IsWebGLRenderingContext self) =>
-                                 self -> GLenum -> GLenum -> GLenum -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self) =>
+                                 self -> GLenum -> GLenum -> GLenum -> m ()
 webGLRenderingContextStencilOp self fail zfail zpass
-  = ghcjs_dom_web_gl_rendering_context_stencil_op
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      fail
-      zfail
-      zpass
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_stencil_op
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         fail
+         zfail
+         zpass)
  
 foreign import javascript unsafe
         "$1[\"stencilOpSeparate\"]($2, $3,\n$4, $5)"
@@ -2007,15 +2144,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.stencilOpSeparate Mozilla WebGLRenderingContext.stencilOpSeparate documentation> 
 webGLRenderingContextStencilOpSeparate ::
-                                       (IsWebGLRenderingContext self) =>
-                                         self -> GLenum -> GLenum -> GLenum -> GLenum -> IO ()
+                                       (MonadIO m, IsWebGLRenderingContext self) =>
+                                         self -> GLenum -> GLenum -> GLenum -> GLenum -> m ()
 webGLRenderingContextStencilOpSeparate self face fail zfail zpass
-  = ghcjs_dom_web_gl_rendering_context_stencil_op_separate
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      face
-      fail
-      zfail
-      zpass
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_stencil_op_separate
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         face
+         fail
+         zfail
+         zpass)
  
 foreign import javascript unsafe
         "$1[\"texParameterf\"]($2, $3, $4)"
@@ -2024,14 +2162,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texParameterf Mozilla WebGLRenderingContext.texParameterf documentation> 
 webGLRenderingContextTexParameterf ::
-                                   (IsWebGLRenderingContext self) =>
-                                     self -> GLenum -> GLenum -> GLfloat -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> GLenum -> GLenum -> GLfloat -> m ()
 webGLRenderingContextTexParameterf self target pname param
-  = ghcjs_dom_web_gl_rendering_context_tex_parameterf
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      pname
-      param
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_parameterf
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         pname
+         param)
  
 foreign import javascript unsafe
         "$1[\"texParameteri\"]($2, $3, $4)"
@@ -2040,14 +2179,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texParameteri Mozilla WebGLRenderingContext.texParameteri documentation> 
 webGLRenderingContextTexParameteri ::
-                                   (IsWebGLRenderingContext self) =>
-                                     self -> GLenum -> GLenum -> GLint -> IO ()
+                                   (MonadIO m, IsWebGLRenderingContext self) =>
+                                     self -> GLenum -> GLenum -> GLint -> m ()
 webGLRenderingContextTexParameteri self target pname param
-  = ghcjs_dom_web_gl_rendering_context_tex_parameteri
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      pname
-      param
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_parameteri
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         pname
+         param)
  
 foreign import javascript unsafe
         "$1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10)"
@@ -2062,27 +2202,29 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texImage2DView Mozilla WebGLRenderingContext.texImage2DView documentation> 
 webGLRenderingContextTexImage2DView ::
-                                    (IsWebGLRenderingContext self, IsArrayBufferView pixels) =>
+                                    (MonadIO m, IsWebGLRenderingContext self,
+                                     IsArrayBufferView pixels) =>
                                       self ->
                                         GLenum ->
                                           GLint ->
                                             GLenum ->
                                               GLsizei ->
                                                 GLsizei ->
-                                                  GLint -> GLenum -> GLenum -> Maybe pixels -> IO ()
+                                                  GLint -> GLenum -> GLenum -> Maybe pixels -> m ()
 webGLRenderingContextTexImage2DView self target level
   internalformat width height border format type' pixels
-  = ghcjs_dom_web_gl_rendering_context_tex_image2_dView
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      internalformat
-      width
-      height
-      border
-      format
-      type'
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) pixels)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_image2_dView
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         internalformat
+         width
+         height
+         border
+         format
+         type'
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) pixels))
  
 foreign import javascript unsafe
         "$1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7)"
@@ -2093,21 +2235,22 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texImage2DData Mozilla WebGLRenderingContext.texImage2DData documentation> 
 webGLRenderingContextTexImage2DData ::
-                                    (IsWebGLRenderingContext self, IsImageData pixels) =>
+                                    (MonadIO m, IsWebGLRenderingContext self, IsImageData pixels) =>
                                       self ->
                                         GLenum ->
                                           GLint ->
-                                            GLenum -> GLenum -> GLenum -> Maybe pixels -> IO ()
+                                            GLenum -> GLenum -> GLenum -> Maybe pixels -> m ()
 webGLRenderingContextTexImage2DData self target level
   internalformat format type' pixels
-  = ghcjs_dom_web_gl_rendering_context_tex_image2_dData
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      internalformat
-      format
-      type'
-      (maybe jsNull (unImageData . toImageData) pixels)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_image2_dData
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         internalformat
+         format
+         type'
+         (maybe jsNull (unImageData . toImageData) pixels))
  
 foreign import javascript unsafe
         "$1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7)"
@@ -2119,20 +2262,22 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texImage2D Mozilla WebGLRenderingContext.texImage2D documentation> 
 webGLRenderingContextTexImage2D ::
-                                (IsWebGLRenderingContext self, IsHTMLImageElement image) =>
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsHTMLImageElement image) =>
                                   self ->
                                     GLenum ->
-                                      GLint -> GLenum -> GLenum -> GLenum -> Maybe image -> IO ()
+                                      GLint -> GLenum -> GLenum -> GLenum -> Maybe image -> m ()
 webGLRenderingContextTexImage2D self target level internalformat
   format type' image
-  = ghcjs_dom_web_gl_rendering_context_tex_image2_d
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      internalformat
-      format
-      type'
-      (maybe jsNull (unHTMLImageElement . toHTMLImageElement) image)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_image2_d
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         internalformat
+         format
+         type'
+         (maybe jsNull (unHTMLImageElement . toHTMLImageElement) image))
  
 foreign import javascript unsafe
         "$1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7)"
@@ -2144,21 +2289,23 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texImage2DCanvas Mozilla WebGLRenderingContext.texImage2DCanvas documentation> 
 webGLRenderingContextTexImage2DCanvas ::
-                                      (IsWebGLRenderingContext self, IsHTMLCanvasElement canvas) =>
+                                      (MonadIO m, IsWebGLRenderingContext self,
+                                       IsHTMLCanvasElement canvas) =>
                                         self ->
                                           GLenum ->
                                             GLint ->
-                                              GLenum -> GLenum -> GLenum -> Maybe canvas -> IO ()
+                                              GLenum -> GLenum -> GLenum -> Maybe canvas -> m ()
 webGLRenderingContextTexImage2DCanvas self target level
   internalformat format type' canvas
-  = ghcjs_dom_web_gl_rendering_context_tex_image2_dCanvas
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      internalformat
-      format
-      type'
-      (maybe jsNull (unHTMLCanvasElement . toHTMLCanvasElement) canvas)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_image2_dCanvas
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         internalformat
+         format
+         type'
+         (maybe jsNull (unHTMLCanvasElement . toHTMLCanvasElement) canvas))
  
 foreign import javascript unsafe
         "$1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7)"
@@ -2170,21 +2317,23 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texImage2DVideo Mozilla WebGLRenderingContext.texImage2DVideo documentation> 
 webGLRenderingContextTexImage2DVideo ::
-                                     (IsWebGLRenderingContext self, IsHTMLVideoElement video) =>
+                                     (MonadIO m, IsWebGLRenderingContext self,
+                                      IsHTMLVideoElement video) =>
                                        self ->
                                          GLenum ->
                                            GLint ->
-                                             GLenum -> GLenum -> GLenum -> Maybe video -> IO ()
+                                             GLenum -> GLenum -> GLenum -> Maybe video -> m ()
 webGLRenderingContextTexImage2DVideo self target level
   internalformat format type' video
-  = ghcjs_dom_web_gl_rendering_context_tex_image2_dVideo
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      internalformat
-      format
-      type'
-      (maybe jsNull (unHTMLVideoElement . toHTMLVideoElement) video)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_image2_dVideo
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         internalformat
+         format
+         type'
+         (maybe jsNull (unHTMLVideoElement . toHTMLVideoElement) video))
  
 foreign import javascript unsafe
         "$1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10)"
@@ -2199,7 +2348,8 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texSubImage2DView Mozilla WebGLRenderingContext.texSubImage2DView documentation> 
 webGLRenderingContextTexSubImage2DView ::
-                                       (IsWebGLRenderingContext self, IsArrayBufferView pixels) =>
+                                       (MonadIO m, IsWebGLRenderingContext self,
+                                        IsArrayBufferView pixels) =>
                                          self ->
                                            GLenum ->
                                              GLint ->
@@ -2207,20 +2357,21 @@ webGLRenderingContextTexSubImage2DView ::
                                                  GLint ->
                                                    GLsizei ->
                                                      GLsizei ->
-                                                       GLenum -> GLenum -> Maybe pixels -> IO ()
+                                                       GLenum -> GLenum -> Maybe pixels -> m ()
 webGLRenderingContextTexSubImage2DView self target level xoffset
   yoffset width height format type' pixels
-  = ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dView
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      xoffset
-      yoffset
-      width
-      height
-      format
-      type'
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) pixels)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dView
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         xoffset
+         yoffset
+         width
+         height
+         format
+         type'
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) pixels))
  
 foreign import javascript unsafe
         "$1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8)"
@@ -2232,23 +2383,25 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texSubImage2DData Mozilla WebGLRenderingContext.texSubImage2DData documentation> 
 webGLRenderingContextTexSubImage2DData ::
-                                       (IsWebGLRenderingContext self, IsImageData pixels) =>
+                                       (MonadIO m, IsWebGLRenderingContext self,
+                                        IsImageData pixels) =>
                                          self ->
                                            GLenum ->
                                              GLint ->
                                                GLint ->
-                                                 GLint -> GLenum -> GLenum -> Maybe pixels -> IO ()
+                                                 GLint -> GLenum -> GLenum -> Maybe pixels -> m ()
 webGLRenderingContextTexSubImage2DData self target level xoffset
   yoffset format type' pixels
-  = ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dData
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      xoffset
-      yoffset
-      format
-      type'
-      (maybe jsNull (unImageData . toImageData) pixels)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dData
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         xoffset
+         yoffset
+         format
+         type'
+         (maybe jsNull (unImageData . toImageData) pixels))
  
 foreign import javascript unsafe
         "$1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8)"
@@ -2261,23 +2414,24 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texSubImage2D Mozilla WebGLRenderingContext.texSubImage2D documentation> 
 webGLRenderingContextTexSubImage2D ::
-                                   (IsWebGLRenderingContext self, IsHTMLImageElement image) =>
+                                   (MonadIO m, IsWebGLRenderingContext self,
+                                    IsHTMLImageElement image) =>
                                      self ->
                                        GLenum ->
                                          GLint ->
-                                           GLint ->
-                                             GLint -> GLenum -> GLenum -> Maybe image -> IO ()
+                                           GLint -> GLint -> GLenum -> GLenum -> Maybe image -> m ()
 webGLRenderingContextTexSubImage2D self target level xoffset
   yoffset format type' image
-  = ghcjs_dom_web_gl_rendering_context_tex_sub_image2_d
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      xoffset
-      yoffset
-      format
-      type'
-      (maybe jsNull (unHTMLImageElement . toHTMLImageElement) image)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_sub_image2_d
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         xoffset
+         yoffset
+         format
+         type'
+         (maybe jsNull (unHTMLImageElement . toHTMLImageElement) image))
  
 foreign import javascript unsafe
         "$1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8)"
@@ -2290,25 +2444,25 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texSubImage2DCanvas Mozilla WebGLRenderingContext.texSubImage2DCanvas documentation> 
 webGLRenderingContextTexSubImage2DCanvas ::
-                                         (IsWebGLRenderingContext self,
+                                         (MonadIO m, IsWebGLRenderingContext self,
                                           IsHTMLCanvasElement canvas) =>
                                            self ->
                                              GLenum ->
                                                GLint ->
                                                  GLint ->
-                                                   GLint ->
-                                                     GLenum -> GLenum -> Maybe canvas -> IO ()
+                                                   GLint -> GLenum -> GLenum -> Maybe canvas -> m ()
 webGLRenderingContextTexSubImage2DCanvas self target level xoffset
   yoffset format type' canvas
-  = ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dCanvas
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      xoffset
-      yoffset
-      format
-      type'
-      (maybe jsNull (unHTMLCanvasElement . toHTMLCanvasElement) canvas)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dCanvas
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         xoffset
+         yoffset
+         format
+         type'
+         (maybe jsNull (unHTMLCanvasElement . toHTMLCanvasElement) canvas))
  
 foreign import javascript unsafe
         "$1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8)"
@@ -2321,23 +2475,25 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.texSubImage2DVideo Mozilla WebGLRenderingContext.texSubImage2DVideo documentation> 
 webGLRenderingContextTexSubImage2DVideo ::
-                                        (IsWebGLRenderingContext self, IsHTMLVideoElement video) =>
+                                        (MonadIO m, IsWebGLRenderingContext self,
+                                         IsHTMLVideoElement video) =>
                                           self ->
                                             GLenum ->
                                               GLint ->
                                                 GLint ->
-                                                  GLint -> GLenum -> GLenum -> Maybe video -> IO ()
+                                                  GLint -> GLenum -> GLenum -> Maybe video -> m ()
 webGLRenderingContextTexSubImage2DVideo self target level xoffset
   yoffset format type' video
-  = ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dVideo
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      target
-      level
-      xoffset
-      yoffset
-      format
-      type'
-      (maybe jsNull (unHTMLVideoElement . toHTMLVideoElement) video)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_tex_sub_image2_dVideo
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         target
+         level
+         xoffset
+         yoffset
+         format
+         type'
+         (maybe jsNull (unHTMLVideoElement . toHTMLVideoElement) video))
  
 foreign import javascript unsafe "$1[\"uniform1f\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform1f ::
@@ -2346,14 +2502,16 @@ foreign import javascript unsafe "$1[\"uniform1f\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform1f Mozilla WebGLRenderingContext.uniform1f documentation> 
 webGLRenderingContextUniform1f ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
-                                 self -> Maybe location -> GLfloat -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
+                                 self -> Maybe location -> GLfloat -> m ()
 webGLRenderingContextUniform1f self location x
-  = ghcjs_dom_web_gl_rendering_context_uniform1f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform1f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x)
  
 foreign import javascript unsafe "$1[\"uniform1fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform1fv ::
@@ -2362,15 +2520,16 @@ foreign import javascript unsafe "$1[\"uniform1fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform1fv Mozilla WebGLRenderingContext.uniform1fv documentation> 
 webGLRenderingContextUniform1fv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsFloat32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsFloat32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform1fv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform1fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unFloat32Array . toFloat32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform1fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unFloat32Array . toFloat32Array) v))
  
 foreign import javascript unsafe "$1[\"uniform1i\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform1i ::
@@ -2379,14 +2538,16 @@ foreign import javascript unsafe "$1[\"uniform1i\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform1i Mozilla WebGLRenderingContext.uniform1i documentation> 
 webGLRenderingContextUniform1i ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
-                                 self -> Maybe location -> GLint -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
+                                 self -> Maybe location -> GLint -> m ()
 webGLRenderingContextUniform1i self location x
-  = ghcjs_dom_web_gl_rendering_context_uniform1i
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform1i
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x)
  
 foreign import javascript unsafe "$1[\"uniform1iv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform1iv ::
@@ -2395,15 +2556,16 @@ foreign import javascript unsafe "$1[\"uniform1iv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform1iv Mozilla WebGLRenderingContext.uniform1iv documentation> 
 webGLRenderingContextUniform1iv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsInt32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsInt32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform1iv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform1iv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unInt32Array . toInt32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform1iv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unInt32Array . toInt32Array) v))
  
 foreign import javascript unsafe "$1[\"uniform2f\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_uniform2f ::
@@ -2412,15 +2574,17 @@ foreign import javascript unsafe "$1[\"uniform2f\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform2f Mozilla WebGLRenderingContext.uniform2f documentation> 
 webGLRenderingContextUniform2f ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
-                                 self -> Maybe location -> GLfloat -> GLfloat -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
+                                 self -> Maybe location -> GLfloat -> GLfloat -> m ()
 webGLRenderingContextUniform2f self location x y
-  = ghcjs_dom_web_gl_rendering_context_uniform2f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
-      y
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform2f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x
+         y)
  
 foreign import javascript unsafe "$1[\"uniform2fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform2fv ::
@@ -2429,15 +2593,16 @@ foreign import javascript unsafe "$1[\"uniform2fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform2fv Mozilla WebGLRenderingContext.uniform2fv documentation> 
 webGLRenderingContextUniform2fv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsFloat32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsFloat32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform2fv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform2fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unFloat32Array . toFloat32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform2fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unFloat32Array . toFloat32Array) v))
  
 foreign import javascript unsafe "$1[\"uniform2i\"]($2, $3, $4)"
         ghcjs_dom_web_gl_rendering_context_uniform2i ::
@@ -2446,15 +2611,17 @@ foreign import javascript unsafe "$1[\"uniform2i\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform2i Mozilla WebGLRenderingContext.uniform2i documentation> 
 webGLRenderingContextUniform2i ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
-                                 self -> Maybe location -> GLint -> GLint -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
+                                 self -> Maybe location -> GLint -> GLint -> m ()
 webGLRenderingContextUniform2i self location x y
-  = ghcjs_dom_web_gl_rendering_context_uniform2i
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
-      y
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform2i
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x
+         y)
  
 foreign import javascript unsafe "$1[\"uniform2iv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform2iv ::
@@ -2463,15 +2630,16 @@ foreign import javascript unsafe "$1[\"uniform2iv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform2iv Mozilla WebGLRenderingContext.uniform2iv documentation> 
 webGLRenderingContextUniform2iv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsInt32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsInt32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform2iv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform2iv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unInt32Array . toInt32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform2iv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unInt32Array . toInt32Array) v))
  
 foreign import javascript unsafe
         "$1[\"uniform3f\"]($2, $3, $4, $5)"
@@ -2482,16 +2650,18 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform3f Mozilla WebGLRenderingContext.uniform3f documentation> 
 webGLRenderingContextUniform3f ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
-                                 self -> Maybe location -> GLfloat -> GLfloat -> GLfloat -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
+                                 self -> Maybe location -> GLfloat -> GLfloat -> GLfloat -> m ()
 webGLRenderingContextUniform3f self location x y z
-  = ghcjs_dom_web_gl_rendering_context_uniform3f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
-      y
-      z
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform3f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x
+         y
+         z)
  
 foreign import javascript unsafe "$1[\"uniform3fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform3fv ::
@@ -2500,15 +2670,16 @@ foreign import javascript unsafe "$1[\"uniform3fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform3fv Mozilla WebGLRenderingContext.uniform3fv documentation> 
 webGLRenderingContextUniform3fv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsFloat32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsFloat32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform3fv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform3fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unFloat32Array . toFloat32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform3fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unFloat32Array . toFloat32Array) v))
  
 foreign import javascript unsafe
         "$1[\"uniform3i\"]($2, $3, $4, $5)"
@@ -2518,16 +2689,18 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform3i Mozilla WebGLRenderingContext.uniform3i documentation> 
 webGLRenderingContextUniform3i ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
-                                 self -> Maybe location -> GLint -> GLint -> GLint -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
+                                 self -> Maybe location -> GLint -> GLint -> GLint -> m ()
 webGLRenderingContextUniform3i self location x y z
-  = ghcjs_dom_web_gl_rendering_context_uniform3i
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
-      y
-      z
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform3i
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x
+         y
+         z)
  
 foreign import javascript unsafe "$1[\"uniform3iv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform3iv ::
@@ -2536,15 +2709,16 @@ foreign import javascript unsafe "$1[\"uniform3iv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform3iv Mozilla WebGLRenderingContext.uniform3iv documentation> 
 webGLRenderingContextUniform3iv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsInt32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsInt32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform3iv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform3iv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unInt32Array . toInt32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform3iv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unInt32Array . toInt32Array) v))
  
 foreign import javascript unsafe
         "$1[\"uniform4f\"]($2, $3, $4, $5,\n$6)"
@@ -2555,19 +2729,21 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform4f Mozilla WebGLRenderingContext.uniform4f documentation> 
 webGLRenderingContextUniform4f ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
                                  self ->
                                    Maybe location ->
-                                     GLfloat -> GLfloat -> GLfloat -> GLfloat -> IO ()
+                                     GLfloat -> GLfloat -> GLfloat -> GLfloat -> m ()
 webGLRenderingContextUniform4f self location x y z w
-  = ghcjs_dom_web_gl_rendering_context_uniform4f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
-      y
-      z
-      w
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform4f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x
+         y
+         z
+         w)
  
 foreign import javascript unsafe "$1[\"uniform4fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform4fv ::
@@ -2576,15 +2752,16 @@ foreign import javascript unsafe "$1[\"uniform4fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform4fv Mozilla WebGLRenderingContext.uniform4fv documentation> 
 webGLRenderingContextUniform4fv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsFloat32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsFloat32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform4fv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform4fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unFloat32Array . toFloat32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform4fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unFloat32Array . toFloat32Array) v))
  
 foreign import javascript unsafe
         "$1[\"uniform4i\"]($2, $3, $4, $5,\n$6)"
@@ -2595,17 +2772,19 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform4i Mozilla WebGLRenderingContext.uniform4i documentation> 
 webGLRenderingContextUniform4i ::
-                               (IsWebGLRenderingContext self, IsWebGLUniformLocation location) =>
-                                 self -> Maybe location -> GLint -> GLint -> GLint -> GLint -> IO ()
+                               (MonadIO m, IsWebGLRenderingContext self,
+                                IsWebGLUniformLocation location) =>
+                                 self -> Maybe location -> GLint -> GLint -> GLint -> GLint -> m ()
 webGLRenderingContextUniform4i self location x y z w
-  = ghcjs_dom_web_gl_rendering_context_uniform4i
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      x
-      y
-      z
-      w
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform4i
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         x
+         y
+         z
+         w)
  
 foreign import javascript unsafe "$1[\"uniform4iv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_uniform4iv ::
@@ -2614,15 +2793,16 @@ foreign import javascript unsafe "$1[\"uniform4iv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniform4iv Mozilla WebGLRenderingContext.uniform4iv documentation> 
 webGLRenderingContextUniform4iv ::
-                                (IsWebGLRenderingContext self, IsWebGLUniformLocation location,
-                                 IsInt32Array v) =>
-                                  self -> Maybe location -> Maybe v -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLUniformLocation location, IsInt32Array v) =>
+                                  self -> Maybe location -> Maybe v -> m ()
 webGLRenderingContextUniform4iv self location v
-  = ghcjs_dom_web_gl_rendering_context_uniform4iv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      (maybe jsNull (unInt32Array . toInt32Array) v)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform4iv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         (maybe jsNull (unInt32Array . toInt32Array) v))
  
 foreign import javascript unsafe
         "$1[\"uniformMatrix2fv\"]($2, $3,\n$4)"
@@ -2633,16 +2813,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniformMatrix2fv Mozilla WebGLRenderingContext.uniformMatrix2fv documentation> 
 webGLRenderingContextUniformMatrix2fv ::
-                                      (IsWebGLRenderingContext self,
+                                      (MonadIO m, IsWebGLRenderingContext self,
                                        IsWebGLUniformLocation location, IsFloat32Array array) =>
-                                        self -> Maybe location -> GLboolean -> Maybe array -> IO ()
+                                        self -> Maybe location -> GLboolean -> Maybe array -> m ()
 webGLRenderingContextUniformMatrix2fv self location transpose array
-  = ghcjs_dom_web_gl_rendering_context_uniform_matrix2fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      transpose
-      (maybe jsNull (unFloat32Array . toFloat32Array) array)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform_matrix2fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         transpose
+         (maybe jsNull (unFloat32Array . toFloat32Array) array))
  
 foreign import javascript unsafe
         "$1[\"uniformMatrix3fv\"]($2, $3,\n$4)"
@@ -2653,16 +2834,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniformMatrix3fv Mozilla WebGLRenderingContext.uniformMatrix3fv documentation> 
 webGLRenderingContextUniformMatrix3fv ::
-                                      (IsWebGLRenderingContext self,
+                                      (MonadIO m, IsWebGLRenderingContext self,
                                        IsWebGLUniformLocation location, IsFloat32Array array) =>
-                                        self -> Maybe location -> GLboolean -> Maybe array -> IO ()
+                                        self -> Maybe location -> GLboolean -> Maybe array -> m ()
 webGLRenderingContextUniformMatrix3fv self location transpose array
-  = ghcjs_dom_web_gl_rendering_context_uniform_matrix3fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      transpose
-      (maybe jsNull (unFloat32Array . toFloat32Array) array)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform_matrix3fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         transpose
+         (maybe jsNull (unFloat32Array . toFloat32Array) array))
  
 foreign import javascript unsafe
         "$1[\"uniformMatrix4fv\"]($2, $3,\n$4)"
@@ -2673,16 +2855,17 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.uniformMatrix4fv Mozilla WebGLRenderingContext.uniformMatrix4fv documentation> 
 webGLRenderingContextUniformMatrix4fv ::
-                                      (IsWebGLRenderingContext self,
+                                      (MonadIO m, IsWebGLRenderingContext self,
                                        IsWebGLUniformLocation location, IsFloat32Array array) =>
-                                        self -> Maybe location -> GLboolean -> Maybe array -> IO ()
+                                        self -> Maybe location -> GLboolean -> Maybe array -> m ()
 webGLRenderingContextUniformMatrix4fv self location transpose array
-  = ghcjs_dom_web_gl_rendering_context_uniform_matrix4fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
-         location)
-      transpose
-      (maybe jsNull (unFloat32Array . toFloat32Array) array)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_uniform_matrix4fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLUniformLocation . toWebGLUniformLocation)
+            location)
+         transpose
+         (maybe jsNull (unFloat32Array . toFloat32Array) array))
  
 foreign import javascript unsafe "$1[\"useProgram\"]($2)"
         ghcjs_dom_web_gl_rendering_context_use_program ::
@@ -2690,12 +2873,14 @@ foreign import javascript unsafe "$1[\"useProgram\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.useProgram Mozilla WebGLRenderingContext.useProgram documentation> 
 webGLRenderingContextUseProgram ::
-                                (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                  self -> Maybe program -> IO ()
+                                (MonadIO m, IsWebGLRenderingContext self,
+                                 IsWebGLProgram program) =>
+                                  self -> Maybe program -> m ()
 webGLRenderingContextUseProgram self program
-  = ghcjs_dom_web_gl_rendering_context_use_program
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_use_program
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program))
  
 foreign import javascript unsafe "$1[\"validateProgram\"]($2)"
         ghcjs_dom_web_gl_rendering_context_validate_program ::
@@ -2703,12 +2888,14 @@ foreign import javascript unsafe "$1[\"validateProgram\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.validateProgram Mozilla WebGLRenderingContext.validateProgram documentation> 
 webGLRenderingContextValidateProgram ::
-                                     (IsWebGLRenderingContext self, IsWebGLProgram program) =>
-                                       self -> Maybe program -> IO ()
+                                     (MonadIO m, IsWebGLRenderingContext self,
+                                      IsWebGLProgram program) =>
+                                       self -> Maybe program -> m ()
 webGLRenderingContextValidateProgram self program
-  = ghcjs_dom_web_gl_rendering_context_validate_program
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      (maybe jsNull (unWebGLProgram . toWebGLProgram) program)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_validate_program
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         (maybe jsNull (unWebGLProgram . toWebGLProgram) program))
  
 foreign import javascript unsafe "$1[\"vertexAttrib1f\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_vertex_attrib1f ::
@@ -2716,13 +2903,14 @@ foreign import javascript unsafe "$1[\"vertexAttrib1f\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib1f Mozilla WebGLRenderingContext.vertexAttrib1f documentation> 
 webGLRenderingContextVertexAttrib1f ::
-                                    (IsWebGLRenderingContext self) =>
-                                      self -> GLuint -> GLfloat -> IO ()
+                                    (MonadIO m, IsWebGLRenderingContext self) =>
+                                      self -> GLuint -> GLfloat -> m ()
 webGLRenderingContextVertexAttrib1f self indx x
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib1f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      x
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib1f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         x)
  
 foreign import javascript unsafe "$1[\"vertexAttrib1fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_vertex_attrib1fv ::
@@ -2731,13 +2919,15 @@ foreign import javascript unsafe "$1[\"vertexAttrib1fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib1fv Mozilla WebGLRenderingContext.vertexAttrib1fv documentation> 
 webGLRenderingContextVertexAttrib1fv ::
-                                     (IsWebGLRenderingContext self, IsFloat32Array values) =>
-                                       self -> GLuint -> Maybe values -> IO ()
+                                     (MonadIO m, IsWebGLRenderingContext self,
+                                      IsFloat32Array values) =>
+                                       self -> GLuint -> Maybe values -> m ()
 webGLRenderingContextVertexAttrib1fv self indx values
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib1fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      (maybe jsNull (unFloat32Array . toFloat32Array) values)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib1fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         (maybe jsNull (unFloat32Array . toFloat32Array) values))
  
 foreign import javascript unsafe
         "$1[\"vertexAttrib2f\"]($2, $3, $4)"
@@ -2747,14 +2937,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib2f Mozilla WebGLRenderingContext.vertexAttrib2f documentation> 
 webGLRenderingContextVertexAttrib2f ::
-                                    (IsWebGLRenderingContext self) =>
-                                      self -> GLuint -> GLfloat -> GLfloat -> IO ()
+                                    (MonadIO m, IsWebGLRenderingContext self) =>
+                                      self -> GLuint -> GLfloat -> GLfloat -> m ()
 webGLRenderingContextVertexAttrib2f self indx x y
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib2f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      x
-      y
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib2f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         x
+         y)
  
 foreign import javascript unsafe "$1[\"vertexAttrib2fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_vertex_attrib2fv ::
@@ -2763,13 +2954,15 @@ foreign import javascript unsafe "$1[\"vertexAttrib2fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib2fv Mozilla WebGLRenderingContext.vertexAttrib2fv documentation> 
 webGLRenderingContextVertexAttrib2fv ::
-                                     (IsWebGLRenderingContext self, IsFloat32Array values) =>
-                                       self -> GLuint -> Maybe values -> IO ()
+                                     (MonadIO m, IsWebGLRenderingContext self,
+                                      IsFloat32Array values) =>
+                                       self -> GLuint -> Maybe values -> m ()
 webGLRenderingContextVertexAttrib2fv self indx values
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib2fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      (maybe jsNull (unFloat32Array . toFloat32Array) values)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib2fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         (maybe jsNull (unFloat32Array . toFloat32Array) values))
  
 foreign import javascript unsafe
         "$1[\"vertexAttrib3f\"]($2, $3, $4,\n$5)"
@@ -2779,15 +2972,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib3f Mozilla WebGLRenderingContext.vertexAttrib3f documentation> 
 webGLRenderingContextVertexAttrib3f ::
-                                    (IsWebGLRenderingContext self) =>
-                                      self -> GLuint -> GLfloat -> GLfloat -> GLfloat -> IO ()
+                                    (MonadIO m, IsWebGLRenderingContext self) =>
+                                      self -> GLuint -> GLfloat -> GLfloat -> GLfloat -> m ()
 webGLRenderingContextVertexAttrib3f self indx x y z
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib3f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      x
-      y
-      z
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib3f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         x
+         y
+         z)
  
 foreign import javascript unsafe "$1[\"vertexAttrib3fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_vertex_attrib3fv ::
@@ -2796,13 +2990,15 @@ foreign import javascript unsafe "$1[\"vertexAttrib3fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib3fv Mozilla WebGLRenderingContext.vertexAttrib3fv documentation> 
 webGLRenderingContextVertexAttrib3fv ::
-                                     (IsWebGLRenderingContext self, IsFloat32Array values) =>
-                                       self -> GLuint -> Maybe values -> IO ()
+                                     (MonadIO m, IsWebGLRenderingContext self,
+                                      IsFloat32Array values) =>
+                                       self -> GLuint -> Maybe values -> m ()
 webGLRenderingContextVertexAttrib3fv self indx values
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib3fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      (maybe jsNull (unFloat32Array . toFloat32Array) values)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib3fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         (maybe jsNull (unFloat32Array . toFloat32Array) values))
  
 foreign import javascript unsafe
         "$1[\"vertexAttrib4f\"]($2, $3, $4,\n$5, $6)"
@@ -2812,17 +3008,18 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib4f Mozilla WebGLRenderingContext.vertexAttrib4f documentation> 
 webGLRenderingContextVertexAttrib4f ::
-                                    (IsWebGLRenderingContext self) =>
+                                    (MonadIO m, IsWebGLRenderingContext self) =>
                                       self ->
-                                        GLuint -> GLfloat -> GLfloat -> GLfloat -> GLfloat -> IO ()
+                                        GLuint -> GLfloat -> GLfloat -> GLfloat -> GLfloat -> m ()
 webGLRenderingContextVertexAttrib4f self indx x y z w
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib4f
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      x
-      y
-      z
-      w
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib4f
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         x
+         y
+         z
+         w)
  
 foreign import javascript unsafe "$1[\"vertexAttrib4fv\"]($2, $3)"
         ghcjs_dom_web_gl_rendering_context_vertex_attrib4fv ::
@@ -2831,13 +3028,15 @@ foreign import javascript unsafe "$1[\"vertexAttrib4fv\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttrib4fv Mozilla WebGLRenderingContext.vertexAttrib4fv documentation> 
 webGLRenderingContextVertexAttrib4fv ::
-                                     (IsWebGLRenderingContext self, IsFloat32Array values) =>
-                                       self -> GLuint -> Maybe values -> IO ()
+                                     (MonadIO m, IsWebGLRenderingContext self,
+                                      IsFloat32Array values) =>
+                                       self -> GLuint -> Maybe values -> m ()
 webGLRenderingContextVertexAttrib4fv self indx values
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib4fv
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      (maybe jsNull (unFloat32Array . toFloat32Array) values)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib4fv
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         (maybe jsNull (unFloat32Array . toFloat32Array) values))
  
 foreign import javascript unsafe
         "$1[\"vertexAttribPointer\"]($2,\n$3, $4, $5, $6, $7)"
@@ -2848,21 +3047,22 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.vertexAttribPointer Mozilla WebGLRenderingContext.vertexAttribPointer documentation> 
 webGLRenderingContextVertexAttribPointer ::
-                                         (IsWebGLRenderingContext self) =>
+                                         (MonadIO m, IsWebGLRenderingContext self) =>
                                            self ->
                                              GLuint ->
                                                GLint ->
-                                                 GLenum -> GLboolean -> GLsizei -> GLintptr -> IO ()
+                                                 GLenum -> GLboolean -> GLsizei -> GLintptr -> m ()
 webGLRenderingContextVertexAttribPointer self indx size type'
   normalized stride offset
-  = ghcjs_dom_web_gl_rendering_context_vertex_attrib_pointer
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      indx
-      size
-      type'
-      normalized
-      stride
-      (fromIntegral offset)
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_vertex_attrib_pointer
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         indx
+         size
+         type'
+         normalized
+         stride
+         (fromIntegral offset))
  
 foreign import javascript unsafe "$1[\"viewport\"]($2, $3, $4, $5)"
         ghcjs_dom_web_gl_rendering_context_viewport ::
@@ -2871,15 +3071,16 @@ foreign import javascript unsafe "$1[\"viewport\"]($2, $3, $4, $5)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.viewport Mozilla WebGLRenderingContext.viewport documentation> 
 webGLRenderingContextViewport ::
-                              (IsWebGLRenderingContext self) =>
-                                self -> GLint -> GLint -> GLsizei -> GLsizei -> IO ()
+                              (MonadIO m, IsWebGLRenderingContext self) =>
+                                self -> GLint -> GLint -> GLsizei -> GLsizei -> m ()
 webGLRenderingContextViewport self x y width height
-  = ghcjs_dom_web_gl_rendering_context_viewport
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
-      x
-      y
-      width
-      height
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_viewport
+         (unWebGLRenderingContext (toWebGLRenderingContext self))
+         x
+         y
+         width
+         height)
 cDEPTH_BUFFER_BIT = 256
 cSTENCIL_BUFFER_BIT = 1024
 cCOLOR_BUFFER_BIT = 16384
@@ -3182,10 +3383,12 @@ foreign import javascript unsafe "$1[\"drawingBufferWidth\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.drawingBufferWidth Mozilla WebGLRenderingContext.drawingBufferWidth documentation> 
 webGLRenderingContextGetDrawingBufferWidth ::
-                                           (IsWebGLRenderingContext self) => self -> IO GLsizei
+                                           (MonadIO m, IsWebGLRenderingContext self) =>
+                                             self -> m GLsizei
 webGLRenderingContextGetDrawingBufferWidth self
-  = ghcjs_dom_web_gl_rendering_context_get_drawing_buffer_width
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_drawing_buffer_width
+         (unWebGLRenderingContext (toWebGLRenderingContext self)))
  
 foreign import javascript unsafe "$1[\"drawingBufferHeight\"]"
         ghcjs_dom_web_gl_rendering_context_get_drawing_buffer_height ::
@@ -3193,10 +3396,12 @@ foreign import javascript unsafe "$1[\"drawingBufferHeight\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext.drawingBufferHeight Mozilla WebGLRenderingContext.drawingBufferHeight documentation> 
 webGLRenderingContextGetDrawingBufferHeight ::
-                                            (IsWebGLRenderingContext self) => self -> IO GLsizei
+                                            (MonadIO m, IsWebGLRenderingContext self) =>
+                                              self -> m GLsizei
 webGLRenderingContextGetDrawingBufferHeight self
-  = ghcjs_dom_web_gl_rendering_context_get_drawing_buffer_height
-      (unWebGLRenderingContext (toWebGLRenderingContext self))
+  = liftIO
+      (ghcjs_dom_web_gl_rendering_context_get_drawing_buffer_height
+         (unWebGLRenderingContext (toWebGLRenderingContext self)))
 #else
 module GHCJS.DOM.WebGLRenderingContext (
   ) where

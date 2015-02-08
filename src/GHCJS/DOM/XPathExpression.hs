@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,18 +26,19 @@ foreign import javascript unsafe "$1[\"evaluate\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathExpression.evaluate Mozilla XPathExpression.evaluate documentation> 
 xPathExpressionEvaluate ::
-                        (IsXPathExpression self, IsNode contextNode,
+                        (MonadIO m, IsXPathExpression self, IsNode contextNode,
                          IsXPathResult inResult) =>
                           self ->
                             Maybe contextNode ->
-                              Word -> Maybe inResult -> IO (Maybe XPathResult)
+                              Word -> Maybe inResult -> m (Maybe XPathResult)
 xPathExpressionEvaluate self contextNode type' inResult
-  = (ghcjs_dom_xpath_expression_evaluate
-       (unXPathExpression (toXPathExpression self))
-       (maybe jsNull (unNode . toNode) contextNode)
-       type'
-       (maybe jsNull (unXPathResult . toXPathResult) inResult))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xpath_expression_evaluate
+          (unXPathExpression (toXPathExpression self))
+          (maybe jsNull (unNode . toNode) contextNode)
+          type'
+          (maybe jsNull (unXPathResult . toXPathResult) inResult))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.XPathExpression (
   module Graphics.UI.Gtk.WebKit.DOM.XPathExpression

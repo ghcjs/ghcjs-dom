@@ -6,14 +6,12 @@ module GHCJS.DOM.WebSocket
         webSocketSend, ghcjs_dom_web_socket_sendView, webSocketSendView,
         ghcjs_dom_web_socket_sendBlob, webSocketSendBlob,
         ghcjs_dom_web_socket_sendString, webSocketSendString,
-        ghcjs_dom_web_socket_close, webSocketClose,
-        ghcjs_dom_web_socket_dispatch_event, webSocketDispatchEvent,
-        cCONNECTING, cOPEN, cCLOSING, cCLOSED,
-        ghcjs_dom_web_socket_get_url, webSocketGetUrl,
+        ghcjs_dom_web_socket_close, webSocketClose, cCONNECTING, cOPEN,
+        cCLOSING, cCLOSED, ghcjs_dom_web_socket_get_url, webSocketGetUrl,
         ghcjs_dom_web_socket_get_ready_state, webSocketGetReadyState,
         ghcjs_dom_web_socket_get_buffered_amount,
-        webSocketGetBufferedAmount, webSocketOnopen, webSocketOnmessage,
-        webSocketOnerror, webSocketOnclose,
+        webSocketGetBufferedAmount, webSocketOpen, webSocketMessage,
+        webSocketError, webSocketCloseEvent,
         ghcjs_dom_web_socket_get_protocol, webSocketGetProtocol,
         ghcjs_dom_web_socket_get_extensions, webSocketGetExtensions,
         ghcjs_dom_web_socket_set_binary_type, webSocketSetBinaryType,
@@ -25,6 +23,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,13 +38,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation> 
 webSocketNew ::
-             (ToJSString url, ToJSString protocols) =>
-               url -> Maybe [protocols] -> IO WebSocket
+             (MonadIO m, ToJSString url, ToJSString protocols) =>
+               url -> Maybe [protocols] -> m WebSocket
 webSocketNew url protocols
-  = toJSRef protocols >>=
-      \ protocols' ->
-        ghcjs_dom_web_socket_new (toJSString url) protocols'
-      >>= fromJSRefUnchecked
+  = liftIO
+      (toJSRef protocols >>=
+         \ protocols' ->
+           ghcjs_dom_web_socket_new (toJSString url) protocols'
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
         "new window[\"WebSocket\"]($1, $2)" ghcjs_dom_web_socket_new' ::
@@ -53,11 +53,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation> 
 webSocketNew' ::
-              (ToJSString url, ToJSString protocol) =>
-                url -> protocol -> IO WebSocket
+              (MonadIO m, ToJSString url, ToJSString protocol) =>
+                url -> protocol -> m WebSocket
 webSocketNew' url protocol
-  = ghcjs_dom_web_socket_new' (toJSString url) (toJSString protocol)
-      >>= fromJSRefUnchecked
+  = liftIO
+      (ghcjs_dom_web_socket_new' (toJSString url) (toJSString protocol)
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"send\"]($2)"
         ghcjs_dom_web_socket_send ::
@@ -65,11 +66,12 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
 webSocketSend ::
-              (IsWebSocket self, IsArrayBuffer data') =>
-                self -> Maybe data' -> IO ()
+              (MonadIO m, IsWebSocket self, IsArrayBuffer data') =>
+                self -> Maybe data' -> m ()
 webSocketSend self data'
-  = ghcjs_dom_web_socket_send (unWebSocket (toWebSocket self))
-      (maybe jsNull (unArrayBuffer . toArrayBuffer) data')
+  = liftIO
+      (ghcjs_dom_web_socket_send (unWebSocket (toWebSocket self))
+         (maybe jsNull (unArrayBuffer . toArrayBuffer) data'))
  
 foreign import javascript unsafe "$1[\"send\"]($2)"
         ghcjs_dom_web_socket_sendView ::
@@ -77,11 +79,12 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.sendView Mozilla WebSocket.sendView documentation> 
 webSocketSendView ::
-                  (IsWebSocket self, IsArrayBufferView data') =>
-                    self -> Maybe data' -> IO ()
+                  (MonadIO m, IsWebSocket self, IsArrayBufferView data') =>
+                    self -> Maybe data' -> m ()
 webSocketSendView self data'
-  = ghcjs_dom_web_socket_sendView (unWebSocket (toWebSocket self))
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
+  = liftIO
+      (ghcjs_dom_web_socket_sendView (unWebSocket (toWebSocket self))
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) data'))
  
 foreign import javascript unsafe "$1[\"send\"]($2)"
         ghcjs_dom_web_socket_sendBlob ::
@@ -89,10 +92,12 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.sendBlob Mozilla WebSocket.sendBlob documentation> 
 webSocketSendBlob ::
-                  (IsWebSocket self, IsBlob data') => self -> Maybe data' -> IO ()
+                  (MonadIO m, IsWebSocket self, IsBlob data') =>
+                    self -> Maybe data' -> m ()
 webSocketSendBlob self data'
-  = ghcjs_dom_web_socket_sendBlob (unWebSocket (toWebSocket self))
-      (maybe jsNull (unBlob . toBlob) data')
+  = liftIO
+      (ghcjs_dom_web_socket_sendBlob (unWebSocket (toWebSocket self))
+         (maybe jsNull (unBlob . toBlob) data'))
  
 foreign import javascript unsafe "$1[\"send\"]($2)"
         ghcjs_dom_web_socket_sendString ::
@@ -100,10 +105,12 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.sendString Mozilla WebSocket.sendString documentation> 
 webSocketSendString ::
-                    (IsWebSocket self, ToJSString data') => self -> data' -> IO ()
+                    (MonadIO m, IsWebSocket self, ToJSString data') =>
+                      self -> data' -> m ()
 webSocketSendString self data'
-  = ghcjs_dom_web_socket_sendString (unWebSocket (toWebSocket self))
-      (toJSString data')
+  = liftIO
+      (ghcjs_dom_web_socket_sendString (unWebSocket (toWebSocket self))
+         (toJSString data'))
  
 foreign import javascript unsafe "$1[\"close\"]($2, $3)"
         ghcjs_dom_web_socket_close ::
@@ -111,24 +118,12 @@ foreign import javascript unsafe "$1[\"close\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.close Mozilla WebSocket.close documentation> 
 webSocketClose ::
-               (IsWebSocket self, ToJSString reason) =>
-                 self -> Word -> reason -> IO ()
+               (MonadIO m, IsWebSocket self, ToJSString reason) =>
+                 self -> Word -> reason -> m ()
 webSocketClose self code reason
-  = ghcjs_dom_web_socket_close (unWebSocket (toWebSocket self)) code
-      (toJSString reason)
- 
-foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_web_socket_dispatch_event ::
-        JSRef WebSocket -> JSRef Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.dispatchEvent Mozilla WebSocket.dispatchEvent documentation> 
-webSocketDispatchEvent ::
-                       (IsWebSocket self, IsEvent evt) => self -> Maybe evt -> IO Bool
-webSocketDispatchEvent self evt
-  = ghcjs_dom_web_socket_dispatch_event
-      (unWebSocket (toWebSocket self))
-      (maybe jsNull (unEvent . toEvent) evt)
+  = liftIO
+      (ghcjs_dom_web_socket_close (unWebSocket (toWebSocket self)) code
+         (toJSString reason))
 cCONNECTING = 0
 cOPEN = 1
 cCLOSING = 2
@@ -139,60 +134,69 @@ foreign import javascript unsafe "$1[\"url\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.url Mozilla WebSocket.url documentation> 
 webSocketGetUrl ::
-                (IsWebSocket self, FromJSString result) => self -> IO result
+                (MonadIO m, IsWebSocket self, FromJSString result) =>
+                  self -> m result
 webSocketGetUrl self
-  = fromJSString <$>
-      (ghcjs_dom_web_socket_get_url (unWebSocket (toWebSocket self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_socket_get_url (unWebSocket (toWebSocket self))))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_web_socket_get_ready_state :: JSRef WebSocket -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.readyState Mozilla WebSocket.readyState documentation> 
-webSocketGetReadyState :: (IsWebSocket self) => self -> IO Word
+webSocketGetReadyState ::
+                       (MonadIO m, IsWebSocket self) => self -> m Word
 webSocketGetReadyState self
-  = ghcjs_dom_web_socket_get_ready_state
-      (unWebSocket (toWebSocket self))
+  = liftIO
+      (ghcjs_dom_web_socket_get_ready_state
+         (unWebSocket (toWebSocket self)))
  
 foreign import javascript unsafe "$1[\"bufferedAmount\"]"
         ghcjs_dom_web_socket_get_buffered_amount ::
         JSRef WebSocket -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.bufferedAmount Mozilla WebSocket.bufferedAmount documentation> 
-webSocketGetBufferedAmount :: (IsWebSocket self) => self -> IO Word
+webSocketGetBufferedAmount ::
+                           (MonadIO m, IsWebSocket self) => self -> m Word
 webSocketGetBufferedAmount self
-  = ghcjs_dom_web_socket_get_buffered_amount
-      (unWebSocket (toWebSocket self))
+  = liftIO
+      (ghcjs_dom_web_socket_get_buffered_amount
+         (unWebSocket (toWebSocket self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onopen Mozilla WebSocket.onopen documentation> 
-webSocketOnopen ::
-                (IsWebSocket self) => Signal self (EventM UIEvent self ())
-webSocketOnopen = (connect "open")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.open Mozilla WebSocket.open documentation> 
+webSocketOpen ::
+              (IsWebSocket self, IsEventTarget self) => EventName self Event
+webSocketOpen = unsafeEventName (toJSString "open")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onmessage Mozilla WebSocket.onmessage documentation> 
-webSocketOnmessage ::
-                   (IsWebSocket self) => Signal self (EventM UIEvent self ())
-webSocketOnmessage = (connect "message")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.message Mozilla WebSocket.message documentation> 
+webSocketMessage ::
+                 (IsWebSocket self, IsEventTarget self) =>
+                   EventName self MessageEvent
+webSocketMessage = unsafeEventName (toJSString "message")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onerror Mozilla WebSocket.onerror documentation> 
-webSocketOnerror ::
-                 (IsWebSocket self) => Signal self (EventM UIEvent self ())
-webSocketOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.error Mozilla WebSocket.error documentation> 
+webSocketError ::
+               (IsWebSocket self, IsEventTarget self) => EventName self UIEvent
+webSocketError = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onclose Mozilla WebSocket.onclose documentation> 
-webSocketOnclose ::
-                 (IsWebSocket self) => Signal self (EventM UIEvent self ())
-webSocketOnclose = (connect "close")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.closeEvent Mozilla WebSocket.closeEvent documentation> 
+webSocketCloseEvent ::
+                    (IsWebSocket self, IsEventTarget self) => EventName self Event
+webSocketCloseEvent = unsafeEventName (toJSString "close")
  
 foreign import javascript unsafe "$1[\"protocol\"]"
         ghcjs_dom_web_socket_get_protocol :: JSRef WebSocket -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.protocol Mozilla WebSocket.protocol documentation> 
 webSocketGetProtocol ::
-                     (IsWebSocket self, FromJSString result) => self -> IO result
+                     (MonadIO m, IsWebSocket self, FromJSString result) =>
+                       self -> m result
 webSocketGetProtocol self
-  = fromJSString <$>
-      (ghcjs_dom_web_socket_get_protocol
-         (unWebSocket (toWebSocket self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_socket_get_protocol
+            (unWebSocket (toWebSocket self))))
  
 foreign import javascript unsafe "$1[\"extensions\"]"
         ghcjs_dom_web_socket_get_extensions ::
@@ -200,11 +204,13 @@ foreign import javascript unsafe "$1[\"extensions\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.extensions Mozilla WebSocket.extensions documentation> 
 webSocketGetExtensions ::
-                       (IsWebSocket self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsWebSocket self, FromJSString result) =>
+                         self -> m result
 webSocketGetExtensions self
-  = fromJSString <$>
-      (ghcjs_dom_web_socket_get_extensions
-         (unWebSocket (toWebSocket self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_socket_get_extensions
+            (unWebSocket (toWebSocket self))))
  
 foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
         ghcjs_dom_web_socket_set_binary_type ::
@@ -212,11 +218,13 @@ foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.binaryType Mozilla WebSocket.binaryType documentation> 
 webSocketSetBinaryType ::
-                       (IsWebSocket self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsWebSocket self, ToJSString val) =>
+                         self -> val -> m ()
 webSocketSetBinaryType self val
-  = ghcjs_dom_web_socket_set_binary_type
-      (unWebSocket (toWebSocket self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_web_socket_set_binary_type
+         (unWebSocket (toWebSocket self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"binaryType\"]"
         ghcjs_dom_web_socket_get_binary_type ::
@@ -224,11 +232,13 @@ foreign import javascript unsafe "$1[\"binaryType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.binaryType Mozilla WebSocket.binaryType documentation> 
 webSocketGetBinaryType ::
-                       (IsWebSocket self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsWebSocket self, FromJSString result) =>
+                         self -> m result
 webSocketGetBinaryType self
-  = fromJSString <$>
-      (ghcjs_dom_web_socket_get_binary_type
-         (unWebSocket (toWebSocket self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_web_socket_get_binary_type
+            (unWebSocket (toWebSocket self))))
 #else
 module GHCJS.DOM.WebSocket (
   ) where

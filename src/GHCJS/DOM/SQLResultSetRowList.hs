@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,13 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList.item Mozilla SQLResultSetRowList.item documentation> 
 sqlResultSetRowListItem ::
-                        (IsSQLResultSetRowList self) => self -> Word -> IO (JSRef a)
+                        (MonadIO m, IsSQLResultSetRowList self) =>
+                          self -> Word -> m (JSRef a)
 sqlResultSetRowListItem self index
-  = ghcjs_dom_sql_result_set_row_list_item
-      (unSQLResultSetRowList (toSQLResultSetRowList self))
-      index
+  = liftIO
+      (ghcjs_dom_sql_result_set_row_list_item
+         (unSQLResultSetRowList (toSQLResultSetRowList self))
+         index)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_sql_result_set_row_list_get_length ::
@@ -38,10 +41,11 @@ foreign import javascript unsafe "$1[\"length\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList.length Mozilla SQLResultSetRowList.length documentation> 
 sqlResultSetRowListGetLength ::
-                             (IsSQLResultSetRowList self) => self -> IO Word
+                             (MonadIO m, IsSQLResultSetRowList self) => self -> m Word
 sqlResultSetRowListGetLength self
-  = ghcjs_dom_sql_result_set_row_list_get_length
-      (unSQLResultSetRowList (toSQLResultSetRowList self))
+  = liftIO
+      (ghcjs_dom_sql_result_set_row_list_get_length
+         (unSQLResultSetRowList (toSQLResultSetRowList self)))
 #else
 module GHCJS.DOM.SQLResultSetRowList (
   ) where

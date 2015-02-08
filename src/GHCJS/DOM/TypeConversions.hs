@@ -73,6 +73,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -87,11 +88,12 @@ foreign import javascript unsafe "$1[\"testLong\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testLong Mozilla TypeConversions.testLong documentation> 
 typeConversionsSetTestLong ::
-                           (IsTypeConversions self) => self -> Int -> IO ()
+                           (MonadIO m, IsTypeConversions self) => self -> Int -> m ()
 typeConversionsSetTestLong self val
-  = ghcjs_dom_type_conversions_set_test_long
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_long
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testLong\"]"
         ghcjs_dom_type_conversions_get_test_long ::
@@ -99,10 +101,11 @@ foreign import javascript unsafe "$1[\"testLong\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testLong Mozilla TypeConversions.testLong documentation> 
 typeConversionsGetTestLong ::
-                           (IsTypeConversions self) => self -> IO Int
+                           (MonadIO m, IsTypeConversions self) => self -> m Int
 typeConversionsGetTestLong self
-  = ghcjs_dom_type_conversions_get_test_long
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_long
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeLong\"] = $2;"
@@ -111,11 +114,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeLong Mozilla TypeConversions.testEnforceRangeLong documentation> 
 typeConversionsSetTestEnforceRangeLong ::
-                                       (IsTypeConversions self) => self -> Int -> IO ()
+                                       (MonadIO m, IsTypeConversions self) => self -> Int -> m ()
 typeConversionsSetTestEnforceRangeLong self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_long
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_long
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testEnforceRangeLong\"]"
         ghcjs_dom_type_conversions_get_test_enforce_range_long ::
@@ -123,10 +127,11 @@ foreign import javascript unsafe "$1[\"testEnforceRangeLong\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeLong Mozilla TypeConversions.testEnforceRangeLong documentation> 
 typeConversionsGetTestEnforceRangeLong ::
-                                       (IsTypeConversions self) => self -> IO Int
+                                       (MonadIO m, IsTypeConversions self) => self -> m Int
 typeConversionsGetTestEnforceRangeLong self
-  = ghcjs_dom_type_conversions_get_test_enforce_range_long
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_enforce_range_long
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe "$1[\"testUnsignedLong\"] = $2;"
         ghcjs_dom_type_conversions_set_test_unsigned_long ::
@@ -134,11 +139,12 @@ foreign import javascript unsafe "$1[\"testUnsignedLong\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testUnsignedLong Mozilla TypeConversions.testUnsignedLong documentation> 
 typeConversionsSetTestUnsignedLong ::
-                                   (IsTypeConversions self) => self -> Word -> IO ()
+                                   (MonadIO m, IsTypeConversions self) => self -> Word -> m ()
 typeConversionsSetTestUnsignedLong self val
-  = ghcjs_dom_type_conversions_set_test_unsigned_long
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_unsigned_long
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testUnsignedLong\"]"
         ghcjs_dom_type_conversions_get_test_unsigned_long ::
@@ -146,10 +152,11 @@ foreign import javascript unsafe "$1[\"testUnsignedLong\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testUnsignedLong Mozilla TypeConversions.testUnsignedLong documentation> 
 typeConversionsGetTestUnsignedLong ::
-                                   (IsTypeConversions self) => self -> IO Word
+                                   (MonadIO m, IsTypeConversions self) => self -> m Word
 typeConversionsGetTestUnsignedLong self
-  = ghcjs_dom_type_conversions_get_test_unsigned_long
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_unsigned_long
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeUnsignedLong\"] = $2;"
@@ -158,11 +165,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeUnsignedLong Mozilla TypeConversions.testEnforceRangeUnsignedLong documentation> 
 typeConversionsSetTestEnforceRangeUnsignedLong ::
-                                               (IsTypeConversions self) => self -> Word -> IO ()
+                                               (MonadIO m, IsTypeConversions self) =>
+                                                 self -> Word -> m ()
 typeConversionsSetTestEnforceRangeUnsignedLong self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_unsigned_long
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_unsigned_long
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeUnsignedLong\"]"
@@ -171,10 +180,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeUnsignedLong Mozilla TypeConversions.testEnforceRangeUnsignedLong documentation> 
 typeConversionsGetTestEnforceRangeUnsignedLong ::
-                                               (IsTypeConversions self) => self -> IO Word
+                                               (MonadIO m, IsTypeConversions self) => self -> m Word
 typeConversionsGetTestEnforceRangeUnsignedLong self
-  = ghcjs_dom_type_conversions_get_test_enforce_range_unsigned_long
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_enforce_range_unsigned_long
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe "$1[\"testLongLong\"] = $2;"
         ghcjs_dom_type_conversions_set_test_long_long ::
@@ -182,11 +192,12 @@ foreign import javascript unsafe "$1[\"testLongLong\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testLongLong Mozilla TypeConversions.testLongLong documentation> 
 typeConversionsSetTestLongLong ::
-                               (IsTypeConversions self) => self -> Int64 -> IO ()
+                               (MonadIO m, IsTypeConversions self) => self -> Int64 -> m ()
 typeConversionsSetTestLongLong self val
-  = ghcjs_dom_type_conversions_set_test_long_long
-      (unTypeConversions (toTypeConversions self))
-      (fromIntegral val)
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_long_long
+         (unTypeConversions (toTypeConversions self))
+         (fromIntegral val))
  
 foreign import javascript unsafe "$1[\"testLongLong\"]"
         ghcjs_dom_type_conversions_get_test_long_long ::
@@ -194,11 +205,12 @@ foreign import javascript unsafe "$1[\"testLongLong\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testLongLong Mozilla TypeConversions.testLongLong documentation> 
 typeConversionsGetTestLongLong ::
-                               (IsTypeConversions self) => self -> IO Int64
+                               (MonadIO m, IsTypeConversions self) => self -> m Int64
 typeConversionsGetTestLongLong self
-  = round <$>
-      (ghcjs_dom_type_conversions_get_test_long_long
-         (unTypeConversions (toTypeConversions self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_type_conversions_get_test_long_long
+            (unTypeConversions (toTypeConversions self))))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeLongLong\"] = $2;"
@@ -207,11 +219,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeLongLong Mozilla TypeConversions.testEnforceRangeLongLong documentation> 
 typeConversionsSetTestEnforceRangeLongLong ::
-                                           (IsTypeConversions self) => self -> Int64 -> IO ()
+                                           (MonadIO m, IsTypeConversions self) =>
+                                             self -> Int64 -> m ()
 typeConversionsSetTestEnforceRangeLongLong self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_long_long
-      (unTypeConversions (toTypeConversions self))
-      (fromIntegral val)
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_long_long
+         (unTypeConversions (toTypeConversions self))
+         (fromIntegral val))
  
 foreign import javascript unsafe "$1[\"testEnforceRangeLongLong\"]"
         ghcjs_dom_type_conversions_get_test_enforce_range_long_long ::
@@ -219,11 +233,12 @@ foreign import javascript unsafe "$1[\"testEnforceRangeLongLong\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeLongLong Mozilla TypeConversions.testEnforceRangeLongLong documentation> 
 typeConversionsGetTestEnforceRangeLongLong ::
-                                           (IsTypeConversions self) => self -> IO Int64
+                                           (MonadIO m, IsTypeConversions self) => self -> m Int64
 typeConversionsGetTestEnforceRangeLongLong self
-  = round <$>
-      (ghcjs_dom_type_conversions_get_test_enforce_range_long_long
-         (unTypeConversions (toTypeConversions self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_type_conversions_get_test_enforce_range_long_long
+            (unTypeConversions (toTypeConversions self))))
  
 foreign import javascript unsafe
         "$1[\"testUnsignedLongLong\"] = $2;"
@@ -232,11 +247,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testUnsignedLongLong Mozilla TypeConversions.testUnsignedLongLong documentation> 
 typeConversionsSetTestUnsignedLongLong ::
-                                       (IsTypeConversions self) => self -> Word64 -> IO ()
+                                       (MonadIO m, IsTypeConversions self) => self -> Word64 -> m ()
 typeConversionsSetTestUnsignedLongLong self val
-  = ghcjs_dom_type_conversions_set_test_unsigned_long_long
-      (unTypeConversions (toTypeConversions self))
-      (fromIntegral val)
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_unsigned_long_long
+         (unTypeConversions (toTypeConversions self))
+         (fromIntegral val))
  
 foreign import javascript unsafe "$1[\"testUnsignedLongLong\"]"
         ghcjs_dom_type_conversions_get_test_unsigned_long_long ::
@@ -244,11 +260,12 @@ foreign import javascript unsafe "$1[\"testUnsignedLongLong\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testUnsignedLongLong Mozilla TypeConversions.testUnsignedLongLong documentation> 
 typeConversionsGetTestUnsignedLongLong ::
-                                       (IsTypeConversions self) => self -> IO Word64
+                                       (MonadIO m, IsTypeConversions self) => self -> m Word64
 typeConversionsGetTestUnsignedLongLong self
-  = round <$>
-      (ghcjs_dom_type_conversions_get_test_unsigned_long_long
-         (unTypeConversions (toTypeConversions self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_type_conversions_get_test_unsigned_long_long
+            (unTypeConversions (toTypeConversions self))))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeUnsignedLongLong\"] = $2;"
@@ -257,12 +274,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeUnsignedLongLong Mozilla TypeConversions.testEnforceRangeUnsignedLongLong documentation> 
 typeConversionsSetTestEnforceRangeUnsignedLongLong ::
-                                                   (IsTypeConversions self) =>
-                                                     self -> Word64 -> IO ()
+                                                   (MonadIO m, IsTypeConversions self) =>
+                                                     self -> Word64 -> m ()
 typeConversionsSetTestEnforceRangeUnsignedLongLong self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_unsigned_long_long
-      (unTypeConversions (toTypeConversions self))
-      (fromIntegral val)
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_unsigned_long_long
+         (unTypeConversions (toTypeConversions self))
+         (fromIntegral val))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeUnsignedLongLong\"]"
@@ -271,11 +289,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeUnsignedLongLong Mozilla TypeConversions.testEnforceRangeUnsignedLongLong documentation> 
 typeConversionsGetTestEnforceRangeUnsignedLongLong ::
-                                                   (IsTypeConversions self) => self -> IO Word64
+                                                   (MonadIO m, IsTypeConversions self) =>
+                                                     self -> m Word64
 typeConversionsGetTestEnforceRangeUnsignedLongLong self
-  = round <$>
-      (ghcjs_dom_type_conversions_get_test_enforce_range_unsigned_long_long
-         (unTypeConversions (toTypeConversions self)))
+  = liftIO
+      (round <$>
+         (ghcjs_dom_type_conversions_get_test_enforce_range_unsigned_long_long
+            (unTypeConversions (toTypeConversions self))))
  
 foreign import javascript unsafe "$1[\"testByte\"] = $2;"
         ghcjs_dom_type_conversions_set_test_byte ::
@@ -283,11 +303,12 @@ foreign import javascript unsafe "$1[\"testByte\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testByte Mozilla TypeConversions.testByte documentation> 
 typeConversionsSetTestByte ::
-                           (IsTypeConversions self) => self -> Int -> IO ()
+                           (MonadIO m, IsTypeConversions self) => self -> Int -> m ()
 typeConversionsSetTestByte self val
-  = ghcjs_dom_type_conversions_set_test_byte
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_byte
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testByte\"]"
         ghcjs_dom_type_conversions_get_test_byte ::
@@ -295,10 +316,11 @@ foreign import javascript unsafe "$1[\"testByte\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testByte Mozilla TypeConversions.testByte documentation> 
 typeConversionsGetTestByte ::
-                           (IsTypeConversions self) => self -> IO Int
+                           (MonadIO m, IsTypeConversions self) => self -> m Int
 typeConversionsGetTestByte self
-  = ghcjs_dom_type_conversions_get_test_byte
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_byte
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeByte\"] = $2;"
@@ -307,11 +329,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeByte Mozilla TypeConversions.testEnforceRangeByte documentation> 
 typeConversionsSetTestEnforceRangeByte ::
-                                       (IsTypeConversions self) => self -> Int -> IO ()
+                                       (MonadIO m, IsTypeConversions self) => self -> Int -> m ()
 typeConversionsSetTestEnforceRangeByte self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_byte
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_byte
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testEnforceRangeByte\"]"
         ghcjs_dom_type_conversions_get_test_enforce_range_byte ::
@@ -319,10 +342,11 @@ foreign import javascript unsafe "$1[\"testEnforceRangeByte\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeByte Mozilla TypeConversions.testEnforceRangeByte documentation> 
 typeConversionsGetTestEnforceRangeByte ::
-                                       (IsTypeConversions self) => self -> IO Int
+                                       (MonadIO m, IsTypeConversions self) => self -> m Int
 typeConversionsGetTestEnforceRangeByte self
-  = ghcjs_dom_type_conversions_get_test_enforce_range_byte
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_enforce_range_byte
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe "$1[\"testOctet\"] = $2;"
         ghcjs_dom_type_conversions_set_test_octet ::
@@ -330,11 +354,12 @@ foreign import javascript unsafe "$1[\"testOctet\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testOctet Mozilla TypeConversions.testOctet documentation> 
 typeConversionsSetTestOctet ::
-                            (IsTypeConversions self) => self -> Word -> IO ()
+                            (MonadIO m, IsTypeConversions self) => self -> Word -> m ()
 typeConversionsSetTestOctet self val
-  = ghcjs_dom_type_conversions_set_test_octet
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_octet
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testOctet\"]"
         ghcjs_dom_type_conversions_get_test_octet ::
@@ -342,10 +367,11 @@ foreign import javascript unsafe "$1[\"testOctet\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testOctet Mozilla TypeConversions.testOctet documentation> 
 typeConversionsGetTestOctet ::
-                            (IsTypeConversions self) => self -> IO Word
+                            (MonadIO m, IsTypeConversions self) => self -> m Word
 typeConversionsGetTestOctet self
-  = ghcjs_dom_type_conversions_get_test_octet
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_octet
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeOctet\"] = $2;"
@@ -354,11 +380,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeOctet Mozilla TypeConversions.testEnforceRangeOctet documentation> 
 typeConversionsSetTestEnforceRangeOctet ::
-                                        (IsTypeConversions self) => self -> Word -> IO ()
+                                        (MonadIO m, IsTypeConversions self) => self -> Word -> m ()
 typeConversionsSetTestEnforceRangeOctet self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_octet
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_octet
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testEnforceRangeOctet\"]"
         ghcjs_dom_type_conversions_get_test_enforce_range_octet ::
@@ -366,10 +393,11 @@ foreign import javascript unsafe "$1[\"testEnforceRangeOctet\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeOctet Mozilla TypeConversions.testEnforceRangeOctet documentation> 
 typeConversionsGetTestEnforceRangeOctet ::
-                                        (IsTypeConversions self) => self -> IO Word
+                                        (MonadIO m, IsTypeConversions self) => self -> m Word
 typeConversionsGetTestEnforceRangeOctet self
-  = ghcjs_dom_type_conversions_get_test_enforce_range_octet
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_enforce_range_octet
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe "$1[\"testShort\"] = $2;"
         ghcjs_dom_type_conversions_set_test_short ::
@@ -377,11 +405,12 @@ foreign import javascript unsafe "$1[\"testShort\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testShort Mozilla TypeConversions.testShort documentation> 
 typeConversionsSetTestShort ::
-                            (IsTypeConversions self) => self -> Int -> IO ()
+                            (MonadIO m, IsTypeConversions self) => self -> Int -> m ()
 typeConversionsSetTestShort self val
-  = ghcjs_dom_type_conversions_set_test_short
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_short
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testShort\"]"
         ghcjs_dom_type_conversions_get_test_short ::
@@ -389,10 +418,11 @@ foreign import javascript unsafe "$1[\"testShort\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testShort Mozilla TypeConversions.testShort documentation> 
 typeConversionsGetTestShort ::
-                            (IsTypeConversions self) => self -> IO Int
+                            (MonadIO m, IsTypeConversions self) => self -> m Int
 typeConversionsGetTestShort self
-  = ghcjs_dom_type_conversions_get_test_short
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_short
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeShort\"] = $2;"
@@ -401,11 +431,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeShort Mozilla TypeConversions.testEnforceRangeShort documentation> 
 typeConversionsSetTestEnforceRangeShort ::
-                                        (IsTypeConversions self) => self -> Int -> IO ()
+                                        (MonadIO m, IsTypeConversions self) => self -> Int -> m ()
 typeConversionsSetTestEnforceRangeShort self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_short
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_short
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testEnforceRangeShort\"]"
         ghcjs_dom_type_conversions_get_test_enforce_range_short ::
@@ -413,10 +444,11 @@ foreign import javascript unsafe "$1[\"testEnforceRangeShort\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeShort Mozilla TypeConversions.testEnforceRangeShort documentation> 
 typeConversionsGetTestEnforceRangeShort ::
-                                        (IsTypeConversions self) => self -> IO Int
+                                        (MonadIO m, IsTypeConversions self) => self -> m Int
 typeConversionsGetTestEnforceRangeShort self
-  = ghcjs_dom_type_conversions_get_test_enforce_range_short
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_enforce_range_short
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe "$1[\"testUnsignedShort\"] = $2;"
         ghcjs_dom_type_conversions_set_test_unsigned_short ::
@@ -424,11 +456,12 @@ foreign import javascript unsafe "$1[\"testUnsignedShort\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testUnsignedShort Mozilla TypeConversions.testUnsignedShort documentation> 
 typeConversionsSetTestUnsignedShort ::
-                                    (IsTypeConversions self) => self -> Word -> IO ()
+                                    (MonadIO m, IsTypeConversions self) => self -> Word -> m ()
 typeConversionsSetTestUnsignedShort self val
-  = ghcjs_dom_type_conversions_set_test_unsigned_short
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_unsigned_short
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe "$1[\"testUnsignedShort\"]"
         ghcjs_dom_type_conversions_get_test_unsigned_short ::
@@ -436,10 +469,11 @@ foreign import javascript unsafe "$1[\"testUnsignedShort\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testUnsignedShort Mozilla TypeConversions.testUnsignedShort documentation> 
 typeConversionsGetTestUnsignedShort ::
-                                    (IsTypeConversions self) => self -> IO Word
+                                    (MonadIO m, IsTypeConversions self) => self -> m Word
 typeConversionsGetTestUnsignedShort self
-  = ghcjs_dom_type_conversions_get_test_unsigned_short
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_unsigned_short
+         (unTypeConversions (toTypeConversions self)))
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeUnsignedShort\"] = $2;"
@@ -448,11 +482,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeUnsignedShort Mozilla TypeConversions.testEnforceRangeUnsignedShort documentation> 
 typeConversionsSetTestEnforceRangeUnsignedShort ::
-                                                (IsTypeConversions self) => self -> Word -> IO ()
+                                                (MonadIO m, IsTypeConversions self) =>
+                                                  self -> Word -> m ()
 typeConversionsSetTestEnforceRangeUnsignedShort self val
-  = ghcjs_dom_type_conversions_set_test_enforce_range_unsigned_short
-      (unTypeConversions (toTypeConversions self))
-      val
+  = liftIO
+      (ghcjs_dom_type_conversions_set_test_enforce_range_unsigned_short
+         (unTypeConversions (toTypeConversions self))
+         val)
  
 foreign import javascript unsafe
         "$1[\"testEnforceRangeUnsignedShort\"]"
@@ -461,10 +497,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions.testEnforceRangeUnsignedShort Mozilla TypeConversions.testEnforceRangeUnsignedShort documentation> 
 typeConversionsGetTestEnforceRangeUnsignedShort ::
-                                                (IsTypeConversions self) => self -> IO Word
+                                                (MonadIO m, IsTypeConversions self) =>
+                                                  self -> m Word
 typeConversionsGetTestEnforceRangeUnsignedShort self
-  = ghcjs_dom_type_conversions_get_test_enforce_range_unsigned_short
-      (unTypeConversions (toTypeConversions self))
+  = liftIO
+      (ghcjs_dom_type_conversions_get_test_enforce_range_unsigned_short
+         (unTypeConversions (toTypeConversions self)))
 #else
 module GHCJS.DOM.TypeConversions (
   ) where

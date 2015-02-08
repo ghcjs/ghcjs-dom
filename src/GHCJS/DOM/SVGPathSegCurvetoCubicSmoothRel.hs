@@ -27,6 +27,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -41,13 +42,14 @@ foreign import javascript unsafe "$1[\"x\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.x Mozilla SVGPathSegCurvetoCubicSmoothRel.x documentation> 
 svgPathSegCurvetoCubicSmoothRelSetX ::
-                                    (IsSVGPathSegCurvetoCubicSmoothRel self) =>
-                                      self -> Float -> IO ()
+                                    (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                      self -> Float -> m ()
 svgPathSegCurvetoCubicSmoothRelSetX self val
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_x
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_x
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_x ::
@@ -55,11 +57,13 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.x Mozilla SVGPathSegCurvetoCubicSmoothRel.x documentation> 
 svgPathSegCurvetoCubicSmoothRelGetX ::
-                                    (IsSVGPathSegCurvetoCubicSmoothRel self) => self -> IO Float
+                                    (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                      self -> m Float
 svgPathSegCurvetoCubicSmoothRelGetX self
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_x
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_x
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self)))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_y ::
@@ -67,13 +71,14 @@ foreign import javascript unsafe "$1[\"y\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.y Mozilla SVGPathSegCurvetoCubicSmoothRel.y documentation> 
 svgPathSegCurvetoCubicSmoothRelSetY ::
-                                    (IsSVGPathSegCurvetoCubicSmoothRel self) =>
-                                      self -> Float -> IO ()
+                                    (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                      self -> Float -> m ()
 svgPathSegCurvetoCubicSmoothRelSetY self val
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_y
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_y
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_y ::
@@ -81,11 +86,13 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.y Mozilla SVGPathSegCurvetoCubicSmoothRel.y documentation> 
 svgPathSegCurvetoCubicSmoothRelGetY ::
-                                    (IsSVGPathSegCurvetoCubicSmoothRel self) => self -> IO Float
+                                    (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                      self -> m Float
 svgPathSegCurvetoCubicSmoothRelGetY self
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_y
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_y
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self)))
  
 foreign import javascript unsafe "$1[\"x2\"] = $2;"
         ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_x2 ::
@@ -93,13 +100,14 @@ foreign import javascript unsafe "$1[\"x2\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.x2 Mozilla SVGPathSegCurvetoCubicSmoothRel.x2 documentation> 
 svgPathSegCurvetoCubicSmoothRelSetX2 ::
-                                     (IsSVGPathSegCurvetoCubicSmoothRel self) =>
-                                       self -> Float -> IO ()
+                                     (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                       self -> Float -> m ()
 svgPathSegCurvetoCubicSmoothRelSetX2 self val
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_x2
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_x2
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"x2\"]"
         ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_x2 ::
@@ -107,11 +115,13 @@ foreign import javascript unsafe "$1[\"x2\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.x2 Mozilla SVGPathSegCurvetoCubicSmoothRel.x2 documentation> 
 svgPathSegCurvetoCubicSmoothRelGetX2 ::
-                                     (IsSVGPathSegCurvetoCubicSmoothRel self) => self -> IO Float
+                                     (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                       self -> m Float
 svgPathSegCurvetoCubicSmoothRelGetX2 self
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_x2
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_x2
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self)))
  
 foreign import javascript unsafe "$1[\"y2\"] = $2;"
         ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_y2 ::
@@ -119,13 +129,14 @@ foreign import javascript unsafe "$1[\"y2\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.y2 Mozilla SVGPathSegCurvetoCubicSmoothRel.y2 documentation> 
 svgPathSegCurvetoCubicSmoothRelSetY2 ::
-                                     (IsSVGPathSegCurvetoCubicSmoothRel self) =>
-                                       self -> Float -> IO ()
+                                     (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                       self -> Float -> m ()
 svgPathSegCurvetoCubicSmoothRelSetY2 self val
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_y2
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_set_y2
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self))
+         val)
  
 foreign import javascript unsafe "$1[\"y2\"]"
         ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_y2 ::
@@ -133,11 +144,13 @@ foreign import javascript unsafe "$1[\"y2\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel.y2 Mozilla SVGPathSegCurvetoCubicSmoothRel.y2 documentation> 
 svgPathSegCurvetoCubicSmoothRelGetY2 ::
-                                     (IsSVGPathSegCurvetoCubicSmoothRel self) => self -> IO Float
+                                     (MonadIO m, IsSVGPathSegCurvetoCubicSmoothRel self) =>
+                                       self -> m Float
 svgPathSegCurvetoCubicSmoothRelGetY2 self
-  = ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_y2
-      (unSVGPathSegCurvetoCubicSmoothRel
-         (toSVGPathSegCurvetoCubicSmoothRel self))
+  = liftIO
+      (ghcjs_dom_svg_path_seg_curveto_cubic_smooth_rel_get_y2
+         (unSVGPathSegCurvetoCubicSmoothRel
+            (toSVGPathSegCurvetoCubicSmoothRel self)))
 #else
 module GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel (
   ) where

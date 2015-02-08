@@ -9,6 +9,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -22,10 +23,12 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMError.name Mozilla DOMError.name documentation> 
 domErrorGetName ::
-                (IsDOMError self, FromJSString result) => self -> IO result
+                (MonadIO m, IsDOMError self, FromJSString result) =>
+                  self -> m result
 domErrorGetName self
-  = fromJSString <$>
-      (ghcjs_dom_dom_error_get_name (unDOMError (toDOMError self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_dom_error_get_name (unDOMError (toDOMError self))))
 #else
 module GHCJS.DOM.DOMError (
   ) where

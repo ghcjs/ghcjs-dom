@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,12 @@ foreign import javascript unsafe "$1[\"publicKey\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyPair.publicKey Mozilla KeyPair.publicKey documentation> 
 cryptoKeyPairGetPublicKey ::
-                          (IsCryptoKeyPair self) => self -> IO (Maybe CryptoKey)
+                          (MonadIO m, IsCryptoKeyPair self) => self -> m (Maybe CryptoKey)
 cryptoKeyPairGetPublicKey self
-  = (ghcjs_dom_crypto_key_pair_get_public_key
-       (unCryptoKeyPair (toCryptoKeyPair self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_crypto_key_pair_get_public_key
+          (unCryptoKeyPair (toCryptoKeyPair self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"privateKey\"]"
         ghcjs_dom_crypto_key_pair_get_private_key ::
@@ -38,11 +40,12 @@ foreign import javascript unsafe "$1[\"privateKey\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyPair.privateKey Mozilla KeyPair.privateKey documentation> 
 cryptoKeyPairGetPrivateKey ::
-                           (IsCryptoKeyPair self) => self -> IO (Maybe CryptoKey)
+                           (MonadIO m, IsCryptoKeyPair self) => self -> m (Maybe CryptoKey)
 cryptoKeyPairGetPrivateKey self
-  = (ghcjs_dom_crypto_key_pair_get_private_key
-       (unCryptoKeyPair (toCryptoKeyPair self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_crypto_key_pair_get_private_key
+          (unCryptoKeyPair (toCryptoKeyPair self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.CryptoKeyPair (
   ) where

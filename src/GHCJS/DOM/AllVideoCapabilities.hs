@@ -23,6 +23,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -37,12 +38,13 @@ foreign import javascript unsafe "$1[\"sourceType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.sourceType Mozilla AllVideoCapabilities.sourceType documentation> 
 allVideoCapabilitiesGetSourceType ::
-                                  (IsAllVideoCapabilities self, FromJSString result) =>
-                                    self -> IO [result]
+                                  (MonadIO m, IsAllVideoCapabilities self, FromJSString result) =>
+                                    self -> m [result]
 allVideoCapabilitiesGetSourceType self
-  = (ghcjs_dom_all_video_capabilities_get_source_type
-       (unAllVideoCapabilities (toAllVideoCapabilities self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_all_video_capabilities_get_source_type
+          (unAllVideoCapabilities (toAllVideoCapabilities self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"sourceId\"]"
         ghcjs_dom_all_video_capabilities_get_source_id ::
@@ -50,12 +52,13 @@ foreign import javascript unsafe "$1[\"sourceId\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.sourceId Mozilla AllVideoCapabilities.sourceId documentation> 
 allVideoCapabilitiesGetSourceId ::
-                                (IsAllVideoCapabilities self, FromJSString result) =>
-                                  self -> IO [result]
+                                (MonadIO m, IsAllVideoCapabilities self, FromJSString result) =>
+                                  self -> m [result]
 allVideoCapabilitiesGetSourceId self
-  = (ghcjs_dom_all_video_capabilities_get_source_id
-       (unAllVideoCapabilities (toAllVideoCapabilities self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_all_video_capabilities_get_source_id
+          (unAllVideoCapabilities (toAllVideoCapabilities self)))
+         >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_all_video_capabilities_get_width ::
@@ -63,11 +66,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.width Mozilla AllVideoCapabilities.width documentation> 
 allVideoCapabilitiesGetWidth ::
-                             (IsAllVideoCapabilities self) => self -> IO (Maybe CapabilityRange)
+                             (MonadIO m, IsAllVideoCapabilities self) =>
+                               self -> m (Maybe CapabilityRange)
 allVideoCapabilitiesGetWidth self
-  = (ghcjs_dom_all_video_capabilities_get_width
-       (unAllVideoCapabilities (toAllVideoCapabilities self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_all_video_capabilities_get_width
+          (unAllVideoCapabilities (toAllVideoCapabilities self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_all_video_capabilities_get_height ::
@@ -75,11 +80,13 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.height Mozilla AllVideoCapabilities.height documentation> 
 allVideoCapabilitiesGetHeight ::
-                              (IsAllVideoCapabilities self) => self -> IO (Maybe CapabilityRange)
+                              (MonadIO m, IsAllVideoCapabilities self) =>
+                                self -> m (Maybe CapabilityRange)
 allVideoCapabilitiesGetHeight self
-  = (ghcjs_dom_all_video_capabilities_get_height
-       (unAllVideoCapabilities (toAllVideoCapabilities self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_all_video_capabilities_get_height
+          (unAllVideoCapabilities (toAllVideoCapabilities self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"frameRate\"]"
         ghcjs_dom_all_video_capabilities_get_frame_rate ::
@@ -87,11 +94,13 @@ foreign import javascript unsafe "$1[\"frameRate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.frameRate Mozilla AllVideoCapabilities.frameRate documentation> 
 allVideoCapabilitiesGetFrameRate ::
-                                 (IsAllVideoCapabilities self) => self -> IO (Maybe CapabilityRange)
+                                 (MonadIO m, IsAllVideoCapabilities self) =>
+                                   self -> m (Maybe CapabilityRange)
 allVideoCapabilitiesGetFrameRate self
-  = (ghcjs_dom_all_video_capabilities_get_frame_rate
-       (unAllVideoCapabilities (toAllVideoCapabilities self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_all_video_capabilities_get_frame_rate
+          (unAllVideoCapabilities (toAllVideoCapabilities self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"aspectRatio\"]"
         ghcjs_dom_all_video_capabilities_get_aspect_ratio ::
@@ -99,12 +108,13 @@ foreign import javascript unsafe "$1[\"aspectRatio\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.aspectRatio Mozilla AllVideoCapabilities.aspectRatio documentation> 
 allVideoCapabilitiesGetAspectRatio ::
-                                   (IsAllVideoCapabilities self) =>
-                                     self -> IO (Maybe CapabilityRange)
+                                   (MonadIO m, IsAllVideoCapabilities self) =>
+                                     self -> m (Maybe CapabilityRange)
 allVideoCapabilitiesGetAspectRatio self
-  = (ghcjs_dom_all_video_capabilities_get_aspect_ratio
-       (unAllVideoCapabilities (toAllVideoCapabilities self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_all_video_capabilities_get_aspect_ratio
+          (unAllVideoCapabilities (toAllVideoCapabilities self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"facingMode\"]"
         ghcjs_dom_all_video_capabilities_get_facing_mode ::
@@ -112,12 +122,13 @@ foreign import javascript unsafe "$1[\"facingMode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.facingMode Mozilla AllVideoCapabilities.facingMode documentation> 
 allVideoCapabilitiesGetFacingMode ::
-                                  (IsAllVideoCapabilities self, FromJSString result) =>
-                                    self -> IO [result]
+                                  (MonadIO m, IsAllVideoCapabilities self, FromJSString result) =>
+                                    self -> m [result]
 allVideoCapabilitiesGetFacingMode self
-  = (ghcjs_dom_all_video_capabilities_get_facing_mode
-       (unAllVideoCapabilities (toAllVideoCapabilities self)))
-      >>= fromJSRefUnchecked
+  = liftIO
+      ((ghcjs_dom_all_video_capabilities_get_facing_mode
+          (unAllVideoCapabilities (toAllVideoCapabilities self)))
+         >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.AllVideoCapabilities (
   ) where

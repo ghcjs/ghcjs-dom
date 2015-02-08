@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"viewBox\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.viewBox Mozilla SVGFitToViewBox.viewBox documentation> 
 svgFitToViewBoxGetViewBox ::
-                          (IsSVGFitToViewBox self) => self -> IO (Maybe SVGAnimatedRect)
+                          (MonadIO m, IsSVGFitToViewBox self) =>
+                            self -> m (Maybe SVGAnimatedRect)
 svgFitToViewBoxGetViewBox self
-  = (ghcjs_dom_svg_fit_to_view_box_get_view_box
-       (unSVGFitToViewBox (toSVGFitToViewBox self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_fit_to_view_box_get_view_box
+          (unSVGFitToViewBox (toSVGFitToViewBox self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
         ghcjs_dom_svg_fit_to_view_box_get_preserve_aspect_ratio ::
@@ -39,12 +42,13 @@ foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.preserveAspectRatio Mozilla SVGFitToViewBox.preserveAspectRatio documentation> 
 svgFitToViewBoxGetPreserveAspectRatio ::
-                                      (IsSVGFitToViewBox self) =>
-                                        self -> IO (Maybe SVGAnimatedPreserveAspectRatio)
+                                      (MonadIO m, IsSVGFitToViewBox self) =>
+                                        self -> m (Maybe SVGAnimatedPreserveAspectRatio)
 svgFitToViewBoxGetPreserveAspectRatio self
-  = (ghcjs_dom_svg_fit_to_view_box_get_preserve_aspect_ratio
-       (unSVGFitToViewBox (toSVGFitToViewBox self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_fit_to_view_box_get_preserve_aspect_ratio
+          (unSVGFitToViewBox (toSVGFitToViewBox self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFitToViewBox (
   ) where

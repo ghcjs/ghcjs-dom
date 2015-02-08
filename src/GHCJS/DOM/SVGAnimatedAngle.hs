@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,12 @@ foreign import javascript unsafe "$1[\"baseVal\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedAngle.baseVal Mozilla SVGAnimatedAngle.baseVal documentation> 
 svgAnimatedAngleGetBaseVal ::
-                           (IsSVGAnimatedAngle self) => self -> IO (Maybe SVGAngle)
+                           (MonadIO m, IsSVGAnimatedAngle self) => self -> m (Maybe SVGAngle)
 svgAnimatedAngleGetBaseVal self
-  = (ghcjs_dom_svg_animated_angle_get_base_val
-       (unSVGAnimatedAngle (toSVGAnimatedAngle self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_animated_angle_get_base_val
+          (unSVGAnimatedAngle (toSVGAnimatedAngle self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"animVal\"]"
         ghcjs_dom_svg_animated_angle_get_anim_val ::
@@ -38,11 +40,12 @@ foreign import javascript unsafe "$1[\"animVal\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedAngle.animVal Mozilla SVGAnimatedAngle.animVal documentation> 
 svgAnimatedAngleGetAnimVal ::
-                           (IsSVGAnimatedAngle self) => self -> IO (Maybe SVGAngle)
+                           (MonadIO m, IsSVGAnimatedAngle self) => self -> m (Maybe SVGAngle)
 svgAnimatedAngleGetAnimVal self
-  = (ghcjs_dom_svg_animated_angle_get_anim_val
-       (unSVGAnimatedAngle (toSVGAnimatedAngle self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_animated_angle_get_anim_val
+          (unSVGAnimatedAngle (toSVGAnimatedAngle self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGAnimatedAngle (
   ) where

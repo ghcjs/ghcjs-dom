@@ -31,6 +31,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -45,12 +46,13 @@ foreign import javascript unsafe "$1[\"align\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.align Mozilla HTMLTableColElement.align documentation> 
 htmlTableColElementSetAlign ::
-                            (IsHTMLTableColElement self, ToJSString val) =>
-                              self -> val -> IO ()
+                            (MonadIO m, IsHTMLTableColElement self, ToJSString val) =>
+                              self -> val -> m ()
 htmlTableColElementSetAlign self val
-  = ghcjs_dom_html_table_col_element_set_align
-      (unHTMLTableColElement (toHTMLTableColElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_table_col_element_set_align
+         (unHTMLTableColElement (toHTMLTableColElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_table_col_element_get_align ::
@@ -58,12 +60,13 @@ foreign import javascript unsafe "$1[\"align\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.align Mozilla HTMLTableColElement.align documentation> 
 htmlTableColElementGetAlign ::
-                            (IsHTMLTableColElement self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsHTMLTableColElement self, FromJSString result) =>
+                              self -> m result
 htmlTableColElementGetAlign self
-  = fromJSString <$>
-      (ghcjs_dom_html_table_col_element_get_align
-         (unHTMLTableColElement (toHTMLTableColElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_table_col_element_get_align
+            (unHTMLTableColElement (toHTMLTableColElement self))))
  
 foreign import javascript unsafe "$1[\"ch\"] = $2;"
         ghcjs_dom_html_table_col_element_set_ch ::
@@ -71,12 +74,13 @@ foreign import javascript unsafe "$1[\"ch\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.ch Mozilla HTMLTableColElement.ch documentation> 
 htmlTableColElementSetCh ::
-                         (IsHTMLTableColElement self, ToJSString val) =>
-                           self -> val -> IO ()
+                         (MonadIO m, IsHTMLTableColElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlTableColElementSetCh self val
-  = ghcjs_dom_html_table_col_element_set_ch
-      (unHTMLTableColElement (toHTMLTableColElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_table_col_element_set_ch
+         (unHTMLTableColElement (toHTMLTableColElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"ch\"]"
         ghcjs_dom_html_table_col_element_get_ch ::
@@ -84,12 +88,13 @@ foreign import javascript unsafe "$1[\"ch\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.ch Mozilla HTMLTableColElement.ch documentation> 
 htmlTableColElementGetCh ::
-                         (IsHTMLTableColElement self, FromJSString result) =>
-                           self -> IO result
+                         (MonadIO m, IsHTMLTableColElement self, FromJSString result) =>
+                           self -> m result
 htmlTableColElementGetCh self
-  = fromJSString <$>
-      (ghcjs_dom_html_table_col_element_get_ch
-         (unHTMLTableColElement (toHTMLTableColElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_table_col_element_get_ch
+            (unHTMLTableColElement (toHTMLTableColElement self))))
  
 foreign import javascript unsafe "$1[\"chOff\"] = $2;"
         ghcjs_dom_html_table_col_element_set_ch_off ::
@@ -97,12 +102,13 @@ foreign import javascript unsafe "$1[\"chOff\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.chOff Mozilla HTMLTableColElement.chOff documentation> 
 htmlTableColElementSetChOff ::
-                            (IsHTMLTableColElement self, ToJSString val) =>
-                              self -> val -> IO ()
+                            (MonadIO m, IsHTMLTableColElement self, ToJSString val) =>
+                              self -> val -> m ()
 htmlTableColElementSetChOff self val
-  = ghcjs_dom_html_table_col_element_set_ch_off
-      (unHTMLTableColElement (toHTMLTableColElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_table_col_element_set_ch_off
+         (unHTMLTableColElement (toHTMLTableColElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"chOff\"]"
         ghcjs_dom_html_table_col_element_get_ch_off ::
@@ -110,12 +116,13 @@ foreign import javascript unsafe "$1[\"chOff\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.chOff Mozilla HTMLTableColElement.chOff documentation> 
 htmlTableColElementGetChOff ::
-                            (IsHTMLTableColElement self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsHTMLTableColElement self, FromJSString result) =>
+                              self -> m result
 htmlTableColElementGetChOff self
-  = fromJSString <$>
-      (ghcjs_dom_html_table_col_element_get_ch_off
-         (unHTMLTableColElement (toHTMLTableColElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_table_col_element_get_ch_off
+            (unHTMLTableColElement (toHTMLTableColElement self))))
  
 foreign import javascript unsafe "$1[\"span\"] = $2;"
         ghcjs_dom_html_table_col_element_set_span ::
@@ -123,11 +130,12 @@ foreign import javascript unsafe "$1[\"span\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.span Mozilla HTMLTableColElement.span documentation> 
 htmlTableColElementSetSpan ::
-                           (IsHTMLTableColElement self) => self -> Int -> IO ()
+                           (MonadIO m, IsHTMLTableColElement self) => self -> Int -> m ()
 htmlTableColElementSetSpan self val
-  = ghcjs_dom_html_table_col_element_set_span
-      (unHTMLTableColElement (toHTMLTableColElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_table_col_element_set_span
+         (unHTMLTableColElement (toHTMLTableColElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"span\"]"
         ghcjs_dom_html_table_col_element_get_span ::
@@ -135,10 +143,11 @@ foreign import javascript unsafe "$1[\"span\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.span Mozilla HTMLTableColElement.span documentation> 
 htmlTableColElementGetSpan ::
-                           (IsHTMLTableColElement self) => self -> IO Int
+                           (MonadIO m, IsHTMLTableColElement self) => self -> m Int
 htmlTableColElementGetSpan self
-  = ghcjs_dom_html_table_col_element_get_span
-      (unHTMLTableColElement (toHTMLTableColElement self))
+  = liftIO
+      (ghcjs_dom_html_table_col_element_get_span
+         (unHTMLTableColElement (toHTMLTableColElement self)))
  
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
         ghcjs_dom_html_table_col_element_set_v_align ::
@@ -146,12 +155,13 @@ foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.vAlign Mozilla HTMLTableColElement.vAlign documentation> 
 htmlTableColElementSetVAlign ::
-                             (IsHTMLTableColElement self, ToJSString val) =>
-                               self -> val -> IO ()
+                             (MonadIO m, IsHTMLTableColElement self, ToJSString val) =>
+                               self -> val -> m ()
 htmlTableColElementSetVAlign self val
-  = ghcjs_dom_html_table_col_element_set_v_align
-      (unHTMLTableColElement (toHTMLTableColElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_table_col_element_set_v_align
+         (unHTMLTableColElement (toHTMLTableColElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"vAlign\"]"
         ghcjs_dom_html_table_col_element_get_v_align ::
@@ -159,12 +169,13 @@ foreign import javascript unsafe "$1[\"vAlign\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.vAlign Mozilla HTMLTableColElement.vAlign documentation> 
 htmlTableColElementGetVAlign ::
-                             (IsHTMLTableColElement self, FromJSString result) =>
-                               self -> IO result
+                             (MonadIO m, IsHTMLTableColElement self, FromJSString result) =>
+                               self -> m result
 htmlTableColElementGetVAlign self
-  = fromJSString <$>
-      (ghcjs_dom_html_table_col_element_get_v_align
-         (unHTMLTableColElement (toHTMLTableColElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_table_col_element_get_v_align
+            (unHTMLTableColElement (toHTMLTableColElement self))))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;"
         ghcjs_dom_html_table_col_element_set_width ::
@@ -172,12 +183,13 @@ foreign import javascript unsafe "$1[\"width\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.width Mozilla HTMLTableColElement.width documentation> 
 htmlTableColElementSetWidth ::
-                            (IsHTMLTableColElement self, ToJSString val) =>
-                              self -> val -> IO ()
+                            (MonadIO m, IsHTMLTableColElement self, ToJSString val) =>
+                              self -> val -> m ()
 htmlTableColElementSetWidth self val
-  = ghcjs_dom_html_table_col_element_set_width
-      (unHTMLTableColElement (toHTMLTableColElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_table_col_element_set_width
+         (unHTMLTableColElement (toHTMLTableColElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_table_col_element_get_width ::
@@ -185,12 +197,13 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.width Mozilla HTMLTableColElement.width documentation> 
 htmlTableColElementGetWidth ::
-                            (IsHTMLTableColElement self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsHTMLTableColElement self, FromJSString result) =>
+                              self -> m result
 htmlTableColElementGetWidth self
-  = fromJSString <$>
-      (ghcjs_dom_html_table_col_element_get_width
-         (unHTMLTableColElement (toHTMLTableColElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_table_col_element_get_width
+            (unHTMLTableColElement (toHTMLTableColElement self))))
 #else
 module GHCJS.DOM.HTMLTableColElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLTableColElement

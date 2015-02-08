@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -38,27 +39,28 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.initWheelEvent Mozilla WheelEvent.initWheelEvent documentation> 
 wheelEventInitWheelEvent ::
-                         (IsWheelEvent self, IsDOMWindow view) =>
+                         (MonadIO m, IsWheelEvent self, IsDOMWindow view) =>
                            self ->
                              Int ->
                                Int ->
                                  Maybe view ->
-                                   Int -> Int -> Int -> Int -> Bool -> Bool -> Bool -> Bool -> IO ()
+                                   Int -> Int -> Int -> Int -> Bool -> Bool -> Bool -> Bool -> m ()
 wheelEventInitWheelEvent self wheelDeltaX wheelDeltaY view screenX
   screenY clientX clientY ctrlKey altKey shiftKey metaKey
-  = ghcjs_dom_wheel_event_init_wheel_event
-      (unWheelEvent (toWheelEvent self))
-      wheelDeltaX
-      wheelDeltaY
-      (maybe jsNull (unDOMWindow . toDOMWindow) view)
-      screenX
-      screenY
-      clientX
-      clientY
-      ctrlKey
-      altKey
-      shiftKey
-      metaKey
+  = liftIO
+      (ghcjs_dom_wheel_event_init_wheel_event
+         (unWheelEvent (toWheelEvent self))
+         wheelDeltaX
+         wheelDeltaY
+         (maybe jsNull (unDOMWindow . toDOMWindow) view)
+         screenX
+         screenY
+         clientX
+         clientY
+         ctrlKey
+         altKey
+         shiftKey
+         metaKey)
 cDOM_DELTA_PIXEL = 0
 cDOM_DELTA_LINE = 1
 cDOM_DELTA_PAGE = 2
@@ -67,66 +69,80 @@ foreign import javascript unsafe "$1[\"deltaX\"]"
         ghcjs_dom_wheel_event_get_delta_x :: JSRef WheelEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaX Mozilla WheelEvent.deltaX documentation> 
-wheelEventGetDeltaX :: (IsWheelEvent self) => self -> IO Double
+wheelEventGetDeltaX ::
+                    (MonadIO m, IsWheelEvent self) => self -> m Double
 wheelEventGetDeltaX self
-  = ghcjs_dom_wheel_event_get_delta_x
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_delta_x
+         (unWheelEvent (toWheelEvent self)))
  
 foreign import javascript unsafe "$1[\"deltaY\"]"
         ghcjs_dom_wheel_event_get_delta_y :: JSRef WheelEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaY Mozilla WheelEvent.deltaY documentation> 
-wheelEventGetDeltaY :: (IsWheelEvent self) => self -> IO Double
+wheelEventGetDeltaY ::
+                    (MonadIO m, IsWheelEvent self) => self -> m Double
 wheelEventGetDeltaY self
-  = ghcjs_dom_wheel_event_get_delta_y
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_delta_y
+         (unWheelEvent (toWheelEvent self)))
  
 foreign import javascript unsafe "$1[\"deltaZ\"]"
         ghcjs_dom_wheel_event_get_delta_z :: JSRef WheelEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaZ Mozilla WheelEvent.deltaZ documentation> 
-wheelEventGetDeltaZ :: (IsWheelEvent self) => self -> IO Double
+wheelEventGetDeltaZ ::
+                    (MonadIO m, IsWheelEvent self) => self -> m Double
 wheelEventGetDeltaZ self
-  = ghcjs_dom_wheel_event_get_delta_z
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_delta_z
+         (unWheelEvent (toWheelEvent self)))
  
 foreign import javascript unsafe "$1[\"deltaMode\"]"
         ghcjs_dom_wheel_event_get_delta_mode :: JSRef WheelEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaMode Mozilla WheelEvent.deltaMode documentation> 
-wheelEventGetDeltaMode :: (IsWheelEvent self) => self -> IO Word
+wheelEventGetDeltaMode ::
+                       (MonadIO m, IsWheelEvent self) => self -> m Word
 wheelEventGetDeltaMode self
-  = ghcjs_dom_wheel_event_get_delta_mode
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_delta_mode
+         (unWheelEvent (toWheelEvent self)))
  
 foreign import javascript unsafe "$1[\"wheelDeltaX\"]"
         ghcjs_dom_wheel_event_get_wheel_delta_x ::
         JSRef WheelEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.wheelDeltaX Mozilla WheelEvent.wheelDeltaX documentation> 
-wheelEventGetWheelDeltaX :: (IsWheelEvent self) => self -> IO Int
+wheelEventGetWheelDeltaX ::
+                         (MonadIO m, IsWheelEvent self) => self -> m Int
 wheelEventGetWheelDeltaX self
-  = ghcjs_dom_wheel_event_get_wheel_delta_x
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_wheel_delta_x
+         (unWheelEvent (toWheelEvent self)))
  
 foreign import javascript unsafe "$1[\"wheelDeltaY\"]"
         ghcjs_dom_wheel_event_get_wheel_delta_y ::
         JSRef WheelEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.wheelDeltaY Mozilla WheelEvent.wheelDeltaY documentation> 
-wheelEventGetWheelDeltaY :: (IsWheelEvent self) => self -> IO Int
+wheelEventGetWheelDeltaY ::
+                         (MonadIO m, IsWheelEvent self) => self -> m Int
 wheelEventGetWheelDeltaY self
-  = ghcjs_dom_wheel_event_get_wheel_delta_y
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_wheel_delta_y
+         (unWheelEvent (toWheelEvent self)))
  
 foreign import javascript unsafe "$1[\"wheelDelta\"]"
         ghcjs_dom_wheel_event_get_wheel_delta :: JSRef WheelEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.wheelDelta Mozilla WheelEvent.wheelDelta documentation> 
-wheelEventGetWheelDelta :: (IsWheelEvent self) => self -> IO Int
+wheelEventGetWheelDelta ::
+                        (MonadIO m, IsWheelEvent self) => self -> m Int
 wheelEventGetWheelDelta self
-  = ghcjs_dom_wheel_event_get_wheel_delta
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_wheel_delta
+         (unWheelEvent (toWheelEvent self)))
  
 foreign import javascript unsafe
         "($1[\"webkitDirectionInvertedFromDevice\"] ? 1 : 0)"
@@ -135,10 +151,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.webkitDirectionInvertedFromDevice Mozilla WheelEvent.webkitDirectionInvertedFromDevice documentation> 
 wheelEventGetWebkitDirectionInvertedFromDevice ::
-                                               (IsWheelEvent self) => self -> IO Bool
+                                               (MonadIO m, IsWheelEvent self) => self -> m Bool
 wheelEventGetWebkitDirectionInvertedFromDevice self
-  = ghcjs_dom_wheel_event_get_webkit_direction_inverted_from_device
-      (unWheelEvent (toWheelEvent self))
+  = liftIO
+      (ghcjs_dom_wheel_event_get_webkit_direction_inverted_from_device
+         (unWheelEvent (toWheelEvent self)))
 #else
 module GHCJS.DOM.WheelEvent (
   ) where

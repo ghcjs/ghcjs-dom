@@ -18,6 +18,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,10 +31,12 @@ foreign import javascript unsafe "$1[\"clear\"]()"
         ghcjs_dom_svg_length_list_clear :: JSRef SVGLengthList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.clear Mozilla SVGLengthList.clear documentation> 
-svgLengthListClear :: (IsSVGLengthList self) => self -> IO ()
+svgLengthListClear ::
+                   (MonadIO m, IsSVGLengthList self) => self -> m ()
 svgLengthListClear self
-  = ghcjs_dom_svg_length_list_clear
-      (unSVGLengthList (toSVGLengthList self))
+  = liftIO
+      (ghcjs_dom_svg_length_list_clear
+         (unSVGLengthList (toSVGLengthList self)))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
         ghcjs_dom_svg_length_list_initialize ::
@@ -41,13 +44,14 @@ foreign import javascript unsafe "$1[\"initialize\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.initialize Mozilla SVGLengthList.initialize documentation> 
 svgLengthListInitialize ::
-                        (IsSVGLengthList self, IsSVGLength item) =>
-                          self -> Maybe item -> IO (Maybe SVGLength)
+                        (MonadIO m, IsSVGLengthList self, IsSVGLength item) =>
+                          self -> Maybe item -> m (Maybe SVGLength)
 svgLengthListInitialize self item
-  = (ghcjs_dom_svg_length_list_initialize
-       (unSVGLengthList (toSVGLengthList self))
-       (maybe jsNull (unSVGLength . toSVGLength) item))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_length_list_initialize
+          (unSVGLengthList (toSVGLengthList self))
+          (maybe jsNull (unSVGLength . toSVGLength) item))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)"
         ghcjs_dom_svg_length_list_get_item ::
@@ -55,12 +59,14 @@ foreign import javascript unsafe "$1[\"getItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.item Mozilla SVGLengthList.item documentation> 
 svgLengthListGetItem ::
-                     (IsSVGLengthList self) => self -> Word -> IO (Maybe SVGLength)
+                     (MonadIO m, IsSVGLengthList self) =>
+                       self -> Word -> m (Maybe SVGLength)
 svgLengthListGetItem self index
-  = (ghcjs_dom_svg_length_list_get_item
-       (unSVGLengthList (toSVGLengthList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_length_list_get_item
+          (unSVGLengthList (toSVGLengthList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         ghcjs_dom_svg_length_list_insert_item_before ::
@@ -69,14 +75,15 @@ foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.insertItemBefore Mozilla SVGLengthList.insertItemBefore documentation> 
 svgLengthListInsertItemBefore ::
-                              (IsSVGLengthList self, IsSVGLength item) =>
-                                self -> Maybe item -> Word -> IO (Maybe SVGLength)
+                              (MonadIO m, IsSVGLengthList self, IsSVGLength item) =>
+                                self -> Maybe item -> Word -> m (Maybe SVGLength)
 svgLengthListInsertItemBefore self item index
-  = (ghcjs_dom_svg_length_list_insert_item_before
-       (unSVGLengthList (toSVGLengthList self))
-       (maybe jsNull (unSVGLength . toSVGLength) item)
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_length_list_insert_item_before
+          (unSVGLengthList (toSVGLengthList self))
+          (maybe jsNull (unSVGLength . toSVGLength) item)
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
         ghcjs_dom_svg_length_list_replace_item ::
@@ -85,14 +92,15 @@ foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.replaceItem Mozilla SVGLengthList.replaceItem documentation> 
 svgLengthListReplaceItem ::
-                         (IsSVGLengthList self, IsSVGLength item) =>
-                           self -> Maybe item -> Word -> IO (Maybe SVGLength)
+                         (MonadIO m, IsSVGLengthList self, IsSVGLength item) =>
+                           self -> Maybe item -> Word -> m (Maybe SVGLength)
 svgLengthListReplaceItem self item index
-  = (ghcjs_dom_svg_length_list_replace_item
-       (unSVGLengthList (toSVGLengthList self))
-       (maybe jsNull (unSVGLength . toSVGLength) item)
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_length_list_replace_item
+          (unSVGLengthList (toSVGLengthList self))
+          (maybe jsNull (unSVGLength . toSVGLength) item)
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
         ghcjs_dom_svg_length_list_remove_item ::
@@ -100,12 +108,14 @@ foreign import javascript unsafe "$1[\"removeItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.removeItem Mozilla SVGLengthList.removeItem documentation> 
 svgLengthListRemoveItem ::
-                        (IsSVGLengthList self) => self -> Word -> IO (Maybe SVGLength)
+                        (MonadIO m, IsSVGLengthList self) =>
+                          self -> Word -> m (Maybe SVGLength)
 svgLengthListRemoveItem self index
-  = (ghcjs_dom_svg_length_list_remove_item
-       (unSVGLengthList (toSVGLengthList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_length_list_remove_item
+          (unSVGLengthList (toSVGLengthList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         ghcjs_dom_svg_length_list_append_item ::
@@ -113,13 +123,14 @@ foreign import javascript unsafe "$1[\"appendItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.appendItem Mozilla SVGLengthList.appendItem documentation> 
 svgLengthListAppendItem ::
-                        (IsSVGLengthList self, IsSVGLength item) =>
-                          self -> Maybe item -> IO (Maybe SVGLength)
+                        (MonadIO m, IsSVGLengthList self, IsSVGLength item) =>
+                          self -> Maybe item -> m (Maybe SVGLength)
 svgLengthListAppendItem self item
-  = (ghcjs_dom_svg_length_list_append_item
-       (unSVGLengthList (toSVGLengthList self))
-       (maybe jsNull (unSVGLength . toSVGLength) item))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_length_list_append_item
+          (unSVGLengthList (toSVGLengthList self))
+          (maybe jsNull (unSVGLength . toSVGLength) item))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
         ghcjs_dom_svg_length_list_get_number_of_items ::
@@ -127,10 +138,11 @@ foreign import javascript unsafe "$1[\"numberOfItems\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.numberOfItems Mozilla SVGLengthList.numberOfItems documentation> 
 svgLengthListGetNumberOfItems ::
-                              (IsSVGLengthList self) => self -> IO Word
+                              (MonadIO m, IsSVGLengthList self) => self -> m Word
 svgLengthListGetNumberOfItems self
-  = ghcjs_dom_svg_length_list_get_number_of_items
-      (unSVGLengthList (toSVGLengthList self))
+  = liftIO
+      (ghcjs_dom_svg_length_list_get_number_of_items
+         (unSVGLengthList (toSVGLengthList self)))
 #else
 module GHCJS.DOM.SVGLengthList (
   ) where

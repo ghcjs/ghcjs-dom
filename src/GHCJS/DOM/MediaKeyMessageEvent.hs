@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"message\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.message Mozilla WebKitMediaKeyMessageEvent.message documentation> 
 mediaKeyMessageEventGetMessage ::
-                               (IsMediaKeyMessageEvent self) => self -> IO (Maybe Uint8Array)
+                               (MonadIO m, IsMediaKeyMessageEvent self) =>
+                                 self -> m (Maybe Uint8Array)
 mediaKeyMessageEventGetMessage self
-  = (ghcjs_dom_media_key_message_event_get_message
-       (unMediaKeyMessageEvent (toMediaKeyMessageEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_media_key_message_event_get_message
+          (unMediaKeyMessageEvent (toMediaKeyMessageEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"destinationURL\"]"
         ghcjs_dom_media_key_message_event_get_destination_url ::
@@ -39,12 +42,14 @@ foreign import javascript unsafe "$1[\"destinationURL\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.destinationURL Mozilla WebKitMediaKeyMessageEvent.destinationURL documentation> 
 mediaKeyMessageEventGetDestinationURL ::
-                                      (IsMediaKeyMessageEvent self, FromJSString result) =>
-                                        self -> IO result
+                                      (MonadIO m, IsMediaKeyMessageEvent self,
+                                       FromJSString result) =>
+                                        self -> m result
 mediaKeyMessageEventGetDestinationURL self
-  = fromJSString <$>
-      (ghcjs_dom_media_key_message_event_get_destination_url
-         (unMediaKeyMessageEvent (toMediaKeyMessageEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_media_key_message_event_get_destination_url
+            (unMediaKeyMessageEvent (toMediaKeyMessageEvent self))))
 #else
 module GHCJS.DOM.MediaKeyMessageEvent (
   ) where

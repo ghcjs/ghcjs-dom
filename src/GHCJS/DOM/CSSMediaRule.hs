@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,13 +28,14 @@ foreign import javascript unsafe "$1[\"insertRule\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.insertRule Mozilla CSSMediaRule.insertRule documentation> 
 cssMediaRuleInsertRule ::
-                       (IsCSSMediaRule self, ToJSString rule) =>
-                         self -> rule -> Word -> IO Word
+                       (MonadIO m, IsCSSMediaRule self, ToJSString rule) =>
+                         self -> rule -> Word -> m Word
 cssMediaRuleInsertRule self rule index
-  = ghcjs_dom_css_media_rule_insert_rule
-      (unCSSMediaRule (toCSSMediaRule self))
-      (toJSString rule)
-      index
+  = liftIO
+      (ghcjs_dom_css_media_rule_insert_rule
+         (unCSSMediaRule (toCSSMediaRule self))
+         (toJSString rule)
+         index)
  
 foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
         ghcjs_dom_css_media_rule_delete_rule ::
@@ -41,11 +43,12 @@ foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.deleteRule Mozilla CSSMediaRule.deleteRule documentation> 
 cssMediaRuleDeleteRule ::
-                       (IsCSSMediaRule self) => self -> Word -> IO ()
+                       (MonadIO m, IsCSSMediaRule self) => self -> Word -> m ()
 cssMediaRuleDeleteRule self index
-  = ghcjs_dom_css_media_rule_delete_rule
-      (unCSSMediaRule (toCSSMediaRule self))
-      index
+  = liftIO
+      (ghcjs_dom_css_media_rule_delete_rule
+         (unCSSMediaRule (toCSSMediaRule self))
+         index)
  
 foreign import javascript unsafe "$1[\"media\"]"
         ghcjs_dom_css_media_rule_get_media ::
@@ -53,11 +56,12 @@ foreign import javascript unsafe "$1[\"media\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.media Mozilla CSSMediaRule.media documentation> 
 cssMediaRuleGetMedia ::
-                     (IsCSSMediaRule self) => self -> IO (Maybe MediaList)
+                     (MonadIO m, IsCSSMediaRule self) => self -> m (Maybe MediaList)
 cssMediaRuleGetMedia self
-  = (ghcjs_dom_css_media_rule_get_media
-       (unCSSMediaRule (toCSSMediaRule self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_media_rule_get_media
+          (unCSSMediaRule (toCSSMediaRule self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"cssRules\"]"
         ghcjs_dom_css_media_rule_get_css_rules ::
@@ -65,11 +69,12 @@ foreign import javascript unsafe "$1[\"cssRules\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.cssRules Mozilla CSSMediaRule.cssRules documentation> 
 cssMediaRuleGetCssRules ::
-                        (IsCSSMediaRule self) => self -> IO (Maybe CSSRuleList)
+                        (MonadIO m, IsCSSMediaRule self) => self -> m (Maybe CSSRuleList)
 cssMediaRuleGetCssRules self
-  = (ghcjs_dom_css_media_rule_get_css_rules
-       (unCSSMediaRule (toCSSMediaRule self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_media_rule_get_css_rules
+          (unCSSMediaRule (toCSSMediaRule self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.CSSMediaRule (
   ) where

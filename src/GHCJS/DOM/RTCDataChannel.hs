@@ -7,10 +7,8 @@ module GHCJS.DOM.RTCDataChannel
         ghcjs_dom_rtc_data_channel_sendBlob, rtcDataChannelSendBlob,
         ghcjs_dom_rtc_data_channel_sendString, rtcDataChannelSendString,
         ghcjs_dom_rtc_data_channel_close, rtcDataChannelClose,
-        ghcjs_dom_rtc_data_channel_dispatch_event,
-        rtcDataChannelDispatchEvent, ghcjs_dom_rtc_data_channel_get_label,
-        rtcDataChannelGetLabel, ghcjs_dom_rtc_data_channel_get_ordered,
-        rtcDataChannelGetOrdered,
+        ghcjs_dom_rtc_data_channel_get_label, rtcDataChannelGetLabel,
+        ghcjs_dom_rtc_data_channel_get_ordered, rtcDataChannelGetOrdered,
         ghcjs_dom_rtc_data_channel_get_max_retransmit_time,
         rtcDataChannelGetMaxRetransmitTime,
         ghcjs_dom_rtc_data_channel_get_max_retransmits,
@@ -25,15 +23,16 @@ module GHCJS.DOM.RTCDataChannel
         ghcjs_dom_rtc_data_channel_set_binary_type,
         rtcDataChannelSetBinaryType,
         ghcjs_dom_rtc_data_channel_get_binary_type,
-        rtcDataChannelGetBinaryType, rtcDataChannelOnopen,
-        rtcDataChannelOnerror, rtcDataChannelOnclose,
-        rtcDataChannelOnmessage, RTCDataChannel, IsRTCDataChannel,
+        rtcDataChannelGetBinaryType, rtcDataChannelOpen,
+        rtcDataChannelError, rtcDataChannelCloseEvent,
+        rtcDataChannelMessage, RTCDataChannel, IsRTCDataChannel,
         castToRTCDataChannel, gTypeRTCDataChannel, toRTCDataChannel)
        where
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -48,12 +47,13 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
 rtcDataChannelSend ::
-                   (IsRTCDataChannel self, IsArrayBuffer data') =>
-                     self -> Maybe data' -> IO ()
+                   (MonadIO m, IsRTCDataChannel self, IsArrayBuffer data') =>
+                     self -> Maybe data' -> m ()
 rtcDataChannelSend self data'
-  = ghcjs_dom_rtc_data_channel_send
-      (unRTCDataChannel (toRTCDataChannel self))
-      (maybe jsNull (unArrayBuffer . toArrayBuffer) data')
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_send
+         (unRTCDataChannel (toRTCDataChannel self))
+         (maybe jsNull (unArrayBuffer . toArrayBuffer) data'))
  
 foreign import javascript unsafe "$1[\"send\"]($2)"
         ghcjs_dom_rtc_data_channel_sendView ::
@@ -61,12 +61,13 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.sendView Mozilla RTCDataChannel.sendView documentation> 
 rtcDataChannelSendView ::
-                       (IsRTCDataChannel self, IsArrayBufferView data') =>
-                         self -> Maybe data' -> IO ()
+                       (MonadIO m, IsRTCDataChannel self, IsArrayBufferView data') =>
+                         self -> Maybe data' -> m ()
 rtcDataChannelSendView self data'
-  = ghcjs_dom_rtc_data_channel_sendView
-      (unRTCDataChannel (toRTCDataChannel self))
-      (maybe jsNull (unArrayBufferView . toArrayBufferView) data')
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_sendView
+         (unRTCDataChannel (toRTCDataChannel self))
+         (maybe jsNull (unArrayBufferView . toArrayBufferView) data'))
  
 foreign import javascript unsafe "$1[\"send\"]($2)"
         ghcjs_dom_rtc_data_channel_sendBlob ::
@@ -74,12 +75,13 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.sendBlob Mozilla RTCDataChannel.sendBlob documentation> 
 rtcDataChannelSendBlob ::
-                       (IsRTCDataChannel self, IsBlob data') =>
-                         self -> Maybe data' -> IO ()
+                       (MonadIO m, IsRTCDataChannel self, IsBlob data') =>
+                         self -> Maybe data' -> m ()
 rtcDataChannelSendBlob self data'
-  = ghcjs_dom_rtc_data_channel_sendBlob
-      (unRTCDataChannel (toRTCDataChannel self))
-      (maybe jsNull (unBlob . toBlob) data')
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_sendBlob
+         (unRTCDataChannel (toRTCDataChannel self))
+         (maybe jsNull (unBlob . toBlob) data'))
  
 foreign import javascript unsafe "$1[\"send\"]($2)"
         ghcjs_dom_rtc_data_channel_sendString ::
@@ -87,34 +89,24 @@ foreign import javascript unsafe "$1[\"send\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.sendString Mozilla RTCDataChannel.sendString documentation> 
 rtcDataChannelSendString ::
-                         (IsRTCDataChannel self, ToJSString data') => self -> data' -> IO ()
+                         (MonadIO m, IsRTCDataChannel self, ToJSString data') =>
+                           self -> data' -> m ()
 rtcDataChannelSendString self data'
-  = ghcjs_dom_rtc_data_channel_sendString
-      (unRTCDataChannel (toRTCDataChannel self))
-      (toJSString data')
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_sendString
+         (unRTCDataChannel (toRTCDataChannel self))
+         (toJSString data'))
  
 foreign import javascript unsafe "$1[\"close\"]()"
         ghcjs_dom_rtc_data_channel_close :: JSRef RTCDataChannel -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.close Mozilla RTCDataChannel.close documentation> 
-rtcDataChannelClose :: (IsRTCDataChannel self) => self -> IO ()
+rtcDataChannelClose ::
+                    (MonadIO m, IsRTCDataChannel self) => self -> m ()
 rtcDataChannelClose self
-  = ghcjs_dom_rtc_data_channel_close
-      (unRTCDataChannel (toRTCDataChannel self))
- 
-foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_rtc_data_channel_dispatch_event ::
-        JSRef RTCDataChannel -> JSRef Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.dispatchEvent Mozilla RTCDataChannel.dispatchEvent documentation> 
-rtcDataChannelDispatchEvent ::
-                            (IsRTCDataChannel self, IsEvent event) =>
-                              self -> Maybe event -> IO Bool
-rtcDataChannelDispatchEvent self event
-  = ghcjs_dom_rtc_data_channel_dispatch_event
-      (unRTCDataChannel (toRTCDataChannel self))
-      (maybe jsNull (unEvent . toEvent) event)
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_close
+         (unRTCDataChannel (toRTCDataChannel self)))
  
 foreign import javascript unsafe "$1[\"label\"]"
         ghcjs_dom_rtc_data_channel_get_label ::
@@ -122,11 +114,13 @@ foreign import javascript unsafe "$1[\"label\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.label Mozilla RTCDataChannel.label documentation> 
 rtcDataChannelGetLabel ::
-                       (IsRTCDataChannel self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsRTCDataChannel self, FromJSString result) =>
+                         self -> m result
 rtcDataChannelGetLabel self
-  = fromJSString <$>
-      (ghcjs_dom_rtc_data_channel_get_label
-         (unRTCDataChannel (toRTCDataChannel self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_data_channel_get_label
+            (unRTCDataChannel (toRTCDataChannel self))))
  
 foreign import javascript unsafe "($1[\"ordered\"] ? 1 : 0)"
         ghcjs_dom_rtc_data_channel_get_ordered ::
@@ -134,10 +128,11 @@ foreign import javascript unsafe "($1[\"ordered\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.ordered Mozilla RTCDataChannel.ordered documentation> 
 rtcDataChannelGetOrdered ::
-                         (IsRTCDataChannel self) => self -> IO Bool
+                         (MonadIO m, IsRTCDataChannel self) => self -> m Bool
 rtcDataChannelGetOrdered self
-  = ghcjs_dom_rtc_data_channel_get_ordered
-      (unRTCDataChannel (toRTCDataChannel self))
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_get_ordered
+         (unRTCDataChannel (toRTCDataChannel self)))
  
 foreign import javascript unsafe "$1[\"maxRetransmitTime\"]"
         ghcjs_dom_rtc_data_channel_get_max_retransmit_time ::
@@ -145,10 +140,11 @@ foreign import javascript unsafe "$1[\"maxRetransmitTime\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.maxRetransmitTime Mozilla RTCDataChannel.maxRetransmitTime documentation> 
 rtcDataChannelGetMaxRetransmitTime ::
-                                   (IsRTCDataChannel self) => self -> IO Word
+                                   (MonadIO m, IsRTCDataChannel self) => self -> m Word
 rtcDataChannelGetMaxRetransmitTime self
-  = ghcjs_dom_rtc_data_channel_get_max_retransmit_time
-      (unRTCDataChannel (toRTCDataChannel self))
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_get_max_retransmit_time
+         (unRTCDataChannel (toRTCDataChannel self)))
  
 foreign import javascript unsafe "$1[\"maxRetransmits\"]"
         ghcjs_dom_rtc_data_channel_get_max_retransmits ::
@@ -156,10 +152,11 @@ foreign import javascript unsafe "$1[\"maxRetransmits\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.maxRetransmits Mozilla RTCDataChannel.maxRetransmits documentation> 
 rtcDataChannelGetMaxRetransmits ::
-                                (IsRTCDataChannel self) => self -> IO Word
+                                (MonadIO m, IsRTCDataChannel self) => self -> m Word
 rtcDataChannelGetMaxRetransmits self
-  = ghcjs_dom_rtc_data_channel_get_max_retransmits
-      (unRTCDataChannel (toRTCDataChannel self))
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_get_max_retransmits
+         (unRTCDataChannel (toRTCDataChannel self)))
  
 foreign import javascript unsafe "$1[\"protocol\"]"
         ghcjs_dom_rtc_data_channel_get_protocol ::
@@ -167,11 +164,13 @@ foreign import javascript unsafe "$1[\"protocol\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.protocol Mozilla RTCDataChannel.protocol documentation> 
 rtcDataChannelGetProtocol ::
-                          (IsRTCDataChannel self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsRTCDataChannel self, FromJSString result) =>
+                            self -> m result
 rtcDataChannelGetProtocol self
-  = fromJSString <$>
-      (ghcjs_dom_rtc_data_channel_get_protocol
-         (unRTCDataChannel (toRTCDataChannel self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_data_channel_get_protocol
+            (unRTCDataChannel (toRTCDataChannel self))))
  
 foreign import javascript unsafe "($1[\"negotiated\"] ? 1 : 0)"
         ghcjs_dom_rtc_data_channel_get_negotiated ::
@@ -179,20 +178,23 @@ foreign import javascript unsafe "($1[\"negotiated\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.negotiated Mozilla RTCDataChannel.negotiated documentation> 
 rtcDataChannelGetNegotiated ::
-                            (IsRTCDataChannel self) => self -> IO Bool
+                            (MonadIO m, IsRTCDataChannel self) => self -> m Bool
 rtcDataChannelGetNegotiated self
-  = ghcjs_dom_rtc_data_channel_get_negotiated
-      (unRTCDataChannel (toRTCDataChannel self))
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_get_negotiated
+         (unRTCDataChannel (toRTCDataChannel self)))
  
 foreign import javascript unsafe "$1[\"id\"]"
         ghcjs_dom_rtc_data_channel_get_id ::
         JSRef RTCDataChannel -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.id Mozilla RTCDataChannel.id documentation> 
-rtcDataChannelGetId :: (IsRTCDataChannel self) => self -> IO Word
+rtcDataChannelGetId ::
+                    (MonadIO m, IsRTCDataChannel self) => self -> m Word
 rtcDataChannelGetId self
-  = ghcjs_dom_rtc_data_channel_get_id
-      (unRTCDataChannel (toRTCDataChannel self))
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_get_id
+         (unRTCDataChannel (toRTCDataChannel self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         ghcjs_dom_rtc_data_channel_get_ready_state ::
@@ -200,11 +202,13 @@ foreign import javascript unsafe "$1[\"readyState\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.readyState Mozilla RTCDataChannel.readyState documentation> 
 rtcDataChannelGetReadyState ::
-                            (IsRTCDataChannel self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsRTCDataChannel self, FromJSString result) =>
+                              self -> m result
 rtcDataChannelGetReadyState self
-  = fromJSString <$>
-      (ghcjs_dom_rtc_data_channel_get_ready_state
-         (unRTCDataChannel (toRTCDataChannel self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_data_channel_get_ready_state
+            (unRTCDataChannel (toRTCDataChannel self))))
  
 foreign import javascript unsafe "$1[\"bufferedAmount\"]"
         ghcjs_dom_rtc_data_channel_get_buffered_amount ::
@@ -212,10 +216,11 @@ foreign import javascript unsafe "$1[\"bufferedAmount\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.bufferedAmount Mozilla RTCDataChannel.bufferedAmount documentation> 
 rtcDataChannelGetBufferedAmount ::
-                                (IsRTCDataChannel self) => self -> IO Word
+                                (MonadIO m, IsRTCDataChannel self) => self -> m Word
 rtcDataChannelGetBufferedAmount self
-  = ghcjs_dom_rtc_data_channel_get_buffered_amount
-      (unRTCDataChannel (toRTCDataChannel self))
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_get_buffered_amount
+         (unRTCDataChannel (toRTCDataChannel self)))
  
 foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
         ghcjs_dom_rtc_data_channel_set_binary_type ::
@@ -223,11 +228,13 @@ foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.binaryType Mozilla RTCDataChannel.binaryType documentation> 
 rtcDataChannelSetBinaryType ::
-                            (IsRTCDataChannel self, ToJSString val) => self -> val -> IO ()
+                            (MonadIO m, IsRTCDataChannel self, ToJSString val) =>
+                              self -> val -> m ()
 rtcDataChannelSetBinaryType self val
-  = ghcjs_dom_rtc_data_channel_set_binary_type
-      (unRTCDataChannel (toRTCDataChannel self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_rtc_data_channel_set_binary_type
+         (unRTCDataChannel (toRTCDataChannel self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"binaryType\"]"
         ghcjs_dom_rtc_data_channel_get_binary_type ::
@@ -235,31 +242,35 @@ foreign import javascript unsafe "$1[\"binaryType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.binaryType Mozilla RTCDataChannel.binaryType documentation> 
 rtcDataChannelGetBinaryType ::
-                            (IsRTCDataChannel self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsRTCDataChannel self, FromJSString result) =>
+                              self -> m result
 rtcDataChannelGetBinaryType self
-  = fromJSString <$>
-      (ghcjs_dom_rtc_data_channel_get_binary_type
-         (unRTCDataChannel (toRTCDataChannel self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_rtc_data_channel_get_binary_type
+            (unRTCDataChannel (toRTCDataChannel self))))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.onopen Mozilla RTCDataChannel.onopen documentation> 
-rtcDataChannelOnopen ::
-                     (IsRTCDataChannel self) => Signal self (EventM UIEvent self ())
-rtcDataChannelOnopen = (connect "open")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.open Mozilla RTCDataChannel.open documentation> 
+rtcDataChannelOpen ::
+                   (IsRTCDataChannel self, IsEventTarget self) => EventName self Event
+rtcDataChannelOpen = unsafeEventName (toJSString "open")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.onerror Mozilla RTCDataChannel.onerror documentation> 
-rtcDataChannelOnerror ::
-                      (IsRTCDataChannel self) => Signal self (EventM UIEvent self ())
-rtcDataChannelOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.error Mozilla RTCDataChannel.error documentation> 
+rtcDataChannelError ::
+                    (IsRTCDataChannel self, IsEventTarget self) =>
+                      EventName self UIEvent
+rtcDataChannelError = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.onclose Mozilla RTCDataChannel.onclose documentation> 
-rtcDataChannelOnclose ::
-                      (IsRTCDataChannel self) => Signal self (EventM UIEvent self ())
-rtcDataChannelOnclose = (connect "close")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.closeEvent Mozilla RTCDataChannel.closeEvent documentation> 
+rtcDataChannelCloseEvent ::
+                         (IsRTCDataChannel self, IsEventTarget self) => EventName self Event
+rtcDataChannelCloseEvent = unsafeEventName (toJSString "close")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.onmessage Mozilla RTCDataChannel.onmessage documentation> 
-rtcDataChannelOnmessage ::
-                        (IsRTCDataChannel self) => Signal self (EventM UIEvent self ())
-rtcDataChannelOnmessage = (connect "message")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.message Mozilla RTCDataChannel.message documentation> 
+rtcDataChannelMessage ::
+                      (IsRTCDataChannel self, IsEventTarget self) =>
+                        EventName self MessageEvent
+rtcDataChannelMessage = unsafeEventName (toJSString "message")
 #else
 module GHCJS.DOM.RTCDataChannel (
   ) where

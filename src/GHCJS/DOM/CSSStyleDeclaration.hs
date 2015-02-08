@@ -32,6 +32,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -46,14 +47,15 @@ foreign import javascript unsafe "$1[\"getPropertyValue\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.propertyValue Mozilla CSSStyleDeclaration.propertyValue documentation> 
 cssStyleDeclarationGetPropertyValue ::
-                                    (IsCSSStyleDeclaration self, ToJSString propertyName,
+                                    (MonadIO m, IsCSSStyleDeclaration self, ToJSString propertyName,
                                      FromJSString result) =>
-                                      self -> propertyName -> IO result
+                                      self -> propertyName -> m result
 cssStyleDeclarationGetPropertyValue self propertyName
-  = fromJSString <$>
-      (ghcjs_dom_css_style_declaration_get_property_value
-         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-         (toJSString propertyName))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_style_declaration_get_property_value
+            (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+            (toJSString propertyName)))
  
 foreign import javascript unsafe "$1[\"getPropertyCSSValue\"]($2)"
         ghcjs_dom_css_style_declaration_get_property_css_value ::
@@ -61,13 +63,15 @@ foreign import javascript unsafe "$1[\"getPropertyCSSValue\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.propertyCSSValue Mozilla CSSStyleDeclaration.propertyCSSValue documentation> 
 cssStyleDeclarationGetPropertyCSSValue ::
-                                       (IsCSSStyleDeclaration self, ToJSString propertyName) =>
-                                         self -> propertyName -> IO (Maybe CSSValue)
+                                       (MonadIO m, IsCSSStyleDeclaration self,
+                                        ToJSString propertyName) =>
+                                         self -> propertyName -> m (Maybe CSSValue)
 cssStyleDeclarationGetPropertyCSSValue self propertyName
-  = (ghcjs_dom_css_style_declaration_get_property_css_value
-       (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-       (toJSString propertyName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_style_declaration_get_property_css_value
+          (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+          (toJSString propertyName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeProperty\"]($2)"
         ghcjs_dom_css_style_declaration_remove_property ::
@@ -75,14 +79,15 @@ foreign import javascript unsafe "$1[\"removeProperty\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.removeProperty Mozilla CSSStyleDeclaration.removeProperty documentation> 
 cssStyleDeclarationRemoveProperty ::
-                                  (IsCSSStyleDeclaration self, ToJSString propertyName,
+                                  (MonadIO m, IsCSSStyleDeclaration self, ToJSString propertyName,
                                    FromJSString result) =>
-                                    self -> propertyName -> IO result
+                                    self -> propertyName -> m result
 cssStyleDeclarationRemoveProperty self propertyName
-  = fromJSString <$>
-      (ghcjs_dom_css_style_declaration_remove_property
-         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-         (toJSString propertyName))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_style_declaration_remove_property
+            (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+            (toJSString propertyName)))
  
 foreign import javascript unsafe "$1[\"getPropertyPriority\"]($2)"
         ghcjs_dom_css_style_declaration_get_property_priority ::
@@ -90,14 +95,15 @@ foreign import javascript unsafe "$1[\"getPropertyPriority\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.propertyPriority Mozilla CSSStyleDeclaration.propertyPriority documentation> 
 cssStyleDeclarationGetPropertyPriority ::
-                                       (IsCSSStyleDeclaration self, ToJSString propertyName,
-                                        FromJSString result) =>
-                                         self -> propertyName -> IO result
+                                       (MonadIO m, IsCSSStyleDeclaration self,
+                                        ToJSString propertyName, FromJSString result) =>
+                                         self -> propertyName -> m result
 cssStyleDeclarationGetPropertyPriority self propertyName
-  = fromJSString <$>
-      (ghcjs_dom_css_style_declaration_get_property_priority
-         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-         (toJSString propertyName))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_style_declaration_get_property_priority
+            (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+            (toJSString propertyName)))
  
 foreign import javascript unsafe "$1[\"setProperty\"]($2, $3, $4)"
         ghcjs_dom_css_style_declaration_set_property ::
@@ -106,15 +112,16 @@ foreign import javascript unsafe "$1[\"setProperty\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.property Mozilla CSSStyleDeclaration.property documentation> 
 cssStyleDeclarationSetProperty ::
-                               (IsCSSStyleDeclaration self, ToJSString propertyName,
+                               (MonadIO m, IsCSSStyleDeclaration self, ToJSString propertyName,
                                 ToJSString value, ToJSString priority) =>
-                                 self -> propertyName -> value -> priority -> IO ()
+                                 self -> propertyName -> value -> priority -> m ()
 cssStyleDeclarationSetProperty self propertyName value priority
-  = ghcjs_dom_css_style_declaration_set_property
-      (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-      (toJSString propertyName)
-      (toJSString value)
-      (toJSString priority)
+  = liftIO
+      (ghcjs_dom_css_style_declaration_set_property
+         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+         (toJSString propertyName)
+         (toJSString value)
+         (toJSString priority))
  
 foreign import javascript unsafe "$1[\"item\"]($2)"
         ghcjs_dom_css_style_declaration_item ::
@@ -122,13 +129,14 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.item Mozilla CSSStyleDeclaration.item documentation> 
 cssStyleDeclarationItem ::
-                        (IsCSSStyleDeclaration self, FromJSString result) =>
-                          self -> Word -> IO result
+                        (MonadIO m, IsCSSStyleDeclaration self, FromJSString result) =>
+                          self -> Word -> m result
 cssStyleDeclarationItem self index
-  = fromJSString <$>
-      (ghcjs_dom_css_style_declaration_item
-         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-         index)
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_style_declaration_item
+            (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+            index))
  
 foreign import javascript unsafe "$1[\"getPropertyShorthand\"]($2)"
         ghcjs_dom_css_style_declaration_get_property_shorthand ::
@@ -136,14 +144,15 @@ foreign import javascript unsafe "$1[\"getPropertyShorthand\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.propertyShorthand Mozilla CSSStyleDeclaration.propertyShorthand documentation> 
 cssStyleDeclarationGetPropertyShorthand ::
-                                        (IsCSSStyleDeclaration self, ToJSString propertyName,
-                                         FromJSString result) =>
-                                          self -> propertyName -> IO result
+                                        (MonadIO m, IsCSSStyleDeclaration self,
+                                         ToJSString propertyName, FromJSString result) =>
+                                          self -> propertyName -> m result
 cssStyleDeclarationGetPropertyShorthand self propertyName
-  = fromJSString <$>
-      (ghcjs_dom_css_style_declaration_get_property_shorthand
-         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-         (toJSString propertyName))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_style_declaration_get_property_shorthand
+            (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+            (toJSString propertyName)))
  
 foreign import javascript unsafe
         "($1[\"isPropertyImplicit\"]($2) ? 1 : 0)"
@@ -152,12 +161,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.isPropertyImplicit Mozilla CSSStyleDeclaration.isPropertyImplicit documentation> 
 cssStyleDeclarationIsPropertyImplicit ::
-                                      (IsCSSStyleDeclaration self, ToJSString propertyName) =>
-                                        self -> propertyName -> IO Bool
+                                      (MonadIO m, IsCSSStyleDeclaration self,
+                                       ToJSString propertyName) =>
+                                        self -> propertyName -> m Bool
 cssStyleDeclarationIsPropertyImplicit self propertyName
-  = ghcjs_dom_css_style_declaration_is_property_implicit
-      (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-      (toJSString propertyName)
+  = liftIO
+      (ghcjs_dom_css_style_declaration_is_property_implicit
+         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+         (toJSString propertyName))
  
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
         ghcjs_dom_css_style_declaration_set_css_text ::
@@ -165,12 +176,13 @@ foreign import javascript unsafe "$1[\"cssText\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 
 cssStyleDeclarationSetCssText ::
-                              (IsCSSStyleDeclaration self, ToJSString val) =>
-                                self -> val -> IO ()
+                              (MonadIO m, IsCSSStyleDeclaration self, ToJSString val) =>
+                                self -> val -> m ()
 cssStyleDeclarationSetCssText self val
-  = ghcjs_dom_css_style_declaration_set_css_text
-      (unCSSStyleDeclaration (toCSSStyleDeclaration self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_css_style_declaration_set_css_text
+         (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"cssText\"]"
         ghcjs_dom_css_style_declaration_get_css_text ::
@@ -178,12 +190,13 @@ foreign import javascript unsafe "$1[\"cssText\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 
 cssStyleDeclarationGetCssText ::
-                              (IsCSSStyleDeclaration self, FromJSString result) =>
-                                self -> IO result
+                              (MonadIO m, IsCSSStyleDeclaration self, FromJSString result) =>
+                                self -> m result
 cssStyleDeclarationGetCssText self
-  = fromJSString <$>
-      (ghcjs_dom_css_style_declaration_get_css_text
-         (unCSSStyleDeclaration (toCSSStyleDeclaration self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_style_declaration_get_css_text
+            (unCSSStyleDeclaration (toCSSStyleDeclaration self))))
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_css_style_declaration_get_length ::
@@ -191,10 +204,11 @@ foreign import javascript unsafe "$1[\"length\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.length Mozilla CSSStyleDeclaration.length documentation> 
 cssStyleDeclarationGetLength ::
-                             (IsCSSStyleDeclaration self) => self -> IO Word
+                             (MonadIO m, IsCSSStyleDeclaration self) => self -> m Word
 cssStyleDeclarationGetLength self
-  = ghcjs_dom_css_style_declaration_get_length
-      (unCSSStyleDeclaration (toCSSStyleDeclaration self))
+  = liftIO
+      (ghcjs_dom_css_style_declaration_get_length
+         (unCSSStyleDeclaration (toCSSStyleDeclaration self)))
  
 foreign import javascript unsafe "$1[\"parentRule\"]"
         ghcjs_dom_css_style_declaration_get_parent_rule ::
@@ -202,11 +216,13 @@ foreign import javascript unsafe "$1[\"parentRule\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.parentRule Mozilla CSSStyleDeclaration.parentRule documentation> 
 cssStyleDeclarationGetParentRule ::
-                                 (IsCSSStyleDeclaration self) => self -> IO (Maybe CSSRule)
+                                 (MonadIO m, IsCSSStyleDeclaration self) =>
+                                   self -> m (Maybe CSSRule)
 cssStyleDeclarationGetParentRule self
-  = (ghcjs_dom_css_style_declaration_get_parent_rule
-       (unCSSStyleDeclaration (toCSSStyleDeclaration self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_style_declaration_get_parent_rule
+          (unCSSStyleDeclaration (toCSSStyleDeclaration self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.CSSStyleDeclaration (
   module Graphics.UI.Gtk.WebKit.DOM.CSSStyleDeclaration

@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"clear\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement.clear Mozilla HTMLBRElement.clear documentation> 
 htmlbrElementSetClear ::
-                      (IsHTMLBRElement self, ToJSString val) => self -> val -> IO ()
+                      (MonadIO m, IsHTMLBRElement self, ToJSString val) =>
+                        self -> val -> m ()
 htmlbrElementSetClear self val
-  = ghcjs_dom_htmlbr_element_set_clear
-      (unHTMLBRElement (toHTMLBRElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_htmlbr_element_set_clear
+         (unHTMLBRElement (toHTMLBRElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"clear\"]"
         ghcjs_dom_htmlbr_element_get_clear ::
@@ -37,11 +40,13 @@ foreign import javascript unsafe "$1[\"clear\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement.clear Mozilla HTMLBRElement.clear documentation> 
 htmlbrElementGetClear ::
-                      (IsHTMLBRElement self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsHTMLBRElement self, FromJSString result) =>
+                        self -> m result
 htmlbrElementGetClear self
-  = fromJSString <$>
-      (ghcjs_dom_htmlbr_element_get_clear
-         (unHTMLBRElement (toHTMLBRElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_htmlbr_element_get_clear
+            (unHTMLBRElement (toHTMLBRElement self))))
 #else
 module GHCJS.DOM.HTMLBRElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLBRElement

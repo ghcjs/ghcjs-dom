@@ -17,6 +17,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -36,26 +37,28 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.initMutationEvent Mozilla MutationEvent.initMutationEvent documentation> 
 mutationEventInitMutationEvent ::
-                               (IsMutationEvent self, ToJSString type', IsNode relatedNode,
-                                ToJSString prevValue, ToJSString newValue, ToJSString attrName) =>
+                               (MonadIO m, IsMutationEvent self, ToJSString type',
+                                IsNode relatedNode, ToJSString prevValue, ToJSString newValue,
+                                ToJSString attrName) =>
                                  self ->
                                    type' ->
                                      Bool ->
                                        Bool ->
                                          Maybe relatedNode ->
-                                           prevValue -> newValue -> attrName -> Word -> IO ()
+                                           prevValue -> newValue -> attrName -> Word -> m ()
 mutationEventInitMutationEvent self type' canBubble cancelable
   relatedNode prevValue newValue attrName attrChange
-  = ghcjs_dom_mutation_event_init_mutation_event
-      (unMutationEvent (toMutationEvent self))
-      (toJSString type')
-      canBubble
-      cancelable
-      (maybe jsNull (unNode . toNode) relatedNode)
-      (toJSString prevValue)
-      (toJSString newValue)
-      (toJSString attrName)
-      attrChange
+  = liftIO
+      (ghcjs_dom_mutation_event_init_mutation_event
+         (unMutationEvent (toMutationEvent self))
+         (toJSString type')
+         canBubble
+         cancelable
+         (maybe jsNull (unNode . toNode) relatedNode)
+         (toJSString prevValue)
+         (toJSString newValue)
+         (toJSString attrName)
+         attrChange)
 cMODIFICATION = 1
 cADDITION = 2
 cREMOVAL = 3
@@ -66,11 +69,12 @@ foreign import javascript unsafe "$1[\"relatedNode\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.relatedNode Mozilla MutationEvent.relatedNode documentation> 
 mutationEventGetRelatedNode ::
-                            (IsMutationEvent self) => self -> IO (Maybe Node)
+                            (MonadIO m, IsMutationEvent self) => self -> m (Maybe Node)
 mutationEventGetRelatedNode self
-  = (ghcjs_dom_mutation_event_get_related_node
-       (unMutationEvent (toMutationEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_mutation_event_get_related_node
+          (unMutationEvent (toMutationEvent self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"prevValue\"]"
         ghcjs_dom_mutation_event_get_prev_value ::
@@ -78,11 +82,13 @@ foreign import javascript unsafe "$1[\"prevValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.prevValue Mozilla MutationEvent.prevValue documentation> 
 mutationEventGetPrevValue ::
-                          (IsMutationEvent self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsMutationEvent self, FromJSString result) =>
+                            self -> m result
 mutationEventGetPrevValue self
-  = fromJSString <$>
-      (ghcjs_dom_mutation_event_get_prev_value
-         (unMutationEvent (toMutationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_mutation_event_get_prev_value
+            (unMutationEvent (toMutationEvent self))))
  
 foreign import javascript unsafe "$1[\"newValue\"]"
         ghcjs_dom_mutation_event_get_new_value ::
@@ -90,11 +96,13 @@ foreign import javascript unsafe "$1[\"newValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.newValue Mozilla MutationEvent.newValue documentation> 
 mutationEventGetNewValue ::
-                         (IsMutationEvent self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsMutationEvent self, FromJSString result) =>
+                           self -> m result
 mutationEventGetNewValue self
-  = fromJSString <$>
-      (ghcjs_dom_mutation_event_get_new_value
-         (unMutationEvent (toMutationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_mutation_event_get_new_value
+            (unMutationEvent (toMutationEvent self))))
  
 foreign import javascript unsafe "$1[\"attrName\"]"
         ghcjs_dom_mutation_event_get_attr_name ::
@@ -102,11 +110,13 @@ foreign import javascript unsafe "$1[\"attrName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrName Mozilla MutationEvent.attrName documentation> 
 mutationEventGetAttrName ::
-                         (IsMutationEvent self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsMutationEvent self, FromJSString result) =>
+                           self -> m result
 mutationEventGetAttrName self
-  = fromJSString <$>
-      (ghcjs_dom_mutation_event_get_attr_name
-         (unMutationEvent (toMutationEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_mutation_event_get_attr_name
+            (unMutationEvent (toMutationEvent self))))
  
 foreign import javascript unsafe "$1[\"attrChange\"]"
         ghcjs_dom_mutation_event_get_attr_change ::
@@ -114,10 +124,11 @@ foreign import javascript unsafe "$1[\"attrChange\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrChange Mozilla MutationEvent.attrChange documentation> 
 mutationEventGetAttrChange ::
-                           (IsMutationEvent self) => self -> IO Word
+                           (MonadIO m, IsMutationEvent self) => self -> m Word
 mutationEventGetAttrChange self
-  = ghcjs_dom_mutation_event_get_attr_change
-      (unMutationEvent (toMutationEvent self))
+  = liftIO
+      (ghcjs_dom_mutation_event_get_attr_change
+         (unMutationEvent (toMutationEvent self)))
 #else
 module GHCJS.DOM.MutationEvent (
   ) where

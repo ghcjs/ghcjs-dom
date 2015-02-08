@@ -25,6 +25,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,11 +40,13 @@ foreign import javascript unsafe "$1[\"glyphRef\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.glyphRef Mozilla SVGGlyphRefElement.glyphRef documentation> 
 svgGlyphRefElementSetGlyphRef ::
-                              (IsSVGGlyphRefElement self, ToJSString val) => self -> val -> IO ()
+                              (MonadIO m, IsSVGGlyphRefElement self, ToJSString val) =>
+                                self -> val -> m ()
 svgGlyphRefElementSetGlyphRef self val
-  = ghcjs_dom_svg_glyph_ref_element_set_glyph_ref
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_set_glyph_ref
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"glyphRef\"]"
         ghcjs_dom_svg_glyph_ref_element_get_glyph_ref ::
@@ -51,12 +54,13 @@ foreign import javascript unsafe "$1[\"glyphRef\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.glyphRef Mozilla SVGGlyphRefElement.glyphRef documentation> 
 svgGlyphRefElementGetGlyphRef ::
-                              (IsSVGGlyphRefElement self, FromJSString result) =>
-                                self -> IO result
+                              (MonadIO m, IsSVGGlyphRefElement self, FromJSString result) =>
+                                self -> m result
 svgGlyphRefElementGetGlyphRef self
-  = fromJSString <$>
-      (ghcjs_dom_svg_glyph_ref_element_get_glyph_ref
-         (unSVGGlyphRefElement (toSVGGlyphRefElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_glyph_ref_element_get_glyph_ref
+            (unSVGGlyphRefElement (toSVGGlyphRefElement self))))
  
 foreign import javascript unsafe "$1[\"format\"] = $2;"
         ghcjs_dom_svg_glyph_ref_element_set_format ::
@@ -64,11 +68,13 @@ foreign import javascript unsafe "$1[\"format\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.format Mozilla SVGGlyphRefElement.format documentation> 
 svgGlyphRefElementSetFormat ::
-                            (IsSVGGlyphRefElement self, ToJSString val) => self -> val -> IO ()
+                            (MonadIO m, IsSVGGlyphRefElement self, ToJSString val) =>
+                              self -> val -> m ()
 svgGlyphRefElementSetFormat self val
-  = ghcjs_dom_svg_glyph_ref_element_set_format
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_set_format
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"format\"]"
         ghcjs_dom_svg_glyph_ref_element_get_format ::
@@ -76,12 +82,13 @@ foreign import javascript unsafe "$1[\"format\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.format Mozilla SVGGlyphRefElement.format documentation> 
 svgGlyphRefElementGetFormat ::
-                            (IsSVGGlyphRefElement self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsSVGGlyphRefElement self, FromJSString result) =>
+                              self -> m result
 svgGlyphRefElementGetFormat self
-  = fromJSString <$>
-      (ghcjs_dom_svg_glyph_ref_element_get_format
-         (unSVGGlyphRefElement (toSVGGlyphRefElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_glyph_ref_element_get_format
+            (unSVGGlyphRefElement (toSVGGlyphRefElement self))))
  
 foreign import javascript unsafe "$1[\"x\"] = $2;"
         ghcjs_dom_svg_glyph_ref_element_set_x ::
@@ -89,11 +96,12 @@ foreign import javascript unsafe "$1[\"x\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.x Mozilla SVGGlyphRefElement.x documentation> 
 svgGlyphRefElementSetX ::
-                       (IsSVGGlyphRefElement self) => self -> Float -> IO ()
+                       (MonadIO m, IsSVGGlyphRefElement self) => self -> Float -> m ()
 svgGlyphRefElementSetX self val
-  = ghcjs_dom_svg_glyph_ref_element_set_x
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_set_x
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"x\"]"
         ghcjs_dom_svg_glyph_ref_element_get_x ::
@@ -101,10 +109,11 @@ foreign import javascript unsafe "$1[\"x\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.x Mozilla SVGGlyphRefElement.x documentation> 
 svgGlyphRefElementGetX ::
-                       (IsSVGGlyphRefElement self) => self -> IO Float
+                       (MonadIO m, IsSVGGlyphRefElement self) => self -> m Float
 svgGlyphRefElementGetX self
-  = ghcjs_dom_svg_glyph_ref_element_get_x
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_get_x
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self)))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;"
         ghcjs_dom_svg_glyph_ref_element_set_y ::
@@ -112,11 +121,12 @@ foreign import javascript unsafe "$1[\"y\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.y Mozilla SVGGlyphRefElement.y documentation> 
 svgGlyphRefElementSetY ::
-                       (IsSVGGlyphRefElement self) => self -> Float -> IO ()
+                       (MonadIO m, IsSVGGlyphRefElement self) => self -> Float -> m ()
 svgGlyphRefElementSetY self val
-  = ghcjs_dom_svg_glyph_ref_element_set_y
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_set_y
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"y\"]"
         ghcjs_dom_svg_glyph_ref_element_get_y ::
@@ -124,10 +134,11 @@ foreign import javascript unsafe "$1[\"y\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.y Mozilla SVGGlyphRefElement.y documentation> 
 svgGlyphRefElementGetY ::
-                       (IsSVGGlyphRefElement self) => self -> IO Float
+                       (MonadIO m, IsSVGGlyphRefElement self) => self -> m Float
 svgGlyphRefElementGetY self
-  = ghcjs_dom_svg_glyph_ref_element_get_y
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_get_y
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self)))
  
 foreign import javascript unsafe "$1[\"dx\"] = $2;"
         ghcjs_dom_svg_glyph_ref_element_set_dx ::
@@ -135,11 +146,12 @@ foreign import javascript unsafe "$1[\"dx\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dx Mozilla SVGGlyphRefElement.dx documentation> 
 svgGlyphRefElementSetDx ::
-                        (IsSVGGlyphRefElement self) => self -> Float -> IO ()
+                        (MonadIO m, IsSVGGlyphRefElement self) => self -> Float -> m ()
 svgGlyphRefElementSetDx self val
-  = ghcjs_dom_svg_glyph_ref_element_set_dx
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_set_dx
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"dx\"]"
         ghcjs_dom_svg_glyph_ref_element_get_dx ::
@@ -147,10 +159,11 @@ foreign import javascript unsafe "$1[\"dx\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dx Mozilla SVGGlyphRefElement.dx documentation> 
 svgGlyphRefElementGetDx ::
-                        (IsSVGGlyphRefElement self) => self -> IO Float
+                        (MonadIO m, IsSVGGlyphRefElement self) => self -> m Float
 svgGlyphRefElementGetDx self
-  = ghcjs_dom_svg_glyph_ref_element_get_dx
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_get_dx
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self)))
  
 foreign import javascript unsafe "$1[\"dy\"] = $2;"
         ghcjs_dom_svg_glyph_ref_element_set_dy ::
@@ -158,11 +171,12 @@ foreign import javascript unsafe "$1[\"dy\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dy Mozilla SVGGlyphRefElement.dy documentation> 
 svgGlyphRefElementSetDy ::
-                        (IsSVGGlyphRefElement self) => self -> Float -> IO ()
+                        (MonadIO m, IsSVGGlyphRefElement self) => self -> Float -> m ()
 svgGlyphRefElementSetDy self val
-  = ghcjs_dom_svg_glyph_ref_element_set_dy
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_set_dy
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"dy\"]"
         ghcjs_dom_svg_glyph_ref_element_get_dy ::
@@ -170,10 +184,11 @@ foreign import javascript unsafe "$1[\"dy\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dy Mozilla SVGGlyphRefElement.dy documentation> 
 svgGlyphRefElementGetDy ::
-                        (IsSVGGlyphRefElement self) => self -> IO Float
+                        (MonadIO m, IsSVGGlyphRefElement self) => self -> m Float
 svgGlyphRefElementGetDy self
-  = ghcjs_dom_svg_glyph_ref_element_get_dy
-      (unSVGGlyphRefElement (toSVGGlyphRefElement self))
+  = liftIO
+      (ghcjs_dom_svg_glyph_ref_element_get_dy
+         (unSVGGlyphRefElement (toSVGGlyphRefElement self)))
 #else
 module GHCJS.DOM.SVGGlyphRefElement (
   ) where

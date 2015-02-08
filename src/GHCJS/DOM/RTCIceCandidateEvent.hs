@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"candidate\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateEvent.candidate Mozilla RTCIceCandidateEvent.candidate documentation> 
 rtcIceCandidateEventGetCandidate ::
-                                 (IsRTCIceCandidateEvent self) => self -> IO (Maybe RTCIceCandidate)
+                                 (MonadIO m, IsRTCIceCandidateEvent self) =>
+                                   self -> m (Maybe RTCIceCandidate)
 rtcIceCandidateEventGetCandidate self
-  = (ghcjs_dom_rtc_ice_candidate_event_get_candidate
-       (unRTCIceCandidateEvent (toRTCIceCandidateEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rtc_ice_candidate_event_get_candidate
+          (unRTCIceCandidateEvent (toRTCIceCandidateEvent self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.RTCIceCandidateEvent (
   ) where

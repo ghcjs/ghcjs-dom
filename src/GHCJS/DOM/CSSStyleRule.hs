@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -27,11 +28,13 @@ foreign import javascript unsafe "$1[\"selectorText\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 
 cssStyleRuleSetSelectorText ::
-                            (IsCSSStyleRule self, ToJSString val) => self -> val -> IO ()
+                            (MonadIO m, IsCSSStyleRule self, ToJSString val) =>
+                              self -> val -> m ()
 cssStyleRuleSetSelectorText self val
-  = ghcjs_dom_css_style_rule_set_selector_text
-      (unCSSStyleRule (toCSSStyleRule self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_css_style_rule_set_selector_text
+         (unCSSStyleRule (toCSSStyleRule self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"selectorText\"]"
         ghcjs_dom_css_style_rule_get_selector_text ::
@@ -39,11 +42,13 @@ foreign import javascript unsafe "$1[\"selectorText\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 
 cssStyleRuleGetSelectorText ::
-                            (IsCSSStyleRule self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsCSSStyleRule self, FromJSString result) =>
+                              self -> m result
 cssStyleRuleGetSelectorText self
-  = fromJSString <$>
-      (ghcjs_dom_css_style_rule_get_selector_text
-         (unCSSStyleRule (toCSSStyleRule self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_style_rule_get_selector_text
+            (unCSSStyleRule (toCSSStyleRule self))))
  
 foreign import javascript unsafe "$1[\"style\"]"
         ghcjs_dom_css_style_rule_get_style ::
@@ -51,11 +56,13 @@ foreign import javascript unsafe "$1[\"style\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.style Mozilla CSSStyleRule.style documentation> 
 cssStyleRuleGetStyle ::
-                     (IsCSSStyleRule self) => self -> IO (Maybe CSSStyleDeclaration)
+                     (MonadIO m, IsCSSStyleRule self) =>
+                       self -> m (Maybe CSSStyleDeclaration)
 cssStyleRuleGetStyle self
-  = (ghcjs_dom_css_style_rule_get_style
-       (unCSSStyleRule (toCSSStyleRule self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_style_rule_get_style
+          (unCSSStyleRule (toCSSStyleRule self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.CSSStyleRule (
   ) where

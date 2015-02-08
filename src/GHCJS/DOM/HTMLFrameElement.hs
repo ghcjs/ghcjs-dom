@@ -49,6 +49,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -63,11 +64,13 @@ foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.svgDocument Mozilla HTMLFrameElement.svgDocument documentation> 
 htmlFrameElementGetSVGDocument ::
-                               (IsHTMLFrameElement self) => self -> IO (Maybe SVGDocument)
+                               (MonadIO m, IsHTMLFrameElement self) =>
+                                 self -> m (Maybe SVGDocument)
 htmlFrameElementGetSVGDocument self
-  = (ghcjs_dom_html_frame_element_get_svg_document
-       (unHTMLFrameElement (toHTMLFrameElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_frame_element_get_svg_document
+          (unHTMLFrameElement (toHTMLFrameElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"frameBorder\"] = $2;"
         ghcjs_dom_html_frame_element_set_frame_border ::
@@ -75,11 +78,13 @@ foreign import javascript unsafe "$1[\"frameBorder\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.frameBorder Mozilla HTMLFrameElement.frameBorder documentation> 
 htmlFrameElementSetFrameBorder ::
-                               (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlFrameElementSetFrameBorder self val
-  = ghcjs_dom_html_frame_element_set_frame_border
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_frame_border
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"frameBorder\"]"
         ghcjs_dom_html_frame_element_get_frame_border ::
@@ -87,11 +92,13 @@ foreign import javascript unsafe "$1[\"frameBorder\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.frameBorder Mozilla HTMLFrameElement.frameBorder documentation> 
 htmlFrameElementGetFrameBorder ::
-                               (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                                 self -> m result
 htmlFrameElementGetFrameBorder self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_frame_border
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_frame_border
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"longDesc\"] = $2;"
         ghcjs_dom_html_frame_element_set_long_desc ::
@@ -99,11 +106,13 @@ foreign import javascript unsafe "$1[\"longDesc\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.longDesc Mozilla HTMLFrameElement.longDesc documentation> 
 htmlFrameElementSetLongDesc ::
-                            (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                            (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                              self -> val -> m ()
 htmlFrameElementSetLongDesc self val
-  = ghcjs_dom_html_frame_element_set_long_desc
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_long_desc
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"longDesc\"]"
         ghcjs_dom_html_frame_element_get_long_desc ::
@@ -111,11 +120,13 @@ foreign import javascript unsafe "$1[\"longDesc\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.longDesc Mozilla HTMLFrameElement.longDesc documentation> 
 htmlFrameElementGetLongDesc ::
-                            (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                              self -> m result
 htmlFrameElementGetLongDesc self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_long_desc
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_long_desc
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"marginHeight\"] = $2;"
         ghcjs_dom_html_frame_element_set_margin_height ::
@@ -123,11 +134,13 @@ foreign import javascript unsafe "$1[\"marginHeight\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginHeight Mozilla HTMLFrameElement.marginHeight documentation> 
 htmlFrameElementSetMarginHeight ::
-                                (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                                (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                                  self -> val -> m ()
 htmlFrameElementSetMarginHeight self val
-  = ghcjs_dom_html_frame_element_set_margin_height
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_margin_height
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginHeight\"]"
         ghcjs_dom_html_frame_element_get_margin_height ::
@@ -135,11 +148,13 @@ foreign import javascript unsafe "$1[\"marginHeight\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginHeight Mozilla HTMLFrameElement.marginHeight documentation> 
 htmlFrameElementGetMarginHeight ::
-                                (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                                (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                                  self -> m result
 htmlFrameElementGetMarginHeight self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_margin_height
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_margin_height
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"marginWidth\"] = $2;"
         ghcjs_dom_html_frame_element_set_margin_width ::
@@ -147,11 +162,13 @@ foreign import javascript unsafe "$1[\"marginWidth\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginWidth Mozilla HTMLFrameElement.marginWidth documentation> 
 htmlFrameElementSetMarginWidth ::
-                               (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                               (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                                 self -> val -> m ()
 htmlFrameElementSetMarginWidth self val
-  = ghcjs_dom_html_frame_element_set_margin_width
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_margin_width
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginWidth\"]"
         ghcjs_dom_html_frame_element_get_margin_width ::
@@ -159,11 +176,13 @@ foreign import javascript unsafe "$1[\"marginWidth\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginWidth Mozilla HTMLFrameElement.marginWidth documentation> 
 htmlFrameElementGetMarginWidth ::
-                               (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                               (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                                 self -> m result
 htmlFrameElementGetMarginWidth self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_margin_width
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_margin_width
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;"
         ghcjs_dom_html_frame_element_set_name ::
@@ -171,11 +190,13 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.name Mozilla HTMLFrameElement.name documentation> 
 htmlFrameElementSetName ::
-                        (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlFrameElementSetName self val
-  = ghcjs_dom_html_frame_element_set_name
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_name
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_frame_element_get_name ::
@@ -183,11 +204,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.name Mozilla HTMLFrameElement.name documentation> 
 htmlFrameElementGetName ::
-                        (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                          self -> m result
 htmlFrameElementGetName self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_name
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_name
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"noResize\"] = $2;"
         ghcjs_dom_html_frame_element_set_no_resize ::
@@ -195,11 +218,12 @@ foreign import javascript unsafe "$1[\"noResize\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.noResize Mozilla HTMLFrameElement.noResize documentation> 
 htmlFrameElementSetNoResize ::
-                            (IsHTMLFrameElement self) => self -> Bool -> IO ()
+                            (MonadIO m, IsHTMLFrameElement self) => self -> Bool -> m ()
 htmlFrameElementSetNoResize self val
-  = ghcjs_dom_html_frame_element_set_no_resize
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_no_resize
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"noResize\"] ? 1 : 0)"
         ghcjs_dom_html_frame_element_get_no_resize ::
@@ -207,10 +231,11 @@ foreign import javascript unsafe "($1[\"noResize\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.noResize Mozilla HTMLFrameElement.noResize documentation> 
 htmlFrameElementGetNoResize ::
-                            (IsHTMLFrameElement self) => self -> IO Bool
+                            (MonadIO m, IsHTMLFrameElement self) => self -> m Bool
 htmlFrameElementGetNoResize self
-  = ghcjs_dom_html_frame_element_get_no_resize
-      (unHTMLFrameElement (toHTMLFrameElement self))
+  = liftIO
+      (ghcjs_dom_html_frame_element_get_no_resize
+         (unHTMLFrameElement (toHTMLFrameElement self)))
  
 foreign import javascript unsafe "$1[\"scrolling\"] = $2;"
         ghcjs_dom_html_frame_element_set_scrolling ::
@@ -218,11 +243,13 @@ foreign import javascript unsafe "$1[\"scrolling\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.scrolling Mozilla HTMLFrameElement.scrolling documentation> 
 htmlFrameElementSetScrolling ::
-                             (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                             (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                               self -> val -> m ()
 htmlFrameElementSetScrolling self val
-  = ghcjs_dom_html_frame_element_set_scrolling
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_scrolling
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"scrolling\"]"
         ghcjs_dom_html_frame_element_get_scrolling ::
@@ -230,11 +257,13 @@ foreign import javascript unsafe "$1[\"scrolling\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.scrolling Mozilla HTMLFrameElement.scrolling documentation> 
 htmlFrameElementGetScrolling ::
-                             (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                             (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                               self -> m result
 htmlFrameElementGetScrolling self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_scrolling
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_scrolling
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"src\"] = $2;"
         ghcjs_dom_html_frame_element_set_src ::
@@ -242,11 +271,13 @@ foreign import javascript unsafe "$1[\"src\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.src Mozilla HTMLFrameElement.src documentation> 
 htmlFrameElementSetSrc ::
-                       (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlFrameElementSetSrc self val
-  = ghcjs_dom_html_frame_element_set_src
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_src
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]"
         ghcjs_dom_html_frame_element_get_src ::
@@ -254,11 +285,13 @@ foreign import javascript unsafe "$1[\"src\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.src Mozilla HTMLFrameElement.src documentation> 
 htmlFrameElementGetSrc ::
-                       (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                         self -> m result
 htmlFrameElementGetSrc self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_src
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_src
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"contentDocument\"]"
         ghcjs_dom_html_frame_element_get_content_document ::
@@ -266,11 +299,13 @@ foreign import javascript unsafe "$1[\"contentDocument\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentDocument Mozilla HTMLFrameElement.contentDocument documentation> 
 htmlFrameElementGetContentDocument ::
-                                   (IsHTMLFrameElement self) => self -> IO (Maybe Document)
+                                   (MonadIO m, IsHTMLFrameElement self) =>
+                                     self -> m (Maybe Document)
 htmlFrameElementGetContentDocument self
-  = (ghcjs_dom_html_frame_element_get_content_document
-       (unHTMLFrameElement (toHTMLFrameElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_frame_element_get_content_document
+          (unHTMLFrameElement (toHTMLFrameElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"contentWindow\"]"
         ghcjs_dom_html_frame_element_get_content_window ::
@@ -278,11 +313,12 @@ foreign import javascript unsafe "$1[\"contentWindow\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentWindow Mozilla HTMLFrameElement.contentWindow documentation> 
 htmlFrameElementGetContentWindow ::
-                                 (IsHTMLFrameElement self) => self -> IO (Maybe DOMWindow)
+                                 (MonadIO m, IsHTMLFrameElement self) => self -> m (Maybe DOMWindow)
 htmlFrameElementGetContentWindow self
-  = (ghcjs_dom_html_frame_element_get_content_window
-       (unHTMLFrameElement (toHTMLFrameElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_frame_element_get_content_window
+          (unHTMLFrameElement (toHTMLFrameElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"location\"] = $2;"
         ghcjs_dom_html_frame_element_set_location ::
@@ -290,11 +326,13 @@ foreign import javascript unsafe "$1[\"location\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 
 htmlFrameElementSetLocation ::
-                            (IsHTMLFrameElement self, ToJSString val) => self -> val -> IO ()
+                            (MonadIO m, IsHTMLFrameElement self, ToJSString val) =>
+                              self -> val -> m ()
 htmlFrameElementSetLocation self val
-  = ghcjs_dom_html_frame_element_set_location
-      (unHTMLFrameElement (toHTMLFrameElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_frame_element_set_location
+         (unHTMLFrameElement (toHTMLFrameElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"location\"]"
         ghcjs_dom_html_frame_element_get_location ::
@@ -302,11 +340,13 @@ foreign import javascript unsafe "$1[\"location\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 
 htmlFrameElementGetLocation ::
-                            (IsHTMLFrameElement self, FromJSString result) => self -> IO result
+                            (MonadIO m, IsHTMLFrameElement self, FromJSString result) =>
+                              self -> m result
 htmlFrameElementGetLocation self
-  = fromJSString <$>
-      (ghcjs_dom_html_frame_element_get_location
-         (unHTMLFrameElement (toHTMLFrameElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_frame_element_get_location
+            (unHTMLFrameElement (toHTMLFrameElement self))))
  
 foreign import javascript unsafe "$1[\"width\"]"
         ghcjs_dom_html_frame_element_get_width ::
@@ -314,10 +354,11 @@ foreign import javascript unsafe "$1[\"width\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.width Mozilla HTMLFrameElement.width documentation> 
 htmlFrameElementGetWidth ::
-                         (IsHTMLFrameElement self) => self -> IO Int
+                         (MonadIO m, IsHTMLFrameElement self) => self -> m Int
 htmlFrameElementGetWidth self
-  = ghcjs_dom_html_frame_element_get_width
-      (unHTMLFrameElement (toHTMLFrameElement self))
+  = liftIO
+      (ghcjs_dom_html_frame_element_get_width
+         (unHTMLFrameElement (toHTMLFrameElement self)))
  
 foreign import javascript unsafe "$1[\"height\"]"
         ghcjs_dom_html_frame_element_get_height ::
@@ -325,10 +366,11 @@ foreign import javascript unsafe "$1[\"height\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.height Mozilla HTMLFrameElement.height documentation> 
 htmlFrameElementGetHeight ::
-                          (IsHTMLFrameElement self) => self -> IO Int
+                          (MonadIO m, IsHTMLFrameElement self) => self -> m Int
 htmlFrameElementGetHeight self
-  = ghcjs_dom_html_frame_element_get_height
-      (unHTMLFrameElement (toHTMLFrameElement self))
+  = liftIO
+      (ghcjs_dom_html_frame_element_get_height
+         (unHTMLFrameElement (toHTMLFrameElement self)))
 #else
 module GHCJS.DOM.HTMLFrameElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLFrameElement

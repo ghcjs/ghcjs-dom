@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -28,16 +29,18 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota.queryUsageAndQuota Mozilla StorageQuota.queryUsageAndQuota documentation> 
 storageQuotaQueryUsageAndQuota ::
-                               (IsStorageQuota self, IsStorageUsageCallback usageCallback,
+                               (MonadIO m, IsStorageQuota self,
+                                IsStorageUsageCallback usageCallback,
                                 IsStorageErrorCallback errorCallback) =>
-                                 self -> Maybe usageCallback -> Maybe errorCallback -> IO ()
+                                 self -> Maybe usageCallback -> Maybe errorCallback -> m ()
 storageQuotaQueryUsageAndQuota self usageCallback errorCallback
-  = ghcjs_dom_storage_quota_query_usage_and_quota
-      (unStorageQuota (toStorageQuota self))
-      (maybe jsNull (unStorageUsageCallback . toStorageUsageCallback)
-         usageCallback)
-      (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
-         errorCallback)
+  = liftIO
+      (ghcjs_dom_storage_quota_query_usage_and_quota
+         (unStorageQuota (toStorageQuota self))
+         (maybe jsNull (unStorageUsageCallback . toStorageUsageCallback)
+            usageCallback)
+         (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
+            errorCallback))
  
 foreign import javascript unsafe "$1[\"requestQuota\"]($2, $3, $4)"
         ghcjs_dom_storage_quota_request_quota ::
@@ -47,19 +50,21 @@ foreign import javascript unsafe "$1[\"requestQuota\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota.requestQuota Mozilla StorageQuota.requestQuota documentation> 
 storageQuotaRequestQuota ::
-                         (IsStorageQuota self, IsStorageQuotaCallback quotaCallback,
+                         (MonadIO m, IsStorageQuota self,
+                          IsStorageQuotaCallback quotaCallback,
                           IsStorageErrorCallback errorCallback) =>
                            self ->
-                             Word64 -> Maybe quotaCallback -> Maybe errorCallback -> IO ()
+                             Word64 -> Maybe quotaCallback -> Maybe errorCallback -> m ()
 storageQuotaRequestQuota self newQuotaInBytes quotaCallback
   errorCallback
-  = ghcjs_dom_storage_quota_request_quota
-      (unStorageQuota (toStorageQuota self))
-      (fromIntegral newQuotaInBytes)
-      (maybe jsNull (unStorageQuotaCallback . toStorageQuotaCallback)
-         quotaCallback)
-      (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
-         errorCallback)
+  = liftIO
+      (ghcjs_dom_storage_quota_request_quota
+         (unStorageQuota (toStorageQuota self))
+         (fromIntegral newQuotaInBytes)
+         (maybe jsNull (unStorageQuotaCallback . toStorageQuotaCallback)
+            quotaCallback)
+         (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
+            errorCallback))
 #else
 module GHCJS.DOM.StorageQuota (
   ) where

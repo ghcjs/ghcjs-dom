@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,11 +25,13 @@ foreign import javascript unsafe "$1[\"handleEvent\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventListener.handleEvent Mozilla EventListener.handleEvent documentation> 
 eventListenerHandleEvent ::
-                         (IsEventListener self, IsEvent evt) => self -> Maybe evt -> IO ()
+                         (MonadIO m, IsEventListener self, IsEvent evt) =>
+                           self -> Maybe evt -> m ()
 eventListenerHandleEvent self evt
-  = ghcjs_dom_event_listener_handle_event
-      (unEventListener (toEventListener self))
-      (maybe jsNull (unEvent . toEvent) evt)
+  = liftIO
+      (ghcjs_dom_event_listener_handle_event
+         (unEventListener (toEventListener self))
+         (maybe jsNull (unEvent . toEvent) evt))
 #else
 module GHCJS.DOM.EventListener (
   ) where

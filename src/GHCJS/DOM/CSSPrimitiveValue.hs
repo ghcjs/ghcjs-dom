@@ -30,6 +30,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -44,12 +45,14 @@ foreign import javascript unsafe "$1[\"setFloatValue\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.floatValue Mozilla CSSPrimitiveValue.floatValue documentation> 
 cssPrimitiveValueSetFloatValue ::
-                               (IsCSSPrimitiveValue self) => self -> Word -> Float -> IO ()
+                               (MonadIO m, IsCSSPrimitiveValue self) =>
+                                 self -> Word -> Float -> m ()
 cssPrimitiveValueSetFloatValue self unitType floatValue
-  = ghcjs_dom_css_primitive_value_set_float_value
-      (unCSSPrimitiveValue (toCSSPrimitiveValue self))
-      unitType
-      floatValue
+  = liftIO
+      (ghcjs_dom_css_primitive_value_set_float_value
+         (unCSSPrimitiveValue (toCSSPrimitiveValue self))
+         unitType
+         floatValue)
  
 foreign import javascript unsafe "$1[\"getFloatValue\"]($2)"
         ghcjs_dom_css_primitive_value_get_float_value ::
@@ -57,11 +60,12 @@ foreign import javascript unsafe "$1[\"getFloatValue\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.floatValue Mozilla CSSPrimitiveValue.floatValue documentation> 
 cssPrimitiveValueGetFloatValue ::
-                               (IsCSSPrimitiveValue self) => self -> Word -> IO Float
+                               (MonadIO m, IsCSSPrimitiveValue self) => self -> Word -> m Float
 cssPrimitiveValueGetFloatValue self unitType
-  = ghcjs_dom_css_primitive_value_get_float_value
-      (unCSSPrimitiveValue (toCSSPrimitiveValue self))
-      unitType
+  = liftIO
+      (ghcjs_dom_css_primitive_value_get_float_value
+         (unCSSPrimitiveValue (toCSSPrimitiveValue self))
+         unitType)
  
 foreign import javascript unsafe "$1[\"setStringValue\"]($2, $3)"
         ghcjs_dom_css_primitive_value_set_string_value ::
@@ -69,13 +73,14 @@ foreign import javascript unsafe "$1[\"setStringValue\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.stringValue Mozilla CSSPrimitiveValue.stringValue documentation> 
 cssPrimitiveValueSetStringValue ::
-                                (IsCSSPrimitiveValue self, ToJSString stringValue) =>
-                                  self -> Word -> stringValue -> IO ()
+                                (MonadIO m, IsCSSPrimitiveValue self, ToJSString stringValue) =>
+                                  self -> Word -> stringValue -> m ()
 cssPrimitiveValueSetStringValue self stringType stringValue
-  = ghcjs_dom_css_primitive_value_set_string_value
-      (unCSSPrimitiveValue (toCSSPrimitiveValue self))
-      stringType
-      (toJSString stringValue)
+  = liftIO
+      (ghcjs_dom_css_primitive_value_set_string_value
+         (unCSSPrimitiveValue (toCSSPrimitiveValue self))
+         stringType
+         (toJSString stringValue))
  
 foreign import javascript unsafe "$1[\"getStringValue\"]()"
         ghcjs_dom_css_primitive_value_get_string_value ::
@@ -83,12 +88,13 @@ foreign import javascript unsafe "$1[\"getStringValue\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.stringValue Mozilla CSSPrimitiveValue.stringValue documentation> 
 cssPrimitiveValueGetStringValue ::
-                                (IsCSSPrimitiveValue self, FromJSString result) =>
-                                  self -> IO result
+                                (MonadIO m, IsCSSPrimitiveValue self, FromJSString result) =>
+                                  self -> m result
 cssPrimitiveValueGetStringValue self
-  = fromJSString <$>
-      (ghcjs_dom_css_primitive_value_get_string_value
-         (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_css_primitive_value_get_string_value
+            (unCSSPrimitiveValue (toCSSPrimitiveValue self))))
  
 foreign import javascript unsafe "$1[\"getCounterValue\"]()"
         ghcjs_dom_css_primitive_value_get_counter_value ::
@@ -96,11 +102,12 @@ foreign import javascript unsafe "$1[\"getCounterValue\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.counterValue Mozilla CSSPrimitiveValue.counterValue documentation> 
 cssPrimitiveValueGetCounterValue ::
-                                 (IsCSSPrimitiveValue self) => self -> IO (Maybe Counter)
+                                 (MonadIO m, IsCSSPrimitiveValue self) => self -> m (Maybe Counter)
 cssPrimitiveValueGetCounterValue self
-  = (ghcjs_dom_css_primitive_value_get_counter_value
-       (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_primitive_value_get_counter_value
+          (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getRectValue\"]()"
         ghcjs_dom_css_primitive_value_get_rect_value ::
@@ -108,11 +115,12 @@ foreign import javascript unsafe "$1[\"getRectValue\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.rectValue Mozilla CSSPrimitiveValue.rectValue documentation> 
 cssPrimitiveValueGetRectValue ::
-                              (IsCSSPrimitiveValue self) => self -> IO (Maybe Rect)
+                              (MonadIO m, IsCSSPrimitiveValue self) => self -> m (Maybe Rect)
 cssPrimitiveValueGetRectValue self
-  = (ghcjs_dom_css_primitive_value_get_rect_value
-       (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_primitive_value_get_rect_value
+          (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getRGBColorValue\"]()"
         ghcjs_dom_css_primitive_value_get_rgb_color_value ::
@@ -120,11 +128,13 @@ foreign import javascript unsafe "$1[\"getRGBColorValue\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.rgbColorValue Mozilla CSSPrimitiveValue.rgbColorValue documentation> 
 cssPrimitiveValueGetRGBColorValue ::
-                                  (IsCSSPrimitiveValue self) => self -> IO (Maybe RGBColor)
+                                  (MonadIO m, IsCSSPrimitiveValue self) =>
+                                    self -> m (Maybe RGBColor)
 cssPrimitiveValueGetRGBColorValue self
-  = (ghcjs_dom_css_primitive_value_get_rgb_color_value
-       (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_primitive_value_get_rgb_color_value
+          (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
+         >>= fromJSRef)
 cCSS_UNKNOWN = 0
 cCSS_NUMBER = 1
 cCSS_PERCENTAGE = 2
@@ -162,10 +172,11 @@ foreign import javascript unsafe "$1[\"primitiveType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.primitiveType Mozilla CSSPrimitiveValue.primitiveType documentation> 
 cssPrimitiveValueGetPrimitiveType ::
-                                  (IsCSSPrimitiveValue self) => self -> IO Word
+                                  (MonadIO m, IsCSSPrimitiveValue self) => self -> m Word
 cssPrimitiveValueGetPrimitiveType self
-  = ghcjs_dom_css_primitive_value_get_primitive_type
-      (unCSSPrimitiveValue (toCSSPrimitiveValue self))
+  = liftIO
+      (ghcjs_dom_css_primitive_value_get_primitive_type
+         (unCSSPrimitiveValue (toCSSPrimitiveValue self)))
 #else
 module GHCJS.DOM.CSSPrimitiveValue (
   ) where

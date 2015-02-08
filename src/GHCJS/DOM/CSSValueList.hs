@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,22 +26,26 @@ foreign import javascript unsafe "$1[\"item\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValueList.item Mozilla CSSValueList.item documentation> 
 cssValueListItem ::
-                 (IsCSSValueList self) => self -> Word -> IO (Maybe CSSValue)
+                 (MonadIO m, IsCSSValueList self) =>
+                   self -> Word -> m (Maybe CSSValue)
 cssValueListItem self index
-  = (ghcjs_dom_css_value_list_item
-       (unCSSValueList (toCSSValueList self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_css_value_list_item
+          (unCSSValueList (toCSSValueList self))
+          index)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"length\"]"
         ghcjs_dom_css_value_list_get_length ::
         JSRef CSSValueList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValueList.length Mozilla CSSValueList.length documentation> 
-cssValueListGetLength :: (IsCSSValueList self) => self -> IO Word
+cssValueListGetLength ::
+                      (MonadIO m, IsCSSValueList self) => self -> m Word
 cssValueListGetLength self
-  = ghcjs_dom_css_value_list_get_length
-      (unCSSValueList (toCSSValueList self))
+  = liftIO
+      (ghcjs_dom_css_value_list_get_length
+         (unCSSValueList (toCSSValueList self)))
 #else
 module GHCJS.DOM.CSSValueList (
   ) where

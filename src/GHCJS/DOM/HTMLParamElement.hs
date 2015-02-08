@@ -16,6 +16,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -30,11 +31,13 @@ foreign import javascript unsafe "$1[\"name\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.name Mozilla HTMLParamElement.name documentation> 
 htmlParamElementSetName ::
-                        (IsHTMLParamElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLParamElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlParamElementSetName self val
-  = ghcjs_dom_html_param_element_set_name
-      (unHTMLParamElement (toHTMLParamElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_param_element_set_name
+         (unHTMLParamElement (toHTMLParamElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_html_param_element_get_name ::
@@ -42,11 +45,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.name Mozilla HTMLParamElement.name documentation> 
 htmlParamElementGetName ::
-                        (IsHTMLParamElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLParamElement self, FromJSString result) =>
+                          self -> m result
 htmlParamElementGetName self
-  = fromJSString <$>
-      (ghcjs_dom_html_param_element_get_name
-         (unHTMLParamElement (toHTMLParamElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_param_element_get_name
+            (unHTMLParamElement (toHTMLParamElement self))))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;"
         ghcjs_dom_html_param_element_set_value ::
@@ -54,11 +59,13 @@ foreign import javascript unsafe "$1[\"value\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.value Mozilla HTMLParamElement.value documentation> 
 htmlParamElementSetValue ::
-                         (IsHTMLParamElement self, ToJSString val) => self -> val -> IO ()
+                         (MonadIO m, IsHTMLParamElement self, ToJSString val) =>
+                           self -> val -> m ()
 htmlParamElementSetValue self val
-  = ghcjs_dom_html_param_element_set_value
-      (unHTMLParamElement (toHTMLParamElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_param_element_set_value
+         (unHTMLParamElement (toHTMLParamElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]"
         ghcjs_dom_html_param_element_get_value ::
@@ -66,11 +73,13 @@ foreign import javascript unsafe "$1[\"value\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.value Mozilla HTMLParamElement.value documentation> 
 htmlParamElementGetValue ::
-                         (IsHTMLParamElement self, FromJSString result) => self -> IO result
+                         (MonadIO m, IsHTMLParamElement self, FromJSString result) =>
+                           self -> m result
 htmlParamElementGetValue self
-  = fromJSString <$>
-      (ghcjs_dom_html_param_element_get_value
-         (unHTMLParamElement (toHTMLParamElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_param_element_get_value
+            (unHTMLParamElement (toHTMLParamElement self))))
  
 foreign import javascript unsafe "$1[\"valueType\"] = $2;"
         ghcjs_dom_html_param_element_set_value_type ::
@@ -78,11 +87,13 @@ foreign import javascript unsafe "$1[\"valueType\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.valueType Mozilla HTMLParamElement.valueType documentation> 
 htmlParamElementSetValueType ::
-                             (IsHTMLParamElement self, ToJSString val) => self -> val -> IO ()
+                             (MonadIO m, IsHTMLParamElement self, ToJSString val) =>
+                               self -> val -> m ()
 htmlParamElementSetValueType self val
-  = ghcjs_dom_html_param_element_set_value_type
-      (unHTMLParamElement (toHTMLParamElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_param_element_set_value_type
+         (unHTMLParamElement (toHTMLParamElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"valueType\"]"
         ghcjs_dom_html_param_element_get_value_type ::
@@ -90,11 +101,13 @@ foreign import javascript unsafe "$1[\"valueType\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.valueType Mozilla HTMLParamElement.valueType documentation> 
 htmlParamElementGetValueType ::
-                             (IsHTMLParamElement self, FromJSString result) => self -> IO result
+                             (MonadIO m, IsHTMLParamElement self, FromJSString result) =>
+                               self -> m result
 htmlParamElementGetValueType self
-  = fromJSString <$>
-      (ghcjs_dom_html_param_element_get_value_type
-         (unHTMLParamElement (toHTMLParamElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_param_element_get_value_type
+            (unHTMLParamElement (toHTMLParamElement self))))
 #else
 module GHCJS.DOM.HTMLParamElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLParamElement

@@ -24,6 +24,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,13 +40,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.presentationAttribute Mozilla SVGElement.presentationAttribute documentation> 
 svgElementGetPresentationAttribute ::
-                                   (IsSVGElement self, ToJSString name) =>
-                                     self -> name -> IO (Maybe CSSValue)
+                                   (MonadIO m, IsSVGElement self, ToJSString name) =>
+                                     self -> name -> m (Maybe CSSValue)
 svgElementGetPresentationAttribute self name
-  = (ghcjs_dom_svg_element_get_presentation_attribute
-       (unSVGElement (toSVGElement self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_element_get_presentation_attribute
+          (unSVGElement (toSVGElement self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"xmlbase\"] = $2;"
         ghcjs_dom_svg_element_set_xmlbase ::
@@ -53,11 +55,13 @@ foreign import javascript unsafe "$1[\"xmlbase\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
 svgElementSetXmlbase ::
-                     (IsSVGElement self, ToJSString val) => self -> val -> IO ()
+                     (MonadIO m, IsSVGElement self, ToJSString val) =>
+                       self -> val -> m ()
 svgElementSetXmlbase self val
-  = ghcjs_dom_svg_element_set_xmlbase
-      (unSVGElement (toSVGElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_element_set_xmlbase
+         (unSVGElement (toSVGElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"xmlbase\"]"
         ghcjs_dom_svg_element_get_xmlbase ::
@@ -65,11 +69,13 @@ foreign import javascript unsafe "$1[\"xmlbase\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
 svgElementGetXmlbase ::
-                     (IsSVGElement self, FromJSString result) => self -> IO result
+                     (MonadIO m, IsSVGElement self, FromJSString result) =>
+                       self -> m result
 svgElementGetXmlbase self
-  = fromJSString <$>
-      (ghcjs_dom_svg_element_get_xmlbase
-         (unSVGElement (toSVGElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_element_get_xmlbase
+            (unSVGElement (toSVGElement self))))
  
 foreign import javascript unsafe "$1[\"ownerSVGElement\"]"
         ghcjs_dom_svg_element_get_owner_svg_element ::
@@ -77,11 +83,12 @@ foreign import javascript unsafe "$1[\"ownerSVGElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
 svgElementGetOwnerSVGElement ::
-                             (IsSVGElement self) => self -> IO (Maybe SVGSVGElement)
+                             (MonadIO m, IsSVGElement self) => self -> m (Maybe SVGSVGElement)
 svgElementGetOwnerSVGElement self
-  = (ghcjs_dom_svg_element_get_owner_svg_element
-       (unSVGElement (toSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_element_get_owner_svg_element
+          (unSVGElement (toSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"viewportElement\"]"
         ghcjs_dom_svg_element_get_viewport_element ::
@@ -89,11 +96,12 @@ foreign import javascript unsafe "$1[\"viewportElement\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
 svgElementGetViewportElement ::
-                             (IsSVGElement self) => self -> IO (Maybe SVGElement)
+                             (MonadIO m, IsSVGElement self) => self -> m (Maybe SVGElement)
 svgElementGetViewportElement self
-  = (ghcjs_dom_svg_element_get_viewport_element
-       (unSVGElement (toSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_element_get_viewport_element
+          (unSVGElement (toSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"xmllang\"] = $2;"
         ghcjs_dom_svg_element_set_xmllang ::
@@ -101,11 +109,13 @@ foreign import javascript unsafe "$1[\"xmllang\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmllang Mozilla SVGElement.xmllang documentation> 
 svgElementSetXmllang ::
-                     (IsSVGElement self, ToJSString val) => self -> val -> IO ()
+                     (MonadIO m, IsSVGElement self, ToJSString val) =>
+                       self -> val -> m ()
 svgElementSetXmllang self val
-  = ghcjs_dom_svg_element_set_xmllang
-      (unSVGElement (toSVGElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_element_set_xmllang
+         (unSVGElement (toSVGElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"xmllang\"]"
         ghcjs_dom_svg_element_get_xmllang ::
@@ -113,11 +123,13 @@ foreign import javascript unsafe "$1[\"xmllang\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmllang Mozilla SVGElement.xmllang documentation> 
 svgElementGetXmllang ::
-                     (IsSVGElement self, FromJSString result) => self -> IO result
+                     (MonadIO m, IsSVGElement self, FromJSString result) =>
+                       self -> m result
 svgElementGetXmllang self
-  = fromJSString <$>
-      (ghcjs_dom_svg_element_get_xmllang
-         (unSVGElement (toSVGElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_element_get_xmllang
+            (unSVGElement (toSVGElement self))))
  
 foreign import javascript unsafe "$1[\"xmlspace\"] = $2;"
         ghcjs_dom_svg_element_set_xmlspace ::
@@ -125,11 +137,13 @@ foreign import javascript unsafe "$1[\"xmlspace\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlspace Mozilla SVGElement.xmlspace documentation> 
 svgElementSetXmlspace ::
-                      (IsSVGElement self, ToJSString val) => self -> val -> IO ()
+                      (MonadIO m, IsSVGElement self, ToJSString val) =>
+                        self -> val -> m ()
 svgElementSetXmlspace self val
-  = ghcjs_dom_svg_element_set_xmlspace
-      (unSVGElement (toSVGElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_svg_element_set_xmlspace
+         (unSVGElement (toSVGElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"xmlspace\"]"
         ghcjs_dom_svg_element_get_xmlspace ::
@@ -137,11 +151,13 @@ foreign import javascript unsafe "$1[\"xmlspace\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlspace Mozilla SVGElement.xmlspace documentation> 
 svgElementGetXmlspace ::
-                      (IsSVGElement self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsSVGElement self, FromJSString result) =>
+                        self -> m result
 svgElementGetXmlspace self
-  = fromJSString <$>
-      (ghcjs_dom_svg_element_get_xmlspace
-         (unSVGElement (toSVGElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_svg_element_get_xmlspace
+            (unSVGElement (toSVGElement self))))
  
 foreign import javascript unsafe "$1[\"className\"]"
         ghcjs_dom_svg_element_get_class_name ::
@@ -149,11 +165,13 @@ foreign import javascript unsafe "$1[\"className\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
 svgElementGetClassName ::
-                       (IsSVGElement self) => self -> IO (Maybe SVGAnimatedString)
+                       (MonadIO m, IsSVGElement self) =>
+                         self -> m (Maybe SVGAnimatedString)
 svgElementGetClassName self
-  = (ghcjs_dom_svg_element_get_class_name
-       (unSVGElement (toSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_element_get_class_name
+          (unSVGElement (toSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"style\"]"
         ghcjs_dom_svg_element_get_style ::
@@ -161,11 +179,13 @@ foreign import javascript unsafe "$1[\"style\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
 svgElementGetStyle ::
-                   (IsSVGElement self) => self -> IO (Maybe CSSStyleDeclaration)
+                   (MonadIO m, IsSVGElement self) =>
+                     self -> m (Maybe CSSStyleDeclaration)
 svgElementGetStyle self
-  = (ghcjs_dom_svg_element_get_style
-       (unSVGElement (toSVGElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_svg_element_get_style
+          (unSVGElement (toSVGElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
         ghcjs_dom_svg_element_set_tab_index ::
@@ -173,20 +193,23 @@ foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.tabIndex Mozilla SVGElement.tabIndex documentation> 
 svgElementSetTabIndex ::
-                      (IsSVGElement self) => self -> Int -> IO ()
+                      (MonadIO m, IsSVGElement self) => self -> Int -> m ()
 svgElementSetTabIndex self val
-  = ghcjs_dom_svg_element_set_tab_index
-      (unSVGElement (toSVGElement self))
-      val
+  = liftIO
+      (ghcjs_dom_svg_element_set_tab_index
+         (unSVGElement (toSVGElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"tabIndex\"]"
         ghcjs_dom_svg_element_get_tab_index :: JSRef SVGElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.tabIndex Mozilla SVGElement.tabIndex documentation> 
-svgElementGetTabIndex :: (IsSVGElement self) => self -> IO Int
+svgElementGetTabIndex ::
+                      (MonadIO m, IsSVGElement self) => self -> m Int
 svgElementGetTabIndex self
-  = ghcjs_dom_svg_element_get_tab_index
-      (unSVGElement (toSVGElement self))
+  = liftIO
+      (ghcjs_dom_svg_element_get_tab_index
+         (unSVGElement (toSVGElement self)))
 #else
 module GHCJS.DOM.SVGElement (
   ) where

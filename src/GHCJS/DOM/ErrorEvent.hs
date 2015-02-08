@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,11 +27,13 @@ foreign import javascript unsafe "$1[\"message\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.message Mozilla ErrorEvent.message documentation> 
 errorEventGetMessage ::
-                     (IsErrorEvent self, FromJSString result) => self -> IO result
+                     (MonadIO m, IsErrorEvent self, FromJSString result) =>
+                       self -> m result
 errorEventGetMessage self
-  = fromJSString <$>
-      (ghcjs_dom_error_event_get_message
-         (unErrorEvent (toErrorEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_error_event_get_message
+            (unErrorEvent (toErrorEvent self))))
  
 foreign import javascript unsafe "$1[\"filename\"]"
         ghcjs_dom_error_event_get_filename ::
@@ -38,29 +41,35 @@ foreign import javascript unsafe "$1[\"filename\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.filename Mozilla ErrorEvent.filename documentation> 
 errorEventGetFilename ::
-                      (IsErrorEvent self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsErrorEvent self, FromJSString result) =>
+                        self -> m result
 errorEventGetFilename self
-  = fromJSString <$>
-      (ghcjs_dom_error_event_get_filename
-         (unErrorEvent (toErrorEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_error_event_get_filename
+            (unErrorEvent (toErrorEvent self))))
  
 foreign import javascript unsafe "$1[\"lineno\"]"
         ghcjs_dom_error_event_get_lineno :: JSRef ErrorEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.lineno Mozilla ErrorEvent.lineno documentation> 
-errorEventGetLineno :: (IsErrorEvent self) => self -> IO Word
+errorEventGetLineno ::
+                    (MonadIO m, IsErrorEvent self) => self -> m Word
 errorEventGetLineno self
-  = ghcjs_dom_error_event_get_lineno
-      (unErrorEvent (toErrorEvent self))
+  = liftIO
+      (ghcjs_dom_error_event_get_lineno
+         (unErrorEvent (toErrorEvent self)))
  
 foreign import javascript unsafe "$1[\"colno\"]"
         ghcjs_dom_error_event_get_colno :: JSRef ErrorEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.colno Mozilla ErrorEvent.colno documentation> 
-errorEventGetColno :: (IsErrorEvent self) => self -> IO Word
+errorEventGetColno ::
+                   (MonadIO m, IsErrorEvent self) => self -> m Word
 errorEventGetColno self
-  = ghcjs_dom_error_event_get_colno
-      (unErrorEvent (toErrorEvent self))
+  = liftIO
+      (ghcjs_dom_error_event_get_colno
+         (unErrorEvent (toErrorEvent self)))
 #else
 module GHCJS.DOM.ErrorEvent (
   ) where

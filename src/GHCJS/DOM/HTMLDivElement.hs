@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"align\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement.align Mozilla HTMLDivElement.align documentation> 
 htmlDivElementSetAlign ::
-                       (IsHTMLDivElement self, ToJSString val) => self -> val -> IO ()
+                       (MonadIO m, IsHTMLDivElement self, ToJSString val) =>
+                         self -> val -> m ()
 htmlDivElementSetAlign self val
-  = ghcjs_dom_html_div_element_set_align
-      (unHTMLDivElement (toHTMLDivElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_div_element_set_align
+         (unHTMLDivElement (toHTMLDivElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]"
         ghcjs_dom_html_div_element_get_align ::
@@ -37,11 +40,13 @@ foreign import javascript unsafe "$1[\"align\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement.align Mozilla HTMLDivElement.align documentation> 
 htmlDivElementGetAlign ::
-                       (IsHTMLDivElement self, FromJSString result) => self -> IO result
+                       (MonadIO m, IsHTMLDivElement self, FromJSString result) =>
+                         self -> m result
 htmlDivElementGetAlign self
-  = fromJSString <$>
-      (ghcjs_dom_html_div_element_get_align
-         (unHTMLDivElement (toHTMLDivElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_div_element_get_align
+            (unHTMLDivElement (toHTMLDivElement self))))
 #else
 module GHCJS.DOM.HTMLDivElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLDivElement

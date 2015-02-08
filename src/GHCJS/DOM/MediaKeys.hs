@@ -13,6 +13,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,10 +27,12 @@ foreign import javascript unsafe
         JSString -> IO (JSRef MediaKeys)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation> 
-mediaKeysNew :: (ToJSString keySystem) => keySystem -> IO MediaKeys
+mediaKeysNew ::
+             (MonadIO m, ToJSString keySystem) => keySystem -> m MediaKeys
 mediaKeysNew keySystem
-  = ghcjs_dom_media_keys_new (toJSString keySystem) >>=
-      fromJSRefUnchecked
+  = liftIO
+      (ghcjs_dom_media_keys_new (toJSString keySystem) >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"createSession\"]($2, $3)"
         ghcjs_dom_media_keys_create_session ::
@@ -38,14 +41,16 @@ foreign import javascript unsafe "$1[\"createSession\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.createSession Mozilla WebKitMediaKeys.createSession documentation> 
 mediaKeysCreateSession ::
-                       (IsMediaKeys self, ToJSString type', IsUint8Array initData) =>
-                         self -> type' -> Maybe initData -> IO (Maybe MediaKeySession)
+                       (MonadIO m, IsMediaKeys self, ToJSString type',
+                        IsUint8Array initData) =>
+                         self -> type' -> Maybe initData -> m (Maybe MediaKeySession)
 mediaKeysCreateSession self type' initData
-  = (ghcjs_dom_media_keys_create_session
-       (unMediaKeys (toMediaKeys self))
-       (toJSString type')
-       (maybe jsNull (unUint8Array . toUint8Array) initData))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_media_keys_create_session
+          (unMediaKeys (toMediaKeys self))
+          (toJSString type')
+          (maybe jsNull (unUint8Array . toUint8Array) initData))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"isTypeSupported\"]($2,\n$3) ? 1 : 0)"
@@ -54,13 +59,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.isTypeSupported Mozilla WebKitMediaKeys.isTypeSupported documentation> 
 mediaKeysIsTypeSupported ::
-                         (IsMediaKeys self, ToJSString keySystem, ToJSString type') =>
-                           self -> keySystem -> type' -> IO Bool
+                         (MonadIO m, IsMediaKeys self, ToJSString keySystem,
+                          ToJSString type') =>
+                           self -> keySystem -> type' -> m Bool
 mediaKeysIsTypeSupported self keySystem type'
-  = ghcjs_dom_media_keys_is_type_supported
-      (unMediaKeys (toMediaKeys self))
-      (toJSString keySystem)
-      (toJSString type')
+  = liftIO
+      (ghcjs_dom_media_keys_is_type_supported
+         (unMediaKeys (toMediaKeys self))
+         (toJSString keySystem)
+         (toJSString type'))
  
 foreign import javascript unsafe "$1[\"keySystem\"]"
         ghcjs_dom_media_keys_get_key_system ::
@@ -68,11 +75,13 @@ foreign import javascript unsafe "$1[\"keySystem\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.keySystem Mozilla WebKitMediaKeys.keySystem documentation> 
 mediaKeysGetKeySystem ::
-                      (IsMediaKeys self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsMediaKeys self, FromJSString result) =>
+                        self -> m result
 mediaKeysGetKeySystem self
-  = fromJSString <$>
-      (ghcjs_dom_media_keys_get_key_system
-         (unMediaKeys (toMediaKeys self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_media_keys_get_key_system
+            (unMediaKeys (toMediaKeys self))))
 #else
 module GHCJS.DOM.MediaKeys (
   ) where

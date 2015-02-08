@@ -25,6 +25,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -39,11 +40,12 @@ foreign import javascript unsafe "$1[\"iterateNext\"]()"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.iterateNext Mozilla XPathResult.iterateNext documentation> 
 xPathResultIterateNext ::
-                       (IsXPathResult self) => self -> IO (Maybe Node)
+                       (MonadIO m, IsXPathResult self) => self -> m (Maybe Node)
 xPathResultIterateNext self
-  = (ghcjs_dom_xpath_result_iterate_next
-       (unXPathResult (toXPathResult self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xpath_result_iterate_next
+          (unXPathResult (toXPathResult self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"snapshotItem\"]($2)"
         ghcjs_dom_xpath_result_snapshot_item ::
@@ -51,12 +53,13 @@ foreign import javascript unsafe "$1[\"snapshotItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotItem Mozilla XPathResult.snapshotItem documentation> 
 xPathResultSnapshotItem ::
-                        (IsXPathResult self) => self -> Word -> IO (Maybe Node)
+                        (MonadIO m, IsXPathResult self) => self -> Word -> m (Maybe Node)
 xPathResultSnapshotItem self index
-  = (ghcjs_dom_xpath_result_snapshot_item
-       (unXPathResult (toXPathResult self))
-       index)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xpath_result_snapshot_item
+          (unXPathResult (toXPathResult self))
+          index)
+         >>= fromJSRef)
 cANY_TYPE = 0
 cNUMBER_TYPE = 1
 cSTRING_TYPE = 2
@@ -73,10 +76,12 @@ foreign import javascript unsafe "$1[\"resultType\"]"
         JSRef XPathResult -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.resultType Mozilla XPathResult.resultType documentation> 
-xPathResultGetResultType :: (IsXPathResult self) => self -> IO Word
+xPathResultGetResultType ::
+                         (MonadIO m, IsXPathResult self) => self -> m Word
 xPathResultGetResultType self
-  = ghcjs_dom_xpath_result_get_result_type
-      (unXPathResult (toXPathResult self))
+  = liftIO
+      (ghcjs_dom_xpath_result_get_result_type
+         (unXPathResult (toXPathResult self)))
  
 foreign import javascript unsafe "$1[\"numberValue\"]"
         ghcjs_dom_xpath_result_get_number_value ::
@@ -84,10 +89,11 @@ foreign import javascript unsafe "$1[\"numberValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.numberValue Mozilla XPathResult.numberValue documentation> 
 xPathResultGetNumberValue ::
-                          (IsXPathResult self) => self -> IO Double
+                          (MonadIO m, IsXPathResult self) => self -> m Double
 xPathResultGetNumberValue self
-  = ghcjs_dom_xpath_result_get_number_value
-      (unXPathResult (toXPathResult self))
+  = liftIO
+      (ghcjs_dom_xpath_result_get_number_value
+         (unXPathResult (toXPathResult self)))
  
 foreign import javascript unsafe "$1[\"stringValue\"]"
         ghcjs_dom_xpath_result_get_string_value ::
@@ -95,11 +101,13 @@ foreign import javascript unsafe "$1[\"stringValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.stringValue Mozilla XPathResult.stringValue documentation> 
 xPathResultGetStringValue ::
-                          (IsXPathResult self, FromJSString result) => self -> IO result
+                          (MonadIO m, IsXPathResult self, FromJSString result) =>
+                            self -> m result
 xPathResultGetStringValue self
-  = fromJSString <$>
-      (ghcjs_dom_xpath_result_get_string_value
-         (unXPathResult (toXPathResult self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_xpath_result_get_string_value
+            (unXPathResult (toXPathResult self))))
  
 foreign import javascript unsafe "($1[\"booleanValue\"] ? 1 : 0)"
         ghcjs_dom_xpath_result_get_boolean_value ::
@@ -107,10 +115,11 @@ foreign import javascript unsafe "($1[\"booleanValue\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.booleanValue Mozilla XPathResult.booleanValue documentation> 
 xPathResultGetBooleanValue ::
-                           (IsXPathResult self) => self -> IO Bool
+                           (MonadIO m, IsXPathResult self) => self -> m Bool
 xPathResultGetBooleanValue self
-  = ghcjs_dom_xpath_result_get_boolean_value
-      (unXPathResult (toXPathResult self))
+  = liftIO
+      (ghcjs_dom_xpath_result_get_boolean_value
+         (unXPathResult (toXPathResult self)))
  
 foreign import javascript unsafe "$1[\"singleNodeValue\"]"
         ghcjs_dom_xpath_result_get_single_node_value ::
@@ -118,11 +127,12 @@ foreign import javascript unsafe "$1[\"singleNodeValue\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.singleNodeValue Mozilla XPathResult.singleNodeValue documentation> 
 xPathResultGetSingleNodeValue ::
-                              (IsXPathResult self) => self -> IO (Maybe Node)
+                              (MonadIO m, IsXPathResult self) => self -> m (Maybe Node)
 xPathResultGetSingleNodeValue self
-  = (ghcjs_dom_xpath_result_get_single_node_value
-       (unXPathResult (toXPathResult self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_xpath_result_get_single_node_value
+          (unXPathResult (toXPathResult self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"invalidIteratorState\"] ? 1 : 0)"
@@ -131,10 +141,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.invalidIteratorState Mozilla XPathResult.invalidIteratorState documentation> 
 xPathResultGetInvalidIteratorState ::
-                                   (IsXPathResult self) => self -> IO Bool
+                                   (MonadIO m, IsXPathResult self) => self -> m Bool
 xPathResultGetInvalidIteratorState self
-  = ghcjs_dom_xpath_result_get_invalid_iterator_state
-      (unXPathResult (toXPathResult self))
+  = liftIO
+      (ghcjs_dom_xpath_result_get_invalid_iterator_state
+         (unXPathResult (toXPathResult self)))
  
 foreign import javascript unsafe "$1[\"snapshotLength\"]"
         ghcjs_dom_xpath_result_get_snapshot_length ::
@@ -142,10 +153,11 @@ foreign import javascript unsafe "$1[\"snapshotLength\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotLength Mozilla XPathResult.snapshotLength documentation> 
 xPathResultGetSnapshotLength ::
-                             (IsXPathResult self) => self -> IO Word
+                             (MonadIO m, IsXPathResult self) => self -> m Word
 xPathResultGetSnapshotLength self
-  = ghcjs_dom_xpath_result_get_snapshot_length
-      (unXPathResult (toXPathResult self))
+  = liftIO
+      (ghcjs_dom_xpath_result_get_snapshot_length
+         (unXPathResult (toXPathResult self)))
 #else
 module GHCJS.DOM.XPathResult (
   module Graphics.UI.Gtk.WebKit.DOM.XPathResult

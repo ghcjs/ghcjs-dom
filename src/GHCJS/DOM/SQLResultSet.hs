@@ -12,6 +12,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -26,21 +27,25 @@ foreign import javascript unsafe "$1[\"rows\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet.rows Mozilla SQLResultSet.rows documentation> 
 sqlResultSetGetRows ::
-                    (IsSQLResultSet self) => self -> IO (Maybe SQLResultSetRowList)
+                    (MonadIO m, IsSQLResultSet self) =>
+                      self -> m (Maybe SQLResultSetRowList)
 sqlResultSetGetRows self
-  = (ghcjs_dom_sql_result_set_get_rows
-       (unSQLResultSet (toSQLResultSet self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_sql_result_set_get_rows
+          (unSQLResultSet (toSQLResultSet self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"insertId\"]"
         ghcjs_dom_sql_result_set_get_insert_id ::
         JSRef SQLResultSet -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet.insertId Mozilla SQLResultSet.insertId documentation> 
-sqlResultSetGetInsertId :: (IsSQLResultSet self) => self -> IO Int
+sqlResultSetGetInsertId ::
+                        (MonadIO m, IsSQLResultSet self) => self -> m Int
 sqlResultSetGetInsertId self
-  = ghcjs_dom_sql_result_set_get_insert_id
-      (unSQLResultSet (toSQLResultSet self))
+  = liftIO
+      (ghcjs_dom_sql_result_set_get_insert_id
+         (unSQLResultSet (toSQLResultSet self)))
  
 foreign import javascript unsafe "$1[\"rowsAffected\"]"
         ghcjs_dom_sql_result_set_get_rows_affected ::
@@ -48,10 +53,11 @@ foreign import javascript unsafe "$1[\"rowsAffected\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet.rowsAffected Mozilla SQLResultSet.rowsAffected documentation> 
 sqlResultSetGetRowsAffected ::
-                            (IsSQLResultSet self) => self -> IO Int
+                            (MonadIO m, IsSQLResultSet self) => self -> m Int
 sqlResultSetGetRowsAffected self
-  = ghcjs_dom_sql_result_set_get_rows_affected
-      (unSQLResultSet (toSQLResultSet self))
+  = liftIO
+      (ghcjs_dom_sql_result_set_get_rows_affected
+         (unSQLResultSet (toSQLResultSet self)))
 #else
 module GHCJS.DOM.SQLResultSet (
   ) where

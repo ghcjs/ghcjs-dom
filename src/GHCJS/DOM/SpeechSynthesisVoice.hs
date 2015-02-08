@@ -19,6 +19,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -33,12 +34,13 @@ foreign import javascript unsafe "$1[\"voiceURI\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.voiceURI Mozilla SpeechSynthesisVoice.voiceURI documentation> 
 speechSynthesisVoiceGetVoiceURI ::
-                                (IsSpeechSynthesisVoice self, FromJSString result) =>
-                                  self -> IO result
+                                (MonadIO m, IsSpeechSynthesisVoice self, FromJSString result) =>
+                                  self -> m result
 speechSynthesisVoiceGetVoiceURI self
-  = fromJSString <$>
-      (ghcjs_dom_speech_synthesis_voice_get_voice_uri
-         (unSpeechSynthesisVoice (toSpeechSynthesisVoice self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_speech_synthesis_voice_get_voice_uri
+            (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))))
  
 foreign import javascript unsafe "$1[\"name\"]"
         ghcjs_dom_speech_synthesis_voice_get_name ::
@@ -46,12 +48,13 @@ foreign import javascript unsafe "$1[\"name\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.name Mozilla SpeechSynthesisVoice.name documentation> 
 speechSynthesisVoiceGetName ::
-                            (IsSpeechSynthesisVoice self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsSpeechSynthesisVoice self, FromJSString result) =>
+                              self -> m result
 speechSynthesisVoiceGetName self
-  = fromJSString <$>
-      (ghcjs_dom_speech_synthesis_voice_get_name
-         (unSpeechSynthesisVoice (toSpeechSynthesisVoice self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_speech_synthesis_voice_get_name
+            (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))))
  
 foreign import javascript unsafe "$1[\"lang\"]"
         ghcjs_dom_speech_synthesis_voice_get_lang ::
@@ -59,12 +62,13 @@ foreign import javascript unsafe "$1[\"lang\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.lang Mozilla SpeechSynthesisVoice.lang documentation> 
 speechSynthesisVoiceGetLang ::
-                            (IsSpeechSynthesisVoice self, FromJSString result) =>
-                              self -> IO result
+                            (MonadIO m, IsSpeechSynthesisVoice self, FromJSString result) =>
+                              self -> m result
 speechSynthesisVoiceGetLang self
-  = fromJSString <$>
-      (ghcjs_dom_speech_synthesis_voice_get_lang
-         (unSpeechSynthesisVoice (toSpeechSynthesisVoice self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_speech_synthesis_voice_get_lang
+            (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))))
  
 foreign import javascript unsafe "($1[\"localService\"] ? 1 : 0)"
         ghcjs_dom_speech_synthesis_voice_get_local_service ::
@@ -72,10 +76,11 @@ foreign import javascript unsafe "($1[\"localService\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.localService Mozilla SpeechSynthesisVoice.localService documentation> 
 speechSynthesisVoiceGetLocalService ::
-                                    (IsSpeechSynthesisVoice self) => self -> IO Bool
+                                    (MonadIO m, IsSpeechSynthesisVoice self) => self -> m Bool
 speechSynthesisVoiceGetLocalService self
-  = ghcjs_dom_speech_synthesis_voice_get_local_service
-      (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))
+  = liftIO
+      (ghcjs_dom_speech_synthesis_voice_get_local_service
+         (unSpeechSynthesisVoice (toSpeechSynthesisVoice self)))
  
 foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
         ghcjs_dom_speech_synthesis_voice_get_default ::
@@ -83,10 +88,11 @@ foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.default Mozilla SpeechSynthesisVoice.default documentation> 
 speechSynthesisVoiceGetDefault ::
-                               (IsSpeechSynthesisVoice self) => self -> IO Bool
+                               (MonadIO m, IsSpeechSynthesisVoice self) => self -> m Bool
 speechSynthesisVoiceGetDefault self
-  = ghcjs_dom_speech_synthesis_voice_get_default
-      (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))
+  = liftIO
+      (ghcjs_dom_speech_synthesis_voice_get_default
+         (unSpeechSynthesisVoice (toSpeechSynthesisVoice self)))
 #else
 module GHCJS.DOM.SpeechSynthesisVoice (
   ) where

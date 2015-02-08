@@ -2,7 +2,8 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AudioContext
-       (ghcjs_dom_audio_context_create_buffer, audioContextCreateBuffer,
+       (ghcjs_dom_audio_context_new, audioContextNew,
+        ghcjs_dom_audio_context_create_buffer, audioContextCreateBuffer,
         ghcjs_dom_audio_context_create_bufferFromArrayBuffer,
         audioContextCreateBufferFromArrayBuffer,
         ghcjs_dom_audio_context_decode_audio_data,
@@ -53,7 +54,7 @@ module GHCJS.DOM.AudioContext
         ghcjs_dom_audio_context_get_sample_rate, audioContextGetSampleRate,
         ghcjs_dom_audio_context_get_listener, audioContextGetListener,
         ghcjs_dom_audio_context_get_active_source_count,
-        audioContextGetActiveSourceCount, audioContextOncomplete,
+        audioContextGetActiveSourceCount, audioContextComplete,
         AudioContext, IsAudioContext, castToAudioContext,
         gTypeAudioContext, toAudioContext)
        where
@@ -61,6 +62,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -69,39 +71,50 @@ import GHCJS.DOM.EventM
 import GHCJS.DOM.Enums
 
  
+foreign import javascript unsafe
+        "new (window[\"AudioContext\"]\n||\nwindow[\"webkitAudioContext\"])()"
+        ghcjs_dom_audio_context_new :: IO (JSRef AudioContext)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext Mozilla AudioContext documentation> 
+audioContextNew :: (MonadIO m) => m AudioContext
+audioContextNew
+  = liftIO (ghcjs_dom_audio_context_new >>= fromJSRefUnchecked)
+ 
 foreign import javascript unsafe "$1[\"createBuffer\"]($2, $3, $4)"
         ghcjs_dom_audio_context_create_buffer ::
         JSRef AudioContext ->
           Word -> Word -> Float -> IO (JSRef AudioBuffer)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createBuffer Mozilla webkitAudioContext.createBuffer documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBuffer Mozilla AudioContext.createBuffer documentation> 
 audioContextCreateBuffer ::
-                         (IsAudioContext self) =>
-                           self -> Word -> Word -> Float -> IO (Maybe AudioBuffer)
+                         (MonadIO m, IsAudioContext self) =>
+                           self -> Word -> Word -> Float -> m (Maybe AudioBuffer)
 audioContextCreateBuffer self numberOfChannels numberOfFrames
   sampleRate
-  = (ghcjs_dom_audio_context_create_buffer
-       (unAudioContext (toAudioContext self))
-       numberOfChannels
-       numberOfFrames
-       sampleRate)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_buffer
+          (unAudioContext (toAudioContext self))
+          numberOfChannels
+          numberOfFrames
+          sampleRate)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createBuffer\"]($2, $3)"
         ghcjs_dom_audio_context_create_bufferFromArrayBuffer ::
         JSRef AudioContext ->
           JSRef ArrayBuffer -> Bool -> IO (JSRef AudioBuffer)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createBufferFromArrayBuffer Mozilla webkitAudioContext.createBufferFromArrayBuffer documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBufferFromArrayBuffer Mozilla AudioContext.createBufferFromArrayBuffer documentation> 
 audioContextCreateBufferFromArrayBuffer ::
-                                        (IsAudioContext self, IsArrayBuffer buffer) =>
-                                          self -> Maybe buffer -> Bool -> IO (Maybe AudioBuffer)
+                                        (MonadIO m, IsAudioContext self, IsArrayBuffer buffer) =>
+                                          self -> Maybe buffer -> Bool -> m (Maybe AudioBuffer)
 audioContextCreateBufferFromArrayBuffer self buffer mixToMono
-  = (ghcjs_dom_audio_context_create_bufferFromArrayBuffer
-       (unAudioContext (toAudioContext self))
-       (maybe jsNull (unArrayBuffer . toArrayBuffer) buffer)
-       mixToMono)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_bufferFromArrayBuffer
+          (unAudioContext (toAudioContext self))
+          (maybe jsNull (unArrayBuffer . toArrayBuffer) buffer)
+          mixToMono)
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"decodeAudioData\"]($2, $3,\n$4)"
@@ -110,35 +123,38 @@ foreign import javascript unsafe
           JSRef ArrayBuffer ->
             JSRef AudioBufferCallback -> JSRef AudioBufferCallback -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.decodeAudioData Mozilla webkitAudioContext.decodeAudioData documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.decodeAudioData Mozilla AudioContext.decodeAudioData documentation> 
 audioContextDecodeAudioData ::
-                            (IsAudioContext self, IsArrayBuffer audioData,
+                            (MonadIO m, IsAudioContext self, IsArrayBuffer audioData,
                              IsAudioBufferCallback successCallback,
                              IsAudioBufferCallback errorCallback) =>
                               self ->
                                 Maybe audioData ->
-                                  Maybe successCallback -> Maybe errorCallback -> IO ()
+                                  Maybe successCallback -> Maybe errorCallback -> m ()
 audioContextDecodeAudioData self audioData successCallback
   errorCallback
-  = ghcjs_dom_audio_context_decode_audio_data
-      (unAudioContext (toAudioContext self))
-      (maybe jsNull (unArrayBuffer . toArrayBuffer) audioData)
-      (maybe jsNull (unAudioBufferCallback . toAudioBufferCallback)
-         successCallback)
-      (maybe jsNull (unAudioBufferCallback . toAudioBufferCallback)
-         errorCallback)
+  = liftIO
+      (ghcjs_dom_audio_context_decode_audio_data
+         (unAudioContext (toAudioContext self))
+         (maybe jsNull (unArrayBuffer . toArrayBuffer) audioData)
+         (maybe jsNull (unAudioBufferCallback . toAudioBufferCallback)
+            successCallback)
+         (maybe jsNull (unAudioBufferCallback . toAudioBufferCallback)
+            errorCallback))
  
 foreign import javascript unsafe "$1[\"createBufferSource\"]()"
         ghcjs_dom_audio_context_create_buffer_source ::
         JSRef AudioContext -> IO (JSRef AudioBufferSourceNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createBufferSource Mozilla webkitAudioContext.createBufferSource documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBufferSource Mozilla AudioContext.createBufferSource documentation> 
 audioContextCreateBufferSource ::
-                               (IsAudioContext self) => self -> IO (Maybe AudioBufferSourceNode)
+                               (MonadIO m, IsAudioContext self) =>
+                                 self -> m (Maybe AudioBufferSourceNode)
 audioContextCreateBufferSource self
-  = (ghcjs_dom_audio_context_create_buffer_source
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_buffer_source
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createMediaElementSource\"]($2)"
@@ -146,18 +162,19 @@ foreign import javascript unsafe
         JSRef AudioContext ->
           JSRef HTMLMediaElement -> IO (JSRef MediaElementAudioSourceNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createMediaElementSource Mozilla webkitAudioContext.createMediaElementSource documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaElementSource Mozilla AudioContext.createMediaElementSource documentation> 
 audioContextCreateMediaElementSource ::
-                                     (IsAudioContext self, IsHTMLMediaElement mediaElement) =>
+                                     (MonadIO m, IsAudioContext self,
+                                      IsHTMLMediaElement mediaElement) =>
                                        self ->
-                                         Maybe mediaElement ->
-                                           IO (Maybe MediaElementAudioSourceNode)
+                                         Maybe mediaElement -> m (Maybe MediaElementAudioSourceNode)
 audioContextCreateMediaElementSource self mediaElement
-  = (ghcjs_dom_audio_context_create_media_element_source
-       (unAudioContext (toAudioContext self))
-       (maybe jsNull (unHTMLMediaElement . toHTMLMediaElement)
-          mediaElement))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_media_element_source
+          (unAudioContext (toAudioContext self))
+          (maybe jsNull (unHTMLMediaElement . toHTMLMediaElement)
+             mediaElement))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createMediaStreamSource\"]($2)"
@@ -165,129 +182,142 @@ foreign import javascript unsafe
         JSRef AudioContext ->
           JSRef MediaStream -> IO (JSRef MediaStreamAudioSourceNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createMediaStreamSource Mozilla webkitAudioContext.createMediaStreamSource documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaStreamSource Mozilla AudioContext.createMediaStreamSource documentation> 
 audioContextCreateMediaStreamSource ::
-                                    (IsAudioContext self, IsMediaStream mediaStream) =>
+                                    (MonadIO m, IsAudioContext self, IsMediaStream mediaStream) =>
                                       self ->
-                                        Maybe mediaStream -> IO (Maybe MediaStreamAudioSourceNode)
+                                        Maybe mediaStream -> m (Maybe MediaStreamAudioSourceNode)
 audioContextCreateMediaStreamSource self mediaStream
-  = (ghcjs_dom_audio_context_create_media_stream_source
-       (unAudioContext (toAudioContext self))
-       (maybe jsNull (unMediaStream . toMediaStream) mediaStream))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_media_stream_source
+          (unAudioContext (toAudioContext self))
+          (maybe jsNull (unMediaStream . toMediaStream) mediaStream))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createMediaStreamDestination\"]()"
         ghcjs_dom_audio_context_create_media_stream_destination ::
         JSRef AudioContext -> IO (JSRef MediaStreamAudioDestinationNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createMediaStreamDestination Mozilla webkitAudioContext.createMediaStreamDestination documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaStreamDestination Mozilla AudioContext.createMediaStreamDestination documentation> 
 audioContextCreateMediaStreamDestination ::
-                                         (IsAudioContext self) =>
-                                           self -> IO (Maybe MediaStreamAudioDestinationNode)
+                                         (MonadIO m, IsAudioContext self) =>
+                                           self -> m (Maybe MediaStreamAudioDestinationNode)
 audioContextCreateMediaStreamDestination self
-  = (ghcjs_dom_audio_context_create_media_stream_destination
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_media_stream_destination
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createGain\"]()"
         ghcjs_dom_audio_context_create_gain ::
         JSRef AudioContext -> IO (JSRef GainNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createGain Mozilla webkitAudioContext.createGain documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createGain Mozilla AudioContext.createGain documentation> 
 audioContextCreateGain ::
-                       (IsAudioContext self) => self -> IO (Maybe GainNode)
+                       (MonadIO m, IsAudioContext self) => self -> m (Maybe GainNode)
 audioContextCreateGain self
-  = (ghcjs_dom_audio_context_create_gain
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_gain
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createDelay\"]($2)"
         ghcjs_dom_audio_context_create_delay ::
         JSRef AudioContext -> Double -> IO (JSRef DelayNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createDelay Mozilla webkitAudioContext.createDelay documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelay Mozilla AudioContext.createDelay documentation> 
 audioContextCreateDelay ::
-                        (IsAudioContext self) => self -> Double -> IO (Maybe DelayNode)
+                        (MonadIO m, IsAudioContext self) =>
+                          self -> Double -> m (Maybe DelayNode)
 audioContextCreateDelay self maxDelayTime
-  = (ghcjs_dom_audio_context_create_delay
-       (unAudioContext (toAudioContext self))
-       maxDelayTime)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_delay
+          (unAudioContext (toAudioContext self))
+          maxDelayTime)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createBiquadFilter\"]()"
         ghcjs_dom_audio_context_create_biquad_filter ::
         JSRef AudioContext -> IO (JSRef BiquadFilterNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createBiquadFilter Mozilla webkitAudioContext.createBiquadFilter documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBiquadFilter Mozilla AudioContext.createBiquadFilter documentation> 
 audioContextCreateBiquadFilter ::
-                               (IsAudioContext self) => self -> IO (Maybe BiquadFilterNode)
+                               (MonadIO m, IsAudioContext self) =>
+                                 self -> m (Maybe BiquadFilterNode)
 audioContextCreateBiquadFilter self
-  = (ghcjs_dom_audio_context_create_biquad_filter
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_biquad_filter
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createWaveShaper\"]()"
         ghcjs_dom_audio_context_create_wave_shaper ::
         JSRef AudioContext -> IO (JSRef WaveShaperNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createWaveShaper Mozilla webkitAudioContext.createWaveShaper documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createWaveShaper Mozilla AudioContext.createWaveShaper documentation> 
 audioContextCreateWaveShaper ::
-                             (IsAudioContext self) => self -> IO (Maybe WaveShaperNode)
+                             (MonadIO m, IsAudioContext self) =>
+                               self -> m (Maybe WaveShaperNode)
 audioContextCreateWaveShaper self
-  = (ghcjs_dom_audio_context_create_wave_shaper
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_wave_shaper
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createPanner\"]()"
         ghcjs_dom_audio_context_create_panner ::
         JSRef AudioContext -> IO (JSRef PannerNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createPanner Mozilla webkitAudioContext.createPanner documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPanner Mozilla AudioContext.createPanner documentation> 
 audioContextCreatePanner ::
-                         (IsAudioContext self) => self -> IO (Maybe PannerNode)
+                         (MonadIO m, IsAudioContext self) => self -> m (Maybe PannerNode)
 audioContextCreatePanner self
-  = (ghcjs_dom_audio_context_create_panner
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_panner
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createConvolver\"]()"
         ghcjs_dom_audio_context_create_convolver ::
         JSRef AudioContext -> IO (JSRef ConvolverNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createConvolver Mozilla webkitAudioContext.createConvolver documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createConvolver Mozilla AudioContext.createConvolver documentation> 
 audioContextCreateConvolver ::
-                            (IsAudioContext self) => self -> IO (Maybe ConvolverNode)
+                            (MonadIO m, IsAudioContext self) => self -> m (Maybe ConvolverNode)
 audioContextCreateConvolver self
-  = (ghcjs_dom_audio_context_create_convolver
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_convolver
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createDynamicsCompressor\"]()"
         ghcjs_dom_audio_context_create_dynamics_compressor ::
         JSRef AudioContext -> IO (JSRef DynamicsCompressorNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createDynamicsCompressor Mozilla webkitAudioContext.createDynamicsCompressor documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDynamicsCompressor Mozilla AudioContext.createDynamicsCompressor documentation> 
 audioContextCreateDynamicsCompressor ::
-                                     (IsAudioContext self) =>
-                                       self -> IO (Maybe DynamicsCompressorNode)
+                                     (MonadIO m, IsAudioContext self) =>
+                                       self -> m (Maybe DynamicsCompressorNode)
 audioContextCreateDynamicsCompressor self
-  = (ghcjs_dom_audio_context_create_dynamics_compressor
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_dynamics_compressor
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createAnalyser\"]()"
         ghcjs_dom_audio_context_create_analyser ::
         JSRef AudioContext -> IO (JSRef AnalyserNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createAnalyser Mozilla webkitAudioContext.createAnalyser documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createAnalyser Mozilla AudioContext.createAnalyser documentation> 
 audioContextCreateAnalyser ::
-                           (IsAudioContext self) => self -> IO (Maybe AnalyserNode)
+                           (MonadIO m, IsAudioContext self) => self -> m (Maybe AnalyserNode)
 audioContextCreateAnalyser self
-  = (ghcjs_dom_audio_context_create_analyser
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_analyser
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createScriptProcessor\"]($2,\n$3, $4)"
@@ -295,30 +325,33 @@ foreign import javascript unsafe
         JSRef AudioContext ->
           Word -> Word -> Word -> IO (JSRef ScriptProcessorNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createScriptProcessor Mozilla webkitAudioContext.createScriptProcessor documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createScriptProcessor Mozilla AudioContext.createScriptProcessor documentation> 
 audioContextCreateScriptProcessor ::
-                                  (IsAudioContext self) =>
-                                    self -> Word -> Word -> Word -> IO (Maybe ScriptProcessorNode)
+                                  (MonadIO m, IsAudioContext self) =>
+                                    self -> Word -> Word -> Word -> m (Maybe ScriptProcessorNode)
 audioContextCreateScriptProcessor self bufferSize
   numberOfInputChannels numberOfOutputChannels
-  = (ghcjs_dom_audio_context_create_script_processor
-       (unAudioContext (toAudioContext self))
-       bufferSize
-       numberOfInputChannels
-       numberOfOutputChannels)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_script_processor
+          (unAudioContext (toAudioContext self))
+          bufferSize
+          numberOfInputChannels
+          numberOfOutputChannels)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createOscillator\"]()"
         ghcjs_dom_audio_context_create_oscillator ::
         JSRef AudioContext -> IO (JSRef OscillatorNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createOscillator Mozilla webkitAudioContext.createOscillator documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createOscillator Mozilla AudioContext.createOscillator documentation> 
 audioContextCreateOscillator ::
-                             (IsAudioContext self) => self -> IO (Maybe OscillatorNode)
+                             (MonadIO m, IsAudioContext self) =>
+                               self -> m (Maybe OscillatorNode)
 audioContextCreateOscillator self
-  = (ghcjs_dom_audio_context_create_oscillator
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_oscillator
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createPeriodicWave\"]($2, $3)"
@@ -326,81 +359,89 @@ foreign import javascript unsafe
         JSRef AudioContext ->
           JSRef Float32Array -> JSRef Float32Array -> IO (JSRef PeriodicWave)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createPeriodicWave Mozilla webkitAudioContext.createPeriodicWave documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPeriodicWave Mozilla AudioContext.createPeriodicWave documentation> 
 audioContextCreatePeriodicWave ::
-                               (IsAudioContext self, IsFloat32Array real, IsFloat32Array imag) =>
-                                 self -> Maybe real -> Maybe imag -> IO (Maybe PeriodicWave)
+                               (MonadIO m, IsAudioContext self, IsFloat32Array real,
+                                IsFloat32Array imag) =>
+                                 self -> Maybe real -> Maybe imag -> m (Maybe PeriodicWave)
 audioContextCreatePeriodicWave self real imag
-  = (ghcjs_dom_audio_context_create_periodic_wave
-       (unAudioContext (toAudioContext self))
-       (maybe jsNull (unFloat32Array . toFloat32Array) real)
-       (maybe jsNull (unFloat32Array . toFloat32Array) imag))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_periodic_wave
+          (unAudioContext (toAudioContext self))
+          (maybe jsNull (unFloat32Array . toFloat32Array) real)
+          (maybe jsNull (unFloat32Array . toFloat32Array) imag))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createChannelSplitter\"]($2)"
         ghcjs_dom_audio_context_create_channel_splitter ::
         JSRef AudioContext -> Word -> IO (JSRef ChannelSplitterNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createChannelSplitter Mozilla webkitAudioContext.createChannelSplitter documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createChannelSplitter Mozilla AudioContext.createChannelSplitter documentation> 
 audioContextCreateChannelSplitter ::
-                                  (IsAudioContext self) =>
-                                    self -> Word -> IO (Maybe ChannelSplitterNode)
+                                  (MonadIO m, IsAudioContext self) =>
+                                    self -> Word -> m (Maybe ChannelSplitterNode)
 audioContextCreateChannelSplitter self numberOfOutputs
-  = (ghcjs_dom_audio_context_create_channel_splitter
-       (unAudioContext (toAudioContext self))
-       numberOfOutputs)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_channel_splitter
+          (unAudioContext (toAudioContext self))
+          numberOfOutputs)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createChannelMerger\"]($2)"
         ghcjs_dom_audio_context_create_channel_merger ::
         JSRef AudioContext -> Word -> IO (JSRef ChannelMergerNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createChannelMerger Mozilla webkitAudioContext.createChannelMerger documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createChannelMerger Mozilla AudioContext.createChannelMerger documentation> 
 audioContextCreateChannelMerger ::
-                                (IsAudioContext self) =>
-                                  self -> Word -> IO (Maybe ChannelMergerNode)
+                                (MonadIO m, IsAudioContext self) =>
+                                  self -> Word -> m (Maybe ChannelMergerNode)
 audioContextCreateChannelMerger self numberOfInputs
-  = (ghcjs_dom_audio_context_create_channel_merger
-       (unAudioContext (toAudioContext self))
-       numberOfInputs)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_channel_merger
+          (unAudioContext (toAudioContext self))
+          numberOfInputs)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"startRendering\"]()"
         ghcjs_dom_audio_context_start_rendering ::
         JSRef AudioContext -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.startRendering Mozilla webkitAudioContext.startRendering documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.startRendering Mozilla AudioContext.startRendering documentation> 
 audioContextStartRendering ::
-                           (IsAudioContext self) => self -> IO ()
+                           (MonadIO m, IsAudioContext self) => self -> m ()
 audioContextStartRendering self
-  = ghcjs_dom_audio_context_start_rendering
-      (unAudioContext (toAudioContext self))
+  = liftIO
+      (ghcjs_dom_audio_context_start_rendering
+         (unAudioContext (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createGainNode\"]()"
         ghcjs_dom_audio_context_create_gain_node ::
         JSRef AudioContext -> IO (JSRef GainNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createGainNode Mozilla webkitAudioContext.createGainNode documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createGainNode Mozilla AudioContext.createGainNode documentation> 
 audioContextCreateGainNode ::
-                           (IsAudioContext self) => self -> IO (Maybe GainNode)
+                           (MonadIO m, IsAudioContext self) => self -> m (Maybe GainNode)
 audioContextCreateGainNode self
-  = (ghcjs_dom_audio_context_create_gain_node
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_gain_node
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createDelayNode\"]($2)"
         ghcjs_dom_audio_context_create_delay_node ::
         JSRef AudioContext -> Double -> IO (JSRef DelayNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createDelayNode Mozilla webkitAudioContext.createDelayNode documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelayNode Mozilla AudioContext.createDelayNode documentation> 
 audioContextCreateDelayNode ::
-                            (IsAudioContext self) => self -> Double -> IO (Maybe DelayNode)
+                            (MonadIO m, IsAudioContext self) =>
+                              self -> Double -> m (Maybe DelayNode)
 audioContextCreateDelayNode self maxDelayTime
-  = (ghcjs_dom_audio_context_create_delay_node
-       (unAudioContext (toAudioContext self))
-       maxDelayTime)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_delay_node
+          (unAudioContext (toAudioContext self))
+          maxDelayTime)
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createJavaScriptNode\"]($2,\n$3, $4)"
@@ -408,80 +449,88 @@ foreign import javascript unsafe
         JSRef AudioContext ->
           Word -> Word -> Word -> IO (JSRef ScriptProcessorNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.createJavaScriptNode Mozilla webkitAudioContext.createJavaScriptNode documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createJavaScriptNode Mozilla AudioContext.createJavaScriptNode documentation> 
 audioContextCreateJavaScriptNode ::
-                                 (IsAudioContext self) =>
-                                   self -> Word -> Word -> Word -> IO (Maybe ScriptProcessorNode)
+                                 (MonadIO m, IsAudioContext self) =>
+                                   self -> Word -> Word -> Word -> m (Maybe ScriptProcessorNode)
 audioContextCreateJavaScriptNode self bufferSize
   numberOfInputChannels numberOfOutputChannels
-  = (ghcjs_dom_audio_context_create_java_script_node
-       (unAudioContext (toAudioContext self))
-       bufferSize
-       numberOfInputChannels
-       numberOfOutputChannels)
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_create_java_script_node
+          (unAudioContext (toAudioContext self))
+          bufferSize
+          numberOfInputChannels
+          numberOfOutputChannels)
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"destination\"]"
         ghcjs_dom_audio_context_get_destination ::
         JSRef AudioContext -> IO (JSRef AudioDestinationNode)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.destination Mozilla webkitAudioContext.destination documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.destination Mozilla AudioContext.destination documentation> 
 audioContextGetDestination ::
-                           (IsAudioContext self) => self -> IO (Maybe AudioDestinationNode)
+                           (MonadIO m, IsAudioContext self) =>
+                             self -> m (Maybe AudioDestinationNode)
 audioContextGetDestination self
-  = (ghcjs_dom_audio_context_get_destination
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_get_destination
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"currentTime\"]"
         ghcjs_dom_audio_context_get_current_time ::
         JSRef AudioContext -> IO Double
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.currentTime Mozilla webkitAudioContext.currentTime documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.currentTime Mozilla AudioContext.currentTime documentation> 
 audioContextGetCurrentTime ::
-                           (IsAudioContext self) => self -> IO Double
+                           (MonadIO m, IsAudioContext self) => self -> m Double
 audioContextGetCurrentTime self
-  = ghcjs_dom_audio_context_get_current_time
-      (unAudioContext (toAudioContext self))
+  = liftIO
+      (ghcjs_dom_audio_context_get_current_time
+         (unAudioContext (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"sampleRate\"]"
         ghcjs_dom_audio_context_get_sample_rate ::
         JSRef AudioContext -> IO Float
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.sampleRate Mozilla webkitAudioContext.sampleRate documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.sampleRate Mozilla AudioContext.sampleRate documentation> 
 audioContextGetSampleRate ::
-                          (IsAudioContext self) => self -> IO Float
+                          (MonadIO m, IsAudioContext self) => self -> m Float
 audioContextGetSampleRate self
-  = ghcjs_dom_audio_context_get_sample_rate
-      (unAudioContext (toAudioContext self))
+  = liftIO
+      (ghcjs_dom_audio_context_get_sample_rate
+         (unAudioContext (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"listener\"]"
         ghcjs_dom_audio_context_get_listener ::
         JSRef AudioContext -> IO (JSRef AudioListener)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.listener Mozilla webkitAudioContext.listener documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.listener Mozilla AudioContext.listener documentation> 
 audioContextGetListener ::
-                        (IsAudioContext self) => self -> IO (Maybe AudioListener)
+                        (MonadIO m, IsAudioContext self) => self -> m (Maybe AudioListener)
 audioContextGetListener self
-  = (ghcjs_dom_audio_context_get_listener
-       (unAudioContext (toAudioContext self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_audio_context_get_listener
+          (unAudioContext (toAudioContext self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"activeSourceCount\"]"
         ghcjs_dom_audio_context_get_active_source_count ::
         JSRef AudioContext -> IO Word
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.activeSourceCount Mozilla webkitAudioContext.activeSourceCount documentation> 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.activeSourceCount Mozilla AudioContext.activeSourceCount documentation> 
 audioContextGetActiveSourceCount ::
-                                 (IsAudioContext self) => self -> IO Word
+                                 (MonadIO m, IsAudioContext self) => self -> m Word
 audioContextGetActiveSourceCount self
-  = ghcjs_dom_audio_context_get_active_source_count
-      (unAudioContext (toAudioContext self))
+  = liftIO
+      (ghcjs_dom_audio_context_get_active_source_count
+         (unAudioContext (toAudioContext self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioContext.oncomplete Mozilla webkitAudioContext.oncomplete documentation> 
-audioContextOncomplete ::
-                       (IsAudioContext self) => Signal self (EventM UIEvent self ())
-audioContextOncomplete = (connect "complete")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.complete Mozilla AudioContext.complete documentation> 
+audioContextComplete ::
+                     (IsAudioContext self, IsEventTarget self) =>
+                       EventName self OfflineAudioCompletionEvent
+audioContextComplete = unsafeEventName (toJSString "complete")
 #else
 module GHCJS.DOM.AudioContext (
   ) where

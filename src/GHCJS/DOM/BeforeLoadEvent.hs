@@ -10,6 +10,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -24,11 +25,13 @@ foreign import javascript unsafe "$1[\"url\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeLoadEvent.url Mozilla BeforeLoadEvent.url documentation> 
 beforeLoadEventGetUrl ::
-                      (IsBeforeLoadEvent self, FromJSString result) => self -> IO result
+                      (MonadIO m, IsBeforeLoadEvent self, FromJSString result) =>
+                        self -> m result
 beforeLoadEventGetUrl self
-  = fromJSString <$>
-      (ghcjs_dom_before_load_event_get_url
-         (unBeforeLoadEvent (toBeforeLoadEvent self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_before_load_event_get_url
+            (unBeforeLoadEvent (toBeforeLoadEvent self))))
 #else
 module GHCJS.DOM.BeforeLoadEvent (
   ) where

@@ -52,6 +52,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -68,14 +69,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
 htmlElementInsertAdjacentElement ::
-                                 (IsHTMLElement self, ToJSString where', IsElement element) =>
-                                   self -> where' -> Maybe element -> IO (Maybe Element)
+                                 (MonadIO m, IsHTMLElement self, ToJSString where',
+                                  IsElement element) =>
+                                   self -> where' -> Maybe element -> m (Maybe Element)
 htmlElementInsertAdjacentElement self where' element
-  = (ghcjs_dom_html_element_insert_adjacent_element
-       (unHTMLElement (toHTMLElement self))
-       (toJSString where')
-       (maybe jsNull (unElement . toElement) element))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_element_insert_adjacent_element
+          (unHTMLElement (toHTMLElement self))
+          (toJSString where')
+          (maybe jsNull (unElement . toElement) element))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"insertAdjacentHTML\"]($2, $3)"
@@ -84,13 +87,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentHTML Mozilla HTMLElement.insertAdjacentHTML documentation> 
 htmlElementInsertAdjacentHTML ::
-                              (IsHTMLElement self, ToJSString where', ToJSString html) =>
-                                self -> where' -> html -> IO ()
+                              (MonadIO m, IsHTMLElement self, ToJSString where',
+                               ToJSString html) =>
+                                self -> where' -> html -> m ()
 htmlElementInsertAdjacentHTML self where' html
-  = ghcjs_dom_html_element_insert_adjacent_html
-      (unHTMLElement (toHTMLElement self))
-      (toJSString where')
-      (toJSString html)
+  = liftIO
+      (ghcjs_dom_html_element_insert_adjacent_html
+         (unHTMLElement (toHTMLElement self))
+         (toJSString where')
+         (toJSString html))
  
 foreign import javascript unsafe
         "$1[\"insertAdjacentText\"]($2, $3)"
@@ -99,21 +104,24 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentText Mozilla HTMLElement.insertAdjacentText documentation> 
 htmlElementInsertAdjacentText ::
-                              (IsHTMLElement self, ToJSString where', ToJSString text) =>
-                                self -> where' -> text -> IO ()
+                              (MonadIO m, IsHTMLElement self, ToJSString where',
+                               ToJSString text) =>
+                                self -> where' -> text -> m ()
 htmlElementInsertAdjacentText self where' text
-  = ghcjs_dom_html_element_insert_adjacent_text
-      (unHTMLElement (toHTMLElement self))
-      (toJSString where')
-      (toJSString text)
+  = liftIO
+      (ghcjs_dom_html_element_insert_adjacent_text
+         (unHTMLElement (toHTMLElement self))
+         (toJSString where')
+         (toJSString text))
  
 foreign import javascript unsafe "$1[\"click\"]()"
         ghcjs_dom_html_element_click :: JSRef HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.click Mozilla HTMLElement.click documentation> 
-htmlElementClick :: (IsHTMLElement self) => self -> IO ()
+htmlElementClick :: (MonadIO m, IsHTMLElement self) => self -> m ()
 htmlElementClick self
-  = ghcjs_dom_html_element_click (unHTMLElement (toHTMLElement self))
+  = liftIO
+      (ghcjs_dom_html_element_click (unHTMLElement (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"title\"] = $2;"
         ghcjs_dom_html_element_set_title ::
@@ -121,11 +129,13 @@ foreign import javascript unsafe "$1[\"title\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.title Mozilla HTMLElement.title documentation> 
 htmlElementSetTitle ::
-                    (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                    (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                      self -> val -> m ()
 htmlElementSetTitle self val
-  = ghcjs_dom_html_element_set_title
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_title
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"title\"]"
         ghcjs_dom_html_element_get_title ::
@@ -133,11 +143,13 @@ foreign import javascript unsafe "$1[\"title\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.title Mozilla HTMLElement.title documentation> 
 htmlElementGetTitle ::
-                    (IsHTMLElement self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                      self -> m result
 htmlElementGetTitle self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_title
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_title
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"lang\"] = $2;"
         ghcjs_dom_html_element_set_lang ::
@@ -145,22 +157,26 @@ foreign import javascript unsafe "$1[\"lang\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.lang Mozilla HTMLElement.lang documentation> 
 htmlElementSetLang ::
-                   (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                   (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                     self -> val -> m ()
 htmlElementSetLang self val
-  = ghcjs_dom_html_element_set_lang
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_lang
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"lang\"]"
         ghcjs_dom_html_element_get_lang :: JSRef HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.lang Mozilla HTMLElement.lang documentation> 
 htmlElementGetLang ::
-                   (IsHTMLElement self, FromJSString result) => self -> IO result
+                   (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                     self -> m result
 htmlElementGetLang self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_lang
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_lang
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"translate\"] = $2;"
         ghcjs_dom_html_element_set_translate ::
@@ -168,21 +184,24 @@ foreign import javascript unsafe "$1[\"translate\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.translate Mozilla HTMLElement.translate documentation> 
 htmlElementSetTranslate ::
-                        (IsHTMLElement self) => self -> Bool -> IO ()
+                        (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
 htmlElementSetTranslate self val
-  = ghcjs_dom_html_element_set_translate
-      (unHTMLElement (toHTMLElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_element_set_translate
+         (unHTMLElement (toHTMLElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"translate\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_translate ::
         JSRef HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.translate Mozilla HTMLElement.translate documentation> 
-htmlElementGetTranslate :: (IsHTMLElement self) => self -> IO Bool
+htmlElementGetTranslate ::
+                        (MonadIO m, IsHTMLElement self) => self -> m Bool
 htmlElementGetTranslate self
-  = ghcjs_dom_html_element_get_translate
-      (unHTMLElement (toHTMLElement self))
+  = liftIO
+      (ghcjs_dom_html_element_get_translate
+         (unHTMLElement (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"dir\"] = $2;"
         ghcjs_dom_html_element_set_dir ::
@@ -190,22 +209,26 @@ foreign import javascript unsafe "$1[\"dir\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dir Mozilla HTMLElement.dir documentation> 
 htmlElementSetDir ::
-                  (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                  (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                    self -> val -> m ()
 htmlElementSetDir self val
-  = ghcjs_dom_html_element_set_dir
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_dir
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"dir\"]"
         ghcjs_dom_html_element_get_dir :: JSRef HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dir Mozilla HTMLElement.dir documentation> 
 htmlElementGetDir ::
-                  (IsHTMLElement self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                    self -> m result
 htmlElementGetDir self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_dir
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_dir
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
         ghcjs_dom_html_element_set_tab_index ::
@@ -213,20 +236,23 @@ foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 
 htmlElementSetTabIndex ::
-                       (IsHTMLElement self) => self -> Int -> IO ()
+                       (MonadIO m, IsHTMLElement self) => self -> Int -> m ()
 htmlElementSetTabIndex self val
-  = ghcjs_dom_html_element_set_tab_index
-      (unHTMLElement (toHTMLElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_element_set_tab_index
+         (unHTMLElement (toHTMLElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"tabIndex\"]"
         ghcjs_dom_html_element_get_tab_index :: JSRef HTMLElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 
-htmlElementGetTabIndex :: (IsHTMLElement self) => self -> IO Int
+htmlElementGetTabIndex ::
+                       (MonadIO m, IsHTMLElement self) => self -> m Int
 htmlElementGetTabIndex self
-  = ghcjs_dom_html_element_get_tab_index
-      (unHTMLElement (toHTMLElement self))
+  = liftIO
+      (ghcjs_dom_html_element_get_tab_index
+         (unHTMLElement (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"draggable\"] = $2;"
         ghcjs_dom_html_element_set_draggable ::
@@ -234,21 +260,24 @@ foreign import javascript unsafe "$1[\"draggable\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
 htmlElementSetDraggable ::
-                        (IsHTMLElement self) => self -> Bool -> IO ()
+                        (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
 htmlElementSetDraggable self val
-  = ghcjs_dom_html_element_set_draggable
-      (unHTMLElement (toHTMLElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_element_set_draggable
+         (unHTMLElement (toHTMLElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"draggable\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_draggable ::
         JSRef HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
-htmlElementGetDraggable :: (IsHTMLElement self) => self -> IO Bool
+htmlElementGetDraggable ::
+                        (MonadIO m, IsHTMLElement self) => self -> m Bool
 htmlElementGetDraggable self
-  = ghcjs_dom_html_element_get_draggable
-      (unHTMLElement (toHTMLElement self))
+  = liftIO
+      (ghcjs_dom_html_element_get_draggable
+         (unHTMLElement (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"webkitdropzone\"] = $2;"
         ghcjs_dom_html_element_set_webkitdropzone ::
@@ -256,11 +285,13 @@ foreign import javascript unsafe "$1[\"webkitdropzone\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 
 htmlElementSetWebkitdropzone ::
-                             (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                             (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                               self -> val -> m ()
 htmlElementSetWebkitdropzone self val
-  = ghcjs_dom_html_element_set_webkitdropzone
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_webkitdropzone
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"webkitdropzone\"]"
         ghcjs_dom_html_element_get_webkitdropzone ::
@@ -268,11 +299,13 @@ foreign import javascript unsafe "$1[\"webkitdropzone\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 
 htmlElementGetWebkitdropzone ::
-                             (IsHTMLElement self, FromJSString result) => self -> IO result
+                             (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                               self -> m result
 htmlElementGetWebkitdropzone self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_webkitdropzone
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_webkitdropzone
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"hidden\"] = $2;"
         ghcjs_dom_html_element_set_hidden ::
@@ -280,20 +313,23 @@ foreign import javascript unsafe "$1[\"hidden\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.hidden Mozilla HTMLElement.hidden documentation> 
 htmlElementSetHidden ::
-                     (IsHTMLElement self) => self -> Bool -> IO ()
+                     (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
 htmlElementSetHidden self val
-  = ghcjs_dom_html_element_set_hidden
-      (unHTMLElement (toHTMLElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_element_set_hidden
+         (unHTMLElement (toHTMLElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_hidden :: JSRef HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.hidden Mozilla HTMLElement.hidden documentation> 
-htmlElementGetHidden :: (IsHTMLElement self) => self -> IO Bool
+htmlElementGetHidden ::
+                     (MonadIO m, IsHTMLElement self) => self -> m Bool
 htmlElementGetHidden self
-  = ghcjs_dom_html_element_get_hidden
-      (unHTMLElement (toHTMLElement self))
+  = liftIO
+      (ghcjs_dom_html_element_get_hidden
+         (unHTMLElement (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"accessKey\"] = $2;"
         ghcjs_dom_html_element_set_access_key ::
@@ -301,11 +337,13 @@ foreign import javascript unsafe "$1[\"accessKey\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.accessKey Mozilla HTMLElement.accessKey documentation> 
 htmlElementSetAccessKey ::
-                        (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlElementSetAccessKey self val
-  = ghcjs_dom_html_element_set_access_key
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_access_key
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"accessKey\"]"
         ghcjs_dom_html_element_get_access_key ::
@@ -313,11 +351,13 @@ foreign import javascript unsafe "$1[\"accessKey\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.accessKey Mozilla HTMLElement.accessKey documentation> 
 htmlElementGetAccessKey ::
-                        (IsHTMLElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                          self -> m result
 htmlElementGetAccessKey self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_access_key
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_access_key
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"innerHTML\"] = $2;"
         ghcjs_dom_html_element_set_inner_html ::
@@ -325,11 +365,13 @@ foreign import javascript unsafe "$1[\"innerHTML\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerHTML Mozilla HTMLElement.innerHTML documentation> 
 htmlElementSetInnerHTML ::
-                        (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlElementSetInnerHTML self val
-  = ghcjs_dom_html_element_set_inner_html
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_inner_html
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"innerHTML\"]"
         ghcjs_dom_html_element_get_inner_html ::
@@ -337,11 +379,13 @@ foreign import javascript unsafe "$1[\"innerHTML\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerHTML Mozilla HTMLElement.innerHTML documentation> 
 htmlElementGetInnerHTML ::
-                        (IsHTMLElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                          self -> m result
 htmlElementGetInnerHTML self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_inner_html
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_inner_html
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"innerText\"] = $2;"
         ghcjs_dom_html_element_set_inner_text ::
@@ -349,11 +393,13 @@ foreign import javascript unsafe "$1[\"innerText\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 htmlElementSetInnerText ::
-                        (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlElementSetInnerText self val
-  = ghcjs_dom_html_element_set_inner_text
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_inner_text
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"innerText\"]"
         ghcjs_dom_html_element_get_inner_text ::
@@ -361,11 +407,13 @@ foreign import javascript unsafe "$1[\"innerText\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 htmlElementGetInnerText ::
-                        (IsHTMLElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                          self -> m result
 htmlElementGetInnerText self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_inner_text
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_inner_text
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"outerHTML\"] = $2;"
         ghcjs_dom_html_element_set_outer_html ::
@@ -373,11 +421,13 @@ foreign import javascript unsafe "$1[\"outerHTML\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerHTML Mozilla HTMLElement.outerHTML documentation> 
 htmlElementSetOuterHTML ::
-                        (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlElementSetOuterHTML self val
-  = ghcjs_dom_html_element_set_outer_html
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_outer_html
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"outerHTML\"]"
         ghcjs_dom_html_element_get_outer_html ::
@@ -385,11 +435,13 @@ foreign import javascript unsafe "$1[\"outerHTML\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerHTML Mozilla HTMLElement.outerHTML documentation> 
 htmlElementGetOuterHTML ::
-                        (IsHTMLElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                          self -> m result
 htmlElementGetOuterHTML self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_outer_html
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_outer_html
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"outerText\"] = $2;"
         ghcjs_dom_html_element_set_outer_text ::
@@ -397,11 +449,13 @@ foreign import javascript unsafe "$1[\"outerText\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 htmlElementSetOuterText ::
-                        (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                        (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                          self -> val -> m ()
 htmlElementSetOuterText self val
-  = ghcjs_dom_html_element_set_outer_text
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_outer_text
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"outerText\"]"
         ghcjs_dom_html_element_get_outer_text ::
@@ -409,11 +463,13 @@ foreign import javascript unsafe "$1[\"outerText\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 htmlElementGetOuterText ::
-                        (IsHTMLElement self, FromJSString result) => self -> IO result
+                        (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                          self -> m result
 htmlElementGetOuterText self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_outer_text
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_outer_text
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"children\"]"
         ghcjs_dom_html_element_get_children ::
@@ -421,11 +477,12 @@ foreign import javascript unsafe "$1[\"children\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.children Mozilla HTMLElement.children documentation> 
 htmlElementGetChildren ::
-                       (IsHTMLElement self) => self -> IO (Maybe HTMLCollection)
+                       (MonadIO m, IsHTMLElement self) => self -> m (Maybe HTMLCollection)
 htmlElementGetChildren self
-  = (ghcjs_dom_html_element_get_children
-       (unHTMLElement (toHTMLElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_html_element_get_children
+          (unHTMLElement (toHTMLElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
         ghcjs_dom_html_element_set_content_editable ::
@@ -433,11 +490,13 @@ foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
 htmlElementSetContentEditable ::
-                              (IsHTMLElement self, ToJSString val) => self -> val -> IO ()
+                              (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                                self -> val -> m ()
 htmlElementSetContentEditable self val
-  = ghcjs_dom_html_element_set_content_editable
-      (unHTMLElement (toHTMLElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_html_element_set_content_editable
+         (unHTMLElement (toHTMLElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"contentEditable\"]"
         ghcjs_dom_html_element_get_content_editable ::
@@ -445,11 +504,13 @@ foreign import javascript unsafe "$1[\"contentEditable\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
 htmlElementGetContentEditable ::
-                              (IsHTMLElement self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                                self -> m result
 htmlElementGetContentEditable self
-  = fromJSString <$>
-      (ghcjs_dom_html_element_get_content_editable
-         (unHTMLElement (toHTMLElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_html_element_get_content_editable
+            (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe
         "($1[\"isContentEditable\"] ? 1 : 0)"
@@ -458,10 +519,11 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.isContentEditable Mozilla HTMLElement.isContentEditable documentation> 
 htmlElementGetIsContentEditable ::
-                                (IsHTMLElement self) => self -> IO Bool
+                                (MonadIO m, IsHTMLElement self) => self -> m Bool
 htmlElementGetIsContentEditable self
-  = ghcjs_dom_html_element_get_is_content_editable
-      (unHTMLElement (toHTMLElement self))
+  = liftIO
+      (ghcjs_dom_html_element_get_is_content_editable
+         (unHTMLElement (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"spellcheck\"] = $2;"
         ghcjs_dom_html_element_set_spellcheck ::
@@ -469,21 +531,24 @@ foreign import javascript unsafe "$1[\"spellcheck\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
 htmlElementSetSpellcheck ::
-                         (IsHTMLElement self) => self -> Bool -> IO ()
+                         (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
 htmlElementSetSpellcheck self val
-  = ghcjs_dom_html_element_set_spellcheck
-      (unHTMLElement (toHTMLElement self))
-      val
+  = liftIO
+      (ghcjs_dom_html_element_set_spellcheck
+         (unHTMLElement (toHTMLElement self))
+         val)
  
 foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
         ghcjs_dom_html_element_get_spellcheck ::
         JSRef HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
-htmlElementGetSpellcheck :: (IsHTMLElement self) => self -> IO Bool
+htmlElementGetSpellcheck ::
+                         (MonadIO m, IsHTMLElement self) => self -> m Bool
 htmlElementGetSpellcheck self
-  = ghcjs_dom_html_element_get_spellcheck
-      (unHTMLElement (toHTMLElement self))
+  = liftIO
+      (ghcjs_dom_html_element_get_spellcheck
+         (unHTMLElement (toHTMLElement self)))
 #else
 module GHCJS.DOM.HTMLElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLElement

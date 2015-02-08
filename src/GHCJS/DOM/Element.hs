@@ -73,31 +73,29 @@ module GHCJS.DOM.Element
         elementGetChildElementCount, ghcjs_dom_element_set_uiactions,
         elementSetUiactions, ghcjs_dom_element_get_uiactions,
         elementGetUiactions, ghcjs_dom_element_get_webkit_region_overset,
-        elementGetWebkitRegionOverset, elementOnabort, elementOnblur,
-        elementOnchange, elementOnclick, elementOncontextmenu,
-        elementOndblclick, elementOndrag, elementOndragend,
-        elementOndragenter, elementOndragleave, elementOndragover,
-        elementOndragstart, elementOndrop, elementOnerror, elementOnfocus,
-        elementOninput, elementOninvalid, elementOnkeydown,
-        elementOnkeypress, elementOnkeyup, elementOnload,
-        elementOnmousedown, elementOnmouseenter, elementOnmouseleave,
-        elementOnmousemove, elementOnmouseout, elementOnmouseover,
-        elementOnmouseup, elementOnmousewheel, elementOnscroll,
-        elementOnselect, elementOnsubmit, elementOnwheel,
-        elementOnbeforecut, elementOncut, elementOnbeforecopy,
-        elementOncopy, elementOnbeforepaste, elementOnpaste,
-        elementOnreset, elementOnsearch, elementOnselectstart,
-        elementOntouchstart, elementOntouchmove, elementOntouchend,
-        elementOntouchcancel, elementOnwebkitfullscreenchange,
-        elementOnwebkitfullscreenerror, elementOnwebkitwillrevealbottom,
-        elementOnwebkitwillrevealleft, elementOnwebkitwillrevealright,
-        elementOnwebkitwillrevealtop, Element, IsElement, castToElement,
-        gTypeElement, toElement)
+        elementGetWebkitRegionOverset, elementAbort, elementBlurEvent,
+        elementChange, elementClick, elementContextMenu, elementDblClick,
+        elementDrag, elementDragEnd, elementDragEnter, elementDragLeave,
+        elementDragOver, elementDragStart, elementDrop, elementError,
+        elementFocusEvent, elementInput, elementInvalid, elementKeyDown,
+        elementKeyPress, elementKeyUp, elementLoad, elementMouseDown,
+        elementMouseEnter, elementMouseLeave, elementMouseMove,
+        elementMouseOut, elementMouseOver, elementMouseUp,
+        elementMouseWheel, elementScroll, elementSelect, elementSubmit,
+        elementWheel, elementBeforeCut, elementCut, elementBeforeCopy,
+        elementCopy, elementBeforePaste, elementPaste, elementReset,
+        elementSearch, elementSelectStart, elementTouchStart,
+        elementTouchMove, elementTouchEnd, elementTouchCancel,
+        elementWebKitFullscreenChange, elementWebKitFullscreenError,
+        elementWebKitWillRevealBottom, elementWebKitWillRevealLeft,
+        elementWebKitWillRevealRight, elementWebKitWillRevealTop, Element,
+        IsElement, castToElement, gTypeElement, toElement)
        where
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -112,12 +110,14 @@ foreign import javascript unsafe "$1[\"getAttribute\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attribute Mozilla Element.attribute documentation> 
 elementGetAttribute ::
-                    (IsElement self, ToJSString name, FromJSString result) =>
-                      self -> name -> IO result
+                    (MonadIO m, IsElement self, ToJSString name,
+                     FromJSString result) =>
+                      self -> name -> m result
 elementGetAttribute self name
-  = fromJSString <$>
-      (ghcjs_dom_element_get_attribute (unElement (toElement self))
-         (toJSString name))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_element_get_attribute (unElement (toElement self))
+            (toJSString name)))
  
 foreign import javascript unsafe "$1[\"setAttribute\"]($2, $3)"
         ghcjs_dom_element_set_attribute ::
@@ -125,12 +125,13 @@ foreign import javascript unsafe "$1[\"setAttribute\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attribute Mozilla Element.attribute documentation> 
 elementSetAttribute ::
-                    (IsElement self, ToJSString name, ToJSString value) =>
-                      self -> name -> value -> IO ()
+                    (MonadIO m, IsElement self, ToJSString name, ToJSString value) =>
+                      self -> name -> value -> m ()
 elementSetAttribute self name value
-  = ghcjs_dom_element_set_attribute (unElement (toElement self))
-      (toJSString name)
-      (toJSString value)
+  = liftIO
+      (ghcjs_dom_element_set_attribute (unElement (toElement self))
+         (toJSString name)
+         (toJSString value))
  
 foreign import javascript unsafe "$1[\"removeAttribute\"]($2)"
         ghcjs_dom_element_remove_attribute ::
@@ -138,10 +139,12 @@ foreign import javascript unsafe "$1[\"removeAttribute\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttribute Mozilla Element.removeAttribute documentation> 
 elementRemoveAttribute ::
-                       (IsElement self, ToJSString name) => self -> name -> IO ()
+                       (MonadIO m, IsElement self, ToJSString name) =>
+                         self -> name -> m ()
 elementRemoveAttribute self name
-  = ghcjs_dom_element_remove_attribute (unElement (toElement self))
-      (toJSString name)
+  = liftIO
+      (ghcjs_dom_element_remove_attribute (unElement (toElement self))
+         (toJSString name))
  
 foreign import javascript unsafe "$1[\"getAttributeNode\"]($2)"
         ghcjs_dom_element_get_attribute_node ::
@@ -149,13 +152,13 @@ foreign import javascript unsafe "$1[\"getAttributeNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributeNode Mozilla Element.attributeNode documentation> 
 elementGetAttributeNode ::
-                        (IsElement self, ToJSString name) =>
-                          self -> name -> IO (Maybe DOMAttr)
+                        (MonadIO m, IsElement self, ToJSString name) =>
+                          self -> name -> m (Maybe DOMAttr)
 elementGetAttributeNode self name
-  = (ghcjs_dom_element_get_attribute_node
-       (unElement (toElement self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_attribute_node (unElement (toElement self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"setAttributeNode\"]($2)"
         ghcjs_dom_element_set_attribute_node ::
@@ -163,13 +166,13 @@ foreign import javascript unsafe "$1[\"setAttributeNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributeNode Mozilla Element.attributeNode documentation> 
 elementSetAttributeNode ::
-                        (IsElement self, IsDOMAttr newAttr) =>
-                          self -> Maybe newAttr -> IO (Maybe DOMAttr)
+                        (MonadIO m, IsElement self, IsDOMAttr newAttr) =>
+                          self -> Maybe newAttr -> m (Maybe DOMAttr)
 elementSetAttributeNode self newAttr
-  = (ghcjs_dom_element_set_attribute_node
-       (unElement (toElement self))
-       (maybe jsNull (unDOMAttr . toDOMAttr) newAttr))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_set_attribute_node (unElement (toElement self))
+          (maybe jsNull (unDOMAttr . toDOMAttr) newAttr))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeAttributeNode\"]($2)"
         ghcjs_dom_element_remove_attribute_node ::
@@ -177,13 +180,14 @@ foreign import javascript unsafe "$1[\"removeAttributeNode\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNode Mozilla Element.removeAttributeNode documentation> 
 elementRemoveAttributeNode ::
-                           (IsElement self, IsDOMAttr oldAttr) =>
-                             self -> Maybe oldAttr -> IO (Maybe DOMAttr)
+                           (MonadIO m, IsElement self, IsDOMAttr oldAttr) =>
+                             self -> Maybe oldAttr -> m (Maybe DOMAttr)
 elementRemoveAttributeNode self oldAttr
-  = (ghcjs_dom_element_remove_attribute_node
-       (unElement (toElement self))
-       (maybe jsNull (unDOMAttr . toDOMAttr) oldAttr))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_remove_attribute_node
+          (unElement (toElement self))
+          (maybe jsNull (unDOMAttr . toDOMAttr) oldAttr))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
         ghcjs_dom_element_get_elements_by_tag_name ::
@@ -191,22 +195,25 @@ foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.elementsByTagName Mozilla Element.elementsByTagName documentation> 
 elementGetElementsByTagName ::
-                            (IsElement self, ToJSString name) =>
-                              self -> name -> IO (Maybe NodeList)
+                            (MonadIO m, IsElement self, ToJSString name) =>
+                              self -> name -> m (Maybe NodeList)
 elementGetElementsByTagName self name
-  = (ghcjs_dom_element_get_elements_by_tag_name
-       (unElement (toElement self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_elements_by_tag_name
+          (unElement (toElement self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"hasAttributes\"]() ? 1 : 0)"
         ghcjs_dom_element_has_attributes :: JSRef Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.hasAttributes Mozilla Element.hasAttributes documentation> 
-elementHasAttributes :: (IsElement self) => self -> IO Bool
+elementHasAttributes ::
+                     (MonadIO m, IsElement self) => self -> m Bool
 elementHasAttributes self
-  = ghcjs_dom_element_has_attributes (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_has_attributes (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"getAttributeNS\"]($2, $3)"
         ghcjs_dom_element_get_attribute_ns ::
@@ -214,14 +221,15 @@ foreign import javascript unsafe "$1[\"getAttributeNS\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributeNS Mozilla Element.attributeNS documentation> 
 elementGetAttributeNS ::
-                      (IsElement self, ToJSString namespaceURI, ToJSString localName,
-                       FromJSString result) =>
-                        self -> namespaceURI -> localName -> IO result
+                      (MonadIO m, IsElement self, ToJSString namespaceURI,
+                       ToJSString localName, FromJSString result) =>
+                        self -> namespaceURI -> localName -> m result
 elementGetAttributeNS self namespaceURI localName
-  = fromJSString <$>
-      (ghcjs_dom_element_get_attribute_ns (unElement (toElement self))
-         (toJSString namespaceURI)
-         (toJSString localName))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_element_get_attribute_ns (unElement (toElement self))
+            (toJSString namespaceURI)
+            (toJSString localName)))
  
 foreign import javascript unsafe
         "$1[\"setAttributeNS\"]($2, $3, $4)"
@@ -230,14 +238,15 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributeNS Mozilla Element.attributeNS documentation> 
 elementSetAttributeNS ::
-                      (IsElement self, ToJSString namespaceURI, ToJSString qualifiedName,
-                       ToJSString value) =>
-                        self -> namespaceURI -> qualifiedName -> value -> IO ()
+                      (MonadIO m, IsElement self, ToJSString namespaceURI,
+                       ToJSString qualifiedName, ToJSString value) =>
+                        self -> namespaceURI -> qualifiedName -> value -> m ()
 elementSetAttributeNS self namespaceURI qualifiedName value
-  = ghcjs_dom_element_set_attribute_ns (unElement (toElement self))
-      (toJSString namespaceURI)
-      (toJSString qualifiedName)
-      (toJSString value)
+  = liftIO
+      (ghcjs_dom_element_set_attribute_ns (unElement (toElement self))
+         (toJSString namespaceURI)
+         (toJSString qualifiedName)
+         (toJSString value))
  
 foreign import javascript unsafe
         "$1[\"removeAttributeNS\"]($2, $3)"
@@ -246,13 +255,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNS Mozilla Element.removeAttributeNS documentation> 
 elementRemoveAttributeNS ::
-                         (IsElement self, ToJSString namespaceURI, ToJSString localName) =>
-                           self -> namespaceURI -> localName -> IO ()
+                         (MonadIO m, IsElement self, ToJSString namespaceURI,
+                          ToJSString localName) =>
+                           self -> namespaceURI -> localName -> m ()
 elementRemoveAttributeNS self namespaceURI localName
-  = ghcjs_dom_element_remove_attribute_ns
-      (unElement (toElement self))
-      (toJSString namespaceURI)
-      (toJSString localName)
+  = liftIO
+      (ghcjs_dom_element_remove_attribute_ns (unElement (toElement self))
+         (toJSString namespaceURI)
+         (toJSString localName))
  
 foreign import javascript unsafe
         "$1[\"getElementsByTagNameNS\"]($2,\n$3)"
@@ -261,14 +271,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.elementsByTagNameNS Mozilla Element.elementsByTagNameNS documentation> 
 elementGetElementsByTagNameNS ::
-                              (IsElement self, ToJSString namespaceURI, ToJSString localName) =>
-                                self -> namespaceURI -> localName -> IO (Maybe NodeList)
+                              (MonadIO m, IsElement self, ToJSString namespaceURI,
+                               ToJSString localName) =>
+                                self -> namespaceURI -> localName -> m (Maybe NodeList)
 elementGetElementsByTagNameNS self namespaceURI localName
-  = (ghcjs_dom_element_get_elements_by_tag_name_ns
-       (unElement (toElement self))
-       (toJSString namespaceURI)
-       (toJSString localName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_elements_by_tag_name_ns
+          (unElement (toElement self))
+          (toJSString namespaceURI)
+          (toJSString localName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"getAttributeNodeNS\"]($2, $3)"
@@ -277,14 +289,16 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributeNodeNS Mozilla Element.attributeNodeNS documentation> 
 elementGetAttributeNodeNS ::
-                          (IsElement self, ToJSString namespaceURI, ToJSString localName) =>
-                            self -> namespaceURI -> localName -> IO (Maybe DOMAttr)
+                          (MonadIO m, IsElement self, ToJSString namespaceURI,
+                           ToJSString localName) =>
+                            self -> namespaceURI -> localName -> m (Maybe DOMAttr)
 elementGetAttributeNodeNS self namespaceURI localName
-  = (ghcjs_dom_element_get_attribute_node_ns
-       (unElement (toElement self))
-       (toJSString namespaceURI)
-       (toJSString localName))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_attribute_node_ns
+          (unElement (toElement self))
+          (toJSString namespaceURI)
+          (toJSString localName))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"setAttributeNodeNS\"]($2)"
         ghcjs_dom_element_set_attribute_node_ns ::
@@ -292,13 +306,14 @@ foreign import javascript unsafe "$1[\"setAttributeNodeNS\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributeNodeNS Mozilla Element.attributeNodeNS documentation> 
 elementSetAttributeNodeNS ::
-                          (IsElement self, IsDOMAttr newAttr) =>
-                            self -> Maybe newAttr -> IO (Maybe DOMAttr)
+                          (MonadIO m, IsElement self, IsDOMAttr newAttr) =>
+                            self -> Maybe newAttr -> m (Maybe DOMAttr)
 elementSetAttributeNodeNS self newAttr
-  = (ghcjs_dom_element_set_attribute_node_ns
-       (unElement (toElement self))
-       (maybe jsNull (unDOMAttr . toDOMAttr) newAttr))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_set_attribute_node_ns
+          (unElement (toElement self))
+          (maybe jsNull (unDOMAttr . toDOMAttr) newAttr))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"hasAttribute\"]($2) ? 1 : 0)"
@@ -307,10 +322,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.hasAttribute Mozilla Element.hasAttribute documentation> 
 elementHasAttribute ::
-                    (IsElement self, ToJSString name) => self -> name -> IO Bool
+                    (MonadIO m, IsElement self, ToJSString name) =>
+                      self -> name -> m Bool
 elementHasAttribute self name
-  = ghcjs_dom_element_has_attribute (unElement (toElement self))
-      (toJSString name)
+  = liftIO
+      (ghcjs_dom_element_has_attribute (unElement (toElement self))
+         (toJSString name))
  
 foreign import javascript unsafe
         "($1[\"hasAttributeNS\"]($2,\n$3) ? 1 : 0)"
@@ -319,38 +336,42 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.hasAttributeNS Mozilla Element.hasAttributeNS documentation> 
 elementHasAttributeNS ::
-                      (IsElement self, ToJSString namespaceURI, ToJSString localName) =>
-                        self -> namespaceURI -> localName -> IO Bool
+                      (MonadIO m, IsElement self, ToJSString namespaceURI,
+                       ToJSString localName) =>
+                        self -> namespaceURI -> localName -> m Bool
 elementHasAttributeNS self namespaceURI localName
-  = ghcjs_dom_element_has_attribute_ns (unElement (toElement self))
-      (toJSString namespaceURI)
-      (toJSString localName)
+  = liftIO
+      (ghcjs_dom_element_has_attribute_ns (unElement (toElement self))
+         (toJSString namespaceURI)
+         (toJSString localName))
  
 foreign import javascript unsafe "$1[\"focus\"]()"
         ghcjs_dom_element_focus :: JSRef Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.focus Mozilla Element.focus documentation> 
-elementFocus :: (IsElement self) => self -> IO ()
+elementFocus :: (MonadIO m, IsElement self) => self -> m ()
 elementFocus self
-  = ghcjs_dom_element_focus (unElement (toElement self))
+  = liftIO (ghcjs_dom_element_focus (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"blur\"]()"
         ghcjs_dom_element_blur :: JSRef Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.blur Mozilla Element.blur documentation> 
-elementBlur :: (IsElement self) => self -> IO ()
+elementBlur :: (MonadIO m, IsElement self) => self -> m ()
 elementBlur self
-  = ghcjs_dom_element_blur (unElement (toElement self))
+  = liftIO (ghcjs_dom_element_blur (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"scrollIntoView\"]($2)"
         ghcjs_dom_element_scroll_into_view ::
         JSRef Element -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollIntoView Mozilla Element.scrollIntoView documentation> 
-elementScrollIntoView :: (IsElement self) => self -> Bool -> IO ()
+elementScrollIntoView ::
+                      (MonadIO m, IsElement self) => self -> Bool -> m ()
 elementScrollIntoView self alignWithTop
-  = ghcjs_dom_element_scroll_into_view (unElement (toElement self))
-      alignWithTop
+  = liftIO
+      (ghcjs_dom_element_scroll_into_view (unElement (toElement self))
+         alignWithTop)
  
 foreign import javascript unsafe
         "$1[\"scrollIntoViewIfNeeded\"]($2)"
@@ -359,29 +380,34 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollIntoViewIfNeeded Mozilla Element.scrollIntoViewIfNeeded documentation> 
 elementScrollIntoViewIfNeeded ::
-                              (IsElement self) => self -> Bool -> IO ()
+                              (MonadIO m, IsElement self) => self -> Bool -> m ()
 elementScrollIntoViewIfNeeded self centerIfNeeded
-  = ghcjs_dom_element_scroll_into_view_if_needed
-      (unElement (toElement self))
-      centerIfNeeded
+  = liftIO
+      (ghcjs_dom_element_scroll_into_view_if_needed
+         (unElement (toElement self))
+         centerIfNeeded)
  
 foreign import javascript unsafe "$1[\"scrollByLines\"]($2)"
         ghcjs_dom_element_scroll_by_lines :: JSRef Element -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollByLines Mozilla Element.scrollByLines documentation> 
-elementScrollByLines :: (IsElement self) => self -> Int -> IO ()
+elementScrollByLines ::
+                     (MonadIO m, IsElement self) => self -> Int -> m ()
 elementScrollByLines self lines
-  = ghcjs_dom_element_scroll_by_lines (unElement (toElement self))
-      lines
+  = liftIO
+      (ghcjs_dom_element_scroll_by_lines (unElement (toElement self))
+         lines)
  
 foreign import javascript unsafe "$1[\"scrollByPages\"]($2)"
         ghcjs_dom_element_scroll_by_pages :: JSRef Element -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollByPages Mozilla Element.scrollByPages documentation> 
-elementScrollByPages :: (IsElement self) => self -> Int -> IO ()
+elementScrollByPages ::
+                     (MonadIO m, IsElement self) => self -> Int -> m ()
 elementScrollByPages self pages
-  = ghcjs_dom_element_scroll_by_pages (unElement (toElement self))
-      pages
+  = liftIO
+      (ghcjs_dom_element_scroll_by_pages (unElement (toElement self))
+         pages)
  
 foreign import javascript unsafe
         "$1[\"getElementsByClassName\"]($2)"
@@ -390,13 +416,14 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.elementsByClassName Mozilla Element.elementsByClassName documentation> 
 elementGetElementsByClassName ::
-                              (IsElement self, ToJSString name) =>
-                                self -> name -> IO (Maybe NodeList)
+                              (MonadIO m, IsElement self, ToJSString name) =>
+                                self -> name -> m (Maybe NodeList)
 elementGetElementsByClassName self name
-  = (ghcjs_dom_element_get_elements_by_class_name
-       (unElement (toElement self))
-       (toJSString name))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_elements_by_class_name
+          (unElement (toElement self))
+          (toJSString name))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         ghcjs_dom_element_query_selector ::
@@ -404,12 +431,13 @@ foreign import javascript unsafe "$1[\"querySelector\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.querySelector Mozilla Element.querySelector documentation> 
 elementQuerySelector ::
-                     (IsElement self, ToJSString selectors) =>
-                       self -> selectors -> IO (Maybe Element)
+                     (MonadIO m, IsElement self, ToJSString selectors) =>
+                       self -> selectors -> m (Maybe Element)
 elementQuerySelector self selectors
-  = (ghcjs_dom_element_query_selector (unElement (toElement self))
-       (toJSString selectors))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_query_selector (unElement (toElement self))
+          (toJSString selectors))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         ghcjs_dom_element_query_selector_all ::
@@ -417,24 +445,25 @@ foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.querySelectorAll Mozilla Element.querySelectorAll documentation> 
 elementQuerySelectorAll ::
-                        (IsElement self, ToJSString selectors) =>
-                          self -> selectors -> IO (Maybe NodeList)
+                        (MonadIO m, IsElement self, ToJSString selectors) =>
+                          self -> selectors -> m (Maybe NodeList)
 elementQuerySelectorAll self selectors
-  = (ghcjs_dom_element_query_selector_all
-       (unElement (toElement self))
-       (toJSString selectors))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_query_selector_all (unElement (toElement self))
+          (toJSString selectors))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "($1[\"matches\"]($2) ? 1 : 0)"
         ghcjs_dom_element_matches :: JSRef Element -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.matches Mozilla Element.matches documentation> 
 elementMatches ::
-               (IsElement self, ToJSString selectors) =>
-                 self -> selectors -> IO Bool
+               (MonadIO m, IsElement self, ToJSString selectors) =>
+                 self -> selectors -> m Bool
 elementMatches self selectors
-  = ghcjs_dom_element_matches (unElement (toElement self))
-      (toJSString selectors)
+  = liftIO
+      (ghcjs_dom_element_matches (unElement (toElement self))
+         (toJSString selectors))
  
 foreign import javascript unsafe "$1[\"closest\"]($2)"
         ghcjs_dom_element_closest ::
@@ -442,12 +471,13 @@ foreign import javascript unsafe "$1[\"closest\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.closest Mozilla Element.closest documentation> 
 elementClosest ::
-               (IsElement self, ToJSString selectors) =>
-                 self -> selectors -> IO (Maybe Element)
+               (MonadIO m, IsElement self, ToJSString selectors) =>
+                 self -> selectors -> m (Maybe Element)
 elementClosest self selectors
-  = (ghcjs_dom_element_closest (unElement (toElement self))
-       (toJSString selectors))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_closest (unElement (toElement self))
+          (toJSString selectors))
+         >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"webkitMatchesSelector\"]($2) ? 1 : 0)"
@@ -456,12 +486,13 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitMatchesSelector Mozilla Element.webkitMatchesSelector documentation> 
 elementWebkitMatchesSelector ::
-                             (IsElement self, ToJSString selectors) =>
-                               self -> selectors -> IO Bool
+                             (MonadIO m, IsElement self, ToJSString selectors) =>
+                               self -> selectors -> m Bool
 elementWebkitMatchesSelector self selectors
-  = ghcjs_dom_element_webkit_matches_selector
-      (unElement (toElement self))
-      (toJSString selectors)
+  = liftIO
+      (ghcjs_dom_element_webkit_matches_selector
+         (unElement (toElement self))
+         (toJSString selectors))
  
 foreign import javascript unsafe
         "$1[\"webkitRequestFullScreen\"]($2)"
@@ -470,11 +501,12 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitRequestFullScreen Mozilla Element.webkitRequestFullScreen documentation> 
 elementWebkitRequestFullScreen ::
-                               (IsElement self) => self -> Word -> IO ()
+                               (MonadIO m, IsElement self) => self -> Word -> m ()
 elementWebkitRequestFullScreen self flags
-  = ghcjs_dom_element_webkit_request_full_screen
-      (unElement (toElement self))
-      flags
+  = liftIO
+      (ghcjs_dom_element_webkit_request_full_screen
+         (unElement (toElement self))
+         flags)
  
 foreign import javascript unsafe
         "$1[\"webkitRequestFullscreen\"]()"
@@ -482,19 +514,23 @@ foreign import javascript unsafe
         JSRef Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitRequestFullscreen Mozilla Element.webkitRequestFullscreen documentation> 
-elementWebkitRequestFullscreen :: (IsElement self) => self -> IO ()
+elementWebkitRequestFullscreen ::
+                               (MonadIO m, IsElement self) => self -> m ()
 elementWebkitRequestFullscreen self
-  = ghcjs_dom_element_webkit_request_fullscreen
-      (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_webkit_request_fullscreen
+         (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"requestPointerLock\"]()"
         ghcjs_dom_element_request_pointer_lock :: JSRef Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.requestPointerLock Mozilla Element.requestPointerLock documentation> 
-elementRequestPointerLock :: (IsElement self) => self -> IO ()
+elementRequestPointerLock ::
+                          (MonadIO m, IsElement self) => self -> m ()
 elementRequestPointerLock self
-  = ghcjs_dom_element_request_pointer_lock
-      (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_request_pointer_lock
+         (unElement (toElement self)))
 cALLOW_KEYBOARD_INPUT = 1
  
 foreign import javascript unsafe "$1[\"tagName\"]"
@@ -502,10 +538,12 @@ foreign import javascript unsafe "$1[\"tagName\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.tagName Mozilla Element.tagName documentation> 
 elementGetTagName ::
-                  (IsElement self, FromJSString result) => self -> IO result
+                  (MonadIO m, IsElement self, FromJSString result) =>
+                    self -> m result
 elementGetTagName self
-  = fromJSString <$>
-      (ghcjs_dom_element_get_tag_name (unElement (toElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_element_get_tag_name (unElement (toElement self))))
  
 foreign import javascript unsafe "$1[\"attributes\"]"
         ghcjs_dom_element_get_attributes ::
@@ -513,10 +551,11 @@ foreign import javascript unsafe "$1[\"attributes\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributes Mozilla Element.attributes documentation> 
 elementGetAttributes ::
-                     (IsElement self) => self -> IO (Maybe NamedNodeMap)
+                     (MonadIO m, IsElement self) => self -> m (Maybe NamedNodeMap)
 elementGetAttributes self
-  = (ghcjs_dom_element_get_attributes (unElement (toElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_attributes (unElement (toElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"style\"]"
         ghcjs_dom_element_get_style ::
@@ -524,143 +563,175 @@ foreign import javascript unsafe "$1[\"style\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.style Mozilla Element.style documentation> 
 elementGetStyle ::
-                (IsElement self) => self -> IO (Maybe CSSStyleDeclaration)
+                (MonadIO m, IsElement self) =>
+                  self -> m (Maybe CSSStyleDeclaration)
 elementGetStyle self
-  = (ghcjs_dom_element_get_style (unElement (toElement self))) >>=
-      fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_style (unElement (toElement self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"id\"] = $2;"
         ghcjs_dom_element_set_id :: JSRef Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.id Mozilla Element.id documentation> 
 elementSetId ::
-             (IsElement self, ToJSString val) => self -> val -> IO ()
+             (MonadIO m, IsElement self, ToJSString val) => self -> val -> m ()
 elementSetId self val
-  = ghcjs_dom_element_set_id (unElement (toElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_element_set_id (unElement (toElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"id\"]"
         ghcjs_dom_element_get_id :: JSRef Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.id Mozilla Element.id documentation> 
 elementGetId ::
-             (IsElement self, FromJSString result) => self -> IO result
+             (MonadIO m, IsElement self, FromJSString result) =>
+               self -> m result
 elementGetId self
-  = fromJSString <$>
-      (ghcjs_dom_element_get_id (unElement (toElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_element_get_id (unElement (toElement self))))
  
 foreign import javascript unsafe "$1[\"offsetLeft\"]"
         ghcjs_dom_element_get_offset_left :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.offsetLeft Mozilla Element.offsetLeft documentation> 
-elementGetOffsetLeft :: (IsElement self) => self -> IO Double
+elementGetOffsetLeft ::
+                     (MonadIO m, IsElement self) => self -> m Double
 elementGetOffsetLeft self
-  = ghcjs_dom_element_get_offset_left (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_offset_left (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"offsetTop\"]"
         ghcjs_dom_element_get_offset_top :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.offsetTop Mozilla Element.offsetTop documentation> 
-elementGetOffsetTop :: (IsElement self) => self -> IO Double
+elementGetOffsetTop ::
+                    (MonadIO m, IsElement self) => self -> m Double
 elementGetOffsetTop self
-  = ghcjs_dom_element_get_offset_top (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_offset_top (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"offsetWidth\"]"
         ghcjs_dom_element_get_offset_width :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.offsetWidth Mozilla Element.offsetWidth documentation> 
-elementGetOffsetWidth :: (IsElement self) => self -> IO Double
+elementGetOffsetWidth ::
+                      (MonadIO m, IsElement self) => self -> m Double
 elementGetOffsetWidth self
-  = ghcjs_dom_element_get_offset_width (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_offset_width (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"offsetHeight\"]"
         ghcjs_dom_element_get_offset_height :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.offsetHeight Mozilla Element.offsetHeight documentation> 
-elementGetOffsetHeight :: (IsElement self) => self -> IO Double
+elementGetOffsetHeight ::
+                       (MonadIO m, IsElement self) => self -> m Double
 elementGetOffsetHeight self
-  = ghcjs_dom_element_get_offset_height (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_offset_height (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"clientLeft\"]"
         ghcjs_dom_element_get_client_left :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientLeft Mozilla Element.clientLeft documentation> 
-elementGetClientLeft :: (IsElement self) => self -> IO Double
+elementGetClientLeft ::
+                     (MonadIO m, IsElement self) => self -> m Double
 elementGetClientLeft self
-  = ghcjs_dom_element_get_client_left (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_client_left (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"clientTop\"]"
         ghcjs_dom_element_get_client_top :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientTop Mozilla Element.clientTop documentation> 
-elementGetClientTop :: (IsElement self) => self -> IO Double
+elementGetClientTop ::
+                    (MonadIO m, IsElement self) => self -> m Double
 elementGetClientTop self
-  = ghcjs_dom_element_get_client_top (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_client_top (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"clientWidth\"]"
         ghcjs_dom_element_get_client_width :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientWidth Mozilla Element.clientWidth documentation> 
-elementGetClientWidth :: (IsElement self) => self -> IO Double
+elementGetClientWidth ::
+                      (MonadIO m, IsElement self) => self -> m Double
 elementGetClientWidth self
-  = ghcjs_dom_element_get_client_width (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_client_width (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"clientHeight\"]"
         ghcjs_dom_element_get_client_height :: JSRef Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientHeight Mozilla Element.clientHeight documentation> 
-elementGetClientHeight :: (IsElement self) => self -> IO Double
+elementGetClientHeight ::
+                       (MonadIO m, IsElement self) => self -> m Double
 elementGetClientHeight self
-  = ghcjs_dom_element_get_client_height (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_client_height (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"scrollLeft\"] = $2;"
         ghcjs_dom_element_set_scroll_left :: JSRef Element -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollLeft Mozilla Element.scrollLeft documentation> 
-elementSetScrollLeft :: (IsElement self) => self -> Int -> IO ()
+elementSetScrollLeft ::
+                     (MonadIO m, IsElement self) => self -> Int -> m ()
 elementSetScrollLeft self val
-  = ghcjs_dom_element_set_scroll_left (unElement (toElement self))
-      val
+  = liftIO
+      (ghcjs_dom_element_set_scroll_left (unElement (toElement self))
+         val)
  
 foreign import javascript unsafe "$1[\"scrollLeft\"]"
         ghcjs_dom_element_get_scroll_left :: JSRef Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollLeft Mozilla Element.scrollLeft documentation> 
-elementGetScrollLeft :: (IsElement self) => self -> IO Int
+elementGetScrollLeft ::
+                     (MonadIO m, IsElement self) => self -> m Int
 elementGetScrollLeft self
-  = ghcjs_dom_element_get_scroll_left (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_scroll_left (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"scrollTop\"] = $2;"
         ghcjs_dom_element_set_scroll_top :: JSRef Element -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollTop Mozilla Element.scrollTop documentation> 
-elementSetScrollTop :: (IsElement self) => self -> Int -> IO ()
+elementSetScrollTop ::
+                    (MonadIO m, IsElement self) => self -> Int -> m ()
 elementSetScrollTop self val
-  = ghcjs_dom_element_set_scroll_top (unElement (toElement self)) val
+  = liftIO
+      (ghcjs_dom_element_set_scroll_top (unElement (toElement self)) val)
  
 foreign import javascript unsafe "$1[\"scrollTop\"]"
         ghcjs_dom_element_get_scroll_top :: JSRef Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollTop Mozilla Element.scrollTop documentation> 
-elementGetScrollTop :: (IsElement self) => self -> IO Int
+elementGetScrollTop :: (MonadIO m, IsElement self) => self -> m Int
 elementGetScrollTop self
-  = ghcjs_dom_element_get_scroll_top (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_scroll_top (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"scrollWidth\"]"
         ghcjs_dom_element_get_scroll_width :: JSRef Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollWidth Mozilla Element.scrollWidth documentation> 
-elementGetScrollWidth :: (IsElement self) => self -> IO Int
+elementGetScrollWidth ::
+                      (MonadIO m, IsElement self) => self -> m Int
 elementGetScrollWidth self
-  = ghcjs_dom_element_get_scroll_width (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_scroll_width (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"scrollHeight\"]"
         ghcjs_dom_element_get_scroll_height :: JSRef Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollHeight Mozilla Element.scrollHeight documentation> 
-elementGetScrollHeight :: (IsElement self) => self -> IO Int
+elementGetScrollHeight ::
+                       (MonadIO m, IsElement self) => self -> m Int
 elementGetScrollHeight self
-  = ghcjs_dom_element_get_scroll_height (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_scroll_height (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"offsetParent\"]"
         ghcjs_dom_element_get_offset_parent ::
@@ -668,11 +739,11 @@ foreign import javascript unsafe "$1[\"offsetParent\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.offsetParent Mozilla Element.offsetParent documentation> 
 elementGetOffsetParent ::
-                       (IsElement self) => self -> IO (Maybe Element)
+                       (MonadIO m, IsElement self) => self -> m (Maybe Element)
 elementGetOffsetParent self
-  = (ghcjs_dom_element_get_offset_parent
-       (unElement (toElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_offset_parent (unElement (toElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"className\"] = $2;"
         ghcjs_dom_element_set_class_name ::
@@ -680,20 +751,23 @@ foreign import javascript unsafe "$1[\"className\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.className Mozilla Element.className documentation> 
 elementSetClassName ::
-                    (IsElement self, ToJSString val) => self -> val -> IO ()
+                    (MonadIO m, IsElement self, ToJSString val) => self -> val -> m ()
 elementSetClassName self val
-  = ghcjs_dom_element_set_class_name (unElement (toElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_element_set_class_name (unElement (toElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"className\"]"
         ghcjs_dom_element_get_class_name :: JSRef Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.className Mozilla Element.className documentation> 
 elementGetClassName ::
-                    (IsElement self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsElement self, FromJSString result) =>
+                      self -> m result
 elementGetClassName self
-  = fromJSString <$>
-      (ghcjs_dom_element_get_class_name (unElement (toElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_element_get_class_name (unElement (toElement self))))
  
 foreign import javascript unsafe "$1[\"classList\"]"
         ghcjs_dom_element_get_class_list ::
@@ -701,10 +775,11 @@ foreign import javascript unsafe "$1[\"classList\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.classList Mozilla Element.classList documentation> 
 elementGetClassList ::
-                    (IsElement self) => self -> IO (Maybe DOMTokenList)
+                    (MonadIO m, IsElement self) => self -> m (Maybe DOMTokenList)
 elementGetClassList self
-  = (ghcjs_dom_element_get_class_list (unElement (toElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_class_list (unElement (toElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"firstElementChild\"]"
         ghcjs_dom_element_get_first_element_child ::
@@ -712,11 +787,12 @@ foreign import javascript unsafe "$1[\"firstElementChild\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.firstElementChild Mozilla Element.firstElementChild documentation> 
 elementGetFirstElementChild ::
-                            (IsElement self) => self -> IO (Maybe Element)
+                            (MonadIO m, IsElement self) => self -> m (Maybe Element)
 elementGetFirstElementChild self
-  = (ghcjs_dom_element_get_first_element_child
-       (unElement (toElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_first_element_child
+          (unElement (toElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"lastElementChild\"]"
         ghcjs_dom_element_get_last_element_child ::
@@ -724,11 +800,12 @@ foreign import javascript unsafe "$1[\"lastElementChild\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.lastElementChild Mozilla Element.lastElementChild documentation> 
 elementGetLastElementChild ::
-                           (IsElement self) => self -> IO (Maybe Element)
+                           (MonadIO m, IsElement self) => self -> m (Maybe Element)
 elementGetLastElementChild self
-  = (ghcjs_dom_element_get_last_element_child
-       (unElement (toElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_last_element_child
+          (unElement (toElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"previousElementSibling\"]"
         ghcjs_dom_element_get_previous_element_sibling ::
@@ -736,11 +813,12 @@ foreign import javascript unsafe "$1[\"previousElementSibling\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.previousElementSibling Mozilla Element.previousElementSibling documentation> 
 elementGetPreviousElementSibling ::
-                                 (IsElement self) => self -> IO (Maybe Element)
+                                 (MonadIO m, IsElement self) => self -> m (Maybe Element)
 elementGetPreviousElementSibling self
-  = (ghcjs_dom_element_get_previous_element_sibling
-       (unElement (toElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_previous_element_sibling
+          (unElement (toElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"nextElementSibling\"]"
         ghcjs_dom_element_get_next_element_sibling ::
@@ -748,21 +826,24 @@ foreign import javascript unsafe "$1[\"nextElementSibling\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.nextElementSibling Mozilla Element.nextElementSibling documentation> 
 elementGetNextElementSibling ::
-                             (IsElement self) => self -> IO (Maybe Element)
+                             (MonadIO m, IsElement self) => self -> m (Maybe Element)
 elementGetNextElementSibling self
-  = (ghcjs_dom_element_get_next_element_sibling
-       (unElement (toElement self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_element_get_next_element_sibling
+          (unElement (toElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"childElementCount\"]"
         ghcjs_dom_element_get_child_element_count ::
         JSRef Element -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.childElementCount Mozilla Element.childElementCount documentation> 
-elementGetChildElementCount :: (IsElement self) => self -> IO Word
+elementGetChildElementCount ::
+                            (MonadIO m, IsElement self) => self -> m Word
 elementGetChildElementCount self
-  = ghcjs_dom_element_get_child_element_count
-      (unElement (toElement self))
+  = liftIO
+      (ghcjs_dom_element_get_child_element_count
+         (unElement (toElement self)))
  
 foreign import javascript unsafe "$1[\"uiactions\"] = $2;"
         ghcjs_dom_element_set_uiactions ::
@@ -770,20 +851,23 @@ foreign import javascript unsafe "$1[\"uiactions\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.uiactions Mozilla Element.uiactions documentation> 
 elementSetUiactions ::
-                    (IsElement self, ToJSString val) => self -> val -> IO ()
+                    (MonadIO m, IsElement self, ToJSString val) => self -> val -> m ()
 elementSetUiactions self val
-  = ghcjs_dom_element_set_uiactions (unElement (toElement self))
-      (toJSString val)
+  = liftIO
+      (ghcjs_dom_element_set_uiactions (unElement (toElement self))
+         (toJSString val))
  
 foreign import javascript unsafe "$1[\"uiactions\"]"
         ghcjs_dom_element_get_uiactions :: JSRef Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.uiactions Mozilla Element.uiactions documentation> 
 elementGetUiactions ::
-                    (IsElement self, FromJSString result) => self -> IO result
+                    (MonadIO m, IsElement self, FromJSString result) =>
+                      self -> m result
 elementGetUiactions self
-  = fromJSString <$>
-      (ghcjs_dom_element_get_uiactions (unElement (toElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_element_get_uiactions (unElement (toElement self))))
  
 foreign import javascript unsafe "$1[\"webkitRegionOverset\"]"
         ghcjs_dom_element_get_webkit_region_overset ::
@@ -791,273 +875,282 @@ foreign import javascript unsafe "$1[\"webkitRegionOverset\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitRegionOverset Mozilla Element.webkitRegionOverset documentation> 
 elementGetWebkitRegionOverset ::
-                              (IsElement self, FromJSString result) => self -> IO result
+                              (MonadIO m, IsElement self, FromJSString result) =>
+                                self -> m result
 elementGetWebkitRegionOverset self
-  = fromJSString <$>
-      (ghcjs_dom_element_get_webkit_region_overset
-         (unElement (toElement self)))
+  = liftIO
+      (fromJSString <$>
+         (ghcjs_dom_element_get_webkit_region_overset
+            (unElement (toElement self))))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onabort Mozilla Element.onabort documentation> 
-elementOnabort ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnabort = (connect "abort")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.abort Mozilla Element.abort documentation> 
+elementAbort ::
+             (IsElement self, IsEventTarget self) => EventName self UIEvent
+elementAbort = unsafeEventName (toJSString "abort")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onblur Mozilla Element.onblur documentation> 
-elementOnblur ::
-              (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnblur = (connect "blur")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.blurEvent Mozilla Element.blurEvent documentation> 
+elementBlurEvent ::
+                 (IsElement self, IsEventTarget self) => EventName self FocusEvent
+elementBlurEvent = unsafeEventName (toJSString "blur")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onchange Mozilla Element.onchange documentation> 
-elementOnchange ::
-                (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnchange = (connect "change")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.change Mozilla Element.change documentation> 
+elementChange ::
+              (IsElement self, IsEventTarget self) => EventName self Event
+elementChange = unsafeEventName (toJSString "change")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onclick Mozilla Element.onclick documentation> 
-elementOnclick ::
-               (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOnclick = (connect "click")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.click Mozilla Element.click documentation> 
+elementClick ::
+             (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementClick = unsafeEventName (toJSString "click")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.oncontextmenu Mozilla Element.oncontextmenu documentation> 
-elementOncontextmenu ::
-                     (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOncontextmenu = (connect "contextmenu")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.contextMenu Mozilla Element.contextMenu documentation> 
+elementContextMenu ::
+                   (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementContextMenu = unsafeEventName (toJSString "contextmenu")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondblclick Mozilla Element.ondblclick documentation> 
-elementOndblclick ::
-                  (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndblclick = (connect "dblclick")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dblClick Mozilla Element.dblClick documentation> 
+elementDblClick ::
+                (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDblClick = unsafeEventName (toJSString "dblclick")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondrag Mozilla Element.ondrag documentation> 
-elementOndrag ::
-              (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndrag = (connect "drag")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.drag Mozilla Element.drag documentation> 
+elementDrag ::
+            (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDrag = unsafeEventName (toJSString "drag")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondragend Mozilla Element.ondragend documentation> 
-elementOndragend ::
-                 (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndragend = (connect "dragend")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dragEnd Mozilla Element.dragEnd documentation> 
+elementDragEnd ::
+               (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDragEnd = unsafeEventName (toJSString "dragend")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondragenter Mozilla Element.ondragenter documentation> 
-elementOndragenter ::
-                   (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndragenter = (connect "dragenter")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dragEnter Mozilla Element.dragEnter documentation> 
+elementDragEnter ::
+                 (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDragEnter = unsafeEventName (toJSString "dragenter")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondragleave Mozilla Element.ondragleave documentation> 
-elementOndragleave ::
-                   (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndragleave = (connect "dragleave")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dragLeave Mozilla Element.dragLeave documentation> 
+elementDragLeave ::
+                 (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDragLeave = unsafeEventName (toJSString "dragleave")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondragover Mozilla Element.ondragover documentation> 
-elementOndragover ::
-                  (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndragover = (connect "dragover")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dragOver Mozilla Element.dragOver documentation> 
+elementDragOver ::
+                (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDragOver = unsafeEventName (toJSString "dragover")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondragstart Mozilla Element.ondragstart documentation> 
-elementOndragstart ::
-                   (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndragstart = (connect "dragstart")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dragStart Mozilla Element.dragStart documentation> 
+elementDragStart ::
+                 (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDragStart = unsafeEventName (toJSString "dragstart")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ondrop Mozilla Element.ondrop documentation> 
-elementOndrop ::
-              (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOndrop = (connect "drop")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.drop Mozilla Element.drop documentation> 
+elementDrop ::
+            (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementDrop = unsafeEventName (toJSString "drop")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onerror Mozilla Element.onerror documentation> 
-elementOnerror ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnerror = (connect "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.error Mozilla Element.error documentation> 
+elementError ::
+             (IsElement self, IsEventTarget self) => EventName self UIEvent
+elementError = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onfocus Mozilla Element.onfocus documentation> 
-elementOnfocus ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnfocus = (connect "focus")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.focusEvent Mozilla Element.focusEvent documentation> 
+elementFocusEvent ::
+                  (IsElement self, IsEventTarget self) => EventName self FocusEvent
+elementFocusEvent = unsafeEventName (toJSString "focus")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.oninput Mozilla Element.oninput documentation> 
-elementOninput ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOninput = (connect "input")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.input Mozilla Element.input documentation> 
+elementInput ::
+             (IsElement self, IsEventTarget self) => EventName self Event
+elementInput = unsafeEventName (toJSString "input")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.oninvalid Mozilla Element.oninvalid documentation> 
-elementOninvalid ::
-                 (IsElement self) => Signal self (EventM UIEvent self ())
-elementOninvalid = (connect "invalid")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.invalid Mozilla Element.invalid documentation> 
+elementInvalid ::
+               (IsElement self, IsEventTarget self) => EventName self Event
+elementInvalid = unsafeEventName (toJSString "invalid")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onkeydown Mozilla Element.onkeydown documentation> 
-elementOnkeydown ::
-                 (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnkeydown = (connect "keydown")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.keyDown Mozilla Element.keyDown documentation> 
+elementKeyDown ::
+               (IsElement self, IsEventTarget self) =>
+                 EventName self KeyboardEvent
+elementKeyDown = unsafeEventName (toJSString "keydown")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onkeypress Mozilla Element.onkeypress documentation> 
-elementOnkeypress ::
-                  (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnkeypress = (connect "keypress")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.keyPress Mozilla Element.keyPress documentation> 
+elementKeyPress ::
+                (IsElement self, IsEventTarget self) =>
+                  EventName self KeyboardEvent
+elementKeyPress = unsafeEventName (toJSString "keypress")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onkeyup Mozilla Element.onkeyup documentation> 
-elementOnkeyup ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnkeyup = (connect "keyup")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.keyUp Mozilla Element.keyUp documentation> 
+elementKeyUp ::
+             (IsElement self, IsEventTarget self) =>
+               EventName self KeyboardEvent
+elementKeyUp = unsafeEventName (toJSString "keyup")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onload Mozilla Element.onload documentation> 
-elementOnload ::
-              (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnload = (connect "load")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.load Mozilla Element.load documentation> 
+elementLoad ::
+            (IsElement self, IsEventTarget self) => EventName self UIEvent
+elementLoad = unsafeEventName (toJSString "load")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmousedown Mozilla Element.onmousedown documentation> 
-elementOnmousedown ::
-                   (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOnmousedown = (connect "mousedown")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseDown Mozilla Element.mouseDown documentation> 
+elementMouseDown ::
+                 (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseDown = unsafeEventName (toJSString "mousedown")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmouseenter Mozilla Element.onmouseenter documentation> 
-elementOnmouseenter ::
-                    (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnmouseenter = (connect "mouseenter")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseEnter Mozilla Element.mouseEnter documentation> 
+elementMouseEnter ::
+                  (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseEnter = unsafeEventName (toJSString "mouseenter")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmouseleave Mozilla Element.onmouseleave documentation> 
-elementOnmouseleave ::
-                    (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnmouseleave = (connect "mouseleave")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseLeave Mozilla Element.mouseLeave documentation> 
+elementMouseLeave ::
+                  (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseLeave = unsafeEventName (toJSString "mouseleave")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmousemove Mozilla Element.onmousemove documentation> 
-elementOnmousemove ::
-                   (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOnmousemove = (connect "mousemove")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseMove Mozilla Element.mouseMove documentation> 
+elementMouseMove ::
+                 (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseMove = unsafeEventName (toJSString "mousemove")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmouseout Mozilla Element.onmouseout documentation> 
-elementOnmouseout ::
-                  (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOnmouseout = (connect "mouseout")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseOut Mozilla Element.mouseOut documentation> 
+elementMouseOut ::
+                (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseOut = unsafeEventName (toJSString "mouseout")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmouseover Mozilla Element.onmouseover documentation> 
-elementOnmouseover ::
-                   (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOnmouseover = (connect "mouseover")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseOver Mozilla Element.mouseOver documentation> 
+elementMouseOver ::
+                 (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseOver = unsafeEventName (toJSString "mouseover")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmouseup Mozilla Element.onmouseup documentation> 
-elementOnmouseup ::
-                 (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOnmouseup = (connect "mouseup")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseUp Mozilla Element.mouseUp documentation> 
+elementMouseUp ::
+               (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseUp = unsafeEventName (toJSString "mouseup")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onmousewheel Mozilla Element.onmousewheel documentation> 
-elementOnmousewheel ::
-                    (IsElement self) => Signal self (EventM MouseEvent self ())
-elementOnmousewheel = (connect "mousewheel")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.mouseWheel Mozilla Element.mouseWheel documentation> 
+elementMouseWheel ::
+                  (IsElement self, IsEventTarget self) => EventName self MouseEvent
+elementMouseWheel = unsafeEventName (toJSString "mousewheel")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onscroll Mozilla Element.onscroll documentation> 
-elementOnscroll ::
-                (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnscroll = (connect "scroll")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scroll Mozilla Element.scroll documentation> 
+elementScroll ::
+              (IsElement self, IsEventTarget self) => EventName self UIEvent
+elementScroll = unsafeEventName (toJSString "scroll")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onselect Mozilla Element.onselect documentation> 
-elementOnselect ::
-                (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnselect = (connect "select")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.select Mozilla Element.select documentation> 
+elementSelect ::
+              (IsElement self, IsEventTarget self) => EventName self UIEvent
+elementSelect = unsafeEventName (toJSString "select")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onsubmit Mozilla Element.onsubmit documentation> 
-elementOnsubmit ::
-                (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnsubmit = (connect "submit")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.submit Mozilla Element.submit documentation> 
+elementSubmit ::
+              (IsElement self, IsEventTarget self) => EventName self Event
+elementSubmit = unsafeEventName (toJSString "submit")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onwheel Mozilla Element.onwheel documentation> 
-elementOnwheel ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnwheel = (connect "wheel")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.wheel Mozilla Element.wheel documentation> 
+elementWheel ::
+             (IsElement self, IsEventTarget self) => EventName self WheelEvent
+elementWheel = unsafeEventName (toJSString "wheel")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onbeforecut Mozilla Element.onbeforecut documentation> 
-elementOnbeforecut ::
-                   (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnbeforecut = (connect "beforecut")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.beforeCut Mozilla Element.beforeCut documentation> 
+elementBeforeCut ::
+                 (IsElement self, IsEventTarget self) => EventName self Event
+elementBeforeCut = unsafeEventName (toJSString "beforecut")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.oncut Mozilla Element.oncut documentation> 
-elementOncut ::
-             (IsElement self) => Signal self (EventM UIEvent self ())
-elementOncut = (connect "cut")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.cut Mozilla Element.cut documentation> 
+elementCut ::
+           (IsElement self, IsEventTarget self) => EventName self Event
+elementCut = unsafeEventName (toJSString "cut")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onbeforecopy Mozilla Element.onbeforecopy documentation> 
-elementOnbeforecopy ::
-                    (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnbeforecopy = (connect "beforecopy")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.beforeCopy Mozilla Element.beforeCopy documentation> 
+elementBeforeCopy ::
+                  (IsElement self, IsEventTarget self) => EventName self Event
+elementBeforeCopy = unsafeEventName (toJSString "beforecopy")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.oncopy Mozilla Element.oncopy documentation> 
-elementOncopy ::
-              (IsElement self) => Signal self (EventM UIEvent self ())
-elementOncopy = (connect "copy")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.copy Mozilla Element.copy documentation> 
+elementCopy ::
+            (IsElement self, IsEventTarget self) => EventName self Event
+elementCopy = unsafeEventName (toJSString "copy")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onbeforepaste Mozilla Element.onbeforepaste documentation> 
-elementOnbeforepaste ::
-                     (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnbeforepaste = (connect "beforepaste")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.beforePaste Mozilla Element.beforePaste documentation> 
+elementBeforePaste ::
+                   (IsElement self, IsEventTarget self) => EventName self Event
+elementBeforePaste = unsafeEventName (toJSString "beforepaste")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onpaste Mozilla Element.onpaste documentation> 
-elementOnpaste ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnpaste = (connect "paste")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.paste Mozilla Element.paste documentation> 
+elementPaste ::
+             (IsElement self, IsEventTarget self) => EventName self Event
+elementPaste = unsafeEventName (toJSString "paste")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onreset Mozilla Element.onreset documentation> 
-elementOnreset ::
-               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnreset = (connect "reset")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.reset Mozilla Element.reset documentation> 
+elementReset ::
+             (IsElement self, IsEventTarget self) => EventName self Event
+elementReset = unsafeEventName (toJSString "reset")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onsearch Mozilla Element.onsearch documentation> 
-elementOnsearch ::
-                (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnsearch = (connect "search")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.search Mozilla Element.search documentation> 
+elementSearch ::
+              (IsElement self, IsEventTarget self) => EventName self Event
+elementSearch = unsafeEventName (toJSString "search")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onselectstart Mozilla Element.onselectstart documentation> 
-elementOnselectstart ::
-                     (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnselectstart = (connect "selectstart")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.selectStart Mozilla Element.selectStart documentation> 
+elementSelectStart ::
+                   (IsElement self, IsEventTarget self) => EventName self Event
+elementSelectStart = unsafeEventName (toJSString "selectstart")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ontouchstart Mozilla Element.ontouchstart documentation> 
-elementOntouchstart ::
-                    (IsElement self) => Signal self (EventM UIEvent self ())
-elementOntouchstart = (connect "touchstart")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.touchStart Mozilla Element.touchStart documentation> 
+elementTouchStart ::
+                  (IsElement self, IsEventTarget self) => EventName self TouchEvent
+elementTouchStart = unsafeEventName (toJSString "touchstart")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ontouchmove Mozilla Element.ontouchmove documentation> 
-elementOntouchmove ::
-                   (IsElement self) => Signal self (EventM UIEvent self ())
-elementOntouchmove = (connect "touchmove")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.touchMove Mozilla Element.touchMove documentation> 
+elementTouchMove ::
+                 (IsElement self, IsEventTarget self) => EventName self TouchEvent
+elementTouchMove = unsafeEventName (toJSString "touchmove")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ontouchend Mozilla Element.ontouchend documentation> 
-elementOntouchend ::
-                  (IsElement self) => Signal self (EventM UIEvent self ())
-elementOntouchend = (connect "touchend")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.touchEnd Mozilla Element.touchEnd documentation> 
+elementTouchEnd ::
+                (IsElement self, IsEventTarget self) => EventName self TouchEvent
+elementTouchEnd = unsafeEventName (toJSString "touchend")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.ontouchcancel Mozilla Element.ontouchcancel documentation> 
-elementOntouchcancel ::
-                     (IsElement self) => Signal self (EventM UIEvent self ())
-elementOntouchcancel = (connect "touchcancel")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.touchCancel Mozilla Element.touchCancel documentation> 
+elementTouchCancel ::
+                   (IsElement self, IsEventTarget self) => EventName self TouchEvent
+elementTouchCancel = unsafeEventName (toJSString "touchcancel")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onwebkitfullscreenchange Mozilla Element.onwebkitfullscreenchange documentation> 
-elementOnwebkitfullscreenchange ::
-                                (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnwebkitfullscreenchange
-  = (connect "webkitfullscreenchange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webKitFullscreenChange Mozilla Element.webKitFullscreenChange documentation> 
+elementWebKitFullscreenChange ::
+                              (IsElement self, IsEventTarget self) => EventName self Event
+elementWebKitFullscreenChange
+  = unsafeEventName (toJSString "webkitfullscreenchange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onwebkitfullscreenerror Mozilla Element.onwebkitfullscreenerror documentation> 
-elementOnwebkitfullscreenerror ::
-                               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnwebkitfullscreenerror = (connect "webkitfullscreenerror")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webKitFullscreenError Mozilla Element.webKitFullscreenError documentation> 
+elementWebKitFullscreenError ::
+                             (IsElement self, IsEventTarget self) => EventName self Event
+elementWebKitFullscreenError
+  = unsafeEventName (toJSString "webkitfullscreenerror")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onwebkitwillrevealbottom Mozilla Element.onwebkitwillrevealbottom documentation> 
-elementOnwebkitwillrevealbottom ::
-                                (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnwebkitwillrevealbottom
-  = (connect "webkitwillrevealbottom")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webKitWillRevealBottom Mozilla Element.webKitWillRevealBottom documentation> 
+elementWebKitWillRevealBottom ::
+                              (IsElement self, IsEventTarget self) => EventName self Event
+elementWebKitWillRevealBottom
+  = unsafeEventName (toJSString "webkitwillrevealbottom")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onwebkitwillrevealleft Mozilla Element.onwebkitwillrevealleft documentation> 
-elementOnwebkitwillrevealleft ::
-                              (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnwebkitwillrevealleft = (connect "webkitwillrevealleft")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webKitWillRevealLeft Mozilla Element.webKitWillRevealLeft documentation> 
+elementWebKitWillRevealLeft ::
+                            (IsElement self, IsEventTarget self) => EventName self Event
+elementWebKitWillRevealLeft
+  = unsafeEventName (toJSString "webkitwillrevealleft")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onwebkitwillrevealright Mozilla Element.onwebkitwillrevealright documentation> 
-elementOnwebkitwillrevealright ::
-                               (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnwebkitwillrevealright = (connect "webkitwillrevealright")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webKitWillRevealRight Mozilla Element.webKitWillRevealRight documentation> 
+elementWebKitWillRevealRight ::
+                             (IsElement self, IsEventTarget self) => EventName self Event
+elementWebKitWillRevealRight
+  = unsafeEventName (toJSString "webkitwillrevealright")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.onwebkitwillrevealtop Mozilla Element.onwebkitwillrevealtop documentation> 
-elementOnwebkitwillrevealtop ::
-                             (IsElement self) => Signal self (EventM UIEvent self ())
-elementOnwebkitwillrevealtop = (connect "webkitwillrevealtop")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webKitWillRevealTop Mozilla Element.webKitWillRevealTop documentation> 
+elementWebKitWillRevealTop ::
+                           (IsElement self, IsEventTarget self) => EventName self Event
+elementWebKitWillRevealTop
+  = unsafeEventName (toJSString "webkitwillrevealtop")
 #else
 module GHCJS.DOM.Element (
   module Graphics.UI.Gtk.WebKit.DOM.Element

@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"cssRules\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSRegionRule.cssRules Mozilla WebKitCSSRegionRule.cssRules documentation> 
 webKitCSSRegionRuleGetCssRules ::
-                               (IsWebKitCSSRegionRule self) => self -> IO (Maybe CSSRuleList)
+                               (MonadIO m, IsWebKitCSSRegionRule self) =>
+                                 self -> m (Maybe CSSRuleList)
 webKitCSSRegionRuleGetCssRules self
-  = (ghcjs_dom_webkit_css_region_rule_get_css_rules
-       (unWebKitCSSRegionRule (toWebKitCSSRegionRule self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_webkit_css_region_rule_get_css_rules
+          (unWebKitCSSRegionRule (toWebKitCSSRegionRule self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.WebKitCSSRegionRule (
   ) where

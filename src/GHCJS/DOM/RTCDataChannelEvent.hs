@@ -11,6 +11,7 @@ import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
 import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
@@ -25,11 +26,13 @@ foreign import javascript unsafe "$1[\"channel\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelEvent.channel Mozilla RTCDataChannelEvent.channel documentation> 
 rtcDataChannelEventGetChannel ::
-                              (IsRTCDataChannelEvent self) => self -> IO (Maybe RTCDataChannel)
+                              (MonadIO m, IsRTCDataChannelEvent self) =>
+                                self -> m (Maybe RTCDataChannel)
 rtcDataChannelEventGetChannel self
-  = (ghcjs_dom_rtc_data_channel_event_get_channel
-       (unRTCDataChannelEvent (toRTCDataChannelEvent self)))
-      >>= fromJSRef
+  = liftIO
+      ((ghcjs_dom_rtc_data_channel_event_get_channel
+          (unRTCDataChannelEvent (toRTCDataChannelEvent self)))
+         >>= fromJSRef)
 #else
 module GHCJS.DOM.RTCDataChannelEvent (
   ) where
