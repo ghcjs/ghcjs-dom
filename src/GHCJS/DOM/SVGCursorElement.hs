@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGCursorElement
-       (ghcjs_dom_svg_cursor_element_get_x, svgCursorElementGetX,
-        ghcjs_dom_svg_cursor_element_get_y, svgCursorElementGetY,
-        SVGCursorElement, IsSVGCursorElement, castToSVGCursorElement,
-        gTypeSVGCursorElement, toSVGCursorElement)
+       (js_getX, getX, js_getY, getY, SVGCursorElement,
+        castToSVGCursorElement, gTypeSVGCursorElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,37 +15,27 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_cursor_element_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGCursorElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCursorElement.x Mozilla SVGCursorElement.x documentation> 
-svgCursorElementGetX ::
-                     (MonadIO m, IsSVGCursorElement self) =>
-                       self -> m (Maybe SVGAnimatedLength)
-svgCursorElementGetX self
-  = liftIO
-      ((ghcjs_dom_svg_cursor_element_get_x
-          (unSVGCursorElement (toSVGCursorElement self)))
-         >>= fromJSRef)
+getX ::
+     (MonadIO m) => SVGCursorElement -> m (Maybe SVGAnimatedLength)
+getX self
+  = liftIO ((js_getX (unSVGCursorElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_cursor_element_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGCursorElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCursorElement.y Mozilla SVGCursorElement.y documentation> 
-svgCursorElementGetY ::
-                     (MonadIO m, IsSVGCursorElement self) =>
-                       self -> m (Maybe SVGAnimatedLength)
-svgCursorElementGetY self
-  = liftIO
-      ((ghcjs_dom_svg_cursor_element_get_y
-          (unSVGCursorElement (toSVGCursorElement self)))
-         >>= fromJSRef)
+getY ::
+     (MonadIO m) => SVGCursorElement -> m (Maybe SVGAnimatedLength)
+getY self
+  = liftIO ((js_getY (unSVGCursorElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGCursorElement (
   ) where

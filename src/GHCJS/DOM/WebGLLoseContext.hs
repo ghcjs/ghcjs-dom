@@ -1,14 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebGLLoseContext
-       (ghcjs_dom_web_gl_lose_context_lose_context,
-        webGLLoseContextLoseContext,
-        ghcjs_dom_web_gl_lose_context_restore_context,
-        webGLLoseContextRestoreContext, WebGLLoseContext,
-        IsWebGLLoseContext, castToWebGLLoseContext, gTypeWebGLLoseContext,
-        toWebGLLoseContext)
+       (js_loseContext, loseContext, js_restoreContext, restoreContext,
+        WebGLLoseContext, castToWebGLLoseContext, gTypeWebGLLoseContext)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,33 +15,25 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"loseContext\"]()"
-        ghcjs_dom_web_gl_lose_context_lose_context ::
-        JSRef WebGLLoseContext -> IO ()
+        js_loseContext :: JSRef WebGLLoseContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext.loseContext Mozilla WebGLLoseContext.loseContext documentation> 
-webGLLoseContextLoseContext ::
-                            (MonadIO m, IsWebGLLoseContext self) => self -> m ()
-webGLLoseContextLoseContext self
-  = liftIO
-      (ghcjs_dom_web_gl_lose_context_lose_context
-         (unWebGLLoseContext (toWebGLLoseContext self)))
+loseContext :: (MonadIO m) => WebGLLoseContext -> m ()
+loseContext self
+  = liftIO (js_loseContext (unWebGLLoseContext self))
  
 foreign import javascript unsafe "$1[\"restoreContext\"]()"
-        ghcjs_dom_web_gl_lose_context_restore_context ::
-        JSRef WebGLLoseContext -> IO ()
+        js_restoreContext :: JSRef WebGLLoseContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext.restoreContext Mozilla WebGLLoseContext.restoreContext documentation> 
-webGLLoseContextRestoreContext ::
-                               (MonadIO m, IsWebGLLoseContext self) => self -> m ()
-webGLLoseContextRestoreContext self
-  = liftIO
-      (ghcjs_dom_web_gl_lose_context_restore_context
-         (unWebGLLoseContext (toWebGLLoseContext self)))
+restoreContext :: (MonadIO m) => WebGLLoseContext -> m ()
+restoreContext self
+  = liftIO (js_restoreContext (unWebGLLoseContext self))
 #else
 module GHCJS.DOM.WebGLLoseContext (
   ) where

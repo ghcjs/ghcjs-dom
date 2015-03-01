@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFEComponentTransferElement
-       (ghcjs_dom_svgfe_component_transfer_element_get_in1,
-        svgfeComponentTransferElementGetIn1, SVGFEComponentTransferElement,
-        IsSVGFEComponentTransferElement,
+       (js_getIn1, getIn1, SVGFEComponentTransferElement,
         castToSVGFEComponentTransferElement,
-        gTypeSVGFEComponentTransferElement,
-        toSVGFEComponentTransferElement)
+        gTypeSVGFEComponentTransferElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,24 +16,20 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"in1\"]"
-        ghcjs_dom_svgfe_component_transfer_element_get_in1 ::
+foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
         JSRef SVGFEComponentTransferElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEComponentTransferElement.in1 Mozilla SVGFEComponentTransferElement.in1 documentation> 
-svgfeComponentTransferElementGetIn1 ::
-                                    (MonadIO m, IsSVGFEComponentTransferElement self) =>
-                                      self -> m (Maybe SVGAnimatedString)
-svgfeComponentTransferElementGetIn1 self
+getIn1 ::
+       (MonadIO m) =>
+         SVGFEComponentTransferElement -> m (Maybe SVGAnimatedString)
+getIn1 self
   = liftIO
-      ((ghcjs_dom_svgfe_component_transfer_element_get_in1
-          (unSVGFEComponentTransferElement
-             (toSVGFEComponentTransferElement self)))
-         >>= fromJSRef)
+      ((js_getIn1 (unSVGFEComponentTransferElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEComponentTransferElement (
   ) where

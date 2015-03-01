@@ -1,20 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SpeechSynthesisVoice
-       (ghcjs_dom_speech_synthesis_voice_get_voice_uri,
-        speechSynthesisVoiceGetVoiceURI,
-        ghcjs_dom_speech_synthesis_voice_get_name,
-        speechSynthesisVoiceGetName,
-        ghcjs_dom_speech_synthesis_voice_get_lang,
-        speechSynthesisVoiceGetLang,
-        ghcjs_dom_speech_synthesis_voice_get_local_service,
-        speechSynthesisVoiceGetLocalService,
-        ghcjs_dom_speech_synthesis_voice_get_default,
-        speechSynthesisVoiceGetDefault, SpeechSynthesisVoice,
-        IsSpeechSynthesisVoice, castToSpeechSynthesisVoice,
-        gTypeSpeechSynthesisVoice, toSpeechSynthesisVoice)
+       (js_getVoiceURI, getVoiceURI, js_getName, getName, js_getLang,
+        getLang, js_getLocalService, getLocalService, js_getDefault,
+        getDefault, SpeechSynthesisVoice, castToSpeechSynthesisVoice,
+        gTypeSpeechSynthesisVoice)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,75 +17,58 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"voiceURI\"]"
-        ghcjs_dom_speech_synthesis_voice_get_voice_uri ::
-        JSRef SpeechSynthesisVoice -> IO JSString
+foreign import javascript unsafe "$1[\"voiceURI\"]" js_getVoiceURI
+        :: JSRef SpeechSynthesisVoice -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.voiceURI Mozilla SpeechSynthesisVoice.voiceURI documentation> 
-speechSynthesisVoiceGetVoiceURI ::
-                                (MonadIO m, IsSpeechSynthesisVoice self, FromJSString result) =>
-                                  self -> m result
-speechSynthesisVoiceGetVoiceURI self
+getVoiceURI ::
+            (MonadIO m, FromJSString result) =>
+              SpeechSynthesisVoice -> m result
+getVoiceURI self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_speech_synthesis_voice_get_voice_uri
-            (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))))
+      (fromJSString <$> (js_getVoiceURI (unSpeechSynthesisVoice self)))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_speech_synthesis_voice_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef SpeechSynthesisVoice -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.name Mozilla SpeechSynthesisVoice.name documentation> 
-speechSynthesisVoiceGetName ::
-                            (MonadIO m, IsSpeechSynthesisVoice self, FromJSString result) =>
-                              self -> m result
-speechSynthesisVoiceGetName self
+getName ::
+        (MonadIO m, FromJSString result) =>
+          SpeechSynthesisVoice -> m result
+getName self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_speech_synthesis_voice_get_name
-            (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))))
+      (fromJSString <$> (js_getName (unSpeechSynthesisVoice self)))
  
-foreign import javascript unsafe "$1[\"lang\"]"
-        ghcjs_dom_speech_synthesis_voice_get_lang ::
+foreign import javascript unsafe "$1[\"lang\"]" js_getLang ::
         JSRef SpeechSynthesisVoice -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.lang Mozilla SpeechSynthesisVoice.lang documentation> 
-speechSynthesisVoiceGetLang ::
-                            (MonadIO m, IsSpeechSynthesisVoice self, FromJSString result) =>
-                              self -> m result
-speechSynthesisVoiceGetLang self
+getLang ::
+        (MonadIO m, FromJSString result) =>
+          SpeechSynthesisVoice -> m result
+getLang self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_speech_synthesis_voice_get_lang
-            (unSpeechSynthesisVoice (toSpeechSynthesisVoice self))))
+      (fromJSString <$> (js_getLang (unSpeechSynthesisVoice self)))
  
 foreign import javascript unsafe "($1[\"localService\"] ? 1 : 0)"
-        ghcjs_dom_speech_synthesis_voice_get_local_service ::
-        JSRef SpeechSynthesisVoice -> IO Bool
+        js_getLocalService :: JSRef SpeechSynthesisVoice -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.localService Mozilla SpeechSynthesisVoice.localService documentation> 
-speechSynthesisVoiceGetLocalService ::
-                                    (MonadIO m, IsSpeechSynthesisVoice self) => self -> m Bool
-speechSynthesisVoiceGetLocalService self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_voice_get_local_service
-         (unSpeechSynthesisVoice (toSpeechSynthesisVoice self)))
+getLocalService :: (MonadIO m) => SpeechSynthesisVoice -> m Bool
+getLocalService self
+  = liftIO (js_getLocalService (unSpeechSynthesisVoice self))
  
 foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
-        ghcjs_dom_speech_synthesis_voice_get_default ::
-        JSRef SpeechSynthesisVoice -> IO Bool
+        js_getDefault :: JSRef SpeechSynthesisVoice -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.default Mozilla SpeechSynthesisVoice.default documentation> 
-speechSynthesisVoiceGetDefault ::
-                               (MonadIO m, IsSpeechSynthesisVoice self) => self -> m Bool
-speechSynthesisVoiceGetDefault self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_voice_get_default
-         (unSpeechSynthesisVoice (toSpeechSynthesisVoice self)))
+getDefault :: (MonadIO m) => SpeechSynthesisVoice -> m Bool
+getDefault self
+  = liftIO (js_getDefault (unSpeechSynthesisVoice self))
 #else
 module GHCJS.DOM.SpeechSynthesisVoice (
   ) where

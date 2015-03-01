@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Storage
-       (ghcjs_dom_storage_key, storageKey, ghcjs_dom_storage_get_item,
-        storageGetItem, ghcjs_dom_storage_set_item, storageSetItem,
-        ghcjs_dom_storage_remove_item, storageRemoveItem,
-        ghcjs_dom_storage_clear, storageClear,
-        ghcjs_dom_storage_get_length, storageGetLength, Storage, IsStorage,
-        castToStorage, gTypeStorage, toStorage)
+       (js_key, key, js_getItem, getItem, js_setItem, setItem,
+        js_removeItem, removeItem, js_clear, clear, js_getLength,
+        getLength, Storage, castToStorage, gTypeStorage)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,77 +16,62 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"key\"]($2)"
-        ghcjs_dom_storage_key :: JSRef Storage -> Word -> IO JSString
+foreign import javascript unsafe "$1[\"key\"]($2)" js_key ::
+        JSRef Storage -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
-storageKey ::
-           (MonadIO m, IsStorage self, FromJSString result) =>
-             self -> Word -> m result
-storageKey self index
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_storage_key (unStorage (toStorage self)) index))
+key ::
+    (MonadIO m, FromJSString result) => Storage -> Word -> m result
+key self index
+  = liftIO (fromJSString <$> (js_key (unStorage self) index))
  
-foreign import javascript unsafe "$1[\"getItem\"]($2)"
-        ghcjs_dom_storage_get_item ::
-        JSRef Storage -> JSString -> IO JSString
+foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
+        :: JSRef Storage -> JSString -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.item Mozilla Storage.item documentation> 
-storageGetItem ::
-               (MonadIO m, IsStorage self, ToJSString key, FromJSString result) =>
-                 self -> key -> m result
-storageGetItem self key
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
+getItem ::
+        (MonadIO m, ToJSString key, FromJSString result) =>
+          Storage -> key -> m result
+getItem self key
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_storage_get_item (unStorage (toStorage self))
-            (toJSString key)))
+      (fromJSString <$> (js_getItem (unStorage self) (toJSString key)))
  
 foreign import javascript unsafe "$1[\"setItem\"]($2, $3)"
-        ghcjs_dom_storage_set_item ::
-        JSRef Storage -> JSString -> JSString -> IO ()
+        js_setItem :: JSRef Storage -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.item Mozilla Storage.item documentation> 
-storageSetItem ::
-               (MonadIO m, IsStorage self, ToJSString key, ToJSString data') =>
-                 self -> key -> data' -> m ()
-storageSetItem self key data'
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.setItem Mozilla Storage.setItem documentation> 
+setItem ::
+        (MonadIO m, ToJSString key, ToJSString data') =>
+          Storage -> key -> data' -> m ()
+setItem self key data'
   = liftIO
-      (ghcjs_dom_storage_set_item (unStorage (toStorage self))
-         (toJSString key)
-         (toJSString data'))
+      (js_setItem (unStorage self) (toJSString key) (toJSString data'))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
-        ghcjs_dom_storage_remove_item :: JSRef Storage -> JSString -> IO ()
+        js_removeItem :: JSRef Storage -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.removeItem Mozilla Storage.removeItem documentation> 
-storageRemoveItem ::
-                  (MonadIO m, IsStorage self, ToJSString key) => self -> key -> m ()
-storageRemoveItem self key
-  = liftIO
-      (ghcjs_dom_storage_remove_item (unStorage (toStorage self))
-         (toJSString key))
+removeItem :: (MonadIO m, ToJSString key) => Storage -> key -> m ()
+removeItem self key
+  = liftIO (js_removeItem (unStorage self) (toJSString key))
  
-foreign import javascript unsafe "$1[\"clear\"]()"
-        ghcjs_dom_storage_clear :: JSRef Storage -> IO ()
+foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+        JSRef Storage -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.clear Mozilla Storage.clear documentation> 
-storageClear :: (MonadIO m, IsStorage self) => self -> m ()
-storageClear self
-  = liftIO (ghcjs_dom_storage_clear (unStorage (toStorage self)))
+clear :: (MonadIO m) => Storage -> m ()
+clear self = liftIO (js_clear (unStorage self))
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_storage_get_length :: JSRef Storage -> IO Word
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+        JSRef Storage -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.length Mozilla Storage.length documentation> 
-storageGetLength :: (MonadIO m, IsStorage self) => self -> m Word
-storageGetLength self
-  = liftIO
-      (ghcjs_dom_storage_get_length (unStorage (toStorage self)))
+getLength :: (MonadIO m) => Storage -> m Word
+getLength self = liftIO (js_getLength (unStorage self))
 #else
 module GHCJS.DOM.Storage (
   module Graphics.UI.Gtk.WebKit.DOM.Storage

@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBaseElement
-       (ghcjs_dom_html_base_element_set_href, htmlBaseElementSetHref,
-        ghcjs_dom_html_base_element_get_href, htmlBaseElementGetHref,
-        ghcjs_dom_html_base_element_set_target, htmlBaseElementSetTarget,
-        ghcjs_dom_html_base_element_get_target, htmlBaseElementGetTarget,
-        HTMLBaseElement, IsHTMLBaseElement, castToHTMLBaseElement,
-        gTypeHTMLBaseElement, toHTMLBaseElement)
+       (js_setHref, setHref, js_getHref, getHref, js_setTarget, setTarget,
+        js_getTarget, getTarget, HTMLBaseElement, castToHTMLBaseElement,
+        gTypeHTMLBaseElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,65 +16,45 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"href\"] = $2;"
-        ghcjs_dom_html_base_element_set_href ::
+foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         JSRef HTMLBaseElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
-htmlBaseElementSetHref ::
-                       (MonadIO m, IsHTMLBaseElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlBaseElementSetHref self val
-  = liftIO
-      (ghcjs_dom_html_base_element_set_href
-         (unHTMLBaseElement (toHTMLBaseElement self))
-         (toJSString val))
+setHref ::
+        (MonadIO m, ToJSString val) => HTMLBaseElement -> val -> m ()
+setHref self val
+  = liftIO (js_setHref (unHTMLBaseElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]"
-        ghcjs_dom_html_base_element_get_href ::
+foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
         JSRef HTMLBaseElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
-htmlBaseElementGetHref ::
-                       (MonadIO m, IsHTMLBaseElement self, FromJSString result) =>
-                         self -> m result
-htmlBaseElementGetHref self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_base_element_get_href
-            (unHTMLBaseElement (toHTMLBaseElement self))))
+getHref ::
+        (MonadIO m, FromJSString result) => HTMLBaseElement -> m result
+getHref self
+  = liftIO (fromJSString <$> (js_getHref (unHTMLBaseElement self)))
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
-        ghcjs_dom_html_base_element_set_target ::
-        JSRef HTMLBaseElement -> JSString -> IO ()
+        js_setTarget :: JSRef HTMLBaseElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.target Mozilla HTMLBaseElement.target documentation> 
-htmlBaseElementSetTarget ::
-                         (MonadIO m, IsHTMLBaseElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlBaseElementSetTarget self val
-  = liftIO
-      (ghcjs_dom_html_base_element_set_target
-         (unHTMLBaseElement (toHTMLBaseElement self))
-         (toJSString val))
+setTarget ::
+          (MonadIO m, ToJSString val) => HTMLBaseElement -> val -> m ()
+setTarget self val
+  = liftIO (js_setTarget (unHTMLBaseElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"target\"]"
-        ghcjs_dom_html_base_element_get_target ::
+foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
         JSRef HTMLBaseElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.target Mozilla HTMLBaseElement.target documentation> 
-htmlBaseElementGetTarget ::
-                         (MonadIO m, IsHTMLBaseElement self, FromJSString result) =>
-                           self -> m result
-htmlBaseElementGetTarget self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_base_element_get_target
-            (unHTMLBaseElement (toHTMLBaseElement self))))
+getTarget ::
+          (MonadIO m, FromJSString result) => HTMLBaseElement -> m result
+getTarget self
+  = liftIO (fromJSString <$> (js_getTarget (unHTMLBaseElement self)))
 #else
 module GHCJS.DOM.HTMLBaseElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLBaseElement

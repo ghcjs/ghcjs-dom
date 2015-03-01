@@ -1,63 +1,26 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.InspectorFrontendHost
-       (ghcjs_dom_inspector_frontend_host_loaded,
-        inspectorFrontendHostLoaded,
-        ghcjs_dom_inspector_frontend_host_close_window,
-        inspectorFrontendHostCloseWindow,
-        ghcjs_dom_inspector_frontend_host_bring_to_front,
-        inspectorFrontendHostBringToFront,
-        ghcjs_dom_inspector_frontend_host_set_zoom_factor,
-        inspectorFrontendHostSetZoomFactor,
-        ghcjs_dom_inspector_frontend_host_inspected_url_changed,
-        inspectorFrontendHostInspectedURLChanged,
-        ghcjs_dom_inspector_frontend_host_request_set_dock_side,
-        inspectorFrontendHostRequestSetDockSide,
-        ghcjs_dom_inspector_frontend_host_set_attached_window_height,
-        inspectorFrontendHostSetAttachedWindowHeight,
-        ghcjs_dom_inspector_frontend_host_set_attached_window_width,
-        inspectorFrontendHostSetAttachedWindowWidth,
-        ghcjs_dom_inspector_frontend_host_set_toolbar_height,
-        inspectorFrontendHostSetToolbarHeight,
-        ghcjs_dom_inspector_frontend_host_move_window_by,
-        inspectorFrontendHostMoveWindowBy,
-        ghcjs_dom_inspector_frontend_host_localized_strings_url,
-        inspectorFrontendHostLocalizedStringsURL,
-        ghcjs_dom_inspector_frontend_host_debuggable_type,
-        inspectorFrontendHostDebuggableType,
-        ghcjs_dom_inspector_frontend_host_copy_text,
-        inspectorFrontendHostCopyText,
-        ghcjs_dom_inspector_frontend_host_open_in_new_tab,
-        inspectorFrontendHostOpenInNewTab,
-        ghcjs_dom_inspector_frontend_host_can_save,
-        inspectorFrontendHostCanSave,
-        ghcjs_dom_inspector_frontend_host_save, inspectorFrontendHostSave,
-        ghcjs_dom_inspector_frontend_host_append,
-        inspectorFrontendHostAppend,
-        ghcjs_dom_inspector_frontend_host_close,
-        inspectorFrontendHostClose,
-        ghcjs_dom_inspector_frontend_host_platform,
-        inspectorFrontendHostPlatform,
-        ghcjs_dom_inspector_frontend_host_port, inspectorFrontendHostPort,
-        ghcjs_dom_inspector_frontend_host_show_context_menu,
-        inspectorFrontendHostShowContextMenu,
-        ghcjs_dom_inspector_frontend_host_dispatch_event_as_context_menu_event,
-        inspectorFrontendHostDispatchEventAsContextMenuEvent,
-        ghcjs_dom_inspector_frontend_host_send_message_to_backend,
-        inspectorFrontendHostSendMessageToBackend,
-        ghcjs_dom_inspector_frontend_host_unbuffered_log,
-        inspectorFrontendHostUnbufferedLog,
-        ghcjs_dom_inspector_frontend_host_is_under_test,
-        inspectorFrontendHostIsUnderTest,
-        ghcjs_dom_inspector_frontend_host_beep, inspectorFrontendHostBeep,
-        ghcjs_dom_inspector_frontend_host_can_inspect_workers,
-        inspectorFrontendHostCanInspectWorkers,
-        ghcjs_dom_inspector_frontend_host_can_save_as,
-        inspectorFrontendHostCanSaveAs, InspectorFrontendHost,
-        IsInspectorFrontendHost, castToInspectorFrontendHost,
-        gTypeInspectorFrontendHost, toInspectorFrontendHost)
+       (js_loaded, loaded, js_closeWindow, closeWindow, js_bringToFront,
+        bringToFront, js_setZoomFactor, setZoomFactor,
+        js_inspectedURLChanged, inspectedURLChanged, js_requestSetDockSide,
+        requestSetDockSide, js_setAttachedWindowHeight,
+        setAttachedWindowHeight, js_setAttachedWindowWidth,
+        setAttachedWindowWidth, js_setToolbarHeight, setToolbarHeight,
+        js_moveWindowBy, moveWindowBy, js_localizedStringsURL,
+        localizedStringsURL, js_debuggableType, debuggableType,
+        js_copyText, copyText, js_openInNewTab, openInNewTab, js_canSave,
+        canSave, js_save, save, js_append, append, js_close, close,
+        js_platform, platform, js_port, port, js_showContextMenu,
+        showContextMenu, js_dispatchEventAsContextMenuEvent,
+        dispatchEventAsContextMenuEvent, js_sendMessageToBackend,
+        sendMessageToBackend, js_unbufferedLog, unbufferedLog,
+        js_isUnderTest, isUnderTest, js_beep, beep, js_canInspectWorkers,
+        canInspectWorkers, js_canSaveAs, canSaveAs, InspectorFrontendHost,
+        castToInspectorFrontendHost, gTypeInspectorFrontendHost)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -67,406 +30,308 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"loaded\"]()"
-        ghcjs_dom_inspector_frontend_host_loaded ::
+foreign import javascript unsafe "$1[\"loaded\"]()" js_loaded ::
         JSRef InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.loaded Mozilla InspectorFrontendHost.loaded documentation> 
-inspectorFrontendHostLoaded ::
-                            (MonadIO m, IsInspectorFrontendHost self) => self -> m ()
-inspectorFrontendHostLoaded self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_loaded
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+loaded :: (MonadIO m) => InspectorFrontendHost -> m ()
+loaded self = liftIO (js_loaded (unInspectorFrontendHost self))
  
 foreign import javascript unsafe "$1[\"closeWindow\"]()"
-        ghcjs_dom_inspector_frontend_host_close_window ::
-        JSRef InspectorFrontendHost -> IO ()
+        js_closeWindow :: JSRef InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.closeWindow Mozilla InspectorFrontendHost.closeWindow documentation> 
-inspectorFrontendHostCloseWindow ::
-                                 (MonadIO m, IsInspectorFrontendHost self) => self -> m ()
-inspectorFrontendHostCloseWindow self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_close_window
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+closeWindow :: (MonadIO m) => InspectorFrontendHost -> m ()
+closeWindow self
+  = liftIO (js_closeWindow (unInspectorFrontendHost self))
  
 foreign import javascript unsafe "$1[\"bringToFront\"]()"
-        ghcjs_dom_inspector_frontend_host_bring_to_front ::
-        JSRef InspectorFrontendHost -> IO ()
+        js_bringToFront :: JSRef InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.bringToFront Mozilla InspectorFrontendHost.bringToFront documentation> 
-inspectorFrontendHostBringToFront ::
-                                  (MonadIO m, IsInspectorFrontendHost self) => self -> m ()
-inspectorFrontendHostBringToFront self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_bring_to_front
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+bringToFront :: (MonadIO m) => InspectorFrontendHost -> m ()
+bringToFront self
+  = liftIO (js_bringToFront (unInspectorFrontendHost self))
  
 foreign import javascript unsafe "$1[\"setZoomFactor\"]($2)"
-        ghcjs_dom_inspector_frontend_host_set_zoom_factor ::
-        JSRef InspectorFrontendHost -> Float -> IO ()
+        js_setZoomFactor :: JSRef InspectorFrontendHost -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.zoomFactor Mozilla InspectorFrontendHost.zoomFactor documentation> 
-inspectorFrontendHostSetZoomFactor ::
-                                   (MonadIO m, IsInspectorFrontendHost self) =>
-                                     self -> Float -> m ()
-inspectorFrontendHostSetZoomFactor self zoom
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_set_zoom_factor
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         zoom)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.setZoomFactor Mozilla InspectorFrontendHost.setZoomFactor documentation> 
+setZoomFactor ::
+              (MonadIO m) => InspectorFrontendHost -> Float -> m ()
+setZoomFactor self zoom
+  = liftIO (js_setZoomFactor (unInspectorFrontendHost self) zoom)
  
 foreign import javascript unsafe "$1[\"inspectedURLChanged\"]($2)"
-        ghcjs_dom_inspector_frontend_host_inspected_url_changed ::
+        js_inspectedURLChanged ::
         JSRef InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.inspectedURLChanged Mozilla InspectorFrontendHost.inspectedURLChanged documentation> 
-inspectorFrontendHostInspectedURLChanged ::
-                                         (MonadIO m, IsInspectorFrontendHost self,
-                                          ToJSString newURL) =>
-                                           self -> newURL -> m ()
-inspectorFrontendHostInspectedURLChanged self newURL
+inspectedURLChanged ::
+                    (MonadIO m, ToJSString newURL) =>
+                      InspectorFrontendHost -> newURL -> m ()
+inspectedURLChanged self newURL
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_inspected_url_changed
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
+      (js_inspectedURLChanged (unInspectorFrontendHost self)
          (toJSString newURL))
  
 foreign import javascript unsafe "$1[\"requestSetDockSide\"]($2)"
-        ghcjs_dom_inspector_frontend_host_request_set_dock_side ::
+        js_requestSetDockSide ::
         JSRef InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.requestSetDockSide Mozilla InspectorFrontendHost.requestSetDockSide documentation> 
-inspectorFrontendHostRequestSetDockSide ::
-                                        (MonadIO m, IsInspectorFrontendHost self,
-                                         ToJSString side) =>
-                                          self -> side -> m ()
-inspectorFrontendHostRequestSetDockSide self side
+requestSetDockSide ::
+                   (MonadIO m, ToJSString side) =>
+                     InspectorFrontendHost -> side -> m ()
+requestSetDockSide self side
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_request_set_dock_side
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
+      (js_requestSetDockSide (unInspectorFrontendHost self)
          (toJSString side))
  
 foreign import javascript unsafe
-        "$1[\"setAttachedWindowHeight\"]($2)"
-        ghcjs_dom_inspector_frontend_host_set_attached_window_height ::
+        "$1[\"setAttachedWindowHeight\"]($2)" js_setAttachedWindowHeight ::
         JSRef InspectorFrontendHost -> Word -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.attachedWindowHeight Mozilla InspectorFrontendHost.attachedWindowHeight documentation> 
-inspectorFrontendHostSetAttachedWindowHeight ::
-                                             (MonadIO m, IsInspectorFrontendHost self) =>
-                                               self -> Word -> m ()
-inspectorFrontendHostSetAttachedWindowHeight self height
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.setAttachedWindowHeight Mozilla InspectorFrontendHost.setAttachedWindowHeight documentation> 
+setAttachedWindowHeight ::
+                        (MonadIO m) => InspectorFrontendHost -> Word -> m ()
+setAttachedWindowHeight self height
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_set_attached_window_height
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         height)
+      (js_setAttachedWindowHeight (unInspectorFrontendHost self) height)
  
 foreign import javascript unsafe
-        "$1[\"setAttachedWindowWidth\"]($2)"
-        ghcjs_dom_inspector_frontend_host_set_attached_window_width ::
+        "$1[\"setAttachedWindowWidth\"]($2)" js_setAttachedWindowWidth ::
         JSRef InspectorFrontendHost -> Word -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.attachedWindowWidth Mozilla InspectorFrontendHost.attachedWindowWidth documentation> 
-inspectorFrontendHostSetAttachedWindowWidth ::
-                                            (MonadIO m, IsInspectorFrontendHost self) =>
-                                              self -> Word -> m ()
-inspectorFrontendHostSetAttachedWindowWidth self width
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.setAttachedWindowWidth Mozilla InspectorFrontendHost.setAttachedWindowWidth documentation> 
+setAttachedWindowWidth ::
+                       (MonadIO m) => InspectorFrontendHost -> Word -> m ()
+setAttachedWindowWidth self width
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_set_attached_window_width
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         width)
+      (js_setAttachedWindowWidth (unInspectorFrontendHost self) width)
  
 foreign import javascript unsafe "$1[\"setToolbarHeight\"]($2)"
-        ghcjs_dom_inspector_frontend_host_set_toolbar_height ::
+        js_setToolbarHeight ::
         JSRef InspectorFrontendHost -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.toolbarHeight Mozilla InspectorFrontendHost.toolbarHeight documentation> 
-inspectorFrontendHostSetToolbarHeight ::
-                                      (MonadIO m, IsInspectorFrontendHost self) =>
-                                        self -> Float -> m ()
-inspectorFrontendHostSetToolbarHeight self height
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.setToolbarHeight Mozilla InspectorFrontendHost.setToolbarHeight documentation> 
+setToolbarHeight ::
+                 (MonadIO m) => InspectorFrontendHost -> Float -> m ()
+setToolbarHeight self height
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_set_toolbar_height
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         height)
+      (js_setToolbarHeight (unInspectorFrontendHost self) height)
  
 foreign import javascript unsafe "$1[\"moveWindowBy\"]($2, $3)"
-        ghcjs_dom_inspector_frontend_host_move_window_by ::
+        js_moveWindowBy ::
         JSRef InspectorFrontendHost -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.moveWindowBy Mozilla InspectorFrontendHost.moveWindowBy documentation> 
-inspectorFrontendHostMoveWindowBy ::
-                                  (MonadIO m, IsInspectorFrontendHost self) =>
-                                    self -> Float -> Float -> m ()
-inspectorFrontendHostMoveWindowBy self x y
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_move_window_by
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         x
-         y)
+moveWindowBy ::
+             (MonadIO m) => InspectorFrontendHost -> Float -> Float -> m ()
+moveWindowBy self x y
+  = liftIO (js_moveWindowBy (unInspectorFrontendHost self) x y)
  
 foreign import javascript unsafe "$1[\"localizedStringsURL\"]()"
-        ghcjs_dom_inspector_frontend_host_localized_strings_url ::
+        js_localizedStringsURL ::
         JSRef InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.localizedStringsURL Mozilla InspectorFrontendHost.localizedStringsURL documentation> 
-inspectorFrontendHostLocalizedStringsURL ::
-                                         (MonadIO m, IsInspectorFrontendHost self,
-                                          FromJSString result) =>
-                                           self -> m result
-inspectorFrontendHostLocalizedStringsURL self
+localizedStringsURL ::
+                    (MonadIO m, FromJSString result) =>
+                      InspectorFrontendHost -> m result
+localizedStringsURL self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_inspector_frontend_host_localized_strings_url
-            (unInspectorFrontendHost (toInspectorFrontendHost self))))
+         (js_localizedStringsURL (unInspectorFrontendHost self)))
  
 foreign import javascript unsafe "$1[\"debuggableType\"]()"
-        ghcjs_dom_inspector_frontend_host_debuggable_type ::
-        JSRef InspectorFrontendHost -> IO JSString
+        js_debuggableType :: JSRef InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.debuggableType Mozilla InspectorFrontendHost.debuggableType documentation> 
-inspectorFrontendHostDebuggableType ::
-                                    (MonadIO m, IsInspectorFrontendHost self,
-                                     FromJSString result) =>
-                                      self -> m result
-inspectorFrontendHostDebuggableType self
+debuggableType ::
+               (MonadIO m, FromJSString result) =>
+                 InspectorFrontendHost -> m result
+debuggableType self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_inspector_frontend_host_debuggable_type
-            (unInspectorFrontendHost (toInspectorFrontendHost self))))
+         (js_debuggableType (unInspectorFrontendHost self)))
  
-foreign import javascript unsafe "$1[\"copyText\"]($2)"
-        ghcjs_dom_inspector_frontend_host_copy_text ::
-        JSRef InspectorFrontendHost -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"copyText\"]($2)" js_copyText
+        :: JSRef InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.copyText Mozilla InspectorFrontendHost.copyText documentation> 
-inspectorFrontendHostCopyText ::
-                              (MonadIO m, IsInspectorFrontendHost self, ToJSString text) =>
-                                self -> text -> m ()
-inspectorFrontendHostCopyText self text
+copyText ::
+         (MonadIO m, ToJSString text) =>
+           InspectorFrontendHost -> text -> m ()
+copyText self text
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_copy_text
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         (toJSString text))
+      (js_copyText (unInspectorFrontendHost self) (toJSString text))
  
 foreign import javascript unsafe "$1[\"openInNewTab\"]($2)"
-        ghcjs_dom_inspector_frontend_host_open_in_new_tab ::
-        JSRef InspectorFrontendHost -> JSString -> IO ()
+        js_openInNewTab :: JSRef InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.openInNewTab Mozilla InspectorFrontendHost.openInNewTab documentation> 
-inspectorFrontendHostOpenInNewTab ::
-                                  (MonadIO m, IsInspectorFrontendHost self, ToJSString url) =>
-                                    self -> url -> m ()
-inspectorFrontendHostOpenInNewTab self url
+openInNewTab ::
+             (MonadIO m, ToJSString url) => InspectorFrontendHost -> url -> m ()
+openInNewTab self url
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_open_in_new_tab
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         (toJSString url))
+      (js_openInNewTab (unInspectorFrontendHost self) (toJSString url))
  
 foreign import javascript unsafe "($1[\"canSave\"]() ? 1 : 0)"
-        ghcjs_dom_inspector_frontend_host_can_save ::
-        JSRef InspectorFrontendHost -> IO Bool
+        js_canSave :: JSRef InspectorFrontendHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canSave Mozilla InspectorFrontendHost.canSave documentation> 
-inspectorFrontendHostCanSave ::
-                             (MonadIO m, IsInspectorFrontendHost self) => self -> m Bool
-inspectorFrontendHostCanSave self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_can_save
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+canSave :: (MonadIO m) => InspectorFrontendHost -> m Bool
+canSave self = liftIO (js_canSave (unInspectorFrontendHost self))
  
 foreign import javascript unsafe "$1[\"save\"]($2, $3, $4, $5)"
-        ghcjs_dom_inspector_frontend_host_save ::
+        js_save ::
         JSRef InspectorFrontendHost ->
           JSString -> JSString -> Bool -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.save Mozilla InspectorFrontendHost.save documentation> 
-inspectorFrontendHostSave ::
-                          (MonadIO m, IsInspectorFrontendHost self, ToJSString url,
-                           ToJSString content) =>
-                            self -> url -> content -> Bool -> Bool -> m ()
-inspectorFrontendHostSave self url content base64Encoded
-  forceSaveAs
+save ::
+     (MonadIO m, ToJSString url, ToJSString content) =>
+       InspectorFrontendHost -> url -> content -> Bool -> Bool -> m ()
+save self url content base64Encoded forceSaveAs
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_save
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         (toJSString url)
+      (js_save (unInspectorFrontendHost self) (toJSString url)
          (toJSString content)
          base64Encoded
          forceSaveAs)
  
-foreign import javascript unsafe "$1[\"append\"]($2, $3)"
-        ghcjs_dom_inspector_frontend_host_append ::
-        JSRef InspectorFrontendHost -> JSString -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"append\"]($2, $3)" js_append
+        :: JSRef InspectorFrontendHost -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.append Mozilla InspectorFrontendHost.append documentation> 
-inspectorFrontendHostAppend ::
-                            (MonadIO m, IsInspectorFrontendHost self, ToJSString url,
-                             ToJSString content) =>
-                              self -> url -> content -> m ()
-inspectorFrontendHostAppend self url content
+append ::
+       (MonadIO m, ToJSString url, ToJSString content) =>
+         InspectorFrontendHost -> url -> content -> m ()
+append self url content
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_append
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         (toJSString url)
+      (js_append (unInspectorFrontendHost self) (toJSString url)
          (toJSString content))
  
-foreign import javascript unsafe "$1[\"close\"]($2)"
-        ghcjs_dom_inspector_frontend_host_close ::
+foreign import javascript unsafe "$1[\"close\"]($2)" js_close ::
         JSRef InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.close Mozilla InspectorFrontendHost.close documentation> 
-inspectorFrontendHostClose ::
-                           (MonadIO m, IsInspectorFrontendHost self, ToJSString url) =>
-                             self -> url -> m ()
-inspectorFrontendHostClose self url
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_close
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
-         (toJSString url))
+close ::
+      (MonadIO m, ToJSString url) => InspectorFrontendHost -> url -> m ()
+close self url
+  = liftIO (js_close (unInspectorFrontendHost self) (toJSString url))
  
-foreign import javascript unsafe "$1[\"platform\"]()"
-        ghcjs_dom_inspector_frontend_host_platform ::
-        JSRef InspectorFrontendHost -> IO JSString
+foreign import javascript unsafe "$1[\"platform\"]()" js_platform
+        :: JSRef InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.platform Mozilla InspectorFrontendHost.platform documentation> 
-inspectorFrontendHostPlatform ::
-                              (MonadIO m, IsInspectorFrontendHost self, FromJSString result) =>
-                                self -> m result
-inspectorFrontendHostPlatform self
+platform ::
+         (MonadIO m, FromJSString result) =>
+           InspectorFrontendHost -> m result
+platform self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_inspector_frontend_host_platform
-            (unInspectorFrontendHost (toInspectorFrontendHost self))))
+      (fromJSString <$> (js_platform (unInspectorFrontendHost self)))
  
-foreign import javascript unsafe "$1[\"port\"]()"
-        ghcjs_dom_inspector_frontend_host_port ::
+foreign import javascript unsafe "$1[\"port\"]()" js_port ::
         JSRef InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.port Mozilla InspectorFrontendHost.port documentation> 
-inspectorFrontendHostPort ::
-                          (MonadIO m, IsInspectorFrontendHost self, FromJSString result) =>
-                            self -> m result
-inspectorFrontendHostPort self
+port ::
+     (MonadIO m, FromJSString result) =>
+       InspectorFrontendHost -> m result
+port self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_inspector_frontend_host_port
-            (unInspectorFrontendHost (toInspectorFrontendHost self))))
+      (fromJSString <$> (js_port (unInspectorFrontendHost self)))
  
 foreign import javascript unsafe "$1[\"showContextMenu\"]($2, $3)"
-        ghcjs_dom_inspector_frontend_host_show_context_menu ::
+        js_showContextMenu ::
         JSRef InspectorFrontendHost -> JSRef MouseEvent -> JSRef a -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.showContextMenu Mozilla InspectorFrontendHost.showContextMenu documentation> 
-inspectorFrontendHostShowContextMenu ::
-                                     (MonadIO m, IsInspectorFrontendHost self,
-                                      IsMouseEvent event) =>
-                                       self -> Maybe event -> JSRef a -> m ()
-inspectorFrontendHostShowContextMenu self event items
+showContextMenu ::
+                (MonadIO m, IsMouseEvent event) =>
+                  InspectorFrontendHost -> Maybe event -> JSRef a -> m ()
+showContextMenu self event items
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_show_context_menu
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
+      (js_showContextMenu (unInspectorFrontendHost self)
          (maybe jsNull (unMouseEvent . toMouseEvent) event)
          items)
  
 foreign import javascript unsafe
         "$1[\"dispatchEventAsContextMenuEvent\"]($2)"
-        ghcjs_dom_inspector_frontend_host_dispatch_event_as_context_menu_event
-        :: JSRef InspectorFrontendHost -> JSRef Event -> IO ()
+        js_dispatchEventAsContextMenuEvent ::
+        JSRef InspectorFrontendHost -> JSRef Event -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.dispatchEventAsContextMenuEvent Mozilla InspectorFrontendHost.dispatchEventAsContextMenuEvent documentation> 
-inspectorFrontendHostDispatchEventAsContextMenuEvent ::
-                                                     (MonadIO m, IsInspectorFrontendHost self,
-                                                      IsEvent event) =>
-                                                       self -> Maybe event -> m ()
-inspectorFrontendHostDispatchEventAsContextMenuEvent self event
+dispatchEventAsContextMenuEvent ::
+                                (MonadIO m, IsEvent event) =>
+                                  InspectorFrontendHost -> Maybe event -> m ()
+dispatchEventAsContextMenuEvent self event
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_dispatch_event_as_context_menu_event
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
+      (js_dispatchEventAsContextMenuEvent (unInspectorFrontendHost self)
          (maybe jsNull (unEvent . toEvent) event))
  
 foreign import javascript unsafe "$1[\"sendMessageToBackend\"]($2)"
-        ghcjs_dom_inspector_frontend_host_send_message_to_backend ::
+        js_sendMessageToBackend ::
         JSRef InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.sendMessageToBackend Mozilla InspectorFrontendHost.sendMessageToBackend documentation> 
-inspectorFrontendHostSendMessageToBackend ::
-                                          (MonadIO m, IsInspectorFrontendHost self,
-                                           ToJSString message) =>
-                                            self -> message -> m ()
-inspectorFrontendHostSendMessageToBackend self message
+sendMessageToBackend ::
+                     (MonadIO m, ToJSString message) =>
+                       InspectorFrontendHost -> message -> m ()
+sendMessageToBackend self message
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_send_message_to_backend
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
+      (js_sendMessageToBackend (unInspectorFrontendHost self)
          (toJSString message))
  
 foreign import javascript unsafe "$1[\"unbufferedLog\"]($2)"
-        ghcjs_dom_inspector_frontend_host_unbuffered_log ::
+        js_unbufferedLog ::
         JSRef InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.unbufferedLog Mozilla InspectorFrontendHost.unbufferedLog documentation> 
-inspectorFrontendHostUnbufferedLog ::
-                                   (MonadIO m, IsInspectorFrontendHost self, ToJSString message) =>
-                                     self -> message -> m ()
-inspectorFrontendHostUnbufferedLog self message
+unbufferedLog ::
+              (MonadIO m, ToJSString message) =>
+                InspectorFrontendHost -> message -> m ()
+unbufferedLog self message
   = liftIO
-      (ghcjs_dom_inspector_frontend_host_unbuffered_log
-         (unInspectorFrontendHost (toInspectorFrontendHost self))
+      (js_unbufferedLog (unInspectorFrontendHost self)
          (toJSString message))
  
 foreign import javascript unsafe "($1[\"isUnderTest\"]() ? 1 : 0)"
-        ghcjs_dom_inspector_frontend_host_is_under_test ::
-        JSRef InspectorFrontendHost -> IO Bool
+        js_isUnderTest :: JSRef InspectorFrontendHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.isUnderTest Mozilla InspectorFrontendHost.isUnderTest documentation> 
-inspectorFrontendHostIsUnderTest ::
-                                 (MonadIO m, IsInspectorFrontendHost self) => self -> m Bool
-inspectorFrontendHostIsUnderTest self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_is_under_test
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+isUnderTest :: (MonadIO m) => InspectorFrontendHost -> m Bool
+isUnderTest self
+  = liftIO (js_isUnderTest (unInspectorFrontendHost self))
  
-foreign import javascript unsafe "$1[\"beep\"]()"
-        ghcjs_dom_inspector_frontend_host_beep ::
+foreign import javascript unsafe "$1[\"beep\"]()" js_beep ::
         JSRef InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.beep Mozilla InspectorFrontendHost.beep documentation> 
-inspectorFrontendHostBeep ::
-                          (MonadIO m, IsInspectorFrontendHost self) => self -> m ()
-inspectorFrontendHostBeep self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_beep
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+beep :: (MonadIO m) => InspectorFrontendHost -> m ()
+beep self = liftIO (js_beep (unInspectorFrontendHost self))
  
 foreign import javascript unsafe
-        "($1[\"canInspectWorkers\"]() ? 1 : 0)"
-        ghcjs_dom_inspector_frontend_host_can_inspect_workers ::
+        "($1[\"canInspectWorkers\"]() ? 1 : 0)" js_canInspectWorkers ::
         JSRef InspectorFrontendHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canInspectWorkers Mozilla InspectorFrontendHost.canInspectWorkers documentation> 
-inspectorFrontendHostCanInspectWorkers ::
-                                       (MonadIO m, IsInspectorFrontendHost self) => self -> m Bool
-inspectorFrontendHostCanInspectWorkers self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_can_inspect_workers
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+canInspectWorkers :: (MonadIO m) => InspectorFrontendHost -> m Bool
+canInspectWorkers self
+  = liftIO (js_canInspectWorkers (unInspectorFrontendHost self))
  
 foreign import javascript unsafe "($1[\"canSaveAs\"]() ? 1 : 0)"
-        ghcjs_dom_inspector_frontend_host_can_save_as ::
-        JSRef InspectorFrontendHost -> IO Bool
+        js_canSaveAs :: JSRef InspectorFrontendHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canSaveAs Mozilla InspectorFrontendHost.canSaveAs documentation> 
-inspectorFrontendHostCanSaveAs ::
-                               (MonadIO m, IsInspectorFrontendHost self) => self -> m Bool
-inspectorFrontendHostCanSaveAs self
-  = liftIO
-      (ghcjs_dom_inspector_frontend_host_can_save_as
-         (unInspectorFrontendHost (toInspectorFrontendHost self)))
+canSaveAs :: (MonadIO m) => InspectorFrontendHost -> m Bool
+canSaveAs self
+  = liftIO (js_canSaveAs (unInspectorFrontendHost self))
 #else
 module GHCJS.DOM.InspectorFrontendHost (
   ) where

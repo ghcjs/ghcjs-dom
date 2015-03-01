@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CloseEvent
-       (ghcjs_dom_close_event_get_was_clean, closeEventGetWasClean,
-        ghcjs_dom_close_event_get_code, closeEventGetCode,
-        ghcjs_dom_close_event_get_reason, closeEventGetReason, CloseEvent,
-        IsCloseEvent, castToCloseEvent, gTypeCloseEvent, toCloseEvent)
+       (js_getWasClean, getWasClean, js_getCode, getCode, js_getReason,
+        getReason, CloseEvent, castToCloseEvent, gTypeCloseEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,43 +15,32 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "($1[\"wasClean\"] ? 1 : 0)"
-        ghcjs_dom_close_event_get_was_clean :: JSRef CloseEvent -> IO Bool
+        js_getWasClean :: JSRef CloseEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent.wasClean Mozilla CloseEvent.wasClean documentation> 
-closeEventGetWasClean ::
-                      (MonadIO m, IsCloseEvent self) => self -> m Bool
-closeEventGetWasClean self
-  = liftIO
-      (ghcjs_dom_close_event_get_was_clean
-         (unCloseEvent (toCloseEvent self)))
+getWasClean :: (MonadIO m) => CloseEvent -> m Bool
+getWasClean self = liftIO (js_getWasClean (unCloseEvent self))
  
-foreign import javascript unsafe "$1[\"code\"]"
-        ghcjs_dom_close_event_get_code :: JSRef CloseEvent -> IO Word
+foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+        JSRef CloseEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent.code Mozilla CloseEvent.code documentation> 
-closeEventGetCode ::
-                  (MonadIO m, IsCloseEvent self) => self -> m Word
-closeEventGetCode self
-  = liftIO
-      (ghcjs_dom_close_event_get_code (unCloseEvent (toCloseEvent self)))
+getCode :: (MonadIO m) => CloseEvent -> m Word
+getCode self = liftIO (js_getCode (unCloseEvent self))
  
-foreign import javascript unsafe "$1[\"reason\"]"
-        ghcjs_dom_close_event_get_reason :: JSRef CloseEvent -> IO JSString
+foreign import javascript unsafe "$1[\"reason\"]" js_getReason ::
+        JSRef CloseEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent.reason Mozilla CloseEvent.reason documentation> 
-closeEventGetReason ::
-                    (MonadIO m, IsCloseEvent self, FromJSString result) =>
-                      self -> m result
-closeEventGetReason self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_close_event_get_reason
-            (unCloseEvent (toCloseEvent self))))
+getReason ::
+          (MonadIO m, FromJSString result) => CloseEvent -> m result
+getReason self
+  = liftIO (fromJSString <$> (js_getReason (unCloseEvent self)))
 #else
 module GHCJS.DOM.CloseEvent (
   ) where

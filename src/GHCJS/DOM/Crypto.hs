@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Crypto
-       (ghcjs_dom_crypto_get_random_values, cryptoGetRandomValues,
-        ghcjs_dom_crypto_get_webkit_subtle, cryptoGetWebkitSubtle, Crypto,
-        IsCrypto, castToCrypto, gTypeCrypto, toCrypto)
+       (js_getRandomValues, getRandomValues, js_getWebkitSubtle,
+        getWebkitSubtle, Crypto, castToCrypto, gTypeCrypto)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,35 +15,31 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getRandomValues\"]($2)"
-        ghcjs_dom_crypto_get_random_values ::
+        js_getRandomValues ::
         JSRef Crypto -> JSRef ArrayBufferView -> IO (JSRef ArrayBufferView)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.randomValues Mozilla Crypto.randomValues documentation> 
-cryptoGetRandomValues ::
-                      (MonadIO m, IsCrypto self, IsArrayBufferView array) =>
-                        self -> Maybe array -> m (Maybe ArrayBufferView)
-cryptoGetRandomValues self array
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.getRandomValues Mozilla Crypto.getRandomValues documentation> 
+getRandomValues ::
+                (MonadIO m, IsArrayBufferView array) =>
+                  Crypto -> Maybe array -> m (Maybe ArrayBufferView)
+getRandomValues self array
   = liftIO
-      ((ghcjs_dom_crypto_get_random_values (unCrypto (toCrypto self))
+      ((js_getRandomValues (unCrypto self)
           (maybe jsNull (unArrayBufferView . toArrayBufferView) array))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitSubtle\"]"
-        ghcjs_dom_crypto_get_webkit_subtle ::
-        JSRef Crypto -> IO (JSRef SubtleCrypto)
+        js_getWebkitSubtle :: JSRef Crypto -> IO (JSRef SubtleCrypto)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.webkitSubtle Mozilla Crypto.webkitSubtle documentation> 
-cryptoGetWebkitSubtle ::
-                      (MonadIO m, IsCrypto self) => self -> m (Maybe SubtleCrypto)
-cryptoGetWebkitSubtle self
-  = liftIO
-      ((ghcjs_dom_crypto_get_webkit_subtle (unCrypto (toCrypto self)))
-         >>= fromJSRef)
+getWebkitSubtle :: (MonadIO m) => Crypto -> m (Maybe SubtleCrypto)
+getWebkitSubtle self
+  = liftIO ((js_getWebkitSubtle (unCrypto self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.Crypto (
   ) where

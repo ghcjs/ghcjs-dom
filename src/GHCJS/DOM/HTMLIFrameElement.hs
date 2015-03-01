@@ -1,56 +1,24 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLIFrameElement
-       (ghcjs_dom_html_iframe_element_get_svg_document,
-        htmliFrameElementGetSVGDocument,
-        ghcjs_dom_html_iframe_element_set_align, htmliFrameElementSetAlign,
-        ghcjs_dom_html_iframe_element_get_align, htmliFrameElementGetAlign,
-        ghcjs_dom_html_iframe_element_set_frame_border,
-        htmliFrameElementSetFrameBorder,
-        ghcjs_dom_html_iframe_element_get_frame_border,
-        htmliFrameElementGetFrameBorder,
-        ghcjs_dom_html_iframe_element_set_height,
-        htmliFrameElementSetHeight,
-        ghcjs_dom_html_iframe_element_get_height,
-        htmliFrameElementGetHeight,
-        ghcjs_dom_html_iframe_element_set_long_desc,
-        htmliFrameElementSetLongDesc,
-        ghcjs_dom_html_iframe_element_get_long_desc,
-        htmliFrameElementGetLongDesc,
-        ghcjs_dom_html_iframe_element_set_margin_height,
-        htmliFrameElementSetMarginHeight,
-        ghcjs_dom_html_iframe_element_get_margin_height,
-        htmliFrameElementGetMarginHeight,
-        ghcjs_dom_html_iframe_element_set_margin_width,
-        htmliFrameElementSetMarginWidth,
-        ghcjs_dom_html_iframe_element_get_margin_width,
-        htmliFrameElementGetMarginWidth,
-        ghcjs_dom_html_iframe_element_set_name, htmliFrameElementSetName,
-        ghcjs_dom_html_iframe_element_get_name, htmliFrameElementGetName,
-        ghcjs_dom_html_iframe_element_set_sandbox,
-        htmliFrameElementSetSandbox,
-        ghcjs_dom_html_iframe_element_get_sandbox,
-        htmliFrameElementGetSandbox,
-        ghcjs_dom_html_iframe_element_set_scrolling,
-        htmliFrameElementSetScrolling,
-        ghcjs_dom_html_iframe_element_get_scrolling,
-        htmliFrameElementGetScrolling,
-        ghcjs_dom_html_iframe_element_set_src, htmliFrameElementSetSrc,
-        ghcjs_dom_html_iframe_element_get_src, htmliFrameElementGetSrc,
-        ghcjs_dom_html_iframe_element_set_srcdoc,
-        htmliFrameElementSetSrcdoc,
-        ghcjs_dom_html_iframe_element_get_srcdoc,
-        htmliFrameElementGetSrcdoc,
-        ghcjs_dom_html_iframe_element_set_width, htmliFrameElementSetWidth,
-        ghcjs_dom_html_iframe_element_get_width, htmliFrameElementGetWidth,
-        ghcjs_dom_html_iframe_element_get_content_document,
-        htmliFrameElementGetContentDocument,
-        ghcjs_dom_html_iframe_element_get_content_window,
-        htmliFrameElementGetContentWindow, HTMLIFrameElement,
-        IsHTMLIFrameElement, castToHTMLIFrameElement,
-        gTypeHTMLIFrameElement, toHTMLIFrameElement)
+       (js_getSVGDocument, getSVGDocument, js_setAlign, setAlign,
+        js_getAlign, getAlign, js_setFrameBorder, setFrameBorder,
+        js_getFrameBorder, getFrameBorder, js_setHeight, setHeight,
+        js_getHeight, getHeight, js_setLongDesc, setLongDesc,
+        js_getLongDesc, getLongDesc, js_setMarginHeight, setMarginHeight,
+        js_getMarginHeight, getMarginHeight, js_setMarginWidth,
+        setMarginWidth, js_getMarginWidth, getMarginWidth, js_setName,
+        setName, js_getName, getName, js_setSandbox, setSandbox,
+        js_getSandbox, getSandbox, js_setScrolling, setScrolling,
+        js_getScrolling, getScrolling, js_setSrc, setSrc, js_getSrc,
+        getSrc, js_setSrcdoc, setSrcdoc, js_getSrcdoc, getSrcdoc,
+        js_setWidth, setWidth, js_getWidth, getWidth,
+        js_getContentDocument, getContentDocument, js_getContentWindow,
+        getContentWindow, HTMLIFrameElement, castToHTMLIFrameElement,
+        gTypeHTMLIFrameElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -60,387 +28,274 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
-        ghcjs_dom_html_iframe_element_get_svg_document ::
+        js_getSVGDocument ::
         JSRef HTMLIFrameElement -> IO (JSRef SVGDocument)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.svgDocument Mozilla HTMLIFrameElement.svgDocument documentation> 
-htmliFrameElementGetSVGDocument ::
-                                (MonadIO m, IsHTMLIFrameElement self) =>
-                                  self -> m (Maybe SVGDocument)
-htmliFrameElementGetSVGDocument self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.getSVGDocument Mozilla HTMLIFrameElement.getSVGDocument documentation> 
+getSVGDocument ::
+               (MonadIO m) => HTMLIFrameElement -> m (Maybe SVGDocument)
+getSVGDocument self
   = liftIO
-      ((ghcjs_dom_html_iframe_element_get_svg_document
-          (unHTMLIFrameElement (toHTMLIFrameElement self)))
-         >>= fromJSRef)
+      ((js_getSVGDocument (unHTMLIFrameElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_align ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.align Mozilla HTMLIFrameElement.align documentation> 
-htmliFrameElementSetAlign ::
-                          (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmliFrameElementSetAlign self val
-  = liftIO
-      (ghcjs_dom_html_iframe_element_set_align
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setAlign self val
+  = liftIO (js_setAlign (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_iframe_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.align Mozilla HTMLIFrameElement.align documentation> 
-htmliFrameElementGetAlign ::
-                          (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                            self -> m result
-htmliFrameElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_align
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"frameBorder\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_frame_border ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setFrameBorder :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.frameBorder Mozilla HTMLIFrameElement.frameBorder documentation> 
-htmliFrameElementSetFrameBorder ::
-                                (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                                  self -> val -> m ()
-htmliFrameElementSetFrameBorder self val
+setFrameBorder ::
+               (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setFrameBorder self val
   = liftIO
-      (ghcjs_dom_html_iframe_element_set_frame_border
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+      (js_setFrameBorder (unHTMLIFrameElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"frameBorder\"]"
-        ghcjs_dom_html_iframe_element_get_frame_border ::
-        JSRef HTMLIFrameElement -> IO JSString
+        js_getFrameBorder :: JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.frameBorder Mozilla HTMLIFrameElement.frameBorder documentation> 
-htmliFrameElementGetFrameBorder ::
-                                (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                                  self -> m result
-htmliFrameElementGetFrameBorder self
+getFrameBorder ::
+               (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getFrameBorder self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_frame_border
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getFrameBorder (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_height ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setHeight :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.height Mozilla HTMLIFrameElement.height documentation> 
-htmliFrameElementSetHeight ::
-                           (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmliFrameElementSetHeight self val
-  = liftIO
-      (ghcjs_dom_html_iframe_element_set_height
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+setHeight ::
+          (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setHeight self val
+  = liftIO (js_setHeight (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_html_iframe_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.height Mozilla HTMLIFrameElement.height documentation> 
-htmliFrameElementGetHeight ::
-                           (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                             self -> m result
-htmliFrameElementGetHeight self
+getHeight ::
+          (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getHeight self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_height
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getHeight (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"longDesc\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_long_desc ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setLongDesc :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.longDesc Mozilla HTMLIFrameElement.longDesc documentation> 
-htmliFrameElementSetLongDesc ::
-                             (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmliFrameElementSetLongDesc self val
+setLongDesc ::
+            (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setLongDesc self val
   = liftIO
-      (ghcjs_dom_html_iframe_element_set_long_desc
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+      (js_setLongDesc (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"longDesc\"]"
-        ghcjs_dom_html_iframe_element_get_long_desc ::
-        JSRef HTMLIFrameElement -> IO JSString
+foreign import javascript unsafe "$1[\"longDesc\"]" js_getLongDesc
+        :: JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.longDesc Mozilla HTMLIFrameElement.longDesc documentation> 
-htmliFrameElementGetLongDesc ::
-                             (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                               self -> m result
-htmliFrameElementGetLongDesc self
+getLongDesc ::
+            (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getLongDesc self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_long_desc
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getLongDesc (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"marginHeight\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_margin_height ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setMarginHeight :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginHeight Mozilla HTMLIFrameElement.marginHeight documentation> 
-htmliFrameElementSetMarginHeight ::
-                                 (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                                   self -> val -> m ()
-htmliFrameElementSetMarginHeight self val
+setMarginHeight ::
+                (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setMarginHeight self val
   = liftIO
-      (ghcjs_dom_html_iframe_element_set_margin_height
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+      (js_setMarginHeight (unHTMLIFrameElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginHeight\"]"
-        ghcjs_dom_html_iframe_element_get_margin_height ::
-        JSRef HTMLIFrameElement -> IO JSString
+        js_getMarginHeight :: JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginHeight Mozilla HTMLIFrameElement.marginHeight documentation> 
-htmliFrameElementGetMarginHeight ::
-                                 (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                                   self -> m result
-htmliFrameElementGetMarginHeight self
+getMarginHeight ::
+                (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getMarginHeight self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_margin_height
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getMarginHeight (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"marginWidth\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_margin_width ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setMarginWidth :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginWidth Mozilla HTMLIFrameElement.marginWidth documentation> 
-htmliFrameElementSetMarginWidth ::
-                                (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                                  self -> val -> m ()
-htmliFrameElementSetMarginWidth self val
+setMarginWidth ::
+               (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setMarginWidth self val
   = liftIO
-      (ghcjs_dom_html_iframe_element_set_margin_width
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+      (js_setMarginWidth (unHTMLIFrameElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginWidth\"]"
-        ghcjs_dom_html_iframe_element_get_margin_width ::
-        JSRef HTMLIFrameElement -> IO JSString
+        js_getMarginWidth :: JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginWidth Mozilla HTMLIFrameElement.marginWidth documentation> 
-htmliFrameElementGetMarginWidth ::
-                                (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                                  self -> m result
-htmliFrameElementGetMarginWidth self
+getMarginWidth ::
+               (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getMarginWidth self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_margin_width
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getMarginWidth (unHTMLIFrameElement self)))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.name Mozilla HTMLIFrameElement.name documentation> 
-htmliFrameElementSetName ::
-                         (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmliFrameElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_iframe_element_set_name
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_iframe_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.name Mozilla HTMLIFrameElement.name documentation> 
-htmliFrameElementGetName ::
-                         (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                           self -> m result
-htmliFrameElementGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_name
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+getName ::
+        (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"sandbox\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_sandbox ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setSandbox :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.sandbox Mozilla HTMLIFrameElement.sandbox documentation> 
-htmliFrameElementSetSandbox ::
-                            (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmliFrameElementSetSandbox self val
+setSandbox ::
+           (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setSandbox self val
   = liftIO
-      (ghcjs_dom_html_iframe_element_set_sandbox
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+      (js_setSandbox (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"sandbox\"]"
-        ghcjs_dom_html_iframe_element_get_sandbox ::
+foreign import javascript unsafe "$1[\"sandbox\"]" js_getSandbox ::
         JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.sandbox Mozilla HTMLIFrameElement.sandbox documentation> 
-htmliFrameElementGetSandbox ::
-                            (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                              self -> m result
-htmliFrameElementGetSandbox self
+getSandbox ::
+           (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getSandbox self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_sandbox
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getSandbox (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"scrolling\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_scrolling ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setScrolling :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.scrolling Mozilla HTMLIFrameElement.scrolling documentation> 
-htmliFrameElementSetScrolling ::
-                              (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                                self -> val -> m ()
-htmliFrameElementSetScrolling self val
+setScrolling ::
+             (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setScrolling self val
   = liftIO
-      (ghcjs_dom_html_iframe_element_set_scrolling
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+      (js_setScrolling (unHTMLIFrameElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"scrolling\"]"
-        ghcjs_dom_html_iframe_element_get_scrolling ::
-        JSRef HTMLIFrameElement -> IO JSString
+        js_getScrolling :: JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.scrolling Mozilla HTMLIFrameElement.scrolling documentation> 
-htmliFrameElementGetScrolling ::
-                              (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                                self -> m result
-htmliFrameElementGetScrolling self
+getScrolling ::
+             (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getScrolling self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_scrolling
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getScrolling (unHTMLIFrameElement self)))
  
-foreign import javascript unsafe "$1[\"src\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_src ::
+foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.src Mozilla HTMLIFrameElement.src documentation> 
-htmliFrameElementSetSrc ::
-                        (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmliFrameElementSetSrc self val
-  = liftIO
-      (ghcjs_dom_html_iframe_element_set_src
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+setSrc ::
+       (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setSrc self val
+  = liftIO (js_setSrc (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]"
-        ghcjs_dom_html_iframe_element_get_src ::
+foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
         JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.src Mozilla HTMLIFrameElement.src documentation> 
-htmliFrameElementGetSrc ::
-                        (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                          self -> m result
-htmliFrameElementGetSrc self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_src
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+getSrc ::
+       (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getSrc self
+  = liftIO (fromJSString <$> (js_getSrc (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"srcdoc\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_srcdoc ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+        js_setSrcdoc :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.srcdoc Mozilla HTMLIFrameElement.srcdoc documentation> 
-htmliFrameElementSetSrcdoc ::
-                           (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmliFrameElementSetSrcdoc self val
-  = liftIO
-      (ghcjs_dom_html_iframe_element_set_srcdoc
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+setSrcdoc ::
+          (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setSrcdoc self val
+  = liftIO (js_setSrcdoc (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"srcdoc\"]"
-        ghcjs_dom_html_iframe_element_get_srcdoc ::
+foreign import javascript unsafe "$1[\"srcdoc\"]" js_getSrcdoc ::
         JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.srcdoc Mozilla HTMLIFrameElement.srcdoc documentation> 
-htmliFrameElementGetSrcdoc ::
-                           (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                             self -> m result
-htmliFrameElementGetSrcdoc self
+getSrcdoc ::
+          (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getSrcdoc self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_srcdoc
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getSrcdoc (unHTMLIFrameElement self)))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;"
-        ghcjs_dom_html_iframe_element_set_width ::
-        JSRef HTMLIFrameElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+        :: JSRef HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.width Mozilla HTMLIFrameElement.width documentation> 
-htmliFrameElementSetWidth ::
-                          (MonadIO m, IsHTMLIFrameElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmliFrameElementSetWidth self val
-  = liftIO
-      (ghcjs_dom_html_iframe_element_set_width
-         (unHTMLIFrameElement (toHTMLIFrameElement self))
-         (toJSString val))
+setWidth ::
+         (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
+setWidth self val
+  = liftIO (js_setWidth (unHTMLIFrameElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_html_iframe_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.width Mozilla HTMLIFrameElement.width documentation> 
-htmliFrameElementGetWidth ::
-                          (MonadIO m, IsHTMLIFrameElement self, FromJSString result) =>
-                            self -> m result
-htmliFrameElementGetWidth self
+getWidth ::
+         (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
+getWidth self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_iframe_element_get_width
-            (unHTMLIFrameElement (toHTMLIFrameElement self))))
+      (fromJSString <$> (js_getWidth (unHTMLIFrameElement self)))
  
 foreign import javascript unsafe "$1[\"contentDocument\"]"
-        ghcjs_dom_html_iframe_element_get_content_document ::
+        js_getContentDocument ::
         JSRef HTMLIFrameElement -> IO (JSRef Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.contentDocument Mozilla HTMLIFrameElement.contentDocument documentation> 
-htmliFrameElementGetContentDocument ::
-                                    (MonadIO m, IsHTMLIFrameElement self) =>
-                                      self -> m (Maybe Document)
-htmliFrameElementGetContentDocument self
+getContentDocument ::
+                   (MonadIO m) => HTMLIFrameElement -> m (Maybe Document)
+getContentDocument self
   = liftIO
-      ((ghcjs_dom_html_iframe_element_get_content_document
-          (unHTMLIFrameElement (toHTMLIFrameElement self)))
-         >>= fromJSRef)
+      ((js_getContentDocument (unHTMLIFrameElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"contentWindow\"]"
-        ghcjs_dom_html_iframe_element_get_content_window ::
+        js_getContentWindow ::
         JSRef HTMLIFrameElement -> IO (JSRef DOMWindow)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.contentWindow Mozilla HTMLIFrameElement.contentWindow documentation> 
-htmliFrameElementGetContentWindow ::
-                                  (MonadIO m, IsHTMLIFrameElement self) =>
-                                    self -> m (Maybe DOMWindow)
-htmliFrameElementGetContentWindow self
+getContentWindow ::
+                 (MonadIO m) => HTMLIFrameElement -> m (Maybe DOMWindow)
+getContentWindow self
   = liftIO
-      ((ghcjs_dom_html_iframe_element_get_content_window
-          (unHTMLIFrameElement (toHTMLIFrameElement self)))
-         >>= fromJSRef)
+      ((js_getContentWindow (unHTMLIFrameElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLIFrameElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLIFrameElement

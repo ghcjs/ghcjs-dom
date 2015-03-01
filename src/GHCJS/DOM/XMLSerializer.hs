@@ -1,12 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XMLSerializer
-       (ghcjs_dom_xml_serializer_new, xmlSerializerNew,
-        ghcjs_dom_xml_serializer_serialize_to_string,
-        xmlSerializerSerializeToString, XMLSerializer, IsXMLSerializer,
-        castToXMLSerializer, gTypeXMLSerializer, toXMLSerializer)
+       (js_newXMLSerializer, newXMLSerializer, js_serializeToString,
+        serializeToString, XMLSerializer, castToXMLSerializer,
+        gTypeXMLSerializer)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,32 +16,30 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"XMLSerializer\"]()"
-        ghcjs_dom_xml_serializer_new :: IO (JSRef XMLSerializer)
+        js_newXMLSerializer :: IO (JSRef XMLSerializer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer Mozilla XMLSerializer documentation> 
-xmlSerializerNew :: (MonadIO m) => m XMLSerializer
-xmlSerializerNew
-  = liftIO (ghcjs_dom_xml_serializer_new >>= fromJSRefUnchecked)
+newXMLSerializer :: (MonadIO m) => m XMLSerializer
+newXMLSerializer
+  = liftIO (js_newXMLSerializer >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"serializeToString\"]($2)"
-        ghcjs_dom_xml_serializer_serialize_to_string ::
+        js_serializeToString ::
         JSRef XMLSerializer -> JSRef Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer.serializeToString Mozilla XMLSerializer.serializeToString documentation> 
-xmlSerializerSerializeToString ::
-                               (MonadIO m, IsXMLSerializer self, IsNode node,
-                                FromJSString result) =>
-                                 self -> Maybe node -> m result
-xmlSerializerSerializeToString self node
+serializeToString ::
+                  (MonadIO m, IsNode node, FromJSString result) =>
+                    XMLSerializer -> Maybe node -> m result
+serializeToString self node
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_xml_serializer_serialize_to_string
-            (unXMLSerializer (toXMLSerializer self))
+         (js_serializeToString (unXMLSerializer self)
             (maybe jsNull (unNode . toNode) node)))
 #else
 module GHCJS.DOM.XMLSerializer (

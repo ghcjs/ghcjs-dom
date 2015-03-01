@@ -1,14 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLHeadingElement
-       (ghcjs_dom_html_heading_element_set_align,
-        htmlHeadingElementSetAlign,
-        ghcjs_dom_html_heading_element_get_align,
-        htmlHeadingElementGetAlign, HTMLHeadingElement,
-        IsHTMLHeadingElement, castToHTMLHeadingElement,
-        gTypeHTMLHeadingElement, toHTMLHeadingElement)
+       (js_setAlign, setAlign, js_getAlign, getAlign, HTMLHeadingElement,
+        castToHTMLHeadingElement, gTypeHTMLHeadingElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +15,28 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_heading_element_set_align ::
-        JSRef HTMLHeadingElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLHeadingElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement.align Mozilla HTMLHeadingElement.align documentation> 
-htmlHeadingElementSetAlign ::
-                           (MonadIO m, IsHTMLHeadingElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlHeadingElementSetAlign self val
-  = liftIO
-      (ghcjs_dom_html_heading_element_set_align
-         (unHTMLHeadingElement (toHTMLHeadingElement self))
-         (toJSString val))
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLHeadingElement -> val -> m ()
+setAlign self val
+  = liftIO (js_setAlign (unHTMLHeadingElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_heading_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLHeadingElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement.align Mozilla HTMLHeadingElement.align documentation> 
-htmlHeadingElementGetAlign ::
-                           (MonadIO m, IsHTMLHeadingElement self, FromJSString result) =>
-                             self -> m result
-htmlHeadingElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) => HTMLHeadingElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_heading_element_get_align
-            (unHTMLHeadingElement (toHTMLHeadingElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLHeadingElement self)))
 #else
 module GHCJS.DOM.HTMLHeadingElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLHeadingElement

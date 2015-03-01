@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaKeyMessageEvent
-       (ghcjs_dom_media_key_message_event_get_message,
-        mediaKeyMessageEventGetMessage,
-        ghcjs_dom_media_key_message_event_get_destination_url,
-        mediaKeyMessageEventGetDestinationURL, MediaKeyMessageEvent,
-        IsMediaKeyMessageEvent, castToMediaKeyMessageEvent,
-        gTypeMediaKeyMessageEvent, toMediaKeyMessageEvent)
+       (js_getMessage, getMessage, js_getDestinationURL,
+        getDestinationURL, MediaKeyMessageEvent,
+        castToMediaKeyMessageEvent, gTypeMediaKeyMessageEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,38 +16,31 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"message\"]"
-        ghcjs_dom_media_key_message_event_get_message ::
+foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
         JSRef MediaKeyMessageEvent -> IO (JSRef Uint8Array)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.message Mozilla WebKitMediaKeyMessageEvent.message documentation> 
-mediaKeyMessageEventGetMessage ::
-                               (MonadIO m, IsMediaKeyMessageEvent self) =>
-                                 self -> m (Maybe Uint8Array)
-mediaKeyMessageEventGetMessage self
+getMessage ::
+           (MonadIO m) => MediaKeyMessageEvent -> m (Maybe Uint8Array)
+getMessage self
   = liftIO
-      ((ghcjs_dom_media_key_message_event_get_message
-          (unMediaKeyMessageEvent (toMediaKeyMessageEvent self)))
-         >>= fromJSRef)
+      ((js_getMessage (unMediaKeyMessageEvent self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"destinationURL\"]"
-        ghcjs_dom_media_key_message_event_get_destination_url ::
-        JSRef MediaKeyMessageEvent -> IO JSString
+        js_getDestinationURL :: JSRef MediaKeyMessageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.destinationURL Mozilla WebKitMediaKeyMessageEvent.destinationURL documentation> 
-mediaKeyMessageEventGetDestinationURL ::
-                                      (MonadIO m, IsMediaKeyMessageEvent self,
-                                       FromJSString result) =>
-                                        self -> m result
-mediaKeyMessageEventGetDestinationURL self
+getDestinationURL ::
+                  (MonadIO m, FromJSString result) =>
+                    MediaKeyMessageEvent -> m result
+getDestinationURL self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_media_key_message_event_get_destination_url
-            (unMediaKeyMessageEvent (toMediaKeyMessageEvent self))))
+         (js_getDestinationURL (unMediaKeyMessageEvent self)))
 #else
 module GHCJS.DOM.MediaKeyMessageEvent (
   ) where

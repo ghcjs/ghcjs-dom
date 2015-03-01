@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFormControlsCollection
-       (ghcjs_dom_html_form_controls_collection_get,
-        htmlFormControlsCollection_get,
-        ghcjs_dom_html_form_controls_collection_named_item,
-        htmlFormControlsCollectionNamedItem, HTMLFormControlsCollection,
-        IsHTMLFormControlsCollection, castToHTMLFormControlsCollection,
-        gTypeHTMLFormControlsCollection, toHTMLFormControlsCollection)
+       (js__get, _get, js_namedItem, namedItem,
+        HTMLFormControlsCollection, castToHTMLFormControlsCollection,
+        gTypeHTMLFormControlsCollection)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,38 +16,31 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"_get\"]($2)"
-        ghcjs_dom_html_form_controls_collection_get ::
+foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
         JSRef HTMLFormControlsCollection -> Word -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection._get Mozilla HTMLFormControlsCollection._get documentation> 
-htmlFormControlsCollection_get ::
-                               (MonadIO m, IsHTMLFormControlsCollection self) =>
-                                 self -> Word -> m (Maybe Node)
-htmlFormControlsCollection_get self index
+_get ::
+     (MonadIO m) => HTMLFormControlsCollection -> Word -> m (Maybe Node)
+_get self index
   = liftIO
-      ((ghcjs_dom_html_form_controls_collection_get
-          (unHTMLFormControlsCollection (toHTMLFormControlsCollection self))
-          index)
-         >>= fromJSRef)
+      ((js__get (unHTMLFormControlsCollection self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        ghcjs_dom_html_form_controls_collection_named_item ::
+        js_namedItem ::
         JSRef HTMLFormControlsCollection -> JSString -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection.namedItem Mozilla HTMLFormControlsCollection.namedItem documentation> 
-htmlFormControlsCollectionNamedItem ::
-                                    (MonadIO m, IsHTMLFormControlsCollection self,
-                                     ToJSString name) =>
-                                      self -> name -> m (Maybe Node)
-htmlFormControlsCollectionNamedItem self name
+namedItem ::
+          (MonadIO m, ToJSString name) =>
+            HTMLFormControlsCollection -> name -> m (Maybe Node)
+namedItem self name
   = liftIO
-      ((ghcjs_dom_html_form_controls_collection_named_item
-          (unHTMLFormControlsCollection (toHTMLFormControlsCollection self))
+      ((js_namedItem (unHTMLFormControlsCollection self)
           (toJSString name))
          >>= fromJSRef)
 #else

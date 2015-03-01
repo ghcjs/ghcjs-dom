@@ -1,20 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMetaElement
-       (ghcjs_dom_html_meta_element_set_content,
-        htmlMetaElementSetContent, ghcjs_dom_html_meta_element_get_content,
-        htmlMetaElementGetContent,
-        ghcjs_dom_html_meta_element_set_http_equiv,
-        htmlMetaElementSetHttpEquiv,
-        ghcjs_dom_html_meta_element_get_http_equiv,
-        htmlMetaElementGetHttpEquiv, ghcjs_dom_html_meta_element_set_name,
-        htmlMetaElementSetName, ghcjs_dom_html_meta_element_get_name,
-        htmlMetaElementGetName, ghcjs_dom_html_meta_element_set_scheme,
-        htmlMetaElementSetScheme, ghcjs_dom_html_meta_element_get_scheme,
-        htmlMetaElementGetScheme, HTMLMetaElement, IsHTMLMetaElement,
-        castToHTMLMetaElement, gTypeHTMLMetaElement, toHTMLMetaElement)
+       (js_setContent, setContent, js_getContent, getContent,
+        js_setHttpEquiv, setHttpEquiv, js_getHttpEquiv, getHttpEquiv,
+        js_setName, setName, js_getName, getName, js_setScheme, setScheme,
+        js_getScheme, getScheme, HTMLMetaElement, castToHTMLMetaElement,
+        gTypeHTMLMetaElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,121 +18,84 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"content\"] = $2;"
-        ghcjs_dom_html_meta_element_set_content ::
-        JSRef HTMLMetaElement -> JSString -> IO ()
+        js_setContent :: JSRef HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.content Mozilla HTMLMetaElement.content documentation> 
-htmlMetaElementSetContent ::
-                          (MonadIO m, IsHTMLMetaElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlMetaElementSetContent self val
-  = liftIO
-      (ghcjs_dom_html_meta_element_set_content
-         (unHTMLMetaElement (toHTMLMetaElement self))
-         (toJSString val))
+setContent ::
+           (MonadIO m, ToJSString val) => HTMLMetaElement -> val -> m ()
+setContent self val
+  = liftIO (js_setContent (unHTMLMetaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"content\"]"
-        ghcjs_dom_html_meta_element_get_content ::
+foreign import javascript unsafe "$1[\"content\"]" js_getContent ::
         JSRef HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.content Mozilla HTMLMetaElement.content documentation> 
-htmlMetaElementGetContent ::
-                          (MonadIO m, IsHTMLMetaElement self, FromJSString result) =>
-                            self -> m result
-htmlMetaElementGetContent self
+getContent ::
+           (MonadIO m, FromJSString result) => HTMLMetaElement -> m result
+getContent self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_meta_element_get_content
-            (unHTMLMetaElement (toHTMLMetaElement self))))
+      (fromJSString <$> (js_getContent (unHTMLMetaElement self)))
  
 foreign import javascript unsafe "$1[\"httpEquiv\"] = $2;"
-        ghcjs_dom_html_meta_element_set_http_equiv ::
-        JSRef HTMLMetaElement -> JSString -> IO ()
+        js_setHttpEquiv :: JSRef HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.httpEquiv Mozilla HTMLMetaElement.httpEquiv documentation> 
-htmlMetaElementSetHttpEquiv ::
-                            (MonadIO m, IsHTMLMetaElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlMetaElementSetHttpEquiv self val
+setHttpEquiv ::
+             (MonadIO m, ToJSString val) => HTMLMetaElement -> val -> m ()
+setHttpEquiv self val
   = liftIO
-      (ghcjs_dom_html_meta_element_set_http_equiv
-         (unHTMLMetaElement (toHTMLMetaElement self))
-         (toJSString val))
+      (js_setHttpEquiv (unHTMLMetaElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"httpEquiv\"]"
-        ghcjs_dom_html_meta_element_get_http_equiv ::
-        JSRef HTMLMetaElement -> IO JSString
+        js_getHttpEquiv :: JSRef HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.httpEquiv Mozilla HTMLMetaElement.httpEquiv documentation> 
-htmlMetaElementGetHttpEquiv ::
-                            (MonadIO m, IsHTMLMetaElement self, FromJSString result) =>
-                              self -> m result
-htmlMetaElementGetHttpEquiv self
+getHttpEquiv ::
+             (MonadIO m, FromJSString result) => HTMLMetaElement -> m result
+getHttpEquiv self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_meta_element_get_http_equiv
-            (unHTMLMetaElement (toHTMLMetaElement self))))
+      (fromJSString <$> (js_getHttpEquiv (unHTMLMetaElement self)))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_meta_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.name Mozilla HTMLMetaElement.name documentation> 
-htmlMetaElementSetName ::
-                       (MonadIO m, IsHTMLMetaElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlMetaElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_meta_element_set_name
-         (unHTMLMetaElement (toHTMLMetaElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLMetaElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLMetaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_meta_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.name Mozilla HTMLMetaElement.name documentation> 
-htmlMetaElementGetName ::
-                       (MonadIO m, IsHTMLMetaElement self, FromJSString result) =>
-                         self -> m result
-htmlMetaElementGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_meta_element_get_name
-            (unHTMLMetaElement (toHTMLMetaElement self))))
+getName ::
+        (MonadIO m, FromJSString result) => HTMLMetaElement -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unHTMLMetaElement self)))
  
 foreign import javascript unsafe "$1[\"scheme\"] = $2;"
-        ghcjs_dom_html_meta_element_set_scheme ::
-        JSRef HTMLMetaElement -> JSString -> IO ()
+        js_setScheme :: JSRef HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.scheme Mozilla HTMLMetaElement.scheme documentation> 
-htmlMetaElementSetScheme ::
-                         (MonadIO m, IsHTMLMetaElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlMetaElementSetScheme self val
-  = liftIO
-      (ghcjs_dom_html_meta_element_set_scheme
-         (unHTMLMetaElement (toHTMLMetaElement self))
-         (toJSString val))
+setScheme ::
+          (MonadIO m, ToJSString val) => HTMLMetaElement -> val -> m ()
+setScheme self val
+  = liftIO (js_setScheme (unHTMLMetaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"scheme\"]"
-        ghcjs_dom_html_meta_element_get_scheme ::
+foreign import javascript unsafe "$1[\"scheme\"]" js_getScheme ::
         JSRef HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.scheme Mozilla HTMLMetaElement.scheme documentation> 
-htmlMetaElementGetScheme ::
-                         (MonadIO m, IsHTMLMetaElement self, FromJSString result) =>
-                           self -> m result
-htmlMetaElementGetScheme self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_meta_element_get_scheme
-            (unHTMLMetaElement (toHTMLMetaElement self))))
+getScheme ::
+          (MonadIO m, FromJSString result) => HTMLMetaElement -> m result
+getScheme self
+  = liftIO (fromJSString <$> (js_getScheme (unHTMLMetaElement self)))
 #else
 module GHCJS.DOM.HTMLMetaElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLMetaElement

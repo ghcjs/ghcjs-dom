@@ -1,25 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLFrameSetElement
-       (ghcjs_dom_html_frame_set_element_set_cols,
-        htmlFrameSetElementSetCols,
-        ghcjs_dom_html_frame_set_element_get_cols,
-        htmlFrameSetElementGetCols,
-        ghcjs_dom_html_frame_set_element_set_rows,
-        htmlFrameSetElementSetRows,
-        ghcjs_dom_html_frame_set_element_get_rows,
-        htmlFrameSetElementGetRows, htmlFrameSetElementBeforeUnload,
-        htmlFrameSetElementHashChange, htmlFrameSetElementMessage,
-        htmlFrameSetElementOffline, htmlFrameSetElementOnline,
-        htmlFrameSetElementPopState, htmlFrameSetElementResize,
-        htmlFrameSetElementStorage, htmlFrameSetElementUnload,
-        htmlFrameSetElementOrientationChange, htmlFrameSetElementBlur,
-        htmlFrameSetElementError, htmlFrameSetElementFocus,
-        htmlFrameSetElementLoad, HTMLFrameSetElement,
-        IsHTMLFrameSetElement, castToHTMLFrameSetElement,
-        gTypeHTMLFrameSetElement, toHTMLFrameSetElement)
+       (js_setCols, setCols, js_getCols, getCols, js_setRows, setRows,
+        js_getRows, getRows, beforeUnload, hashChange, message, offline,
+        online, popState, resize, storage, unload, orientationChange, blur,
+        error, focus, load, HTMLFrameSetElement, castToHTMLFrameSetElement,
+        gTypeHTMLFrameSetElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -29,153 +18,104 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"cols\"] = $2;"
-        ghcjs_dom_html_frame_set_element_set_cols ::
+foreign import javascript unsafe "$1[\"cols\"] = $2;" js_setCols ::
         JSRef HTMLFrameSetElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.cols Mozilla HTMLFrameSetElement.cols documentation> 
-htmlFrameSetElementSetCols ::
-                           (MonadIO m, IsHTMLFrameSetElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlFrameSetElementSetCols self val
-  = liftIO
-      (ghcjs_dom_html_frame_set_element_set_cols
-         (unHTMLFrameSetElement (toHTMLFrameSetElement self))
-         (toJSString val))
+setCols ::
+        (MonadIO m, ToJSString val) => HTMLFrameSetElement -> val -> m ()
+setCols self val
+  = liftIO (js_setCols (unHTMLFrameSetElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"cols\"]"
-        ghcjs_dom_html_frame_set_element_get_cols ::
+foreign import javascript unsafe "$1[\"cols\"]" js_getCols ::
         JSRef HTMLFrameSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.cols Mozilla HTMLFrameSetElement.cols documentation> 
-htmlFrameSetElementGetCols ::
-                           (MonadIO m, IsHTMLFrameSetElement self, FromJSString result) =>
-                             self -> m result
-htmlFrameSetElementGetCols self
+getCols ::
+        (MonadIO m, FromJSString result) => HTMLFrameSetElement -> m result
+getCols self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_frame_set_element_get_cols
-            (unHTMLFrameSetElement (toHTMLFrameSetElement self))))
+      (fromJSString <$> (js_getCols (unHTMLFrameSetElement self)))
  
-foreign import javascript unsafe "$1[\"rows\"] = $2;"
-        ghcjs_dom_html_frame_set_element_set_rows ::
+foreign import javascript unsafe "$1[\"rows\"] = $2;" js_setRows ::
         JSRef HTMLFrameSetElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.rows Mozilla HTMLFrameSetElement.rows documentation> 
-htmlFrameSetElementSetRows ::
-                           (MonadIO m, IsHTMLFrameSetElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlFrameSetElementSetRows self val
-  = liftIO
-      (ghcjs_dom_html_frame_set_element_set_rows
-         (unHTMLFrameSetElement (toHTMLFrameSetElement self))
-         (toJSString val))
+setRows ::
+        (MonadIO m, ToJSString val) => HTMLFrameSetElement -> val -> m ()
+setRows self val
+  = liftIO (js_setRows (unHTMLFrameSetElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"rows\"]"
-        ghcjs_dom_html_frame_set_element_get_rows ::
+foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
         JSRef HTMLFrameSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.rows Mozilla HTMLFrameSetElement.rows documentation> 
-htmlFrameSetElementGetRows ::
-                           (MonadIO m, IsHTMLFrameSetElement self, FromJSString result) =>
-                             self -> m result
-htmlFrameSetElementGetRows self
+getRows ::
+        (MonadIO m, FromJSString result) => HTMLFrameSetElement -> m result
+getRows self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_frame_set_element_get_rows
-            (unHTMLFrameSetElement (toHTMLFrameSetElement self))))
+      (fromJSString <$> (js_getRows (unHTMLFrameSetElement self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.beforeUnload Mozilla HTMLFrameSetElement.beforeUnload documentation> 
-htmlFrameSetElementBeforeUnload ::
-                                (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                                  EventName self BeforeUnloadEvent
-htmlFrameSetElementBeforeUnload
-  = unsafeEventName (toJSString "beforeunload")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onbeforeunload Mozilla HTMLFrameSetElement.onbeforeunload documentation> 
+beforeUnload :: EventName HTMLFrameSetElement BeforeUnloadEvent
+beforeUnload = unsafeEventName (toJSString "beforeunload")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.hashChange Mozilla HTMLFrameSetElement.hashChange documentation> 
-htmlFrameSetElementHashChange ::
-                              (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                                EventName self HashChangeEvent
-htmlFrameSetElementHashChange
-  = unsafeEventName (toJSString "hashchange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onhashchange Mozilla HTMLFrameSetElement.onhashchange documentation> 
+hashChange :: EventName HTMLFrameSetElement HashChangeEvent
+hashChange = unsafeEventName (toJSString "hashchange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.message Mozilla HTMLFrameSetElement.message documentation> 
-htmlFrameSetElementMessage ::
-                           (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                             EventName self MessageEvent
-htmlFrameSetElementMessage = unsafeEventName (toJSString "message")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onmessage Mozilla HTMLFrameSetElement.onmessage documentation> 
+message :: EventName HTMLFrameSetElement MessageEvent
+message = unsafeEventName (toJSString "message")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.offline Mozilla HTMLFrameSetElement.offline documentation> 
-htmlFrameSetElementOffline ::
-                           (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                             EventName self Event
-htmlFrameSetElementOffline = unsafeEventName (toJSString "offline")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onoffline Mozilla HTMLFrameSetElement.onoffline documentation> 
+offline :: EventName HTMLFrameSetElement Event
+offline = unsafeEventName (toJSString "offline")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.online Mozilla HTMLFrameSetElement.online documentation> 
-htmlFrameSetElementOnline ::
-                          (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                            EventName self Event
-htmlFrameSetElementOnline = unsafeEventName (toJSString "online")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.ononline Mozilla HTMLFrameSetElement.ononline documentation> 
+online :: EventName HTMLFrameSetElement Event
+online = unsafeEventName (toJSString "online")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.popState Mozilla HTMLFrameSetElement.popState documentation> 
-htmlFrameSetElementPopState ::
-                            (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                              EventName self PopStateEvent
-htmlFrameSetElementPopState
-  = unsafeEventName (toJSString "popstate")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onpopstate Mozilla HTMLFrameSetElement.onpopstate documentation> 
+popState :: EventName HTMLFrameSetElement PopStateEvent
+popState = unsafeEventName (toJSString "popstate")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.resize Mozilla HTMLFrameSetElement.resize documentation> 
-htmlFrameSetElementResize ::
-                          (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                            EventName self UIEvent
-htmlFrameSetElementResize = unsafeEventName (toJSString "resize")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onresize Mozilla HTMLFrameSetElement.onresize documentation> 
+resize :: EventName HTMLFrameSetElement UIEvent
+resize = unsafeEventName (toJSString "resize")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.storage Mozilla HTMLFrameSetElement.storage documentation> 
-htmlFrameSetElementStorage ::
-                           (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                             EventName self StorageEvent
-htmlFrameSetElementStorage = unsafeEventName (toJSString "storage")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onstorage Mozilla HTMLFrameSetElement.onstorage documentation> 
+storage :: EventName HTMLFrameSetElement StorageEvent
+storage = unsafeEventName (toJSString "storage")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.unload Mozilla HTMLFrameSetElement.unload documentation> 
-htmlFrameSetElementUnload ::
-                          (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                            EventName self UIEvent
-htmlFrameSetElementUnload = unsafeEventName (toJSString "unload")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onunload Mozilla HTMLFrameSetElement.onunload documentation> 
+unload :: EventName HTMLFrameSetElement UIEvent
+unload = unsafeEventName (toJSString "unload")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.orientationChange Mozilla HTMLFrameSetElement.orientationChange documentation> 
-htmlFrameSetElementOrientationChange ::
-                                     (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                                       EventName self Event
-htmlFrameSetElementOrientationChange
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onorientationchange Mozilla HTMLFrameSetElement.onorientationchange documentation> 
+orientationChange :: EventName HTMLFrameSetElement Event
+orientationChange
   = unsafeEventName (toJSString "orientationchange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.blur Mozilla HTMLFrameSetElement.blur documentation> 
-htmlFrameSetElementBlur ::
-                        (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                          EventName self FocusEvent
-htmlFrameSetElementBlur = unsafeEventName (toJSString "blur")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onblur Mozilla HTMLFrameSetElement.onblur documentation> 
+blur :: EventName HTMLFrameSetElement FocusEvent
+blur = unsafeEventName (toJSString "blur")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.error Mozilla HTMLFrameSetElement.error documentation> 
-htmlFrameSetElementError ::
-                         (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                           EventName self UIEvent
-htmlFrameSetElementError = unsafeEventName (toJSString "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onerror Mozilla HTMLFrameSetElement.onerror documentation> 
+error :: EventName HTMLFrameSetElement UIEvent
+error = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.focus Mozilla HTMLFrameSetElement.focus documentation> 
-htmlFrameSetElementFocus ::
-                         (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                           EventName self FocusEvent
-htmlFrameSetElementFocus = unsafeEventName (toJSString "focus")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onfocus Mozilla HTMLFrameSetElement.onfocus documentation> 
+focus :: EventName HTMLFrameSetElement FocusEvent
+focus = unsafeEventName (toJSString "focus")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.load Mozilla HTMLFrameSetElement.load documentation> 
-htmlFrameSetElementLoad ::
-                        (IsHTMLFrameSetElement self, IsEventTarget self) =>
-                          EventName self UIEvent
-htmlFrameSetElementLoad = unsafeEventName (toJSString "load")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onload Mozilla HTMLFrameSetElement.onload documentation> 
+load :: EventName HTMLFrameSetElement UIEvent
+load = unsafeEventName (toJSString "load")
 #else
 module GHCJS.DOM.HTMLFrameSetElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLFrameSetElement

@@ -1,35 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAreaElement
-       (ghcjs_dom_html_area_element_set_alt, htmlAreaElementSetAlt,
-        ghcjs_dom_html_area_element_get_alt, htmlAreaElementGetAlt,
-        ghcjs_dom_html_area_element_set_coords, htmlAreaElementSetCoords,
-        ghcjs_dom_html_area_element_get_coords, htmlAreaElementGetCoords,
-        ghcjs_dom_html_area_element_set_href, htmlAreaElementSetHref,
-        ghcjs_dom_html_area_element_get_href, htmlAreaElementGetHref,
-        ghcjs_dom_html_area_element_set_no_href, htmlAreaElementSetNoHref,
-        ghcjs_dom_html_area_element_get_no_href, htmlAreaElementGetNoHref,
-        ghcjs_dom_html_area_element_set_ping, htmlAreaElementSetPing,
-        ghcjs_dom_html_area_element_get_ping, htmlAreaElementGetPing,
-        ghcjs_dom_html_area_element_set_rel, htmlAreaElementSetRel,
-        ghcjs_dom_html_area_element_get_rel, htmlAreaElementGetRel,
-        ghcjs_dom_html_area_element_set_shape, htmlAreaElementSetShape,
-        ghcjs_dom_html_area_element_get_shape, htmlAreaElementGetShape,
-        ghcjs_dom_html_area_element_set_target, htmlAreaElementSetTarget,
-        ghcjs_dom_html_area_element_get_target, htmlAreaElementGetTarget,
-        ghcjs_dom_html_area_element_get_hash, htmlAreaElementGetHash,
-        ghcjs_dom_html_area_element_get_host, htmlAreaElementGetHost,
-        ghcjs_dom_html_area_element_get_hostname,
-        htmlAreaElementGetHostname,
-        ghcjs_dom_html_area_element_get_pathname,
-        htmlAreaElementGetPathname, ghcjs_dom_html_area_element_get_port,
-        htmlAreaElementGetPort, ghcjs_dom_html_area_element_get_protocol,
-        htmlAreaElementGetProtocol, ghcjs_dom_html_area_element_get_search,
-        htmlAreaElementGetSearch, ghcjs_dom_html_area_element_get_rel_list,
-        htmlAreaElementGetRelList, HTMLAreaElement, IsHTMLAreaElement,
-        castToHTMLAreaElement, gTypeHTMLAreaElement, toHTMLAreaElement)
+       (js_setAlt, setAlt, js_getAlt, getAlt, js_setCoords, setCoords,
+        js_getCoords, getCoords, js_setHref, setHref, js_getHref, getHref,
+        js_setNoHref, setNoHref, js_getNoHref, getNoHref, js_setPing,
+        setPing, js_getPing, getPing, js_setRel, setRel, js_getRel, getRel,
+        js_setShape, setShape, js_getShape, getShape, js_setTarget,
+        setTarget, js_getTarget, getTarget, js_getHash, getHash,
+        js_getHost, getHost, js_getHostname, getHostname, js_getPathname,
+        getPathname, js_getPort, getPort, js_getProtocol, getProtocol,
+        js_getSearch, getSearch, js_getRelList, getRelList,
+        HTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -39,342 +23,225 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"alt\"] = $2;"
-        ghcjs_dom_html_area_element_set_alt ::
+foreign import javascript unsafe "$1[\"alt\"] = $2;" js_setAlt ::
         JSRef HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.alt Mozilla HTMLAreaElement.alt documentation> 
-htmlAreaElementSetAlt ::
-                      (MonadIO m, IsHTMLAreaElement self, ToJSString val) =>
-                        self -> val -> m ()
-htmlAreaElementSetAlt self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_alt
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         (toJSString val))
+setAlt ::
+       (MonadIO m, ToJSString val) => HTMLAreaElement -> val -> m ()
+setAlt self val
+  = liftIO (js_setAlt (unHTMLAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"alt\"]"
-        ghcjs_dom_html_area_element_get_alt ::
+foreign import javascript unsafe "$1[\"alt\"]" js_getAlt ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.alt Mozilla HTMLAreaElement.alt documentation> 
-htmlAreaElementGetAlt ::
-                      (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                        self -> m result
-htmlAreaElementGetAlt self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_alt
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getAlt ::
+       (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getAlt self
+  = liftIO (fromJSString <$> (js_getAlt (unHTMLAreaElement self)))
  
 foreign import javascript unsafe "$1[\"coords\"] = $2;"
-        ghcjs_dom_html_area_element_set_coords ::
-        JSRef HTMLAreaElement -> JSString -> IO ()
+        js_setCoords :: JSRef HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.coords Mozilla HTMLAreaElement.coords documentation> 
-htmlAreaElementSetCoords ::
-                         (MonadIO m, IsHTMLAreaElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAreaElementSetCoords self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_coords
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         (toJSString val))
+setCoords ::
+          (MonadIO m, ToJSString val) => HTMLAreaElement -> val -> m ()
+setCoords self val
+  = liftIO (js_setCoords (unHTMLAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"coords\"]"
-        ghcjs_dom_html_area_element_get_coords ::
+foreign import javascript unsafe "$1[\"coords\"]" js_getCoords ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.coords Mozilla HTMLAreaElement.coords documentation> 
-htmlAreaElementGetCoords ::
-                         (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                           self -> m result
-htmlAreaElementGetCoords self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_coords
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getCoords ::
+          (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getCoords self
+  = liftIO (fromJSString <$> (js_getCoords (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"href\"] = $2;"
-        ghcjs_dom_html_area_element_set_href ::
+foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         JSRef HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.href Mozilla HTMLAreaElement.href documentation> 
-htmlAreaElementSetHref ::
-                       (MonadIO m, IsHTMLAreaElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlAreaElementSetHref self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_href
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         (toJSString val))
+setHref ::
+        (MonadIO m, ToJSString val) => HTMLAreaElement -> val -> m ()
+setHref self val
+  = liftIO (js_setHref (unHTMLAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]"
-        ghcjs_dom_html_area_element_get_href ::
+foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.href Mozilla HTMLAreaElement.href documentation> 
-htmlAreaElementGetHref ::
-                       (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                         self -> m result
-htmlAreaElementGetHref self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_href
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getHref ::
+        (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getHref self
+  = liftIO (fromJSString <$> (js_getHref (unHTMLAreaElement self)))
  
 foreign import javascript unsafe "$1[\"noHref\"] = $2;"
-        ghcjs_dom_html_area_element_set_no_href ::
-        JSRef HTMLAreaElement -> Bool -> IO ()
+        js_setNoHref :: JSRef HTMLAreaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.noHref Mozilla HTMLAreaElement.noHref documentation> 
-htmlAreaElementSetNoHref ::
-                         (MonadIO m, IsHTMLAreaElement self) => self -> Bool -> m ()
-htmlAreaElementSetNoHref self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_no_href
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         val)
+setNoHref :: (MonadIO m) => HTMLAreaElement -> Bool -> m ()
+setNoHref self val
+  = liftIO (js_setNoHref (unHTMLAreaElement self) val)
  
 foreign import javascript unsafe "($1[\"noHref\"] ? 1 : 0)"
-        ghcjs_dom_html_area_element_get_no_href ::
-        JSRef HTMLAreaElement -> IO Bool
+        js_getNoHref :: JSRef HTMLAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.noHref Mozilla HTMLAreaElement.noHref documentation> 
-htmlAreaElementGetNoHref ::
-                         (MonadIO m, IsHTMLAreaElement self) => self -> m Bool
-htmlAreaElementGetNoHref self
-  = liftIO
-      (ghcjs_dom_html_area_element_get_no_href
-         (unHTMLAreaElement (toHTMLAreaElement self)))
+getNoHref :: (MonadIO m) => HTMLAreaElement -> m Bool
+getNoHref self = liftIO (js_getNoHref (unHTMLAreaElement self))
  
-foreign import javascript unsafe "$1[\"ping\"] = $2;"
-        ghcjs_dom_html_area_element_set_ping ::
+foreign import javascript unsafe "$1[\"ping\"] = $2;" js_setPing ::
         JSRef HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.ping Mozilla HTMLAreaElement.ping documentation> 
-htmlAreaElementSetPing ::
-                       (MonadIO m, IsHTMLAreaElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlAreaElementSetPing self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_ping
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         (toJSString val))
+setPing ::
+        (MonadIO m, ToJSString val) => HTMLAreaElement -> val -> m ()
+setPing self val
+  = liftIO (js_setPing (unHTMLAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"ping\"]"
-        ghcjs_dom_html_area_element_get_ping ::
+foreign import javascript unsafe "$1[\"ping\"]" js_getPing ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.ping Mozilla HTMLAreaElement.ping documentation> 
-htmlAreaElementGetPing ::
-                       (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                         self -> m result
-htmlAreaElementGetPing self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_ping
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getPing ::
+        (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getPing self
+  = liftIO (fromJSString <$> (js_getPing (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"rel\"] = $2;"
-        ghcjs_dom_html_area_element_set_rel ::
+foreign import javascript unsafe "$1[\"rel\"] = $2;" js_setRel ::
         JSRef HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.rel Mozilla HTMLAreaElement.rel documentation> 
-htmlAreaElementSetRel ::
-                      (MonadIO m, IsHTMLAreaElement self, ToJSString val) =>
-                        self -> val -> m ()
-htmlAreaElementSetRel self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_rel
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         (toJSString val))
+setRel ::
+       (MonadIO m, ToJSString val) => HTMLAreaElement -> val -> m ()
+setRel self val
+  = liftIO (js_setRel (unHTMLAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"rel\"]"
-        ghcjs_dom_html_area_element_get_rel ::
+foreign import javascript unsafe "$1[\"rel\"]" js_getRel ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.rel Mozilla HTMLAreaElement.rel documentation> 
-htmlAreaElementGetRel ::
-                      (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                        self -> m result
-htmlAreaElementGetRel self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_rel
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getRel ::
+       (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getRel self
+  = liftIO (fromJSString <$> (js_getRel (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"shape\"] = $2;"
-        ghcjs_dom_html_area_element_set_shape ::
-        JSRef HTMLAreaElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"shape\"] = $2;" js_setShape
+        :: JSRef HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.shape Mozilla HTMLAreaElement.shape documentation> 
-htmlAreaElementSetShape ::
-                        (MonadIO m, IsHTMLAreaElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlAreaElementSetShape self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_shape
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         (toJSString val))
+setShape ::
+         (MonadIO m, ToJSString val) => HTMLAreaElement -> val -> m ()
+setShape self val
+  = liftIO (js_setShape (unHTMLAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"shape\"]"
-        ghcjs_dom_html_area_element_get_shape ::
+foreign import javascript unsafe "$1[\"shape\"]" js_getShape ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.shape Mozilla HTMLAreaElement.shape documentation> 
-htmlAreaElementGetShape ::
-                        (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                          self -> m result
-htmlAreaElementGetShape self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_shape
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getShape ::
+         (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getShape self
+  = liftIO (fromJSString <$> (js_getShape (unHTMLAreaElement self)))
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
-        ghcjs_dom_html_area_element_set_target ::
-        JSRef HTMLAreaElement -> JSString -> IO ()
+        js_setTarget :: JSRef HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.target Mozilla HTMLAreaElement.target documentation> 
-htmlAreaElementSetTarget ::
-                         (MonadIO m, IsHTMLAreaElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAreaElementSetTarget self val
-  = liftIO
-      (ghcjs_dom_html_area_element_set_target
-         (unHTMLAreaElement (toHTMLAreaElement self))
-         (toJSString val))
+setTarget ::
+          (MonadIO m, ToJSString val) => HTMLAreaElement -> val -> m ()
+setTarget self val
+  = liftIO (js_setTarget (unHTMLAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"target\"]"
-        ghcjs_dom_html_area_element_get_target ::
+foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.target Mozilla HTMLAreaElement.target documentation> 
-htmlAreaElementGetTarget ::
-                         (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                           self -> m result
-htmlAreaElementGetTarget self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_target
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getTarget ::
+          (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getTarget self
+  = liftIO (fromJSString <$> (js_getTarget (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"hash\"]"
-        ghcjs_dom_html_area_element_get_hash ::
+foreign import javascript unsafe "$1[\"hash\"]" js_getHash ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.hash Mozilla HTMLAreaElement.hash documentation> 
-htmlAreaElementGetHash ::
-                       (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                         self -> m result
-htmlAreaElementGetHash self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_hash
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getHash ::
+        (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getHash self
+  = liftIO (fromJSString <$> (js_getHash (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"host\"]"
-        ghcjs_dom_html_area_element_get_host ::
+foreign import javascript unsafe "$1[\"host\"]" js_getHost ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.host Mozilla HTMLAreaElement.host documentation> 
-htmlAreaElementGetHost ::
-                       (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                         self -> m result
-htmlAreaElementGetHost self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_host
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getHost ::
+        (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getHost self
+  = liftIO (fromJSString <$> (js_getHost (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"hostname\"]"
-        ghcjs_dom_html_area_element_get_hostname ::
-        JSRef HTMLAreaElement -> IO JSString
+foreign import javascript unsafe "$1[\"hostname\"]" js_getHostname
+        :: JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.hostname Mozilla HTMLAreaElement.hostname documentation> 
-htmlAreaElementGetHostname ::
-                           (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                             self -> m result
-htmlAreaElementGetHostname self
+getHostname ::
+            (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getHostname self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_hostname
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+      (fromJSString <$> (js_getHostname (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"pathname\"]"
-        ghcjs_dom_html_area_element_get_pathname ::
-        JSRef HTMLAreaElement -> IO JSString
+foreign import javascript unsafe "$1[\"pathname\"]" js_getPathname
+        :: JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.pathname Mozilla HTMLAreaElement.pathname documentation> 
-htmlAreaElementGetPathname ::
-                           (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                             self -> m result
-htmlAreaElementGetPathname self
+getPathname ::
+            (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getPathname self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_pathname
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+      (fromJSString <$> (js_getPathname (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"port\"]"
-        ghcjs_dom_html_area_element_get_port ::
+foreign import javascript unsafe "$1[\"port\"]" js_getPort ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.port Mozilla HTMLAreaElement.port documentation> 
-htmlAreaElementGetPort ::
-                       (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                         self -> m result
-htmlAreaElementGetPort self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_port
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getPort ::
+        (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getPort self
+  = liftIO (fromJSString <$> (js_getPort (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"protocol\"]"
-        ghcjs_dom_html_area_element_get_protocol ::
-        JSRef HTMLAreaElement -> IO JSString
+foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+        :: JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.protocol Mozilla HTMLAreaElement.protocol documentation> 
-htmlAreaElementGetProtocol ::
-                           (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                             self -> m result
-htmlAreaElementGetProtocol self
+getProtocol ::
+            (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getProtocol self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_protocol
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+      (fromJSString <$> (js_getProtocol (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"search\"]"
-        ghcjs_dom_html_area_element_get_search ::
+foreign import javascript unsafe "$1[\"search\"]" js_getSearch ::
         JSRef HTMLAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.search Mozilla HTMLAreaElement.search documentation> 
-htmlAreaElementGetSearch ::
-                         (MonadIO m, IsHTMLAreaElement self, FromJSString result) =>
-                           self -> m result
-htmlAreaElementGetSearch self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_area_element_get_search
-            (unHTMLAreaElement (toHTMLAreaElement self))))
+getSearch ::
+          (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
+getSearch self
+  = liftIO (fromJSString <$> (js_getSearch (unHTMLAreaElement self)))
  
-foreign import javascript unsafe "$1[\"relList\"]"
-        ghcjs_dom_html_area_element_get_rel_list ::
+foreign import javascript unsafe "$1[\"relList\"]" js_getRelList ::
         JSRef HTMLAreaElement -> IO (JSRef DOMTokenList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.relList Mozilla HTMLAreaElement.relList documentation> 
-htmlAreaElementGetRelList ::
-                          (MonadIO m, IsHTMLAreaElement self) =>
-                            self -> m (Maybe DOMTokenList)
-htmlAreaElementGetRelList self
-  = liftIO
-      ((ghcjs_dom_html_area_element_get_rel_list
-          (unHTMLAreaElement (toHTMLAreaElement self)))
-         >>= fromJSRef)
+getRelList ::
+           (MonadIO m) => HTMLAreaElement -> m (Maybe DOMTokenList)
+getRelList self
+  = liftIO ((js_getRelList (unHTMLAreaElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLAreaElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLAreaElement

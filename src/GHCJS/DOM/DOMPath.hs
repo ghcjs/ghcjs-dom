@@ -1,17 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMPath
-       (ghcjs_dom_dom_path_new, domPathNew, ghcjs_dom_dom_path_add_path,
-        domPathAddPath, ghcjs_dom_dom_path_close_path, domPathClosePath,
-        ghcjs_dom_dom_path_move_to, domPathMoveTo,
-        ghcjs_dom_dom_path_line_to, domPathLineTo,
-        ghcjs_dom_dom_path_quadratic_curve_to, domPathQuadraticCurveTo,
-        ghcjs_dom_dom_path_bezier_curve_to, domPathBezierCurveTo,
-        ghcjs_dom_dom_path_arc_to, domPathArcTo, ghcjs_dom_dom_path_rect,
-        domPathRect, ghcjs_dom_dom_path_arc, domPathArc, DOMPath,
-        IsDOMPath, castToDOMPath, gTypeDOMPath, toDOMPath)
+       (js_newDOMPath, newDOMPath, js_newDOMPath', newDOMPath',
+        js_newDOMPath'', newDOMPath'', js_addPath, addPath, js_closePath,
+        closePath, js_moveTo, moveTo, js_lineTo, lineTo,
+        js_quadraticCurveTo, quadraticCurveTo, js_bezierCurveTo,
+        bezierCurveTo, js_arcTo, arcTo, js_rect, rect, js_arc, arc,
+        DOMPath, castToDOMPath, gTypeDOMPath)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,161 +19,127 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"Path2D\"]()"
-        ghcjs_dom_dom_path_new :: IO (JSRef DOMPath)
+        js_newDOMPath :: IO (JSRef DOMPath)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation> 
-domPathNew :: (MonadIO m) => m DOMPath
-domPathNew = liftIO (ghcjs_dom_dom_path_new >>= fromJSRefUnchecked)
+newDOMPath :: (MonadIO m) => m DOMPath
+newDOMPath = liftIO (js_newDOMPath >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "new window[\"Path2D\"]($1)"
-        ghcjs_dom_dom_path_new' :: JSRef DOMPath -> IO (JSRef DOMPath)
+        js_newDOMPath' :: JSRef DOMPath -> IO (JSRef DOMPath)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation> 
-domPathNew' ::
-            (MonadIO m, IsDOMPath path) => Maybe path -> m DOMPath
-domPathNew' path
+newDOMPath' :: (MonadIO m) => Maybe DOMPath -> m DOMPath
+newDOMPath' path
   = liftIO
-      (ghcjs_dom_dom_path_new'
-         (maybe jsNull (unDOMPath . toDOMPath) path)
-         >>= fromJSRefUnchecked)
+      (js_newDOMPath' (maybe jsNull unDOMPath path) >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe "new window[\"Path2D\"]($1)"
-        ghcjs_dom_dom_path_new'' :: JSString -> IO (JSRef DOMPath)
+        js_newDOMPath'' :: JSString -> IO (JSRef DOMPath)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation> 
-domPathNew'' :: (MonadIO m, ToJSString text) => text -> m DOMPath
-domPathNew'' text
-  = liftIO
-      (ghcjs_dom_dom_path_new'' (toJSString text) >>= fromJSRefUnchecked)
+newDOMPath'' :: (MonadIO m, ToJSString text) => text -> m DOMPath
+newDOMPath'' text
+  = liftIO (js_newDOMPath'' (toJSString text) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"addPath\"]($2, $3)"
-        ghcjs_dom_dom_path_add_path ::
+        js_addPath ::
         JSRef DOMPath -> JSRef DOMPath -> JSRef SVGMatrix -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.addPath Mozilla Path2D.addPath documentation> 
-domPathAddPath ::
-               (MonadIO m, IsDOMPath self, IsDOMPath path,
-                IsSVGMatrix transform) =>
-                 self -> Maybe path -> Maybe transform -> m ()
-domPathAddPath self path transform
+addPath ::
+        (MonadIO m) => DOMPath -> Maybe DOMPath -> Maybe SVGMatrix -> m ()
+addPath self path transform
   = liftIO
-      (ghcjs_dom_dom_path_add_path (unDOMPath (toDOMPath self))
-         (maybe jsNull (unDOMPath . toDOMPath) path)
-         (maybe jsNull (unSVGMatrix . toSVGMatrix) transform))
+      (js_addPath (unDOMPath self) (maybe jsNull unDOMPath path)
+         (maybe jsNull unSVGMatrix transform))
  
-foreign import javascript unsafe "$1[\"closePath\"]()"
-        ghcjs_dom_dom_path_close_path :: JSRef DOMPath -> IO ()
+foreign import javascript unsafe "$1[\"closePath\"]()" js_closePath
+        :: JSRef DOMPath -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.closePath Mozilla Path2D.closePath documentation> 
-domPathClosePath :: (MonadIO m, IsDOMPath self) => self -> m ()
-domPathClosePath self
-  = liftIO
-      (ghcjs_dom_dom_path_close_path (unDOMPath (toDOMPath self)))
+closePath :: (MonadIO m) => DOMPath -> m ()
+closePath self = liftIO (js_closePath (unDOMPath self))
  
-foreign import javascript unsafe "$1[\"moveTo\"]($2, $3)"
-        ghcjs_dom_dom_path_move_to ::
-        JSRef DOMPath -> Float -> Float -> IO ()
+foreign import javascript unsafe "$1[\"moveTo\"]($2, $3)" js_moveTo
+        :: JSRef DOMPath -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.moveTo Mozilla Path2D.moveTo documentation> 
-domPathMoveTo ::
-              (MonadIO m, IsDOMPath self) => self -> Float -> Float -> m ()
-domPathMoveTo self x y
-  = liftIO
-      (ghcjs_dom_dom_path_move_to (unDOMPath (toDOMPath self)) x y)
+moveTo :: (MonadIO m) => DOMPath -> Float -> Float -> m ()
+moveTo self x y = liftIO (js_moveTo (unDOMPath self) x y)
  
-foreign import javascript unsafe "$1[\"lineTo\"]($2, $3)"
-        ghcjs_dom_dom_path_line_to ::
-        JSRef DOMPath -> Float -> Float -> IO ()
+foreign import javascript unsafe "$1[\"lineTo\"]($2, $3)" js_lineTo
+        :: JSRef DOMPath -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.lineTo Mozilla Path2D.lineTo documentation> 
-domPathLineTo ::
-              (MonadIO m, IsDOMPath self) => self -> Float -> Float -> m ()
-domPathLineTo self x y
-  = liftIO
-      (ghcjs_dom_dom_path_line_to (unDOMPath (toDOMPath self)) x y)
+lineTo :: (MonadIO m) => DOMPath -> Float -> Float -> m ()
+lineTo self x y = liftIO (js_lineTo (unDOMPath self) x y)
  
 foreign import javascript unsafe
-        "$1[\"quadraticCurveTo\"]($2, $3,\n$4, $5)"
-        ghcjs_dom_dom_path_quadratic_curve_to ::
+        "$1[\"quadraticCurveTo\"]($2, $3,\n$4, $5)" js_quadraticCurveTo ::
         JSRef DOMPath -> Float -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.quadraticCurveTo Mozilla Path2D.quadraticCurveTo documentation> 
-domPathQuadraticCurveTo ::
-                        (MonadIO m, IsDOMPath self) =>
-                          self -> Float -> Float -> Float -> Float -> m ()
-domPathQuadraticCurveTo self cpx cpy x y
-  = liftIO
-      (ghcjs_dom_dom_path_quadratic_curve_to (unDOMPath (toDOMPath self))
-         cpx
-         cpy
-         x
-         y)
+quadraticCurveTo ::
+                 (MonadIO m) => DOMPath -> Float -> Float -> Float -> Float -> m ()
+quadraticCurveTo self cpx cpy x y
+  = liftIO (js_quadraticCurveTo (unDOMPath self) cpx cpy x y)
  
 foreign import javascript unsafe
-        "$1[\"bezierCurveTo\"]($2, $3, $4,\n$5, $6, $7)"
-        ghcjs_dom_dom_path_bezier_curve_to ::
+        "$1[\"bezierCurveTo\"]($2, $3, $4,\n$5, $6, $7)" js_bezierCurveTo
+        ::
         JSRef DOMPath ->
           Float -> Float -> Float -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.bezierCurveTo Mozilla Path2D.bezierCurveTo documentation> 
-domPathBezierCurveTo ::
-                     (MonadIO m, IsDOMPath self) =>
-                       self -> Float -> Float -> Float -> Float -> Float -> Float -> m ()
-domPathBezierCurveTo self cp1x cp1y cp2x cp2y x y
+bezierCurveTo ::
+              (MonadIO m) =>
+                DOMPath ->
+                  Float -> Float -> Float -> Float -> Float -> Float -> m ()
+bezierCurveTo self cp1x cp1y cp2x cp2y x y
   = liftIO
-      (ghcjs_dom_dom_path_bezier_curve_to (unDOMPath (toDOMPath self))
-         cp1x
-         cp1y
-         cp2x
-         cp2y
-         x
-         y)
+      (js_bezierCurveTo (unDOMPath self) cp1x cp1y cp2x cp2y x y)
  
 foreign import javascript unsafe
-        "$1[\"arcTo\"]($2, $3, $4, $5, $6)" ghcjs_dom_dom_path_arc_to ::
+        "$1[\"arcTo\"]($2, $3, $4, $5, $6)" js_arcTo ::
         JSRef DOMPath -> Float -> Float -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.arcTo Mozilla Path2D.arcTo documentation> 
-domPathArcTo ::
-             (MonadIO m, IsDOMPath self) =>
-               self -> Float -> Float -> Float -> Float -> Float -> m ()
-domPathArcTo self x1 y1 x2 y2 radius
-  = liftIO
-      (ghcjs_dom_dom_path_arc_to (unDOMPath (toDOMPath self)) x1 y1 x2 y2
-         radius)
+arcTo ::
+      (MonadIO m) =>
+        DOMPath -> Float -> Float -> Float -> Float -> Float -> m ()
+arcTo self x1 y1 x2 y2 radius
+  = liftIO (js_arcTo (unDOMPath self) x1 y1 x2 y2 radius)
  
 foreign import javascript unsafe "$1[\"rect\"]($2, $3, $4, $5)"
-        ghcjs_dom_dom_path_rect ::
+        js_rect ::
         JSRef DOMPath -> Float -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.rect Mozilla Path2D.rect documentation> 
-domPathRect ::
-            (MonadIO m, IsDOMPath self) =>
-              self -> Float -> Float -> Float -> Float -> m ()
-domPathRect self x y width height
-  = liftIO
-      (ghcjs_dom_dom_path_rect (unDOMPath (toDOMPath self)) x y width
-         height)
+rect ::
+     (MonadIO m) => DOMPath -> Float -> Float -> Float -> Float -> m ()
+rect self x y width height
+  = liftIO (js_rect (unDOMPath self) x y width height)
  
 foreign import javascript unsafe
-        "$1[\"arc\"]($2, $3, $4, $5, $6,\n$7)" ghcjs_dom_dom_path_arc ::
+        "$1[\"arc\"]($2, $3, $4, $5, $6,\n$7)" js_arc ::
         JSRef DOMPath ->
           Float -> Float -> Float -> Float -> Float -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D.arc Mozilla Path2D.arc documentation> 
-domPathArc ::
-           (MonadIO m, IsDOMPath self) =>
-             self -> Float -> Float -> Float -> Float -> Float -> Bool -> m ()
-domPathArc self x y radius startAngle endAngle anticlockwise
+arc ::
+    (MonadIO m) =>
+      DOMPath ->
+        Float -> Float -> Float -> Float -> Float -> Bool -> m ()
+arc self x y radius startAngle endAngle anticlockwise
   = liftIO
-      (ghcjs_dom_dom_path_arc (unDOMPath (toDOMPath self)) x y radius
-         startAngle
-         endAngle
+      (js_arc (unDOMPath self) x y radius startAngle endAngle
          anticlockwise)
 #else
 module GHCJS.DOM.DOMPath (

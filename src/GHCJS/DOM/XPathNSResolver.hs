@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathNSResolver
-       (ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri,
-        xPathNSResolverLookupNamespaceURI, XPathNSResolver,
-        IsXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver,
-        toXPathNSResolver)
+       (js_lookupNamespaceURI, lookupNamespaceURI, XPathNSResolver,
+        castToXPathNSResolver, gTypeXPathNSResolver)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,24 +15,22 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
-        ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri ::
+        js_lookupNamespaceURI ::
         JSRef XPathNSResolver -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver.lookupNamespaceURI Mozilla XPathNSResolver.lookupNamespaceURI documentation> 
-xPathNSResolverLookupNamespaceURI ::
-                                  (MonadIO m, IsXPathNSResolver self, ToJSString prefix,
-                                   FromJSString result) =>
-                                    self -> prefix -> m result
-xPathNSResolverLookupNamespaceURI self prefix
+lookupNamespaceURI ::
+                   (MonadIO m, ToJSString prefix, FromJSString result) =>
+                     XPathNSResolver -> prefix -> m result
+lookupNamespaceURI self prefix
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_xpath_ns_resolver_lookup_namespace_uri
-            (unXPathNSResolver (toXPathNSResolver self))
+         (js_lookupNamespaceURI (unXPathNSResolver self)
             (toJSString prefix)))
 #else
 module GHCJS.DOM.XPathNSResolver (

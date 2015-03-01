@@ -1,20 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SubtleCrypto
-       (ghcjs_dom_subtle_crypto_encrypt, subtleCryptoEncrypt,
-        ghcjs_dom_subtle_crypto_decrypt, subtleCryptoDecrypt,
-        ghcjs_dom_subtle_crypto_sign, subtleCryptoSign,
-        ghcjs_dom_subtle_crypto_verify, subtleCryptoVerify,
-        ghcjs_dom_subtle_crypto_digest, subtleCryptoDigest,
-        ghcjs_dom_subtle_crypto_generate_key, subtleCryptoGenerateKey,
-        ghcjs_dom_subtle_crypto_import_key, subtleCryptoImportKey,
-        ghcjs_dom_subtle_crypto_export_key, subtleCryptoExportKey,
-        ghcjs_dom_subtle_crypto_wrap_key, subtleCryptoWrapKey,
-        ghcjs_dom_subtle_crypto_unwrap_key, subtleCryptoUnwrapKey,
-        SubtleCrypto, IsSubtleCrypto, castToSubtleCrypto,
-        gTypeSubtleCrypto, toSubtleCrypto)
+       (js_encrypt, encrypt, js_decrypt, decrypt, js_sign, sign,
+        js_verify, verify, js_digest, digest, js_generateKey, generateKey,
+        js_importKey, importKey, js_exportKey, exportKey, js_wrapKey,
+        wrapKey, js_unwrapKey, unwrapKey, SubtleCrypto, castToSubtleCrypto,
+        gTypeSubtleCrypto)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,80 +18,72 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"encrypt\"]($2, $3, $4)"
-        ghcjs_dom_subtle_crypto_encrypt ::
+        js_encrypt ::
         JSRef SubtleCrypto ->
           JSString ->
             JSRef CryptoKey -> JSRef [Maybe data'] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.encrypt Mozilla WebKitSubtleCrypto.encrypt documentation> 
-subtleCryptoEncrypt ::
-                    (MonadIO m, IsSubtleCrypto self, ToJSString algorithm,
-                     IsCryptoKey key, IsCryptoOperationData data') =>
-                      self ->
-                        algorithm -> Maybe key -> [Maybe data'] -> m (Maybe Promise)
-subtleCryptoEncrypt self algorithm key data'
+encrypt ::
+        (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+          SubtleCrypto ->
+            algorithm -> Maybe CryptoKey -> [Maybe data'] -> m (Maybe Promise)
+encrypt self algorithm key data'
   = liftIO
       ((toJSRef data' >>=
           \ data'' ->
-            ghcjs_dom_subtle_crypto_encrypt
-              (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString algorithm)
-              (maybe jsNull (unCryptoKey . toCryptoKey) key)
+            js_encrypt (unSubtleCrypto self) (toJSString algorithm)
+              (maybe jsNull unCryptoKey key)
               data'')
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"decrypt\"]($2, $3, $4)"
-        ghcjs_dom_subtle_crypto_decrypt ::
+        js_decrypt ::
         JSRef SubtleCrypto ->
           JSString ->
             JSRef CryptoKey -> JSRef [Maybe data'] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.decrypt Mozilla WebKitSubtleCrypto.decrypt documentation> 
-subtleCryptoDecrypt ::
-                    (MonadIO m, IsSubtleCrypto self, ToJSString algorithm,
-                     IsCryptoKey key, IsCryptoOperationData data') =>
-                      self ->
-                        algorithm -> Maybe key -> [Maybe data'] -> m (Maybe Promise)
-subtleCryptoDecrypt self algorithm key data'
+decrypt ::
+        (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+          SubtleCrypto ->
+            algorithm -> Maybe CryptoKey -> [Maybe data'] -> m (Maybe Promise)
+decrypt self algorithm key data'
   = liftIO
       ((toJSRef data' >>=
           \ data'' ->
-            ghcjs_dom_subtle_crypto_decrypt
-              (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString algorithm)
-              (maybe jsNull (unCryptoKey . toCryptoKey) key)
+            js_decrypt (unSubtleCrypto self) (toJSString algorithm)
+              (maybe jsNull unCryptoKey key)
               data'')
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"sign\"]($2, $3, $4)"
-        ghcjs_dom_subtle_crypto_sign ::
+foreign import javascript unsafe "$1[\"sign\"]($2, $3, $4)" js_sign
+        ::
         JSRef SubtleCrypto ->
           JSString ->
             JSRef CryptoKey -> JSRef [Maybe data'] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.sign Mozilla WebKitSubtleCrypto.sign documentation> 
-subtleCryptoSign ::
-                 (MonadIO m, IsSubtleCrypto self, ToJSString algorithm,
-                  IsCryptoKey key, IsCryptoOperationData data') =>
-                   self ->
-                     algorithm -> Maybe key -> [Maybe data'] -> m (Maybe Promise)
-subtleCryptoSign self algorithm key data'
+sign ::
+     (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+       SubtleCrypto ->
+         algorithm -> Maybe CryptoKey -> [Maybe data'] -> m (Maybe Promise)
+sign self algorithm key data'
   = liftIO
       ((toJSRef data' >>=
           \ data'' ->
-            ghcjs_dom_subtle_crypto_sign (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString algorithm)
-              (maybe jsNull (unCryptoKey . toCryptoKey) key)
+            js_sign (unSubtleCrypto self) (toJSString algorithm)
+              (maybe jsNull unCryptoKey key)
               data'')
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"verify\"]($2, $3, $4, $5)"
-        ghcjs_dom_subtle_crypto_verify ::
+        js_verify ::
         JSRef SubtleCrypto ->
           JSString ->
             JSRef CryptoKey ->
@@ -105,90 +91,79 @@ foreign import javascript unsafe "$1[\"verify\"]($2, $3, $4, $5)"
                 JSRef [Maybe data'] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.verify Mozilla WebKitSubtleCrypto.verify documentation> 
-subtleCryptoVerify ::
-                   (MonadIO m, IsSubtleCrypto self, ToJSString algorithm,
-                    IsCryptoKey key, IsCryptoOperationData signature,
-                    IsCryptoOperationData data') =>
-                     self ->
-                       algorithm ->
-                         Maybe key -> Maybe signature -> [Maybe data'] -> m (Maybe Promise)
-subtleCryptoVerify self algorithm key signature data'
+verify ::
+       (MonadIO m, ToJSString algorithm, IsCryptoOperationData signature,
+        IsCryptoOperationData data') =>
+         SubtleCrypto ->
+           algorithm ->
+             Maybe CryptoKey ->
+               Maybe signature -> [Maybe data'] -> m (Maybe Promise)
+verify self algorithm key signature data'
   = liftIO
       ((toJSRef data' >>=
           \ data'' ->
-            ghcjs_dom_subtle_crypto_verify
-              (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString algorithm)
-              (maybe jsNull (unCryptoKey . toCryptoKey) key)
+            js_verify (unSubtleCrypto self) (toJSString algorithm)
+              (maybe jsNull unCryptoKey key)
               (maybe jsNull (unCryptoOperationData . toCryptoOperationData)
                  signature)
               data'')
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"digest\"]($2, $3)"
-        ghcjs_dom_subtle_crypto_digest ::
+foreign import javascript unsafe "$1[\"digest\"]($2, $3)" js_digest
+        ::
         JSRef SubtleCrypto ->
           JSString -> JSRef [Maybe data'] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.digest Mozilla WebKitSubtleCrypto.digest documentation> 
-subtleCryptoDigest ::
-                   (MonadIO m, IsSubtleCrypto self, ToJSString algorithm,
-                    IsCryptoOperationData data') =>
-                     self -> algorithm -> [Maybe data'] -> m (Maybe Promise)
-subtleCryptoDigest self algorithm data'
+digest ::
+       (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+         SubtleCrypto -> algorithm -> [Maybe data'] -> m (Maybe Promise)
+digest self algorithm data'
   = liftIO
       ((toJSRef data' >>=
           \ data'' ->
-            ghcjs_dom_subtle_crypto_digest
-              (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString algorithm)
-              data'')
+            js_digest (unSubtleCrypto self) (toJSString algorithm) data'')
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"generateKey\"]($2, $3, $4)"
-        ghcjs_dom_subtle_crypto_generate_key ::
+        js_generateKey ::
         JSRef SubtleCrypto ->
           JSString -> Bool -> JSRef [KeyUsage] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.generateKey Mozilla WebKitSubtleCrypto.generateKey documentation> 
-subtleCryptoGenerateKey ::
-                        (MonadIO m, IsSubtleCrypto self, ToJSString algorithm) =>
-                          self -> algorithm -> Bool -> [KeyUsage] -> m (Maybe Promise)
-subtleCryptoGenerateKey self algorithm extractable keyUsages
+generateKey ::
+            (MonadIO m, ToJSString algorithm) =>
+              SubtleCrypto ->
+                algorithm -> Bool -> [KeyUsage] -> m (Maybe Promise)
+generateKey self algorithm extractable keyUsages
   = liftIO
       ((toJSRef keyUsages >>=
           \ keyUsages' ->
-            ghcjs_dom_subtle_crypto_generate_key
-              (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString algorithm)
+            js_generateKey (unSubtleCrypto self) (toJSString algorithm)
               extractable
               keyUsages')
          >>= fromJSRef)
  
 foreign import javascript unsafe
-        "$1[\"importKey\"]($2, $3, $4, $5,\n$6)"
-        ghcjs_dom_subtle_crypto_import_key ::
+        "$1[\"importKey\"]($2, $3, $4, $5,\n$6)" js_importKey ::
         JSRef SubtleCrypto ->
           JSString ->
             JSRef CryptoOperationData ->
               JSString -> Bool -> JSRef [KeyUsage] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.importKey Mozilla WebKitSubtleCrypto.importKey documentation> 
-subtleCryptoImportKey ::
-                      (MonadIO m, IsSubtleCrypto self, ToJSString format,
-                       IsCryptoOperationData keyData, ToJSString algorithm) =>
-                        self ->
-                          format ->
-                            Maybe keyData ->
-                              Maybe algorithm -> Bool -> [KeyUsage] -> m (Maybe Promise)
-subtleCryptoImportKey self format keyData algorithm extractable
-  keyUsages
+importKey ::
+          (MonadIO m, ToJSString format, IsCryptoOperationData keyData,
+           ToJSString algorithm) =>
+            SubtleCrypto ->
+              format ->
+                Maybe keyData ->
+                  Maybe algorithm -> Bool -> [KeyUsage] -> m (Maybe Promise)
+importKey self format keyData algorithm extractable keyUsages
   = liftIO
       ((toJSRef keyUsages >>=
           \ keyUsages' ->
-            ghcjs_dom_subtle_crypto_import_key
-              (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString format)
+            js_importKey (unSubtleCrypto self) (toJSString format)
               (maybe jsNull (unCryptoOperationData . toCryptoOperationData)
                  keyData)
               (maybe jsNull toJSString algorithm)
@@ -197,52 +172,44 @@ subtleCryptoImportKey self format keyData algorithm extractable
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"exportKey\"]($2, $3)"
-        ghcjs_dom_subtle_crypto_export_key ::
+        js_exportKey ::
         JSRef SubtleCrypto ->
           JSString -> JSRef CryptoKey -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.exportKey Mozilla WebKitSubtleCrypto.exportKey documentation> 
-subtleCryptoExportKey ::
-                      (MonadIO m, IsSubtleCrypto self, ToJSString format,
-                       IsCryptoKey key) =>
-                        self -> format -> Maybe key -> m (Maybe Promise)
-subtleCryptoExportKey self format key
+exportKey ::
+          (MonadIO m, ToJSString format) =>
+            SubtleCrypto -> format -> Maybe CryptoKey -> m (Maybe Promise)
+exportKey self format key
   = liftIO
-      ((ghcjs_dom_subtle_crypto_export_key
-          (unSubtleCrypto (toSubtleCrypto self))
-          (toJSString format)
-          (maybe jsNull (unCryptoKey . toCryptoKey) key))
+      ((js_exportKey (unSubtleCrypto self) (toJSString format)
+          (maybe jsNull unCryptoKey key))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"wrapKey\"]($2, $3, $4, $5)"
-        ghcjs_dom_subtle_crypto_wrap_key ::
+        js_wrapKey ::
         JSRef SubtleCrypto ->
           JSString ->
             JSRef CryptoKey ->
               JSRef CryptoKey -> JSString -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.wrapKey Mozilla WebKitSubtleCrypto.wrapKey documentation> 
-subtleCryptoWrapKey ::
-                    (MonadIO m, IsSubtleCrypto self, ToJSString format,
-                     IsCryptoKey key, IsCryptoKey wrappingKey,
-                     ToJSString wrapAlgorithm) =>
-                      self ->
-                        format ->
-                          Maybe key ->
-                            Maybe wrappingKey -> wrapAlgorithm -> m (Maybe Promise)
-subtleCryptoWrapKey self format key wrappingKey wrapAlgorithm
+wrapKey ::
+        (MonadIO m, ToJSString format, ToJSString wrapAlgorithm) =>
+          SubtleCrypto ->
+            format ->
+              Maybe CryptoKey ->
+                Maybe CryptoKey -> wrapAlgorithm -> m (Maybe Promise)
+wrapKey self format key wrappingKey wrapAlgorithm
   = liftIO
-      ((ghcjs_dom_subtle_crypto_wrap_key
-          (unSubtleCrypto (toSubtleCrypto self))
-          (toJSString format)
-          (maybe jsNull (unCryptoKey . toCryptoKey) key)
-          (maybe jsNull (unCryptoKey . toCryptoKey) wrappingKey)
+      ((js_wrapKey (unSubtleCrypto self) (toJSString format)
+          (maybe jsNull unCryptoKey key)
+          (maybe jsNull unCryptoKey wrappingKey)
           (toJSString wrapAlgorithm))
          >>= fromJSRef)
  
 foreign import javascript unsafe
-        "$1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8)"
-        ghcjs_dom_subtle_crypto_unwrap_key ::
+        "$1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8)" js_unwrapKey ::
         JSRef SubtleCrypto ->
           JSString ->
             JSRef CryptoOperationData ->
@@ -251,28 +218,25 @@ foreign import javascript unsafe
                   JSString -> Bool -> JSRef [KeyUsage] -> IO (JSRef Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.unwrapKey Mozilla WebKitSubtleCrypto.unwrapKey documentation> 
-subtleCryptoUnwrapKey ::
-                      (MonadIO m, IsSubtleCrypto self, ToJSString format,
-                       IsCryptoOperationData wrappedKey, IsCryptoKey unwrappingKey,
-                       ToJSString unwrapAlgorithm, ToJSString unwrappedKeyAlgorithm) =>
-                        self ->
-                          format ->
-                            Maybe wrappedKey ->
-                              Maybe unwrappingKey ->
-                                unwrapAlgorithm ->
-                                  Maybe unwrappedKeyAlgorithm ->
-                                    Bool -> [KeyUsage] -> m (Maybe Promise)
-subtleCryptoUnwrapKey self format wrappedKey unwrappingKey
-  unwrapAlgorithm unwrappedKeyAlgorithm extractable keyUsages
+unwrapKey ::
+          (MonadIO m, ToJSString format, IsCryptoOperationData wrappedKey,
+           ToJSString unwrapAlgorithm, ToJSString unwrappedKeyAlgorithm) =>
+            SubtleCrypto ->
+              format ->
+                Maybe wrappedKey ->
+                  Maybe CryptoKey ->
+                    unwrapAlgorithm ->
+                      Maybe unwrappedKeyAlgorithm ->
+                        Bool -> [KeyUsage] -> m (Maybe Promise)
+unwrapKey self format wrappedKey unwrappingKey unwrapAlgorithm
+  unwrappedKeyAlgorithm extractable keyUsages
   = liftIO
       ((toJSRef keyUsages >>=
           \ keyUsages' ->
-            ghcjs_dom_subtle_crypto_unwrap_key
-              (unSubtleCrypto (toSubtleCrypto self))
-              (toJSString format)
+            js_unwrapKey (unSubtleCrypto self) (toJSString format)
               (maybe jsNull (unCryptoOperationData . toCryptoOperationData)
                  wrappedKey)
-              (maybe jsNull (unCryptoKey . toCryptoKey) unwrappingKey)
+              (maybe jsNull unCryptoKey unwrappingKey)
               (toJSString unwrapAlgorithm)
               (maybe jsNull toJSString unwrappedKeyAlgorithm)
               extractable

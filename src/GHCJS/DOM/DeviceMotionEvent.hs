@@ -1,20 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DeviceMotionEvent
-       (ghcjs_dom_device_motion_event_init_device_motion_event,
-        deviceMotionEventInitDeviceMotionEvent,
-        ghcjs_dom_device_motion_event_get_acceleration,
-        deviceMotionEventGetAcceleration,
-        ghcjs_dom_device_motion_event_get_acceleration_including_gravity,
-        deviceMotionEventGetAccelerationIncludingGravity,
-        ghcjs_dom_device_motion_event_get_rotation_rate,
-        deviceMotionEventGetRotationRate,
-        ghcjs_dom_device_motion_event_get_interval,
-        deviceMotionEventGetInterval, DeviceMotionEvent,
-        IsDeviceMotionEvent, castToDeviceMotionEvent,
-        gTypeDeviceMotionEvent, toDeviceMotionEvent)
+       (js_initDeviceMotionEvent, initDeviceMotionEvent,
+        js_getAcceleration, getAcceleration,
+        js_getAccelerationIncludingGravity,
+        getAccelerationIncludingGravity, js_getRotationRate,
+        getRotationRate, js_getInterval, getInterval, DeviceMotionEvent,
+        castToDeviceMotionEvent, gTypeDeviceMotionEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,13 +19,13 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "$1[\"initDeviceMotionEvent\"]($2,\n$3, $4, $5, $6, $7, $8)"
-        ghcjs_dom_device_motion_event_init_device_motion_event ::
+        js_initDeviceMotionEvent ::
         JSRef DeviceMotionEvent ->
           JSString ->
             Bool ->
@@ -39,24 +34,21 @@ foreign import javascript unsafe
                   JSRef Acceleration -> JSRef RotationRate -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.initDeviceMotionEvent Mozilla DeviceMotionEvent.initDeviceMotionEvent documentation> 
-deviceMotionEventInitDeviceMotionEvent ::
-                                       (MonadIO m, IsDeviceMotionEvent self, ToJSString type',
-                                        IsAcceleration acceleration,
-                                        IsAcceleration accelerationIncludingGravity,
-                                        IsRotationRate rotationRate) =>
-                                         self ->
-                                           type' ->
-                                             Bool ->
-                                               Bool ->
-                                                 Maybe acceleration ->
-                                                   Maybe accelerationIncludingGravity ->
-                                                     Maybe rotationRate -> Double -> m ()
-deviceMotionEventInitDeviceMotionEvent self type' bubbles
-  cancelable acceleration accelerationIncludingGravity rotationRate
-  interval
+initDeviceMotionEvent ::
+                      (MonadIO m, ToJSString type', IsAcceleration acceleration,
+                       IsAcceleration accelerationIncludingGravity,
+                       IsRotationRate rotationRate) =>
+                        DeviceMotionEvent ->
+                          type' ->
+                            Bool ->
+                              Bool ->
+                                Maybe acceleration ->
+                                  Maybe accelerationIncludingGravity ->
+                                    Maybe rotationRate -> Double -> m ()
+initDeviceMotionEvent self type' bubbles cancelable acceleration
+  accelerationIncludingGravity rotationRate interval
   = liftIO
-      (ghcjs_dom_device_motion_event_init_device_motion_event
-         (unDeviceMotionEvent (toDeviceMotionEvent self))
+      (js_initDeviceMotionEvent (unDeviceMotionEvent self)
          (toJSString type')
          bubbles
          cancelable
@@ -67,59 +59,47 @@ deviceMotionEventInitDeviceMotionEvent self type' bubbles
          interval)
  
 foreign import javascript unsafe "$1[\"acceleration\"]"
-        ghcjs_dom_device_motion_event_get_acceleration ::
+        js_getAcceleration ::
         JSRef DeviceMotionEvent -> IO (JSRef Acceleration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.acceleration Mozilla DeviceMotionEvent.acceleration documentation> 
-deviceMotionEventGetAcceleration ::
-                                 (MonadIO m, IsDeviceMotionEvent self) =>
-                                   self -> m (Maybe Acceleration)
-deviceMotionEventGetAcceleration self
+getAcceleration ::
+                (MonadIO m) => DeviceMotionEvent -> m (Maybe Acceleration)
+getAcceleration self
   = liftIO
-      ((ghcjs_dom_device_motion_event_get_acceleration
-          (unDeviceMotionEvent (toDeviceMotionEvent self)))
-         >>= fromJSRef)
+      ((js_getAcceleration (unDeviceMotionEvent self)) >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"accelerationIncludingGravity\"]"
-        ghcjs_dom_device_motion_event_get_acceleration_including_gravity ::
+        js_getAccelerationIncludingGravity ::
         JSRef DeviceMotionEvent -> IO (JSRef Acceleration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.accelerationIncludingGravity Mozilla DeviceMotionEvent.accelerationIncludingGravity documentation> 
-deviceMotionEventGetAccelerationIncludingGravity ::
-                                                 (MonadIO m, IsDeviceMotionEvent self) =>
-                                                   self -> m (Maybe Acceleration)
-deviceMotionEventGetAccelerationIncludingGravity self
+getAccelerationIncludingGravity ::
+                                (MonadIO m) => DeviceMotionEvent -> m (Maybe Acceleration)
+getAccelerationIncludingGravity self
   = liftIO
-      ((ghcjs_dom_device_motion_event_get_acceleration_including_gravity
-          (unDeviceMotionEvent (toDeviceMotionEvent self)))
+      ((js_getAccelerationIncludingGravity (unDeviceMotionEvent self))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"rotationRate\"]"
-        ghcjs_dom_device_motion_event_get_rotation_rate ::
+        js_getRotationRate ::
         JSRef DeviceMotionEvent -> IO (JSRef RotationRate)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.rotationRate Mozilla DeviceMotionEvent.rotationRate documentation> 
-deviceMotionEventGetRotationRate ::
-                                 (MonadIO m, IsDeviceMotionEvent self) =>
-                                   self -> m (Maybe RotationRate)
-deviceMotionEventGetRotationRate self
+getRotationRate ::
+                (MonadIO m) => DeviceMotionEvent -> m (Maybe RotationRate)
+getRotationRate self
   = liftIO
-      ((ghcjs_dom_device_motion_event_get_rotation_rate
-          (unDeviceMotionEvent (toDeviceMotionEvent self)))
-         >>= fromJSRef)
+      ((js_getRotationRate (unDeviceMotionEvent self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"interval\"]"
-        ghcjs_dom_device_motion_event_get_interval ::
-        JSRef DeviceMotionEvent -> IO Double
+foreign import javascript unsafe "$1[\"interval\"]" js_getInterval
+        :: JSRef DeviceMotionEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.interval Mozilla DeviceMotionEvent.interval documentation> 
-deviceMotionEventGetInterval ::
-                             (MonadIO m, IsDeviceMotionEvent self) => self -> m Double
-deviceMotionEventGetInterval self
-  = liftIO
-      (ghcjs_dom_device_motion_event_get_interval
-         (unDeviceMotionEvent (toDeviceMotionEvent self)))
+getInterval :: (MonadIO m) => DeviceMotionEvent -> m Double
+getInterval self
+  = liftIO (js_getInterval (unDeviceMotionEvent self))
 #else
 module GHCJS.DOM.DeviceMotionEvent (
   ) where

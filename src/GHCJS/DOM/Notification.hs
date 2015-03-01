@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Notification
-       (ghcjs_dom_notification_show, notificationShow,
-        notificationShowEvent, notificationError, notificationClose,
-        notificationClick, Notification, IsNotification,
-        castToNotification, gTypeNotification, toNotification)
+       (js_show, show, showEvent, error, close, click, Notification,
+        castToNotification, gTypeNotification)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,42 +15,32 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"show\"]()"
-        ghcjs_dom_notification_show :: JSRef Notification -> IO ()
+foreign import javascript unsafe "$1[\"show\"]()" js_show ::
+        JSRef Notification -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.show Mozilla Notification.show documentation> 
-notificationShow ::
-                 (MonadIO m, IsNotification self) => self -> m ()
-notificationShow self
-  = liftIO
-      (ghcjs_dom_notification_show
-         (unNotification (toNotification self)))
+show :: (MonadIO m) => Notification -> m ()
+show self = liftIO (js_show (unNotification self))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.showEvent Mozilla Notification.showEvent documentation> 
-notificationShowEvent ::
-                      (IsNotification self, IsEventTarget self) =>
-                        EventName self MouseEvent
-notificationShowEvent = unsafeEventName (toJSString "show")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onshow Mozilla Notification.onshow documentation> 
+showEvent :: EventName Notification MouseEvent
+showEvent = unsafeEventName (toJSString "show")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.error Mozilla Notification.error documentation> 
-notificationError ::
-                  (IsNotification self, IsEventTarget self) => EventName self UIEvent
-notificationError = unsafeEventName (toJSString "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onerror Mozilla Notification.onerror documentation> 
+error :: EventName Notification UIEvent
+error = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.close Mozilla Notification.close documentation> 
-notificationClose ::
-                  (IsNotification self, IsEventTarget self) => EventName self Event
-notificationClose = unsafeEventName (toJSString "close")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onclose Mozilla Notification.onclose documentation> 
+close :: EventName Notification Event
+close = unsafeEventName (toJSString "close")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.click Mozilla Notification.click documentation> 
-notificationClick ::
-                  (IsNotification self, IsEventTarget self) =>
-                    EventName self MouseEvent
-notificationClick = unsafeEventName (toJSString "click")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onclick Mozilla Notification.onclick documentation> 
+click :: EventName Notification MouseEvent
+click = unsafeEventName (toJSString "click")
 #else
 module GHCJS.DOM.Notification (
   ) where

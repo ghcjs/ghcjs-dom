@@ -1,15 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NodeFilter
-       (ghcjs_dom_node_filter_accept_node, nodeFilterAcceptNode,
-        cFILTER_ACCEPT, cFILTER_REJECT, cFILTER_SKIP, cSHOW_ALL,
-        cSHOW_ELEMENT, cSHOW_ATTRIBUTE, cSHOW_TEXT, cSHOW_CDATA_SECTION,
-        cSHOW_ENTITY_REFERENCE, cSHOW_ENTITY, cSHOW_PROCESSING_INSTRUCTION,
-        cSHOW_COMMENT, cSHOW_DOCUMENT, cSHOW_DOCUMENT_TYPE,
-        cSHOW_DOCUMENT_FRAGMENT, cSHOW_NOTATION, NodeFilter, IsNodeFilter,
-        castToNodeFilter, gTypeNodeFilter, toNodeFilter)
+       (js_acceptNode, acceptNode, pattern FILTER_ACCEPT,
+        pattern FILTER_REJECT, pattern FILTER_SKIP, pattern SHOW_ALL,
+        pattern SHOW_ELEMENT, pattern SHOW_ATTRIBUTE, pattern SHOW_TEXT,
+        pattern SHOW_CDATA_SECTION, pattern SHOW_ENTITY_REFERENCE,
+        pattern SHOW_ENTITY, pattern SHOW_PROCESSING_INSTRUCTION,
+        pattern SHOW_COMMENT, pattern SHOW_DOCUMENT,
+        pattern SHOW_DOCUMENT_TYPE, pattern SHOW_DOCUMENT_FRAGMENT,
+        pattern SHOW_NOTATION, NodeFilter, castToNodeFilter,
+        gTypeNodeFilter)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,39 +22,36 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"acceptNode\"]($2)"
-        ghcjs_dom_node_filter_accept_node ::
-        JSRef NodeFilter -> JSRef Node -> IO Int
+        js_acceptNode :: JSRef NodeFilter -> JSRef Node -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter.acceptNode Mozilla NodeFilter.acceptNode documentation> 
-nodeFilterAcceptNode ::
-                     (MonadIO m, IsNodeFilter self, IsNode n) =>
-                       self -> Maybe n -> m Int
-nodeFilterAcceptNode self n
+acceptNode ::
+           (MonadIO m, IsNode n) => NodeFilter -> Maybe n -> m Int
+acceptNode self n
   = liftIO
-      (ghcjs_dom_node_filter_accept_node
-         (unNodeFilter (toNodeFilter self))
+      (js_acceptNode (unNodeFilter self)
          (maybe jsNull (unNode . toNode) n))
-cFILTER_ACCEPT = 1
-cFILTER_REJECT = 2
-cFILTER_SKIP = 3
-cSHOW_ALL = 4294967295
-cSHOW_ELEMENT = 1
-cSHOW_ATTRIBUTE = 2
-cSHOW_TEXT = 4
-cSHOW_CDATA_SECTION = 8
-cSHOW_ENTITY_REFERENCE = 16
-cSHOW_ENTITY = 32
-cSHOW_PROCESSING_INSTRUCTION = 64
-cSHOW_COMMENT = 128
-cSHOW_DOCUMENT = 256
-cSHOW_DOCUMENT_TYPE = 512
-cSHOW_DOCUMENT_FRAGMENT = 1024
-cSHOW_NOTATION = 2048
+pattern FILTER_ACCEPT = 1
+pattern FILTER_REJECT = 2
+pattern FILTER_SKIP = 3
+pattern SHOW_ALL = 4294967295
+pattern SHOW_ELEMENT = 1
+pattern SHOW_ATTRIBUTE = 2
+pattern SHOW_TEXT = 4
+pattern SHOW_CDATA_SECTION = 8
+pattern SHOW_ENTITY_REFERENCE = 16
+pattern SHOW_ENTITY = 32
+pattern SHOW_PROCESSING_INSTRUCTION = 64
+pattern SHOW_COMMENT = 128
+pattern SHOW_DOCUMENT = 256
+pattern SHOW_DOCUMENT_TYPE = 512
+pattern SHOW_DOCUMENT_FRAGMENT = 1024
+pattern SHOW_NOTATION = 2048
 #else
 module GHCJS.DOM.NodeFilter (
   module Graphics.UI.Gtk.WebKit.DOM.NodeFilter

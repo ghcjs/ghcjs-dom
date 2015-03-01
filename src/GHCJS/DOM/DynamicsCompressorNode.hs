@@ -1,22 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DynamicsCompressorNode
-       (ghcjs_dom_dynamics_compressor_node_get_threshold,
-        dynamicsCompressorNodeGetThreshold,
-        ghcjs_dom_dynamics_compressor_node_get_knee,
-        dynamicsCompressorNodeGetKnee,
-        ghcjs_dom_dynamics_compressor_node_get_ratio,
-        dynamicsCompressorNodeGetRatio,
-        ghcjs_dom_dynamics_compressor_node_get_reduction,
-        dynamicsCompressorNodeGetReduction,
-        ghcjs_dom_dynamics_compressor_node_get_attack,
-        dynamicsCompressorNodeGetAttack,
-        ghcjs_dom_dynamics_compressor_node_get_release,
-        dynamicsCompressorNodeGetRelease, DynamicsCompressorNode,
-        IsDynamicsCompressorNode, castToDynamicsCompressorNode,
-        gTypeDynamicsCompressorNode, toDynamicsCompressorNode)
+       (js_getThreshold, getThreshold, js_getKnee, getKnee, js_getRatio,
+        getRatio, js_getReduction, getReduction, js_getAttack, getAttack,
+        js_getRelease, getRelease, DynamicsCompressorNode,
+        castToDynamicsCompressorNode, gTypeDynamicsCompressorNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,93 +17,71 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"threshold\"]"
-        ghcjs_dom_dynamics_compressor_node_get_threshold ::
+        js_getThreshold ::
         JSRef DynamicsCompressorNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.threshold Mozilla DynamicsCompressorNode.threshold documentation> 
-dynamicsCompressorNodeGetThreshold ::
-                                   (MonadIO m, IsDynamicsCompressorNode self) =>
-                                     self -> m (Maybe AudioParam)
-dynamicsCompressorNodeGetThreshold self
+getThreshold ::
+             (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
+getThreshold self
   = liftIO
-      ((ghcjs_dom_dynamics_compressor_node_get_threshold
-          (unDynamicsCompressorNode (toDynamicsCompressorNode self)))
-         >>= fromJSRef)
+      ((js_getThreshold (unDynamicsCompressorNode self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"knee\"]"
-        ghcjs_dom_dynamics_compressor_node_get_knee ::
+foreign import javascript unsafe "$1[\"knee\"]" js_getKnee ::
         JSRef DynamicsCompressorNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.knee Mozilla DynamicsCompressorNode.knee documentation> 
-dynamicsCompressorNodeGetKnee ::
-                              (MonadIO m, IsDynamicsCompressorNode self) =>
-                                self -> m (Maybe AudioParam)
-dynamicsCompressorNodeGetKnee self
+getKnee ::
+        (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
+getKnee self
   = liftIO
-      ((ghcjs_dom_dynamics_compressor_node_get_knee
-          (unDynamicsCompressorNode (toDynamicsCompressorNode self)))
-         >>= fromJSRef)
+      ((js_getKnee (unDynamicsCompressorNode self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"ratio\"]"
-        ghcjs_dom_dynamics_compressor_node_get_ratio ::
+foreign import javascript unsafe "$1[\"ratio\"]" js_getRatio ::
         JSRef DynamicsCompressorNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.ratio Mozilla DynamicsCompressorNode.ratio documentation> 
-dynamicsCompressorNodeGetRatio ::
-                               (MonadIO m, IsDynamicsCompressorNode self) =>
-                                 self -> m (Maybe AudioParam)
-dynamicsCompressorNodeGetRatio self
+getRatio ::
+         (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
+getRatio self
   = liftIO
-      ((ghcjs_dom_dynamics_compressor_node_get_ratio
-          (unDynamicsCompressorNode (toDynamicsCompressorNode self)))
-         >>= fromJSRef)
+      ((js_getRatio (unDynamicsCompressorNode self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"reduction\"]"
-        ghcjs_dom_dynamics_compressor_node_get_reduction ::
+        js_getReduction ::
         JSRef DynamicsCompressorNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.reduction Mozilla DynamicsCompressorNode.reduction documentation> 
-dynamicsCompressorNodeGetReduction ::
-                                   (MonadIO m, IsDynamicsCompressorNode self) =>
-                                     self -> m (Maybe AudioParam)
-dynamicsCompressorNodeGetReduction self
+getReduction ::
+             (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
+getReduction self
   = liftIO
-      ((ghcjs_dom_dynamics_compressor_node_get_reduction
-          (unDynamicsCompressorNode (toDynamicsCompressorNode self)))
-         >>= fromJSRef)
+      ((js_getReduction (unDynamicsCompressorNode self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"attack\"]"
-        ghcjs_dom_dynamics_compressor_node_get_attack ::
+foreign import javascript unsafe "$1[\"attack\"]" js_getAttack ::
         JSRef DynamicsCompressorNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.attack Mozilla DynamicsCompressorNode.attack documentation> 
-dynamicsCompressorNodeGetAttack ::
-                                (MonadIO m, IsDynamicsCompressorNode self) =>
-                                  self -> m (Maybe AudioParam)
-dynamicsCompressorNodeGetAttack self
+getAttack ::
+          (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
+getAttack self
   = liftIO
-      ((ghcjs_dom_dynamics_compressor_node_get_attack
-          (unDynamicsCompressorNode (toDynamicsCompressorNode self)))
-         >>= fromJSRef)
+      ((js_getAttack (unDynamicsCompressorNode self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"release\"]"
-        ghcjs_dom_dynamics_compressor_node_get_release ::
+foreign import javascript unsafe "$1[\"release\"]" js_getRelease ::
         JSRef DynamicsCompressorNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.release Mozilla DynamicsCompressorNode.release documentation> 
-dynamicsCompressorNodeGetRelease ::
-                                 (MonadIO m, IsDynamicsCompressorNode self) =>
-                                   self -> m (Maybe AudioParam)
-dynamicsCompressorNodeGetRelease self
+getRelease ::
+           (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
+getRelease self
   = liftIO
-      ((ghcjs_dom_dynamics_compressor_node_get_release
-          (unDynamicsCompressorNode (toDynamicsCompressorNode self)))
-         >>= fromJSRef)
+      ((js_getRelease (unDynamicsCompressorNode self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.DynamicsCompressorNode (
   ) where

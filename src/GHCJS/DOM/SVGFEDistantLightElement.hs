@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFEDistantLightElement
-       (ghcjs_dom_svgfe_distant_light_element_get_azimuth,
-        svgfeDistantLightElementGetAzimuth,
-        ghcjs_dom_svgfe_distant_light_element_get_elevation,
-        svgfeDistantLightElementGetElevation, SVGFEDistantLightElement,
-        IsSVGFEDistantLightElement, castToSVGFEDistantLightElement,
-        gTypeSVGFEDistantLightElement, toSVGFEDistantLightElement)
+       (js_getAzimuth, getAzimuth, js_getElevation, getElevation,
+        SVGFEDistantLightElement, castToSVGFEDistantLightElement,
+        gTypeSVGFEDistantLightElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +16,32 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"azimuth\"]"
-        ghcjs_dom_svgfe_distant_light_element_get_azimuth ::
+foreign import javascript unsafe "$1[\"azimuth\"]" js_getAzimuth ::
         JSRef SVGFEDistantLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.azimuth Mozilla SVGFEDistantLightElement.azimuth documentation> 
-svgfeDistantLightElementGetAzimuth ::
-                                   (MonadIO m, IsSVGFEDistantLightElement self) =>
-                                     self -> m (Maybe SVGAnimatedNumber)
-svgfeDistantLightElementGetAzimuth self
+getAzimuth ::
+           (MonadIO m) =>
+             SVGFEDistantLightElement -> m (Maybe SVGAnimatedNumber)
+getAzimuth self
   = liftIO
-      ((ghcjs_dom_svgfe_distant_light_element_get_azimuth
-          (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
-         >>= fromJSRef)
+      ((js_getAzimuth (unSVGFEDistantLightElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"elevation\"]"
-        ghcjs_dom_svgfe_distant_light_element_get_elevation ::
+        js_getElevation ::
         JSRef SVGFEDistantLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.elevation Mozilla SVGFEDistantLightElement.elevation documentation> 
-svgfeDistantLightElementGetElevation ::
-                                     (MonadIO m, IsSVGFEDistantLightElement self) =>
-                                       self -> m (Maybe SVGAnimatedNumber)
-svgfeDistantLightElementGetElevation self
+getElevation ::
+             (MonadIO m) =>
+               SVGFEDistantLightElement -> m (Maybe SVGAnimatedNumber)
+getElevation self
   = liftIO
-      ((ghcjs_dom_svgfe_distant_light_element_get_elevation
-          (unSVGFEDistantLightElement (toSVGFEDistantLightElement self)))
-         >>= fromJSRef)
+      ((js_getElevation (unSVGFEDistantLightElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEDistantLightElement (
   ) where

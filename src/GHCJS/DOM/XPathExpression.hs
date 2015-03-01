@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XPathExpression
-       (ghcjs_dom_xpath_expression_evaluate, xPathExpressionEvaluate,
-        XPathExpression, IsXPathExpression, castToXPathExpression,
-        gTypeXPathExpression, toXPathExpression)
+       (js_evaluate, evaluate, XPathExpression, castToXPathExpression,
+        gTypeXPathExpression)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,29 +15,27 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"evaluate\"]($2, $3, $4)"
-        ghcjs_dom_xpath_expression_evaluate ::
+        js_evaluate ::
         JSRef XPathExpression ->
           JSRef Node -> Word -> JSRef XPathResult -> IO (JSRef XPathResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathExpression.evaluate Mozilla XPathExpression.evaluate documentation> 
-xPathExpressionEvaluate ::
-                        (MonadIO m, IsXPathExpression self, IsNode contextNode,
-                         IsXPathResult inResult) =>
-                          self ->
-                            Maybe contextNode ->
-                              Word -> Maybe inResult -> m (Maybe XPathResult)
-xPathExpressionEvaluate self contextNode type' inResult
+evaluate ::
+         (MonadIO m, IsNode contextNode) =>
+           XPathExpression ->
+             Maybe contextNode ->
+               Word -> Maybe XPathResult -> m (Maybe XPathResult)
+evaluate self contextNode type' inResult
   = liftIO
-      ((ghcjs_dom_xpath_expression_evaluate
-          (unXPathExpression (toXPathExpression self))
+      ((js_evaluate (unXPathExpression self)
           (maybe jsNull (unNode . toNode) contextNode)
           type'
-          (maybe jsNull (unXPathResult . toXPathResult) inResult))
+          (maybe jsNull unXPathResult inResult))
          >>= fromJSRef)
 #else
 module GHCJS.DOM.XPathExpression (

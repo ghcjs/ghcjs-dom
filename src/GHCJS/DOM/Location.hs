@@ -1,31 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Location
-       (ghcjs_dom_location_assign, locationAssign,
-        ghcjs_dom_location_replace, locationReplace,
-        ghcjs_dom_location_reload, locationReload,
-        ghcjs_dom_location_set_href, locationSetHref,
-        ghcjs_dom_location_get_href, locationGetHref,
-        ghcjs_dom_location_set_protocol, locationSetProtocol,
-        ghcjs_dom_location_get_protocol, locationGetProtocol,
-        ghcjs_dom_location_set_host, locationSetHost,
-        ghcjs_dom_location_get_host, locationGetHost,
-        ghcjs_dom_location_set_hostname, locationSetHostname,
-        ghcjs_dom_location_get_hostname, locationGetHostname,
-        ghcjs_dom_location_set_port, locationSetPort,
-        ghcjs_dom_location_get_port, locationGetPort,
-        ghcjs_dom_location_set_pathname, locationSetPathname,
-        ghcjs_dom_location_get_pathname, locationGetPathname,
-        ghcjs_dom_location_set_search, locationSetSearch,
-        ghcjs_dom_location_get_search, locationGetSearch,
-        ghcjs_dom_location_set_hash, locationSetHash,
-        ghcjs_dom_location_get_hash, locationGetHash,
-        ghcjs_dom_location_get_origin, locationGetOrigin,
-        ghcjs_dom_location_get_ancestor_origins,
-        locationGetAncestorOrigins, Location, IsLocation, castToLocation,
-        gTypeLocation, toLocation)
+       (js_assign, assign, js_replace, replace, js_reload, reload,
+        js_setHref, setHref, js_getHref, getHref, js_setProtocol,
+        setProtocol, js_getProtocol, getProtocol, js_setHost, setHost,
+        js_getHost, getHost, js_setHostname, setHostname, js_getHostname,
+        getHostname, js_setPort, setPort, js_getPort, getPort,
+        js_setPathname, setPathname, js_getPathname, getPathname,
+        js_setSearch, setSearch, js_getSearch, getSearch, js_setHash,
+        setHash, js_getHash, getHash, js_getOrigin, getOrigin,
+        js_getAncestorOrigins, getAncestorOrigins, Location,
+        castToLocation, gTypeLocation)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -35,252 +23,185 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"assign\"]($2)"
-        ghcjs_dom_location_assign :: JSRef Location -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"assign\"]($2)" js_assign ::
+        JSRef Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.assign Mozilla Location.assign documentation> 
-locationAssign ::
-               (MonadIO m, IsLocation self, ToJSString url) => self -> url -> m ()
-locationAssign self url
-  = liftIO
-      (ghcjs_dom_location_assign (unLocation (toLocation self))
-         (toJSString url))
+assign :: (MonadIO m, ToJSString url) => Location -> url -> m ()
+assign self url
+  = liftIO (js_assign (unLocation self) (toJSString url))
  
-foreign import javascript unsafe "$1[\"replace\"]($2)"
-        ghcjs_dom_location_replace :: JSRef Location -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"replace\"]($2)" js_replace
+        :: JSRef Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.replace Mozilla Location.replace documentation> 
-locationReplace ::
-                (MonadIO m, IsLocation self, ToJSString url) => self -> url -> m ()
-locationReplace self url
-  = liftIO
-      (ghcjs_dom_location_replace (unLocation (toLocation self))
-         (toJSString url))
+replace :: (MonadIO m, ToJSString url) => Location -> url -> m ()
+replace self url
+  = liftIO (js_replace (unLocation self) (toJSString url))
  
-foreign import javascript unsafe "$1[\"reload\"]()"
-        ghcjs_dom_location_reload :: JSRef Location -> IO ()
+foreign import javascript unsafe "$1[\"reload\"]()" js_reload ::
+        JSRef Location -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.reload Mozilla Location.reload documentation> 
-locationReload :: (MonadIO m, IsLocation self) => self -> m ()
-locationReload self
-  = liftIO (ghcjs_dom_location_reload (unLocation (toLocation self)))
+reload :: (MonadIO m) => Location -> m ()
+reload self = liftIO (js_reload (unLocation self))
  
-foreign import javascript unsafe "$1[\"href\"] = $2;"
-        ghcjs_dom_location_set_href :: JSRef Location -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
+        JSRef Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.href Mozilla Location.href documentation> 
-locationSetHref ::
-                (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetHref self val
-  = liftIO
-      (ghcjs_dom_location_set_href (unLocation (toLocation self))
-         (toJSString val))
+setHref :: (MonadIO m, ToJSString val) => Location -> val -> m ()
+setHref self val
+  = liftIO (js_setHref (unLocation self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]"
-        ghcjs_dom_location_get_href :: JSRef Location -> IO JSString
+foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
+        JSRef Location -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.href Mozilla Location.href documentation> 
-locationGetHref ::
-                (MonadIO m, IsLocation self, FromJSString result) =>
-                  self -> m result
-locationGetHref self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_href (unLocation (toLocation self))))
+getHref :: (MonadIO m, FromJSString result) => Location -> m result
+getHref self
+  = liftIO (fromJSString <$> (js_getHref (unLocation self)))
  
 foreign import javascript unsafe "$1[\"protocol\"] = $2;"
-        ghcjs_dom_location_set_protocol ::
+        js_setProtocol :: JSRef Location -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 
+setProtocol ::
+            (MonadIO m, ToJSString val) => Location -> val -> m ()
+setProtocol self val
+  = liftIO (js_setProtocol (unLocation self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+        :: JSRef Location -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 
+getProtocol ::
+            (MonadIO m, FromJSString result) => Location -> m result
+getProtocol self
+  = liftIO (fromJSString <$> (js_getProtocol (unLocation self)))
+ 
+foreign import javascript unsafe "$1[\"host\"] = $2;" js_setHost ::
         JSRef Location -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 
-locationSetProtocol ::
-                    (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetProtocol self val
-  = liftIO
-      (ghcjs_dom_location_set_protocol (unLocation (toLocation self))
-         (toJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.host Mozilla Location.host documentation> 
+setHost :: (MonadIO m, ToJSString val) => Location -> val -> m ()
+setHost self val
+  = liftIO (js_setHost (unLocation self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"protocol\"]"
-        ghcjs_dom_location_get_protocol :: JSRef Location -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 
-locationGetProtocol ::
-                    (MonadIO m, IsLocation self, FromJSString result) =>
-                      self -> m result
-locationGetProtocol self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_protocol (unLocation (toLocation self))))
- 
-foreign import javascript unsafe "$1[\"host\"] = $2;"
-        ghcjs_dom_location_set_host :: JSRef Location -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"host\"]" js_getHost ::
+        JSRef Location -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.host Mozilla Location.host documentation> 
-locationSetHost ::
-                (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetHost self val
-  = liftIO
-      (ghcjs_dom_location_set_host (unLocation (toLocation self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"host\"]"
-        ghcjs_dom_location_get_host :: JSRef Location -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.host Mozilla Location.host documentation> 
-locationGetHost ::
-                (MonadIO m, IsLocation self, FromJSString result) =>
-                  self -> m result
-locationGetHost self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_host (unLocation (toLocation self))))
+getHost :: (MonadIO m, FromJSString result) => Location -> m result
+getHost self
+  = liftIO (fromJSString <$> (js_getHost (unLocation self)))
  
 foreign import javascript unsafe "$1[\"hostname\"] = $2;"
-        ghcjs_dom_location_set_hostname ::
+        js_setHostname :: JSRef Location -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hostname Mozilla Location.hostname documentation> 
+setHostname ::
+            (MonadIO m, ToJSString val) => Location -> val -> m ()
+setHostname self val
+  = liftIO (js_setHostname (unLocation self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"hostname\"]" js_getHostname
+        :: JSRef Location -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hostname Mozilla Location.hostname documentation> 
+getHostname ::
+            (MonadIO m, FromJSString result) => Location -> m result
+getHostname self
+  = liftIO (fromJSString <$> (js_getHostname (unLocation self)))
+ 
+foreign import javascript unsafe "$1[\"port\"] = $2;" js_setPort ::
         JSRef Location -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hostname Mozilla Location.hostname documentation> 
-locationSetHostname ::
-                    (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetHostname self val
-  = liftIO
-      (ghcjs_dom_location_set_hostname (unLocation (toLocation self))
-         (toJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.port Mozilla Location.port documentation> 
+setPort :: (MonadIO m, ToJSString val) => Location -> val -> m ()
+setPort self val
+  = liftIO (js_setPort (unLocation self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"hostname\"]"
-        ghcjs_dom_location_get_hostname :: JSRef Location -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hostname Mozilla Location.hostname documentation> 
-locationGetHostname ::
-                    (MonadIO m, IsLocation self, FromJSString result) =>
-                      self -> m result
-locationGetHostname self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_hostname (unLocation (toLocation self))))
- 
-foreign import javascript unsafe "$1[\"port\"] = $2;"
-        ghcjs_dom_location_set_port :: JSRef Location -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"port\"]" js_getPort ::
+        JSRef Location -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.port Mozilla Location.port documentation> 
-locationSetPort ::
-                (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetPort self val
-  = liftIO
-      (ghcjs_dom_location_set_port (unLocation (toLocation self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"port\"]"
-        ghcjs_dom_location_get_port :: JSRef Location -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.port Mozilla Location.port documentation> 
-locationGetPort ::
-                (MonadIO m, IsLocation self, FromJSString result) =>
-                  self -> m result
-locationGetPort self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_port (unLocation (toLocation self))))
+getPort :: (MonadIO m, FromJSString result) => Location -> m result
+getPort self
+  = liftIO (fromJSString <$> (js_getPort (unLocation self)))
  
 foreign import javascript unsafe "$1[\"pathname\"] = $2;"
-        ghcjs_dom_location_set_pathname ::
-        JSRef Location -> JSString -> IO ()
+        js_setPathname :: JSRef Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.pathname Mozilla Location.pathname documentation> 
-locationSetPathname ::
-                    (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetPathname self val
-  = liftIO
-      (ghcjs_dom_location_set_pathname (unLocation (toLocation self))
-         (toJSString val))
+setPathname ::
+            (MonadIO m, ToJSString val) => Location -> val -> m ()
+setPathname self val
+  = liftIO (js_setPathname (unLocation self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"pathname\"]"
-        ghcjs_dom_location_get_pathname :: JSRef Location -> IO JSString
+foreign import javascript unsafe "$1[\"pathname\"]" js_getPathname
+        :: JSRef Location -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.pathname Mozilla Location.pathname documentation> 
-locationGetPathname ::
-                    (MonadIO m, IsLocation self, FromJSString result) =>
-                      self -> m result
-locationGetPathname self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_pathname (unLocation (toLocation self))))
+getPathname ::
+            (MonadIO m, FromJSString result) => Location -> m result
+getPathname self
+  = liftIO (fromJSString <$> (js_getPathname (unLocation self)))
  
 foreign import javascript unsafe "$1[\"search\"] = $2;"
-        ghcjs_dom_location_set_search ::
+        js_setSearch :: JSRef Location -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.search Mozilla Location.search documentation> 
+setSearch :: (MonadIO m, ToJSString val) => Location -> val -> m ()
+setSearch self val
+  = liftIO (js_setSearch (unLocation self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"search\"]" js_getSearch ::
+        JSRef Location -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.search Mozilla Location.search documentation> 
+getSearch ::
+          (MonadIO m, FromJSString result) => Location -> m result
+getSearch self
+  = liftIO (fromJSString <$> (js_getSearch (unLocation self)))
+ 
+foreign import javascript unsafe "$1[\"hash\"] = $2;" js_setHash ::
         JSRef Location -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.search Mozilla Location.search documentation> 
-locationSetSearch ::
-                  (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetSearch self val
-  = liftIO
-      (ghcjs_dom_location_set_search (unLocation (toLocation self))
-         (toJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hash Mozilla Location.hash documentation> 
+setHash :: (MonadIO m, ToJSString val) => Location -> val -> m ()
+setHash self val
+  = liftIO (js_setHash (unLocation self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"search\"]"
-        ghcjs_dom_location_get_search :: JSRef Location -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.search Mozilla Location.search documentation> 
-locationGetSearch ::
-                  (MonadIO m, IsLocation self, FromJSString result) =>
-                    self -> m result
-locationGetSearch self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_search (unLocation (toLocation self))))
- 
-foreign import javascript unsafe "$1[\"hash\"] = $2;"
-        ghcjs_dom_location_set_hash :: JSRef Location -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"hash\"]" js_getHash ::
+        JSRef Location -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hash Mozilla Location.hash documentation> 
-locationSetHash ::
-                (MonadIO m, IsLocation self, ToJSString val) => self -> val -> m ()
-locationSetHash self val
-  = liftIO
-      (ghcjs_dom_location_set_hash (unLocation (toLocation self))
-         (toJSString val))
+getHash :: (MonadIO m, FromJSString result) => Location -> m result
+getHash self
+  = liftIO (fromJSString <$> (js_getHash (unLocation self)))
  
-foreign import javascript unsafe "$1[\"hash\"]"
-        ghcjs_dom_location_get_hash :: JSRef Location -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hash Mozilla Location.hash documentation> 
-locationGetHash ::
-                (MonadIO m, IsLocation self, FromJSString result) =>
-                  self -> m result
-locationGetHash self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_hash (unLocation (toLocation self))))
- 
-foreign import javascript unsafe "$1[\"origin\"]"
-        ghcjs_dom_location_get_origin :: JSRef Location -> IO JSString
+foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
+        JSRef Location -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.origin Mozilla Location.origin documentation> 
-locationGetOrigin ::
-                  (MonadIO m, IsLocation self, FromJSString result) =>
-                    self -> m result
-locationGetOrigin self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_location_get_origin (unLocation (toLocation self))))
+getOrigin ::
+          (MonadIO m, FromJSString result) => Location -> m result
+getOrigin self
+  = liftIO (fromJSString <$> (js_getOrigin (unLocation self)))
  
 foreign import javascript unsafe "$1[\"ancestorOrigins\"]"
-        ghcjs_dom_location_get_ancestor_origins ::
-        JSRef Location -> IO (JSRef DOMStringList)
+        js_getAncestorOrigins :: JSRef Location -> IO (JSRef DOMStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.ancestorOrigins Mozilla Location.ancestorOrigins documentation> 
-locationGetAncestorOrigins ::
-                           (MonadIO m, IsLocation self) => self -> m (Maybe DOMStringList)
-locationGetAncestorOrigins self
-  = liftIO
-      ((ghcjs_dom_location_get_ancestor_origins
-          (unLocation (toLocation self)))
-         >>= fromJSRef)
+getAncestorOrigins ::
+                   (MonadIO m) => Location -> m (Maybe DOMStringList)
+getAncestorOrigins self
+  = liftIO ((js_getAncestorOrigins (unLocation self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.Location (
   module Graphics.UI.Gtk.WebKit.DOM.Location

@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CustomEvent
-       (ghcjs_dom_custom_event_init_custom_event,
-        customEventInitCustomEvent, ghcjs_dom_custom_event_get_detail,
-        customEventGetDetail, CustomEvent, IsCustomEvent,
-        castToCustomEvent, gTypeCustomEvent, toCustomEvent)
+       (js_initCustomEvent, initCustomEvent, js_getDetail, getDetail,
+        CustomEvent, castToCustomEvent, gTypeCustomEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,40 +15,31 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "$1[\"initCustomEvent\"]($2, $3,\n$4, $5)"
-        ghcjs_dom_custom_event_init_custom_event ::
+        "$1[\"initCustomEvent\"]($2, $3,\n$4, $5)" js_initCustomEvent ::
         JSRef CustomEvent -> JSString -> Bool -> Bool -> JSRef a -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.initCustomEvent Mozilla CustomEvent.initCustomEvent documentation> 
-customEventInitCustomEvent ::
-                           (MonadIO m, IsCustomEvent self, ToJSString typeArg) =>
-                             self -> typeArg -> Bool -> Bool -> JSRef a -> m ()
-customEventInitCustomEvent self typeArg canBubbleArg cancelableArg
-  detailArg
+initCustomEvent ::
+                (MonadIO m, ToJSString typeArg) =>
+                  CustomEvent -> typeArg -> Bool -> Bool -> JSRef a -> m ()
+initCustomEvent self typeArg canBubbleArg cancelableArg detailArg
   = liftIO
-      (ghcjs_dom_custom_event_init_custom_event
-         (unCustomEvent (toCustomEvent self))
-         (toJSString typeArg)
+      (js_initCustomEvent (unCustomEvent self) (toJSString typeArg)
          canBubbleArg
          cancelableArg
          detailArg)
  
-foreign import javascript unsafe "$1[\"detail\"]"
-        ghcjs_dom_custom_event_get_detail ::
+foreign import javascript unsafe "$1[\"detail\"]" js_getDetail ::
         JSRef CustomEvent -> IO (JSRef a)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.detail Mozilla CustomEvent.detail documentation> 
-customEventGetDetail ::
-                     (MonadIO m, IsCustomEvent self) => self -> m (JSRef a)
-customEventGetDetail self
-  = liftIO
-      (ghcjs_dom_custom_event_get_detail
-         (unCustomEvent (toCustomEvent self)))
+getDetail :: (MonadIO m) => CustomEvent -> m (JSRef a)
+getDetail self = liftIO (js_getDetail (unCustomEvent self))
 #else
 module GHCJS.DOM.CustomEvent (
   ) where

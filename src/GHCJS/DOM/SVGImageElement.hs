@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGImageElement
-       (ghcjs_dom_svg_image_element_get_x, svgImageElementGetX,
-        ghcjs_dom_svg_image_element_get_y, svgImageElementGetY,
-        ghcjs_dom_svg_image_element_get_width, svgImageElementGetWidth,
-        ghcjs_dom_svg_image_element_get_height, svgImageElementGetHeight,
-        ghcjs_dom_svg_image_element_get_preserve_aspect_ratio,
-        svgImageElementGetPreserveAspectRatio, SVGImageElement,
-        IsSVGImageElement, castToSVGImageElement, gTypeSVGImageElement,
-        toSVGImageElement)
+       (js_getX, getX, js_getY, getY, js_getWidth, getWidth, js_getHeight,
+        getHeight, js_getPreserveAspectRatio, getPreserveAspectRatio,
+        SVGImageElement, castToSVGImageElement, gTypeSVGImageElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,79 +16,58 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_image_element_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGImageElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.x Mozilla SVGImageElement.x documentation> 
-svgImageElementGetX ::
-                    (MonadIO m, IsSVGImageElement self) =>
-                      self -> m (Maybe SVGAnimatedLength)
-svgImageElementGetX self
-  = liftIO
-      ((ghcjs_dom_svg_image_element_get_x
-          (unSVGImageElement (toSVGImageElement self)))
-         >>= fromJSRef)
+getX ::
+     (MonadIO m) => SVGImageElement -> m (Maybe SVGAnimatedLength)
+getX self
+  = liftIO ((js_getX (unSVGImageElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_image_element_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGImageElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.y Mozilla SVGImageElement.y documentation> 
-svgImageElementGetY ::
-                    (MonadIO m, IsSVGImageElement self) =>
-                      self -> m (Maybe SVGAnimatedLength)
-svgImageElementGetY self
-  = liftIO
-      ((ghcjs_dom_svg_image_element_get_y
-          (unSVGImageElement (toSVGImageElement self)))
-         >>= fromJSRef)
+getY ::
+     (MonadIO m) => SVGImageElement -> m (Maybe SVGAnimatedLength)
+getY self
+  = liftIO ((js_getY (unSVGImageElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_svg_image_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef SVGImageElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.width Mozilla SVGImageElement.width documentation> 
-svgImageElementGetWidth ::
-                        (MonadIO m, IsSVGImageElement self) =>
-                          self -> m (Maybe SVGAnimatedLength)
-svgImageElementGetWidth self
-  = liftIO
-      ((ghcjs_dom_svg_image_element_get_width
-          (unSVGImageElement (toSVGImageElement self)))
-         >>= fromJSRef)
+getWidth ::
+         (MonadIO m) => SVGImageElement -> m (Maybe SVGAnimatedLength)
+getWidth self
+  = liftIO ((js_getWidth (unSVGImageElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_svg_image_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef SVGImageElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.height Mozilla SVGImageElement.height documentation> 
-svgImageElementGetHeight ::
-                         (MonadIO m, IsSVGImageElement self) =>
-                           self -> m (Maybe SVGAnimatedLength)
-svgImageElementGetHeight self
-  = liftIO
-      ((ghcjs_dom_svg_image_element_get_height
-          (unSVGImageElement (toSVGImageElement self)))
-         >>= fromJSRef)
+getHeight ::
+          (MonadIO m) => SVGImageElement -> m (Maybe SVGAnimatedLength)
+getHeight self
+  = liftIO ((js_getHeight (unSVGImageElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
-        ghcjs_dom_svg_image_element_get_preserve_aspect_ratio ::
+        js_getPreserveAspectRatio ::
         JSRef SVGImageElement -> IO (JSRef SVGAnimatedPreserveAspectRatio)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.preserveAspectRatio Mozilla SVGImageElement.preserveAspectRatio documentation> 
-svgImageElementGetPreserveAspectRatio ::
-                                      (MonadIO m, IsSVGImageElement self) =>
-                                        self -> m (Maybe SVGAnimatedPreserveAspectRatio)
-svgImageElementGetPreserveAspectRatio self
+getPreserveAspectRatio ::
+                       (MonadIO m) =>
+                         SVGImageElement -> m (Maybe SVGAnimatedPreserveAspectRatio)
+getPreserveAspectRatio self
   = liftIO
-      ((ghcjs_dom_svg_image_element_get_preserve_aspect_ratio
-          (unSVGImageElement (toSVGImageElement self)))
-         >>= fromJSRef)
+      ((js_getPreserveAspectRatio (unSVGImageElement self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.SVGImageElement (
   ) where

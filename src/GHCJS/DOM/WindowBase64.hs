@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WindowBase64
-       (ghcjs_dom_window_base64_atob, windowBase64Atob,
-        ghcjs_dom_window_base64_btoa, windowBase64Btoa, WindowBase64,
-        IsWindowBase64, castToWindowBase64, gTypeWindowBase64,
-        toWindowBase64)
+       (js_atob, atob, js_btoa, btoa, WindowBase64, castToWindowBase64,
+        gTypeWindowBase64)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,41 +15,33 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"atob\"]($2)"
-        ghcjs_dom_window_base64_atob ::
+foreign import javascript unsafe "$1[\"atob\"]($2)" js_atob ::
         JSRef WindowBase64 -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64.atob Mozilla WindowBase64.atob documentation> 
-windowBase64Atob ::
-                 (MonadIO m, IsWindowBase64 self, ToJSString string,
-                  FromJSString result) =>
-                   self -> string -> m result
-windowBase64Atob self string
+atob ::
+     (MonadIO m, ToJSString string, FromJSString result) =>
+       WindowBase64 -> string -> m result
+atob self string
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_window_base64_atob
-            (unWindowBase64 (toWindowBase64 self))
-            (toJSString string)))
+         (js_atob (unWindowBase64 self) (toJSString string)))
  
-foreign import javascript unsafe "$1[\"btoa\"]($2)"
-        ghcjs_dom_window_base64_btoa ::
+foreign import javascript unsafe "$1[\"btoa\"]($2)" js_btoa ::
         JSRef WindowBase64 -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64.btoa Mozilla WindowBase64.btoa documentation> 
-windowBase64Btoa ::
-                 (MonadIO m, IsWindowBase64 self, ToJSString string,
-                  FromJSString result) =>
-                   self -> string -> m result
-windowBase64Btoa self string
+btoa ::
+     (MonadIO m, ToJSString string, FromJSString result) =>
+       WindowBase64 -> string -> m result
+btoa self string
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_window_base64_btoa
-            (unWindowBase64 (toWindowBase64 self))
-            (toJSString string)))
+         (js_btoa (unWindowBase64 self) (toJSString string)))
 #else
 module GHCJS.DOM.WindowBase64 (
   ) where

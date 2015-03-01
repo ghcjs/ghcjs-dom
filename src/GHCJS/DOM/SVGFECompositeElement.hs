@@ -1,28 +1,20 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFECompositeElement
-       (cSVG_FECOMPOSITE_OPERATOR_UNKNOWN, cSVG_FECOMPOSITE_OPERATOR_OVER,
-        cSVG_FECOMPOSITE_OPERATOR_IN, cSVG_FECOMPOSITE_OPERATOR_OUT,
-        cSVG_FECOMPOSITE_OPERATOR_ATOP, cSVG_FECOMPOSITE_OPERATOR_XOR,
-        cSVG_FECOMPOSITE_OPERATOR_ARITHMETIC,
-        ghcjs_dom_svgfe_composite_element_get_in1,
-        svgfeCompositeElementGetIn1,
-        ghcjs_dom_svgfe_composite_element_get_in2,
-        svgfeCompositeElementGetIn2,
-        ghcjs_dom_svgfe_composite_element_get_operator,
-        svgfeCompositeElementGetOperator,
-        ghcjs_dom_svgfe_composite_element_get_k1,
-        svgfeCompositeElementGetK1,
-        ghcjs_dom_svgfe_composite_element_get_k2,
-        svgfeCompositeElementGetK2,
-        ghcjs_dom_svgfe_composite_element_get_k3,
-        svgfeCompositeElementGetK3,
-        ghcjs_dom_svgfe_composite_element_get_k4,
-        svgfeCompositeElementGetK4, SVGFECompositeElement,
-        IsSVGFECompositeElement, castToSVGFECompositeElement,
-        gTypeSVGFECompositeElement, toSVGFECompositeElement)
+       (pattern SVG_FECOMPOSITE_OPERATOR_UNKNOWN,
+        pattern SVG_FECOMPOSITE_OPERATOR_OVER,
+        pattern SVG_FECOMPOSITE_OPERATOR_IN,
+        pattern SVG_FECOMPOSITE_OPERATOR_OUT,
+        pattern SVG_FECOMPOSITE_OPERATOR_ATOP,
+        pattern SVG_FECOMPOSITE_OPERATOR_XOR,
+        pattern SVG_FECOMPOSITE_OPERATOR_ARITHMETIC, js_getIn1, getIn1,
+        js_getIn2, getIn2, js_getOperator, getOperator, js_getK1, getK1,
+        js_getK2, getK2, js_getK3, getK3, js_getK4, getK4,
+        SVGFECompositeElement, castToSVGFECompositeElement,
+        gTypeSVGFECompositeElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -32,114 +24,81 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cSVG_FECOMPOSITE_OPERATOR_UNKNOWN = 0
-cSVG_FECOMPOSITE_OPERATOR_OVER = 1
-cSVG_FECOMPOSITE_OPERATOR_IN = 2
-cSVG_FECOMPOSITE_OPERATOR_OUT = 3
-cSVG_FECOMPOSITE_OPERATOR_ATOP = 4
-cSVG_FECOMPOSITE_OPERATOR_XOR = 5
-cSVG_FECOMPOSITE_OPERATOR_ARITHMETIC = 6
+pattern SVG_FECOMPOSITE_OPERATOR_UNKNOWN = 0
+pattern SVG_FECOMPOSITE_OPERATOR_OVER = 1
+pattern SVG_FECOMPOSITE_OPERATOR_IN = 2
+pattern SVG_FECOMPOSITE_OPERATOR_OUT = 3
+pattern SVG_FECOMPOSITE_OPERATOR_ATOP = 4
+pattern SVG_FECOMPOSITE_OPERATOR_XOR = 5
+pattern SVG_FECOMPOSITE_OPERATOR_ARITHMETIC = 6
  
-foreign import javascript unsafe "$1[\"in1\"]"
-        ghcjs_dom_svgfe_composite_element_get_in1 ::
+foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
         JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.in1 Mozilla SVGFECompositeElement.in1 documentation> 
-svgfeCompositeElementGetIn1 ::
-                            (MonadIO m, IsSVGFECompositeElement self) =>
-                              self -> m (Maybe SVGAnimatedString)
-svgfeCompositeElementGetIn1 self
-  = liftIO
-      ((ghcjs_dom_svgfe_composite_element_get_in1
-          (unSVGFECompositeElement (toSVGFECompositeElement self)))
-         >>= fromJSRef)
+getIn1 ::
+       (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedString)
+getIn1 self
+  = liftIO ((js_getIn1 (unSVGFECompositeElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"in2\"]"
-        ghcjs_dom_svgfe_composite_element_get_in2 ::
+foreign import javascript unsafe "$1[\"in2\"]" js_getIn2 ::
         JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.in2 Mozilla SVGFECompositeElement.in2 documentation> 
-svgfeCompositeElementGetIn2 ::
-                            (MonadIO m, IsSVGFECompositeElement self) =>
-                              self -> m (Maybe SVGAnimatedString)
-svgfeCompositeElementGetIn2 self
-  = liftIO
-      ((ghcjs_dom_svgfe_composite_element_get_in2
-          (unSVGFECompositeElement (toSVGFECompositeElement self)))
-         >>= fromJSRef)
+getIn2 ::
+       (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedString)
+getIn2 self
+  = liftIO ((js_getIn2 (unSVGFECompositeElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"operator\"]"
-        ghcjs_dom_svgfe_composite_element_get_operator ::
-        JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedEnumeration)
+foreign import javascript unsafe "$1[\"operator\"]" js_getOperator
+        :: JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.operator Mozilla SVGFECompositeElement.operator documentation> 
-svgfeCompositeElementGetOperator ::
-                                 (MonadIO m, IsSVGFECompositeElement self) =>
-                                   self -> m (Maybe SVGAnimatedEnumeration)
-svgfeCompositeElementGetOperator self
+getOperator ::
+            (MonadIO m) =>
+              SVGFECompositeElement -> m (Maybe SVGAnimatedEnumeration)
+getOperator self
   = liftIO
-      ((ghcjs_dom_svgfe_composite_element_get_operator
-          (unSVGFECompositeElement (toSVGFECompositeElement self)))
-         >>= fromJSRef)
+      ((js_getOperator (unSVGFECompositeElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"k1\"]"
-        ghcjs_dom_svgfe_composite_element_get_k1 ::
+foreign import javascript unsafe "$1[\"k1\"]" js_getK1 ::
         JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k1 Mozilla SVGFECompositeElement.k1 documentation> 
-svgfeCompositeElementGetK1 ::
-                           (MonadIO m, IsSVGFECompositeElement self) =>
-                             self -> m (Maybe SVGAnimatedNumber)
-svgfeCompositeElementGetK1 self
-  = liftIO
-      ((ghcjs_dom_svgfe_composite_element_get_k1
-          (unSVGFECompositeElement (toSVGFECompositeElement self)))
-         >>= fromJSRef)
+getK1 ::
+      (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
+getK1 self
+  = liftIO ((js_getK1 (unSVGFECompositeElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"k2\"]"
-        ghcjs_dom_svgfe_composite_element_get_k2 ::
+foreign import javascript unsafe "$1[\"k2\"]" js_getK2 ::
         JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k2 Mozilla SVGFECompositeElement.k2 documentation> 
-svgfeCompositeElementGetK2 ::
-                           (MonadIO m, IsSVGFECompositeElement self) =>
-                             self -> m (Maybe SVGAnimatedNumber)
-svgfeCompositeElementGetK2 self
-  = liftIO
-      ((ghcjs_dom_svgfe_composite_element_get_k2
-          (unSVGFECompositeElement (toSVGFECompositeElement self)))
-         >>= fromJSRef)
+getK2 ::
+      (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
+getK2 self
+  = liftIO ((js_getK2 (unSVGFECompositeElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"k3\"]"
-        ghcjs_dom_svgfe_composite_element_get_k3 ::
+foreign import javascript unsafe "$1[\"k3\"]" js_getK3 ::
         JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k3 Mozilla SVGFECompositeElement.k3 documentation> 
-svgfeCompositeElementGetK3 ::
-                           (MonadIO m, IsSVGFECompositeElement self) =>
-                             self -> m (Maybe SVGAnimatedNumber)
-svgfeCompositeElementGetK3 self
-  = liftIO
-      ((ghcjs_dom_svgfe_composite_element_get_k3
-          (unSVGFECompositeElement (toSVGFECompositeElement self)))
-         >>= fromJSRef)
+getK3 ::
+      (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
+getK3 self
+  = liftIO ((js_getK3 (unSVGFECompositeElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"k4\"]"
-        ghcjs_dom_svgfe_composite_element_get_k4 ::
+foreign import javascript unsafe "$1[\"k4\"]" js_getK4 ::
         JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k4 Mozilla SVGFECompositeElement.k4 documentation> 
-svgfeCompositeElementGetK4 ::
-                           (MonadIO m, IsSVGFECompositeElement self) =>
-                             self -> m (Maybe SVGAnimatedNumber)
-svgfeCompositeElementGetK4 self
-  = liftIO
-      ((ghcjs_dom_svgfe_composite_element_get_k4
-          (unSVGFECompositeElement (toSVGFECompositeElement self)))
-         >>= fromJSRef)
+getK4 ::
+      (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
+getK4 self
+  = liftIO ((js_getK4 (unSVGFECompositeElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFECompositeElement (
   ) where

@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLCollection
-       (ghcjs_dom_html_collection_item, htmlCollectionItem,
-        ghcjs_dom_html_collection_named_item, htmlCollectionNamedItem,
-        ghcjs_dom_html_collection_get_length, htmlCollectionGetLength,
-        HTMLCollection, IsHTMLCollection, castToHTMLCollection,
-        gTypeHTMLCollection, toHTMLCollection)
+       (js_item, item, js_namedItem, namedItem, js_getLength, getLength,
+        HTMLCollection, castToHTMLCollection, gTypeHTMLCollection,
+        IsHTMLCollection, toHTMLCollection)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,51 +16,42 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_html_collection_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef HTMLCollection -> Word -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.item Mozilla HTMLCollection.item documentation> 
-htmlCollectionItem ::
-                   (MonadIO m, IsHTMLCollection self) =>
-                     self -> Word -> m (Maybe Node)
-htmlCollectionItem self index
+item ::
+     (MonadIO m, IsHTMLCollection self) =>
+       self -> Word -> m (Maybe Node)
+item self index
   = liftIO
-      ((ghcjs_dom_html_collection_item
-          (unHTMLCollection (toHTMLCollection self))
-          index)
-         >>= fromJSRef)
+      ((js_item (unHTMLCollection (toHTMLCollection self)) index) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        ghcjs_dom_html_collection_named_item ::
-        JSRef HTMLCollection -> JSString -> IO (JSRef Node)
+        js_namedItem :: JSRef HTMLCollection -> JSString -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.namedItem Mozilla HTMLCollection.namedItem documentation> 
-htmlCollectionNamedItem ::
-                        (MonadIO m, IsHTMLCollection self, ToJSString name) =>
-                          self -> name -> m (Maybe Node)
-htmlCollectionNamedItem self name
+namedItem ::
+          (MonadIO m, IsHTMLCollection self, ToJSString name) =>
+            self -> name -> m (Maybe Node)
+namedItem self name
   = liftIO
-      ((ghcjs_dom_html_collection_named_item
-          (unHTMLCollection (toHTMLCollection self))
+      ((js_namedItem (unHTMLCollection (toHTMLCollection self))
           (toJSString name))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_html_collection_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef HTMLCollection -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.length Mozilla HTMLCollection.length documentation> 
-htmlCollectionGetLength ::
-                        (MonadIO m, IsHTMLCollection self) => self -> m Word
-htmlCollectionGetLength self
-  = liftIO
-      (ghcjs_dom_html_collection_get_length
-         (unHTMLCollection (toHTMLCollection self)))
+getLength :: (MonadIO m, IsHTMLCollection self) => self -> m Word
+getLength self
+  = liftIO (js_getLength (unHTMLCollection (toHTMLCollection self)))
 #else
 module GHCJS.DOM.HTMLCollection (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLCollection

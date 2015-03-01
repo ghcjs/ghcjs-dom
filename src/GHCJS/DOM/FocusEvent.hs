@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.FocusEvent
-       (ghcjs_dom_focus_event_get_related_target,
-        focusEventGetRelatedTarget, FocusEvent, IsFocusEvent,
-        castToFocusEvent, gTypeFocusEvent, toFocusEvent)
+       (js_getRelatedTarget, getRelatedTarget, FocusEvent,
+        castToFocusEvent, gTypeFocusEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,22 +15,18 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"relatedTarget\"]"
-        ghcjs_dom_focus_event_get_related_target ::
-        JSRef FocusEvent -> IO (JSRef EventTarget)
+        js_getRelatedTarget :: JSRef FocusEvent -> IO (JSRef EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent.relatedTarget Mozilla FocusEvent.relatedTarget documentation> 
-focusEventGetRelatedTarget ::
-                           (MonadIO m, IsFocusEvent self) => self -> m (Maybe EventTarget)
-focusEventGetRelatedTarget self
-  = liftIO
-      ((ghcjs_dom_focus_event_get_related_target
-          (unFocusEvent (toFocusEvent self)))
-         >>= fromJSRef)
+getRelatedTarget ::
+                 (MonadIO m) => FocusEvent -> m (Maybe EventTarget)
+getRelatedTarget self
+  = liftIO ((js_getRelatedTarget (unFocusEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.FocusEvent (
   ) where

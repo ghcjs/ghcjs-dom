@@ -1,18 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGZoomEvent
-       (ghcjs_dom_svg_zoom_event_get_zoom_rect_screen,
-        svgZoomEventGetZoomRectScreen,
-        ghcjs_dom_svg_zoom_event_get_previous_scale,
-        svgZoomEventGetPreviousScale,
-        ghcjs_dom_svg_zoom_event_get_previous_translate,
-        svgZoomEventGetPreviousTranslate,
-        ghcjs_dom_svg_zoom_event_get_new_scale, svgZoomEventGetNewScale,
-        ghcjs_dom_svg_zoom_event_get_new_translate,
-        svgZoomEventGetNewTranslate, SVGZoomEvent, IsSVGZoomEvent,
-        castToSVGZoomEvent, gTypeSVGZoomEvent, toSVGZoomEvent)
+       (js_getZoomRectScreen, getZoomRectScreen, js_getPreviousScale,
+        getPreviousScale, js_getPreviousTranslate, getPreviousTranslate,
+        js_getNewScale, getNewScale, js_getNewTranslate, getNewTranslate,
+        SVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,72 +17,54 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"zoomRectScreen\"]"
-        ghcjs_dom_svg_zoom_event_get_zoom_rect_screen ::
-        JSRef SVGZoomEvent -> IO (JSRef SVGRect)
+        js_getZoomRectScreen :: JSRef SVGZoomEvent -> IO (JSRef SVGRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.zoomRectScreen Mozilla SVGZoomEvent.zoomRectScreen documentation> 
-svgZoomEventGetZoomRectScreen ::
-                              (MonadIO m, IsSVGZoomEvent self) => self -> m (Maybe SVGRect)
-svgZoomEventGetZoomRectScreen self
+getZoomRectScreen ::
+                  (MonadIO m) => SVGZoomEvent -> m (Maybe SVGRect)
+getZoomRectScreen self
   = liftIO
-      ((ghcjs_dom_svg_zoom_event_get_zoom_rect_screen
-          (unSVGZoomEvent (toSVGZoomEvent self)))
-         >>= fromJSRef)
+      ((js_getZoomRectScreen (unSVGZoomEvent self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"previousScale\"]"
-        ghcjs_dom_svg_zoom_event_get_previous_scale ::
-        JSRef SVGZoomEvent -> IO Float
+        js_getPreviousScale :: JSRef SVGZoomEvent -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.previousScale Mozilla SVGZoomEvent.previousScale documentation> 
-svgZoomEventGetPreviousScale ::
-                             (MonadIO m, IsSVGZoomEvent self) => self -> m Float
-svgZoomEventGetPreviousScale self
-  = liftIO
-      (ghcjs_dom_svg_zoom_event_get_previous_scale
-         (unSVGZoomEvent (toSVGZoomEvent self)))
+getPreviousScale :: (MonadIO m) => SVGZoomEvent -> m Float
+getPreviousScale self
+  = liftIO (js_getPreviousScale (unSVGZoomEvent self))
  
 foreign import javascript unsafe "$1[\"previousTranslate\"]"
-        ghcjs_dom_svg_zoom_event_get_previous_translate ::
+        js_getPreviousTranslate ::
         JSRef SVGZoomEvent -> IO (JSRef SVGPoint)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.previousTranslate Mozilla SVGZoomEvent.previousTranslate documentation> 
-svgZoomEventGetPreviousTranslate ::
-                                 (MonadIO m, IsSVGZoomEvent self) => self -> m (Maybe SVGPoint)
-svgZoomEventGetPreviousTranslate self
+getPreviousTranslate ::
+                     (MonadIO m) => SVGZoomEvent -> m (Maybe SVGPoint)
+getPreviousTranslate self
   = liftIO
-      ((ghcjs_dom_svg_zoom_event_get_previous_translate
-          (unSVGZoomEvent (toSVGZoomEvent self)))
-         >>= fromJSRef)
+      ((js_getPreviousTranslate (unSVGZoomEvent self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"newScale\"]"
-        ghcjs_dom_svg_zoom_event_get_new_scale ::
-        JSRef SVGZoomEvent -> IO Float
+foreign import javascript unsafe "$1[\"newScale\"]" js_getNewScale
+        :: JSRef SVGZoomEvent -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.newScale Mozilla SVGZoomEvent.newScale documentation> 
-svgZoomEventGetNewScale ::
-                        (MonadIO m, IsSVGZoomEvent self) => self -> m Float
-svgZoomEventGetNewScale self
-  = liftIO
-      (ghcjs_dom_svg_zoom_event_get_new_scale
-         (unSVGZoomEvent (toSVGZoomEvent self)))
+getNewScale :: (MonadIO m) => SVGZoomEvent -> m Float
+getNewScale self = liftIO (js_getNewScale (unSVGZoomEvent self))
  
 foreign import javascript unsafe "$1[\"newTranslate\"]"
-        ghcjs_dom_svg_zoom_event_get_new_translate ::
-        JSRef SVGZoomEvent -> IO (JSRef SVGPoint)
+        js_getNewTranslate :: JSRef SVGZoomEvent -> IO (JSRef SVGPoint)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.newTranslate Mozilla SVGZoomEvent.newTranslate documentation> 
-svgZoomEventGetNewTranslate ::
-                            (MonadIO m, IsSVGZoomEvent self) => self -> m (Maybe SVGPoint)
-svgZoomEventGetNewTranslate self
-  = liftIO
-      ((ghcjs_dom_svg_zoom_event_get_new_translate
-          (unSVGZoomEvent (toSVGZoomEvent self)))
-         >>= fromJSRef)
+getNewTranslate ::
+                (MonadIO m) => SVGZoomEvent -> m (Maybe SVGPoint)
+getNewTranslate self
+  = liftIO ((js_getNewTranslate (unSVGZoomEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGZoomEvent (
   ) where

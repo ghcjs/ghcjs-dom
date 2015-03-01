@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDivElement
-       (ghcjs_dom_html_div_element_set_align, htmlDivElementSetAlign,
-        ghcjs_dom_html_div_element_get_align, htmlDivElementGetAlign,
-        HTMLDivElement, IsHTMLDivElement, castToHTMLDivElement,
-        gTypeHTMLDivElement, toHTMLDivElement)
+       (js_setAlign, setAlign, js_getAlign, getAlign, HTMLDivElement,
+        castToHTMLDivElement, gTypeHTMLDivElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,37 +15,27 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_div_element_set_align ::
-        JSRef HTMLDivElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLDivElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement.align Mozilla HTMLDivElement.align documentation> 
-htmlDivElementSetAlign ::
-                       (MonadIO m, IsHTMLDivElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlDivElementSetAlign self val
-  = liftIO
-      (ghcjs_dom_html_div_element_set_align
-         (unHTMLDivElement (toHTMLDivElement self))
-         (toJSString val))
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLDivElement -> val -> m ()
+setAlign self val
+  = liftIO (js_setAlign (unHTMLDivElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_div_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLDivElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement.align Mozilla HTMLDivElement.align documentation> 
-htmlDivElementGetAlign ::
-                       (MonadIO m, IsHTMLDivElement self, FromJSString result) =>
-                         self -> m result
-htmlDivElementGetAlign self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_div_element_get_align
-            (unHTMLDivElement (toHTMLDivElement self))))
+getAlign ::
+         (MonadIO m, FromJSString result) => HTMLDivElement -> m result
+getAlign self
+  = liftIO (fromJSString <$> (js_getAlign (unHTMLDivElement self)))
 #else
 module GHCJS.DOM.HTMLDivElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLDivElement

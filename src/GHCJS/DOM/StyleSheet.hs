@@ -1,17 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleSheet
-       (ghcjs_dom_style_sheet_set_disabled, styleSheetSetDisabled,
-        ghcjs_dom_style_sheet_get_disabled, styleSheetGetDisabled,
-        ghcjs_dom_style_sheet_get_owner_node, styleSheetGetOwnerNode,
-        ghcjs_dom_style_sheet_get_parent_style_sheet,
-        styleSheetGetParentStyleSheet, ghcjs_dom_style_sheet_get_href,
-        styleSheetGetHref, ghcjs_dom_style_sheet_get_title,
-        styleSheetGetTitle, ghcjs_dom_style_sheet_get_media,
-        styleSheetGetMedia, StyleSheet, IsStyleSheet, castToStyleSheet,
-        gTypeStyleSheet, toStyleSheet)
+       (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
+        js_getOwnerNode, getOwnerNode, js_getParentStyleSheet,
+        getParentStyleSheet, js_getHref, getHref, js_getTitle, getTitle,
+        js_getMedia, getMedia, StyleSheet, castToStyleSheet,
+        gTypeStyleSheet, IsStyleSheet, toStyleSheet)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,98 +18,80 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        ghcjs_dom_style_sheet_set_disabled ::
-        JSRef StyleSheet -> Bool -> IO ()
+        js_setDisabled :: JSRef StyleSheet -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.disabled Mozilla StyleSheet.disabled documentation> 
-styleSheetSetDisabled ::
-                      (MonadIO m, IsStyleSheet self) => self -> Bool -> m ()
-styleSheetSetDisabled self val
-  = liftIO
-      (ghcjs_dom_style_sheet_set_disabled
-         (unStyleSheet (toStyleSheet self))
-         val)
+setDisabled ::
+            (MonadIO m, IsStyleSheet self) => self -> Bool -> m ()
+setDisabled self val
+  = liftIO (js_setDisabled (unStyleSheet (toStyleSheet self)) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        ghcjs_dom_style_sheet_get_disabled :: JSRef StyleSheet -> IO Bool
+        js_getDisabled :: JSRef StyleSheet -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.disabled Mozilla StyleSheet.disabled documentation> 
-styleSheetGetDisabled ::
-                      (MonadIO m, IsStyleSheet self) => self -> m Bool
-styleSheetGetDisabled self
-  = liftIO
-      (ghcjs_dom_style_sheet_get_disabled
-         (unStyleSheet (toStyleSheet self)))
+getDisabled :: (MonadIO m, IsStyleSheet self) => self -> m Bool
+getDisabled self
+  = liftIO (js_getDisabled (unStyleSheet (toStyleSheet self)))
  
 foreign import javascript unsafe "$1[\"ownerNode\"]"
-        ghcjs_dom_style_sheet_get_owner_node ::
-        JSRef StyleSheet -> IO (JSRef Node)
+        js_getOwnerNode :: JSRef StyleSheet -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.ownerNode Mozilla StyleSheet.ownerNode documentation> 
-styleSheetGetOwnerNode ::
-                       (MonadIO m, IsStyleSheet self) => self -> m (Maybe Node)
-styleSheetGetOwnerNode self
+getOwnerNode ::
+             (MonadIO m, IsStyleSheet self) => self -> m (Maybe Node)
+getOwnerNode self
   = liftIO
-      ((ghcjs_dom_style_sheet_get_owner_node
-          (unStyleSheet (toStyleSheet self)))
-         >>= fromJSRef)
+      ((js_getOwnerNode (unStyleSheet (toStyleSheet self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
-        ghcjs_dom_style_sheet_get_parent_style_sheet ::
-        JSRef StyleSheet -> IO (JSRef StyleSheet)
+        js_getParentStyleSheet :: JSRef StyleSheet -> IO (JSRef StyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.parentStyleSheet Mozilla StyleSheet.parentStyleSheet documentation> 
-styleSheetGetParentStyleSheet ::
-                              (MonadIO m, IsStyleSheet self) => self -> m (Maybe StyleSheet)
-styleSheetGetParentStyleSheet self
+getParentStyleSheet ::
+                    (MonadIO m, IsStyleSheet self) => self -> m (Maybe StyleSheet)
+getParentStyleSheet self
   = liftIO
-      ((ghcjs_dom_style_sheet_get_parent_style_sheet
-          (unStyleSheet (toStyleSheet self)))
-         >>= fromJSRef)
+      ((js_getParentStyleSheet (unStyleSheet (toStyleSheet self))) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"href\"]"
-        ghcjs_dom_style_sheet_get_href :: JSRef StyleSheet -> IO JSString
+foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
+        JSRef StyleSheet -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.href Mozilla StyleSheet.href documentation> 
-styleSheetGetHref ::
-                  (MonadIO m, IsStyleSheet self, FromJSString result) =>
-                    self -> m result
-styleSheetGetHref self
+getHref ::
+        (MonadIO m, IsStyleSheet self, FromJSString result) =>
+          self -> m result
+getHref self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_style_sheet_get_href
-            (unStyleSheet (toStyleSheet self))))
+      (fromJSString <$> (js_getHref (unStyleSheet (toStyleSheet self))))
  
-foreign import javascript unsafe "$1[\"title\"]"
-        ghcjs_dom_style_sheet_get_title :: JSRef StyleSheet -> IO JSString
+foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
+        JSRef StyleSheet -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.title Mozilla StyleSheet.title documentation> 
-styleSheetGetTitle ::
-                   (MonadIO m, IsStyleSheet self, FromJSString result) =>
-                     self -> m result
-styleSheetGetTitle self
+getTitle ::
+         (MonadIO m, IsStyleSheet self, FromJSString result) =>
+           self -> m result
+getTitle self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_style_sheet_get_title
-            (unStyleSheet (toStyleSheet self))))
+      (fromJSString <$> (js_getTitle (unStyleSheet (toStyleSheet self))))
  
-foreign import javascript unsafe "$1[\"media\"]"
-        ghcjs_dom_style_sheet_get_media ::
+foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
         JSRef StyleSheet -> IO (JSRef MediaList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.media Mozilla StyleSheet.media documentation> 
-styleSheetGetMedia ::
-                   (MonadIO m, IsStyleSheet self) => self -> m (Maybe MediaList)
-styleSheetGetMedia self
+getMedia ::
+         (MonadIO m, IsStyleSheet self) => self -> m (Maybe MediaList)
+getMedia self
   = liftIO
-      ((ghcjs_dom_style_sheet_get_media
-          (unStyleSheet (toStyleSheet self)))
-         >>= fromJSRef)
+      ((js_getMedia (unStyleSheet (toStyleSheet self))) >>= fromJSRef)
 #else
 module GHCJS.DOM.StyleSheet (
   module Graphics.UI.Gtk.WebKit.DOM.StyleSheet

@@ -1,19 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGTextPathElement
-       (cTEXTPATH_METHODTYPE_UNKNOWN, cTEXTPATH_METHODTYPE_ALIGN,
-        cTEXTPATH_METHODTYPE_STRETCH, cTEXTPATH_SPACINGTYPE_UNKNOWN,
-        cTEXTPATH_SPACINGTYPE_AUTO, cTEXTPATH_SPACINGTYPE_EXACT,
-        ghcjs_dom_svg_text_path_element_get_start_offset,
-        svgTextPathElementGetStartOffset,
-        ghcjs_dom_svg_text_path_element_get_method,
-        svgTextPathElementGetMethod,
-        ghcjs_dom_svg_text_path_element_get_spacing,
-        svgTextPathElementGetSpacing, SVGTextPathElement,
-        IsSVGTextPathElement, castToSVGTextPathElement,
-        gTypeSVGTextPathElement, toSVGTextPathElement)
+       (pattern TEXTPATH_METHODTYPE_UNKNOWN,
+        pattern TEXTPATH_METHODTYPE_ALIGN,
+        pattern TEXTPATH_METHODTYPE_STRETCH,
+        pattern TEXTPATH_SPACINGTYPE_UNKNOWN,
+        pattern TEXTPATH_SPACINGTYPE_AUTO,
+        pattern TEXTPATH_SPACINGTYPE_EXACT, js_getStartOffset,
+        getStartOffset, js_getMethod, getMethod, js_getSpacing, getSpacing,
+        SVGTextPathElement, castToSVGTextPathElement,
+        gTypeSVGTextPathElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,57 +22,47 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cTEXTPATH_METHODTYPE_UNKNOWN = 0
-cTEXTPATH_METHODTYPE_ALIGN = 1
-cTEXTPATH_METHODTYPE_STRETCH = 2
-cTEXTPATH_SPACINGTYPE_UNKNOWN = 0
-cTEXTPATH_SPACINGTYPE_AUTO = 1
-cTEXTPATH_SPACINGTYPE_EXACT = 2
+pattern TEXTPATH_METHODTYPE_UNKNOWN = 0
+pattern TEXTPATH_METHODTYPE_ALIGN = 1
+pattern TEXTPATH_METHODTYPE_STRETCH = 2
+pattern TEXTPATH_SPACINGTYPE_UNKNOWN = 0
+pattern TEXTPATH_SPACINGTYPE_AUTO = 1
+pattern TEXTPATH_SPACINGTYPE_EXACT = 2
  
 foreign import javascript unsafe "$1[\"startOffset\"]"
-        ghcjs_dom_svg_text_path_element_get_start_offset ::
+        js_getStartOffset ::
         JSRef SVGTextPathElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.startOffset Mozilla SVGTextPathElement.startOffset documentation> 
-svgTextPathElementGetStartOffset ::
-                                 (MonadIO m, IsSVGTextPathElement self) =>
-                                   self -> m (Maybe SVGAnimatedLength)
-svgTextPathElementGetStartOffset self
+getStartOffset ::
+               (MonadIO m) => SVGTextPathElement -> m (Maybe SVGAnimatedLength)
+getStartOffset self
   = liftIO
-      ((ghcjs_dom_svg_text_path_element_get_start_offset
-          (unSVGTextPathElement (toSVGTextPathElement self)))
-         >>= fromJSRef)
+      ((js_getStartOffset (unSVGTextPathElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"method\"]"
-        ghcjs_dom_svg_text_path_element_get_method ::
+foreign import javascript unsafe "$1[\"method\"]" js_getMethod ::
         JSRef SVGTextPathElement -> IO (JSRef SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.method Mozilla SVGTextPathElement.method documentation> 
-svgTextPathElementGetMethod ::
-                            (MonadIO m, IsSVGTextPathElement self) =>
-                              self -> m (Maybe SVGAnimatedEnumeration)
-svgTextPathElementGetMethod self
-  = liftIO
-      ((ghcjs_dom_svg_text_path_element_get_method
-          (unSVGTextPathElement (toSVGTextPathElement self)))
-         >>= fromJSRef)
+getMethod ::
+          (MonadIO m) =>
+            SVGTextPathElement -> m (Maybe SVGAnimatedEnumeration)
+getMethod self
+  = liftIO ((js_getMethod (unSVGTextPathElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"spacing\"]"
-        ghcjs_dom_svg_text_path_element_get_spacing ::
+foreign import javascript unsafe "$1[\"spacing\"]" js_getSpacing ::
         JSRef SVGTextPathElement -> IO (JSRef SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.spacing Mozilla SVGTextPathElement.spacing documentation> 
-svgTextPathElementGetSpacing ::
-                             (MonadIO m, IsSVGTextPathElement self) =>
-                               self -> m (Maybe SVGAnimatedEnumeration)
-svgTextPathElementGetSpacing self
+getSpacing ::
+           (MonadIO m) =>
+             SVGTextPathElement -> m (Maybe SVGAnimatedEnumeration)
+getSpacing self
   = liftIO
-      ((ghcjs_dom_svg_text_path_element_get_spacing
-          (unSVGTextPathElement (toSVGTextPathElement self)))
-         >>= fromJSRef)
+      ((js_getSpacing (unSVGTextPathElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGTextPathElement (
   ) where

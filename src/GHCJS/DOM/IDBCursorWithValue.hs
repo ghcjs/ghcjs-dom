@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.IDBCursorWithValue
-       (ghcjs_dom_idb_cursor_with_value_get_value,
-        idbCursorWithValueGetValue, IDBCursorWithValue,
-        IsIDBCursorWithValue, castToIDBCursorWithValue,
-        gTypeIDBCursorWithValue, toIDBCursorWithValue)
+       (js_getValue, getValue, IDBCursorWithValue,
+        castToIDBCursorWithValue, gTypeIDBCursorWithValue)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,21 +15,16 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"value\"]"
-        ghcjs_dom_idb_cursor_with_value_get_value ::
+foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
         JSRef IDBCursorWithValue -> IO (JSRef a)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursorWithValue.value Mozilla IDBCursorWithValue.value documentation> 
-idbCursorWithValueGetValue ::
-                           (MonadIO m, IsIDBCursorWithValue self) => self -> m (JSRef a)
-idbCursorWithValueGetValue self
-  = liftIO
-      (ghcjs_dom_idb_cursor_with_value_get_value
-         (unIDBCursorWithValue (toIDBCursorWithValue self)))
+getValue :: (MonadIO m) => IDBCursorWithValue -> m (JSRef a)
+getValue self = liftIO (js_getValue (unIDBCursorWithValue self))
 #else
 module GHCJS.DOM.IDBCursorWithValue (
   ) where

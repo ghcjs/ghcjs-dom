@@ -1,27 +1,16 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTrackElement
-       (cNONE, cLOADING, cLOADED, cERROR,
-        ghcjs_dom_html_track_element_set_kind, htmlTrackElementSetKind,
-        ghcjs_dom_html_track_element_get_kind, htmlTrackElementGetKind,
-        ghcjs_dom_html_track_element_set_src, htmlTrackElementSetSrc,
-        ghcjs_dom_html_track_element_get_src, htmlTrackElementGetSrc,
-        ghcjs_dom_html_track_element_set_srclang,
-        htmlTrackElementSetSrclang,
-        ghcjs_dom_html_track_element_get_srclang,
-        htmlTrackElementGetSrclang, ghcjs_dom_html_track_element_set_label,
-        htmlTrackElementSetLabel, ghcjs_dom_html_track_element_get_label,
-        htmlTrackElementGetLabel, ghcjs_dom_html_track_element_set_default,
-        htmlTrackElementSetDefault,
-        ghcjs_dom_html_track_element_get_default,
-        htmlTrackElementGetDefault,
-        ghcjs_dom_html_track_element_get_ready_state,
-        htmlTrackElementGetReadyState,
-        ghcjs_dom_html_track_element_get_track, htmlTrackElementGetTrack,
-        HTMLTrackElement, IsHTMLTrackElement, castToHTMLTrackElement,
-        gTypeHTMLTrackElement, toHTMLTrackElement)
+       (pattern NONE, pattern LOADING, pattern LOADED, pattern ERROR,
+        js_setKind, setKind, js_getKind, getKind, js_setSrc, setSrc,
+        js_getSrc, getSrc, js_setSrclang, setSrclang, js_getSrclang,
+        getSrclang, js_setLabel, setLabel, js_getLabel, getLabel,
+        js_setDefault, setDefault, js_getDefault, getDefault,
+        js_getReadyState, getReadyState, js_getTrack, getTrack,
+        HTMLTrackElement, castToHTMLTrackElement, gTypeHTMLTrackElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -31,175 +20,117 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cNONE = 0
-cLOADING = 1
-cLOADED = 2
-cERROR = 3
+pattern NONE = 0
+pattern LOADING = 1
+pattern LOADED = 2
+pattern ERROR = 3
  
-foreign import javascript unsafe "$1[\"kind\"] = $2;"
-        ghcjs_dom_html_track_element_set_kind ::
+foreign import javascript unsafe "$1[\"kind\"] = $2;" js_setKind ::
         JSRef HTMLTrackElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.kind Mozilla HTMLTrackElement.kind documentation> 
-htmlTrackElementSetKind ::
-                        (MonadIO m, IsHTMLTrackElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlTrackElementSetKind self val
-  = liftIO
-      (ghcjs_dom_html_track_element_set_kind
-         (unHTMLTrackElement (toHTMLTrackElement self))
-         (toJSString val))
+setKind ::
+        (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
+setKind self val
+  = liftIO (js_setKind (unHTMLTrackElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"kind\"]"
-        ghcjs_dom_html_track_element_get_kind ::
+foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
         JSRef HTMLTrackElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.kind Mozilla HTMLTrackElement.kind documentation> 
-htmlTrackElementGetKind ::
-                        (MonadIO m, IsHTMLTrackElement self, FromJSString result) =>
-                          self -> m result
-htmlTrackElementGetKind self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_track_element_get_kind
-            (unHTMLTrackElement (toHTMLTrackElement self))))
+getKind ::
+        (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
+getKind self
+  = liftIO (fromJSString <$> (js_getKind (unHTMLTrackElement self)))
  
-foreign import javascript unsafe "$1[\"src\"] = $2;"
-        ghcjs_dom_html_track_element_set_src ::
+foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         JSRef HTMLTrackElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.src Mozilla HTMLTrackElement.src documentation> 
-htmlTrackElementSetSrc ::
-                       (MonadIO m, IsHTMLTrackElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlTrackElementSetSrc self val
-  = liftIO
-      (ghcjs_dom_html_track_element_set_src
-         (unHTMLTrackElement (toHTMLTrackElement self))
-         (toJSString val))
+setSrc ::
+       (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
+setSrc self val
+  = liftIO (js_setSrc (unHTMLTrackElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]"
-        ghcjs_dom_html_track_element_get_src ::
+foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
         JSRef HTMLTrackElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.src Mozilla HTMLTrackElement.src documentation> 
-htmlTrackElementGetSrc ::
-                       (MonadIO m, IsHTMLTrackElement self, FromJSString result) =>
-                         self -> m result
-htmlTrackElementGetSrc self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_track_element_get_src
-            (unHTMLTrackElement (toHTMLTrackElement self))))
+getSrc ::
+       (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
+getSrc self
+  = liftIO (fromJSString <$> (js_getSrc (unHTMLTrackElement self)))
  
 foreign import javascript unsafe "$1[\"srclang\"] = $2;"
-        ghcjs_dom_html_track_element_set_srclang ::
-        JSRef HTMLTrackElement -> JSString -> IO ()
+        js_setSrclang :: JSRef HTMLTrackElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.srclang Mozilla HTMLTrackElement.srclang documentation> 
-htmlTrackElementSetSrclang ::
-                           (MonadIO m, IsHTMLTrackElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlTrackElementSetSrclang self val
-  = liftIO
-      (ghcjs_dom_html_track_element_set_srclang
-         (unHTMLTrackElement (toHTMLTrackElement self))
-         (toJSString val))
+setSrclang ::
+           (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
+setSrclang self val
+  = liftIO (js_setSrclang (unHTMLTrackElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"srclang\"]"
-        ghcjs_dom_html_track_element_get_srclang ::
+foreign import javascript unsafe "$1[\"srclang\"]" js_getSrclang ::
         JSRef HTMLTrackElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.srclang Mozilla HTMLTrackElement.srclang documentation> 
-htmlTrackElementGetSrclang ::
-                           (MonadIO m, IsHTMLTrackElement self, FromJSString result) =>
-                             self -> m result
-htmlTrackElementGetSrclang self
+getSrclang ::
+           (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
+getSrclang self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_track_element_get_srclang
-            (unHTMLTrackElement (toHTMLTrackElement self))))
+      (fromJSString <$> (js_getSrclang (unHTMLTrackElement self)))
  
-foreign import javascript unsafe "$1[\"label\"] = $2;"
-        ghcjs_dom_html_track_element_set_label ::
-        JSRef HTMLTrackElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
+        :: JSRef HTMLTrackElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.label Mozilla HTMLTrackElement.label documentation> 
-htmlTrackElementSetLabel ::
-                         (MonadIO m, IsHTMLTrackElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlTrackElementSetLabel self val
-  = liftIO
-      (ghcjs_dom_html_track_element_set_label
-         (unHTMLTrackElement (toHTMLTrackElement self))
-         (toJSString val))
+setLabel ::
+         (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
+setLabel self val
+  = liftIO (js_setLabel (unHTMLTrackElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"label\"]"
-        ghcjs_dom_html_track_element_get_label ::
+foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
         JSRef HTMLTrackElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.label Mozilla HTMLTrackElement.label documentation> 
-htmlTrackElementGetLabel ::
-                         (MonadIO m, IsHTMLTrackElement self, FromJSString result) =>
-                           self -> m result
-htmlTrackElementGetLabel self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_track_element_get_label
-            (unHTMLTrackElement (toHTMLTrackElement self))))
+getLabel ::
+         (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
+getLabel self
+  = liftIO (fromJSString <$> (js_getLabel (unHTMLTrackElement self)))
  
 foreign import javascript unsafe "$1[\"default\"] = $2;"
-        ghcjs_dom_html_track_element_set_default ::
-        JSRef HTMLTrackElement -> Bool -> IO ()
+        js_setDefault :: JSRef HTMLTrackElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.default Mozilla HTMLTrackElement.default documentation> 
-htmlTrackElementSetDefault ::
-                           (MonadIO m, IsHTMLTrackElement self) => self -> Bool -> m ()
-htmlTrackElementSetDefault self val
-  = liftIO
-      (ghcjs_dom_html_track_element_set_default
-         (unHTMLTrackElement (toHTMLTrackElement self))
-         val)
+setDefault :: (MonadIO m) => HTMLTrackElement -> Bool -> m ()
+setDefault self val
+  = liftIO (js_setDefault (unHTMLTrackElement self) val)
  
 foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
-        ghcjs_dom_html_track_element_get_default ::
-        JSRef HTMLTrackElement -> IO Bool
+        js_getDefault :: JSRef HTMLTrackElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.default Mozilla HTMLTrackElement.default documentation> 
-htmlTrackElementGetDefault ::
-                           (MonadIO m, IsHTMLTrackElement self) => self -> m Bool
-htmlTrackElementGetDefault self
-  = liftIO
-      (ghcjs_dom_html_track_element_get_default
-         (unHTMLTrackElement (toHTMLTrackElement self)))
+getDefault :: (MonadIO m) => HTMLTrackElement -> m Bool
+getDefault self = liftIO (js_getDefault (unHTMLTrackElement self))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        ghcjs_dom_html_track_element_get_ready_state ::
-        JSRef HTMLTrackElement -> IO Word
+        js_getReadyState :: JSRef HTMLTrackElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.readyState Mozilla HTMLTrackElement.readyState documentation> 
-htmlTrackElementGetReadyState ::
-                              (MonadIO m, IsHTMLTrackElement self) => self -> m Word
-htmlTrackElementGetReadyState self
-  = liftIO
-      (ghcjs_dom_html_track_element_get_ready_state
-         (unHTMLTrackElement (toHTMLTrackElement self)))
+getReadyState :: (MonadIO m) => HTMLTrackElement -> m Word
+getReadyState self
+  = liftIO (js_getReadyState (unHTMLTrackElement self))
  
-foreign import javascript unsafe "$1[\"track\"]"
-        ghcjs_dom_html_track_element_get_track ::
+foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
         JSRef HTMLTrackElement -> IO (JSRef TextTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
-htmlTrackElementGetTrack ::
-                         (MonadIO m, IsHTMLTrackElement self) => self -> m (Maybe TextTrack)
-htmlTrackElementGetTrack self
-  = liftIO
-      ((ghcjs_dom_html_track_element_get_track
-          (unHTMLTrackElement (toHTMLTrackElement self)))
-         >>= fromJSRef)
+getTrack :: (MonadIO m) => HTMLTrackElement -> m (Maybe TextTrack)
+getTrack self
+  = liftIO ((js_getTrack (unHTMLTrackElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLTrackElement (
   ) where

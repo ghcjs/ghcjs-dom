@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SQLStatementCallback
-       (sqlStatementCallbackNewSync, sqlStatementCallbackNewAsync,
-        SQLStatementCallback, IsSQLStatementCallback,
-        castToSQLStatementCallback, gTypeSQLStatementCallback,
-        toSQLStatementCallback)
+       (newSQLStatementCallbackSync, newSQLStatementCallbackSync',
+        newSQLStatementCallbackAsync, newSQLStatementCallbackAsync',
+        SQLStatementCallback, castToSQLStatementCallback,
+        gTypeSQLStatementCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,16 +17,16 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementCallback Mozilla SQLStatementCallback documentation> 
-sqlStatementCallbackNewSync ::
+newSQLStatementCallbackSync ::
                             (MonadIO m) =>
                               (Maybe SQLTransaction -> Maybe SQLResultSet -> IO Bool) ->
                                 m SQLStatementCallback
-sqlStatementCallbackNewSync callback
+newSQLStatementCallbackSync callback
   = liftIO
       (SQLStatementCallback . castRef <$>
          syncCallback2 AlwaysRetain True
@@ -37,13 +38,13 @@ sqlStatementCallbackNewSync callback
                     resultSet'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementCallback Mozilla SQLStatementCallback documentation> 
-sqlStatementCallbackNewSync' ::
+newSQLStatementCallbackSync' ::
                              (MonadIO m) =>
                                ForeignRetention ->
                                  Bool ->
                                    (Maybe SQLTransaction -> Maybe SQLResultSet -> IO Bool) ->
                                      m SQLStatementCallback
-sqlStatementCallbackNewSync' retention continueAsync callback
+newSQLStatementCallbackSync' retention continueAsync callback
   = liftIO
       (SQLStatementCallback . castRef <$>
          syncCallback2 retention continueAsync
@@ -55,11 +56,11 @@ sqlStatementCallbackNewSync' retention continueAsync callback
                     resultSet'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementCallback Mozilla SQLStatementCallback documentation> 
-sqlStatementCallbackNewAsync ::
+newSQLStatementCallbackAsync ::
                              (MonadIO m) =>
                                (Maybe SQLTransaction -> Maybe SQLResultSet -> IO Bool) ->
                                  m SQLStatementCallback
-sqlStatementCallbackNewAsync callback
+newSQLStatementCallbackAsync callback
   = liftIO
       (SQLStatementCallback . castRef <$>
          asyncCallback2 AlwaysRetain
@@ -71,12 +72,12 @@ sqlStatementCallbackNewAsync callback
                     resultSet'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementCallback Mozilla SQLStatementCallback documentation> 
-sqlStatementCallbackNewAsync' ::
+newSQLStatementCallbackAsync' ::
                               (MonadIO m) =>
                                 ForeignRetention ->
                                   (Maybe SQLTransaction -> Maybe SQLResultSet -> IO Bool) ->
                                     m SQLStatementCallback
-sqlStatementCallbackNewAsync' retention callback
+newSQLStatementCallbackAsync' retention callback
   = liftIO
       (SQLStatementCallback . castRef <$>
          asyncCallback2 retention

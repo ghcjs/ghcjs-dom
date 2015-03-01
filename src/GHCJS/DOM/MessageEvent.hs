@@ -1,16 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MessageEvent
-       (ghcjs_dom_message_event_init_message_event,
-        messageEventInitMessageEvent, ghcjs_dom_message_event_get_origin,
-        messageEventGetOrigin, ghcjs_dom_message_event_get_last_event_id,
-        messageEventGetLastEventId, ghcjs_dom_message_event_get_source,
-        messageEventGetSource, ghcjs_dom_message_event_get_data,
-        messageEventGetData, ghcjs_dom_message_event_get_message_port,
-        messageEventGetMessagePort, MessageEvent, IsMessageEvent,
-        castToMessageEvent, gTypeMessageEvent, toMessageEvent)
+       (js_initMessageEvent, initMessageEvent, js_getOrigin, getOrigin,
+        js_getLastEventId, getLastEventId, js_getSource, getSource,
+        js_getData, getData, js_getMessagePort, getMessagePort,
+        MessageEvent, castToMessageEvent, gTypeMessageEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,13 +17,13 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "$1[\"initMessageEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
-        ghcjs_dom_message_event_init_message_event ::
+        js_initMessageEvent ::
         JSRef MessageEvent ->
           JSString ->
             Bool ->
@@ -36,102 +33,73 @@ foreign import javascript unsafe
                     JSString -> JSRef DOMWindow -> JSRef MessagePort -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.initMessageEvent Mozilla MessageEvent.initMessageEvent documentation> 
-messageEventInitMessageEvent ::
-                             (MonadIO m, IsMessageEvent self, ToJSString typeArg,
-                              IsSerializedScriptValue dataArg, ToJSString originArg,
-                              ToJSString lastEventIdArg, IsDOMWindow sourceArg,
-                              IsMessagePort messagePort) =>
-                               self ->
-                                 typeArg ->
-                                   Bool ->
-                                     Bool ->
-                                       Maybe dataArg ->
-                                         originArg ->
-                                           lastEventIdArg ->
-                                             Maybe sourceArg -> Maybe messagePort -> m ()
-messageEventInitMessageEvent self typeArg canBubbleArg
-  cancelableArg dataArg originArg lastEventIdArg sourceArg
-  messagePort
+initMessageEvent ::
+                 (MonadIO m, ToJSString typeArg, IsSerializedScriptValue dataArg,
+                  ToJSString originArg, ToJSString lastEventIdArg) =>
+                   MessageEvent ->
+                     typeArg ->
+                       Bool ->
+                         Bool ->
+                           Maybe dataArg ->
+                             originArg ->
+                               lastEventIdArg -> Maybe DOMWindow -> Maybe MessagePort -> m ()
+initMessageEvent self typeArg canBubbleArg cancelableArg dataArg
+  originArg lastEventIdArg sourceArg messagePort
   = liftIO
-      (ghcjs_dom_message_event_init_message_event
-         (unMessageEvent (toMessageEvent self))
-         (toJSString typeArg)
+      (js_initMessageEvent (unMessageEvent self) (toJSString typeArg)
          canBubbleArg
          cancelableArg
          (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
             dataArg)
          (toJSString originArg)
          (toJSString lastEventIdArg)
-         (maybe jsNull (unDOMWindow . toDOMWindow) sourceArg)
-         (maybe jsNull (unMessagePort . toMessagePort) messagePort))
+         (maybe jsNull unDOMWindow sourceArg)
+         (maybe jsNull unMessagePort messagePort))
  
-foreign import javascript unsafe "$1[\"origin\"]"
-        ghcjs_dom_message_event_get_origin ::
+foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
         JSRef MessageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.origin Mozilla MessageEvent.origin documentation> 
-messageEventGetOrigin ::
-                      (MonadIO m, IsMessageEvent self, FromJSString result) =>
-                        self -> m result
-messageEventGetOrigin self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_message_event_get_origin
-            (unMessageEvent (toMessageEvent self))))
+getOrigin ::
+          (MonadIO m, FromJSString result) => MessageEvent -> m result
+getOrigin self
+  = liftIO (fromJSString <$> (js_getOrigin (unMessageEvent self)))
  
 foreign import javascript unsafe "$1[\"lastEventId\"]"
-        ghcjs_dom_message_event_get_last_event_id ::
-        JSRef MessageEvent -> IO JSString
+        js_getLastEventId :: JSRef MessageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.lastEventId Mozilla MessageEvent.lastEventId documentation> 
-messageEventGetLastEventId ::
-                           (MonadIO m, IsMessageEvent self, FromJSString result) =>
-                             self -> m result
-messageEventGetLastEventId self
+getLastEventId ::
+               (MonadIO m, FromJSString result) => MessageEvent -> m result
+getLastEventId self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_message_event_get_last_event_id
-            (unMessageEvent (toMessageEvent self))))
+      (fromJSString <$> (js_getLastEventId (unMessageEvent self)))
  
-foreign import javascript unsafe "$1[\"source\"]"
-        ghcjs_dom_message_event_get_source ::
+foreign import javascript unsafe "$1[\"source\"]" js_getSource ::
         JSRef MessageEvent -> IO (JSRef EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.source Mozilla MessageEvent.source documentation> 
-messageEventGetSource ::
-                      (MonadIO m, IsMessageEvent self) => self -> m (Maybe EventTarget)
-messageEventGetSource self
-  = liftIO
-      ((ghcjs_dom_message_event_get_source
-          (unMessageEvent (toMessageEvent self)))
-         >>= fromJSRef)
+getSource :: (MonadIO m) => MessageEvent -> m (Maybe EventTarget)
+getSource self
+  = liftIO ((js_getSource (unMessageEvent self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"data\"]"
-        ghcjs_dom_message_event_get_data ::
+foreign import javascript unsafe "$1[\"data\"]" js_getData ::
         JSRef MessageEvent -> IO (JSRef SerializedScriptValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.data Mozilla MessageEvent.data documentation> 
-messageEventGetData ::
-                    (MonadIO m, IsMessageEvent self) =>
-                      self -> m (Maybe SerializedScriptValue)
-messageEventGetData self
-  = liftIO
-      ((ghcjs_dom_message_event_get_data
-          (unMessageEvent (toMessageEvent self)))
-         >>= fromJSRef)
+getData ::
+        (MonadIO m) => MessageEvent -> m (Maybe SerializedScriptValue)
+getData self
+  = liftIO ((js_getData (unMessageEvent self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"messagePort\"]"
-        ghcjs_dom_message_event_get_message_port ::
-        JSRef MessageEvent -> IO (JSRef MessagePort)
+        js_getMessagePort :: JSRef MessageEvent -> IO (JSRef MessagePort)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.messagePort Mozilla MessageEvent.messagePort documentation> 
-messageEventGetMessagePort ::
-                           (MonadIO m, IsMessageEvent self) => self -> m (Maybe MessagePort)
-messageEventGetMessagePort self
-  = liftIO
-      ((ghcjs_dom_message_event_get_message_port
-          (unMessageEvent (toMessageEvent self)))
-         >>= fromJSRef)
+getMessagePort ::
+               (MonadIO m) => MessageEvent -> m (Maybe MessagePort)
+getMessagePort self
+  = liftIO ((js_getMessagePort (unMessageEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.MessageEvent (
   ) where

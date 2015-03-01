@@ -1,28 +1,22 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGLength
-       (ghcjs_dom_svg_length_new_value_specified_units,
-        svgLengthNewValueSpecifiedUnits,
-        ghcjs_dom_svg_length_convert_to_specified_units,
-        svgLengthConvertToSpecifiedUnits, cSVG_LENGTHTYPE_UNKNOWN,
-        cSVG_LENGTHTYPE_NUMBER, cSVG_LENGTHTYPE_PERCENTAGE,
-        cSVG_LENGTHTYPE_EMS, cSVG_LENGTHTYPE_EXS, cSVG_LENGTHTYPE_PX,
-        cSVG_LENGTHTYPE_CM, cSVG_LENGTHTYPE_MM, cSVG_LENGTHTYPE_IN,
-        cSVG_LENGTHTYPE_PT, cSVG_LENGTHTYPE_PC,
-        ghcjs_dom_svg_length_get_unit_type, svgLengthGetUnitType,
-        ghcjs_dom_svg_length_set_value, svgLengthSetValue,
-        ghcjs_dom_svg_length_get_value, svgLengthGetValue,
-        ghcjs_dom_svg_length_set_value_in_specified_units,
-        svgLengthSetValueInSpecifiedUnits,
-        ghcjs_dom_svg_length_get_value_in_specified_units,
-        svgLengthGetValueInSpecifiedUnits,
-        ghcjs_dom_svg_length_set_value_as_string,
-        svgLengthSetValueAsString,
-        ghcjs_dom_svg_length_get_value_as_string,
-        svgLengthGetValueAsString, SVGLength, IsSVGLength, castToSVGLength,
-        gTypeSVGLength, toSVGLength)
+       (js_newValueSpecifiedUnits, newValueSpecifiedUnits,
+        js_convertToSpecifiedUnits, convertToSpecifiedUnits,
+        pattern SVG_LENGTHTYPE_UNKNOWN, pattern SVG_LENGTHTYPE_NUMBER,
+        pattern SVG_LENGTHTYPE_PERCENTAGE, pattern SVG_LENGTHTYPE_EMS,
+        pattern SVG_LENGTHTYPE_EXS, pattern SVG_LENGTHTYPE_PX,
+        pattern SVG_LENGTHTYPE_CM, pattern SVG_LENGTHTYPE_MM,
+        pattern SVG_LENGTHTYPE_IN, pattern SVG_LENGTHTYPE_PT,
+        pattern SVG_LENGTHTYPE_PC, js_getUnitType, getUnitType,
+        js_setValue, setValue, js_getValue, getValue,
+        js_setValueInSpecifiedUnits, setValueInSpecifiedUnits,
+        js_getValueInSpecifiedUnits, getValueInSpecifiedUnits,
+        js_setValueAsString, setValueAsString, js_getValueAsString,
+        getValueAsString, SVGLength, castToSVGLength, gTypeSVGLength)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -32,135 +26,99 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "$1[\"newValueSpecifiedUnits\"]($2,\n$3)"
-        ghcjs_dom_svg_length_new_value_specified_units ::
-        JSRef SVGLength -> Word -> Float -> IO ()
+        "$1[\"newValueSpecifiedUnits\"]($2,\n$3)" js_newValueSpecifiedUnits
+        :: JSRef SVGLength -> Word -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.newValueSpecifiedUnits Mozilla SVGLength.newValueSpecifiedUnits documentation> 
-svgLengthNewValueSpecifiedUnits ::
-                                (MonadIO m, IsSVGLength self) => self -> Word -> Float -> m ()
-svgLengthNewValueSpecifiedUnits self unitType valueInSpecifiedUnits
+newValueSpecifiedUnits ::
+                       (MonadIO m) => SVGLength -> Word -> Float -> m ()
+newValueSpecifiedUnits self unitType valueInSpecifiedUnits
   = liftIO
-      (ghcjs_dom_svg_length_new_value_specified_units
-         (unSVGLength (toSVGLength self))
-         unitType
+      (js_newValueSpecifiedUnits (unSVGLength self) unitType
          valueInSpecifiedUnits)
  
 foreign import javascript unsafe
-        "$1[\"convertToSpecifiedUnits\"]($2)"
-        ghcjs_dom_svg_length_convert_to_specified_units ::
+        "$1[\"convertToSpecifiedUnits\"]($2)" js_convertToSpecifiedUnits ::
         JSRef SVGLength -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.convertToSpecifiedUnits Mozilla SVGLength.convertToSpecifiedUnits documentation> 
-svgLengthConvertToSpecifiedUnits ::
-                                 (MonadIO m, IsSVGLength self) => self -> Word -> m ()
-svgLengthConvertToSpecifiedUnits self unitType
-  = liftIO
-      (ghcjs_dom_svg_length_convert_to_specified_units
-         (unSVGLength (toSVGLength self))
-         unitType)
-cSVG_LENGTHTYPE_UNKNOWN = 0
-cSVG_LENGTHTYPE_NUMBER = 1
-cSVG_LENGTHTYPE_PERCENTAGE = 2
-cSVG_LENGTHTYPE_EMS = 3
-cSVG_LENGTHTYPE_EXS = 4
-cSVG_LENGTHTYPE_PX = 5
-cSVG_LENGTHTYPE_CM = 6
-cSVG_LENGTHTYPE_MM = 7
-cSVG_LENGTHTYPE_IN = 8
-cSVG_LENGTHTYPE_PT = 9
-cSVG_LENGTHTYPE_PC = 10
+convertToSpecifiedUnits :: (MonadIO m) => SVGLength -> Word -> m ()
+convertToSpecifiedUnits self unitType
+  = liftIO (js_convertToSpecifiedUnits (unSVGLength self) unitType)
+pattern SVG_LENGTHTYPE_UNKNOWN = 0
+pattern SVG_LENGTHTYPE_NUMBER = 1
+pattern SVG_LENGTHTYPE_PERCENTAGE = 2
+pattern SVG_LENGTHTYPE_EMS = 3
+pattern SVG_LENGTHTYPE_EXS = 4
+pattern SVG_LENGTHTYPE_PX = 5
+pattern SVG_LENGTHTYPE_CM = 6
+pattern SVG_LENGTHTYPE_MM = 7
+pattern SVG_LENGTHTYPE_IN = 8
+pattern SVG_LENGTHTYPE_PT = 9
+pattern SVG_LENGTHTYPE_PC = 10
  
-foreign import javascript unsafe "$1[\"unitType\"]"
-        ghcjs_dom_svg_length_get_unit_type :: JSRef SVGLength -> IO Word
+foreign import javascript unsafe "$1[\"unitType\"]" js_getUnitType
+        :: JSRef SVGLength -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.unitType Mozilla SVGLength.unitType documentation> 
-svgLengthGetUnitType ::
-                     (MonadIO m, IsSVGLength self) => self -> m Word
-svgLengthGetUnitType self
-  = liftIO
-      (ghcjs_dom_svg_length_get_unit_type
-         (unSVGLength (toSVGLength self)))
+getUnitType :: (MonadIO m) => SVGLength -> m Word
+getUnitType self = liftIO (js_getUnitType (unSVGLength self))
  
-foreign import javascript unsafe "$1[\"value\"] = $2;"
-        ghcjs_dom_svg_length_set_value :: JSRef SVGLength -> Float -> IO ()
+foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+        :: JSRef SVGLength -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.value Mozilla SVGLength.value documentation> 
-svgLengthSetValue ::
-                  (MonadIO m, IsSVGLength self) => self -> Float -> m ()
-svgLengthSetValue self val
-  = liftIO
-      (ghcjs_dom_svg_length_set_value (unSVGLength (toSVGLength self))
-         val)
+setValue :: (MonadIO m) => SVGLength -> Float -> m ()
+setValue self val = liftIO (js_setValue (unSVGLength self) val)
  
-foreign import javascript unsafe "$1[\"value\"]"
-        ghcjs_dom_svg_length_get_value :: JSRef SVGLength -> IO Float
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.value Mozilla SVGLength.value documentation> 
-svgLengthGetValue ::
-                  (MonadIO m, IsSVGLength self) => self -> m Float
-svgLengthGetValue self
-  = liftIO
-      (ghcjs_dom_svg_length_get_value (unSVGLength (toSVGLength self)))
- 
-foreign import javascript unsafe
-        "$1[\"valueInSpecifiedUnits\"] = $2;"
-        ghcjs_dom_svg_length_set_value_in_specified_units ::
-        JSRef SVGLength -> Float -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueInSpecifiedUnits Mozilla SVGLength.valueInSpecifiedUnits documentation> 
-svgLengthSetValueInSpecifiedUnits ::
-                                  (MonadIO m, IsSVGLength self) => self -> Float -> m ()
-svgLengthSetValueInSpecifiedUnits self val
-  = liftIO
-      (ghcjs_dom_svg_length_set_value_in_specified_units
-         (unSVGLength (toSVGLength self))
-         val)
- 
-foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
-        ghcjs_dom_svg_length_get_value_in_specified_units ::
+foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
         JSRef SVGLength -> IO Float
 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.value Mozilla SVGLength.value documentation> 
+getValue :: (MonadIO m) => SVGLength -> m Float
+getValue self = liftIO (js_getValue (unSVGLength self))
+ 
+foreign import javascript unsafe
+        "$1[\"valueInSpecifiedUnits\"] = $2;" js_setValueInSpecifiedUnits
+        :: JSRef SVGLength -> Float -> IO ()
+
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueInSpecifiedUnits Mozilla SVGLength.valueInSpecifiedUnits documentation> 
-svgLengthGetValueInSpecifiedUnits ::
-                                  (MonadIO m, IsSVGLength self) => self -> m Float
-svgLengthGetValueInSpecifiedUnits self
-  = liftIO
-      (ghcjs_dom_svg_length_get_value_in_specified_units
-         (unSVGLength (toSVGLength self)))
+setValueInSpecifiedUnits ::
+                         (MonadIO m) => SVGLength -> Float -> m ()
+setValueInSpecifiedUnits self val
+  = liftIO (js_setValueInSpecifiedUnits (unSVGLength self) val)
+ 
+foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
+        js_getValueInSpecifiedUnits :: JSRef SVGLength -> IO Float
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueInSpecifiedUnits Mozilla SVGLength.valueInSpecifiedUnits documentation> 
+getValueInSpecifiedUnits :: (MonadIO m) => SVGLength -> m Float
+getValueInSpecifiedUnits self
+  = liftIO (js_getValueInSpecifiedUnits (unSVGLength self))
  
 foreign import javascript unsafe "$1[\"valueAsString\"] = $2;"
-        ghcjs_dom_svg_length_set_value_as_string ::
-        JSRef SVGLength -> JSString -> IO ()
+        js_setValueAsString :: JSRef SVGLength -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
-svgLengthSetValueAsString ::
-                          (MonadIO m, IsSVGLength self, ToJSString val) =>
-                            self -> val -> m ()
-svgLengthSetValueAsString self val
-  = liftIO
-      (ghcjs_dom_svg_length_set_value_as_string
-         (unSVGLength (toSVGLength self))
-         (toJSString val))
+setValueAsString ::
+                 (MonadIO m, ToJSString val) => SVGLength -> val -> m ()
+setValueAsString self val
+  = liftIO (js_setValueAsString (unSVGLength self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"valueAsString\"]"
-        ghcjs_dom_svg_length_get_value_as_string ::
-        JSRef SVGLength -> IO JSString
+        js_getValueAsString :: JSRef SVGLength -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
-svgLengthGetValueAsString ::
-                          (MonadIO m, IsSVGLength self, FromJSString result) =>
-                            self -> m result
-svgLengthGetValueAsString self
+getValueAsString ::
+                 (MonadIO m, FromJSString result) => SVGLength -> m result
+getValueAsString self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_length_get_value_as_string
-            (unSVGLength (toSVGLength self))))
+      (fromJSString <$> (js_getValueAsString (unSVGLength self)))
 #else
 module GHCJS.DOM.SVGLength (
   ) where

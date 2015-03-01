@@ -133,7 +133,6 @@ library
           GHCJS.DOM.DataTransferItemList
           GHCJS.DOM.Database
           GHCJS.DOM.DatabaseCallback
-          GHCJS.DOM.DatabaseSync
           GHCJS.DOM.DedicatedWorkerGlobalScope
           GHCJS.DOM.DelayNode
           GHCJS.DOM.DeviceMotionEvent
@@ -143,6 +142,8 @@ library
           GHCJS.DOM.DocumentFragment
           GHCJS.DOM.DocumentType
           GHCJS.DOM.DynamicsCompressorNode
+          GHCJS.DOM.EXTBlendMinMax
+          GHCJS.DOM.EXTsRGB
           GHCJS.DOM.EXTTextureFilterAnisotropic
           GHCJS.DOM.Element
           GHCJS.DOM.Entity
@@ -297,7 +298,6 @@ library
           GHCJS.DOM.NodeFilter
           GHCJS.DOM.NodeIterator
           GHCJS.DOM.NodeList
-          GHCJS.DOM.Notation
           GHCJS.DOM.Notification
           GHCJS.DOM.NotificationCenter
           GHCJS.DOM.NotificationPermissionCallback
@@ -341,6 +341,7 @@ library
           GHCJS.DOM.RTCStatsResponse
           GHCJS.DOM.RadioNodeList
           GHCJS.DOM.Range
+          GHCJS.DOM.ReadableStream
           GHCJS.DOM.Rect
           GHCJS.DOM.RequestAnimationFrameCallback
           GHCJS.DOM.SQLError
@@ -351,8 +352,6 @@ library
           GHCJS.DOM.SQLTransaction
           GHCJS.DOM.SQLTransactionCallback
           GHCJS.DOM.SQLTransactionErrorCallback
-          GHCJS.DOM.SQLTransactionSync
-          GHCJS.DOM.SQLTransactionSyncCallback
           GHCJS.DOM.SVGAElement
           GHCJS.DOM.SVGAltGlyphElement
           GHCJS.DOM.SVGAngle
@@ -376,8 +375,6 @@ library
           GHCJS.DOM.SVGCursorElement
           GHCJS.DOM.SVGDocument
           GHCJS.DOM.SVGElement
-          GHCJS.DOM.SVGElementInstance
-          GHCJS.DOM.SVGElementInstanceList
           GHCJS.DOM.SVGEllipseElement
           GHCJS.DOM.SVGExternalResourcesRequired
           GHCJS.DOM.SVGFEBlendElement
@@ -470,8 +467,6 @@ library
           GHCJS.DOM.ScriptProfile
           GHCJS.DOM.ScriptProfileNode
           GHCJS.DOM.SecurityPolicyViolationEvent
-          GHCJS.DOM.SharedWorker
-          GHCJS.DOM.SharedWorkerGlobalScope
           GHCJS.DOM.SourceBuffer
           GHCJS.DOM.SourceBufferList
           GHCJS.DOM.SourceInfo
@@ -521,6 +516,7 @@ library
           GHCJS.DOM.VideoTrackList
           GHCJS.DOM.VoidCallback
           GHCJS.DOM.WaveShaperNode
+          GHCJS.DOM.WebGL2RenderingContext
           GHCJS.DOM.WebGLActiveInfo
           GHCJS.DOM.WebGLCompressedTextureATC
           GHCJS.DOM.WebGLCompressedTexturePVRTC
@@ -532,7 +528,7 @@ library
           GHCJS.DOM.WebGLDepthTexture
           GHCJS.DOM.WebGLDrawBuffers
           GHCJS.DOM.WebGLLoseContext
-          GHCJS.DOM.WebGLRenderingContext
+          GHCJS.DOM.WebGLRenderingContextBase
           GHCJS.DOM.WebGLShaderPrecisionFormat
           GHCJS.DOM.WebKitAnimationEvent
           GHCJS.DOM.WebKitCSSFilterValue

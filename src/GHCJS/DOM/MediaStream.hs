@@ -1,21 +1,17 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaStream
-       (ghcjs_dom_media_stream_new, mediaStreamNew,
-        ghcjs_dom_media_stream_get_audio_tracks, mediaStreamGetAudioTracks,
-        ghcjs_dom_media_stream_get_video_tracks, mediaStreamGetVideoTracks,
-        ghcjs_dom_media_stream_get_tracks, mediaStreamGetTracks,
-        ghcjs_dom_media_stream_add_track, mediaStreamAddTrack,
-        ghcjs_dom_media_stream_remove_track, mediaStreamRemoveTrack,
-        ghcjs_dom_media_stream_get_track_by_id, mediaStreamGetTrackById,
-        ghcjs_dom_media_stream_clone, mediaStreamClone,
-        ghcjs_dom_media_stream_get_id, mediaStreamGetId,
-        ghcjs_dom_media_stream_get_active, mediaStreamGetActive,
-        mediaStreamActive, mediaStreamInactive, mediaStreamAddTrackEvent,
-        mediaStreamRemoveTrackEvent, MediaStream, IsMediaStream,
-        castToMediaStream, gTypeMediaStream, toMediaStream)
+       (js_newMediaStream, newMediaStream, js_newMediaStream',
+        newMediaStream', js_newMediaStream'', newMediaStream'',
+        js_getAudioTracks, getAudioTracks, js_getVideoTracks,
+        getVideoTracks, js_getTracks, getTracks, js_addTrack, addTrack,
+        js_removeTrack, removeTrack, js_getTrackById, getTrackById,
+        js_clone, clone, js_getId, getId, js_getActive, getActive, active,
+        inactive, addTrackEvent, removeTrackEvent, MediaStream,
+        castToMediaStream, gTypeMediaStream)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -25,189 +21,151 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"webkitMediaStream\"]()" ghcjs_dom_media_stream_new ::
+        "new window[\"webkitMediaStream\"]()" js_newMediaStream ::
         IO (JSRef MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
-mediaStreamNew :: (MonadIO m) => m MediaStream
-mediaStreamNew
-  = liftIO (ghcjs_dom_media_stream_new >>= fromJSRefUnchecked)
+newMediaStream :: (MonadIO m) => m MediaStream
+newMediaStream = liftIO (js_newMediaStream >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
-        "new window[\"webkitMediaStream\"]($1)" ghcjs_dom_media_stream_new'
-        :: JSRef MediaStream -> IO (JSRef MediaStream)
+        "new window[\"webkitMediaStream\"]($1)" js_newMediaStream' ::
+        JSRef MediaStream -> IO (JSRef MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
-mediaStreamNew' ::
-                (MonadIO m, IsMediaStream stream) => Maybe stream -> m MediaStream
-mediaStreamNew' stream
+newMediaStream' ::
+                (MonadIO m) => Maybe MediaStream -> m MediaStream
+newMediaStream' stream
   = liftIO
-      (ghcjs_dom_media_stream_new'
-         (maybe jsNull (unMediaStream . toMediaStream) stream)
-         >>= fromJSRefUnchecked)
+      (js_newMediaStream' (maybe jsNull unMediaStream stream) >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe
-        "new window[\"webkitMediaStream\"]($1)"
-        ghcjs_dom_media_stream_new'' ::
+        "new window[\"webkitMediaStream\"]($1)" js_newMediaStream'' ::
         JSRef [Maybe tracks] -> IO (JSRef MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
-mediaStreamNew'' ::
+newMediaStream'' ::
                  (MonadIO m, IsMediaStreamTrack tracks) =>
                    [Maybe tracks] -> m MediaStream
-mediaStreamNew'' tracks
+newMediaStream'' tracks
   = liftIO
-      (toJSRef tracks >>=
-         \ tracks' -> ghcjs_dom_media_stream_new'' tracks'
-         >>= fromJSRefUnchecked)
+      (toJSRef tracks >>= \ tracks' -> js_newMediaStream'' tracks' >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"getAudioTracks\"]()"
-        ghcjs_dom_media_stream_get_audio_tracks ::
+        js_getAudioTracks ::
         JSRef MediaStream -> IO (JSRef [Maybe MediaStreamTrack])
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.audioTracks Mozilla webkitMediaStream.audioTracks documentation> 
-mediaStreamGetAudioTracks ::
-                          (MonadIO m, IsMediaStream self) =>
-                            self -> m [Maybe MediaStreamTrack]
-mediaStreamGetAudioTracks self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getAudioTracks Mozilla webkitMediaStream.getAudioTracks documentation> 
+getAudioTracks ::
+               (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
+getAudioTracks self
   = liftIO
-      ((ghcjs_dom_media_stream_get_audio_tracks
-          (unMediaStream (toMediaStream self)))
-         >>= fromJSRefUnchecked)
+      ((js_getAudioTracks (unMediaStream self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"getVideoTracks\"]()"
-        ghcjs_dom_media_stream_get_video_tracks ::
+        js_getVideoTracks ::
         JSRef MediaStream -> IO (JSRef [Maybe MediaStreamTrack])
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.videoTracks Mozilla webkitMediaStream.videoTracks documentation> 
-mediaStreamGetVideoTracks ::
-                          (MonadIO m, IsMediaStream self) =>
-                            self -> m [Maybe MediaStreamTrack]
-mediaStreamGetVideoTracks self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getVideoTracks Mozilla webkitMediaStream.getVideoTracks documentation> 
+getVideoTracks ::
+               (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
+getVideoTracks self
   = liftIO
-      ((ghcjs_dom_media_stream_get_video_tracks
-          (unMediaStream (toMediaStream self)))
-         >>= fromJSRefUnchecked)
+      ((js_getVideoTracks (unMediaStream self)) >>= fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"getTracks\"]()"
-        ghcjs_dom_media_stream_get_tracks ::
-        JSRef MediaStream -> IO (JSRef [Maybe MediaStreamTrack])
+foreign import javascript unsafe "$1[\"getTracks\"]()" js_getTracks
+        :: JSRef MediaStream -> IO (JSRef [Maybe MediaStreamTrack])
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.tracks Mozilla webkitMediaStream.tracks documentation> 
-mediaStreamGetTracks ::
-                     (MonadIO m, IsMediaStream self) =>
-                       self -> m [Maybe MediaStreamTrack]
-mediaStreamGetTracks self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTracks Mozilla webkitMediaStream.getTracks documentation> 
+getTracks ::
+          (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
+getTracks self
   = liftIO
-      ((ghcjs_dom_media_stream_get_tracks
-          (unMediaStream (toMediaStream self)))
-         >>= fromJSRefUnchecked)
+      ((js_getTracks (unMediaStream self)) >>= fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"addTrack\"]($2)"
-        ghcjs_dom_media_stream_add_track ::
-        JSRef MediaStream -> JSRef MediaStreamTrack -> IO ()
+foreign import javascript unsafe "$1[\"addTrack\"]($2)" js_addTrack
+        :: JSRef MediaStream -> JSRef MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.addTrack Mozilla webkitMediaStream.addTrack documentation> 
-mediaStreamAddTrack ::
-                    (MonadIO m, IsMediaStream self, IsMediaStreamTrack track) =>
-                      self -> Maybe track -> m ()
-mediaStreamAddTrack self track
+addTrack ::
+         (MonadIO m, IsMediaStreamTrack track) =>
+           MediaStream -> Maybe track -> m ()
+addTrack self track
   = liftIO
-      (ghcjs_dom_media_stream_add_track
-         (unMediaStream (toMediaStream self))
+      (js_addTrack (unMediaStream self)
          (maybe jsNull (unMediaStreamTrack . toMediaStreamTrack) track))
  
 foreign import javascript unsafe "$1[\"removeTrack\"]($2)"
-        ghcjs_dom_media_stream_remove_track ::
+        js_removeTrack ::
         JSRef MediaStream -> JSRef MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.removeTrack Mozilla webkitMediaStream.removeTrack documentation> 
-mediaStreamRemoveTrack ::
-                       (MonadIO m, IsMediaStream self, IsMediaStreamTrack track) =>
-                         self -> Maybe track -> m ()
-mediaStreamRemoveTrack self track
+removeTrack ::
+            (MonadIO m, IsMediaStreamTrack track) =>
+              MediaStream -> Maybe track -> m ()
+removeTrack self track
   = liftIO
-      (ghcjs_dom_media_stream_remove_track
-         (unMediaStream (toMediaStream self))
+      (js_removeTrack (unMediaStream self)
          (maybe jsNull (unMediaStreamTrack . toMediaStreamTrack) track))
  
 foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
-        ghcjs_dom_media_stream_get_track_by_id ::
+        js_getTrackById ::
         JSRef MediaStream -> JSString -> IO (JSRef MediaStreamTrack)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.trackById Mozilla webkitMediaStream.trackById documentation> 
-mediaStreamGetTrackById ::
-                        (MonadIO m, IsMediaStream self, ToJSString trackId) =>
-                          self -> trackId -> m (Maybe MediaStreamTrack)
-mediaStreamGetTrackById self trackId
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTrackById Mozilla webkitMediaStream.getTrackById documentation> 
+getTrackById ::
+             (MonadIO m, ToJSString trackId) =>
+               MediaStream -> trackId -> m (Maybe MediaStreamTrack)
+getTrackById self trackId
   = liftIO
-      ((ghcjs_dom_media_stream_get_track_by_id
-          (unMediaStream (toMediaStream self))
-          (toJSString trackId))
-         >>= fromJSRef)
+      ((js_getTrackById (unMediaStream self) (toJSString trackId)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"clone\"]()"
-        ghcjs_dom_media_stream_clone ::
+foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
         JSRef MediaStream -> IO (JSRef MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
-mediaStreamClone ::
-                 (MonadIO m, IsMediaStream self) => self -> m (Maybe MediaStream)
-mediaStreamClone self
-  = liftIO
-      ((ghcjs_dom_media_stream_clone
-          (unMediaStream (toMediaStream self)))
-         >>= fromJSRef)
+clone :: (MonadIO m) => MediaStream -> m (Maybe MediaStream)
+clone self = liftIO ((js_clone (unMediaStream self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"id\"]"
-        ghcjs_dom_media_stream_get_id :: JSRef MediaStream -> IO JSString
+foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+        JSRef MediaStream -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.id Mozilla webkitMediaStream.id documentation> 
-mediaStreamGetId ::
-                 (MonadIO m, IsMediaStream self, FromJSString result) =>
-                   self -> m result
-mediaStreamGetId self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_media_stream_get_id
-            (unMediaStream (toMediaStream self))))
+getId ::
+      (MonadIO m, FromJSString result) => MediaStream -> m result
+getId self
+  = liftIO (fromJSString <$> (js_getId (unMediaStream self)))
  
 foreign import javascript unsafe "($1[\"active\"] ? 1 : 0)"
-        ghcjs_dom_media_stream_get_active :: JSRef MediaStream -> IO Bool
+        js_getActive :: JSRef MediaStream -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.active Mozilla webkitMediaStream.active documentation> 
-mediaStreamGetActive ::
-                     (MonadIO m, IsMediaStream self) => self -> m Bool
-mediaStreamGetActive self
-  = liftIO
-      (ghcjs_dom_media_stream_get_active
-         (unMediaStream (toMediaStream self)))
+getActive :: (MonadIO m) => MediaStream -> m Bool
+getActive self = liftIO (js_getActive (unMediaStream self))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.active Mozilla webkitMediaStream.active documentation> 
-mediaStreamActive ::
-                  (IsMediaStream self, IsEventTarget self) => EventName self Event
-mediaStreamActive = unsafeEventName (toJSString "active")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.onactive Mozilla webkitMediaStream.onactive documentation> 
+active :: EventName MediaStream Event
+active = unsafeEventName (toJSString "active")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.inactive Mozilla webkitMediaStream.inactive documentation> 
-mediaStreamInactive ::
-                    (IsMediaStream self, IsEventTarget self) => EventName self Event
-mediaStreamInactive = unsafeEventName (toJSString "inactive")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.oninactive Mozilla webkitMediaStream.oninactive documentation> 
+inactive :: EventName MediaStream Event
+inactive = unsafeEventName (toJSString "inactive")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.addTrackEvent Mozilla webkitMediaStream.addTrackEvent documentation> 
-mediaStreamAddTrackEvent ::
-                         (IsMediaStream self, IsEventTarget self) => EventName self Event
-mediaStreamAddTrackEvent = unsafeEventName (toJSString "addtrack")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.onaddtrack Mozilla webkitMediaStream.onaddtrack documentation> 
+addTrackEvent :: EventName MediaStream Event
+addTrackEvent = unsafeEventName (toJSString "addtrack")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.removeTrackEvent Mozilla webkitMediaStream.removeTrackEvent documentation> 
-mediaStreamRemoveTrackEvent ::
-                            (IsMediaStream self, IsEventTarget self) => EventName self Event
-mediaStreamRemoveTrackEvent
-  = unsafeEventName (toJSString "removetrack")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.onremovetrack Mozilla webkitMediaStream.onremovetrack documentation> 
+removeTrackEvent :: EventName MediaStream Event
+removeTrackEvent = unsafeEventName (toJSString "removetrack")
 #else
 module GHCJS.DOM.MediaStream (
   ) where

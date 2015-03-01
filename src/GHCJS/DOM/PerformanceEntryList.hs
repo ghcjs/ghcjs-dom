@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.PerformanceEntryList
-       (ghcjs_dom_performance_entry_list_item, performanceEntryListItem,
-        ghcjs_dom_performance_entry_list_get_length,
-        performanceEntryListGetLength, PerformanceEntryList,
-        IsPerformanceEntryList, castToPerformanceEntryList,
-        gTypePerformanceEntryList, toPerformanceEntryList)
+       (js_item, item, js_getLength, getLength, PerformanceEntryList,
+        castToPerformanceEntryList, gTypePerformanceEntryList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,36 +15,28 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_performance_entry_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef PerformanceEntryList -> Word -> IO (JSRef PerformanceEntry)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntryList.item Mozilla PerformanceEntryList.item documentation> 
-performanceEntryListItem ::
-                         (MonadIO m, IsPerformanceEntryList self) =>
-                           self -> Word -> m (Maybe PerformanceEntry)
-performanceEntryListItem self index
+item ::
+     (MonadIO m) =>
+       PerformanceEntryList -> Word -> m (Maybe PerformanceEntry)
+item self index
   = liftIO
-      ((ghcjs_dom_performance_entry_list_item
-          (unPerformanceEntryList (toPerformanceEntryList self))
-          index)
-         >>= fromJSRef)
+      ((js_item (unPerformanceEntryList self) index) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_performance_entry_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef PerformanceEntryList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntryList.length Mozilla PerformanceEntryList.length documentation> 
-performanceEntryListGetLength ::
-                              (MonadIO m, IsPerformanceEntryList self) => self -> m Word
-performanceEntryListGetLength self
-  = liftIO
-      (ghcjs_dom_performance_entry_list_get_length
-         (unPerformanceEntryList (toPerformanceEntryList self)))
+getLength :: (MonadIO m) => PerformanceEntryList -> m Word
+getLength self
+  = liftIO (js_getLength (unPerformanceEntryList self))
 #else
 module GHCJS.DOM.PerformanceEntryList (
   ) where

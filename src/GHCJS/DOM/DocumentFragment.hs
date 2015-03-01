@@ -1,15 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DocumentFragment
-       (ghcjs_dom_document_fragment_new, documentFragmentNew,
-        ghcjs_dom_document_fragment_query_selector,
-        documentFragmentQuerySelector,
-        ghcjs_dom_document_fragment_query_selector_all,
-        documentFragmentQuerySelectorAll, DocumentFragment,
-        IsDocumentFragment, castToDocumentFragment, gTypeDocumentFragment,
-        toDocumentFragment)
+       (js_newDocumentFragment, newDocumentFragment, js_querySelector,
+        querySelector, js_querySelectorAll, querySelectorAll,
+        DocumentFragment, castToDocumentFragment, gTypeDocumentFragment)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,46 +16,44 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"DocumentFragment\"]()"
-        ghcjs_dom_document_fragment_new :: IO (JSRef DocumentFragment)
+        "new window[\"DocumentFragment\"]()" js_newDocumentFragment ::
+        IO (JSRef DocumentFragment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment Mozilla DocumentFragment documentation> 
-documentFragmentNew :: (MonadIO m) => m DocumentFragment
-documentFragmentNew
-  = liftIO (ghcjs_dom_document_fragment_new >>= fromJSRefUnchecked)
+newDocumentFragment :: (MonadIO m) => m DocumentFragment
+newDocumentFragment
+  = liftIO (js_newDocumentFragment >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
-        ghcjs_dom_document_fragment_query_selector ::
+        js_querySelector ::
         JSRef DocumentFragment -> JSString -> IO (JSRef Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelector Mozilla DocumentFragment.querySelector documentation> 
-documentFragmentQuerySelector ::
-                              (MonadIO m, IsDocumentFragment self, ToJSString selectors) =>
-                                self -> selectors -> m (Maybe Element)
-documentFragmentQuerySelector self selectors
+querySelector ::
+              (MonadIO m, ToJSString selectors) =>
+                DocumentFragment -> selectors -> m (Maybe Element)
+querySelector self selectors
   = liftIO
-      ((ghcjs_dom_document_fragment_query_selector
-          (unDocumentFragment (toDocumentFragment self))
+      ((js_querySelector (unDocumentFragment self)
           (toJSString selectors))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
-        ghcjs_dom_document_fragment_query_selector_all ::
+        js_querySelectorAll ::
         JSRef DocumentFragment -> JSString -> IO (JSRef NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelectorAll Mozilla DocumentFragment.querySelectorAll documentation> 
-documentFragmentQuerySelectorAll ::
-                                 (MonadIO m, IsDocumentFragment self, ToJSString selectors) =>
-                                   self -> selectors -> m (Maybe NodeList)
-documentFragmentQuerySelectorAll self selectors
+querySelectorAll ::
+                 (MonadIO m, ToJSString selectors) =>
+                   DocumentFragment -> selectors -> m (Maybe NodeList)
+querySelectorAll self selectors
   = liftIO
-      ((ghcjs_dom_document_fragment_query_selector_all
-          (unDocumentFragment (toDocumentFragment self))
+      ((js_querySelectorAll (unDocumentFragment self)
           (toJSString selectors))
          >>= fromJSRef)
 #else

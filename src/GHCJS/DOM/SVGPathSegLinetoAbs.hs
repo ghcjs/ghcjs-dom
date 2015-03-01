@@ -1,15 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGPathSegLinetoAbs
-       (ghcjs_dom_svg_path_seg_lineto_abs_set_x, svgPathSegLinetoAbsSetX,
-        ghcjs_dom_svg_path_seg_lineto_abs_get_x, svgPathSegLinetoAbsGetX,
-        ghcjs_dom_svg_path_seg_lineto_abs_set_y, svgPathSegLinetoAbsSetY,
-        ghcjs_dom_svg_path_seg_lineto_abs_get_y, svgPathSegLinetoAbsGetY,
-        SVGPathSegLinetoAbs, IsSVGPathSegLinetoAbs,
-        castToSVGPathSegLinetoAbs, gTypeSVGPathSegLinetoAbs,
-        toSVGPathSegLinetoAbs)
+       (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
+        SVGPathSegLinetoAbs, castToSVGPathSegLinetoAbs,
+        gTypeSVGPathSegLinetoAbs)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,59 +16,37 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"] = $2;"
-        ghcjs_dom_svg_path_seg_lineto_abs_set_x ::
+foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
         JSRef SVGPathSegLinetoAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoAbs.x Mozilla SVGPathSegLinetoAbs.x documentation> 
-svgPathSegLinetoAbsSetX ::
-                        (MonadIO m, IsSVGPathSegLinetoAbs self) => self -> Float -> m ()
-svgPathSegLinetoAbsSetX self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_lineto_abs_set_x
-         (unSVGPathSegLinetoAbs (toSVGPathSegLinetoAbs self))
-         val)
+setX :: (MonadIO m) => SVGPathSegLinetoAbs -> Float -> m ()
+setX self val = liftIO (js_setX (unSVGPathSegLinetoAbs self) val)
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_path_seg_lineto_abs_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGPathSegLinetoAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoAbs.x Mozilla SVGPathSegLinetoAbs.x documentation> 
-svgPathSegLinetoAbsGetX ::
-                        (MonadIO m, IsSVGPathSegLinetoAbs self) => self -> m Float
-svgPathSegLinetoAbsGetX self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_lineto_abs_get_x
-         (unSVGPathSegLinetoAbs (toSVGPathSegLinetoAbs self)))
+getX :: (MonadIO m) => SVGPathSegLinetoAbs -> m Float
+getX self = liftIO (js_getX (unSVGPathSegLinetoAbs self))
  
-foreign import javascript unsafe "$1[\"y\"] = $2;"
-        ghcjs_dom_svg_path_seg_lineto_abs_set_y ::
+foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
         JSRef SVGPathSegLinetoAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoAbs.y Mozilla SVGPathSegLinetoAbs.y documentation> 
-svgPathSegLinetoAbsSetY ::
-                        (MonadIO m, IsSVGPathSegLinetoAbs self) => self -> Float -> m ()
-svgPathSegLinetoAbsSetY self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_lineto_abs_set_y
-         (unSVGPathSegLinetoAbs (toSVGPathSegLinetoAbs self))
-         val)
+setY :: (MonadIO m) => SVGPathSegLinetoAbs -> Float -> m ()
+setY self val = liftIO (js_setY (unSVGPathSegLinetoAbs self) val)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_path_seg_lineto_abs_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGPathSegLinetoAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoAbs.y Mozilla SVGPathSegLinetoAbs.y documentation> 
-svgPathSegLinetoAbsGetY ::
-                        (MonadIO m, IsSVGPathSegLinetoAbs self) => self -> m Float
-svgPathSegLinetoAbsGetY self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_lineto_abs_get_y
-         (unSVGPathSegLinetoAbs (toSVGPathSegLinetoAbs self)))
+getY :: (MonadIO m) => SVGPathSegLinetoAbs -> m Float
+getY self = liftIO (js_getY (unSVGPathSegLinetoAbs self))
 #else
 module GHCJS.DOM.SVGPathSegLinetoAbs (
   ) where

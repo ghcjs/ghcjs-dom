@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebGLDebugShaders
-       (ghcjs_dom_web_gl_debug_shaders_get_translated_shader_source,
-        webGLDebugShadersGetTranslatedShaderSource, WebGLDebugShaders,
-        IsWebGLDebugShaders, castToWebGLDebugShaders,
-        gTypeWebGLDebugShaders, toWebGLDebugShaders)
+       (js_getTranslatedShaderSource, getTranslatedShaderSource,
+        WebGLDebugShaders, castToWebGLDebugShaders, gTypeWebGLDebugShaders)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,26 +15,24 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "$1[\"getTranslatedShaderSource\"]($2)"
-        ghcjs_dom_web_gl_debug_shaders_get_translated_shader_source ::
+        js_getTranslatedShaderSource ::
         JSRef WebGLDebugShaders -> JSRef WebGLShader -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugShaders.translatedShaderSource Mozilla WebGLDebugShaders.translatedShaderSource documentation> 
-webGLDebugShadersGetTranslatedShaderSource ::
-                                           (MonadIO m, IsWebGLDebugShaders self,
-                                            IsWebGLShader shader, FromJSString result) =>
-                                             self -> Maybe shader -> m result
-webGLDebugShadersGetTranslatedShaderSource self shader
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugShaders.getTranslatedShaderSource Mozilla WebGLDebugShaders.getTranslatedShaderSource documentation> 
+getTranslatedShaderSource ::
+                          (MonadIO m, FromJSString result) =>
+                            WebGLDebugShaders -> Maybe WebGLShader -> m result
+getTranslatedShaderSource self shader
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_web_gl_debug_shaders_get_translated_shader_source
-            (unWebGLDebugShaders (toWebGLDebugShaders self))
-            (maybe jsNull (unWebGLShader . toWebGLShader) shader)))
+         (js_getTranslatedShaderSource (unWebGLDebugShaders self)
+            (maybe jsNull unWebGLShader shader)))
 #else
 module GHCJS.DOM.WebGLDebugShaders (
   ) where

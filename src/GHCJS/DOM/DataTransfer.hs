@@ -1,22 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DataTransfer
-       (ghcjs_dom_data_transfer_clear_data, dataTransferClearData,
-        ghcjs_dom_data_transfer_get_data, dataTransferGetData,
-        ghcjs_dom_data_transfer_set_data, dataTransferSetData,
-        ghcjs_dom_data_transfer_set_drag_image, dataTransferSetDragImage,
-        ghcjs_dom_data_transfer_set_drop_effect, dataTransferSetDropEffect,
-        ghcjs_dom_data_transfer_get_drop_effect, dataTransferGetDropEffect,
-        ghcjs_dom_data_transfer_set_effect_allowed,
-        dataTransferSetEffectAllowed,
-        ghcjs_dom_data_transfer_get_effect_allowed,
-        dataTransferGetEffectAllowed, ghcjs_dom_data_transfer_get_types,
-        dataTransferGetTypes, ghcjs_dom_data_transfer_get_files,
-        dataTransferGetFiles, ghcjs_dom_data_transfer_get_items,
-        dataTransferGetItems, DataTransfer, IsDataTransfer,
-        castToDataTransfer, gTypeDataTransfer, toDataTransfer)
+       (js_clearData, clearData, js_getData, getData, js_setData, setData,
+        js_setDragImage, setDragImage, js_setDropEffect, setDropEffect,
+        js_getDropEffect, getDropEffect, js_setEffectAllowed,
+        setEffectAllowed, js_getEffectAllowed, getEffectAllowed,
+        js_getTypes, getTypes, js_getFiles, getFiles, js_getItems,
+        getItems, DataTransfer, castToDataTransfer, gTypeDataTransfer)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,167 +19,121 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"clearData\"]($2)"
-        ghcjs_dom_data_transfer_clear_data ::
-        JSRef DataTransfer -> JSString -> IO ()
+        js_clearData :: JSRef DataTransfer -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.clearData Mozilla DataTransfer.clearData documentation> 
-dataTransferClearData ::
-                      (MonadIO m, IsDataTransfer self, ToJSString type') =>
-                        self -> type' -> m ()
-dataTransferClearData self type'
-  = liftIO
-      (ghcjs_dom_data_transfer_clear_data
-         (unDataTransfer (toDataTransfer self))
-         (toJSString type'))
+clearData ::
+          (MonadIO m, ToJSString type') => DataTransfer -> type' -> m ()
+clearData self type'
+  = liftIO (js_clearData (unDataTransfer self) (toJSString type'))
  
-foreign import javascript unsafe "$1[\"getData\"]($2)"
-        ghcjs_dom_data_transfer_get_data ::
-        JSRef DataTransfer -> JSString -> IO JSString
+foreign import javascript unsafe "$1[\"getData\"]($2)" js_getData
+        :: JSRef DataTransfer -> JSString -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.data Mozilla DataTransfer.data documentation> 
-dataTransferGetData ::
-                    (MonadIO m, IsDataTransfer self, ToJSString type',
-                     FromJSString result) =>
-                      self -> type' -> m result
-dataTransferGetData self type'
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.getData Mozilla DataTransfer.getData documentation> 
+getData ::
+        (MonadIO m, ToJSString type', FromJSString result) =>
+          DataTransfer -> type' -> m result
+getData self type'
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_data_transfer_get_data
-            (unDataTransfer (toDataTransfer self))
-            (toJSString type')))
+         (js_getData (unDataTransfer self) (toJSString type')))
  
 foreign import javascript unsafe "$1[\"setData\"]($2, $3)"
-        ghcjs_dom_data_transfer_set_data ::
-        JSRef DataTransfer -> JSString -> JSString -> IO ()
+        js_setData :: JSRef DataTransfer -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.data Mozilla DataTransfer.data documentation> 
-dataTransferSetData ::
-                    (MonadIO m, IsDataTransfer self, ToJSString type',
-                     ToJSString data') =>
-                      self -> type' -> data' -> m ()
-dataTransferSetData self type' data'
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.setData Mozilla DataTransfer.setData documentation> 
+setData ::
+        (MonadIO m, ToJSString type', ToJSString data') =>
+          DataTransfer -> type' -> data' -> m ()
+setData self type' data'
   = liftIO
-      (ghcjs_dom_data_transfer_set_data
-         (unDataTransfer (toDataTransfer self))
-         (toJSString type')
+      (js_setData (unDataTransfer self) (toJSString type')
          (toJSString data'))
  
 foreign import javascript unsafe "$1[\"setDragImage\"]($2, $3, $4)"
-        ghcjs_dom_data_transfer_set_drag_image ::
+        js_setDragImage ::
         JSRef DataTransfer -> JSRef Element -> Int -> Int -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.dragImage Mozilla DataTransfer.dragImage documentation> 
-dataTransferSetDragImage ::
-                         (MonadIO m, IsDataTransfer self, IsElement image) =>
-                           self -> Maybe image -> Int -> Int -> m ()
-dataTransferSetDragImage self image x y
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.setDragImage Mozilla DataTransfer.setDragImage documentation> 
+setDragImage ::
+             (MonadIO m, IsElement image) =>
+               DataTransfer -> Maybe image -> Int -> Int -> m ()
+setDragImage self image x y
   = liftIO
-      (ghcjs_dom_data_transfer_set_drag_image
-         (unDataTransfer (toDataTransfer self))
+      (js_setDragImage (unDataTransfer self)
          (maybe jsNull (unElement . toElement) image)
          x
          y)
  
 foreign import javascript unsafe "$1[\"dropEffect\"] = $2;"
-        ghcjs_dom_data_transfer_set_drop_effect ::
-        JSRef DataTransfer -> JSString -> IO ()
+        js_setDropEffect :: JSRef DataTransfer -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.dropEffect Mozilla DataTransfer.dropEffect documentation> 
-dataTransferSetDropEffect ::
-                          (MonadIO m, IsDataTransfer self, ToJSString val) =>
-                            self -> val -> m ()
-dataTransferSetDropEffect self val
-  = liftIO
-      (ghcjs_dom_data_transfer_set_drop_effect
-         (unDataTransfer (toDataTransfer self))
-         (toJSString val))
+setDropEffect ::
+              (MonadIO m, ToJSString val) => DataTransfer -> val -> m ()
+setDropEffect self val
+  = liftIO (js_setDropEffect (unDataTransfer self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"dropEffect\"]"
-        ghcjs_dom_data_transfer_get_drop_effect ::
-        JSRef DataTransfer -> IO JSString
+        js_getDropEffect :: JSRef DataTransfer -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.dropEffect Mozilla DataTransfer.dropEffect documentation> 
-dataTransferGetDropEffect ::
-                          (MonadIO m, IsDataTransfer self, FromJSString result) =>
-                            self -> m result
-dataTransferGetDropEffect self
+getDropEffect ::
+              (MonadIO m, FromJSString result) => DataTransfer -> m result
+getDropEffect self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_data_transfer_get_drop_effect
-            (unDataTransfer (toDataTransfer self))))
+      (fromJSString <$> (js_getDropEffect (unDataTransfer self)))
  
 foreign import javascript unsafe "$1[\"effectAllowed\"] = $2;"
-        ghcjs_dom_data_transfer_set_effect_allowed ::
-        JSRef DataTransfer -> JSString -> IO ()
+        js_setEffectAllowed :: JSRef DataTransfer -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.effectAllowed Mozilla DataTransfer.effectAllowed documentation> 
-dataTransferSetEffectAllowed ::
-                             (MonadIO m, IsDataTransfer self, ToJSString val) =>
-                               self -> val -> m ()
-dataTransferSetEffectAllowed self val
+setEffectAllowed ::
+                 (MonadIO m, ToJSString val) => DataTransfer -> val -> m ()
+setEffectAllowed self val
   = liftIO
-      (ghcjs_dom_data_transfer_set_effect_allowed
-         (unDataTransfer (toDataTransfer self))
-         (toJSString val))
+      (js_setEffectAllowed (unDataTransfer self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"effectAllowed\"]"
-        ghcjs_dom_data_transfer_get_effect_allowed ::
-        JSRef DataTransfer -> IO JSString
+        js_getEffectAllowed :: JSRef DataTransfer -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.effectAllowed Mozilla DataTransfer.effectAllowed documentation> 
-dataTransferGetEffectAllowed ::
-                             (MonadIO m, IsDataTransfer self, FromJSString result) =>
-                               self -> m result
-dataTransferGetEffectAllowed self
+getEffectAllowed ::
+                 (MonadIO m, FromJSString result) => DataTransfer -> m result
+getEffectAllowed self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_data_transfer_get_effect_allowed
-            (unDataTransfer (toDataTransfer self))))
+      (fromJSString <$> (js_getEffectAllowed (unDataTransfer self)))
  
-foreign import javascript unsafe "$1[\"types\"]"
-        ghcjs_dom_data_transfer_get_types ::
+foreign import javascript unsafe "$1[\"types\"]" js_getTypes ::
         JSRef DataTransfer -> IO (JSRef Array)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.types Mozilla DataTransfer.types documentation> 
-dataTransferGetTypes ::
-                     (MonadIO m, IsDataTransfer self) => self -> m (Maybe Array)
-dataTransferGetTypes self
-  = liftIO
-      ((ghcjs_dom_data_transfer_get_types
-          (unDataTransfer (toDataTransfer self)))
-         >>= fromJSRef)
+getTypes :: (MonadIO m) => DataTransfer -> m (Maybe Array)
+getTypes self
+  = liftIO ((js_getTypes (unDataTransfer self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"files\"]"
-        ghcjs_dom_data_transfer_get_files ::
+foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
         JSRef DataTransfer -> IO (JSRef FileList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 
-dataTransferGetFiles ::
-                     (MonadIO m, IsDataTransfer self) => self -> m (Maybe FileList)
-dataTransferGetFiles self
-  = liftIO
-      ((ghcjs_dom_data_transfer_get_files
-          (unDataTransfer (toDataTransfer self)))
-         >>= fromJSRef)
+getFiles :: (MonadIO m) => DataTransfer -> m (Maybe FileList)
+getFiles self
+  = liftIO ((js_getFiles (unDataTransfer self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"items\"]"
-        ghcjs_dom_data_transfer_get_items ::
+foreign import javascript unsafe "$1[\"items\"]" js_getItems ::
         JSRef DataTransfer -> IO (JSRef DataTransferItemList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.items Mozilla DataTransfer.items documentation> 
-dataTransferGetItems ::
-                     (MonadIO m, IsDataTransfer self) =>
-                       self -> m (Maybe DataTransferItemList)
-dataTransferGetItems self
-  = liftIO
-      ((ghcjs_dom_data_transfer_get_items
-          (unDataTransfer (toDataTransfer self)))
-         >>= fromJSRef)
+getItems ::
+         (MonadIO m) => DataTransfer -> m (Maybe DataTransferItemList)
+getItems self
+  = liftIO ((js_getItems (unDataTransfer self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.DataTransfer (
   ) where

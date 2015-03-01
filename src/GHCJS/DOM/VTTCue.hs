@@ -1,27 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.VTTCue
-       (ghcjs_dom_vtt_cue_new, vttCueNew,
-        ghcjs_dom_vtt_cue_get_cue_as_html, vttCueGetCueAsHTML,
-        ghcjs_dom_vtt_cue_set_vertical, vttCueSetVertical,
-        ghcjs_dom_vtt_cue_get_vertical, vttCueGetVertical,
-        ghcjs_dom_vtt_cue_set_snap_to_lines, vttCueSetSnapToLines,
-        ghcjs_dom_vtt_cue_get_snap_to_lines, vttCueGetSnapToLines,
-        ghcjs_dom_vtt_cue_set_line, vttCueSetLine,
-        ghcjs_dom_vtt_cue_get_line, vttCueGetLine,
-        ghcjs_dom_vtt_cue_set_position, vttCueSetPosition,
-        ghcjs_dom_vtt_cue_get_position, vttCueGetPosition,
-        ghcjs_dom_vtt_cue_set_size, vttCueSetSize,
-        ghcjs_dom_vtt_cue_get_size, vttCueGetSize,
-        ghcjs_dom_vtt_cue_set_align, vttCueSetAlign,
-        ghcjs_dom_vtt_cue_get_align, vttCueGetAlign,
-        ghcjs_dom_vtt_cue_set_text, vttCueSetText,
-        ghcjs_dom_vtt_cue_get_text, vttCueGetText,
-        ghcjs_dom_vtt_cue_set_region_id, vttCueSetRegionId,
-        ghcjs_dom_vtt_cue_get_region_id, vttCueGetRegionId, VTTCue,
-        IsVTTCue, castToVTTCue, gTypeVTTCue, toVTTCue)
+       (js_newVTTCue, newVTTCue, js_getCueAsHTML, getCueAsHTML,
+        js_setVertical, setVertical, js_getVertical, getVertical,
+        js_setSnapToLines, setSnapToLines, js_getSnapToLines,
+        getSnapToLines, js_setLine, setLine, js_getLine, getLine,
+        js_setPosition, setPosition, js_getPosition, getPosition,
+        js_setSize, setSize, js_getSize, getSize, js_setAlign, setAlign,
+        js_getAlign, getAlign, js_setText, setText, js_getText, getText,
+        js_setRegionId, setRegionId, js_getRegionId, getRegionId, VTTCue,
+        castToVTTCue, gTypeVTTCue)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -31,200 +22,153 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"VTTCue\"]($1, $2, $3)" ghcjs_dom_vtt_cue_new ::
+        "new window[\"VTTCue\"]($1, $2, $3)" js_newVTTCue ::
         Double -> Double -> JSString -> IO (JSRef VTTCue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue Mozilla VTTCue documentation> 
-vttCueNew ::
+newVTTCue ::
           (MonadIO m, ToJSString text) =>
             Double -> Double -> text -> m VTTCue
-vttCueNew startTime endTime text
+newVTTCue startTime endTime text
   = liftIO
-      (ghcjs_dom_vtt_cue_new startTime endTime (toJSString text) >>=
+      (js_newVTTCue startTime endTime (toJSString text) >>=
          fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"getCueAsHTML\"]()"
-        ghcjs_dom_vtt_cue_get_cue_as_html ::
-        JSRef VTTCue -> IO (JSRef DocumentFragment)
+        js_getCueAsHTML :: JSRef VTTCue -> IO (JSRef DocumentFragment)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.cueAsHTML Mozilla VTTCue.cueAsHTML documentation> 
-vttCueGetCueAsHTML ::
-                   (MonadIO m, IsVTTCue self) => self -> m (Maybe DocumentFragment)
-vttCueGetCueAsHTML self
-  = liftIO
-      ((ghcjs_dom_vtt_cue_get_cue_as_html (unVTTCue (toVTTCue self))) >>=
-         fromJSRef)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
+getCueAsHTML :: (MonadIO m) => VTTCue -> m (Maybe DocumentFragment)
+getCueAsHTML self
+  = liftIO ((js_getCueAsHTML (unVTTCue self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"vertical\"] = $2;"
-        ghcjs_dom_vtt_cue_set_vertical :: JSRef VTTCue -> JSString -> IO ()
+        js_setVertical :: JSRef VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.vertical Mozilla VTTCue.vertical documentation> 
-vttCueSetVertical ::
-                  (MonadIO m, IsVTTCue self, ToJSString val) => self -> val -> m ()
-vttCueSetVertical self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_vertical (unVTTCue (toVTTCue self))
-         (toJSString val))
+setVertical :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
+setVertical self val
+  = liftIO (js_setVertical (unVTTCue self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"vertical\"]"
-        ghcjs_dom_vtt_cue_get_vertical :: JSRef VTTCue -> IO JSString
+foreign import javascript unsafe "$1[\"vertical\"]" js_getVertical
+        :: JSRef VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.vertical Mozilla VTTCue.vertical documentation> 
-vttCueGetVertical ::
-                  (MonadIO m, IsVTTCue self, FromJSString result) => self -> m result
-vttCueGetVertical self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_vtt_cue_get_vertical (unVTTCue (toVTTCue self))))
+getVertical ::
+            (MonadIO m, FromJSString result) => VTTCue -> m result
+getVertical self
+  = liftIO (fromJSString <$> (js_getVertical (unVTTCue self)))
  
 foreign import javascript unsafe "$1[\"snapToLines\"] = $2;"
-        ghcjs_dom_vtt_cue_set_snap_to_lines ::
-        JSRef VTTCue -> Bool -> IO ()
+        js_setSnapToLines :: JSRef VTTCue -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.snapToLines Mozilla VTTCue.snapToLines documentation> 
-vttCueSetSnapToLines ::
-                     (MonadIO m, IsVTTCue self) => self -> Bool -> m ()
-vttCueSetSnapToLines self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_snap_to_lines (unVTTCue (toVTTCue self))
-         val)
+setSnapToLines :: (MonadIO m) => VTTCue -> Bool -> m ()
+setSnapToLines self val
+  = liftIO (js_setSnapToLines (unVTTCue self) val)
  
 foreign import javascript unsafe "($1[\"snapToLines\"] ? 1 : 0)"
-        ghcjs_dom_vtt_cue_get_snap_to_lines :: JSRef VTTCue -> IO Bool
+        js_getSnapToLines :: JSRef VTTCue -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.snapToLines Mozilla VTTCue.snapToLines documentation> 
-vttCueGetSnapToLines ::
-                     (MonadIO m, IsVTTCue self) => self -> m Bool
-vttCueGetSnapToLines self
-  = liftIO
-      (ghcjs_dom_vtt_cue_get_snap_to_lines (unVTTCue (toVTTCue self)))
+getSnapToLines :: (MonadIO m) => VTTCue -> m Bool
+getSnapToLines self = liftIO (js_getSnapToLines (unVTTCue self))
  
-foreign import javascript unsafe "$1[\"line\"] = $2;"
-        ghcjs_dom_vtt_cue_set_line :: JSRef VTTCue -> Double -> IO ()
+foreign import javascript unsafe "$1[\"line\"] = $2;" js_setLine ::
+        JSRef VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.line Mozilla VTTCue.line documentation> 
-vttCueSetLine ::
-              (MonadIO m, IsVTTCue self) => self -> Double -> m ()
-vttCueSetLine self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_line (unVTTCue (toVTTCue self)) val)
+setLine :: (MonadIO m) => VTTCue -> Double -> m ()
+setLine self val = liftIO (js_setLine (unVTTCue self) val)
  
-foreign import javascript unsafe "$1[\"line\"]"
-        ghcjs_dom_vtt_cue_get_line :: JSRef VTTCue -> IO Double
+foreign import javascript unsafe "$1[\"line\"]" js_getLine ::
+        JSRef VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.line Mozilla VTTCue.line documentation> 
-vttCueGetLine :: (MonadIO m, IsVTTCue self) => self -> m Double
-vttCueGetLine self
-  = liftIO (ghcjs_dom_vtt_cue_get_line (unVTTCue (toVTTCue self)))
+getLine :: (MonadIO m) => VTTCue -> m Double
+getLine self = liftIO (js_getLine (unVTTCue self))
  
 foreign import javascript unsafe "$1[\"position\"] = $2;"
-        ghcjs_dom_vtt_cue_set_position :: JSRef VTTCue -> Double -> IO ()
+        js_setPosition :: JSRef VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.position Mozilla VTTCue.position documentation> 
-vttCueSetPosition ::
-                  (MonadIO m, IsVTTCue self) => self -> Double -> m ()
-vttCueSetPosition self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_position (unVTTCue (toVTTCue self)) val)
+setPosition :: (MonadIO m) => VTTCue -> Double -> m ()
+setPosition self val = liftIO (js_setPosition (unVTTCue self) val)
  
-foreign import javascript unsafe "$1[\"position\"]"
-        ghcjs_dom_vtt_cue_get_position :: JSRef VTTCue -> IO Double
+foreign import javascript unsafe "$1[\"position\"]" js_getPosition
+        :: JSRef VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.position Mozilla VTTCue.position documentation> 
-vttCueGetPosition :: (MonadIO m, IsVTTCue self) => self -> m Double
-vttCueGetPosition self
-  = liftIO
-      (ghcjs_dom_vtt_cue_get_position (unVTTCue (toVTTCue self)))
+getPosition :: (MonadIO m) => VTTCue -> m Double
+getPosition self = liftIO (js_getPosition (unVTTCue self))
  
-foreign import javascript unsafe "$1[\"size\"] = $2;"
-        ghcjs_dom_vtt_cue_set_size :: JSRef VTTCue -> Double -> IO ()
+foreign import javascript unsafe "$1[\"size\"] = $2;" js_setSize ::
+        JSRef VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.size Mozilla VTTCue.size documentation> 
-vttCueSetSize ::
-              (MonadIO m, IsVTTCue self) => self -> Double -> m ()
-vttCueSetSize self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_size (unVTTCue (toVTTCue self)) val)
+setSize :: (MonadIO m) => VTTCue -> Double -> m ()
+setSize self val = liftIO (js_setSize (unVTTCue self) val)
  
-foreign import javascript unsafe "$1[\"size\"]"
-        ghcjs_dom_vtt_cue_get_size :: JSRef VTTCue -> IO Double
+foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
+        JSRef VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.size Mozilla VTTCue.size documentation> 
-vttCueGetSize :: (MonadIO m, IsVTTCue self) => self -> m Double
-vttCueGetSize self
-  = liftIO (ghcjs_dom_vtt_cue_get_size (unVTTCue (toVTTCue self)))
+getSize :: (MonadIO m) => VTTCue -> m Double
+getSize self = liftIO (js_getSize (unVTTCue self))
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_vtt_cue_set_align :: JSRef VTTCue -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.align Mozilla VTTCue.align documentation> 
-vttCueSetAlign ::
-               (MonadIO m, IsVTTCue self, ToJSString val) => self -> val -> m ()
-vttCueSetAlign self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_align (unVTTCue (toVTTCue self))
-         (toJSString val))
+setAlign :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
+setAlign self val
+  = liftIO (js_setAlign (unVTTCue self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_vtt_cue_get_align :: JSRef VTTCue -> IO JSString
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
+        JSRef VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.align Mozilla VTTCue.align documentation> 
-vttCueGetAlign ::
-               (MonadIO m, IsVTTCue self, FromJSString result) => self -> m result
-vttCueGetAlign self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_vtt_cue_get_align (unVTTCue (toVTTCue self))))
+getAlign :: (MonadIO m, FromJSString result) => VTTCue -> m result
+getAlign self
+  = liftIO (fromJSString <$> (js_getAlign (unVTTCue self)))
  
-foreign import javascript unsafe "$1[\"text\"] = $2;"
-        ghcjs_dom_vtt_cue_set_text :: JSRef VTTCue -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
-vttCueSetText ::
-              (MonadIO m, IsVTTCue self, ToJSString val) => self -> val -> m ()
-vttCueSetText self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_text (unVTTCue (toVTTCue self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"text\"]"
-        ghcjs_dom_vtt_cue_get_text :: JSRef VTTCue -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
-vttCueGetText ::
-              (MonadIO m, IsVTTCue self, FromJSString result) => self -> m result
-vttCueGetText self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_vtt_cue_get_text (unVTTCue (toVTTCue self))))
- 
-foreign import javascript unsafe "$1[\"regionId\"] = $2;"
-        ghcjs_dom_vtt_cue_set_region_id ::
+foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
         JSRef VTTCue -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.regionId Mozilla VTTCue.regionId documentation> 
-vttCueSetRegionId ::
-                  (MonadIO m, IsVTTCue self, ToJSString val) => self -> val -> m ()
-vttCueSetRegionId self val
-  = liftIO
-      (ghcjs_dom_vtt_cue_set_region_id (unVTTCue (toVTTCue self))
-         (toJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
+setText :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
+setText self val
+  = liftIO (js_setText (unVTTCue self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"regionId\"]"
-        ghcjs_dom_vtt_cue_get_region_id :: JSRef VTTCue -> IO JSString
+foreign import javascript unsafe "$1[\"text\"]" js_getText ::
+        JSRef VTTCue -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
+getText :: (MonadIO m, FromJSString result) => VTTCue -> m result
+getText self
+  = liftIO (fromJSString <$> (js_getText (unVTTCue self)))
+ 
+foreign import javascript unsafe "$1[\"regionId\"] = $2;"
+        js_setRegionId :: JSRef VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.regionId Mozilla VTTCue.regionId documentation> 
-vttCueGetRegionId ::
-                  (MonadIO m, IsVTTCue self, FromJSString result) => self -> m result
-vttCueGetRegionId self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_vtt_cue_get_region_id (unVTTCue (toVTTCue self))))
+setRegionId :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
+setRegionId self val
+  = liftIO (js_setRegionId (unVTTCue self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"regionId\"]" js_getRegionId
+        :: JSRef VTTCue -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.regionId Mozilla VTTCue.regionId documentation> 
+getRegionId ::
+            (MonadIO m, FromJSString result) => VTTCue -> m result
+getRegionId self
+  = liftIO (fromJSString <$> (js_getRegionId (unVTTCue self)))
 #else
 module GHCJS.DOM.VTTCue (
   ) where

@@ -1,16 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFEBlendElement
-       (cSVG_FEBLEND_MODE_UNKNOWN, cSVG_FEBLEND_MODE_NORMAL,
-        cSVG_FEBLEND_MODE_MULTIPLY, cSVG_FEBLEND_MODE_SCREEN,
-        cSVG_FEBLEND_MODE_DARKEN, cSVG_FEBLEND_MODE_LIGHTEN,
-        ghcjs_dom_svgfe_blend_element_get_in1, svgfeBlendElementGetIn1,
-        ghcjs_dom_svgfe_blend_element_get_in2, svgfeBlendElementGetIn2,
-        ghcjs_dom_svgfe_blend_element_get_mode, svgfeBlendElementGetMode,
-        SVGFEBlendElement, IsSVGFEBlendElement, castToSVGFEBlendElement,
-        gTypeSVGFEBlendElement, toSVGFEBlendElement)
+       (pattern SVG_FEBLEND_MODE_UNKNOWN, pattern SVG_FEBLEND_MODE_NORMAL,
+        pattern SVG_FEBLEND_MODE_MULTIPLY, pattern SVG_FEBLEND_MODE_SCREEN,
+        pattern SVG_FEBLEND_MODE_DARKEN, pattern SVG_FEBLEND_MODE_LIGHTEN,
+        js_getIn1, getIn1, js_getIn2, getIn2, js_getMode, getMode,
+        SVGFEBlendElement, castToSVGFEBlendElement, gTypeSVGFEBlendElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,57 +18,43 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cSVG_FEBLEND_MODE_UNKNOWN = 0
-cSVG_FEBLEND_MODE_NORMAL = 1
-cSVG_FEBLEND_MODE_MULTIPLY = 2
-cSVG_FEBLEND_MODE_SCREEN = 3
-cSVG_FEBLEND_MODE_DARKEN = 4
-cSVG_FEBLEND_MODE_LIGHTEN = 5
+pattern SVG_FEBLEND_MODE_UNKNOWN = 0
+pattern SVG_FEBLEND_MODE_NORMAL = 1
+pattern SVG_FEBLEND_MODE_MULTIPLY = 2
+pattern SVG_FEBLEND_MODE_SCREEN = 3
+pattern SVG_FEBLEND_MODE_DARKEN = 4
+pattern SVG_FEBLEND_MODE_LIGHTEN = 5
  
-foreign import javascript unsafe "$1[\"in1\"]"
-        ghcjs_dom_svgfe_blend_element_get_in1 ::
+foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
         JSRef SVGFEBlendElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.in1 Mozilla SVGFEBlendElement.in1 documentation> 
-svgfeBlendElementGetIn1 ::
-                        (MonadIO m, IsSVGFEBlendElement self) =>
-                          self -> m (Maybe SVGAnimatedString)
-svgfeBlendElementGetIn1 self
-  = liftIO
-      ((ghcjs_dom_svgfe_blend_element_get_in1
-          (unSVGFEBlendElement (toSVGFEBlendElement self)))
-         >>= fromJSRef)
+getIn1 ::
+       (MonadIO m) => SVGFEBlendElement -> m (Maybe SVGAnimatedString)
+getIn1 self
+  = liftIO ((js_getIn1 (unSVGFEBlendElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"in2\"]"
-        ghcjs_dom_svgfe_blend_element_get_in2 ::
+foreign import javascript unsafe "$1[\"in2\"]" js_getIn2 ::
         JSRef SVGFEBlendElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.in2 Mozilla SVGFEBlendElement.in2 documentation> 
-svgfeBlendElementGetIn2 ::
-                        (MonadIO m, IsSVGFEBlendElement self) =>
-                          self -> m (Maybe SVGAnimatedString)
-svgfeBlendElementGetIn2 self
-  = liftIO
-      ((ghcjs_dom_svgfe_blend_element_get_in2
-          (unSVGFEBlendElement (toSVGFEBlendElement self)))
-         >>= fromJSRef)
+getIn2 ::
+       (MonadIO m) => SVGFEBlendElement -> m (Maybe SVGAnimatedString)
+getIn2 self
+  = liftIO ((js_getIn2 (unSVGFEBlendElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"mode\"]"
-        ghcjs_dom_svgfe_blend_element_get_mode ::
+foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
         JSRef SVGFEBlendElement -> IO (JSRef SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.mode Mozilla SVGFEBlendElement.mode documentation> 
-svgfeBlendElementGetMode ::
-                         (MonadIO m, IsSVGFEBlendElement self) =>
-                           self -> m (Maybe SVGAnimatedEnumeration)
-svgfeBlendElementGetMode self
-  = liftIO
-      ((ghcjs_dom_svgfe_blend_element_get_mode
-          (unSVGFEBlendElement (toSVGFEBlendElement self)))
-         >>= fromJSRef)
+getMode ::
+        (MonadIO m) =>
+          SVGFEBlendElement -> m (Maybe SVGAnimatedEnumeration)
+getMode self
+  = liftIO ((js_getMode (unSVGFEBlendElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEBlendElement (
   ) where

@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TextEvent
-       (ghcjs_dom_text_event_init_text_event, textEventInitTextEvent,
-        ghcjs_dom_text_event_get_data, textEventGetData, TextEvent(..),
-        IsTextEvent, castToTextEvent, gTypeTextEvent, toTextEvent)
+       (js_initTextEvent, initTextEvent, js_getData, getData, TextEvent,
+        castToTextEvent, gTypeTextEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,43 +15,37 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "$1[\"initTextEvent\"]($2, $3, $4,\n$5, $6)"
-        ghcjs_dom_text_event_init_text_event ::
+        "$1[\"initTextEvent\"]($2, $3, $4,\n$5, $6)" js_initTextEvent ::
         JSRef TextEvent ->
           JSString -> Bool -> Bool -> JSRef DOMWindow -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextEvent.initTextEvent Mozilla TextEvent.initTextEvent documentation> 
-textEventInitTextEvent ::
-                       (MonadIO m, IsTextEvent self, ToJSString typeArg,
-                        IsDOMWindow viewArg, ToJSString dataArg) =>
-                         self -> typeArg -> Bool -> Bool -> Maybe viewArg -> dataArg -> m ()
-textEventInitTextEvent self typeArg canBubbleArg cancelableArg
-  viewArg dataArg
+initTextEvent ::
+              (MonadIO m, ToJSString typeArg, ToJSString dataArg) =>
+                TextEvent ->
+                  typeArg -> Bool -> Bool -> Maybe DOMWindow -> dataArg -> m ()
+initTextEvent self typeArg canBubbleArg cancelableArg viewArg
+  dataArg
   = liftIO
-      (ghcjs_dom_text_event_init_text_event
-         (unTextEvent (toTextEvent self))
-         (toJSString typeArg)
+      (js_initTextEvent (unTextEvent self) (toJSString typeArg)
          canBubbleArg
          cancelableArg
-         (maybe jsNull (unDOMWindow . toDOMWindow) viewArg)
+         (maybe jsNull unDOMWindow viewArg)
          (toJSString dataArg))
  
-foreign import javascript unsafe "$1[\"data\"]"
-        ghcjs_dom_text_event_get_data :: JSRef TextEvent -> IO JSString
+foreign import javascript unsafe "$1[\"data\"]" js_getData ::
+        JSRef TextEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextEvent.data Mozilla TextEvent.data documentation> 
-textEventGetData ::
-                 (MonadIO m, IsTextEvent self, FromJSString result) =>
-                   self -> m result
-textEventGetData self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_text_event_get_data (unTextEvent (toTextEvent self))))
+getData ::
+        (MonadIO m, FromJSString result) => TextEvent -> m result
+getData self
+  = liftIO (fromJSString <$> (js_getData (unTextEvent self)))
 #else
 module GHCJS.DOM.TextEvent (
   ) where

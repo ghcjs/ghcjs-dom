@@ -1,17 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.FileReaderSync
-       (ghcjs_dom_file_reader_sync_new, fileReaderSyncNew,
-        ghcjs_dom_file_reader_sync_read_as_array_buffer,
-        fileReaderSyncReadAsArrayBuffer,
-        ghcjs_dom_file_reader_sync_read_as_binary_string,
-        fileReaderSyncReadAsBinaryString,
-        ghcjs_dom_file_reader_sync_read_as_text, fileReaderSyncReadAsText,
-        ghcjs_dom_file_reader_sync_read_as_data_url,
-        fileReaderSyncReadAsDataURL, FileReaderSync, IsFileReaderSync,
-        castToFileReaderSync, gTypeFileReaderSync, toFileReaderSync)
+       (js_newFileReaderSync, newFileReaderSync, js_readAsArrayBuffer,
+        readAsArrayBuffer, js_readAsBinaryString, readAsBinaryString,
+        js_readAsText, readAsText, js_readAsDataURL, readAsDataURL,
+        FileReaderSync, castToFileReaderSync, gTypeFileReaderSync)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,80 +17,74 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"FileReaderSync\"]()"
-        ghcjs_dom_file_reader_sync_new :: IO (JSRef FileReaderSync)
+        js_newFileReaderSync :: IO (JSRef FileReaderSync)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync Mozilla FileReaderSync documentation> 
-fileReaderSyncNew :: (MonadIO m) => m FileReaderSync
-fileReaderSyncNew
-  = liftIO (ghcjs_dom_file_reader_sync_new >>= fromJSRefUnchecked)
+newFileReaderSync :: (MonadIO m) => m FileReaderSync
+newFileReaderSync
+  = liftIO (js_newFileReaderSync >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"readAsArrayBuffer\"]($2)"
-        ghcjs_dom_file_reader_sync_read_as_array_buffer ::
+        js_readAsArrayBuffer ::
         JSRef FileReaderSync -> JSRef Blob -> IO (JSRef ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsArrayBuffer Mozilla FileReaderSync.readAsArrayBuffer documentation> 
-fileReaderSyncReadAsArrayBuffer ::
-                                (MonadIO m, IsFileReaderSync self, IsBlob blob) =>
-                                  self -> Maybe blob -> m (Maybe ArrayBuffer)
-fileReaderSyncReadAsArrayBuffer self blob
+readAsArrayBuffer ::
+                  (MonadIO m, IsBlob blob) =>
+                    FileReaderSync -> Maybe blob -> m (Maybe ArrayBuffer)
+readAsArrayBuffer self blob
   = liftIO
-      ((ghcjs_dom_file_reader_sync_read_as_array_buffer
-          (unFileReaderSync (toFileReaderSync self))
+      ((js_readAsArrayBuffer (unFileReaderSync self)
           (maybe jsNull (unBlob . toBlob) blob))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"readAsBinaryString\"]($2)"
-        ghcjs_dom_file_reader_sync_read_as_binary_string ::
+        js_readAsBinaryString ::
         JSRef FileReaderSync -> JSRef Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsBinaryString Mozilla FileReaderSync.readAsBinaryString documentation> 
-fileReaderSyncReadAsBinaryString ::
-                                 (MonadIO m, IsFileReaderSync self, IsBlob blob,
-                                  FromJSString result) =>
-                                   self -> Maybe blob -> m result
-fileReaderSyncReadAsBinaryString self blob
+readAsBinaryString ::
+                   (MonadIO m, IsBlob blob, FromJSString result) =>
+                     FileReaderSync -> Maybe blob -> m result
+readAsBinaryString self blob
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_file_reader_sync_read_as_binary_string
-            (unFileReaderSync (toFileReaderSync self))
+         (js_readAsBinaryString (unFileReaderSync self)
             (maybe jsNull (unBlob . toBlob) blob)))
  
 foreign import javascript unsafe "$1[\"readAsText\"]($2, $3)"
-        ghcjs_dom_file_reader_sync_read_as_text ::
+        js_readAsText ::
         JSRef FileReaderSync -> JSRef Blob -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsText Mozilla FileReaderSync.readAsText documentation> 
-fileReaderSyncReadAsText ::
-                         (MonadIO m, IsFileReaderSync self, IsBlob blob,
-                          ToJSString encoding, FromJSString result) =>
-                           self -> Maybe blob -> encoding -> m result
-fileReaderSyncReadAsText self blob encoding
+readAsText ::
+           (MonadIO m, IsBlob blob, ToJSString encoding,
+            FromJSString result) =>
+             FileReaderSync -> Maybe blob -> encoding -> m result
+readAsText self blob encoding
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_file_reader_sync_read_as_text
-            (unFileReaderSync (toFileReaderSync self))
+         (js_readAsText (unFileReaderSync self)
             (maybe jsNull (unBlob . toBlob) blob)
             (toJSString encoding)))
  
 foreign import javascript unsafe "$1[\"readAsDataURL\"]($2)"
-        ghcjs_dom_file_reader_sync_read_as_data_url ::
+        js_readAsDataURL ::
         JSRef FileReaderSync -> JSRef Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsDataURL Mozilla FileReaderSync.readAsDataURL documentation> 
-fileReaderSyncReadAsDataURL ::
-                            (MonadIO m, IsFileReaderSync self, IsBlob blob,
-                             FromJSString result) =>
-                              self -> Maybe blob -> m result
-fileReaderSyncReadAsDataURL self blob
+readAsDataURL ::
+              (MonadIO m, IsBlob blob, FromJSString result) =>
+                FileReaderSync -> Maybe blob -> m result
+readAsDataURL self blob
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_file_reader_sync_read_as_data_url
-            (unFileReaderSync (toFileReaderSync self))
+         (js_readAsDataURL (unFileReaderSync self)
             (maybe jsNull (unBlob . toBlob) blob)))
 #else
 module GHCJS.DOM.FileReaderSync (

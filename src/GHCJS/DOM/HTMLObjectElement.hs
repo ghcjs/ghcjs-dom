@@ -1,75 +1,27 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLObjectElement
-       (ghcjs_dom_html_object_element_check_validity,
-        htmlObjectElementCheckValidity,
-        ghcjs_dom_html_object_element_set_custom_validity,
-        htmlObjectElementSetCustomValidity,
-        ghcjs_dom_html_object_element_get_svg_document,
-        htmlObjectElementGetSVGDocument,
-        ghcjs_dom_html_object_element_get_form, htmlObjectElementGetForm,
-        ghcjs_dom_html_object_element_set_code, htmlObjectElementSetCode,
-        ghcjs_dom_html_object_element_get_code, htmlObjectElementGetCode,
-        ghcjs_dom_html_object_element_set_align, htmlObjectElementSetAlign,
-        ghcjs_dom_html_object_element_get_align, htmlObjectElementGetAlign,
-        ghcjs_dom_html_object_element_set_archive,
-        htmlObjectElementSetArchive,
-        ghcjs_dom_html_object_element_get_archive,
-        htmlObjectElementGetArchive,
-        ghcjs_dom_html_object_element_set_border,
-        htmlObjectElementSetBorder,
-        ghcjs_dom_html_object_element_get_border,
-        htmlObjectElementGetBorder,
-        ghcjs_dom_html_object_element_set_code_base,
-        htmlObjectElementSetCodeBase,
-        ghcjs_dom_html_object_element_get_code_base,
-        htmlObjectElementGetCodeBase,
-        ghcjs_dom_html_object_element_set_code_type,
-        htmlObjectElementSetCodeType,
-        ghcjs_dom_html_object_element_get_code_type,
-        htmlObjectElementGetCodeType,
-        ghcjs_dom_html_object_element_set_data, htmlObjectElementSetData,
-        ghcjs_dom_html_object_element_get_data, htmlObjectElementGetData,
-        ghcjs_dom_html_object_element_set_declare,
-        htmlObjectElementSetDeclare,
-        ghcjs_dom_html_object_element_get_declare,
-        htmlObjectElementGetDeclare,
-        ghcjs_dom_html_object_element_set_height,
-        htmlObjectElementSetHeight,
-        ghcjs_dom_html_object_element_get_height,
-        htmlObjectElementGetHeight,
-        ghcjs_dom_html_object_element_set_hspace,
-        htmlObjectElementSetHspace,
-        ghcjs_dom_html_object_element_get_hspace,
-        htmlObjectElementGetHspace, ghcjs_dom_html_object_element_set_name,
-        htmlObjectElementSetName, ghcjs_dom_html_object_element_get_name,
-        htmlObjectElementGetName,
-        ghcjs_dom_html_object_element_set_standby,
-        htmlObjectElementSetStandby,
-        ghcjs_dom_html_object_element_get_standby,
-        htmlObjectElementGetStandby,
-        ghcjs_dom_html_object_element_set_use_map,
-        htmlObjectElementSetUseMap,
-        ghcjs_dom_html_object_element_get_use_map,
-        htmlObjectElementGetUseMap,
-        ghcjs_dom_html_object_element_set_vspace,
-        htmlObjectElementSetVspace,
-        ghcjs_dom_html_object_element_get_vspace,
-        htmlObjectElementGetVspace,
-        ghcjs_dom_html_object_element_set_width, htmlObjectElementSetWidth,
-        ghcjs_dom_html_object_element_get_width, htmlObjectElementGetWidth,
-        ghcjs_dom_html_object_element_get_will_validate,
-        htmlObjectElementGetWillValidate,
-        ghcjs_dom_html_object_element_get_validity,
-        htmlObjectElementGetValidity,
-        ghcjs_dom_html_object_element_get_validation_message,
-        htmlObjectElementGetValidationMessage,
-        ghcjs_dom_html_object_element_get_content_document,
-        htmlObjectElementGetContentDocument, HTMLObjectElement,
-        IsHTMLObjectElement, castToHTMLObjectElement,
-        gTypeHTMLObjectElement, toHTMLObjectElement)
+       (js_checkValidity, checkValidity, js_setCustomValidity,
+        setCustomValidity, js_getSVGDocument, getSVGDocument, js_getForm,
+        getForm, js_setCode, setCode, js_getCode, getCode, js_setAlign,
+        setAlign, js_getAlign, getAlign, js_setArchive, setArchive,
+        js_getArchive, getArchive, js_setBorder, setBorder, js_getBorder,
+        getBorder, js_setCodeBase, setCodeBase, js_getCodeBase,
+        getCodeBase, js_setCodeType, setCodeType, js_getCodeType,
+        getCodeType, js_setData, setData, js_getData, getData,
+        js_setDeclare, setDeclare, js_getDeclare, getDeclare, js_setHeight,
+        setHeight, js_getHeight, getHeight, js_setHspace, setHspace,
+        js_getHspace, getHspace, js_setName, setName, js_getName, getName,
+        js_setStandby, setStandby, js_getStandby, getStandby, js_setUseMap,
+        setUseMap, js_getUseMap, getUseMap, js_setVspace, setVspace,
+        js_getVspace, getVspace, js_setWidth, setWidth, js_getWidth,
+        getWidth, js_getWillValidate, getWillValidate, js_getValidity,
+        getValidity, js_getValidationMessage, getValidationMessage,
+        js_getContentDocument, getContentDocument, HTMLObjectElement,
+        castToHTMLObjectElement, gTypeHTMLObjectElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -79,529 +31,364 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"checkValidity\"]() ? 1 : 0)"
-        ghcjs_dom_html_object_element_check_validity ::
+        "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
         JSRef HTMLObjectElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.checkValidity Mozilla HTMLObjectElement.checkValidity documentation> 
-htmlObjectElementCheckValidity ::
-                               (MonadIO m, IsHTMLObjectElement self) => self -> m Bool
-htmlObjectElementCheckValidity self
-  = liftIO
-      (ghcjs_dom_html_object_element_check_validity
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+checkValidity :: (MonadIO m) => HTMLObjectElement -> m Bool
+checkValidity self
+  = liftIO (js_checkValidity (unHTMLObjectElement self))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
-        ghcjs_dom_html_object_element_set_custom_validity ::
+        js_setCustomValidity ::
         JSRef HTMLObjectElement -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.customValidity Mozilla HTMLObjectElement.customValidity documentation> 
-htmlObjectElementSetCustomValidity ::
-                                   (MonadIO m, IsHTMLObjectElement self, ToJSString error) =>
-                                     self -> error -> m ()
-htmlObjectElementSetCustomValidity self error
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.setCustomValidity Mozilla HTMLObjectElement.setCustomValidity documentation> 
+setCustomValidity ::
+                  (MonadIO m, ToJSString error) => HTMLObjectElement -> error -> m ()
+setCustomValidity self error
   = liftIO
-      (ghcjs_dom_html_object_element_set_custom_validity
-         (unHTMLObjectElement (toHTMLObjectElement self))
+      (js_setCustomValidity (unHTMLObjectElement self)
          (toJSString error))
  
 foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
-        ghcjs_dom_html_object_element_get_svg_document ::
+        js_getSVGDocument ::
         JSRef HTMLObjectElement -> IO (JSRef SVGDocument)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.svgDocument Mozilla HTMLObjectElement.svgDocument documentation> 
-htmlObjectElementGetSVGDocument ::
-                                (MonadIO m, IsHTMLObjectElement self) =>
-                                  self -> m (Maybe SVGDocument)
-htmlObjectElementGetSVGDocument self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.getSVGDocument Mozilla HTMLObjectElement.getSVGDocument documentation> 
+getSVGDocument ::
+               (MonadIO m) => HTMLObjectElement -> m (Maybe SVGDocument)
+getSVGDocument self
   = liftIO
-      ((ghcjs_dom_html_object_element_get_svg_document
-          (unHTMLObjectElement (toHTMLObjectElement self)))
-         >>= fromJSRef)
+      ((js_getSVGDocument (unHTMLObjectElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"form\"]"
-        ghcjs_dom_html_object_element_get_form ::
+foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
         JSRef HTMLObjectElement -> IO (JSRef HTMLFormElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.form Mozilla HTMLObjectElement.form documentation> 
-htmlObjectElementGetForm ::
-                         (MonadIO m, IsHTMLObjectElement self) =>
-                           self -> m (Maybe HTMLFormElement)
-htmlObjectElementGetForm self
-  = liftIO
-      ((ghcjs_dom_html_object_element_get_form
-          (unHTMLObjectElement (toHTMLObjectElement self)))
-         >>= fromJSRef)
+getForm ::
+        (MonadIO m) => HTMLObjectElement -> m (Maybe HTMLFormElement)
+getForm self
+  = liftIO ((js_getForm (unHTMLObjectElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"code\"] = $2;"
-        ghcjs_dom_html_object_element_set_code ::
+foreign import javascript unsafe "$1[\"code\"] = $2;" js_setCode ::
         JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.code Mozilla HTMLObjectElement.code documentation> 
-htmlObjectElementSetCode ::
-                         (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlObjectElementSetCode self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_code
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setCode ::
+        (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setCode self val
+  = liftIO (js_setCode (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"code\"]"
-        ghcjs_dom_html_object_element_get_code ::
+foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.code Mozilla HTMLObjectElement.code documentation> 
-htmlObjectElementGetCode ::
-                         (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                           self -> m result
-htmlObjectElementGetCode self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_code
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+getCode ::
+        (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getCode self
+  = liftIO (fromJSString <$> (js_getCode (unHTMLObjectElement self)))
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_object_element_set_align ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.align Mozilla HTMLObjectElement.align documentation> 
-htmlObjectElementSetAlign ::
-                          (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlObjectElementSetAlign self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_align
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setAlign self val
+  = liftIO (js_setAlign (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_object_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.align Mozilla HTMLObjectElement.align documentation> 
-htmlObjectElementGetAlign ::
-                          (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                            self -> m result
-htmlObjectElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_align
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"archive\"] = $2;"
-        ghcjs_dom_html_object_element_set_archive ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        js_setArchive :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.archive Mozilla HTMLObjectElement.archive documentation> 
-htmlObjectElementSetArchive ::
-                            (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlObjectElementSetArchive self val
+setArchive ::
+           (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setArchive self val
   = liftIO
-      (ghcjs_dom_html_object_element_set_archive
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+      (js_setArchive (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"archive\"]"
-        ghcjs_dom_html_object_element_get_archive ::
+foreign import javascript unsafe "$1[\"archive\"]" js_getArchive ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.archive Mozilla HTMLObjectElement.archive documentation> 
-htmlObjectElementGetArchive ::
-                            (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                              self -> m result
-htmlObjectElementGetArchive self
+getArchive ::
+           (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getArchive self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_archive
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getArchive (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"border\"] = $2;"
-        ghcjs_dom_html_object_element_set_border ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        js_setBorder :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
-htmlObjectElementSetBorder ::
-                           (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlObjectElementSetBorder self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_border
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setBorder ::
+          (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setBorder self val
+  = liftIO (js_setBorder (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"border\"]"
-        ghcjs_dom_html_object_element_get_border ::
+foreign import javascript unsafe "$1[\"border\"]" js_getBorder ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
-htmlObjectElementGetBorder ::
-                           (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                             self -> m result
-htmlObjectElementGetBorder self
+getBorder ::
+          (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getBorder self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_border
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getBorder (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"codeBase\"] = $2;"
-        ghcjs_dom_html_object_element_set_code_base ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        js_setCodeBase :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeBase Mozilla HTMLObjectElement.codeBase documentation> 
-htmlObjectElementSetCodeBase ::
-                             (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlObjectElementSetCodeBase self val
+setCodeBase ::
+            (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setCodeBase self val
   = liftIO
-      (ghcjs_dom_html_object_element_set_code_base
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+      (js_setCodeBase (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"codeBase\"]"
-        ghcjs_dom_html_object_element_get_code_base ::
-        JSRef HTMLObjectElement -> IO JSString
+foreign import javascript unsafe "$1[\"codeBase\"]" js_getCodeBase
+        :: JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeBase Mozilla HTMLObjectElement.codeBase documentation> 
-htmlObjectElementGetCodeBase ::
-                             (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                               self -> m result
-htmlObjectElementGetCodeBase self
+getCodeBase ::
+            (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getCodeBase self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_code_base
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getCodeBase (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"codeType\"] = $2;"
-        ghcjs_dom_html_object_element_set_code_type ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        js_setCodeType :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeType Mozilla HTMLObjectElement.codeType documentation> 
-htmlObjectElementSetCodeType ::
-                             (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlObjectElementSetCodeType self val
+setCodeType ::
+            (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setCodeType self val
   = liftIO
-      (ghcjs_dom_html_object_element_set_code_type
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+      (js_setCodeType (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"codeType\"]"
-        ghcjs_dom_html_object_element_get_code_type ::
-        JSRef HTMLObjectElement -> IO JSString
+foreign import javascript unsafe "$1[\"codeType\"]" js_getCodeType
+        :: JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.codeType Mozilla HTMLObjectElement.codeType documentation> 
-htmlObjectElementGetCodeType ::
-                             (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                               self -> m result
-htmlObjectElementGetCodeType self
+getCodeType ::
+            (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getCodeType self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_code_type
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getCodeType (unHTMLObjectElement self)))
  
-foreign import javascript unsafe "$1[\"data\"] = $2;"
-        ghcjs_dom_html_object_element_set_data ::
+foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::
         JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.data Mozilla HTMLObjectElement.data documentation> 
-htmlObjectElementSetData ::
-                         (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlObjectElementSetData self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_data
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setData ::
+        (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setData self val
+  = liftIO (js_setData (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"data\"]"
-        ghcjs_dom_html_object_element_get_data ::
+foreign import javascript unsafe "$1[\"data\"]" js_getData ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.data Mozilla HTMLObjectElement.data documentation> 
-htmlObjectElementGetData ::
-                         (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                           self -> m result
-htmlObjectElementGetData self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_data
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+getData ::
+        (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getData self
+  = liftIO (fromJSString <$> (js_getData (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"declare\"] = $2;"
-        ghcjs_dom_html_object_element_set_declare ::
-        JSRef HTMLObjectElement -> Bool -> IO ()
+        js_setDeclare :: JSRef HTMLObjectElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.declare Mozilla HTMLObjectElement.declare documentation> 
-htmlObjectElementSetDeclare ::
-                            (MonadIO m, IsHTMLObjectElement self) => self -> Bool -> m ()
-htmlObjectElementSetDeclare self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_declare
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         val)
+setDeclare :: (MonadIO m) => HTMLObjectElement -> Bool -> m ()
+setDeclare self val
+  = liftIO (js_setDeclare (unHTMLObjectElement self) val)
  
 foreign import javascript unsafe "($1[\"declare\"] ? 1 : 0)"
-        ghcjs_dom_html_object_element_get_declare ::
-        JSRef HTMLObjectElement -> IO Bool
+        js_getDeclare :: JSRef HTMLObjectElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.declare Mozilla HTMLObjectElement.declare documentation> 
-htmlObjectElementGetDeclare ::
-                            (MonadIO m, IsHTMLObjectElement self) => self -> m Bool
-htmlObjectElementGetDeclare self
-  = liftIO
-      (ghcjs_dom_html_object_element_get_declare
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+getDeclare :: (MonadIO m) => HTMLObjectElement -> m Bool
+getDeclare self = liftIO (js_getDeclare (unHTMLObjectElement self))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        ghcjs_dom_html_object_element_set_height ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        js_setHeight :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.height Mozilla HTMLObjectElement.height documentation> 
-htmlObjectElementSetHeight ::
-                           (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlObjectElementSetHeight self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_height
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setHeight ::
+          (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setHeight self val
+  = liftIO (js_setHeight (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_html_object_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.height Mozilla HTMLObjectElement.height documentation> 
-htmlObjectElementGetHeight ::
-                           (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                             self -> m result
-htmlObjectElementGetHeight self
+getHeight ::
+          (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getHeight self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_height
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getHeight (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
-        ghcjs_dom_html_object_element_set_hspace ::
-        JSRef HTMLObjectElement -> Int -> IO ()
+        js_setHspace :: JSRef HTMLObjectElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.hspace Mozilla HTMLObjectElement.hspace documentation> 
-htmlObjectElementSetHspace ::
-                           (MonadIO m, IsHTMLObjectElement self) => self -> Int -> m ()
-htmlObjectElementSetHspace self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_hspace
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         val)
+setHspace :: (MonadIO m) => HTMLObjectElement -> Int -> m ()
+setHspace self val
+  = liftIO (js_setHspace (unHTMLObjectElement self) val)
  
-foreign import javascript unsafe "$1[\"hspace\"]"
-        ghcjs_dom_html_object_element_get_hspace ::
+foreign import javascript unsafe "$1[\"hspace\"]" js_getHspace ::
         JSRef HTMLObjectElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.hspace Mozilla HTMLObjectElement.hspace documentation> 
-htmlObjectElementGetHspace ::
-                           (MonadIO m, IsHTMLObjectElement self) => self -> m Int
-htmlObjectElementGetHspace self
-  = liftIO
-      (ghcjs_dom_html_object_element_get_hspace
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+getHspace :: (MonadIO m) => HTMLObjectElement -> m Int
+getHspace self = liftIO (js_getHspace (unHTMLObjectElement self))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_object_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.name Mozilla HTMLObjectElement.name documentation> 
-htmlObjectElementSetName ::
-                         (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlObjectElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_name
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_object_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.name Mozilla HTMLObjectElement.name documentation> 
-htmlObjectElementGetName ::
-                         (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                           self -> m result
-htmlObjectElementGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_name
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+getName ::
+        (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"standby\"] = $2;"
-        ghcjs_dom_html_object_element_set_standby ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        js_setStandby :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.standby Mozilla HTMLObjectElement.standby documentation> 
-htmlObjectElementSetStandby ::
-                            (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlObjectElementSetStandby self val
+setStandby ::
+           (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setStandby self val
   = liftIO
-      (ghcjs_dom_html_object_element_set_standby
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+      (js_setStandby (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"standby\"]"
-        ghcjs_dom_html_object_element_get_standby ::
+foreign import javascript unsafe "$1[\"standby\"]" js_getStandby ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.standby Mozilla HTMLObjectElement.standby documentation> 
-htmlObjectElementGetStandby ::
-                            (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                              self -> m result
-htmlObjectElementGetStandby self
+getStandby ::
+           (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getStandby self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_standby
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getStandby (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
-        ghcjs_dom_html_object_element_set_use_map ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        js_setUseMap :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.useMap Mozilla HTMLObjectElement.useMap documentation> 
-htmlObjectElementSetUseMap ::
-                           (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlObjectElementSetUseMap self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_use_map
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setUseMap ::
+          (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setUseMap self val
+  = liftIO (js_setUseMap (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"useMap\"]"
-        ghcjs_dom_html_object_element_get_use_map ::
+foreign import javascript unsafe "$1[\"useMap\"]" js_getUseMap ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.useMap Mozilla HTMLObjectElement.useMap documentation> 
-htmlObjectElementGetUseMap ::
-                           (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                             self -> m result
-htmlObjectElementGetUseMap self
+getUseMap ::
+          (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getUseMap self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_use_map
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getUseMap (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
-        ghcjs_dom_html_object_element_set_vspace ::
-        JSRef HTMLObjectElement -> Int -> IO ()
+        js_setVspace :: JSRef HTMLObjectElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.vspace Mozilla HTMLObjectElement.vspace documentation> 
-htmlObjectElementSetVspace ::
-                           (MonadIO m, IsHTMLObjectElement self) => self -> Int -> m ()
-htmlObjectElementSetVspace self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_vspace
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         val)
+setVspace :: (MonadIO m) => HTMLObjectElement -> Int -> m ()
+setVspace self val
+  = liftIO (js_setVspace (unHTMLObjectElement self) val)
  
-foreign import javascript unsafe "$1[\"vspace\"]"
-        ghcjs_dom_html_object_element_get_vspace ::
+foreign import javascript unsafe "$1[\"vspace\"]" js_getVspace ::
         JSRef HTMLObjectElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.vspace Mozilla HTMLObjectElement.vspace documentation> 
-htmlObjectElementGetVspace ::
-                           (MonadIO m, IsHTMLObjectElement self) => self -> m Int
-htmlObjectElementGetVspace self
-  = liftIO
-      (ghcjs_dom_html_object_element_get_vspace
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+getVspace :: (MonadIO m) => HTMLObjectElement -> m Int
+getVspace self = liftIO (js_getVspace (unHTMLObjectElement self))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;"
-        ghcjs_dom_html_object_element_set_width ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+        :: JSRef HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.width Mozilla HTMLObjectElement.width documentation> 
-htmlObjectElementSetWidth ::
-                          (MonadIO m, IsHTMLObjectElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlObjectElementSetWidth self val
-  = liftIO
-      (ghcjs_dom_html_object_element_set_width
-         (unHTMLObjectElement (toHTMLObjectElement self))
-         (toJSString val))
+setWidth ::
+         (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setWidth self val
+  = liftIO (js_setWidth (unHTMLObjectElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_html_object_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.width Mozilla HTMLObjectElement.width documentation> 
-htmlObjectElementGetWidth ::
-                          (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                            self -> m result
-htmlObjectElementGetWidth self
+getWidth ::
+         (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getWidth self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_width
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+      (fromJSString <$> (js_getWidth (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
-        ghcjs_dom_html_object_element_get_will_validate ::
-        JSRef HTMLObjectElement -> IO Bool
+        js_getWillValidate :: JSRef HTMLObjectElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.willValidate Mozilla HTMLObjectElement.willValidate documentation> 
-htmlObjectElementGetWillValidate ::
-                                 (MonadIO m, IsHTMLObjectElement self) => self -> m Bool
-htmlObjectElementGetWillValidate self
-  = liftIO
-      (ghcjs_dom_html_object_element_get_will_validate
-         (unHTMLObjectElement (toHTMLObjectElement self)))
+getWillValidate :: (MonadIO m) => HTMLObjectElement -> m Bool
+getWillValidate self
+  = liftIO (js_getWillValidate (unHTMLObjectElement self))
  
-foreign import javascript unsafe "$1[\"validity\"]"
-        ghcjs_dom_html_object_element_get_validity ::
-        JSRef HTMLObjectElement -> IO (JSRef ValidityState)
+foreign import javascript unsafe "$1[\"validity\"]" js_getValidity
+        :: JSRef HTMLObjectElement -> IO (JSRef ValidityState)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.validity Mozilla HTMLObjectElement.validity documentation> 
-htmlObjectElementGetValidity ::
-                             (MonadIO m, IsHTMLObjectElement self) =>
-                               self -> m (Maybe ValidityState)
-htmlObjectElementGetValidity self
+getValidity ::
+            (MonadIO m) => HTMLObjectElement -> m (Maybe ValidityState)
+getValidity self
   = liftIO
-      ((ghcjs_dom_html_object_element_get_validity
-          (unHTMLObjectElement (toHTMLObjectElement self)))
-         >>= fromJSRef)
+      ((js_getValidity (unHTMLObjectElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
-        ghcjs_dom_html_object_element_get_validation_message ::
-        JSRef HTMLObjectElement -> IO JSString
+        js_getValidationMessage :: JSRef HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.validationMessage Mozilla HTMLObjectElement.validationMessage documentation> 
-htmlObjectElementGetValidationMessage ::
-                                      (MonadIO m, IsHTMLObjectElement self, FromJSString result) =>
-                                        self -> m result
-htmlObjectElementGetValidationMessage self
+getValidationMessage ::
+                     (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getValidationMessage self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_object_element_get_validation_message
-            (unHTMLObjectElement (toHTMLObjectElement self))))
+         (js_getValidationMessage (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"contentDocument\"]"
-        ghcjs_dom_html_object_element_get_content_document ::
+        js_getContentDocument ::
         JSRef HTMLObjectElement -> IO (JSRef Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.contentDocument Mozilla HTMLObjectElement.contentDocument documentation> 
-htmlObjectElementGetContentDocument ::
-                                    (MonadIO m, IsHTMLObjectElement self) =>
-                                      self -> m (Maybe Document)
-htmlObjectElementGetContentDocument self
+getContentDocument ::
+                   (MonadIO m) => HTMLObjectElement -> m (Maybe Document)
+getContentDocument self
   = liftIO
-      ((ghcjs_dom_html_object_element_get_content_document
-          (unHTMLObjectElement (toHTMLObjectElement self)))
-         >>= fromJSRef)
+      ((js_getContentDocument (unHTMLObjectElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLObjectElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLObjectElement

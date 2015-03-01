@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StorageQuotaCallback
-       (storageQuotaCallbackNewSync, storageQuotaCallbackNewAsync,
-        StorageQuotaCallback, IsStorageQuotaCallback,
-        castToStorageQuotaCallback, gTypeStorageQuotaCallback,
-        toStorageQuotaCallback)
+       (newStorageQuotaCallbackSync, newStorageQuotaCallbackSync',
+        newStorageQuotaCallbackAsync, newStorageQuotaCallbackAsync',
+        StorageQuotaCallback, castToStorageQuotaCallback,
+        gTypeStorageQuotaCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,14 +17,14 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
-storageQuotaCallbackNewSync ::
+newStorageQuotaCallbackSync ::
                             (MonadIO m) => (Double -> IO Bool) -> m StorageQuotaCallback
-storageQuotaCallbackNewSync callback
+newStorageQuotaCallbackSync callback
   = liftIO
       (StorageQuotaCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -32,11 +33,11 @@ storageQuotaCallbackNewSync callback
                 \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
-storageQuotaCallbackNewSync' ::
+newStorageQuotaCallbackSync' ::
                              (MonadIO m) =>
                                ForeignRetention ->
                                  Bool -> (Double -> IO Bool) -> m StorageQuotaCallback
-storageQuotaCallbackNewSync' retention continueAsync callback
+newStorageQuotaCallbackSync' retention continueAsync callback
   = liftIO
       (StorageQuotaCallback . castRef <$>
          syncCallback1 retention continueAsync
@@ -45,9 +46,9 @@ storageQuotaCallbackNewSync' retention continueAsync callback
                 \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
-storageQuotaCallbackNewAsync ::
+newStorageQuotaCallbackAsync ::
                              (MonadIO m) => (Double -> IO Bool) -> m StorageQuotaCallback
-storageQuotaCallbackNewAsync callback
+newStorageQuotaCallbackAsync callback
   = liftIO
       (StorageQuotaCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -56,10 +57,10 @@ storageQuotaCallbackNewAsync callback
                 \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
-storageQuotaCallbackNewAsync' ::
+newStorageQuotaCallbackAsync' ::
                               (MonadIO m) =>
                                 ForeignRetention -> (Double -> IO Bool) -> m StorageQuotaCallback
-storageQuotaCallbackNewAsync' retention callback
+newStorageQuotaCallbackAsync' retention callback
   = liftIO
       (StorageQuotaCallback . castRef <$>
          asyncCallback1 retention

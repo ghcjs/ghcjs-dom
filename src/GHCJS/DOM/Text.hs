@@ -1,12 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Text
-       (ghcjs_dom_text_new, textNew, ghcjs_dom_text_split_text,
-        textSplitText, ghcjs_dom_text_replace_whole_text,
-        textReplaceWholeText, ghcjs_dom_text_get_whole_text,
-        textGetWholeText, Text(..), IsText, castToText, gTypeText, toText)
+       (js_newText, newText, js_splitText, splitText, js_replaceWholeText,
+        replaceWholeText, js_getWholeText, getWholeText, Text, castToText,
+        gTypeText, IsText, toText)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,54 +16,49 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"Text\"]($1)"
-        ghcjs_dom_text_new :: JSString -> IO (JSRef Text)
+        js_newText :: JSString -> IO (JSRef Text)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text Mozilla Text documentation> 
-textNew :: (MonadIO m, ToJSString data') => data' -> m Text
-textNew data'
-  = liftIO
-      (ghcjs_dom_text_new (toJSString data') >>= fromJSRefUnchecked)
+newText :: (MonadIO m, ToJSString data') => data' -> m Text
+newText data'
+  = liftIO (js_newText (toJSString data') >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"splitText\"]($2)"
-        ghcjs_dom_text_split_text :: JSRef Text -> Word -> IO (JSRef Text)
+        js_splitText :: JSRef Text -> Word -> IO (JSRef Text)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.splitText Mozilla Text.splitText documentation> 
-textSplitText ::
-              (MonadIO m, IsText self) => self -> Word -> m (Maybe Text)
-textSplitText self offset
+splitText ::
+          (MonadIO m, IsText self) => self -> Word -> m (Maybe Text)
+splitText self offset
   = liftIO
-      ((ghcjs_dom_text_split_text (unText (toText self)) offset) >>=
-         fromJSRef)
+      ((js_splitText (unText (toText self)) offset) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"replaceWholeText\"]($2)"
-        ghcjs_dom_text_replace_whole_text ::
-        JSRef Text -> JSString -> IO (JSRef Text)
+        js_replaceWholeText :: JSRef Text -> JSString -> IO (JSRef Text)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.replaceWholeText Mozilla Text.replaceWholeText documentation> 
-textReplaceWholeText ::
-                     (MonadIO m, IsText self, ToJSString content) =>
-                       self -> content -> m (Maybe Text)
-textReplaceWholeText self content
+replaceWholeText ::
+                 (MonadIO m, IsText self, ToJSString content) =>
+                   self -> content -> m (Maybe Text)
+replaceWholeText self content
   = liftIO
-      ((ghcjs_dom_text_replace_whole_text (unText (toText self))
-          (toJSString content))
+      ((js_replaceWholeText (unText (toText self)) (toJSString content))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"wholeText\"]"
-        ghcjs_dom_text_get_whole_text :: JSRef Text -> IO JSString
+        js_getWholeText :: JSRef Text -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.wholeText Mozilla Text.wholeText documentation> 
-textGetWholeText ::
-                 (MonadIO m, IsText self, FromJSString result) => self -> m result
-textGetWholeText self
+getWholeText ::
+             (MonadIO m, IsText self, FromJSString result) => self -> m result
+getWholeText self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_text_get_whole_text (unText (toText self))))
+      (fromJSString <$> (js_getWholeText (unText (toText self))))
 #else
 module GHCJS.DOM.Text (
   module Graphics.UI.Gtk.WebKit.DOM.Text

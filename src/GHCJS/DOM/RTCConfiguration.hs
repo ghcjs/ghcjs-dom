@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.RTCConfiguration
-       (ghcjs_dom_rtc_configuration_get_ice_servers,
-        rtcConfigurationGetIceServers,
-        ghcjs_dom_rtc_configuration_get_ice_transports,
-        rtcConfigurationGetIceTransports,
-        ghcjs_dom_rtc_configuration_get_request_identity,
-        rtcConfigurationGetRequestIdentity, RTCConfiguration,
-        IsRTCConfiguration, castToRTCConfiguration, gTypeRTCConfiguration,
-        toRTCConfiguration)
+       (js_getIceServers, getIceServers, js_getIceTransports,
+        getIceTransports, js_getRequestIdentity, getRequestIdentity,
+        RTCConfiguration, castToRTCConfiguration, gTypeRTCConfiguration)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,51 +16,45 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"iceServers\"]"
-        ghcjs_dom_rtc_configuration_get_ice_servers ::
+        js_getIceServers ::
         JSRef RTCConfiguration -> IO (JSRef [Maybe RTCIceServer])
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration.iceServers Mozilla RTCConfiguration.iceServers documentation> 
-rtcConfigurationGetIceServers ::
-                              (MonadIO m, IsRTCConfiguration self) =>
-                                self -> m [Maybe RTCIceServer]
-rtcConfigurationGetIceServers self
+getIceServers ::
+              (MonadIO m) => RTCConfiguration -> m [Maybe RTCIceServer]
+getIceServers self
   = liftIO
-      ((ghcjs_dom_rtc_configuration_get_ice_servers
-          (unRTCConfiguration (toRTCConfiguration self)))
-         >>= fromJSRefUnchecked)
+      ((js_getIceServers (unRTCConfiguration self)) >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"iceTransports\"]"
-        ghcjs_dom_rtc_configuration_get_ice_transports ::
+        js_getIceTransports ::
         JSRef RTCConfiguration -> IO (JSRef RTCIceTransportsEnum)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration.iceTransports Mozilla RTCConfiguration.iceTransports documentation> 
-rtcConfigurationGetIceTransports ::
-                                 (MonadIO m, IsRTCConfiguration self) =>
-                                   self -> m RTCIceTransportsEnum
-rtcConfigurationGetIceTransports self
+getIceTransports ::
+                 (MonadIO m) => RTCConfiguration -> m RTCIceTransportsEnum
+getIceTransports self
   = liftIO
-      ((ghcjs_dom_rtc_configuration_get_ice_transports
-          (unRTCConfiguration (toRTCConfiguration self)))
-         >>= fromJSRefUnchecked)
+      ((js_getIceTransports (unRTCConfiguration self)) >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"requestIdentity\"]"
-        ghcjs_dom_rtc_configuration_get_request_identity ::
+        js_getRequestIdentity ::
         JSRef RTCConfiguration -> IO (JSRef RTCIdentityOptionEnum)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration.requestIdentity Mozilla RTCConfiguration.requestIdentity documentation> 
-rtcConfigurationGetRequestIdentity ::
-                                   (MonadIO m, IsRTCConfiguration self) =>
-                                     self -> m RTCIdentityOptionEnum
-rtcConfigurationGetRequestIdentity self
+getRequestIdentity ::
+                   (MonadIO m) => RTCConfiguration -> m RTCIdentityOptionEnum
+getRequestIdentity self
   = liftIO
-      ((ghcjs_dom_rtc_configuration_get_request_identity
-          (unRTCConfiguration (toRTCConfiguration self)))
-         >>= fromJSRefUnchecked)
+      ((js_getRequestIdentity (unRTCConfiguration self)) >>=
+         fromJSRefUnchecked)
 #else
 module GHCJS.DOM.RTCConfiguration (
   ) where

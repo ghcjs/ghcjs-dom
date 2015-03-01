@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SQLResultSetRowList
-       (ghcjs_dom_sql_result_set_row_list_item, sqlResultSetRowListItem,
-        ghcjs_dom_sql_result_set_row_list_get_length,
-        sqlResultSetRowListGetLength, SQLResultSetRowList,
-        IsSQLResultSetRowList, castToSQLResultSetRowList,
-        gTypeSQLResultSetRowList, toSQLResultSetRowList)
+       (js_item, item, js_getLength, getLength, SQLResultSetRowList,
+        castToSQLResultSetRowList, gTypeSQLResultSetRowList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,35 +15,24 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_sql_result_set_row_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef SQLResultSetRowList -> Word -> IO (JSRef a)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList.item Mozilla SQLResultSetRowList.item documentation> 
-sqlResultSetRowListItem ::
-                        (MonadIO m, IsSQLResultSetRowList self) =>
-                          self -> Word -> m (JSRef a)
-sqlResultSetRowListItem self index
-  = liftIO
-      (ghcjs_dom_sql_result_set_row_list_item
-         (unSQLResultSetRowList (toSQLResultSetRowList self))
-         index)
+item :: (MonadIO m) => SQLResultSetRowList -> Word -> m (JSRef a)
+item self index
+  = liftIO (js_item (unSQLResultSetRowList self) index)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_sql_result_set_row_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef SQLResultSetRowList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList.length Mozilla SQLResultSetRowList.length documentation> 
-sqlResultSetRowListGetLength ::
-                             (MonadIO m, IsSQLResultSetRowList self) => self -> m Word
-sqlResultSetRowListGetLength self
-  = liftIO
-      (ghcjs_dom_sql_result_set_row_list_get_length
-         (unSQLResultSetRowList (toSQLResultSetRowList self)))
+getLength :: (MonadIO m) => SQLResultSetRowList -> m Word
+getLength self = liftIO (js_getLength (unSQLResultSetRowList self))
 #else
 module GHCJS.DOM.SQLResultSetRowList (
   ) where

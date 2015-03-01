@@ -1,14 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.RequestAnimationFrameCallback
-       (requestAnimationFrameCallbackNewSync,
-        requestAnimationFrameCallbackNewAsync,
-        RequestAnimationFrameCallback, IsRequestAnimationFrameCallback,
-        castToRequestAnimationFrameCallback,
-        gTypeRequestAnimationFrameCallback,
-        toRequestAnimationFrameCallback)
+       (newRequestAnimationFrameCallbackSync,
+        newRequestAnimationFrameCallbackSync',
+        newRequestAnimationFrameCallbackAsync,
+        newRequestAnimationFrameCallbackAsync',
+        RequestAnimationFrameCallback, castToRequestAnimationFrameCallback,
+        gTypeRequestAnimationFrameCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,15 +19,15 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
-requestAnimationFrameCallbackNewSync ::
+newRequestAnimationFrameCallbackSync ::
                                      (MonadIO m) =>
                                        (Double -> IO Bool) -> m RequestAnimationFrameCallback
-requestAnimationFrameCallbackNewSync callback
+newRequestAnimationFrameCallbackSync callback
   = liftIO
       (RequestAnimationFrameCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -35,12 +36,12 @@ requestAnimationFrameCallbackNewSync callback
                 \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
-requestAnimationFrameCallbackNewSync' ::
+newRequestAnimationFrameCallbackSync' ::
                                       (MonadIO m) =>
                                         ForeignRetention ->
                                           Bool ->
                                             (Double -> IO Bool) -> m RequestAnimationFrameCallback
-requestAnimationFrameCallbackNewSync' retention continueAsync
+newRequestAnimationFrameCallbackSync' retention continueAsync
   callback
   = liftIO
       (RequestAnimationFrameCallback . castRef <$>
@@ -50,10 +51,10 @@ requestAnimationFrameCallbackNewSync' retention continueAsync
                 \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
-requestAnimationFrameCallbackNewAsync ::
+newRequestAnimationFrameCallbackAsync ::
                                       (MonadIO m) =>
                                         (Double -> IO Bool) -> m RequestAnimationFrameCallback
-requestAnimationFrameCallbackNewAsync callback
+newRequestAnimationFrameCallbackAsync callback
   = liftIO
       (RequestAnimationFrameCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -62,11 +63,11 @@ requestAnimationFrameCallbackNewAsync callback
                 \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
-requestAnimationFrameCallbackNewAsync' ::
+newRequestAnimationFrameCallbackAsync' ::
                                        (MonadIO m) =>
                                          ForeignRetention ->
                                            (Double -> IO Bool) -> m RequestAnimationFrameCallback
-requestAnimationFrameCallbackNewAsync' retention callback
+newRequestAnimationFrameCallbackAsync' retention callback
   = liftIO
       (RequestAnimationFrameCallback . castRef <$>
          asyncCallback1 retention

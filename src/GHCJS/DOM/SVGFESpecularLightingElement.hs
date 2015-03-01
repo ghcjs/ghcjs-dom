@@ -1,19 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFESpecularLightingElement
-       (ghcjs_dom_svgfe_specular_lighting_element_get_in1,
-        svgfeSpecularLightingElementGetIn1,
-        ghcjs_dom_svgfe_specular_lighting_element_get_surface_scale,
-        svgfeSpecularLightingElementGetSurfaceScale,
-        ghcjs_dom_svgfe_specular_lighting_element_get_specular_constant,
-        svgfeSpecularLightingElementGetSpecularConstant,
-        ghcjs_dom_svgfe_specular_lighting_element_get_specular_exponent,
-        svgfeSpecularLightingElementGetSpecularExponent,
-        SVGFESpecularLightingElement, IsSVGFESpecularLightingElement,
-        castToSVGFESpecularLightingElement,
-        gTypeSVGFESpecularLightingElement, toSVGFESpecularLightingElement)
+       (js_getIn1, getIn1, js_getSurfaceScale, getSurfaceScale,
+        js_getSpecularConstant, getSpecularConstant,
+        js_getSpecularExponent, getSpecularExponent,
+        SVGFESpecularLightingElement, castToSVGFESpecularLightingElement,
+        gTypeSVGFESpecularLightingElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,69 +18,59 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"in1\"]"
-        ghcjs_dom_svgfe_specular_lighting_element_get_in1 ::
+foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
         JSRef SVGFESpecularLightingElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.in1 Mozilla SVGFESpecularLightingElement.in1 documentation> 
-svgfeSpecularLightingElementGetIn1 ::
-                                   (MonadIO m, IsSVGFESpecularLightingElement self) =>
-                                     self -> m (Maybe SVGAnimatedString)
-svgfeSpecularLightingElementGetIn1 self
+getIn1 ::
+       (MonadIO m) =>
+         SVGFESpecularLightingElement -> m (Maybe SVGAnimatedString)
+getIn1 self
   = liftIO
-      ((ghcjs_dom_svgfe_specular_lighting_element_get_in1
-          (unSVGFESpecularLightingElement
-             (toSVGFESpecularLightingElement self)))
-         >>= fromJSRef)
+      ((js_getIn1 (unSVGFESpecularLightingElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"surfaceScale\"]"
-        ghcjs_dom_svgfe_specular_lighting_element_get_surface_scale ::
+        js_getSurfaceScale ::
         JSRef SVGFESpecularLightingElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.surfaceScale Mozilla SVGFESpecularLightingElement.surfaceScale documentation> 
-svgfeSpecularLightingElementGetSurfaceScale ::
-                                            (MonadIO m, IsSVGFESpecularLightingElement self) =>
-                                              self -> m (Maybe SVGAnimatedNumber)
-svgfeSpecularLightingElementGetSurfaceScale self
+getSurfaceScale ::
+                (MonadIO m) =>
+                  SVGFESpecularLightingElement -> m (Maybe SVGAnimatedNumber)
+getSurfaceScale self
   = liftIO
-      ((ghcjs_dom_svgfe_specular_lighting_element_get_surface_scale
-          (unSVGFESpecularLightingElement
-             (toSVGFESpecularLightingElement self)))
-         >>= fromJSRef)
+      ((js_getSurfaceScale (unSVGFESpecularLightingElement self)) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"specularConstant\"]"
-        ghcjs_dom_svgfe_specular_lighting_element_get_specular_constant ::
+        js_getSpecularConstant ::
         JSRef SVGFESpecularLightingElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.specularConstant Mozilla SVGFESpecularLightingElement.specularConstant documentation> 
-svgfeSpecularLightingElementGetSpecularConstant ::
-                                                (MonadIO m, IsSVGFESpecularLightingElement self) =>
-                                                  self -> m (Maybe SVGAnimatedNumber)
-svgfeSpecularLightingElementGetSpecularConstant self
+getSpecularConstant ::
+                    (MonadIO m) =>
+                      SVGFESpecularLightingElement -> m (Maybe SVGAnimatedNumber)
+getSpecularConstant self
   = liftIO
-      ((ghcjs_dom_svgfe_specular_lighting_element_get_specular_constant
-          (unSVGFESpecularLightingElement
-             (toSVGFESpecularLightingElement self)))
-         >>= fromJSRef)
+      ((js_getSpecularConstant (unSVGFESpecularLightingElement self)) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"specularExponent\"]"
-        ghcjs_dom_svgfe_specular_lighting_element_get_specular_exponent ::
+        js_getSpecularExponent ::
         JSRef SVGFESpecularLightingElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.specularExponent Mozilla SVGFESpecularLightingElement.specularExponent documentation> 
-svgfeSpecularLightingElementGetSpecularExponent ::
-                                                (MonadIO m, IsSVGFESpecularLightingElement self) =>
-                                                  self -> m (Maybe SVGAnimatedNumber)
-svgfeSpecularLightingElementGetSpecularExponent self
+getSpecularExponent ::
+                    (MonadIO m) =>
+                      SVGFESpecularLightingElement -> m (Maybe SVGAnimatedNumber)
+getSpecularExponent self
   = liftIO
-      ((ghcjs_dom_svgfe_specular_lighting_element_get_specular_exponent
-          (unSVGFESpecularLightingElement
-             (toSVGFESpecularLightingElement self)))
-         >>= fromJSRef)
+      ((js_getSpecularExponent (unSVGFESpecularLightingElement self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.SVGFESpecularLightingElement (
   ) where

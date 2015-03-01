@@ -1,10 +1,9 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.File
-       (ghcjs_dom_file_get_name, fileGetName, File, IsFile, castToFile,
-        gTypeFile, toFile)
-       where
+       (js_getName, getName, File, castToFile, gTypeFile) where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -14,19 +13,16 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_file_get_name :: JSRef File -> IO JSString
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+        JSRef File -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/File.name Mozilla File.name documentation> 
-fileGetName ::
-            (MonadIO m, IsFile self, FromJSString result) => self -> m result
-fileGetName self
-  = liftIO
-      (fromJSString <$> (ghcjs_dom_file_get_name (unFile (toFile self))))
+getName :: (MonadIO m, FromJSString result) => File -> m result
+getName self = liftIO (fromJSString <$> (js_getName (unFile self)))
 #else
 module GHCJS.DOM.File (
   module Graphics.UI.Gtk.WebKit.DOM.File

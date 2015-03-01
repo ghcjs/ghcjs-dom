@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSFontFaceLoadEvent
-       (ghcjs_dom_css_font_face_load_event_get_fontface,
-        cssFontFaceLoadEventGetFontface,
-        ghcjs_dom_css_font_face_load_event_get_error,
-        cssFontFaceLoadEventGetError, CSSFontFaceLoadEvent,
-        IsCSSFontFaceLoadEvent, castToCSSFontFaceLoadEvent,
-        gTypeCSSFontFaceLoadEvent, toCSSFontFaceLoadEvent)
+       (js_getFontface, getFontface, js_getError, getError,
+        CSSFontFaceLoadEvent, castToCSSFontFaceLoadEvent,
+        gTypeCSSFontFaceLoadEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +16,29 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"fontface\"]"
-        ghcjs_dom_css_font_face_load_event_get_fontface ::
-        JSRef CSSFontFaceLoadEvent -> IO (JSRef CSSFontFaceRule)
+foreign import javascript unsafe "$1[\"fontface\"]" js_getFontface
+        :: JSRef CSSFontFaceLoadEvent -> IO (JSRef CSSFontFaceRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.fontface Mozilla CSSFontFaceLoadEvent.fontface documentation> 
-cssFontFaceLoadEventGetFontface ::
-                                (MonadIO m, IsCSSFontFaceLoadEvent self) =>
-                                  self -> m (Maybe CSSFontFaceRule)
-cssFontFaceLoadEventGetFontface self
+getFontface ::
+            (MonadIO m) => CSSFontFaceLoadEvent -> m (Maybe CSSFontFaceRule)
+getFontface self
   = liftIO
-      ((ghcjs_dom_css_font_face_load_event_get_fontface
-          (unCSSFontFaceLoadEvent (toCSSFontFaceLoadEvent self)))
-         >>= fromJSRef)
+      ((js_getFontface (unCSSFontFaceLoadEvent self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"error\"]"
-        ghcjs_dom_css_font_face_load_event_get_error ::
+foreign import javascript unsafe "$1[\"error\"]" js_getError ::
         JSRef CSSFontFaceLoadEvent -> IO (JSRef DOMError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.error Mozilla CSSFontFaceLoadEvent.error documentation> 
-cssFontFaceLoadEventGetError ::
-                             (MonadIO m, IsCSSFontFaceLoadEvent self) =>
-                               self -> m (Maybe DOMError)
-cssFontFaceLoadEventGetError self
+getError ::
+         (MonadIO m) => CSSFontFaceLoadEvent -> m (Maybe DOMError)
+getError self
   = liftIO
-      ((ghcjs_dom_css_font_face_load_event_get_error
-          (unCSSFontFaceLoadEvent (toCSSFontFaceLoadEvent self)))
-         >>= fromJSRef)
+      ((js_getError (unCSSFontFaceLoadEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.CSSFontFaceLoadEvent (
   ) where

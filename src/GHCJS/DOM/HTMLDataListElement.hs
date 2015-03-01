@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDataListElement
-       (ghcjs_dom_html_data_list_element_get_options,
-        htmlDataListElementGetOptions, HTMLDataListElement,
-        IsHTMLDataListElement, castToHTMLDataListElement,
-        gTypeHTMLDataListElement, toHTMLDataListElement)
+       (js_getOptions, getOptions, HTMLDataListElement,
+        castToHTMLDataListElement, gTypeHTMLDataListElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,19 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"options\"]"
-        ghcjs_dom_html_data_list_element_get_options ::
+foreign import javascript unsafe "$1[\"options\"]" js_getOptions ::
         JSRef HTMLDataListElement -> IO (JSRef HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDataListElement.options Mozilla HTMLDataListElement.options documentation> 
-htmlDataListElementGetOptions ::
-                              (MonadIO m, IsHTMLDataListElement self) =>
-                                self -> m (Maybe HTMLCollection)
-htmlDataListElementGetOptions self
+getOptions ::
+           (MonadIO m) => HTMLDataListElement -> m (Maybe HTMLCollection)
+getOptions self
   = liftIO
-      ((ghcjs_dom_html_data_list_element_get_options
-          (unHTMLDataListElement (toHTMLDataListElement self)))
-         >>= fromJSRef)
+      ((js_getOptions (unHTMLDataListElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLDataListElement (
   ) where

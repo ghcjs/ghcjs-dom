@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGAnimatedInteger
-       (ghcjs_dom_svg_animated_integer_set_base_val,
-        svgAnimatedIntegerSetBaseVal,
-        ghcjs_dom_svg_animated_integer_get_base_val,
-        svgAnimatedIntegerGetBaseVal,
-        ghcjs_dom_svg_animated_integer_get_anim_val,
-        svgAnimatedIntegerGetAnimVal, SVGAnimatedInteger,
-        IsSVGAnimatedInteger, castToSVGAnimatedInteger,
-        gTypeSVGAnimatedInteger, toSVGAnimatedInteger)
+       (js_setBaseVal, setBaseVal, js_getBaseVal, getBaseVal,
+        js_getAnimVal, getAnimVal, SVGAnimatedInteger,
+        castToSVGAnimatedInteger, gTypeSVGAnimatedInteger)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,46 +16,33 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
-        ghcjs_dom_svg_animated_integer_set_base_val ::
-        JSRef SVGAnimatedInteger -> Int -> IO ()
+        js_setBaseVal :: JSRef SVGAnimatedInteger -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger.baseVal Mozilla SVGAnimatedInteger.baseVal documentation> 
-svgAnimatedIntegerSetBaseVal ::
-                             (MonadIO m, IsSVGAnimatedInteger self) => self -> Int -> m ()
-svgAnimatedIntegerSetBaseVal self val
-  = liftIO
-      (ghcjs_dom_svg_animated_integer_set_base_val
-         (unSVGAnimatedInteger (toSVGAnimatedInteger self))
-         val)
+setBaseVal :: (MonadIO m) => SVGAnimatedInteger -> Int -> m ()
+setBaseVal self val
+  = liftIO (js_setBaseVal (unSVGAnimatedInteger self) val)
  
-foreign import javascript unsafe "$1[\"baseVal\"]"
-        ghcjs_dom_svg_animated_integer_get_base_val ::
+foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         JSRef SVGAnimatedInteger -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger.baseVal Mozilla SVGAnimatedInteger.baseVal documentation> 
-svgAnimatedIntegerGetBaseVal ::
-                             (MonadIO m, IsSVGAnimatedInteger self) => self -> m Int
-svgAnimatedIntegerGetBaseVal self
-  = liftIO
-      (ghcjs_dom_svg_animated_integer_get_base_val
-         (unSVGAnimatedInteger (toSVGAnimatedInteger self)))
+getBaseVal :: (MonadIO m) => SVGAnimatedInteger -> m Int
+getBaseVal self
+  = liftIO (js_getBaseVal (unSVGAnimatedInteger self))
  
-foreign import javascript unsafe "$1[\"animVal\"]"
-        ghcjs_dom_svg_animated_integer_get_anim_val ::
+foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
         JSRef SVGAnimatedInteger -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger.animVal Mozilla SVGAnimatedInteger.animVal documentation> 
-svgAnimatedIntegerGetAnimVal ::
-                             (MonadIO m, IsSVGAnimatedInteger self) => self -> m Int
-svgAnimatedIntegerGetAnimVal self
-  = liftIO
-      (ghcjs_dom_svg_animated_integer_get_anim_val
-         (unSVGAnimatedInteger (toSVGAnimatedInteger self)))
+getAnimVal :: (MonadIO m) => SVGAnimatedInteger -> m Int
+getAnimVal self
+  = liftIO (js_getAnimVal (unSVGAnimatedInteger self))
 #else
 module GHCJS.DOM.SVGAnimatedInteger (
   ) where

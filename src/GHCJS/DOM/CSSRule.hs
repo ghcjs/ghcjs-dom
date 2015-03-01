@@ -1,18 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CSSRule
-       (cUNKNOWN_RULE, cSTYLE_RULE, cCHARSET_RULE, cIMPORT_RULE,
-        cMEDIA_RULE, cFONT_FACE_RULE, cPAGE_RULE, cKEYFRAMES_RULE,
-        cKEYFRAME_RULE, cSUPPORTS_RULE, cWEBKIT_VIEWPORT_RULE,
-        cWEBKIT_REGION_RULE, cWEBKIT_KEYFRAMES_RULE, cWEBKIT_KEYFRAME_RULE,
-        ghcjs_dom_css_rule_set_css_text, cssRuleSetCssText,
-        ghcjs_dom_css_rule_get_css_text, cssRuleGetCssText,
-        ghcjs_dom_css_rule_get_parent_style_sheet,
-        cssRuleGetParentStyleSheet, ghcjs_dom_css_rule_get_parent_rule,
-        cssRuleGetParentRule, CSSRule, IsCSSRule, castToCSSRule,
-        gTypeCSSRule, toCSSRule)
+       (pattern UNKNOWN_RULE, pattern STYLE_RULE, pattern CHARSET_RULE,
+        pattern IMPORT_RULE, pattern MEDIA_RULE, pattern FONT_FACE_RULE,
+        pattern PAGE_RULE, pattern KEYFRAMES_RULE, pattern KEYFRAME_RULE,
+        pattern SUPPORTS_RULE, pattern WEBKIT_VIEWPORT_RULE,
+        pattern WEBKIT_REGION_RULE, pattern WEBKIT_KEYFRAMES_RULE,
+        pattern WEBKIT_KEYFRAME_RULE, js_setCssText, setCssText,
+        js_getCssText, getCssText, js_getParentStyleSheet,
+        getParentStyleSheet, js_getParentRule, getParentRule, CSSRule,
+        castToCSSRule, gTypeCSSRule, IsCSSRule, toCSSRule)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,72 +22,65 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cUNKNOWN_RULE = 0
-cSTYLE_RULE = 1
-cCHARSET_RULE = 2
-cIMPORT_RULE = 3
-cMEDIA_RULE = 4
-cFONT_FACE_RULE = 5
-cPAGE_RULE = 6
-cKEYFRAMES_RULE = 7
-cKEYFRAME_RULE = 8
-cSUPPORTS_RULE = 12
-cWEBKIT_VIEWPORT_RULE = 15
-cWEBKIT_REGION_RULE = 16
-cWEBKIT_KEYFRAMES_RULE = 7
-cWEBKIT_KEYFRAME_RULE = 8
+pattern UNKNOWN_RULE = 0
+pattern STYLE_RULE = 1
+pattern CHARSET_RULE = 2
+pattern IMPORT_RULE = 3
+pattern MEDIA_RULE = 4
+pattern FONT_FACE_RULE = 5
+pattern PAGE_RULE = 6
+pattern KEYFRAMES_RULE = 7
+pattern KEYFRAME_RULE = 8
+pattern SUPPORTS_RULE = 12
+pattern WEBKIT_VIEWPORT_RULE = 15
+pattern WEBKIT_REGION_RULE = 16
+pattern WEBKIT_KEYFRAMES_RULE = 7
+pattern WEBKIT_KEYFRAME_RULE = 8
  
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
-        ghcjs_dom_css_rule_set_css_text ::
-        JSRef CSSRule -> JSString -> IO ()
+        js_setCssText :: JSRef CSSRule -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
-cssRuleSetCssText ::
-                  (MonadIO m, IsCSSRule self, ToJSString val) => self -> val -> m ()
-cssRuleSetCssText self val
+setCssText ::
+           (MonadIO m, IsCSSRule self, ToJSString val) => self -> val -> m ()
+setCssText self val
   = liftIO
-      (ghcjs_dom_css_rule_set_css_text (unCSSRule (toCSSRule self))
-         (toJSString val))
+      (js_setCssText (unCSSRule (toCSSRule self)) (toJSString val))
  
-foreign import javascript unsafe "$1[\"cssText\"]"
-        ghcjs_dom_css_rule_get_css_text :: JSRef CSSRule -> IO JSString
+foreign import javascript unsafe "$1[\"cssText\"]" js_getCssText ::
+        JSRef CSSRule -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
-cssRuleGetCssText ::
-                  (MonadIO m, IsCSSRule self, FromJSString result) =>
-                    self -> m result
-cssRuleGetCssText self
+getCssText ::
+           (MonadIO m, IsCSSRule self, FromJSString result) =>
+             self -> m result
+getCssText self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_css_rule_get_css_text (unCSSRule (toCSSRule self))))
+      (fromJSString <$> (js_getCssText (unCSSRule (toCSSRule self))))
  
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
-        ghcjs_dom_css_rule_get_parent_style_sheet ::
-        JSRef CSSRule -> IO (JSRef CSSStyleSheet)
+        js_getParentStyleSheet :: JSRef CSSRule -> IO (JSRef CSSStyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentStyleSheet Mozilla CSSRule.parentStyleSheet documentation> 
-cssRuleGetParentStyleSheet ::
-                           (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSStyleSheet)
-cssRuleGetParentStyleSheet self
+getParentStyleSheet ::
+                    (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSStyleSheet)
+getParentStyleSheet self
   = liftIO
-      ((ghcjs_dom_css_rule_get_parent_style_sheet
-          (unCSSRule (toCSSRule self)))
-         >>= fromJSRef)
+      ((js_getParentStyleSheet (unCSSRule (toCSSRule self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"parentRule\"]"
-        ghcjs_dom_css_rule_get_parent_rule ::
-        JSRef CSSRule -> IO (JSRef CSSRule)
+        js_getParentRule :: JSRef CSSRule -> IO (JSRef CSSRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentRule Mozilla CSSRule.parentRule documentation> 
-cssRuleGetParentRule ::
-                     (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSRule)
-cssRuleGetParentRule self
+getParentRule ::
+              (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSRule)
+getParentRule self
   = liftIO
-      ((ghcjs_dom_css_rule_get_parent_rule (unCSSRule (toCSSRule self)))
-         >>= fromJSRef)
+      ((js_getParentRule (unCSSRule (toCSSRule self))) >>= fromJSRef)
 #else
 module GHCJS.DOM.CSSRule (
   module Graphics.UI.Gtk.WebKit.DOM.CSSRule

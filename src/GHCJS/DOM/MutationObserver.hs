@@ -1,15 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MutationObserver
-       (ghcjs_dom_mutation_observer_new, mutationObserverNew,
-        ghcjs_dom_mutation_observer_observe, mutationObserverObserve,
-        ghcjs_dom_mutation_observer_take_records,
-        mutationObserverTakeRecords,
-        ghcjs_dom_mutation_observer_disconnect, mutationObserverDisconnect,
-        MutationObserver, IsMutationObserver, castToMutationObserver,
-        gTypeMutationObserver, toMutationObserver)
+       (js_newMutationObserver, newMutationObserver, js_observe, observe,
+        js_takeRecords, takeRecords, js_disconnect, disconnect,
+        MutationObserver, castToMutationObserver, gTypeMutationObserver)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,66 +16,55 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"MutationObserver\"]($1)"
-        ghcjs_dom_mutation_observer_new ::
+        "new window[\"MutationObserver\"]($1)" js_newMutationObserver ::
         JSRef MutationCallback -> IO (JSRef MutationObserver)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver Mozilla MutationObserver documentation> 
-mutationObserverNew ::
+newMutationObserver ::
                     (MonadIO m, IsMutationCallback callback) =>
                       Maybe callback -> m MutationObserver
-mutationObserverNew callback
+newMutationObserver callback
   = liftIO
-      (ghcjs_dom_mutation_observer_new
+      (js_newMutationObserver
          (maybe jsNull (unMutationCallback . toMutationCallback) callback)
          >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"observe\"]($2, $3)"
-        ghcjs_dom_mutation_observer_observe ::
+        js_observe ::
         JSRef MutationObserver -> JSRef Node -> JSRef Dictionary -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.observe Mozilla MutationObserver.observe documentation> 
-mutationObserverObserve ::
-                        (MonadIO m, IsMutationObserver self, IsNode target,
-                         IsDictionary options) =>
-                          self -> Maybe target -> Maybe options -> m ()
-mutationObserverObserve self target options
+observe ::
+        (MonadIO m, IsNode target, IsDictionary options) =>
+          MutationObserver -> Maybe target -> Maybe options -> m ()
+observe self target options
   = liftIO
-      (ghcjs_dom_mutation_observer_observe
-         (unMutationObserver (toMutationObserver self))
+      (js_observe (unMutationObserver self)
          (maybe jsNull (unNode . toNode) target)
          (maybe jsNull (unDictionary . toDictionary) options))
  
 foreign import javascript unsafe "$1[\"takeRecords\"]()"
-        ghcjs_dom_mutation_observer_take_records ::
+        js_takeRecords ::
         JSRef MutationObserver -> IO (JSRef [Maybe MutationRecord])
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.takeRecords Mozilla MutationObserver.takeRecords documentation> 
-mutationObserverTakeRecords ::
-                            (MonadIO m, IsMutationObserver self) =>
-                              self -> m [Maybe MutationRecord]
-mutationObserverTakeRecords self
+takeRecords ::
+            (MonadIO m) => MutationObserver -> m [Maybe MutationRecord]
+takeRecords self
   = liftIO
-      ((ghcjs_dom_mutation_observer_take_records
-          (unMutationObserver (toMutationObserver self)))
-         >>= fromJSRefUnchecked)
+      ((js_takeRecords (unMutationObserver self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"disconnect\"]()"
-        ghcjs_dom_mutation_observer_disconnect ::
-        JSRef MutationObserver -> IO ()
+        js_disconnect :: JSRef MutationObserver -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.disconnect Mozilla MutationObserver.disconnect documentation> 
-mutationObserverDisconnect ::
-                           (MonadIO m, IsMutationObserver self) => self -> m ()
-mutationObserverDisconnect self
-  = liftIO
-      (ghcjs_dom_mutation_observer_disconnect
-         (unMutationObserver (toMutationObserver self)))
+disconnect :: (MonadIO m) => MutationObserver -> m ()
+disconnect self = liftIO (js_disconnect (unMutationObserver self))
 #else
 module GHCJS.DOM.MutationObserver (
   ) where

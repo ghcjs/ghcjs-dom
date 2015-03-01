@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AnimationEvent
-       (ghcjs_dom_animation_event_get_animation_name,
-        animationEventGetAnimationName,
-        ghcjs_dom_animation_event_get_elapsed_time,
-        animationEventGetElapsedTime, AnimationEvent, IsAnimationEvent,
-        castToAnimationEvent, gTypeAnimationEvent, toAnimationEvent)
+       (js_getAnimationName, getAnimationName, js_getElapsedTime,
+        getElapsedTime, AnimationEvent, castToAnimationEvent,
+        gTypeAnimationEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,35 +16,27 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"animationName\"]"
-        ghcjs_dom_animation_event_get_animation_name ::
-        JSRef AnimationEvent -> IO JSString
+        js_getAnimationName :: JSRef AnimationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent.animationName Mozilla AnimationEvent.animationName documentation> 
-animationEventGetAnimationName ::
-                               (MonadIO m, IsAnimationEvent self, FromJSString result) =>
-                                 self -> m result
-animationEventGetAnimationName self
+getAnimationName ::
+                 (MonadIO m, FromJSString result) => AnimationEvent -> m result
+getAnimationName self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_animation_event_get_animation_name
-            (unAnimationEvent (toAnimationEvent self))))
+      (fromJSString <$> (js_getAnimationName (unAnimationEvent self)))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
-        ghcjs_dom_animation_event_get_elapsed_time ::
-        JSRef AnimationEvent -> IO Double
+        js_getElapsedTime :: JSRef AnimationEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent.elapsedTime Mozilla AnimationEvent.elapsedTime documentation> 
-animationEventGetElapsedTime ::
-                             (MonadIO m, IsAnimationEvent self) => self -> m Double
-animationEventGetElapsedTime self
-  = liftIO
-      (ghcjs_dom_animation_event_get_elapsed_time
-         (unAnimationEvent (toAnimationEvent self)))
+getElapsedTime :: (MonadIO m) => AnimationEvent -> m Double
+getElapsedTime self
+  = liftIO (js_getElapsedTime (unAnimationEvent self))
 #else
 module GHCJS.DOM.AnimationEvent (
   ) where

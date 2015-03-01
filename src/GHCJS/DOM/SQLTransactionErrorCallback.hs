@@ -1,12 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SQLTransactionErrorCallback
-       (sqlTransactionErrorCallbackNewSync,
-        sqlTransactionErrorCallbackNewAsync, SQLTransactionErrorCallback,
-        IsSQLTransactionErrorCallback, castToSQLTransactionErrorCallback,
-        gTypeSQLTransactionErrorCallback, toSQLTransactionErrorCallback)
+       (newSQLTransactionErrorCallbackSync,
+        newSQLTransactionErrorCallbackSync',
+        newSQLTransactionErrorCallbackAsync,
+        newSQLTransactionErrorCallbackAsync', SQLTransactionErrorCallback,
+        castToSQLTransactionErrorCallback,
+        gTypeSQLTransactionErrorCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,15 +19,15 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation> 
-sqlTransactionErrorCallbackNewSync ::
+newSQLTransactionErrorCallbackSync ::
                                    (MonadIO m) =>
                                      (Maybe SQLError -> IO Bool) -> m SQLTransactionErrorCallback
-sqlTransactionErrorCallbackNewSync callback
+newSQLTransactionErrorCallbackSync callback
   = liftIO
       (SQLTransactionErrorCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -32,13 +35,13 @@ sqlTransactionErrorCallbackNewSync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation> 
-sqlTransactionErrorCallbackNewSync' ::
+newSQLTransactionErrorCallbackSync' ::
                                     (MonadIO m) =>
                                       ForeignRetention ->
                                         Bool ->
                                           (Maybe SQLError -> IO Bool) ->
                                             m SQLTransactionErrorCallback
-sqlTransactionErrorCallbackNewSync' retention continueAsync
+newSQLTransactionErrorCallbackSync' retention continueAsync
   callback
   = liftIO
       (SQLTransactionErrorCallback . castRef <$>
@@ -47,10 +50,10 @@ sqlTransactionErrorCallbackNewSync' retention continueAsync
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation> 
-sqlTransactionErrorCallbackNewAsync ::
+newSQLTransactionErrorCallbackAsync ::
                                     (MonadIO m) =>
                                       (Maybe SQLError -> IO Bool) -> m SQLTransactionErrorCallback
-sqlTransactionErrorCallbackNewAsync callback
+newSQLTransactionErrorCallbackAsync callback
   = liftIO
       (SQLTransactionErrorCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -58,12 +61,12 @@ sqlTransactionErrorCallbackNewAsync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation> 
-sqlTransactionErrorCallbackNewAsync' ::
+newSQLTransactionErrorCallbackAsync' ::
                                      (MonadIO m) =>
                                        ForeignRetention ->
                                          (Maybe SQLError -> IO Bool) ->
                                            m SQLTransactionErrorCallback
-sqlTransactionErrorCallbackNewAsync' retention callback
+newSQLTransactionErrorCallbackAsync' retention callback
   = liftIO
       (SQLTransactionErrorCallback . castRef <$>
          asyncCallback1 retention

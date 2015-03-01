@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleSheetList
-       (ghcjs_dom_style_sheet_list_item, styleSheetListItem,
-        ghcjs_dom_style_sheet_list_get, styleSheetList_get,
-        ghcjs_dom_style_sheet_list_get_length, styleSheetListGetLength,
-        StyleSheetList, IsStyleSheetList, castToStyleSheetList,
-        gTypeStyleSheetList, toStyleSheetList)
+       (js_item, item, js__get, _get, js_getLength, getLength,
+        StyleSheetList, castToStyleSheetList, gTypeStyleSheetList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,51 +15,36 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_style_sheet_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef StyleSheetList -> Word -> IO (JSRef StyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList.item Mozilla StyleSheetList.item documentation> 
-styleSheetListItem ::
-                   (MonadIO m, IsStyleSheetList self) =>
-                     self -> Word -> m (Maybe StyleSheet)
-styleSheetListItem self index
-  = liftIO
-      ((ghcjs_dom_style_sheet_list_item
-          (unStyleSheetList (toStyleSheetList self))
-          index)
-         >>= fromJSRef)
+item ::
+     (MonadIO m) => StyleSheetList -> Word -> m (Maybe StyleSheet)
+item self index
+  = liftIO ((js_item (unStyleSheetList self) index) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"_get\"]($2)"
-        ghcjs_dom_style_sheet_list_get ::
+foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
         JSRef StyleSheetList -> JSString -> IO (JSRef CSSStyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList._get Mozilla StyleSheetList._get documentation> 
-styleSheetList_get ::
-                   (MonadIO m, IsStyleSheetList self, ToJSString name) =>
-                     self -> name -> m (Maybe CSSStyleSheet)
-styleSheetList_get self name
+_get ::
+     (MonadIO m, ToJSString name) =>
+       StyleSheetList -> name -> m (Maybe CSSStyleSheet)
+_get self name
   = liftIO
-      ((ghcjs_dom_style_sheet_list_get
-          (unStyleSheetList (toStyleSheetList self))
-          (toJSString name))
-         >>= fromJSRef)
+      ((js__get (unStyleSheetList self) (toJSString name)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_style_sheet_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef StyleSheetList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList.length Mozilla StyleSheetList.length documentation> 
-styleSheetListGetLength ::
-                        (MonadIO m, IsStyleSheetList self) => self -> m Word
-styleSheetListGetLength self
-  = liftIO
-      (ghcjs_dom_style_sheet_list_get_length
-         (unStyleSheetList (toStyleSheetList self)))
+getLength :: (MonadIO m) => StyleSheetList -> m Word
+getLength self = liftIO (js_getLength (unStyleSheetList self))
 #else
 module GHCJS.DOM.StyleSheetList (
   module Graphics.UI.Gtk.WebKit.DOM.StyleSheetList

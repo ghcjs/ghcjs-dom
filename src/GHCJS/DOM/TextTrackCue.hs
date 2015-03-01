@@ -1,22 +1,16 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TextTrackCue
-       (ghcjs_dom_text_track_cue_new, textTrackCueNew,
-        ghcjs_dom_text_track_cue_get_track, textTrackCueGetTrack,
-        ghcjs_dom_text_track_cue_set_id, textTrackCueSetId,
-        ghcjs_dom_text_track_cue_get_id, textTrackCueGetId,
-        ghcjs_dom_text_track_cue_set_start_time, textTrackCueSetStartTime,
-        ghcjs_dom_text_track_cue_get_start_time, textTrackCueGetStartTime,
-        ghcjs_dom_text_track_cue_set_end_time, textTrackCueSetEndTime,
-        ghcjs_dom_text_track_cue_get_end_time, textTrackCueGetEndTime,
-        ghcjs_dom_text_track_cue_set_pause_on_exit,
-        textTrackCueSetPauseOnExit,
-        ghcjs_dom_text_track_cue_get_pause_on_exit,
-        textTrackCueGetPauseOnExit, textTrackCueEnter, textTrackCueExit,
-        TextTrackCue(..), IsTextTrackCue, castToTextTrackCue,
-        gTypeTextTrackCue, toTextTrackCue)
+       (js_newTextTrackCue, newTextTrackCue, js_getTrack, getTrack,
+        js_setId, setId, js_getId, getId, js_setStartTime, setStartTime,
+        js_getStartTime, getStartTime, js_setEndTime, setEndTime,
+        js_getEndTime, getEndTime, js_setPauseOnExit, setPauseOnExit,
+        js_getPauseOnExit, getPauseOnExit, enter, exit, TextTrackCue,
+        castToTextTrackCue, gTypeTextTrackCue, IsTextTrackCue,
+        toTextTrackCue)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,149 +20,121 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"TextTrackCue\"]($1,\n$2, $3)"
-        ghcjs_dom_text_track_cue_new ::
+        "new window[\"TextTrackCue\"]($1,\n$2, $3)" js_newTextTrackCue ::
         Double -> Double -> JSString -> IO (JSRef TextTrackCue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue Mozilla TextTrackCue documentation> 
-textTrackCueNew ::
+newTextTrackCue ::
                 (MonadIO m, ToJSString text) =>
                   Double -> Double -> text -> m TextTrackCue
-textTrackCueNew startTime endTime text
+newTextTrackCue startTime endTime text
   = liftIO
-      (ghcjs_dom_text_track_cue_new startTime endTime (toJSString text)
-         >>= fromJSRefUnchecked)
+      (js_newTextTrackCue startTime endTime (toJSString text) >>=
+         fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"track\"]"
-        ghcjs_dom_text_track_cue_get_track ::
+foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
         JSRef TextTrackCue -> IO (JSRef TextTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.track Mozilla TextTrackCue.track documentation> 
-textTrackCueGetTrack ::
-                     (MonadIO m, IsTextTrackCue self) => self -> m (Maybe TextTrack)
-textTrackCueGetTrack self
+getTrack ::
+         (MonadIO m, IsTextTrackCue self) => self -> m (Maybe TextTrack)
+getTrack self
   = liftIO
-      ((ghcjs_dom_text_track_cue_get_track
-          (unTextTrackCue (toTextTrackCue self)))
-         >>= fromJSRef)
+      ((js_getTrack (unTextTrackCue (toTextTrackCue self))) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"id\"] = $2;"
-        ghcjs_dom_text_track_cue_set_id ::
+foreign import javascript unsafe "$1[\"id\"] = $2;" js_setId ::
         JSRef TextTrackCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.id Mozilla TextTrackCue.id documentation> 
-textTrackCueSetId ::
-                  (MonadIO m, IsTextTrackCue self, ToJSString val) =>
-                    self -> val -> m ()
-textTrackCueSetId self val
+setId ::
+      (MonadIO m, IsTextTrackCue self, ToJSString val) =>
+        self -> val -> m ()
+setId self val
   = liftIO
-      (ghcjs_dom_text_track_cue_set_id
-         (unTextTrackCue (toTextTrackCue self))
-         (toJSString val))
+      (js_setId (unTextTrackCue (toTextTrackCue self)) (toJSString val))
  
-foreign import javascript unsafe "$1[\"id\"]"
-        ghcjs_dom_text_track_cue_get_id ::
+foreign import javascript unsafe "$1[\"id\"]" js_getId ::
         JSRef TextTrackCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.id Mozilla TextTrackCue.id documentation> 
-textTrackCueGetId ::
-                  (MonadIO m, IsTextTrackCue self, FromJSString result) =>
-                    self -> m result
-textTrackCueGetId self
+getId ::
+      (MonadIO m, IsTextTrackCue self, FromJSString result) =>
+        self -> m result
+getId self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_text_track_cue_get_id
-            (unTextTrackCue (toTextTrackCue self))))
+         (js_getId (unTextTrackCue (toTextTrackCue self))))
  
 foreign import javascript unsafe "$1[\"startTime\"] = $2;"
-        ghcjs_dom_text_track_cue_set_start_time ::
-        JSRef TextTrackCue -> Double -> IO ()
+        js_setStartTime :: JSRef TextTrackCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.startTime Mozilla TextTrackCue.startTime documentation> 
-textTrackCueSetStartTime ::
-                         (MonadIO m, IsTextTrackCue self) => self -> Double -> m ()
-textTrackCueSetStartTime self val
+setStartTime ::
+             (MonadIO m, IsTextTrackCue self) => self -> Double -> m ()
+setStartTime self val
   = liftIO
-      (ghcjs_dom_text_track_cue_set_start_time
-         (unTextTrackCue (toTextTrackCue self))
-         val)
+      (js_setStartTime (unTextTrackCue (toTextTrackCue self)) val)
  
 foreign import javascript unsafe "$1[\"startTime\"]"
-        ghcjs_dom_text_track_cue_get_start_time ::
-        JSRef TextTrackCue -> IO Double
+        js_getStartTime :: JSRef TextTrackCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.startTime Mozilla TextTrackCue.startTime documentation> 
-textTrackCueGetStartTime ::
-                         (MonadIO m, IsTextTrackCue self) => self -> m Double
-textTrackCueGetStartTime self
-  = liftIO
-      (ghcjs_dom_text_track_cue_get_start_time
-         (unTextTrackCue (toTextTrackCue self)))
+getStartTime ::
+             (MonadIO m, IsTextTrackCue self) => self -> m Double
+getStartTime self
+  = liftIO (js_getStartTime (unTextTrackCue (toTextTrackCue self)))
  
 foreign import javascript unsafe "$1[\"endTime\"] = $2;"
-        ghcjs_dom_text_track_cue_set_end_time ::
-        JSRef TextTrackCue -> Double -> IO ()
+        js_setEndTime :: JSRef TextTrackCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.endTime Mozilla TextTrackCue.endTime documentation> 
-textTrackCueSetEndTime ::
-                       (MonadIO m, IsTextTrackCue self) => self -> Double -> m ()
-textTrackCueSetEndTime self val
-  = liftIO
-      (ghcjs_dom_text_track_cue_set_end_time
-         (unTextTrackCue (toTextTrackCue self))
-         val)
+setEndTime ::
+           (MonadIO m, IsTextTrackCue self) => self -> Double -> m ()
+setEndTime self val
+  = liftIO (js_setEndTime (unTextTrackCue (toTextTrackCue self)) val)
  
-foreign import javascript unsafe "$1[\"endTime\"]"
-        ghcjs_dom_text_track_cue_get_end_time ::
+foreign import javascript unsafe "$1[\"endTime\"]" js_getEndTime ::
         JSRef TextTrackCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.endTime Mozilla TextTrackCue.endTime documentation> 
-textTrackCueGetEndTime ::
-                       (MonadIO m, IsTextTrackCue self) => self -> m Double
-textTrackCueGetEndTime self
-  = liftIO
-      (ghcjs_dom_text_track_cue_get_end_time
-         (unTextTrackCue (toTextTrackCue self)))
+getEndTime :: (MonadIO m, IsTextTrackCue self) => self -> m Double
+getEndTime self
+  = liftIO (js_getEndTime (unTextTrackCue (toTextTrackCue self)))
  
 foreign import javascript unsafe "$1[\"pauseOnExit\"] = $2;"
-        ghcjs_dom_text_track_cue_set_pause_on_exit ::
-        JSRef TextTrackCue -> Bool -> IO ()
+        js_setPauseOnExit :: JSRef TextTrackCue -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.pauseOnExit Mozilla TextTrackCue.pauseOnExit documentation> 
-textTrackCueSetPauseOnExit ::
-                           (MonadIO m, IsTextTrackCue self) => self -> Bool -> m ()
-textTrackCueSetPauseOnExit self val
+setPauseOnExit ::
+               (MonadIO m, IsTextTrackCue self) => self -> Bool -> m ()
+setPauseOnExit self val
   = liftIO
-      (ghcjs_dom_text_track_cue_set_pause_on_exit
-         (unTextTrackCue (toTextTrackCue self))
-         val)
+      (js_setPauseOnExit (unTextTrackCue (toTextTrackCue self)) val)
  
 foreign import javascript unsafe "($1[\"pauseOnExit\"] ? 1 : 0)"
-        ghcjs_dom_text_track_cue_get_pause_on_exit ::
-        JSRef TextTrackCue -> IO Bool
+        js_getPauseOnExit :: JSRef TextTrackCue -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.pauseOnExit Mozilla TextTrackCue.pauseOnExit documentation> 
-textTrackCueGetPauseOnExit ::
-                           (MonadIO m, IsTextTrackCue self) => self -> m Bool
-textTrackCueGetPauseOnExit self
-  = liftIO
-      (ghcjs_dom_text_track_cue_get_pause_on_exit
-         (unTextTrackCue (toTextTrackCue self)))
+getPauseOnExit ::
+               (MonadIO m, IsTextTrackCue self) => self -> m Bool
+getPauseOnExit self
+  = liftIO (js_getPauseOnExit (unTextTrackCue (toTextTrackCue self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.enter Mozilla TextTrackCue.enter documentation> 
-textTrackCueEnter ::
-                  (IsTextTrackCue self, IsEventTarget self) => EventName self Event
-textTrackCueEnter = unsafeEventName (toJSString "enter")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.onenter Mozilla TextTrackCue.onenter documentation> 
+enter ::
+      (IsTextTrackCue self, IsEventTarget self) => EventName self Event
+enter = unsafeEventName (toJSString "enter")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.exit Mozilla TextTrackCue.exit documentation> 
-textTrackCueExit ::
-                 (IsTextTrackCue self, IsEventTarget self) => EventName self Event
-textTrackCueExit = unsafeEventName (toJSString "exit")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.onexit Mozilla TextTrackCue.onexit documentation> 
+exit ::
+     (IsTextTrackCue self, IsEventTarget self) => EventName self Event
+exit = unsafeEventName (toJSString "exit")
 #else
 module GHCJS.DOM.TextTrackCue (
   ) where

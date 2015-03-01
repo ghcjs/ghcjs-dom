@@ -1,27 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGPathSegArcAbs
-       (ghcjs_dom_svg_path_seg_arc_abs_set_x, svgPathSegArcAbsSetX,
-        ghcjs_dom_svg_path_seg_arc_abs_get_x, svgPathSegArcAbsGetX,
-        ghcjs_dom_svg_path_seg_arc_abs_set_y, svgPathSegArcAbsSetY,
-        ghcjs_dom_svg_path_seg_arc_abs_get_y, svgPathSegArcAbsGetY,
-        ghcjs_dom_svg_path_seg_arc_abs_set_r1, svgPathSegArcAbsSetR1,
-        ghcjs_dom_svg_path_seg_arc_abs_get_r1, svgPathSegArcAbsGetR1,
-        ghcjs_dom_svg_path_seg_arc_abs_set_r2, svgPathSegArcAbsSetR2,
-        ghcjs_dom_svg_path_seg_arc_abs_get_r2, svgPathSegArcAbsGetR2,
-        ghcjs_dom_svg_path_seg_arc_abs_set_angle, svgPathSegArcAbsSetAngle,
-        ghcjs_dom_svg_path_seg_arc_abs_get_angle, svgPathSegArcAbsGetAngle,
-        ghcjs_dom_svg_path_seg_arc_abs_set_large_arc_flag,
-        svgPathSegArcAbsSetLargeArcFlag,
-        ghcjs_dom_svg_path_seg_arc_abs_get_large_arc_flag,
-        svgPathSegArcAbsGetLargeArcFlag,
-        ghcjs_dom_svg_path_seg_arc_abs_set_sweep_flag,
-        svgPathSegArcAbsSetSweepFlag,
-        ghcjs_dom_svg_path_seg_arc_abs_get_sweep_flag,
-        svgPathSegArcAbsGetSweepFlag, SVGPathSegArcAbs, IsSVGPathSegArcAbs,
-        castToSVGPathSegArcAbs, gTypeSVGPathSegArcAbs, toSVGPathSegArcAbs)
+       (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
+        js_setR1, setR1, js_getR1, getR1, js_setR2, setR2, js_getR2, getR2,
+        js_setAngle, setAngle, js_getAngle, getAngle, js_setLargeArcFlag,
+        setLargeArcFlag, js_getLargeArcFlag, getLargeArcFlag,
+        js_setSweepFlag, setSweepFlag, js_getSweepFlag, getSweepFlag,
+        SVGPathSegArcAbs, castToSVGPathSegArcAbs, gTypeSVGPathSegArcAbs)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -31,184 +19,112 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"] = $2;"
-        ghcjs_dom_svg_path_seg_arc_abs_set_x ::
+foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
         JSRef SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.x Mozilla SVGPathSegArcAbs.x documentation> 
-svgPathSegArcAbsSetX ::
-                     (MonadIO m, IsSVGPathSegArcAbs self) => self -> Float -> m ()
-svgPathSegArcAbsSetX self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_set_x
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self))
-         val)
+setX :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
+setX self val = liftIO (js_setX (unSVGPathSegArcAbs self) val)
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_path_seg_arc_abs_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.x Mozilla SVGPathSegArcAbs.x documentation> 
-svgPathSegArcAbsGetX ::
-                     (MonadIO m, IsSVGPathSegArcAbs self) => self -> m Float
-svgPathSegArcAbsGetX self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_get_x
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self)))
+getX :: (MonadIO m) => SVGPathSegArcAbs -> m Float
+getX self = liftIO (js_getX (unSVGPathSegArcAbs self))
  
-foreign import javascript unsafe "$1[\"y\"] = $2;"
-        ghcjs_dom_svg_path_seg_arc_abs_set_y ::
+foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
         JSRef SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.y Mozilla SVGPathSegArcAbs.y documentation> 
-svgPathSegArcAbsSetY ::
-                     (MonadIO m, IsSVGPathSegArcAbs self) => self -> Float -> m ()
-svgPathSegArcAbsSetY self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_set_y
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self))
-         val)
+setY :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
+setY self val = liftIO (js_setY (unSVGPathSegArcAbs self) val)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_path_seg_arc_abs_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.y Mozilla SVGPathSegArcAbs.y documentation> 
-svgPathSegArcAbsGetY ::
-                     (MonadIO m, IsSVGPathSegArcAbs self) => self -> m Float
-svgPathSegArcAbsGetY self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_get_y
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self)))
+getY :: (MonadIO m) => SVGPathSegArcAbs -> m Float
+getY self = liftIO (js_getY (unSVGPathSegArcAbs self))
  
-foreign import javascript unsafe "$1[\"r1\"] = $2;"
-        ghcjs_dom_svg_path_seg_arc_abs_set_r1 ::
+foreign import javascript unsafe "$1[\"r1\"] = $2;" js_setR1 ::
         JSRef SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r1 Mozilla SVGPathSegArcAbs.r1 documentation> 
-svgPathSegArcAbsSetR1 ::
-                      (MonadIO m, IsSVGPathSegArcAbs self) => self -> Float -> m ()
-svgPathSegArcAbsSetR1 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_set_r1
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self))
-         val)
+setR1 :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
+setR1 self val = liftIO (js_setR1 (unSVGPathSegArcAbs self) val)
  
-foreign import javascript unsafe "$1[\"r1\"]"
-        ghcjs_dom_svg_path_seg_arc_abs_get_r1 ::
+foreign import javascript unsafe "$1[\"r1\"]" js_getR1 ::
         JSRef SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r1 Mozilla SVGPathSegArcAbs.r1 documentation> 
-svgPathSegArcAbsGetR1 ::
-                      (MonadIO m, IsSVGPathSegArcAbs self) => self -> m Float
-svgPathSegArcAbsGetR1 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_get_r1
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self)))
+getR1 :: (MonadIO m) => SVGPathSegArcAbs -> m Float
+getR1 self = liftIO (js_getR1 (unSVGPathSegArcAbs self))
  
-foreign import javascript unsafe "$1[\"r2\"] = $2;"
-        ghcjs_dom_svg_path_seg_arc_abs_set_r2 ::
+foreign import javascript unsafe "$1[\"r2\"] = $2;" js_setR2 ::
         JSRef SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r2 Mozilla SVGPathSegArcAbs.r2 documentation> 
-svgPathSegArcAbsSetR2 ::
-                      (MonadIO m, IsSVGPathSegArcAbs self) => self -> Float -> m ()
-svgPathSegArcAbsSetR2 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_set_r2
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self))
-         val)
+setR2 :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
+setR2 self val = liftIO (js_setR2 (unSVGPathSegArcAbs self) val)
  
-foreign import javascript unsafe "$1[\"r2\"]"
-        ghcjs_dom_svg_path_seg_arc_abs_get_r2 ::
+foreign import javascript unsafe "$1[\"r2\"]" js_getR2 ::
         JSRef SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r2 Mozilla SVGPathSegArcAbs.r2 documentation> 
-svgPathSegArcAbsGetR2 ::
-                      (MonadIO m, IsSVGPathSegArcAbs self) => self -> m Float
-svgPathSegArcAbsGetR2 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_get_r2
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self)))
+getR2 :: (MonadIO m) => SVGPathSegArcAbs -> m Float
+getR2 self = liftIO (js_getR2 (unSVGPathSegArcAbs self))
  
-foreign import javascript unsafe "$1[\"angle\"] = $2;"
-        ghcjs_dom_svg_path_seg_arc_abs_set_angle ::
-        JSRef SVGPathSegArcAbs -> Float -> IO ()
+foreign import javascript unsafe "$1[\"angle\"] = $2;" js_setAngle
+        :: JSRef SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.angle Mozilla SVGPathSegArcAbs.angle documentation> 
-svgPathSegArcAbsSetAngle ::
-                         (MonadIO m, IsSVGPathSegArcAbs self) => self -> Float -> m ()
-svgPathSegArcAbsSetAngle self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_set_angle
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self))
-         val)
+setAngle :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
+setAngle self val
+  = liftIO (js_setAngle (unSVGPathSegArcAbs self) val)
  
-foreign import javascript unsafe "$1[\"angle\"]"
-        ghcjs_dom_svg_path_seg_arc_abs_get_angle ::
+foreign import javascript unsafe "$1[\"angle\"]" js_getAngle ::
         JSRef SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.angle Mozilla SVGPathSegArcAbs.angle documentation> 
-svgPathSegArcAbsGetAngle ::
-                         (MonadIO m, IsSVGPathSegArcAbs self) => self -> m Float
-svgPathSegArcAbsGetAngle self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_get_angle
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self)))
+getAngle :: (MonadIO m) => SVGPathSegArcAbs -> m Float
+getAngle self = liftIO (js_getAngle (unSVGPathSegArcAbs self))
  
 foreign import javascript unsafe "$1[\"largeArcFlag\"] = $2;"
-        ghcjs_dom_svg_path_seg_arc_abs_set_large_arc_flag ::
-        JSRef SVGPathSegArcAbs -> Bool -> IO ()
+        js_setLargeArcFlag :: JSRef SVGPathSegArcAbs -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.largeArcFlag Mozilla SVGPathSegArcAbs.largeArcFlag documentation> 
-svgPathSegArcAbsSetLargeArcFlag ::
-                                (MonadIO m, IsSVGPathSegArcAbs self) => self -> Bool -> m ()
-svgPathSegArcAbsSetLargeArcFlag self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_set_large_arc_flag
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self))
-         val)
+setLargeArcFlag :: (MonadIO m) => SVGPathSegArcAbs -> Bool -> m ()
+setLargeArcFlag self val
+  = liftIO (js_setLargeArcFlag (unSVGPathSegArcAbs self) val)
  
 foreign import javascript unsafe "($1[\"largeArcFlag\"] ? 1 : 0)"
-        ghcjs_dom_svg_path_seg_arc_abs_get_large_arc_flag ::
-        JSRef SVGPathSegArcAbs -> IO Bool
+        js_getLargeArcFlag :: JSRef SVGPathSegArcAbs -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.largeArcFlag Mozilla SVGPathSegArcAbs.largeArcFlag documentation> 
-svgPathSegArcAbsGetLargeArcFlag ::
-                                (MonadIO m, IsSVGPathSegArcAbs self) => self -> m Bool
-svgPathSegArcAbsGetLargeArcFlag self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_get_large_arc_flag
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self)))
+getLargeArcFlag :: (MonadIO m) => SVGPathSegArcAbs -> m Bool
+getLargeArcFlag self
+  = liftIO (js_getLargeArcFlag (unSVGPathSegArcAbs self))
  
 foreign import javascript unsafe "$1[\"sweepFlag\"] = $2;"
-        ghcjs_dom_svg_path_seg_arc_abs_set_sweep_flag ::
-        JSRef SVGPathSegArcAbs -> Bool -> IO ()
+        js_setSweepFlag :: JSRef SVGPathSegArcAbs -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.sweepFlag Mozilla SVGPathSegArcAbs.sweepFlag documentation> 
-svgPathSegArcAbsSetSweepFlag ::
-                             (MonadIO m, IsSVGPathSegArcAbs self) => self -> Bool -> m ()
-svgPathSegArcAbsSetSweepFlag self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_set_sweep_flag
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self))
-         val)
+setSweepFlag :: (MonadIO m) => SVGPathSegArcAbs -> Bool -> m ()
+setSweepFlag self val
+  = liftIO (js_setSweepFlag (unSVGPathSegArcAbs self) val)
  
 foreign import javascript unsafe "($1[\"sweepFlag\"] ? 1 : 0)"
-        ghcjs_dom_svg_path_seg_arc_abs_get_sweep_flag ::
-        JSRef SVGPathSegArcAbs -> IO Bool
+        js_getSweepFlag :: JSRef SVGPathSegArcAbs -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.sweepFlag Mozilla SVGPathSegArcAbs.sweepFlag documentation> 
-svgPathSegArcAbsGetSweepFlag ::
-                             (MonadIO m, IsSVGPathSegArcAbs self) => self -> m Bool
-svgPathSegArcAbsGetSweepFlag self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_arc_abs_get_sweep_flag
-         (unSVGPathSegArcAbs (toSVGPathSegArcAbs self)))
+getSweepFlag :: (MonadIO m) => SVGPathSegArcAbs -> m Bool
+getSweepFlag self
+  = liftIO (js_getSweepFlag (unSVGPathSegArcAbs self))
 #else
 module GHCJS.DOM.SVGPathSegArcAbs (
   ) where

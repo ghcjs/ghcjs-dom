@@ -1,15 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGZoomAndPan
-       (cSVG_ZOOMANDPAN_UNKNOWN, cSVG_ZOOMANDPAN_DISABLE,
-        cSVG_ZOOMANDPAN_MAGNIFY,
-        ghcjs_dom_svg_zoom_and_pan_set_zoom_and_pan,
-        svgZoomAndPanSetZoomAndPan,
-        ghcjs_dom_svg_zoom_and_pan_get_zoom_and_pan,
-        svgZoomAndPanGetZoomAndPan, SVGZoomAndPan, IsSVGZoomAndPan,
-        castToSVGZoomAndPan, gTypeSVGZoomAndPan, toSVGZoomAndPan)
+       (pattern SVG_ZOOMANDPAN_UNKNOWN, pattern SVG_ZOOMANDPAN_DISABLE,
+        pattern SVG_ZOOMANDPAN_MAGNIFY, js_setZoomAndPan, setZoomAndPan,
+        js_getZoomAndPan, getZoomAndPan, SVGZoomAndPan,
+        castToSVGZoomAndPan, gTypeSVGZoomAndPan)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,37 +17,28 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cSVG_ZOOMANDPAN_UNKNOWN = 0
-cSVG_ZOOMANDPAN_DISABLE = 1
-cSVG_ZOOMANDPAN_MAGNIFY = 2
+pattern SVG_ZOOMANDPAN_UNKNOWN = 0
+pattern SVG_ZOOMANDPAN_DISABLE = 1
+pattern SVG_ZOOMANDPAN_MAGNIFY = 2
  
 foreign import javascript unsafe "$1[\"zoomAndPan\"] = $2;"
-        ghcjs_dom_svg_zoom_and_pan_set_zoom_and_pan ::
-        JSRef SVGZoomAndPan -> Word -> IO ()
+        js_setZoomAndPan :: JSRef SVGZoomAndPan -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan.zoomAndPan Mozilla SVGZoomAndPan.zoomAndPan documentation> 
-svgZoomAndPanSetZoomAndPan ::
-                           (MonadIO m, IsSVGZoomAndPan self) => self -> Word -> m ()
-svgZoomAndPanSetZoomAndPan self val
-  = liftIO
-      (ghcjs_dom_svg_zoom_and_pan_set_zoom_and_pan
-         (unSVGZoomAndPan (toSVGZoomAndPan self))
-         val)
+setZoomAndPan :: (MonadIO m) => SVGZoomAndPan -> Word -> m ()
+setZoomAndPan self val
+  = liftIO (js_setZoomAndPan (unSVGZoomAndPan self) val)
  
 foreign import javascript unsafe "$1[\"zoomAndPan\"]"
-        ghcjs_dom_svg_zoom_and_pan_get_zoom_and_pan ::
-        JSRef SVGZoomAndPan -> IO Word
+        js_getZoomAndPan :: JSRef SVGZoomAndPan -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan.zoomAndPan Mozilla SVGZoomAndPan.zoomAndPan documentation> 
-svgZoomAndPanGetZoomAndPan ::
-                           (MonadIO m, IsSVGZoomAndPan self) => self -> m Word
-svgZoomAndPanGetZoomAndPan self
-  = liftIO
-      (ghcjs_dom_svg_zoom_and_pan_get_zoom_and_pan
-         (unSVGZoomAndPan (toSVGZoomAndPan self)))
+getZoomAndPan :: (MonadIO m) => SVGZoomAndPan -> m Word
+getZoomAndPan self
+  = liftIO (js_getZoomAndPan (unSVGZoomAndPan self))
 #else
 module GHCJS.DOM.SVGZoomAndPan (
   ) where

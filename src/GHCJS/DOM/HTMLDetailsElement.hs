@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDetailsElement
-       (ghcjs_dom_html_details_element_set_open,
-        htmlDetailsElementSetOpen, ghcjs_dom_html_details_element_get_open,
-        htmlDetailsElementGetOpen, HTMLDetailsElement,
-        IsHTMLDetailsElement, castToHTMLDetailsElement,
-        gTypeHTMLDetailsElement, toHTMLDetailsElement)
+       (js_setOpen, setOpen, js_getOpen, getOpen, HTMLDetailsElement,
+        castToHTMLDetailsElement, gTypeHTMLDetailsElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,34 +15,24 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"open\"] = $2;"
-        ghcjs_dom_html_details_element_set_open ::
+foreign import javascript unsafe "$1[\"open\"] = $2;" js_setOpen ::
         JSRef HTMLDetailsElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement.open Mozilla HTMLDetailsElement.open documentation> 
-htmlDetailsElementSetOpen ::
-                          (MonadIO m, IsHTMLDetailsElement self) => self -> Bool -> m ()
-htmlDetailsElementSetOpen self val
-  = liftIO
-      (ghcjs_dom_html_details_element_set_open
-         (unHTMLDetailsElement (toHTMLDetailsElement self))
-         val)
+setOpen :: (MonadIO m) => HTMLDetailsElement -> Bool -> m ()
+setOpen self val
+  = liftIO (js_setOpen (unHTMLDetailsElement self) val)
  
 foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
-        ghcjs_dom_html_details_element_get_open ::
-        JSRef HTMLDetailsElement -> IO Bool
+        js_getOpen :: JSRef HTMLDetailsElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement.open Mozilla HTMLDetailsElement.open documentation> 
-htmlDetailsElementGetOpen ::
-                          (MonadIO m, IsHTMLDetailsElement self) => self -> m Bool
-htmlDetailsElementGetOpen self
-  = liftIO
-      (ghcjs_dom_html_details_element_get_open
-         (unHTMLDetailsElement (toHTMLDetailsElement self)))
+getOpen :: (MonadIO m) => HTMLDetailsElement -> m Bool
+getOpen self = liftIO (js_getOpen (unHTMLDetailsElement self))
 #else
 module GHCJS.DOM.HTMLDetailsElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLDetailsElement

@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGAnimatedLengthList
-       (ghcjs_dom_svg_animated_length_list_get_base_val,
-        svgAnimatedLengthListGetBaseVal,
-        ghcjs_dom_svg_animated_length_list_get_anim_val,
-        svgAnimatedLengthListGetAnimVal, SVGAnimatedLengthList,
-        IsSVGAnimatedLengthList, castToSVGAnimatedLengthList,
-        gTypeSVGAnimatedLengthList, toSVGAnimatedLengthList)
+       (js_getBaseVal, getBaseVal, js_getAnimVal, getAnimVal,
+        SVGAnimatedLengthList, castToSVGAnimatedLengthList,
+        gTypeSVGAnimatedLengthList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +16,29 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"baseVal\"]"
-        ghcjs_dom_svg_animated_length_list_get_base_val ::
+foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         JSRef SVGAnimatedLengthList -> IO (JSRef SVGLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList.baseVal Mozilla SVGAnimatedLengthList.baseVal documentation> 
-svgAnimatedLengthListGetBaseVal ::
-                                (MonadIO m, IsSVGAnimatedLengthList self) =>
-                                  self -> m (Maybe SVGLengthList)
-svgAnimatedLengthListGetBaseVal self
+getBaseVal ::
+           (MonadIO m) => SVGAnimatedLengthList -> m (Maybe SVGLengthList)
+getBaseVal self
   = liftIO
-      ((ghcjs_dom_svg_animated_length_list_get_base_val
-          (unSVGAnimatedLengthList (toSVGAnimatedLengthList self)))
-         >>= fromJSRef)
+      ((js_getBaseVal (unSVGAnimatedLengthList self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"animVal\"]"
-        ghcjs_dom_svg_animated_length_list_get_anim_val ::
+foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
         JSRef SVGAnimatedLengthList -> IO (JSRef SVGLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList.animVal Mozilla SVGAnimatedLengthList.animVal documentation> 
-svgAnimatedLengthListGetAnimVal ::
-                                (MonadIO m, IsSVGAnimatedLengthList self) =>
-                                  self -> m (Maybe SVGLengthList)
-svgAnimatedLengthListGetAnimVal self
+getAnimVal ::
+           (MonadIO m) => SVGAnimatedLengthList -> m (Maybe SVGLengthList)
+getAnimVal self
   = liftIO
-      ((ghcjs_dom_svg_animated_length_list_get_anim_val
-          (unSVGAnimatedLengthList (toSVGAnimatedLengthList self)))
-         >>= fromJSRef)
+      ((js_getAnimVal (unSVGAnimatedLengthList self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGAnimatedLengthList (
   ) where

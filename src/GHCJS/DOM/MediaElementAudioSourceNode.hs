@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaElementAudioSourceNode
-       (ghcjs_dom_media_element_audio_source_node_get_media_element,
-        mediaElementAudioSourceNodeGetMediaElement,
-        MediaElementAudioSourceNode, IsMediaElementAudioSourceNode,
+       (js_getMediaElement, getMediaElement, MediaElementAudioSourceNode,
         castToMediaElementAudioSourceNode,
-        gTypeMediaElementAudioSourceNode, toMediaElementAudioSourceNode)
+        gTypeMediaElementAudioSourceNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,24 +16,22 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"mediaElement\"]"
-        ghcjs_dom_media_element_audio_source_node_get_media_element ::
+        js_getMediaElement ::
         JSRef MediaElementAudioSourceNode -> IO (JSRef HTMLMediaElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaElementAudioSourceNode.mediaElement Mozilla MediaElementAudioSourceNode.mediaElement documentation> 
-mediaElementAudioSourceNodeGetMediaElement ::
-                                           (MonadIO m, IsMediaElementAudioSourceNode self) =>
-                                             self -> m (Maybe HTMLMediaElement)
-mediaElementAudioSourceNodeGetMediaElement self
+getMediaElement ::
+                (MonadIO m) =>
+                  MediaElementAudioSourceNode -> m (Maybe HTMLMediaElement)
+getMediaElement self
   = liftIO
-      ((ghcjs_dom_media_element_audio_source_node_get_media_element
-          (unMediaElementAudioSourceNode
-             (toMediaElementAudioSourceNode self)))
-         >>= fromJSRef)
+      ((js_getMediaElement (unMediaElementAudioSourceNode self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.MediaElementAudioSourceNode (
   ) where

@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaStreamEvent
-       (ghcjs_dom_media_stream_event_get_stream,
-        mediaStreamEventGetStream, MediaStreamEvent, IsMediaStreamEvent,
-        castToMediaStreamEvent, gTypeMediaStreamEvent, toMediaStreamEvent)
+       (js_getStream, getStream, MediaStreamEvent, castToMediaStreamEvent,
+        gTypeMediaStreamEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,23 +15,18 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"stream\"]"
-        ghcjs_dom_media_stream_event_get_stream ::
+foreign import javascript unsafe "$1[\"stream\"]" js_getStream ::
         JSRef MediaStreamEvent -> IO (JSRef MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamEvent.stream Mozilla MediaStreamEvent.stream documentation> 
-mediaStreamEventGetStream ::
-                          (MonadIO m, IsMediaStreamEvent self) =>
-                            self -> m (Maybe MediaStream)
-mediaStreamEventGetStream self
-  = liftIO
-      ((ghcjs_dom_media_stream_event_get_stream
-          (unMediaStreamEvent (toMediaStreamEvent self)))
-         >>= fromJSRef)
+getStream ::
+          (MonadIO m) => MediaStreamEvent -> m (Maybe MediaStream)
+getStream self
+  = liftIO ((js_getStream (unMediaStreamEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.MediaStreamEvent (
   ) where

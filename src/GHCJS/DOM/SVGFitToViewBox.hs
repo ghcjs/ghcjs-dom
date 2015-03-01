@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFitToViewBox
-       (ghcjs_dom_svg_fit_to_view_box_get_view_box,
-        svgFitToViewBoxGetViewBox,
-        ghcjs_dom_svg_fit_to_view_box_get_preserve_aspect_ratio,
-        svgFitToViewBoxGetPreserveAspectRatio, SVGFitToViewBox,
-        IsSVGFitToViewBox, castToSVGFitToViewBox, gTypeSVGFitToViewBox,
-        toSVGFitToViewBox)
+       (js_getViewBox, getViewBox, js_getPreserveAspectRatio,
+        getPreserveAspectRatio, SVGFitToViewBox, castToSVGFitToViewBox,
+        gTypeSVGFitToViewBox)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +16,31 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"viewBox\"]"
-        ghcjs_dom_svg_fit_to_view_box_get_view_box ::
+foreign import javascript unsafe "$1[\"viewBox\"]" js_getViewBox ::
         JSRef SVGFitToViewBox -> IO (JSRef SVGAnimatedRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.viewBox Mozilla SVGFitToViewBox.viewBox documentation> 
-svgFitToViewBoxGetViewBox ::
-                          (MonadIO m, IsSVGFitToViewBox self) =>
-                            self -> m (Maybe SVGAnimatedRect)
-svgFitToViewBoxGetViewBox self
-  = liftIO
-      ((ghcjs_dom_svg_fit_to_view_box_get_view_box
-          (unSVGFitToViewBox (toSVGFitToViewBox self)))
-         >>= fromJSRef)
+getViewBox ::
+           (MonadIO m) => SVGFitToViewBox -> m (Maybe SVGAnimatedRect)
+getViewBox self
+  = liftIO ((js_getViewBox (unSVGFitToViewBox self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
-        ghcjs_dom_svg_fit_to_view_box_get_preserve_aspect_ratio ::
+        js_getPreserveAspectRatio ::
         JSRef SVGFitToViewBox -> IO (JSRef SVGAnimatedPreserveAspectRatio)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.preserveAspectRatio Mozilla SVGFitToViewBox.preserveAspectRatio documentation> 
-svgFitToViewBoxGetPreserveAspectRatio ::
-                                      (MonadIO m, IsSVGFitToViewBox self) =>
-                                        self -> m (Maybe SVGAnimatedPreserveAspectRatio)
-svgFitToViewBoxGetPreserveAspectRatio self
+getPreserveAspectRatio ::
+                       (MonadIO m) =>
+                         SVGFitToViewBox -> m (Maybe SVGAnimatedPreserveAspectRatio)
+getPreserveAspectRatio self
   = liftIO
-      ((ghcjs_dom_svg_fit_to_view_box_get_preserve_aspect_ratio
-          (unSVGFitToViewBox (toSVGFitToViewBox self)))
-         >>= fromJSRef)
+      ((js_getPreserveAspectRatio (unSVGFitToViewBox self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.SVGFitToViewBox (
   ) where

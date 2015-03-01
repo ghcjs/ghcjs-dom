@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLQuoteElement
-       (ghcjs_dom_html_quote_element_set_cite, htmlQuoteElementSetCite,
-        ghcjs_dom_html_quote_element_get_cite, htmlQuoteElementGetCite,
-        HTMLQuoteElement, IsHTMLQuoteElement, castToHTMLQuoteElement,
-        gTypeHTMLQuoteElement, toHTMLQuoteElement)
+       (js_setCite, setCite, js_getCite, getCite, HTMLQuoteElement,
+        castToHTMLQuoteElement, gTypeHTMLQuoteElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,37 +15,27 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"cite\"] = $2;"
-        ghcjs_dom_html_quote_element_set_cite ::
+foreign import javascript unsafe "$1[\"cite\"] = $2;" js_setCite ::
         JSRef HTMLQuoteElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
-htmlQuoteElementSetCite ::
-                        (MonadIO m, IsHTMLQuoteElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlQuoteElementSetCite self val
-  = liftIO
-      (ghcjs_dom_html_quote_element_set_cite
-         (unHTMLQuoteElement (toHTMLQuoteElement self))
-         (toJSString val))
+setCite ::
+        (MonadIO m, ToJSString val) => HTMLQuoteElement -> val -> m ()
+setCite self val
+  = liftIO (js_setCite (unHTMLQuoteElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"cite\"]"
-        ghcjs_dom_html_quote_element_get_cite ::
+foreign import javascript unsafe "$1[\"cite\"]" js_getCite ::
         JSRef HTMLQuoteElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
-htmlQuoteElementGetCite ::
-                        (MonadIO m, IsHTMLQuoteElement self, FromJSString result) =>
-                          self -> m result
-htmlQuoteElementGetCite self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_quote_element_get_cite
-            (unHTMLQuoteElement (toHTMLQuoteElement self))))
+getCite ::
+        (MonadIO m, FromJSString result) => HTMLQuoteElement -> m result
+getCite self
+  = liftIO (fromJSString <$> (js_getCite (unHTMLQuoteElement self)))
 #else
 module GHCJS.DOM.HTMLQuoteElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLQuoteElement

@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ConvolverNode
-       (ghcjs_dom_convolver_node_set_buffer, convolverNodeSetBuffer,
-        ghcjs_dom_convolver_node_get_buffer, convolverNodeGetBuffer,
-        ghcjs_dom_convolver_node_set_normalize, convolverNodeSetNormalize,
-        ghcjs_dom_convolver_node_get_normalize, convolverNodeGetNormalize,
-        ConvolverNode, IsConvolverNode, castToConvolverNode,
-        gTypeConvolverNode, toConvolverNode)
+       (js_setBuffer, setBuffer, js_getBuffer, getBuffer, js_setNormalize,
+        setNormalize, js_getNormalize, getNormalize, ConvolverNode,
+        castToConvolverNode, gTypeConvolverNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,61 +16,43 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"buffer\"] = $2;"
-        ghcjs_dom_convolver_node_set_buffer ::
-        JSRef ConvolverNode -> JSRef AudioBuffer -> IO ()
+        js_setBuffer :: JSRef ConvolverNode -> JSRef AudioBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.buffer Mozilla ConvolverNode.buffer documentation> 
-convolverNodeSetBuffer ::
-                       (MonadIO m, IsConvolverNode self, IsAudioBuffer val) =>
-                         self -> Maybe val -> m ()
-convolverNodeSetBuffer self val
+setBuffer ::
+          (MonadIO m) => ConvolverNode -> Maybe AudioBuffer -> m ()
+setBuffer self val
   = liftIO
-      (ghcjs_dom_convolver_node_set_buffer
-         (unConvolverNode (toConvolverNode self))
-         (maybe jsNull (unAudioBuffer . toAudioBuffer) val))
+      (js_setBuffer (unConvolverNode self)
+         (maybe jsNull unAudioBuffer val))
  
-foreign import javascript unsafe "$1[\"buffer\"]"
-        ghcjs_dom_convolver_node_get_buffer ::
+foreign import javascript unsafe "$1[\"buffer\"]" js_getBuffer ::
         JSRef ConvolverNode -> IO (JSRef AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.buffer Mozilla ConvolverNode.buffer documentation> 
-convolverNodeGetBuffer ::
-                       (MonadIO m, IsConvolverNode self) => self -> m (Maybe AudioBuffer)
-convolverNodeGetBuffer self
-  = liftIO
-      ((ghcjs_dom_convolver_node_get_buffer
-          (unConvolverNode (toConvolverNode self)))
-         >>= fromJSRef)
+getBuffer :: (MonadIO m) => ConvolverNode -> m (Maybe AudioBuffer)
+getBuffer self
+  = liftIO ((js_getBuffer (unConvolverNode self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"normalize\"] = $2;"
-        ghcjs_dom_convolver_node_set_normalize ::
-        JSRef ConvolverNode -> Bool -> IO ()
+        js_setNormalize :: JSRef ConvolverNode -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 
-convolverNodeSetNormalize ::
-                          (MonadIO m, IsConvolverNode self) => self -> Bool -> m ()
-convolverNodeSetNormalize self val
-  = liftIO
-      (ghcjs_dom_convolver_node_set_normalize
-         (unConvolverNode (toConvolverNode self))
-         val)
+setNormalize :: (MonadIO m) => ConvolverNode -> Bool -> m ()
+setNormalize self val
+  = liftIO (js_setNormalize (unConvolverNode self) val)
  
 foreign import javascript unsafe "($1[\"normalize\"] ? 1 : 0)"
-        ghcjs_dom_convolver_node_get_normalize ::
-        JSRef ConvolverNode -> IO Bool
+        js_getNormalize :: JSRef ConvolverNode -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 
-convolverNodeGetNormalize ::
-                          (MonadIO m, IsConvolverNode self) => self -> m Bool
-convolverNodeGetNormalize self
-  = liftIO
-      (ghcjs_dom_convolver_node_get_normalize
-         (unConvolverNode (toConvolverNode self)))
+getNormalize :: (MonadIO m) => ConvolverNode -> m Bool
+getNormalize self = liftIO (js_getNormalize (unConvolverNode self))
 #else
 module GHCJS.DOM.ConvolverNode (
   ) where

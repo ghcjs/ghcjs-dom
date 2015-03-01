@@ -1,17 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DataTransferItemList
-       (ghcjs_dom_data_transfer_item_list_item, dataTransferItemListItem,
-        ghcjs_dom_data_transfer_item_list_clear, dataTransferItemListClear,
-        ghcjs_dom_data_transfer_item_list_addFile,
-        dataTransferItemListAddFile, ghcjs_dom_data_transfer_item_list_add,
-        dataTransferItemListAdd,
-        ghcjs_dom_data_transfer_item_list_get_length,
-        dataTransferItemListGetLength, DataTransferItemList,
-        IsDataTransferItemList, castToDataTransferItemList,
-        gTypeDataTransferItemList, toDataTransferItemList)
+       (js_item, item, js_clear, clear, js_addFile, addFile, js_add, add,
+        js_getLength, getLength, DataTransferItemList,
+        castToDataTransferItemList, gTypeDataTransferItemList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,78 +16,58 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_data_transfer_item_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef DataTransferItemList -> Word -> IO (JSRef DataTransferItem)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.item Mozilla DataTransferItemList.item documentation> 
-dataTransferItemListItem ::
-                         (MonadIO m, IsDataTransferItemList self) =>
-                           self -> Word -> m (Maybe DataTransferItem)
-dataTransferItemListItem self index
+item ::
+     (MonadIO m) =>
+       DataTransferItemList -> Word -> m (Maybe DataTransferItem)
+item self index
   = liftIO
-      ((ghcjs_dom_data_transfer_item_list_item
-          (unDataTransferItemList (toDataTransferItemList self))
-          index)
-         >>= fromJSRef)
+      ((js_item (unDataTransferItemList self) index) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"clear\"]()"
-        ghcjs_dom_data_transfer_item_list_clear ::
+foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
         JSRef DataTransferItemList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.clear Mozilla DataTransferItemList.clear documentation> 
-dataTransferItemListClear ::
-                          (MonadIO m, IsDataTransferItemList self) => self -> m ()
-dataTransferItemListClear self
-  = liftIO
-      (ghcjs_dom_data_transfer_item_list_clear
-         (unDataTransferItemList (toDataTransferItemList self)))
+clear :: (MonadIO m) => DataTransferItemList -> m ()
+clear self = liftIO (js_clear (unDataTransferItemList self))
  
-foreign import javascript unsafe "$1[\"add\"]($2)"
-        ghcjs_dom_data_transfer_item_list_addFile ::
+foreign import javascript unsafe "$1[\"add\"]($2)" js_addFile ::
         JSRef DataTransferItemList -> JSRef File -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.addFile Mozilla DataTransferItemList.addFile documentation> 
-dataTransferItemListAddFile ::
-                            (MonadIO m, IsDataTransferItemList self, IsFile file) =>
-                              self -> Maybe file -> m ()
-dataTransferItemListAddFile self file
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.add Mozilla DataTransferItemList.add documentation> 
+addFile ::
+        (MonadIO m) => DataTransferItemList -> Maybe File -> m ()
+addFile self file
   = liftIO
-      (ghcjs_dom_data_transfer_item_list_addFile
-         (unDataTransferItemList (toDataTransferItemList self))
-         (maybe jsNull (unFile . toFile) file))
+      (js_addFile (unDataTransferItemList self)
+         (maybe jsNull unFile file))
  
-foreign import javascript unsafe "$1[\"add\"]($2, $3)"
-        ghcjs_dom_data_transfer_item_list_add ::
+foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_add ::
         JSRef DataTransferItemList -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.add Mozilla DataTransferItemList.add documentation> 
-dataTransferItemListAdd ::
-                        (MonadIO m, IsDataTransferItemList self, ToJSString data',
-                         ToJSString type') =>
-                          self -> data' -> type' -> m ()
-dataTransferItemListAdd self data' type'
+add ::
+    (MonadIO m, ToJSString data', ToJSString type') =>
+      DataTransferItemList -> data' -> type' -> m ()
+add self data' type'
   = liftIO
-      (ghcjs_dom_data_transfer_item_list_add
-         (unDataTransferItemList (toDataTransferItemList self))
-         (toJSString data')
+      (js_add (unDataTransferItemList self) (toJSString data')
          (toJSString type'))
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_data_transfer_item_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef DataTransferItemList -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.length Mozilla DataTransferItemList.length documentation> 
-dataTransferItemListGetLength ::
-                              (MonadIO m, IsDataTransferItemList self) => self -> m Int
-dataTransferItemListGetLength self
-  = liftIO
-      (ghcjs_dom_data_transfer_item_list_get_length
-         (unDataTransferItemList (toDataTransferItemList self)))
+getLength :: (MonadIO m) => DataTransferItemList -> m Int
+getLength self
+  = liftIO (js_getLength (unDataTransferItemList self))
 #else
 module GHCJS.DOM.DataTransferItemList (
   ) where

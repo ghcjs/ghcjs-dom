@@ -1,70 +1,26 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAnchorElement
-       (ghcjs_dom_html_anchor_element_set_charset,
-        htmlAnchorElementSetCharset,
-        ghcjs_dom_html_anchor_element_get_charset,
-        htmlAnchorElementGetCharset,
-        ghcjs_dom_html_anchor_element_set_coords,
-        htmlAnchorElementSetCoords,
-        ghcjs_dom_html_anchor_element_get_coords,
-        htmlAnchorElementGetCoords,
-        ghcjs_dom_html_anchor_element_set_download,
-        htmlAnchorElementSetDownload,
-        ghcjs_dom_html_anchor_element_get_download,
-        htmlAnchorElementGetDownload,
-        ghcjs_dom_html_anchor_element_set_href, htmlAnchorElementSetHref,
-        ghcjs_dom_html_anchor_element_get_href, htmlAnchorElementGetHref,
-        ghcjs_dom_html_anchor_element_set_hreflang,
-        htmlAnchorElementSetHreflang,
-        ghcjs_dom_html_anchor_element_get_hreflang,
-        htmlAnchorElementGetHreflang,
-        ghcjs_dom_html_anchor_element_set_name, htmlAnchorElementSetName,
-        ghcjs_dom_html_anchor_element_get_name, htmlAnchorElementGetName,
-        ghcjs_dom_html_anchor_element_set_ping, htmlAnchorElementSetPing,
-        ghcjs_dom_html_anchor_element_get_ping, htmlAnchorElementGetPing,
-        ghcjs_dom_html_anchor_element_set_rel, htmlAnchorElementSetRel,
-        ghcjs_dom_html_anchor_element_get_rel, htmlAnchorElementGetRel,
-        ghcjs_dom_html_anchor_element_set_rev, htmlAnchorElementSetRev,
-        ghcjs_dom_html_anchor_element_get_rev, htmlAnchorElementGetRev,
-        ghcjs_dom_html_anchor_element_set_shape, htmlAnchorElementSetShape,
-        ghcjs_dom_html_anchor_element_get_shape, htmlAnchorElementGetShape,
-        ghcjs_dom_html_anchor_element_set_target,
-        htmlAnchorElementSetTarget,
-        ghcjs_dom_html_anchor_element_get_target,
-        htmlAnchorElementGetTarget, ghcjs_dom_html_anchor_element_set_hash,
-        htmlAnchorElementSetHash, ghcjs_dom_html_anchor_element_get_hash,
-        htmlAnchorElementGetHash, ghcjs_dom_html_anchor_element_set_host,
-        htmlAnchorElementSetHost, ghcjs_dom_html_anchor_element_get_host,
-        htmlAnchorElementGetHost,
-        ghcjs_dom_html_anchor_element_set_hostname,
-        htmlAnchorElementSetHostname,
-        ghcjs_dom_html_anchor_element_get_hostname,
-        htmlAnchorElementGetHostname,
-        ghcjs_dom_html_anchor_element_set_pathname,
-        htmlAnchorElementSetPathname,
-        ghcjs_dom_html_anchor_element_get_pathname,
-        htmlAnchorElementGetPathname,
-        ghcjs_dom_html_anchor_element_set_port, htmlAnchorElementSetPort,
-        ghcjs_dom_html_anchor_element_get_port, htmlAnchorElementGetPort,
-        ghcjs_dom_html_anchor_element_set_protocol,
-        htmlAnchorElementSetProtocol,
-        ghcjs_dom_html_anchor_element_get_protocol,
-        htmlAnchorElementGetProtocol,
-        ghcjs_dom_html_anchor_element_set_search,
-        htmlAnchorElementSetSearch,
-        ghcjs_dom_html_anchor_element_get_search,
-        htmlAnchorElementGetSearch,
-        ghcjs_dom_html_anchor_element_get_origin,
-        htmlAnchorElementGetOrigin, ghcjs_dom_html_anchor_element_set_text,
-        htmlAnchorElementSetText, ghcjs_dom_html_anchor_element_get_text,
-        htmlAnchorElementGetText,
-        ghcjs_dom_html_anchor_element_get_rel_list,
-        htmlAnchorElementGetRelList, HTMLAnchorElement,
-        IsHTMLAnchorElement, castToHTMLAnchorElement,
-        gTypeHTMLAnchorElement, toHTMLAnchorElement)
+       (js_setCharset, setCharset, js_getCharset, getCharset,
+        js_setCoords, setCoords, js_getCoords, getCoords, js_setDownload,
+        setDownload, js_getDownload, getDownload, js_setHref, setHref,
+        js_getHref, getHref, js_setHreflang, setHreflang, js_getHreflang,
+        getHreflang, js_setName, setName, js_getName, getName, js_setPing,
+        setPing, js_getPing, getPing, js_setRel, setRel, js_getRel, getRel,
+        js_setRev, setRev, js_getRev, getRev, js_setShape, setShape,
+        js_getShape, getShape, js_setTarget, setTarget, js_getTarget,
+        getTarget, js_setHash, setHash, js_getHash, getHash, js_setHost,
+        setHost, js_getHost, getHost, js_setHostname, setHostname,
+        js_getHostname, getHostname, js_setPathname, setPathname,
+        js_getPathname, getPathname, js_setPort, setPort, js_getPort,
+        getPort, js_setProtocol, setProtocol, js_getProtocol, getProtocol,
+        js_setSearch, setSearch, js_getSearch, getSearch, js_getOrigin,
+        getOrigin, js_setText, setText, js_getText, getText, js_getRelList,
+        getRelList, HTMLAnchorElement, castToHTMLAnchorElement,
+        gTypeHTMLAnchorElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -74,569 +30,386 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_charset ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setCharset :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.charset Mozilla HTMLAnchorElement.charset documentation> 
-htmlAnchorElementSetCharset ::
-                            (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlAnchorElementSetCharset self val
+setCharset ::
+           (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setCharset self val
   = liftIO
-      (ghcjs_dom_html_anchor_element_set_charset
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+      (js_setCharset (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"charset\"]"
-        ghcjs_dom_html_anchor_element_get_charset ::
+foreign import javascript unsafe "$1[\"charset\"]" js_getCharset ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.charset Mozilla HTMLAnchorElement.charset documentation> 
-htmlAnchorElementGetCharset ::
-                            (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                              self -> m result
-htmlAnchorElementGetCharset self
+getCharset ::
+           (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getCharset self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_charset
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getCharset (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"coords\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_coords ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setCoords :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.coords Mozilla HTMLAnchorElement.coords documentation> 
-htmlAnchorElementSetCoords ::
-                           (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlAnchorElementSetCoords self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_coords
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setCoords ::
+          (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setCoords self val
+  = liftIO (js_setCoords (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"coords\"]"
-        ghcjs_dom_html_anchor_element_get_coords ::
+foreign import javascript unsafe "$1[\"coords\"]" js_getCoords ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.coords Mozilla HTMLAnchorElement.coords documentation> 
-htmlAnchorElementGetCoords ::
-                           (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                             self -> m result
-htmlAnchorElementGetCoords self
+getCoords ::
+          (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getCoords self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_coords
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getCoords (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"download\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_download ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setDownload :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.download Mozilla HTMLAnchorElement.download documentation> 
-htmlAnchorElementSetDownload ::
-                             (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlAnchorElementSetDownload self val
+setDownload ::
+            (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setDownload self val
   = liftIO
-      (ghcjs_dom_html_anchor_element_set_download
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+      (js_setDownload (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"download\"]"
-        ghcjs_dom_html_anchor_element_get_download ::
-        JSRef HTMLAnchorElement -> IO JSString
+foreign import javascript unsafe "$1[\"download\"]" js_getDownload
+        :: JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.download Mozilla HTMLAnchorElement.download documentation> 
-htmlAnchorElementGetDownload ::
-                             (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                               self -> m result
-htmlAnchorElementGetDownload self
+getDownload ::
+            (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getDownload self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_download
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getDownload (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"href\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_href ::
+foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.href Mozilla HTMLAnchorElement.href documentation> 
-htmlAnchorElementSetHref ::
-                         (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAnchorElementSetHref self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_href
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setHref ::
+        (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setHref self val
+  = liftIO (js_setHref (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]"
-        ghcjs_dom_html_anchor_element_get_href ::
+foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.href Mozilla HTMLAnchorElement.href documentation> 
-htmlAnchorElementGetHref ::
-                         (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                           self -> m result
-htmlAnchorElementGetHref self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_href
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getHref ::
+        (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getHref self
+  = liftIO (fromJSString <$> (js_getHref (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"hreflang\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_hreflang ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setHreflang :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hreflang Mozilla HTMLAnchorElement.hreflang documentation> 
-htmlAnchorElementSetHreflang ::
-                             (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlAnchorElementSetHreflang self val
+setHreflang ::
+            (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setHreflang self val
   = liftIO
-      (ghcjs_dom_html_anchor_element_set_hreflang
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+      (js_setHreflang (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"hreflang\"]"
-        ghcjs_dom_html_anchor_element_get_hreflang ::
-        JSRef HTMLAnchorElement -> IO JSString
+foreign import javascript unsafe "$1[\"hreflang\"]" js_getHreflang
+        :: JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hreflang Mozilla HTMLAnchorElement.hreflang documentation> 
-htmlAnchorElementGetHreflang ::
-                             (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                               self -> m result
-htmlAnchorElementGetHreflang self
+getHreflang ::
+            (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getHreflang self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_hreflang
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getHreflang (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.name Mozilla HTMLAnchorElement.name documentation> 
-htmlAnchorElementSetName ::
-                         (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAnchorElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_name
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_anchor_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.name Mozilla HTMLAnchorElement.name documentation> 
-htmlAnchorElementGetName ::
-                         (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                           self -> m result
-htmlAnchorElementGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_name
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getName ::
+        (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"ping\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_ping ::
+foreign import javascript unsafe "$1[\"ping\"] = $2;" js_setPing ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.ping Mozilla HTMLAnchorElement.ping documentation> 
-htmlAnchorElementSetPing ::
-                         (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAnchorElementSetPing self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_ping
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setPing ::
+        (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setPing self val
+  = liftIO (js_setPing (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"ping\"]"
-        ghcjs_dom_html_anchor_element_get_ping ::
+foreign import javascript unsafe "$1[\"ping\"]" js_getPing ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.ping Mozilla HTMLAnchorElement.ping documentation> 
-htmlAnchorElementGetPing ::
-                         (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                           self -> m result
-htmlAnchorElementGetPing self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_ping
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getPing ::
+        (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getPing self
+  = liftIO (fromJSString <$> (js_getPing (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"rel\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_rel ::
+foreign import javascript unsafe "$1[\"rel\"] = $2;" js_setRel ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.rel Mozilla HTMLAnchorElement.rel documentation> 
-htmlAnchorElementSetRel ::
-                        (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlAnchorElementSetRel self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_rel
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setRel ::
+       (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setRel self val
+  = liftIO (js_setRel (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"rel\"]"
-        ghcjs_dom_html_anchor_element_get_rel ::
+foreign import javascript unsafe "$1[\"rel\"]" js_getRel ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.rel Mozilla HTMLAnchorElement.rel documentation> 
-htmlAnchorElementGetRel ::
-                        (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                          self -> m result
-htmlAnchorElementGetRel self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_rel
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getRel ::
+       (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getRel self
+  = liftIO (fromJSString <$> (js_getRel (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"rev\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_rev ::
+foreign import javascript unsafe "$1[\"rev\"] = $2;" js_setRev ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.rev Mozilla HTMLAnchorElement.rev documentation> 
-htmlAnchorElementSetRev ::
-                        (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlAnchorElementSetRev self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_rev
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setRev ::
+       (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setRev self val
+  = liftIO (js_setRev (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"rev\"]"
-        ghcjs_dom_html_anchor_element_get_rev ::
+foreign import javascript unsafe "$1[\"rev\"]" js_getRev ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.rev Mozilla HTMLAnchorElement.rev documentation> 
-htmlAnchorElementGetRev ::
-                        (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                          self -> m result
-htmlAnchorElementGetRev self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_rev
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getRev ::
+       (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getRev self
+  = liftIO (fromJSString <$> (js_getRev (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"shape\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_shape ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"shape\"] = $2;" js_setShape
+        :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.shape Mozilla HTMLAnchorElement.shape documentation> 
-htmlAnchorElementSetShape ::
-                          (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlAnchorElementSetShape self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_shape
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setShape ::
+         (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setShape self val
+  = liftIO (js_setShape (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"shape\"]"
-        ghcjs_dom_html_anchor_element_get_shape ::
+foreign import javascript unsafe "$1[\"shape\"]" js_getShape ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.shape Mozilla HTMLAnchorElement.shape documentation> 
-htmlAnchorElementGetShape ::
-                          (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                            self -> m result
-htmlAnchorElementGetShape self
+getShape ::
+         (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getShape self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_shape
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getShape (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_target ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setTarget :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.target Mozilla HTMLAnchorElement.target documentation> 
-htmlAnchorElementSetTarget ::
-                           (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlAnchorElementSetTarget self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_target
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setTarget ::
+          (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setTarget self val
+  = liftIO (js_setTarget (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"target\"]"
-        ghcjs_dom_html_anchor_element_get_target ::
+foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.target Mozilla HTMLAnchorElement.target documentation> 
-htmlAnchorElementGetTarget ::
-                           (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                             self -> m result
-htmlAnchorElementGetTarget self
+getTarget ::
+          (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getTarget self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_target
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getTarget (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"hash\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_hash ::
+foreign import javascript unsafe "$1[\"hash\"] = $2;" js_setHash ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hash Mozilla HTMLAnchorElement.hash documentation> 
-htmlAnchorElementSetHash ::
-                         (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAnchorElementSetHash self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_hash
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setHash ::
+        (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setHash self val
+  = liftIO (js_setHash (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"hash\"]"
-        ghcjs_dom_html_anchor_element_get_hash ::
+foreign import javascript unsafe "$1[\"hash\"]" js_getHash ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hash Mozilla HTMLAnchorElement.hash documentation> 
-htmlAnchorElementGetHash ::
-                         (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                           self -> m result
-htmlAnchorElementGetHash self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_hash
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getHash ::
+        (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getHash self
+  = liftIO (fromJSString <$> (js_getHash (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"host\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_host ::
+foreign import javascript unsafe "$1[\"host\"] = $2;" js_setHost ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.host Mozilla HTMLAnchorElement.host documentation> 
-htmlAnchorElementSetHost ::
-                         (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAnchorElementSetHost self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_host
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setHost ::
+        (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setHost self val
+  = liftIO (js_setHost (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"host\"]"
-        ghcjs_dom_html_anchor_element_get_host ::
+foreign import javascript unsafe "$1[\"host\"]" js_getHost ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.host Mozilla HTMLAnchorElement.host documentation> 
-htmlAnchorElementGetHost ::
-                         (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                           self -> m result
-htmlAnchorElementGetHost self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_host
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getHost ::
+        (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getHost self
+  = liftIO (fromJSString <$> (js_getHost (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"hostname\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_hostname ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setHostname :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hostname Mozilla HTMLAnchorElement.hostname documentation> 
-htmlAnchorElementSetHostname ::
-                             (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlAnchorElementSetHostname self val
+setHostname ::
+            (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setHostname self val
   = liftIO
-      (ghcjs_dom_html_anchor_element_set_hostname
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+      (js_setHostname (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"hostname\"]"
-        ghcjs_dom_html_anchor_element_get_hostname ::
-        JSRef HTMLAnchorElement -> IO JSString
+foreign import javascript unsafe "$1[\"hostname\"]" js_getHostname
+        :: JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hostname Mozilla HTMLAnchorElement.hostname documentation> 
-htmlAnchorElementGetHostname ::
-                             (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                               self -> m result
-htmlAnchorElementGetHostname self
+getHostname ::
+            (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getHostname self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_hostname
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getHostname (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"pathname\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_pathname ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setPathname :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.pathname Mozilla HTMLAnchorElement.pathname documentation> 
-htmlAnchorElementSetPathname ::
-                             (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlAnchorElementSetPathname self val
+setPathname ::
+            (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setPathname self val
   = liftIO
-      (ghcjs_dom_html_anchor_element_set_pathname
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+      (js_setPathname (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"pathname\"]"
-        ghcjs_dom_html_anchor_element_get_pathname ::
-        JSRef HTMLAnchorElement -> IO JSString
+foreign import javascript unsafe "$1[\"pathname\"]" js_getPathname
+        :: JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.pathname Mozilla HTMLAnchorElement.pathname documentation> 
-htmlAnchorElementGetPathname ::
-                             (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                               self -> m result
-htmlAnchorElementGetPathname self
+getPathname ::
+            (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getPathname self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_pathname
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getPathname (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"port\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_port ::
+foreign import javascript unsafe "$1[\"port\"] = $2;" js_setPort ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.port Mozilla HTMLAnchorElement.port documentation> 
-htmlAnchorElementSetPort ::
-                         (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAnchorElementSetPort self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_port
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setPort ::
+        (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setPort self val
+  = liftIO (js_setPort (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"port\"]"
-        ghcjs_dom_html_anchor_element_get_port ::
+foreign import javascript unsafe "$1[\"port\"]" js_getPort ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.port Mozilla HTMLAnchorElement.port documentation> 
-htmlAnchorElementGetPort ::
-                         (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                           self -> m result
-htmlAnchorElementGetPort self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_port
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getPort ::
+        (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getPort self
+  = liftIO (fromJSString <$> (js_getPort (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"protocol\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_protocol ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setProtocol :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.protocol Mozilla HTMLAnchorElement.protocol documentation> 
-htmlAnchorElementSetProtocol ::
-                             (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlAnchorElementSetProtocol self val
+setProtocol ::
+            (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setProtocol self val
   = liftIO
-      (ghcjs_dom_html_anchor_element_set_protocol
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+      (js_setProtocol (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"protocol\"]"
-        ghcjs_dom_html_anchor_element_get_protocol ::
-        JSRef HTMLAnchorElement -> IO JSString
+foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+        :: JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.protocol Mozilla HTMLAnchorElement.protocol documentation> 
-htmlAnchorElementGetProtocol ::
-                             (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                               self -> m result
-htmlAnchorElementGetProtocol self
+getProtocol ::
+            (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getProtocol self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_protocol
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getProtocol (unHTMLAnchorElement self)))
  
 foreign import javascript unsafe "$1[\"search\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_search ::
-        JSRef HTMLAnchorElement -> JSString -> IO ()
+        js_setSearch :: JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.search Mozilla HTMLAnchorElement.search documentation> 
-htmlAnchorElementSetSearch ::
-                           (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlAnchorElementSetSearch self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_search
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setSearch ::
+          (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setSearch self val
+  = liftIO (js_setSearch (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"search\"]"
-        ghcjs_dom_html_anchor_element_get_search ::
+foreign import javascript unsafe "$1[\"search\"]" js_getSearch ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.search Mozilla HTMLAnchorElement.search documentation> 
-htmlAnchorElementGetSearch ::
-                           (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                             self -> m result
-htmlAnchorElementGetSearch self
+getSearch ::
+          (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getSearch self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_search
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getSearch (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"origin\"]"
-        ghcjs_dom_html_anchor_element_get_origin ::
+foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.origin Mozilla HTMLAnchorElement.origin documentation> 
-htmlAnchorElementGetOrigin ::
-                           (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                             self -> m result
-htmlAnchorElementGetOrigin self
+getOrigin ::
+          (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getOrigin self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_origin
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+      (fromJSString <$> (js_getOrigin (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"text\"] = $2;"
-        ghcjs_dom_html_anchor_element_set_text ::
+foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
         JSRef HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.text Mozilla HTMLAnchorElement.text documentation> 
-htmlAnchorElementSetText ::
-                         (MonadIO m, IsHTMLAnchorElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAnchorElementSetText self val
-  = liftIO
-      (ghcjs_dom_html_anchor_element_set_text
-         (unHTMLAnchorElement (toHTMLAnchorElement self))
-         (toJSString val))
+setText ::
+        (MonadIO m, ToJSString val) => HTMLAnchorElement -> val -> m ()
+setText self val
+  = liftIO (js_setText (unHTMLAnchorElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"text\"]"
-        ghcjs_dom_html_anchor_element_get_text ::
+foreign import javascript unsafe "$1[\"text\"]" js_getText ::
         JSRef HTMLAnchorElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.text Mozilla HTMLAnchorElement.text documentation> 
-htmlAnchorElementGetText ::
-                         (MonadIO m, IsHTMLAnchorElement self, FromJSString result) =>
-                           self -> m result
-htmlAnchorElementGetText self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_anchor_element_get_text
-            (unHTMLAnchorElement (toHTMLAnchorElement self))))
+getText ::
+        (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
+getText self
+  = liftIO (fromJSString <$> (js_getText (unHTMLAnchorElement self)))
  
-foreign import javascript unsafe "$1[\"relList\"]"
-        ghcjs_dom_html_anchor_element_get_rel_list ::
+foreign import javascript unsafe "$1[\"relList\"]" js_getRelList ::
         JSRef HTMLAnchorElement -> IO (JSRef DOMTokenList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.relList Mozilla HTMLAnchorElement.relList documentation> 
-htmlAnchorElementGetRelList ::
-                            (MonadIO m, IsHTMLAnchorElement self) =>
-                              self -> m (Maybe DOMTokenList)
-htmlAnchorElementGetRelList self
-  = liftIO
-      ((ghcjs_dom_html_anchor_element_get_rel_list
-          (unHTMLAnchorElement (toHTMLAnchorElement self)))
-         >>= fromJSRef)
+getRelList ::
+           (MonadIO m) => HTMLAnchorElement -> m (Maybe DOMTokenList)
+getRelList self
+  = liftIO ((js_getRelList (unHTMLAnchorElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLAnchorElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLAnchorElement

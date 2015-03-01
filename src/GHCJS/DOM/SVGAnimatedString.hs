@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGAnimatedString
-       (ghcjs_dom_svg_animated_string_set_base_val,
-        svgAnimatedStringSetBaseVal,
-        ghcjs_dom_svg_animated_string_get_base_val,
-        svgAnimatedStringGetBaseVal,
-        ghcjs_dom_svg_animated_string_get_anim_val,
-        svgAnimatedStringGetAnimVal, SVGAnimatedString,
-        IsSVGAnimatedString, castToSVGAnimatedString,
-        gTypeSVGAnimatedString, toSVGAnimatedString)
+       (js_setBaseVal, setBaseVal, js_getBaseVal, getBaseVal,
+        js_getAnimVal, getAnimVal, SVGAnimatedString,
+        castToSVGAnimatedString, gTypeSVGAnimatedString)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,51 +16,39 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
-        ghcjs_dom_svg_animated_string_set_base_val ::
-        JSRef SVGAnimatedString -> JSString -> IO ()
+        js_setBaseVal :: JSRef SVGAnimatedString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
-svgAnimatedStringSetBaseVal ::
-                            (MonadIO m, IsSVGAnimatedString self, ToJSString val) =>
-                              self -> val -> m ()
-svgAnimatedStringSetBaseVal self val
+setBaseVal ::
+           (MonadIO m, ToJSString val) => SVGAnimatedString -> val -> m ()
+setBaseVal self val
   = liftIO
-      (ghcjs_dom_svg_animated_string_set_base_val
-         (unSVGAnimatedString (toSVGAnimatedString self))
-         (toJSString val))
+      (js_setBaseVal (unSVGAnimatedString self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"baseVal\"]"
-        ghcjs_dom_svg_animated_string_get_base_val ::
+foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         JSRef SVGAnimatedString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
-svgAnimatedStringGetBaseVal ::
-                            (MonadIO m, IsSVGAnimatedString self, FromJSString result) =>
-                              self -> m result
-svgAnimatedStringGetBaseVal self
+getBaseVal ::
+           (MonadIO m, FromJSString result) => SVGAnimatedString -> m result
+getBaseVal self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_animated_string_get_base_val
-            (unSVGAnimatedString (toSVGAnimatedString self))))
+      (fromJSString <$> (js_getBaseVal (unSVGAnimatedString self)))
  
-foreign import javascript unsafe "$1[\"animVal\"]"
-        ghcjs_dom_svg_animated_string_get_anim_val ::
+foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
         JSRef SVGAnimatedString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.animVal Mozilla SVGAnimatedString.animVal documentation> 
-svgAnimatedStringGetAnimVal ::
-                            (MonadIO m, IsSVGAnimatedString self, FromJSString result) =>
-                              self -> m result
-svgAnimatedStringGetAnimVal self
+getAnimVal ::
+           (MonadIO m, FromJSString result) => SVGAnimatedString -> m result
+getAnimVal self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_animated_string_get_anim_val
-            (unSVGAnimatedString (toSVGAnimatedString self))))
+      (fromJSString <$> (js_getAnimVal (unSVGAnimatedString self)))
 #else
 module GHCJS.DOM.SVGAnimatedString (
   ) where

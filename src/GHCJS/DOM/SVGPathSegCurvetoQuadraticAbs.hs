@@ -1,28 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs
-       (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_x,
-        svgPathSegCurvetoQuadraticAbsSetX,
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_x,
-        svgPathSegCurvetoQuadraticAbsGetX,
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_y,
-        svgPathSegCurvetoQuadraticAbsSetY,
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_y,
-        svgPathSegCurvetoQuadraticAbsGetY,
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_x1,
-        svgPathSegCurvetoQuadraticAbsSetX1,
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_x1,
-        svgPathSegCurvetoQuadraticAbsGetX1,
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_y1,
-        svgPathSegCurvetoQuadraticAbsSetY1,
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_y1,
-        svgPathSegCurvetoQuadraticAbsGetY1, SVGPathSegCurvetoQuadraticAbs,
-        IsSVGPathSegCurvetoQuadraticAbs,
-        castToSVGPathSegCurvetoQuadraticAbs,
-        gTypeSVGPathSegCurvetoQuadraticAbs,
-        toSVGPathSegCurvetoQuadraticAbs)
+       (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
+        js_setX1, setX1, js_getX1, getX1, js_setY1, setY1, js_getY1, getY1,
+        SVGPathSegCurvetoQuadraticAbs, castToSVGPathSegCurvetoQuadraticAbs,
+        gTypeSVGPathSegCurvetoQuadraticAbs)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -32,125 +17,75 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_x ::
+foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x Mozilla SVGPathSegCurvetoQuadraticAbs.x documentation> 
-svgPathSegCurvetoQuadraticAbsSetX ::
-                                  (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                    self -> Float -> m ()
-svgPathSegCurvetoQuadraticAbsSetX self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_x
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self))
-         val)
+setX ::
+     (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
+setX self val
+  = liftIO (js_setX (unSVGPathSegCurvetoQuadraticAbs self) val)
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x Mozilla SVGPathSegCurvetoQuadraticAbs.x documentation> 
-svgPathSegCurvetoQuadraticAbsGetX ::
-                                  (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                    self -> m Float
-svgPathSegCurvetoQuadraticAbsGetX self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_x
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self)))
+getX :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
+getX self = liftIO (js_getX (unSVGPathSegCurvetoQuadraticAbs self))
  
-foreign import javascript unsafe "$1[\"y\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_y ::
+foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y Mozilla SVGPathSegCurvetoQuadraticAbs.y documentation> 
-svgPathSegCurvetoQuadraticAbsSetY ::
-                                  (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                    self -> Float -> m ()
-svgPathSegCurvetoQuadraticAbsSetY self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_y
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self))
-         val)
+setY ::
+     (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
+setY self val
+  = liftIO (js_setY (unSVGPathSegCurvetoQuadraticAbs self) val)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y Mozilla SVGPathSegCurvetoQuadraticAbs.y documentation> 
-svgPathSegCurvetoQuadraticAbsGetY ::
-                                  (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                    self -> m Float
-svgPathSegCurvetoQuadraticAbsGetY self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_y
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self)))
+getY :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
+getY self = liftIO (js_getY (unSVGPathSegCurvetoQuadraticAbs self))
  
-foreign import javascript unsafe "$1[\"x1\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_x1 ::
+foreign import javascript unsafe "$1[\"x1\"] = $2;" js_setX1 ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x1 Mozilla SVGPathSegCurvetoQuadraticAbs.x1 documentation> 
-svgPathSegCurvetoQuadraticAbsSetX1 ::
-                                   (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                     self -> Float -> m ()
-svgPathSegCurvetoQuadraticAbsSetX1 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_x1
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self))
-         val)
+setX1 ::
+      (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
+setX1 self val
+  = liftIO (js_setX1 (unSVGPathSegCurvetoQuadraticAbs self) val)
  
-foreign import javascript unsafe "$1[\"x1\"]"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_x1 ::
+foreign import javascript unsafe "$1[\"x1\"]" js_getX1 ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x1 Mozilla SVGPathSegCurvetoQuadraticAbs.x1 documentation> 
-svgPathSegCurvetoQuadraticAbsGetX1 ::
-                                   (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                     self -> m Float
-svgPathSegCurvetoQuadraticAbsGetX1 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_x1
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self)))
+getX1 :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
+getX1 self
+  = liftIO (js_getX1 (unSVGPathSegCurvetoQuadraticAbs self))
  
-foreign import javascript unsafe "$1[\"y1\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_y1 ::
+foreign import javascript unsafe "$1[\"y1\"] = $2;" js_setY1 ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y1 Mozilla SVGPathSegCurvetoQuadraticAbs.y1 documentation> 
-svgPathSegCurvetoQuadraticAbsSetY1 ::
-                                   (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                     self -> Float -> m ()
-svgPathSegCurvetoQuadraticAbsSetY1 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_set_y1
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self))
-         val)
+setY1 ::
+      (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
+setY1 self val
+  = liftIO (js_setY1 (unSVGPathSegCurvetoQuadraticAbs self) val)
  
-foreign import javascript unsafe "$1[\"y1\"]"
-        ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_y1 ::
+foreign import javascript unsafe "$1[\"y1\"]" js_getY1 ::
         JSRef SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y1 Mozilla SVGPathSegCurvetoQuadraticAbs.y1 documentation> 
-svgPathSegCurvetoQuadraticAbsGetY1 ::
-                                   (MonadIO m, IsSVGPathSegCurvetoQuadraticAbs self) =>
-                                     self -> m Float
-svgPathSegCurvetoQuadraticAbsGetY1 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_quadratic_abs_get_y1
-         (unSVGPathSegCurvetoQuadraticAbs
-            (toSVGPathSegCurvetoQuadraticAbs self)))
+getY1 :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
+getY1 self
+  = liftIO (js_getY1 (unSVGPathSegCurvetoQuadraticAbs self))
 #else
 module GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs (
   ) where

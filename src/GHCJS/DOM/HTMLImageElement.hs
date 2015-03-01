@@ -1,58 +1,26 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLImageElement
-       (ghcjs_dom_html_image_element_set_name, htmlImageElementSetName,
-        ghcjs_dom_html_image_element_get_name, htmlImageElementGetName,
-        ghcjs_dom_html_image_element_set_align, htmlImageElementSetAlign,
-        ghcjs_dom_html_image_element_get_align, htmlImageElementGetAlign,
-        ghcjs_dom_html_image_element_set_alt, htmlImageElementSetAlt,
-        ghcjs_dom_html_image_element_get_alt, htmlImageElementGetAlt,
-        ghcjs_dom_html_image_element_set_border, htmlImageElementSetBorder,
-        ghcjs_dom_html_image_element_get_border, htmlImageElementGetBorder,
-        ghcjs_dom_html_image_element_set_cross_origin,
-        htmlImageElementSetCrossOrigin,
-        ghcjs_dom_html_image_element_get_cross_origin,
-        htmlImageElementGetCrossOrigin,
-        ghcjs_dom_html_image_element_set_height, htmlImageElementSetHeight,
-        ghcjs_dom_html_image_element_get_height, htmlImageElementGetHeight,
-        ghcjs_dom_html_image_element_set_hspace, htmlImageElementSetHspace,
-        ghcjs_dom_html_image_element_get_hspace, htmlImageElementGetHspace,
-        ghcjs_dom_html_image_element_set_is_map, htmlImageElementSetIsMap,
-        ghcjs_dom_html_image_element_get_is_map, htmlImageElementGetIsMap,
-        ghcjs_dom_html_image_element_set_long_desc,
-        htmlImageElementSetLongDesc,
-        ghcjs_dom_html_image_element_get_long_desc,
-        htmlImageElementGetLongDesc, ghcjs_dom_html_image_element_set_src,
-        htmlImageElementSetSrc, ghcjs_dom_html_image_element_get_src,
-        htmlImageElementGetSrc, ghcjs_dom_html_image_element_set_srcset,
-        htmlImageElementSetSrcset, ghcjs_dom_html_image_element_get_srcset,
-        htmlImageElementGetSrcset, ghcjs_dom_html_image_element_set_sizes,
-        htmlImageElementSetSizes, ghcjs_dom_html_image_element_get_sizes,
-        htmlImageElementGetSizes,
-        ghcjs_dom_html_image_element_get_current_src,
-        htmlImageElementGetCurrentSrc,
-        ghcjs_dom_html_image_element_set_use_map,
-        htmlImageElementSetUseMap,
-        ghcjs_dom_html_image_element_get_use_map,
-        htmlImageElementGetUseMap, ghcjs_dom_html_image_element_set_vspace,
-        htmlImageElementSetVspace, ghcjs_dom_html_image_element_get_vspace,
-        htmlImageElementGetVspace, ghcjs_dom_html_image_element_set_width,
-        htmlImageElementSetWidth, ghcjs_dom_html_image_element_get_width,
-        htmlImageElementGetWidth,
-        ghcjs_dom_html_image_element_get_complete,
-        htmlImageElementGetComplete,
-        ghcjs_dom_html_image_element_set_lowsrc, htmlImageElementSetLowsrc,
-        ghcjs_dom_html_image_element_get_lowsrc, htmlImageElementGetLowsrc,
-        ghcjs_dom_html_image_element_get_natural_height,
-        htmlImageElementGetNaturalHeight,
-        ghcjs_dom_html_image_element_get_natural_width,
-        htmlImageElementGetNaturalWidth,
-        ghcjs_dom_html_image_element_get_x, htmlImageElementGetX,
-        ghcjs_dom_html_image_element_get_y, htmlImageElementGetY,
-        HTMLImageElement, IsHTMLImageElement, castToHTMLImageElement,
-        gTypeHTMLImageElement, toHTMLImageElement)
+       (js_setName, setName, js_getName, getName, js_setAlign, setAlign,
+        js_getAlign, getAlign, js_setAlt, setAlt, js_getAlt, getAlt,
+        js_setBorder, setBorder, js_getBorder, getBorder,
+        js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
+        getCrossOrigin, js_setHeight, setHeight, js_getHeight, getHeight,
+        js_setHspace, setHspace, js_getHspace, getHspace, js_setIsMap,
+        setIsMap, js_getIsMap, getIsMap, js_setLongDesc, setLongDesc,
+        js_getLongDesc, getLongDesc, js_setSrc, setSrc, js_getSrc, getSrc,
+        js_setSrcset, setSrcset, js_getSrcset, getSrcset, js_setSizes,
+        setSizes, js_getSizes, getSizes, js_getCurrentSrc, getCurrentSrc,
+        js_setUseMap, setUseMap, js_getUseMap, getUseMap, js_setVspace,
+        setVspace, js_getVspace, getVspace, js_setWidth, setWidth,
+        js_getWidth, getWidth, js_getComplete, getComplete, js_setLowsrc,
+        setLowsrc, js_getLowsrc, getLowsrc, js_getNaturalHeight,
+        getNaturalHeight, js_getNaturalWidth, getNaturalWidth, js_getX,
+        getX, js_getY, getY, HTMLImageElement, castToHTMLImageElement,
+        gTypeHTMLImageElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -62,516 +30,338 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_image_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.name Mozilla HTMLImageElement.name documentation> 
-htmlImageElementSetName ::
-                        (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlImageElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_name
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_image_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.name Mozilla HTMLImageElement.name documentation> 
-htmlImageElementGetName ::
-                        (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                          self -> m result
-htmlImageElementGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_name
-            (unHTMLImageElement (toHTMLImageElement self))))
+getName ::
+        (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unHTMLImageElement self)))
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_image_element_set_align ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.align Mozilla HTMLImageElement.align documentation> 
-htmlImageElementSetAlign ::
-                         (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlImageElementSetAlign self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_align
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setAlign self val
+  = liftIO (js_setAlign (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_image_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.align Mozilla HTMLImageElement.align documentation> 
-htmlImageElementGetAlign ::
-                         (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                           self -> m result
-htmlImageElementGetAlign self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_align
-            (unHTMLImageElement (toHTMLImageElement self))))
+getAlign ::
+         (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getAlign self
+  = liftIO (fromJSString <$> (js_getAlign (unHTMLImageElement self)))
  
-foreign import javascript unsafe "$1[\"alt\"] = $2;"
-        ghcjs_dom_html_image_element_set_alt ::
+foreign import javascript unsafe "$1[\"alt\"] = $2;" js_setAlt ::
         JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.alt Mozilla HTMLImageElement.alt documentation> 
-htmlImageElementSetAlt ::
-                       (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlImageElementSetAlt self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_alt
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setAlt ::
+       (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setAlt self val
+  = liftIO (js_setAlt (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"alt\"]"
-        ghcjs_dom_html_image_element_get_alt ::
+foreign import javascript unsafe "$1[\"alt\"]" js_getAlt ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.alt Mozilla HTMLImageElement.alt documentation> 
-htmlImageElementGetAlt ::
-                       (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                         self -> m result
-htmlImageElementGetAlt self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_alt
-            (unHTMLImageElement (toHTMLImageElement self))))
+getAlt ::
+       (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getAlt self
+  = liftIO (fromJSString <$> (js_getAlt (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"border\"] = $2;"
-        ghcjs_dom_html_image_element_set_border ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+        js_setBorder :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.border Mozilla HTMLImageElement.border documentation> 
-htmlImageElementSetBorder ::
-                          (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlImageElementSetBorder self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_border
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setBorder ::
+          (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setBorder self val
+  = liftIO (js_setBorder (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"border\"]"
-        ghcjs_dom_html_image_element_get_border ::
+foreign import javascript unsafe "$1[\"border\"]" js_getBorder ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.border Mozilla HTMLImageElement.border documentation> 
-htmlImageElementGetBorder ::
-                          (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                            self -> m result
-htmlImageElementGetBorder self
+getBorder ::
+          (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getBorder self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_border
-            (unHTMLImageElement (toHTMLImageElement self))))
+      (fromJSString <$> (js_getBorder (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
-        ghcjs_dom_html_image_element_set_cross_origin ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+        js_setCrossOrigin :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.crossOrigin Mozilla HTMLImageElement.crossOrigin documentation> 
-htmlImageElementSetCrossOrigin ::
-                               (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                                 self -> val -> m ()
-htmlImageElementSetCrossOrigin self val
+setCrossOrigin ::
+               (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setCrossOrigin self val
   = liftIO
-      (ghcjs_dom_html_image_element_set_cross_origin
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+      (js_setCrossOrigin (unHTMLImageElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"crossOrigin\"]"
-        ghcjs_dom_html_image_element_get_cross_origin ::
-        JSRef HTMLImageElement -> IO JSString
+        js_getCrossOrigin :: JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.crossOrigin Mozilla HTMLImageElement.crossOrigin documentation> 
-htmlImageElementGetCrossOrigin ::
-                               (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                                 self -> m result
-htmlImageElementGetCrossOrigin self
+getCrossOrigin ::
+               (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getCrossOrigin self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_cross_origin
-            (unHTMLImageElement (toHTMLImageElement self))))
+      (fromJSString <$> (js_getCrossOrigin (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        ghcjs_dom_html_image_element_set_height ::
-        JSRef HTMLImageElement -> Int -> IO ()
+        js_setHeight :: JSRef HTMLImageElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.height Mozilla HTMLImageElement.height documentation> 
-htmlImageElementSetHeight ::
-                          (MonadIO m, IsHTMLImageElement self) => self -> Int -> m ()
-htmlImageElementSetHeight self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_height
-         (unHTMLImageElement (toHTMLImageElement self))
-         val)
+setHeight :: (MonadIO m) => HTMLImageElement -> Int -> m ()
+setHeight self val
+  = liftIO (js_setHeight (unHTMLImageElement self) val)
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_html_image_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.height Mozilla HTMLImageElement.height documentation> 
-htmlImageElementGetHeight ::
-                          (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetHeight self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_height
-         (unHTMLImageElement (toHTMLImageElement self)))
+getHeight :: (MonadIO m) => HTMLImageElement -> m Int
+getHeight self = liftIO (js_getHeight (unHTMLImageElement self))
  
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
-        ghcjs_dom_html_image_element_set_hspace ::
-        JSRef HTMLImageElement -> Int -> IO ()
+        js_setHspace :: JSRef HTMLImageElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.hspace Mozilla HTMLImageElement.hspace documentation> 
-htmlImageElementSetHspace ::
-                          (MonadIO m, IsHTMLImageElement self) => self -> Int -> m ()
-htmlImageElementSetHspace self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_hspace
-         (unHTMLImageElement (toHTMLImageElement self))
-         val)
+setHspace :: (MonadIO m) => HTMLImageElement -> Int -> m ()
+setHspace self val
+  = liftIO (js_setHspace (unHTMLImageElement self) val)
  
-foreign import javascript unsafe "$1[\"hspace\"]"
-        ghcjs_dom_html_image_element_get_hspace ::
+foreign import javascript unsafe "$1[\"hspace\"]" js_getHspace ::
         JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.hspace Mozilla HTMLImageElement.hspace documentation> 
-htmlImageElementGetHspace ::
-                          (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetHspace self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_hspace
-         (unHTMLImageElement (toHTMLImageElement self)))
+getHspace :: (MonadIO m) => HTMLImageElement -> m Int
+getHspace self = liftIO (js_getHspace (unHTMLImageElement self))
  
-foreign import javascript unsafe "$1[\"isMap\"] = $2;"
-        ghcjs_dom_html_image_element_set_is_map ::
-        JSRef HTMLImageElement -> Bool -> IO ()
+foreign import javascript unsafe "$1[\"isMap\"] = $2;" js_setIsMap
+        :: JSRef HTMLImageElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.isMap Mozilla HTMLImageElement.isMap documentation> 
-htmlImageElementSetIsMap ::
-                         (MonadIO m, IsHTMLImageElement self) => self -> Bool -> m ()
-htmlImageElementSetIsMap self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_is_map
-         (unHTMLImageElement (toHTMLImageElement self))
-         val)
+setIsMap :: (MonadIO m) => HTMLImageElement -> Bool -> m ()
+setIsMap self val
+  = liftIO (js_setIsMap (unHTMLImageElement self) val)
  
 foreign import javascript unsafe "($1[\"isMap\"] ? 1 : 0)"
-        ghcjs_dom_html_image_element_get_is_map ::
-        JSRef HTMLImageElement -> IO Bool
+        js_getIsMap :: JSRef HTMLImageElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.isMap Mozilla HTMLImageElement.isMap documentation> 
-htmlImageElementGetIsMap ::
-                         (MonadIO m, IsHTMLImageElement self) => self -> m Bool
-htmlImageElementGetIsMap self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_is_map
-         (unHTMLImageElement (toHTMLImageElement self)))
+getIsMap :: (MonadIO m) => HTMLImageElement -> m Bool
+getIsMap self = liftIO (js_getIsMap (unHTMLImageElement self))
  
 foreign import javascript unsafe "$1[\"longDesc\"] = $2;"
-        ghcjs_dom_html_image_element_set_long_desc ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+        js_setLongDesc :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.longDesc Mozilla HTMLImageElement.longDesc documentation> 
-htmlImageElementSetLongDesc ::
-                            (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlImageElementSetLongDesc self val
+setLongDesc ::
+            (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setLongDesc self val
   = liftIO
-      (ghcjs_dom_html_image_element_set_long_desc
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+      (js_setLongDesc (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"longDesc\"]"
-        ghcjs_dom_html_image_element_get_long_desc ::
-        JSRef HTMLImageElement -> IO JSString
+foreign import javascript unsafe "$1[\"longDesc\"]" js_getLongDesc
+        :: JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.longDesc Mozilla HTMLImageElement.longDesc documentation> 
-htmlImageElementGetLongDesc ::
-                            (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                              self -> m result
-htmlImageElementGetLongDesc self
+getLongDesc ::
+            (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getLongDesc self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_long_desc
-            (unHTMLImageElement (toHTMLImageElement self))))
+      (fromJSString <$> (js_getLongDesc (unHTMLImageElement self)))
  
-foreign import javascript unsafe "$1[\"src\"] = $2;"
-        ghcjs_dom_html_image_element_set_src ::
+foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.src Mozilla HTMLImageElement.src documentation> 
-htmlImageElementSetSrc ::
-                       (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlImageElementSetSrc self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_src
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setSrc ::
+       (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setSrc self val
+  = liftIO (js_setSrc (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]"
-        ghcjs_dom_html_image_element_get_src ::
+foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.src Mozilla HTMLImageElement.src documentation> 
-htmlImageElementGetSrc ::
-                       (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                         self -> m result
-htmlImageElementGetSrc self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_src
-            (unHTMLImageElement (toHTMLImageElement self))))
+getSrc ::
+       (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getSrc self
+  = liftIO (fromJSString <$> (js_getSrc (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"srcset\"] = $2;"
-        ghcjs_dom_html_image_element_set_srcset ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+        js_setSrcset :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.srcset Mozilla HTMLImageElement.srcset documentation> 
-htmlImageElementSetSrcset ::
-                          (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlImageElementSetSrcset self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_srcset
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setSrcset ::
+          (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setSrcset self val
+  = liftIO (js_setSrcset (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"srcset\"]"
-        ghcjs_dom_html_image_element_get_srcset ::
+foreign import javascript unsafe "$1[\"srcset\"]" js_getSrcset ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.srcset Mozilla HTMLImageElement.srcset documentation> 
-htmlImageElementGetSrcset ::
-                          (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                            self -> m result
-htmlImageElementGetSrcset self
+getSrcset ::
+          (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getSrcset self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_srcset
-            (unHTMLImageElement (toHTMLImageElement self))))
+      (fromJSString <$> (js_getSrcset (unHTMLImageElement self)))
  
-foreign import javascript unsafe "$1[\"sizes\"] = $2;"
-        ghcjs_dom_html_image_element_set_sizes ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"sizes\"] = $2;" js_setSizes
+        :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.sizes Mozilla HTMLImageElement.sizes documentation> 
-htmlImageElementSetSizes ::
-                         (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlImageElementSetSizes self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_sizes
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setSizes ::
+         (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setSizes self val
+  = liftIO (js_setSizes (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"sizes\"]"
-        ghcjs_dom_html_image_element_get_sizes ::
+foreign import javascript unsafe "$1[\"sizes\"]" js_getSizes ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.sizes Mozilla HTMLImageElement.sizes documentation> 
-htmlImageElementGetSizes ::
-                         (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                           self -> m result
-htmlImageElementGetSizes self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_sizes
-            (unHTMLImageElement (toHTMLImageElement self))))
+getSizes ::
+         (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getSizes self
+  = liftIO (fromJSString <$> (js_getSizes (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"currentSrc\"]"
-        ghcjs_dom_html_image_element_get_current_src ::
-        JSRef HTMLImageElement -> IO JSString
+        js_getCurrentSrc :: JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.currentSrc Mozilla HTMLImageElement.currentSrc documentation> 
-htmlImageElementGetCurrentSrc ::
-                              (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                                self -> m result
-htmlImageElementGetCurrentSrc self
+getCurrentSrc ::
+              (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getCurrentSrc self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_current_src
-            (unHTMLImageElement (toHTMLImageElement self))))
+      (fromJSString <$> (js_getCurrentSrc (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
-        ghcjs_dom_html_image_element_set_use_map ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+        js_setUseMap :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.useMap Mozilla HTMLImageElement.useMap documentation> 
-htmlImageElementSetUseMap ::
-                          (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlImageElementSetUseMap self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_use_map
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setUseMap ::
+          (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setUseMap self val
+  = liftIO (js_setUseMap (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"useMap\"]"
-        ghcjs_dom_html_image_element_get_use_map ::
+foreign import javascript unsafe "$1[\"useMap\"]" js_getUseMap ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.useMap Mozilla HTMLImageElement.useMap documentation> 
-htmlImageElementGetUseMap ::
-                          (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                            self -> m result
-htmlImageElementGetUseMap self
+getUseMap ::
+          (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getUseMap self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_use_map
-            (unHTMLImageElement (toHTMLImageElement self))))
+      (fromJSString <$> (js_getUseMap (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
-        ghcjs_dom_html_image_element_set_vspace ::
-        JSRef HTMLImageElement -> Int -> IO ()
+        js_setVspace :: JSRef HTMLImageElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.vspace Mozilla HTMLImageElement.vspace documentation> 
-htmlImageElementSetVspace ::
-                          (MonadIO m, IsHTMLImageElement self) => self -> Int -> m ()
-htmlImageElementSetVspace self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_vspace
-         (unHTMLImageElement (toHTMLImageElement self))
-         val)
+setVspace :: (MonadIO m) => HTMLImageElement -> Int -> m ()
+setVspace self val
+  = liftIO (js_setVspace (unHTMLImageElement self) val)
  
-foreign import javascript unsafe "$1[\"vspace\"]"
-        ghcjs_dom_html_image_element_get_vspace ::
+foreign import javascript unsafe "$1[\"vspace\"]" js_getVspace ::
         JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.vspace Mozilla HTMLImageElement.vspace documentation> 
-htmlImageElementGetVspace ::
-                          (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetVspace self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_vspace
-         (unHTMLImageElement (toHTMLImageElement self)))
+getVspace :: (MonadIO m) => HTMLImageElement -> m Int
+getVspace self = liftIO (js_getVspace (unHTMLImageElement self))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;"
-        ghcjs_dom_html_image_element_set_width ::
-        JSRef HTMLImageElement -> Int -> IO ()
+foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+        :: JSRef HTMLImageElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.width Mozilla HTMLImageElement.width documentation> 
-htmlImageElementSetWidth ::
-                         (MonadIO m, IsHTMLImageElement self) => self -> Int -> m ()
-htmlImageElementSetWidth self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_width
-         (unHTMLImageElement (toHTMLImageElement self))
-         val)
+setWidth :: (MonadIO m) => HTMLImageElement -> Int -> m ()
+setWidth self val
+  = liftIO (js_setWidth (unHTMLImageElement self) val)
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_html_image_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.width Mozilla HTMLImageElement.width documentation> 
-htmlImageElementGetWidth ::
-                         (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetWidth self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_width
-         (unHTMLImageElement (toHTMLImageElement self)))
+getWidth :: (MonadIO m) => HTMLImageElement -> m Int
+getWidth self = liftIO (js_getWidth (unHTMLImageElement self))
  
 foreign import javascript unsafe "($1[\"complete\"] ? 1 : 0)"
-        ghcjs_dom_html_image_element_get_complete ::
-        JSRef HTMLImageElement -> IO Bool
+        js_getComplete :: JSRef HTMLImageElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.complete Mozilla HTMLImageElement.complete documentation> 
-htmlImageElementGetComplete ::
-                            (MonadIO m, IsHTMLImageElement self) => self -> m Bool
-htmlImageElementGetComplete self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_complete
-         (unHTMLImageElement (toHTMLImageElement self)))
+getComplete :: (MonadIO m) => HTMLImageElement -> m Bool
+getComplete self
+  = liftIO (js_getComplete (unHTMLImageElement self))
  
 foreign import javascript unsafe "$1[\"lowsrc\"] = $2;"
-        ghcjs_dom_html_image_element_set_lowsrc ::
-        JSRef HTMLImageElement -> JSString -> IO ()
+        js_setLowsrc :: JSRef HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.lowsrc Mozilla HTMLImageElement.lowsrc documentation> 
-htmlImageElementSetLowsrc ::
-                          (MonadIO m, IsHTMLImageElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlImageElementSetLowsrc self val
-  = liftIO
-      (ghcjs_dom_html_image_element_set_lowsrc
-         (unHTMLImageElement (toHTMLImageElement self))
-         (toJSString val))
+setLowsrc ::
+          (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setLowsrc self val
+  = liftIO (js_setLowsrc (unHTMLImageElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"lowsrc\"]"
-        ghcjs_dom_html_image_element_get_lowsrc ::
+foreign import javascript unsafe "$1[\"lowsrc\"]" js_getLowsrc ::
         JSRef HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.lowsrc Mozilla HTMLImageElement.lowsrc documentation> 
-htmlImageElementGetLowsrc ::
-                          (MonadIO m, IsHTMLImageElement self, FromJSString result) =>
-                            self -> m result
-htmlImageElementGetLowsrc self
+getLowsrc ::
+          (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getLowsrc self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_image_element_get_lowsrc
-            (unHTMLImageElement (toHTMLImageElement self))))
+      (fromJSString <$> (js_getLowsrc (unHTMLImageElement self)))
  
 foreign import javascript unsafe "$1[\"naturalHeight\"]"
-        ghcjs_dom_html_image_element_get_natural_height ::
-        JSRef HTMLImageElement -> IO Int
+        js_getNaturalHeight :: JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.naturalHeight Mozilla HTMLImageElement.naturalHeight documentation> 
-htmlImageElementGetNaturalHeight ::
-                                 (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetNaturalHeight self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_natural_height
-         (unHTMLImageElement (toHTMLImageElement self)))
+getNaturalHeight :: (MonadIO m) => HTMLImageElement -> m Int
+getNaturalHeight self
+  = liftIO (js_getNaturalHeight (unHTMLImageElement self))
  
 foreign import javascript unsafe "$1[\"naturalWidth\"]"
-        ghcjs_dom_html_image_element_get_natural_width ::
-        JSRef HTMLImageElement -> IO Int
+        js_getNaturalWidth :: JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.naturalWidth Mozilla HTMLImageElement.naturalWidth documentation> 
-htmlImageElementGetNaturalWidth ::
-                                (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetNaturalWidth self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_natural_width
-         (unHTMLImageElement (toHTMLImageElement self)))
+getNaturalWidth :: (MonadIO m) => HTMLImageElement -> m Int
+getNaturalWidth self
+  = liftIO (js_getNaturalWidth (unHTMLImageElement self))
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_html_image_element_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.x Mozilla HTMLImageElement.x documentation> 
-htmlImageElementGetX ::
-                     (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetX self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_x
-         (unHTMLImageElement (toHTMLImageElement self)))
+getX :: (MonadIO m) => HTMLImageElement -> m Int
+getX self = liftIO (js_getX (unHTMLImageElement self))
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_html_image_element_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.y Mozilla HTMLImageElement.y documentation> 
-htmlImageElementGetY ::
-                     (MonadIO m, IsHTMLImageElement self) => self -> m Int
-htmlImageElementGetY self
-  = liftIO
-      (ghcjs_dom_html_image_element_get_y
-         (unHTMLImageElement (toHTMLImageElement self)))
+getY :: (MonadIO m) => HTMLImageElement -> m Int
+getY self = liftIO (js_getY (unHTMLImageElement self))
 #else
 module GHCJS.DOM.HTMLImageElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLImageElement

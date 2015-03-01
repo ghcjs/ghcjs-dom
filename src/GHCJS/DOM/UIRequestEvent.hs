@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.UIRequestEvent
-       (ghcjs_dom_ui_request_event_get_receiver,
-        uiRequestEventGetReceiver, UIRequestEvent, IsUIRequestEvent,
-        castToUIRequestEvent, gTypeUIRequestEvent, toUIRequestEvent)
+       (js_getReceiver, getReceiver, UIRequestEvent, castToUIRequestEvent,
+        gTypeUIRequestEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,22 +15,18 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"receiver\"]"
-        ghcjs_dom_ui_request_event_get_receiver ::
-        JSRef UIRequestEvent -> IO (JSRef EventTarget)
+foreign import javascript unsafe "$1[\"receiver\"]" js_getReceiver
+        :: JSRef UIRequestEvent -> IO (JSRef EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UIRequestEvent.receiver Mozilla UIRequestEvent.receiver documentation> 
-uiRequestEventGetReceiver ::
-                          (MonadIO m, IsUIRequestEvent self) => self -> m (Maybe EventTarget)
-uiRequestEventGetReceiver self
-  = liftIO
-      ((ghcjs_dom_ui_request_event_get_receiver
-          (unUIRequestEvent (toUIRequestEvent self)))
-         >>= fromJSRef)
+getReceiver ::
+            (MonadIO m) => UIRequestEvent -> m (Maybe EventTarget)
+getReceiver self
+  = liftIO ((js_getReceiver (unUIRequestEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.UIRequestEvent (
   ) where

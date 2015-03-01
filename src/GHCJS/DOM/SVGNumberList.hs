@@ -1,19 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGNumberList
-       (ghcjs_dom_svg_number_list_clear, svgNumberListClear,
-        ghcjs_dom_svg_number_list_initialize, svgNumberListInitialize,
-        ghcjs_dom_svg_number_list_get_item, svgNumberListGetItem,
-        ghcjs_dom_svg_number_list_insert_item_before,
-        svgNumberListInsertItemBefore,
-        ghcjs_dom_svg_number_list_replace_item, svgNumberListReplaceItem,
-        ghcjs_dom_svg_number_list_remove_item, svgNumberListRemoveItem,
-        ghcjs_dom_svg_number_list_append_item, svgNumberListAppendItem,
-        ghcjs_dom_svg_number_list_get_number_of_items,
-        svgNumberListGetNumberOfItems, SVGNumberList, IsSVGNumberList,
-        castToSVGNumberList, gTypeSVGNumberList, toSVGNumberList)
+       (js_clear, clear, js_initialize, initialize, js_getItem, getItem,
+        js_insertItemBefore, insertItemBefore, js_replaceItem, replaceItem,
+        js_removeItem, removeItem, js_appendItem, appendItem,
+        js_getNumberOfItems, getNumberOfItems, SVGNumberList,
+        castToSVGNumberList, gTypeSVGNumberList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,126 +18,104 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"clear\"]()"
-        ghcjs_dom_svg_number_list_clear :: JSRef SVGNumberList -> IO ()
+foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+        JSRef SVGNumberList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.clear Mozilla SVGNumberList.clear documentation> 
-svgNumberListClear ::
-                   (MonadIO m, IsSVGNumberList self) => self -> m ()
-svgNumberListClear self
-  = liftIO
-      (ghcjs_dom_svg_number_list_clear
-         (unSVGNumberList (toSVGNumberList self)))
+clear :: (MonadIO m) => SVGNumberList -> m ()
+clear self = liftIO (js_clear (unSVGNumberList self))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
-        ghcjs_dom_svg_number_list_initialize ::
+        js_initialize ::
         JSRef SVGNumberList -> JSRef SVGNumber -> IO (JSRef SVGNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.initialize Mozilla SVGNumberList.initialize documentation> 
-svgNumberListInitialize ::
-                        (MonadIO m, IsSVGNumberList self, IsSVGNumber item) =>
-                          self -> Maybe item -> m (Maybe SVGNumber)
-svgNumberListInitialize self item
+initialize ::
+           (MonadIO m) =>
+             SVGNumberList -> Maybe SVGNumber -> m (Maybe SVGNumber)
+initialize self item
   = liftIO
-      ((ghcjs_dom_svg_number_list_initialize
-          (unSVGNumberList (toSVGNumberList self))
-          (maybe jsNull (unSVGNumber . toSVGNumber) item))
+      ((js_initialize (unSVGNumberList self)
+          (maybe jsNull unSVGNumber item))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"getItem\"]($2)"
-        ghcjs_dom_svg_number_list_get_item ::
-        JSRef SVGNumberList -> Word -> IO (JSRef SVGNumber)
+foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
+        :: JSRef SVGNumberList -> Word -> IO (JSRef SVGNumber)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.item Mozilla SVGNumberList.item documentation> 
-svgNumberListGetItem ::
-                     (MonadIO m, IsSVGNumberList self) =>
-                       self -> Word -> m (Maybe SVGNumber)
-svgNumberListGetItem self index
-  = liftIO
-      ((ghcjs_dom_svg_number_list_get_item
-          (unSVGNumberList (toSVGNumberList self))
-          index)
-         >>= fromJSRef)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.getItem Mozilla SVGNumberList.getItem documentation> 
+getItem ::
+        (MonadIO m) => SVGNumberList -> Word -> m (Maybe SVGNumber)
+getItem self index
+  = liftIO ((js_getItem (unSVGNumberList self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
-        ghcjs_dom_svg_number_list_insert_item_before ::
+        js_insertItemBefore ::
         JSRef SVGNumberList ->
           JSRef SVGNumber -> Word -> IO (JSRef SVGNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.insertItemBefore Mozilla SVGNumberList.insertItemBefore documentation> 
-svgNumberListInsertItemBefore ::
-                              (MonadIO m, IsSVGNumberList self, IsSVGNumber item) =>
-                                self -> Maybe item -> Word -> m (Maybe SVGNumber)
-svgNumberListInsertItemBefore self item index
+insertItemBefore ::
+                 (MonadIO m) =>
+                   SVGNumberList -> Maybe SVGNumber -> Word -> m (Maybe SVGNumber)
+insertItemBefore self item index
   = liftIO
-      ((ghcjs_dom_svg_number_list_insert_item_before
-          (unSVGNumberList (toSVGNumberList self))
-          (maybe jsNull (unSVGNumber . toSVGNumber) item)
+      ((js_insertItemBefore (unSVGNumberList self)
+          (maybe jsNull unSVGNumber item)
           index)
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
-        ghcjs_dom_svg_number_list_replace_item ::
+        js_replaceItem ::
         JSRef SVGNumberList ->
           JSRef SVGNumber -> Word -> IO (JSRef SVGNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.replaceItem Mozilla SVGNumberList.replaceItem documentation> 
-svgNumberListReplaceItem ::
-                         (MonadIO m, IsSVGNumberList self, IsSVGNumber item) =>
-                           self -> Maybe item -> Word -> m (Maybe SVGNumber)
-svgNumberListReplaceItem self item index
+replaceItem ::
+            (MonadIO m) =>
+              SVGNumberList -> Maybe SVGNumber -> Word -> m (Maybe SVGNumber)
+replaceItem self item index
   = liftIO
-      ((ghcjs_dom_svg_number_list_replace_item
-          (unSVGNumberList (toSVGNumberList self))
-          (maybe jsNull (unSVGNumber . toSVGNumber) item)
+      ((js_replaceItem (unSVGNumberList self)
+          (maybe jsNull unSVGNumber item)
           index)
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
-        ghcjs_dom_svg_number_list_remove_item ::
+        js_removeItem ::
         JSRef SVGNumberList -> Word -> IO (JSRef SVGNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.removeItem Mozilla SVGNumberList.removeItem documentation> 
-svgNumberListRemoveItem ::
-                        (MonadIO m, IsSVGNumberList self) =>
-                          self -> Word -> m (Maybe SVGNumber)
-svgNumberListRemoveItem self index
+removeItem ::
+           (MonadIO m) => SVGNumberList -> Word -> m (Maybe SVGNumber)
+removeItem self index
   = liftIO
-      ((ghcjs_dom_svg_number_list_remove_item
-          (unSVGNumberList (toSVGNumberList self))
-          index)
-         >>= fromJSRef)
+      ((js_removeItem (unSVGNumberList self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
-        ghcjs_dom_svg_number_list_append_item ::
+        js_appendItem ::
         JSRef SVGNumberList -> JSRef SVGNumber -> IO (JSRef SVGNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.appendItem Mozilla SVGNumberList.appendItem documentation> 
-svgNumberListAppendItem ::
-                        (MonadIO m, IsSVGNumberList self, IsSVGNumber item) =>
-                          self -> Maybe item -> m (Maybe SVGNumber)
-svgNumberListAppendItem self item
+appendItem ::
+           (MonadIO m) =>
+             SVGNumberList -> Maybe SVGNumber -> m (Maybe SVGNumber)
+appendItem self item
   = liftIO
-      ((ghcjs_dom_svg_number_list_append_item
-          (unSVGNumberList (toSVGNumberList self))
-          (maybe jsNull (unSVGNumber . toSVGNumber) item))
+      ((js_appendItem (unSVGNumberList self)
+          (maybe jsNull unSVGNumber item))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
-        ghcjs_dom_svg_number_list_get_number_of_items ::
-        JSRef SVGNumberList -> IO Word
+        js_getNumberOfItems :: JSRef SVGNumberList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.numberOfItems Mozilla SVGNumberList.numberOfItems documentation> 
-svgNumberListGetNumberOfItems ::
-                              (MonadIO m, IsSVGNumberList self) => self -> m Word
-svgNumberListGetNumberOfItems self
-  = liftIO
-      (ghcjs_dom_svg_number_list_get_number_of_items
-         (unSVGNumberList (toSVGNumberList self)))
+getNumberOfItems :: (MonadIO m) => SVGNumberList -> m Word
+getNumberOfItems self
+  = liftIO (js_getNumberOfItems (unSVGNumberList self))
 #else
 module GHCJS.DOM.SVGNumberList (
   ) where

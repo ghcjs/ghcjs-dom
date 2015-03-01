@@ -23,9 +23,14 @@
 #define ENABLE_USER_TIMING 1
 #define ENABLE_VIBRATION 1
 #define ENABLE_VIDEO 1
+#define ENABLE_VIDEO_PRESENTATION_MODE 1
 #define ENABLE_VIDEO_TRACK 1
 #define ENABLE_WEBVTT_REGIONS 1
 #define ENABLE_WEB_TIMING 1
+//#define LANGUAGE_GOBJECT 1
+//#define LANGUAGE_JAVASCRIPT 1
+//#define LANGUAGE_OBJECTIVE_C 1
+//#define WTF_PLATFORM_IOS 1
 
 // Use this file with the domconv-webkit tool update the Haskell webkit DOM bindings
 module core {
@@ -117,7 +122,6 @@ module core {
 #include "dom/NodeFilter.idl"
 #include "dom/NodeIterator.idl"
 #include "dom/NodeList.idl"
-#include "dom/Notation.idl"
 #include "dom/OverflowEvent.idl"
 #include "dom/PageTransitionEvent.idl"
 #include "dom/PopStateEvent.idl"
@@ -154,7 +158,10 @@ module core {
 #include "html/canvas/CanvasRenderingContext.idl"
 #include "html/canvas/CanvasRenderingContext2D.idl"
 #include "html/canvas/DOMPath.idl"
+#include "html/canvas/EXTBlendMinMax.idl"
+#include "html/canvas/EXTFragDepth.idl"
 #include "html/canvas/EXTShaderTextureLOD.idl"
+#include "html/canvas/EXTsRGB.idl"
 #include "html/canvas/EXTTextureFilterAnisotropic.idl"
 #include "html/canvas/OESElementIndexUint.idl"
 #include "html/canvas/OESStandardDerivatives.idl"
@@ -163,6 +170,7 @@ module core {
 #include "html/canvas/OESTextureHalfFloat.idl"
 #include "html/canvas/OESTextureHalfFloatLinear.idl"
 #include "html/canvas/OESVertexArrayObject.idl"
+#include "html/canvas/WebGL2RenderingContext.idl"
 #include "html/canvas/WebGLActiveInfo.idl"
 #include "html/canvas/WebGLBuffer.idl"
 #include "html/canvas/WebGLCompressedTextureATC.idl"
@@ -177,12 +185,18 @@ module core {
 #include "html/canvas/WebGLFramebuffer.idl"
 #include "html/canvas/WebGLLoseContext.idl"
 #include "html/canvas/WebGLProgram.idl"
+#include "html/canvas/WebGLQuery.idl"
 #include "html/canvas/WebGLRenderbuffer.idl"
 #include "html/canvas/WebGLRenderingContext.idl"
+#include "html/canvas/WebGLRenderingContextBase.idl"
+#include "html/canvas/WebGLSampler.idl"
 #include "html/canvas/WebGLShader.idl"
 #include "html/canvas/WebGLShaderPrecisionFormat.idl"
+#include "html/canvas/WebGLSync.idl"
 #include "html/canvas/WebGLTexture.idl"
+#include "html/canvas/WebGLTransformFeedback.idl"
 #include "html/canvas/WebGLUniformLocation.idl"
+#include "html/canvas/WebGLVertexArrayObject.idl"
 #include "html/canvas/WebGLVertexArrayObjectOES.idl"
 #include "html/DOMFormData.idl"
 #include "html/DOMSettableTokenList.idl"
@@ -298,6 +312,9 @@ module core {
 #include "Modules/encryptedmedia/MediaKeyNeededEvent.idl"
 #include "Modules/encryptedmedia/MediaKeys.idl"
 #include "Modules/encryptedmedia/MediaKeySession.idl"
+//#include "Modules/gamepad/deprecated/Gamepad.idl"
+//#include "Modules/gamepad/deprecated/GamepadList.idl"
+//#include "Modules/gamepad/deprecated/NavigatorGamepad.idl"
 #include "Modules/gamepad/Gamepad.idl"
 #include "Modules/gamepad/GamepadButton.idl"
 #include "Modules/gamepad/GamepadEvent.idl"
@@ -391,6 +408,7 @@ module core {
 #include "Modules/speech/SpeechSynthesisEvent.idl"
 #include "Modules/speech/SpeechSynthesisUtterance.idl"
 #include "Modules/speech/SpeechSynthesisVoice.idl"
+#include "Modules/streams/ReadableStream.idl"
 #include "Modules/vibration/NavigatorVibration.idl"
 #include "Modules/webaudio/AnalyserNode.idl"
 #include "Modules/webaudio/AudioBuffer.idl"
@@ -421,7 +439,6 @@ module core {
 #include "Modules/webaudio/WaveShaperNode.idl"
 #include "Modules/webdatabase/Database.idl"
 #include "Modules/webdatabase/DatabaseCallback.idl"
-#include "Modules/webdatabase/DatabaseSync.idl"
 #include "Modules/webdatabase/DOMWindowWebDatabase.idl"
 #include "Modules/webdatabase/SQLError.idl"
 #include "Modules/webdatabase/SQLException.idl"
@@ -432,9 +449,6 @@ module core {
 #include "Modules/webdatabase/SQLTransaction.idl"
 #include "Modules/webdatabase/SQLTransactionCallback.idl"
 #include "Modules/webdatabase/SQLTransactionErrorCallback.idl"
-#include "Modules/webdatabase/SQLTransactionSync.idl"
-#include "Modules/webdatabase/SQLTransactionSyncCallback.idl"
-#include "Modules/webdatabase/WorkerGlobalScopeWebDatabase.idl"
 #include "Modules/websockets/CloseEvent.idl"
 #include "Modules/websockets/WebSocket.idl"
 #include "page/AbstractView.idl"
@@ -500,8 +514,6 @@ module core {
 #include "svg/SVGDescElement.idl"
 #include "svg/SVGDocument.idl"
 #include "svg/SVGElement.idl"
-#include "svg/SVGElementInstance.idl"
-#include "svg/SVGElementInstanceList.idl"
 #include "svg/SVGEllipseElement.idl"
 #include "svg/SVGException.idl"
 #include "svg/SVGExternalResourcesRequired.idl"
@@ -625,8 +637,6 @@ module core {
 #include "testing/TypeConversions.idl"
 #include "workers/AbstractWorker.idl"
 #include "workers/DedicatedWorkerGlobalScope.idl"
-#include "workers/SharedWorker.idl"
-#include "workers/SharedWorkerGlobalScope.idl"
 #include "workers/Worker.idl"
 #include "workers/WorkerGlobalScope.idl"
 #include "workers/WorkerLocation.idl"

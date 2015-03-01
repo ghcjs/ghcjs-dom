@@ -1,22 +1,16 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Touch
-       (ghcjs_dom_touch_get_client_x, touchGetClientX,
-        ghcjs_dom_touch_get_client_y, touchGetClientY,
-        ghcjs_dom_touch_get_screen_x, touchGetScreenX,
-        ghcjs_dom_touch_get_screen_y, touchGetScreenY,
-        ghcjs_dom_touch_get_page_x, touchGetPageX,
-        ghcjs_dom_touch_get_page_y, touchGetPageY,
-        ghcjs_dom_touch_get_target, touchGetTarget,
-        ghcjs_dom_touch_get_identifier, touchGetIdentifier,
-        ghcjs_dom_touch_get_webkit_radius_x, touchGetWebkitRadiusX,
-        ghcjs_dom_touch_get_webkit_radius_y, touchGetWebkitRadiusY,
-        ghcjs_dom_touch_get_webkit_rotation_angle,
-        touchGetWebkitRotationAngle, ghcjs_dom_touch_get_webkit_force,
-        touchGetWebkitForce, Touch(..), IsTouch, castToTouch, gTypeTouch,
-        toTouch)
+       (js_getClientX, getClientX, js_getClientY, getClientY,
+        js_getScreenX, getScreenX, js_getScreenY, getScreenY, js_getPageX,
+        getPageX, js_getPageY, getPageY, js_getTarget, getTarget,
+        js_getIdentifier, getIdentifier, js_getWebkitRadiusX,
+        getWebkitRadiusX, js_getWebkitRadiusY, getWebkitRadiusY,
+        js_getWebkitRotationAngle, getWebkitRotationAngle,
+        js_getWebkitForce, getWebkitForce, Touch, castToTouch, gTypeTouch)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,115 +20,95 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"clientX\"]"
-        ghcjs_dom_touch_get_client_x :: JSRef Touch -> IO Int
+foreign import javascript unsafe "$1[\"clientX\"]" js_getClientX ::
+        JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.clientX Mozilla Touch.clientX documentation> 
-touchGetClientX :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetClientX self
-  = liftIO (ghcjs_dom_touch_get_client_x (unTouch (toTouch self)))
+getClientX :: (MonadIO m) => Touch -> m Int
+getClientX self = liftIO (js_getClientX (unTouch self))
  
-foreign import javascript unsafe "$1[\"clientY\"]"
-        ghcjs_dom_touch_get_client_y :: JSRef Touch -> IO Int
+foreign import javascript unsafe "$1[\"clientY\"]" js_getClientY ::
+        JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.clientY Mozilla Touch.clientY documentation> 
-touchGetClientY :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetClientY self
-  = liftIO (ghcjs_dom_touch_get_client_y (unTouch (toTouch self)))
+getClientY :: (MonadIO m) => Touch -> m Int
+getClientY self = liftIO (js_getClientY (unTouch self))
  
-foreign import javascript unsafe "$1[\"screenX\"]"
-        ghcjs_dom_touch_get_screen_x :: JSRef Touch -> IO Int
+foreign import javascript unsafe "$1[\"screenX\"]" js_getScreenX ::
+        JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.screenX Mozilla Touch.screenX documentation> 
-touchGetScreenX :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetScreenX self
-  = liftIO (ghcjs_dom_touch_get_screen_x (unTouch (toTouch self)))
+getScreenX :: (MonadIO m) => Touch -> m Int
+getScreenX self = liftIO (js_getScreenX (unTouch self))
  
-foreign import javascript unsafe "$1[\"screenY\"]"
-        ghcjs_dom_touch_get_screen_y :: JSRef Touch -> IO Int
+foreign import javascript unsafe "$1[\"screenY\"]" js_getScreenY ::
+        JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.screenY Mozilla Touch.screenY documentation> 
-touchGetScreenY :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetScreenY self
-  = liftIO (ghcjs_dom_touch_get_screen_y (unTouch (toTouch self)))
+getScreenY :: (MonadIO m) => Touch -> m Int
+getScreenY self = liftIO (js_getScreenY (unTouch self))
  
-foreign import javascript unsafe "$1[\"pageX\"]"
-        ghcjs_dom_touch_get_page_x :: JSRef Touch -> IO Int
+foreign import javascript unsafe "$1[\"pageX\"]" js_getPageX ::
+        JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.pageX Mozilla Touch.pageX documentation> 
-touchGetPageX :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetPageX self
-  = liftIO (ghcjs_dom_touch_get_page_x (unTouch (toTouch self)))
+getPageX :: (MonadIO m) => Touch -> m Int
+getPageX self = liftIO (js_getPageX (unTouch self))
  
-foreign import javascript unsafe "$1[\"pageY\"]"
-        ghcjs_dom_touch_get_page_y :: JSRef Touch -> IO Int
+foreign import javascript unsafe "$1[\"pageY\"]" js_getPageY ::
+        JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.pageY Mozilla Touch.pageY documentation> 
-touchGetPageY :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetPageY self
-  = liftIO (ghcjs_dom_touch_get_page_y (unTouch (toTouch self)))
+getPageY :: (MonadIO m) => Touch -> m Int
+getPageY self = liftIO (js_getPageY (unTouch self))
  
-foreign import javascript unsafe "$1[\"target\"]"
-        ghcjs_dom_touch_get_target :: JSRef Touch -> IO (JSRef EventTarget)
+foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
+        JSRef Touch -> IO (JSRef EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.target Mozilla Touch.target documentation> 
-touchGetTarget ::
-               (MonadIO m, IsTouch self) => self -> m (Maybe EventTarget)
-touchGetTarget self
-  = liftIO
-      ((ghcjs_dom_touch_get_target (unTouch (toTouch self))) >>=
-         fromJSRef)
+getTarget :: (MonadIO m) => Touch -> m (Maybe EventTarget)
+getTarget self
+  = liftIO ((js_getTarget (unTouch self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"identifier\"]"
-        ghcjs_dom_touch_get_identifier :: JSRef Touch -> IO Word
+        js_getIdentifier :: JSRef Touch -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.identifier Mozilla Touch.identifier documentation> 
-touchGetIdentifier :: (MonadIO m, IsTouch self) => self -> m Word
-touchGetIdentifier self
-  = liftIO (ghcjs_dom_touch_get_identifier (unTouch (toTouch self)))
+getIdentifier :: (MonadIO m) => Touch -> m Word
+getIdentifier self = liftIO (js_getIdentifier (unTouch self))
  
 foreign import javascript unsafe "$1[\"webkitRadiusX\"]"
-        ghcjs_dom_touch_get_webkit_radius_x :: JSRef Touch -> IO Int
+        js_getWebkitRadiusX :: JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitRadiusX Mozilla Touch.webkitRadiusX documentation> 
-touchGetWebkitRadiusX :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetWebkitRadiusX self
-  = liftIO
-      (ghcjs_dom_touch_get_webkit_radius_x (unTouch (toTouch self)))
+getWebkitRadiusX :: (MonadIO m) => Touch -> m Int
+getWebkitRadiusX self = liftIO (js_getWebkitRadiusX (unTouch self))
  
 foreign import javascript unsafe "$1[\"webkitRadiusY\"]"
-        ghcjs_dom_touch_get_webkit_radius_y :: JSRef Touch -> IO Int
+        js_getWebkitRadiusY :: JSRef Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitRadiusY Mozilla Touch.webkitRadiusY documentation> 
-touchGetWebkitRadiusY :: (MonadIO m, IsTouch self) => self -> m Int
-touchGetWebkitRadiusY self
-  = liftIO
-      (ghcjs_dom_touch_get_webkit_radius_y (unTouch (toTouch self)))
+getWebkitRadiusY :: (MonadIO m) => Touch -> m Int
+getWebkitRadiusY self = liftIO (js_getWebkitRadiusY (unTouch self))
  
 foreign import javascript unsafe "$1[\"webkitRotationAngle\"]"
-        ghcjs_dom_touch_get_webkit_rotation_angle ::
-        JSRef Touch -> IO Float
+        js_getWebkitRotationAngle :: JSRef Touch -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitRotationAngle Mozilla Touch.webkitRotationAngle documentation> 
-touchGetWebkitRotationAngle ::
-                            (MonadIO m, IsTouch self) => self -> m Float
-touchGetWebkitRotationAngle self
-  = liftIO
-      (ghcjs_dom_touch_get_webkit_rotation_angle
-         (unTouch (toTouch self)))
+getWebkitRotationAngle :: (MonadIO m) => Touch -> m Float
+getWebkitRotationAngle self
+  = liftIO (js_getWebkitRotationAngle (unTouch self))
  
 foreign import javascript unsafe "$1[\"webkitForce\"]"
-        ghcjs_dom_touch_get_webkit_force :: JSRef Touch -> IO Float
+        js_getWebkitForce :: JSRef Touch -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitForce Mozilla Touch.webkitForce documentation> 
-touchGetWebkitForce :: (MonadIO m, IsTouch self) => self -> m Float
-touchGetWebkitForce self
-  = liftIO
-      (ghcjs_dom_touch_get_webkit_force (unTouch (toTouch self)))
+getWebkitForce :: (MonadIO m) => Touch -> m Float
+getWebkitForce self = liftIO (js_getWebkitForce (unTouch self))
 #else
 module GHCJS.DOM.Touch (
   ) where

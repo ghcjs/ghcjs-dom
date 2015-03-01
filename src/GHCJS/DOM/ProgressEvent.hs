@@ -1,14 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ProgressEvent
-       (ghcjs_dom_progress_event_get_length_computable,
-        progressEventGetLengthComputable,
-        ghcjs_dom_progress_event_get_loaded, progressEventGetLoaded,
-        ghcjs_dom_progress_event_get_total, progressEventGetTotal,
-        ProgressEvent, IsProgressEvent, castToProgressEvent,
-        gTypeProgressEvent, toProgressEvent)
+       (js_getLengthComputable, getLengthComputable, js_getLoaded,
+        getLoaded, js_getTotal, getTotal, ProgressEvent,
+        castToProgressEvent, gTypeProgressEvent, IsProgressEvent,
+        toProgressEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,48 +17,38 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"lengthComputable\"] ? 1 : 0)"
-        ghcjs_dom_progress_event_get_length_computable ::
+        "($1[\"lengthComputable\"] ? 1 : 0)" js_getLengthComputable ::
         JSRef ProgressEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.lengthComputable Mozilla ProgressEvent.lengthComputable documentation> 
-progressEventGetLengthComputable ::
-                                 (MonadIO m, IsProgressEvent self) => self -> m Bool
-progressEventGetLengthComputable self
+getLengthComputable ::
+                    (MonadIO m, IsProgressEvent self) => self -> m Bool
+getLengthComputable self
   = liftIO
-      (ghcjs_dom_progress_event_get_length_computable
-         (unProgressEvent (toProgressEvent self)))
+      (js_getLengthComputable (unProgressEvent (toProgressEvent self)))
  
-foreign import javascript unsafe "$1[\"loaded\"]"
-        ghcjs_dom_progress_event_get_loaded ::
+foreign import javascript unsafe "$1[\"loaded\"]" js_getLoaded ::
         JSRef ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.loaded Mozilla ProgressEvent.loaded documentation> 
-progressEventGetLoaded ::
-                       (MonadIO m, IsProgressEvent self) => self -> m Word64
-progressEventGetLoaded self
+getLoaded :: (MonadIO m, IsProgressEvent self) => self -> m Word64
+getLoaded self
   = liftIO
-      (round <$>
-         (ghcjs_dom_progress_event_get_loaded
-            (unProgressEvent (toProgressEvent self))))
+      (round <$> (js_getLoaded (unProgressEvent (toProgressEvent self))))
  
-foreign import javascript unsafe "$1[\"total\"]"
-        ghcjs_dom_progress_event_get_total ::
+foreign import javascript unsafe "$1[\"total\"]" js_getTotal ::
         JSRef ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.total Mozilla ProgressEvent.total documentation> 
-progressEventGetTotal ::
-                      (MonadIO m, IsProgressEvent self) => self -> m Word64
-progressEventGetTotal self
+getTotal :: (MonadIO m, IsProgressEvent self) => self -> m Word64
+getTotal self
   = liftIO
-      (round <$>
-         (ghcjs_dom_progress_event_get_total
-            (unProgressEvent (toProgressEvent self))))
+      (round <$> (js_getTotal (unProgressEvent (toProgressEvent self))))
 #else
 module GHCJS.DOM.ProgressEvent (
   ) where

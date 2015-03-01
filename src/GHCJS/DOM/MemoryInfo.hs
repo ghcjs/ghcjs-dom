@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MemoryInfo
-       (ghcjs_dom_memory_info_get_used_js_heap_size,
-        memoryInfoGetUsedJSHeapSize,
-        ghcjs_dom_memory_info_get_total_js_heap_size,
-        memoryInfoGetTotalJSHeapSize, MemoryInfo, IsMemoryInfo,
-        castToMemoryInfo, gTypeMemoryInfo, toMemoryInfo)
+       (js_getUsedJSHeapSize, getUsedJSHeapSize, js_getTotalJSHeapSize,
+        getTotalJSHeapSize, MemoryInfo, castToMemoryInfo, gTypeMemoryInfo)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,33 +15,25 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"usedJSHeapSize\"]"
-        ghcjs_dom_memory_info_get_used_js_heap_size ::
-        JSRef MemoryInfo -> IO Word
+        js_getUsedJSHeapSize :: JSRef MemoryInfo -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo.usedJSHeapSize Mozilla MemoryInfo.usedJSHeapSize documentation> 
-memoryInfoGetUsedJSHeapSize ::
-                            (MonadIO m, IsMemoryInfo self) => self -> m Word
-memoryInfoGetUsedJSHeapSize self
-  = liftIO
-      (ghcjs_dom_memory_info_get_used_js_heap_size
-         (unMemoryInfo (toMemoryInfo self)))
+getUsedJSHeapSize :: (MonadIO m) => MemoryInfo -> m Word
+getUsedJSHeapSize self
+  = liftIO (js_getUsedJSHeapSize (unMemoryInfo self))
  
 foreign import javascript unsafe "$1[\"totalJSHeapSize\"]"
-        ghcjs_dom_memory_info_get_total_js_heap_size ::
-        JSRef MemoryInfo -> IO Word
+        js_getTotalJSHeapSize :: JSRef MemoryInfo -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo.totalJSHeapSize Mozilla MemoryInfo.totalJSHeapSize documentation> 
-memoryInfoGetTotalJSHeapSize ::
-                             (MonadIO m, IsMemoryInfo self) => self -> m Word
-memoryInfoGetTotalJSHeapSize self
-  = liftIO
-      (ghcjs_dom_memory_info_get_total_js_heap_size
-         (unMemoryInfo (toMemoryInfo self)))
+getTotalJSHeapSize :: (MonadIO m) => MemoryInfo -> m Word
+getTotalJSHeapSize self
+  = liftIO (js_getTotalJSHeapSize (unMemoryInfo self))
 #else
 module GHCJS.DOM.MemoryInfo (
   ) where

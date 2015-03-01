@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaTrackConstraints
-       (ghcjs_dom_media_track_constraints_get_mandatory,
-        mediaTrackConstraintsGetMandatory,
-        ghcjs_dom_media_track_constraints_get_optional,
-        mediaTrackConstraintsGetOptional, MediaTrackConstraints,
-        IsMediaTrackConstraints, castToMediaTrackConstraints,
-        gTypeMediaTrackConstraints, toMediaTrackConstraints)
+       (js_getMandatory, getMandatory, js_getOptional, getOptional,
+        MediaTrackConstraints, castToMediaTrackConstraints,
+        gTypeMediaTrackConstraints)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,39 +16,37 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"mandatory\"]"
-        ghcjs_dom_media_track_constraints_get_mandatory ::
+        js_getMandatory ::
         JSRef MediaTrackConstraints ->
           IO (JSRef (Maybe MediaTrackConstraintSet))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints.mandatory Mozilla MediaTrackConstraints.mandatory documentation> 
-mediaTrackConstraintsGetMandatory ::
-                                  (MonadIO m, IsMediaTrackConstraints self) =>
-                                    self -> m (Maybe MediaTrackConstraintSet)
-mediaTrackConstraintsGetMandatory self
+getMandatory ::
+             (MonadIO m) =>
+               MediaTrackConstraints -> m (Maybe MediaTrackConstraintSet)
+getMandatory self
   = liftIO
-      ((ghcjs_dom_media_track_constraints_get_mandatory
-          (unMediaTrackConstraints (toMediaTrackConstraints self)))
-         >>= fromJSRefUnchecked)
+      ((js_getMandatory (unMediaTrackConstraints self)) >>=
+         fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"optional\"]"
-        ghcjs_dom_media_track_constraints_get_optional ::
+foreign import javascript unsafe "$1[\"optional\"]" js_getOptional
+        ::
         JSRef MediaTrackConstraints ->
           IO (JSRef (Maybe [Maybe MediaTrackConstraint]))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints.optional Mozilla MediaTrackConstraints.optional documentation> 
-mediaTrackConstraintsGetOptional ::
-                                 (MonadIO m, IsMediaTrackConstraints self) =>
-                                   self -> m (Maybe [Maybe MediaTrackConstraint])
-mediaTrackConstraintsGetOptional self
+getOptional ::
+            (MonadIO m) =>
+              MediaTrackConstraints -> m (Maybe [Maybe MediaTrackConstraint])
+getOptional self
   = liftIO
-      ((ghcjs_dom_media_track_constraints_get_optional
-          (unMediaTrackConstraints (toMediaTrackConstraints self)))
-         >>= fromJSRefUnchecked)
+      ((js_getOptional (unMediaTrackConstraints self)) >>=
+         fromJSRefUnchecked)
 #else
 module GHCJS.DOM.MediaTrackConstraints (
   ) where

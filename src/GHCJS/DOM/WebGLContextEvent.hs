@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebGLContextEvent
-       (ghcjs_dom_web_gl_context_event_get_status_message,
-        webGLContextEventGetStatusMessage, WebGLContextEvent,
-        IsWebGLContextEvent, castToWebGLContextEvent,
-        gTypeWebGLContextEvent, toWebGLContextEvent)
+       (js_getStatusMessage, getStatusMessage, WebGLContextEvent,
+        castToWebGLContextEvent, gTypeWebGLContextEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,19 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"statusMessage\"]"
-        ghcjs_dom_web_gl_context_event_get_status_message ::
-        JSRef WebGLContextEvent -> IO JSString
+        js_getStatusMessage :: JSRef WebGLContextEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextEvent.statusMessage Mozilla WebGLContextEvent.statusMessage documentation> 
-webGLContextEventGetStatusMessage ::
-                                  (MonadIO m, IsWebGLContextEvent self, FromJSString result) =>
-                                    self -> m result
-webGLContextEventGetStatusMessage self
+getStatusMessage ::
+                 (MonadIO m, FromJSString result) => WebGLContextEvent -> m result
+getStatusMessage self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_web_gl_context_event_get_status_message
-            (unWebGLContextEvent (toWebGLContextEvent self))))
+      (fromJSString <$> (js_getStatusMessage (unWebGLContextEvent self)))
 #else
 module GHCJS.DOM.WebGLContextEvent (
   ) where

@@ -1,22 +1,27 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGPathSeg
-       (cPATHSEG_UNKNOWN, cPATHSEG_CLOSEPATH, cPATHSEG_MOVETO_ABS,
-        cPATHSEG_MOVETO_REL, cPATHSEG_LINETO_ABS, cPATHSEG_LINETO_REL,
-        cPATHSEG_CURVETO_CUBIC_ABS, cPATHSEG_CURVETO_CUBIC_REL,
-        cPATHSEG_CURVETO_QUADRATIC_ABS, cPATHSEG_CURVETO_QUADRATIC_REL,
-        cPATHSEG_ARC_ABS, cPATHSEG_ARC_REL, cPATHSEG_LINETO_HORIZONTAL_ABS,
-        cPATHSEG_LINETO_HORIZONTAL_REL, cPATHSEG_LINETO_VERTICAL_ABS,
-        cPATHSEG_LINETO_VERTICAL_REL, cPATHSEG_CURVETO_CUBIC_SMOOTH_ABS,
-        cPATHSEG_CURVETO_CUBIC_SMOOTH_REL,
-        cPATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS,
-        cPATHSEG_CURVETO_QUADRATIC_SMOOTH_REL,
-        ghcjs_dom_svg_path_seg_get_path_seg_type, svgPathSegGetPathSegType,
-        ghcjs_dom_svg_path_seg_get_path_seg_type_as_letter,
-        svgPathSegGetPathSegTypeAsLetter, SVGPathSeg, IsSVGPathSeg,
-        castToSVGPathSeg, gTypeSVGPathSeg, toSVGPathSeg)
+       (pattern PATHSEG_UNKNOWN, pattern PATHSEG_CLOSEPATH,
+        pattern PATHSEG_MOVETO_ABS, pattern PATHSEG_MOVETO_REL,
+        pattern PATHSEG_LINETO_ABS, pattern PATHSEG_LINETO_REL,
+        pattern PATHSEG_CURVETO_CUBIC_ABS,
+        pattern PATHSEG_CURVETO_CUBIC_REL,
+        pattern PATHSEG_CURVETO_QUADRATIC_ABS,
+        pattern PATHSEG_CURVETO_QUADRATIC_REL, pattern PATHSEG_ARC_ABS,
+        pattern PATHSEG_ARC_REL, pattern PATHSEG_LINETO_HORIZONTAL_ABS,
+        pattern PATHSEG_LINETO_HORIZONTAL_REL,
+        pattern PATHSEG_LINETO_VERTICAL_ABS,
+        pattern PATHSEG_LINETO_VERTICAL_REL,
+        pattern PATHSEG_CURVETO_CUBIC_SMOOTH_ABS,
+        pattern PATHSEG_CURVETO_CUBIC_SMOOTH_REL,
+        pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS,
+        pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL, js_getPathSegType,
+        getPathSegType, js_getPathSegTypeAsLetter, getPathSegTypeAsLetter,
+        SVGPathSeg, castToSVGPathSeg, gTypeSVGPathSeg, IsSVGPathSeg,
+        toSVGPathSeg)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,55 +31,49 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cPATHSEG_UNKNOWN = 0
-cPATHSEG_CLOSEPATH = 1
-cPATHSEG_MOVETO_ABS = 2
-cPATHSEG_MOVETO_REL = 3
-cPATHSEG_LINETO_ABS = 4
-cPATHSEG_LINETO_REL = 5
-cPATHSEG_CURVETO_CUBIC_ABS = 6
-cPATHSEG_CURVETO_CUBIC_REL = 7
-cPATHSEG_CURVETO_QUADRATIC_ABS = 8
-cPATHSEG_CURVETO_QUADRATIC_REL = 9
-cPATHSEG_ARC_ABS = 10
-cPATHSEG_ARC_REL = 11
-cPATHSEG_LINETO_HORIZONTAL_ABS = 12
-cPATHSEG_LINETO_HORIZONTAL_REL = 13
-cPATHSEG_LINETO_VERTICAL_ABS = 14
-cPATHSEG_LINETO_VERTICAL_REL = 15
-cPATHSEG_CURVETO_CUBIC_SMOOTH_ABS = 16
-cPATHSEG_CURVETO_CUBIC_SMOOTH_REL = 17
-cPATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS = 18
-cPATHSEG_CURVETO_QUADRATIC_SMOOTH_REL = 19
+pattern PATHSEG_UNKNOWN = 0
+pattern PATHSEG_CLOSEPATH = 1
+pattern PATHSEG_MOVETO_ABS = 2
+pattern PATHSEG_MOVETO_REL = 3
+pattern PATHSEG_LINETO_ABS = 4
+pattern PATHSEG_LINETO_REL = 5
+pattern PATHSEG_CURVETO_CUBIC_ABS = 6
+pattern PATHSEG_CURVETO_CUBIC_REL = 7
+pattern PATHSEG_CURVETO_QUADRATIC_ABS = 8
+pattern PATHSEG_CURVETO_QUADRATIC_REL = 9
+pattern PATHSEG_ARC_ABS = 10
+pattern PATHSEG_ARC_REL = 11
+pattern PATHSEG_LINETO_HORIZONTAL_ABS = 12
+pattern PATHSEG_LINETO_HORIZONTAL_REL = 13
+pattern PATHSEG_LINETO_VERTICAL_ABS = 14
+pattern PATHSEG_LINETO_VERTICAL_REL = 15
+pattern PATHSEG_CURVETO_CUBIC_SMOOTH_ABS = 16
+pattern PATHSEG_CURVETO_CUBIC_SMOOTH_REL = 17
+pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS = 18
+pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL = 19
  
 foreign import javascript unsafe "$1[\"pathSegType\"]"
-        ghcjs_dom_svg_path_seg_get_path_seg_type ::
-        JSRef SVGPathSeg -> IO Word
+        js_getPathSegType :: JSRef SVGPathSeg -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegType Mozilla SVGPathSeg.pathSegType documentation> 
-svgPathSegGetPathSegType ::
-                         (MonadIO m, IsSVGPathSeg self) => self -> m Word
-svgPathSegGetPathSegType self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_get_path_seg_type
-         (unSVGPathSeg (toSVGPathSeg self)))
+getPathSegType :: (MonadIO m, IsSVGPathSeg self) => self -> m Word
+getPathSegType self
+  = liftIO (js_getPathSegType (unSVGPathSeg (toSVGPathSeg self)))
  
 foreign import javascript unsafe "$1[\"pathSegTypeAsLetter\"]"
-        ghcjs_dom_svg_path_seg_get_path_seg_type_as_letter ::
-        JSRef SVGPathSeg -> IO JSString
+        js_getPathSegTypeAsLetter :: JSRef SVGPathSeg -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegTypeAsLetter Mozilla SVGPathSeg.pathSegTypeAsLetter documentation> 
-svgPathSegGetPathSegTypeAsLetter ::
-                                 (MonadIO m, IsSVGPathSeg self, FromJSString result) =>
-                                   self -> m result
-svgPathSegGetPathSegTypeAsLetter self
+getPathSegTypeAsLetter ::
+                       (MonadIO m, IsSVGPathSeg self, FromJSString result) =>
+                         self -> m result
+getPathSegTypeAsLetter self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_svg_path_seg_get_path_seg_type_as_letter
-            (unSVGPathSeg (toSVGPathSeg self))))
+         (js_getPathSegTypeAsLetter (unSVGPathSeg (toSVGPathSeg self))))
 #else
 module GHCJS.DOM.SVGPathSeg (
   ) where

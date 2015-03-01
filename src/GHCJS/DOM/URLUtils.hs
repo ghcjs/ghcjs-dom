@@ -1,30 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.URLUtils
-       (ghcjs_dom_url_utils_set_href, urlUtilsSetHref,
-        ghcjs_dom_url_utils_get_href, urlUtilsGetHref,
-        ghcjs_dom_url_utils_get_origin, urlUtilsGetOrigin,
-        ghcjs_dom_url_utils_set_protocol, urlUtilsSetProtocol,
-        ghcjs_dom_url_utils_get_protocol, urlUtilsGetProtocol,
-        ghcjs_dom_url_utils_set_username, urlUtilsSetUsername,
-        ghcjs_dom_url_utils_get_username, urlUtilsGetUsername,
-        ghcjs_dom_url_utils_set_password, urlUtilsSetPassword,
-        ghcjs_dom_url_utils_get_password, urlUtilsGetPassword,
-        ghcjs_dom_url_utils_set_host, urlUtilsSetHost,
-        ghcjs_dom_url_utils_get_host, urlUtilsGetHost,
-        ghcjs_dom_url_utils_set_hostname, urlUtilsSetHostname,
-        ghcjs_dom_url_utils_get_hostname, urlUtilsGetHostname,
-        ghcjs_dom_url_utils_set_port, urlUtilsSetPort,
-        ghcjs_dom_url_utils_get_port, urlUtilsGetPort,
-        ghcjs_dom_url_utils_set_pathname, urlUtilsSetPathname,
-        ghcjs_dom_url_utils_get_pathname, urlUtilsGetPathname,
-        ghcjs_dom_url_utils_set_search, urlUtilsSetSearch,
-        ghcjs_dom_url_utils_get_search, urlUtilsGetSearch,
-        ghcjs_dom_url_utils_set_hash, urlUtilsSetHash,
-        ghcjs_dom_url_utils_get_hash, urlUtilsGetHash, URLUtils,
-        IsURLUtils, castToURLUtils, gTypeURLUtils, toURLUtils)
+       (js_setHref, setHref, js_getHref, getHref, js_getOrigin, getOrigin,
+        js_setProtocol, setProtocol, js_getProtocol, getProtocol,
+        js_setUsername, setUsername, js_getUsername, getUsername,
+        js_setPassword, setPassword, js_getPassword, getPassword,
+        js_setHost, setHost, js_getHost, getHost, js_setHostname,
+        setHostname, js_getHostname, getHostname, js_setPort, setPort,
+        js_getPort, getPort, js_setPathname, setPathname, js_getPathname,
+        getPathname, js_setSearch, setSearch, js_getSearch, getSearch,
+        js_setHash, setHash, js_getHash, getHash, URLUtils, castToURLUtils,
+        gTypeURLUtils)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -34,257 +23,189 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"href\"] = $2;"
-        ghcjs_dom_url_utils_set_href :: JSRef URLUtils -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
+        JSRef URLUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.href Mozilla URLUtils.href documentation> 
-urlUtilsSetHref ::
-                (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetHref self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_href (unURLUtils (toURLUtils self))
-         (toJSString val))
+setHref :: (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setHref self val
+  = liftIO (js_setHref (unURLUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]"
-        ghcjs_dom_url_utils_get_href :: JSRef URLUtils -> IO JSString
+foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
+        JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.href Mozilla URLUtils.href documentation> 
-urlUtilsGetHref ::
-                (MonadIO m, IsURLUtils self, FromJSString result) =>
-                  self -> m result
-urlUtilsGetHref self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_href (unURLUtils (toURLUtils self))))
+getHref :: (MonadIO m, FromJSString result) => URLUtils -> m result
+getHref self
+  = liftIO (fromJSString <$> (js_getHref (unURLUtils self)))
  
-foreign import javascript unsafe "$1[\"origin\"]"
-        ghcjs_dom_url_utils_get_origin :: JSRef URLUtils -> IO JSString
+foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
+        JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.origin Mozilla URLUtils.origin documentation> 
-urlUtilsGetOrigin ::
-                  (MonadIO m, IsURLUtils self, FromJSString result) =>
-                    self -> m result
-urlUtilsGetOrigin self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_origin (unURLUtils (toURLUtils self))))
+getOrigin ::
+          (MonadIO m, FromJSString result) => URLUtils -> m result
+getOrigin self
+  = liftIO (fromJSString <$> (js_getOrigin (unURLUtils self)))
  
 foreign import javascript unsafe "$1[\"protocol\"] = $2;"
-        ghcjs_dom_url_utils_set_protocol ::
-        JSRef URLUtils -> JSString -> IO ()
+        js_setProtocol :: JSRef URLUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.protocol Mozilla URLUtils.protocol documentation> 
-urlUtilsSetProtocol ::
-                    (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetProtocol self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_protocol (unURLUtils (toURLUtils self))
-         (toJSString val))
+setProtocol ::
+            (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setProtocol self val
+  = liftIO (js_setProtocol (unURLUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"protocol\"]"
-        ghcjs_dom_url_utils_get_protocol :: JSRef URLUtils -> IO JSString
+foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+        :: JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.protocol Mozilla URLUtils.protocol documentation> 
-urlUtilsGetProtocol ::
-                    (MonadIO m, IsURLUtils self, FromJSString result) =>
-                      self -> m result
-urlUtilsGetProtocol self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_protocol (unURLUtils (toURLUtils self))))
+getProtocol ::
+            (MonadIO m, FromJSString result) => URLUtils -> m result
+getProtocol self
+  = liftIO (fromJSString <$> (js_getProtocol (unURLUtils self)))
  
 foreign import javascript unsafe "$1[\"username\"] = $2;"
-        ghcjs_dom_url_utils_set_username ::
-        JSRef URLUtils -> JSString -> IO ()
+        js_setUsername :: JSRef URLUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.username Mozilla URLUtils.username documentation> 
-urlUtilsSetUsername ::
-                    (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetUsername self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_username (unURLUtils (toURLUtils self))
-         (toJSString val))
+setUsername ::
+            (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setUsername self val
+  = liftIO (js_setUsername (unURLUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"username\"]"
-        ghcjs_dom_url_utils_get_username :: JSRef URLUtils -> IO JSString
+foreign import javascript unsafe "$1[\"username\"]" js_getUsername
+        :: JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.username Mozilla URLUtils.username documentation> 
-urlUtilsGetUsername ::
-                    (MonadIO m, IsURLUtils self, FromJSString result) =>
-                      self -> m result
-urlUtilsGetUsername self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_username (unURLUtils (toURLUtils self))))
+getUsername ::
+            (MonadIO m, FromJSString result) => URLUtils -> m result
+getUsername self
+  = liftIO (fromJSString <$> (js_getUsername (unURLUtils self)))
  
 foreign import javascript unsafe "$1[\"password\"] = $2;"
-        ghcjs_dom_url_utils_set_password ::
+        js_setPassword :: JSRef URLUtils -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.password Mozilla URLUtils.password documentation> 
+setPassword ::
+            (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setPassword self val
+  = liftIO (js_setPassword (unURLUtils self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"password\"]" js_getPassword
+        :: JSRef URLUtils -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.password Mozilla URLUtils.password documentation> 
+getPassword ::
+            (MonadIO m, FromJSString result) => URLUtils -> m result
+getPassword self
+  = liftIO (fromJSString <$> (js_getPassword (unURLUtils self)))
+ 
+foreign import javascript unsafe "$1[\"host\"] = $2;" js_setHost ::
         JSRef URLUtils -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.password Mozilla URLUtils.password documentation> 
-urlUtilsSetPassword ::
-                    (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetPassword self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_password (unURLUtils (toURLUtils self))
-         (toJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.host Mozilla URLUtils.host documentation> 
+setHost :: (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setHost self val
+  = liftIO (js_setHost (unURLUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"password\"]"
-        ghcjs_dom_url_utils_get_password :: JSRef URLUtils -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.password Mozilla URLUtils.password documentation> 
-urlUtilsGetPassword ::
-                    (MonadIO m, IsURLUtils self, FromJSString result) =>
-                      self -> m result
-urlUtilsGetPassword self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_password (unURLUtils (toURLUtils self))))
- 
-foreign import javascript unsafe "$1[\"host\"] = $2;"
-        ghcjs_dom_url_utils_set_host :: JSRef URLUtils -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"host\"]" js_getHost ::
+        JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.host Mozilla URLUtils.host documentation> 
-urlUtilsSetHost ::
-                (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetHost self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_host (unURLUtils (toURLUtils self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"host\"]"
-        ghcjs_dom_url_utils_get_host :: JSRef URLUtils -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.host Mozilla URLUtils.host documentation> 
-urlUtilsGetHost ::
-                (MonadIO m, IsURLUtils self, FromJSString result) =>
-                  self -> m result
-urlUtilsGetHost self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_host (unURLUtils (toURLUtils self))))
+getHost :: (MonadIO m, FromJSString result) => URLUtils -> m result
+getHost self
+  = liftIO (fromJSString <$> (js_getHost (unURLUtils self)))
  
 foreign import javascript unsafe "$1[\"hostname\"] = $2;"
-        ghcjs_dom_url_utils_set_hostname ::
+        js_setHostname :: JSRef URLUtils -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hostname Mozilla URLUtils.hostname documentation> 
+setHostname ::
+            (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setHostname self val
+  = liftIO (js_setHostname (unURLUtils self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"hostname\"]" js_getHostname
+        :: JSRef URLUtils -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hostname Mozilla URLUtils.hostname documentation> 
+getHostname ::
+            (MonadIO m, FromJSString result) => URLUtils -> m result
+getHostname self
+  = liftIO (fromJSString <$> (js_getHostname (unURLUtils self)))
+ 
+foreign import javascript unsafe "$1[\"port\"] = $2;" js_setPort ::
         JSRef URLUtils -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hostname Mozilla URLUtils.hostname documentation> 
-urlUtilsSetHostname ::
-                    (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetHostname self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_hostname (unURLUtils (toURLUtils self))
-         (toJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.port Mozilla URLUtils.port documentation> 
+setPort :: (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setPort self val
+  = liftIO (js_setPort (unURLUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"hostname\"]"
-        ghcjs_dom_url_utils_get_hostname :: JSRef URLUtils -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hostname Mozilla URLUtils.hostname documentation> 
-urlUtilsGetHostname ::
-                    (MonadIO m, IsURLUtils self, FromJSString result) =>
-                      self -> m result
-urlUtilsGetHostname self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_hostname (unURLUtils (toURLUtils self))))
- 
-foreign import javascript unsafe "$1[\"port\"] = $2;"
-        ghcjs_dom_url_utils_set_port :: JSRef URLUtils -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"port\"]" js_getPort ::
+        JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.port Mozilla URLUtils.port documentation> 
-urlUtilsSetPort ::
-                (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetPort self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_port (unURLUtils (toURLUtils self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"port\"]"
-        ghcjs_dom_url_utils_get_port :: JSRef URLUtils -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.port Mozilla URLUtils.port documentation> 
-urlUtilsGetPort ::
-                (MonadIO m, IsURLUtils self, FromJSString result) =>
-                  self -> m result
-urlUtilsGetPort self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_port (unURLUtils (toURLUtils self))))
+getPort :: (MonadIO m, FromJSString result) => URLUtils -> m result
+getPort self
+  = liftIO (fromJSString <$> (js_getPort (unURLUtils self)))
  
 foreign import javascript unsafe "$1[\"pathname\"] = $2;"
-        ghcjs_dom_url_utils_set_pathname ::
-        JSRef URLUtils -> JSString -> IO ()
+        js_setPathname :: JSRef URLUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname Mozilla URLUtils.pathname documentation> 
-urlUtilsSetPathname ::
-                    (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetPathname self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_pathname (unURLUtils (toURLUtils self))
-         (toJSString val))
+setPathname ::
+            (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setPathname self val
+  = liftIO (js_setPathname (unURLUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"pathname\"]"
-        ghcjs_dom_url_utils_get_pathname :: JSRef URLUtils -> IO JSString
+foreign import javascript unsafe "$1[\"pathname\"]" js_getPathname
+        :: JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname Mozilla URLUtils.pathname documentation> 
-urlUtilsGetPathname ::
-                    (MonadIO m, IsURLUtils self, FromJSString result) =>
-                      self -> m result
-urlUtilsGetPathname self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_pathname (unURLUtils (toURLUtils self))))
+getPathname ::
+            (MonadIO m, FromJSString result) => URLUtils -> m result
+getPathname self
+  = liftIO (fromJSString <$> (js_getPathname (unURLUtils self)))
  
 foreign import javascript unsafe "$1[\"search\"] = $2;"
-        ghcjs_dom_url_utils_set_search ::
+        js_setSearch :: JSRef URLUtils -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.search Mozilla URLUtils.search documentation> 
+setSearch :: (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setSearch self val
+  = liftIO (js_setSearch (unURLUtils self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"search\"]" js_getSearch ::
+        JSRef URLUtils -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.search Mozilla URLUtils.search documentation> 
+getSearch ::
+          (MonadIO m, FromJSString result) => URLUtils -> m result
+getSearch self
+  = liftIO (fromJSString <$> (js_getSearch (unURLUtils self)))
+ 
+foreign import javascript unsafe "$1[\"hash\"] = $2;" js_setHash ::
         JSRef URLUtils -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.search Mozilla URLUtils.search documentation> 
-urlUtilsSetSearch ::
-                  (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetSearch self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_search (unURLUtils (toURLUtils self))
-         (toJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash Mozilla URLUtils.hash documentation> 
+setHash :: (MonadIO m, ToJSString val) => URLUtils -> val -> m ()
+setHash self val
+  = liftIO (js_setHash (unURLUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"search\"]"
-        ghcjs_dom_url_utils_get_search :: JSRef URLUtils -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.search Mozilla URLUtils.search documentation> 
-urlUtilsGetSearch ::
-                  (MonadIO m, IsURLUtils self, FromJSString result) =>
-                    self -> m result
-urlUtilsGetSearch self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_search (unURLUtils (toURLUtils self))))
- 
-foreign import javascript unsafe "$1[\"hash\"] = $2;"
-        ghcjs_dom_url_utils_set_hash :: JSRef URLUtils -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"hash\"]" js_getHash ::
+        JSRef URLUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash Mozilla URLUtils.hash documentation> 
-urlUtilsSetHash ::
-                (MonadIO m, IsURLUtils self, ToJSString val) => self -> val -> m ()
-urlUtilsSetHash self val
-  = liftIO
-      (ghcjs_dom_url_utils_set_hash (unURLUtils (toURLUtils self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"hash\"]"
-        ghcjs_dom_url_utils_get_hash :: JSRef URLUtils -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash Mozilla URLUtils.hash documentation> 
-urlUtilsGetHash ::
-                (MonadIO m, IsURLUtils self, FromJSString result) =>
-                  self -> m result
-urlUtilsGetHash self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_url_utils_get_hash (unURLUtils (toURLUtils self))))
+getHash :: (MonadIO m, FromJSString result) => URLUtils -> m result
+getHash self
+  = liftIO (fromJSString <$> (js_getHash (unURLUtils self)))
 #else
 module GHCJS.DOM.URLUtils (
   ) where

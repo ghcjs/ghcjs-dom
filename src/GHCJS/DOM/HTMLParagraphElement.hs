@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLParagraphElement
-       (ghcjs_dom_html_paragraph_element_set_align,
-        htmlParagraphElementSetAlign,
-        ghcjs_dom_html_paragraph_element_get_align,
-        htmlParagraphElementGetAlign, HTMLParagraphElement,
-        IsHTMLParagraphElement, castToHTMLParagraphElement,
-        gTypeHTMLParagraphElement, toHTMLParagraphElement)
+       (js_setAlign, setAlign, js_getAlign, getAlign,
+        HTMLParagraphElement, castToHTMLParagraphElement,
+        gTypeHTMLParagraphElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +16,30 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_paragraph_element_set_align ::
-        JSRef HTMLParagraphElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLParagraphElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParagraphElement.align Mozilla HTMLParagraphElement.align documentation> 
-htmlParagraphElementSetAlign ::
-                             (MonadIO m, IsHTMLParagraphElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlParagraphElementSetAlign self val
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLParagraphElement -> val -> m ()
+setAlign self val
   = liftIO
-      (ghcjs_dom_html_paragraph_element_set_align
-         (unHTMLParagraphElement (toHTMLParagraphElement self))
-         (toJSString val))
+      (js_setAlign (unHTMLParagraphElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_paragraph_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLParagraphElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParagraphElement.align Mozilla HTMLParagraphElement.align documentation> 
-htmlParagraphElementGetAlign ::
-                             (MonadIO m, IsHTMLParagraphElement self, FromJSString result) =>
-                               self -> m result
-htmlParagraphElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) =>
+           HTMLParagraphElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_paragraph_element_get_align
-            (unHTMLParagraphElement (toHTMLParagraphElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLParagraphElement self)))
 #else
 module GHCJS.DOM.HTMLParagraphElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLParagraphElement

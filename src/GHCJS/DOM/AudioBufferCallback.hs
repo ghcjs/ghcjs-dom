@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AudioBufferCallback
-       (audioBufferCallbackNewSync, audioBufferCallbackNewAsync,
-        AudioBufferCallback, IsAudioBufferCallback,
-        castToAudioBufferCallback, gTypeAudioBufferCallback,
-        toAudioBufferCallback)
+       (newAudioBufferCallbackSync, newAudioBufferCallbackSync',
+        newAudioBufferCallbackAsync, newAudioBufferCallbackAsync',
+        AudioBufferCallback, castToAudioBufferCallback,
+        gTypeAudioBufferCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,15 +17,15 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
-audioBufferCallbackNewSync ::
+newAudioBufferCallbackSync ::
                            (MonadIO m) =>
                              (Maybe AudioBuffer -> IO Bool) -> m AudioBufferCallback
-audioBufferCallbackNewSync callback
+newAudioBufferCallbackSync callback
   = liftIO
       (AudioBufferCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -33,11 +34,11 @@ audioBufferCallbackNewSync callback
                 \ audioBuffer' -> callback audioBuffer'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
-audioBufferCallbackNewSync' ::
+newAudioBufferCallbackSync' ::
                             (MonadIO m) =>
                               ForeignRetention ->
                                 Bool -> (Maybe AudioBuffer -> IO Bool) -> m AudioBufferCallback
-audioBufferCallbackNewSync' retention continueAsync callback
+newAudioBufferCallbackSync' retention continueAsync callback
   = liftIO
       (AudioBufferCallback . castRef <$>
          syncCallback1 retention continueAsync
@@ -46,10 +47,10 @@ audioBufferCallbackNewSync' retention continueAsync callback
                 \ audioBuffer' -> callback audioBuffer'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
-audioBufferCallbackNewAsync ::
+newAudioBufferCallbackAsync ::
                             (MonadIO m) =>
                               (Maybe AudioBuffer -> IO Bool) -> m AudioBufferCallback
-audioBufferCallbackNewAsync callback
+newAudioBufferCallbackAsync callback
   = liftIO
       (AudioBufferCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -58,11 +59,11 @@ audioBufferCallbackNewAsync callback
                 \ audioBuffer' -> callback audioBuffer'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
-audioBufferCallbackNewAsync' ::
+newAudioBufferCallbackAsync' ::
                              (MonadIO m) =>
                                ForeignRetention ->
                                  (Maybe AudioBuffer -> IO Bool) -> m AudioBufferCallback
-audioBufferCallbackNewAsync' retention callback
+newAudioBufferCallbackAsync' retention callback
   = liftIO
       (AudioBufferCallback . castRef <$>
          asyncCallback1 retention

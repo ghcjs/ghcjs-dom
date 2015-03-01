@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WindowTimers
-       (ghcjs_dom_window_timers_set_timeout, windowTimersSetTimeout,
-        ghcjs_dom_window_timers_clear_timeout, windowTimersClearTimeout,
-        ghcjs_dom_window_timers_set_interval, windowTimersSetInterval,
-        ghcjs_dom_window_timers_clear_interval, windowTimersClearInterval,
-        WindowTimers, IsWindowTimers, castToWindowTimers,
-        gTypeWindowTimers, toWindowTimers)
+       (js_setTimeout, setTimeout, js_clearTimeout, clearTimeout,
+        js_setInterval, setInterval, js_clearInterval, clearInterval,
+        WindowTimers, castToWindowTimers, gTypeWindowTimers)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,63 +16,43 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"setTimeout\"]($2, $3)"
-        ghcjs_dom_window_timers_set_timeout ::
-        JSRef WindowTimers -> JSRef a -> Int -> IO Int
+        js_setTimeout :: JSRef WindowTimers -> JSRef a -> Int -> IO Int
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.timeout Mozilla WindowTimers.timeout documentation> 
-windowTimersSetTimeout ::
-                       (MonadIO m, IsWindowTimers self) => self -> JSRef a -> Int -> m Int
-windowTimersSetTimeout self handler timeout
-  = liftIO
-      (ghcjs_dom_window_timers_set_timeout
-         (unWindowTimers (toWindowTimers self))
-         handler
-         timeout)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.setTimeout Mozilla WindowTimers.setTimeout documentation> 
+setTimeout ::
+           (MonadIO m) => WindowTimers -> JSRef a -> Int -> m Int
+setTimeout self handler timeout
+  = liftIO (js_setTimeout (unWindowTimers self) handler timeout)
  
 foreign import javascript unsafe "$1[\"clearTimeout\"]($2)"
-        ghcjs_dom_window_timers_clear_timeout ::
-        JSRef WindowTimers -> Int -> IO ()
+        js_clearTimeout :: JSRef WindowTimers -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.clearTimeout Mozilla WindowTimers.clearTimeout documentation> 
-windowTimersClearTimeout ::
-                         (MonadIO m, IsWindowTimers self) => self -> Int -> m ()
-windowTimersClearTimeout self handle
-  = liftIO
-      (ghcjs_dom_window_timers_clear_timeout
-         (unWindowTimers (toWindowTimers self))
-         handle)
+clearTimeout :: (MonadIO m) => WindowTimers -> Int -> m ()
+clearTimeout self handle
+  = liftIO (js_clearTimeout (unWindowTimers self) handle)
  
 foreign import javascript unsafe "$1[\"setInterval\"]($2, $3)"
-        ghcjs_dom_window_timers_set_interval ::
-        JSRef WindowTimers -> JSRef a -> Int -> IO Int
+        js_setInterval :: JSRef WindowTimers -> JSRef a -> Int -> IO Int
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.interval Mozilla WindowTimers.interval documentation> 
-windowTimersSetInterval ::
-                        (MonadIO m, IsWindowTimers self) => self -> JSRef a -> Int -> m Int
-windowTimersSetInterval self handler timeout
-  = liftIO
-      (ghcjs_dom_window_timers_set_interval
-         (unWindowTimers (toWindowTimers self))
-         handler
-         timeout)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.setInterval Mozilla WindowTimers.setInterval documentation> 
+setInterval ::
+            (MonadIO m) => WindowTimers -> JSRef a -> Int -> m Int
+setInterval self handler timeout
+  = liftIO (js_setInterval (unWindowTimers self) handler timeout)
  
 foreign import javascript unsafe "$1[\"clearInterval\"]($2)"
-        ghcjs_dom_window_timers_clear_interval ::
-        JSRef WindowTimers -> Int -> IO ()
+        js_clearInterval :: JSRef WindowTimers -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.clearInterval Mozilla WindowTimers.clearInterval documentation> 
-windowTimersClearInterval ::
-                          (MonadIO m, IsWindowTimers self) => self -> Int -> m ()
-windowTimersClearInterval self handle
-  = liftIO
-      (ghcjs_dom_window_timers_clear_interval
-         (unWindowTimers (toWindowTimers self))
-         handle)
+clearInterval :: (MonadIO m) => WindowTimers -> Int -> m ()
+clearInterval self handle
+  = liftIO (js_clearInterval (unWindowTimers self) handle)
 #else
 module GHCJS.DOM.WindowTimers (
   ) where

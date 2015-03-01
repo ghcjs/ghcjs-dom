@@ -1,37 +1,22 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLDocument
-       (ghcjs_dom_html_document_open, htmlDocumentOpen,
-        ghcjs_dom_html_document_close, htmlDocumentClose,
-        ghcjs_dom_html_document_write, htmlDocumentWrite,
-        ghcjs_dom_html_document_writeln, htmlDocumentWriteln,
-        ghcjs_dom_html_document_clear, htmlDocumentClear,
-        ghcjs_dom_html_document_capture_events, htmlDocumentCaptureEvents,
-        ghcjs_dom_html_document_release_events, htmlDocumentReleaseEvents,
-        ghcjs_dom_html_document_get_embeds, htmlDocumentGetEmbeds,
-        ghcjs_dom_html_document_get_plugins, htmlDocumentGetPlugins,
-        ghcjs_dom_html_document_get_scripts, htmlDocumentGetScripts,
-        ghcjs_dom_html_document_get_width, htmlDocumentGetWidth,
-        ghcjs_dom_html_document_get_height, htmlDocumentGetHeight,
-        ghcjs_dom_html_document_set_dir, htmlDocumentSetDir,
-        ghcjs_dom_html_document_get_dir, htmlDocumentGetDir,
-        ghcjs_dom_html_document_set_design_mode, htmlDocumentSetDesignMode,
-        ghcjs_dom_html_document_get_design_mode, htmlDocumentGetDesignMode,
-        ghcjs_dom_html_document_get_compat_mode, htmlDocumentGetCompatMode,
-        ghcjs_dom_html_document_set_bg_color, htmlDocumentSetBgColor,
-        ghcjs_dom_html_document_get_bg_color, htmlDocumentGetBgColor,
-        ghcjs_dom_html_document_set_fg_color, htmlDocumentSetFgColor,
-        ghcjs_dom_html_document_get_fg_color, htmlDocumentGetFgColor,
-        ghcjs_dom_html_document_set_alink_color, htmlDocumentSetAlinkColor,
-        ghcjs_dom_html_document_get_alink_color, htmlDocumentGetAlinkColor,
-        ghcjs_dom_html_document_set_link_color, htmlDocumentSetLinkColor,
-        ghcjs_dom_html_document_get_link_color, htmlDocumentGetLinkColor,
-        ghcjs_dom_html_document_set_vlink_color, htmlDocumentSetVlinkColor,
-        ghcjs_dom_html_document_get_vlink_color, htmlDocumentGetVlinkColor,
-        HTMLDocument, IsHTMLDocument, castToHTMLDocument,
-        gTypeHTMLDocument, toHTMLDocument)
+       (js_open, open, js_close, close, js_write, write, js_writeln,
+        writeln, js_clear, clear, js_captureEvents, captureEvents,
+        js_releaseEvents, releaseEvents, js_getEmbeds, getEmbeds,
+        js_getPlugins, getPlugins, js_getScripts, getScripts, js_getWidth,
+        getWidth, js_getHeight, getHeight, js_setDir, setDir, js_getDir,
+        getDir, js_setDesignMode, setDesignMode, js_getDesignMode,
+        getDesignMode, js_getCompatMode, getCompatMode, js_setBgColor,
+        setBgColor, js_getBgColor, getBgColor, js_setFgColor, setFgColor,
+        js_getFgColor, getFgColor, js_setAlinkColor, setAlinkColor,
+        js_getAlinkColor, getAlinkColor, js_setLinkColor, setLinkColor,
+        js_getLinkColor, getLinkColor, js_setVlinkColor, setVlinkColor,
+        js_getVlinkColor, getVlinkColor, HTMLDocument, castToHTMLDocument,
+        gTypeHTMLDocument)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -41,368 +26,244 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"open\"]()"
-        ghcjs_dom_html_document_open :: JSRef HTMLDocument -> IO ()
+foreign import javascript unsafe "$1[\"open\"]()" js_open ::
+        JSRef HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.open Mozilla HTMLDocument.open documentation> 
-htmlDocumentOpen ::
-                 (MonadIO m, IsHTMLDocument self) => self -> m ()
-htmlDocumentOpen self
-  = liftIO
-      (ghcjs_dom_html_document_open
-         (unHTMLDocument (toHTMLDocument self)))
+open :: (MonadIO m) => HTMLDocument -> m ()
+open self = liftIO (js_open (unHTMLDocument self))
  
-foreign import javascript unsafe "$1[\"close\"]()"
-        ghcjs_dom_html_document_close :: JSRef HTMLDocument -> IO ()
+foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+        JSRef HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.close Mozilla HTMLDocument.close documentation> 
-htmlDocumentClose ::
-                  (MonadIO m, IsHTMLDocument self) => self -> m ()
-htmlDocumentClose self
-  = liftIO
-      (ghcjs_dom_html_document_close
-         (unHTMLDocument (toHTMLDocument self)))
+close :: (MonadIO m) => HTMLDocument -> m ()
+close self = liftIO (js_close (unHTMLDocument self))
  
-foreign import javascript unsafe "$1[\"write\"]($2)"
-        ghcjs_dom_html_document_write ::
+foreign import javascript unsafe "$1[\"write\"]($2)" js_write ::
         JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.write Mozilla HTMLDocument.write documentation> 
-htmlDocumentWrite ::
-                  (MonadIO m, IsHTMLDocument self, ToJSString text) =>
-                    self -> text -> m ()
-htmlDocumentWrite self text
-  = liftIO
-      (ghcjs_dom_html_document_write
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString text))
+write ::
+      (MonadIO m, ToJSString text) => HTMLDocument -> text -> m ()
+write self text
+  = liftIO (js_write (unHTMLDocument self) (toJSString text))
  
-foreign import javascript unsafe "$1[\"writeln\"]($2)"
-        ghcjs_dom_html_document_writeln ::
-        JSRef HTMLDocument -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"writeln\"]($2)" js_writeln
+        :: JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.writeln Mozilla HTMLDocument.writeln documentation> 
-htmlDocumentWriteln ::
-                    (MonadIO m, IsHTMLDocument self, ToJSString text) =>
-                      self -> text -> m ()
-htmlDocumentWriteln self text
-  = liftIO
-      (ghcjs_dom_html_document_writeln
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString text))
+writeln ::
+        (MonadIO m, ToJSString text) => HTMLDocument -> text -> m ()
+writeln self text
+  = liftIO (js_writeln (unHTMLDocument self) (toJSString text))
  
-foreign import javascript unsafe "$1[\"clear\"]()"
-        ghcjs_dom_html_document_clear :: JSRef HTMLDocument -> IO ()
+foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+        JSRef HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.clear Mozilla HTMLDocument.clear documentation> 
-htmlDocumentClear ::
-                  (MonadIO m, IsHTMLDocument self) => self -> m ()
-htmlDocumentClear self
-  = liftIO
-      (ghcjs_dom_html_document_clear
-         (unHTMLDocument (toHTMLDocument self)))
+clear :: (MonadIO m) => HTMLDocument -> m ()
+clear self = liftIO (js_clear (unHTMLDocument self))
  
 foreign import javascript unsafe "$1[\"captureEvents\"]()"
-        ghcjs_dom_html_document_capture_events ::
-        JSRef HTMLDocument -> IO ()
+        js_captureEvents :: JSRef HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.captureEvents Mozilla HTMLDocument.captureEvents documentation> 
-htmlDocumentCaptureEvents ::
-                          (MonadIO m, IsHTMLDocument self) => self -> m ()
-htmlDocumentCaptureEvents self
-  = liftIO
-      (ghcjs_dom_html_document_capture_events
-         (unHTMLDocument (toHTMLDocument self)))
+captureEvents :: (MonadIO m) => HTMLDocument -> m ()
+captureEvents self
+  = liftIO (js_captureEvents (unHTMLDocument self))
  
 foreign import javascript unsafe "$1[\"releaseEvents\"]()"
-        ghcjs_dom_html_document_release_events ::
-        JSRef HTMLDocument -> IO ()
+        js_releaseEvents :: JSRef HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.releaseEvents Mozilla HTMLDocument.releaseEvents documentation> 
-htmlDocumentReleaseEvents ::
-                          (MonadIO m, IsHTMLDocument self) => self -> m ()
-htmlDocumentReleaseEvents self
-  = liftIO
-      (ghcjs_dom_html_document_release_events
-         (unHTMLDocument (toHTMLDocument self)))
+releaseEvents :: (MonadIO m) => HTMLDocument -> m ()
+releaseEvents self
+  = liftIO (js_releaseEvents (unHTMLDocument self))
  
-foreign import javascript unsafe "$1[\"embeds\"]"
-        ghcjs_dom_html_document_get_embeds ::
+foreign import javascript unsafe "$1[\"embeds\"]" js_getEmbeds ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.embeds Mozilla HTMLDocument.embeds documentation> 
-htmlDocumentGetEmbeds ::
-                      (MonadIO m, IsHTMLDocument self) =>
-                        self -> m (Maybe HTMLCollection)
-htmlDocumentGetEmbeds self
-  = liftIO
-      ((ghcjs_dom_html_document_get_embeds
-          (unHTMLDocument (toHTMLDocument self)))
-         >>= fromJSRef)
+getEmbeds ::
+          (MonadIO m) => HTMLDocument -> m (Maybe HTMLCollection)
+getEmbeds self
+  = liftIO ((js_getEmbeds (unHTMLDocument self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"plugins\"]"
-        ghcjs_dom_html_document_get_plugins ::
+foreign import javascript unsafe "$1[\"plugins\"]" js_getPlugins ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.plugins Mozilla HTMLDocument.plugins documentation> 
-htmlDocumentGetPlugins ::
-                       (MonadIO m, IsHTMLDocument self) =>
-                         self -> m (Maybe HTMLCollection)
-htmlDocumentGetPlugins self
-  = liftIO
-      ((ghcjs_dom_html_document_get_plugins
-          (unHTMLDocument (toHTMLDocument self)))
-         >>= fromJSRef)
+getPlugins ::
+           (MonadIO m) => HTMLDocument -> m (Maybe HTMLCollection)
+getPlugins self
+  = liftIO ((js_getPlugins (unHTMLDocument self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"scripts\"]"
-        ghcjs_dom_html_document_get_scripts ::
+foreign import javascript unsafe "$1[\"scripts\"]" js_getScripts ::
         JSRef HTMLDocument -> IO (JSRef HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.scripts Mozilla HTMLDocument.scripts documentation> 
-htmlDocumentGetScripts ::
-                       (MonadIO m, IsHTMLDocument self) =>
-                         self -> m (Maybe HTMLCollection)
-htmlDocumentGetScripts self
-  = liftIO
-      ((ghcjs_dom_html_document_get_scripts
-          (unHTMLDocument (toHTMLDocument self)))
-         >>= fromJSRef)
+getScripts ::
+           (MonadIO m) => HTMLDocument -> m (Maybe HTMLCollection)
+getScripts self
+  = liftIO ((js_getScripts (unHTMLDocument self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_html_document_get_width :: JSRef HTMLDocument -> IO Int
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+        JSRef HTMLDocument -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.width Mozilla HTMLDocument.width documentation> 
-htmlDocumentGetWidth ::
-                     (MonadIO m, IsHTMLDocument self) => self -> m Int
-htmlDocumentGetWidth self
-  = liftIO
-      (ghcjs_dom_html_document_get_width
-         (unHTMLDocument (toHTMLDocument self)))
+getWidth :: (MonadIO m) => HTMLDocument -> m Int
+getWidth self = liftIO (js_getWidth (unHTMLDocument self))
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_html_document_get_height :: JSRef HTMLDocument -> IO Int
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+        JSRef HTMLDocument -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.height Mozilla HTMLDocument.height documentation> 
-htmlDocumentGetHeight ::
-                      (MonadIO m, IsHTMLDocument self) => self -> m Int
-htmlDocumentGetHeight self
-  = liftIO
-      (ghcjs_dom_html_document_get_height
-         (unHTMLDocument (toHTMLDocument self)))
+getHeight :: (MonadIO m) => HTMLDocument -> m Int
+getHeight self = liftIO (js_getHeight (unHTMLDocument self))
  
-foreign import javascript unsafe "$1[\"dir\"] = $2;"
-        ghcjs_dom_html_document_set_dir ::
+foreign import javascript unsafe "$1[\"dir\"] = $2;" js_setDir ::
         JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.dir Mozilla HTMLDocument.dir documentation> 
-htmlDocumentSetDir ::
-                   (MonadIO m, IsHTMLDocument self, ToJSString val) =>
-                     self -> val -> m ()
-htmlDocumentSetDir self val
-  = liftIO
-      (ghcjs_dom_html_document_set_dir
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString val))
+setDir ::
+       (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setDir self val
+  = liftIO (js_setDir (unHTMLDocument self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"dir\"]"
-        ghcjs_dom_html_document_get_dir ::
+foreign import javascript unsafe "$1[\"dir\"]" js_getDir ::
         JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.dir Mozilla HTMLDocument.dir documentation> 
-htmlDocumentGetDir ::
-                   (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                     self -> m result
-htmlDocumentGetDir self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_dir
-            (unHTMLDocument (toHTMLDocument self))))
+getDir ::
+       (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getDir self
+  = liftIO (fromJSString <$> (js_getDir (unHTMLDocument self)))
  
 foreign import javascript unsafe "$1[\"designMode\"] = $2;"
-        ghcjs_dom_html_document_set_design_mode ::
-        JSRef HTMLDocument -> JSString -> IO ()
+        js_setDesignMode :: JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.designMode Mozilla HTMLDocument.designMode documentation> 
-htmlDocumentSetDesignMode ::
-                          (MonadIO m, IsHTMLDocument self, ToJSString val) =>
-                            self -> val -> m ()
-htmlDocumentSetDesignMode self val
-  = liftIO
-      (ghcjs_dom_html_document_set_design_mode
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString val))
+setDesignMode ::
+              (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setDesignMode self val
+  = liftIO (js_setDesignMode (unHTMLDocument self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"designMode\"]"
-        ghcjs_dom_html_document_get_design_mode ::
-        JSRef HTMLDocument -> IO JSString
+        js_getDesignMode :: JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.designMode Mozilla HTMLDocument.designMode documentation> 
-htmlDocumentGetDesignMode ::
-                          (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                            self -> m result
-htmlDocumentGetDesignMode self
+getDesignMode ::
+              (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getDesignMode self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_design_mode
-            (unHTMLDocument (toHTMLDocument self))))
+      (fromJSString <$> (js_getDesignMode (unHTMLDocument self)))
  
 foreign import javascript unsafe "$1[\"compatMode\"]"
-        ghcjs_dom_html_document_get_compat_mode ::
-        JSRef HTMLDocument -> IO JSString
+        js_getCompatMode :: JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.compatMode Mozilla HTMLDocument.compatMode documentation> 
-htmlDocumentGetCompatMode ::
-                          (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                            self -> m result
-htmlDocumentGetCompatMode self
+getCompatMode ::
+              (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getCompatMode self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_compat_mode
-            (unHTMLDocument (toHTMLDocument self))))
+      (fromJSString <$> (js_getCompatMode (unHTMLDocument self)))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        ghcjs_dom_html_document_set_bg_color ::
-        JSRef HTMLDocument -> JSString -> IO ()
+        js_setBgColor :: JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
-htmlDocumentSetBgColor ::
-                       (MonadIO m, IsHTMLDocument self, ToJSString val) =>
-                         self -> val -> m ()
-htmlDocumentSetBgColor self val
-  = liftIO
-      (ghcjs_dom_html_document_set_bg_color
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString val))
+setBgColor ::
+           (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setBgColor self val
+  = liftIO (js_setBgColor (unHTMLDocument self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"bgColor\"]"
-        ghcjs_dom_html_document_get_bg_color ::
+foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
         JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
-htmlDocumentGetBgColor ::
-                       (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                         self -> m result
-htmlDocumentGetBgColor self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_bg_color
-            (unHTMLDocument (toHTMLDocument self))))
+getBgColor ::
+           (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getBgColor self
+  = liftIO (fromJSString <$> (js_getBgColor (unHTMLDocument self)))
  
 foreign import javascript unsafe "$1[\"fgColor\"] = $2;"
-        ghcjs_dom_html_document_set_fg_color ::
-        JSRef HTMLDocument -> JSString -> IO ()
+        js_setFgColor :: JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
-htmlDocumentSetFgColor ::
-                       (MonadIO m, IsHTMLDocument self, ToJSString val) =>
-                         self -> val -> m ()
-htmlDocumentSetFgColor self val
-  = liftIO
-      (ghcjs_dom_html_document_set_fg_color
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString val))
+setFgColor ::
+           (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setFgColor self val
+  = liftIO (js_setFgColor (unHTMLDocument self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"fgColor\"]"
-        ghcjs_dom_html_document_get_fg_color ::
+foreign import javascript unsafe "$1[\"fgColor\"]" js_getFgColor ::
         JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
-htmlDocumentGetFgColor ::
-                       (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                         self -> m result
-htmlDocumentGetFgColor self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_fg_color
-            (unHTMLDocument (toHTMLDocument self))))
+getFgColor ::
+           (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getFgColor self
+  = liftIO (fromJSString <$> (js_getFgColor (unHTMLDocument self)))
  
 foreign import javascript unsafe "$1[\"alinkColor\"] = $2;"
-        ghcjs_dom_html_document_set_alink_color ::
-        JSRef HTMLDocument -> JSString -> IO ()
+        js_setAlinkColor :: JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
-htmlDocumentSetAlinkColor ::
-                          (MonadIO m, IsHTMLDocument self, ToJSString val) =>
-                            self -> val -> m ()
-htmlDocumentSetAlinkColor self val
-  = liftIO
-      (ghcjs_dom_html_document_set_alink_color
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString val))
+setAlinkColor ::
+              (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setAlinkColor self val
+  = liftIO (js_setAlinkColor (unHTMLDocument self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"alinkColor\"]"
-        ghcjs_dom_html_document_get_alink_color ::
-        JSRef HTMLDocument -> IO JSString
+        js_getAlinkColor :: JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
-htmlDocumentGetAlinkColor ::
-                          (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                            self -> m result
-htmlDocumentGetAlinkColor self
+getAlinkColor ::
+              (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getAlinkColor self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_alink_color
-            (unHTMLDocument (toHTMLDocument self))))
+      (fromJSString <$> (js_getAlinkColor (unHTMLDocument self)))
  
 foreign import javascript unsafe "$1[\"linkColor\"] = $2;"
-        ghcjs_dom_html_document_set_link_color ::
-        JSRef HTMLDocument -> JSString -> IO ()
+        js_setLinkColor :: JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
-htmlDocumentSetLinkColor ::
-                         (MonadIO m, IsHTMLDocument self, ToJSString val) =>
-                           self -> val -> m ()
-htmlDocumentSetLinkColor self val
-  = liftIO
-      (ghcjs_dom_html_document_set_link_color
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString val))
+setLinkColor ::
+             (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setLinkColor self val
+  = liftIO (js_setLinkColor (unHTMLDocument self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"linkColor\"]"
-        ghcjs_dom_html_document_get_link_color ::
-        JSRef HTMLDocument -> IO JSString
+        js_getLinkColor :: JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
-htmlDocumentGetLinkColor ::
-                         (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                           self -> m result
-htmlDocumentGetLinkColor self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_link_color
-            (unHTMLDocument (toHTMLDocument self))))
+getLinkColor ::
+             (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getLinkColor self
+  = liftIO (fromJSString <$> (js_getLinkColor (unHTMLDocument self)))
  
 foreign import javascript unsafe "$1[\"vlinkColor\"] = $2;"
-        ghcjs_dom_html_document_set_vlink_color ::
-        JSRef HTMLDocument -> JSString -> IO ()
+        js_setVlinkColor :: JSRef HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
-htmlDocumentSetVlinkColor ::
-                          (MonadIO m, IsHTMLDocument self, ToJSString val) =>
-                            self -> val -> m ()
-htmlDocumentSetVlinkColor self val
-  = liftIO
-      (ghcjs_dom_html_document_set_vlink_color
-         (unHTMLDocument (toHTMLDocument self))
-         (toJSString val))
+setVlinkColor ::
+              (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setVlinkColor self val
+  = liftIO (js_setVlinkColor (unHTMLDocument self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"vlinkColor\"]"
-        ghcjs_dom_html_document_get_vlink_color ::
-        JSRef HTMLDocument -> IO JSString
+        js_getVlinkColor :: JSRef HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
-htmlDocumentGetVlinkColor ::
-                          (MonadIO m, IsHTMLDocument self, FromJSString result) =>
-                            self -> m result
-htmlDocumentGetVlinkColor self
+getVlinkColor ::
+              (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getVlinkColor self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_document_get_vlink_color
-            (unHTMLDocument (toHTMLDocument self))))
+      (fromJSString <$> (js_getVlinkColor (unHTMLDocument self)))
 #else
 module GHCJS.DOM.HTMLDocument (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLDocument

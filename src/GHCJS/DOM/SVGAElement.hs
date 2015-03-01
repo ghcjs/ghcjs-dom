@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGAElement
-       (ghcjs_dom_svga_element_get_target, svgaElementGetTarget,
-        SVGAElement, IsSVGAElement, castToSVGAElement, gTypeSVGAElement,
-        toSVGAElement)
+       (js_getTarget, getTarget, SVGAElement, castToSVGAElement,
+        gTypeSVGAElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,23 +15,18 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"target\"]"
-        ghcjs_dom_svga_element_get_target ::
+foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
         JSRef SVGAElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement.target Mozilla SVGAElement.target documentation> 
-svgaElementGetTarget ::
-                     (MonadIO m, IsSVGAElement self) =>
-                       self -> m (Maybe SVGAnimatedString)
-svgaElementGetTarget self
-  = liftIO
-      ((ghcjs_dom_svga_element_get_target
-          (unSVGAElement (toSVGAElement self)))
-         >>= fromJSRef)
+getTarget ::
+          (MonadIO m) => SVGAElement -> m (Maybe SVGAnimatedString)
+getTarget self
+  = liftIO ((js_getTarget (unSVGAElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGAElement (
   ) where

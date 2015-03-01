@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Rect
-       (ghcjs_dom_rect_get_top, rectGetTop, ghcjs_dom_rect_get_right,
-        rectGetRight, ghcjs_dom_rect_get_bottom, rectGetBottom,
-        ghcjs_dom_rect_get_left, rectGetLeft, Rect, IsRect, castToRect,
-        gTypeRect, toRect)
+       (js_getTop, getTop, js_getRight, getRight, js_getBottom, getBottom,
+        js_getLeft, getLeft, Rect, castToRect, gTypeRect)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,53 +15,38 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"top\"]"
-        ghcjs_dom_rect_get_top ::
+foreign import javascript unsafe "$1[\"top\"]" js_getTop ::
         JSRef Rect -> IO (JSRef CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.top Mozilla Rect.top documentation> 
-rectGetTop ::
-           (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
-rectGetTop self
-  = liftIO
-      ((ghcjs_dom_rect_get_top (unRect (toRect self))) >>= fromJSRef)
+getTop :: (MonadIO m) => Rect -> m (Maybe CSSPrimitiveValue)
+getTop self = liftIO ((js_getTop (unRect self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"right\"]"
-        ghcjs_dom_rect_get_right ::
+foreign import javascript unsafe "$1[\"right\"]" js_getRight ::
         JSRef Rect -> IO (JSRef CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.right Mozilla Rect.right documentation> 
-rectGetRight ::
-             (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
-rectGetRight self
-  = liftIO
-      ((ghcjs_dom_rect_get_right (unRect (toRect self))) >>= fromJSRef)
+getRight :: (MonadIO m) => Rect -> m (Maybe CSSPrimitiveValue)
+getRight self = liftIO ((js_getRight (unRect self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"bottom\"]"
-        ghcjs_dom_rect_get_bottom ::
+foreign import javascript unsafe "$1[\"bottom\"]" js_getBottom ::
         JSRef Rect -> IO (JSRef CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.bottom Mozilla Rect.bottom documentation> 
-rectGetBottom ::
-              (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
-rectGetBottom self
-  = liftIO
-      ((ghcjs_dom_rect_get_bottom (unRect (toRect self))) >>= fromJSRef)
+getBottom :: (MonadIO m) => Rect -> m (Maybe CSSPrimitiveValue)
+getBottom self
+  = liftIO ((js_getBottom (unRect self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"left\"]"
-        ghcjs_dom_rect_get_left ::
+foreign import javascript unsafe "$1[\"left\"]" js_getLeft ::
         JSRef Rect -> IO (JSRef CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Rect.left Mozilla Rect.left documentation> 
-rectGetLeft ::
-            (MonadIO m, IsRect self) => self -> m (Maybe CSSPrimitiveValue)
-rectGetLeft self
-  = liftIO
-      ((ghcjs_dom_rect_get_left (unRect (toRect self))) >>= fromJSRef)
+getLeft :: (MonadIO m) => Rect -> m (Maybe CSSPrimitiveValue)
+getLeft self = liftIO ((js_getLeft (unRect self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.Rect (
   ) where

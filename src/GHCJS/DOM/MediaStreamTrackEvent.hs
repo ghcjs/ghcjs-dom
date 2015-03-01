@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaStreamTrackEvent
-       (ghcjs_dom_media_stream_track_event_get_track,
-        mediaStreamTrackEventGetTrack, MediaStreamTrackEvent,
-        IsMediaStreamTrackEvent, castToMediaStreamTrackEvent,
-        gTypeMediaStreamTrackEvent, toMediaStreamTrackEvent)
+       (js_getTrack, getTrack, MediaStreamTrackEvent,
+        castToMediaStreamTrackEvent, gTypeMediaStreamTrackEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,19 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"track\"]"
-        ghcjs_dom_media_stream_track_event_get_track ::
+foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
         JSRef MediaStreamTrackEvent -> IO (JSRef MediaStreamTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackEvent.track Mozilla MediaStreamTrackEvent.track documentation> 
-mediaStreamTrackEventGetTrack ::
-                              (MonadIO m, IsMediaStreamTrackEvent self) =>
-                                self -> m (Maybe MediaStreamTrack)
-mediaStreamTrackEventGetTrack self
+getTrack ::
+         (MonadIO m) => MediaStreamTrackEvent -> m (Maybe MediaStreamTrack)
+getTrack self
   = liftIO
-      ((ghcjs_dom_media_stream_track_event_get_track
-          (unMediaStreamTrackEvent (toMediaStreamTrackEvent self)))
-         >>= fromJSRef)
+      ((js_getTrack (unMediaStreamTrackEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.MediaStreamTrackEvent (
   ) where

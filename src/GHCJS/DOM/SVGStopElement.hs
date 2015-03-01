@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGStopElement
-       (ghcjs_dom_svg_stop_element_get_offset, svgStopElementGetOffset,
-        SVGStopElement, IsSVGStopElement, castToSVGStopElement,
-        gTypeSVGStopElement, toSVGStopElement)
+       (js_getOffset, getOffset, SVGStopElement, castToSVGStopElement,
+        gTypeSVGStopElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,23 +15,18 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"offset\"]"
-        ghcjs_dom_svg_stop_element_get_offset ::
+foreign import javascript unsafe "$1[\"offset\"]" js_getOffset ::
         JSRef SVGStopElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement.offset Mozilla SVGStopElement.offset documentation> 
-svgStopElementGetOffset ::
-                        (MonadIO m, IsSVGStopElement self) =>
-                          self -> m (Maybe SVGAnimatedNumber)
-svgStopElementGetOffset self
-  = liftIO
-      ((ghcjs_dom_svg_stop_element_get_offset
-          (unSVGStopElement (toSVGStopElement self)))
-         >>= fromJSRef)
+getOffset ::
+          (MonadIO m) => SVGStopElement -> m (Maybe SVGAnimatedNumber)
+getOffset self
+  = liftIO ((js_getOffset (unSVGStopElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGStopElement (
   ) where

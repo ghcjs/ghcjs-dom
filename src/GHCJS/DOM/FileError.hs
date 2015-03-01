@@ -1,14 +1,16 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.FileError
-       (cNOT_FOUND_ERR, cSECURITY_ERR, cABORT_ERR, cNOT_READABLE_ERR,
-        cENCODING_ERR, cNO_MODIFICATION_ALLOWED_ERR, cINVALID_STATE_ERR,
-        cSYNTAX_ERR, cINVALID_MODIFICATION_ERR, cQUOTA_EXCEEDED_ERR,
-        cTYPE_MISMATCH_ERR, cPATH_EXISTS_ERR,
-        ghcjs_dom_file_error_get_code, fileErrorGetCode, FileError,
-        IsFileError, castToFileError, gTypeFileError, toFileError)
+       (pattern NOT_FOUND_ERR, pattern SECURITY_ERR, pattern ABORT_ERR,
+        pattern NOT_READABLE_ERR, pattern ENCODING_ERR,
+        pattern NO_MODIFICATION_ALLOWED_ERR, pattern INVALID_STATE_ERR,
+        pattern SYNTAX_ERR, pattern INVALID_MODIFICATION_ERR,
+        pattern QUOTA_EXCEEDED_ERR, pattern TYPE_MISMATCH_ERR,
+        pattern PATH_EXISTS_ERR, js_getCode, getCode, FileError,
+        castToFileError, gTypeFileError)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,30 +20,28 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cNOT_FOUND_ERR = 1
-cSECURITY_ERR = 2
-cABORT_ERR = 3
-cNOT_READABLE_ERR = 4
-cENCODING_ERR = 5
-cNO_MODIFICATION_ALLOWED_ERR = 6
-cINVALID_STATE_ERR = 7
-cSYNTAX_ERR = 8
-cINVALID_MODIFICATION_ERR = 9
-cQUOTA_EXCEEDED_ERR = 10
-cTYPE_MISMATCH_ERR = 11
-cPATH_EXISTS_ERR = 12
+pattern NOT_FOUND_ERR = 1
+pattern SECURITY_ERR = 2
+pattern ABORT_ERR = 3
+pattern NOT_READABLE_ERR = 4
+pattern ENCODING_ERR = 5
+pattern NO_MODIFICATION_ALLOWED_ERR = 6
+pattern INVALID_STATE_ERR = 7
+pattern SYNTAX_ERR = 8
+pattern INVALID_MODIFICATION_ERR = 9
+pattern QUOTA_EXCEEDED_ERR = 10
+pattern TYPE_MISMATCH_ERR = 11
+pattern PATH_EXISTS_ERR = 12
  
-foreign import javascript unsafe "$1[\"code\"]"
-        ghcjs_dom_file_error_get_code :: JSRef FileError -> IO Word
+foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+        JSRef FileError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileError.code Mozilla FileError.code documentation> 
-fileErrorGetCode :: (MonadIO m, IsFileError self) => self -> m Word
-fileErrorGetCode self
-  = liftIO
-      (ghcjs_dom_file_error_get_code (unFileError (toFileError self)))
+getCode :: (MonadIO m) => FileError -> m Word
+getCode self = liftIO (js_getCode (unFileError self))
 #else
 module GHCJS.DOM.FileError (
   ) where

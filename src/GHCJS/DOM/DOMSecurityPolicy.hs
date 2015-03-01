@@ -1,40 +1,20 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSecurityPolicy
-       (ghcjs_dom_dom_security_policy_allows_connection_to,
-        domSecurityPolicyAllowsConnectionTo,
-        ghcjs_dom_dom_security_policy_allows_font_from,
-        domSecurityPolicyAllowsFontFrom,
-        ghcjs_dom_dom_security_policy_allows_form_action,
-        domSecurityPolicyAllowsFormAction,
-        ghcjs_dom_dom_security_policy_allows_frame_from,
-        domSecurityPolicyAllowsFrameFrom,
-        ghcjs_dom_dom_security_policy_allows_image_from,
-        domSecurityPolicyAllowsImageFrom,
-        ghcjs_dom_dom_security_policy_allows_media_from,
-        domSecurityPolicyAllowsMediaFrom,
-        ghcjs_dom_dom_security_policy_allows_object_from,
-        domSecurityPolicyAllowsObjectFrom,
-        ghcjs_dom_dom_security_policy_allows_plugin_type,
-        domSecurityPolicyAllowsPluginType,
-        ghcjs_dom_dom_security_policy_allows_script_from,
-        domSecurityPolicyAllowsScriptFrom,
-        ghcjs_dom_dom_security_policy_allows_style_from,
-        domSecurityPolicyAllowsStyleFrom,
-        ghcjs_dom_dom_security_policy_get_allows_eval,
-        domSecurityPolicyGetAllowsEval,
-        ghcjs_dom_dom_security_policy_get_allows_inline_script,
-        domSecurityPolicyGetAllowsInlineScript,
-        ghcjs_dom_dom_security_policy_get_allows_inline_style,
-        domSecurityPolicyGetAllowsInlineStyle,
-        ghcjs_dom_dom_security_policy_get_is_active,
-        domSecurityPolicyGetIsActive,
-        ghcjs_dom_dom_security_policy_get_report_ur_is,
-        domSecurityPolicyGetReportURIs, DOMSecurityPolicy,
-        IsDOMSecurityPolicy, castToDOMSecurityPolicy,
-        gTypeDOMSecurityPolicy, toDOMSecurityPolicy)
+       (js_allowsConnectionTo, allowsConnectionTo, js_allowsFontFrom,
+        allowsFontFrom, js_allowsFormAction, allowsFormAction,
+        js_allowsFrameFrom, allowsFrameFrom, js_allowsImageFrom,
+        allowsImageFrom, js_allowsMediaFrom, allowsMediaFrom,
+        js_allowsObjectFrom, allowsObjectFrom, js_allowsPluginType,
+        allowsPluginType, js_allowsScriptFrom, allowsScriptFrom,
+        js_allowsStyleFrom, allowsStyleFrom, js_getAllowsEval,
+        getAllowsEval, js_getAllowsInlineScript, getAllowsInlineScript,
+        js_getAllowsInlineStyle, getAllowsInlineStyle, js_getIsActive,
+        getIsActive, js_getReportURIs, getReportURIs, DOMSecurityPolicy,
+        castToDOMSecurityPolicy, gTypeDOMSecurityPolicy)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -44,223 +24,165 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"allowsConnectionTo\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_connection_to ::
+        "($1[\"allowsConnectionTo\"]($2) ? 1 : 0)" js_allowsConnectionTo ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsConnectionTo Mozilla SecurityPolicy.allowsConnectionTo documentation> 
-domSecurityPolicyAllowsConnectionTo ::
-                                    (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                      self -> url -> m Bool
-domSecurityPolicyAllowsConnectionTo self url
+allowsConnectionTo ::
+                   (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsConnectionTo self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_connection_to
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsConnectionTo (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsFontFrom\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_font_from ::
+        "($1[\"allowsFontFrom\"]($2) ? 1 : 0)" js_allowsFontFrom ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsFontFrom Mozilla SecurityPolicy.allowsFontFrom documentation> 
-domSecurityPolicyAllowsFontFrom ::
-                                (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                  self -> url -> m Bool
-domSecurityPolicyAllowsFontFrom self url
+allowsFontFrom ::
+               (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsFontFrom self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_font_from
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsFontFrom (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsFormAction\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_form_action ::
+        "($1[\"allowsFormAction\"]($2) ? 1 : 0)" js_allowsFormAction ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsFormAction Mozilla SecurityPolicy.allowsFormAction documentation> 
-domSecurityPolicyAllowsFormAction ::
-                                  (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                    self -> url -> m Bool
-domSecurityPolicyAllowsFormAction self url
+allowsFormAction ::
+                 (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsFormAction self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_form_action
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsFormAction (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsFrameFrom\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_frame_from ::
+        "($1[\"allowsFrameFrom\"]($2) ? 1 : 0)" js_allowsFrameFrom ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsFrameFrom Mozilla SecurityPolicy.allowsFrameFrom documentation> 
-domSecurityPolicyAllowsFrameFrom ::
-                                 (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                   self -> url -> m Bool
-domSecurityPolicyAllowsFrameFrom self url
+allowsFrameFrom ::
+                (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsFrameFrom self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_frame_from
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsFrameFrom (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsImageFrom\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_image_from ::
+        "($1[\"allowsImageFrom\"]($2) ? 1 : 0)" js_allowsImageFrom ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsImageFrom Mozilla SecurityPolicy.allowsImageFrom documentation> 
-domSecurityPolicyAllowsImageFrom ::
-                                 (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                   self -> url -> m Bool
-domSecurityPolicyAllowsImageFrom self url
+allowsImageFrom ::
+                (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsImageFrom self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_image_from
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsImageFrom (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsMediaFrom\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_media_from ::
+        "($1[\"allowsMediaFrom\"]($2) ? 1 : 0)" js_allowsMediaFrom ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsMediaFrom Mozilla SecurityPolicy.allowsMediaFrom documentation> 
-domSecurityPolicyAllowsMediaFrom ::
-                                 (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                   self -> url -> m Bool
-domSecurityPolicyAllowsMediaFrom self url
+allowsMediaFrom ::
+                (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsMediaFrom self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_media_from
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsMediaFrom (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsObjectFrom\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_object_from ::
+        "($1[\"allowsObjectFrom\"]($2) ? 1 : 0)" js_allowsObjectFrom ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsObjectFrom Mozilla SecurityPolicy.allowsObjectFrom documentation> 
-domSecurityPolicyAllowsObjectFrom ::
-                                  (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                    self -> url -> m Bool
-domSecurityPolicyAllowsObjectFrom self url
+allowsObjectFrom ::
+                 (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsObjectFrom self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_object_from
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsObjectFrom (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsPluginType\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_plugin_type ::
+        "($1[\"allowsPluginType\"]($2) ? 1 : 0)" js_allowsPluginType ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsPluginType Mozilla SecurityPolicy.allowsPluginType documentation> 
-domSecurityPolicyAllowsPluginType ::
-                                  (MonadIO m, IsDOMSecurityPolicy self, ToJSString type') =>
-                                    self -> type' -> m Bool
-domSecurityPolicyAllowsPluginType self type'
+allowsPluginType ::
+                 (MonadIO m, ToJSString type') =>
+                   DOMSecurityPolicy -> type' -> m Bool
+allowsPluginType self type'
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_plugin_type
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString type'))
+      (js_allowsPluginType (unDOMSecurityPolicy self) (toJSString type'))
  
 foreign import javascript unsafe
-        "($1[\"allowsScriptFrom\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_script_from ::
+        "($1[\"allowsScriptFrom\"]($2) ? 1 : 0)" js_allowsScriptFrom ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsScriptFrom Mozilla SecurityPolicy.allowsScriptFrom documentation> 
-domSecurityPolicyAllowsScriptFrom ::
-                                  (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                    self -> url -> m Bool
-domSecurityPolicyAllowsScriptFrom self url
+allowsScriptFrom ::
+                 (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsScriptFrom self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_script_from
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsScriptFrom (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe
-        "($1[\"allowsStyleFrom\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_allows_style_from ::
+        "($1[\"allowsStyleFrom\"]($2) ? 1 : 0)" js_allowsStyleFrom ::
         JSRef DOMSecurityPolicy -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsStyleFrom Mozilla SecurityPolicy.allowsStyleFrom documentation> 
-domSecurityPolicyAllowsStyleFrom ::
-                                 (MonadIO m, IsDOMSecurityPolicy self, ToJSString url) =>
-                                   self -> url -> m Bool
-domSecurityPolicyAllowsStyleFrom self url
+allowsStyleFrom ::
+                (MonadIO m, ToJSString url) => DOMSecurityPolicy -> url -> m Bool
+allowsStyleFrom self url
   = liftIO
-      (ghcjs_dom_dom_security_policy_allows_style_from
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self))
-         (toJSString url))
+      (js_allowsStyleFrom (unDOMSecurityPolicy self) (toJSString url))
  
 foreign import javascript unsafe "($1[\"allowsEval\"] ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_get_allows_eval ::
-        JSRef DOMSecurityPolicy -> IO Bool
+        js_getAllowsEval :: JSRef DOMSecurityPolicy -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsEval Mozilla SecurityPolicy.allowsEval documentation> 
-domSecurityPolicyGetAllowsEval ::
-                               (MonadIO m, IsDOMSecurityPolicy self) => self -> m Bool
-domSecurityPolicyGetAllowsEval self
-  = liftIO
-      (ghcjs_dom_dom_security_policy_get_allows_eval
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self)))
+getAllowsEval :: (MonadIO m) => DOMSecurityPolicy -> m Bool
+getAllowsEval self
+  = liftIO (js_getAllowsEval (unDOMSecurityPolicy self))
  
 foreign import javascript unsafe
-        "($1[\"allowsInlineScript\"] ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_get_allows_inline_script ::
+        "($1[\"allowsInlineScript\"] ? 1 : 0)" js_getAllowsInlineScript ::
         JSRef DOMSecurityPolicy -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsInlineScript Mozilla SecurityPolicy.allowsInlineScript documentation> 
-domSecurityPolicyGetAllowsInlineScript ::
-                                       (MonadIO m, IsDOMSecurityPolicy self) => self -> m Bool
-domSecurityPolicyGetAllowsInlineScript self
-  = liftIO
-      (ghcjs_dom_dom_security_policy_get_allows_inline_script
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self)))
+getAllowsInlineScript :: (MonadIO m) => DOMSecurityPolicy -> m Bool
+getAllowsInlineScript self
+  = liftIO (js_getAllowsInlineScript (unDOMSecurityPolicy self))
  
 foreign import javascript unsafe
-        "($1[\"allowsInlineStyle\"] ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_get_allows_inline_style ::
+        "($1[\"allowsInlineStyle\"] ? 1 : 0)" js_getAllowsInlineStyle ::
         JSRef DOMSecurityPolicy -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.allowsInlineStyle Mozilla SecurityPolicy.allowsInlineStyle documentation> 
-domSecurityPolicyGetAllowsInlineStyle ::
-                                      (MonadIO m, IsDOMSecurityPolicy self) => self -> m Bool
-domSecurityPolicyGetAllowsInlineStyle self
-  = liftIO
-      (ghcjs_dom_dom_security_policy_get_allows_inline_style
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self)))
+getAllowsInlineStyle :: (MonadIO m) => DOMSecurityPolicy -> m Bool
+getAllowsInlineStyle self
+  = liftIO (js_getAllowsInlineStyle (unDOMSecurityPolicy self))
  
 foreign import javascript unsafe "($1[\"isActive\"] ? 1 : 0)"
-        ghcjs_dom_dom_security_policy_get_is_active ::
-        JSRef DOMSecurityPolicy -> IO Bool
+        js_getIsActive :: JSRef DOMSecurityPolicy -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.isActive Mozilla SecurityPolicy.isActive documentation> 
-domSecurityPolicyGetIsActive ::
-                             (MonadIO m, IsDOMSecurityPolicy self) => self -> m Bool
-domSecurityPolicyGetIsActive self
-  = liftIO
-      (ghcjs_dom_dom_security_policy_get_is_active
-         (unDOMSecurityPolicy (toDOMSecurityPolicy self)))
+getIsActive :: (MonadIO m) => DOMSecurityPolicy -> m Bool
+getIsActive self
+  = liftIO (js_getIsActive (unDOMSecurityPolicy self))
  
 foreign import javascript unsafe "$1[\"reportURIs\"]"
-        ghcjs_dom_dom_security_policy_get_report_ur_is ::
+        js_getReportURIs ::
         JSRef DOMSecurityPolicy -> IO (JSRef DOMStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.reportURIs Mozilla SecurityPolicy.reportURIs documentation> 
-domSecurityPolicyGetReportURIs ::
-                               (MonadIO m, IsDOMSecurityPolicy self) =>
-                                 self -> m (Maybe DOMStringList)
-domSecurityPolicyGetReportURIs self
+getReportURIs ::
+              (MonadIO m) => DOMSecurityPolicy -> m (Maybe DOMStringList)
+getReportURIs self
   = liftIO
-      ((ghcjs_dom_dom_security_policy_get_report_ur_is
-          (unDOMSecurityPolicy (toDOMSecurityPolicy self)))
-         >>= fromJSRef)
+      ((js_getReportURIs (unDOMSecurityPolicy self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.DOMSecurityPolicy (
   module Graphics.UI.Gtk.WebKit.DOM.DOMSecurityPolicy

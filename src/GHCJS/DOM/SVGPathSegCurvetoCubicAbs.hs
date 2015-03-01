@@ -1,34 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGPathSegCurvetoCubicAbs
-       (ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x,
-        svgPathSegCurvetoCubicAbsSetX,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x,
-        svgPathSegCurvetoCubicAbsGetX,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y,
-        svgPathSegCurvetoCubicAbsSetY,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y,
-        svgPathSegCurvetoCubicAbsGetY,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x1,
-        svgPathSegCurvetoCubicAbsSetX1,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x1,
-        svgPathSegCurvetoCubicAbsGetX1,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y1,
-        svgPathSegCurvetoCubicAbsSetY1,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y1,
-        svgPathSegCurvetoCubicAbsGetY1,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x2,
-        svgPathSegCurvetoCubicAbsSetX2,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x2,
-        svgPathSegCurvetoCubicAbsGetX2,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y2,
-        svgPathSegCurvetoCubicAbsSetY2,
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y2,
-        svgPathSegCurvetoCubicAbsGetY2, SVGPathSegCurvetoCubicAbs,
-        IsSVGPathSegCurvetoCubicAbs, castToSVGPathSegCurvetoCubicAbs,
-        gTypeSVGPathSegCurvetoCubicAbs, toSVGPathSegCurvetoCubicAbs)
+       (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
+        js_setX1, setX1, js_getX1, getX1, js_setY1, setY1, js_getY1, getY1,
+        js_setX2, setX2, js_getX2, getX2, js_setY2, setY2, js_getY2, getY2,
+        SVGPathSegCurvetoCubicAbs, castToSVGPathSegCurvetoCubicAbs,
+        gTypeSVGPathSegCurvetoCubicAbs)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -38,165 +18,99 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x ::
+foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
         JSRef SVGPathSegCurvetoCubicAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.x Mozilla SVGPathSegCurvetoCubicAbs.x documentation> 
-svgPathSegCurvetoCubicAbsSetX ::
-                              (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) =>
-                                self -> Float -> m ()
-svgPathSegCurvetoCubicAbsSetX self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self))
-         val)
+setX :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> Float -> m ()
+setX self val
+  = liftIO (js_setX (unSVGPathSegCurvetoCubicAbs self) val)
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGPathSegCurvetoCubicAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.x Mozilla SVGPathSegCurvetoCubicAbs.x documentation> 
-svgPathSegCurvetoCubicAbsGetX ::
-                              (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) => self -> m Float
-svgPathSegCurvetoCubicAbsGetX self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self)))
+getX :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> m Float
+getX self = liftIO (js_getX (unSVGPathSegCurvetoCubicAbs self))
  
-foreign import javascript unsafe "$1[\"y\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y ::
+foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
         JSRef SVGPathSegCurvetoCubicAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.y Mozilla SVGPathSegCurvetoCubicAbs.y documentation> 
-svgPathSegCurvetoCubicAbsSetY ::
-                              (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) =>
-                                self -> Float -> m ()
-svgPathSegCurvetoCubicAbsSetY self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self))
-         val)
+setY :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> Float -> m ()
+setY self val
+  = liftIO (js_setY (unSVGPathSegCurvetoCubicAbs self) val)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGPathSegCurvetoCubicAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.y Mozilla SVGPathSegCurvetoCubicAbs.y documentation> 
-svgPathSegCurvetoCubicAbsGetY ::
-                              (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) => self -> m Float
-svgPathSegCurvetoCubicAbsGetY self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self)))
+getY :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> m Float
+getY self = liftIO (js_getY (unSVGPathSegCurvetoCubicAbs self))
  
-foreign import javascript unsafe "$1[\"x1\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x1 ::
+foreign import javascript unsafe "$1[\"x1\"] = $2;" js_setX1 ::
         JSRef SVGPathSegCurvetoCubicAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.x1 Mozilla SVGPathSegCurvetoCubicAbs.x1 documentation> 
-svgPathSegCurvetoCubicAbsSetX1 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) =>
-                                 self -> Float -> m ()
-svgPathSegCurvetoCubicAbsSetX1 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x1
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self))
-         val)
+setX1 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> Float -> m ()
+setX1 self val
+  = liftIO (js_setX1 (unSVGPathSegCurvetoCubicAbs self) val)
  
-foreign import javascript unsafe "$1[\"x1\"]"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x1 ::
+foreign import javascript unsafe "$1[\"x1\"]" js_getX1 ::
         JSRef SVGPathSegCurvetoCubicAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.x1 Mozilla SVGPathSegCurvetoCubicAbs.x1 documentation> 
-svgPathSegCurvetoCubicAbsGetX1 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) => self -> m Float
-svgPathSegCurvetoCubicAbsGetX1 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x1
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self)))
+getX1 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> m Float
+getX1 self = liftIO (js_getX1 (unSVGPathSegCurvetoCubicAbs self))
  
-foreign import javascript unsafe "$1[\"y1\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y1 ::
+foreign import javascript unsafe "$1[\"y1\"] = $2;" js_setY1 ::
         JSRef SVGPathSegCurvetoCubicAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.y1 Mozilla SVGPathSegCurvetoCubicAbs.y1 documentation> 
-svgPathSegCurvetoCubicAbsSetY1 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) =>
-                                 self -> Float -> m ()
-svgPathSegCurvetoCubicAbsSetY1 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y1
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self))
-         val)
+setY1 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> Float -> m ()
+setY1 self val
+  = liftIO (js_setY1 (unSVGPathSegCurvetoCubicAbs self) val)
  
-foreign import javascript unsafe "$1[\"y1\"]"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y1 ::
+foreign import javascript unsafe "$1[\"y1\"]" js_getY1 ::
         JSRef SVGPathSegCurvetoCubicAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.y1 Mozilla SVGPathSegCurvetoCubicAbs.y1 documentation> 
-svgPathSegCurvetoCubicAbsGetY1 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) => self -> m Float
-svgPathSegCurvetoCubicAbsGetY1 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y1
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self)))
+getY1 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> m Float
+getY1 self = liftIO (js_getY1 (unSVGPathSegCurvetoCubicAbs self))
  
-foreign import javascript unsafe "$1[\"x2\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x2 ::
+foreign import javascript unsafe "$1[\"x2\"] = $2;" js_setX2 ::
         JSRef SVGPathSegCurvetoCubicAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.x2 Mozilla SVGPathSegCurvetoCubicAbs.x2 documentation> 
-svgPathSegCurvetoCubicAbsSetX2 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) =>
-                                 self -> Float -> m ()
-svgPathSegCurvetoCubicAbsSetX2 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_x2
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self))
-         val)
+setX2 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> Float -> m ()
+setX2 self val
+  = liftIO (js_setX2 (unSVGPathSegCurvetoCubicAbs self) val)
  
-foreign import javascript unsafe "$1[\"x2\"]"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x2 ::
+foreign import javascript unsafe "$1[\"x2\"]" js_getX2 ::
         JSRef SVGPathSegCurvetoCubicAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.x2 Mozilla SVGPathSegCurvetoCubicAbs.x2 documentation> 
-svgPathSegCurvetoCubicAbsGetX2 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) => self -> m Float
-svgPathSegCurvetoCubicAbsGetX2 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_x2
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self)))
+getX2 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> m Float
+getX2 self = liftIO (js_getX2 (unSVGPathSegCurvetoCubicAbs self))
  
-foreign import javascript unsafe "$1[\"y2\"] = $2;"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y2 ::
+foreign import javascript unsafe "$1[\"y2\"] = $2;" js_setY2 ::
         JSRef SVGPathSegCurvetoCubicAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.y2 Mozilla SVGPathSegCurvetoCubicAbs.y2 documentation> 
-svgPathSegCurvetoCubicAbsSetY2 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) =>
-                                 self -> Float -> m ()
-svgPathSegCurvetoCubicAbsSetY2 self val
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_set_y2
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self))
-         val)
+setY2 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> Float -> m ()
+setY2 self val
+  = liftIO (js_setY2 (unSVGPathSegCurvetoCubicAbs self) val)
  
-foreign import javascript unsafe "$1[\"y2\"]"
-        ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y2 ::
+foreign import javascript unsafe "$1[\"y2\"]" js_getY2 ::
         JSRef SVGPathSegCurvetoCubicAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs.y2 Mozilla SVGPathSegCurvetoCubicAbs.y2 documentation> 
-svgPathSegCurvetoCubicAbsGetY2 ::
-                               (MonadIO m, IsSVGPathSegCurvetoCubicAbs self) => self -> m Float
-svgPathSegCurvetoCubicAbsGetY2 self
-  = liftIO
-      (ghcjs_dom_svg_path_seg_curveto_cubic_abs_get_y2
-         (unSVGPathSegCurvetoCubicAbs (toSVGPathSegCurvetoCubicAbs self)))
+getY2 :: (MonadIO m) => SVGPathSegCurvetoCubicAbs -> m Float
+getY2 self = liftIO (js_getY2 (unSVGPathSegCurvetoCubicAbs self))
 #else
 module GHCJS.DOM.SVGPathSegCurvetoCubicAbs (
   ) where

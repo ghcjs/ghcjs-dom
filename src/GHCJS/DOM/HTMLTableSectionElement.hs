@@ -1,32 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableSectionElement
-       (ghcjs_dom_html_table_section_element_insert_row,
-        htmlTableSectionElementInsertRow,
-        ghcjs_dom_html_table_section_element_delete_row,
-        htmlTableSectionElementDeleteRow,
-        ghcjs_dom_html_table_section_element_set_align,
-        htmlTableSectionElementSetAlign,
-        ghcjs_dom_html_table_section_element_get_align,
-        htmlTableSectionElementGetAlign,
-        ghcjs_dom_html_table_section_element_set_ch,
-        htmlTableSectionElementSetCh,
-        ghcjs_dom_html_table_section_element_get_ch,
-        htmlTableSectionElementGetCh,
-        ghcjs_dom_html_table_section_element_set_ch_off,
-        htmlTableSectionElementSetChOff,
-        ghcjs_dom_html_table_section_element_get_ch_off,
-        htmlTableSectionElementGetChOff,
-        ghcjs_dom_html_table_section_element_set_v_align,
-        htmlTableSectionElementSetVAlign,
-        ghcjs_dom_html_table_section_element_get_v_align,
-        htmlTableSectionElementGetVAlign,
-        ghcjs_dom_html_table_section_element_get_rows,
-        htmlTableSectionElementGetRows, HTMLTableSectionElement,
-        IsHTMLTableSectionElement, castToHTMLTableSectionElement,
-        gTypeHTMLTableSectionElement, toHTMLTableSectionElement)
+       (js_insertRow, insertRow, js_deleteRow, deleteRow, js_setAlign,
+        setAlign, js_getAlign, getAlign, js_setCh, setCh, js_getCh, getCh,
+        js_setChOff, setChOff, js_getChOff, getChOff, js_setVAlign,
+        setVAlign, js_getVAlign, getVAlign, js_getRows, getRows,
+        HTMLTableSectionElement, castToHTMLTableSectionElement,
+        gTypeHTMLTableSectionElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -36,163 +19,128 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"insertRow\"]($2)"
-        ghcjs_dom_html_table_section_element_insert_row ::
+        js_insertRow ::
         JSRef HTMLTableSectionElement -> Int -> IO (JSRef HTMLElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
-htmlTableSectionElementInsertRow ::
-                                 (MonadIO m, IsHTMLTableSectionElement self) =>
-                                   self -> Int -> m (Maybe HTMLElement)
-htmlTableSectionElementInsertRow self index
+insertRow ::
+          (MonadIO m) =>
+            HTMLTableSectionElement -> Int -> m (Maybe HTMLElement)
+insertRow self index
   = liftIO
-      ((ghcjs_dom_html_table_section_element_insert_row
-          (unHTMLTableSectionElement (toHTMLTableSectionElement self))
-          index)
-         >>= fromJSRef)
+      ((js_insertRow (unHTMLTableSectionElement self) index) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
-        ghcjs_dom_html_table_section_element_delete_row ::
-        JSRef HTMLTableSectionElement -> Int -> IO ()
+        js_deleteRow :: JSRef HTMLTableSectionElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.deleteRow Mozilla HTMLTableSectionElement.deleteRow documentation> 
-htmlTableSectionElementDeleteRow ::
-                                 (MonadIO m, IsHTMLTableSectionElement self) => self -> Int -> m ()
-htmlTableSectionElementDeleteRow self index
-  = liftIO
-      (ghcjs_dom_html_table_section_element_delete_row
-         (unHTMLTableSectionElement (toHTMLTableSectionElement self))
-         index)
+deleteRow :: (MonadIO m) => HTMLTableSectionElement -> Int -> m ()
+deleteRow self index
+  = liftIO (js_deleteRow (unHTMLTableSectionElement self) index)
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_table_section_element_set_align ::
-        JSRef HTMLTableSectionElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.align Mozilla HTMLTableSectionElement.align documentation> 
-htmlTableSectionElementSetAlign ::
-                                (MonadIO m, IsHTMLTableSectionElement self, ToJSString val) =>
-                                  self -> val -> m ()
-htmlTableSectionElementSetAlign self val
+setAlign ::
+         (MonadIO m, ToJSString val) =>
+           HTMLTableSectionElement -> val -> m ()
+setAlign self val
   = liftIO
-      (ghcjs_dom_html_table_section_element_set_align
-         (unHTMLTableSectionElement (toHTMLTableSectionElement self))
-         (toJSString val))
+      (js_setAlign (unHTMLTableSectionElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_table_section_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.align Mozilla HTMLTableSectionElement.align documentation> 
-htmlTableSectionElementGetAlign ::
-                                (MonadIO m, IsHTMLTableSectionElement self, FromJSString result) =>
-                                  self -> m result
-htmlTableSectionElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) =>
+           HTMLTableSectionElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_section_element_get_align
-            (unHTMLTableSectionElement (toHTMLTableSectionElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLTableSectionElement self)))
  
-foreign import javascript unsafe "$1[\"ch\"] = $2;"
-        ghcjs_dom_html_table_section_element_set_ch ::
+foreign import javascript unsafe "$1[\"ch\"] = $2;" js_setCh ::
         JSRef HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.ch Mozilla HTMLTableSectionElement.ch documentation> 
-htmlTableSectionElementSetCh ::
-                             (MonadIO m, IsHTMLTableSectionElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlTableSectionElementSetCh self val
+setCh ::
+      (MonadIO m, ToJSString val) =>
+        HTMLTableSectionElement -> val -> m ()
+setCh self val
   = liftIO
-      (ghcjs_dom_html_table_section_element_set_ch
-         (unHTMLTableSectionElement (toHTMLTableSectionElement self))
-         (toJSString val))
+      (js_setCh (unHTMLTableSectionElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"ch\"]"
-        ghcjs_dom_html_table_section_element_get_ch ::
+foreign import javascript unsafe "$1[\"ch\"]" js_getCh ::
         JSRef HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.ch Mozilla HTMLTableSectionElement.ch documentation> 
-htmlTableSectionElementGetCh ::
-                             (MonadIO m, IsHTMLTableSectionElement self, FromJSString result) =>
-                               self -> m result
-htmlTableSectionElementGetCh self
+getCh ::
+      (MonadIO m, FromJSString result) =>
+        HTMLTableSectionElement -> m result
+getCh self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_section_element_get_ch
-            (unHTMLTableSectionElement (toHTMLTableSectionElement self))))
+      (fromJSString <$> (js_getCh (unHTMLTableSectionElement self)))
  
-foreign import javascript unsafe "$1[\"chOff\"] = $2;"
-        ghcjs_dom_html_table_section_element_set_ch_off ::
-        JSRef HTMLTableSectionElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"chOff\"] = $2;" js_setChOff
+        :: JSRef HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.chOff Mozilla HTMLTableSectionElement.chOff documentation> 
-htmlTableSectionElementSetChOff ::
-                                (MonadIO m, IsHTMLTableSectionElement self, ToJSString val) =>
-                                  self -> val -> m ()
-htmlTableSectionElementSetChOff self val
+setChOff ::
+         (MonadIO m, ToJSString val) =>
+           HTMLTableSectionElement -> val -> m ()
+setChOff self val
   = liftIO
-      (ghcjs_dom_html_table_section_element_set_ch_off
-         (unHTMLTableSectionElement (toHTMLTableSectionElement self))
-         (toJSString val))
+      (js_setChOff (unHTMLTableSectionElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"chOff\"]"
-        ghcjs_dom_html_table_section_element_get_ch_off ::
+foreign import javascript unsafe "$1[\"chOff\"]" js_getChOff ::
         JSRef HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.chOff Mozilla HTMLTableSectionElement.chOff documentation> 
-htmlTableSectionElementGetChOff ::
-                                (MonadIO m, IsHTMLTableSectionElement self, FromJSString result) =>
-                                  self -> m result
-htmlTableSectionElementGetChOff self
+getChOff ::
+         (MonadIO m, FromJSString result) =>
+           HTMLTableSectionElement -> m result
+getChOff self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_section_element_get_ch_off
-            (unHTMLTableSectionElement (toHTMLTableSectionElement self))))
+      (fromJSString <$> (js_getChOff (unHTMLTableSectionElement self)))
  
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
-        ghcjs_dom_html_table_section_element_set_v_align ::
-        JSRef HTMLTableSectionElement -> JSString -> IO ()
+        js_setVAlign :: JSRef HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.vAlign Mozilla HTMLTableSectionElement.vAlign documentation> 
-htmlTableSectionElementSetVAlign ::
-                                 (MonadIO m, IsHTMLTableSectionElement self, ToJSString val) =>
-                                   self -> val -> m ()
-htmlTableSectionElementSetVAlign self val
+setVAlign ::
+          (MonadIO m, ToJSString val) =>
+            HTMLTableSectionElement -> val -> m ()
+setVAlign self val
   = liftIO
-      (ghcjs_dom_html_table_section_element_set_v_align
-         (unHTMLTableSectionElement (toHTMLTableSectionElement self))
-         (toJSString val))
+      (js_setVAlign (unHTMLTableSectionElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"vAlign\"]"
-        ghcjs_dom_html_table_section_element_get_v_align ::
+foreign import javascript unsafe "$1[\"vAlign\"]" js_getVAlign ::
         JSRef HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.vAlign Mozilla HTMLTableSectionElement.vAlign documentation> 
-htmlTableSectionElementGetVAlign ::
-                                 (MonadIO m, IsHTMLTableSectionElement self, FromJSString result) =>
-                                   self -> m result
-htmlTableSectionElementGetVAlign self
+getVAlign ::
+          (MonadIO m, FromJSString result) =>
+            HTMLTableSectionElement -> m result
+getVAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_section_element_get_v_align
-            (unHTMLTableSectionElement (toHTMLTableSectionElement self))))
+      (fromJSString <$> (js_getVAlign (unHTMLTableSectionElement self)))
  
-foreign import javascript unsafe "$1[\"rows\"]"
-        ghcjs_dom_html_table_section_element_get_rows ::
+foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
         JSRef HTMLTableSectionElement -> IO (JSRef HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.rows Mozilla HTMLTableSectionElement.rows documentation> 
-htmlTableSectionElementGetRows ::
-                               (MonadIO m, IsHTMLTableSectionElement self) =>
-                                 self -> m (Maybe HTMLCollection)
-htmlTableSectionElementGetRows self
+getRows ::
+        (MonadIO m) => HTMLTableSectionElement -> m (Maybe HTMLCollection)
+getRows self
   = liftIO
-      ((ghcjs_dom_html_table_section_element_get_rows
-          (unHTMLTableSectionElement (toHTMLTableSectionElement self)))
-         >>= fromJSRef)
+      ((js_getRows (unHTMLTableSectionElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLTableSectionElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLTableSectionElement

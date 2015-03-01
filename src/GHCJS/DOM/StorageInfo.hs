@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StorageInfo
-       (ghcjs_dom_storage_info_query_usage_and_quota,
-        storageInfoQueryUsageAndQuota,
-        ghcjs_dom_storage_info_request_quota, storageInfoRequestQuota,
-        cTEMPORARY, cPERSISTENT, StorageInfo, IsStorageInfo,
-        castToStorageInfo, gTypeStorageInfo, toStorageInfo)
+       (js_queryUsageAndQuota, queryUsageAndQuota, js_requestQuota,
+        requestQuota, pattern TEMPORARY, pattern PERSISTENT, StorageInfo,
+        castToStorageInfo, gTypeStorageInfo)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,63 +16,51 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "$1[\"queryUsageAndQuota\"]($2, $3,\n$4)"
-        ghcjs_dom_storage_info_query_usage_and_quota ::
+        "$1[\"queryUsageAndQuota\"]($2, $3,\n$4)" js_queryUsageAndQuota ::
         JSRef StorageInfo ->
           Word ->
             JSRef StorageUsageCallback -> JSRef StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.queryUsageAndQuota Mozilla StorageInfo.queryUsageAndQuota documentation> 
-storageInfoQueryUsageAndQuota ::
-                              (MonadIO m, IsStorageInfo self,
-                               IsStorageUsageCallback usageCallback,
-                               IsStorageErrorCallback errorCallback) =>
-                                self -> Word -> Maybe usageCallback -> Maybe errorCallback -> m ()
-storageInfoQueryUsageAndQuota self storageType usageCallback
-  errorCallback
+queryUsageAndQuota ::
+                   (MonadIO m) =>
+                     StorageInfo ->
+                       Word ->
+                         Maybe StorageUsageCallback -> Maybe StorageErrorCallback -> m ()
+queryUsageAndQuota self storageType usageCallback errorCallback
   = liftIO
-      (ghcjs_dom_storage_info_query_usage_and_quota
-         (unStorageInfo (toStorageInfo self))
-         storageType
-         (maybe jsNull (unStorageUsageCallback . toStorageUsageCallback)
-            usageCallback)
-         (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
-            errorCallback))
+      (js_queryUsageAndQuota (unStorageInfo self) storageType
+         (maybe jsNull unStorageUsageCallback usageCallback)
+         (maybe jsNull unStorageErrorCallback errorCallback))
  
 foreign import javascript unsafe
-        "$1[\"requestQuota\"]($2, $3, $4,\n$5)"
-        ghcjs_dom_storage_info_request_quota ::
+        "$1[\"requestQuota\"]($2, $3, $4,\n$5)" js_requestQuota ::
         JSRef StorageInfo ->
           Word ->
             Double ->
               JSRef StorageQuotaCallback -> JSRef StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.requestQuota Mozilla StorageInfo.requestQuota documentation> 
-storageInfoRequestQuota ::
-                        (MonadIO m, IsStorageInfo self,
-                         IsStorageQuotaCallback quotaCallback,
-                         IsStorageErrorCallback errorCallback) =>
-                          self ->
-                            Word ->
-                              Word64 -> Maybe quotaCallback -> Maybe errorCallback -> m ()
-storageInfoRequestQuota self storageType newQuotaInBytes
-  quotaCallback errorCallback
+requestQuota ::
+             (MonadIO m) =>
+               StorageInfo ->
+                 Word ->
+                   Word64 ->
+                     Maybe StorageQuotaCallback -> Maybe StorageErrorCallback -> m ()
+requestQuota self storageType newQuotaInBytes quotaCallback
+  errorCallback
   = liftIO
-      (ghcjs_dom_storage_info_request_quota
-         (unStorageInfo (toStorageInfo self))
-         storageType
+      (js_requestQuota (unStorageInfo self) storageType
          (fromIntegral newQuotaInBytes)
-         (maybe jsNull (unStorageQuotaCallback . toStorageQuotaCallback)
-            quotaCallback)
-         (maybe jsNull (unStorageErrorCallback . toStorageErrorCallback)
-            errorCallback))
-cTEMPORARY = 0
-cPERSISTENT = 1
+         (maybe jsNull unStorageQuotaCallback quotaCallback)
+         (maybe jsNull unStorageErrorCallback errorCallback))
+pattern TEMPORARY = 0
+pattern PERSISTENT = 1
 #else
 module GHCJS.DOM.StorageInfo (
   module Graphics.UI.Gtk.WebKit.DOM.StorageInfo

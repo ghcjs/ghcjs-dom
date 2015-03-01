@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TimeRanges
-       (ghcjs_dom_time_ranges_start, timeRangesStart,
-        ghcjs_dom_time_ranges_end, timeRangesEnd,
-        ghcjs_dom_time_ranges_get_length, timeRangesGetLength,
-        TimeRanges(..), IsTimeRanges, castToTimeRanges, gTypeTimeRanges,
-        toTimeRanges)
+       (js_start, start, js_end, end, js_getLength, getLength, TimeRanges,
+        castToTimeRanges, gTypeTimeRanges)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,43 +15,30 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"start\"]($2)"
-        ghcjs_dom_time_ranges_start ::
+foreign import javascript unsafe "$1[\"start\"]($2)" js_start ::
         JSRef TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.start Mozilla TimeRanges.start documentation> 
-timeRangesStart ::
-                (MonadIO m, IsTimeRanges self) => self -> Word -> m Double
-timeRangesStart self index
-  = liftIO
-      (ghcjs_dom_time_ranges_start (unTimeRanges (toTimeRanges self))
-         index)
+start :: (MonadIO m) => TimeRanges -> Word -> m Double
+start self index = liftIO (js_start (unTimeRanges self) index)
  
-foreign import javascript unsafe "$1[\"end\"]($2)"
-        ghcjs_dom_time_ranges_end :: JSRef TimeRanges -> Word -> IO Double
+foreign import javascript unsafe "$1[\"end\"]($2)" js_end ::
+        JSRef TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.end Mozilla TimeRanges.end documentation> 
-timeRangesEnd ::
-              (MonadIO m, IsTimeRanges self) => self -> Word -> m Double
-timeRangesEnd self index
-  = liftIO
-      (ghcjs_dom_time_ranges_end (unTimeRanges (toTimeRanges self))
-         index)
+end :: (MonadIO m) => TimeRanges -> Word -> m Double
+end self index = liftIO (js_end (unTimeRanges self) index)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_time_ranges_get_length :: JSRef TimeRanges -> IO Word
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+        JSRef TimeRanges -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.length Mozilla TimeRanges.length documentation> 
-timeRangesGetLength ::
-                    (MonadIO m, IsTimeRanges self) => self -> m Word
-timeRangesGetLength self
-  = liftIO
-      (ghcjs_dom_time_ranges_get_length
-         (unTimeRanges (toTimeRanges self)))
+getLength :: (MonadIO m) => TimeRanges -> m Word
+getLength self = liftIO (js_getLength (unTimeRanges self))
 #else
 module GHCJS.DOM.TimeRanges (
   module Graphics.UI.Gtk.WebKit.DOM.TimeRanges

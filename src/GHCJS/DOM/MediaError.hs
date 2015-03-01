@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaError
-       (cMEDIA_ERR_ABORTED, cMEDIA_ERR_NETWORK, cMEDIA_ERR_DECODE,
-        cMEDIA_ERR_SRC_NOT_SUPPORTED, cMEDIA_ERR_ENCRYPTED,
-        ghcjs_dom_media_error_get_code, mediaErrorGetCode, MediaError,
-        IsMediaError, castToMediaError, gTypeMediaError, toMediaError)
+       (pattern MEDIA_ERR_ABORTED, pattern MEDIA_ERR_NETWORK,
+        pattern MEDIA_ERR_DECODE, pattern MEDIA_ERR_SRC_NOT_SUPPORTED,
+        pattern MEDIA_ERR_ENCRYPTED, js_getCode, getCode, MediaError,
+        castToMediaError, gTypeMediaError)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,24 +17,21 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cMEDIA_ERR_ABORTED = 1
-cMEDIA_ERR_NETWORK = 2
-cMEDIA_ERR_DECODE = 3
-cMEDIA_ERR_SRC_NOT_SUPPORTED = 4
-cMEDIA_ERR_ENCRYPTED = 5
+pattern MEDIA_ERR_ABORTED = 1
+pattern MEDIA_ERR_NETWORK = 2
+pattern MEDIA_ERR_DECODE = 3
+pattern MEDIA_ERR_SRC_NOT_SUPPORTED = 4
+pattern MEDIA_ERR_ENCRYPTED = 5
  
-foreign import javascript unsafe "$1[\"code\"]"
-        ghcjs_dom_media_error_get_code :: JSRef MediaError -> IO Word
+foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+        JSRef MediaError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaError.code Mozilla MediaError.code documentation> 
-mediaErrorGetCode ::
-                  (MonadIO m, IsMediaError self) => self -> m Word
-mediaErrorGetCode self
-  = liftIO
-      (ghcjs_dom_media_error_get_code (unMediaError (toMediaError self)))
+getCode :: (MonadIO m) => MediaError -> m Word
+getCode self = liftIO (js_getCode (unMediaError self))
 #else
 module GHCJS.DOM.MediaError (
   module Graphics.UI.Gtk.WebKit.DOM.MediaError

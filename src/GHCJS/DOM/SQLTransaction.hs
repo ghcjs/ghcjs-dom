@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SQLTransaction
-       (ghcjs_dom_sql_transaction_execute_sql, sqlTransactionExecuteSql,
-        SQLTransaction, IsSQLTransaction, castToSQLTransaction,
-        gTypeSQLTransaction, toSQLTransaction)
+       (js_executeSql, executeSql, SQLTransaction, castToSQLTransaction,
+        gTypeSQLTransaction)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,13 +15,12 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "$1[\"executeSql\"]($2, $3, $4, $5)"
-        ghcjs_dom_sql_transaction_execute_sql ::
+        "$1[\"executeSql\"]($2, $3, $4, $5)" js_executeSql ::
         JSRef SQLTransaction ->
           JSString ->
             JSRef ObjectArray ->
@@ -29,25 +28,19 @@ foreign import javascript unsafe
                 JSRef SQLStatementErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransaction.executeSql Mozilla SQLTransaction.executeSql documentation> 
-sqlTransactionExecuteSql ::
-                         (MonadIO m, IsSQLTransaction self, ToJSString sqlStatement,
-                          IsObjectArray arguments, IsSQLStatementCallback callback,
-                          IsSQLStatementErrorCallback errorCallback) =>
-                           self ->
-                             sqlStatement ->
-                               Maybe arguments -> Maybe callback -> Maybe errorCallback -> m ()
-sqlTransactionExecuteSql self sqlStatement arguments callback
-  errorCallback
+executeSql ::
+           (MonadIO m, ToJSString sqlStatement, IsObjectArray arguments) =>
+             SQLTransaction ->
+               sqlStatement ->
+                 Maybe arguments ->
+                   Maybe SQLStatementCallback ->
+                     Maybe SQLStatementErrorCallback -> m ()
+executeSql self sqlStatement arguments callback errorCallback
   = liftIO
-      (ghcjs_dom_sql_transaction_execute_sql
-         (unSQLTransaction (toSQLTransaction self))
-         (toJSString sqlStatement)
+      (js_executeSql (unSQLTransaction self) (toJSString sqlStatement)
          (maybe jsNull (unObjectArray . toObjectArray) arguments)
-         (maybe jsNull (unSQLStatementCallback . toSQLStatementCallback)
-            callback)
-         (maybe jsNull
-            (unSQLStatementErrorCallback . toSQLStatementErrorCallback)
-            errorCallback))
+         (maybe jsNull unSQLStatementCallback callback)
+         (maybe jsNull unSQLStatementErrorCallback errorCallback))
 #else
 module GHCJS.DOM.SQLTransaction (
   ) where

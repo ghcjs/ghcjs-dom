@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLabelElement
-       (ghcjs_dom_html_label_element_get_form, htmlLabelElementGetForm,
-        ghcjs_dom_html_label_element_set_html_for,
-        htmlLabelElementSetHtmlFor,
-        ghcjs_dom_html_label_element_get_html_for,
-        htmlLabelElementGetHtmlFor,
-        ghcjs_dom_html_label_element_get_control,
-        htmlLabelElementGetControl, HTMLLabelElement, IsHTMLLabelElement,
-        castToHTMLLabelElement, gTypeHTMLLabelElement, toHTMLLabelElement)
+       (js_getForm, getForm, js_setHtmlFor, setHtmlFor, js_getHtmlFor,
+        getHtmlFor, js_getControl, getControl, HTMLLabelElement,
+        castToHTMLLabelElement, gTypeHTMLLabelElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,65 +16,46 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"form\"]"
-        ghcjs_dom_html_label_element_get_form ::
+foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
         JSRef HTMLLabelElement -> IO (JSRef HTMLFormElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.form Mozilla HTMLLabelElement.form documentation> 
-htmlLabelElementGetForm ::
-                        (MonadIO m, IsHTMLLabelElement self) =>
-                          self -> m (Maybe HTMLFormElement)
-htmlLabelElementGetForm self
-  = liftIO
-      ((ghcjs_dom_html_label_element_get_form
-          (unHTMLLabelElement (toHTMLLabelElement self)))
-         >>= fromJSRef)
+getForm ::
+        (MonadIO m) => HTMLLabelElement -> m (Maybe HTMLFormElement)
+getForm self
+  = liftIO ((js_getForm (unHTMLLabelElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
-        ghcjs_dom_html_label_element_set_html_for ::
-        JSRef HTMLLabelElement -> JSString -> IO ()
+        js_setHtmlFor :: JSRef HTMLLabelElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.htmlFor Mozilla HTMLLabelElement.htmlFor documentation> 
-htmlLabelElementSetHtmlFor ::
-                           (MonadIO m, IsHTMLLabelElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlLabelElementSetHtmlFor self val
-  = liftIO
-      (ghcjs_dom_html_label_element_set_html_for
-         (unHTMLLabelElement (toHTMLLabelElement self))
-         (toJSString val))
+setHtmlFor ::
+           (MonadIO m, ToJSString val) => HTMLLabelElement -> val -> m ()
+setHtmlFor self val
+  = liftIO (js_setHtmlFor (unHTMLLabelElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"htmlFor\"]"
-        ghcjs_dom_html_label_element_get_html_for ::
+foreign import javascript unsafe "$1[\"htmlFor\"]" js_getHtmlFor ::
         JSRef HTMLLabelElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.htmlFor Mozilla HTMLLabelElement.htmlFor documentation> 
-htmlLabelElementGetHtmlFor ::
-                           (MonadIO m, IsHTMLLabelElement self, FromJSString result) =>
-                             self -> m result
-htmlLabelElementGetHtmlFor self
+getHtmlFor ::
+           (MonadIO m, FromJSString result) => HTMLLabelElement -> m result
+getHtmlFor self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_label_element_get_html_for
-            (unHTMLLabelElement (toHTMLLabelElement self))))
+      (fromJSString <$> (js_getHtmlFor (unHTMLLabelElement self)))
  
-foreign import javascript unsafe "$1[\"control\"]"
-        ghcjs_dom_html_label_element_get_control ::
+foreign import javascript unsafe "$1[\"control\"]" js_getControl ::
         JSRef HTMLLabelElement -> IO (JSRef HTMLElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.control Mozilla HTMLLabelElement.control documentation> 
-htmlLabelElementGetControl ::
-                           (MonadIO m, IsHTMLLabelElement self) =>
-                             self -> m (Maybe HTMLElement)
-htmlLabelElementGetControl self
-  = liftIO
-      ((ghcjs_dom_html_label_element_get_control
-          (unHTMLLabelElement (toHTMLLabelElement self)))
-         >>= fromJSRef)
+getControl ::
+           (MonadIO m) => HTMLLabelElement -> m (Maybe HTMLElement)
+getControl self
+  = liftIO ((js_getControl (unHTMLLabelElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLLabelElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLLabelElement

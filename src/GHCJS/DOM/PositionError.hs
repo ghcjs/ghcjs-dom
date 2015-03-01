@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.PositionError
-       (cPERMISSION_DENIED, cPOSITION_UNAVAILABLE, cTIMEOUT,
-        ghcjs_dom_position_error_get_code, positionErrorGetCode,
-        ghcjs_dom_position_error_get_message, positionErrorGetMessage,
-        PositionError, IsPositionError, castToPositionError,
-        gTypePositionError, toPositionError)
+       (pattern PERMISSION_DENIED, pattern POSITION_UNAVAILABLE,
+        pattern TIMEOUT, js_getCode, getCode, js_getMessage, getMessage,
+        PositionError, castToPositionError, gTypePositionError)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,37 +16,28 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cPERMISSION_DENIED = 1
-cPOSITION_UNAVAILABLE = 2
-cTIMEOUT = 3
+pattern PERMISSION_DENIED = 1
+pattern POSITION_UNAVAILABLE = 2
+pattern TIMEOUT = 3
  
-foreign import javascript unsafe "$1[\"code\"]"
-        ghcjs_dom_position_error_get_code :: JSRef PositionError -> IO Word
+foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+        JSRef PositionError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.code Mozilla PositionError.code documentation> 
-positionErrorGetCode ::
-                     (MonadIO m, IsPositionError self) => self -> m Word
-positionErrorGetCode self
-  = liftIO
-      (ghcjs_dom_position_error_get_code
-         (unPositionError (toPositionError self)))
+getCode :: (MonadIO m) => PositionError -> m Word
+getCode self = liftIO (js_getCode (unPositionError self))
  
-foreign import javascript unsafe "$1[\"message\"]"
-        ghcjs_dom_position_error_get_message ::
+foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
         JSRef PositionError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.message Mozilla PositionError.message documentation> 
-positionErrorGetMessage ::
-                        (MonadIO m, IsPositionError self, FromJSString result) =>
-                          self -> m result
-positionErrorGetMessage self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_position_error_get_message
-            (unPositionError (toPositionError self))))
+getMessage ::
+           (MonadIO m, FromJSString result) => PositionError -> m result
+getMessage self
+  = liftIO (fromJSString <$> (js_getMessage (unPositionError self)))
 #else
 module GHCJS.DOM.PositionError (
   ) where

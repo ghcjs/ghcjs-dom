@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.IDBTransaction
-       (ghcjs_dom_idb_transaction_object_store, idbTransactionObjectStore,
-        ghcjs_dom_idb_transaction_abort, idbTransactionAbort,
-        ghcjs_dom_idb_transaction_get_mode, idbTransactionGetMode,
-        ghcjs_dom_idb_transaction_get_db, idbTransactionGetDb,
-        ghcjs_dom_idb_transaction_get_error, idbTransactionGetError,
-        idbTransactionAbortEvent, idbTransactionComplete,
-        idbTransactionError, IDBTransaction, IsIDBTransaction,
-        castToIDBTransaction, gTypeIDBTransaction, toIDBTransaction)
+       (js_objectStore, objectStore, js_abort, abort, js_getMode, getMode,
+        js_getDb, getDb, js_getError, getError, abortEvent, complete,
+        error, IDBTransaction, castToIDBTransaction, gTypeIDBTransaction)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,90 +16,66 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"objectStore\"]($2)"
-        ghcjs_dom_idb_transaction_object_store ::
+        js_objectStore ::
         JSRef IDBTransaction -> JSString -> IO (JSRef IDBObjectStore)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
-idbTransactionObjectStore ::
-                          (MonadIO m, IsIDBTransaction self, ToJSString name) =>
-                            self -> name -> m (Maybe IDBObjectStore)
-idbTransactionObjectStore self name
+objectStore ::
+            (MonadIO m, ToJSString name) =>
+              IDBTransaction -> name -> m (Maybe IDBObjectStore)
+objectStore self name
   = liftIO
-      ((ghcjs_dom_idb_transaction_object_store
-          (unIDBTransaction (toIDBTransaction self))
-          (toJSString name))
-         >>= fromJSRef)
+      ((js_objectStore (unIDBTransaction self) (toJSString name)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"abort\"]()"
-        ghcjs_dom_idb_transaction_abort :: JSRef IDBTransaction -> IO ()
+foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
+        JSRef IDBTransaction -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.abort Mozilla IDBTransaction.abort documentation> 
-idbTransactionAbort ::
-                    (MonadIO m, IsIDBTransaction self) => self -> m ()
-idbTransactionAbort self
-  = liftIO
-      (ghcjs_dom_idb_transaction_abort
-         (unIDBTransaction (toIDBTransaction self)))
+abort :: (MonadIO m) => IDBTransaction -> m ()
+abort self = liftIO (js_abort (unIDBTransaction self))
  
-foreign import javascript unsafe "$1[\"mode\"]"
-        ghcjs_dom_idb_transaction_get_mode ::
+foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
         JSRef IDBTransaction -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.mode Mozilla IDBTransaction.mode documentation> 
-idbTransactionGetMode ::
-                      (MonadIO m, IsIDBTransaction self, FromJSString result) =>
-                        self -> m result
-idbTransactionGetMode self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_idb_transaction_get_mode
-            (unIDBTransaction (toIDBTransaction self))))
+getMode ::
+        (MonadIO m, FromJSString result) => IDBTransaction -> m result
+getMode self
+  = liftIO (fromJSString <$> (js_getMode (unIDBTransaction self)))
  
-foreign import javascript unsafe "$1[\"db\"]"
-        ghcjs_dom_idb_transaction_get_db ::
+foreign import javascript unsafe "$1[\"db\"]" js_getDb ::
         JSRef IDBTransaction -> IO (JSRef IDBDatabase)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.db Mozilla IDBTransaction.db documentation> 
-idbTransactionGetDb ::
-                    (MonadIO m, IsIDBTransaction self) => self -> m (Maybe IDBDatabase)
-idbTransactionGetDb self
-  = liftIO
-      ((ghcjs_dom_idb_transaction_get_db
-          (unIDBTransaction (toIDBTransaction self)))
-         >>= fromJSRef)
+getDb :: (MonadIO m) => IDBTransaction -> m (Maybe IDBDatabase)
+getDb self
+  = liftIO ((js_getDb (unIDBTransaction self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"error\"]"
-        ghcjs_dom_idb_transaction_get_error ::
+foreign import javascript unsafe "$1[\"error\"]" js_getError ::
         JSRef IDBTransaction -> IO (JSRef DOMError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
-idbTransactionGetError ::
-                       (MonadIO m, IsIDBTransaction self) => self -> m (Maybe DOMError)
-idbTransactionGetError self
-  = liftIO
-      ((ghcjs_dom_idb_transaction_get_error
-          (unIDBTransaction (toIDBTransaction self)))
-         >>= fromJSRef)
+getError :: (MonadIO m) => IDBTransaction -> m (Maybe DOMError)
+getError self
+  = liftIO ((js_getError (unIDBTransaction self)) >>= fromJSRef)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.abortEvent Mozilla IDBTransaction.abortEvent documentation> 
-idbTransactionAbortEvent ::
-                         (IsIDBTransaction self, IsEventTarget self) => EventName self Event
-idbTransactionAbortEvent = unsafeEventName (toJSString "abort")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.onabort Mozilla IDBTransaction.onabort documentation> 
+abortEvent :: EventName IDBTransaction Event
+abortEvent = unsafeEventName (toJSString "abort")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.complete Mozilla IDBTransaction.complete documentation> 
-idbTransactionComplete ::
-                       (IsIDBTransaction self, IsEventTarget self) => EventName self Event
-idbTransactionComplete = unsafeEventName (toJSString "complete")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.oncomplete Mozilla IDBTransaction.oncomplete documentation> 
+complete :: EventName IDBTransaction Event
+complete = unsafeEventName (toJSString "complete")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
-idbTransactionError ::
-                    (IsIDBTransaction self, IsEventTarget self) => EventName self Event
-idbTransactionError = unsafeEventName (toJSString "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.onerror Mozilla IDBTransaction.onerror documentation> 
+error :: EventName IDBTransaction Event
+error = unsafeEventName (toJSString "error")
 #else
 module GHCJS.DOM.IDBTransaction (
   ) where

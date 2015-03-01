@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AbstractView
-       (ghcjs_dom_abstract_view_get_document, abstractViewGetDocument,
-        ghcjs_dom_abstract_view_get_style_media, abstractViewGetStyleMedia,
-        AbstractView, IsAbstractView, castToAbstractView,
-        gTypeAbstractView, toAbstractView)
+       (js_getDocument, getDocument, js_getStyleMedia, getStyleMedia,
+        AbstractView, castToAbstractView, gTypeAbstractView)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,35 +15,26 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"document\"]"
-        ghcjs_dom_abstract_view_get_document ::
-        JSRef AbstractView -> IO (JSRef Document)
+foreign import javascript unsafe "$1[\"document\"]" js_getDocument
+        :: JSRef AbstractView -> IO (JSRef Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.document Mozilla AbstractView.document documentation> 
-abstractViewGetDocument ::
-                        (MonadIO m, IsAbstractView self) => self -> m (Maybe Document)
-abstractViewGetDocument self
-  = liftIO
-      ((ghcjs_dom_abstract_view_get_document
-          (unAbstractView (toAbstractView self)))
-         >>= fromJSRef)
+getDocument :: (MonadIO m) => AbstractView -> m (Maybe Document)
+getDocument self
+  = liftIO ((js_getDocument (unAbstractView self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"styleMedia\"]"
-        ghcjs_dom_abstract_view_get_style_media ::
-        JSRef AbstractView -> IO (JSRef StyleMedia)
+        js_getStyleMedia :: JSRef AbstractView -> IO (JSRef StyleMedia)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.styleMedia Mozilla AbstractView.styleMedia documentation> 
-abstractViewGetStyleMedia ::
-                          (MonadIO m, IsAbstractView self) => self -> m (Maybe StyleMedia)
-abstractViewGetStyleMedia self
-  = liftIO
-      ((ghcjs_dom_abstract_view_get_style_media
-          (unAbstractView (toAbstractView self)))
-         >>= fromJSRef)
+getStyleMedia ::
+              (MonadIO m) => AbstractView -> m (Maybe StyleMedia)
+getStyleMedia self
+  = liftIO ((js_getStyleMedia (unAbstractView self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.AbstractView (
   ) where

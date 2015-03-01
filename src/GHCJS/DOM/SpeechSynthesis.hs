@@ -1,18 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SpeechSynthesis
-       (ghcjs_dom_speech_synthesis_speak, speechSynthesisSpeak,
-        ghcjs_dom_speech_synthesis_cancel, speechSynthesisCancel,
-        ghcjs_dom_speech_synthesis_pause, speechSynthesisPause,
-        ghcjs_dom_speech_synthesis_resume, speechSynthesisResume,
-        ghcjs_dom_speech_synthesis_get_voices, speechSynthesisGetVoices,
-        ghcjs_dom_speech_synthesis_get_pending, speechSynthesisGetPending,
-        ghcjs_dom_speech_synthesis_get_speaking,
-        speechSynthesisGetSpeaking, ghcjs_dom_speech_synthesis_get_paused,
-        speechSynthesisGetPaused, SpeechSynthesis, IsSpeechSynthesis,
-        castToSpeechSynthesis, gTypeSpeechSynthesis, toSpeechSynthesis)
+       (js_speak, speak, js_cancel, cancel, js_pause, pause, js_resume,
+        resume, js_getVoices, getVoices, js_getPending, getPending,
+        js_getSpeaking, getSpeaking, js_getPaused, getPaused,
+        SpeechSynthesis, castToSpeechSynthesis, gTypeSpeechSynthesis)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,109 +17,73 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"speak\"]($2)"
-        ghcjs_dom_speech_synthesis_speak ::
+foreign import javascript unsafe "$1[\"speak\"]($2)" js_speak ::
         JSRef SpeechSynthesis -> JSRef SpeechSynthesisUtterance -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.speak Mozilla SpeechSynthesis.speak documentation> 
-speechSynthesisSpeak ::
-                     (MonadIO m, IsSpeechSynthesis self,
-                      IsSpeechSynthesisUtterance utterance) =>
-                       self -> Maybe utterance -> m ()
-speechSynthesisSpeak self utterance
+speak ::
+      (MonadIO m) =>
+        SpeechSynthesis -> Maybe SpeechSynthesisUtterance -> m ()
+speak self utterance
   = liftIO
-      (ghcjs_dom_speech_synthesis_speak
-         (unSpeechSynthesis (toSpeechSynthesis self))
-         (maybe jsNull
-            (unSpeechSynthesisUtterance . toSpeechSynthesisUtterance)
-            utterance))
+      (js_speak (unSpeechSynthesis self)
+         (maybe jsNull unSpeechSynthesisUtterance utterance))
  
-foreign import javascript unsafe "$1[\"cancel\"]()"
-        ghcjs_dom_speech_synthesis_cancel :: JSRef SpeechSynthesis -> IO ()
+foreign import javascript unsafe "$1[\"cancel\"]()" js_cancel ::
+        JSRef SpeechSynthesis -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.cancel Mozilla SpeechSynthesis.cancel documentation> 
-speechSynthesisCancel ::
-                      (MonadIO m, IsSpeechSynthesis self) => self -> m ()
-speechSynthesisCancel self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_cancel
-         (unSpeechSynthesis (toSpeechSynthesis self)))
+cancel :: (MonadIO m) => SpeechSynthesis -> m ()
+cancel self = liftIO (js_cancel (unSpeechSynthesis self))
  
-foreign import javascript unsafe "$1[\"pause\"]()"
-        ghcjs_dom_speech_synthesis_pause :: JSRef SpeechSynthesis -> IO ()
+foreign import javascript unsafe "$1[\"pause\"]()" js_pause ::
+        JSRef SpeechSynthesis -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.pause Mozilla SpeechSynthesis.pause documentation> 
-speechSynthesisPause ::
-                     (MonadIO m, IsSpeechSynthesis self) => self -> m ()
-speechSynthesisPause self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_pause
-         (unSpeechSynthesis (toSpeechSynthesis self)))
+pause :: (MonadIO m) => SpeechSynthesis -> m ()
+pause self = liftIO (js_pause (unSpeechSynthesis self))
  
-foreign import javascript unsafe "$1[\"resume\"]()"
-        ghcjs_dom_speech_synthesis_resume :: JSRef SpeechSynthesis -> IO ()
+foreign import javascript unsafe "$1[\"resume\"]()" js_resume ::
+        JSRef SpeechSynthesis -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.resume Mozilla SpeechSynthesis.resume documentation> 
-speechSynthesisResume ::
-                      (MonadIO m, IsSpeechSynthesis self) => self -> m ()
-speechSynthesisResume self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_resume
-         (unSpeechSynthesis (toSpeechSynthesis self)))
+resume :: (MonadIO m) => SpeechSynthesis -> m ()
+resume self = liftIO (js_resume (unSpeechSynthesis self))
  
-foreign import javascript unsafe "$1[\"getVoices\"]()"
-        ghcjs_dom_speech_synthesis_get_voices ::
-        JSRef SpeechSynthesis -> IO (JSRef [Maybe SpeechSynthesisVoice])
+foreign import javascript unsafe "$1[\"getVoices\"]()" js_getVoices
+        :: JSRef SpeechSynthesis -> IO (JSRef [Maybe SpeechSynthesisVoice])
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.voices Mozilla SpeechSynthesis.voices documentation> 
-speechSynthesisGetVoices ::
-                         (MonadIO m, IsSpeechSynthesis self) =>
-                           self -> m [Maybe SpeechSynthesisVoice]
-speechSynthesisGetVoices self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.getVoices Mozilla SpeechSynthesis.getVoices documentation> 
+getVoices ::
+          (MonadIO m) => SpeechSynthesis -> m [Maybe SpeechSynthesisVoice]
+getVoices self
   = liftIO
-      ((ghcjs_dom_speech_synthesis_get_voices
-          (unSpeechSynthesis (toSpeechSynthesis self)))
-         >>= fromJSRefUnchecked)
+      ((js_getVoices (unSpeechSynthesis self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "($1[\"pending\"] ? 1 : 0)"
-        ghcjs_dom_speech_synthesis_get_pending ::
-        JSRef SpeechSynthesis -> IO Bool
+        js_getPending :: JSRef SpeechSynthesis -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.pending Mozilla SpeechSynthesis.pending documentation> 
-speechSynthesisGetPending ::
-                          (MonadIO m, IsSpeechSynthesis self) => self -> m Bool
-speechSynthesisGetPending self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_get_pending
-         (unSpeechSynthesis (toSpeechSynthesis self)))
+getPending :: (MonadIO m) => SpeechSynthesis -> m Bool
+getPending self = liftIO (js_getPending (unSpeechSynthesis self))
  
 foreign import javascript unsafe "($1[\"speaking\"] ? 1 : 0)"
-        ghcjs_dom_speech_synthesis_get_speaking ::
-        JSRef SpeechSynthesis -> IO Bool
+        js_getSpeaking :: JSRef SpeechSynthesis -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.speaking Mozilla SpeechSynthesis.speaking documentation> 
-speechSynthesisGetSpeaking ::
-                           (MonadIO m, IsSpeechSynthesis self) => self -> m Bool
-speechSynthesisGetSpeaking self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_get_speaking
-         (unSpeechSynthesis (toSpeechSynthesis self)))
+getSpeaking :: (MonadIO m) => SpeechSynthesis -> m Bool
+getSpeaking self = liftIO (js_getSpeaking (unSpeechSynthesis self))
  
 foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
-        ghcjs_dom_speech_synthesis_get_paused ::
-        JSRef SpeechSynthesis -> IO Bool
+        js_getPaused :: JSRef SpeechSynthesis -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.paused Mozilla SpeechSynthesis.paused documentation> 
-speechSynthesisGetPaused ::
-                         (MonadIO m, IsSpeechSynthesis self) => self -> m Bool
-speechSynthesisGetPaused self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_get_paused
-         (unSpeechSynthesis (toSpeechSynthesis self)))
+getPaused :: (MonadIO m) => SpeechSynthesis -> m Bool
+getPaused self = liftIO (js_getPaused (unSpeechSynthesis self))
 #else
 module GHCJS.DOM.SpeechSynthesis (
   ) where

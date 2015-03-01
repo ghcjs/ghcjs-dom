@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGAnimatedEnumeration
-       (ghcjs_dom_svg_animated_enumeration_set_base_val,
-        svgAnimatedEnumerationSetBaseVal,
-        ghcjs_dom_svg_animated_enumeration_get_base_val,
-        svgAnimatedEnumerationGetBaseVal,
-        ghcjs_dom_svg_animated_enumeration_get_anim_val,
-        svgAnimatedEnumerationGetAnimVal, SVGAnimatedEnumeration,
-        IsSVGAnimatedEnumeration, castToSVGAnimatedEnumeration,
-        gTypeSVGAnimatedEnumeration, toSVGAnimatedEnumeration)
+       (js_setBaseVal, setBaseVal, js_getBaseVal, getBaseVal,
+        js_getAnimVal, getAnimVal, SVGAnimatedEnumeration,
+        castToSVGAnimatedEnumeration, gTypeSVGAnimatedEnumeration)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,46 +16,33 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
-        ghcjs_dom_svg_animated_enumeration_set_base_val ::
-        JSRef SVGAnimatedEnumeration -> Word -> IO ()
+        js_setBaseVal :: JSRef SVGAnimatedEnumeration -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.baseVal Mozilla SVGAnimatedEnumeration.baseVal documentation> 
-svgAnimatedEnumerationSetBaseVal ::
-                                 (MonadIO m, IsSVGAnimatedEnumeration self) => self -> Word -> m ()
-svgAnimatedEnumerationSetBaseVal self val
-  = liftIO
-      (ghcjs_dom_svg_animated_enumeration_set_base_val
-         (unSVGAnimatedEnumeration (toSVGAnimatedEnumeration self))
-         val)
+setBaseVal :: (MonadIO m) => SVGAnimatedEnumeration -> Word -> m ()
+setBaseVal self val
+  = liftIO (js_setBaseVal (unSVGAnimatedEnumeration self) val)
  
-foreign import javascript unsafe "$1[\"baseVal\"]"
-        ghcjs_dom_svg_animated_enumeration_get_base_val ::
+foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         JSRef SVGAnimatedEnumeration -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.baseVal Mozilla SVGAnimatedEnumeration.baseVal documentation> 
-svgAnimatedEnumerationGetBaseVal ::
-                                 (MonadIO m, IsSVGAnimatedEnumeration self) => self -> m Word
-svgAnimatedEnumerationGetBaseVal self
-  = liftIO
-      (ghcjs_dom_svg_animated_enumeration_get_base_val
-         (unSVGAnimatedEnumeration (toSVGAnimatedEnumeration self)))
+getBaseVal :: (MonadIO m) => SVGAnimatedEnumeration -> m Word
+getBaseVal self
+  = liftIO (js_getBaseVal (unSVGAnimatedEnumeration self))
  
-foreign import javascript unsafe "$1[\"animVal\"]"
-        ghcjs_dom_svg_animated_enumeration_get_anim_val ::
+foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
         JSRef SVGAnimatedEnumeration -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.animVal Mozilla SVGAnimatedEnumeration.animVal documentation> 
-svgAnimatedEnumerationGetAnimVal ::
-                                 (MonadIO m, IsSVGAnimatedEnumeration self) => self -> m Word
-svgAnimatedEnumerationGetAnimVal self
-  = liftIO
-      (ghcjs_dom_svg_animated_enumeration_get_anim_val
-         (unSVGAnimatedEnumeration (toSVGAnimatedEnumeration self)))
+getAnimVal :: (MonadIO m) => SVGAnimatedEnumeration -> m Word
+getAnimVal self
+  = liftIO (js_getAnimVal (unSVGAnimatedEnumeration self))
 #else
 module GHCJS.DOM.SVGAnimatedEnumeration (
   ) where

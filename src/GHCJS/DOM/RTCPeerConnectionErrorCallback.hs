@@ -1,14 +1,16 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.RTCPeerConnectionErrorCallback
-       (rtcPeerConnectionErrorCallbackNewSync,
-        rtcPeerConnectionErrorCallbackNewAsync,
-        RTCPeerConnectionErrorCallback, IsRTCPeerConnectionErrorCallback,
+       (newRTCPeerConnectionErrorCallbackSync,
+        newRTCPeerConnectionErrorCallbackSync',
+        newRTCPeerConnectionErrorCallbackAsync,
+        newRTCPeerConnectionErrorCallbackAsync',
+        RTCPeerConnectionErrorCallback,
         castToRTCPeerConnectionErrorCallback,
-        gTypeRTCPeerConnectionErrorCallback,
-        toRTCPeerConnectionErrorCallback)
+        gTypeRTCPeerConnectionErrorCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,16 +20,16 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionErrorCallback Mozilla RTCPeerConnectionErrorCallback documentation> 
-rtcPeerConnectionErrorCallbackNewSync ::
+newRTCPeerConnectionErrorCallbackSync ::
                                       (MonadIO m) =>
                                         (Maybe DOMError -> IO Bool) ->
                                           m RTCPeerConnectionErrorCallback
-rtcPeerConnectionErrorCallbackNewSync callback
+newRTCPeerConnectionErrorCallbackSync callback
   = liftIO
       (RTCPeerConnectionErrorCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -35,13 +37,13 @@ rtcPeerConnectionErrorCallbackNewSync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionErrorCallback Mozilla RTCPeerConnectionErrorCallback documentation> 
-rtcPeerConnectionErrorCallbackNewSync' ::
+newRTCPeerConnectionErrorCallbackSync' ::
                                        (MonadIO m) =>
                                          ForeignRetention ->
                                            Bool ->
                                              (Maybe DOMError -> IO Bool) ->
                                                m RTCPeerConnectionErrorCallback
-rtcPeerConnectionErrorCallbackNewSync' retention continueAsync
+newRTCPeerConnectionErrorCallbackSync' retention continueAsync
   callback
   = liftIO
       (RTCPeerConnectionErrorCallback . castRef <$>
@@ -50,11 +52,11 @@ rtcPeerConnectionErrorCallbackNewSync' retention continueAsync
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionErrorCallback Mozilla RTCPeerConnectionErrorCallback documentation> 
-rtcPeerConnectionErrorCallbackNewAsync ::
+newRTCPeerConnectionErrorCallbackAsync ::
                                        (MonadIO m) =>
                                          (Maybe DOMError -> IO Bool) ->
                                            m RTCPeerConnectionErrorCallback
-rtcPeerConnectionErrorCallbackNewAsync callback
+newRTCPeerConnectionErrorCallbackAsync callback
   = liftIO
       (RTCPeerConnectionErrorCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -62,12 +64,12 @@ rtcPeerConnectionErrorCallbackNewAsync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionErrorCallback Mozilla RTCPeerConnectionErrorCallback documentation> 
-rtcPeerConnectionErrorCallbackNewAsync' ::
+newRTCPeerConnectionErrorCallbackAsync' ::
                                         (MonadIO m) =>
                                           ForeignRetention ->
                                             (Maybe DOMError -> IO Bool) ->
                                               m RTCPeerConnectionErrorCallback
-rtcPeerConnectionErrorCallbackNewAsync' retention callback
+newRTCPeerConnectionErrorCallbackAsync' retention callback
   = liftIO
       (RTCPeerConnectionErrorCallback . castRef <$>
          asyncCallback1 retention

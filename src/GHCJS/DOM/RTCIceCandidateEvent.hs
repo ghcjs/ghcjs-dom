@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.RTCIceCandidateEvent
-       (ghcjs_dom_rtc_ice_candidate_event_get_candidate,
-        rtcIceCandidateEventGetCandidate, RTCIceCandidateEvent,
-        IsRTCIceCandidateEvent, castToRTCIceCandidateEvent,
-        gTypeRTCIceCandidateEvent, toRTCIceCandidateEvent)
+       (js_getCandidate, getCandidate, RTCIceCandidateEvent,
+        castToRTCIceCandidateEvent, gTypeRTCIceCandidateEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,20 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"candidate\"]"
-        ghcjs_dom_rtc_ice_candidate_event_get_candidate ::
+        js_getCandidate ::
         JSRef RTCIceCandidateEvent -> IO (JSRef RTCIceCandidate)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateEvent.candidate Mozilla RTCIceCandidateEvent.candidate documentation> 
-rtcIceCandidateEventGetCandidate ::
-                                 (MonadIO m, IsRTCIceCandidateEvent self) =>
-                                   self -> m (Maybe RTCIceCandidate)
-rtcIceCandidateEventGetCandidate self
+getCandidate ::
+             (MonadIO m) => RTCIceCandidateEvent -> m (Maybe RTCIceCandidate)
+getCandidate self
   = liftIO
-      ((ghcjs_dom_rtc_ice_candidate_event_get_candidate
-          (unRTCIceCandidateEvent (toRTCIceCandidateEvent self)))
-         >>= fromJSRef)
+      ((js_getCandidate (unRTCIceCandidateEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.RTCIceCandidateEvent (
   ) where

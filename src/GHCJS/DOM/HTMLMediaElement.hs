@@ -1,127 +1,57 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMediaElement
-       (ghcjs_dom_html_media_element_load, htmlMediaElementLoad,
-        ghcjs_dom_html_media_element_can_play_type,
-        htmlMediaElementCanPlayType, ghcjs_dom_html_media_element_play,
-        htmlMediaElementPlay, ghcjs_dom_html_media_element_pause,
-        htmlMediaElementPause, ghcjs_dom_html_media_element_fast_seek,
-        htmlMediaElementFastSeek,
-        ghcjs_dom_html_media_element_webkit_generate_key_request,
-        htmlMediaElementWebkitGenerateKeyRequest,
-        ghcjs_dom_html_media_element_webkit_add_key,
-        htmlMediaElementWebkitAddKey,
-        ghcjs_dom_html_media_element_webkit_cancel_key_request,
-        htmlMediaElementWebkitCancelKeyRequest,
-        ghcjs_dom_html_media_element_webkit_set_media_keys,
-        htmlMediaElementWebkitSetMediaKeys,
-        ghcjs_dom_html_media_element_add_text_track,
-        htmlMediaElementAddTextTrack,
-        ghcjs_dom_html_media_element_webkit_show_playback_target_picker,
-        htmlMediaElementWebkitShowPlaybackTargetPicker, cNETWORK_EMPTY,
-        cNETWORK_IDLE, cNETWORK_LOADING, cNETWORK_NO_SOURCE, cHAVE_NOTHING,
-        cHAVE_METADATA, cHAVE_CURRENT_DATA, cHAVE_FUTURE_DATA,
-        cHAVE_ENOUGH_DATA, ghcjs_dom_html_media_element_get_error,
-        htmlMediaElementGetError, ghcjs_dom_html_media_element_set_src,
-        htmlMediaElementSetSrc, ghcjs_dom_html_media_element_get_src,
-        htmlMediaElementGetSrc,
-        ghcjs_dom_html_media_element_get_current_src,
-        htmlMediaElementGetCurrentSrc,
-        ghcjs_dom_html_media_element_get_network_state,
-        htmlMediaElementGetNetworkState,
-        ghcjs_dom_html_media_element_set_preload,
-        htmlMediaElementSetPreload,
-        ghcjs_dom_html_media_element_get_preload,
-        htmlMediaElementGetPreload,
-        ghcjs_dom_html_media_element_get_buffered,
-        htmlMediaElementGetBuffered,
-        ghcjs_dom_html_media_element_get_ready_state,
-        htmlMediaElementGetReadyState,
-        ghcjs_dom_html_media_element_get_seeking,
-        htmlMediaElementGetSeeking,
-        ghcjs_dom_html_media_element_set_current_time,
-        htmlMediaElementSetCurrentTime,
-        ghcjs_dom_html_media_element_get_current_time,
-        htmlMediaElementGetCurrentTime,
-        ghcjs_dom_html_media_element_get_duration,
-        htmlMediaElementGetDuration,
-        ghcjs_dom_html_media_element_get_paused, htmlMediaElementGetPaused,
-        ghcjs_dom_html_media_element_set_default_playback_rate,
-        htmlMediaElementSetDefaultPlaybackRate,
-        ghcjs_dom_html_media_element_get_default_playback_rate,
-        htmlMediaElementGetDefaultPlaybackRate,
-        ghcjs_dom_html_media_element_set_playback_rate,
-        htmlMediaElementSetPlaybackRate,
-        ghcjs_dom_html_media_element_get_playback_rate,
-        htmlMediaElementGetPlaybackRate,
-        ghcjs_dom_html_media_element_get_played, htmlMediaElementGetPlayed,
-        ghcjs_dom_html_media_element_get_seekable,
-        htmlMediaElementGetSeekable,
-        ghcjs_dom_html_media_element_get_ended, htmlMediaElementGetEnded,
-        ghcjs_dom_html_media_element_set_autoplay,
-        htmlMediaElementSetAutoplay,
-        ghcjs_dom_html_media_element_get_autoplay,
-        htmlMediaElementGetAutoplay, ghcjs_dom_html_media_element_set_loop,
-        htmlMediaElementSetLoop, ghcjs_dom_html_media_element_get_loop,
-        htmlMediaElementGetLoop, ghcjs_dom_html_media_element_set_controls,
-        htmlMediaElementSetControls,
-        ghcjs_dom_html_media_element_get_controls,
-        htmlMediaElementGetControls,
-        ghcjs_dom_html_media_element_set_volume, htmlMediaElementSetVolume,
-        ghcjs_dom_html_media_element_get_volume, htmlMediaElementGetVolume,
-        ghcjs_dom_html_media_element_set_muted, htmlMediaElementSetMuted,
-        ghcjs_dom_html_media_element_get_muted, htmlMediaElementGetMuted,
-        ghcjs_dom_html_media_element_set_default_muted,
-        htmlMediaElementSetDefaultMuted,
-        ghcjs_dom_html_media_element_get_default_muted,
-        htmlMediaElementGetDefaultMuted, htmlMediaElementEmptied,
-        htmlMediaElementLoadedMetadata, htmlMediaElementLoadedData,
-        htmlMediaElementCanPlay, htmlMediaElementCanPlayThrough,
-        htmlMediaElementPlaying, htmlMediaElementEnded,
-        htmlMediaElementWaiting, htmlMediaElementDurationChange,
-        htmlMediaElementTimeUpdate, htmlMediaElementPlayEvent,
-        htmlMediaElementPauseEvent, htmlMediaElementRateChange,
-        htmlMediaElementVolumeChange,
-        ghcjs_dom_html_media_element_set_webkit_preserves_pitch,
-        htmlMediaElementSetWebkitPreservesPitch,
-        ghcjs_dom_html_media_element_get_webkit_preserves_pitch,
-        htmlMediaElementGetWebkitPreservesPitch,
-        ghcjs_dom_html_media_element_get_webkit_has_closed_captions,
-        htmlMediaElementGetWebkitHasClosedCaptions,
-        ghcjs_dom_html_media_element_set_webkit_closed_captions_visible,
-        htmlMediaElementSetWebkitClosedCaptionsVisible,
-        ghcjs_dom_html_media_element_get_webkit_closed_captions_visible,
-        htmlMediaElementGetWebkitClosedCaptionsVisible,
-        ghcjs_dom_html_media_element_get_webkit_audio_decoded_byte_count,
-        htmlMediaElementGetWebkitAudioDecodedByteCount,
-        ghcjs_dom_html_media_element_get_webkit_video_decoded_byte_count,
-        htmlMediaElementGetWebkitVideoDecodedByteCount,
-        htmlMediaElementWebKitKeyAdded, htmlMediaElementWebKitKeyError,
-        htmlMediaElementWebKitKeyMessage, htmlMediaElementWebKitNeedKey,
-        ghcjs_dom_html_media_element_get_webkit_keys,
-        htmlMediaElementGetWebkitKeys,
-        ghcjs_dom_html_media_element_get_audio_tracks,
-        htmlMediaElementGetAudioTracks,
-        ghcjs_dom_html_media_element_get_text_tracks,
-        htmlMediaElementGetTextTracks,
-        ghcjs_dom_html_media_element_get_video_tracks,
-        htmlMediaElementGetVideoTracks,
-        ghcjs_dom_html_media_element_set_media_group,
-        htmlMediaElementSetMediaGroup,
-        ghcjs_dom_html_media_element_get_media_group,
-        htmlMediaElementGetMediaGroup,
-        ghcjs_dom_html_media_element_set_controller,
-        htmlMediaElementSetController,
-        ghcjs_dom_html_media_element_get_controller,
-        htmlMediaElementGetController,
-        ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless,
-        htmlMediaElementGetWebkitCurrentPlaybackTargetIsWireless,
-        htmlMediaElementWebKitCurrentPlaybackTargetIsWirelessChanged,
-        htmlMediaElementWebKitPlaybackTargetAvailabilityChanged,
-        HTMLMediaElement, IsHTMLMediaElement, castToHTMLMediaElement,
-        gTypeHTMLMediaElement, toHTMLMediaElement)
+       (js_load, load, js_canPlayType, canPlayType, js_play, play,
+        js_pause, pause, js_fastSeek, fastSeek,
+        js_webkitGenerateKeyRequest, webkitGenerateKeyRequest,
+        js_webkitAddKey, webkitAddKey, js_webkitCancelKeyRequest,
+        webkitCancelKeyRequest, js_webkitSetMediaKeys, webkitSetMediaKeys,
+        js_addTextTrack, addTextTrack, js_webkitShowPlaybackTargetPicker,
+        webkitShowPlaybackTargetPicker, pattern NETWORK_EMPTY,
+        pattern NETWORK_IDLE, pattern NETWORK_LOADING,
+        pattern NETWORK_NO_SOURCE, pattern HAVE_NOTHING,
+        pattern HAVE_METADATA, pattern HAVE_CURRENT_DATA,
+        pattern HAVE_FUTURE_DATA, pattern HAVE_ENOUGH_DATA, js_getError,
+        getError, js_setSrc, setSrc, js_getSrc, getSrc, js_getCurrentSrc,
+        getCurrentSrc, js_getNetworkState, getNetworkState, js_setPreload,
+        setPreload, js_getPreload, getPreload, js_getBuffered, getBuffered,
+        js_getReadyState, getReadyState, js_getSeeking, getSeeking,
+        js_setCurrentTime, setCurrentTime, js_getCurrentTime,
+        getCurrentTime, js_getDuration, getDuration, js_getPaused,
+        getPaused, js_setDefaultPlaybackRate, setDefaultPlaybackRate,
+        js_getDefaultPlaybackRate, getDefaultPlaybackRate,
+        js_setPlaybackRate, setPlaybackRate, js_getPlaybackRate,
+        getPlaybackRate, js_getPlayed, getPlayed, js_getSeekable,
+        getSeekable, js_getEnded, getEnded, js_setAutoplay, setAutoplay,
+        js_getAutoplay, getAutoplay, js_setLoop, setLoop, js_getLoop,
+        getLoop, js_setControls, setControls, js_getControls, getControls,
+        js_setVolume, setVolume, js_getVolume, getVolume, js_setMuted,
+        setMuted, js_getMuted, getMuted, js_setDefaultMuted,
+        setDefaultMuted, js_getDefaultMuted, getDefaultMuted, emptied,
+        loadedMetadata, loadedData, canPlay, canPlayThrough, playing,
+        ended, waiting, durationChange, timeUpdate, playEvent, pauseEvent,
+        rateChange, volumeChange, js_setWebkitPreservesPitch,
+        setWebkitPreservesPitch, js_getWebkitPreservesPitch,
+        getWebkitPreservesPitch, js_getWebkitHasClosedCaptions,
+        getWebkitHasClosedCaptions, js_setWebkitClosedCaptionsVisible,
+        setWebkitClosedCaptionsVisible, js_getWebkitClosedCaptionsVisible,
+        getWebkitClosedCaptionsVisible, js_getWebkitAudioDecodedByteCount,
+        getWebkitAudioDecodedByteCount, js_getWebkitVideoDecodedByteCount,
+        getWebkitVideoDecodedByteCount, webKitKeyAdded, webKitKeyError,
+        webKitKeyMessage, webKitNeedKey, js_getWebkitKeys, getWebkitKeys,
+        js_getAudioTracks, getAudioTracks, js_getTextTracks, getTextTracks,
+        js_getVideoTracks, getVideoTracks, js_setMediaGroup, setMediaGroup,
+        js_getMediaGroup, getMediaGroup, js_setController, setController,
+        js_getController, getController,
+        js_getWebkitCurrentPlaybackTargetIsWireless,
+        getWebkitCurrentPlaybackTargetIsWireless,
+        webKitCurrentPlaybackTargetIsWirelessChanged,
+        webKitPlaybackTargetAvailabilityChanged, HTMLMediaElement,
+        castToHTMLMediaElement, gTypeHTMLMediaElement, IsHTMLMediaElement,
+        toHTMLMediaElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -131,160 +61,140 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"load\"]()"
-        ghcjs_dom_html_media_element_load ::
+foreign import javascript unsafe "$1[\"load\"]()" js_load ::
         JSRef HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.load Mozilla HTMLMediaElement.load documentation> 
-htmlMediaElementLoad ::
-                     (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-htmlMediaElementLoad self
-  = liftIO
-      (ghcjs_dom_html_media_element_load
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+load :: (MonadIO m, IsHTMLMediaElement self) => self -> m ()
+load self
+  = liftIO (js_load (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"canPlayType\"]($2, $3)"
-        ghcjs_dom_html_media_element_can_play_type ::
+        js_canPlayType ::
         JSRef HTMLMediaElement -> JSString -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.canPlayType Mozilla HTMLMediaElement.canPlayType documentation> 
-htmlMediaElementCanPlayType ::
-                            (MonadIO m, IsHTMLMediaElement self, ToJSString type',
-                             ToJSString keySystem, FromJSString result) =>
-                              self -> type' -> keySystem -> m result
-htmlMediaElementCanPlayType self type' keySystem
+canPlayType ::
+            (MonadIO m, IsHTMLMediaElement self, ToJSString type',
+             ToJSString keySystem, FromJSString result) =>
+              self -> type' -> keySystem -> m result
+canPlayType self type' keySystem
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_media_element_can_play_type
-            (unHTMLMediaElement (toHTMLMediaElement self))
+         (js_canPlayType (unHTMLMediaElement (toHTMLMediaElement self))
             (toJSString type')
             (toJSString keySystem)))
  
-foreign import javascript unsafe "$1[\"play\"]()"
-        ghcjs_dom_html_media_element_play ::
+foreign import javascript unsafe "$1[\"play\"]()" js_play ::
         JSRef HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.play Mozilla HTMLMediaElement.play documentation> 
-htmlMediaElementPlay ::
-                     (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-htmlMediaElementPlay self
-  = liftIO
-      (ghcjs_dom_html_media_element_play
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+play :: (MonadIO m, IsHTMLMediaElement self) => self -> m ()
+play self
+  = liftIO (js_play (unHTMLMediaElement (toHTMLMediaElement self)))
  
-foreign import javascript unsafe "$1[\"pause\"]()"
-        ghcjs_dom_html_media_element_pause ::
+foreign import javascript unsafe "$1[\"pause\"]()" js_pause ::
         JSRef HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.pause Mozilla HTMLMediaElement.pause documentation> 
-htmlMediaElementPause ::
-                      (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-htmlMediaElementPause self
-  = liftIO
-      (ghcjs_dom_html_media_element_pause
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+pause :: (MonadIO m, IsHTMLMediaElement self) => self -> m ()
+pause self
+  = liftIO (js_pause (unHTMLMediaElement (toHTMLMediaElement self)))
  
-foreign import javascript unsafe "$1[\"fastSeek\"]($2)"
-        ghcjs_dom_html_media_element_fast_seek ::
-        JSRef HTMLMediaElement -> Double -> IO ()
+foreign import javascript unsafe "$1[\"fastSeek\"]($2)" js_fastSeek
+        :: JSRef HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.fastSeek Mozilla HTMLMediaElement.fastSeek documentation> 
-htmlMediaElementFastSeek ::
-                         (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
-htmlMediaElementFastSeek self time
+fastSeek ::
+         (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
+fastSeek self time
   = liftIO
-      (ghcjs_dom_html_media_element_fast_seek
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         time)
+      (js_fastSeek (unHTMLMediaElement (toHTMLMediaElement self)) time)
  
 foreign import javascript unsafe
         "$1[\"webkitGenerateKeyRequest\"]($2,\n$3)"
-        ghcjs_dom_html_media_element_webkit_generate_key_request ::
+        js_webkitGenerateKeyRequest ::
         JSRef HTMLMediaElement -> JSString -> JSRef Uint8Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitGenerateKeyRequest Mozilla HTMLMediaElement.webkitGenerateKeyRequest documentation> 
-htmlMediaElementWebkitGenerateKeyRequest ::
-                                         (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
-                                          IsUint8Array initData) =>
-                                           self -> keySystem -> Maybe initData -> m ()
-htmlMediaElementWebkitGenerateKeyRequest self keySystem initData
+webkitGenerateKeyRequest ::
+                         (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
+                          IsUint8Array initData) =>
+                           self -> keySystem -> Maybe initData -> m ()
+webkitGenerateKeyRequest self keySystem initData
   = liftIO
-      (ghcjs_dom_html_media_element_webkit_generate_key_request
+      (js_webkitGenerateKeyRequest
          (unHTMLMediaElement (toHTMLMediaElement self))
          (toJSString keySystem)
          (maybe jsNull (unUint8Array . toUint8Array) initData))
  
 foreign import javascript unsafe
-        "$1[\"webkitAddKey\"]($2, $3, $4,\n$5)"
-        ghcjs_dom_html_media_element_webkit_add_key ::
+        "$1[\"webkitAddKey\"]($2, $3, $4,\n$5)" js_webkitAddKey ::
         JSRef HTMLMediaElement ->
           JSString ->
             JSRef Uint8Array -> JSRef Uint8Array -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitAddKey Mozilla HTMLMediaElement.webkitAddKey documentation> 
-htmlMediaElementWebkitAddKey ::
-                             (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
-                              IsUint8Array key, IsUint8Array initData, ToJSString sessionId) =>
-                               self ->
-                                 keySystem -> Maybe key -> Maybe initData -> sessionId -> m ()
-htmlMediaElementWebkitAddKey self keySystem key initData sessionId
+webkitAddKey ::
+             (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
+              IsUint8Array key, IsUint8Array initData, ToJSString sessionId) =>
+               self ->
+                 keySystem -> Maybe key -> Maybe initData -> sessionId -> m ()
+webkitAddKey self keySystem key initData sessionId
   = liftIO
-      (ghcjs_dom_html_media_element_webkit_add_key
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_webkitAddKey (unHTMLMediaElement (toHTMLMediaElement self))
          (toJSString keySystem)
          (maybe jsNull (unUint8Array . toUint8Array) key)
          (maybe jsNull (unUint8Array . toUint8Array) initData)
          (toJSString sessionId))
  
 foreign import javascript unsafe
-        "$1[\"webkitCancelKeyRequest\"]($2,\n$3)"
-        ghcjs_dom_html_media_element_webkit_cancel_key_request ::
-        JSRef HTMLMediaElement -> JSString -> JSString -> IO ()
+        "$1[\"webkitCancelKeyRequest\"]($2,\n$3)" js_webkitCancelKeyRequest
+        :: JSRef HTMLMediaElement -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitCancelKeyRequest Mozilla HTMLMediaElement.webkitCancelKeyRequest documentation> 
-htmlMediaElementWebkitCancelKeyRequest ::
-                                       (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
-                                        ToJSString sessionId) =>
-                                         self -> keySystem -> sessionId -> m ()
-htmlMediaElementWebkitCancelKeyRequest self keySystem sessionId
+webkitCancelKeyRequest ::
+                       (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
+                        ToJSString sessionId) =>
+                         self -> keySystem -> sessionId -> m ()
+webkitCancelKeyRequest self keySystem sessionId
   = liftIO
-      (ghcjs_dom_html_media_element_webkit_cancel_key_request
+      (js_webkitCancelKeyRequest
          (unHTMLMediaElement (toHTMLMediaElement self))
          (toJSString keySystem)
          (toJSString sessionId))
  
 foreign import javascript unsafe "$1[\"webkitSetMediaKeys\"]($2)"
-        ghcjs_dom_html_media_element_webkit_set_media_keys ::
+        js_webkitSetMediaKeys ::
         JSRef HTMLMediaElement -> JSRef MediaKeys -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitSetMediaKeys Mozilla HTMLMediaElement.webkitSetMediaKeys documentation> 
-htmlMediaElementWebkitSetMediaKeys ::
-                                   (MonadIO m, IsHTMLMediaElement self, IsMediaKeys mediaKeys) =>
-                                     self -> Maybe mediaKeys -> m ()
-htmlMediaElementWebkitSetMediaKeys self mediaKeys
+webkitSetMediaKeys ::
+                   (MonadIO m, IsHTMLMediaElement self) =>
+                     self -> Maybe MediaKeys -> m ()
+webkitSetMediaKeys self mediaKeys
   = liftIO
-      (ghcjs_dom_html_media_element_webkit_set_media_keys
+      (js_webkitSetMediaKeys
          (unHTMLMediaElement (toHTMLMediaElement self))
-         (maybe jsNull (unMediaKeys . toMediaKeys) mediaKeys))
+         (maybe jsNull unMediaKeys mediaKeys))
  
 foreign import javascript unsafe "$1[\"addTextTrack\"]($2, $3, $4)"
-        ghcjs_dom_html_media_element_add_text_track ::
+        js_addTextTrack ::
         JSRef HTMLMediaElement ->
           JSString -> JSString -> JSString -> IO (JSRef TextTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.addTextTrack Mozilla HTMLMediaElement.addTextTrack documentation> 
-htmlMediaElementAddTextTrack ::
-                             (MonadIO m, IsHTMLMediaElement self, ToJSString kind,
-                              ToJSString label, ToJSString language) =>
-                               self -> kind -> label -> language -> m (Maybe TextTrack)
-htmlMediaElementAddTextTrack self kind label language
+addTextTrack ::
+             (MonadIO m, IsHTMLMediaElement self, ToJSString kind,
+              ToJSString label, ToJSString language) =>
+               self -> kind -> label -> language -> m (Maybe TextTrack)
+addTextTrack self kind label language
   = liftIO
-      ((ghcjs_dom_html_media_element_add_text_track
-          (unHTMLMediaElement (toHTMLMediaElement self))
+      ((js_addTextTrack (unHTMLMediaElement (toHTMLMediaElement self))
           (toJSString kind)
           (toJSString label)
           (toJSString language))
@@ -292,807 +202,701 @@ htmlMediaElementAddTextTrack self kind label language
  
 foreign import javascript unsafe
         "$1[\"webkitShowPlaybackTargetPicker\"]()"
-        ghcjs_dom_html_media_element_webkit_show_playback_target_picker ::
+        js_webkitShowPlaybackTargetPicker ::
         JSRef HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitShowPlaybackTargetPicker Mozilla HTMLMediaElement.webkitShowPlaybackTargetPicker documentation> 
-htmlMediaElementWebkitShowPlaybackTargetPicker ::
-                                               (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-htmlMediaElementWebkitShowPlaybackTargetPicker self
+webkitShowPlaybackTargetPicker ::
+                               (MonadIO m, IsHTMLMediaElement self) => self -> m ()
+webkitShowPlaybackTargetPicker self
   = liftIO
-      (ghcjs_dom_html_media_element_webkit_show_playback_target_picker
+      (js_webkitShowPlaybackTargetPicker
          (unHTMLMediaElement (toHTMLMediaElement self)))
-cNETWORK_EMPTY = 0
-cNETWORK_IDLE = 1
-cNETWORK_LOADING = 2
-cNETWORK_NO_SOURCE = 3
-cHAVE_NOTHING = 0
-cHAVE_METADATA = 1
-cHAVE_CURRENT_DATA = 2
-cHAVE_FUTURE_DATA = 3
-cHAVE_ENOUGH_DATA = 4
+pattern NETWORK_EMPTY = 0
+pattern NETWORK_IDLE = 1
+pattern NETWORK_LOADING = 2
+pattern NETWORK_NO_SOURCE = 3
+pattern HAVE_NOTHING = 0
+pattern HAVE_METADATA = 1
+pattern HAVE_CURRENT_DATA = 2
+pattern HAVE_FUTURE_DATA = 3
+pattern HAVE_ENOUGH_DATA = 4
  
-foreign import javascript unsafe "$1[\"error\"]"
-        ghcjs_dom_html_media_element_get_error ::
+foreign import javascript unsafe "$1[\"error\"]" js_getError ::
         JSRef HTMLMediaElement -> IO (JSRef MediaError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.error Mozilla HTMLMediaElement.error documentation> 
-htmlMediaElementGetError ::
-                         (MonadIO m, IsHTMLMediaElement self) =>
-                           self -> m (Maybe MediaError)
-htmlMediaElementGetError self
+getError ::
+         (MonadIO m, IsHTMLMediaElement self) =>
+           self -> m (Maybe MediaError)
+getError self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_error
-          (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      ((js_getError (unHTMLMediaElement (toHTMLMediaElement self))) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"src\"] = $2;"
-        ghcjs_dom_html_media_element_set_src ::
+foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         JSRef HTMLMediaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.src Mozilla HTMLMediaElement.src documentation> 
-htmlMediaElementSetSrc ::
-                       (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlMediaElementSetSrc self val
+setSrc ::
+       (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
+         self -> val -> m ()
+setSrc self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_src
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_setSrc (unHTMLMediaElement (toHTMLMediaElement self))
          (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]"
-        ghcjs_dom_html_media_element_get_src ::
+foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
         JSRef HTMLMediaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.src Mozilla HTMLMediaElement.src documentation> 
-htmlMediaElementGetSrc ::
-                       (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
-                         self -> m result
-htmlMediaElementGetSrc self
+getSrc ::
+       (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
+         self -> m result
+getSrc self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_media_element_get_src
-            (unHTMLMediaElement (toHTMLMediaElement self))))
+         (js_getSrc (unHTMLMediaElement (toHTMLMediaElement self))))
  
 foreign import javascript unsafe "$1[\"currentSrc\"]"
-        ghcjs_dom_html_media_element_get_current_src ::
-        JSRef HTMLMediaElement -> IO JSString
+        js_getCurrentSrc :: JSRef HTMLMediaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.currentSrc Mozilla HTMLMediaElement.currentSrc documentation> 
-htmlMediaElementGetCurrentSrc ::
-                              (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
-                                self -> m result
-htmlMediaElementGetCurrentSrc self
+getCurrentSrc ::
+              (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
+                self -> m result
+getCurrentSrc self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_media_element_get_current_src
-            (unHTMLMediaElement (toHTMLMediaElement self))))
+         (js_getCurrentSrc (unHTMLMediaElement (toHTMLMediaElement self))))
  
 foreign import javascript unsafe "$1[\"networkState\"]"
-        ghcjs_dom_html_media_element_get_network_state ::
-        JSRef HTMLMediaElement -> IO Word
+        js_getNetworkState :: JSRef HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.networkState Mozilla HTMLMediaElement.networkState documentation> 
-htmlMediaElementGetNetworkState ::
-                                (MonadIO m, IsHTMLMediaElement self) => self -> m Word
-htmlMediaElementGetNetworkState self
+getNetworkState ::
+                (MonadIO m, IsHTMLMediaElement self) => self -> m Word
+getNetworkState self
   = liftIO
-      (ghcjs_dom_html_media_element_get_network_state
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getNetworkState (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"preload\"] = $2;"
-        ghcjs_dom_html_media_element_set_preload ::
-        JSRef HTMLMediaElement -> JSString -> IO ()
+        js_setPreload :: JSRef HTMLMediaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.preload Mozilla HTMLMediaElement.preload documentation> 
-htmlMediaElementSetPreload ::
-                           (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlMediaElementSetPreload self val
+setPreload ::
+           (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
+             self -> val -> m ()
+setPreload self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_preload
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_setPreload (unHTMLMediaElement (toHTMLMediaElement self))
          (toJSString val))
  
-foreign import javascript unsafe "$1[\"preload\"]"
-        ghcjs_dom_html_media_element_get_preload ::
+foreign import javascript unsafe "$1[\"preload\"]" js_getPreload ::
         JSRef HTMLMediaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.preload Mozilla HTMLMediaElement.preload documentation> 
-htmlMediaElementGetPreload ::
-                           (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
-                             self -> m result
-htmlMediaElementGetPreload self
+getPreload ::
+           (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
+             self -> m result
+getPreload self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_media_element_get_preload
-            (unHTMLMediaElement (toHTMLMediaElement self))))
+         (js_getPreload (unHTMLMediaElement (toHTMLMediaElement self))))
  
-foreign import javascript unsafe "$1[\"buffered\"]"
-        ghcjs_dom_html_media_element_get_buffered ::
-        JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
+foreign import javascript unsafe "$1[\"buffered\"]" js_getBuffered
+        :: JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.buffered Mozilla HTMLMediaElement.buffered documentation> 
-htmlMediaElementGetBuffered ::
-                            (MonadIO m, IsHTMLMediaElement self) =>
-                              self -> m (Maybe TimeRanges)
-htmlMediaElementGetBuffered self
+getBuffered ::
+            (MonadIO m, IsHTMLMediaElement self) =>
+              self -> m (Maybe TimeRanges)
+getBuffered self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_buffered
-          (unHTMLMediaElement (toHTMLMediaElement self)))
+      ((js_getBuffered (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        ghcjs_dom_html_media_element_get_ready_state ::
-        JSRef HTMLMediaElement -> IO Word
+        js_getReadyState :: JSRef HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.readyState Mozilla HTMLMediaElement.readyState documentation> 
-htmlMediaElementGetReadyState ::
-                              (MonadIO m, IsHTMLMediaElement self) => self -> m Word
-htmlMediaElementGetReadyState self
+getReadyState ::
+              (MonadIO m, IsHTMLMediaElement self) => self -> m Word
+getReadyState self
   = liftIO
-      (ghcjs_dom_html_media_element_get_ready_state
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getReadyState (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "($1[\"seeking\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_seeking ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getSeeking :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.seeking Mozilla HTMLMediaElement.seeking documentation> 
-htmlMediaElementGetSeeking ::
-                           (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetSeeking self
+getSeeking ::
+           (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getSeeking self
   = liftIO
-      (ghcjs_dom_html_media_element_get_seeking
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getSeeking (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"currentTime\"] = $2;"
-        ghcjs_dom_html_media_element_set_current_time ::
-        JSRef HTMLMediaElement -> Double -> IO ()
+        js_setCurrentTime :: JSRef HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.currentTime Mozilla HTMLMediaElement.currentTime documentation> 
-htmlMediaElementSetCurrentTime ::
-                               (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
-htmlMediaElementSetCurrentTime self val
+setCurrentTime ::
+               (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
+setCurrentTime self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_current_time
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_setCurrentTime (unHTMLMediaElement (toHTMLMediaElement self))
          val)
  
 foreign import javascript unsafe "$1[\"currentTime\"]"
-        ghcjs_dom_html_media_element_get_current_time ::
-        JSRef HTMLMediaElement -> IO Double
+        js_getCurrentTime :: JSRef HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.currentTime Mozilla HTMLMediaElement.currentTime documentation> 
-htmlMediaElementGetCurrentTime ::
-                               (MonadIO m, IsHTMLMediaElement self) => self -> m Double
-htmlMediaElementGetCurrentTime self
+getCurrentTime ::
+               (MonadIO m, IsHTMLMediaElement self) => self -> m Double
+getCurrentTime self
   = liftIO
-      (ghcjs_dom_html_media_element_get_current_time
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getCurrentTime (unHTMLMediaElement (toHTMLMediaElement self)))
  
-foreign import javascript unsafe "$1[\"duration\"]"
-        ghcjs_dom_html_media_element_get_duration ::
-        JSRef HTMLMediaElement -> IO Double
+foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
+        :: JSRef HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.duration Mozilla HTMLMediaElement.duration documentation> 
-htmlMediaElementGetDuration ::
-                            (MonadIO m, IsHTMLMediaElement self) => self -> m Double
-htmlMediaElementGetDuration self
+getDuration ::
+            (MonadIO m, IsHTMLMediaElement self) => self -> m Double
+getDuration self
   = liftIO
-      (ghcjs_dom_html_media_element_get_duration
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getDuration (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_paused ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getPaused :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.paused Mozilla HTMLMediaElement.paused documentation> 
-htmlMediaElementGetPaused ::
-                          (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetPaused self
+getPaused :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getPaused self
   = liftIO
-      (ghcjs_dom_html_media_element_get_paused
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getPaused (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
-        "$1[\"defaultPlaybackRate\"] = $2;"
-        ghcjs_dom_html_media_element_set_default_playback_rate ::
+        "$1[\"defaultPlaybackRate\"] = $2;" js_setDefaultPlaybackRate ::
         JSRef HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultPlaybackRate Mozilla HTMLMediaElement.defaultPlaybackRate documentation> 
-htmlMediaElementSetDefaultPlaybackRate ::
-                                       (MonadIO m, IsHTMLMediaElement self) =>
-                                         self -> Double -> m ()
-htmlMediaElementSetDefaultPlaybackRate self val
+setDefaultPlaybackRate ::
+                       (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
+setDefaultPlaybackRate self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_default_playback_rate
+      (js_setDefaultPlaybackRate
          (unHTMLMediaElement (toHTMLMediaElement self))
          val)
  
 foreign import javascript unsafe "$1[\"defaultPlaybackRate\"]"
-        ghcjs_dom_html_media_element_get_default_playback_rate ::
-        JSRef HTMLMediaElement -> IO Double
+        js_getDefaultPlaybackRate :: JSRef HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultPlaybackRate Mozilla HTMLMediaElement.defaultPlaybackRate documentation> 
-htmlMediaElementGetDefaultPlaybackRate ::
-                                       (MonadIO m, IsHTMLMediaElement self) => self -> m Double
-htmlMediaElementGetDefaultPlaybackRate self
+getDefaultPlaybackRate ::
+                       (MonadIO m, IsHTMLMediaElement self) => self -> m Double
+getDefaultPlaybackRate self
   = liftIO
-      (ghcjs_dom_html_media_element_get_default_playback_rate
+      (js_getDefaultPlaybackRate
          (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"playbackRate\"] = $2;"
-        ghcjs_dom_html_media_element_set_playback_rate ::
-        JSRef HTMLMediaElement -> Double -> IO ()
+        js_setPlaybackRate :: JSRef HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.playbackRate Mozilla HTMLMediaElement.playbackRate documentation> 
-htmlMediaElementSetPlaybackRate ::
-                                (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
-htmlMediaElementSetPlaybackRate self val
+setPlaybackRate ::
+                (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
+setPlaybackRate self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_playback_rate
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_setPlaybackRate (unHTMLMediaElement (toHTMLMediaElement self))
          val)
  
 foreign import javascript unsafe "$1[\"playbackRate\"]"
-        ghcjs_dom_html_media_element_get_playback_rate ::
-        JSRef HTMLMediaElement -> IO Double
+        js_getPlaybackRate :: JSRef HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.playbackRate Mozilla HTMLMediaElement.playbackRate documentation> 
-htmlMediaElementGetPlaybackRate ::
-                                (MonadIO m, IsHTMLMediaElement self) => self -> m Double
-htmlMediaElementGetPlaybackRate self
+getPlaybackRate ::
+                (MonadIO m, IsHTMLMediaElement self) => self -> m Double
+getPlaybackRate self
   = liftIO
-      (ghcjs_dom_html_media_element_get_playback_rate
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getPlaybackRate (unHTMLMediaElement (toHTMLMediaElement self)))
  
-foreign import javascript unsafe "$1[\"played\"]"
-        ghcjs_dom_html_media_element_get_played ::
+foreign import javascript unsafe "$1[\"played\"]" js_getPlayed ::
         JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.played Mozilla HTMLMediaElement.played documentation> 
-htmlMediaElementGetPlayed ::
-                          (MonadIO m, IsHTMLMediaElement self) =>
-                            self -> m (Maybe TimeRanges)
-htmlMediaElementGetPlayed self
+getPlayed ::
+          (MonadIO m, IsHTMLMediaElement self) =>
+            self -> m (Maybe TimeRanges)
+getPlayed self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_played
-          (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      ((js_getPlayed (unHTMLMediaElement (toHTMLMediaElement self))) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"seekable\"]"
-        ghcjs_dom_html_media_element_get_seekable ::
-        JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
+foreign import javascript unsafe "$1[\"seekable\"]" js_getSeekable
+        :: JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.seekable Mozilla HTMLMediaElement.seekable documentation> 
-htmlMediaElementGetSeekable ::
-                            (MonadIO m, IsHTMLMediaElement self) =>
-                              self -> m (Maybe TimeRanges)
-htmlMediaElementGetSeekable self
+getSeekable ::
+            (MonadIO m, IsHTMLMediaElement self) =>
+              self -> m (Maybe TimeRanges)
+getSeekable self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_seekable
-          (unHTMLMediaElement (toHTMLMediaElement self)))
+      ((js_getSeekable (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_ended ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getEnded :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.ended Mozilla HTMLMediaElement.ended documentation> 
-htmlMediaElementGetEnded ::
-                         (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetEnded self
+getEnded :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getEnded self
   = liftIO
-      (ghcjs_dom_html_media_element_get_ended
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getEnded (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"autoplay\"] = $2;"
-        ghcjs_dom_html_media_element_set_autoplay ::
-        JSRef HTMLMediaElement -> Bool -> IO ()
+        js_setAutoplay :: JSRef HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.autoplay Mozilla HTMLMediaElement.autoplay documentation> 
-htmlMediaElementSetAutoplay ::
-                            (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
-htmlMediaElementSetAutoplay self val
+setAutoplay ::
+            (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
+setAutoplay self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_autoplay
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+      (js_setAutoplay (unHTMLMediaElement (toHTMLMediaElement self)) val)
  
 foreign import javascript unsafe "($1[\"autoplay\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_autoplay ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getAutoplay :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.autoplay Mozilla HTMLMediaElement.autoplay documentation> 
-htmlMediaElementGetAutoplay ::
-                            (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetAutoplay self
+getAutoplay ::
+            (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getAutoplay self
   = liftIO
-      (ghcjs_dom_html_media_element_get_autoplay
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getAutoplay (unHTMLMediaElement (toHTMLMediaElement self)))
  
-foreign import javascript unsafe "$1[\"loop\"] = $2;"
-        ghcjs_dom_html_media_element_set_loop ::
+foreign import javascript unsafe "$1[\"loop\"] = $2;" js_setLoop ::
         JSRef HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.loop Mozilla HTMLMediaElement.loop documentation> 
-htmlMediaElementSetLoop ::
-                        (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
-htmlMediaElementSetLoop self val
+setLoop ::
+        (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
+setLoop self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_loop
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+      (js_setLoop (unHTMLMediaElement (toHTMLMediaElement self)) val)
  
 foreign import javascript unsafe "($1[\"loop\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_loop ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getLoop :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.loop Mozilla HTMLMediaElement.loop documentation> 
-htmlMediaElementGetLoop ::
-                        (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetLoop self
+getLoop :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getLoop self
   = liftIO
-      (ghcjs_dom_html_media_element_get_loop
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getLoop (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"controls\"] = $2;"
-        ghcjs_dom_html_media_element_set_controls ::
-        JSRef HTMLMediaElement -> Bool -> IO ()
+        js_setControls :: JSRef HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controls Mozilla HTMLMediaElement.controls documentation> 
-htmlMediaElementSetControls ::
-                            (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
-htmlMediaElementSetControls self val
+setControls ::
+            (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
+setControls self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_controls
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+      (js_setControls (unHTMLMediaElement (toHTMLMediaElement self)) val)
  
 foreign import javascript unsafe "($1[\"controls\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_controls ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getControls :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controls Mozilla HTMLMediaElement.controls documentation> 
-htmlMediaElementGetControls ::
-                            (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetControls self
+getControls ::
+            (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getControls self
   = liftIO
-      (ghcjs_dom_html_media_element_get_controls
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getControls (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"volume\"] = $2;"
-        ghcjs_dom_html_media_element_set_volume ::
-        JSRef HTMLMediaElement -> Double -> IO ()
+        js_setVolume :: JSRef HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.volume Mozilla HTMLMediaElement.volume documentation> 
-htmlMediaElementSetVolume ::
-                          (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
-htmlMediaElementSetVolume self val
+setVolume ::
+          (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
+setVolume self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_volume
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+      (js_setVolume (unHTMLMediaElement (toHTMLMediaElement self)) val)
  
-foreign import javascript unsafe "$1[\"volume\"]"
-        ghcjs_dom_html_media_element_get_volume ::
+foreign import javascript unsafe "$1[\"volume\"]" js_getVolume ::
         JSRef HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.volume Mozilla HTMLMediaElement.volume documentation> 
-htmlMediaElementGetVolume ::
-                          (MonadIO m, IsHTMLMediaElement self) => self -> m Double
-htmlMediaElementGetVolume self
+getVolume ::
+          (MonadIO m, IsHTMLMediaElement self) => self -> m Double
+getVolume self
   = liftIO
-      (ghcjs_dom_html_media_element_get_volume
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getVolume (unHTMLMediaElement (toHTMLMediaElement self)))
  
-foreign import javascript unsafe "$1[\"muted\"] = $2;"
-        ghcjs_dom_html_media_element_set_muted ::
-        JSRef HTMLMediaElement -> Bool -> IO ()
+foreign import javascript unsafe "$1[\"muted\"] = $2;" js_setMuted
+        :: JSRef HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.muted Mozilla HTMLMediaElement.muted documentation> 
-htmlMediaElementSetMuted ::
-                         (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
-htmlMediaElementSetMuted self val
+setMuted ::
+         (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
+setMuted self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_muted
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+      (js_setMuted (unHTMLMediaElement (toHTMLMediaElement self)) val)
  
 foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_muted ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getMuted :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.muted Mozilla HTMLMediaElement.muted documentation> 
-htmlMediaElementGetMuted ::
-                         (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetMuted self
+getMuted :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getMuted self
   = liftIO
-      (ghcjs_dom_html_media_element_get_muted
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getMuted (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"defaultMuted\"] = $2;"
-        ghcjs_dom_html_media_element_set_default_muted ::
-        JSRef HTMLMediaElement -> Bool -> IO ()
+        js_setDefaultMuted :: JSRef HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultMuted Mozilla HTMLMediaElement.defaultMuted documentation> 
-htmlMediaElementSetDefaultMuted ::
-                                (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
-htmlMediaElementSetDefaultMuted self val
+setDefaultMuted ::
+                (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
+setDefaultMuted self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_default_muted
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_setDefaultMuted (unHTMLMediaElement (toHTMLMediaElement self))
          val)
  
 foreign import javascript unsafe "($1[\"defaultMuted\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_default_muted ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getDefaultMuted :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultMuted Mozilla HTMLMediaElement.defaultMuted documentation> 
-htmlMediaElementGetDefaultMuted ::
-                                (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetDefaultMuted self
+getDefaultMuted ::
+                (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getDefaultMuted self
   = liftIO
-      (ghcjs_dom_html_media_element_get_default_muted
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getDefaultMuted (unHTMLMediaElement (toHTMLMediaElement self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.emptied Mozilla HTMLMediaElement.emptied documentation> 
-htmlMediaElementEmptied ::
-                        (IsHTMLMediaElement self, IsEventTarget self) =>
-                          EventName self Event
-htmlMediaElementEmptied = unsafeEventName (toJSString "emptied")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onemptied Mozilla HTMLMediaElement.onemptied documentation> 
+emptied ::
+        (IsHTMLMediaElement self, IsEventTarget self) =>
+          EventName self Event
+emptied = unsafeEventName (toJSString "emptied")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.loadedMetadata Mozilla HTMLMediaElement.loadedMetadata documentation> 
-htmlMediaElementLoadedMetadata ::
-                               (IsHTMLMediaElement self, IsEventTarget self) =>
-                                 EventName self Event
-htmlMediaElementLoadedMetadata
-  = unsafeEventName (toJSString "loadedmetadata")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onloadedmetadata Mozilla HTMLMediaElement.onloadedmetadata documentation> 
+loadedMetadata ::
+               (IsHTMLMediaElement self, IsEventTarget self) =>
+                 EventName self Event
+loadedMetadata = unsafeEventName (toJSString "loadedmetadata")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.loadedData Mozilla HTMLMediaElement.loadedData documentation> 
-htmlMediaElementLoadedData ::
-                           (IsHTMLMediaElement self, IsEventTarget self) =>
-                             EventName self Event
-htmlMediaElementLoadedData
-  = unsafeEventName (toJSString "loadeddata")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onloadeddata Mozilla HTMLMediaElement.onloadeddata documentation> 
+loadedData ::
+           (IsHTMLMediaElement self, IsEventTarget self) =>
+             EventName self Event
+loadedData = unsafeEventName (toJSString "loadeddata")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.canPlay Mozilla HTMLMediaElement.canPlay documentation> 
-htmlMediaElementCanPlay ::
-                        (IsHTMLMediaElement self, IsEventTarget self) =>
-                          EventName self Event
-htmlMediaElementCanPlay = unsafeEventName (toJSString "canplay")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.oncanplay Mozilla HTMLMediaElement.oncanplay documentation> 
+canPlay ::
+        (IsHTMLMediaElement self, IsEventTarget self) =>
+          EventName self Event
+canPlay = unsafeEventName (toJSString "canplay")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.canPlayThrough Mozilla HTMLMediaElement.canPlayThrough documentation> 
-htmlMediaElementCanPlayThrough ::
-                               (IsHTMLMediaElement self, IsEventTarget self) =>
-                                 EventName self Event
-htmlMediaElementCanPlayThrough
-  = unsafeEventName (toJSString "canplaythrough")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.oncanplaythrough Mozilla HTMLMediaElement.oncanplaythrough documentation> 
+canPlayThrough ::
+               (IsHTMLMediaElement self, IsEventTarget self) =>
+                 EventName self Event
+canPlayThrough = unsafeEventName (toJSString "canplaythrough")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.playing Mozilla HTMLMediaElement.playing documentation> 
-htmlMediaElementPlaying ::
-                        (IsHTMLMediaElement self, IsEventTarget self) =>
-                          EventName self Event
-htmlMediaElementPlaying = unsafeEventName (toJSString "playing")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onplaying Mozilla HTMLMediaElement.onplaying documentation> 
+playing ::
+        (IsHTMLMediaElement self, IsEventTarget self) =>
+          EventName self Event
+playing = unsafeEventName (toJSString "playing")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.ended Mozilla HTMLMediaElement.ended documentation> 
-htmlMediaElementEnded ::
-                      (IsHTMLMediaElement self, IsEventTarget self) =>
-                        EventName self Event
-htmlMediaElementEnded = unsafeEventName (toJSString "ended")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onended Mozilla HTMLMediaElement.onended documentation> 
+ended ::
+      (IsHTMLMediaElement self, IsEventTarget self) =>
+        EventName self Event
+ended = unsafeEventName (toJSString "ended")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.waiting Mozilla HTMLMediaElement.waiting documentation> 
-htmlMediaElementWaiting ::
-                        (IsHTMLMediaElement self, IsEventTarget self) =>
-                          EventName self Event
-htmlMediaElementWaiting = unsafeEventName (toJSString "waiting")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwaiting Mozilla HTMLMediaElement.onwaiting documentation> 
+waiting ::
+        (IsHTMLMediaElement self, IsEventTarget self) =>
+          EventName self Event
+waiting = unsafeEventName (toJSString "waiting")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.durationChange Mozilla HTMLMediaElement.durationChange documentation> 
-htmlMediaElementDurationChange ::
-                               (IsHTMLMediaElement self, IsEventTarget self) =>
-                                 EventName self Event
-htmlMediaElementDurationChange
-  = unsafeEventName (toJSString "durationchange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.ondurationchange Mozilla HTMLMediaElement.ondurationchange documentation> 
+durationChange ::
+               (IsHTMLMediaElement self, IsEventTarget self) =>
+                 EventName self Event
+durationChange = unsafeEventName (toJSString "durationchange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.timeUpdate Mozilla HTMLMediaElement.timeUpdate documentation> 
-htmlMediaElementTimeUpdate ::
-                           (IsHTMLMediaElement self, IsEventTarget self) =>
-                             EventName self Event
-htmlMediaElementTimeUpdate
-  = unsafeEventName (toJSString "timeupdate")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.ontimeupdate Mozilla HTMLMediaElement.ontimeupdate documentation> 
+timeUpdate ::
+           (IsHTMLMediaElement self, IsEventTarget self) =>
+             EventName self Event
+timeUpdate = unsafeEventName (toJSString "timeupdate")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.playEvent Mozilla HTMLMediaElement.playEvent documentation> 
-htmlMediaElementPlayEvent ::
-                          (IsHTMLMediaElement self, IsEventTarget self) =>
-                            EventName self Event
-htmlMediaElementPlayEvent = unsafeEventName (toJSString "play")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onplay Mozilla HTMLMediaElement.onplay documentation> 
+playEvent ::
+          (IsHTMLMediaElement self, IsEventTarget self) =>
+            EventName self Event
+playEvent = unsafeEventName (toJSString "play")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.pauseEvent Mozilla HTMLMediaElement.pauseEvent documentation> 
-htmlMediaElementPauseEvent ::
-                           (IsHTMLMediaElement self, IsEventTarget self) =>
-                             EventName self Event
-htmlMediaElementPauseEvent = unsafeEventName (toJSString "pause")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onpause Mozilla HTMLMediaElement.onpause documentation> 
+pauseEvent ::
+           (IsHTMLMediaElement self, IsEventTarget self) =>
+             EventName self Event
+pauseEvent = unsafeEventName (toJSString "pause")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.rateChange Mozilla HTMLMediaElement.rateChange documentation> 
-htmlMediaElementRateChange ::
-                           (IsHTMLMediaElement self, IsEventTarget self) =>
-                             EventName self Event
-htmlMediaElementRateChange
-  = unsafeEventName (toJSString "ratechange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onratechange Mozilla HTMLMediaElement.onratechange documentation> 
+rateChange ::
+           (IsHTMLMediaElement self, IsEventTarget self) =>
+             EventName self Event
+rateChange = unsafeEventName (toJSString "ratechange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.volumeChange Mozilla HTMLMediaElement.volumeChange documentation> 
-htmlMediaElementVolumeChange ::
-                             (IsHTMLMediaElement self, IsEventTarget self) =>
-                               EventName self Event
-htmlMediaElementVolumeChange
-  = unsafeEventName (toJSString "volumechange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onvolumechange Mozilla HTMLMediaElement.onvolumechange documentation> 
+volumeChange ::
+             (IsHTMLMediaElement self, IsEventTarget self) =>
+               EventName self Event
+volumeChange = unsafeEventName (toJSString "volumechange")
  
 foreign import javascript unsafe
-        "$1[\"webkitPreservesPitch\"] = $2;"
-        ghcjs_dom_html_media_element_set_webkit_preserves_pitch ::
+        "$1[\"webkitPreservesPitch\"] = $2;" js_setWebkitPreservesPitch ::
         JSRef HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitPreservesPitch Mozilla HTMLMediaElement.webkitPreservesPitch documentation> 
-htmlMediaElementSetWebkitPreservesPitch ::
-                                        (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
-htmlMediaElementSetWebkitPreservesPitch self val
+setWebkitPreservesPitch ::
+                        (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
+setWebkitPreservesPitch self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_webkit_preserves_pitch
+      (js_setWebkitPreservesPitch
          (unHTMLMediaElement (toHTMLMediaElement self))
          val)
  
 foreign import javascript unsafe
-        "($1[\"webkitPreservesPitch\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_webkit_preserves_pitch ::
-        JSRef HTMLMediaElement -> IO Bool
+        "($1[\"webkitPreservesPitch\"] ? 1 : 0)" js_getWebkitPreservesPitch
+        :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitPreservesPitch Mozilla HTMLMediaElement.webkitPreservesPitch documentation> 
-htmlMediaElementGetWebkitPreservesPitch ::
-                                        (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetWebkitPreservesPitch self
+getWebkitPreservesPitch ::
+                        (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getWebkitPreservesPitch self
   = liftIO
-      (ghcjs_dom_html_media_element_get_webkit_preserves_pitch
+      (js_getWebkitPreservesPitch
          (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
         "($1[\"webkitHasClosedCaptions\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_webkit_has_closed_captions ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getWebkitHasClosedCaptions :: JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitHasClosedCaptions Mozilla HTMLMediaElement.webkitHasClosedCaptions documentation> 
-htmlMediaElementGetWebkitHasClosedCaptions ::
-                                           (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-htmlMediaElementGetWebkitHasClosedCaptions self
+getWebkitHasClosedCaptions ::
+                           (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getWebkitHasClosedCaptions self
   = liftIO
-      (ghcjs_dom_html_media_element_get_webkit_has_closed_captions
+      (js_getWebkitHasClosedCaptions
          (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
         "$1[\"webkitClosedCaptionsVisible\"] = $2;"
-        ghcjs_dom_html_media_element_set_webkit_closed_captions_visible ::
+        js_setWebkitClosedCaptionsVisible ::
         JSRef HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitClosedCaptionsVisible Mozilla HTMLMediaElement.webkitClosedCaptionsVisible documentation> 
-htmlMediaElementSetWebkitClosedCaptionsVisible ::
-                                               (MonadIO m, IsHTMLMediaElement self) =>
-                                                 self -> Bool -> m ()
-htmlMediaElementSetWebkitClosedCaptionsVisible self val
+setWebkitClosedCaptionsVisible ::
+                               (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
+setWebkitClosedCaptionsVisible self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_webkit_closed_captions_visible
+      (js_setWebkitClosedCaptionsVisible
          (unHTMLMediaElement (toHTMLMediaElement self))
          val)
  
 foreign import javascript unsafe
         "($1[\"webkitClosedCaptionsVisible\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_webkit_closed_captions_visible ::
+        js_getWebkitClosedCaptionsVisible ::
         JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitClosedCaptionsVisible Mozilla HTMLMediaElement.webkitClosedCaptionsVisible documentation> 
-htmlMediaElementGetWebkitClosedCaptionsVisible ::
-                                               (MonadIO m, IsHTMLMediaElement self) =>
-                                                 self -> m Bool
-htmlMediaElementGetWebkitClosedCaptionsVisible self
+getWebkitClosedCaptionsVisible ::
+                               (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getWebkitClosedCaptionsVisible self
   = liftIO
-      (ghcjs_dom_html_media_element_get_webkit_closed_captions_visible
+      (js_getWebkitClosedCaptionsVisible
          (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
         "$1[\"webkitAudioDecodedByteCount\"]"
-        ghcjs_dom_html_media_element_get_webkit_audio_decoded_byte_count ::
+        js_getWebkitAudioDecodedByteCount ::
         JSRef HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitAudioDecodedByteCount Mozilla HTMLMediaElement.webkitAudioDecodedByteCount documentation> 
-htmlMediaElementGetWebkitAudioDecodedByteCount ::
-                                               (MonadIO m, IsHTMLMediaElement self) =>
-                                                 self -> m Word
-htmlMediaElementGetWebkitAudioDecodedByteCount self
+getWebkitAudioDecodedByteCount ::
+                               (MonadIO m, IsHTMLMediaElement self) => self -> m Word
+getWebkitAudioDecodedByteCount self
   = liftIO
-      (ghcjs_dom_html_media_element_get_webkit_audio_decoded_byte_count
+      (js_getWebkitAudioDecodedByteCount
          (unHTMLMediaElement (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
         "$1[\"webkitVideoDecodedByteCount\"]"
-        ghcjs_dom_html_media_element_get_webkit_video_decoded_byte_count ::
+        js_getWebkitVideoDecodedByteCount ::
         JSRef HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitVideoDecodedByteCount Mozilla HTMLMediaElement.webkitVideoDecodedByteCount documentation> 
-htmlMediaElementGetWebkitVideoDecodedByteCount ::
-                                               (MonadIO m, IsHTMLMediaElement self) =>
-                                                 self -> m Word
-htmlMediaElementGetWebkitVideoDecodedByteCount self
+getWebkitVideoDecodedByteCount ::
+                               (MonadIO m, IsHTMLMediaElement self) => self -> m Word
+getWebkitVideoDecodedByteCount self
   = liftIO
-      (ghcjs_dom_html_media_element_get_webkit_video_decoded_byte_count
+      (js_getWebkitVideoDecodedByteCount
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webKitKeyAdded Mozilla HTMLMediaElement.webKitKeyAdded documentation> 
-htmlMediaElementWebKitKeyAdded ::
-                               (IsHTMLMediaElement self, IsEventTarget self) =>
-                                 EventName self Event
-htmlMediaElementWebKitKeyAdded
-  = unsafeEventName (toJSString "webkitkeyadded")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitkeyadded Mozilla HTMLMediaElement.onwebkitkeyadded documentation> 
+webKitKeyAdded ::
+               (IsHTMLMediaElement self, IsEventTarget self) =>
+                 EventName self Event
+webKitKeyAdded = unsafeEventName (toJSString "webkitkeyadded")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webKitKeyError Mozilla HTMLMediaElement.webKitKeyError documentation> 
-htmlMediaElementWebKitKeyError ::
-                               (IsHTMLMediaElement self, IsEventTarget self) =>
-                                 EventName self Event
-htmlMediaElementWebKitKeyError
-  = unsafeEventName (toJSString "webkitkeyerror")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitkeyerror Mozilla HTMLMediaElement.onwebkitkeyerror documentation> 
+webKitKeyError ::
+               (IsHTMLMediaElement self, IsEventTarget self) =>
+                 EventName self Event
+webKitKeyError = unsafeEventName (toJSString "webkitkeyerror")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webKitKeyMessage Mozilla HTMLMediaElement.webKitKeyMessage documentation> 
-htmlMediaElementWebKitKeyMessage ::
-                                 (IsHTMLMediaElement self, IsEventTarget self) =>
-                                   EventName self Event
-htmlMediaElementWebKitKeyMessage
-  = unsafeEventName (toJSString "webkitkeymessage")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitkeymessage Mozilla HTMLMediaElement.onwebkitkeymessage documentation> 
+webKitKeyMessage ::
+                 (IsHTMLMediaElement self, IsEventTarget self) =>
+                   EventName self Event
+webKitKeyMessage = unsafeEventName (toJSString "webkitkeymessage")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webKitNeedKey Mozilla HTMLMediaElement.webKitNeedKey documentation> 
-htmlMediaElementWebKitNeedKey ::
-                              (IsHTMLMediaElement self, IsEventTarget self) =>
-                                EventName self Event
-htmlMediaElementWebKitNeedKey
-  = unsafeEventName (toJSString "webkitneedkey")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitneedkey Mozilla HTMLMediaElement.onwebkitneedkey documentation> 
+webKitNeedKey ::
+              (IsHTMLMediaElement self, IsEventTarget self) =>
+                EventName self Event
+webKitNeedKey = unsafeEventName (toJSString "webkitneedkey")
  
 foreign import javascript unsafe "$1[\"webkitKeys\"]"
-        ghcjs_dom_html_media_element_get_webkit_keys ::
-        JSRef HTMLMediaElement -> IO (JSRef MediaKeys)
+        js_getWebkitKeys :: JSRef HTMLMediaElement -> IO (JSRef MediaKeys)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitKeys Mozilla HTMLMediaElement.webkitKeys documentation> 
-htmlMediaElementGetWebkitKeys ::
-                              (MonadIO m, IsHTMLMediaElement self) => self -> m (Maybe MediaKeys)
-htmlMediaElementGetWebkitKeys self
+getWebkitKeys ::
+              (MonadIO m, IsHTMLMediaElement self) => self -> m (Maybe MediaKeys)
+getWebkitKeys self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_webkit_keys
-          (unHTMLMediaElement (toHTMLMediaElement self)))
+      ((js_getWebkitKeys (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"audioTracks\"]"
-        ghcjs_dom_html_media_element_get_audio_tracks ::
+        js_getAudioTracks ::
         JSRef HTMLMediaElement -> IO (JSRef AudioTrackList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.audioTracks Mozilla HTMLMediaElement.audioTracks documentation> 
-htmlMediaElementGetAudioTracks ::
-                               (MonadIO m, IsHTMLMediaElement self) =>
-                                 self -> m (Maybe AudioTrackList)
-htmlMediaElementGetAudioTracks self
+getAudioTracks ::
+               (MonadIO m, IsHTMLMediaElement self) =>
+                 self -> m (Maybe AudioTrackList)
+getAudioTracks self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_audio_tracks
-          (unHTMLMediaElement (toHTMLMediaElement self)))
+      ((js_getAudioTracks (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"textTracks\"]"
-        ghcjs_dom_html_media_element_get_text_tracks ::
+        js_getTextTracks ::
         JSRef HTMLMediaElement -> IO (JSRef TextTrackList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.textTracks Mozilla HTMLMediaElement.textTracks documentation> 
-htmlMediaElementGetTextTracks ::
-                              (MonadIO m, IsHTMLMediaElement self) =>
-                                self -> m (Maybe TextTrackList)
-htmlMediaElementGetTextTracks self
+getTextTracks ::
+              (MonadIO m, IsHTMLMediaElement self) =>
+                self -> m (Maybe TextTrackList)
+getTextTracks self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_text_tracks
-          (unHTMLMediaElement (toHTMLMediaElement self)))
+      ((js_getTextTracks (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"videoTracks\"]"
-        ghcjs_dom_html_media_element_get_video_tracks ::
+        js_getVideoTracks ::
         JSRef HTMLMediaElement -> IO (JSRef VideoTrackList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.videoTracks Mozilla HTMLMediaElement.videoTracks documentation> 
-htmlMediaElementGetVideoTracks ::
-                               (MonadIO m, IsHTMLMediaElement self) =>
-                                 self -> m (Maybe VideoTrackList)
-htmlMediaElementGetVideoTracks self
+getVideoTracks ::
+               (MonadIO m, IsHTMLMediaElement self) =>
+                 self -> m (Maybe VideoTrackList)
+getVideoTracks self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_video_tracks
-          (unHTMLMediaElement (toHTMLMediaElement self)))
+      ((js_getVideoTracks (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"mediaGroup\"] = $2;"
-        ghcjs_dom_html_media_element_set_media_group ::
-        JSRef HTMLMediaElement -> JSString -> IO ()
+        js_setMediaGroup :: JSRef HTMLMediaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.mediaGroup Mozilla HTMLMediaElement.mediaGroup documentation> 
-htmlMediaElementSetMediaGroup ::
-                              (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
-                                self -> val -> m ()
-htmlMediaElementSetMediaGroup self val
+setMediaGroup ::
+              (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
+                self -> val -> m ()
+setMediaGroup self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_media_group
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_setMediaGroup (unHTMLMediaElement (toHTMLMediaElement self))
          (toJSString val))
  
 foreign import javascript unsafe "$1[\"mediaGroup\"]"
-        ghcjs_dom_html_media_element_get_media_group ::
-        JSRef HTMLMediaElement -> IO JSString
+        js_getMediaGroup :: JSRef HTMLMediaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.mediaGroup Mozilla HTMLMediaElement.mediaGroup documentation> 
-htmlMediaElementGetMediaGroup ::
-                              (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
-                                self -> m result
-htmlMediaElementGetMediaGroup self
+getMediaGroup ::
+              (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
+                self -> m result
+getMediaGroup self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_media_element_get_media_group
-            (unHTMLMediaElement (toHTMLMediaElement self))))
+         (js_getMediaGroup (unHTMLMediaElement (toHTMLMediaElement self))))
  
 foreign import javascript unsafe "$1[\"controller\"] = $2;"
-        ghcjs_dom_html_media_element_set_controller ::
+        js_setController ::
         JSRef HTMLMediaElement -> JSRef MediaController -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controller Mozilla HTMLMediaElement.controller documentation> 
-htmlMediaElementSetController ::
-                              (MonadIO m, IsHTMLMediaElement self, IsMediaController val) =>
-                                self -> Maybe val -> m ()
-htmlMediaElementSetController self val
+setController ::
+              (MonadIO m, IsHTMLMediaElement self) =>
+                self -> Maybe MediaController -> m ()
+setController self val
   = liftIO
-      (ghcjs_dom_html_media_element_set_controller
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         (maybe jsNull (unMediaController . toMediaController) val))
+      (js_setController (unHTMLMediaElement (toHTMLMediaElement self))
+         (maybe jsNull unMediaController val))
  
 foreign import javascript unsafe "$1[\"controller\"]"
-        ghcjs_dom_html_media_element_get_controller ::
+        js_getController ::
         JSRef HTMLMediaElement -> IO (JSRef MediaController)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controller Mozilla HTMLMediaElement.controller documentation> 
-htmlMediaElementGetController ::
-                              (MonadIO m, IsHTMLMediaElement self) =>
-                                self -> m (Maybe MediaController)
-htmlMediaElementGetController self
+getController ::
+              (MonadIO m, IsHTMLMediaElement self) =>
+                self -> m (Maybe MediaController)
+getController self
   = liftIO
-      ((ghcjs_dom_html_media_element_get_controller
-          (unHTMLMediaElement (toHTMLMediaElement self)))
+      ((js_getController (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe
         "($1[\"webkitCurrentPlaybackTargetIsWireless\"] ? 1 : 0)"
-        ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless
-        :: JSRef HTMLMediaElement -> IO Bool
+        js_getWebkitCurrentPlaybackTargetIsWireless ::
+        JSRef HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitCurrentPlaybackTargetIsWireless Mozilla HTMLMediaElement.webkitCurrentPlaybackTargetIsWireless documentation> 
-htmlMediaElementGetWebkitCurrentPlaybackTargetIsWireless ::
-                                                         (MonadIO m, IsHTMLMediaElement self) =>
-                                                           self -> m Bool
-htmlMediaElementGetWebkitCurrentPlaybackTargetIsWireless self
+getWebkitCurrentPlaybackTargetIsWireless ::
+                                         (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
+getWebkitCurrentPlaybackTargetIsWireless self
   = liftIO
-      (ghcjs_dom_html_media_element_get_webkit_current_playback_target_is_wireless
+      (js_getWebkitCurrentPlaybackTargetIsWireless
          (unHTMLMediaElement (toHTMLMediaElement self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webKitCurrentPlaybackTargetIsWirelessChanged Mozilla HTMLMediaElement.webKitCurrentPlaybackTargetIsWirelessChanged documentation> 
-htmlMediaElementWebKitCurrentPlaybackTargetIsWirelessChanged ::
-                                                             (IsHTMLMediaElement self,
-                                                              IsEventTarget self) =>
-                                                               EventName self Event
-htmlMediaElementWebKitCurrentPlaybackTargetIsWirelessChanged
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitcurrentplaybacktargetiswirelesschanged Mozilla HTMLMediaElement.onwebkitcurrentplaybacktargetiswirelesschanged documentation> 
+webKitCurrentPlaybackTargetIsWirelessChanged ::
+                                             (IsHTMLMediaElement self, IsEventTarget self) =>
+                                               EventName self Event
+webKitCurrentPlaybackTargetIsWirelessChanged
   = unsafeEventName
       (toJSString "webkitcurrentplaybacktargetiswirelesschanged")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webKitPlaybackTargetAvailabilityChanged Mozilla HTMLMediaElement.webKitPlaybackTargetAvailabilityChanged documentation> 
-htmlMediaElementWebKitPlaybackTargetAvailabilityChanged ::
-                                                        (IsHTMLMediaElement self,
-                                                         IsEventTarget self) =>
-                                                          EventName self Event
-htmlMediaElementWebKitPlaybackTargetAvailabilityChanged
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitplaybacktargetavailabilitychanged Mozilla HTMLMediaElement.onwebkitplaybacktargetavailabilitychanged documentation> 
+webKitPlaybackTargetAvailabilityChanged ::
+                                        (IsHTMLMediaElement self, IsEventTarget self) =>
+                                          EventName self Event
+webKitPlaybackTargetAvailabilityChanged
   = unsafeEventName
       (toJSString "webkitplaybacktargetavailabilitychanged")
 #else

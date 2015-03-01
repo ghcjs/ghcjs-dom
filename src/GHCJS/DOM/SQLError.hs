@@ -1,13 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SQLError
-       (cUNKNOWN_ERR, cDATABASE_ERR, cVERSION_ERR, cTOO_LARGE_ERR,
-        cQUOTA_ERR, cSYNTAX_ERR, cCONSTRAINT_ERR, cTIMEOUT_ERR,
-        ghcjs_dom_sql_error_get_code, sqlErrorGetCode,
-        ghcjs_dom_sql_error_get_message, sqlErrorGetMessage, SQLError,
-        IsSQLError, castToSQLError, gTypeSQLError, toSQLError)
+       (pattern UNKNOWN_ERR, pattern DATABASE_ERR, pattern VERSION_ERR,
+        pattern TOO_LARGE_ERR, pattern QUOTA_ERR, pattern SYNTAX_ERR,
+        pattern CONSTRAINT_ERR, pattern TIMEOUT_ERR, js_getCode, getCode,
+        js_getMessage, getMessage, SQLError, castToSQLError, gTypeSQLError)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,38 +17,33 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cUNKNOWN_ERR = 0
-cDATABASE_ERR = 1
-cVERSION_ERR = 2
-cTOO_LARGE_ERR = 3
-cQUOTA_ERR = 4
-cSYNTAX_ERR = 5
-cCONSTRAINT_ERR = 6
-cTIMEOUT_ERR = 7
+pattern UNKNOWN_ERR = 0
+pattern DATABASE_ERR = 1
+pattern VERSION_ERR = 2
+pattern TOO_LARGE_ERR = 3
+pattern QUOTA_ERR = 4
+pattern SYNTAX_ERR = 5
+pattern CONSTRAINT_ERR = 6
+pattern TIMEOUT_ERR = 7
  
-foreign import javascript unsafe "$1[\"code\"]"
-        ghcjs_dom_sql_error_get_code :: JSRef SQLError -> IO Word
+foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+        JSRef SQLError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLError.code Mozilla SQLError.code documentation> 
-sqlErrorGetCode :: (MonadIO m, IsSQLError self) => self -> m Word
-sqlErrorGetCode self
-  = liftIO
-      (ghcjs_dom_sql_error_get_code (unSQLError (toSQLError self)))
+getCode :: (MonadIO m) => SQLError -> m Word
+getCode self = liftIO (js_getCode (unSQLError self))
  
-foreign import javascript unsafe "$1[\"message\"]"
-        ghcjs_dom_sql_error_get_message :: JSRef SQLError -> IO JSString
+foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+        JSRef SQLError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLError.message Mozilla SQLError.message documentation> 
-sqlErrorGetMessage ::
-                   (MonadIO m, IsSQLError self, FromJSString result) =>
-                     self -> m result
-sqlErrorGetMessage self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_sql_error_get_message (unSQLError (toSQLError self))))
+getMessage ::
+           (MonadIO m, FromJSString result) => SQLError -> m result
+getMessage self
+  = liftIO (fromJSString <$> (js_getMessage (unSQLError self)))
 #else
 module GHCJS.DOM.SQLError (
   ) where

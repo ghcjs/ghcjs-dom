@@ -1,15 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAllCollection
-       (ghcjs_dom_html_all_collection_item, htmlAllCollectionItem,
-        ghcjs_dom_html_all_collection_named_item,
-        htmlAllCollectionNamedItem, ghcjs_dom_html_all_collection_tags,
-        htmlAllCollectionTags, ghcjs_dom_html_all_collection_get_length,
-        htmlAllCollectionGetLength, HTMLAllCollection, IsHTMLAllCollection,
-        castToHTMLAllCollection, gTypeHTMLAllCollection,
-        toHTMLAllCollection)
+       (js_item, item, js_namedItem, namedItem, js_tags, tags,
+        js_getLength, getLength, HTMLAllCollection,
+        castToHTMLAllCollection, gTypeHTMLAllCollection)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,66 +16,49 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_html_all_collection_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef HTMLAllCollection -> Word -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.item Mozilla HTMLAllCollection.item documentation> 
-htmlAllCollectionItem ::
-                      (MonadIO m, IsHTMLAllCollection self) =>
-                        self -> Word -> m (Maybe Node)
-htmlAllCollectionItem self index
-  = liftIO
-      ((ghcjs_dom_html_all_collection_item
-          (unHTMLAllCollection (toHTMLAllCollection self))
-          index)
-         >>= fromJSRef)
+item :: (MonadIO m) => HTMLAllCollection -> Word -> m (Maybe Node)
+item self index
+  = liftIO ((js_item (unHTMLAllCollection self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        ghcjs_dom_html_all_collection_named_item ::
+        js_namedItem ::
         JSRef HTMLAllCollection -> JSString -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.namedItem Mozilla HTMLAllCollection.namedItem documentation> 
-htmlAllCollectionNamedItem ::
-                           (MonadIO m, IsHTMLAllCollection self, ToJSString name) =>
-                             self -> name -> m (Maybe Node)
-htmlAllCollectionNamedItem self name
+namedItem ::
+          (MonadIO m, ToJSString name) =>
+            HTMLAllCollection -> name -> m (Maybe Node)
+namedItem self name
   = liftIO
-      ((ghcjs_dom_html_all_collection_named_item
-          (unHTMLAllCollection (toHTMLAllCollection self))
-          (toJSString name))
-         >>= fromJSRef)
+      ((js_namedItem (unHTMLAllCollection self) (toJSString name)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"tags\"]($2)"
-        ghcjs_dom_html_all_collection_tags ::
+foreign import javascript unsafe "$1[\"tags\"]($2)" js_tags ::
         JSRef HTMLAllCollection -> JSString -> IO (JSRef NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.tags Mozilla HTMLAllCollection.tags documentation> 
-htmlAllCollectionTags ::
-                      (MonadIO m, IsHTMLAllCollection self, ToJSString name) =>
-                        self -> name -> m (Maybe NodeList)
-htmlAllCollectionTags self name
+tags ::
+     (MonadIO m, ToJSString name) =>
+       HTMLAllCollection -> name -> m (Maybe NodeList)
+tags self name
   = liftIO
-      ((ghcjs_dom_html_all_collection_tags
-          (unHTMLAllCollection (toHTMLAllCollection self))
-          (toJSString name))
-         >>= fromJSRef)
+      ((js_tags (unHTMLAllCollection self) (toJSString name)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_html_all_collection_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef HTMLAllCollection -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.length Mozilla HTMLAllCollection.length documentation> 
-htmlAllCollectionGetLength ::
-                           (MonadIO m, IsHTMLAllCollection self) => self -> m Word
-htmlAllCollectionGetLength self
-  = liftIO
-      (ghcjs_dom_html_all_collection_get_length
-         (unHTMLAllCollection (toHTMLAllCollection self)))
+getLength :: (MonadIO m) => HTMLAllCollection -> m Word
+getLength self = liftIO (js_getLength (unHTMLAllCollection self))
 #else
 module GHCJS.DOM.HTMLAllCollection (
   ) where

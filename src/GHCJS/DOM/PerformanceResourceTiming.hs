@@ -1,32 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.PerformanceResourceTiming
-       (ghcjs_dom_performance_resource_timing_get_initiator_type,
-        performanceResourceTimingGetInitiatorType,
-        ghcjs_dom_performance_resource_timing_get_redirect_start,
-        performanceResourceTimingGetRedirectStart,
-        ghcjs_dom_performance_resource_timing_get_redirect_end,
-        performanceResourceTimingGetRedirectEnd,
-        ghcjs_dom_performance_resource_timing_get_fetch_start,
-        performanceResourceTimingGetFetchStart,
-        ghcjs_dom_performance_resource_timing_get_domain_lookup_start,
-        performanceResourceTimingGetDomainLookupStart,
-        ghcjs_dom_performance_resource_timing_get_domain_lookup_end,
-        performanceResourceTimingGetDomainLookupEnd,
-        ghcjs_dom_performance_resource_timing_get_connect_start,
-        performanceResourceTimingGetConnectStart,
-        ghcjs_dom_performance_resource_timing_get_connect_end,
-        performanceResourceTimingGetConnectEnd,
-        ghcjs_dom_performance_resource_timing_get_secure_connection_start,
-        performanceResourceTimingGetSecureConnectionStart,
-        ghcjs_dom_performance_resource_timing_get_request_start,
-        performanceResourceTimingGetRequestStart,
-        ghcjs_dom_performance_resource_timing_get_response_end,
-        performanceResourceTimingGetResponseEnd, PerformanceResourceTiming,
-        IsPerformanceResourceTiming, castToPerformanceResourceTiming,
-        gTypePerformanceResourceTiming, toPerformanceResourceTiming)
+       (js_getInitiatorType, getInitiatorType, js_getRedirectStart,
+        getRedirectStart, js_getRedirectEnd, getRedirectEnd,
+        js_getFetchStart, getFetchStart, js_getDomainLookupStart,
+        getDomainLookupStart, js_getDomainLookupEnd, getDomainLookupEnd,
+        js_getConnectStart, getConnectStart, js_getConnectEnd,
+        getConnectEnd, js_getSecureConnectionStart,
+        getSecureConnectionStart, js_getRequestStart, getRequestStart,
+        js_getResponseEnd, getResponseEnd, PerformanceResourceTiming,
+        castToPerformanceResourceTiming, gTypePerformanceResourceTiming)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -36,154 +22,117 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"initiatorType\"]"
-        ghcjs_dom_performance_resource_timing_get_initiator_type ::
+        js_getInitiatorType ::
         JSRef PerformanceResourceTiming -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.initiatorType Mozilla PerformanceResourceTiming.initiatorType documentation> 
-performanceResourceTimingGetInitiatorType ::
-                                          (MonadIO m, IsPerformanceResourceTiming self,
-                                           FromJSString result) =>
-                                            self -> m result
-performanceResourceTimingGetInitiatorType self
+getInitiatorType ::
+                 (MonadIO m, FromJSString result) =>
+                   PerformanceResourceTiming -> m result
+getInitiatorType self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_performance_resource_timing_get_initiator_type
-            (unPerformanceResourceTiming (toPerformanceResourceTiming self))))
+         (js_getInitiatorType (unPerformanceResourceTiming self)))
  
 foreign import javascript unsafe "$1[\"redirectStart\"]"
-        ghcjs_dom_performance_resource_timing_get_redirect_start ::
-        JSRef PerformanceResourceTiming -> IO Double
+        js_getRedirectStart :: JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.redirectStart Mozilla PerformanceResourceTiming.redirectStart documentation> 
-performanceResourceTimingGetRedirectStart ::
-                                          (MonadIO m, IsPerformanceResourceTiming self) =>
-                                            self -> m Double
-performanceResourceTimingGetRedirectStart self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_redirect_start
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getRedirectStart ::
+                 (MonadIO m) => PerformanceResourceTiming -> m Double
+getRedirectStart self
+  = liftIO (js_getRedirectStart (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"redirectEnd\"]"
-        ghcjs_dom_performance_resource_timing_get_redirect_end ::
-        JSRef PerformanceResourceTiming -> IO Double
+        js_getRedirectEnd :: JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.redirectEnd Mozilla PerformanceResourceTiming.redirectEnd documentation> 
-performanceResourceTimingGetRedirectEnd ::
-                                        (MonadIO m, IsPerformanceResourceTiming self) =>
-                                          self -> m Double
-performanceResourceTimingGetRedirectEnd self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_redirect_end
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getRedirectEnd ::
+               (MonadIO m) => PerformanceResourceTiming -> m Double
+getRedirectEnd self
+  = liftIO (js_getRedirectEnd (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"fetchStart\"]"
-        ghcjs_dom_performance_resource_timing_get_fetch_start ::
-        JSRef PerformanceResourceTiming -> IO Double
+        js_getFetchStart :: JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.fetchStart Mozilla PerformanceResourceTiming.fetchStart documentation> 
-performanceResourceTimingGetFetchStart ::
-                                       (MonadIO m, IsPerformanceResourceTiming self) =>
-                                         self -> m Double
-performanceResourceTimingGetFetchStart self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_fetch_start
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getFetchStart ::
+              (MonadIO m) => PerformanceResourceTiming -> m Double
+getFetchStart self
+  = liftIO (js_getFetchStart (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"domainLookupStart\"]"
-        ghcjs_dom_performance_resource_timing_get_domain_lookup_start ::
+        js_getDomainLookupStart ::
         JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.domainLookupStart Mozilla PerformanceResourceTiming.domainLookupStart documentation> 
-performanceResourceTimingGetDomainLookupStart ::
-                                              (MonadIO m, IsPerformanceResourceTiming self) =>
-                                                self -> m Double
-performanceResourceTimingGetDomainLookupStart self
+getDomainLookupStart ::
+                     (MonadIO m) => PerformanceResourceTiming -> m Double
+getDomainLookupStart self
   = liftIO
-      (ghcjs_dom_performance_resource_timing_get_domain_lookup_start
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+      (js_getDomainLookupStart (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"domainLookupEnd\"]"
-        ghcjs_dom_performance_resource_timing_get_domain_lookup_end ::
+        js_getDomainLookupEnd ::
         JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.domainLookupEnd Mozilla PerformanceResourceTiming.domainLookupEnd documentation> 
-performanceResourceTimingGetDomainLookupEnd ::
-                                            (MonadIO m, IsPerformanceResourceTiming self) =>
-                                              self -> m Double
-performanceResourceTimingGetDomainLookupEnd self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_domain_lookup_end
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getDomainLookupEnd ::
+                   (MonadIO m) => PerformanceResourceTiming -> m Double
+getDomainLookupEnd self
+  = liftIO (js_getDomainLookupEnd (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"connectStart\"]"
-        ghcjs_dom_performance_resource_timing_get_connect_start ::
-        JSRef PerformanceResourceTiming -> IO Double
+        js_getConnectStart :: JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.connectStart Mozilla PerformanceResourceTiming.connectStart documentation> 
-performanceResourceTimingGetConnectStart ::
-                                         (MonadIO m, IsPerformanceResourceTiming self) =>
-                                           self -> m Double
-performanceResourceTimingGetConnectStart self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_connect_start
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getConnectStart ::
+                (MonadIO m) => PerformanceResourceTiming -> m Double
+getConnectStart self
+  = liftIO (js_getConnectStart (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"connectEnd\"]"
-        ghcjs_dom_performance_resource_timing_get_connect_end ::
-        JSRef PerformanceResourceTiming -> IO Double
+        js_getConnectEnd :: JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.connectEnd Mozilla PerformanceResourceTiming.connectEnd documentation> 
-performanceResourceTimingGetConnectEnd ::
-                                       (MonadIO m, IsPerformanceResourceTiming self) =>
-                                         self -> m Double
-performanceResourceTimingGetConnectEnd self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_connect_end
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getConnectEnd ::
+              (MonadIO m) => PerformanceResourceTiming -> m Double
+getConnectEnd self
+  = liftIO (js_getConnectEnd (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"secureConnectionStart\"]"
-        ghcjs_dom_performance_resource_timing_get_secure_connection_start
-        :: JSRef PerformanceResourceTiming -> IO Double
+        js_getSecureConnectionStart ::
+        JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.secureConnectionStart Mozilla PerformanceResourceTiming.secureConnectionStart documentation> 
-performanceResourceTimingGetSecureConnectionStart ::
-                                                  (MonadIO m, IsPerformanceResourceTiming self) =>
-                                                    self -> m Double
-performanceResourceTimingGetSecureConnectionStart self
+getSecureConnectionStart ::
+                         (MonadIO m) => PerformanceResourceTiming -> m Double
+getSecureConnectionStart self
   = liftIO
-      (ghcjs_dom_performance_resource_timing_get_secure_connection_start
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+      (js_getSecureConnectionStart (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"requestStart\"]"
-        ghcjs_dom_performance_resource_timing_get_request_start ::
-        JSRef PerformanceResourceTiming -> IO Double
+        js_getRequestStart :: JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.requestStart Mozilla PerformanceResourceTiming.requestStart documentation> 
-performanceResourceTimingGetRequestStart ::
-                                         (MonadIO m, IsPerformanceResourceTiming self) =>
-                                           self -> m Double
-performanceResourceTimingGetRequestStart self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_request_start
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getRequestStart ::
+                (MonadIO m) => PerformanceResourceTiming -> m Double
+getRequestStart self
+  = liftIO (js_getRequestStart (unPerformanceResourceTiming self))
  
 foreign import javascript unsafe "$1[\"responseEnd\"]"
-        ghcjs_dom_performance_resource_timing_get_response_end ::
-        JSRef PerformanceResourceTiming -> IO Double
+        js_getResponseEnd :: JSRef PerformanceResourceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.responseEnd Mozilla PerformanceResourceTiming.responseEnd documentation> 
-performanceResourceTimingGetResponseEnd ::
-                                        (MonadIO m, IsPerformanceResourceTiming self) =>
-                                          self -> m Double
-performanceResourceTimingGetResponseEnd self
-  = liftIO
-      (ghcjs_dom_performance_resource_timing_get_response_end
-         (unPerformanceResourceTiming (toPerformanceResourceTiming self)))
+getResponseEnd ::
+               (MonadIO m) => PerformanceResourceTiming -> m Double
+getResponseEnd self
+  = liftIO (js_getResponseEnd (unPerformanceResourceTiming self))
 #else
 module GHCJS.DOM.PerformanceResourceTiming (
   ) where

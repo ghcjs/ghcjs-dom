@@ -1,22 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WorkerNavigator
-       (ghcjs_dom_worker_navigator_get_webkit_temporary_storage,
-        workerNavigatorGetWebkitTemporaryStorage,
-        ghcjs_dom_worker_navigator_get_webkit_persistent_storage,
-        workerNavigatorGetWebkitPersistentStorage,
-        ghcjs_dom_worker_navigator_get_app_name, workerNavigatorGetAppName,
-        ghcjs_dom_worker_navigator_get_app_version,
-        workerNavigatorGetAppVersion,
-        ghcjs_dom_worker_navigator_get_platform,
-        workerNavigatorGetPlatform,
-        ghcjs_dom_worker_navigator_get_user_agent,
-        workerNavigatorGetUserAgent,
-        ghcjs_dom_worker_navigator_get_on_line, workerNavigatorGetOnLine,
-        WorkerNavigator, IsWorkerNavigator, castToWorkerNavigator,
-        gTypeWorkerNavigator, toWorkerNavigator)
+       (js_getWebkitTemporaryStorage, getWebkitTemporaryStorage,
+        js_getWebkitPersistentStorage, getWebkitPersistentStorage,
+        js_getAppName, getAppName, js_getAppVersion, getAppVersion,
+        js_getPlatform, getPlatform, js_getUserAgent, getUserAgent,
+        js_getOnLine, getOnLine, WorkerNavigator, castToWorkerNavigator,
+        gTypeWorkerNavigator)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,105 +19,80 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"webkitTemporaryStorage\"]"
-        ghcjs_dom_worker_navigator_get_webkit_temporary_storage ::
+        js_getWebkitTemporaryStorage ::
         JSRef WorkerNavigator -> IO (JSRef StorageQuota)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitTemporaryStorage Mozilla WorkerNavigator.webkitTemporaryStorage documentation> 
-workerNavigatorGetWebkitTemporaryStorage ::
-                                         (MonadIO m, IsWorkerNavigator self) =>
-                                           self -> m (Maybe StorageQuota)
-workerNavigatorGetWebkitTemporaryStorage self
+getWebkitTemporaryStorage ::
+                          (MonadIO m) => WorkerNavigator -> m (Maybe StorageQuota)
+getWebkitTemporaryStorage self
   = liftIO
-      ((ghcjs_dom_worker_navigator_get_webkit_temporary_storage
-          (unWorkerNavigator (toWorkerNavigator self)))
-         >>= fromJSRef)
+      ((js_getWebkitTemporaryStorage (unWorkerNavigator self)) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
-        ghcjs_dom_worker_navigator_get_webkit_persistent_storage ::
+        js_getWebkitPersistentStorage ::
         JSRef WorkerNavigator -> IO (JSRef StorageQuota)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitPersistentStorage Mozilla WorkerNavigator.webkitPersistentStorage documentation> 
-workerNavigatorGetWebkitPersistentStorage ::
-                                          (MonadIO m, IsWorkerNavigator self) =>
-                                            self -> m (Maybe StorageQuota)
-workerNavigatorGetWebkitPersistentStorage self
+getWebkitPersistentStorage ::
+                           (MonadIO m) => WorkerNavigator -> m (Maybe StorageQuota)
+getWebkitPersistentStorage self
   = liftIO
-      ((ghcjs_dom_worker_navigator_get_webkit_persistent_storage
-          (unWorkerNavigator (toWorkerNavigator self)))
-         >>= fromJSRef)
+      ((js_getWebkitPersistentStorage (unWorkerNavigator self)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"appName\"]"
-        ghcjs_dom_worker_navigator_get_app_name ::
+foreign import javascript unsafe "$1[\"appName\"]" js_getAppName ::
         JSRef WorkerNavigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.appName Mozilla WorkerNavigator.appName documentation> 
-workerNavigatorGetAppName ::
-                          (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
-                            self -> m result
-workerNavigatorGetAppName self
+getAppName ::
+           (MonadIO m, FromJSString result) => WorkerNavigator -> m result
+getAppName self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_worker_navigator_get_app_name
-            (unWorkerNavigator (toWorkerNavigator self))))
+      (fromJSString <$> (js_getAppName (unWorkerNavigator self)))
  
 foreign import javascript unsafe "$1[\"appVersion\"]"
-        ghcjs_dom_worker_navigator_get_app_version ::
-        JSRef WorkerNavigator -> IO JSString
+        js_getAppVersion :: JSRef WorkerNavigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.appVersion Mozilla WorkerNavigator.appVersion documentation> 
-workerNavigatorGetAppVersion ::
-                             (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
-                               self -> m result
-workerNavigatorGetAppVersion self
+getAppVersion ::
+              (MonadIO m, FromJSString result) => WorkerNavigator -> m result
+getAppVersion self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_worker_navigator_get_app_version
-            (unWorkerNavigator (toWorkerNavigator self))))
+      (fromJSString <$> (js_getAppVersion (unWorkerNavigator self)))
  
-foreign import javascript unsafe "$1[\"platform\"]"
-        ghcjs_dom_worker_navigator_get_platform ::
-        JSRef WorkerNavigator -> IO JSString
+foreign import javascript unsafe "$1[\"platform\"]" js_getPlatform
+        :: JSRef WorkerNavigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.platform Mozilla WorkerNavigator.platform documentation> 
-workerNavigatorGetPlatform ::
-                           (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
-                             self -> m result
-workerNavigatorGetPlatform self
+getPlatform ::
+            (MonadIO m, FromJSString result) => WorkerNavigator -> m result
+getPlatform self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_worker_navigator_get_platform
-            (unWorkerNavigator (toWorkerNavigator self))))
+      (fromJSString <$> (js_getPlatform (unWorkerNavigator self)))
  
 foreign import javascript unsafe "$1[\"userAgent\"]"
-        ghcjs_dom_worker_navigator_get_user_agent ::
-        JSRef WorkerNavigator -> IO JSString
+        js_getUserAgent :: JSRef WorkerNavigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.userAgent Mozilla WorkerNavigator.userAgent documentation> 
-workerNavigatorGetUserAgent ::
-                            (MonadIO m, IsWorkerNavigator self, FromJSString result) =>
-                              self -> m result
-workerNavigatorGetUserAgent self
+getUserAgent ::
+             (MonadIO m, FromJSString result) => WorkerNavigator -> m result
+getUserAgent self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_worker_navigator_get_user_agent
-            (unWorkerNavigator (toWorkerNavigator self))))
+      (fromJSString <$> (js_getUserAgent (unWorkerNavigator self)))
  
 foreign import javascript unsafe "($1[\"onLine\"] ? 1 : 0)"
-        ghcjs_dom_worker_navigator_get_on_line ::
-        JSRef WorkerNavigator -> IO Bool
+        js_getOnLine :: JSRef WorkerNavigator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.onLine Mozilla WorkerNavigator.onLine documentation> 
-workerNavigatorGetOnLine ::
-                         (MonadIO m, IsWorkerNavigator self) => self -> m Bool
-workerNavigatorGetOnLine self
-  = liftIO
-      (ghcjs_dom_worker_navigator_get_on_line
-         (unWorkerNavigator (toWorkerNavigator self)))
+getOnLine :: (MonadIO m) => WorkerNavigator -> m Bool
+getOnLine self = liftIO (js_getOnLine (unWorkerNavigator self))
 #else
 module GHCJS.DOM.WorkerNavigator (
   ) where

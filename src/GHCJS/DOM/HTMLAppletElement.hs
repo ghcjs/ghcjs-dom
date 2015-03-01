@@ -1,43 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLAppletElement
-       (ghcjs_dom_html_applet_element_set_align,
-        htmlAppletElementSetAlign, ghcjs_dom_html_applet_element_get_align,
-        htmlAppletElementGetAlign, ghcjs_dom_html_applet_element_set_alt,
-        htmlAppletElementSetAlt, ghcjs_dom_html_applet_element_get_alt,
-        htmlAppletElementGetAlt, ghcjs_dom_html_applet_element_set_archive,
-        htmlAppletElementSetArchive,
-        ghcjs_dom_html_applet_element_get_archive,
-        htmlAppletElementGetArchive,
-        ghcjs_dom_html_applet_element_set_code, htmlAppletElementSetCode,
-        ghcjs_dom_html_applet_element_get_code, htmlAppletElementGetCode,
-        ghcjs_dom_html_applet_element_set_code_base,
-        htmlAppletElementSetCodeBase,
-        ghcjs_dom_html_applet_element_get_code_base,
-        htmlAppletElementGetCodeBase,
-        ghcjs_dom_html_applet_element_set_height,
-        htmlAppletElementSetHeight,
-        ghcjs_dom_html_applet_element_get_height,
-        htmlAppletElementGetHeight,
-        ghcjs_dom_html_applet_element_set_hspace,
-        htmlAppletElementSetHspace,
-        ghcjs_dom_html_applet_element_get_hspace,
-        htmlAppletElementGetHspace, ghcjs_dom_html_applet_element_set_name,
-        htmlAppletElementSetName, ghcjs_dom_html_applet_element_get_name,
-        htmlAppletElementGetName, ghcjs_dom_html_applet_element_set_object,
-        htmlAppletElementSetObject,
-        ghcjs_dom_html_applet_element_get_object,
-        htmlAppletElementGetObject,
-        ghcjs_dom_html_applet_element_set_vspace,
-        htmlAppletElementSetVspace,
-        ghcjs_dom_html_applet_element_get_vspace,
-        htmlAppletElementGetVspace,
-        ghcjs_dom_html_applet_element_set_width, htmlAppletElementSetWidth,
-        ghcjs_dom_html_applet_element_get_width, htmlAppletElementGetWidth,
-        HTMLAppletElement, IsHTMLAppletElement, castToHTMLAppletElement,
-        gTypeHTMLAppletElement, toHTMLAppletElement)
+       (js_setAlign, setAlign, js_getAlign, getAlign, js_setAlt, setAlt,
+        js_getAlt, getAlt, js_setArchive, setArchive, js_getArchive,
+        getArchive, js_setCode, setCode, js_getCode, getCode,
+        js_setCodeBase, setCodeBase, js_getCodeBase, getCodeBase,
+        js_setHeight, setHeight, js_getHeight, getHeight, js_setHspace,
+        setHspace, js_getHspace, getHspace, js_setName, setName,
+        js_getName, getName, js_setObject, setObject, js_getObject,
+        getObject, js_setVspace, setVspace, js_getVspace, getVspace,
+        js_setWidth, setWidth, js_getWidth, getWidth, HTMLAppletElement,
+        castToHTMLAppletElement, gTypeHTMLAppletElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -47,311 +23,209 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_applet_element_set_align ::
-        JSRef HTMLAppletElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.align Mozilla HTMLAppletElement.align documentation> 
-htmlAppletElementSetAlign ::
-                          (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlAppletElementSetAlign self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_align
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setAlign self val
+  = liftIO (js_setAlign (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_applet_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.align Mozilla HTMLAppletElement.align documentation> 
-htmlAppletElementGetAlign ::
-                          (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                            self -> m result
-htmlAppletElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_align
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLAppletElement self)))
  
-foreign import javascript unsafe "$1[\"alt\"] = $2;"
-        ghcjs_dom_html_applet_element_set_alt ::
+foreign import javascript unsafe "$1[\"alt\"] = $2;" js_setAlt ::
         JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.alt Mozilla HTMLAppletElement.alt documentation> 
-htmlAppletElementSetAlt ::
-                        (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlAppletElementSetAlt self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_alt
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+setAlt ::
+       (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setAlt self val
+  = liftIO (js_setAlt (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"alt\"]"
-        ghcjs_dom_html_applet_element_get_alt ::
+foreign import javascript unsafe "$1[\"alt\"]" js_getAlt ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.alt Mozilla HTMLAppletElement.alt documentation> 
-htmlAppletElementGetAlt ::
-                        (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                          self -> m result
-htmlAppletElementGetAlt self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_alt
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+getAlt ::
+       (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getAlt self
+  = liftIO (fromJSString <$> (js_getAlt (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"archive\"] = $2;"
-        ghcjs_dom_html_applet_element_set_archive ::
-        JSRef HTMLAppletElement -> JSString -> IO ()
+        js_setArchive :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.archive Mozilla HTMLAppletElement.archive documentation> 
-htmlAppletElementSetArchive ::
-                            (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlAppletElementSetArchive self val
+setArchive ::
+           (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setArchive self val
   = liftIO
-      (ghcjs_dom_html_applet_element_set_archive
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+      (js_setArchive (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"archive\"]"
-        ghcjs_dom_html_applet_element_get_archive ::
+foreign import javascript unsafe "$1[\"archive\"]" js_getArchive ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.archive Mozilla HTMLAppletElement.archive documentation> 
-htmlAppletElementGetArchive ::
-                            (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                              self -> m result
-htmlAppletElementGetArchive self
+getArchive ::
+           (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getArchive self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_archive
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+      (fromJSString <$> (js_getArchive (unHTMLAppletElement self)))
  
-foreign import javascript unsafe "$1[\"code\"] = $2;"
-        ghcjs_dom_html_applet_element_set_code ::
+foreign import javascript unsafe "$1[\"code\"] = $2;" js_setCode ::
         JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.code Mozilla HTMLAppletElement.code documentation> 
-htmlAppletElementSetCode ::
-                         (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAppletElementSetCode self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_code
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+setCode ::
+        (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setCode self val
+  = liftIO (js_setCode (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"code\"]"
-        ghcjs_dom_html_applet_element_get_code ::
+foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.code Mozilla HTMLAppletElement.code documentation> 
-htmlAppletElementGetCode ::
-                         (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                           self -> m result
-htmlAppletElementGetCode self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_code
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+getCode ::
+        (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getCode self
+  = liftIO (fromJSString <$> (js_getCode (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"codeBase\"] = $2;"
-        ghcjs_dom_html_applet_element_set_code_base ::
-        JSRef HTMLAppletElement -> JSString -> IO ()
+        js_setCodeBase :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.codeBase Mozilla HTMLAppletElement.codeBase documentation> 
-htmlAppletElementSetCodeBase ::
-                             (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlAppletElementSetCodeBase self val
+setCodeBase ::
+            (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setCodeBase self val
   = liftIO
-      (ghcjs_dom_html_applet_element_set_code_base
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+      (js_setCodeBase (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"codeBase\"]"
-        ghcjs_dom_html_applet_element_get_code_base ::
-        JSRef HTMLAppletElement -> IO JSString
+foreign import javascript unsafe "$1[\"codeBase\"]" js_getCodeBase
+        :: JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.codeBase Mozilla HTMLAppletElement.codeBase documentation> 
-htmlAppletElementGetCodeBase ::
-                             (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                               self -> m result
-htmlAppletElementGetCodeBase self
+getCodeBase ::
+            (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getCodeBase self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_code_base
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+      (fromJSString <$> (js_getCodeBase (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        ghcjs_dom_html_applet_element_set_height ::
-        JSRef HTMLAppletElement -> JSString -> IO ()
+        js_setHeight :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.height Mozilla HTMLAppletElement.height documentation> 
-htmlAppletElementSetHeight ::
-                           (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlAppletElementSetHeight self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_height
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+setHeight ::
+          (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setHeight self val
+  = liftIO (js_setHeight (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_html_applet_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.height Mozilla HTMLAppletElement.height documentation> 
-htmlAppletElementGetHeight ::
-                           (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                             self -> m result
-htmlAppletElementGetHeight self
+getHeight ::
+          (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getHeight self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_height
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+      (fromJSString <$> (js_getHeight (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
-        ghcjs_dom_html_applet_element_set_hspace ::
-        JSRef HTMLAppletElement -> Int -> IO ()
+        js_setHspace :: JSRef HTMLAppletElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.hspace Mozilla HTMLAppletElement.hspace documentation> 
-htmlAppletElementSetHspace ::
-                           (MonadIO m, IsHTMLAppletElement self) => self -> Int -> m ()
-htmlAppletElementSetHspace self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_hspace
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         val)
+setHspace :: (MonadIO m) => HTMLAppletElement -> Int -> m ()
+setHspace self val
+  = liftIO (js_setHspace (unHTMLAppletElement self) val)
  
-foreign import javascript unsafe "$1[\"hspace\"]"
-        ghcjs_dom_html_applet_element_get_hspace ::
+foreign import javascript unsafe "$1[\"hspace\"]" js_getHspace ::
         JSRef HTMLAppletElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.hspace Mozilla HTMLAppletElement.hspace documentation> 
-htmlAppletElementGetHspace ::
-                           (MonadIO m, IsHTMLAppletElement self) => self -> m Int
-htmlAppletElementGetHspace self
-  = liftIO
-      (ghcjs_dom_html_applet_element_get_hspace
-         (unHTMLAppletElement (toHTMLAppletElement self)))
+getHspace :: (MonadIO m) => HTMLAppletElement -> m Int
+getHspace self = liftIO (js_getHspace (unHTMLAppletElement self))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_applet_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.name Mozilla HTMLAppletElement.name documentation> 
-htmlAppletElementSetName ::
-                         (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlAppletElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_name
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_applet_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.name Mozilla HTMLAppletElement.name documentation> 
-htmlAppletElementGetName ::
-                         (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                           self -> m result
-htmlAppletElementGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_name
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+getName ::
+        (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"object\"] = $2;"
-        ghcjs_dom_html_applet_element_set_object ::
-        JSRef HTMLAppletElement -> JSString -> IO ()
+        js_setObject :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.object Mozilla HTMLAppletElement.object documentation> 
-htmlAppletElementSetObject ::
-                           (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlAppletElementSetObject self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_object
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+setObject ::
+          (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setObject self val
+  = liftIO (js_setObject (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"object\"]"
-        ghcjs_dom_html_applet_element_get_object ::
+foreign import javascript unsafe "$1[\"object\"]" js_getObject ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.object Mozilla HTMLAppletElement.object documentation> 
-htmlAppletElementGetObject ::
-                           (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                             self -> m result
-htmlAppletElementGetObject self
+getObject ::
+          (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getObject self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_object
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+      (fromJSString <$> (js_getObject (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
-        ghcjs_dom_html_applet_element_set_vspace ::
-        JSRef HTMLAppletElement -> Int -> IO ()
+        js_setVspace :: JSRef HTMLAppletElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.vspace Mozilla HTMLAppletElement.vspace documentation> 
-htmlAppletElementSetVspace ::
-                           (MonadIO m, IsHTMLAppletElement self) => self -> Int -> m ()
-htmlAppletElementSetVspace self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_vspace
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         val)
+setVspace :: (MonadIO m) => HTMLAppletElement -> Int -> m ()
+setVspace self val
+  = liftIO (js_setVspace (unHTMLAppletElement self) val)
  
-foreign import javascript unsafe "$1[\"vspace\"]"
-        ghcjs_dom_html_applet_element_get_vspace ::
+foreign import javascript unsafe "$1[\"vspace\"]" js_getVspace ::
         JSRef HTMLAppletElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.vspace Mozilla HTMLAppletElement.vspace documentation> 
-htmlAppletElementGetVspace ::
-                           (MonadIO m, IsHTMLAppletElement self) => self -> m Int
-htmlAppletElementGetVspace self
-  = liftIO
-      (ghcjs_dom_html_applet_element_get_vspace
-         (unHTMLAppletElement (toHTMLAppletElement self)))
+getVspace :: (MonadIO m) => HTMLAppletElement -> m Int
+getVspace self = liftIO (js_getVspace (unHTMLAppletElement self))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;"
-        ghcjs_dom_html_applet_element_set_width ::
-        JSRef HTMLAppletElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+        :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.width Mozilla HTMLAppletElement.width documentation> 
-htmlAppletElementSetWidth ::
-                          (MonadIO m, IsHTMLAppletElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlAppletElementSetWidth self val
-  = liftIO
-      (ghcjs_dom_html_applet_element_set_width
-         (unHTMLAppletElement (toHTMLAppletElement self))
-         (toJSString val))
+setWidth ::
+         (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
+setWidth self val
+  = liftIO (js_setWidth (unHTMLAppletElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_html_applet_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.width Mozilla HTMLAppletElement.width documentation> 
-htmlAppletElementGetWidth ::
-                          (MonadIO m, IsHTMLAppletElement self, FromJSString result) =>
-                            self -> m result
-htmlAppletElementGetWidth self
+getWidth ::
+         (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getWidth self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_applet_element_get_width
-            (unHTMLAppletElement (toHTMLAppletElement self))))
+      (fromJSString <$> (js_getWidth (unHTMLAppletElement self)))
 #else
 module GHCJS.DOM.HTMLAppletElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLAppletElement

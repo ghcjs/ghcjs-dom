@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TouchList
-       (ghcjs_dom_touch_list_item, touchListItem,
-        ghcjs_dom_touch_list_get_length, touchListGetLength, TouchList(..),
-        IsTouchList, castToTouchList, gTypeTouchList, toTouchList)
+       (js_item, item, js_getLength, getLength, TouchList,
+        castToTouchList, gTypeTouchList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,31 +15,24 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_touch_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef TouchList -> Word -> IO (JSRef Touch)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchList.item Mozilla TouchList.item documentation> 
-touchListItem ::
-              (MonadIO m, IsTouchList self) => self -> Word -> m (Maybe Touch)
-touchListItem self index
-  = liftIO
-      ((ghcjs_dom_touch_list_item (unTouchList (toTouchList self)) index)
-         >>= fromJSRef)
+item :: (MonadIO m) => TouchList -> Word -> m (Maybe Touch)
+item self index
+  = liftIO ((js_item (unTouchList self) index) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_touch_list_get_length :: JSRef TouchList -> IO Word
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+        JSRef TouchList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchList.length Mozilla TouchList.length documentation> 
-touchListGetLength ::
-                   (MonadIO m, IsTouchList self) => self -> m Word
-touchListGetLength self
-  = liftIO
-      (ghcjs_dom_touch_list_get_length (unTouchList (toTouchList self)))
+getLength :: (MonadIO m) => TouchList -> m Word
+getLength self = liftIO (js_getLength (unTouchList self))
 #else
 module GHCJS.DOM.TouchList (
   ) where

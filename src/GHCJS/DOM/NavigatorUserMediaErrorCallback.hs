@@ -1,14 +1,16 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NavigatorUserMediaErrorCallback
-       (navigatorUserMediaErrorCallbackNewSync,
-        navigatorUserMediaErrorCallbackNewAsync,
-        NavigatorUserMediaErrorCallback, IsNavigatorUserMediaErrorCallback,
+       (newNavigatorUserMediaErrorCallbackSync,
+        newNavigatorUserMediaErrorCallbackSync',
+        newNavigatorUserMediaErrorCallbackAsync,
+        newNavigatorUserMediaErrorCallbackAsync',
+        NavigatorUserMediaErrorCallback,
         castToNavigatorUserMediaErrorCallback,
-        gTypeNavigatorUserMediaErrorCallback,
-        toNavigatorUserMediaErrorCallback)
+        gTypeNavigatorUserMediaErrorCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,16 +20,16 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation> 
-navigatorUserMediaErrorCallbackNewSync ::
+newNavigatorUserMediaErrorCallbackSync ::
                                        (MonadIO m) =>
                                          (Maybe NavigatorUserMediaError -> IO Bool) ->
                                            m NavigatorUserMediaErrorCallback
-navigatorUserMediaErrorCallbackNewSync callback
+newNavigatorUserMediaErrorCallbackSync callback
   = liftIO
       (NavigatorUserMediaErrorCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -35,13 +37,13 @@ navigatorUserMediaErrorCallbackNewSync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation> 
-navigatorUserMediaErrorCallbackNewSync' ::
+newNavigatorUserMediaErrorCallbackSync' ::
                                         (MonadIO m) =>
                                           ForeignRetention ->
                                             Bool ->
                                               (Maybe NavigatorUserMediaError -> IO Bool) ->
                                                 m NavigatorUserMediaErrorCallback
-navigatorUserMediaErrorCallbackNewSync' retention continueAsync
+newNavigatorUserMediaErrorCallbackSync' retention continueAsync
   callback
   = liftIO
       (NavigatorUserMediaErrorCallback . castRef <$>
@@ -50,11 +52,11 @@ navigatorUserMediaErrorCallbackNewSync' retention continueAsync
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation> 
-navigatorUserMediaErrorCallbackNewAsync ::
+newNavigatorUserMediaErrorCallbackAsync ::
                                         (MonadIO m) =>
                                           (Maybe NavigatorUserMediaError -> IO Bool) ->
                                             m NavigatorUserMediaErrorCallback
-navigatorUserMediaErrorCallbackNewAsync callback
+newNavigatorUserMediaErrorCallbackAsync callback
   = liftIO
       (NavigatorUserMediaErrorCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -62,12 +64,12 @@ navigatorUserMediaErrorCallbackNewAsync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation> 
-navigatorUserMediaErrorCallbackNewAsync' ::
+newNavigatorUserMediaErrorCallbackAsync' ::
                                          (MonadIO m) =>
                                            ForeignRetention ->
                                              (Maybe NavigatorUserMediaError -> IO Bool) ->
                                                m NavigatorUserMediaErrorCallback
-navigatorUserMediaErrorCallbackNewAsync' retention callback
+newNavigatorUserMediaErrorCallbackAsync' retention callback
   = liftIO
       (NavigatorUserMediaErrorCallback . castRef <$>
          asyncCallback1 retention

@@ -1,15 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGTests
-       (ghcjs_dom_svg_tests_has_extension, svgTestsHasExtension,
-        ghcjs_dom_svg_tests_get_required_features,
-        svgTestsGetRequiredFeatures,
-        ghcjs_dom_svg_tests_get_required_extensions,
-        svgTestsGetRequiredExtensions,
-        ghcjs_dom_svg_tests_get_system_language, svgTestsGetSystemLanguage,
-        SVGTests, IsSVGTests, castToSVGTests, gTypeSVGTests, toSVGTests)
+       (js_hasExtension, hasExtension, js_getRequiredFeatures,
+        getRequiredFeatures, js_getRequiredExtensions,
+        getRequiredExtensions, js_getSystemLanguage, getSystemLanguage,
+        SVGTests, castToSVGTests, gTypeSVGTests)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,62 +17,50 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"hasExtension\"]($2) ? 1 : 0)"
-        ghcjs_dom_svg_tests_has_extension ::
+        "($1[\"hasExtension\"]($2) ? 1 : 0)" js_hasExtension ::
         JSRef SVGTests -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.hasExtension Mozilla SVGTests.hasExtension documentation> 
-svgTestsHasExtension ::
-                     (MonadIO m, IsSVGTests self, ToJSString extension) =>
-                       self -> extension -> m Bool
-svgTestsHasExtension self extension
-  = liftIO
-      (ghcjs_dom_svg_tests_has_extension (unSVGTests (toSVGTests self))
-         (toJSString extension))
+hasExtension ::
+             (MonadIO m, ToJSString extension) =>
+               SVGTests -> extension -> m Bool
+hasExtension self extension
+  = liftIO (js_hasExtension (unSVGTests self) (toJSString extension))
  
 foreign import javascript unsafe "$1[\"requiredFeatures\"]"
-        ghcjs_dom_svg_tests_get_required_features ::
+        js_getRequiredFeatures ::
         JSRef SVGTests -> IO (JSRef SVGStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredFeatures Mozilla SVGTests.requiredFeatures documentation> 
-svgTestsGetRequiredFeatures ::
-                            (MonadIO m, IsSVGTests self) => self -> m (Maybe SVGStringList)
-svgTestsGetRequiredFeatures self
-  = liftIO
-      ((ghcjs_dom_svg_tests_get_required_features
-          (unSVGTests (toSVGTests self)))
-         >>= fromJSRef)
+getRequiredFeatures ::
+                    (MonadIO m) => SVGTests -> m (Maybe SVGStringList)
+getRequiredFeatures self
+  = liftIO ((js_getRequiredFeatures (unSVGTests self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"requiredExtensions\"]"
-        ghcjs_dom_svg_tests_get_required_extensions ::
+        js_getRequiredExtensions ::
         JSRef SVGTests -> IO (JSRef SVGStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredExtensions Mozilla SVGTests.requiredExtensions documentation> 
-svgTestsGetRequiredExtensions ::
-                              (MonadIO m, IsSVGTests self) => self -> m (Maybe SVGStringList)
-svgTestsGetRequiredExtensions self
+getRequiredExtensions ::
+                      (MonadIO m) => SVGTests -> m (Maybe SVGStringList)
+getRequiredExtensions self
   = liftIO
-      ((ghcjs_dom_svg_tests_get_required_extensions
-          (unSVGTests (toSVGTests self)))
-         >>= fromJSRef)
+      ((js_getRequiredExtensions (unSVGTests self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"systemLanguage\"]"
-        ghcjs_dom_svg_tests_get_system_language ::
-        JSRef SVGTests -> IO (JSRef SVGStringList)
+        js_getSystemLanguage :: JSRef SVGTests -> IO (JSRef SVGStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.systemLanguage Mozilla SVGTests.systemLanguage documentation> 
-svgTestsGetSystemLanguage ::
-                          (MonadIO m, IsSVGTests self) => self -> m (Maybe SVGStringList)
-svgTestsGetSystemLanguage self
-  = liftIO
-      ((ghcjs_dom_svg_tests_get_system_language
-          (unSVGTests (toSVGTests self)))
-         >>= fromJSRef)
+getSystemLanguage ::
+                  (MonadIO m) => SVGTests -> m (Maybe SVGStringList)
+getSystemLanguage self
+  = liftIO ((js_getSystemLanguage (unSVGTests self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGTests (
   ) where

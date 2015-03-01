@@ -1,19 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.VideoTrack
-       (ghcjs_dom_video_track_get_id, videoTrackGetId,
-        ghcjs_dom_video_track_set_kind, videoTrackSetKind,
-        ghcjs_dom_video_track_get_kind, videoTrackGetKind,
-        ghcjs_dom_video_track_get_label, videoTrackGetLabel,
-        ghcjs_dom_video_track_set_language, videoTrackSetLanguage,
-        ghcjs_dom_video_track_get_language, videoTrackGetLanguage,
-        ghcjs_dom_video_track_set_selected, videoTrackSetSelected,
-        ghcjs_dom_video_track_get_selected, videoTrackGetSelected,
-        ghcjs_dom_video_track_get_source_buffer, videoTrackGetSourceBuffer,
-        VideoTrack, IsVideoTrack, castToVideoTrack, gTypeVideoTrack,
-        toVideoTrack)
+       (js_getId, getId, js_setKind, setKind, js_getKind, getKind,
+        js_getLabel, getLabel, js_setLanguage, setLanguage, js_getLanguage,
+        getLanguage, js_setSelected, setSelected, js_getSelected,
+        getSelected, js_getSourceBuffer, getSourceBuffer, VideoTrack,
+        castToVideoTrack, gTypeVideoTrack)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,125 +18,85 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"id\"]"
-        ghcjs_dom_video_track_get_id :: JSRef VideoTrack -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.id Mozilla VideoTrack.id documentation> 
-videoTrackGetId ::
-                (MonadIO m, IsVideoTrack self, FromJSString result) =>
-                  self -> m result
-videoTrackGetId self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_video_track_get_id (unVideoTrack (toVideoTrack self))))
- 
-foreign import javascript unsafe "$1[\"kind\"] = $2;"
-        ghcjs_dom_video_track_set_kind ::
-        JSRef VideoTrack -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.kind Mozilla VideoTrack.kind documentation> 
-videoTrackSetKind ::
-                  (MonadIO m, IsVideoTrack self, ToJSString val) =>
-                    self -> val -> m ()
-videoTrackSetKind self val
-  = liftIO
-      (ghcjs_dom_video_track_set_kind (unVideoTrack (toVideoTrack self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"kind\"]"
-        ghcjs_dom_video_track_get_kind :: JSRef VideoTrack -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.kind Mozilla VideoTrack.kind documentation> 
-videoTrackGetKind ::
-                  (MonadIO m, IsVideoTrack self, FromJSString result) =>
-                    self -> m result
-videoTrackGetKind self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_video_track_get_kind
-            (unVideoTrack (toVideoTrack self))))
- 
-foreign import javascript unsafe "$1[\"label\"]"
-        ghcjs_dom_video_track_get_label :: JSRef VideoTrack -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.label Mozilla VideoTrack.label documentation> 
-videoTrackGetLabel ::
-                   (MonadIO m, IsVideoTrack self, FromJSString result) =>
-                     self -> m result
-videoTrackGetLabel self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_video_track_get_label
-            (unVideoTrack (toVideoTrack self))))
- 
-foreign import javascript unsafe "$1[\"language\"] = $2;"
-        ghcjs_dom_video_track_set_language ::
-        JSRef VideoTrack -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.language Mozilla VideoTrack.language documentation> 
-videoTrackSetLanguage ::
-                      (MonadIO m, IsVideoTrack self, ToJSString val) =>
-                        self -> val -> m ()
-videoTrackSetLanguage self val
-  = liftIO
-      (ghcjs_dom_video_track_set_language
-         (unVideoTrack (toVideoTrack self))
-         (toJSString val))
- 
-foreign import javascript unsafe "$1[\"language\"]"
-        ghcjs_dom_video_track_get_language ::
+foreign import javascript unsafe "$1[\"id\"]" js_getId ::
         JSRef VideoTrack -> IO JSString
 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.id Mozilla VideoTrack.id documentation> 
+getId :: (MonadIO m, FromJSString result) => VideoTrack -> m result
+getId self
+  = liftIO (fromJSString <$> (js_getId (unVideoTrack self)))
+ 
+foreign import javascript unsafe "$1[\"kind\"] = $2;" js_setKind ::
+        JSRef VideoTrack -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.kind Mozilla VideoTrack.kind documentation> 
+setKind :: (MonadIO m, ToJSString val) => VideoTrack -> val -> m ()
+setKind self val
+  = liftIO (js_setKind (unVideoTrack self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
+        JSRef VideoTrack -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.kind Mozilla VideoTrack.kind documentation> 
+getKind ::
+        (MonadIO m, FromJSString result) => VideoTrack -> m result
+getKind self
+  = liftIO (fromJSString <$> (js_getKind (unVideoTrack self)))
+ 
+foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+        JSRef VideoTrack -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.label Mozilla VideoTrack.label documentation> 
+getLabel ::
+         (MonadIO m, FromJSString result) => VideoTrack -> m result
+getLabel self
+  = liftIO (fromJSString <$> (js_getLabel (unVideoTrack self)))
+ 
+foreign import javascript unsafe "$1[\"language\"] = $2;"
+        js_setLanguage :: JSRef VideoTrack -> JSString -> IO ()
+
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.language Mozilla VideoTrack.language documentation> 
-videoTrackGetLanguage ::
-                      (MonadIO m, IsVideoTrack self, FromJSString result) =>
-                        self -> m result
-videoTrackGetLanguage self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_video_track_get_language
-            (unVideoTrack (toVideoTrack self))))
+setLanguage ::
+            (MonadIO m, ToJSString val) => VideoTrack -> val -> m ()
+setLanguage self val
+  = liftIO (js_setLanguage (unVideoTrack self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"language\"]" js_getLanguage
+        :: JSRef VideoTrack -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.language Mozilla VideoTrack.language documentation> 
+getLanguage ::
+            (MonadIO m, FromJSString result) => VideoTrack -> m result
+getLanguage self
+  = liftIO (fromJSString <$> (js_getLanguage (unVideoTrack self)))
  
 foreign import javascript unsafe "$1[\"selected\"] = $2;"
-        ghcjs_dom_video_track_set_selected ::
-        JSRef VideoTrack -> Bool -> IO ()
+        js_setSelected :: JSRef VideoTrack -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.selected Mozilla VideoTrack.selected documentation> 
-videoTrackSetSelected ::
-                      (MonadIO m, IsVideoTrack self) => self -> Bool -> m ()
-videoTrackSetSelected self val
-  = liftIO
-      (ghcjs_dom_video_track_set_selected
-         (unVideoTrack (toVideoTrack self))
-         val)
+setSelected :: (MonadIO m) => VideoTrack -> Bool -> m ()
+setSelected self val
+  = liftIO (js_setSelected (unVideoTrack self) val)
  
 foreign import javascript unsafe "($1[\"selected\"] ? 1 : 0)"
-        ghcjs_dom_video_track_get_selected :: JSRef VideoTrack -> IO Bool
+        js_getSelected :: JSRef VideoTrack -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.selected Mozilla VideoTrack.selected documentation> 
-videoTrackGetSelected ::
-                      (MonadIO m, IsVideoTrack self) => self -> m Bool
-videoTrackGetSelected self
-  = liftIO
-      (ghcjs_dom_video_track_get_selected
-         (unVideoTrack (toVideoTrack self)))
+getSelected :: (MonadIO m) => VideoTrack -> m Bool
+getSelected self = liftIO (js_getSelected (unVideoTrack self))
  
 foreign import javascript unsafe "$1[\"sourceBuffer\"]"
-        ghcjs_dom_video_track_get_source_buffer ::
-        JSRef VideoTrack -> IO (JSRef SourceBuffer)
+        js_getSourceBuffer :: JSRef VideoTrack -> IO (JSRef SourceBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.sourceBuffer Mozilla VideoTrack.sourceBuffer documentation> 
-videoTrackGetSourceBuffer ::
-                          (MonadIO m, IsVideoTrack self) => self -> m (Maybe SourceBuffer)
-videoTrackGetSourceBuffer self
-  = liftIO
-      ((ghcjs_dom_video_track_get_source_buffer
-          (unVideoTrack (toVideoTrack self)))
-         >>= fromJSRef)
+getSourceBuffer ::
+                (MonadIO m) => VideoTrack -> m (Maybe SourceBuffer)
+getSourceBuffer self
+  = liftIO ((js_getSourceBuffer (unVideoTrack self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.VideoTrack (
   ) where

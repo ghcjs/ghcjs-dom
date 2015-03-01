@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.EventListener
-       (ghcjs_dom_event_listener_handle_event, eventListenerHandleEvent,
-        EventListener, IsEventListener, castToEventListener,
-        gTypeEventListener, toEventListener)
+       (js_handleEvent, handleEvent, EventListener, castToEventListener,
+        gTypeEventListener)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,22 +15,19 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"handleEvent\"]($2)"
-        ghcjs_dom_event_listener_handle_event ::
-        JSRef EventListener -> JSRef Event -> IO ()
+        js_handleEvent :: JSRef EventListener -> JSRef Event -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventListener.handleEvent Mozilla EventListener.handleEvent documentation> 
-eventListenerHandleEvent ::
-                         (MonadIO m, IsEventListener self, IsEvent evt) =>
-                           self -> Maybe evt -> m ()
-eventListenerHandleEvent self evt
+handleEvent ::
+            (MonadIO m, IsEvent evt) => EventListener -> Maybe evt -> m ()
+handleEvent self evt
   = liftIO
-      (ghcjs_dom_event_listener_handle_event
-         (unEventListener (toEventListener self))
+      (js_handleEvent (unEventListener self)
          (maybe jsNull (unEvent . toEvent) evt))
 #else
 module GHCJS.DOM.EventListener (

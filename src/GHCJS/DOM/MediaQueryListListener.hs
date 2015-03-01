@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaQueryListListener
-       (mediaQueryListListenerNewSync, mediaQueryListListenerNewAsync,
-        MediaQueryListListener, IsMediaQueryListListener,
-        castToMediaQueryListListener, gTypeMediaQueryListListener,
-        toMediaQueryListListener)
+       (newMediaQueryListListenerSync, newMediaQueryListListenerSync',
+        newMediaQueryListListenerAsync, newMediaQueryListListenerAsync',
+        MediaQueryListListener, castToMediaQueryListListener,
+        gTypeMediaQueryListListener)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,48 +17,48 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
-mediaQueryListListenerNewSync ::
+newMediaQueryListListenerSync ::
                               (MonadIO m) =>
                                 (Maybe MediaQueryList -> IO Bool) -> m MediaQueryListListener
-mediaQueryListListenerNewSync callback
+newMediaQueryListListenerSync callback
   = liftIO
       (MediaQueryListListener . castRef <$>
          syncCallback1 AlwaysRetain True
            (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
-mediaQueryListListenerNewSync' ::
+newMediaQueryListListenerSync' ::
                                (MonadIO m) =>
                                  ForeignRetention ->
                                    Bool ->
                                      (Maybe MediaQueryList -> IO Bool) -> m MediaQueryListListener
-mediaQueryListListenerNewSync' retention continueAsync callback
+newMediaQueryListListenerSync' retention continueAsync callback
   = liftIO
       (MediaQueryListListener . castRef <$>
          syncCallback1 retention continueAsync
            (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
-mediaQueryListListenerNewAsync ::
+newMediaQueryListListenerAsync ::
                                (MonadIO m) =>
                                  (Maybe MediaQueryList -> IO Bool) -> m MediaQueryListListener
-mediaQueryListListenerNewAsync callback
+newMediaQueryListListenerAsync callback
   = liftIO
       (MediaQueryListListener . castRef <$>
          asyncCallback1 AlwaysRetain
            (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
-mediaQueryListListenerNewAsync' ::
+newMediaQueryListListenerAsync' ::
                                 (MonadIO m) =>
                                   ForeignRetention ->
                                     (Maybe MediaQueryList -> IO Bool) -> m MediaQueryListListener
-mediaQueryListListenerNewAsync' retention callback
+newMediaQueryListListenerAsync' retention callback
   = liftIO
       (MediaQueryListListener . castRef <$>
          asyncCallback1 retention

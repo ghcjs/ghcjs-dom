@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGPolylineElement
-       (ghcjs_dom_svg_polyline_element_get_points,
-        svgPolylineElementGetPoints,
-        ghcjs_dom_svg_polyline_element_get_animated_points,
-        svgPolylineElementGetAnimatedPoints, SVGPolylineElement,
-        IsSVGPolylineElement, castToSVGPolylineElement,
-        gTypeSVGPolylineElement, toSVGPolylineElement)
+       (js_getPoints, getPoints, js_getAnimatedPoints, getAnimatedPoints,
+        SVGPolylineElement, castToSVGPolylineElement,
+        gTypeSVGPolylineElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +16,29 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"points\"]"
-        ghcjs_dom_svg_polyline_element_get_points ::
+foreign import javascript unsafe "$1[\"points\"]" js_getPoints ::
         JSRef SVGPolylineElement -> IO (JSRef SVGPointList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement.points Mozilla SVGPolylineElement.points documentation> 
-svgPolylineElementGetPoints ::
-                            (MonadIO m, IsSVGPolylineElement self) =>
-                              self -> m (Maybe SVGPointList)
-svgPolylineElementGetPoints self
-  = liftIO
-      ((ghcjs_dom_svg_polyline_element_get_points
-          (unSVGPolylineElement (toSVGPolylineElement self)))
-         >>= fromJSRef)
+getPoints ::
+          (MonadIO m) => SVGPolylineElement -> m (Maybe SVGPointList)
+getPoints self
+  = liftIO ((js_getPoints (unSVGPolylineElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"animatedPoints\"]"
-        ghcjs_dom_svg_polyline_element_get_animated_points ::
+        js_getAnimatedPoints ::
         JSRef SVGPolylineElement -> IO (JSRef SVGPointList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement.animatedPoints Mozilla SVGPolylineElement.animatedPoints documentation> 
-svgPolylineElementGetAnimatedPoints ::
-                                    (MonadIO m, IsSVGPolylineElement self) =>
-                                      self -> m (Maybe SVGPointList)
-svgPolylineElementGetAnimatedPoints self
+getAnimatedPoints ::
+                  (MonadIO m) => SVGPolylineElement -> m (Maybe SVGPointList)
+getAnimatedPoints self
   = liftIO
-      ((ghcjs_dom_svg_polyline_element_get_animated_points
-          (unSVGPolylineElement (toSVGPolylineElement self)))
-         >>= fromJSRef)
+      ((js_getAnimatedPoints (unSVGPolylineElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGPolylineElement (
   ) where

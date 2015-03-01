@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StorageUsageCallback
-       (storageUsageCallbackNewSync, storageUsageCallbackNewAsync,
-        StorageUsageCallback, IsStorageUsageCallback,
-        castToStorageUsageCallback, gTypeStorageUsageCallback,
-        toStorageUsageCallback)
+       (newStorageUsageCallbackSync, newStorageUsageCallbackSync',
+        newStorageUsageCallbackAsync, newStorageUsageCallbackAsync',
+        StorageUsageCallback, castToStorageUsageCallback,
+        gTypeStorageUsageCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,15 +17,15 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation> 
-storageUsageCallbackNewSync ::
+newStorageUsageCallbackSync ::
                             (MonadIO m) =>
                               (Double -> Double -> IO Bool) -> m StorageUsageCallback
-storageUsageCallbackNewSync callback
+newStorageUsageCallbackSync callback
   = liftIO
       (StorageUsageCallback . castRef <$>
          syncCallback2 AlwaysRetain True
@@ -36,11 +37,11 @@ storageUsageCallbackNewSync callback
                     currentQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation> 
-storageUsageCallbackNewSync' ::
+newStorageUsageCallbackSync' ::
                              (MonadIO m) =>
                                ForeignRetention ->
                                  Bool -> (Double -> Double -> IO Bool) -> m StorageUsageCallback
-storageUsageCallbackNewSync' retention continueAsync callback
+newStorageUsageCallbackSync' retention continueAsync callback
   = liftIO
       (StorageUsageCallback . castRef <$>
          syncCallback2 retention continueAsync
@@ -52,10 +53,10 @@ storageUsageCallbackNewSync' retention continueAsync callback
                     currentQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation> 
-storageUsageCallbackNewAsync ::
+newStorageUsageCallbackAsync ::
                              (MonadIO m) =>
                                (Double -> Double -> IO Bool) -> m StorageUsageCallback
-storageUsageCallbackNewAsync callback
+newStorageUsageCallbackAsync callback
   = liftIO
       (StorageUsageCallback . castRef <$>
          asyncCallback2 AlwaysRetain
@@ -67,11 +68,11 @@ storageUsageCallbackNewAsync callback
                     currentQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation> 
-storageUsageCallbackNewAsync' ::
+newStorageUsageCallbackAsync' ::
                               (MonadIO m) =>
                                 ForeignRetention ->
                                   (Double -> Double -> IO Bool) -> m StorageUsageCallback
-storageUsageCallbackNewAsync' retention callback
+newStorageUsageCallbackAsync' retention callback
   = liftIO
       (StorageUsageCallback . castRef <$>
          asyncCallback2 retention

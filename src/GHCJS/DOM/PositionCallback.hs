@@ -1,11 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.PositionCallback
-       (positionCallbackNewSync, positionCallbackNewAsync,
-        PositionCallback, IsPositionCallback, castToPositionCallback,
-        gTypePositionCallback, toPositionCallback)
+       (newPositionCallbackSync, newPositionCallbackSync',
+        newPositionCallbackAsync, newPositionCallbackAsync',
+        PositionCallback, castToPositionCallback, gTypePositionCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,14 +16,14 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
-positionCallbackNewSync ::
+newPositionCallbackSync ::
                         (MonadIO m) => (Maybe Geoposition -> IO Bool) -> m PositionCallback
-positionCallbackNewSync callback
+newPositionCallbackSync callback
   = liftIO
       (PositionCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -30,11 +31,11 @@ positionCallbackNewSync callback
               fromJSRefUnchecked position >>= \ position' -> callback position'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
-positionCallbackNewSync' ::
+newPositionCallbackSync' ::
                          (MonadIO m) =>
                            ForeignRetention ->
                              Bool -> (Maybe Geoposition -> IO Bool) -> m PositionCallback
-positionCallbackNewSync' retention continueAsync callback
+newPositionCallbackSync' retention continueAsync callback
   = liftIO
       (PositionCallback . castRef <$>
          syncCallback1 retention continueAsync
@@ -42,9 +43,9 @@ positionCallbackNewSync' retention continueAsync callback
               fromJSRefUnchecked position >>= \ position' -> callback position'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
-positionCallbackNewAsync ::
+newPositionCallbackAsync ::
                          (MonadIO m) => (Maybe Geoposition -> IO Bool) -> m PositionCallback
-positionCallbackNewAsync callback
+newPositionCallbackAsync callback
   = liftIO
       (PositionCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -52,11 +53,11 @@ positionCallbackNewAsync callback
               fromJSRefUnchecked position >>= \ position' -> callback position'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
-positionCallbackNewAsync' ::
+newPositionCallbackAsync' ::
                           (MonadIO m) =>
                             ForeignRetention ->
                               (Maybe Geoposition -> IO Bool) -> m PositionCallback
-positionCallbackNewAsync' retention callback
+newPositionCallbackAsync' retention callback
   = liftIO
       (PositionCallback . castRef <$>
          asyncCallback1 retention

@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ClientRectList
-       (ghcjs_dom_client_rect_list_item, clientRectListItem,
-        ghcjs_dom_client_rect_list_get_length, clientRectListGetLength,
-        ClientRectList, IsClientRectList, castToClientRectList,
-        gTypeClientRectList, toClientRectList)
+       (js_item, item, js_getLength, getLength, ClientRectList,
+        castToClientRectList, gTypeClientRectList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,36 +15,25 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_client_rect_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef ClientRectList -> Word -> IO (JSRef ClientRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList.item Mozilla ClientRectList.item documentation> 
-clientRectListItem ::
-                   (MonadIO m, IsClientRectList self) =>
-                     self -> Word -> m (Maybe ClientRect)
-clientRectListItem self index
-  = liftIO
-      ((ghcjs_dom_client_rect_list_item
-          (unClientRectList (toClientRectList self))
-          index)
-         >>= fromJSRef)
+item ::
+     (MonadIO m) => ClientRectList -> Word -> m (Maybe ClientRect)
+item self index
+  = liftIO ((js_item (unClientRectList self) index) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_client_rect_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef ClientRectList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList.length Mozilla ClientRectList.length documentation> 
-clientRectListGetLength ::
-                        (MonadIO m, IsClientRectList self) => self -> m Word
-clientRectListGetLength self
-  = liftIO
-      (ghcjs_dom_client_rect_list_get_length
-         (unClientRectList (toClientRectList self)))
+getLength :: (MonadIO m) => ClientRectList -> m Word
+getLength self = liftIO (js_getLength (unClientRectList self))
 #else
 module GHCJS.DOM.ClientRectList (
   ) where

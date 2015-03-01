@@ -1,19 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOListElement
-       (ghcjs_dom_htmlo_list_element_set_compact,
-        htmloListElementSetCompact,
-        ghcjs_dom_htmlo_list_element_get_compact,
-        htmloListElementGetCompact, ghcjs_dom_htmlo_list_element_set_start,
-        htmloListElementSetStart, ghcjs_dom_htmlo_list_element_get_start,
-        htmloListElementGetStart,
-        ghcjs_dom_htmlo_list_element_set_reversed,
-        htmloListElementSetReversed,
-        ghcjs_dom_htmlo_list_element_get_reversed,
-        htmloListElementGetReversed, HTMLOListElement, IsHTMLOListElement,
-        castToHTMLOListElement, gTypeHTMLOListElement, toHTMLOListElement)
+       (js_setCompact, setCompact, js_getCompact, getCompact, js_setStart,
+        setStart, js_getStart, getStart, js_setReversed, setReversed,
+        js_getReversed, getReversed, HTMLOListElement,
+        castToHTMLOListElement, gTypeHTMLOListElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,84 +17,55 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
-        ghcjs_dom_htmlo_list_element_set_compact ::
-        JSRef HTMLOListElement -> Bool -> IO ()
+        js_setCompact :: JSRef HTMLOListElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.compact Mozilla HTMLOListElement.compact documentation> 
-htmloListElementSetCompact ::
-                           (MonadIO m, IsHTMLOListElement self) => self -> Bool -> m ()
-htmloListElementSetCompact self val
-  = liftIO
-      (ghcjs_dom_htmlo_list_element_set_compact
-         (unHTMLOListElement (toHTMLOListElement self))
-         val)
+setCompact :: (MonadIO m) => HTMLOListElement -> Bool -> m ()
+setCompact self val
+  = liftIO (js_setCompact (unHTMLOListElement self) val)
  
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
-        ghcjs_dom_htmlo_list_element_get_compact ::
-        JSRef HTMLOListElement -> IO Bool
+        js_getCompact :: JSRef HTMLOListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.compact Mozilla HTMLOListElement.compact documentation> 
-htmloListElementGetCompact ::
-                           (MonadIO m, IsHTMLOListElement self) => self -> m Bool
-htmloListElementGetCompact self
-  = liftIO
-      (ghcjs_dom_htmlo_list_element_get_compact
-         (unHTMLOListElement (toHTMLOListElement self)))
+getCompact :: (MonadIO m) => HTMLOListElement -> m Bool
+getCompact self = liftIO (js_getCompact (unHTMLOListElement self))
  
-foreign import javascript unsafe "$1[\"start\"] = $2;"
-        ghcjs_dom_htmlo_list_element_set_start ::
-        JSRef HTMLOListElement -> Int -> IO ()
+foreign import javascript unsafe "$1[\"start\"] = $2;" js_setStart
+        :: JSRef HTMLOListElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.start Mozilla HTMLOListElement.start documentation> 
-htmloListElementSetStart ::
-                         (MonadIO m, IsHTMLOListElement self) => self -> Int -> m ()
-htmloListElementSetStart self val
-  = liftIO
-      (ghcjs_dom_htmlo_list_element_set_start
-         (unHTMLOListElement (toHTMLOListElement self))
-         val)
+setStart :: (MonadIO m) => HTMLOListElement -> Int -> m ()
+setStart self val
+  = liftIO (js_setStart (unHTMLOListElement self) val)
  
-foreign import javascript unsafe "$1[\"start\"]"
-        ghcjs_dom_htmlo_list_element_get_start ::
+foreign import javascript unsafe "$1[\"start\"]" js_getStart ::
         JSRef HTMLOListElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.start Mozilla HTMLOListElement.start documentation> 
-htmloListElementGetStart ::
-                         (MonadIO m, IsHTMLOListElement self) => self -> m Int
-htmloListElementGetStart self
-  = liftIO
-      (ghcjs_dom_htmlo_list_element_get_start
-         (unHTMLOListElement (toHTMLOListElement self)))
+getStart :: (MonadIO m) => HTMLOListElement -> m Int
+getStart self = liftIO (js_getStart (unHTMLOListElement self))
  
 foreign import javascript unsafe "$1[\"reversed\"] = $2;"
-        ghcjs_dom_htmlo_list_element_set_reversed ::
-        JSRef HTMLOListElement -> Bool -> IO ()
+        js_setReversed :: JSRef HTMLOListElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.reversed Mozilla HTMLOListElement.reversed documentation> 
-htmloListElementSetReversed ::
-                            (MonadIO m, IsHTMLOListElement self) => self -> Bool -> m ()
-htmloListElementSetReversed self val
-  = liftIO
-      (ghcjs_dom_htmlo_list_element_set_reversed
-         (unHTMLOListElement (toHTMLOListElement self))
-         val)
+setReversed :: (MonadIO m) => HTMLOListElement -> Bool -> m ()
+setReversed self val
+  = liftIO (js_setReversed (unHTMLOListElement self) val)
  
 foreign import javascript unsafe "($1[\"reversed\"] ? 1 : 0)"
-        ghcjs_dom_htmlo_list_element_get_reversed ::
-        JSRef HTMLOListElement -> IO Bool
+        js_getReversed :: JSRef HTMLOListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.reversed Mozilla HTMLOListElement.reversed documentation> 
-htmloListElementGetReversed ::
-                            (MonadIO m, IsHTMLOListElement self) => self -> m Bool
-htmloListElementGetReversed self
-  = liftIO
-      (ghcjs_dom_htmlo_list_element_get_reversed
-         (unHTMLOListElement (toHTMLOListElement self)))
+getReversed :: (MonadIO m) => HTMLOListElement -> m Bool
+getReversed self
+  = liftIO (js_getReversed (unHTMLOListElement self))
 #else
 module GHCJS.DOM.HTMLOListElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLOListElement

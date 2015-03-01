@@ -1,16 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLHtmlElement
-       (ghcjs_dom_html_html_element_set_version,
-        htmlHtmlElementSetVersion, ghcjs_dom_html_html_element_get_version,
-        htmlHtmlElementGetVersion,
-        ghcjs_dom_html_html_element_set_manifest,
-        htmlHtmlElementSetManifest,
-        ghcjs_dom_html_html_element_get_manifest,
-        htmlHtmlElementGetManifest, HTMLHtmlElement, IsHTMLHtmlElement,
-        castToHTMLHtmlElement, gTypeHTMLHtmlElement, toHTMLHtmlElement)
+       (js_setVersion, setVersion, js_getVersion, getVersion,
+        js_setManifest, setManifest, js_getManifest, getManifest,
+        HTMLHtmlElement, castToHTMLHtmlElement, gTypeHTMLHtmlElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,65 +16,47 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"version\"] = $2;"
-        ghcjs_dom_html_html_element_set_version ::
-        JSRef HTMLHtmlElement -> JSString -> IO ()
+        js_setVersion :: JSRef HTMLHtmlElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.version Mozilla HTMLHtmlElement.version documentation> 
-htmlHtmlElementSetVersion ::
-                          (MonadIO m, IsHTMLHtmlElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlHtmlElementSetVersion self val
-  = liftIO
-      (ghcjs_dom_html_html_element_set_version
-         (unHTMLHtmlElement (toHTMLHtmlElement self))
-         (toJSString val))
+setVersion ::
+           (MonadIO m, ToJSString val) => HTMLHtmlElement -> val -> m ()
+setVersion self val
+  = liftIO (js_setVersion (unHTMLHtmlElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"version\"]"
-        ghcjs_dom_html_html_element_get_version ::
+foreign import javascript unsafe "$1[\"version\"]" js_getVersion ::
         JSRef HTMLHtmlElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.version Mozilla HTMLHtmlElement.version documentation> 
-htmlHtmlElementGetVersion ::
-                          (MonadIO m, IsHTMLHtmlElement self, FromJSString result) =>
-                            self -> m result
-htmlHtmlElementGetVersion self
+getVersion ::
+           (MonadIO m, FromJSString result) => HTMLHtmlElement -> m result
+getVersion self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_html_element_get_version
-            (unHTMLHtmlElement (toHTMLHtmlElement self))))
+      (fromJSString <$> (js_getVersion (unHTMLHtmlElement self)))
  
 foreign import javascript unsafe "$1[\"manifest\"] = $2;"
-        ghcjs_dom_html_html_element_set_manifest ::
-        JSRef HTMLHtmlElement -> JSString -> IO ()
+        js_setManifest :: JSRef HTMLHtmlElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.manifest Mozilla HTMLHtmlElement.manifest documentation> 
-htmlHtmlElementSetManifest ::
-                           (MonadIO m, IsHTMLHtmlElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlHtmlElementSetManifest self val
-  = liftIO
-      (ghcjs_dom_html_html_element_set_manifest
-         (unHTMLHtmlElement (toHTMLHtmlElement self))
-         (toJSString val))
+setManifest ::
+            (MonadIO m, ToJSString val) => HTMLHtmlElement -> val -> m ()
+setManifest self val
+  = liftIO (js_setManifest (unHTMLHtmlElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"manifest\"]"
-        ghcjs_dom_html_html_element_get_manifest ::
-        JSRef HTMLHtmlElement -> IO JSString
+foreign import javascript unsafe "$1[\"manifest\"]" js_getManifest
+        :: JSRef HTMLHtmlElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.manifest Mozilla HTMLHtmlElement.manifest documentation> 
-htmlHtmlElementGetManifest ::
-                           (MonadIO m, IsHTMLHtmlElement self, FromJSString result) =>
-                             self -> m result
-htmlHtmlElementGetManifest self
+getManifest ::
+            (MonadIO m, FromJSString result) => HTMLHtmlElement -> m result
+getManifest self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_html_element_get_manifest
-            (unHTMLHtmlElement (toHTMLHtmlElement self))))
+      (fromJSString <$> (js_getManifest (unHTMLHtmlElement self)))
 #else
 module GHCJS.DOM.HTMLHtmlElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLHtmlElement

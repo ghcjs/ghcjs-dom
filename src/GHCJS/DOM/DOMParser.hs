@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMParser
-       (ghcjs_dom_dom_parser_new, domParserNew,
-        ghcjs_dom_dom_parser_parse_from_string, domParserParseFromString,
-        DOMParser, IsDOMParser, castToDOMParser, gTypeDOMParser,
-        toDOMParser)
+       (js_newDOMParser, newDOMParser, js_parseFromString,
+        parseFromString, DOMParser, castToDOMParser, gTypeDOMParser)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,32 +15,28 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"DOMParser\"]()"
-        ghcjs_dom_dom_parser_new :: IO (JSRef DOMParser)
+        js_newDOMParser :: IO (JSRef DOMParser)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser Mozilla DOMParser documentation> 
-domParserNew :: (MonadIO m) => m DOMParser
-domParserNew
-  = liftIO (ghcjs_dom_dom_parser_new >>= fromJSRefUnchecked)
+newDOMParser :: (MonadIO m) => m DOMParser
+newDOMParser = liftIO (js_newDOMParser >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"parseFromString\"]($2, $3)"
-        ghcjs_dom_dom_parser_parse_from_string ::
+        js_parseFromString ::
         JSRef DOMParser -> JSString -> JSString -> IO (JSRef Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser.parseFromString Mozilla DOMParser.parseFromString documentation> 
-domParserParseFromString ::
-                         (MonadIO m, IsDOMParser self, ToJSString str,
-                          ToJSString contentType) =>
-                           self -> str -> contentType -> m (Maybe Document)
-domParserParseFromString self str contentType
+parseFromString ::
+                (MonadIO m, ToJSString str, ToJSString contentType) =>
+                  DOMParser -> str -> contentType -> m (Maybe Document)
+parseFromString self str contentType
   = liftIO
-      ((ghcjs_dom_dom_parser_parse_from_string
-          (unDOMParser (toDOMParser self))
-          (toJSString str)
+      ((js_parseFromString (unDOMParser self) (toJSString str)
           (toJSString contentType))
          >>= fromJSRef)
 #else

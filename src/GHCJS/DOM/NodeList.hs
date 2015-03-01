@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NodeList
-       (ghcjs_dom_node_list_item, nodeListItem,
-        ghcjs_dom_node_list_get_length, nodeListGetLength, NodeList,
-        IsNodeList, castToNodeList, gTypeNodeList, toNodeList)
+       (js_item, item, js_getLength, getLength, NodeList, castToNodeList,
+        gTypeNodeList, IsNodeList, toNodeList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,30 +15,27 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_node_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef NodeList -> Word -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.item Mozilla NodeList.item documentation> 
-nodeListItem ::
-             (MonadIO m, IsNodeList self) => self -> Word -> m (Maybe Node)
-nodeListItem self index
+item ::
+     (MonadIO m, IsNodeList self) => self -> Word -> m (Maybe Node)
+item self index
   = liftIO
-      ((ghcjs_dom_node_list_item (unNodeList (toNodeList self)) index)
-         >>= fromJSRef)
+      ((js_item (unNodeList (toNodeList self)) index) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_node_list_get_length :: JSRef NodeList -> IO Word
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+        JSRef NodeList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.length Mozilla NodeList.length documentation> 
-nodeListGetLength :: (MonadIO m, IsNodeList self) => self -> m Word
-nodeListGetLength self
-  = liftIO
-      (ghcjs_dom_node_list_get_length (unNodeList (toNodeList self)))
+getLength :: (MonadIO m, IsNodeList self) => self -> m Word
+getLength self
+  = liftIO (js_getLength (unNodeList (toNodeList self)))
 #else
 module GHCJS.DOM.NodeList (
   module Graphics.UI.Gtk.WebKit.DOM.NodeList

@@ -1,20 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLProgressElement
-       (ghcjs_dom_html_progress_element_set_value,
-        htmlProgressElementSetValue,
-        ghcjs_dom_html_progress_element_get_value,
-        htmlProgressElementGetValue,
-        ghcjs_dom_html_progress_element_set_max, htmlProgressElementSetMax,
-        ghcjs_dom_html_progress_element_get_max, htmlProgressElementGetMax,
-        ghcjs_dom_html_progress_element_get_position,
-        htmlProgressElementGetPosition,
-        ghcjs_dom_html_progress_element_get_labels,
-        htmlProgressElementGetLabels, HTMLProgressElement,
-        IsHTMLProgressElement, castToHTMLProgressElement,
-        gTypeHTMLProgressElement, toHTMLProgressElement)
+       (js_setValue, setValue, js_getValue, getValue, js_setMax, setMax,
+        js_getMax, getMax, js_getPosition, getPosition, js_getLabels,
+        getLabels, HTMLProgressElement, castToHTMLProgressElement,
+        gTypeHTMLProgressElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,85 +17,57 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"value\"] = $2;"
-        ghcjs_dom_html_progress_element_set_value ::
-        JSRef HTMLProgressElement -> Double -> IO ()
+foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+        :: JSRef HTMLProgressElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.value Mozilla HTMLProgressElement.value documentation> 
-htmlProgressElementSetValue ::
-                            (MonadIO m, IsHTMLProgressElement self) => self -> Double -> m ()
-htmlProgressElementSetValue self val
-  = liftIO
-      (ghcjs_dom_html_progress_element_set_value
-         (unHTMLProgressElement (toHTMLProgressElement self))
-         val)
+setValue :: (MonadIO m) => HTMLProgressElement -> Double -> m ()
+setValue self val
+  = liftIO (js_setValue (unHTMLProgressElement self) val)
  
-foreign import javascript unsafe "$1[\"value\"]"
-        ghcjs_dom_html_progress_element_get_value ::
+foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
         JSRef HTMLProgressElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.value Mozilla HTMLProgressElement.value documentation> 
-htmlProgressElementGetValue ::
-                            (MonadIO m, IsHTMLProgressElement self) => self -> m Double
-htmlProgressElementGetValue self
-  = liftIO
-      (ghcjs_dom_html_progress_element_get_value
-         (unHTMLProgressElement (toHTMLProgressElement self)))
+getValue :: (MonadIO m) => HTMLProgressElement -> m Double
+getValue self = liftIO (js_getValue (unHTMLProgressElement self))
  
-foreign import javascript unsafe "$1[\"max\"] = $2;"
-        ghcjs_dom_html_progress_element_set_max ::
+foreign import javascript unsafe "$1[\"max\"] = $2;" js_setMax ::
         JSRef HTMLProgressElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.max Mozilla HTMLProgressElement.max documentation> 
-htmlProgressElementSetMax ::
-                          (MonadIO m, IsHTMLProgressElement self) => self -> Double -> m ()
-htmlProgressElementSetMax self val
-  = liftIO
-      (ghcjs_dom_html_progress_element_set_max
-         (unHTMLProgressElement (toHTMLProgressElement self))
-         val)
+setMax :: (MonadIO m) => HTMLProgressElement -> Double -> m ()
+setMax self val
+  = liftIO (js_setMax (unHTMLProgressElement self) val)
  
-foreign import javascript unsafe "$1[\"max\"]"
-        ghcjs_dom_html_progress_element_get_max ::
+foreign import javascript unsafe "$1[\"max\"]" js_getMax ::
         JSRef HTMLProgressElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.max Mozilla HTMLProgressElement.max documentation> 
-htmlProgressElementGetMax ::
-                          (MonadIO m, IsHTMLProgressElement self) => self -> m Double
-htmlProgressElementGetMax self
-  = liftIO
-      (ghcjs_dom_html_progress_element_get_max
-         (unHTMLProgressElement (toHTMLProgressElement self)))
+getMax :: (MonadIO m) => HTMLProgressElement -> m Double
+getMax self = liftIO (js_getMax (unHTMLProgressElement self))
  
-foreign import javascript unsafe "$1[\"position\"]"
-        ghcjs_dom_html_progress_element_get_position ::
-        JSRef HTMLProgressElement -> IO Double
+foreign import javascript unsafe "$1[\"position\"]" js_getPosition
+        :: JSRef HTMLProgressElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.position Mozilla HTMLProgressElement.position documentation> 
-htmlProgressElementGetPosition ::
-                               (MonadIO m, IsHTMLProgressElement self) => self -> m Double
-htmlProgressElementGetPosition self
-  = liftIO
-      (ghcjs_dom_html_progress_element_get_position
-         (unHTMLProgressElement (toHTMLProgressElement self)))
+getPosition :: (MonadIO m) => HTMLProgressElement -> m Double
+getPosition self
+  = liftIO (js_getPosition (unHTMLProgressElement self))
  
-foreign import javascript unsafe "$1[\"labels\"]"
-        ghcjs_dom_html_progress_element_get_labels ::
+foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
         JSRef HTMLProgressElement -> IO (JSRef NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement.labels Mozilla HTMLProgressElement.labels documentation> 
-htmlProgressElementGetLabels ::
-                             (MonadIO m, IsHTMLProgressElement self) =>
-                               self -> m (Maybe NodeList)
-htmlProgressElementGetLabels self
+getLabels ::
+          (MonadIO m) => HTMLProgressElement -> m (Maybe NodeList)
+getLabels self
   = liftIO
-      ((ghcjs_dom_html_progress_element_get_labels
-          (unHTMLProgressElement (toHTMLProgressElement self)))
-         >>= fromJSRef)
+      ((js_getLabels (unHTMLProgressElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLProgressElement (
   ) where

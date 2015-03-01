@@ -1,18 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGPaint
-       (ghcjs_dom_svg_paint_set_uri, svgPaintSetUri,
-        ghcjs_dom_svg_paint_set_paint, svgPaintSetPaint,
-        cSVG_PAINTTYPE_UNKNOWN, cSVG_PAINTTYPE_RGBCOLOR,
-        cSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR, cSVG_PAINTTYPE_NONE,
-        cSVG_PAINTTYPE_CURRENTCOLOR, cSVG_PAINTTYPE_URI_NONE,
-        cSVG_PAINTTYPE_URI_CURRENTCOLOR, cSVG_PAINTTYPE_URI_RGBCOLOR,
-        cSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR, cSVG_PAINTTYPE_URI,
-        ghcjs_dom_svg_paint_get_paint_type, svgPaintGetPaintType,
-        ghcjs_dom_svg_paint_get_uri, svgPaintGetUri, SVGPaint, IsSVGPaint,
-        castToSVGPaint, gTypeSVGPaint, toSVGPaint)
+       (js_setUri, setUri, js_setPaint, setPaint,
+        pattern SVG_PAINTTYPE_UNKNOWN, pattern SVG_PAINTTYPE_RGBCOLOR,
+        pattern SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR,
+        pattern SVG_PAINTTYPE_NONE, pattern SVG_PAINTTYPE_CURRENTCOLOR,
+        pattern SVG_PAINTTYPE_URI_NONE,
+        pattern SVG_PAINTTYPE_URI_CURRENTCOLOR,
+        pattern SVG_PAINTTYPE_URI_RGBCOLOR,
+        pattern SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR,
+        pattern SVG_PAINTTYPE_URI, js_getPaintType, getPaintType,
+        js_getUri, getUri, SVGPaint, castToSVGPaint, gTypeSVGPaint)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,69 +23,57 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"setUri\"]($2)"
-        ghcjs_dom_svg_paint_set_uri :: JSRef SVGPaint -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"setUri\"]($2)" js_setUri ::
+        JSRef SVGPaint -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.uri Mozilla SVGPaint.uri documentation> 
-svgPaintSetUri ::
-               (MonadIO m, IsSVGPaint self, ToJSString uri) => self -> uri -> m ()
-svgPaintSetUri self uri
-  = liftIO
-      (ghcjs_dom_svg_paint_set_uri (unSVGPaint (toSVGPaint self))
-         (toJSString uri))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.setUri Mozilla SVGPaint.setUri documentation> 
+setUri :: (MonadIO m, ToJSString uri) => SVGPaint -> uri -> m ()
+setUri self uri
+  = liftIO (js_setUri (unSVGPaint self) (toJSString uri))
  
 foreign import javascript unsafe "$1[\"setPaint\"]($2, $3, $4, $5)"
-        ghcjs_dom_svg_paint_set_paint ::
+        js_setPaint ::
         JSRef SVGPaint -> Word -> JSString -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.paint Mozilla SVGPaint.paint documentation> 
-svgPaintSetPaint ::
-                 (MonadIO m, IsSVGPaint self, ToJSString uri, ToJSString rgbColor,
-                  ToJSString iccColor) =>
-                   self -> Word -> uri -> rgbColor -> iccColor -> m ()
-svgPaintSetPaint self paintType uri rgbColor iccColor
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.setPaint Mozilla SVGPaint.setPaint documentation> 
+setPaint ::
+         (MonadIO m, ToJSString uri, ToJSString rgbColor,
+          ToJSString iccColor) =>
+           SVGPaint -> Word -> uri -> rgbColor -> iccColor -> m ()
+setPaint self paintType uri rgbColor iccColor
   = liftIO
-      (ghcjs_dom_svg_paint_set_paint (unSVGPaint (toSVGPaint self))
-         paintType
-         (toJSString uri)
+      (js_setPaint (unSVGPaint self) paintType (toJSString uri)
          (toJSString rgbColor)
          (toJSString iccColor))
-cSVG_PAINTTYPE_UNKNOWN = 0
-cSVG_PAINTTYPE_RGBCOLOR = 1
-cSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR = 2
-cSVG_PAINTTYPE_NONE = 101
-cSVG_PAINTTYPE_CURRENTCOLOR = 102
-cSVG_PAINTTYPE_URI_NONE = 103
-cSVG_PAINTTYPE_URI_CURRENTCOLOR = 104
-cSVG_PAINTTYPE_URI_RGBCOLOR = 105
-cSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR = 106
-cSVG_PAINTTYPE_URI = 107
+pattern SVG_PAINTTYPE_UNKNOWN = 0
+pattern SVG_PAINTTYPE_RGBCOLOR = 1
+pattern SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR = 2
+pattern SVG_PAINTTYPE_NONE = 101
+pattern SVG_PAINTTYPE_CURRENTCOLOR = 102
+pattern SVG_PAINTTYPE_URI_NONE = 103
+pattern SVG_PAINTTYPE_URI_CURRENTCOLOR = 104
+pattern SVG_PAINTTYPE_URI_RGBCOLOR = 105
+pattern SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR = 106
+pattern SVG_PAINTTYPE_URI = 107
  
 foreign import javascript unsafe "$1[\"paintType\"]"
-        ghcjs_dom_svg_paint_get_paint_type :: JSRef SVGPaint -> IO Word
+        js_getPaintType :: JSRef SVGPaint -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.paintType Mozilla SVGPaint.paintType documentation> 
-svgPaintGetPaintType ::
-                     (MonadIO m, IsSVGPaint self) => self -> m Word
-svgPaintGetPaintType self
-  = liftIO
-      (ghcjs_dom_svg_paint_get_paint_type (unSVGPaint (toSVGPaint self)))
+getPaintType :: (MonadIO m) => SVGPaint -> m Word
+getPaintType self = liftIO (js_getPaintType (unSVGPaint self))
  
-foreign import javascript unsafe "$1[\"uri\"]"
-        ghcjs_dom_svg_paint_get_uri :: JSRef SVGPaint -> IO JSString
+foreign import javascript unsafe "$1[\"uri\"]" js_getUri ::
+        JSRef SVGPaint -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint.uri Mozilla SVGPaint.uri documentation> 
-svgPaintGetUri ::
-               (MonadIO m, IsSVGPaint self, FromJSString result) =>
-                 self -> m result
-svgPaintGetUri self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_paint_get_uri (unSVGPaint (toSVGPaint self))))
+getUri :: (MonadIO m, FromJSString result) => SVGPaint -> m result
+getUri self
+  = liftIO (fromJSString <$> (js_getUri (unSVGPaint self)))
 #else
 module GHCJS.DOM.SVGPaint (
   ) where

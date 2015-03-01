@@ -1,18 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGUseElement
-       (ghcjs_dom_svg_use_element_get_x, svgUseElementGetX,
-        ghcjs_dom_svg_use_element_get_y, svgUseElementGetY,
-        ghcjs_dom_svg_use_element_get_width, svgUseElementGetWidth,
-        ghcjs_dom_svg_use_element_get_height, svgUseElementGetHeight,
-        ghcjs_dom_svg_use_element_get_instance_root,
-        svgUseElementGetInstanceRoot,
-        ghcjs_dom_svg_use_element_get_animated_instance_root,
-        svgUseElementGetAnimatedInstanceRoot, SVGUseElement,
-        IsSVGUseElement, castToSVGUseElement, gTypeSVGUseElement,
-        toSVGUseElement)
+       (js_getX, getX, js_getY, getY, js_getWidth, getWidth, js_getHeight,
+        getHeight, SVGUseElement, castToSVGUseElement, gTypeSVGUseElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,93 +15,41 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_use_element_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.x Mozilla SVGUseElement.x documentation> 
-svgUseElementGetX ::
-                  (MonadIO m, IsSVGUseElement self) =>
-                    self -> m (Maybe SVGAnimatedLength)
-svgUseElementGetX self
-  = liftIO
-      ((ghcjs_dom_svg_use_element_get_x
-          (unSVGUseElement (toSVGUseElement self)))
-         >>= fromJSRef)
+getX :: (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
+getX self = liftIO ((js_getX (unSVGUseElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_use_element_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.y Mozilla SVGUseElement.y documentation> 
-svgUseElementGetY ::
-                  (MonadIO m, IsSVGUseElement self) =>
-                    self -> m (Maybe SVGAnimatedLength)
-svgUseElementGetY self
-  = liftIO
-      ((ghcjs_dom_svg_use_element_get_y
-          (unSVGUseElement (toSVGUseElement self)))
-         >>= fromJSRef)
+getY :: (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
+getY self = liftIO ((js_getY (unSVGUseElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_svg_use_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.width Mozilla SVGUseElement.width documentation> 
-svgUseElementGetWidth ::
-                      (MonadIO m, IsSVGUseElement self) =>
-                        self -> m (Maybe SVGAnimatedLength)
-svgUseElementGetWidth self
-  = liftIO
-      ((ghcjs_dom_svg_use_element_get_width
-          (unSVGUseElement (toSVGUseElement self)))
-         >>= fromJSRef)
+getWidth ::
+         (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
+getWidth self
+  = liftIO ((js_getWidth (unSVGUseElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_svg_use_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.height Mozilla SVGUseElement.height documentation> 
-svgUseElementGetHeight ::
-                       (MonadIO m, IsSVGUseElement self) =>
-                         self -> m (Maybe SVGAnimatedLength)
-svgUseElementGetHeight self
-  = liftIO
-      ((ghcjs_dom_svg_use_element_get_height
-          (unSVGUseElement (toSVGUseElement self)))
-         >>= fromJSRef)
- 
-foreign import javascript unsafe "$1[\"instanceRoot\"]"
-        ghcjs_dom_svg_use_element_get_instance_root ::
-        JSRef SVGUseElement -> IO (JSRef SVGElementInstance)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.instanceRoot Mozilla SVGUseElement.instanceRoot documentation> 
-svgUseElementGetInstanceRoot ::
-                             (MonadIO m, IsSVGUseElement self) =>
-                               self -> m (Maybe SVGElementInstance)
-svgUseElementGetInstanceRoot self
-  = liftIO
-      ((ghcjs_dom_svg_use_element_get_instance_root
-          (unSVGUseElement (toSVGUseElement self)))
-         >>= fromJSRef)
- 
-foreign import javascript unsafe "$1[\"animatedInstanceRoot\"]"
-        ghcjs_dom_svg_use_element_get_animated_instance_root ::
-        JSRef SVGUseElement -> IO (JSRef SVGElementInstance)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.animatedInstanceRoot Mozilla SVGUseElement.animatedInstanceRoot documentation> 
-svgUseElementGetAnimatedInstanceRoot ::
-                                     (MonadIO m, IsSVGUseElement self) =>
-                                       self -> m (Maybe SVGElementInstance)
-svgUseElementGetAnimatedInstanceRoot self
-  = liftIO
-      ((ghcjs_dom_svg_use_element_get_animated_instance_root
-          (unSVGUseElement (toSVGUseElement self)))
-         >>= fromJSRef)
+getHeight ::
+          (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
+getHeight self
+  = liftIO ((js_getHeight (unSVGUseElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGUseElement (
   ) where

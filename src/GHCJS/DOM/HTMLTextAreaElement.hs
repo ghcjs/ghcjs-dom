@@ -1,105 +1,36 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTextAreaElement
-       (ghcjs_dom_html_text_area_element_check_validity,
-        htmlTextAreaElementCheckValidity,
-        ghcjs_dom_html_text_area_element_set_custom_validity,
-        htmlTextAreaElementSetCustomValidity,
-        ghcjs_dom_html_text_area_element_select, htmlTextAreaElementSelect,
-        ghcjs_dom_html_text_area_element_set_range_text,
-        htmlTextAreaElementSetRangeText,
-        ghcjs_dom_html_text_area_element_set_range_text4,
-        htmlTextAreaElementSetRangeText4,
-        ghcjs_dom_html_text_area_element_set_selection_range,
-        htmlTextAreaElementSetSelectionRange,
-        ghcjs_dom_html_text_area_element_set_autofocus,
-        htmlTextAreaElementSetAutofocus,
-        ghcjs_dom_html_text_area_element_get_autofocus,
-        htmlTextAreaElementGetAutofocus,
-        ghcjs_dom_html_text_area_element_set_cols,
-        htmlTextAreaElementSetCols,
-        ghcjs_dom_html_text_area_element_get_cols,
-        htmlTextAreaElementGetCols,
-        ghcjs_dom_html_text_area_element_set_dir_name,
-        htmlTextAreaElementSetDirName,
-        ghcjs_dom_html_text_area_element_get_dir_name,
-        htmlTextAreaElementGetDirName,
-        ghcjs_dom_html_text_area_element_set_disabled,
-        htmlTextAreaElementSetDisabled,
-        ghcjs_dom_html_text_area_element_get_disabled,
-        htmlTextAreaElementGetDisabled,
-        ghcjs_dom_html_text_area_element_get_form,
-        htmlTextAreaElementGetForm,
-        ghcjs_dom_html_text_area_element_set_max_length,
-        htmlTextAreaElementSetMaxLength,
-        ghcjs_dom_html_text_area_element_get_max_length,
-        htmlTextAreaElementGetMaxLength,
-        ghcjs_dom_html_text_area_element_set_name,
-        htmlTextAreaElementSetName,
-        ghcjs_dom_html_text_area_element_get_name,
-        htmlTextAreaElementGetName,
-        ghcjs_dom_html_text_area_element_set_placeholder,
-        htmlTextAreaElementSetPlaceholder,
-        ghcjs_dom_html_text_area_element_get_placeholder,
-        htmlTextAreaElementGetPlaceholder,
-        ghcjs_dom_html_text_area_element_set_read_only,
-        htmlTextAreaElementSetReadOnly,
-        ghcjs_dom_html_text_area_element_get_read_only,
-        htmlTextAreaElementGetReadOnly,
-        ghcjs_dom_html_text_area_element_set_required,
-        htmlTextAreaElementSetRequired,
-        ghcjs_dom_html_text_area_element_get_required,
-        htmlTextAreaElementGetRequired,
-        ghcjs_dom_html_text_area_element_set_rows,
-        htmlTextAreaElementSetRows,
-        ghcjs_dom_html_text_area_element_get_rows,
-        htmlTextAreaElementGetRows,
-        ghcjs_dom_html_text_area_element_set_wrap,
-        htmlTextAreaElementSetWrap,
-        ghcjs_dom_html_text_area_element_get_wrap,
-        htmlTextAreaElementGetWrap,
-        ghcjs_dom_html_text_area_element_set_default_value,
-        htmlTextAreaElementSetDefaultValue,
-        ghcjs_dom_html_text_area_element_get_default_value,
-        htmlTextAreaElementGetDefaultValue,
-        ghcjs_dom_html_text_area_element_set_value,
-        htmlTextAreaElementSetValue,
-        ghcjs_dom_html_text_area_element_get_value,
-        htmlTextAreaElementGetValue,
-        ghcjs_dom_html_text_area_element_get_text_length,
-        htmlTextAreaElementGetTextLength,
-        ghcjs_dom_html_text_area_element_get_will_validate,
-        htmlTextAreaElementGetWillValidate,
-        ghcjs_dom_html_text_area_element_get_validity,
-        htmlTextAreaElementGetValidity,
-        ghcjs_dom_html_text_area_element_get_validation_message,
-        htmlTextAreaElementGetValidationMessage,
-        ghcjs_dom_html_text_area_element_get_labels,
-        htmlTextAreaElementGetLabels,
-        ghcjs_dom_html_text_area_element_set_selection_start,
-        htmlTextAreaElementSetSelectionStart,
-        ghcjs_dom_html_text_area_element_get_selection_start,
-        htmlTextAreaElementGetSelectionStart,
-        ghcjs_dom_html_text_area_element_set_selection_end,
-        htmlTextAreaElementSetSelectionEnd,
-        ghcjs_dom_html_text_area_element_get_selection_end,
-        htmlTextAreaElementGetSelectionEnd,
-        ghcjs_dom_html_text_area_element_set_selection_direction,
-        htmlTextAreaElementSetSelectionDirection,
-        ghcjs_dom_html_text_area_element_get_selection_direction,
-        htmlTextAreaElementGetSelectionDirection,
-        ghcjs_dom_html_text_area_element_set_autocorrect,
-        htmlTextAreaElementSetAutocorrect,
-        ghcjs_dom_html_text_area_element_get_autocorrect,
-        htmlTextAreaElementGetAutocorrect,
-        ghcjs_dom_html_text_area_element_set_autocapitalize,
-        htmlTextAreaElementSetAutocapitalize,
-        ghcjs_dom_html_text_area_element_get_autocapitalize,
-        htmlTextAreaElementGetAutocapitalize, HTMLTextAreaElement,
-        IsHTMLTextAreaElement, castToHTMLTextAreaElement,
-        gTypeHTMLTextAreaElement, toHTMLTextAreaElement)
+       (js_checkValidity, checkValidity, js_setCustomValidity,
+        setCustomValidity, js_select, select, js_setRangeText,
+        setRangeText, js_setRangeText4, setRangeText4,
+        js_setSelectionRange, setSelectionRange, js_setAutofocus,
+        setAutofocus, js_getAutofocus, getAutofocus, js_setCols, setCols,
+        js_getCols, getCols, js_setDirName, setDirName, js_getDirName,
+        getDirName, js_setDisabled, setDisabled, js_getDisabled,
+        getDisabled, js_getForm, getForm, js_setMaxLength, setMaxLength,
+        js_getMaxLength, getMaxLength, js_setName, setName, js_getName,
+        getName, js_setPlaceholder, setPlaceholder, js_getPlaceholder,
+        getPlaceholder, js_setReadOnly, setReadOnly, js_getReadOnly,
+        getReadOnly, js_setRequired, setRequired, js_getRequired,
+        getRequired, js_setRows, setRows, js_getRows, getRows, js_setWrap,
+        setWrap, js_getWrap, getWrap, js_setDefaultValue, setDefaultValue,
+        js_getDefaultValue, getDefaultValue, js_setValue, setValue,
+        js_getValue, getValue, js_getTextLength, getTextLength,
+        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
+        js_getValidationMessage, getValidationMessage, js_getLabels,
+        getLabels, js_setSelectionStart, setSelectionStart,
+        js_getSelectionStart, getSelectionStart, js_setSelectionEnd,
+        setSelectionEnd, js_getSelectionEnd, getSelectionEnd,
+        js_setSelectionDirection, setSelectionDirection,
+        js_getSelectionDirection, getSelectionDirection, js_setAutocorrect,
+        setAutocorrect, js_getAutocorrect, getAutocorrect,
+        js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
+        getAutocapitalize, HTMLTextAreaElement, castToHTMLTextAreaElement,
+        gTypeHTMLTextAreaElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -109,657 +40,465 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"checkValidity\"]() ? 1 : 0)"
-        ghcjs_dom_html_text_area_element_check_validity ::
+        "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
         JSRef HTMLTextAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.checkValidity Mozilla HTMLTextAreaElement.checkValidity documentation> 
-htmlTextAreaElementCheckValidity ::
-                                 (MonadIO m, IsHTMLTextAreaElement self) => self -> m Bool
-htmlTextAreaElementCheckValidity self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_check_validity
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+checkValidity :: (MonadIO m) => HTMLTextAreaElement -> m Bool
+checkValidity self
+  = liftIO (js_checkValidity (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
-        ghcjs_dom_html_text_area_element_set_custom_validity ::
+        js_setCustomValidity ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.customValidity Mozilla HTMLTextAreaElement.customValidity documentation> 
-htmlTextAreaElementSetCustomValidity ::
-                                     (MonadIO m, IsHTMLTextAreaElement self, ToJSString error) =>
-                                       self -> error -> m ()
-htmlTextAreaElementSetCustomValidity self error
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.setCustomValidity Mozilla HTMLTextAreaElement.setCustomValidity documentation> 
+setCustomValidity ::
+                  (MonadIO m, ToJSString error) =>
+                    HTMLTextAreaElement -> error -> m ()
+setCustomValidity self error
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_custom_validity
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+      (js_setCustomValidity (unHTMLTextAreaElement self)
          (toJSString error))
  
-foreign import javascript unsafe "$1[\"select\"]()"
-        ghcjs_dom_html_text_area_element_select ::
+foreign import javascript unsafe "$1[\"select\"]()" js_select ::
         JSRef HTMLTextAreaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.select Mozilla HTMLTextAreaElement.select documentation> 
-htmlTextAreaElementSelect ::
-                          (MonadIO m, IsHTMLTextAreaElement self) => self -> m ()
-htmlTextAreaElementSelect self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_select
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+select :: (MonadIO m) => HTMLTextAreaElement -> m ()
+select self = liftIO (js_select (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "$1[\"setRangeText\"]($2)"
-        ghcjs_dom_html_text_area_element_set_range_text ::
-        JSRef HTMLTextAreaElement -> JSString -> IO ()
+        js_setRangeText :: JSRef HTMLTextAreaElement -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.rangeText Mozilla HTMLTextAreaElement.rangeText documentation> 
-htmlTextAreaElementSetRangeText ::
-                                (MonadIO m, IsHTMLTextAreaElement self, ToJSString replacement) =>
-                                  self -> replacement -> m ()
-htmlTextAreaElementSetRangeText self replacement
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.setRangeText Mozilla HTMLTextAreaElement.setRangeText documentation> 
+setRangeText ::
+             (MonadIO m, ToJSString replacement) =>
+               HTMLTextAreaElement -> replacement -> m ()
+setRangeText self replacement
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_range_text
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+      (js_setRangeText (unHTMLTextAreaElement self)
          (toJSString replacement))
  
 foreign import javascript unsafe
-        "$1[\"setRangeText\"]($2, $3, $4,\n$5)"
-        ghcjs_dom_html_text_area_element_set_range_text4 ::
+        "$1[\"setRangeText\"]($2, $3, $4,\n$5)" js_setRangeText4 ::
         JSRef HTMLTextAreaElement ->
           JSString -> Word -> Word -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.rangeText4 Mozilla HTMLTextAreaElement.rangeText4 documentation> 
-htmlTextAreaElementSetRangeText4 ::
-                                 (MonadIO m, IsHTMLTextAreaElement self, ToJSString replacement,
-                                  ToJSString selectionMode) =>
-                                   self -> replacement -> Word -> Word -> selectionMode -> m ()
-htmlTextAreaElementSetRangeText4 self replacement start end
-  selectionMode
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.setRangeText Mozilla HTMLTextAreaElement.setRangeText documentation> 
+setRangeText4 ::
+              (MonadIO m, ToJSString replacement, ToJSString selectionMode) =>
+                HTMLTextAreaElement ->
+                  replacement -> Word -> Word -> selectionMode -> m ()
+setRangeText4 self replacement start end selectionMode
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_range_text4
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+      (js_setRangeText4 (unHTMLTextAreaElement self)
          (toJSString replacement)
          start
          end
          (toJSString selectionMode))
  
 foreign import javascript unsafe
-        "$1[\"setSelectionRange\"]($2, $3,\n$4)"
-        ghcjs_dom_html_text_area_element_set_selection_range ::
+        "$1[\"setSelectionRange\"]($2, $3,\n$4)" js_setSelectionRange ::
         JSRef HTMLTextAreaElement -> Int -> Int -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.selectionRange Mozilla HTMLTextAreaElement.selectionRange documentation> 
-htmlTextAreaElementSetSelectionRange ::
-                                     (MonadIO m, IsHTMLTextAreaElement self,
-                                      ToJSString direction) =>
-                                       self -> Int -> Int -> direction -> m ()
-htmlTextAreaElementSetSelectionRange self start end direction
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.setSelectionRange Mozilla HTMLTextAreaElement.setSelectionRange documentation> 
+setSelectionRange ::
+                  (MonadIO m, ToJSString direction) =>
+                    HTMLTextAreaElement -> Int -> Int -> direction -> m ()
+setSelectionRange self start end direction
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_selection_range
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         start
-         end
+      (js_setSelectionRange (unHTMLTextAreaElement self) start end
          (toJSString direction))
  
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_autofocus ::
-        JSRef HTMLTextAreaElement -> Bool -> IO ()
+        js_setAutofocus :: JSRef HTMLTextAreaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autofocus Mozilla HTMLTextAreaElement.autofocus documentation> 
-htmlTextAreaElementSetAutofocus ::
-                                (MonadIO m, IsHTMLTextAreaElement self) => self -> Bool -> m ()
-htmlTextAreaElementSetAutofocus self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_autofocus
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setAutofocus :: (MonadIO m) => HTMLTextAreaElement -> Bool -> m ()
+setAutofocus self val
+  = liftIO (js_setAutofocus (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
-        ghcjs_dom_html_text_area_element_get_autofocus ::
-        JSRef HTMLTextAreaElement -> IO Bool
+        js_getAutofocus :: JSRef HTMLTextAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autofocus Mozilla HTMLTextAreaElement.autofocus documentation> 
-htmlTextAreaElementGetAutofocus ::
-                                (MonadIO m, IsHTMLTextAreaElement self) => self -> m Bool
-htmlTextAreaElementGetAutofocus self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_autofocus
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getAutofocus :: (MonadIO m) => HTMLTextAreaElement -> m Bool
+getAutofocus self
+  = liftIO (js_getAutofocus (unHTMLTextAreaElement self))
  
-foreign import javascript unsafe "$1[\"cols\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_cols ::
+foreign import javascript unsafe "$1[\"cols\"] = $2;" js_setCols ::
         JSRef HTMLTextAreaElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.cols Mozilla HTMLTextAreaElement.cols documentation> 
-htmlTextAreaElementSetCols ::
-                           (MonadIO m, IsHTMLTextAreaElement self) => self -> Int -> m ()
-htmlTextAreaElementSetCols self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_cols
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setCols :: (MonadIO m) => HTMLTextAreaElement -> Int -> m ()
+setCols self val
+  = liftIO (js_setCols (unHTMLTextAreaElement self) val)
  
-foreign import javascript unsafe "$1[\"cols\"]"
-        ghcjs_dom_html_text_area_element_get_cols ::
+foreign import javascript unsafe "$1[\"cols\"]" js_getCols ::
         JSRef HTMLTextAreaElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.cols Mozilla HTMLTextAreaElement.cols documentation> 
-htmlTextAreaElementGetCols ::
-                           (MonadIO m, IsHTMLTextAreaElement self) => self -> m Int
-htmlTextAreaElementGetCols self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_cols
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getCols :: (MonadIO m) => HTMLTextAreaElement -> m Int
+getCols self = liftIO (js_getCols (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "$1[\"dirName\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_dir_name ::
-        JSRef HTMLTextAreaElement -> JSString -> IO ()
+        js_setDirName :: JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.dirName Mozilla HTMLTextAreaElement.dirName documentation> 
-htmlTextAreaElementSetDirName ::
-                              (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                                self -> val -> m ()
-htmlTextAreaElementSetDirName self val
+setDirName ::
+           (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setDirName self val
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_dir_name
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         (toJSString val))
+      (js_setDirName (unHTMLTextAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"dirName\"]"
-        ghcjs_dom_html_text_area_element_get_dir_name ::
+foreign import javascript unsafe "$1[\"dirName\"]" js_getDirName ::
         JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.dirName Mozilla HTMLTextAreaElement.dirName documentation> 
-htmlTextAreaElementGetDirName ::
-                              (MonadIO m, IsHTMLTextAreaElement self, FromJSString result) =>
-                                self -> m result
-htmlTextAreaElementGetDirName self
+getDirName ::
+           (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getDirName self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_dir_name
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+      (fromJSString <$> (js_getDirName (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_disabled ::
-        JSRef HTMLTextAreaElement -> Bool -> IO ()
+        js_setDisabled :: JSRef HTMLTextAreaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.disabled Mozilla HTMLTextAreaElement.disabled documentation> 
-htmlTextAreaElementSetDisabled ::
-                               (MonadIO m, IsHTMLTextAreaElement self) => self -> Bool -> m ()
-htmlTextAreaElementSetDisabled self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_disabled
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setDisabled :: (MonadIO m) => HTMLTextAreaElement -> Bool -> m ()
+setDisabled self val
+  = liftIO (js_setDisabled (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        ghcjs_dom_html_text_area_element_get_disabled ::
-        JSRef HTMLTextAreaElement -> IO Bool
+        js_getDisabled :: JSRef HTMLTextAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.disabled Mozilla HTMLTextAreaElement.disabled documentation> 
-htmlTextAreaElementGetDisabled ::
-                               (MonadIO m, IsHTMLTextAreaElement self) => self -> m Bool
-htmlTextAreaElementGetDisabled self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_disabled
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getDisabled :: (MonadIO m) => HTMLTextAreaElement -> m Bool
+getDisabled self
+  = liftIO (js_getDisabled (unHTMLTextAreaElement self))
  
-foreign import javascript unsafe "$1[\"form\"]"
-        ghcjs_dom_html_text_area_element_get_form ::
+foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
         JSRef HTMLTextAreaElement -> IO (JSRef HTMLFormElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.form Mozilla HTMLTextAreaElement.form documentation> 
-htmlTextAreaElementGetForm ::
-                           (MonadIO m, IsHTMLTextAreaElement self) =>
-                             self -> m (Maybe HTMLFormElement)
-htmlTextAreaElementGetForm self
-  = liftIO
-      ((ghcjs_dom_html_text_area_element_get_form
-          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
-         >>= fromJSRef)
+getForm ::
+        (MonadIO m) => HTMLTextAreaElement -> m (Maybe HTMLFormElement)
+getForm self
+  = liftIO ((js_getForm (unHTMLTextAreaElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"maxLength\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_max_length ::
-        JSRef HTMLTextAreaElement -> Int -> IO ()
+        js_setMaxLength :: JSRef HTMLTextAreaElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.maxLength Mozilla HTMLTextAreaElement.maxLength documentation> 
-htmlTextAreaElementSetMaxLength ::
-                                (MonadIO m, IsHTMLTextAreaElement self) => self -> Int -> m ()
-htmlTextAreaElementSetMaxLength self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_max_length
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setMaxLength :: (MonadIO m) => HTMLTextAreaElement -> Int -> m ()
+setMaxLength self val
+  = liftIO (js_setMaxLength (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "$1[\"maxLength\"]"
-        ghcjs_dom_html_text_area_element_get_max_length ::
-        JSRef HTMLTextAreaElement -> IO Int
+        js_getMaxLength :: JSRef HTMLTextAreaElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.maxLength Mozilla HTMLTextAreaElement.maxLength documentation> 
-htmlTextAreaElementGetMaxLength ::
-                                (MonadIO m, IsHTMLTextAreaElement self) => self -> m Int
-htmlTextAreaElementGetMaxLength self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_max_length
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getMaxLength :: (MonadIO m) => HTMLTextAreaElement -> m Int
+getMaxLength self
+  = liftIO (js_getMaxLength (unHTMLTextAreaElement self))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.name Mozilla HTMLTextAreaElement.name documentation> 
-htmlTextAreaElementSetName ::
-                           (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlTextAreaElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_name
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLTextAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_text_area_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.name Mozilla HTMLTextAreaElement.name documentation> 
-htmlTextAreaElementGetName ::
-                           (MonadIO m, IsHTMLTextAreaElement self, FromJSString result) =>
-                             self -> m result
-htmlTextAreaElementGetName self
+getName ::
+        (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getName self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_name
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+      (fromJSString <$> (js_getName (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"placeholder\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_placeholder ::
-        JSRef HTMLTextAreaElement -> JSString -> IO ()
+        js_setPlaceholder :: JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.placeholder Mozilla HTMLTextAreaElement.placeholder documentation> 
-htmlTextAreaElementSetPlaceholder ::
-                                  (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                                    self -> val -> m ()
-htmlTextAreaElementSetPlaceholder self val
+setPlaceholder ::
+               (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setPlaceholder self val
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_placeholder
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         (toJSString val))
+      (js_setPlaceholder (unHTMLTextAreaElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"placeholder\"]"
-        ghcjs_dom_html_text_area_element_get_placeholder ::
-        JSRef HTMLTextAreaElement -> IO JSString
+        js_getPlaceholder :: JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.placeholder Mozilla HTMLTextAreaElement.placeholder documentation> 
-htmlTextAreaElementGetPlaceholder ::
-                                  (MonadIO m, IsHTMLTextAreaElement self, FromJSString result) =>
-                                    self -> m result
-htmlTextAreaElementGetPlaceholder self
+getPlaceholder ::
+               (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getPlaceholder self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_placeholder
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+      (fromJSString <$> (js_getPlaceholder (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"readOnly\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_read_only ::
-        JSRef HTMLTextAreaElement -> Bool -> IO ()
+        js_setReadOnly :: JSRef HTMLTextAreaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.readOnly Mozilla HTMLTextAreaElement.readOnly documentation> 
-htmlTextAreaElementSetReadOnly ::
-                               (MonadIO m, IsHTMLTextAreaElement self) => self -> Bool -> m ()
-htmlTextAreaElementSetReadOnly self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_read_only
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setReadOnly :: (MonadIO m) => HTMLTextAreaElement -> Bool -> m ()
+setReadOnly self val
+  = liftIO (js_setReadOnly (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "($1[\"readOnly\"] ? 1 : 0)"
-        ghcjs_dom_html_text_area_element_get_read_only ::
-        JSRef HTMLTextAreaElement -> IO Bool
+        js_getReadOnly :: JSRef HTMLTextAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.readOnly Mozilla HTMLTextAreaElement.readOnly documentation> 
-htmlTextAreaElementGetReadOnly ::
-                               (MonadIO m, IsHTMLTextAreaElement self) => self -> m Bool
-htmlTextAreaElementGetReadOnly self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_read_only
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getReadOnly :: (MonadIO m) => HTMLTextAreaElement -> m Bool
+getReadOnly self
+  = liftIO (js_getReadOnly (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "$1[\"required\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_required ::
-        JSRef HTMLTextAreaElement -> Bool -> IO ()
+        js_setRequired :: JSRef HTMLTextAreaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.required Mozilla HTMLTextAreaElement.required documentation> 
-htmlTextAreaElementSetRequired ::
-                               (MonadIO m, IsHTMLTextAreaElement self) => self -> Bool -> m ()
-htmlTextAreaElementSetRequired self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_required
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setRequired :: (MonadIO m) => HTMLTextAreaElement -> Bool -> m ()
+setRequired self val
+  = liftIO (js_setRequired (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
-        ghcjs_dom_html_text_area_element_get_required ::
-        JSRef HTMLTextAreaElement -> IO Bool
+        js_getRequired :: JSRef HTMLTextAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.required Mozilla HTMLTextAreaElement.required documentation> 
-htmlTextAreaElementGetRequired ::
-                               (MonadIO m, IsHTMLTextAreaElement self) => self -> m Bool
-htmlTextAreaElementGetRequired self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_required
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getRequired :: (MonadIO m) => HTMLTextAreaElement -> m Bool
+getRequired self
+  = liftIO (js_getRequired (unHTMLTextAreaElement self))
  
-foreign import javascript unsafe "$1[\"rows\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_rows ::
+foreign import javascript unsafe "$1[\"rows\"] = $2;" js_setRows ::
         JSRef HTMLTextAreaElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.rows Mozilla HTMLTextAreaElement.rows documentation> 
-htmlTextAreaElementSetRows ::
-                           (MonadIO m, IsHTMLTextAreaElement self) => self -> Int -> m ()
-htmlTextAreaElementSetRows self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_rows
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setRows :: (MonadIO m) => HTMLTextAreaElement -> Int -> m ()
+setRows self val
+  = liftIO (js_setRows (unHTMLTextAreaElement self) val)
  
-foreign import javascript unsafe "$1[\"rows\"]"
-        ghcjs_dom_html_text_area_element_get_rows ::
+foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
         JSRef HTMLTextAreaElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.rows Mozilla HTMLTextAreaElement.rows documentation> 
-htmlTextAreaElementGetRows ::
-                           (MonadIO m, IsHTMLTextAreaElement self) => self -> m Int
-htmlTextAreaElementGetRows self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_rows
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getRows :: (MonadIO m) => HTMLTextAreaElement -> m Int
+getRows self = liftIO (js_getRows (unHTMLTextAreaElement self))
  
-foreign import javascript unsafe "$1[\"wrap\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_wrap ::
+foreign import javascript unsafe "$1[\"wrap\"] = $2;" js_setWrap ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.wrap Mozilla HTMLTextAreaElement.wrap documentation> 
-htmlTextAreaElementSetWrap ::
-                           (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlTextAreaElementSetWrap self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_wrap
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         (toJSString val))
+setWrap ::
+        (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setWrap self val
+  = liftIO (js_setWrap (unHTMLTextAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"wrap\"]"
-        ghcjs_dom_html_text_area_element_get_wrap ::
+foreign import javascript unsafe "$1[\"wrap\"]" js_getWrap ::
         JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.wrap Mozilla HTMLTextAreaElement.wrap documentation> 
-htmlTextAreaElementGetWrap ::
-                           (MonadIO m, IsHTMLTextAreaElement self, FromJSString result) =>
-                             self -> m result
-htmlTextAreaElementGetWrap self
+getWrap ::
+        (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getWrap self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_wrap
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+      (fromJSString <$> (js_getWrap (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_default_value ::
+        js_setDefaultValue ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.defaultValue Mozilla HTMLTextAreaElement.defaultValue documentation> 
-htmlTextAreaElementSetDefaultValue ::
-                                   (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                                     self -> val -> m ()
-htmlTextAreaElementSetDefaultValue self val
+setDefaultValue ::
+                (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setDefaultValue self val
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_default_value
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         (toJSString val))
+      (js_setDefaultValue (unHTMLTextAreaElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"defaultValue\"]"
-        ghcjs_dom_html_text_area_element_get_default_value ::
-        JSRef HTMLTextAreaElement -> IO JSString
+        js_getDefaultValue :: JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.defaultValue Mozilla HTMLTextAreaElement.defaultValue documentation> 
-htmlTextAreaElementGetDefaultValue ::
-                                   (MonadIO m, IsHTMLTextAreaElement self, FromJSString result) =>
-                                     self -> m result
-htmlTextAreaElementGetDefaultValue self
+getDefaultValue ::
+                (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getDefaultValue self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_default_value
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+         (js_getDefaultValue (unHTMLTextAreaElement self)))
  
-foreign import javascript unsafe "$1[\"value\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_value ::
-        JSRef HTMLTextAreaElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+        :: JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
-htmlTextAreaElementSetValue ::
-                            (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlTextAreaElementSetValue self val
+setValue ::
+         (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setValue self val
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_value
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         (toJSString val))
+      (js_setValue (unHTMLTextAreaElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"value\"]"
-        ghcjs_dom_html_text_area_element_get_value ::
+foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
         JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
-htmlTextAreaElementGetValue ::
-                            (MonadIO m, IsHTMLTextAreaElement self, FromJSString result) =>
-                              self -> m result
-htmlTextAreaElementGetValue self
+getValue ::
+         (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getValue self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_value
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+      (fromJSString <$> (js_getValue (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"textLength\"]"
-        ghcjs_dom_html_text_area_element_get_text_length ::
-        JSRef HTMLTextAreaElement -> IO Word
+        js_getTextLength :: JSRef HTMLTextAreaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.textLength Mozilla HTMLTextAreaElement.textLength documentation> 
-htmlTextAreaElementGetTextLength ::
-                                 (MonadIO m, IsHTMLTextAreaElement self) => self -> m Word
-htmlTextAreaElementGetTextLength self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_text_length
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getTextLength :: (MonadIO m) => HTMLTextAreaElement -> m Word
+getTextLength self
+  = liftIO (js_getTextLength (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
-        ghcjs_dom_html_text_area_element_get_will_validate ::
-        JSRef HTMLTextAreaElement -> IO Bool
+        js_getWillValidate :: JSRef HTMLTextAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.willValidate Mozilla HTMLTextAreaElement.willValidate documentation> 
-htmlTextAreaElementGetWillValidate ::
-                                   (MonadIO m, IsHTMLTextAreaElement self) => self -> m Bool
-htmlTextAreaElementGetWillValidate self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_will_validate
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getWillValidate :: (MonadIO m) => HTMLTextAreaElement -> m Bool
+getWillValidate self
+  = liftIO (js_getWillValidate (unHTMLTextAreaElement self))
  
-foreign import javascript unsafe "$1[\"validity\"]"
-        ghcjs_dom_html_text_area_element_get_validity ::
-        JSRef HTMLTextAreaElement -> IO (JSRef ValidityState)
+foreign import javascript unsafe "$1[\"validity\"]" js_getValidity
+        :: JSRef HTMLTextAreaElement -> IO (JSRef ValidityState)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.validity Mozilla HTMLTextAreaElement.validity documentation> 
-htmlTextAreaElementGetValidity ::
-                               (MonadIO m, IsHTMLTextAreaElement self) =>
-                                 self -> m (Maybe ValidityState)
-htmlTextAreaElementGetValidity self
+getValidity ::
+            (MonadIO m) => HTMLTextAreaElement -> m (Maybe ValidityState)
+getValidity self
   = liftIO
-      ((ghcjs_dom_html_text_area_element_get_validity
-          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
-         >>= fromJSRef)
+      ((js_getValidity (unHTMLTextAreaElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
-        ghcjs_dom_html_text_area_element_get_validation_message ::
-        JSRef HTMLTextAreaElement -> IO JSString
+        js_getValidationMessage :: JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.validationMessage Mozilla HTMLTextAreaElement.validationMessage documentation> 
-htmlTextAreaElementGetValidationMessage ::
-                                        (MonadIO m, IsHTMLTextAreaElement self,
-                                         FromJSString result) =>
-                                          self -> m result
-htmlTextAreaElementGetValidationMessage self
+getValidationMessage ::
+                     (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getValidationMessage self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_validation_message
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+         (js_getValidationMessage (unHTMLTextAreaElement self)))
  
-foreign import javascript unsafe "$1[\"labels\"]"
-        ghcjs_dom_html_text_area_element_get_labels ::
+foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
         JSRef HTMLTextAreaElement -> IO (JSRef NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.labels Mozilla HTMLTextAreaElement.labels documentation> 
-htmlTextAreaElementGetLabels ::
-                             (MonadIO m, IsHTMLTextAreaElement self) =>
-                               self -> m (Maybe NodeList)
-htmlTextAreaElementGetLabels self
+getLabels ::
+          (MonadIO m) => HTMLTextAreaElement -> m (Maybe NodeList)
+getLabels self
   = liftIO
-      ((ghcjs_dom_html_text_area_element_get_labels
-          (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
-         >>= fromJSRef)
+      ((js_getLabels (unHTMLTextAreaElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"selectionStart\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_selection_start ::
-        JSRef HTMLTextAreaElement -> Int -> IO ()
+        js_setSelectionStart :: JSRef HTMLTextAreaElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.selectionStart Mozilla HTMLTextAreaElement.selectionStart documentation> 
-htmlTextAreaElementSetSelectionStart ::
-                                     (MonadIO m, IsHTMLTextAreaElement self) => self -> Int -> m ()
-htmlTextAreaElementSetSelectionStart self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_selection_start
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setSelectionStart ::
+                  (MonadIO m) => HTMLTextAreaElement -> Int -> m ()
+setSelectionStart self val
+  = liftIO (js_setSelectionStart (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "$1[\"selectionStart\"]"
-        ghcjs_dom_html_text_area_element_get_selection_start ::
-        JSRef HTMLTextAreaElement -> IO Int
+        js_getSelectionStart :: JSRef HTMLTextAreaElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.selectionStart Mozilla HTMLTextAreaElement.selectionStart documentation> 
-htmlTextAreaElementGetSelectionStart ::
-                                     (MonadIO m, IsHTMLTextAreaElement self) => self -> m Int
-htmlTextAreaElementGetSelectionStart self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_selection_start
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getSelectionStart :: (MonadIO m) => HTMLTextAreaElement -> m Int
+getSelectionStart self
+  = liftIO (js_getSelectionStart (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "$1[\"selectionEnd\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_selection_end ::
-        JSRef HTMLTextAreaElement -> Int -> IO ()
+        js_setSelectionEnd :: JSRef HTMLTextAreaElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.selectionEnd Mozilla HTMLTextAreaElement.selectionEnd documentation> 
-htmlTextAreaElementSetSelectionEnd ::
-                                   (MonadIO m, IsHTMLTextAreaElement self) => self -> Int -> m ()
-htmlTextAreaElementSetSelectionEnd self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_selection_end
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setSelectionEnd ::
+                (MonadIO m) => HTMLTextAreaElement -> Int -> m ()
+setSelectionEnd self val
+  = liftIO (js_setSelectionEnd (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "$1[\"selectionEnd\"]"
-        ghcjs_dom_html_text_area_element_get_selection_end ::
-        JSRef HTMLTextAreaElement -> IO Int
+        js_getSelectionEnd :: JSRef HTMLTextAreaElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.selectionEnd Mozilla HTMLTextAreaElement.selectionEnd documentation> 
-htmlTextAreaElementGetSelectionEnd ::
-                                   (MonadIO m, IsHTMLTextAreaElement self) => self -> m Int
-htmlTextAreaElementGetSelectionEnd self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_selection_end
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getSelectionEnd :: (MonadIO m) => HTMLTextAreaElement -> m Int
+getSelectionEnd self
+  = liftIO (js_getSelectionEnd (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "$1[\"selectionDirection\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_selection_direction ::
+        js_setSelectionDirection ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.selectionDirection Mozilla HTMLTextAreaElement.selectionDirection documentation> 
-htmlTextAreaElementSetSelectionDirection ::
-                                         (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                                           self -> val -> m ()
-htmlTextAreaElementSetSelectionDirection self val
+setSelectionDirection ::
+                      (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setSelectionDirection self val
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_selection_direction
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+      (js_setSelectionDirection (unHTMLTextAreaElement self)
          (toJSString val))
  
 foreign import javascript unsafe "$1[\"selectionDirection\"]"
-        ghcjs_dom_html_text_area_element_get_selection_direction ::
+        js_getSelectionDirection ::
         JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.selectionDirection Mozilla HTMLTextAreaElement.selectionDirection documentation> 
-htmlTextAreaElementGetSelectionDirection ::
-                                         (MonadIO m, IsHTMLTextAreaElement self,
-                                          FromJSString result) =>
-                                           self -> m result
-htmlTextAreaElementGetSelectionDirection self
+getSelectionDirection ::
+                      (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getSelectionDirection self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_selection_direction
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+         (js_getSelectionDirection (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_autocorrect ::
-        JSRef HTMLTextAreaElement -> Bool -> IO ()
+        js_setAutocorrect :: JSRef HTMLTextAreaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocorrect Mozilla HTMLTextAreaElement.autocorrect documentation> 
-htmlTextAreaElementSetAutocorrect ::
-                                  (MonadIO m, IsHTMLTextAreaElement self) => self -> Bool -> m ()
-htmlTextAreaElementSetAutocorrect self val
-  = liftIO
-      (ghcjs_dom_html_text_area_element_set_autocorrect
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
-         val)
+setAutocorrect ::
+               (MonadIO m) => HTMLTextAreaElement -> Bool -> m ()
+setAutocorrect self val
+  = liftIO (js_setAutocorrect (unHTMLTextAreaElement self) val)
  
 foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
-        ghcjs_dom_html_text_area_element_get_autocorrect ::
-        JSRef HTMLTextAreaElement -> IO Bool
+        js_getAutocorrect :: JSRef HTMLTextAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocorrect Mozilla HTMLTextAreaElement.autocorrect documentation> 
-htmlTextAreaElementGetAutocorrect ::
-                                  (MonadIO m, IsHTMLTextAreaElement self) => self -> m Bool
-htmlTextAreaElementGetAutocorrect self
-  = liftIO
-      (ghcjs_dom_html_text_area_element_get_autocorrect
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self)))
+getAutocorrect :: (MonadIO m) => HTMLTextAreaElement -> m Bool
+getAutocorrect self
+  = liftIO (js_getAutocorrect (unHTMLTextAreaElement self))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
-        ghcjs_dom_html_text_area_element_set_autocapitalize ::
+        js_setAutocapitalize ::
         JSRef HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocapitalize Mozilla HTMLTextAreaElement.autocapitalize documentation> 
-htmlTextAreaElementSetAutocapitalize ::
-                                     (MonadIO m, IsHTMLTextAreaElement self, ToJSString val) =>
-                                       self -> val -> m ()
-htmlTextAreaElementSetAutocapitalize self val
+setAutocapitalize ::
+                  (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setAutocapitalize self val
   = liftIO
-      (ghcjs_dom_html_text_area_element_set_autocapitalize
-         (unHTMLTextAreaElement (toHTMLTextAreaElement self))
+      (js_setAutocapitalize (unHTMLTextAreaElement self)
          (toJSString val))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"]"
-        ghcjs_dom_html_text_area_element_get_autocapitalize ::
-        JSRef HTMLTextAreaElement -> IO JSString
+        js_getAutocapitalize :: JSRef HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocapitalize Mozilla HTMLTextAreaElement.autocapitalize documentation> 
-htmlTextAreaElementGetAutocapitalize ::
-                                     (MonadIO m, IsHTMLTextAreaElement self, FromJSString result) =>
-                                       self -> m result
-htmlTextAreaElementGetAutocapitalize self
+getAutocapitalize ::
+                  (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getAutocapitalize self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_text_area_element_get_autocapitalize
-            (unHTMLTextAreaElement (toHTMLTextAreaElement self))))
+         (js_getAutocapitalize (unHTMLTextAreaElement self)))
 #else
 module GHCJS.DOM.HTMLTextAreaElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLTextAreaElement

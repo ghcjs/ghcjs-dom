@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StyleMedia
-       (ghcjs_dom_style_media_match_medium, styleMediaMatchMedium,
-        StyleMedia, IsStyleMedia, castToStyleMedia, gTypeStyleMedia,
-        toStyleMedia)
+       (js_matchMedium, matchMedium, StyleMedia, castToStyleMedia,
+        gTypeStyleMedia)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,24 +15,21 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"matchMedium\"]($2) ? 1 : 0)"
-        ghcjs_dom_style_media_match_medium ::
+        "($1[\"matchMedium\"]($2) ? 1 : 0)" js_matchMedium ::
         JSRef StyleMedia -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia.matchMedium Mozilla StyleMedia.matchMedium documentation> 
-styleMediaMatchMedium ::
-                      (MonadIO m, IsStyleMedia self, ToJSString mediaquery) =>
-                        self -> mediaquery -> m Bool
-styleMediaMatchMedium self mediaquery
+matchMedium ::
+            (MonadIO m, ToJSString mediaquery) =>
+              StyleMedia -> mediaquery -> m Bool
+matchMedium self mediaquery
   = liftIO
-      (ghcjs_dom_style_media_match_medium
-         (unStyleMedia (toStyleMedia self))
-         (toJSString mediaquery))
+      (js_matchMedium (unStyleMedia self) (toJSString mediaquery))
 #else
 module GHCJS.DOM.StyleMedia (
   module Graphics.UI.Gtk.WebKit.DOM.StyleMedia

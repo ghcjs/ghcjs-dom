@@ -1,11 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TrackEvent
-       (ghcjs_dom_track_event_get_track, trackEventGetTrack,
-        TrackEvent(..), IsTrackEvent, castToTrackEvent, gTypeTrackEvent,
-        toTrackEvent)
+       (js_getTrack, getTrack, TrackEvent, castToTrackEvent,
+        gTypeTrackEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,22 +15,17 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"track\"]"
-        ghcjs_dom_track_event_get_track ::
+foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
         JSRef TrackEvent -> IO (JSRef GObject)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TrackEvent.track Mozilla TrackEvent.track documentation> 
-trackEventGetTrack ::
-                   (MonadIO m, IsTrackEvent self) => self -> m (Maybe GObject)
-trackEventGetTrack self
-  = liftIO
-      ((ghcjs_dom_track_event_get_track
-          (unTrackEvent (toTrackEvent self)))
-         >>= fromJSRef)
+getTrack :: (MonadIO m) => TrackEvent -> m (Maybe GObject)
+getTrack self
+  = liftIO ((js_getTrack (unTrackEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.TrackEvent (
   ) where

@@ -1,12 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SQLStatementErrorCallback
-       (sqlStatementErrorCallbackNewSync,
-        sqlStatementErrorCallbackNewAsync, SQLStatementErrorCallback,
-        IsSQLStatementErrorCallback, castToSQLStatementErrorCallback,
-        gTypeSQLStatementErrorCallback, toSQLStatementErrorCallback)
+       (newSQLStatementErrorCallbackSync,
+        newSQLStatementErrorCallbackSync',
+        newSQLStatementErrorCallbackAsync,
+        newSQLStatementErrorCallbackAsync', SQLStatementErrorCallback,
+        castToSQLStatementErrorCallback, gTypeSQLStatementErrorCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,16 +18,16 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
-sqlStatementErrorCallbackNewSync ::
+newSQLStatementErrorCallbackSync ::
                                  (MonadIO m) =>
                                    (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
                                      m SQLStatementErrorCallback
-sqlStatementErrorCallbackNewSync callback
+newSQLStatementErrorCallbackSync callback
   = liftIO
       (SQLStatementErrorCallback . castRef <$>
          syncCallback2 AlwaysRetain True
@@ -37,13 +39,13 @@ sqlStatementErrorCallbackNewSync callback
                     error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
-sqlStatementErrorCallbackNewSync' ::
+newSQLStatementErrorCallbackSync' ::
                                   (MonadIO m) =>
                                     ForeignRetention ->
                                       Bool ->
                                         (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
                                           m SQLStatementErrorCallback
-sqlStatementErrorCallbackNewSync' retention continueAsync callback
+newSQLStatementErrorCallbackSync' retention continueAsync callback
   = liftIO
       (SQLStatementErrorCallback . castRef <$>
          syncCallback2 retention continueAsync
@@ -55,11 +57,11 @@ sqlStatementErrorCallbackNewSync' retention continueAsync callback
                     error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
-sqlStatementErrorCallbackNewAsync ::
+newSQLStatementErrorCallbackAsync ::
                                   (MonadIO m) =>
                                     (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
                                       m SQLStatementErrorCallback
-sqlStatementErrorCallbackNewAsync callback
+newSQLStatementErrorCallbackAsync callback
   = liftIO
       (SQLStatementErrorCallback . castRef <$>
          asyncCallback2 AlwaysRetain
@@ -71,12 +73,12 @@ sqlStatementErrorCallbackNewAsync callback
                     error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
-sqlStatementErrorCallbackNewAsync' ::
+newSQLStatementErrorCallbackAsync' ::
                                    (MonadIO m) =>
                                      ForeignRetention ->
                                        (Maybe SQLTransaction -> Maybe SQLError -> IO Bool) ->
                                          m SQLStatementErrorCallback
-sqlStatementErrorCallbackNewAsync' retention callback
+newSQLStatementErrorCallbackAsync' retention callback
   = liftIO
       (SQLStatementErrorCallback . castRef <$>
          asyncCallback2 retention

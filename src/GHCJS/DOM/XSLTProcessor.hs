@@ -1,23 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.XSLTProcessor
-       (ghcjs_dom_xslt_processor_new, xsltProcessorNew,
-        ghcjs_dom_xslt_processor_import_stylesheet,
-        xsltProcessorImportStylesheet,
-        ghcjs_dom_xslt_processor_transform_to_fragment,
-        xsltProcessorTransformToFragment,
-        ghcjs_dom_xslt_processor_transform_to_document,
-        xsltProcessorTransformToDocument,
-        ghcjs_dom_xslt_processor_set_parameter, xsltProcessorSetParameter,
-        ghcjs_dom_xslt_processor_get_parameter, xsltProcessorGetParameter,
-        ghcjs_dom_xslt_processor_remove_parameter,
-        xsltProcessorRemoveParameter,
-        ghcjs_dom_xslt_processor_clear_parameters,
-        xsltProcessorClearParameters, ghcjs_dom_xslt_processor_reset,
-        xsltProcessorReset, XSLTProcessor, IsXSLTProcessor,
-        castToXSLTProcessor, gTypeXSLTProcessor, toXSLTProcessor)
+       (js_newXSLTProcessor, newXSLTProcessor, js_importStylesheet,
+        importStylesheet, js_transformToFragment, transformToFragment,
+        js_transformToDocument, transformToDocument, js_setParameter,
+        setParameter, js_getParameter, getParameter, js_removeParameter,
+        removeParameter, js_clearParameters, clearParameters, js_reset,
+        reset, XSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,139 +19,119 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"XSLTProcessor\"]()"
-        ghcjs_dom_xslt_processor_new :: IO (JSRef XSLTProcessor)
+        js_newXSLTProcessor :: IO (JSRef XSLTProcessor)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor Mozilla XSLTProcessor documentation> 
-xsltProcessorNew :: (MonadIO m) => m XSLTProcessor
-xsltProcessorNew
-  = liftIO (ghcjs_dom_xslt_processor_new >>= fromJSRefUnchecked)
+newXSLTProcessor :: (MonadIO m) => m XSLTProcessor
+newXSLTProcessor
+  = liftIO (js_newXSLTProcessor >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"importStylesheet\"]($2)"
-        ghcjs_dom_xslt_processor_import_stylesheet ::
-        JSRef XSLTProcessor -> JSRef Node -> IO ()
+        js_importStylesheet :: JSRef XSLTProcessor -> JSRef Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.importStylesheet Mozilla XSLTProcessor.importStylesheet documentation> 
-xsltProcessorImportStylesheet ::
-                              (MonadIO m, IsXSLTProcessor self, IsNode stylesheet) =>
-                                self -> Maybe stylesheet -> m ()
-xsltProcessorImportStylesheet self stylesheet
+importStylesheet ::
+                 (MonadIO m, IsNode stylesheet) =>
+                   XSLTProcessor -> Maybe stylesheet -> m ()
+importStylesheet self stylesheet
   = liftIO
-      (ghcjs_dom_xslt_processor_import_stylesheet
-         (unXSLTProcessor (toXSLTProcessor self))
+      (js_importStylesheet (unXSLTProcessor self)
          (maybe jsNull (unNode . toNode) stylesheet))
  
 foreign import javascript unsafe
-        "$1[\"transformToFragment\"]($2,\n$3)"
-        ghcjs_dom_xslt_processor_transform_to_fragment ::
+        "$1[\"transformToFragment\"]($2,\n$3)" js_transformToFragment ::
         JSRef XSLTProcessor ->
           JSRef Node -> JSRef Document -> IO (JSRef DocumentFragment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToFragment Mozilla XSLTProcessor.transformToFragment documentation> 
-xsltProcessorTransformToFragment ::
-                                 (MonadIO m, IsXSLTProcessor self, IsNode source,
-                                  IsDocument docVal) =>
-                                   self ->
-                                     Maybe source -> Maybe docVal -> m (Maybe DocumentFragment)
-xsltProcessorTransformToFragment self source docVal
+transformToFragment ::
+                    (MonadIO m, IsNode source, IsDocument docVal) =>
+                      XSLTProcessor ->
+                        Maybe source -> Maybe docVal -> m (Maybe DocumentFragment)
+transformToFragment self source docVal
   = liftIO
-      ((ghcjs_dom_xslt_processor_transform_to_fragment
-          (unXSLTProcessor (toXSLTProcessor self))
+      ((js_transformToFragment (unXSLTProcessor self)
           (maybe jsNull (unNode . toNode) source)
           (maybe jsNull (unDocument . toDocument) docVal))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"transformToDocument\"]($2)"
-        ghcjs_dom_xslt_processor_transform_to_document ::
+        js_transformToDocument ::
         JSRef XSLTProcessor -> JSRef Node -> IO (JSRef Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToDocument Mozilla XSLTProcessor.transformToDocument documentation> 
-xsltProcessorTransformToDocument ::
-                                 (MonadIO m, IsXSLTProcessor self, IsNode source) =>
-                                   self -> Maybe source -> m (Maybe Document)
-xsltProcessorTransformToDocument self source
+transformToDocument ::
+                    (MonadIO m, IsNode source) =>
+                      XSLTProcessor -> Maybe source -> m (Maybe Document)
+transformToDocument self source
   = liftIO
-      ((ghcjs_dom_xslt_processor_transform_to_document
-          (unXSLTProcessor (toXSLTProcessor self))
+      ((js_transformToDocument (unXSLTProcessor self)
           (maybe jsNull (unNode . toNode) source))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"setParameter\"]($2, $3, $4)"
-        ghcjs_dom_xslt_processor_set_parameter ::
+        js_setParameter ::
         JSRef XSLTProcessor -> JSString -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.parameter Mozilla XSLTProcessor.parameter documentation> 
-xsltProcessorSetParameter ::
-                          (MonadIO m, IsXSLTProcessor self, ToJSString namespaceURI,
-                           ToJSString localName, ToJSString value) =>
-                            self -> namespaceURI -> localName -> value -> m ()
-xsltProcessorSetParameter self namespaceURI localName value
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.setParameter Mozilla XSLTProcessor.setParameter documentation> 
+setParameter ::
+             (MonadIO m, ToJSString namespaceURI, ToJSString localName,
+              ToJSString value) =>
+               XSLTProcessor -> namespaceURI -> localName -> value -> m ()
+setParameter self namespaceURI localName value
   = liftIO
-      (ghcjs_dom_xslt_processor_set_parameter
-         (unXSLTProcessor (toXSLTProcessor self))
-         (toJSString namespaceURI)
+      (js_setParameter (unXSLTProcessor self) (toJSString namespaceURI)
          (toJSString localName)
          (toJSString value))
  
 foreign import javascript unsafe "$1[\"getParameter\"]($2, $3)"
-        ghcjs_dom_xslt_processor_get_parameter ::
+        js_getParameter ::
         JSRef XSLTProcessor -> JSString -> JSString -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.parameter Mozilla XSLTProcessor.parameter documentation> 
-xsltProcessorGetParameter ::
-                          (MonadIO m, IsXSLTProcessor self, ToJSString namespaceURI,
-                           ToJSString localName, FromJSString result) =>
-                            self -> namespaceURI -> localName -> m result
-xsltProcessorGetParameter self namespaceURI localName
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.getParameter Mozilla XSLTProcessor.getParameter documentation> 
+getParameter ::
+             (MonadIO m, ToJSString namespaceURI, ToJSString localName,
+              FromJSString result) =>
+               XSLTProcessor -> namespaceURI -> localName -> m result
+getParameter self namespaceURI localName
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_xslt_processor_get_parameter
-            (unXSLTProcessor (toXSLTProcessor self))
-            (toJSString namespaceURI)
+         (js_getParameter (unXSLTProcessor self) (toJSString namespaceURI)
             (toJSString localName)))
  
 foreign import javascript unsafe "$1[\"removeParameter\"]($2, $3)"
-        ghcjs_dom_xslt_processor_remove_parameter ::
+        js_removeParameter ::
         JSRef XSLTProcessor -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.removeParameter Mozilla XSLTProcessor.removeParameter documentation> 
-xsltProcessorRemoveParameter ::
-                             (MonadIO m, IsXSLTProcessor self, ToJSString namespaceURI,
-                              ToJSString localName) =>
-                               self -> namespaceURI -> localName -> m ()
-xsltProcessorRemoveParameter self namespaceURI localName
+removeParameter ::
+                (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                  XSLTProcessor -> namespaceURI -> localName -> m ()
+removeParameter self namespaceURI localName
   = liftIO
-      (ghcjs_dom_xslt_processor_remove_parameter
-         (unXSLTProcessor (toXSLTProcessor self))
+      (js_removeParameter (unXSLTProcessor self)
          (toJSString namespaceURI)
          (toJSString localName))
  
 foreign import javascript unsafe "$1[\"clearParameters\"]()"
-        ghcjs_dom_xslt_processor_clear_parameters ::
-        JSRef XSLTProcessor -> IO ()
+        js_clearParameters :: JSRef XSLTProcessor -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.clearParameters Mozilla XSLTProcessor.clearParameters documentation> 
-xsltProcessorClearParameters ::
-                             (MonadIO m, IsXSLTProcessor self) => self -> m ()
-xsltProcessorClearParameters self
-  = liftIO
-      (ghcjs_dom_xslt_processor_clear_parameters
-         (unXSLTProcessor (toXSLTProcessor self)))
+clearParameters :: (MonadIO m) => XSLTProcessor -> m ()
+clearParameters self
+  = liftIO (js_clearParameters (unXSLTProcessor self))
  
-foreign import javascript unsafe "$1[\"reset\"]()"
-        ghcjs_dom_xslt_processor_reset :: JSRef XSLTProcessor -> IO ()
+foreign import javascript unsafe "$1[\"reset\"]()" js_reset ::
+        JSRef XSLTProcessor -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.reset Mozilla XSLTProcessor.reset documentation> 
-xsltProcessorReset ::
-                   (MonadIO m, IsXSLTProcessor self) => self -> m ()
-xsltProcessorReset self
-  = liftIO
-      (ghcjs_dom_xslt_processor_reset
-         (unXSLTProcessor (toXSLTProcessor self)))
+reset :: (MonadIO m) => XSLTProcessor -> m ()
+reset self = liftIO (js_reset (unXSLTProcessor self))
 #else
 module GHCJS.DOM.XSLTProcessor (
   ) where

@@ -1,18 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGLinearGradientElement
-       (ghcjs_dom_svg_linear_gradient_element_get_x1,
-        svgLinearGradientElementGetX1,
-        ghcjs_dom_svg_linear_gradient_element_get_y1,
-        svgLinearGradientElementGetY1,
-        ghcjs_dom_svg_linear_gradient_element_get_x2,
-        svgLinearGradientElementGetX2,
-        ghcjs_dom_svg_linear_gradient_element_get_y2,
-        svgLinearGradientElementGetY2, SVGLinearGradientElement,
-        IsSVGLinearGradientElement, castToSVGLinearGradientElement,
-        gTypeSVGLinearGradientElement, toSVGLinearGradientElement)
+       (js_getX1, getX1, js_getY1, getY1, js_getX2, getX2, js_getY2,
+        getY2, SVGLinearGradientElement, castToSVGLinearGradientElement,
+        gTypeSVGLinearGradientElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,65 +16,53 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x1\"]"
-        ghcjs_dom_svg_linear_gradient_element_get_x1 ::
+foreign import javascript unsafe "$1[\"x1\"]" js_getX1 ::
         JSRef SVGLinearGradientElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLinearGradientElement.x1 Mozilla SVGLinearGradientElement.x1 documentation> 
-svgLinearGradientElementGetX1 ::
-                              (MonadIO m, IsSVGLinearGradientElement self) =>
-                                self -> m (Maybe SVGAnimatedLength)
-svgLinearGradientElementGetX1 self
+getX1 ::
+      (MonadIO m) =>
+        SVGLinearGradientElement -> m (Maybe SVGAnimatedLength)
+getX1 self
   = liftIO
-      ((ghcjs_dom_svg_linear_gradient_element_get_x1
-          (unSVGLinearGradientElement (toSVGLinearGradientElement self)))
-         >>= fromJSRef)
+      ((js_getX1 (unSVGLinearGradientElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y1\"]"
-        ghcjs_dom_svg_linear_gradient_element_get_y1 ::
+foreign import javascript unsafe "$1[\"y1\"]" js_getY1 ::
         JSRef SVGLinearGradientElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLinearGradientElement.y1 Mozilla SVGLinearGradientElement.y1 documentation> 
-svgLinearGradientElementGetY1 ::
-                              (MonadIO m, IsSVGLinearGradientElement self) =>
-                                self -> m (Maybe SVGAnimatedLength)
-svgLinearGradientElementGetY1 self
+getY1 ::
+      (MonadIO m) =>
+        SVGLinearGradientElement -> m (Maybe SVGAnimatedLength)
+getY1 self
   = liftIO
-      ((ghcjs_dom_svg_linear_gradient_element_get_y1
-          (unSVGLinearGradientElement (toSVGLinearGradientElement self)))
-         >>= fromJSRef)
+      ((js_getY1 (unSVGLinearGradientElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"x2\"]"
-        ghcjs_dom_svg_linear_gradient_element_get_x2 ::
+foreign import javascript unsafe "$1[\"x2\"]" js_getX2 ::
         JSRef SVGLinearGradientElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLinearGradientElement.x2 Mozilla SVGLinearGradientElement.x2 documentation> 
-svgLinearGradientElementGetX2 ::
-                              (MonadIO m, IsSVGLinearGradientElement self) =>
-                                self -> m (Maybe SVGAnimatedLength)
-svgLinearGradientElementGetX2 self
+getX2 ::
+      (MonadIO m) =>
+        SVGLinearGradientElement -> m (Maybe SVGAnimatedLength)
+getX2 self
   = liftIO
-      ((ghcjs_dom_svg_linear_gradient_element_get_x2
-          (unSVGLinearGradientElement (toSVGLinearGradientElement self)))
-         >>= fromJSRef)
+      ((js_getX2 (unSVGLinearGradientElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y2\"]"
-        ghcjs_dom_svg_linear_gradient_element_get_y2 ::
+foreign import javascript unsafe "$1[\"y2\"]" js_getY2 ::
         JSRef SVGLinearGradientElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLinearGradientElement.y2 Mozilla SVGLinearGradientElement.y2 documentation> 
-svgLinearGradientElementGetY2 ::
-                              (MonadIO m, IsSVGLinearGradientElement self) =>
-                                self -> m (Maybe SVGAnimatedLength)
-svgLinearGradientElementGetY2 self
+getY2 ::
+      (MonadIO m) =>
+        SVGLinearGradientElement -> m (Maybe SVGAnimatedLength)
+getY2 self
   = liftIO
-      ((ghcjs_dom_svg_linear_gradient_element_get_y2
-          (unSVGLinearGradientElement (toSVGLinearGradientElement self)))
-         >>= fromJSRef)
+      ((js_getY2 (unSVGLinearGradientElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGLinearGradientElement (
   ) where

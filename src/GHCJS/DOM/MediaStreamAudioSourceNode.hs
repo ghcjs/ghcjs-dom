@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaStreamAudioSourceNode
-       (ghcjs_dom_media_stream_audio_source_node_get_media_stream,
-        mediaStreamAudioSourceNodeGetMediaStream,
-        MediaStreamAudioSourceNode, IsMediaStreamAudioSourceNode,
-        castToMediaStreamAudioSourceNode, gTypeMediaStreamAudioSourceNode,
-        toMediaStreamAudioSourceNode)
+       (js_getMediaStream, getMediaStream, MediaStreamAudioSourceNode,
+        castToMediaStreamAudioSourceNode, gTypeMediaStreamAudioSourceNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,23 +15,21 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"mediaStream\"]"
-        ghcjs_dom_media_stream_audio_source_node_get_media_stream ::
+        js_getMediaStream ::
         JSRef MediaStreamAudioSourceNode -> IO (JSRef MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode.mediaStream Mozilla MediaStreamAudioSourceNode.mediaStream documentation> 
-mediaStreamAudioSourceNodeGetMediaStream ::
-                                         (MonadIO m, IsMediaStreamAudioSourceNode self) =>
-                                           self -> m (Maybe MediaStream)
-mediaStreamAudioSourceNodeGetMediaStream self
+getMediaStream ::
+               (MonadIO m) => MediaStreamAudioSourceNode -> m (Maybe MediaStream)
+getMediaStream self
   = liftIO
-      ((ghcjs_dom_media_stream_audio_source_node_get_media_stream
-          (unMediaStreamAudioSourceNode (toMediaStreamAudioSourceNode self)))
-         >>= fromJSRef)
+      ((js_getMediaStream (unMediaStreamAudioSourceNode self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.MediaStreamAudioSourceNode (
   ) where

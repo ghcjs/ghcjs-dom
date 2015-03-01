@@ -1,15 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.OverflowEvent
-       (cHORIZONTAL, cVERTICAL, cBOTH,
-        ghcjs_dom_overflow_event_get_orient, overflowEventGetOrient,
-        ghcjs_dom_overflow_event_get_horizontal_overflow,
-        overflowEventGetHorizontalOverflow,
-        ghcjs_dom_overflow_event_get_vertical_overflow,
-        overflowEventGetVerticalOverflow, OverflowEvent, IsOverflowEvent,
-        castToOverflowEvent, gTypeOverflowEvent, toOverflowEvent)
+       (pattern HORIZONTAL, pattern VERTICAL, pattern BOTH, js_getOrient,
+        getOrient, js_getHorizontalOverflow, getHorizontalOverflow,
+        js_getVerticalOverflow, getVerticalOverflow, OverflowEvent,
+        castToOverflowEvent, gTypeOverflowEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,50 +17,37 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cHORIZONTAL = 0
-cVERTICAL = 1
-cBOTH = 2
+pattern HORIZONTAL = 0
+pattern VERTICAL = 1
+pattern BOTH = 2
  
-foreign import javascript unsafe "$1[\"orient\"]"
-        ghcjs_dom_overflow_event_get_orient ::
+foreign import javascript unsafe "$1[\"orient\"]" js_getOrient ::
         JSRef OverflowEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.orient Mozilla OverflowEvent.orient documentation> 
-overflowEventGetOrient ::
-                       (MonadIO m, IsOverflowEvent self) => self -> m Word
-overflowEventGetOrient self
-  = liftIO
-      (ghcjs_dom_overflow_event_get_orient
-         (unOverflowEvent (toOverflowEvent self)))
+getOrient :: (MonadIO m) => OverflowEvent -> m Word
+getOrient self = liftIO (js_getOrient (unOverflowEvent self))
  
 foreign import javascript unsafe
-        "($1[\"horizontalOverflow\"] ? 1 : 0)"
-        ghcjs_dom_overflow_event_get_horizontal_overflow ::
+        "($1[\"horizontalOverflow\"] ? 1 : 0)" js_getHorizontalOverflow ::
         JSRef OverflowEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.horizontalOverflow Mozilla OverflowEvent.horizontalOverflow documentation> 
-overflowEventGetHorizontalOverflow ::
-                                   (MonadIO m, IsOverflowEvent self) => self -> m Bool
-overflowEventGetHorizontalOverflow self
-  = liftIO
-      (ghcjs_dom_overflow_event_get_horizontal_overflow
-         (unOverflowEvent (toOverflowEvent self)))
+getHorizontalOverflow :: (MonadIO m) => OverflowEvent -> m Bool
+getHorizontalOverflow self
+  = liftIO (js_getHorizontalOverflow (unOverflowEvent self))
  
 foreign import javascript unsafe
-        "($1[\"verticalOverflow\"] ? 1 : 0)"
-        ghcjs_dom_overflow_event_get_vertical_overflow ::
+        "($1[\"verticalOverflow\"] ? 1 : 0)" js_getVerticalOverflow ::
         JSRef OverflowEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.verticalOverflow Mozilla OverflowEvent.verticalOverflow documentation> 
-overflowEventGetVerticalOverflow ::
-                                 (MonadIO m, IsOverflowEvent self) => self -> m Bool
-overflowEventGetVerticalOverflow self
-  = liftIO
-      (ghcjs_dom_overflow_event_get_vertical_overflow
-         (unOverflowEvent (toOverflowEvent self)))
+getVerticalOverflow :: (MonadIO m) => OverflowEvent -> m Bool
+getVerticalOverflow self
+  = liftIO (js_getVerticalOverflow (unOverflowEvent self))
 #else
 module GHCJS.DOM.OverflowEvent (
   ) where

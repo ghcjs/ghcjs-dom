@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AudioDestinationNode
-       (ghcjs_dom_audio_destination_node_get_max_channel_count,
-        audioDestinationNodeGetMaxChannelCount, AudioDestinationNode,
-        IsAudioDestinationNode, castToAudioDestinationNode,
-        gTypeAudioDestinationNode, toAudioDestinationNode)
+       (js_getMaxChannelCount, getMaxChannelCount, AudioDestinationNode,
+        castToAudioDestinationNode, gTypeAudioDestinationNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,21 +15,17 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"maxChannelCount\"]"
-        ghcjs_dom_audio_destination_node_get_max_channel_count ::
-        JSRef AudioDestinationNode -> IO Word
+        js_getMaxChannelCount :: JSRef AudioDestinationNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioDestinationNode.maxChannelCount Mozilla AudioDestinationNode.maxChannelCount documentation> 
-audioDestinationNodeGetMaxChannelCount ::
-                                       (MonadIO m, IsAudioDestinationNode self) => self -> m Word
-audioDestinationNodeGetMaxChannelCount self
-  = liftIO
-      (ghcjs_dom_audio_destination_node_get_max_channel_count
-         (unAudioDestinationNode (toAudioDestinationNode self)))
+getMaxChannelCount :: (MonadIO m) => AudioDestinationNode -> m Word
+getMaxChannelCount self
+  = liftIO (js_getMaxChannelCount (unAudioDestinationNode self))
 #else
 module GHCJS.DOM.AudioDestinationNode (
   ) where

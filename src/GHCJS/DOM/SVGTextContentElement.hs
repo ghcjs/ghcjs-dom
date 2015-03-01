@@ -1,33 +1,22 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGTextContentElement
-       (ghcjs_dom_svg_text_content_element_get_number_of_chars,
-        svgTextContentElementGetNumberOfChars,
-        ghcjs_dom_svg_text_content_element_get_computed_text_length,
-        svgTextContentElementGetComputedTextLength,
-        ghcjs_dom_svg_text_content_element_get_sub_string_length,
-        svgTextContentElementGetSubStringLength,
-        ghcjs_dom_svg_text_content_element_get_start_position_of_char,
-        svgTextContentElementGetStartPositionOfChar,
-        ghcjs_dom_svg_text_content_element_get_end_position_of_char,
-        svgTextContentElementGetEndPositionOfChar,
-        ghcjs_dom_svg_text_content_element_get_extent_of_char,
-        svgTextContentElementGetExtentOfChar,
-        ghcjs_dom_svg_text_content_element_get_rotation_of_char,
-        svgTextContentElementGetRotationOfChar,
-        ghcjs_dom_svg_text_content_element_get_char_num_at_position,
-        svgTextContentElementGetCharNumAtPosition,
-        ghcjs_dom_svg_text_content_element_select_sub_string,
-        svgTextContentElementSelectSubString, cLENGTHADJUST_UNKNOWN,
-        cLENGTHADJUST_SPACING, cLENGTHADJUST_SPACINGANDGLYPHS,
-        ghcjs_dom_svg_text_content_element_get_text_length,
-        svgTextContentElementGetTextLength,
-        ghcjs_dom_svg_text_content_element_get_length_adjust,
-        svgTextContentElementGetLengthAdjust, SVGTextContentElement,
-        IsSVGTextContentElement, castToSVGTextContentElement,
-        gTypeSVGTextContentElement, toSVGTextContentElement)
+       (js_getNumberOfChars, getNumberOfChars, js_getComputedTextLength,
+        getComputedTextLength, js_getSubStringLength, getSubStringLength,
+        js_getStartPositionOfChar, getStartPositionOfChar,
+        js_getEndPositionOfChar, getEndPositionOfChar, js_getExtentOfChar,
+        getExtentOfChar, js_getRotationOfChar, getRotationOfChar,
+        js_getCharNumAtPosition, getCharNumAtPosition, js_selectSubString,
+        selectSubString, pattern LENGTHADJUST_UNKNOWN,
+        pattern LENGTHADJUST_SPACING,
+        pattern LENGTHADJUST_SPACINGANDGLYPHS, js_getTextLength,
+        getTextLength, js_getLengthAdjust, getLengthAdjust,
+        SVGTextContentElement, castToSVGTextContentElement,
+        gTypeSVGTextContentElement, IsSVGTextContentElement,
+        toSVGTextContentElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -37,169 +26,163 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getNumberOfChars\"]()"
-        ghcjs_dom_svg_text_content_element_get_number_of_chars ::
-        JSRef SVGTextContentElement -> IO Int
+        js_getNumberOfChars :: JSRef SVGTextContentElement -> IO Int
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.numberOfChars Mozilla SVGTextContentElement.numberOfChars documentation> 
-svgTextContentElementGetNumberOfChars ::
-                                      (MonadIO m, IsSVGTextContentElement self) => self -> m Int
-svgTextContentElementGetNumberOfChars self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getNumberOfChars Mozilla SVGTextContentElement.getNumberOfChars documentation> 
+getNumberOfChars ::
+                 (MonadIO m, IsSVGTextContentElement self) => self -> m Int
+getNumberOfChars self
   = liftIO
-      (ghcjs_dom_svg_text_content_element_get_number_of_chars
+      (js_getNumberOfChars
          (unSVGTextContentElement (toSVGTextContentElement self)))
  
 foreign import javascript unsafe "$1[\"getComputedTextLength\"]()"
-        ghcjs_dom_svg_text_content_element_get_computed_text_length ::
-        JSRef SVGTextContentElement -> IO Float
+        js_getComputedTextLength :: JSRef SVGTextContentElement -> IO Float
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.computedTextLength Mozilla SVGTextContentElement.computedTextLength documentation> 
-svgTextContentElementGetComputedTextLength ::
-                                           (MonadIO m, IsSVGTextContentElement self) =>
-                                             self -> m Float
-svgTextContentElementGetComputedTextLength self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getComputedTextLength Mozilla SVGTextContentElement.getComputedTextLength documentation> 
+getComputedTextLength ::
+                      (MonadIO m, IsSVGTextContentElement self) => self -> m Float
+getComputedTextLength self
   = liftIO
-      (ghcjs_dom_svg_text_content_element_get_computed_text_length
+      (js_getComputedTextLength
          (unSVGTextContentElement (toSVGTextContentElement self)))
  
 foreign import javascript unsafe
-        "$1[\"getSubStringLength\"]($2, $3)"
-        ghcjs_dom_svg_text_content_element_get_sub_string_length ::
+        "$1[\"getSubStringLength\"]($2, $3)" js_getSubStringLength ::
         JSRef SVGTextContentElement -> Word -> Word -> IO Float
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.subStringLength Mozilla SVGTextContentElement.subStringLength documentation> 
-svgTextContentElementGetSubStringLength ::
-                                        (MonadIO m, IsSVGTextContentElement self) =>
-                                          self -> Word -> Word -> m Float
-svgTextContentElementGetSubStringLength self offset length
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getSubStringLength Mozilla SVGTextContentElement.getSubStringLength documentation> 
+getSubStringLength ::
+                   (MonadIO m, IsSVGTextContentElement self) =>
+                     self -> Word -> Word -> m Float
+getSubStringLength self offset length
   = liftIO
-      (ghcjs_dom_svg_text_content_element_get_sub_string_length
+      (js_getSubStringLength
          (unSVGTextContentElement (toSVGTextContentElement self))
          offset
          length)
  
 foreign import javascript unsafe
-        "$1[\"getStartPositionOfChar\"]($2)"
-        ghcjs_dom_svg_text_content_element_get_start_position_of_char ::
+        "$1[\"getStartPositionOfChar\"]($2)" js_getStartPositionOfChar ::
         JSRef SVGTextContentElement -> Word -> IO (JSRef SVGPoint)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.startPositionOfChar Mozilla SVGTextContentElement.startPositionOfChar documentation> 
-svgTextContentElementGetStartPositionOfChar ::
-                                            (MonadIO m, IsSVGTextContentElement self) =>
-                                              self -> Word -> m (Maybe SVGPoint)
-svgTextContentElementGetStartPositionOfChar self offset
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getStartPositionOfChar Mozilla SVGTextContentElement.getStartPositionOfChar documentation> 
+getStartPositionOfChar ::
+                       (MonadIO m, IsSVGTextContentElement self) =>
+                         self -> Word -> m (Maybe SVGPoint)
+getStartPositionOfChar self offset
   = liftIO
-      ((ghcjs_dom_svg_text_content_element_get_start_position_of_char
+      ((js_getStartPositionOfChar
           (unSVGTextContentElement (toSVGTextContentElement self))
           offset)
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getEndPositionOfChar\"]($2)"
-        ghcjs_dom_svg_text_content_element_get_end_position_of_char ::
+        js_getEndPositionOfChar ::
         JSRef SVGTextContentElement -> Word -> IO (JSRef SVGPoint)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.endPositionOfChar Mozilla SVGTextContentElement.endPositionOfChar documentation> 
-svgTextContentElementGetEndPositionOfChar ::
-                                          (MonadIO m, IsSVGTextContentElement self) =>
-                                            self -> Word -> m (Maybe SVGPoint)
-svgTextContentElementGetEndPositionOfChar self offset
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getEndPositionOfChar Mozilla SVGTextContentElement.getEndPositionOfChar documentation> 
+getEndPositionOfChar ::
+                     (MonadIO m, IsSVGTextContentElement self) =>
+                       self -> Word -> m (Maybe SVGPoint)
+getEndPositionOfChar self offset
   = liftIO
-      ((ghcjs_dom_svg_text_content_element_get_end_position_of_char
+      ((js_getEndPositionOfChar
           (unSVGTextContentElement (toSVGTextContentElement self))
           offset)
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getExtentOfChar\"]($2)"
-        ghcjs_dom_svg_text_content_element_get_extent_of_char ::
+        js_getExtentOfChar ::
         JSRef SVGTextContentElement -> Word -> IO (JSRef SVGRect)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.extentOfChar Mozilla SVGTextContentElement.extentOfChar documentation> 
-svgTextContentElementGetExtentOfChar ::
-                                     (MonadIO m, IsSVGTextContentElement self) =>
-                                       self -> Word -> m (Maybe SVGRect)
-svgTextContentElementGetExtentOfChar self offset
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getExtentOfChar Mozilla SVGTextContentElement.getExtentOfChar documentation> 
+getExtentOfChar ::
+                (MonadIO m, IsSVGTextContentElement self) =>
+                  self -> Word -> m (Maybe SVGRect)
+getExtentOfChar self offset
   = liftIO
-      ((ghcjs_dom_svg_text_content_element_get_extent_of_char
+      ((js_getExtentOfChar
           (unSVGTextContentElement (toSVGTextContentElement self))
           offset)
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getRotationOfChar\"]($2)"
-        ghcjs_dom_svg_text_content_element_get_rotation_of_char ::
+        js_getRotationOfChar ::
         JSRef SVGTextContentElement -> Word -> IO Float
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.rotationOfChar Mozilla SVGTextContentElement.rotationOfChar documentation> 
-svgTextContentElementGetRotationOfChar ::
-                                       (MonadIO m, IsSVGTextContentElement self) =>
-                                         self -> Word -> m Float
-svgTextContentElementGetRotationOfChar self offset
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getRotationOfChar Mozilla SVGTextContentElement.getRotationOfChar documentation> 
+getRotationOfChar ::
+                  (MonadIO m, IsSVGTextContentElement self) =>
+                    self -> Word -> m Float
+getRotationOfChar self offset
   = liftIO
-      (ghcjs_dom_svg_text_content_element_get_rotation_of_char
+      (js_getRotationOfChar
          (unSVGTextContentElement (toSVGTextContentElement self))
          offset)
  
 foreign import javascript unsafe "$1[\"getCharNumAtPosition\"]($2)"
-        ghcjs_dom_svg_text_content_element_get_char_num_at_position ::
+        js_getCharNumAtPosition ::
         JSRef SVGTextContentElement -> JSRef SVGPoint -> IO Int
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.charNumAtPosition Mozilla SVGTextContentElement.charNumAtPosition documentation> 
-svgTextContentElementGetCharNumAtPosition ::
-                                          (MonadIO m, IsSVGTextContentElement self,
-                                           IsSVGPoint point) =>
-                                            self -> Maybe point -> m Int
-svgTextContentElementGetCharNumAtPosition self point
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getCharNumAtPosition Mozilla SVGTextContentElement.getCharNumAtPosition documentation> 
+getCharNumAtPosition ::
+                     (MonadIO m, IsSVGTextContentElement self) =>
+                       self -> Maybe SVGPoint -> m Int
+getCharNumAtPosition self point
   = liftIO
-      (ghcjs_dom_svg_text_content_element_get_char_num_at_position
+      (js_getCharNumAtPosition
          (unSVGTextContentElement (toSVGTextContentElement self))
-         (maybe jsNull (unSVGPoint . toSVGPoint) point))
+         (maybe jsNull unSVGPoint point))
  
 foreign import javascript unsafe "$1[\"selectSubString\"]($2, $3)"
-        ghcjs_dom_svg_text_content_element_select_sub_string ::
+        js_selectSubString ::
         JSRef SVGTextContentElement -> Word -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.selectSubString Mozilla SVGTextContentElement.selectSubString documentation> 
-svgTextContentElementSelectSubString ::
-                                     (MonadIO m, IsSVGTextContentElement self) =>
-                                       self -> Word -> Word -> m ()
-svgTextContentElementSelectSubString self offset length
+selectSubString ::
+                (MonadIO m, IsSVGTextContentElement self) =>
+                  self -> Word -> Word -> m ()
+selectSubString self offset length
   = liftIO
-      (ghcjs_dom_svg_text_content_element_select_sub_string
+      (js_selectSubString
          (unSVGTextContentElement (toSVGTextContentElement self))
          offset
          length)
-cLENGTHADJUST_UNKNOWN = 0
-cLENGTHADJUST_SPACING = 1
-cLENGTHADJUST_SPACINGANDGLYPHS = 2
+pattern LENGTHADJUST_UNKNOWN = 0
+pattern LENGTHADJUST_SPACING = 1
+pattern LENGTHADJUST_SPACINGANDGLYPHS = 2
  
 foreign import javascript unsafe "$1[\"textLength\"]"
-        ghcjs_dom_svg_text_content_element_get_text_length ::
+        js_getTextLength ::
         JSRef SVGTextContentElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.textLength Mozilla SVGTextContentElement.textLength documentation> 
-svgTextContentElementGetTextLength ::
-                                   (MonadIO m, IsSVGTextContentElement self) =>
-                                     self -> m (Maybe SVGAnimatedLength)
-svgTextContentElementGetTextLength self
+getTextLength ::
+              (MonadIO m, IsSVGTextContentElement self) =>
+                self -> m (Maybe SVGAnimatedLength)
+getTextLength self
   = liftIO
-      ((ghcjs_dom_svg_text_content_element_get_text_length
+      ((js_getTextLength
           (unSVGTextContentElement (toSVGTextContentElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"lengthAdjust\"]"
-        ghcjs_dom_svg_text_content_element_get_length_adjust ::
+        js_getLengthAdjust ::
         JSRef SVGTextContentElement -> IO (JSRef SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.lengthAdjust Mozilla SVGTextContentElement.lengthAdjust documentation> 
-svgTextContentElementGetLengthAdjust ::
-                                     (MonadIO m, IsSVGTextContentElement self) =>
-                                       self -> m (Maybe SVGAnimatedEnumeration)
-svgTextContentElementGetLengthAdjust self
+getLengthAdjust ::
+                (MonadIO m, IsSVGTextContentElement self) =>
+                  self -> m (Maybe SVGAnimatedEnumeration)
+getLengthAdjust self
   = liftIO
-      ((ghcjs_dom_svg_text_content_element_get_length_adjust
+      ((js_getLengthAdjust
           (unSVGTextContentElement (toSVGTextContentElement self)))
          >>= fromJSRef)
 #else

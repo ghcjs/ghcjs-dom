@@ -1,31 +1,23 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGComponentTransferFunctionElement
-       (cSVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN,
-        cSVG_FECOMPONENTTRANSFER_TYPE_IDENTITY,
-        cSVG_FECOMPONENTTRANSFER_TYPE_TABLE,
-        cSVG_FECOMPONENTTRANSFER_TYPE_DISCRETE,
-        cSVG_FECOMPONENTTRANSFER_TYPE_LINEAR,
-        cSVG_FECOMPONENTTRANSFER_TYPE_GAMMA,
-        ghcjs_dom_svg_component_transfer_function_element_get_table_values,
-        svgComponentTransferFunctionElementGetTableValues,
-        ghcjs_dom_svg_component_transfer_function_element_get_slope,
-        svgComponentTransferFunctionElementGetSlope,
-        ghcjs_dom_svg_component_transfer_function_element_get_intercept,
-        svgComponentTransferFunctionElementGetIntercept,
-        ghcjs_dom_svg_component_transfer_function_element_get_amplitude,
-        svgComponentTransferFunctionElementGetAmplitude,
-        ghcjs_dom_svg_component_transfer_function_element_get_exponent,
-        svgComponentTransferFunctionElementGetExponent,
-        ghcjs_dom_svg_component_transfer_function_element_get_offset,
-        svgComponentTransferFunctionElementGetOffset,
+       (pattern SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN,
+        pattern SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY,
+        pattern SVG_FECOMPONENTTRANSFER_TYPE_TABLE,
+        pattern SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE,
+        pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR,
+        pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA, js_getTableValues,
+        getTableValues, js_getSlope, getSlope, js_getIntercept,
+        getIntercept, js_getAmplitude, getAmplitude, js_getExponent,
+        getExponent, js_getOffset, getOffset,
         SVGComponentTransferFunctionElement,
-        IsSVGComponentTransferFunctionElement,
         castToSVGComponentTransferFunctionElement,
         gTypeSVGComponentTransferFunctionElement,
+        IsSVGComponentTransferFunctionElement,
         toSVGComponentTransferFunctionElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -35,115 +27,106 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cSVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN = 0
-cSVG_FECOMPONENTTRANSFER_TYPE_IDENTITY = 1
-cSVG_FECOMPONENTTRANSFER_TYPE_TABLE = 2
-cSVG_FECOMPONENTTRANSFER_TYPE_DISCRETE = 3
-cSVG_FECOMPONENTTRANSFER_TYPE_LINEAR = 4
-cSVG_FECOMPONENTTRANSFER_TYPE_GAMMA = 5
+pattern SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN = 0
+pattern SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY = 1
+pattern SVG_FECOMPONENTTRANSFER_TYPE_TABLE = 2
+pattern SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE = 3
+pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR = 4
+pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA = 5
  
 foreign import javascript unsafe "$1[\"tableValues\"]"
-        ghcjs_dom_svg_component_transfer_function_element_get_table_values
-        ::
+        js_getTableValues ::
         JSRef SVGComponentTransferFunctionElement ->
           IO (JSRef SVGAnimatedNumberList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.tableValues Mozilla SVGComponentTransferFunctionElement.tableValues documentation> 
-svgComponentTransferFunctionElementGetTableValues ::
-                                                  (MonadIO m,
-                                                   IsSVGComponentTransferFunctionElement self) =>
-                                                    self -> m (Maybe SVGAnimatedNumberList)
-svgComponentTransferFunctionElementGetTableValues self
+getTableValues ::
+               (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                 self -> m (Maybe SVGAnimatedNumberList)
+getTableValues self
   = liftIO
-      ((ghcjs_dom_svg_component_transfer_function_element_get_table_values
+      ((js_getTableValues
           (unSVGComponentTransferFunctionElement
              (toSVGComponentTransferFunctionElement self)))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"slope\"]"
-        ghcjs_dom_svg_component_transfer_function_element_get_slope ::
+foreign import javascript unsafe "$1[\"slope\"]" js_getSlope ::
         JSRef SVGComponentTransferFunctionElement ->
           IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.slope Mozilla SVGComponentTransferFunctionElement.slope documentation> 
-svgComponentTransferFunctionElementGetSlope ::
-                                            (MonadIO m,
-                                             IsSVGComponentTransferFunctionElement self) =>
-                                              self -> m (Maybe SVGAnimatedNumber)
-svgComponentTransferFunctionElementGetSlope self
+getSlope ::
+         (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+           self -> m (Maybe SVGAnimatedNumber)
+getSlope self
   = liftIO
-      ((ghcjs_dom_svg_component_transfer_function_element_get_slope
+      ((js_getSlope
           (unSVGComponentTransferFunctionElement
              (toSVGComponentTransferFunctionElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"intercept\"]"
-        ghcjs_dom_svg_component_transfer_function_element_get_intercept ::
+        js_getIntercept ::
         JSRef SVGComponentTransferFunctionElement ->
           IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.intercept Mozilla SVGComponentTransferFunctionElement.intercept documentation> 
-svgComponentTransferFunctionElementGetIntercept ::
-                                                (MonadIO m,
-                                                 IsSVGComponentTransferFunctionElement self) =>
-                                                  self -> m (Maybe SVGAnimatedNumber)
-svgComponentTransferFunctionElementGetIntercept self
+getIntercept ::
+             (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+               self -> m (Maybe SVGAnimatedNumber)
+getIntercept self
   = liftIO
-      ((ghcjs_dom_svg_component_transfer_function_element_get_intercept
+      ((js_getIntercept
           (unSVGComponentTransferFunctionElement
              (toSVGComponentTransferFunctionElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"amplitude\"]"
-        ghcjs_dom_svg_component_transfer_function_element_get_amplitude ::
+        js_getAmplitude ::
         JSRef SVGComponentTransferFunctionElement ->
           IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.amplitude Mozilla SVGComponentTransferFunctionElement.amplitude documentation> 
-svgComponentTransferFunctionElementGetAmplitude ::
-                                                (MonadIO m,
-                                                 IsSVGComponentTransferFunctionElement self) =>
-                                                  self -> m (Maybe SVGAnimatedNumber)
-svgComponentTransferFunctionElementGetAmplitude self
+getAmplitude ::
+             (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+               self -> m (Maybe SVGAnimatedNumber)
+getAmplitude self
   = liftIO
-      ((ghcjs_dom_svg_component_transfer_function_element_get_amplitude
+      ((js_getAmplitude
           (unSVGComponentTransferFunctionElement
              (toSVGComponentTransferFunctionElement self)))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"exponent\"]"
-        ghcjs_dom_svg_component_transfer_function_element_get_exponent ::
+foreign import javascript unsafe "$1[\"exponent\"]" js_getExponent
+        ::
         JSRef SVGComponentTransferFunctionElement ->
           IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.exponent Mozilla SVGComponentTransferFunctionElement.exponent documentation> 
-svgComponentTransferFunctionElementGetExponent ::
-                                               (MonadIO m,
-                                                IsSVGComponentTransferFunctionElement self) =>
-                                                 self -> m (Maybe SVGAnimatedNumber)
-svgComponentTransferFunctionElementGetExponent self
+getExponent ::
+            (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+              self -> m (Maybe SVGAnimatedNumber)
+getExponent self
   = liftIO
-      ((ghcjs_dom_svg_component_transfer_function_element_get_exponent
+      ((js_getExponent
           (unSVGComponentTransferFunctionElement
              (toSVGComponentTransferFunctionElement self)))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"offset\"]"
-        ghcjs_dom_svg_component_transfer_function_element_get_offset ::
+foreign import javascript unsafe "$1[\"offset\"]" js_getOffset ::
         JSRef SVGComponentTransferFunctionElement ->
           IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.offset Mozilla SVGComponentTransferFunctionElement.offset documentation> 
-svgComponentTransferFunctionElementGetOffset ::
-                                             (MonadIO m,
-                                              IsSVGComponentTransferFunctionElement self) =>
-                                               self -> m (Maybe SVGAnimatedNumber)
-svgComponentTransferFunctionElementGetOffset self
+getOffset ::
+          (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+            self -> m (Maybe SVGAnimatedNumber)
+getOffset self
   = liftIO
-      ((ghcjs_dom_svg_component_transfer_function_element_get_offset
+      ((js_getOffset
           (unSVGComponentTransferFunctionElement
              (toSVGComponentTransferFunctionElement self)))
          >>= fromJSRef)

@@ -1,10 +1,10 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Comment
-       (ghcjs_dom_comment_new, commentNew, Comment, IsComment,
-        castToComment, gTypeComment, toComment)
+       (js_newComment, newComment, Comment, castToComment, gTypeComment)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -14,18 +14,17 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"Comment\"]($1)"
-        ghcjs_dom_comment_new :: JSString -> IO (JSRef Comment)
+        js_newComment :: JSString -> IO (JSRef Comment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Comment Mozilla Comment documentation> 
-commentNew :: (MonadIO m, ToJSString data') => data' -> m Comment
-commentNew data'
-  = liftIO
-      (ghcjs_dom_comment_new (toJSString data') >>= fromJSRefUnchecked)
+newComment :: (MonadIO m, ToJSString data') => data' -> m Comment
+newComment data'
+  = liftIO (js_newComment (toJSString data') >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.Comment (
   ) where

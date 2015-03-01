@@ -1,16 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DocumentType
-       (ghcjs_dom_document_type_get_name, documentTypeGetName,
-        ghcjs_dom_document_type_get_entities, documentTypeGetEntities,
-        ghcjs_dom_document_type_get_notations, documentTypeGetNotations,
-        ghcjs_dom_document_type_get_public_id, documentTypeGetPublicId,
-        ghcjs_dom_document_type_get_system_id, documentTypeGetSystemId,
-        ghcjs_dom_document_type_get_internal_subset,
-        documentTypeGetInternalSubset, DocumentType, IsDocumentType,
-        castToDocumentType, gTypeDocumentType, toDocumentType)
+       (js_getName, getName, js_getEntities, getEntities, js_getNotations,
+        getNotations, js_getPublicId, getPublicId, js_getSystemId,
+        getSystemId, js_getInternalSubset, getInternalSubset, DocumentType,
+        castToDocumentType, gTypeDocumentType)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,91 +17,64 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_document_type_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef DocumentType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.name Mozilla DocumentType.name documentation> 
-documentTypeGetName ::
-                    (MonadIO m, IsDocumentType self, FromJSString result) =>
-                      self -> m result
-documentTypeGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_document_type_get_name
-            (unDocumentType (toDocumentType self))))
+getName ::
+        (MonadIO m, FromJSString result) => DocumentType -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unDocumentType self)))
  
-foreign import javascript unsafe "$1[\"entities\"]"
-        ghcjs_dom_document_type_get_entities ::
-        JSRef DocumentType -> IO (JSRef NamedNodeMap)
+foreign import javascript unsafe "$1[\"entities\"]" js_getEntities
+        :: JSRef DocumentType -> IO (JSRef NamedNodeMap)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.entities Mozilla DocumentType.entities documentation> 
-documentTypeGetEntities ::
-                        (MonadIO m, IsDocumentType self) => self -> m (Maybe NamedNodeMap)
-documentTypeGetEntities self
-  = liftIO
-      ((ghcjs_dom_document_type_get_entities
-          (unDocumentType (toDocumentType self)))
-         >>= fromJSRef)
+getEntities ::
+            (MonadIO m) => DocumentType -> m (Maybe NamedNodeMap)
+getEntities self
+  = liftIO ((js_getEntities (unDocumentType self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"notations\"]"
-        ghcjs_dom_document_type_get_notations ::
-        JSRef DocumentType -> IO (JSRef NamedNodeMap)
+        js_getNotations :: JSRef DocumentType -> IO (JSRef NamedNodeMap)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.notations Mozilla DocumentType.notations documentation> 
-documentTypeGetNotations ::
-                         (MonadIO m, IsDocumentType self) => self -> m (Maybe NamedNodeMap)
-documentTypeGetNotations self
-  = liftIO
-      ((ghcjs_dom_document_type_get_notations
-          (unDocumentType (toDocumentType self)))
-         >>= fromJSRef)
+getNotations ::
+             (MonadIO m) => DocumentType -> m (Maybe NamedNodeMap)
+getNotations self
+  = liftIO ((js_getNotations (unDocumentType self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"publicId\"]"
-        ghcjs_dom_document_type_get_public_id ::
-        JSRef DocumentType -> IO JSString
+foreign import javascript unsafe "$1[\"publicId\"]" js_getPublicId
+        :: JSRef DocumentType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.publicId Mozilla DocumentType.publicId documentation> 
-documentTypeGetPublicId ::
-                        (MonadIO m, IsDocumentType self, FromJSString result) =>
-                          self -> m result
-documentTypeGetPublicId self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_document_type_get_public_id
-            (unDocumentType (toDocumentType self))))
+getPublicId ::
+            (MonadIO m, FromJSString result) => DocumentType -> m result
+getPublicId self
+  = liftIO (fromJSString <$> (js_getPublicId (unDocumentType self)))
  
-foreign import javascript unsafe "$1[\"systemId\"]"
-        ghcjs_dom_document_type_get_system_id ::
-        JSRef DocumentType -> IO JSString
+foreign import javascript unsafe "$1[\"systemId\"]" js_getSystemId
+        :: JSRef DocumentType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.systemId Mozilla DocumentType.systemId documentation> 
-documentTypeGetSystemId ::
-                        (MonadIO m, IsDocumentType self, FromJSString result) =>
-                          self -> m result
-documentTypeGetSystemId self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_document_type_get_system_id
-            (unDocumentType (toDocumentType self))))
+getSystemId ::
+            (MonadIO m, FromJSString result) => DocumentType -> m result
+getSystemId self
+  = liftIO (fromJSString <$> (js_getSystemId (unDocumentType self)))
  
 foreign import javascript unsafe "$1[\"internalSubset\"]"
-        ghcjs_dom_document_type_get_internal_subset ::
-        JSRef DocumentType -> IO JSString
+        js_getInternalSubset :: JSRef DocumentType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.internalSubset Mozilla DocumentType.internalSubset documentation> 
-documentTypeGetInternalSubset ::
-                              (MonadIO m, IsDocumentType self, FromJSString result) =>
-                                self -> m result
-documentTypeGetInternalSubset self
+getInternalSubset ::
+                  (MonadIO m, FromJSString result) => DocumentType -> m result
+getInternalSubset self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_document_type_get_internal_subset
-            (unDocumentType (toDocumentType self))))
+      (fromJSString <$> (js_getInternalSubset (unDocumentType self)))
 #else
 module GHCJS.DOM.DocumentType (
   module Graphics.UI.Gtk.WebKit.DOM.DocumentType

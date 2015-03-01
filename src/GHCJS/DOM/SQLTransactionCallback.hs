@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SQLTransactionCallback
-       (sqlTransactionCallbackNewSync, sqlTransactionCallbackNewAsync,
-        SQLTransactionCallback, IsSQLTransactionCallback,
-        castToSQLTransactionCallback, gTypeSQLTransactionCallback,
-        toSQLTransactionCallback)
+       (newSQLTransactionCallbackSync, newSQLTransactionCallbackSync',
+        newSQLTransactionCallbackAsync, newSQLTransactionCallbackAsync',
+        SQLTransactionCallback, castToSQLTransactionCallback,
+        gTypeSQLTransactionCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,15 +17,15 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation> 
-sqlTransactionCallbackNewSync ::
+newSQLTransactionCallbackSync ::
                               (MonadIO m) =>
                                 (Maybe SQLTransaction -> IO Bool) -> m SQLTransactionCallback
-sqlTransactionCallbackNewSync callback
+newSQLTransactionCallbackSync callback
   = liftIO
       (SQLTransactionCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -33,12 +34,12 @@ sqlTransactionCallbackNewSync callback
                 \ transaction' -> callback transaction'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation> 
-sqlTransactionCallbackNewSync' ::
+newSQLTransactionCallbackSync' ::
                                (MonadIO m) =>
                                  ForeignRetention ->
                                    Bool ->
                                      (Maybe SQLTransaction -> IO Bool) -> m SQLTransactionCallback
-sqlTransactionCallbackNewSync' retention continueAsync callback
+newSQLTransactionCallbackSync' retention continueAsync callback
   = liftIO
       (SQLTransactionCallback . castRef <$>
          syncCallback1 retention continueAsync
@@ -47,10 +48,10 @@ sqlTransactionCallbackNewSync' retention continueAsync callback
                 \ transaction' -> callback transaction'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation> 
-sqlTransactionCallbackNewAsync ::
+newSQLTransactionCallbackAsync ::
                                (MonadIO m) =>
                                  (Maybe SQLTransaction -> IO Bool) -> m SQLTransactionCallback
-sqlTransactionCallbackNewAsync callback
+newSQLTransactionCallbackAsync callback
   = liftIO
       (SQLTransactionCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -59,11 +60,11 @@ sqlTransactionCallbackNewAsync callback
                 \ transaction' -> callback transaction'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation> 
-sqlTransactionCallbackNewAsync' ::
+newSQLTransactionCallbackAsync' ::
                                 (MonadIO m) =>
                                   ForeignRetention ->
                                     (Maybe SQLTransaction -> IO Bool) -> m SQLTransactionCallback
-sqlTransactionCallbackNewAsync' retention callback
+newSQLTransactionCallbackAsync' retention callback
   = liftIO
       (SQLTransactionCallback . castRef <$>
          asyncCallback1 retention

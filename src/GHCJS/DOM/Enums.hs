@@ -1,38 +1,52 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Enums
-       (KeyType, PToJSRef, ToJSRef(..), PFromJSRef, FromJSRef,
-        js_KeyTypeSecret, js_KeyTypePublic, js_KeyTypePrivate, KeyUsage,
-        js_KeyUsageEncrypt, js_KeyUsageDecrypt, js_KeyUsageSign,
-        js_KeyUsageVerify, js_KeyUsageDeriveKey, js_KeyUsageDeriveBits,
-        js_KeyUsageWrapKey, js_KeyUsageUnwrapKey, CanvasWindingRule,
-        js_CanvasWindingRuleNonzero, js_CanvasWindingRuleEvenodd,
+       (KeyType(..), PToJSRef, ToJSRef, PFromJSRef, FromJSRef,
+        js_KeyTypeSecret, js_KeyTypePublic, js_KeyTypePrivate,
+        KeyUsage(..), js_KeyUsageEncrypt, js_KeyUsageDecrypt,
+        js_KeyUsageSign, js_KeyUsageVerify, js_KeyUsageDeriveKey,
+        js_KeyUsageDeriveBits, js_KeyUsageWrapKey, js_KeyUsageUnwrapKey,
+        CanvasWindingRule(..), js_CanvasWindingRuleNonzero,
+        js_CanvasWindingRuleEvenodd, VideoPresentationMode(..),
+        js_VideoPresentationModeFullscreen,
+        js_VideoPresentationModeOptimized, js_VideoPresentationModeInline,
         TextTrackMode(..), js_TextTrackModeDisabled,
         js_TextTrackModeHidden, js_TextTrackModeShowing, TextTrackKind(..),
         js_TextTrackKindSubtitles, js_TextTrackKindCaptions,
         js_TextTrackKindDescriptions, js_TextTrackKindChapters,
-        js_TextTrackKindMetadata, DeviceType, js_DeviceTypeNone,
-        js_DeviceTypeAirplay, js_DeviceTypeTvout, FullscreenMode,
-        js_FullscreenModeNone, js_FullscreenModeStandard,
-        js_FullscreenModeOptimized, MediaUIPartID,
+        js_TextTrackKindMetadata, DeviceType(..), js_DeviceTypeNone,
+        js_DeviceTypeAirplay, js_DeviceTypeTvout, MediaUIPartID(..),
         js_MediaUIPartIDOptimizedFullscreenButton,
-        js_MediaUIPartIDOptimizedFullscreenPlaceholder, EndOfStreamError,
-        js_EndOfStreamErrorNetwork, js_EndOfStreamErrorDecode,
-        SourceTypeEnum, js_SourceTypeEnumNone, js_SourceTypeEnumCamera,
-        js_SourceTypeEnumMicrophone, VideoFacingModeEnum,
-        js_VideoFacingModeEnumUser, js_VideoFacingModeEnumEnvironment,
-        js_VideoFacingModeEnumLeft, js_VideoFacingModeEnumRight,
-        MediaStreamTrackState, js_MediaStreamTrackStateNew,
-        js_MediaStreamTrackStateLive, js_MediaStreamTrackStateEnded,
-        RTCIceTransportsEnum, js_RTCIceTransportsEnumNone,
-        js_RTCIceTransportsEnumRelay, js_RTCIceTransportsEnumAll,
-        RTCIdentityOptionEnum, js_RTCIdentityOptionEnumYes,
-        js_RTCIdentityOptionEnumNo, js_RTCIdentityOptionEnumIfconfigured,
-        OverSampleType, js_OverSampleTypeNone, js_OverSampleType2x,
-        js_OverSampleType4x, PageOverlayType, js_PageOverlayTypeView,
-        js_PageOverlayTypeDocument)
+        js_MediaUIPartIDOptimizedFullscreenPlaceholder,
+        EndOfStreamError(..), js_EndOfStreamErrorNetwork,
+        js_EndOfStreamErrorDecode, AppendMode(..), js_AppendModeSegments,
+        js_AppendModeSequence, SourceTypeEnum(..), js_SourceTypeEnumNone,
+        js_SourceTypeEnumCamera, js_SourceTypeEnumMicrophone,
+        VideoFacingModeEnum(..), js_VideoFacingModeEnumUser,
+        js_VideoFacingModeEnumEnvironment, js_VideoFacingModeEnumLeft,
+        js_VideoFacingModeEnumRight, MediaStreamTrackState(..),
+        js_MediaStreamTrackStateNew, js_MediaStreamTrackStateLive,
+        js_MediaStreamTrackStateEnded, RTCIceTransportsEnum(..),
+        js_RTCIceTransportsEnumNone, js_RTCIceTransportsEnumRelay,
+        js_RTCIceTransportsEnumAll, RTCIdentityOptionEnum(..),
+        js_RTCIdentityOptionEnumYes, js_RTCIdentityOptionEnumNo,
+        js_RTCIdentityOptionEnumIfconfigured, ReadableStreamStateType(..),
+        js_ReadableStreamStateTypeReadable,
+        js_ReadableStreamStateTypeWaiting,
+        js_ReadableStreamStateTypeClosed,
+        js_ReadableStreamStateTypeErrored, OverSampleType(..),
+        js_OverSampleTypeNone, js_OverSampleType2x, js_OverSampleType4x,
+        PageOverlayType(..), js_PageOverlayTypeView,
+        js_PageOverlayTypeDocument, XMLHttpRequestResponseType(..),
+        js_XMLHttpRequestResponseType,
+        js_XMLHttpRequestResponseTypeArraybuffer,
+        js_XMLHttpRequestResponseTypeBlob,
+        js_XMLHttpRequestResponseTypeDocument,
+        js_XMLHttpRequestResponseTypeJson,
+        js_XMLHttpRequestResponseTypeText)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -160,6 +174,44 @@ foreign import javascript unsafe "\"nonzero\""
 foreign import javascript unsafe "\"evenodd\""
         js_CanvasWindingRuleEvenodd :: JSRef CanvasWindingRule
  
+data VideoPresentationMode = VideoPresentationModeFullscreen
+                           | VideoPresentationModeOptimized
+                           | VideoPresentationModeInline
+ 
+instance PToJSRef VideoPresentationMode where
+        ptoJSRef VideoPresentationModeFullscreen
+          = js_VideoPresentationModeFullscreen
+        ptoJSRef VideoPresentationModeOptimized
+          = js_VideoPresentationModeOptimized
+        ptoJSRef VideoPresentationModeInline
+          = js_VideoPresentationModeInline
+ 
+instance ToJSRef VideoPresentationMode where
+        toJSRef = return . ptoJSRef
+ 
+instance PFromJSRef VideoPresentationMode where
+        pfromJSRef x
+          | x == js_VideoPresentationModeFullscreen =
+            VideoPresentationModeFullscreen
+        pfromJSRef x
+          | x == js_VideoPresentationModeOptimized =
+            VideoPresentationModeOptimized
+        pfromJSRef x
+          | x == js_VideoPresentationModeInline = VideoPresentationModeInline
+ 
+instance FromJSRef VideoPresentationMode where
+        fromJSRefUnchecked = return . pfromJSRef
+        fromJSRef = return . pfromJSRef . castRef
+ 
+foreign import javascript unsafe "\"fullscreen\""
+        js_VideoPresentationModeFullscreen :: JSRef VideoPresentationMode
+ 
+foreign import javascript unsafe "\"optimized\""
+        js_VideoPresentationModeOptimized :: JSRef VideoPresentationMode
+ 
+foreign import javascript unsafe "\"inline\""
+        js_VideoPresentationModeInline :: JSRef VideoPresentationMode
+ 
 data TextTrackMode = TextTrackModeDisabled
                    | TextTrackModeHidden
                    | TextTrackModeShowing
@@ -268,38 +320,6 @@ foreign import javascript unsafe "\"airplay\"" js_DeviceTypeAirplay
 foreign import javascript unsafe "\"tvout\"" js_DeviceTypeTvout ::
         JSRef DeviceType
  
-data FullscreenMode = FullscreenModeNone
-                    | FullscreenModeStandard
-                    | FullscreenModeOptimized
- 
-instance PToJSRef FullscreenMode where
-        ptoJSRef FullscreenModeNone = js_FullscreenModeNone
-        ptoJSRef FullscreenModeStandard = js_FullscreenModeStandard
-        ptoJSRef FullscreenModeOptimized = js_FullscreenModeOptimized
- 
-instance ToJSRef FullscreenMode where
-        toJSRef = return . ptoJSRef
- 
-instance PFromJSRef FullscreenMode where
-        pfromJSRef x | x == js_FullscreenModeNone = FullscreenModeNone
-        pfromJSRef x
-          | x == js_FullscreenModeStandard = FullscreenModeStandard
-        pfromJSRef x
-          | x == js_FullscreenModeOptimized = FullscreenModeOptimized
- 
-instance FromJSRef FullscreenMode where
-        fromJSRefUnchecked = return . pfromJSRef
-        fromJSRef = return . pfromJSRef . castRef
- 
-foreign import javascript unsafe "\"none\"" js_FullscreenModeNone
-        :: JSRef FullscreenMode
- 
-foreign import javascript unsafe "\"standard\""
-        js_FullscreenModeStandard :: JSRef FullscreenMode
- 
-foreign import javascript unsafe "\"optimized\""
-        js_FullscreenModeOptimized :: JSRef FullscreenMode
- 
 data MediaUIPartID = MediaUIPartIDOptimizedFullscreenButton
                    | MediaUIPartIDOptimizedFullscreenPlaceholder
  
@@ -357,6 +377,30 @@ foreign import javascript unsafe "\"network\""
  
 foreign import javascript unsafe "\"decode\""
         js_EndOfStreamErrorDecode :: JSRef EndOfStreamError
+ 
+data AppendMode = AppendModeSegments
+                | AppendModeSequence
+ 
+instance PToJSRef AppendMode where
+        ptoJSRef AppendModeSegments = js_AppendModeSegments
+        ptoJSRef AppendModeSequence = js_AppendModeSequence
+ 
+instance ToJSRef AppendMode where
+        toJSRef = return . ptoJSRef
+ 
+instance PFromJSRef AppendMode where
+        pfromJSRef x | x == js_AppendModeSegments = AppendModeSegments
+        pfromJSRef x | x == js_AppendModeSequence = AppendModeSequence
+ 
+instance FromJSRef AppendMode where
+        fromJSRefUnchecked = return . pfromJSRef
+        fromJSRef = return . pfromJSRef . castRef
+ 
+foreign import javascript unsafe "\"segments\""
+        js_AppendModeSegments :: JSRef AppendMode
+ 
+foreign import javascript unsafe "\"sequence\""
+        js_AppendModeSequence :: JSRef AppendMode
  
 data SourceTypeEnum = SourceTypeEnumNone
                     | SourceTypeEnumCamera
@@ -532,6 +576,54 @@ foreign import javascript unsafe "\"no\""
 foreign import javascript unsafe "\"ifconfigured\""
         js_RTCIdentityOptionEnumIfconfigured :: JSRef RTCIdentityOptionEnum
  
+data ReadableStreamStateType = ReadableStreamStateTypeReadable
+                             | ReadableStreamStateTypeWaiting
+                             | ReadableStreamStateTypeClosed
+                             | ReadableStreamStateTypeErrored
+ 
+instance PToJSRef ReadableStreamStateType where
+        ptoJSRef ReadableStreamStateTypeReadable
+          = js_ReadableStreamStateTypeReadable
+        ptoJSRef ReadableStreamStateTypeWaiting
+          = js_ReadableStreamStateTypeWaiting
+        ptoJSRef ReadableStreamStateTypeClosed
+          = js_ReadableStreamStateTypeClosed
+        ptoJSRef ReadableStreamStateTypeErrored
+          = js_ReadableStreamStateTypeErrored
+ 
+instance ToJSRef ReadableStreamStateType where
+        toJSRef = return . ptoJSRef
+ 
+instance PFromJSRef ReadableStreamStateType where
+        pfromJSRef x
+          | x == js_ReadableStreamStateTypeReadable =
+            ReadableStreamStateTypeReadable
+        pfromJSRef x
+          | x == js_ReadableStreamStateTypeWaiting =
+            ReadableStreamStateTypeWaiting
+        pfromJSRef x
+          | x == js_ReadableStreamStateTypeClosed =
+            ReadableStreamStateTypeClosed
+        pfromJSRef x
+          | x == js_ReadableStreamStateTypeErrored =
+            ReadableStreamStateTypeErrored
+ 
+instance FromJSRef ReadableStreamStateType where
+        fromJSRefUnchecked = return . pfromJSRef
+        fromJSRef = return . pfromJSRef . castRef
+ 
+foreign import javascript unsafe "\"readable\""
+        js_ReadableStreamStateTypeReadable :: JSRef ReadableStreamStateType
+ 
+foreign import javascript unsafe "\"waiting\""
+        js_ReadableStreamStateTypeWaiting :: JSRef ReadableStreamStateType
+ 
+foreign import javascript unsafe "\"closed\""
+        js_ReadableStreamStateTypeClosed :: JSRef ReadableStreamStateType
+ 
+foreign import javascript unsafe "\"errored\""
+        js_ReadableStreamStateTypeErrored :: JSRef ReadableStreamStateType
+ 
 data OverSampleType = OverSampleTypeNone
                     | OverSampleType2x
                     | OverSampleType4x
@@ -586,6 +678,75 @@ foreign import javascript unsafe "\"view\"" js_PageOverlayTypeView
  
 foreign import javascript unsafe "\"document\""
         js_PageOverlayTypeDocument :: JSRef PageOverlayType
+ 
+data XMLHttpRequestResponseType = XMLHttpRequestResponseType
+                                | XMLHttpRequestResponseTypeArraybuffer
+                                | XMLHttpRequestResponseTypeBlob
+                                | XMLHttpRequestResponseTypeDocument
+                                | XMLHttpRequestResponseTypeJson
+                                | XMLHttpRequestResponseTypeText
+ 
+instance PToJSRef XMLHttpRequestResponseType where
+        ptoJSRef XMLHttpRequestResponseType = js_XMLHttpRequestResponseType
+        ptoJSRef XMLHttpRequestResponseTypeArraybuffer
+          = js_XMLHttpRequestResponseTypeArraybuffer
+        ptoJSRef XMLHttpRequestResponseTypeBlob
+          = js_XMLHttpRequestResponseTypeBlob
+        ptoJSRef XMLHttpRequestResponseTypeDocument
+          = js_XMLHttpRequestResponseTypeDocument
+        ptoJSRef XMLHttpRequestResponseTypeJson
+          = js_XMLHttpRequestResponseTypeJson
+        ptoJSRef XMLHttpRequestResponseTypeText
+          = js_XMLHttpRequestResponseTypeText
+ 
+instance ToJSRef XMLHttpRequestResponseType where
+        toJSRef = return . ptoJSRef
+ 
+instance PFromJSRef XMLHttpRequestResponseType where
+        pfromJSRef x
+          | x == js_XMLHttpRequestResponseType = XMLHttpRequestResponseType
+        pfromJSRef x
+          | x == js_XMLHttpRequestResponseTypeArraybuffer =
+            XMLHttpRequestResponseTypeArraybuffer
+        pfromJSRef x
+          | x == js_XMLHttpRequestResponseTypeBlob =
+            XMLHttpRequestResponseTypeBlob
+        pfromJSRef x
+          | x == js_XMLHttpRequestResponseTypeDocument =
+            XMLHttpRequestResponseTypeDocument
+        pfromJSRef x
+          | x == js_XMLHttpRequestResponseTypeJson =
+            XMLHttpRequestResponseTypeJson
+        pfromJSRef x
+          | x == js_XMLHttpRequestResponseTypeText =
+            XMLHttpRequestResponseTypeText
+ 
+instance FromJSRef XMLHttpRequestResponseType where
+        fromJSRefUnchecked = return . pfromJSRef
+        fromJSRef = return . pfromJSRef . castRef
+ 
+foreign import javascript unsafe "\"\""
+        js_XMLHttpRequestResponseType :: JSRef XMLHttpRequestResponseType
+ 
+foreign import javascript unsafe "\"arraybuffer\""
+        js_XMLHttpRequestResponseTypeArraybuffer ::
+        JSRef XMLHttpRequestResponseType
+ 
+foreign import javascript unsafe "\"blob\""
+        js_XMLHttpRequestResponseTypeBlob ::
+        JSRef XMLHttpRequestResponseType
+ 
+foreign import javascript unsafe "\"document\""
+        js_XMLHttpRequestResponseTypeDocument ::
+        JSRef XMLHttpRequestResponseType
+ 
+foreign import javascript unsafe "\"json\""
+        js_XMLHttpRequestResponseTypeJson ::
+        JSRef XMLHttpRequestResponseType
+ 
+foreign import javascript unsafe "\"text\""
+        js_XMLHttpRequestResponseTypeText ::
+        JSRef XMLHttpRequestResponseType
 #else
 module GHCJS.DOM.Enums (
   ) where

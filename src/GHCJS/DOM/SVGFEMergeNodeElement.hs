@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFEMergeNodeElement
-       (ghcjs_dom_svgfe_merge_node_element_get_in1,
-        svgfeMergeNodeElementGetIn1, SVGFEMergeNodeElement,
-        IsSVGFEMergeNodeElement, castToSVGFEMergeNodeElement,
-        gTypeSVGFEMergeNodeElement, toSVGFEMergeNodeElement)
+       (js_getIn1, getIn1, SVGFEMergeNodeElement,
+        castToSVGFEMergeNodeElement, gTypeSVGFEMergeNodeElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,18 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"in1\"]"
-        ghcjs_dom_svgfe_merge_node_element_get_in1 ::
+foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
         JSRef SVGFEMergeNodeElement -> IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeNodeElement.in1 Mozilla SVGFEMergeNodeElement.in1 documentation> 
-svgfeMergeNodeElementGetIn1 ::
-                            (MonadIO m, IsSVGFEMergeNodeElement self) =>
-                              self -> m (Maybe SVGAnimatedString)
-svgfeMergeNodeElementGetIn1 self
-  = liftIO
-      ((ghcjs_dom_svgfe_merge_node_element_get_in1
-          (unSVGFEMergeNodeElement (toSVGFEMergeNodeElement self)))
-         >>= fromJSRef)
+getIn1 ::
+       (MonadIO m) => SVGFEMergeNodeElement -> m (Maybe SVGAnimatedString)
+getIn1 self
+  = liftIO ((js_getIn1 (unSVGFEMergeNodeElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFEMergeNodeElement (
   ) where

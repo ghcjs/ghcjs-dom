@@ -1,38 +1,17 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableRowElement
-       (ghcjs_dom_html_table_row_element_insert_cell,
-        htmlTableRowElementInsertCell,
-        ghcjs_dom_html_table_row_element_delete_cell,
-        htmlTableRowElementDeleteCell,
-        ghcjs_dom_html_table_row_element_get_row_index,
-        htmlTableRowElementGetRowIndex,
-        ghcjs_dom_html_table_row_element_get_section_row_index,
-        htmlTableRowElementGetSectionRowIndex,
-        ghcjs_dom_html_table_row_element_get_cells,
-        htmlTableRowElementGetCells,
-        ghcjs_dom_html_table_row_element_set_align,
-        htmlTableRowElementSetAlign,
-        ghcjs_dom_html_table_row_element_get_align,
-        htmlTableRowElementGetAlign,
-        ghcjs_dom_html_table_row_element_set_bg_color,
-        htmlTableRowElementSetBgColor,
-        ghcjs_dom_html_table_row_element_get_bg_color,
-        htmlTableRowElementGetBgColor,
-        ghcjs_dom_html_table_row_element_set_ch, htmlTableRowElementSetCh,
-        ghcjs_dom_html_table_row_element_get_ch, htmlTableRowElementGetCh,
-        ghcjs_dom_html_table_row_element_set_ch_off,
-        htmlTableRowElementSetChOff,
-        ghcjs_dom_html_table_row_element_get_ch_off,
-        htmlTableRowElementGetChOff,
-        ghcjs_dom_html_table_row_element_set_v_align,
-        htmlTableRowElementSetVAlign,
-        ghcjs_dom_html_table_row_element_get_v_align,
-        htmlTableRowElementGetVAlign, HTMLTableRowElement,
-        IsHTMLTableRowElement, castToHTMLTableRowElement,
-        gTypeHTMLTableRowElement, toHTMLTableRowElement)
+       (js_insertCell, insertCell, js_deleteCell, deleteCell,
+        js_getRowIndex, getRowIndex, js_getSectionRowIndex,
+        getSectionRowIndex, js_getCells, getCells, js_setAlign, setAlign,
+        js_getAlign, getAlign, js_setBgColor, setBgColor, js_getBgColor,
+        getBgColor, js_setCh, setCh, js_getCh, getCh, js_setChOff,
+        setChOff, js_getChOff, getChOff, js_setVAlign, setVAlign,
+        js_getVAlign, getVAlign, HTMLTableRowElement,
+        castToHTMLTableRowElement, gTypeHTMLTableRowElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -42,215 +21,151 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"insertCell\"]($2)"
-        ghcjs_dom_html_table_row_element_insert_cell ::
+        js_insertCell ::
         JSRef HTMLTableRowElement -> Int -> IO (JSRef HTMLElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.insertCell Mozilla HTMLTableRowElement.insertCell documentation> 
-htmlTableRowElementInsertCell ::
-                              (MonadIO m, IsHTMLTableRowElement self) =>
-                                self -> Int -> m (Maybe HTMLElement)
-htmlTableRowElementInsertCell self index
+insertCell ::
+           (MonadIO m) => HTMLTableRowElement -> Int -> m (Maybe HTMLElement)
+insertCell self index
   = liftIO
-      ((ghcjs_dom_html_table_row_element_insert_cell
-          (unHTMLTableRowElement (toHTMLTableRowElement self))
-          index)
-         >>= fromJSRef)
+      ((js_insertCell (unHTMLTableRowElement self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"deleteCell\"]($2)"
-        ghcjs_dom_html_table_row_element_delete_cell ::
-        JSRef HTMLTableRowElement -> Int -> IO ()
+        js_deleteCell :: JSRef HTMLTableRowElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.deleteCell Mozilla HTMLTableRowElement.deleteCell documentation> 
-htmlTableRowElementDeleteCell ::
-                              (MonadIO m, IsHTMLTableRowElement self) => self -> Int -> m ()
-htmlTableRowElementDeleteCell self index
-  = liftIO
-      (ghcjs_dom_html_table_row_element_delete_cell
-         (unHTMLTableRowElement (toHTMLTableRowElement self))
-         index)
+deleteCell :: (MonadIO m) => HTMLTableRowElement -> Int -> m ()
+deleteCell self index
+  = liftIO (js_deleteCell (unHTMLTableRowElement self) index)
  
-foreign import javascript unsafe "$1[\"rowIndex\"]"
-        ghcjs_dom_html_table_row_element_get_row_index ::
-        JSRef HTMLTableRowElement -> IO Int
+foreign import javascript unsafe "$1[\"rowIndex\"]" js_getRowIndex
+        :: JSRef HTMLTableRowElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.rowIndex Mozilla HTMLTableRowElement.rowIndex documentation> 
-htmlTableRowElementGetRowIndex ::
-                               (MonadIO m, IsHTMLTableRowElement self) => self -> m Int
-htmlTableRowElementGetRowIndex self
-  = liftIO
-      (ghcjs_dom_html_table_row_element_get_row_index
-         (unHTMLTableRowElement (toHTMLTableRowElement self)))
+getRowIndex :: (MonadIO m) => HTMLTableRowElement -> m Int
+getRowIndex self
+  = liftIO (js_getRowIndex (unHTMLTableRowElement self))
  
 foreign import javascript unsafe "$1[\"sectionRowIndex\"]"
-        ghcjs_dom_html_table_row_element_get_section_row_index ::
-        JSRef HTMLTableRowElement -> IO Int
+        js_getSectionRowIndex :: JSRef HTMLTableRowElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.sectionRowIndex Mozilla HTMLTableRowElement.sectionRowIndex documentation> 
-htmlTableRowElementGetSectionRowIndex ::
-                                      (MonadIO m, IsHTMLTableRowElement self) => self -> m Int
-htmlTableRowElementGetSectionRowIndex self
-  = liftIO
-      (ghcjs_dom_html_table_row_element_get_section_row_index
-         (unHTMLTableRowElement (toHTMLTableRowElement self)))
+getSectionRowIndex :: (MonadIO m) => HTMLTableRowElement -> m Int
+getSectionRowIndex self
+  = liftIO (js_getSectionRowIndex (unHTMLTableRowElement self))
  
-foreign import javascript unsafe "$1[\"cells\"]"
-        ghcjs_dom_html_table_row_element_get_cells ::
+foreign import javascript unsafe "$1[\"cells\"]" js_getCells ::
         JSRef HTMLTableRowElement -> IO (JSRef HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.cells Mozilla HTMLTableRowElement.cells documentation> 
-htmlTableRowElementGetCells ::
-                            (MonadIO m, IsHTMLTableRowElement self) =>
-                              self -> m (Maybe HTMLCollection)
-htmlTableRowElementGetCells self
-  = liftIO
-      ((ghcjs_dom_html_table_row_element_get_cells
-          (unHTMLTableRowElement (toHTMLTableRowElement self)))
-         >>= fromJSRef)
+getCells ::
+         (MonadIO m) => HTMLTableRowElement -> m (Maybe HTMLCollection)
+getCells self
+  = liftIO ((js_getCells (unHTMLTableRowElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_table_row_element_set_align ::
-        JSRef HTMLTableRowElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.align Mozilla HTMLTableRowElement.align documentation> 
-htmlTableRowElementSetAlign ::
-                            (MonadIO m, IsHTMLTableRowElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlTableRowElementSetAlign self val
+setAlign ::
+         (MonadIO m, ToJSString val) => HTMLTableRowElement -> val -> m ()
+setAlign self val
   = liftIO
-      (ghcjs_dom_html_table_row_element_set_align
-         (unHTMLTableRowElement (toHTMLTableRowElement self))
-         (toJSString val))
+      (js_setAlign (unHTMLTableRowElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_table_row_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLTableRowElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.align Mozilla HTMLTableRowElement.align documentation> 
-htmlTableRowElementGetAlign ::
-                            (MonadIO m, IsHTMLTableRowElement self, FromJSString result) =>
-                              self -> m result
-htmlTableRowElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_row_element_get_align
-            (unHTMLTableRowElement (toHTMLTableRowElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLTableRowElement self)))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        ghcjs_dom_html_table_row_element_set_bg_color ::
-        JSRef HTMLTableRowElement -> JSString -> IO ()
+        js_setBgColor :: JSRef HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
-htmlTableRowElementSetBgColor ::
-                              (MonadIO m, IsHTMLTableRowElement self, ToJSString val) =>
-                                self -> val -> m ()
-htmlTableRowElementSetBgColor self val
+setBgColor ::
+           (MonadIO m, ToJSString val) => HTMLTableRowElement -> val -> m ()
+setBgColor self val
   = liftIO
-      (ghcjs_dom_html_table_row_element_set_bg_color
-         (unHTMLTableRowElement (toHTMLTableRowElement self))
-         (toJSString val))
+      (js_setBgColor (unHTMLTableRowElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"bgColor\"]"
-        ghcjs_dom_html_table_row_element_get_bg_color ::
+foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
         JSRef HTMLTableRowElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
-htmlTableRowElementGetBgColor ::
-                              (MonadIO m, IsHTMLTableRowElement self, FromJSString result) =>
-                                self -> m result
-htmlTableRowElementGetBgColor self
+getBgColor ::
+           (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
+getBgColor self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_row_element_get_bg_color
-            (unHTMLTableRowElement (toHTMLTableRowElement self))))
+      (fromJSString <$> (js_getBgColor (unHTMLTableRowElement self)))
  
-foreign import javascript unsafe "$1[\"ch\"] = $2;"
-        ghcjs_dom_html_table_row_element_set_ch ::
+foreign import javascript unsafe "$1[\"ch\"] = $2;" js_setCh ::
         JSRef HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.ch Mozilla HTMLTableRowElement.ch documentation> 
-htmlTableRowElementSetCh ::
-                         (MonadIO m, IsHTMLTableRowElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlTableRowElementSetCh self val
-  = liftIO
-      (ghcjs_dom_html_table_row_element_set_ch
-         (unHTMLTableRowElement (toHTMLTableRowElement self))
-         (toJSString val))
+setCh ::
+      (MonadIO m, ToJSString val) => HTMLTableRowElement -> val -> m ()
+setCh self val
+  = liftIO (js_setCh (unHTMLTableRowElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"ch\"]"
-        ghcjs_dom_html_table_row_element_get_ch ::
+foreign import javascript unsafe "$1[\"ch\"]" js_getCh ::
         JSRef HTMLTableRowElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.ch Mozilla HTMLTableRowElement.ch documentation> 
-htmlTableRowElementGetCh ::
-                         (MonadIO m, IsHTMLTableRowElement self, FromJSString result) =>
-                           self -> m result
-htmlTableRowElementGetCh self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_row_element_get_ch
-            (unHTMLTableRowElement (toHTMLTableRowElement self))))
+getCh ::
+      (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
+getCh self
+  = liftIO (fromJSString <$> (js_getCh (unHTMLTableRowElement self)))
  
-foreign import javascript unsafe "$1[\"chOff\"] = $2;"
-        ghcjs_dom_html_table_row_element_set_ch_off ::
-        JSRef HTMLTableRowElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"chOff\"] = $2;" js_setChOff
+        :: JSRef HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.chOff Mozilla HTMLTableRowElement.chOff documentation> 
-htmlTableRowElementSetChOff ::
-                            (MonadIO m, IsHTMLTableRowElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlTableRowElementSetChOff self val
+setChOff ::
+         (MonadIO m, ToJSString val) => HTMLTableRowElement -> val -> m ()
+setChOff self val
   = liftIO
-      (ghcjs_dom_html_table_row_element_set_ch_off
-         (unHTMLTableRowElement (toHTMLTableRowElement self))
-         (toJSString val))
+      (js_setChOff (unHTMLTableRowElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"chOff\"]"
-        ghcjs_dom_html_table_row_element_get_ch_off ::
+foreign import javascript unsafe "$1[\"chOff\"]" js_getChOff ::
         JSRef HTMLTableRowElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.chOff Mozilla HTMLTableRowElement.chOff documentation> 
-htmlTableRowElementGetChOff ::
-                            (MonadIO m, IsHTMLTableRowElement self, FromJSString result) =>
-                              self -> m result
-htmlTableRowElementGetChOff self
+getChOff ::
+         (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
+getChOff self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_row_element_get_ch_off
-            (unHTMLTableRowElement (toHTMLTableRowElement self))))
+      (fromJSString <$> (js_getChOff (unHTMLTableRowElement self)))
  
 foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
-        ghcjs_dom_html_table_row_element_set_v_align ::
-        JSRef HTMLTableRowElement -> JSString -> IO ()
+        js_setVAlign :: JSRef HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.vAlign Mozilla HTMLTableRowElement.vAlign documentation> 
-htmlTableRowElementSetVAlign ::
-                             (MonadIO m, IsHTMLTableRowElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlTableRowElementSetVAlign self val
+setVAlign ::
+          (MonadIO m, ToJSString val) => HTMLTableRowElement -> val -> m ()
+setVAlign self val
   = liftIO
-      (ghcjs_dom_html_table_row_element_set_v_align
-         (unHTMLTableRowElement (toHTMLTableRowElement self))
-         (toJSString val))
+      (js_setVAlign (unHTMLTableRowElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"vAlign\"]"
-        ghcjs_dom_html_table_row_element_get_v_align ::
+foreign import javascript unsafe "$1[\"vAlign\"]" js_getVAlign ::
         JSRef HTMLTableRowElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.vAlign Mozilla HTMLTableRowElement.vAlign documentation> 
-htmlTableRowElementGetVAlign ::
-                             (MonadIO m, IsHTMLTableRowElement self, FromJSString result) =>
-                               self -> m result
-htmlTableRowElementGetVAlign self
+getVAlign ::
+          (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
+getVAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_row_element_get_v_align
-            (unHTMLTableRowElement (toHTMLTableRowElement self))))
+      (fromJSString <$> (js_getVAlign (unHTMLTableRowElement self)))
 #else
 module GHCJS.DOM.HTMLTableRowElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLTableRowElement

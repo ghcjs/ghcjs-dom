@@ -1,29 +1,16 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptionElement
-       (ghcjs_dom_html_option_element_set_disabled,
-        htmlOptionElementSetDisabled,
-        ghcjs_dom_html_option_element_get_disabled,
-        htmlOptionElementGetDisabled,
-        ghcjs_dom_html_option_element_get_form, htmlOptionElementGetForm,
-        ghcjs_dom_html_option_element_set_label, htmlOptionElementSetLabel,
-        ghcjs_dom_html_option_element_get_label, htmlOptionElementGetLabel,
-        ghcjs_dom_html_option_element_set_default_selected,
-        htmlOptionElementSetDefaultSelected,
-        ghcjs_dom_html_option_element_get_default_selected,
-        htmlOptionElementGetDefaultSelected,
-        ghcjs_dom_html_option_element_set_selected,
-        htmlOptionElementSetSelected,
-        ghcjs_dom_html_option_element_get_selected,
-        htmlOptionElementGetSelected,
-        ghcjs_dom_html_option_element_set_value, htmlOptionElementSetValue,
-        ghcjs_dom_html_option_element_get_value, htmlOptionElementGetValue,
-        ghcjs_dom_html_option_element_get_text, htmlOptionElementGetText,
-        ghcjs_dom_html_option_element_get_index, htmlOptionElementGetIndex,
-        HTMLOptionElement, IsHTMLOptionElement, castToHTMLOptionElement,
-        gTypeHTMLOptionElement, toHTMLOptionElement)
+       (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
+        js_getForm, getForm, js_setLabel, setLabel, js_getLabel, getLabel,
+        js_setDefaultSelected, setDefaultSelected, js_getDefaultSelected,
+        getDefaultSelected, js_setSelected, setSelected, js_getSelected,
+        getSelected, js_setValue, setValue, js_getValue, getValue,
+        js_getText, getText, js_getIndex, getIndex, HTMLOptionElement,
+        castToHTMLOptionElement, gTypeHTMLOptionElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -33,181 +20,122 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        ghcjs_dom_html_option_element_set_disabled ::
-        JSRef HTMLOptionElement -> Bool -> IO ()
+        js_setDisabled :: JSRef HTMLOptionElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.disabled Mozilla HTMLOptionElement.disabled documentation> 
-htmlOptionElementSetDisabled ::
-                             (MonadIO m, IsHTMLOptionElement self) => self -> Bool -> m ()
-htmlOptionElementSetDisabled self val
-  = liftIO
-      (ghcjs_dom_html_option_element_set_disabled
-         (unHTMLOptionElement (toHTMLOptionElement self))
-         val)
+setDisabled :: (MonadIO m) => HTMLOptionElement -> Bool -> m ()
+setDisabled self val
+  = liftIO (js_setDisabled (unHTMLOptionElement self) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        ghcjs_dom_html_option_element_get_disabled ::
-        JSRef HTMLOptionElement -> IO Bool
+        js_getDisabled :: JSRef HTMLOptionElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.disabled Mozilla HTMLOptionElement.disabled documentation> 
-htmlOptionElementGetDisabled ::
-                             (MonadIO m, IsHTMLOptionElement self) => self -> m Bool
-htmlOptionElementGetDisabled self
-  = liftIO
-      (ghcjs_dom_html_option_element_get_disabled
-         (unHTMLOptionElement (toHTMLOptionElement self)))
+getDisabled :: (MonadIO m) => HTMLOptionElement -> m Bool
+getDisabled self
+  = liftIO (js_getDisabled (unHTMLOptionElement self))
  
-foreign import javascript unsafe "$1[\"form\"]"
-        ghcjs_dom_html_option_element_get_form ::
+foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
         JSRef HTMLOptionElement -> IO (JSRef HTMLFormElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.form Mozilla HTMLOptionElement.form documentation> 
-htmlOptionElementGetForm ::
-                         (MonadIO m, IsHTMLOptionElement self) =>
-                           self -> m (Maybe HTMLFormElement)
-htmlOptionElementGetForm self
-  = liftIO
-      ((ghcjs_dom_html_option_element_get_form
-          (unHTMLOptionElement (toHTMLOptionElement self)))
-         >>= fromJSRef)
+getForm ::
+        (MonadIO m) => HTMLOptionElement -> m (Maybe HTMLFormElement)
+getForm self
+  = liftIO ((js_getForm (unHTMLOptionElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"label\"] = $2;"
-        ghcjs_dom_html_option_element_set_label ::
-        JSRef HTMLOptionElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
+        :: JSRef HTMLOptionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.label Mozilla HTMLOptionElement.label documentation> 
-htmlOptionElementSetLabel ::
-                          (MonadIO m, IsHTMLOptionElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlOptionElementSetLabel self val
-  = liftIO
-      (ghcjs_dom_html_option_element_set_label
-         (unHTMLOptionElement (toHTMLOptionElement self))
-         (toJSString val))
+setLabel ::
+         (MonadIO m, ToJSString val) => HTMLOptionElement -> val -> m ()
+setLabel self val
+  = liftIO (js_setLabel (unHTMLOptionElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"label\"]"
-        ghcjs_dom_html_option_element_get_label ::
+foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
         JSRef HTMLOptionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.label Mozilla HTMLOptionElement.label documentation> 
-htmlOptionElementGetLabel ::
-                          (MonadIO m, IsHTMLOptionElement self, FromJSString result) =>
-                            self -> m result
-htmlOptionElementGetLabel self
+getLabel ::
+         (MonadIO m, FromJSString result) => HTMLOptionElement -> m result
+getLabel self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_option_element_get_label
-            (unHTMLOptionElement (toHTMLOptionElement self))))
+      (fromJSString <$> (js_getLabel (unHTMLOptionElement self)))
  
 foreign import javascript unsafe "$1[\"defaultSelected\"] = $2;"
-        ghcjs_dom_html_option_element_set_default_selected ::
-        JSRef HTMLOptionElement -> Bool -> IO ()
+        js_setDefaultSelected :: JSRef HTMLOptionElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.defaultSelected Mozilla HTMLOptionElement.defaultSelected documentation> 
-htmlOptionElementSetDefaultSelected ::
-                                    (MonadIO m, IsHTMLOptionElement self) => self -> Bool -> m ()
-htmlOptionElementSetDefaultSelected self val
-  = liftIO
-      (ghcjs_dom_html_option_element_set_default_selected
-         (unHTMLOptionElement (toHTMLOptionElement self))
-         val)
+setDefaultSelected ::
+                   (MonadIO m) => HTMLOptionElement -> Bool -> m ()
+setDefaultSelected self val
+  = liftIO (js_setDefaultSelected (unHTMLOptionElement self) val)
  
 foreign import javascript unsafe
-        "($1[\"defaultSelected\"] ? 1 : 0)"
-        ghcjs_dom_html_option_element_get_default_selected ::
+        "($1[\"defaultSelected\"] ? 1 : 0)" js_getDefaultSelected ::
         JSRef HTMLOptionElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.defaultSelected Mozilla HTMLOptionElement.defaultSelected documentation> 
-htmlOptionElementGetDefaultSelected ::
-                                    (MonadIO m, IsHTMLOptionElement self) => self -> m Bool
-htmlOptionElementGetDefaultSelected self
-  = liftIO
-      (ghcjs_dom_html_option_element_get_default_selected
-         (unHTMLOptionElement (toHTMLOptionElement self)))
+getDefaultSelected :: (MonadIO m) => HTMLOptionElement -> m Bool
+getDefaultSelected self
+  = liftIO (js_getDefaultSelected (unHTMLOptionElement self))
  
 foreign import javascript unsafe "$1[\"selected\"] = $2;"
-        ghcjs_dom_html_option_element_set_selected ::
-        JSRef HTMLOptionElement -> Bool -> IO ()
+        js_setSelected :: JSRef HTMLOptionElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.selected Mozilla HTMLOptionElement.selected documentation> 
-htmlOptionElementSetSelected ::
-                             (MonadIO m, IsHTMLOptionElement self) => self -> Bool -> m ()
-htmlOptionElementSetSelected self val
-  = liftIO
-      (ghcjs_dom_html_option_element_set_selected
-         (unHTMLOptionElement (toHTMLOptionElement self))
-         val)
+setSelected :: (MonadIO m) => HTMLOptionElement -> Bool -> m ()
+setSelected self val
+  = liftIO (js_setSelected (unHTMLOptionElement self) val)
  
 foreign import javascript unsafe "($1[\"selected\"] ? 1 : 0)"
-        ghcjs_dom_html_option_element_get_selected ::
-        JSRef HTMLOptionElement -> IO Bool
+        js_getSelected :: JSRef HTMLOptionElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.selected Mozilla HTMLOptionElement.selected documentation> 
-htmlOptionElementGetSelected ::
-                             (MonadIO m, IsHTMLOptionElement self) => self -> m Bool
-htmlOptionElementGetSelected self
-  = liftIO
-      (ghcjs_dom_html_option_element_get_selected
-         (unHTMLOptionElement (toHTMLOptionElement self)))
+getSelected :: (MonadIO m) => HTMLOptionElement -> m Bool
+getSelected self
+  = liftIO (js_getSelected (unHTMLOptionElement self))
  
-foreign import javascript unsafe "$1[\"value\"] = $2;"
-        ghcjs_dom_html_option_element_set_value ::
-        JSRef HTMLOptionElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+        :: JSRef HTMLOptionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.value Mozilla HTMLOptionElement.value documentation> 
-htmlOptionElementSetValue ::
-                          (MonadIO m, IsHTMLOptionElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlOptionElementSetValue self val
-  = liftIO
-      (ghcjs_dom_html_option_element_set_value
-         (unHTMLOptionElement (toHTMLOptionElement self))
-         (toJSString val))
+setValue ::
+         (MonadIO m, ToJSString val) => HTMLOptionElement -> val -> m ()
+setValue self val
+  = liftIO (js_setValue (unHTMLOptionElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"value\"]"
-        ghcjs_dom_html_option_element_get_value ::
+foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
         JSRef HTMLOptionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.value Mozilla HTMLOptionElement.value documentation> 
-htmlOptionElementGetValue ::
-                          (MonadIO m, IsHTMLOptionElement self, FromJSString result) =>
-                            self -> m result
-htmlOptionElementGetValue self
+getValue ::
+         (MonadIO m, FromJSString result) => HTMLOptionElement -> m result
+getValue self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_option_element_get_value
-            (unHTMLOptionElement (toHTMLOptionElement self))))
+      (fromJSString <$> (js_getValue (unHTMLOptionElement self)))
  
-foreign import javascript unsafe "$1[\"text\"]"
-        ghcjs_dom_html_option_element_get_text ::
+foreign import javascript unsafe "$1[\"text\"]" js_getText ::
         JSRef HTMLOptionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.text Mozilla HTMLOptionElement.text documentation> 
-htmlOptionElementGetText ::
-                         (MonadIO m, IsHTMLOptionElement self, FromJSString result) =>
-                           self -> m result
-htmlOptionElementGetText self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_option_element_get_text
-            (unHTMLOptionElement (toHTMLOptionElement self))))
+getText ::
+        (MonadIO m, FromJSString result) => HTMLOptionElement -> m result
+getText self
+  = liftIO (fromJSString <$> (js_getText (unHTMLOptionElement self)))
  
-foreign import javascript unsafe "$1[\"index\"]"
-        ghcjs_dom_html_option_element_get_index ::
+foreign import javascript unsafe "$1[\"index\"]" js_getIndex ::
         JSRef HTMLOptionElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.index Mozilla HTMLOptionElement.index documentation> 
-htmlOptionElementGetIndex ::
-                          (MonadIO m, IsHTMLOptionElement self) => self -> m Int
-htmlOptionElementGetIndex self
-  = liftIO
-      (ghcjs_dom_html_option_element_get_index
-         (unHTMLOptionElement (toHTMLOptionElement self)))
+getIndex :: (MonadIO m) => HTMLOptionElement -> m Int
+getIndex self = liftIO (js_getIndex (unHTMLOptionElement self))
 #else
 module GHCJS.DOM.HTMLOptionElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLOptionElement

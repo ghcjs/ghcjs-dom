@@ -1,16 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMURL
-       (ghcjs_dom_domurl_new, domurlNew,
-        ghcjs_dom_domurl_create_object_url, domurlCreateObjectURL,
-        ghcjs_dom_domurl_revoke_object_url, domurlRevokeObjectURL,
-        ghcjs_dom_domurl_create_object_urlSource,
-        domurlCreateObjectURLSource,
-        ghcjs_dom_domurl_create_object_urlStream,
-        domurlCreateObjectURLStream, DOMURL, IsDOMURL, castToDOMURL,
-        gTypeDOMURL, toDOMURL)
+       (js_newDOMURL, newDOMURL, js_newDOMURL', newDOMURL',
+        js_newDOMURL'', newDOMURL'', js_createObjectURL, createObjectURL,
+        js_revokeObjectURL, revokeObjectURL, js_createObjectURLSource,
+        createObjectURLSource, js_createObjectURLStream,
+        createObjectURLStream, DOMURL, castToDOMURL, gTypeDOMURL)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,102 +18,90 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"URL\"]($1)"
-        ghcjs_dom_domurl_new :: JSString -> IO (JSRef DOMURL)
+        js_newDOMURL :: JSString -> IO (JSRef DOMURL)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
-domurlNew :: (MonadIO m, ToJSString url) => url -> m DOMURL
-domurlNew url
-  = liftIO
-      (ghcjs_dom_domurl_new (toJSString url) >>= fromJSRefUnchecked)
+newDOMURL :: (MonadIO m, ToJSString url) => url -> m DOMURL
+newDOMURL url
+  = liftIO (js_newDOMURL (toJSString url) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "new window[\"URL\"]($1, $2)"
-        ghcjs_dom_domurl_new' :: JSString -> JSString -> IO (JSRef DOMURL)
+        js_newDOMURL' :: JSString -> JSString -> IO (JSRef DOMURL)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
-domurlNew' ::
+newDOMURL' ::
            (MonadIO m, ToJSString url, ToJSString base) =>
              url -> base -> m DOMURL
-domurlNew' url base
+newDOMURL' url base
   = liftIO
-      (ghcjs_dom_domurl_new' (toJSString url) (toJSString base) >>=
+      (js_newDOMURL' (toJSString url) (toJSString base) >>=
          fromJSRefUnchecked)
  
 foreign import javascript unsafe "new window[\"URL\"]($1, $2)"
-        ghcjs_dom_domurl_new'' ::
-        JSString -> JSRef DOMURL -> IO (JSRef DOMURL)
+        js_newDOMURL'' :: JSString -> JSRef DOMURL -> IO (JSRef DOMURL)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
-domurlNew'' ::
-            (MonadIO m, ToJSString url, IsDOMURL base) =>
-              url -> Maybe base -> m DOMURL
-domurlNew'' url base
+newDOMURL'' ::
+            (MonadIO m, ToJSString url) => url -> Maybe DOMURL -> m DOMURL
+newDOMURL'' url base
   = liftIO
-      (ghcjs_dom_domurl_new'' (toJSString url)
-         (maybe jsNull (unDOMURL . toDOMURL) base)
-         >>= fromJSRefUnchecked)
+      (js_newDOMURL'' (toJSString url) (maybe jsNull unDOMURL base) >>=
+         fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
-        ghcjs_dom_domurl_create_object_url ::
-        JSRef DOMURL -> JSRef Blob -> IO JSString
+        js_createObjectURL :: JSRef DOMURL -> JSRef Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
-domurlCreateObjectURL ::
-                      (MonadIO m, IsDOMURL self, IsBlob blob, FromJSString result) =>
-                        self -> Maybe blob -> m result
-domurlCreateObjectURL self blob
+createObjectURL ::
+                (MonadIO m, IsBlob blob, FromJSString result) =>
+                  DOMURL -> Maybe blob -> m result
+createObjectURL self blob
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_domurl_create_object_url (unDOMURL (toDOMURL self))
+         (js_createObjectURL (unDOMURL self)
             (maybe jsNull (unBlob . toBlob) blob)))
  
 foreign import javascript unsafe "$1[\"revokeObjectURL\"]($2)"
-        ghcjs_dom_domurl_revoke_object_url ::
-        JSRef DOMURL -> JSString -> IO ()
+        js_revokeObjectURL :: JSRef DOMURL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.revokeObjectURL Mozilla URL.revokeObjectURL documentation> 
-domurlRevokeObjectURL ::
-                      (MonadIO m, IsDOMURL self, ToJSString url) => self -> url -> m ()
-domurlRevokeObjectURL self url
-  = liftIO
-      (ghcjs_dom_domurl_revoke_object_url (unDOMURL (toDOMURL self))
-         (toJSString url))
+revokeObjectURL ::
+                (MonadIO m, ToJSString url) => DOMURL -> url -> m ()
+revokeObjectURL self url
+  = liftIO (js_revokeObjectURL (unDOMURL self) (toJSString url))
  
 foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
-        ghcjs_dom_domurl_create_object_urlSource ::
+        js_createObjectURLSource ::
         JSRef DOMURL -> JSRef MediaSource -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURLSource Mozilla URL.createObjectURLSource documentation> 
-domurlCreateObjectURLSource ::
-                            (MonadIO m, IsDOMURL self, IsMediaSource source,
-                             FromJSString result) =>
-                              self -> Maybe source -> m result
-domurlCreateObjectURLSource self source
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
+createObjectURLSource ::
+                      (MonadIO m, FromJSString result) =>
+                        DOMURL -> Maybe MediaSource -> m result
+createObjectURLSource self source
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_domurl_create_object_urlSource
-            (unDOMURL (toDOMURL self))
-            (maybe jsNull (unMediaSource . toMediaSource) source)))
+         (js_createObjectURLSource (unDOMURL self)
+            (maybe jsNull unMediaSource source)))
  
 foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
-        ghcjs_dom_domurl_create_object_urlStream ::
+        js_createObjectURLStream ::
         JSRef DOMURL -> JSRef MediaStream -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURLStream Mozilla URL.createObjectURLStream documentation> 
-domurlCreateObjectURLStream ::
-                            (MonadIO m, IsDOMURL self, IsMediaStream stream,
-                             FromJSString result) =>
-                              self -> Maybe stream -> m result
-domurlCreateObjectURLStream self stream
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
+createObjectURLStream ::
+                      (MonadIO m, FromJSString result) =>
+                        DOMURL -> Maybe MediaStream -> m result
+createObjectURLStream self stream
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_domurl_create_object_urlStream
-            (unDOMURL (toDOMURL self))
-            (maybe jsNull (unMediaStream . toMediaStream) stream)))
+         (js_createObjectURLStream (unDOMURL self)
+            (maybe jsNull unMediaStream stream)))
 #else
 module GHCJS.DOM.DOMURL (
   ) where

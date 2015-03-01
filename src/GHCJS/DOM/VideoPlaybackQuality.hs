@@ -1,20 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.VideoPlaybackQuality
-       (ghcjs_dom_video_playback_quality_get_creation_time,
-        videoPlaybackQualityGetCreationTime,
-        ghcjs_dom_video_playback_quality_get_total_video_frames,
-        videoPlaybackQualityGetTotalVideoFrames,
-        ghcjs_dom_video_playback_quality_get_dropped_video_frames,
-        videoPlaybackQualityGetDroppedVideoFrames,
-        ghcjs_dom_video_playback_quality_get_corrupted_video_frames,
-        videoPlaybackQualityGetCorruptedVideoFrames,
-        ghcjs_dom_video_playback_quality_get_total_frame_delay,
-        videoPlaybackQualityGetTotalFrameDelay, VideoPlaybackQuality,
-        IsVideoPlaybackQuality, castToVideoPlaybackQuality,
-        gTypeVideoPlaybackQuality, toVideoPlaybackQuality)
+       (js_getCreationTime, getCreationTime, js_getTotalVideoFrames,
+        getTotalVideoFrames, js_getDroppedVideoFrames,
+        getDroppedVideoFrames, js_getCorruptedVideoFrames,
+        getCorruptedVideoFrames, js_getTotalFrameDelay, getTotalFrameDelay,
+        VideoPlaybackQuality, castToVideoPlaybackQuality,
+        gTypeVideoPlaybackQuality)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,70 +19,53 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"creationTime\"]"
-        ghcjs_dom_video_playback_quality_get_creation_time ::
-        JSRef VideoPlaybackQuality -> IO Double
+        js_getCreationTime :: JSRef VideoPlaybackQuality -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.creationTime Mozilla VideoPlaybackQuality.creationTime documentation> 
-videoPlaybackQualityGetCreationTime ::
-                                    (MonadIO m, IsVideoPlaybackQuality self) => self -> m Double
-videoPlaybackQualityGetCreationTime self
-  = liftIO
-      (ghcjs_dom_video_playback_quality_get_creation_time
-         (unVideoPlaybackQuality (toVideoPlaybackQuality self)))
+getCreationTime :: (MonadIO m) => VideoPlaybackQuality -> m Double
+getCreationTime self
+  = liftIO (js_getCreationTime (unVideoPlaybackQuality self))
  
 foreign import javascript unsafe "$1[\"totalVideoFrames\"]"
-        ghcjs_dom_video_playback_quality_get_total_video_frames ::
-        JSRef VideoPlaybackQuality -> IO Word
+        js_getTotalVideoFrames :: JSRef VideoPlaybackQuality -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.totalVideoFrames Mozilla VideoPlaybackQuality.totalVideoFrames documentation> 
-videoPlaybackQualityGetTotalVideoFrames ::
-                                        (MonadIO m, IsVideoPlaybackQuality self) => self -> m Word
-videoPlaybackQualityGetTotalVideoFrames self
-  = liftIO
-      (ghcjs_dom_video_playback_quality_get_total_video_frames
-         (unVideoPlaybackQuality (toVideoPlaybackQuality self)))
+getTotalVideoFrames ::
+                    (MonadIO m) => VideoPlaybackQuality -> m Word
+getTotalVideoFrames self
+  = liftIO (js_getTotalVideoFrames (unVideoPlaybackQuality self))
  
 foreign import javascript unsafe "$1[\"droppedVideoFrames\"]"
-        ghcjs_dom_video_playback_quality_get_dropped_video_frames ::
-        JSRef VideoPlaybackQuality -> IO Word
+        js_getDroppedVideoFrames :: JSRef VideoPlaybackQuality -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.droppedVideoFrames Mozilla VideoPlaybackQuality.droppedVideoFrames documentation> 
-videoPlaybackQualityGetDroppedVideoFrames ::
-                                          (MonadIO m, IsVideoPlaybackQuality self) => self -> m Word
-videoPlaybackQualityGetDroppedVideoFrames self
-  = liftIO
-      (ghcjs_dom_video_playback_quality_get_dropped_video_frames
-         (unVideoPlaybackQuality (toVideoPlaybackQuality self)))
+getDroppedVideoFrames ::
+                      (MonadIO m) => VideoPlaybackQuality -> m Word
+getDroppedVideoFrames self
+  = liftIO (js_getDroppedVideoFrames (unVideoPlaybackQuality self))
  
 foreign import javascript unsafe "$1[\"corruptedVideoFrames\"]"
-        ghcjs_dom_video_playback_quality_get_corrupted_video_frames ::
-        JSRef VideoPlaybackQuality -> IO Word
+        js_getCorruptedVideoFrames :: JSRef VideoPlaybackQuality -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.corruptedVideoFrames Mozilla VideoPlaybackQuality.corruptedVideoFrames documentation> 
-videoPlaybackQualityGetCorruptedVideoFrames ::
-                                            (MonadIO m, IsVideoPlaybackQuality self) =>
-                                              self -> m Word
-videoPlaybackQualityGetCorruptedVideoFrames self
-  = liftIO
-      (ghcjs_dom_video_playback_quality_get_corrupted_video_frames
-         (unVideoPlaybackQuality (toVideoPlaybackQuality self)))
+getCorruptedVideoFrames ::
+                        (MonadIO m) => VideoPlaybackQuality -> m Word
+getCorruptedVideoFrames self
+  = liftIO (js_getCorruptedVideoFrames (unVideoPlaybackQuality self))
  
 foreign import javascript unsafe "$1[\"totalFrameDelay\"]"
-        ghcjs_dom_video_playback_quality_get_total_frame_delay ::
-        JSRef VideoPlaybackQuality -> IO Double
+        js_getTotalFrameDelay :: JSRef VideoPlaybackQuality -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.totalFrameDelay Mozilla VideoPlaybackQuality.totalFrameDelay documentation> 
-videoPlaybackQualityGetTotalFrameDelay ::
-                                       (MonadIO m, IsVideoPlaybackQuality self) => self -> m Double
-videoPlaybackQualityGetTotalFrameDelay self
-  = liftIO
-      (ghcjs_dom_video_playback_quality_get_total_frame_delay
-         (unVideoPlaybackQuality (toVideoPlaybackQuality self)))
+getTotalFrameDelay ::
+                   (MonadIO m) => VideoPlaybackQuality -> m Double
+getTotalFrameDelay self
+  = liftIO (js_getTotalFrameDelay (unVideoPlaybackQuality self))
 #else
 module GHCJS.DOM.VideoPlaybackQuality (
   ) where

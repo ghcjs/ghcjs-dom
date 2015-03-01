@@ -41,8 +41,8 @@ import Control.Monad.IO.Class (liftIO)
 #endif
 
 import GHCJS.DOM.Types
-import GHCJS.DOM.DOMWindow (domWindowGetNavigator, domWindowGetDocument)
-import GHCJS.DOM.Navigator (navigatorGetUserAgent)
+import GHCJS.DOM.DOMWindow (getNavigator, getDocument)
+import GHCJS.DOM.Navigator (getUserAgent)
 import Foreign (ForeignPtr, nullPtr, Ptr)
 import Control.Monad (unless, forever, liftM)
 import Control.Concurrent
@@ -77,8 +77,8 @@ currentDocument = fmap Document . maybeJSNullOrUndefined <$> ghcjs_currentDocume
 type WebView = DOMWindow
 castToWebView = id
 
-webViewGetDomDocument :: IsDOMWindow w => w -> IO (Maybe Document)
-webViewGetDomDocument = domWindowGetDocument
+webViewGetDomDocument :: DOMWindow -> IO (Maybe Document)
+webViewGetDomDocument = getDocument
 #else
 foreign import ccall safe "ghcjs_currentWindow"
   ghcjs_currentWindow :: IO (Ptr DOMWindow)
@@ -103,8 +103,8 @@ runWebGUI' userAgentKey main = do
   case mbWindow of
     Just window -> do
       -- Check if we are running in javascript inside the the native version
-      Just n <- domWindowGetNavigator window
-      agent <- navigatorGetUserAgent n
+      Just n <- getNavigator window
+      agent <- getUserAgent n
       unless ((" " <> userAgentKey) `T.isSuffixOf` agent) $ main (castToWebView window)
     Nothing -> do
       makeDefaultWebView userAgentKey main

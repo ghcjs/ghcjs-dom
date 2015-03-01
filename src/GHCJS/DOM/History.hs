@@ -1,15 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.History
-       (ghcjs_dom_history_back, historyBack, ghcjs_dom_history_forward,
-        historyForward, ghcjs_dom_history_go, historyGo,
-        ghcjs_dom_history_push_state, historyPushState,
-        ghcjs_dom_history_replace_state, historyReplaceState,
-        ghcjs_dom_history_get_length, historyGetLength,
-        ghcjs_dom_history_get_state, historyGetState, History, IsHistory,
-        castToHistory, gTypeHistory, toHistory)
+       (js_back, back, js_forward, forward, js_go, go, js_pushState,
+        pushState, js_replaceState, replaceState, js_getLength, getLength,
+        js_getState, getState, History, castToHistory, gTypeHistory)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,84 +16,72 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"back\"]()"
-        ghcjs_dom_history_back :: JSRef History -> IO ()
+foreign import javascript unsafe "$1[\"back\"]()" js_back ::
+        JSRef History -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.back Mozilla History.back documentation> 
-historyBack :: (MonadIO m, IsHistory self) => self -> m ()
-historyBack self
-  = liftIO (ghcjs_dom_history_back (unHistory (toHistory self)))
+back :: (MonadIO m) => History -> m ()
+back self = liftIO (js_back (unHistory self))
  
-foreign import javascript unsafe "$1[\"forward\"]()"
-        ghcjs_dom_history_forward :: JSRef History -> IO ()
+foreign import javascript unsafe "$1[\"forward\"]()" js_forward ::
+        JSRef History -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.forward Mozilla History.forward documentation> 
-historyForward :: (MonadIO m, IsHistory self) => self -> m ()
-historyForward self
-  = liftIO (ghcjs_dom_history_forward (unHistory (toHistory self)))
+forward :: (MonadIO m) => History -> m ()
+forward self = liftIO (js_forward (unHistory self))
  
-foreign import javascript unsafe "$1[\"go\"]($2)"
-        ghcjs_dom_history_go :: JSRef History -> Int -> IO ()
+foreign import javascript unsafe "$1[\"go\"]($2)" js_go ::
+        JSRef History -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.go Mozilla History.go documentation> 
-historyGo :: (MonadIO m, IsHistory self) => self -> Int -> m ()
-historyGo self distance
-  = liftIO
-      (ghcjs_dom_history_go (unHistory (toHistory self)) distance)
+go :: (MonadIO m) => History -> Int -> m ()
+go self distance = liftIO (js_go (unHistory self) distance)
  
 foreign import javascript unsafe "$1[\"pushState\"]($2, $3, $4)"
-        ghcjs_dom_history_push_state ::
+        js_pushState ::
         JSRef History -> JSRef a -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.pushState Mozilla History.pushState documentation> 
-historyPushState ::
-                 (MonadIO m, IsHistory self, ToJSString title, ToJSString url) =>
-                   self -> JSRef a -> title -> url -> m ()
-historyPushState self data' title url
+pushState ::
+          (MonadIO m, ToJSString title, ToJSString url) =>
+            History -> JSRef a -> title -> url -> m ()
+pushState self data' title url
   = liftIO
-      (ghcjs_dom_history_push_state (unHistory (toHistory self)) data'
-         (toJSString title)
+      (js_pushState (unHistory self) data' (toJSString title)
          (toJSString url))
  
 foreign import javascript unsafe "$1[\"replaceState\"]($2, $3, $4)"
-        ghcjs_dom_history_replace_state ::
+        js_replaceState ::
         JSRef History -> JSRef a -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.replaceState Mozilla History.replaceState documentation> 
-historyReplaceState ::
-                    (MonadIO m, IsHistory self, ToJSString title, ToJSString url) =>
-                      self -> JSRef a -> title -> url -> m ()
-historyReplaceState self data' title url
+replaceState ::
+             (MonadIO m, ToJSString title, ToJSString url) =>
+               History -> JSRef a -> title -> url -> m ()
+replaceState self data' title url
   = liftIO
-      (ghcjs_dom_history_replace_state (unHistory (toHistory self)) data'
-         (toJSString title)
+      (js_replaceState (unHistory self) data' (toJSString title)
          (toJSString url))
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_history_get_length :: JSRef History -> IO Word
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+        JSRef History -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.length Mozilla History.length documentation> 
-historyGetLength :: (MonadIO m, IsHistory self) => self -> m Word
-historyGetLength self
-  = liftIO
-      (ghcjs_dom_history_get_length (unHistory (toHistory self)))
+getLength :: (MonadIO m) => History -> m Word
+getLength self = liftIO (js_getLength (unHistory self))
  
-foreign import javascript unsafe "$1[\"state\"]"
-        ghcjs_dom_history_get_state ::
+foreign import javascript unsafe "$1[\"state\"]" js_getState ::
         JSRef History -> IO (JSRef SerializedScriptValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.state Mozilla History.state documentation> 
-historyGetState ::
-                (MonadIO m, IsHistory self) =>
-                  self -> m (Maybe SerializedScriptValue)
-historyGetState self
-  = liftIO
-      ((ghcjs_dom_history_get_state (unHistory (toHistory self))) >>=
-         fromJSRef)
+getState ::
+         (MonadIO m) => History -> m (Maybe SerializedScriptValue)
+getState self
+  = liftIO ((js_getState (unHistory self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.History (
   module Graphics.UI.Gtk.WebKit.DOM.History

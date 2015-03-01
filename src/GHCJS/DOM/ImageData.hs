@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ImageData
-       (ghcjs_dom_image_data_new, imageDataNew,
-        ghcjs_dom_image_data_get_width, imageDataGetWidth,
-        ghcjs_dom_image_data_get_height, imageDataGetHeight,
-        ghcjs_dom_image_data_get_data, imageDataGetData, ImageData,
-        IsImageData, castToImageData, gTypeImageData, toImageData)
+       (js_newImageData, newImageData, js_newImageData', newImageData',
+        js_getWidth, getWidth, js_getHeight, getHeight, js_getData,
+        getData, ImageData, castToImageData, gTypeImageData)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,66 +16,56 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"ImageData\"]($1, $2,\n$3)" ghcjs_dom_image_data_new
-        :: JSRef Uint8ClampedArray -> Word -> Word -> IO (JSRef ImageData)
+        "new window[\"ImageData\"]($1, $2,\n$3)" js_newImageData ::
+        JSRef Uint8ClampedArray -> Word -> Word -> IO (JSRef ImageData)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation> 
-imageDataNew ::
+newImageData ::
              (MonadIO m, IsUint8ClampedArray data') =>
                Maybe data' -> Word -> Word -> m ImageData
-imageDataNew data' sw sh
+newImageData data' sw sh
   = liftIO
-      (ghcjs_dom_image_data_new
+      (js_newImageData
          (maybe jsNull (unUint8ClampedArray . toUint8ClampedArray) data')
          sw
          sh
          >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
-        "new window[\"ImageData\"]($1, $2)" ghcjs_dom_image_data_new' ::
+        "new window[\"ImageData\"]($1, $2)" js_newImageData' ::
         Word -> Word -> IO (JSRef ImageData)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation> 
-imageDataNew' :: (MonadIO m) => Word -> Word -> m ImageData
-imageDataNew' sw sh
-  = liftIO (ghcjs_dom_image_data_new' sw sh >>= fromJSRefUnchecked)
+newImageData' :: (MonadIO m) => Word -> Word -> m ImageData
+newImageData' sw sh
+  = liftIO (js_newImageData' sw sh >>= fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_image_data_get_width :: JSRef ImageData -> IO Int
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+        JSRef ImageData -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.width Mozilla ImageData.width documentation> 
-imageDataGetWidth :: (MonadIO m, IsImageData self) => self -> m Int
-imageDataGetWidth self
-  = liftIO
-      (ghcjs_dom_image_data_get_width (unImageData (toImageData self)))
+getWidth :: (MonadIO m) => ImageData -> m Int
+getWidth self = liftIO (js_getWidth (unImageData self))
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_image_data_get_height :: JSRef ImageData -> IO Int
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+        JSRef ImageData -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.height Mozilla ImageData.height documentation> 
-imageDataGetHeight ::
-                   (MonadIO m, IsImageData self) => self -> m Int
-imageDataGetHeight self
-  = liftIO
-      (ghcjs_dom_image_data_get_height (unImageData (toImageData self)))
+getHeight :: (MonadIO m) => ImageData -> m Int
+getHeight self = liftIO (js_getHeight (unImageData self))
  
-foreign import javascript unsafe "$1[\"data\"]"
-        ghcjs_dom_image_data_get_data ::
+foreign import javascript unsafe "$1[\"data\"]" js_getData ::
         JSRef ImageData -> IO (JSRef Uint8ClampedArray)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.data Mozilla ImageData.data documentation> 
-imageDataGetData ::
-                 (MonadIO m, IsImageData self) =>
-                   self -> m (Maybe Uint8ClampedArray)
-imageDataGetData self
-  = liftIO
-      ((ghcjs_dom_image_data_get_data (unImageData (toImageData self)))
-         >>= fromJSRef)
+getData :: (MonadIO m) => ImageData -> m (Maybe Uint8ClampedArray)
+getData self
+  = liftIO ((js_getData (unImageData self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.ImageData (
   ) where

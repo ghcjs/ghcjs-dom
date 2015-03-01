@@ -1,16 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AudioProcessingEvent
-       (ghcjs_dom_audio_processing_event_get_playback_time,
-        audioProcessingEventGetPlaybackTime,
-        ghcjs_dom_audio_processing_event_get_input_buffer,
-        audioProcessingEventGetInputBuffer,
-        ghcjs_dom_audio_processing_event_get_output_buffer,
-        audioProcessingEventGetOutputBuffer, AudioProcessingEvent,
-        IsAudioProcessingEvent, castToAudioProcessingEvent,
-        gTypeAudioProcessingEvent, toAudioProcessingEvent)
+       (js_getPlaybackTime, getPlaybackTime, js_getInputBuffer,
+        getInputBuffer, js_getOutputBuffer, getOutputBuffer,
+        AudioProcessingEvent, castToAudioProcessingEvent,
+        gTypeAudioProcessingEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,49 +17,39 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"playbackTime\"]"
-        ghcjs_dom_audio_processing_event_get_playback_time ::
-        JSRef AudioProcessingEvent -> IO Double
+        js_getPlaybackTime :: JSRef AudioProcessingEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.playbackTime Mozilla AudioProcessingEvent.playbackTime documentation> 
-audioProcessingEventGetPlaybackTime ::
-                                    (MonadIO m, IsAudioProcessingEvent self) => self -> m Double
-audioProcessingEventGetPlaybackTime self
-  = liftIO
-      (ghcjs_dom_audio_processing_event_get_playback_time
-         (unAudioProcessingEvent (toAudioProcessingEvent self)))
+getPlaybackTime :: (MonadIO m) => AudioProcessingEvent -> m Double
+getPlaybackTime self
+  = liftIO (js_getPlaybackTime (unAudioProcessingEvent self))
  
 foreign import javascript unsafe "$1[\"inputBuffer\"]"
-        ghcjs_dom_audio_processing_event_get_input_buffer ::
+        js_getInputBuffer ::
         JSRef AudioProcessingEvent -> IO (JSRef AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.inputBuffer Mozilla AudioProcessingEvent.inputBuffer documentation> 
-audioProcessingEventGetInputBuffer ::
-                                   (MonadIO m, IsAudioProcessingEvent self) =>
-                                     self -> m (Maybe AudioBuffer)
-audioProcessingEventGetInputBuffer self
+getInputBuffer ::
+               (MonadIO m) => AudioProcessingEvent -> m (Maybe AudioBuffer)
+getInputBuffer self
   = liftIO
-      ((ghcjs_dom_audio_processing_event_get_input_buffer
-          (unAudioProcessingEvent (toAudioProcessingEvent self)))
-         >>= fromJSRef)
+      ((js_getInputBuffer (unAudioProcessingEvent self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"outputBuffer\"]"
-        ghcjs_dom_audio_processing_event_get_output_buffer ::
+        js_getOutputBuffer ::
         JSRef AudioProcessingEvent -> IO (JSRef AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.outputBuffer Mozilla AudioProcessingEvent.outputBuffer documentation> 
-audioProcessingEventGetOutputBuffer ::
-                                    (MonadIO m, IsAudioProcessingEvent self) =>
-                                      self -> m (Maybe AudioBuffer)
-audioProcessingEventGetOutputBuffer self
+getOutputBuffer ::
+                (MonadIO m) => AudioProcessingEvent -> m (Maybe AudioBuffer)
+getOutputBuffer self
   = liftIO
-      ((ghcjs_dom_audio_processing_event_get_output_buffer
-          (unAudioProcessingEvent (toAudioProcessingEvent self)))
-         >>= fromJSRef)
+      ((js_getOutputBuffer (unAudioProcessingEvent self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.AudioProcessingEvent (
   ) where

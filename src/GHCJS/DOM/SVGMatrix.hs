@@ -1,32 +1,17 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGMatrix
-       (ghcjs_dom_svg_matrix_multiply, svgMatrixMultiply,
-        ghcjs_dom_svg_matrix_inverse, svgMatrixInverse,
-        ghcjs_dom_svg_matrix_translate, svgMatrixTranslate,
-        ghcjs_dom_svg_matrix_scale, svgMatrixScale,
-        ghcjs_dom_svg_matrix_scale_non_uniform, svgMatrixScaleNonUniform,
-        ghcjs_dom_svg_matrix_rotate, svgMatrixRotate,
-        ghcjs_dom_svg_matrix_rotate_from_vector, svgMatrixRotateFromVector,
-        ghcjs_dom_svg_matrix_flip_x, svgMatrixFlipX,
-        ghcjs_dom_svg_matrix_flip_y, svgMatrixFlipY,
-        ghcjs_dom_svg_matrix_skew_x, svgMatrixSkewX,
-        ghcjs_dom_svg_matrix_skew_y, svgMatrixSkewY,
-        ghcjs_dom_svg_matrix_set_a, svgMatrixSetA,
-        ghcjs_dom_svg_matrix_get_a, svgMatrixGetA,
-        ghcjs_dom_svg_matrix_set_b, svgMatrixSetB,
-        ghcjs_dom_svg_matrix_get_b, svgMatrixGetB,
-        ghcjs_dom_svg_matrix_set_c, svgMatrixSetC,
-        ghcjs_dom_svg_matrix_get_c, svgMatrixGetC,
-        ghcjs_dom_svg_matrix_set_d, svgMatrixSetD,
-        ghcjs_dom_svg_matrix_get_d, svgMatrixGetD,
-        ghcjs_dom_svg_matrix_set_e, svgMatrixSetE,
-        ghcjs_dom_svg_matrix_get_e, svgMatrixGetE,
-        ghcjs_dom_svg_matrix_set_f, svgMatrixSetF,
-        ghcjs_dom_svg_matrix_get_f, svgMatrixGetF, SVGMatrix, IsSVGMatrix,
-        castToSVGMatrix, gTypeSVGMatrix, toSVGMatrix)
+       (js_multiply, multiply, js_inverse, inverse, js_translate,
+        translate, js_scale, scale, js_scaleNonUniform, scaleNonUniform,
+        js_rotate, rotate, js_rotateFromVector, rotateFromVector, js_flipX,
+        flipX, js_flipY, flipY, js_skewX, skewX, js_skewY, skewY, js_setA,
+        setA, js_getA, getA, js_setB, setB, js_getB, getB, js_setC, setC,
+        js_getC, getC, js_setD, setD, js_getD, getD, js_setE, setE,
+        js_getE, getE, js_setF, setF, js_getF, getF, SVGMatrix,
+        castToSVGMatrix, gTypeSVGMatrix)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -36,275 +21,192 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"multiply\"]($2)"
-        ghcjs_dom_svg_matrix_multiply ::
-        JSRef SVGMatrix -> JSRef SVGMatrix -> IO (JSRef SVGMatrix)
+foreign import javascript unsafe "$1[\"multiply\"]($2)" js_multiply
+        :: JSRef SVGMatrix -> JSRef SVGMatrix -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.multiply Mozilla SVGMatrix.multiply documentation> 
-svgMatrixMultiply ::
-                  (MonadIO m, IsSVGMatrix self, IsSVGMatrix secondMatrix) =>
-                    self -> Maybe secondMatrix -> m (Maybe SVGMatrix)
-svgMatrixMultiply self secondMatrix
+multiply ::
+         (MonadIO m) => SVGMatrix -> Maybe SVGMatrix -> m (Maybe SVGMatrix)
+multiply self secondMatrix
   = liftIO
-      ((ghcjs_dom_svg_matrix_multiply (unSVGMatrix (toSVGMatrix self))
-          (maybe jsNull (unSVGMatrix . toSVGMatrix) secondMatrix))
+      ((js_multiply (unSVGMatrix self)
+          (maybe jsNull unSVGMatrix secondMatrix))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"inverse\"]()"
-        ghcjs_dom_svg_matrix_inverse ::
+foreign import javascript unsafe "$1[\"inverse\"]()" js_inverse ::
         JSRef SVGMatrix -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.inverse Mozilla SVGMatrix.inverse documentation> 
-svgMatrixInverse ::
-                 (MonadIO m, IsSVGMatrix self) => self -> m (Maybe SVGMatrix)
-svgMatrixInverse self
-  = liftIO
-      ((ghcjs_dom_svg_matrix_inverse (unSVGMatrix (toSVGMatrix self)))
-         >>= fromJSRef)
+inverse :: (MonadIO m) => SVGMatrix -> m (Maybe SVGMatrix)
+inverse self
+  = liftIO ((js_inverse (unSVGMatrix self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"translate\"]($2, $3)"
-        ghcjs_dom_svg_matrix_translate ::
+        js_translate ::
         JSRef SVGMatrix -> Float -> Float -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.translate Mozilla SVGMatrix.translate documentation> 
-svgMatrixTranslate ::
-                   (MonadIO m, IsSVGMatrix self) =>
-                     self -> Float -> Float -> m (Maybe SVGMatrix)
-svgMatrixTranslate self x y
-  = liftIO
-      ((ghcjs_dom_svg_matrix_translate (unSVGMatrix (toSVGMatrix self)) x
-          y)
-         >>= fromJSRef)
+translate ::
+          (MonadIO m) => SVGMatrix -> Float -> Float -> m (Maybe SVGMatrix)
+translate self x y
+  = liftIO ((js_translate (unSVGMatrix self) x y) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"scale\"]($2)"
-        ghcjs_dom_svg_matrix_scale ::
+foreign import javascript unsafe "$1[\"scale\"]($2)" js_scale ::
         JSRef SVGMatrix -> Float -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.scale Mozilla SVGMatrix.scale documentation> 
-svgMatrixScale ::
-               (MonadIO m, IsSVGMatrix self) =>
-                 self -> Float -> m (Maybe SVGMatrix)
-svgMatrixScale self scaleFactor
-  = liftIO
-      ((ghcjs_dom_svg_matrix_scale (unSVGMatrix (toSVGMatrix self))
-          scaleFactor)
-         >>= fromJSRef)
+scale :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
+scale self scaleFactor
+  = liftIO ((js_scale (unSVGMatrix self) scaleFactor) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"scaleNonUniform\"]($2, $3)"
-        ghcjs_dom_svg_matrix_scale_non_uniform ::
+        js_scaleNonUniform ::
         JSRef SVGMatrix -> Float -> Float -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.scaleNonUniform Mozilla SVGMatrix.scaleNonUniform documentation> 
-svgMatrixScaleNonUniform ::
-                         (MonadIO m, IsSVGMatrix self) =>
-                           self -> Float -> Float -> m (Maybe SVGMatrix)
-svgMatrixScaleNonUniform self scaleFactorX scaleFactorY
+scaleNonUniform ::
+                (MonadIO m) => SVGMatrix -> Float -> Float -> m (Maybe SVGMatrix)
+scaleNonUniform self scaleFactorX scaleFactorY
   = liftIO
-      ((ghcjs_dom_svg_matrix_scale_non_uniform
-          (unSVGMatrix (toSVGMatrix self))
-          scaleFactorX
-          scaleFactorY)
+      ((js_scaleNonUniform (unSVGMatrix self) scaleFactorX scaleFactorY)
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"rotate\"]($2)"
-        ghcjs_dom_svg_matrix_rotate ::
+foreign import javascript unsafe "$1[\"rotate\"]($2)" js_rotate ::
         JSRef SVGMatrix -> Float -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.rotate Mozilla SVGMatrix.rotate documentation> 
-svgMatrixRotate ::
-                (MonadIO m, IsSVGMatrix self) =>
-                  self -> Float -> m (Maybe SVGMatrix)
-svgMatrixRotate self angle
-  = liftIO
-      ((ghcjs_dom_svg_matrix_rotate (unSVGMatrix (toSVGMatrix self))
-          angle)
-         >>= fromJSRef)
+rotate :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
+rotate self angle
+  = liftIO ((js_rotate (unSVGMatrix self) angle) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"rotateFromVector\"]($2, $3)"
-        ghcjs_dom_svg_matrix_rotate_from_vector ::
+        js_rotateFromVector ::
         JSRef SVGMatrix -> Float -> Float -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.rotateFromVector Mozilla SVGMatrix.rotateFromVector documentation> 
-svgMatrixRotateFromVector ::
-                          (MonadIO m, IsSVGMatrix self) =>
-                            self -> Float -> Float -> m (Maybe SVGMatrix)
-svgMatrixRotateFromVector self x y
+rotateFromVector ::
+                 (MonadIO m) => SVGMatrix -> Float -> Float -> m (Maybe SVGMatrix)
+rotateFromVector self x y
   = liftIO
-      ((ghcjs_dom_svg_matrix_rotate_from_vector
-          (unSVGMatrix (toSVGMatrix self))
-          x
-          y)
-         >>= fromJSRef)
+      ((js_rotateFromVector (unSVGMatrix self) x y) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"flipX\"]()"
-        ghcjs_dom_svg_matrix_flip_x ::
+foreign import javascript unsafe "$1[\"flipX\"]()" js_flipX ::
         JSRef SVGMatrix -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipX Mozilla SVGMatrix.flipX documentation> 
-svgMatrixFlipX ::
-               (MonadIO m, IsSVGMatrix self) => self -> m (Maybe SVGMatrix)
-svgMatrixFlipX self
-  = liftIO
-      ((ghcjs_dom_svg_matrix_flip_x (unSVGMatrix (toSVGMatrix self))) >>=
-         fromJSRef)
+flipX :: (MonadIO m) => SVGMatrix -> m (Maybe SVGMatrix)
+flipX self = liftIO ((js_flipX (unSVGMatrix self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"flipY\"]()"
-        ghcjs_dom_svg_matrix_flip_y ::
+foreign import javascript unsafe "$1[\"flipY\"]()" js_flipY ::
         JSRef SVGMatrix -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipY Mozilla SVGMatrix.flipY documentation> 
-svgMatrixFlipY ::
-               (MonadIO m, IsSVGMatrix self) => self -> m (Maybe SVGMatrix)
-svgMatrixFlipY self
-  = liftIO
-      ((ghcjs_dom_svg_matrix_flip_y (unSVGMatrix (toSVGMatrix self))) >>=
-         fromJSRef)
+flipY :: (MonadIO m) => SVGMatrix -> m (Maybe SVGMatrix)
+flipY self = liftIO ((js_flipY (unSVGMatrix self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"skewX\"]($2)"
-        ghcjs_dom_svg_matrix_skew_x ::
+foreign import javascript unsafe "$1[\"skewX\"]($2)" js_skewX ::
         JSRef SVGMatrix -> Float -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.skewX Mozilla SVGMatrix.skewX documentation> 
-svgMatrixSkewX ::
-               (MonadIO m, IsSVGMatrix self) =>
-                 self -> Float -> m (Maybe SVGMatrix)
-svgMatrixSkewX self angle
-  = liftIO
-      ((ghcjs_dom_svg_matrix_skew_x (unSVGMatrix (toSVGMatrix self))
-          angle)
-         >>= fromJSRef)
+skewX :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
+skewX self angle
+  = liftIO ((js_skewX (unSVGMatrix self) angle) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"skewY\"]($2)"
-        ghcjs_dom_svg_matrix_skew_y ::
+foreign import javascript unsafe "$1[\"skewY\"]($2)" js_skewY ::
         JSRef SVGMatrix -> Float -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.skewY Mozilla SVGMatrix.skewY documentation> 
-svgMatrixSkewY ::
-               (MonadIO m, IsSVGMatrix self) =>
-                 self -> Float -> m (Maybe SVGMatrix)
-svgMatrixSkewY self angle
-  = liftIO
-      ((ghcjs_dom_svg_matrix_skew_y (unSVGMatrix (toSVGMatrix self))
-          angle)
-         >>= fromJSRef)
+skewY :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
+skewY self angle
+  = liftIO ((js_skewY (unSVGMatrix self) angle) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"a\"] = $2;"
-        ghcjs_dom_svg_matrix_set_a :: JSRef SVGMatrix -> Double -> IO ()
+foreign import javascript unsafe "$1[\"a\"] = $2;" js_setA ::
+        JSRef SVGMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.a Mozilla SVGMatrix.a documentation> 
-svgMatrixSetA ::
-              (MonadIO m, IsSVGMatrix self) => self -> Double -> m ()
-svgMatrixSetA self val
-  = liftIO
-      (ghcjs_dom_svg_matrix_set_a (unSVGMatrix (toSVGMatrix self)) val)
+setA :: (MonadIO m) => SVGMatrix -> Double -> m ()
+setA self val = liftIO (js_setA (unSVGMatrix self) val)
  
-foreign import javascript unsafe "$1[\"a\"]"
-        ghcjs_dom_svg_matrix_get_a :: JSRef SVGMatrix -> IO Double
+foreign import javascript unsafe "$1[\"a\"]" js_getA ::
+        JSRef SVGMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.a Mozilla SVGMatrix.a documentation> 
-svgMatrixGetA :: (MonadIO m, IsSVGMatrix self) => self -> m Double
-svgMatrixGetA self
-  = liftIO
-      (ghcjs_dom_svg_matrix_get_a (unSVGMatrix (toSVGMatrix self)))
+getA :: (MonadIO m) => SVGMatrix -> m Double
+getA self = liftIO (js_getA (unSVGMatrix self))
  
-foreign import javascript unsafe "$1[\"b\"] = $2;"
-        ghcjs_dom_svg_matrix_set_b :: JSRef SVGMatrix -> Double -> IO ()
+foreign import javascript unsafe "$1[\"b\"] = $2;" js_setB ::
+        JSRef SVGMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.b Mozilla SVGMatrix.b documentation> 
-svgMatrixSetB ::
-              (MonadIO m, IsSVGMatrix self) => self -> Double -> m ()
-svgMatrixSetB self val
-  = liftIO
-      (ghcjs_dom_svg_matrix_set_b (unSVGMatrix (toSVGMatrix self)) val)
+setB :: (MonadIO m) => SVGMatrix -> Double -> m ()
+setB self val = liftIO (js_setB (unSVGMatrix self) val)
  
-foreign import javascript unsafe "$1[\"b\"]"
-        ghcjs_dom_svg_matrix_get_b :: JSRef SVGMatrix -> IO Double
+foreign import javascript unsafe "$1[\"b\"]" js_getB ::
+        JSRef SVGMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.b Mozilla SVGMatrix.b documentation> 
-svgMatrixGetB :: (MonadIO m, IsSVGMatrix self) => self -> m Double
-svgMatrixGetB self
-  = liftIO
-      (ghcjs_dom_svg_matrix_get_b (unSVGMatrix (toSVGMatrix self)))
+getB :: (MonadIO m) => SVGMatrix -> m Double
+getB self = liftIO (js_getB (unSVGMatrix self))
  
-foreign import javascript unsafe "$1[\"c\"] = $2;"
-        ghcjs_dom_svg_matrix_set_c :: JSRef SVGMatrix -> Double -> IO ()
+foreign import javascript unsafe "$1[\"c\"] = $2;" js_setC ::
+        JSRef SVGMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.c Mozilla SVGMatrix.c documentation> 
-svgMatrixSetC ::
-              (MonadIO m, IsSVGMatrix self) => self -> Double -> m ()
-svgMatrixSetC self val
-  = liftIO
-      (ghcjs_dom_svg_matrix_set_c (unSVGMatrix (toSVGMatrix self)) val)
+setC :: (MonadIO m) => SVGMatrix -> Double -> m ()
+setC self val = liftIO (js_setC (unSVGMatrix self) val)
  
-foreign import javascript unsafe "$1[\"c\"]"
-        ghcjs_dom_svg_matrix_get_c :: JSRef SVGMatrix -> IO Double
+foreign import javascript unsafe "$1[\"c\"]" js_getC ::
+        JSRef SVGMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.c Mozilla SVGMatrix.c documentation> 
-svgMatrixGetC :: (MonadIO m, IsSVGMatrix self) => self -> m Double
-svgMatrixGetC self
-  = liftIO
-      (ghcjs_dom_svg_matrix_get_c (unSVGMatrix (toSVGMatrix self)))
+getC :: (MonadIO m) => SVGMatrix -> m Double
+getC self = liftIO (js_getC (unSVGMatrix self))
  
-foreign import javascript unsafe "$1[\"d\"] = $2;"
-        ghcjs_dom_svg_matrix_set_d :: JSRef SVGMatrix -> Double -> IO ()
+foreign import javascript unsafe "$1[\"d\"] = $2;" js_setD ::
+        JSRef SVGMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.d Mozilla SVGMatrix.d documentation> 
-svgMatrixSetD ::
-              (MonadIO m, IsSVGMatrix self) => self -> Double -> m ()
-svgMatrixSetD self val
-  = liftIO
-      (ghcjs_dom_svg_matrix_set_d (unSVGMatrix (toSVGMatrix self)) val)
+setD :: (MonadIO m) => SVGMatrix -> Double -> m ()
+setD self val = liftIO (js_setD (unSVGMatrix self) val)
  
-foreign import javascript unsafe "$1[\"d\"]"
-        ghcjs_dom_svg_matrix_get_d :: JSRef SVGMatrix -> IO Double
+foreign import javascript unsafe "$1[\"d\"]" js_getD ::
+        JSRef SVGMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.d Mozilla SVGMatrix.d documentation> 
-svgMatrixGetD :: (MonadIO m, IsSVGMatrix self) => self -> m Double
-svgMatrixGetD self
-  = liftIO
-      (ghcjs_dom_svg_matrix_get_d (unSVGMatrix (toSVGMatrix self)))
+getD :: (MonadIO m) => SVGMatrix -> m Double
+getD self = liftIO (js_getD (unSVGMatrix self))
  
-foreign import javascript unsafe "$1[\"e\"] = $2;"
-        ghcjs_dom_svg_matrix_set_e :: JSRef SVGMatrix -> Double -> IO ()
+foreign import javascript unsafe "$1[\"e\"] = $2;" js_setE ::
+        JSRef SVGMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.e Mozilla SVGMatrix.e documentation> 
-svgMatrixSetE ::
-              (MonadIO m, IsSVGMatrix self) => self -> Double -> m ()
-svgMatrixSetE self val
-  = liftIO
-      (ghcjs_dom_svg_matrix_set_e (unSVGMatrix (toSVGMatrix self)) val)
+setE :: (MonadIO m) => SVGMatrix -> Double -> m ()
+setE self val = liftIO (js_setE (unSVGMatrix self) val)
  
-foreign import javascript unsafe "$1[\"e\"]"
-        ghcjs_dom_svg_matrix_get_e :: JSRef SVGMatrix -> IO Double
+foreign import javascript unsafe "$1[\"e\"]" js_getE ::
+        JSRef SVGMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.e Mozilla SVGMatrix.e documentation> 
-svgMatrixGetE :: (MonadIO m, IsSVGMatrix self) => self -> m Double
-svgMatrixGetE self
-  = liftIO
-      (ghcjs_dom_svg_matrix_get_e (unSVGMatrix (toSVGMatrix self)))
+getE :: (MonadIO m) => SVGMatrix -> m Double
+getE self = liftIO (js_getE (unSVGMatrix self))
  
-foreign import javascript unsafe "$1[\"f\"] = $2;"
-        ghcjs_dom_svg_matrix_set_f :: JSRef SVGMatrix -> Double -> IO ()
+foreign import javascript unsafe "$1[\"f\"] = $2;" js_setF ::
+        JSRef SVGMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.f Mozilla SVGMatrix.f documentation> 
-svgMatrixSetF ::
-              (MonadIO m, IsSVGMatrix self) => self -> Double -> m ()
-svgMatrixSetF self val
-  = liftIO
-      (ghcjs_dom_svg_matrix_set_f (unSVGMatrix (toSVGMatrix self)) val)
+setF :: (MonadIO m) => SVGMatrix -> Double -> m ()
+setF self val = liftIO (js_setF (unSVGMatrix self) val)
  
-foreign import javascript unsafe "$1[\"f\"]"
-        ghcjs_dom_svg_matrix_get_f :: JSRef SVGMatrix -> IO Double
+foreign import javascript unsafe "$1[\"f\"]" js_getF ::
+        JSRef SVGMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.f Mozilla SVGMatrix.f documentation> 
-svgMatrixGetF :: (MonadIO m, IsSVGMatrix self) => self -> m Double
-svgMatrixGetF self
-  = liftIO
-      (ghcjs_dom_svg_matrix_get_f (unSVGMatrix (toSVGMatrix self)))
+getF :: (MonadIO m) => SVGMatrix -> m Double
+getF self = liftIO (js_getF (unSVGMatrix self))
 #else
 module GHCJS.DOM.SVGMatrix (
   ) where

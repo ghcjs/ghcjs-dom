@@ -62,592 +62,596 @@ module GHCJS.DOM.Types (
   -- * WebGL typedefs
   , GLenum(..), GLboolean(..), GLbitfield(..), GLbyte(..), GLshort(..), GLint(..), GLsizei(..)
   , GLintptr(..), GLsizeiptr(..), GLubyte(..), GLushort(..), GLuint(..), GLfloat(..), GLclampf(..)
+  , GLint64, GLuint64
 
   -- * Inteface types from IDL files
 
 -- AUTO GENERATION STARTS HERE
-  , ANGLEInstancedArrays(ANGLEInstancedArrays), unANGLEInstancedArrays, IsANGLEInstancedArrays, toANGLEInstancedArrays, castToANGLEInstancedArrays, gTypeANGLEInstancedArrays
-  , AbstractView(AbstractView), unAbstractView, IsAbstractView, toAbstractView, castToAbstractView, gTypeAbstractView
-  , AbstractWorker(AbstractWorker), unAbstractWorker, IsAbstractWorker, toAbstractWorker, castToAbstractWorker, gTypeAbstractWorker
-  , AllAudioCapabilities(AllAudioCapabilities), unAllAudioCapabilities, IsAllAudioCapabilities, toAllAudioCapabilities, castToAllAudioCapabilities, gTypeAllAudioCapabilities
-  , AllVideoCapabilities(AllVideoCapabilities), unAllVideoCapabilities, IsAllVideoCapabilities, toAllVideoCapabilities, castToAllVideoCapabilities, gTypeAllVideoCapabilities
-  , AnalyserNode(AnalyserNode), unAnalyserNode, IsAnalyserNode, toAnalyserNode, castToAnalyserNode, gTypeAnalyserNode
-  , AnimationEvent(AnimationEvent), unAnimationEvent, IsAnimationEvent, toAnimationEvent, castToAnimationEvent, gTypeAnimationEvent
-  , DOMAttr(DOMAttr), unDOMAttr, IsDOMAttr, toDOMAttr, castToDOMAttr, gTypeDOMAttr
-  , AudioBuffer(AudioBuffer), unAudioBuffer, IsAudioBuffer, toAudioBuffer, castToAudioBuffer, gTypeAudioBuffer
-  , AudioBufferCallback(AudioBufferCallback), unAudioBufferCallback, IsAudioBufferCallback, toAudioBufferCallback, castToAudioBufferCallback, gTypeAudioBufferCallback
-  , AudioBufferSourceNode(AudioBufferSourceNode), unAudioBufferSourceNode, IsAudioBufferSourceNode, toAudioBufferSourceNode, castToAudioBufferSourceNode, gTypeAudioBufferSourceNode
+  , ANGLEInstancedArrays(ANGLEInstancedArrays), unANGLEInstancedArrays, castToANGLEInstancedArrays, gTypeANGLEInstancedArrays
+  , AbstractView(AbstractView), unAbstractView, castToAbstractView, gTypeAbstractView
+  , AbstractWorker(AbstractWorker), unAbstractWorker, castToAbstractWorker, gTypeAbstractWorker
+  , AllAudioCapabilities(AllAudioCapabilities), unAllAudioCapabilities, castToAllAudioCapabilities, gTypeAllAudioCapabilities
+  , AllVideoCapabilities(AllVideoCapabilities), unAllVideoCapabilities, castToAllVideoCapabilities, gTypeAllVideoCapabilities
+  , AnalyserNode(AnalyserNode), unAnalyserNode, castToAnalyserNode, gTypeAnalyserNode
+  , AnimationEvent(AnimationEvent), unAnimationEvent, castToAnimationEvent, gTypeAnimationEvent
+  , DOMAttr(DOMAttr), unDOMAttr, castToDOMAttr, gTypeDOMAttr
+  , AudioBuffer(AudioBuffer), unAudioBuffer, castToAudioBuffer, gTypeAudioBuffer
+  , AudioBufferCallback(AudioBufferCallback), unAudioBufferCallback, castToAudioBufferCallback, gTypeAudioBufferCallback
+  , AudioBufferSourceNode(AudioBufferSourceNode), unAudioBufferSourceNode, castToAudioBufferSourceNode, gTypeAudioBufferSourceNode
   , AudioContext(AudioContext), unAudioContext, IsAudioContext, toAudioContext, castToAudioContext, gTypeAudioContext
-  , AudioDestinationNode(AudioDestinationNode), unAudioDestinationNode, IsAudioDestinationNode, toAudioDestinationNode, castToAudioDestinationNode, gTypeAudioDestinationNode
-  , AudioListener(AudioListener), unAudioListener, IsAudioListener, toAudioListener, castToAudioListener, gTypeAudioListener
+  , AudioDestinationNode(AudioDestinationNode), unAudioDestinationNode, castToAudioDestinationNode, gTypeAudioDestinationNode
+  , AudioListener(AudioListener), unAudioListener, castToAudioListener, gTypeAudioListener
   , AudioNode(AudioNode), unAudioNode, IsAudioNode, toAudioNode, castToAudioNode, gTypeAudioNode
-  , AudioParam(AudioParam), unAudioParam, IsAudioParam, toAudioParam, castToAudioParam, gTypeAudioParam
-  , AudioProcessingEvent(AudioProcessingEvent), unAudioProcessingEvent, IsAudioProcessingEvent, toAudioProcessingEvent, castToAudioProcessingEvent, gTypeAudioProcessingEvent
-  , AudioStreamTrack(AudioStreamTrack), unAudioStreamTrack, IsAudioStreamTrack, toAudioStreamTrack, castToAudioStreamTrack, gTypeAudioStreamTrack
-  , AudioTrack(AudioTrack), unAudioTrack, IsAudioTrack, toAudioTrack, castToAudioTrack, gTypeAudioTrack
-  , AudioTrackList(AudioTrackList), unAudioTrackList, IsAudioTrackList, toAudioTrackList, castToAudioTrackList, gTypeAudioTrackList
-  , AutocompleteErrorEvent(AutocompleteErrorEvent), unAutocompleteErrorEvent, IsAutocompleteErrorEvent, toAutocompleteErrorEvent, castToAutocompleteErrorEvent, gTypeAutocompleteErrorEvent
-  , BarProp(BarProp), unBarProp, IsBarProp, toBarProp, castToBarProp, gTypeBarProp
-  , BatteryManager(BatteryManager), unBatteryManager, IsBatteryManager, toBatteryManager, castToBatteryManager, gTypeBatteryManager
-  , BeforeLoadEvent(BeforeLoadEvent), unBeforeLoadEvent, IsBeforeLoadEvent, toBeforeLoadEvent, castToBeforeLoadEvent, gTypeBeforeLoadEvent
-  , BeforeUnloadEvent(BeforeUnloadEvent), unBeforeUnloadEvent, IsBeforeUnloadEvent, toBeforeUnloadEvent, castToBeforeUnloadEvent, gTypeBeforeUnloadEvent
-  , BiquadFilterNode(BiquadFilterNode), unBiquadFilterNode, IsBiquadFilterNode, toBiquadFilterNode, castToBiquadFilterNode, gTypeBiquadFilterNode
+  , AudioParam(AudioParam), unAudioParam, castToAudioParam, gTypeAudioParam
+  , AudioProcessingEvent(AudioProcessingEvent), unAudioProcessingEvent, castToAudioProcessingEvent, gTypeAudioProcessingEvent
+  , AudioStreamTrack(AudioStreamTrack), unAudioStreamTrack, castToAudioStreamTrack, gTypeAudioStreamTrack
+  , AudioTrack(AudioTrack), unAudioTrack, castToAudioTrack, gTypeAudioTrack
+  , AudioTrackList(AudioTrackList), unAudioTrackList, castToAudioTrackList, gTypeAudioTrackList
+  , AutocompleteErrorEvent(AutocompleteErrorEvent), unAutocompleteErrorEvent, castToAutocompleteErrorEvent, gTypeAutocompleteErrorEvent
+  , BarProp(BarProp), unBarProp, castToBarProp, gTypeBarProp
+  , BatteryManager(BatteryManager), unBatteryManager, castToBatteryManager, gTypeBatteryManager
+  , BeforeLoadEvent(BeforeLoadEvent), unBeforeLoadEvent, castToBeforeLoadEvent, gTypeBeforeLoadEvent
+  , BeforeUnloadEvent(BeforeUnloadEvent), unBeforeUnloadEvent, castToBeforeUnloadEvent, gTypeBeforeUnloadEvent
+  , BiquadFilterNode(BiquadFilterNode), unBiquadFilterNode, castToBiquadFilterNode, gTypeBiquadFilterNode
   , Blob(Blob), unBlob, IsBlob, toBlob, castToBlob, gTypeBlob
-  , CDATASection(CDATASection), unCDATASection, IsCDATASection, toCDATASection, castToCDATASection, gTypeCDATASection
-  , CSSCharsetRule(CSSCharsetRule), unCSSCharsetRule, IsCSSCharsetRule, toCSSCharsetRule, castToCSSCharsetRule, gTypeCSSCharsetRule
-  , CSSFontFaceLoadEvent(CSSFontFaceLoadEvent), unCSSFontFaceLoadEvent, IsCSSFontFaceLoadEvent, toCSSFontFaceLoadEvent, castToCSSFontFaceLoadEvent, gTypeCSSFontFaceLoadEvent
-  , CSSFontFaceRule(CSSFontFaceRule), unCSSFontFaceRule, IsCSSFontFaceRule, toCSSFontFaceRule, castToCSSFontFaceRule, gTypeCSSFontFaceRule
-  , CSSImportRule(CSSImportRule), unCSSImportRule, IsCSSImportRule, toCSSImportRule, castToCSSImportRule, gTypeCSSImportRule
-  , CSSKeyframeRule(CSSKeyframeRule), unCSSKeyframeRule, IsCSSKeyframeRule, toCSSKeyframeRule, castToCSSKeyframeRule, gTypeCSSKeyframeRule
-  , CSSKeyframesRule(CSSKeyframesRule), unCSSKeyframesRule, IsCSSKeyframesRule, toCSSKeyframesRule, castToCSSKeyframesRule, gTypeCSSKeyframesRule
-  , CSSMediaRule(CSSMediaRule), unCSSMediaRule, IsCSSMediaRule, toCSSMediaRule, castToCSSMediaRule, gTypeCSSMediaRule
-  , CSSPageRule(CSSPageRule), unCSSPageRule, IsCSSPageRule, toCSSPageRule, castToCSSPageRule, gTypeCSSPageRule
-  , CSSPrimitiveValue(CSSPrimitiveValue), unCSSPrimitiveValue, IsCSSPrimitiveValue, toCSSPrimitiveValue, castToCSSPrimitiveValue, gTypeCSSPrimitiveValue
+  , CDATASection(CDATASection), unCDATASection, castToCDATASection, gTypeCDATASection
+  , CSSCharsetRule(CSSCharsetRule), unCSSCharsetRule, castToCSSCharsetRule, gTypeCSSCharsetRule
+  , CSSFontFaceLoadEvent(CSSFontFaceLoadEvent), unCSSFontFaceLoadEvent, castToCSSFontFaceLoadEvent, gTypeCSSFontFaceLoadEvent
+  , CSSFontFaceRule(CSSFontFaceRule), unCSSFontFaceRule, castToCSSFontFaceRule, gTypeCSSFontFaceRule
+  , CSSImportRule(CSSImportRule), unCSSImportRule, castToCSSImportRule, gTypeCSSImportRule
+  , CSSKeyframeRule(CSSKeyframeRule), unCSSKeyframeRule, castToCSSKeyframeRule, gTypeCSSKeyframeRule
+  , CSSKeyframesRule(CSSKeyframesRule), unCSSKeyframesRule, castToCSSKeyframesRule, gTypeCSSKeyframesRule
+  , CSSMediaRule(CSSMediaRule), unCSSMediaRule, castToCSSMediaRule, gTypeCSSMediaRule
+  , CSSPageRule(CSSPageRule), unCSSPageRule, castToCSSPageRule, gTypeCSSPageRule
+  , CSSPrimitiveValue(CSSPrimitiveValue), unCSSPrimitiveValue, castToCSSPrimitiveValue, gTypeCSSPrimitiveValue
   , CSSRule(CSSRule), unCSSRule, IsCSSRule, toCSSRule, castToCSSRule, gTypeCSSRule
-  , CSSRuleList(CSSRuleList), unCSSRuleList, IsCSSRuleList, toCSSRuleList, castToCSSRuleList, gTypeCSSRuleList
-  , CSSStyleDeclaration(CSSStyleDeclaration), unCSSStyleDeclaration, IsCSSStyleDeclaration, toCSSStyleDeclaration, castToCSSStyleDeclaration, gTypeCSSStyleDeclaration
-  , CSSStyleRule(CSSStyleRule), unCSSStyleRule, IsCSSStyleRule, toCSSStyleRule, castToCSSStyleRule, gTypeCSSStyleRule
-  , CSSStyleSheet(CSSStyleSheet), unCSSStyleSheet, IsCSSStyleSheet, toCSSStyleSheet, castToCSSStyleSheet, gTypeCSSStyleSheet
-  , CSSSupportsRule(CSSSupportsRule), unCSSSupportsRule, IsCSSSupportsRule, toCSSSupportsRule, castToCSSSupportsRule, gTypeCSSSupportsRule
-  , CSSUnknownRule(CSSUnknownRule), unCSSUnknownRule, IsCSSUnknownRule, toCSSUnknownRule, castToCSSUnknownRule, gTypeCSSUnknownRule
+  , CSSRuleList(CSSRuleList), unCSSRuleList, castToCSSRuleList, gTypeCSSRuleList
+  , CSSStyleDeclaration(CSSStyleDeclaration), unCSSStyleDeclaration, castToCSSStyleDeclaration, gTypeCSSStyleDeclaration
+  , CSSStyleRule(CSSStyleRule), unCSSStyleRule, castToCSSStyleRule, gTypeCSSStyleRule
+  , CSSStyleSheet(CSSStyleSheet), unCSSStyleSheet, castToCSSStyleSheet, gTypeCSSStyleSheet
+  , CSSSupportsRule(CSSSupportsRule), unCSSSupportsRule, castToCSSSupportsRule, gTypeCSSSupportsRule
+  , CSSUnknownRule(CSSUnknownRule), unCSSUnknownRule, castToCSSUnknownRule, gTypeCSSUnknownRule
   , CSSValue(CSSValue), unCSSValue, IsCSSValue, toCSSValue, castToCSSValue, gTypeCSSValue
   , CSSValueList(CSSValueList), unCSSValueList, IsCSSValueList, toCSSValueList, castToCSSValueList, gTypeCSSValueList
-  , CanvasGradient(CanvasGradient), unCanvasGradient, IsCanvasGradient, toCanvasGradient, castToCanvasGradient, gTypeCanvasGradient
-  , CanvasPattern(CanvasPattern), unCanvasPattern, IsCanvasPattern, toCanvasPattern, castToCanvasPattern, gTypeCanvasPattern
-  , CanvasProxy(CanvasProxy), unCanvasProxy, IsCanvasProxy, toCanvasProxy, castToCanvasProxy, gTypeCanvasProxy
+  , CanvasGradient(CanvasGradient), unCanvasGradient, castToCanvasGradient, gTypeCanvasGradient
+  , CanvasPattern(CanvasPattern), unCanvasPattern, castToCanvasPattern, gTypeCanvasPattern
+  , CanvasProxy(CanvasProxy), unCanvasProxy, castToCanvasProxy, gTypeCanvasProxy
   , CanvasRenderingContext(CanvasRenderingContext), unCanvasRenderingContext, IsCanvasRenderingContext, toCanvasRenderingContext, castToCanvasRenderingContext, gTypeCanvasRenderingContext
-  , CanvasRenderingContext2D(CanvasRenderingContext2D), unCanvasRenderingContext2D, IsCanvasRenderingContext2D, toCanvasRenderingContext2D, castToCanvasRenderingContext2D, gTypeCanvasRenderingContext2D
-  , CapabilityRange(CapabilityRange), unCapabilityRange, IsCapabilityRange, toCapabilityRange, castToCapabilityRange, gTypeCapabilityRange
-  , ChannelMergerNode(ChannelMergerNode), unChannelMergerNode, IsChannelMergerNode, toChannelMergerNode, castToChannelMergerNode, gTypeChannelMergerNode
-  , ChannelSplitterNode(ChannelSplitterNode), unChannelSplitterNode, IsChannelSplitterNode, toChannelSplitterNode, castToChannelSplitterNode, gTypeChannelSplitterNode
+  , CanvasRenderingContext2D(CanvasRenderingContext2D), unCanvasRenderingContext2D, castToCanvasRenderingContext2D, gTypeCanvasRenderingContext2D
+  , CapabilityRange(CapabilityRange), unCapabilityRange, castToCapabilityRange, gTypeCapabilityRange
+  , ChannelMergerNode(ChannelMergerNode), unChannelMergerNode, castToChannelMergerNode, gTypeChannelMergerNode
+  , ChannelSplitterNode(ChannelSplitterNode), unChannelSplitterNode, castToChannelSplitterNode, gTypeChannelSplitterNode
   , CharacterData(CharacterData), unCharacterData, IsCharacterData, toCharacterData, castToCharacterData, gTypeCharacterData
-  , ChildNode(ChildNode), unChildNode, IsChildNode, toChildNode, castToChildNode, gTypeChildNode
-  , ClientRect(ClientRect), unClientRect, IsClientRect, toClientRect, castToClientRect, gTypeClientRect
-  , ClientRectList(ClientRectList), unClientRectList, IsClientRectList, toClientRectList, castToClientRectList, gTypeClientRectList
-  , CloseEvent(CloseEvent), unCloseEvent, IsCloseEvent, toCloseEvent, castToCloseEvent, gTypeCloseEvent
-  , CommandLineAPIHost(CommandLineAPIHost), unCommandLineAPIHost, IsCommandLineAPIHost, toCommandLineAPIHost, castToCommandLineAPIHost, gTypeCommandLineAPIHost
-  , Comment(Comment), unComment, IsComment, toComment, castToComment, gTypeComment
-  , CompositionEvent(CompositionEvent), unCompositionEvent, IsCompositionEvent, toCompositionEvent, castToCompositionEvent, gTypeCompositionEvent
-  , ConvolverNode(ConvolverNode), unConvolverNode, IsConvolverNode, toConvolverNode, castToConvolverNode, gTypeConvolverNode
-  , Coordinates(Coordinates), unCoordinates, IsCoordinates, toCoordinates, castToCoordinates, gTypeCoordinates
-  , Counter(Counter), unCounter, IsCounter, toCounter, castToCounter, gTypeCounter
-  , Crypto(Crypto), unCrypto, IsCrypto, toCrypto, castToCrypto, gTypeCrypto
-  , CryptoKey(CryptoKey), unCryptoKey, IsCryptoKey, toCryptoKey, castToCryptoKey, gTypeCryptoKey
-  , CryptoKeyPair(CryptoKeyPair), unCryptoKeyPair, IsCryptoKeyPair, toCryptoKeyPair, castToCryptoKeyPair, gTypeCryptoKeyPair
-  , CustomEvent(CustomEvent), unCustomEvent, IsCustomEvent, toCustomEvent, castToCustomEvent, gTypeCustomEvent
-  , DOMApplicationCache(DOMApplicationCache), unDOMApplicationCache, IsDOMApplicationCache, toDOMApplicationCache, castToDOMApplicationCache, gTypeDOMApplicationCache
+  , ChildNode(ChildNode), unChildNode, castToChildNode, gTypeChildNode
+  , ClientRect(ClientRect), unClientRect, castToClientRect, gTypeClientRect
+  , ClientRectList(ClientRectList), unClientRectList, castToClientRectList, gTypeClientRectList
+  , CloseEvent(CloseEvent), unCloseEvent, castToCloseEvent, gTypeCloseEvent
+  , CommandLineAPIHost(CommandLineAPIHost), unCommandLineAPIHost, castToCommandLineAPIHost, gTypeCommandLineAPIHost
+  , Comment(Comment), unComment, castToComment, gTypeComment
+  , CompositionEvent(CompositionEvent), unCompositionEvent, castToCompositionEvent, gTypeCompositionEvent
+  , ConvolverNode(ConvolverNode), unConvolverNode, castToConvolverNode, gTypeConvolverNode
+  , Coordinates(Coordinates), unCoordinates, castToCoordinates, gTypeCoordinates
+  , Counter(Counter), unCounter, castToCounter, gTypeCounter
+  , Crypto(Crypto), unCrypto, castToCrypto, gTypeCrypto
+  , CryptoKey(CryptoKey), unCryptoKey, castToCryptoKey, gTypeCryptoKey
+  , CryptoKeyPair(CryptoKeyPair), unCryptoKeyPair, castToCryptoKeyPair, gTypeCryptoKeyPair
+  , CustomEvent(CustomEvent), unCustomEvent, castToCustomEvent, gTypeCustomEvent
+  , DOMApplicationCache(DOMApplicationCache), unDOMApplicationCache, castToDOMApplicationCache, gTypeDOMApplicationCache
   , DOMError(DOMError), unDOMError, IsDOMError, toDOMError, castToDOMError, gTypeDOMError
-  , DOMFormData(DOMFormData), unDOMFormData, IsDOMFormData, toDOMFormData, castToDOMFormData, gTypeDOMFormData
-  , DOMImplementation(DOMImplementation), unDOMImplementation, IsDOMImplementation, toDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
-  , DOMMimeType(DOMMimeType), unDOMMimeType, IsDOMMimeType, toDOMMimeType, castToDOMMimeType, gTypeDOMMimeType
-  , DOMMimeTypeArray(DOMMimeTypeArray), unDOMMimeTypeArray, IsDOMMimeTypeArray, toDOMMimeTypeArray, castToDOMMimeTypeArray, gTypeDOMMimeTypeArray
-  , DOMNamedFlowCollection(DOMNamedFlowCollection), unDOMNamedFlowCollection, IsDOMNamedFlowCollection, toDOMNamedFlowCollection, castToDOMNamedFlowCollection, gTypeDOMNamedFlowCollection
-  , DOMParser(DOMParser), unDOMParser, IsDOMParser, toDOMParser, castToDOMParser, gTypeDOMParser
-  , DOMPath(DOMPath), unDOMPath, IsDOMPath, toDOMPath, castToDOMPath, gTypeDOMPath
-  , DOMPlugin(DOMPlugin), unDOMPlugin, IsDOMPlugin, toDOMPlugin, castToDOMPlugin, gTypeDOMPlugin
-  , DOMPluginArray(DOMPluginArray), unDOMPluginArray, IsDOMPluginArray, toDOMPluginArray, castToDOMPluginArray, gTypeDOMPluginArray
-  , DOMSecurityPolicy(DOMSecurityPolicy), unDOMSecurityPolicy, IsDOMSecurityPolicy, toDOMSecurityPolicy, castToDOMSecurityPolicy, gTypeDOMSecurityPolicy
-  , DOMSelection(DOMSelection), unDOMSelection, IsDOMSelection, toDOMSelection, castToDOMSelection, gTypeDOMSelection
-  , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, IsDOMSettableTokenList, toDOMSettableTokenList, castToDOMSettableTokenList, gTypeDOMSettableTokenList
-  , DOMStringList(DOMStringList), unDOMStringList, IsDOMStringList, toDOMStringList, castToDOMStringList, gTypeDOMStringList
-  , DOMStringMap(DOMStringMap), unDOMStringMap, IsDOMStringMap, toDOMStringMap, castToDOMStringMap, gTypeDOMStringMap
+  , DOMFormData(DOMFormData), unDOMFormData, castToDOMFormData, gTypeDOMFormData
+  , DOMImplementation(DOMImplementation), unDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
+  , DOMMimeType(DOMMimeType), unDOMMimeType, castToDOMMimeType, gTypeDOMMimeType
+  , DOMMimeTypeArray(DOMMimeTypeArray), unDOMMimeTypeArray, castToDOMMimeTypeArray, gTypeDOMMimeTypeArray
+  , DOMNamedFlowCollection(DOMNamedFlowCollection), unDOMNamedFlowCollection, castToDOMNamedFlowCollection, gTypeDOMNamedFlowCollection
+  , DOMParser(DOMParser), unDOMParser, castToDOMParser, gTypeDOMParser
+  , DOMPath(DOMPath), unDOMPath, castToDOMPath, gTypeDOMPath
+  , DOMPlugin(DOMPlugin), unDOMPlugin, castToDOMPlugin, gTypeDOMPlugin
+  , DOMPluginArray(DOMPluginArray), unDOMPluginArray, castToDOMPluginArray, gTypeDOMPluginArray
+  , DOMSecurityPolicy(DOMSecurityPolicy), unDOMSecurityPolicy, castToDOMSecurityPolicy, gTypeDOMSecurityPolicy
+  , DOMSelection(DOMSelection), unDOMSelection, castToDOMSelection, gTypeDOMSelection
+  , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, castToDOMSettableTokenList, gTypeDOMSettableTokenList
+  , DOMStringList(DOMStringList), unDOMStringList, castToDOMStringList, gTypeDOMStringList
+  , DOMStringMap(DOMStringMap), unDOMStringMap, castToDOMStringMap, gTypeDOMStringMap
   , DOMTokenList(DOMTokenList), unDOMTokenList, IsDOMTokenList, toDOMTokenList, castToDOMTokenList, gTypeDOMTokenList
-  , DOMURL(DOMURL), unDOMURL, IsDOMURL, toDOMURL, castToDOMURL, gTypeDOMURL
-  , DOMWindow(DOMWindow), unDOMWindow, IsDOMWindow, toDOMWindow, castToDOMWindow, gTypeDOMWindow
-  , DOMWindowCSS(DOMWindowCSS), unDOMWindowCSS, IsDOMWindowCSS, toDOMWindowCSS, castToDOMWindowCSS, gTypeDOMWindowCSS
-  , DataCue(DataCue), unDataCue, IsDataCue, toDataCue, castToDataCue, gTypeDataCue
-  , DataTransfer(DataTransfer), unDataTransfer, IsDataTransfer, toDataTransfer, castToDataTransfer, gTypeDataTransfer
-  , DataTransferItem(DataTransferItem), unDataTransferItem, IsDataTransferItem, toDataTransferItem, castToDataTransferItem, gTypeDataTransferItem
-  , DataTransferItemList(DataTransferItemList), unDataTransferItemList, IsDataTransferItemList, toDataTransferItemList, castToDataTransferItemList, gTypeDataTransferItemList
-  , Database(Database), unDatabase, IsDatabase, toDatabase, castToDatabase, gTypeDatabase
-  , DatabaseCallback(DatabaseCallback), unDatabaseCallback, IsDatabaseCallback, toDatabaseCallback, castToDatabaseCallback, gTypeDatabaseCallback
-  , DatabaseSync(DatabaseSync), unDatabaseSync, IsDatabaseSync, toDatabaseSync, castToDatabaseSync, gTypeDatabaseSync
-  , DedicatedWorkerGlobalScope(DedicatedWorkerGlobalScope), unDedicatedWorkerGlobalScope, IsDedicatedWorkerGlobalScope, toDedicatedWorkerGlobalScope, castToDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope
-  , DelayNode(DelayNode), unDelayNode, IsDelayNode, toDelayNode, castToDelayNode, gTypeDelayNode
-  , DeviceMotionEvent(DeviceMotionEvent), unDeviceMotionEvent, IsDeviceMotionEvent, toDeviceMotionEvent, castToDeviceMotionEvent, gTypeDeviceMotionEvent
-  , DeviceOrientationEvent(DeviceOrientationEvent), unDeviceOrientationEvent, IsDeviceOrientationEvent, toDeviceOrientationEvent, castToDeviceOrientationEvent, gTypeDeviceOrientationEvent
-  , DeviceProximityEvent(DeviceProximityEvent), unDeviceProximityEvent, IsDeviceProximityEvent, toDeviceProximityEvent, castToDeviceProximityEvent, gTypeDeviceProximityEvent
+  , DOMURL(DOMURL), unDOMURL, castToDOMURL, gTypeDOMURL
+  , DOMWindow(DOMWindow), unDOMWindow, castToDOMWindow, gTypeDOMWindow
+  , DOMWindowCSS(DOMWindowCSS), unDOMWindowCSS, castToDOMWindowCSS, gTypeDOMWindowCSS
+  , DataCue(DataCue), unDataCue, castToDataCue, gTypeDataCue
+  , DataTransfer(DataTransfer), unDataTransfer, castToDataTransfer, gTypeDataTransfer
+  , DataTransferItem(DataTransferItem), unDataTransferItem, castToDataTransferItem, gTypeDataTransferItem
+  , DataTransferItemList(DataTransferItemList), unDataTransferItemList, castToDataTransferItemList, gTypeDataTransferItemList
+  , Database(Database), unDatabase, castToDatabase, gTypeDatabase
+  , DatabaseCallback(DatabaseCallback), unDatabaseCallback, castToDatabaseCallback, gTypeDatabaseCallback
+  , DedicatedWorkerGlobalScope(DedicatedWorkerGlobalScope), unDedicatedWorkerGlobalScope, castToDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope
+  , DelayNode(DelayNode), unDelayNode, castToDelayNode, gTypeDelayNode
+  , DeviceMotionEvent(DeviceMotionEvent), unDeviceMotionEvent, castToDeviceMotionEvent, gTypeDeviceMotionEvent
+  , DeviceOrientationEvent(DeviceOrientationEvent), unDeviceOrientationEvent, castToDeviceOrientationEvent, gTypeDeviceOrientationEvent
+  , DeviceProximityEvent(DeviceProximityEvent), unDeviceProximityEvent, castToDeviceProximityEvent, gTypeDeviceProximityEvent
   , Document(Document), unDocument, IsDocument, toDocument, castToDocument, gTypeDocument
-  , DocumentFragment(DocumentFragment), unDocumentFragment, IsDocumentFragment, toDocumentFragment, castToDocumentFragment, gTypeDocumentFragment
-  , DocumentType(DocumentType), unDocumentType, IsDocumentType, toDocumentType, castToDocumentType, gTypeDocumentType
-  , DynamicsCompressorNode(DynamicsCompressorNode), unDynamicsCompressorNode, IsDynamicsCompressorNode, toDynamicsCompressorNode, castToDynamicsCompressorNode, gTypeDynamicsCompressorNode
-  , EXTShaderTextureLOD(EXTShaderTextureLOD), unEXTShaderTextureLOD, IsEXTShaderTextureLOD, toEXTShaderTextureLOD, castToEXTShaderTextureLOD, gTypeEXTShaderTextureLOD
-  , EXTTextureFilterAnisotropic(EXTTextureFilterAnisotropic), unEXTTextureFilterAnisotropic, IsEXTTextureFilterAnisotropic, toEXTTextureFilterAnisotropic, castToEXTTextureFilterAnisotropic, gTypeEXTTextureFilterAnisotropic
+  , DocumentFragment(DocumentFragment), unDocumentFragment, castToDocumentFragment, gTypeDocumentFragment
+  , DocumentType(DocumentType), unDocumentType, castToDocumentType, gTypeDocumentType
+  , DynamicsCompressorNode(DynamicsCompressorNode), unDynamicsCompressorNode, castToDynamicsCompressorNode, gTypeDynamicsCompressorNode
+  , EXTBlendMinMax(EXTBlendMinMax), unEXTBlendMinMax, castToEXTBlendMinMax, gTypeEXTBlendMinMax
+  , EXTFragDepth(EXTFragDepth), unEXTFragDepth, castToEXTFragDepth, gTypeEXTFragDepth
+  , EXTShaderTextureLOD(EXTShaderTextureLOD), unEXTShaderTextureLOD, castToEXTShaderTextureLOD, gTypeEXTShaderTextureLOD
+  , EXTTextureFilterAnisotropic(EXTTextureFilterAnisotropic), unEXTTextureFilterAnisotropic, castToEXTTextureFilterAnisotropic, gTypeEXTTextureFilterAnisotropic
+  , EXTsRGB(EXTsRGB), unEXTsRGB, castToEXTsRGB, gTypeEXTsRGB
   , Element(Element), unElement, IsElement, toElement, castToElement, gTypeElement
-  , Entity(Entity), unEntity, IsEntity, toEntity, castToEntity, gTypeEntity
-  , EntityReference(EntityReference), unEntityReference, IsEntityReference, toEntityReference, castToEntityReference, gTypeEntityReference
-  , ErrorEvent(ErrorEvent), unErrorEvent, IsErrorEvent, toErrorEvent, castToErrorEvent, gTypeErrorEvent
+  , Entity(Entity), unEntity, castToEntity, gTypeEntity
+  , EntityReference(EntityReference), unEntityReference, castToEntityReference, gTypeEntityReference
+  , ErrorEvent(ErrorEvent), unErrorEvent, castToErrorEvent, gTypeErrorEvent
   , Event(Event), unEvent, IsEvent, toEvent, castToEvent, gTypeEvent
-  , EventListener(EventListener), unEventListener, IsEventListener, toEventListener, castToEventListener, gTypeEventListener
-  , EventSource(EventSource), unEventSource, IsEventSource, toEventSource, castToEventSource, gTypeEventSource
+  , EventListener(EventListener), unEventListener, castToEventListener, gTypeEventListener
+  , EventSource(EventSource), unEventSource, castToEventSource, gTypeEventSource
   , EventTarget(EventTarget), unEventTarget, IsEventTarget, toEventTarget, castToEventTarget, gTypeEventTarget
-  , File(File), unFile, IsFile, toFile, castToFile, gTypeFile
-  , FileError(FileError), unFileError, IsFileError, toFileError, castToFileError, gTypeFileError
-  , FileList(FileList), unFileList, IsFileList, toFileList, castToFileList, gTypeFileList
-  , FileReader(FileReader), unFileReader, IsFileReader, toFileReader, castToFileReader, gTypeFileReader
-  , FileReaderSync(FileReaderSync), unFileReaderSync, IsFileReaderSync, toFileReaderSync, castToFileReaderSync, gTypeFileReaderSync
-  , FocusEvent(FocusEvent), unFocusEvent, IsFocusEvent, toFocusEvent, castToFocusEvent, gTypeFocusEvent
-  , FontLoader(FontLoader), unFontLoader, IsFontLoader, toFontLoader, castToFontLoader, gTypeFontLoader
-  , GainNode(GainNode), unGainNode, IsGainNode, toGainNode, castToGainNode, gTypeGainNode
-  , Gamepad(Gamepad), unGamepad, IsGamepad, toGamepad, castToGamepad, gTypeGamepad
-  , GamepadButton(GamepadButton), unGamepadButton, IsGamepadButton, toGamepadButton, castToGamepadButton, gTypeGamepadButton
-  , GamepadEvent(GamepadEvent), unGamepadEvent, IsGamepadEvent, toGamepadEvent, castToGamepadEvent, gTypeGamepadEvent
-  , Geolocation(Geolocation), unGeolocation, IsGeolocation, toGeolocation, castToGeolocation, gTypeGeolocation
-  , Geoposition(Geoposition), unGeoposition, IsGeoposition, toGeoposition, castToGeoposition, gTypeGeoposition
-  , HTMLAllCollection(HTMLAllCollection), unHTMLAllCollection, IsHTMLAllCollection, toHTMLAllCollection, castToHTMLAllCollection, gTypeHTMLAllCollection
-  , HTMLAnchorElement(HTMLAnchorElement), unHTMLAnchorElement, IsHTMLAnchorElement, toHTMLAnchorElement, castToHTMLAnchorElement, gTypeHTMLAnchorElement
-  , HTMLAppletElement(HTMLAppletElement), unHTMLAppletElement, IsHTMLAppletElement, toHTMLAppletElement, castToHTMLAppletElement, gTypeHTMLAppletElement
-  , HTMLAreaElement(HTMLAreaElement), unHTMLAreaElement, IsHTMLAreaElement, toHTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement
-  , HTMLAudioElement(HTMLAudioElement), unHTMLAudioElement, IsHTMLAudioElement, toHTMLAudioElement, castToHTMLAudioElement, gTypeHTMLAudioElement
-  , HTMLBRElement(HTMLBRElement), unHTMLBRElement, IsHTMLBRElement, toHTMLBRElement, castToHTMLBRElement, gTypeHTMLBRElement
-  , HTMLBaseElement(HTMLBaseElement), unHTMLBaseElement, IsHTMLBaseElement, toHTMLBaseElement, castToHTMLBaseElement, gTypeHTMLBaseElement
-  , HTMLBaseFontElement(HTMLBaseFontElement), unHTMLBaseFontElement, IsHTMLBaseFontElement, toHTMLBaseFontElement, castToHTMLBaseFontElement, gTypeHTMLBaseFontElement
-  , HTMLBodyElement(HTMLBodyElement), unHTMLBodyElement, IsHTMLBodyElement, toHTMLBodyElement, castToHTMLBodyElement, gTypeHTMLBodyElement
-  , HTMLButtonElement(HTMLButtonElement), unHTMLButtonElement, IsHTMLButtonElement, toHTMLButtonElement, castToHTMLButtonElement, gTypeHTMLButtonElement
-  , HTMLCanvasElement(HTMLCanvasElement), unHTMLCanvasElement, IsHTMLCanvasElement, toHTMLCanvasElement, castToHTMLCanvasElement, gTypeHTMLCanvasElement
+  , File(File), unFile, castToFile, gTypeFile
+  , FileError(FileError), unFileError, castToFileError, gTypeFileError
+  , FileList(FileList), unFileList, castToFileList, gTypeFileList
+  , FileReader(FileReader), unFileReader, castToFileReader, gTypeFileReader
+  , FileReaderSync(FileReaderSync), unFileReaderSync, castToFileReaderSync, gTypeFileReaderSync
+  , FocusEvent(FocusEvent), unFocusEvent, castToFocusEvent, gTypeFocusEvent
+  , FontLoader(FontLoader), unFontLoader, castToFontLoader, gTypeFontLoader
+  , GainNode(GainNode), unGainNode, castToGainNode, gTypeGainNode
+  , Gamepad(Gamepad), unGamepad, castToGamepad, gTypeGamepad
+  , GamepadButton(GamepadButton), unGamepadButton, castToGamepadButton, gTypeGamepadButton
+  , GamepadEvent(GamepadEvent), unGamepadEvent, castToGamepadEvent, gTypeGamepadEvent
+  , Geolocation(Geolocation), unGeolocation, castToGeolocation, gTypeGeolocation
+  , Geoposition(Geoposition), unGeoposition, castToGeoposition, gTypeGeoposition
+  , HTMLAllCollection(HTMLAllCollection), unHTMLAllCollection, castToHTMLAllCollection, gTypeHTMLAllCollection
+  , HTMLAnchorElement(HTMLAnchorElement), unHTMLAnchorElement, castToHTMLAnchorElement, gTypeHTMLAnchorElement
+  , HTMLAppletElement(HTMLAppletElement), unHTMLAppletElement, castToHTMLAppletElement, gTypeHTMLAppletElement
+  , HTMLAreaElement(HTMLAreaElement), unHTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement
+  , HTMLAudioElement(HTMLAudioElement), unHTMLAudioElement, castToHTMLAudioElement, gTypeHTMLAudioElement
+  , HTMLBRElement(HTMLBRElement), unHTMLBRElement, castToHTMLBRElement, gTypeHTMLBRElement
+  , HTMLBaseElement(HTMLBaseElement), unHTMLBaseElement, castToHTMLBaseElement, gTypeHTMLBaseElement
+  , HTMLBaseFontElement(HTMLBaseFontElement), unHTMLBaseFontElement, castToHTMLBaseFontElement, gTypeHTMLBaseFontElement
+  , HTMLBodyElement(HTMLBodyElement), unHTMLBodyElement, castToHTMLBodyElement, gTypeHTMLBodyElement
+  , HTMLButtonElement(HTMLButtonElement), unHTMLButtonElement, castToHTMLButtonElement, gTypeHTMLButtonElement
+  , HTMLCanvasElement(HTMLCanvasElement), unHTMLCanvasElement, castToHTMLCanvasElement, gTypeHTMLCanvasElement
   , HTMLCollection(HTMLCollection), unHTMLCollection, IsHTMLCollection, toHTMLCollection, castToHTMLCollection, gTypeHTMLCollection
-  , HTMLDListElement(HTMLDListElement), unHTMLDListElement, IsHTMLDListElement, toHTMLDListElement, castToHTMLDListElement, gTypeHTMLDListElement
-  , HTMLDataListElement(HTMLDataListElement), unHTMLDataListElement, IsHTMLDataListElement, toHTMLDataListElement, castToHTMLDataListElement, gTypeHTMLDataListElement
-  , HTMLDetailsElement(HTMLDetailsElement), unHTMLDetailsElement, IsHTMLDetailsElement, toHTMLDetailsElement, castToHTMLDetailsElement, gTypeHTMLDetailsElement
-  , HTMLDirectoryElement(HTMLDirectoryElement), unHTMLDirectoryElement, IsHTMLDirectoryElement, toHTMLDirectoryElement, castToHTMLDirectoryElement, gTypeHTMLDirectoryElement
-  , HTMLDivElement(HTMLDivElement), unHTMLDivElement, IsHTMLDivElement, toHTMLDivElement, castToHTMLDivElement, gTypeHTMLDivElement
-  , HTMLDocument(HTMLDocument), unHTMLDocument, IsHTMLDocument, toHTMLDocument, castToHTMLDocument, gTypeHTMLDocument
+  , HTMLDListElement(HTMLDListElement), unHTMLDListElement, castToHTMLDListElement, gTypeHTMLDListElement
+  , HTMLDataListElement(HTMLDataListElement), unHTMLDataListElement, castToHTMLDataListElement, gTypeHTMLDataListElement
+  , HTMLDetailsElement(HTMLDetailsElement), unHTMLDetailsElement, castToHTMLDetailsElement, gTypeHTMLDetailsElement
+  , HTMLDirectoryElement(HTMLDirectoryElement), unHTMLDirectoryElement, castToHTMLDirectoryElement, gTypeHTMLDirectoryElement
+  , HTMLDivElement(HTMLDivElement), unHTMLDivElement, castToHTMLDivElement, gTypeHTMLDivElement
+  , HTMLDocument(HTMLDocument), unHTMLDocument, castToHTMLDocument, gTypeHTMLDocument
   , HTMLElement(HTMLElement), unHTMLElement, IsHTMLElement, toHTMLElement, castToHTMLElement, gTypeHTMLElement
-  , HTMLEmbedElement(HTMLEmbedElement), unHTMLEmbedElement, IsHTMLEmbedElement, toHTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement
-  , HTMLFieldSetElement(HTMLFieldSetElement), unHTMLFieldSetElement, IsHTMLFieldSetElement, toHTMLFieldSetElement, castToHTMLFieldSetElement, gTypeHTMLFieldSetElement
-  , HTMLFontElement(HTMLFontElement), unHTMLFontElement, IsHTMLFontElement, toHTMLFontElement, castToHTMLFontElement, gTypeHTMLFontElement
-  , HTMLFormControlsCollection(HTMLFormControlsCollection), unHTMLFormControlsCollection, IsHTMLFormControlsCollection, toHTMLFormControlsCollection, castToHTMLFormControlsCollection, gTypeHTMLFormControlsCollection
-  , HTMLFormElement(HTMLFormElement), unHTMLFormElement, IsHTMLFormElement, toHTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement
-  , HTMLFrameElement(HTMLFrameElement), unHTMLFrameElement, IsHTMLFrameElement, toHTMLFrameElement, castToHTMLFrameElement, gTypeHTMLFrameElement
-  , HTMLFrameSetElement(HTMLFrameSetElement), unHTMLFrameSetElement, IsHTMLFrameSetElement, toHTMLFrameSetElement, castToHTMLFrameSetElement, gTypeHTMLFrameSetElement
-  , HTMLHRElement(HTMLHRElement), unHTMLHRElement, IsHTMLHRElement, toHTMLHRElement, castToHTMLHRElement, gTypeHTMLHRElement
-  , HTMLHeadElement(HTMLHeadElement), unHTMLHeadElement, IsHTMLHeadElement, toHTMLHeadElement, castToHTMLHeadElement, gTypeHTMLHeadElement
-  , HTMLHeadingElement(HTMLHeadingElement), unHTMLHeadingElement, IsHTMLHeadingElement, toHTMLHeadingElement, castToHTMLHeadingElement, gTypeHTMLHeadingElement
-  , HTMLHtmlElement(HTMLHtmlElement), unHTMLHtmlElement, IsHTMLHtmlElement, toHTMLHtmlElement, castToHTMLHtmlElement, gTypeHTMLHtmlElement
-  , HTMLIFrameElement(HTMLIFrameElement), unHTMLIFrameElement, IsHTMLIFrameElement, toHTMLIFrameElement, castToHTMLIFrameElement, gTypeHTMLIFrameElement
-  , HTMLImageElement(HTMLImageElement), unHTMLImageElement, IsHTMLImageElement, toHTMLImageElement, castToHTMLImageElement, gTypeHTMLImageElement
-  , HTMLInputElement(HTMLInputElement), unHTMLInputElement, IsHTMLInputElement, toHTMLInputElement, castToHTMLInputElement, gTypeHTMLInputElement
-  , HTMLKeygenElement(HTMLKeygenElement), unHTMLKeygenElement, IsHTMLKeygenElement, toHTMLKeygenElement, castToHTMLKeygenElement, gTypeHTMLKeygenElement
-  , HTMLLIElement(HTMLLIElement), unHTMLLIElement, IsHTMLLIElement, toHTMLLIElement, castToHTMLLIElement, gTypeHTMLLIElement
-  , HTMLLabelElement(HTMLLabelElement), unHTMLLabelElement, IsHTMLLabelElement, toHTMLLabelElement, castToHTMLLabelElement, gTypeHTMLLabelElement
-  , HTMLLegendElement(HTMLLegendElement), unHTMLLegendElement, IsHTMLLegendElement, toHTMLLegendElement, castToHTMLLegendElement, gTypeHTMLLegendElement
-  , HTMLLinkElement(HTMLLinkElement), unHTMLLinkElement, IsHTMLLinkElement, toHTMLLinkElement, castToHTMLLinkElement, gTypeHTMLLinkElement
-  , HTMLMapElement(HTMLMapElement), unHTMLMapElement, IsHTMLMapElement, toHTMLMapElement, castToHTMLMapElement, gTypeHTMLMapElement
-  , HTMLMarqueeElement(HTMLMarqueeElement), unHTMLMarqueeElement, IsHTMLMarqueeElement, toHTMLMarqueeElement, castToHTMLMarqueeElement, gTypeHTMLMarqueeElement
+  , HTMLEmbedElement(HTMLEmbedElement), unHTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement
+  , HTMLFieldSetElement(HTMLFieldSetElement), unHTMLFieldSetElement, castToHTMLFieldSetElement, gTypeHTMLFieldSetElement
+  , HTMLFontElement(HTMLFontElement), unHTMLFontElement, castToHTMLFontElement, gTypeHTMLFontElement
+  , HTMLFormControlsCollection(HTMLFormControlsCollection), unHTMLFormControlsCollection, castToHTMLFormControlsCollection, gTypeHTMLFormControlsCollection
+  , HTMLFormElement(HTMLFormElement), unHTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement
+  , HTMLFrameElement(HTMLFrameElement), unHTMLFrameElement, castToHTMLFrameElement, gTypeHTMLFrameElement
+  , HTMLFrameSetElement(HTMLFrameSetElement), unHTMLFrameSetElement, castToHTMLFrameSetElement, gTypeHTMLFrameSetElement
+  , HTMLHRElement(HTMLHRElement), unHTMLHRElement, castToHTMLHRElement, gTypeHTMLHRElement
+  , HTMLHeadElement(HTMLHeadElement), unHTMLHeadElement, castToHTMLHeadElement, gTypeHTMLHeadElement
+  , HTMLHeadingElement(HTMLHeadingElement), unHTMLHeadingElement, castToHTMLHeadingElement, gTypeHTMLHeadingElement
+  , HTMLHtmlElement(HTMLHtmlElement), unHTMLHtmlElement, castToHTMLHtmlElement, gTypeHTMLHtmlElement
+  , HTMLIFrameElement(HTMLIFrameElement), unHTMLIFrameElement, castToHTMLIFrameElement, gTypeHTMLIFrameElement
+  , HTMLImageElement(HTMLImageElement), unHTMLImageElement, castToHTMLImageElement, gTypeHTMLImageElement
+  , HTMLInputElement(HTMLInputElement), unHTMLInputElement, castToHTMLInputElement, gTypeHTMLInputElement
+  , HTMLKeygenElement(HTMLKeygenElement), unHTMLKeygenElement, castToHTMLKeygenElement, gTypeHTMLKeygenElement
+  , HTMLLIElement(HTMLLIElement), unHTMLLIElement, castToHTMLLIElement, gTypeHTMLLIElement
+  , HTMLLabelElement(HTMLLabelElement), unHTMLLabelElement, castToHTMLLabelElement, gTypeHTMLLabelElement
+  , HTMLLegendElement(HTMLLegendElement), unHTMLLegendElement, castToHTMLLegendElement, gTypeHTMLLegendElement
+  , HTMLLinkElement(HTMLLinkElement), unHTMLLinkElement, castToHTMLLinkElement, gTypeHTMLLinkElement
+  , HTMLMapElement(HTMLMapElement), unHTMLMapElement, castToHTMLMapElement, gTypeHTMLMapElement
+  , HTMLMarqueeElement(HTMLMarqueeElement), unHTMLMarqueeElement, castToHTMLMarqueeElement, gTypeHTMLMarqueeElement
   , HTMLMediaElement(HTMLMediaElement), unHTMLMediaElement, IsHTMLMediaElement, toHTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement
-  , HTMLMenuElement(HTMLMenuElement), unHTMLMenuElement, IsHTMLMenuElement, toHTMLMenuElement, castToHTMLMenuElement, gTypeHTMLMenuElement
-  , HTMLMetaElement(HTMLMetaElement), unHTMLMetaElement, IsHTMLMetaElement, toHTMLMetaElement, castToHTMLMetaElement, gTypeHTMLMetaElement
-  , HTMLMeterElement(HTMLMeterElement), unHTMLMeterElement, IsHTMLMeterElement, toHTMLMeterElement, castToHTMLMeterElement, gTypeHTMLMeterElement
-  , HTMLModElement(HTMLModElement), unHTMLModElement, IsHTMLModElement, toHTMLModElement, castToHTMLModElement, gTypeHTMLModElement
-  , HTMLOListElement(HTMLOListElement), unHTMLOListElement, IsHTMLOListElement, toHTMLOListElement, castToHTMLOListElement, gTypeHTMLOListElement
-  , HTMLObjectElement(HTMLObjectElement), unHTMLObjectElement, IsHTMLObjectElement, toHTMLObjectElement, castToHTMLObjectElement, gTypeHTMLObjectElement
-  , HTMLOptGroupElement(HTMLOptGroupElement), unHTMLOptGroupElement, IsHTMLOptGroupElement, toHTMLOptGroupElement, castToHTMLOptGroupElement, gTypeHTMLOptGroupElement
-  , HTMLOptionElement(HTMLOptionElement), unHTMLOptionElement, IsHTMLOptionElement, toHTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement
-  , HTMLOptionsCollection(HTMLOptionsCollection), unHTMLOptionsCollection, IsHTMLOptionsCollection, toHTMLOptionsCollection, castToHTMLOptionsCollection, gTypeHTMLOptionsCollection
-  , HTMLOutputElement(HTMLOutputElement), unHTMLOutputElement, IsHTMLOutputElement, toHTMLOutputElement, castToHTMLOutputElement, gTypeHTMLOutputElement
-  , HTMLParagraphElement(HTMLParagraphElement), unHTMLParagraphElement, IsHTMLParagraphElement, toHTMLParagraphElement, castToHTMLParagraphElement, gTypeHTMLParagraphElement
-  , HTMLParamElement(HTMLParamElement), unHTMLParamElement, IsHTMLParamElement, toHTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement
-  , HTMLPreElement(HTMLPreElement), unHTMLPreElement, IsHTMLPreElement, toHTMLPreElement, castToHTMLPreElement, gTypeHTMLPreElement
-  , HTMLProgressElement(HTMLProgressElement), unHTMLProgressElement, IsHTMLProgressElement, toHTMLProgressElement, castToHTMLProgressElement, gTypeHTMLProgressElement
-  , HTMLQuoteElement(HTMLQuoteElement), unHTMLQuoteElement, IsHTMLQuoteElement, toHTMLQuoteElement, castToHTMLQuoteElement, gTypeHTMLQuoteElement
-  , HTMLScriptElement(HTMLScriptElement), unHTMLScriptElement, IsHTMLScriptElement, toHTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement
-  , HTMLSelectElement(HTMLSelectElement), unHTMLSelectElement, IsHTMLSelectElement, toHTMLSelectElement, castToHTMLSelectElement, gTypeHTMLSelectElement
-  , HTMLSourceElement(HTMLSourceElement), unHTMLSourceElement, IsHTMLSourceElement, toHTMLSourceElement, castToHTMLSourceElement, gTypeHTMLSourceElement
-  , HTMLSpanElement(HTMLSpanElement), unHTMLSpanElement, IsHTMLSpanElement, toHTMLSpanElement, castToHTMLSpanElement, gTypeHTMLSpanElement
-  , HTMLStyleElement(HTMLStyleElement), unHTMLStyleElement, IsHTMLStyleElement, toHTMLStyleElement, castToHTMLStyleElement, gTypeHTMLStyleElement
-  , HTMLTableCaptionElement(HTMLTableCaptionElement), unHTMLTableCaptionElement, IsHTMLTableCaptionElement, toHTMLTableCaptionElement, castToHTMLTableCaptionElement, gTypeHTMLTableCaptionElement
-  , HTMLTableCellElement(HTMLTableCellElement), unHTMLTableCellElement, IsHTMLTableCellElement, toHTMLTableCellElement, castToHTMLTableCellElement, gTypeHTMLTableCellElement
-  , HTMLTableColElement(HTMLTableColElement), unHTMLTableColElement, IsHTMLTableColElement, toHTMLTableColElement, castToHTMLTableColElement, gTypeHTMLTableColElement
-  , HTMLTableElement(HTMLTableElement), unHTMLTableElement, IsHTMLTableElement, toHTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement
-  , HTMLTableRowElement(HTMLTableRowElement), unHTMLTableRowElement, IsHTMLTableRowElement, toHTMLTableRowElement, castToHTMLTableRowElement, gTypeHTMLTableRowElement
-  , HTMLTableSectionElement(HTMLTableSectionElement), unHTMLTableSectionElement, IsHTMLTableSectionElement, toHTMLTableSectionElement, castToHTMLTableSectionElement, gTypeHTMLTableSectionElement
-  , HTMLTemplateElement(HTMLTemplateElement), unHTMLTemplateElement, IsHTMLTemplateElement, toHTMLTemplateElement, castToHTMLTemplateElement, gTypeHTMLTemplateElement
-  , HTMLTextAreaElement(HTMLTextAreaElement), unHTMLTextAreaElement, IsHTMLTextAreaElement, toHTMLTextAreaElement, castToHTMLTextAreaElement, gTypeHTMLTextAreaElement
-  , HTMLTitleElement(HTMLTitleElement), unHTMLTitleElement, IsHTMLTitleElement, toHTMLTitleElement, castToHTMLTitleElement, gTypeHTMLTitleElement
-  , HTMLTrackElement(HTMLTrackElement), unHTMLTrackElement, IsHTMLTrackElement, toHTMLTrackElement, castToHTMLTrackElement, gTypeHTMLTrackElement
-  , HTMLUListElement(HTMLUListElement), unHTMLUListElement, IsHTMLUListElement, toHTMLUListElement, castToHTMLUListElement, gTypeHTMLUListElement
-  , HTMLUnknownElement(HTMLUnknownElement), unHTMLUnknownElement, IsHTMLUnknownElement, toHTMLUnknownElement, castToHTMLUnknownElement, gTypeHTMLUnknownElement
-  , HTMLVideoElement(HTMLVideoElement), unHTMLVideoElement, IsHTMLVideoElement, toHTMLVideoElement, castToHTMLVideoElement, gTypeHTMLVideoElement
-  , HashChangeEvent(HashChangeEvent), unHashChangeEvent, IsHashChangeEvent, toHashChangeEvent, castToHashChangeEvent, gTypeHashChangeEvent
-  , History(History), unHistory, IsHistory, toHistory, castToHistory, gTypeHistory
-  , IDBAny(IDBAny), unIDBAny, IsIDBAny, toIDBAny, castToIDBAny, gTypeIDBAny
+  , HTMLMenuElement(HTMLMenuElement), unHTMLMenuElement, castToHTMLMenuElement, gTypeHTMLMenuElement
+  , HTMLMetaElement(HTMLMetaElement), unHTMLMetaElement, castToHTMLMetaElement, gTypeHTMLMetaElement
+  , HTMLMeterElement(HTMLMeterElement), unHTMLMeterElement, castToHTMLMeterElement, gTypeHTMLMeterElement
+  , HTMLModElement(HTMLModElement), unHTMLModElement, castToHTMLModElement, gTypeHTMLModElement
+  , HTMLOListElement(HTMLOListElement), unHTMLOListElement, castToHTMLOListElement, gTypeHTMLOListElement
+  , HTMLObjectElement(HTMLObjectElement), unHTMLObjectElement, castToHTMLObjectElement, gTypeHTMLObjectElement
+  , HTMLOptGroupElement(HTMLOptGroupElement), unHTMLOptGroupElement, castToHTMLOptGroupElement, gTypeHTMLOptGroupElement
+  , HTMLOptionElement(HTMLOptionElement), unHTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement
+  , HTMLOptionsCollection(HTMLOptionsCollection), unHTMLOptionsCollection, castToHTMLOptionsCollection, gTypeHTMLOptionsCollection
+  , HTMLOutputElement(HTMLOutputElement), unHTMLOutputElement, castToHTMLOutputElement, gTypeHTMLOutputElement
+  , HTMLParagraphElement(HTMLParagraphElement), unHTMLParagraphElement, castToHTMLParagraphElement, gTypeHTMLParagraphElement
+  , HTMLParamElement(HTMLParamElement), unHTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement
+  , HTMLPreElement(HTMLPreElement), unHTMLPreElement, castToHTMLPreElement, gTypeHTMLPreElement
+  , HTMLProgressElement(HTMLProgressElement), unHTMLProgressElement, castToHTMLProgressElement, gTypeHTMLProgressElement
+  , HTMLQuoteElement(HTMLQuoteElement), unHTMLQuoteElement, castToHTMLQuoteElement, gTypeHTMLQuoteElement
+  , HTMLScriptElement(HTMLScriptElement), unHTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement
+  , HTMLSelectElement(HTMLSelectElement), unHTMLSelectElement, castToHTMLSelectElement, gTypeHTMLSelectElement
+  , HTMLSourceElement(HTMLSourceElement), unHTMLSourceElement, castToHTMLSourceElement, gTypeHTMLSourceElement
+  , HTMLSpanElement(HTMLSpanElement), unHTMLSpanElement, castToHTMLSpanElement, gTypeHTMLSpanElement
+  , HTMLStyleElement(HTMLStyleElement), unHTMLStyleElement, castToHTMLStyleElement, gTypeHTMLStyleElement
+  , HTMLTableCaptionElement(HTMLTableCaptionElement), unHTMLTableCaptionElement, castToHTMLTableCaptionElement, gTypeHTMLTableCaptionElement
+  , HTMLTableCellElement(HTMLTableCellElement), unHTMLTableCellElement, castToHTMLTableCellElement, gTypeHTMLTableCellElement
+  , HTMLTableColElement(HTMLTableColElement), unHTMLTableColElement, castToHTMLTableColElement, gTypeHTMLTableColElement
+  , HTMLTableElement(HTMLTableElement), unHTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement
+  , HTMLTableRowElement(HTMLTableRowElement), unHTMLTableRowElement, castToHTMLTableRowElement, gTypeHTMLTableRowElement
+  , HTMLTableSectionElement(HTMLTableSectionElement), unHTMLTableSectionElement, castToHTMLTableSectionElement, gTypeHTMLTableSectionElement
+  , HTMLTemplateElement(HTMLTemplateElement), unHTMLTemplateElement, castToHTMLTemplateElement, gTypeHTMLTemplateElement
+  , HTMLTextAreaElement(HTMLTextAreaElement), unHTMLTextAreaElement, castToHTMLTextAreaElement, gTypeHTMLTextAreaElement
+  , HTMLTitleElement(HTMLTitleElement), unHTMLTitleElement, castToHTMLTitleElement, gTypeHTMLTitleElement
+  , HTMLTrackElement(HTMLTrackElement), unHTMLTrackElement, castToHTMLTrackElement, gTypeHTMLTrackElement
+  , HTMLUListElement(HTMLUListElement), unHTMLUListElement, castToHTMLUListElement, gTypeHTMLUListElement
+  , HTMLUnknownElement(HTMLUnknownElement), unHTMLUnknownElement, castToHTMLUnknownElement, gTypeHTMLUnknownElement
+  , HTMLVideoElement(HTMLVideoElement), unHTMLVideoElement, castToHTMLVideoElement, gTypeHTMLVideoElement
+  , HashChangeEvent(HashChangeEvent), unHashChangeEvent, castToHashChangeEvent, gTypeHashChangeEvent
+  , History(History), unHistory, castToHistory, gTypeHistory
+  , IDBAny(IDBAny), unIDBAny, castToIDBAny, gTypeIDBAny
   , IDBCursor(IDBCursor), unIDBCursor, IsIDBCursor, toIDBCursor, castToIDBCursor, gTypeIDBCursor
-  , IDBCursorWithValue(IDBCursorWithValue), unIDBCursorWithValue, IsIDBCursorWithValue, toIDBCursorWithValue, castToIDBCursorWithValue, gTypeIDBCursorWithValue
-  , IDBDatabase(IDBDatabase), unIDBDatabase, IsIDBDatabase, toIDBDatabase, castToIDBDatabase, gTypeIDBDatabase
-  , IDBFactory(IDBFactory), unIDBFactory, IsIDBFactory, toIDBFactory, castToIDBFactory, gTypeIDBFactory
-  , IDBIndex(IDBIndex), unIDBIndex, IsIDBIndex, toIDBIndex, castToIDBIndex, gTypeIDBIndex
-  , IDBKeyRange(IDBKeyRange), unIDBKeyRange, IsIDBKeyRange, toIDBKeyRange, castToIDBKeyRange, gTypeIDBKeyRange
-  , IDBObjectStore(IDBObjectStore), unIDBObjectStore, IsIDBObjectStore, toIDBObjectStore, castToIDBObjectStore, gTypeIDBObjectStore
-  , IDBOpenDBRequest(IDBOpenDBRequest), unIDBOpenDBRequest, IsIDBOpenDBRequest, toIDBOpenDBRequest, castToIDBOpenDBRequest, gTypeIDBOpenDBRequest
+  , IDBCursorWithValue(IDBCursorWithValue), unIDBCursorWithValue, castToIDBCursorWithValue, gTypeIDBCursorWithValue
+  , IDBDatabase(IDBDatabase), unIDBDatabase, castToIDBDatabase, gTypeIDBDatabase
+  , IDBFactory(IDBFactory), unIDBFactory, castToIDBFactory, gTypeIDBFactory
+  , IDBIndex(IDBIndex), unIDBIndex, castToIDBIndex, gTypeIDBIndex
+  , IDBKeyRange(IDBKeyRange), unIDBKeyRange, castToIDBKeyRange, gTypeIDBKeyRange
+  , IDBObjectStore(IDBObjectStore), unIDBObjectStore, castToIDBObjectStore, gTypeIDBObjectStore
+  , IDBOpenDBRequest(IDBOpenDBRequest), unIDBOpenDBRequest, castToIDBOpenDBRequest, gTypeIDBOpenDBRequest
   , IDBRequest(IDBRequest), unIDBRequest, IsIDBRequest, toIDBRequest, castToIDBRequest, gTypeIDBRequest
-  , IDBTransaction(IDBTransaction), unIDBTransaction, IsIDBTransaction, toIDBTransaction, castToIDBTransaction, gTypeIDBTransaction
-  , IDBVersionChangeEvent(IDBVersionChangeEvent), unIDBVersionChangeEvent, IsIDBVersionChangeEvent, toIDBVersionChangeEvent, castToIDBVersionChangeEvent, gTypeIDBVersionChangeEvent
-  , ImageData(ImageData), unImageData, IsImageData, toImageData, castToImageData, gTypeImageData
-  , InspectorFrontendHost(InspectorFrontendHost), unInspectorFrontendHost, IsInspectorFrontendHost, toInspectorFrontendHost, castToInspectorFrontendHost, gTypeInspectorFrontendHost
-  , InternalSettings(InternalSettings), unInternalSettings, IsInternalSettings, toInternalSettings, castToInternalSettings, gTypeInternalSettings
-  , Internals(Internals), unInternals, IsInternals, toInternals, castToInternals, gTypeInternals
-  , KeyboardEvent(KeyboardEvent), unKeyboardEvent, IsKeyboardEvent, toKeyboardEvent, castToKeyboardEvent, gTypeKeyboardEvent
-  , Location(Location), unLocation, IsLocation, toLocation, castToLocation, gTypeLocation
-  , MallocStatistics(MallocStatistics), unMallocStatistics, IsMallocStatistics, toMallocStatistics, castToMallocStatistics, gTypeMallocStatistics
-  , MediaController(MediaController), unMediaController, IsMediaController, toMediaController, castToMediaController, gTypeMediaController
-  , MediaControlsHost(MediaControlsHost), unMediaControlsHost, IsMediaControlsHost, toMediaControlsHost, castToMediaControlsHost, gTypeMediaControlsHost
-  , MediaElementAudioSourceNode(MediaElementAudioSourceNode), unMediaElementAudioSourceNode, IsMediaElementAudioSourceNode, toMediaElementAudioSourceNode, castToMediaElementAudioSourceNode, gTypeMediaElementAudioSourceNode
-  , MediaError(MediaError), unMediaError, IsMediaError, toMediaError, castToMediaError, gTypeMediaError
-  , MediaKeyError(MediaKeyError), unMediaKeyError, IsMediaKeyError, toMediaKeyError, castToMediaKeyError, gTypeMediaKeyError
-  , MediaKeyEvent(MediaKeyEvent), unMediaKeyEvent, IsMediaKeyEvent, toMediaKeyEvent, castToMediaKeyEvent, gTypeMediaKeyEvent
-  , MediaKeyMessageEvent(MediaKeyMessageEvent), unMediaKeyMessageEvent, IsMediaKeyMessageEvent, toMediaKeyMessageEvent, castToMediaKeyMessageEvent, gTypeMediaKeyMessageEvent
-  , MediaKeyNeededEvent(MediaKeyNeededEvent), unMediaKeyNeededEvent, IsMediaKeyNeededEvent, toMediaKeyNeededEvent, castToMediaKeyNeededEvent, gTypeMediaKeyNeededEvent
-  , MediaKeySession(MediaKeySession), unMediaKeySession, IsMediaKeySession, toMediaKeySession, castToMediaKeySession, gTypeMediaKeySession
-  , MediaKeys(MediaKeys), unMediaKeys, IsMediaKeys, toMediaKeys, castToMediaKeys, gTypeMediaKeys
-  , MediaList(MediaList), unMediaList, IsMediaList, toMediaList, castToMediaList, gTypeMediaList
-  , MediaQueryList(MediaQueryList), unMediaQueryList, IsMediaQueryList, toMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
-  , MediaQueryListListener(MediaQueryListListener), unMediaQueryListListener, IsMediaQueryListListener, toMediaQueryListListener, castToMediaQueryListListener, gTypeMediaQueryListListener
-  , MediaSource(MediaSource), unMediaSource, IsMediaSource, toMediaSource, castToMediaSource, gTypeMediaSource
-  , MediaSourceStates(MediaSourceStates), unMediaSourceStates, IsMediaSourceStates, toMediaSourceStates, castToMediaSourceStates, gTypeMediaSourceStates
-  , MediaStream(MediaStream), unMediaStream, IsMediaStream, toMediaStream, castToMediaStream, gTypeMediaStream
-  , MediaStreamAudioDestinationNode(MediaStreamAudioDestinationNode), unMediaStreamAudioDestinationNode, IsMediaStreamAudioDestinationNode, toMediaStreamAudioDestinationNode, castToMediaStreamAudioDestinationNode, gTypeMediaStreamAudioDestinationNode
-  , MediaStreamAudioSourceNode(MediaStreamAudioSourceNode), unMediaStreamAudioSourceNode, IsMediaStreamAudioSourceNode, toMediaStreamAudioSourceNode, castToMediaStreamAudioSourceNode, gTypeMediaStreamAudioSourceNode
+  , IDBTransaction(IDBTransaction), unIDBTransaction, castToIDBTransaction, gTypeIDBTransaction
+  , IDBVersionChangeEvent(IDBVersionChangeEvent), unIDBVersionChangeEvent, castToIDBVersionChangeEvent, gTypeIDBVersionChangeEvent
+  , ImageData(ImageData), unImageData, castToImageData, gTypeImageData
+  , InspectorFrontendHost(InspectorFrontendHost), unInspectorFrontendHost, castToInspectorFrontendHost, gTypeInspectorFrontendHost
+  , InternalSettings(InternalSettings), unInternalSettings, castToInternalSettings, gTypeInternalSettings
+  , Internals(Internals), unInternals, castToInternals, gTypeInternals
+  , KeyboardEvent(KeyboardEvent), unKeyboardEvent, castToKeyboardEvent, gTypeKeyboardEvent
+  , Location(Location), unLocation, castToLocation, gTypeLocation
+  , MallocStatistics(MallocStatistics), unMallocStatistics, castToMallocStatistics, gTypeMallocStatistics
+  , MediaController(MediaController), unMediaController, castToMediaController, gTypeMediaController
+  , MediaControlsHost(MediaControlsHost), unMediaControlsHost, castToMediaControlsHost, gTypeMediaControlsHost
+  , MediaElementAudioSourceNode(MediaElementAudioSourceNode), unMediaElementAudioSourceNode, castToMediaElementAudioSourceNode, gTypeMediaElementAudioSourceNode
+  , MediaError(MediaError), unMediaError, castToMediaError, gTypeMediaError
+  , MediaKeyError(MediaKeyError), unMediaKeyError, castToMediaKeyError, gTypeMediaKeyError
+  , MediaKeyEvent(MediaKeyEvent), unMediaKeyEvent, castToMediaKeyEvent, gTypeMediaKeyEvent
+  , MediaKeyMessageEvent(MediaKeyMessageEvent), unMediaKeyMessageEvent, castToMediaKeyMessageEvent, gTypeMediaKeyMessageEvent
+  , MediaKeyNeededEvent(MediaKeyNeededEvent), unMediaKeyNeededEvent, castToMediaKeyNeededEvent, gTypeMediaKeyNeededEvent
+  , MediaKeySession(MediaKeySession), unMediaKeySession, castToMediaKeySession, gTypeMediaKeySession
+  , MediaKeys(MediaKeys), unMediaKeys, castToMediaKeys, gTypeMediaKeys
+  , MediaList(MediaList), unMediaList, castToMediaList, gTypeMediaList
+  , MediaQueryList(MediaQueryList), unMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
+  , MediaQueryListListener(MediaQueryListListener), unMediaQueryListListener, castToMediaQueryListListener, gTypeMediaQueryListListener
+  , MediaSource(MediaSource), unMediaSource, castToMediaSource, gTypeMediaSource
+  , MediaSourceStates(MediaSourceStates), unMediaSourceStates, castToMediaSourceStates, gTypeMediaSourceStates
+  , MediaStream(MediaStream), unMediaStream, castToMediaStream, gTypeMediaStream
+  , MediaStreamAudioDestinationNode(MediaStreamAudioDestinationNode), unMediaStreamAudioDestinationNode, castToMediaStreamAudioDestinationNode, gTypeMediaStreamAudioDestinationNode
+  , MediaStreamAudioSourceNode(MediaStreamAudioSourceNode), unMediaStreamAudioSourceNode, castToMediaStreamAudioSourceNode, gTypeMediaStreamAudioSourceNode
   , MediaStreamCapabilities(MediaStreamCapabilities), unMediaStreamCapabilities, IsMediaStreamCapabilities, toMediaStreamCapabilities, castToMediaStreamCapabilities, gTypeMediaStreamCapabilities
-  , MediaStreamEvent(MediaStreamEvent), unMediaStreamEvent, IsMediaStreamEvent, toMediaStreamEvent, castToMediaStreamEvent, gTypeMediaStreamEvent
+  , MediaStreamEvent(MediaStreamEvent), unMediaStreamEvent, castToMediaStreamEvent, gTypeMediaStreamEvent
   , MediaStreamTrack(MediaStreamTrack), unMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack, castToMediaStreamTrack, gTypeMediaStreamTrack
-  , MediaStreamTrackEvent(MediaStreamTrackEvent), unMediaStreamTrackEvent, IsMediaStreamTrackEvent, toMediaStreamTrackEvent, castToMediaStreamTrackEvent, gTypeMediaStreamTrackEvent
-  , MediaStreamTrackSourcesCallback(MediaStreamTrackSourcesCallback), unMediaStreamTrackSourcesCallback, IsMediaStreamTrackSourcesCallback, toMediaStreamTrackSourcesCallback, castToMediaStreamTrackSourcesCallback, gTypeMediaStreamTrackSourcesCallback
-  , MediaTrackConstraint(MediaTrackConstraint), unMediaTrackConstraint, IsMediaTrackConstraint, toMediaTrackConstraint, castToMediaTrackConstraint, gTypeMediaTrackConstraint
-  , MediaTrackConstraintSet(MediaTrackConstraintSet), unMediaTrackConstraintSet, IsMediaTrackConstraintSet, toMediaTrackConstraintSet, castToMediaTrackConstraintSet, gTypeMediaTrackConstraintSet
-  , MediaTrackConstraints(MediaTrackConstraints), unMediaTrackConstraints, IsMediaTrackConstraints, toMediaTrackConstraints, castToMediaTrackConstraints, gTypeMediaTrackConstraints
-  , MemoryInfo(MemoryInfo), unMemoryInfo, IsMemoryInfo, toMemoryInfo, castToMemoryInfo, gTypeMemoryInfo
-  , MessageChannel(MessageChannel), unMessageChannel, IsMessageChannel, toMessageChannel, castToMessageChannel, gTypeMessageChannel
-  , MessageEvent(MessageEvent), unMessageEvent, IsMessageEvent, toMessageEvent, castToMessageEvent, gTypeMessageEvent
-  , MessagePort(MessagePort), unMessagePort, IsMessagePort, toMessagePort, castToMessagePort, gTypeMessagePort
+  , MediaStreamTrackEvent(MediaStreamTrackEvent), unMediaStreamTrackEvent, castToMediaStreamTrackEvent, gTypeMediaStreamTrackEvent
+  , MediaStreamTrackSourcesCallback(MediaStreamTrackSourcesCallback), unMediaStreamTrackSourcesCallback, castToMediaStreamTrackSourcesCallback, gTypeMediaStreamTrackSourcesCallback
+  , MediaTrackConstraint(MediaTrackConstraint), unMediaTrackConstraint, castToMediaTrackConstraint, gTypeMediaTrackConstraint
+  , MediaTrackConstraintSet(MediaTrackConstraintSet), unMediaTrackConstraintSet, castToMediaTrackConstraintSet, gTypeMediaTrackConstraintSet
+  , MediaTrackConstraints(MediaTrackConstraints), unMediaTrackConstraints, castToMediaTrackConstraints, gTypeMediaTrackConstraints
+  , MemoryInfo(MemoryInfo), unMemoryInfo, castToMemoryInfo, gTypeMemoryInfo
+  , MessageChannel(MessageChannel), unMessageChannel, castToMessageChannel, gTypeMessageChannel
+  , MessageEvent(MessageEvent), unMessageEvent, castToMessageEvent, gTypeMessageEvent
+  , MessagePort(MessagePort), unMessagePort, castToMessagePort, gTypeMessagePort
   , MouseEvent(MouseEvent), unMouseEvent, IsMouseEvent, toMouseEvent, castToMouseEvent, gTypeMouseEvent
-  , MutationEvent(MutationEvent), unMutationEvent, IsMutationEvent, toMutationEvent, castToMutationEvent, gTypeMutationEvent
-  , MutationObserver(MutationObserver), unMutationObserver, IsMutationObserver, toMutationObserver, castToMutationObserver, gTypeMutationObserver
-  , MutationRecord(MutationRecord), unMutationRecord, IsMutationRecord, toMutationRecord, castToMutationRecord, gTypeMutationRecord
-  , NamedNodeMap(NamedNodeMap), unNamedNodeMap, IsNamedNodeMap, toNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
-  , Navigator(Navigator), unNavigator, IsNavigator, toNavigator, castToNavigator, gTypeNavigator
-  , NavigatorUserMediaError(NavigatorUserMediaError), unNavigatorUserMediaError, IsNavigatorUserMediaError, toNavigatorUserMediaError, castToNavigatorUserMediaError, gTypeNavigatorUserMediaError
-  , NavigatorUserMediaErrorCallback(NavigatorUserMediaErrorCallback), unNavigatorUserMediaErrorCallback, IsNavigatorUserMediaErrorCallback, toNavigatorUserMediaErrorCallback, castToNavigatorUserMediaErrorCallback, gTypeNavigatorUserMediaErrorCallback
-  , NavigatorUserMediaSuccessCallback(NavigatorUserMediaSuccessCallback), unNavigatorUserMediaSuccessCallback, IsNavigatorUserMediaSuccessCallback, toNavigatorUserMediaSuccessCallback, castToNavigatorUserMediaSuccessCallback, gTypeNavigatorUserMediaSuccessCallback
+  , MutationEvent(MutationEvent), unMutationEvent, castToMutationEvent, gTypeMutationEvent
+  , MutationObserver(MutationObserver), unMutationObserver, castToMutationObserver, gTypeMutationObserver
+  , MutationRecord(MutationRecord), unMutationRecord, castToMutationRecord, gTypeMutationRecord
+  , NamedNodeMap(NamedNodeMap), unNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
+  , Navigator(Navigator), unNavigator, castToNavigator, gTypeNavigator
+  , NavigatorUserMediaError(NavigatorUserMediaError), unNavigatorUserMediaError, castToNavigatorUserMediaError, gTypeNavigatorUserMediaError
+  , NavigatorUserMediaErrorCallback(NavigatorUserMediaErrorCallback), unNavigatorUserMediaErrorCallback, castToNavigatorUserMediaErrorCallback, gTypeNavigatorUserMediaErrorCallback
+  , NavigatorUserMediaSuccessCallback(NavigatorUserMediaSuccessCallback), unNavigatorUserMediaSuccessCallback, castToNavigatorUserMediaSuccessCallback, gTypeNavigatorUserMediaSuccessCallback
   , Node(Node), unNode, IsNode, toNode, castToNode, gTypeNode
-  , NodeFilter(NodeFilter), unNodeFilter, IsNodeFilter, toNodeFilter, castToNodeFilter, gTypeNodeFilter
-  , NodeIterator(NodeIterator), unNodeIterator, IsNodeIterator, toNodeIterator, castToNodeIterator, gTypeNodeIterator
+  , NodeFilter(NodeFilter), unNodeFilter, castToNodeFilter, gTypeNodeFilter
+  , NodeIterator(NodeIterator), unNodeIterator, castToNodeIterator, gTypeNodeIterator
   , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, castToNodeList, gTypeNodeList
-  , Notation(Notation), unNotation, IsNotation, toNotation, castToNotation, gTypeNotation
-  , Notification(Notification), unNotification, IsNotification, toNotification, castToNotification, gTypeNotification
-  , NotificationCenter(NotificationCenter), unNotificationCenter, IsNotificationCenter, toNotificationCenter, castToNotificationCenter, gTypeNotificationCenter
-  , NotificationPermissionCallback(NotificationPermissionCallback), unNotificationPermissionCallback, IsNotificationPermissionCallback, toNotificationPermissionCallback, castToNotificationPermissionCallback, gTypeNotificationPermissionCallback
-  , OESElementIndexUint(OESElementIndexUint), unOESElementIndexUint, IsOESElementIndexUint, toOESElementIndexUint, castToOESElementIndexUint, gTypeOESElementIndexUint
-  , OESStandardDerivatives(OESStandardDerivatives), unOESStandardDerivatives, IsOESStandardDerivatives, toOESStandardDerivatives, castToOESStandardDerivatives, gTypeOESStandardDerivatives
-  , OESTextureFloat(OESTextureFloat), unOESTextureFloat, IsOESTextureFloat, toOESTextureFloat, castToOESTextureFloat, gTypeOESTextureFloat
-  , OESTextureFloatLinear(OESTextureFloatLinear), unOESTextureFloatLinear, IsOESTextureFloatLinear, toOESTextureFloatLinear, castToOESTextureFloatLinear, gTypeOESTextureFloatLinear
-  , OESTextureHalfFloat(OESTextureHalfFloat), unOESTextureHalfFloat, IsOESTextureHalfFloat, toOESTextureHalfFloat, castToOESTextureHalfFloat, gTypeOESTextureHalfFloat
-  , OESTextureHalfFloatLinear(OESTextureHalfFloatLinear), unOESTextureHalfFloatLinear, IsOESTextureHalfFloatLinear, toOESTextureHalfFloatLinear, castToOESTextureHalfFloatLinear, gTypeOESTextureHalfFloatLinear
-  , OESVertexArrayObject(OESVertexArrayObject), unOESVertexArrayObject, IsOESVertexArrayObject, toOESVertexArrayObject, castToOESVertexArrayObject, gTypeOESVertexArrayObject
-  , OfflineAudioCompletionEvent(OfflineAudioCompletionEvent), unOfflineAudioCompletionEvent, IsOfflineAudioCompletionEvent, toOfflineAudioCompletionEvent, castToOfflineAudioCompletionEvent, gTypeOfflineAudioCompletionEvent
-  , OfflineAudioContext(OfflineAudioContext), unOfflineAudioContext, IsOfflineAudioContext, toOfflineAudioContext, castToOfflineAudioContext, gTypeOfflineAudioContext
-  , OscillatorNode(OscillatorNode), unOscillatorNode, IsOscillatorNode, toOscillatorNode, castToOscillatorNode, gTypeOscillatorNode
-  , OverflowEvent(OverflowEvent), unOverflowEvent, IsOverflowEvent, toOverflowEvent, castToOverflowEvent, gTypeOverflowEvent
-  , PageTransitionEvent(PageTransitionEvent), unPageTransitionEvent, IsPageTransitionEvent, toPageTransitionEvent, castToPageTransitionEvent, gTypePageTransitionEvent
-  , PannerNode(PannerNode), unPannerNode, IsPannerNode, toPannerNode, castToPannerNode, gTypePannerNode
-  , Performance(Performance), unPerformance, IsPerformance, toPerformance, castToPerformance, gTypePerformance
+  , Notification(Notification), unNotification, castToNotification, gTypeNotification
+  , NotificationCenter(NotificationCenter), unNotificationCenter, castToNotificationCenter, gTypeNotificationCenter
+  , NotificationPermissionCallback(NotificationPermissionCallback), unNotificationPermissionCallback, castToNotificationPermissionCallback, gTypeNotificationPermissionCallback
+  , OESElementIndexUint(OESElementIndexUint), unOESElementIndexUint, castToOESElementIndexUint, gTypeOESElementIndexUint
+  , OESStandardDerivatives(OESStandardDerivatives), unOESStandardDerivatives, castToOESStandardDerivatives, gTypeOESStandardDerivatives
+  , OESTextureFloat(OESTextureFloat), unOESTextureFloat, castToOESTextureFloat, gTypeOESTextureFloat
+  , OESTextureFloatLinear(OESTextureFloatLinear), unOESTextureFloatLinear, castToOESTextureFloatLinear, gTypeOESTextureFloatLinear
+  , OESTextureHalfFloat(OESTextureHalfFloat), unOESTextureHalfFloat, castToOESTextureHalfFloat, gTypeOESTextureHalfFloat
+  , OESTextureHalfFloatLinear(OESTextureHalfFloatLinear), unOESTextureHalfFloatLinear, castToOESTextureHalfFloatLinear, gTypeOESTextureHalfFloatLinear
+  , OESVertexArrayObject(OESVertexArrayObject), unOESVertexArrayObject, castToOESVertexArrayObject, gTypeOESVertexArrayObject
+  , OfflineAudioCompletionEvent(OfflineAudioCompletionEvent), unOfflineAudioCompletionEvent, castToOfflineAudioCompletionEvent, gTypeOfflineAudioCompletionEvent
+  , OfflineAudioContext(OfflineAudioContext), unOfflineAudioContext, castToOfflineAudioContext, gTypeOfflineAudioContext
+  , OscillatorNode(OscillatorNode), unOscillatorNode, castToOscillatorNode, gTypeOscillatorNode
+  , OverflowEvent(OverflowEvent), unOverflowEvent, castToOverflowEvent, gTypeOverflowEvent
+  , PageTransitionEvent(PageTransitionEvent), unPageTransitionEvent, castToPageTransitionEvent, gTypePageTransitionEvent
+  , PannerNode(PannerNode), unPannerNode, castToPannerNode, gTypePannerNode
+  , Performance(Performance), unPerformance, castToPerformance, gTypePerformance
   , PerformanceEntry(PerformanceEntry), unPerformanceEntry, IsPerformanceEntry, toPerformanceEntry, castToPerformanceEntry, gTypePerformanceEntry
-  , PerformanceEntryList(PerformanceEntryList), unPerformanceEntryList, IsPerformanceEntryList, toPerformanceEntryList, castToPerformanceEntryList, gTypePerformanceEntryList
-  , PerformanceMark(PerformanceMark), unPerformanceMark, IsPerformanceMark, toPerformanceMark, castToPerformanceMark, gTypePerformanceMark
-  , PerformanceMeasure(PerformanceMeasure), unPerformanceMeasure, IsPerformanceMeasure, toPerformanceMeasure, castToPerformanceMeasure, gTypePerformanceMeasure
-  , PerformanceNavigation(PerformanceNavigation), unPerformanceNavigation, IsPerformanceNavigation, toPerformanceNavigation, castToPerformanceNavigation, gTypePerformanceNavigation
-  , PerformanceResourceTiming(PerformanceResourceTiming), unPerformanceResourceTiming, IsPerformanceResourceTiming, toPerformanceResourceTiming, castToPerformanceResourceTiming, gTypePerformanceResourceTiming
-  , PerformanceTiming(PerformanceTiming), unPerformanceTiming, IsPerformanceTiming, toPerformanceTiming, castToPerformanceTiming, gTypePerformanceTiming
-  , PeriodicWave(PeriodicWave), unPeriodicWave, IsPeriodicWave, toPeriodicWave, castToPeriodicWave, gTypePeriodicWave
-  , PopStateEvent(PopStateEvent), unPopStateEvent, IsPopStateEvent, toPopStateEvent, castToPopStateEvent, gTypePopStateEvent
-  , PositionCallback(PositionCallback), unPositionCallback, IsPositionCallback, toPositionCallback, castToPositionCallback, gTypePositionCallback
-  , PositionError(PositionError), unPositionError, IsPositionError, toPositionError, castToPositionError, gTypePositionError
-  , PositionErrorCallback(PositionErrorCallback), unPositionErrorCallback, IsPositionErrorCallback, toPositionErrorCallback, castToPositionErrorCallback, gTypePositionErrorCallback
-  , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, IsProcessingInstruction, toProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
+  , PerformanceEntryList(PerformanceEntryList), unPerformanceEntryList, castToPerformanceEntryList, gTypePerformanceEntryList
+  , PerformanceMark(PerformanceMark), unPerformanceMark, castToPerformanceMark, gTypePerformanceMark
+  , PerformanceMeasure(PerformanceMeasure), unPerformanceMeasure, castToPerformanceMeasure, gTypePerformanceMeasure
+  , PerformanceNavigation(PerformanceNavigation), unPerformanceNavigation, castToPerformanceNavigation, gTypePerformanceNavigation
+  , PerformanceResourceTiming(PerformanceResourceTiming), unPerformanceResourceTiming, castToPerformanceResourceTiming, gTypePerformanceResourceTiming
+  , PerformanceTiming(PerformanceTiming), unPerformanceTiming, castToPerformanceTiming, gTypePerformanceTiming
+  , PeriodicWave(PeriodicWave), unPeriodicWave, castToPeriodicWave, gTypePeriodicWave
+  , PopStateEvent(PopStateEvent), unPopStateEvent, castToPopStateEvent, gTypePopStateEvent
+  , PositionCallback(PositionCallback), unPositionCallback, castToPositionCallback, gTypePositionCallback
+  , PositionError(PositionError), unPositionError, castToPositionError, gTypePositionError
+  , PositionErrorCallback(PositionErrorCallback), unPositionErrorCallback, castToPositionErrorCallback, gTypePositionErrorCallback
+  , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
   , ProgressEvent(ProgressEvent), unProgressEvent, IsProgressEvent, toProgressEvent, castToProgressEvent, gTypeProgressEvent
-  , QuickTimePluginReplacement(QuickTimePluginReplacement), unQuickTimePluginReplacement, IsQuickTimePluginReplacement, toQuickTimePluginReplacement, castToQuickTimePluginReplacement, gTypeQuickTimePluginReplacement
-  , RGBColor(RGBColor), unRGBColor, IsRGBColor, toRGBColor, castToRGBColor, gTypeRGBColor
-  , RTCConfiguration(RTCConfiguration), unRTCConfiguration, IsRTCConfiguration, toRTCConfiguration, castToRTCConfiguration, gTypeRTCConfiguration
-  , RTCDTMFSender(RTCDTMFSender), unRTCDTMFSender, IsRTCDTMFSender, toRTCDTMFSender, castToRTCDTMFSender, gTypeRTCDTMFSender
-  , RTCDTMFToneChangeEvent(RTCDTMFToneChangeEvent), unRTCDTMFToneChangeEvent, IsRTCDTMFToneChangeEvent, toRTCDTMFToneChangeEvent, castToRTCDTMFToneChangeEvent, gTypeRTCDTMFToneChangeEvent
-  , RTCDataChannel(RTCDataChannel), unRTCDataChannel, IsRTCDataChannel, toRTCDataChannel, castToRTCDataChannel, gTypeRTCDataChannel
-  , RTCDataChannelEvent(RTCDataChannelEvent), unRTCDataChannelEvent, IsRTCDataChannelEvent, toRTCDataChannelEvent, castToRTCDataChannelEvent, gTypeRTCDataChannelEvent
-  , RTCIceCandidate(RTCIceCandidate), unRTCIceCandidate, IsRTCIceCandidate, toRTCIceCandidate, castToRTCIceCandidate, gTypeRTCIceCandidate
-  , RTCIceCandidateEvent(RTCIceCandidateEvent), unRTCIceCandidateEvent, IsRTCIceCandidateEvent, toRTCIceCandidateEvent, castToRTCIceCandidateEvent, gTypeRTCIceCandidateEvent
-  , RTCIceServer(RTCIceServer), unRTCIceServer, IsRTCIceServer, toRTCIceServer, castToRTCIceServer, gTypeRTCIceServer
-  , RTCPeerConnection(RTCPeerConnection), unRTCPeerConnection, IsRTCPeerConnection, toRTCPeerConnection, castToRTCPeerConnection, gTypeRTCPeerConnection
-  , RTCPeerConnectionErrorCallback(RTCPeerConnectionErrorCallback), unRTCPeerConnectionErrorCallback, IsRTCPeerConnectionErrorCallback, toRTCPeerConnectionErrorCallback, castToRTCPeerConnectionErrorCallback, gTypeRTCPeerConnectionErrorCallback
-  , RTCSessionDescription(RTCSessionDescription), unRTCSessionDescription, IsRTCSessionDescription, toRTCSessionDescription, castToRTCSessionDescription, gTypeRTCSessionDescription
-  , RTCSessionDescriptionCallback(RTCSessionDescriptionCallback), unRTCSessionDescriptionCallback, IsRTCSessionDescriptionCallback, toRTCSessionDescriptionCallback, castToRTCSessionDescriptionCallback, gTypeRTCSessionDescriptionCallback
-  , RTCStatsCallback(RTCStatsCallback), unRTCStatsCallback, IsRTCStatsCallback, toRTCStatsCallback, castToRTCStatsCallback, gTypeRTCStatsCallback
-  , RTCStatsReport(RTCStatsReport), unRTCStatsReport, IsRTCStatsReport, toRTCStatsReport, castToRTCStatsReport, gTypeRTCStatsReport
-  , RTCStatsResponse(RTCStatsResponse), unRTCStatsResponse, IsRTCStatsResponse, toRTCStatsResponse, castToRTCStatsResponse, gTypeRTCStatsResponse
-  , RadioNodeList(RadioNodeList), unRadioNodeList, IsRadioNodeList, toRadioNodeList, castToRadioNodeList, gTypeRadioNodeList
-  , DOMRange(DOMRange), unDOMRange, IsDOMRange, toDOMRange, castToDOMRange, gTypeDOMRange
-  , Rect(Rect), unRect, IsRect, toRect, castToRect, gTypeRect
-  , RequestAnimationFrameCallback(RequestAnimationFrameCallback), unRequestAnimationFrameCallback, IsRequestAnimationFrameCallback, toRequestAnimationFrameCallback, castToRequestAnimationFrameCallback, gTypeRequestAnimationFrameCallback
-  , SQLError(SQLError), unSQLError, IsSQLError, toSQLError, castToSQLError, gTypeSQLError
-  , SQLResultSet(SQLResultSet), unSQLResultSet, IsSQLResultSet, toSQLResultSet, castToSQLResultSet, gTypeSQLResultSet
-  , SQLResultSetRowList(SQLResultSetRowList), unSQLResultSetRowList, IsSQLResultSetRowList, toSQLResultSetRowList, castToSQLResultSetRowList, gTypeSQLResultSetRowList
-  , SQLStatementCallback(SQLStatementCallback), unSQLStatementCallback, IsSQLStatementCallback, toSQLStatementCallback, castToSQLStatementCallback, gTypeSQLStatementCallback
-  , SQLStatementErrorCallback(SQLStatementErrorCallback), unSQLStatementErrorCallback, IsSQLStatementErrorCallback, toSQLStatementErrorCallback, castToSQLStatementErrorCallback, gTypeSQLStatementErrorCallback
-  , SQLTransaction(SQLTransaction), unSQLTransaction, IsSQLTransaction, toSQLTransaction, castToSQLTransaction, gTypeSQLTransaction
-  , SQLTransactionCallback(SQLTransactionCallback), unSQLTransactionCallback, IsSQLTransactionCallback, toSQLTransactionCallback, castToSQLTransactionCallback, gTypeSQLTransactionCallback
-  , SQLTransactionErrorCallback(SQLTransactionErrorCallback), unSQLTransactionErrorCallback, IsSQLTransactionErrorCallback, toSQLTransactionErrorCallback, castToSQLTransactionErrorCallback, gTypeSQLTransactionErrorCallback
-  , SQLTransactionSync(SQLTransactionSync), unSQLTransactionSync, IsSQLTransactionSync, toSQLTransactionSync, castToSQLTransactionSync, gTypeSQLTransactionSync
-  , SQLTransactionSyncCallback(SQLTransactionSyncCallback), unSQLTransactionSyncCallback, IsSQLTransactionSyncCallback, toSQLTransactionSyncCallback, castToSQLTransactionSyncCallback, gTypeSQLTransactionSyncCallback
-  , SVGAElement(SVGAElement), unSVGAElement, IsSVGAElement, toSVGAElement, castToSVGAElement, gTypeSVGAElement
-  , SVGAltGlyphDefElement(SVGAltGlyphDefElement), unSVGAltGlyphDefElement, IsSVGAltGlyphDefElement, toSVGAltGlyphDefElement, castToSVGAltGlyphDefElement, gTypeSVGAltGlyphDefElement
-  , SVGAltGlyphElement(SVGAltGlyphElement), unSVGAltGlyphElement, IsSVGAltGlyphElement, toSVGAltGlyphElement, castToSVGAltGlyphElement, gTypeSVGAltGlyphElement
-  , SVGAltGlyphItemElement(SVGAltGlyphItemElement), unSVGAltGlyphItemElement, IsSVGAltGlyphItemElement, toSVGAltGlyphItemElement, castToSVGAltGlyphItemElement, gTypeSVGAltGlyphItemElement
-  , SVGAngle(SVGAngle), unSVGAngle, IsSVGAngle, toSVGAngle, castToSVGAngle, gTypeSVGAngle
-  , SVGAnimateColorElement(SVGAnimateColorElement), unSVGAnimateColorElement, IsSVGAnimateColorElement, toSVGAnimateColorElement, castToSVGAnimateColorElement, gTypeSVGAnimateColorElement
-  , SVGAnimateElement(SVGAnimateElement), unSVGAnimateElement, IsSVGAnimateElement, toSVGAnimateElement, castToSVGAnimateElement, gTypeSVGAnimateElement
-  , SVGAnimateMotionElement(SVGAnimateMotionElement), unSVGAnimateMotionElement, IsSVGAnimateMotionElement, toSVGAnimateMotionElement, castToSVGAnimateMotionElement, gTypeSVGAnimateMotionElement
-  , SVGAnimateTransformElement(SVGAnimateTransformElement), unSVGAnimateTransformElement, IsSVGAnimateTransformElement, toSVGAnimateTransformElement, castToSVGAnimateTransformElement, gTypeSVGAnimateTransformElement
-  , SVGAnimatedAngle(SVGAnimatedAngle), unSVGAnimatedAngle, IsSVGAnimatedAngle, toSVGAnimatedAngle, castToSVGAnimatedAngle, gTypeSVGAnimatedAngle
-  , SVGAnimatedBoolean(SVGAnimatedBoolean), unSVGAnimatedBoolean, IsSVGAnimatedBoolean, toSVGAnimatedBoolean, castToSVGAnimatedBoolean, gTypeSVGAnimatedBoolean
-  , SVGAnimatedEnumeration(SVGAnimatedEnumeration), unSVGAnimatedEnumeration, IsSVGAnimatedEnumeration, toSVGAnimatedEnumeration, castToSVGAnimatedEnumeration, gTypeSVGAnimatedEnumeration
-  , SVGAnimatedInteger(SVGAnimatedInteger), unSVGAnimatedInteger, IsSVGAnimatedInteger, toSVGAnimatedInteger, castToSVGAnimatedInteger, gTypeSVGAnimatedInteger
-  , SVGAnimatedLength(SVGAnimatedLength), unSVGAnimatedLength, IsSVGAnimatedLength, toSVGAnimatedLength, castToSVGAnimatedLength, gTypeSVGAnimatedLength
-  , SVGAnimatedLengthList(SVGAnimatedLengthList), unSVGAnimatedLengthList, IsSVGAnimatedLengthList, toSVGAnimatedLengthList, castToSVGAnimatedLengthList, gTypeSVGAnimatedLengthList
-  , SVGAnimatedNumber(SVGAnimatedNumber), unSVGAnimatedNumber, IsSVGAnimatedNumber, toSVGAnimatedNumber, castToSVGAnimatedNumber, gTypeSVGAnimatedNumber
-  , SVGAnimatedNumberList(SVGAnimatedNumberList), unSVGAnimatedNumberList, IsSVGAnimatedNumberList, toSVGAnimatedNumberList, castToSVGAnimatedNumberList, gTypeSVGAnimatedNumberList
-  , SVGAnimatedPreserveAspectRatio(SVGAnimatedPreserveAspectRatio), unSVGAnimatedPreserveAspectRatio, IsSVGAnimatedPreserveAspectRatio, toSVGAnimatedPreserveAspectRatio, castToSVGAnimatedPreserveAspectRatio, gTypeSVGAnimatedPreserveAspectRatio
-  , SVGAnimatedRect(SVGAnimatedRect), unSVGAnimatedRect, IsSVGAnimatedRect, toSVGAnimatedRect, castToSVGAnimatedRect, gTypeSVGAnimatedRect
-  , SVGAnimatedString(SVGAnimatedString), unSVGAnimatedString, IsSVGAnimatedString, toSVGAnimatedString, castToSVGAnimatedString, gTypeSVGAnimatedString
-  , SVGAnimatedTransformList(SVGAnimatedTransformList), unSVGAnimatedTransformList, IsSVGAnimatedTransformList, toSVGAnimatedTransformList, castToSVGAnimatedTransformList, gTypeSVGAnimatedTransformList
+  , QuickTimePluginReplacement(QuickTimePluginReplacement), unQuickTimePluginReplacement, castToQuickTimePluginReplacement, gTypeQuickTimePluginReplacement
+  , RGBColor(RGBColor), unRGBColor, castToRGBColor, gTypeRGBColor
+  , RTCConfiguration(RTCConfiguration), unRTCConfiguration, castToRTCConfiguration, gTypeRTCConfiguration
+  , RTCDTMFSender(RTCDTMFSender), unRTCDTMFSender, castToRTCDTMFSender, gTypeRTCDTMFSender
+  , RTCDTMFToneChangeEvent(RTCDTMFToneChangeEvent), unRTCDTMFToneChangeEvent, castToRTCDTMFToneChangeEvent, gTypeRTCDTMFToneChangeEvent
+  , RTCDataChannel(RTCDataChannel), unRTCDataChannel, castToRTCDataChannel, gTypeRTCDataChannel
+  , RTCDataChannelEvent(RTCDataChannelEvent), unRTCDataChannelEvent, castToRTCDataChannelEvent, gTypeRTCDataChannelEvent
+  , RTCIceCandidate(RTCIceCandidate), unRTCIceCandidate, castToRTCIceCandidate, gTypeRTCIceCandidate
+  , RTCIceCandidateEvent(RTCIceCandidateEvent), unRTCIceCandidateEvent, castToRTCIceCandidateEvent, gTypeRTCIceCandidateEvent
+  , RTCIceServer(RTCIceServer), unRTCIceServer, castToRTCIceServer, gTypeRTCIceServer
+  , RTCPeerConnection(RTCPeerConnection), unRTCPeerConnection, castToRTCPeerConnection, gTypeRTCPeerConnection
+  , RTCPeerConnectionErrorCallback(RTCPeerConnectionErrorCallback), unRTCPeerConnectionErrorCallback, castToRTCPeerConnectionErrorCallback, gTypeRTCPeerConnectionErrorCallback
+  , RTCSessionDescription(RTCSessionDescription), unRTCSessionDescription, castToRTCSessionDescription, gTypeRTCSessionDescription
+  , RTCSessionDescriptionCallback(RTCSessionDescriptionCallback), unRTCSessionDescriptionCallback, castToRTCSessionDescriptionCallback, gTypeRTCSessionDescriptionCallback
+  , RTCStatsCallback(RTCStatsCallback), unRTCStatsCallback, castToRTCStatsCallback, gTypeRTCStatsCallback
+  , RTCStatsReport(RTCStatsReport), unRTCStatsReport, castToRTCStatsReport, gTypeRTCStatsReport
+  , RTCStatsResponse(RTCStatsResponse), unRTCStatsResponse, castToRTCStatsResponse, gTypeRTCStatsResponse
+  , RadioNodeList(RadioNodeList), unRadioNodeList, castToRadioNodeList, gTypeRadioNodeList
+  , DOMRange(DOMRange), unDOMRange, castToDOMRange, gTypeDOMRange
+  , ReadableStream(ReadableStream), unReadableStream, castToReadableStream, gTypeReadableStream
+  , Rect(Rect), unRect, castToRect, gTypeRect
+  , RequestAnimationFrameCallback(RequestAnimationFrameCallback), unRequestAnimationFrameCallback, castToRequestAnimationFrameCallback, gTypeRequestAnimationFrameCallback
+  , SQLError(SQLError), unSQLError, castToSQLError, gTypeSQLError
+  , SQLResultSet(SQLResultSet), unSQLResultSet, castToSQLResultSet, gTypeSQLResultSet
+  , SQLResultSetRowList(SQLResultSetRowList), unSQLResultSetRowList, castToSQLResultSetRowList, gTypeSQLResultSetRowList
+  , SQLStatementCallback(SQLStatementCallback), unSQLStatementCallback, castToSQLStatementCallback, gTypeSQLStatementCallback
+  , SQLStatementErrorCallback(SQLStatementErrorCallback), unSQLStatementErrorCallback, castToSQLStatementErrorCallback, gTypeSQLStatementErrorCallback
+  , SQLTransaction(SQLTransaction), unSQLTransaction, castToSQLTransaction, gTypeSQLTransaction
+  , SQLTransactionCallback(SQLTransactionCallback), unSQLTransactionCallback, castToSQLTransactionCallback, gTypeSQLTransactionCallback
+  , SQLTransactionErrorCallback(SQLTransactionErrorCallback), unSQLTransactionErrorCallback, castToSQLTransactionErrorCallback, gTypeSQLTransactionErrorCallback
+  , SVGAElement(SVGAElement), unSVGAElement, castToSVGAElement, gTypeSVGAElement
+  , SVGAltGlyphDefElement(SVGAltGlyphDefElement), unSVGAltGlyphDefElement, castToSVGAltGlyphDefElement, gTypeSVGAltGlyphDefElement
+  , SVGAltGlyphElement(SVGAltGlyphElement), unSVGAltGlyphElement, castToSVGAltGlyphElement, gTypeSVGAltGlyphElement
+  , SVGAltGlyphItemElement(SVGAltGlyphItemElement), unSVGAltGlyphItemElement, castToSVGAltGlyphItemElement, gTypeSVGAltGlyphItemElement
+  , SVGAngle(SVGAngle), unSVGAngle, castToSVGAngle, gTypeSVGAngle
+  , SVGAnimateColorElement(SVGAnimateColorElement), unSVGAnimateColorElement, castToSVGAnimateColorElement, gTypeSVGAnimateColorElement
+  , SVGAnimateElement(SVGAnimateElement), unSVGAnimateElement, castToSVGAnimateElement, gTypeSVGAnimateElement
+  , SVGAnimateMotionElement(SVGAnimateMotionElement), unSVGAnimateMotionElement, castToSVGAnimateMotionElement, gTypeSVGAnimateMotionElement
+  , SVGAnimateTransformElement(SVGAnimateTransformElement), unSVGAnimateTransformElement, castToSVGAnimateTransformElement, gTypeSVGAnimateTransformElement
+  , SVGAnimatedAngle(SVGAnimatedAngle), unSVGAnimatedAngle, castToSVGAnimatedAngle, gTypeSVGAnimatedAngle
+  , SVGAnimatedBoolean(SVGAnimatedBoolean), unSVGAnimatedBoolean, castToSVGAnimatedBoolean, gTypeSVGAnimatedBoolean
+  , SVGAnimatedEnumeration(SVGAnimatedEnumeration), unSVGAnimatedEnumeration, castToSVGAnimatedEnumeration, gTypeSVGAnimatedEnumeration
+  , SVGAnimatedInteger(SVGAnimatedInteger), unSVGAnimatedInteger, castToSVGAnimatedInteger, gTypeSVGAnimatedInteger
+  , SVGAnimatedLength(SVGAnimatedLength), unSVGAnimatedLength, castToSVGAnimatedLength, gTypeSVGAnimatedLength
+  , SVGAnimatedLengthList(SVGAnimatedLengthList), unSVGAnimatedLengthList, castToSVGAnimatedLengthList, gTypeSVGAnimatedLengthList
+  , SVGAnimatedNumber(SVGAnimatedNumber), unSVGAnimatedNumber, castToSVGAnimatedNumber, gTypeSVGAnimatedNumber
+  , SVGAnimatedNumberList(SVGAnimatedNumberList), unSVGAnimatedNumberList, castToSVGAnimatedNumberList, gTypeSVGAnimatedNumberList
+  , SVGAnimatedPreserveAspectRatio(SVGAnimatedPreserveAspectRatio), unSVGAnimatedPreserveAspectRatio, castToSVGAnimatedPreserveAspectRatio, gTypeSVGAnimatedPreserveAspectRatio
+  , SVGAnimatedRect(SVGAnimatedRect), unSVGAnimatedRect, castToSVGAnimatedRect, gTypeSVGAnimatedRect
+  , SVGAnimatedString(SVGAnimatedString), unSVGAnimatedString, castToSVGAnimatedString, gTypeSVGAnimatedString
+  , SVGAnimatedTransformList(SVGAnimatedTransformList), unSVGAnimatedTransformList, castToSVGAnimatedTransformList, gTypeSVGAnimatedTransformList
   , SVGAnimationElement(SVGAnimationElement), unSVGAnimationElement, IsSVGAnimationElement, toSVGAnimationElement, castToSVGAnimationElement, gTypeSVGAnimationElement
-  , SVGCircleElement(SVGCircleElement), unSVGCircleElement, IsSVGCircleElement, toSVGCircleElement, castToSVGCircleElement, gTypeSVGCircleElement
-  , SVGClipPathElement(SVGClipPathElement), unSVGClipPathElement, IsSVGClipPathElement, toSVGClipPathElement, castToSVGClipPathElement, gTypeSVGClipPathElement
+  , SVGCircleElement(SVGCircleElement), unSVGCircleElement, castToSVGCircleElement, gTypeSVGCircleElement
+  , SVGClipPathElement(SVGClipPathElement), unSVGClipPathElement, castToSVGClipPathElement, gTypeSVGClipPathElement
   , SVGColor(SVGColor), unSVGColor, IsSVGColor, toSVGColor, castToSVGColor, gTypeSVGColor
   , SVGComponentTransferFunctionElement(SVGComponentTransferFunctionElement), unSVGComponentTransferFunctionElement, IsSVGComponentTransferFunctionElement, toSVGComponentTransferFunctionElement, castToSVGComponentTransferFunctionElement, gTypeSVGComponentTransferFunctionElement
-  , SVGCursorElement(SVGCursorElement), unSVGCursorElement, IsSVGCursorElement, toSVGCursorElement, castToSVGCursorElement, gTypeSVGCursorElement
-  , SVGDefsElement(SVGDefsElement), unSVGDefsElement, IsSVGDefsElement, toSVGDefsElement, castToSVGDefsElement, gTypeSVGDefsElement
-  , SVGDescElement(SVGDescElement), unSVGDescElement, IsSVGDescElement, toSVGDescElement, castToSVGDescElement, gTypeSVGDescElement
-  , SVGDocument(SVGDocument), unSVGDocument, IsSVGDocument, toSVGDocument, castToSVGDocument, gTypeSVGDocument
+  , SVGCursorElement(SVGCursorElement), unSVGCursorElement, castToSVGCursorElement, gTypeSVGCursorElement
+  , SVGDefsElement(SVGDefsElement), unSVGDefsElement, castToSVGDefsElement, gTypeSVGDefsElement
+  , SVGDescElement(SVGDescElement), unSVGDescElement, castToSVGDescElement, gTypeSVGDescElement
+  , SVGDocument(SVGDocument), unSVGDocument, castToSVGDocument, gTypeSVGDocument
   , SVGElement(SVGElement), unSVGElement, IsSVGElement, toSVGElement, castToSVGElement, gTypeSVGElement
-  , SVGElementInstance(SVGElementInstance), unSVGElementInstance, IsSVGElementInstance, toSVGElementInstance, castToSVGElementInstance, gTypeSVGElementInstance
-  , SVGElementInstanceList(SVGElementInstanceList), unSVGElementInstanceList, IsSVGElementInstanceList, toSVGElementInstanceList, castToSVGElementInstanceList, gTypeSVGElementInstanceList
-  , SVGEllipseElement(SVGEllipseElement), unSVGEllipseElement, IsSVGEllipseElement, toSVGEllipseElement, castToSVGEllipseElement, gTypeSVGEllipseElement
-  , SVGExternalResourcesRequired(SVGExternalResourcesRequired), unSVGExternalResourcesRequired, IsSVGExternalResourcesRequired, toSVGExternalResourcesRequired, castToSVGExternalResourcesRequired, gTypeSVGExternalResourcesRequired
-  , SVGFEBlendElement(SVGFEBlendElement), unSVGFEBlendElement, IsSVGFEBlendElement, toSVGFEBlendElement, castToSVGFEBlendElement, gTypeSVGFEBlendElement
-  , SVGFEColorMatrixElement(SVGFEColorMatrixElement), unSVGFEColorMatrixElement, IsSVGFEColorMatrixElement, toSVGFEColorMatrixElement, castToSVGFEColorMatrixElement, gTypeSVGFEColorMatrixElement
-  , SVGFEComponentTransferElement(SVGFEComponentTransferElement), unSVGFEComponentTransferElement, IsSVGFEComponentTransferElement, toSVGFEComponentTransferElement, castToSVGFEComponentTransferElement, gTypeSVGFEComponentTransferElement
-  , SVGFECompositeElement(SVGFECompositeElement), unSVGFECompositeElement, IsSVGFECompositeElement, toSVGFECompositeElement, castToSVGFECompositeElement, gTypeSVGFECompositeElement
-  , SVGFEConvolveMatrixElement(SVGFEConvolveMatrixElement), unSVGFEConvolveMatrixElement, IsSVGFEConvolveMatrixElement, toSVGFEConvolveMatrixElement, castToSVGFEConvolveMatrixElement, gTypeSVGFEConvolveMatrixElement
-  , SVGFEDiffuseLightingElement(SVGFEDiffuseLightingElement), unSVGFEDiffuseLightingElement, IsSVGFEDiffuseLightingElement, toSVGFEDiffuseLightingElement, castToSVGFEDiffuseLightingElement, gTypeSVGFEDiffuseLightingElement
-  , SVGFEDisplacementMapElement(SVGFEDisplacementMapElement), unSVGFEDisplacementMapElement, IsSVGFEDisplacementMapElement, toSVGFEDisplacementMapElement, castToSVGFEDisplacementMapElement, gTypeSVGFEDisplacementMapElement
-  , SVGFEDistantLightElement(SVGFEDistantLightElement), unSVGFEDistantLightElement, IsSVGFEDistantLightElement, toSVGFEDistantLightElement, castToSVGFEDistantLightElement, gTypeSVGFEDistantLightElement
-  , SVGFEDropShadowElement(SVGFEDropShadowElement), unSVGFEDropShadowElement, IsSVGFEDropShadowElement, toSVGFEDropShadowElement, castToSVGFEDropShadowElement, gTypeSVGFEDropShadowElement
-  , SVGFEFloodElement(SVGFEFloodElement), unSVGFEFloodElement, IsSVGFEFloodElement, toSVGFEFloodElement, castToSVGFEFloodElement, gTypeSVGFEFloodElement
-  , SVGFEFuncAElement(SVGFEFuncAElement), unSVGFEFuncAElement, IsSVGFEFuncAElement, toSVGFEFuncAElement, castToSVGFEFuncAElement, gTypeSVGFEFuncAElement
-  , SVGFEFuncBElement(SVGFEFuncBElement), unSVGFEFuncBElement, IsSVGFEFuncBElement, toSVGFEFuncBElement, castToSVGFEFuncBElement, gTypeSVGFEFuncBElement
-  , SVGFEFuncGElement(SVGFEFuncGElement), unSVGFEFuncGElement, IsSVGFEFuncGElement, toSVGFEFuncGElement, castToSVGFEFuncGElement, gTypeSVGFEFuncGElement
-  , SVGFEFuncRElement(SVGFEFuncRElement), unSVGFEFuncRElement, IsSVGFEFuncRElement, toSVGFEFuncRElement, castToSVGFEFuncRElement, gTypeSVGFEFuncRElement
-  , SVGFEGaussianBlurElement(SVGFEGaussianBlurElement), unSVGFEGaussianBlurElement, IsSVGFEGaussianBlurElement, toSVGFEGaussianBlurElement, castToSVGFEGaussianBlurElement, gTypeSVGFEGaussianBlurElement
-  , SVGFEImageElement(SVGFEImageElement), unSVGFEImageElement, IsSVGFEImageElement, toSVGFEImageElement, castToSVGFEImageElement, gTypeSVGFEImageElement
-  , SVGFEMergeElement(SVGFEMergeElement), unSVGFEMergeElement, IsSVGFEMergeElement, toSVGFEMergeElement, castToSVGFEMergeElement, gTypeSVGFEMergeElement
-  , SVGFEMergeNodeElement(SVGFEMergeNodeElement), unSVGFEMergeNodeElement, IsSVGFEMergeNodeElement, toSVGFEMergeNodeElement, castToSVGFEMergeNodeElement, gTypeSVGFEMergeNodeElement
-  , SVGFEMorphologyElement(SVGFEMorphologyElement), unSVGFEMorphologyElement, IsSVGFEMorphologyElement, toSVGFEMorphologyElement, castToSVGFEMorphologyElement, gTypeSVGFEMorphologyElement
-  , SVGFEOffsetElement(SVGFEOffsetElement), unSVGFEOffsetElement, IsSVGFEOffsetElement, toSVGFEOffsetElement, castToSVGFEOffsetElement, gTypeSVGFEOffsetElement
-  , SVGFEPointLightElement(SVGFEPointLightElement), unSVGFEPointLightElement, IsSVGFEPointLightElement, toSVGFEPointLightElement, castToSVGFEPointLightElement, gTypeSVGFEPointLightElement
-  , SVGFESpecularLightingElement(SVGFESpecularLightingElement), unSVGFESpecularLightingElement, IsSVGFESpecularLightingElement, toSVGFESpecularLightingElement, castToSVGFESpecularLightingElement, gTypeSVGFESpecularLightingElement
-  , SVGFESpotLightElement(SVGFESpotLightElement), unSVGFESpotLightElement, IsSVGFESpotLightElement, toSVGFESpotLightElement, castToSVGFESpotLightElement, gTypeSVGFESpotLightElement
-  , SVGFETileElement(SVGFETileElement), unSVGFETileElement, IsSVGFETileElement, toSVGFETileElement, castToSVGFETileElement, gTypeSVGFETileElement
-  , SVGFETurbulenceElement(SVGFETurbulenceElement), unSVGFETurbulenceElement, IsSVGFETurbulenceElement, toSVGFETurbulenceElement, castToSVGFETurbulenceElement, gTypeSVGFETurbulenceElement
-  , SVGFilterElement(SVGFilterElement), unSVGFilterElement, IsSVGFilterElement, toSVGFilterElement, castToSVGFilterElement, gTypeSVGFilterElement
-  , SVGFilterPrimitiveStandardAttributes(SVGFilterPrimitiveStandardAttributes), unSVGFilterPrimitiveStandardAttributes, IsSVGFilterPrimitiveStandardAttributes, toSVGFilterPrimitiveStandardAttributes, castToSVGFilterPrimitiveStandardAttributes, gTypeSVGFilterPrimitiveStandardAttributes
-  , SVGFitToViewBox(SVGFitToViewBox), unSVGFitToViewBox, IsSVGFitToViewBox, toSVGFitToViewBox, castToSVGFitToViewBox, gTypeSVGFitToViewBox
-  , SVGFontElement(SVGFontElement), unSVGFontElement, IsSVGFontElement, toSVGFontElement, castToSVGFontElement, gTypeSVGFontElement
-  , SVGFontFaceElement(SVGFontFaceElement), unSVGFontFaceElement, IsSVGFontFaceElement, toSVGFontFaceElement, castToSVGFontFaceElement, gTypeSVGFontFaceElement
-  , SVGFontFaceFormatElement(SVGFontFaceFormatElement), unSVGFontFaceFormatElement, IsSVGFontFaceFormatElement, toSVGFontFaceFormatElement, castToSVGFontFaceFormatElement, gTypeSVGFontFaceFormatElement
-  , SVGFontFaceNameElement(SVGFontFaceNameElement), unSVGFontFaceNameElement, IsSVGFontFaceNameElement, toSVGFontFaceNameElement, castToSVGFontFaceNameElement, gTypeSVGFontFaceNameElement
-  , SVGFontFaceSrcElement(SVGFontFaceSrcElement), unSVGFontFaceSrcElement, IsSVGFontFaceSrcElement, toSVGFontFaceSrcElement, castToSVGFontFaceSrcElement, gTypeSVGFontFaceSrcElement
-  , SVGFontFaceUriElement(SVGFontFaceUriElement), unSVGFontFaceUriElement, IsSVGFontFaceUriElement, toSVGFontFaceUriElement, castToSVGFontFaceUriElement, gTypeSVGFontFaceUriElement
-  , SVGForeignObjectElement(SVGForeignObjectElement), unSVGForeignObjectElement, IsSVGForeignObjectElement, toSVGForeignObjectElement, castToSVGForeignObjectElement, gTypeSVGForeignObjectElement
-  , SVGGElement(SVGGElement), unSVGGElement, IsSVGGElement, toSVGGElement, castToSVGGElement, gTypeSVGGElement
-  , SVGGlyphElement(SVGGlyphElement), unSVGGlyphElement, IsSVGGlyphElement, toSVGGlyphElement, castToSVGGlyphElement, gTypeSVGGlyphElement
-  , SVGGlyphRefElement(SVGGlyphRefElement), unSVGGlyphRefElement, IsSVGGlyphRefElement, toSVGGlyphRefElement, castToSVGGlyphRefElement, gTypeSVGGlyphRefElement
+  , SVGEllipseElement(SVGEllipseElement), unSVGEllipseElement, castToSVGEllipseElement, gTypeSVGEllipseElement
+  , SVGExternalResourcesRequired(SVGExternalResourcesRequired), unSVGExternalResourcesRequired, castToSVGExternalResourcesRequired, gTypeSVGExternalResourcesRequired
+  , SVGFEBlendElement(SVGFEBlendElement), unSVGFEBlendElement, castToSVGFEBlendElement, gTypeSVGFEBlendElement
+  , SVGFEColorMatrixElement(SVGFEColorMatrixElement), unSVGFEColorMatrixElement, castToSVGFEColorMatrixElement, gTypeSVGFEColorMatrixElement
+  , SVGFEComponentTransferElement(SVGFEComponentTransferElement), unSVGFEComponentTransferElement, castToSVGFEComponentTransferElement, gTypeSVGFEComponentTransferElement
+  , SVGFECompositeElement(SVGFECompositeElement), unSVGFECompositeElement, castToSVGFECompositeElement, gTypeSVGFECompositeElement
+  , SVGFEConvolveMatrixElement(SVGFEConvolveMatrixElement), unSVGFEConvolveMatrixElement, castToSVGFEConvolveMatrixElement, gTypeSVGFEConvolveMatrixElement
+  , SVGFEDiffuseLightingElement(SVGFEDiffuseLightingElement), unSVGFEDiffuseLightingElement, castToSVGFEDiffuseLightingElement, gTypeSVGFEDiffuseLightingElement
+  , SVGFEDisplacementMapElement(SVGFEDisplacementMapElement), unSVGFEDisplacementMapElement, castToSVGFEDisplacementMapElement, gTypeSVGFEDisplacementMapElement
+  , SVGFEDistantLightElement(SVGFEDistantLightElement), unSVGFEDistantLightElement, castToSVGFEDistantLightElement, gTypeSVGFEDistantLightElement
+  , SVGFEDropShadowElement(SVGFEDropShadowElement), unSVGFEDropShadowElement, castToSVGFEDropShadowElement, gTypeSVGFEDropShadowElement
+  , SVGFEFloodElement(SVGFEFloodElement), unSVGFEFloodElement, castToSVGFEFloodElement, gTypeSVGFEFloodElement
+  , SVGFEFuncAElement(SVGFEFuncAElement), unSVGFEFuncAElement, castToSVGFEFuncAElement, gTypeSVGFEFuncAElement
+  , SVGFEFuncBElement(SVGFEFuncBElement), unSVGFEFuncBElement, castToSVGFEFuncBElement, gTypeSVGFEFuncBElement
+  , SVGFEFuncGElement(SVGFEFuncGElement), unSVGFEFuncGElement, castToSVGFEFuncGElement, gTypeSVGFEFuncGElement
+  , SVGFEFuncRElement(SVGFEFuncRElement), unSVGFEFuncRElement, castToSVGFEFuncRElement, gTypeSVGFEFuncRElement
+  , SVGFEGaussianBlurElement(SVGFEGaussianBlurElement), unSVGFEGaussianBlurElement, castToSVGFEGaussianBlurElement, gTypeSVGFEGaussianBlurElement
+  , SVGFEImageElement(SVGFEImageElement), unSVGFEImageElement, castToSVGFEImageElement, gTypeSVGFEImageElement
+  , SVGFEMergeElement(SVGFEMergeElement), unSVGFEMergeElement, castToSVGFEMergeElement, gTypeSVGFEMergeElement
+  , SVGFEMergeNodeElement(SVGFEMergeNodeElement), unSVGFEMergeNodeElement, castToSVGFEMergeNodeElement, gTypeSVGFEMergeNodeElement
+  , SVGFEMorphologyElement(SVGFEMorphologyElement), unSVGFEMorphologyElement, castToSVGFEMorphologyElement, gTypeSVGFEMorphologyElement
+  , SVGFEOffsetElement(SVGFEOffsetElement), unSVGFEOffsetElement, castToSVGFEOffsetElement, gTypeSVGFEOffsetElement
+  , SVGFEPointLightElement(SVGFEPointLightElement), unSVGFEPointLightElement, castToSVGFEPointLightElement, gTypeSVGFEPointLightElement
+  , SVGFESpecularLightingElement(SVGFESpecularLightingElement), unSVGFESpecularLightingElement, castToSVGFESpecularLightingElement, gTypeSVGFESpecularLightingElement
+  , SVGFESpotLightElement(SVGFESpotLightElement), unSVGFESpotLightElement, castToSVGFESpotLightElement, gTypeSVGFESpotLightElement
+  , SVGFETileElement(SVGFETileElement), unSVGFETileElement, castToSVGFETileElement, gTypeSVGFETileElement
+  , SVGFETurbulenceElement(SVGFETurbulenceElement), unSVGFETurbulenceElement, castToSVGFETurbulenceElement, gTypeSVGFETurbulenceElement
+  , SVGFilterElement(SVGFilterElement), unSVGFilterElement, castToSVGFilterElement, gTypeSVGFilterElement
+  , SVGFilterPrimitiveStandardAttributes(SVGFilterPrimitiveStandardAttributes), unSVGFilterPrimitiveStandardAttributes, castToSVGFilterPrimitiveStandardAttributes, gTypeSVGFilterPrimitiveStandardAttributes
+  , SVGFitToViewBox(SVGFitToViewBox), unSVGFitToViewBox, castToSVGFitToViewBox, gTypeSVGFitToViewBox
+  , SVGFontElement(SVGFontElement), unSVGFontElement, castToSVGFontElement, gTypeSVGFontElement
+  , SVGFontFaceElement(SVGFontFaceElement), unSVGFontFaceElement, castToSVGFontFaceElement, gTypeSVGFontFaceElement
+  , SVGFontFaceFormatElement(SVGFontFaceFormatElement), unSVGFontFaceFormatElement, castToSVGFontFaceFormatElement, gTypeSVGFontFaceFormatElement
+  , SVGFontFaceNameElement(SVGFontFaceNameElement), unSVGFontFaceNameElement, castToSVGFontFaceNameElement, gTypeSVGFontFaceNameElement
+  , SVGFontFaceSrcElement(SVGFontFaceSrcElement), unSVGFontFaceSrcElement, castToSVGFontFaceSrcElement, gTypeSVGFontFaceSrcElement
+  , SVGFontFaceUriElement(SVGFontFaceUriElement), unSVGFontFaceUriElement, castToSVGFontFaceUriElement, gTypeSVGFontFaceUriElement
+  , SVGForeignObjectElement(SVGForeignObjectElement), unSVGForeignObjectElement, castToSVGForeignObjectElement, gTypeSVGForeignObjectElement
+  , SVGGElement(SVGGElement), unSVGGElement, castToSVGGElement, gTypeSVGGElement
+  , SVGGlyphElement(SVGGlyphElement), unSVGGlyphElement, castToSVGGlyphElement, gTypeSVGGlyphElement
+  , SVGGlyphRefElement(SVGGlyphRefElement), unSVGGlyphRefElement, castToSVGGlyphRefElement, gTypeSVGGlyphRefElement
   , SVGGradientElement(SVGGradientElement), unSVGGradientElement, IsSVGGradientElement, toSVGGradientElement, castToSVGGradientElement, gTypeSVGGradientElement
   , SVGGraphicsElement(SVGGraphicsElement), unSVGGraphicsElement, IsSVGGraphicsElement, toSVGGraphicsElement, castToSVGGraphicsElement, gTypeSVGGraphicsElement
-  , SVGHKernElement(SVGHKernElement), unSVGHKernElement, IsSVGHKernElement, toSVGHKernElement, castToSVGHKernElement, gTypeSVGHKernElement
-  , SVGImageElement(SVGImageElement), unSVGImageElement, IsSVGImageElement, toSVGImageElement, castToSVGImageElement, gTypeSVGImageElement
-  , SVGLength(SVGLength), unSVGLength, IsSVGLength, toSVGLength, castToSVGLength, gTypeSVGLength
-  , SVGLengthList(SVGLengthList), unSVGLengthList, IsSVGLengthList, toSVGLengthList, castToSVGLengthList, gTypeSVGLengthList
-  , SVGLineElement(SVGLineElement), unSVGLineElement, IsSVGLineElement, toSVGLineElement, castToSVGLineElement, gTypeSVGLineElement
-  , SVGLinearGradientElement(SVGLinearGradientElement), unSVGLinearGradientElement, IsSVGLinearGradientElement, toSVGLinearGradientElement, castToSVGLinearGradientElement, gTypeSVGLinearGradientElement
-  , SVGMPathElement(SVGMPathElement), unSVGMPathElement, IsSVGMPathElement, toSVGMPathElement, castToSVGMPathElement, gTypeSVGMPathElement
-  , SVGMarkerElement(SVGMarkerElement), unSVGMarkerElement, IsSVGMarkerElement, toSVGMarkerElement, castToSVGMarkerElement, gTypeSVGMarkerElement
-  , SVGMaskElement(SVGMaskElement), unSVGMaskElement, IsSVGMaskElement, toSVGMaskElement, castToSVGMaskElement, gTypeSVGMaskElement
-  , SVGMatrix(SVGMatrix), unSVGMatrix, IsSVGMatrix, toSVGMatrix, castToSVGMatrix, gTypeSVGMatrix
-  , SVGMetadataElement(SVGMetadataElement), unSVGMetadataElement, IsSVGMetadataElement, toSVGMetadataElement, castToSVGMetadataElement, gTypeSVGMetadataElement
-  , SVGMissingGlyphElement(SVGMissingGlyphElement), unSVGMissingGlyphElement, IsSVGMissingGlyphElement, toSVGMissingGlyphElement, castToSVGMissingGlyphElement, gTypeSVGMissingGlyphElement
-  , SVGNumber(SVGNumber), unSVGNumber, IsSVGNumber, toSVGNumber, castToSVGNumber, gTypeSVGNumber
-  , SVGNumberList(SVGNumberList), unSVGNumberList, IsSVGNumberList, toSVGNumberList, castToSVGNumberList, gTypeSVGNumberList
-  , SVGPaint(SVGPaint), unSVGPaint, IsSVGPaint, toSVGPaint, castToSVGPaint, gTypeSVGPaint
-  , SVGPathElement(SVGPathElement), unSVGPathElement, IsSVGPathElement, toSVGPathElement, castToSVGPathElement, gTypeSVGPathElement
+  , SVGHKernElement(SVGHKernElement), unSVGHKernElement, castToSVGHKernElement, gTypeSVGHKernElement
+  , SVGImageElement(SVGImageElement), unSVGImageElement, castToSVGImageElement, gTypeSVGImageElement
+  , SVGLength(SVGLength), unSVGLength, castToSVGLength, gTypeSVGLength
+  , SVGLengthList(SVGLengthList), unSVGLengthList, castToSVGLengthList, gTypeSVGLengthList
+  , SVGLineElement(SVGLineElement), unSVGLineElement, castToSVGLineElement, gTypeSVGLineElement
+  , SVGLinearGradientElement(SVGLinearGradientElement), unSVGLinearGradientElement, castToSVGLinearGradientElement, gTypeSVGLinearGradientElement
+  , SVGMPathElement(SVGMPathElement), unSVGMPathElement, castToSVGMPathElement, gTypeSVGMPathElement
+  , SVGMarkerElement(SVGMarkerElement), unSVGMarkerElement, castToSVGMarkerElement, gTypeSVGMarkerElement
+  , SVGMaskElement(SVGMaskElement), unSVGMaskElement, castToSVGMaskElement, gTypeSVGMaskElement
+  , SVGMatrix(SVGMatrix), unSVGMatrix, castToSVGMatrix, gTypeSVGMatrix
+  , SVGMetadataElement(SVGMetadataElement), unSVGMetadataElement, castToSVGMetadataElement, gTypeSVGMetadataElement
+  , SVGMissingGlyphElement(SVGMissingGlyphElement), unSVGMissingGlyphElement, castToSVGMissingGlyphElement, gTypeSVGMissingGlyphElement
+  , SVGNumber(SVGNumber), unSVGNumber, castToSVGNumber, gTypeSVGNumber
+  , SVGNumberList(SVGNumberList), unSVGNumberList, castToSVGNumberList, gTypeSVGNumberList
+  , SVGPaint(SVGPaint), unSVGPaint, castToSVGPaint, gTypeSVGPaint
+  , SVGPathElement(SVGPathElement), unSVGPathElement, castToSVGPathElement, gTypeSVGPathElement
   , SVGPathSeg(SVGPathSeg), unSVGPathSeg, IsSVGPathSeg, toSVGPathSeg, castToSVGPathSeg, gTypeSVGPathSeg
-  , SVGPathSegArcAbs(SVGPathSegArcAbs), unSVGPathSegArcAbs, IsSVGPathSegArcAbs, toSVGPathSegArcAbs, castToSVGPathSegArcAbs, gTypeSVGPathSegArcAbs
-  , SVGPathSegArcRel(SVGPathSegArcRel), unSVGPathSegArcRel, IsSVGPathSegArcRel, toSVGPathSegArcRel, castToSVGPathSegArcRel, gTypeSVGPathSegArcRel
-  , SVGPathSegClosePath(SVGPathSegClosePath), unSVGPathSegClosePath, IsSVGPathSegClosePath, toSVGPathSegClosePath, castToSVGPathSegClosePath, gTypeSVGPathSegClosePath
-  , SVGPathSegCurvetoCubicAbs(SVGPathSegCurvetoCubicAbs), unSVGPathSegCurvetoCubicAbs, IsSVGPathSegCurvetoCubicAbs, toSVGPathSegCurvetoCubicAbs, castToSVGPathSegCurvetoCubicAbs, gTypeSVGPathSegCurvetoCubicAbs
-  , SVGPathSegCurvetoCubicRel(SVGPathSegCurvetoCubicRel), unSVGPathSegCurvetoCubicRel, IsSVGPathSegCurvetoCubicRel, toSVGPathSegCurvetoCubicRel, castToSVGPathSegCurvetoCubicRel, gTypeSVGPathSegCurvetoCubicRel
-  , SVGPathSegCurvetoCubicSmoothAbs(SVGPathSegCurvetoCubicSmoothAbs), unSVGPathSegCurvetoCubicSmoothAbs, IsSVGPathSegCurvetoCubicSmoothAbs, toSVGPathSegCurvetoCubicSmoothAbs, castToSVGPathSegCurvetoCubicSmoothAbs, gTypeSVGPathSegCurvetoCubicSmoothAbs
-  , SVGPathSegCurvetoCubicSmoothRel(SVGPathSegCurvetoCubicSmoothRel), unSVGPathSegCurvetoCubicSmoothRel, IsSVGPathSegCurvetoCubicSmoothRel, toSVGPathSegCurvetoCubicSmoothRel, castToSVGPathSegCurvetoCubicSmoothRel, gTypeSVGPathSegCurvetoCubicSmoothRel
-  , SVGPathSegCurvetoQuadraticAbs(SVGPathSegCurvetoQuadraticAbs), unSVGPathSegCurvetoQuadraticAbs, IsSVGPathSegCurvetoQuadraticAbs, toSVGPathSegCurvetoQuadraticAbs, castToSVGPathSegCurvetoQuadraticAbs, gTypeSVGPathSegCurvetoQuadraticAbs
-  , SVGPathSegCurvetoQuadraticRel(SVGPathSegCurvetoQuadraticRel), unSVGPathSegCurvetoQuadraticRel, IsSVGPathSegCurvetoQuadraticRel, toSVGPathSegCurvetoQuadraticRel, castToSVGPathSegCurvetoQuadraticRel, gTypeSVGPathSegCurvetoQuadraticRel
-  , SVGPathSegCurvetoQuadraticSmoothAbs(SVGPathSegCurvetoQuadraticSmoothAbs), unSVGPathSegCurvetoQuadraticSmoothAbs, IsSVGPathSegCurvetoQuadraticSmoothAbs, toSVGPathSegCurvetoQuadraticSmoothAbs, castToSVGPathSegCurvetoQuadraticSmoothAbs, gTypeSVGPathSegCurvetoQuadraticSmoothAbs
-  , SVGPathSegCurvetoQuadraticSmoothRel(SVGPathSegCurvetoQuadraticSmoothRel), unSVGPathSegCurvetoQuadraticSmoothRel, IsSVGPathSegCurvetoQuadraticSmoothRel, toSVGPathSegCurvetoQuadraticSmoothRel, castToSVGPathSegCurvetoQuadraticSmoothRel, gTypeSVGPathSegCurvetoQuadraticSmoothRel
-  , SVGPathSegLinetoAbs(SVGPathSegLinetoAbs), unSVGPathSegLinetoAbs, IsSVGPathSegLinetoAbs, toSVGPathSegLinetoAbs, castToSVGPathSegLinetoAbs, gTypeSVGPathSegLinetoAbs
-  , SVGPathSegLinetoHorizontalAbs(SVGPathSegLinetoHorizontalAbs), unSVGPathSegLinetoHorizontalAbs, IsSVGPathSegLinetoHorizontalAbs, toSVGPathSegLinetoHorizontalAbs, castToSVGPathSegLinetoHorizontalAbs, gTypeSVGPathSegLinetoHorizontalAbs
-  , SVGPathSegLinetoHorizontalRel(SVGPathSegLinetoHorizontalRel), unSVGPathSegLinetoHorizontalRel, IsSVGPathSegLinetoHorizontalRel, toSVGPathSegLinetoHorizontalRel, castToSVGPathSegLinetoHorizontalRel, gTypeSVGPathSegLinetoHorizontalRel
-  , SVGPathSegLinetoRel(SVGPathSegLinetoRel), unSVGPathSegLinetoRel, IsSVGPathSegLinetoRel, toSVGPathSegLinetoRel, castToSVGPathSegLinetoRel, gTypeSVGPathSegLinetoRel
-  , SVGPathSegLinetoVerticalAbs(SVGPathSegLinetoVerticalAbs), unSVGPathSegLinetoVerticalAbs, IsSVGPathSegLinetoVerticalAbs, toSVGPathSegLinetoVerticalAbs, castToSVGPathSegLinetoVerticalAbs, gTypeSVGPathSegLinetoVerticalAbs
-  , SVGPathSegLinetoVerticalRel(SVGPathSegLinetoVerticalRel), unSVGPathSegLinetoVerticalRel, IsSVGPathSegLinetoVerticalRel, toSVGPathSegLinetoVerticalRel, castToSVGPathSegLinetoVerticalRel, gTypeSVGPathSegLinetoVerticalRel
-  , SVGPathSegList(SVGPathSegList), unSVGPathSegList, IsSVGPathSegList, toSVGPathSegList, castToSVGPathSegList, gTypeSVGPathSegList
-  , SVGPathSegMovetoAbs(SVGPathSegMovetoAbs), unSVGPathSegMovetoAbs, IsSVGPathSegMovetoAbs, toSVGPathSegMovetoAbs, castToSVGPathSegMovetoAbs, gTypeSVGPathSegMovetoAbs
-  , SVGPathSegMovetoRel(SVGPathSegMovetoRel), unSVGPathSegMovetoRel, IsSVGPathSegMovetoRel, toSVGPathSegMovetoRel, castToSVGPathSegMovetoRel, gTypeSVGPathSegMovetoRel
-  , SVGPatternElement(SVGPatternElement), unSVGPatternElement, IsSVGPatternElement, toSVGPatternElement, castToSVGPatternElement, gTypeSVGPatternElement
-  , SVGPoint(SVGPoint), unSVGPoint, IsSVGPoint, toSVGPoint, castToSVGPoint, gTypeSVGPoint
-  , SVGPointList(SVGPointList), unSVGPointList, IsSVGPointList, toSVGPointList, castToSVGPointList, gTypeSVGPointList
-  , SVGPolygonElement(SVGPolygonElement), unSVGPolygonElement, IsSVGPolygonElement, toSVGPolygonElement, castToSVGPolygonElement, gTypeSVGPolygonElement
-  , SVGPolylineElement(SVGPolylineElement), unSVGPolylineElement, IsSVGPolylineElement, toSVGPolylineElement, castToSVGPolylineElement, gTypeSVGPolylineElement
-  , SVGPreserveAspectRatio(SVGPreserveAspectRatio), unSVGPreserveAspectRatio, IsSVGPreserveAspectRatio, toSVGPreserveAspectRatio, castToSVGPreserveAspectRatio, gTypeSVGPreserveAspectRatio
-  , SVGRadialGradientElement(SVGRadialGradientElement), unSVGRadialGradientElement, IsSVGRadialGradientElement, toSVGRadialGradientElement, castToSVGRadialGradientElement, gTypeSVGRadialGradientElement
-  , SVGRect(SVGRect), unSVGRect, IsSVGRect, toSVGRect, castToSVGRect, gTypeSVGRect
-  , SVGRectElement(SVGRectElement), unSVGRectElement, IsSVGRectElement, toSVGRectElement, castToSVGRectElement, gTypeSVGRectElement
-  , SVGRenderingIntent(SVGRenderingIntent), unSVGRenderingIntent, IsSVGRenderingIntent, toSVGRenderingIntent, castToSVGRenderingIntent, gTypeSVGRenderingIntent
-  , SVGSVGElement(SVGSVGElement), unSVGSVGElement, IsSVGSVGElement, toSVGSVGElement, castToSVGSVGElement, gTypeSVGSVGElement
-  , SVGScriptElement(SVGScriptElement), unSVGScriptElement, IsSVGScriptElement, toSVGScriptElement, castToSVGScriptElement, gTypeSVGScriptElement
-  , SVGSetElement(SVGSetElement), unSVGSetElement, IsSVGSetElement, toSVGSetElement, castToSVGSetElement, gTypeSVGSetElement
-  , SVGStopElement(SVGStopElement), unSVGStopElement, IsSVGStopElement, toSVGStopElement, castToSVGStopElement, gTypeSVGStopElement
-  , SVGStringList(SVGStringList), unSVGStringList, IsSVGStringList, toSVGStringList, castToSVGStringList, gTypeSVGStringList
-  , SVGStyleElement(SVGStyleElement), unSVGStyleElement, IsSVGStyleElement, toSVGStyleElement, castToSVGStyleElement, gTypeSVGStyleElement
-  , SVGSwitchElement(SVGSwitchElement), unSVGSwitchElement, IsSVGSwitchElement, toSVGSwitchElement, castToSVGSwitchElement, gTypeSVGSwitchElement
-  , SVGSymbolElement(SVGSymbolElement), unSVGSymbolElement, IsSVGSymbolElement, toSVGSymbolElement, castToSVGSymbolElement, gTypeSVGSymbolElement
-  , SVGTRefElement(SVGTRefElement), unSVGTRefElement, IsSVGTRefElement, toSVGTRefElement, castToSVGTRefElement, gTypeSVGTRefElement
-  , SVGTSpanElement(SVGTSpanElement), unSVGTSpanElement, IsSVGTSpanElement, toSVGTSpanElement, castToSVGTSpanElement, gTypeSVGTSpanElement
-  , SVGTests(SVGTests), unSVGTests, IsSVGTests, toSVGTests, castToSVGTests, gTypeSVGTests
+  , SVGPathSegArcAbs(SVGPathSegArcAbs), unSVGPathSegArcAbs, castToSVGPathSegArcAbs, gTypeSVGPathSegArcAbs
+  , SVGPathSegArcRel(SVGPathSegArcRel), unSVGPathSegArcRel, castToSVGPathSegArcRel, gTypeSVGPathSegArcRel
+  , SVGPathSegClosePath(SVGPathSegClosePath), unSVGPathSegClosePath, castToSVGPathSegClosePath, gTypeSVGPathSegClosePath
+  , SVGPathSegCurvetoCubicAbs(SVGPathSegCurvetoCubicAbs), unSVGPathSegCurvetoCubicAbs, castToSVGPathSegCurvetoCubicAbs, gTypeSVGPathSegCurvetoCubicAbs
+  , SVGPathSegCurvetoCubicRel(SVGPathSegCurvetoCubicRel), unSVGPathSegCurvetoCubicRel, castToSVGPathSegCurvetoCubicRel, gTypeSVGPathSegCurvetoCubicRel
+  , SVGPathSegCurvetoCubicSmoothAbs(SVGPathSegCurvetoCubicSmoothAbs), unSVGPathSegCurvetoCubicSmoothAbs, castToSVGPathSegCurvetoCubicSmoothAbs, gTypeSVGPathSegCurvetoCubicSmoothAbs
+  , SVGPathSegCurvetoCubicSmoothRel(SVGPathSegCurvetoCubicSmoothRel), unSVGPathSegCurvetoCubicSmoothRel, castToSVGPathSegCurvetoCubicSmoothRel, gTypeSVGPathSegCurvetoCubicSmoothRel
+  , SVGPathSegCurvetoQuadraticAbs(SVGPathSegCurvetoQuadraticAbs), unSVGPathSegCurvetoQuadraticAbs, castToSVGPathSegCurvetoQuadraticAbs, gTypeSVGPathSegCurvetoQuadraticAbs
+  , SVGPathSegCurvetoQuadraticRel(SVGPathSegCurvetoQuadraticRel), unSVGPathSegCurvetoQuadraticRel, castToSVGPathSegCurvetoQuadraticRel, gTypeSVGPathSegCurvetoQuadraticRel
+  , SVGPathSegCurvetoQuadraticSmoothAbs(SVGPathSegCurvetoQuadraticSmoothAbs), unSVGPathSegCurvetoQuadraticSmoothAbs, castToSVGPathSegCurvetoQuadraticSmoothAbs, gTypeSVGPathSegCurvetoQuadraticSmoothAbs
+  , SVGPathSegCurvetoQuadraticSmoothRel(SVGPathSegCurvetoQuadraticSmoothRel), unSVGPathSegCurvetoQuadraticSmoothRel, castToSVGPathSegCurvetoQuadraticSmoothRel, gTypeSVGPathSegCurvetoQuadraticSmoothRel
+  , SVGPathSegLinetoAbs(SVGPathSegLinetoAbs), unSVGPathSegLinetoAbs, castToSVGPathSegLinetoAbs, gTypeSVGPathSegLinetoAbs
+  , SVGPathSegLinetoHorizontalAbs(SVGPathSegLinetoHorizontalAbs), unSVGPathSegLinetoHorizontalAbs, castToSVGPathSegLinetoHorizontalAbs, gTypeSVGPathSegLinetoHorizontalAbs
+  , SVGPathSegLinetoHorizontalRel(SVGPathSegLinetoHorizontalRel), unSVGPathSegLinetoHorizontalRel, castToSVGPathSegLinetoHorizontalRel, gTypeSVGPathSegLinetoHorizontalRel
+  , SVGPathSegLinetoRel(SVGPathSegLinetoRel), unSVGPathSegLinetoRel, castToSVGPathSegLinetoRel, gTypeSVGPathSegLinetoRel
+  , SVGPathSegLinetoVerticalAbs(SVGPathSegLinetoVerticalAbs), unSVGPathSegLinetoVerticalAbs, castToSVGPathSegLinetoVerticalAbs, gTypeSVGPathSegLinetoVerticalAbs
+  , SVGPathSegLinetoVerticalRel(SVGPathSegLinetoVerticalRel), unSVGPathSegLinetoVerticalRel, castToSVGPathSegLinetoVerticalRel, gTypeSVGPathSegLinetoVerticalRel
+  , SVGPathSegList(SVGPathSegList), unSVGPathSegList, castToSVGPathSegList, gTypeSVGPathSegList
+  , SVGPathSegMovetoAbs(SVGPathSegMovetoAbs), unSVGPathSegMovetoAbs, castToSVGPathSegMovetoAbs, gTypeSVGPathSegMovetoAbs
+  , SVGPathSegMovetoRel(SVGPathSegMovetoRel), unSVGPathSegMovetoRel, castToSVGPathSegMovetoRel, gTypeSVGPathSegMovetoRel
+  , SVGPatternElement(SVGPatternElement), unSVGPatternElement, castToSVGPatternElement, gTypeSVGPatternElement
+  , SVGPoint(SVGPoint), unSVGPoint, castToSVGPoint, gTypeSVGPoint
+  , SVGPointList(SVGPointList), unSVGPointList, castToSVGPointList, gTypeSVGPointList
+  , SVGPolygonElement(SVGPolygonElement), unSVGPolygonElement, castToSVGPolygonElement, gTypeSVGPolygonElement
+  , SVGPolylineElement(SVGPolylineElement), unSVGPolylineElement, castToSVGPolylineElement, gTypeSVGPolylineElement
+  , SVGPreserveAspectRatio(SVGPreserveAspectRatio), unSVGPreserveAspectRatio, castToSVGPreserveAspectRatio, gTypeSVGPreserveAspectRatio
+  , SVGRadialGradientElement(SVGRadialGradientElement), unSVGRadialGradientElement, castToSVGRadialGradientElement, gTypeSVGRadialGradientElement
+  , SVGRect(SVGRect), unSVGRect, castToSVGRect, gTypeSVGRect
+  , SVGRectElement(SVGRectElement), unSVGRectElement, castToSVGRectElement, gTypeSVGRectElement
+  , SVGRenderingIntent(SVGRenderingIntent), unSVGRenderingIntent, castToSVGRenderingIntent, gTypeSVGRenderingIntent
+  , SVGSVGElement(SVGSVGElement), unSVGSVGElement, castToSVGSVGElement, gTypeSVGSVGElement
+  , SVGScriptElement(SVGScriptElement), unSVGScriptElement, castToSVGScriptElement, gTypeSVGScriptElement
+  , SVGSetElement(SVGSetElement), unSVGSetElement, castToSVGSetElement, gTypeSVGSetElement
+  , SVGStopElement(SVGStopElement), unSVGStopElement, castToSVGStopElement, gTypeSVGStopElement
+  , SVGStringList(SVGStringList), unSVGStringList, castToSVGStringList, gTypeSVGStringList
+  , SVGStyleElement(SVGStyleElement), unSVGStyleElement, castToSVGStyleElement, gTypeSVGStyleElement
+  , SVGSwitchElement(SVGSwitchElement), unSVGSwitchElement, castToSVGSwitchElement, gTypeSVGSwitchElement
+  , SVGSymbolElement(SVGSymbolElement), unSVGSymbolElement, castToSVGSymbolElement, gTypeSVGSymbolElement
+  , SVGTRefElement(SVGTRefElement), unSVGTRefElement, castToSVGTRefElement, gTypeSVGTRefElement
+  , SVGTSpanElement(SVGTSpanElement), unSVGTSpanElement, castToSVGTSpanElement, gTypeSVGTSpanElement
+  , SVGTests(SVGTests), unSVGTests, castToSVGTests, gTypeSVGTests
   , SVGTextContentElement(SVGTextContentElement), unSVGTextContentElement, IsSVGTextContentElement, toSVGTextContentElement, castToSVGTextContentElement, gTypeSVGTextContentElement
-  , SVGTextElement(SVGTextElement), unSVGTextElement, IsSVGTextElement, toSVGTextElement, castToSVGTextElement, gTypeSVGTextElement
-  , SVGTextPathElement(SVGTextPathElement), unSVGTextPathElement, IsSVGTextPathElement, toSVGTextPathElement, castToSVGTextPathElement, gTypeSVGTextPathElement
+  , SVGTextElement(SVGTextElement), unSVGTextElement, castToSVGTextElement, gTypeSVGTextElement
+  , SVGTextPathElement(SVGTextPathElement), unSVGTextPathElement, castToSVGTextPathElement, gTypeSVGTextPathElement
   , SVGTextPositioningElement(SVGTextPositioningElement), unSVGTextPositioningElement, IsSVGTextPositioningElement, toSVGTextPositioningElement, castToSVGTextPositioningElement, gTypeSVGTextPositioningElement
-  , SVGTitleElement(SVGTitleElement), unSVGTitleElement, IsSVGTitleElement, toSVGTitleElement, castToSVGTitleElement, gTypeSVGTitleElement
-  , SVGTransform(SVGTransform), unSVGTransform, IsSVGTransform, toSVGTransform, castToSVGTransform, gTypeSVGTransform
-  , SVGTransformList(SVGTransformList), unSVGTransformList, IsSVGTransformList, toSVGTransformList, castToSVGTransformList, gTypeSVGTransformList
-  , SVGURIReference(SVGURIReference), unSVGURIReference, IsSVGURIReference, toSVGURIReference, castToSVGURIReference, gTypeSVGURIReference
-  , SVGUnitTypes(SVGUnitTypes), unSVGUnitTypes, IsSVGUnitTypes, toSVGUnitTypes, castToSVGUnitTypes, gTypeSVGUnitTypes
-  , SVGUseElement(SVGUseElement), unSVGUseElement, IsSVGUseElement, toSVGUseElement, castToSVGUseElement, gTypeSVGUseElement
-  , SVGVKernElement(SVGVKernElement), unSVGVKernElement, IsSVGVKernElement, toSVGVKernElement, castToSVGVKernElement, gTypeSVGVKernElement
-  , SVGViewElement(SVGViewElement), unSVGViewElement, IsSVGViewElement, toSVGViewElement, castToSVGViewElement, gTypeSVGViewElement
-  , SVGViewSpec(SVGViewSpec), unSVGViewSpec, IsSVGViewSpec, toSVGViewSpec, castToSVGViewSpec, gTypeSVGViewSpec
-  , SVGZoomAndPan(SVGZoomAndPan), unSVGZoomAndPan, IsSVGZoomAndPan, toSVGZoomAndPan, castToSVGZoomAndPan, gTypeSVGZoomAndPan
-  , SVGZoomEvent(SVGZoomEvent), unSVGZoomEvent, IsSVGZoomEvent, toSVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent
-  , DOMScreen(DOMScreen), unDOMScreen, IsDOMScreen, toDOMScreen, castToDOMScreen, gTypeDOMScreen
-  , ScriptProcessorNode(ScriptProcessorNode), unScriptProcessorNode, IsScriptProcessorNode, toScriptProcessorNode, castToScriptProcessorNode, gTypeScriptProcessorNode
-  , ScriptProfile(ScriptProfile), unScriptProfile, IsScriptProfile, toScriptProfile, castToScriptProfile, gTypeScriptProfile
-  , ScriptProfileNode(ScriptProfileNode), unScriptProfileNode, IsScriptProfileNode, toScriptProfileNode, castToScriptProfileNode, gTypeScriptProfileNode
-  , SecurityPolicyViolationEvent(SecurityPolicyViolationEvent), unSecurityPolicyViolationEvent, IsSecurityPolicyViolationEvent, toSecurityPolicyViolationEvent, castToSecurityPolicyViolationEvent, gTypeSecurityPolicyViolationEvent
-  , SharedWorker(SharedWorker), unSharedWorker, IsSharedWorker, toSharedWorker, castToSharedWorker, gTypeSharedWorker
-  , SharedWorkerGlobalScope(SharedWorkerGlobalScope), unSharedWorkerGlobalScope, IsSharedWorkerGlobalScope, toSharedWorkerGlobalScope, castToSharedWorkerGlobalScope, gTypeSharedWorkerGlobalScope
-  , SourceBuffer(SourceBuffer), unSourceBuffer, IsSourceBuffer, toSourceBuffer, castToSourceBuffer, gTypeSourceBuffer
-  , SourceBufferList(SourceBufferList), unSourceBufferList, IsSourceBufferList, toSourceBufferList, castToSourceBufferList, gTypeSourceBufferList
-  , SourceInfo(SourceInfo), unSourceInfo, IsSourceInfo, toSourceInfo, castToSourceInfo, gTypeSourceInfo
-  , SpeechSynthesis(SpeechSynthesis), unSpeechSynthesis, IsSpeechSynthesis, toSpeechSynthesis, castToSpeechSynthesis, gTypeSpeechSynthesis
-  , SpeechSynthesisEvent(SpeechSynthesisEvent), unSpeechSynthesisEvent, IsSpeechSynthesisEvent, toSpeechSynthesisEvent, castToSpeechSynthesisEvent, gTypeSpeechSynthesisEvent
-  , SpeechSynthesisUtterance(SpeechSynthesisUtterance), unSpeechSynthesisUtterance, IsSpeechSynthesisUtterance, toSpeechSynthesisUtterance, castToSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance
-  , SpeechSynthesisVoice(SpeechSynthesisVoice), unSpeechSynthesisVoice, IsSpeechSynthesisVoice, toSpeechSynthesisVoice, castToSpeechSynthesisVoice, gTypeSpeechSynthesisVoice
-  , Storage(Storage), unStorage, IsStorage, toStorage, castToStorage, gTypeStorage
-  , StorageErrorCallback(StorageErrorCallback), unStorageErrorCallback, IsStorageErrorCallback, toStorageErrorCallback, castToStorageErrorCallback, gTypeStorageErrorCallback
-  , StorageEvent(StorageEvent), unStorageEvent, IsStorageEvent, toStorageEvent, castToStorageEvent, gTypeStorageEvent
-  , StorageInfo(StorageInfo), unStorageInfo, IsStorageInfo, toStorageInfo, castToStorageInfo, gTypeStorageInfo
-  , StorageQuota(StorageQuota), unStorageQuota, IsStorageQuota, toStorageQuota, castToStorageQuota, gTypeStorageQuota
-  , StorageQuotaCallback(StorageQuotaCallback), unStorageQuotaCallback, IsStorageQuotaCallback, toStorageQuotaCallback, castToStorageQuotaCallback, gTypeStorageQuotaCallback
-  , StorageUsageCallback(StorageUsageCallback), unStorageUsageCallback, IsStorageUsageCallback, toStorageUsageCallback, castToStorageUsageCallback, gTypeStorageUsageCallback
-  , StringCallback(StringCallback), unStringCallback, IsStringCallback, toStringCallback, castToStringCallback, gTypeStringCallback
-  , StyleMedia(StyleMedia), unStyleMedia, IsStyleMedia, toStyleMedia, castToStyleMedia, gTypeStyleMedia
+  , SVGTitleElement(SVGTitleElement), unSVGTitleElement, castToSVGTitleElement, gTypeSVGTitleElement
+  , SVGTransform(SVGTransform), unSVGTransform, castToSVGTransform, gTypeSVGTransform
+  , SVGTransformList(SVGTransformList), unSVGTransformList, castToSVGTransformList, gTypeSVGTransformList
+  , SVGURIReference(SVGURIReference), unSVGURIReference, castToSVGURIReference, gTypeSVGURIReference
+  , SVGUnitTypes(SVGUnitTypes), unSVGUnitTypes, castToSVGUnitTypes, gTypeSVGUnitTypes
+  , SVGUseElement(SVGUseElement), unSVGUseElement, castToSVGUseElement, gTypeSVGUseElement
+  , SVGVKernElement(SVGVKernElement), unSVGVKernElement, castToSVGVKernElement, gTypeSVGVKernElement
+  , SVGViewElement(SVGViewElement), unSVGViewElement, castToSVGViewElement, gTypeSVGViewElement
+  , SVGViewSpec(SVGViewSpec), unSVGViewSpec, castToSVGViewSpec, gTypeSVGViewSpec
+  , SVGZoomAndPan(SVGZoomAndPan), unSVGZoomAndPan, castToSVGZoomAndPan, gTypeSVGZoomAndPan
+  , SVGZoomEvent(SVGZoomEvent), unSVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent
+  , DOMScreen(DOMScreen), unDOMScreen, castToDOMScreen, gTypeDOMScreen
+  , ScriptProcessorNode(ScriptProcessorNode), unScriptProcessorNode, castToScriptProcessorNode, gTypeScriptProcessorNode
+  , ScriptProfile(ScriptProfile), unScriptProfile, castToScriptProfile, gTypeScriptProfile
+  , ScriptProfileNode(ScriptProfileNode), unScriptProfileNode, castToScriptProfileNode, gTypeScriptProfileNode
+  , SecurityPolicyViolationEvent(SecurityPolicyViolationEvent), unSecurityPolicyViolationEvent, castToSecurityPolicyViolationEvent, gTypeSecurityPolicyViolationEvent
+  , SourceBuffer(SourceBuffer), unSourceBuffer, castToSourceBuffer, gTypeSourceBuffer
+  , SourceBufferList(SourceBufferList), unSourceBufferList, castToSourceBufferList, gTypeSourceBufferList
+  , SourceInfo(SourceInfo), unSourceInfo, castToSourceInfo, gTypeSourceInfo
+  , SpeechSynthesis(SpeechSynthesis), unSpeechSynthesis, castToSpeechSynthesis, gTypeSpeechSynthesis
+  , SpeechSynthesisEvent(SpeechSynthesisEvent), unSpeechSynthesisEvent, castToSpeechSynthesisEvent, gTypeSpeechSynthesisEvent
+  , SpeechSynthesisUtterance(SpeechSynthesisUtterance), unSpeechSynthesisUtterance, castToSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance
+  , SpeechSynthesisVoice(SpeechSynthesisVoice), unSpeechSynthesisVoice, castToSpeechSynthesisVoice, gTypeSpeechSynthesisVoice
+  , Storage(Storage), unStorage, castToStorage, gTypeStorage
+  , StorageErrorCallback(StorageErrorCallback), unStorageErrorCallback, castToStorageErrorCallback, gTypeStorageErrorCallback
+  , StorageEvent(StorageEvent), unStorageEvent, castToStorageEvent, gTypeStorageEvent
+  , StorageInfo(StorageInfo), unStorageInfo, castToStorageInfo, gTypeStorageInfo
+  , StorageQuota(StorageQuota), unStorageQuota, castToStorageQuota, gTypeStorageQuota
+  , StorageQuotaCallback(StorageQuotaCallback), unStorageQuotaCallback, castToStorageQuotaCallback, gTypeStorageQuotaCallback
+  , StorageUsageCallback(StorageUsageCallback), unStorageUsageCallback, castToStorageUsageCallback, gTypeStorageUsageCallback
+  , StringCallback(StringCallback), unStringCallback, castToStringCallback, gTypeStringCallback
+  , StyleMedia(StyleMedia), unStyleMedia, castToStyleMedia, gTypeStyleMedia
   , StyleSheet(StyleSheet), unStyleSheet, IsStyleSheet, toStyleSheet, castToStyleSheet, gTypeStyleSheet
-  , StyleSheetList(StyleSheetList), unStyleSheetList, IsStyleSheetList, toStyleSheetList, castToStyleSheetList, gTypeStyleSheetList
-  , SubtleCrypto(SubtleCrypto), unSubtleCrypto, IsSubtleCrypto, toSubtleCrypto, castToSubtleCrypto, gTypeSubtleCrypto
+  , StyleSheetList(StyleSheetList), unStyleSheetList, castToStyleSheetList, gTypeStyleSheetList
+  , SubtleCrypto(SubtleCrypto), unSubtleCrypto, castToSubtleCrypto, gTypeSubtleCrypto
   , Text(Text), unText, IsText, toText, castToText, gTypeText
-  , TextEvent(TextEvent), unTextEvent, IsTextEvent, toTextEvent, castToTextEvent, gTypeTextEvent
-  , TextMetrics(TextMetrics), unTextMetrics, IsTextMetrics, toTextMetrics, castToTextMetrics, gTypeTextMetrics
-  , TextTrack(TextTrack), unTextTrack, IsTextTrack, toTextTrack, castToTextTrack, gTypeTextTrack
+  , TextEvent(TextEvent), unTextEvent, castToTextEvent, gTypeTextEvent
+  , TextMetrics(TextMetrics), unTextMetrics, castToTextMetrics, gTypeTextMetrics
+  , TextTrack(TextTrack), unTextTrack, castToTextTrack, gTypeTextTrack
   , TextTrackCue(TextTrackCue), unTextTrackCue, IsTextTrackCue, toTextTrackCue, castToTextTrackCue, gTypeTextTrackCue
-  , TextTrackCueList(TextTrackCueList), unTextTrackCueList, IsTextTrackCueList, toTextTrackCueList, castToTextTrackCueList, gTypeTextTrackCueList
-  , TextTrackList(TextTrackList), unTextTrackList, IsTextTrackList, toTextTrackList, castToTextTrackList, gTypeTextTrackList
-  , TimeRanges(TimeRanges), unTimeRanges, IsTimeRanges, toTimeRanges, castToTimeRanges, gTypeTimeRanges
-  , Touch(Touch), unTouch, IsTouch, toTouch, castToTouch, gTypeTouch
-  , TouchEvent(TouchEvent), unTouchEvent, IsTouchEvent, toTouchEvent, castToTouchEvent, gTypeTouchEvent
-  , TouchList(TouchList), unTouchList, IsTouchList, toTouchList, castToTouchList, gTypeTouchList
-  , TrackEvent(TrackEvent), unTrackEvent, IsTrackEvent, toTrackEvent, castToTrackEvent, gTypeTrackEvent
-  , TransitionEvent(TransitionEvent), unTransitionEvent, IsTransitionEvent, toTransitionEvent, castToTransitionEvent, gTypeTransitionEvent
-  , TreeWalker(TreeWalker), unTreeWalker, IsTreeWalker, toTreeWalker, castToTreeWalker, gTypeTreeWalker
-  , TypeConversions(TypeConversions), unTypeConversions, IsTypeConversions, toTypeConversions, castToTypeConversions, gTypeTypeConversions
+  , TextTrackCueList(TextTrackCueList), unTextTrackCueList, castToTextTrackCueList, gTypeTextTrackCueList
+  , TextTrackList(TextTrackList), unTextTrackList, castToTextTrackList, gTypeTextTrackList
+  , TimeRanges(TimeRanges), unTimeRanges, castToTimeRanges, gTypeTimeRanges
+  , Touch(Touch), unTouch, castToTouch, gTypeTouch
+  , TouchEvent(TouchEvent), unTouchEvent, castToTouchEvent, gTypeTouchEvent
+  , TouchList(TouchList), unTouchList, castToTouchList, gTypeTouchList
+  , TrackEvent(TrackEvent), unTrackEvent, castToTrackEvent, gTypeTrackEvent
+  , TransitionEvent(TransitionEvent), unTransitionEvent, castToTransitionEvent, gTypeTransitionEvent
+  , TreeWalker(TreeWalker), unTreeWalker, castToTreeWalker, gTypeTreeWalker
+  , TypeConversions(TypeConversions), unTypeConversions, castToTypeConversions, gTypeTypeConversions
   , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, castToUIEvent, gTypeUIEvent
-  , UIRequestEvent(UIRequestEvent), unUIRequestEvent, IsUIRequestEvent, toUIRequestEvent, castToUIRequestEvent, gTypeUIRequestEvent
-  , URLUtils(URLUtils), unURLUtils, IsURLUtils, toURLUtils, castToURLUtils, gTypeURLUtils
-  , UserMessageHandler(UserMessageHandler), unUserMessageHandler, IsUserMessageHandler, toUserMessageHandler, castToUserMessageHandler, gTypeUserMessageHandler
-  , UserMessageHandlersNamespace(UserMessageHandlersNamespace), unUserMessageHandlersNamespace, IsUserMessageHandlersNamespace, toUserMessageHandlersNamespace, castToUserMessageHandlersNamespace, gTypeUserMessageHandlersNamespace
-  , VTTCue(VTTCue), unVTTCue, IsVTTCue, toVTTCue, castToVTTCue, gTypeVTTCue
-  , VTTRegion(VTTRegion), unVTTRegion, IsVTTRegion, toVTTRegion, castToVTTRegion, gTypeVTTRegion
-  , VTTRegionList(VTTRegionList), unVTTRegionList, IsVTTRegionList, toVTTRegionList, castToVTTRegionList, gTypeVTTRegionList
-  , ValidityState(ValidityState), unValidityState, IsValidityState, toValidityState, castToValidityState, gTypeValidityState
-  , VideoPlaybackQuality(VideoPlaybackQuality), unVideoPlaybackQuality, IsVideoPlaybackQuality, toVideoPlaybackQuality, castToVideoPlaybackQuality, gTypeVideoPlaybackQuality
-  , VideoStreamTrack(VideoStreamTrack), unVideoStreamTrack, IsVideoStreamTrack, toVideoStreamTrack, castToVideoStreamTrack, gTypeVideoStreamTrack
-  , VideoTrack(VideoTrack), unVideoTrack, IsVideoTrack, toVideoTrack, castToVideoTrack, gTypeVideoTrack
-  , VideoTrackList(VideoTrackList), unVideoTrackList, IsVideoTrackList, toVideoTrackList, castToVideoTrackList, gTypeVideoTrackList
-  , VoidCallback(VoidCallback), unVoidCallback, IsVoidCallback, toVoidCallback, castToVoidCallback, gTypeVoidCallback
-  , WaveShaperNode(WaveShaperNode), unWaveShaperNode, IsWaveShaperNode, toWaveShaperNode, castToWaveShaperNode, gTypeWaveShaperNode
-  , WebGLActiveInfo(WebGLActiveInfo), unWebGLActiveInfo, IsWebGLActiveInfo, toWebGLActiveInfo, castToWebGLActiveInfo, gTypeWebGLActiveInfo
-  , WebGLBuffer(WebGLBuffer), unWebGLBuffer, IsWebGLBuffer, toWebGLBuffer, castToWebGLBuffer, gTypeWebGLBuffer
-  , WebGLCompressedTextureATC(WebGLCompressedTextureATC), unWebGLCompressedTextureATC, IsWebGLCompressedTextureATC, toWebGLCompressedTextureATC, castToWebGLCompressedTextureATC, gTypeWebGLCompressedTextureATC
-  , WebGLCompressedTexturePVRTC(WebGLCompressedTexturePVRTC), unWebGLCompressedTexturePVRTC, IsWebGLCompressedTexturePVRTC, toWebGLCompressedTexturePVRTC, castToWebGLCompressedTexturePVRTC, gTypeWebGLCompressedTexturePVRTC
-  , WebGLCompressedTextureS3TC(WebGLCompressedTextureS3TC), unWebGLCompressedTextureS3TC, IsWebGLCompressedTextureS3TC, toWebGLCompressedTextureS3TC, castToWebGLCompressedTextureS3TC, gTypeWebGLCompressedTextureS3TC
-  , WebGLContextAttributes(WebGLContextAttributes), unWebGLContextAttributes, IsWebGLContextAttributes, toWebGLContextAttributes, castToWebGLContextAttributes, gTypeWebGLContextAttributes
-  , WebGLContextEvent(WebGLContextEvent), unWebGLContextEvent, IsWebGLContextEvent, toWebGLContextEvent, castToWebGLContextEvent, gTypeWebGLContextEvent
-  , WebGLDebugRendererInfo(WebGLDebugRendererInfo), unWebGLDebugRendererInfo, IsWebGLDebugRendererInfo, toWebGLDebugRendererInfo, castToWebGLDebugRendererInfo, gTypeWebGLDebugRendererInfo
-  , WebGLDebugShaders(WebGLDebugShaders), unWebGLDebugShaders, IsWebGLDebugShaders, toWebGLDebugShaders, castToWebGLDebugShaders, gTypeWebGLDebugShaders
-  , WebGLDepthTexture(WebGLDepthTexture), unWebGLDepthTexture, IsWebGLDepthTexture, toWebGLDepthTexture, castToWebGLDepthTexture, gTypeWebGLDepthTexture
-  , WebGLDrawBuffers(WebGLDrawBuffers), unWebGLDrawBuffers, IsWebGLDrawBuffers, toWebGLDrawBuffers, castToWebGLDrawBuffers, gTypeWebGLDrawBuffers
-  , WebGLFramebuffer(WebGLFramebuffer), unWebGLFramebuffer, IsWebGLFramebuffer, toWebGLFramebuffer, castToWebGLFramebuffer, gTypeWebGLFramebuffer
-  , WebGLLoseContext(WebGLLoseContext), unWebGLLoseContext, IsWebGLLoseContext, toWebGLLoseContext, castToWebGLLoseContext, gTypeWebGLLoseContext
-  , WebGLProgram(WebGLProgram), unWebGLProgram, IsWebGLProgram, toWebGLProgram, castToWebGLProgram, gTypeWebGLProgram
-  , WebGLRenderbuffer(WebGLRenderbuffer), unWebGLRenderbuffer, IsWebGLRenderbuffer, toWebGLRenderbuffer, castToWebGLRenderbuffer, gTypeWebGLRenderbuffer
-  , WebGLRenderingContext(WebGLRenderingContext), unWebGLRenderingContext, IsWebGLRenderingContext, toWebGLRenderingContext, castToWebGLRenderingContext, gTypeWebGLRenderingContext
-  , WebGLShader(WebGLShader), unWebGLShader, IsWebGLShader, toWebGLShader, castToWebGLShader, gTypeWebGLShader
-  , WebGLShaderPrecisionFormat(WebGLShaderPrecisionFormat), unWebGLShaderPrecisionFormat, IsWebGLShaderPrecisionFormat, toWebGLShaderPrecisionFormat, castToWebGLShaderPrecisionFormat, gTypeWebGLShaderPrecisionFormat
-  , WebGLTexture(WebGLTexture), unWebGLTexture, IsWebGLTexture, toWebGLTexture, castToWebGLTexture, gTypeWebGLTexture
-  , WebGLUniformLocation(WebGLUniformLocation), unWebGLUniformLocation, IsWebGLUniformLocation, toWebGLUniformLocation, castToWebGLUniformLocation, gTypeWebGLUniformLocation
-  , WebGLVertexArrayObjectOES(WebGLVertexArrayObjectOES), unWebGLVertexArrayObjectOES, IsWebGLVertexArrayObjectOES, toWebGLVertexArrayObjectOES, castToWebGLVertexArrayObjectOES, gTypeWebGLVertexArrayObjectOES
-  , WebKitAnimationEvent(WebKitAnimationEvent), unWebKitAnimationEvent, IsWebKitAnimationEvent, toWebKitAnimationEvent, castToWebKitAnimationEvent, gTypeWebKitAnimationEvent
-  , WebKitCSSFilterValue(WebKitCSSFilterValue), unWebKitCSSFilterValue, IsWebKitCSSFilterValue, toWebKitCSSFilterValue, castToWebKitCSSFilterValue, gTypeWebKitCSSFilterValue
-  , WebKitCSSMatrix(WebKitCSSMatrix), unWebKitCSSMatrix, IsWebKitCSSMatrix, toWebKitCSSMatrix, castToWebKitCSSMatrix, gTypeWebKitCSSMatrix
-  , WebKitCSSRegionRule(WebKitCSSRegionRule), unWebKitCSSRegionRule, IsWebKitCSSRegionRule, toWebKitCSSRegionRule, castToWebKitCSSRegionRule, gTypeWebKitCSSRegionRule
-  , WebKitCSSTransformValue(WebKitCSSTransformValue), unWebKitCSSTransformValue, IsWebKitCSSTransformValue, toWebKitCSSTransformValue, castToWebKitCSSTransformValue, gTypeWebKitCSSTransformValue
-  , WebKitCSSViewportRule(WebKitCSSViewportRule), unWebKitCSSViewportRule, IsWebKitCSSViewportRule, toWebKitCSSViewportRule, castToWebKitCSSViewportRule, gTypeWebKitCSSViewportRule
-  , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, IsWebKitNamedFlow, toWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
-  , WebKitNamespace(WebKitNamespace), unWebKitNamespace, IsWebKitNamespace, toWebKitNamespace, castToWebKitNamespace, gTypeWebKitNamespace
-  , WebKitPlaybackTargetAvailabilityEvent(WebKitPlaybackTargetAvailabilityEvent), unWebKitPlaybackTargetAvailabilityEvent, IsWebKitPlaybackTargetAvailabilityEvent, toWebKitPlaybackTargetAvailabilityEvent, castToWebKitPlaybackTargetAvailabilityEvent, gTypeWebKitPlaybackTargetAvailabilityEvent
-  , WebKitPoint(WebKitPoint), unWebKitPoint, IsWebKitPoint, toWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
-  , WebKitTransitionEvent(WebKitTransitionEvent), unWebKitTransitionEvent, IsWebKitTransitionEvent, toWebKitTransitionEvent, castToWebKitTransitionEvent, gTypeWebKitTransitionEvent
-  , WebSocket(WebSocket), unWebSocket, IsWebSocket, toWebSocket, castToWebSocket, gTypeWebSocket
-  , WheelEvent(WheelEvent), unWheelEvent, IsWheelEvent, toWheelEvent, castToWheelEvent, gTypeWheelEvent
-  , WindowBase64(WindowBase64), unWindowBase64, IsWindowBase64, toWindowBase64, castToWindowBase64, gTypeWindowBase64
-  , WindowTimers(WindowTimers), unWindowTimers, IsWindowTimers, toWindowTimers, castToWindowTimers, gTypeWindowTimers
-  , Worker(Worker), unWorker, IsWorker, toWorker, castToWorker, gTypeWorker
+  , UIRequestEvent(UIRequestEvent), unUIRequestEvent, castToUIRequestEvent, gTypeUIRequestEvent
+  , URLUtils(URLUtils), unURLUtils, castToURLUtils, gTypeURLUtils
+  , UserMessageHandler(UserMessageHandler), unUserMessageHandler, castToUserMessageHandler, gTypeUserMessageHandler
+  , UserMessageHandlersNamespace(UserMessageHandlersNamespace), unUserMessageHandlersNamespace, castToUserMessageHandlersNamespace, gTypeUserMessageHandlersNamespace
+  , VTTCue(VTTCue), unVTTCue, castToVTTCue, gTypeVTTCue
+  , VTTRegion(VTTRegion), unVTTRegion, castToVTTRegion, gTypeVTTRegion
+  , VTTRegionList(VTTRegionList), unVTTRegionList, castToVTTRegionList, gTypeVTTRegionList
+  , ValidityState(ValidityState), unValidityState, castToValidityState, gTypeValidityState
+  , VideoPlaybackQuality(VideoPlaybackQuality), unVideoPlaybackQuality, castToVideoPlaybackQuality, gTypeVideoPlaybackQuality
+  , VideoStreamTrack(VideoStreamTrack), unVideoStreamTrack, castToVideoStreamTrack, gTypeVideoStreamTrack
+  , VideoTrack(VideoTrack), unVideoTrack, castToVideoTrack, gTypeVideoTrack
+  , VideoTrackList(VideoTrackList), unVideoTrackList, castToVideoTrackList, gTypeVideoTrackList
+  , VoidCallback(VoidCallback), unVoidCallback, castToVoidCallback, gTypeVoidCallback
+  , WaveShaperNode(WaveShaperNode), unWaveShaperNode, castToWaveShaperNode, gTypeWaveShaperNode
+  , WebGL2RenderingContext(WebGL2RenderingContext), unWebGL2RenderingContext, castToWebGL2RenderingContext, gTypeWebGL2RenderingContext
+  , WebGLActiveInfo(WebGLActiveInfo), unWebGLActiveInfo, castToWebGLActiveInfo, gTypeWebGLActiveInfo
+  , WebGLBuffer(WebGLBuffer), unWebGLBuffer, castToWebGLBuffer, gTypeWebGLBuffer
+  , WebGLCompressedTextureATC(WebGLCompressedTextureATC), unWebGLCompressedTextureATC, castToWebGLCompressedTextureATC, gTypeWebGLCompressedTextureATC
+  , WebGLCompressedTexturePVRTC(WebGLCompressedTexturePVRTC), unWebGLCompressedTexturePVRTC, castToWebGLCompressedTexturePVRTC, gTypeWebGLCompressedTexturePVRTC
+  , WebGLCompressedTextureS3TC(WebGLCompressedTextureS3TC), unWebGLCompressedTextureS3TC, castToWebGLCompressedTextureS3TC, gTypeWebGLCompressedTextureS3TC
+  , WebGLContextAttributes(WebGLContextAttributes), unWebGLContextAttributes, castToWebGLContextAttributes, gTypeWebGLContextAttributes
+  , WebGLContextEvent(WebGLContextEvent), unWebGLContextEvent, castToWebGLContextEvent, gTypeWebGLContextEvent
+  , WebGLDebugRendererInfo(WebGLDebugRendererInfo), unWebGLDebugRendererInfo, castToWebGLDebugRendererInfo, gTypeWebGLDebugRendererInfo
+  , WebGLDebugShaders(WebGLDebugShaders), unWebGLDebugShaders, castToWebGLDebugShaders, gTypeWebGLDebugShaders
+  , WebGLDepthTexture(WebGLDepthTexture), unWebGLDepthTexture, castToWebGLDepthTexture, gTypeWebGLDepthTexture
+  , WebGLDrawBuffers(WebGLDrawBuffers), unWebGLDrawBuffers, castToWebGLDrawBuffers, gTypeWebGLDrawBuffers
+  , WebGLFramebuffer(WebGLFramebuffer), unWebGLFramebuffer, castToWebGLFramebuffer, gTypeWebGLFramebuffer
+  , WebGLLoseContext(WebGLLoseContext), unWebGLLoseContext, castToWebGLLoseContext, gTypeWebGLLoseContext
+  , WebGLProgram(WebGLProgram), unWebGLProgram, castToWebGLProgram, gTypeWebGLProgram
+  , WebGLQuery(WebGLQuery), unWebGLQuery, castToWebGLQuery, gTypeWebGLQuery
+  , WebGLRenderbuffer(WebGLRenderbuffer), unWebGLRenderbuffer, castToWebGLRenderbuffer, gTypeWebGLRenderbuffer
+  , WebGLRenderingContext(WebGLRenderingContext), unWebGLRenderingContext, castToWebGLRenderingContext, gTypeWebGLRenderingContext
+  , WebGLRenderingContextBase(WebGLRenderingContextBase), unWebGLRenderingContextBase, IsWebGLRenderingContextBase, toWebGLRenderingContextBase, castToWebGLRenderingContextBase, gTypeWebGLRenderingContextBase
+  , WebGLSampler(WebGLSampler), unWebGLSampler, castToWebGLSampler, gTypeWebGLSampler
+  , WebGLShader(WebGLShader), unWebGLShader, castToWebGLShader, gTypeWebGLShader
+  , WebGLShaderPrecisionFormat(WebGLShaderPrecisionFormat), unWebGLShaderPrecisionFormat, castToWebGLShaderPrecisionFormat, gTypeWebGLShaderPrecisionFormat
+  , WebGLSync(WebGLSync), unWebGLSync, castToWebGLSync, gTypeWebGLSync
+  , WebGLTexture(WebGLTexture), unWebGLTexture, castToWebGLTexture, gTypeWebGLTexture
+  , WebGLTransformFeedback(WebGLTransformFeedback), unWebGLTransformFeedback, castToWebGLTransformFeedback, gTypeWebGLTransformFeedback
+  , WebGLUniformLocation(WebGLUniformLocation), unWebGLUniformLocation, castToWebGLUniformLocation, gTypeWebGLUniformLocation
+  , WebGLVertexArrayObject(WebGLVertexArrayObject), unWebGLVertexArrayObject, castToWebGLVertexArrayObject, gTypeWebGLVertexArrayObject
+  , WebGLVertexArrayObjectOES(WebGLVertexArrayObjectOES), unWebGLVertexArrayObjectOES, castToWebGLVertexArrayObjectOES, gTypeWebGLVertexArrayObjectOES
+  , WebKitAnimationEvent(WebKitAnimationEvent), unWebKitAnimationEvent, castToWebKitAnimationEvent, gTypeWebKitAnimationEvent
+  , WebKitCSSFilterValue(WebKitCSSFilterValue), unWebKitCSSFilterValue, castToWebKitCSSFilterValue, gTypeWebKitCSSFilterValue
+  , WebKitCSSMatrix(WebKitCSSMatrix), unWebKitCSSMatrix, castToWebKitCSSMatrix, gTypeWebKitCSSMatrix
+  , WebKitCSSRegionRule(WebKitCSSRegionRule), unWebKitCSSRegionRule, castToWebKitCSSRegionRule, gTypeWebKitCSSRegionRule
+  , WebKitCSSTransformValue(WebKitCSSTransformValue), unWebKitCSSTransformValue, castToWebKitCSSTransformValue, gTypeWebKitCSSTransformValue
+  , WebKitCSSViewportRule(WebKitCSSViewportRule), unWebKitCSSViewportRule, castToWebKitCSSViewportRule, gTypeWebKitCSSViewportRule
+  , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
+  , WebKitNamespace(WebKitNamespace), unWebKitNamespace, castToWebKitNamespace, gTypeWebKitNamespace
+  , WebKitPlaybackTargetAvailabilityEvent(WebKitPlaybackTargetAvailabilityEvent), unWebKitPlaybackTargetAvailabilityEvent, castToWebKitPlaybackTargetAvailabilityEvent, gTypeWebKitPlaybackTargetAvailabilityEvent
+  , WebKitPoint(WebKitPoint), unWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
+  , WebKitTransitionEvent(WebKitTransitionEvent), unWebKitTransitionEvent, castToWebKitTransitionEvent, gTypeWebKitTransitionEvent
+  , WebSocket(WebSocket), unWebSocket, castToWebSocket, gTypeWebSocket
+  , WheelEvent(WheelEvent), unWheelEvent, castToWheelEvent, gTypeWheelEvent
+  , WindowBase64(WindowBase64), unWindowBase64, castToWindowBase64, gTypeWindowBase64
+  , WindowTimers(WindowTimers), unWindowTimers, castToWindowTimers, gTypeWindowTimers
+  , Worker(Worker), unWorker, castToWorker, gTypeWorker
   , WorkerGlobalScope(WorkerGlobalScope), unWorkerGlobalScope, IsWorkerGlobalScope, toWorkerGlobalScope, castToWorkerGlobalScope, gTypeWorkerGlobalScope
-  , WorkerLocation(WorkerLocation), unWorkerLocation, IsWorkerLocation, toWorkerLocation, castToWorkerLocation, gTypeWorkerLocation
-  , WorkerNavigator(WorkerNavigator), unWorkerNavigator, IsWorkerNavigator, toWorkerNavigator, castToWorkerNavigator, gTypeWorkerNavigator
-  , XMLHttpRequest(XMLHttpRequest), unXMLHttpRequest, IsXMLHttpRequest, toXMLHttpRequest, castToXMLHttpRequest, gTypeXMLHttpRequest
-  , XMLHttpRequestProgressEvent(XMLHttpRequestProgressEvent), unXMLHttpRequestProgressEvent, IsXMLHttpRequestProgressEvent, toXMLHttpRequestProgressEvent, castToXMLHttpRequestProgressEvent, gTypeXMLHttpRequestProgressEvent
-  , XMLHttpRequestUpload(XMLHttpRequestUpload), unXMLHttpRequestUpload, IsXMLHttpRequestUpload, toXMLHttpRequestUpload, castToXMLHttpRequestUpload, gTypeXMLHttpRequestUpload
-  , XMLSerializer(XMLSerializer), unXMLSerializer, IsXMLSerializer, toXMLSerializer, castToXMLSerializer, gTypeXMLSerializer
-  , XPathEvaluator(XPathEvaluator), unXPathEvaluator, IsXPathEvaluator, toXPathEvaluator, castToXPathEvaluator, gTypeXPathEvaluator
-  , XPathExpression(XPathExpression), unXPathExpression, IsXPathExpression, toXPathExpression, castToXPathExpression, gTypeXPathExpression
-  , XPathNSResolver(XPathNSResolver), unXPathNSResolver, IsXPathNSResolver, toXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
-  , XPathResult(XPathResult), unXPathResult, IsXPathResult, toXPathResult, castToXPathResult, gTypeXPathResult
-  , XSLTProcessor(XSLTProcessor), unXSLTProcessor, IsXSLTProcessor, toXSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor
+  , WorkerLocation(WorkerLocation), unWorkerLocation, castToWorkerLocation, gTypeWorkerLocation
+  , WorkerNavigator(WorkerNavigator), unWorkerNavigator, castToWorkerNavigator, gTypeWorkerNavigator
+  , XMLHttpRequest(XMLHttpRequest), unXMLHttpRequest, castToXMLHttpRequest, gTypeXMLHttpRequest
+  , XMLHttpRequestProgressEvent(XMLHttpRequestProgressEvent), unXMLHttpRequestProgressEvent, castToXMLHttpRequestProgressEvent, gTypeXMLHttpRequestProgressEvent
+  , XMLHttpRequestUpload(XMLHttpRequestUpload), unXMLHttpRequestUpload, castToXMLHttpRequestUpload, gTypeXMLHttpRequestUpload
+  , XMLSerializer(XMLSerializer), unXMLSerializer, castToXMLSerializer, gTypeXMLSerializer
+  , XPathEvaluator(XPathEvaluator), unXPathEvaluator, castToXPathEvaluator, gTypeXPathEvaluator
+  , XPathExpression(XPathExpression), unXPathExpression, castToXPathExpression, gTypeXPathExpression
+  , XPathNSResolver(XPathNSResolver), unXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
+  , XPathResult(XPathResult), unXPathResult, castToXPathResult, gTypeXPathResult
+  , XSLTProcessor(XSLTProcessor), unXSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor
 -- AUTO GENERATION ENDS HERE
 #else
     propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
@@ -1680,12 +1684,14 @@ type GLbitfield = Word32
 type GLbyte = Int8
 type GLshort = Int16
 type GLint = Int32
+type GLint64 = Int64
 type GLsizei = Int32
 type GLintptr = Int64
 type GLsizeiptr = Int64
 type GLubyte = Word8
 type GLushort = Word16
 type GLuint = Word32
+type GLuint64 = Word64
 type GLfloat = Double
 type GLclampf = Double
 
@@ -1707,11 +1713,6 @@ instance FromJSRef ANGLEInstancedArrays where
   fromJSRef = return . fmap ANGLEInstancedArrays . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsANGLEInstancedArrays o
-toANGLEInstancedArrays :: IsANGLEInstancedArrays o => o -> ANGLEInstancedArrays
-toANGLEInstancedArrays = unsafeCastGObject . toGObject
-
-instance IsANGLEInstancedArrays ANGLEInstancedArrays
 instance IsGObject ANGLEInstancedArrays where
   toGObject = GObject . castRef . unANGLEInstancedArrays
   unsafeCastGObject = ANGLEInstancedArrays . castRef . unGObject
@@ -1741,11 +1742,6 @@ instance FromJSRef AbstractView where
   fromJSRef = return . fmap AbstractView . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsAbstractView o
-toAbstractView :: IsAbstractView o => o -> AbstractView
-toAbstractView = unsafeCastGObject . toGObject
-
-instance IsAbstractView AbstractView
 instance IsGObject AbstractView where
   toGObject = GObject . castRef . unAbstractView
   unsafeCastGObject = AbstractView . castRef . unGObject
@@ -1775,11 +1771,6 @@ instance FromJSRef AbstractWorker where
   fromJSRef = return . fmap AbstractWorker . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsAbstractWorker o
-toAbstractWorker :: IsAbstractWorker o => o -> AbstractWorker
-toAbstractWorker = unsafeCastGObject . toGObject
-
-instance IsAbstractWorker AbstractWorker
 instance IsGObject AbstractWorker where
   toGObject = GObject . castRef . unAbstractWorker
   unsafeCastGObject = AbstractWorker . castRef . unGObject
@@ -1812,11 +1803,6 @@ instance FromJSRef AllAudioCapabilities where
   fromJSRef = return . fmap AllAudioCapabilities . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsMediaStreamCapabilities o => IsAllAudioCapabilities o
-toAllAudioCapabilities :: IsAllAudioCapabilities o => o -> AllAudioCapabilities
-toAllAudioCapabilities = unsafeCastGObject . toGObject
-
-instance IsAllAudioCapabilities AllAudioCapabilities
 instance IsMediaStreamCapabilities AllAudioCapabilities
 instance IsGObject AllAudioCapabilities where
   toGObject = GObject . castRef . unAllAudioCapabilities
@@ -1850,11 +1836,6 @@ instance FromJSRef AllVideoCapabilities where
   fromJSRef = return . fmap AllVideoCapabilities . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsMediaStreamCapabilities o => IsAllVideoCapabilities o
-toAllVideoCapabilities :: IsAllVideoCapabilities o => o -> AllVideoCapabilities
-toAllVideoCapabilities = unsafeCastGObject . toGObject
-
-instance IsAllVideoCapabilities AllVideoCapabilities
 instance IsMediaStreamCapabilities AllVideoCapabilities
 instance IsGObject AllVideoCapabilities where
   toGObject = GObject . castRef . unAllVideoCapabilities
@@ -1889,11 +1870,6 @@ instance FromJSRef AnalyserNode where
   fromJSRef = return . fmap AnalyserNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsAnalyserNode o
-toAnalyserNode :: IsAnalyserNode o => o -> AnalyserNode
-toAnalyserNode = unsafeCastGObject . toGObject
-
-instance IsAnalyserNode AnalyserNode
 instance IsAudioNode AnalyserNode
 instance IsEventTarget AnalyserNode
 instance IsGObject AnalyserNode where
@@ -1928,11 +1904,6 @@ instance FromJSRef AnimationEvent where
   fromJSRef = return . fmap AnimationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsAnimationEvent o
-toAnimationEvent :: IsAnimationEvent o => o -> AnimationEvent
-toAnimationEvent = unsafeCastGObject . toGObject
-
-instance IsAnimationEvent AnimationEvent
 instance IsEvent AnimationEvent
 instance IsGObject AnimationEvent where
   toGObject = GObject . castRef . unAnimationEvent
@@ -1967,11 +1938,6 @@ instance FromJSRef DOMAttr where
   fromJSRef = return . fmap DOMAttr . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsNode o => IsDOMAttr o
-toDOMAttr :: IsDOMAttr o => o -> DOMAttr
-toDOMAttr = unsafeCastGObject . toGObject
-
-instance IsDOMAttr DOMAttr
 instance IsNode DOMAttr
 instance IsEventTarget DOMAttr
 instance IsGObject DOMAttr where
@@ -2004,11 +1970,6 @@ instance FromJSRef AudioBuffer where
   fromJSRef = return . fmap AudioBuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsAudioBuffer o
-toAudioBuffer :: IsAudioBuffer o => o -> AudioBuffer
-toAudioBuffer = unsafeCastGObject . toGObject
-
-instance IsAudioBuffer AudioBuffer
 instance IsGObject AudioBuffer where
   toGObject = GObject . castRef . unAudioBuffer
   unsafeCastGObject = AudioBuffer . castRef . unGObject
@@ -2038,11 +1999,6 @@ instance FromJSRef AudioBufferCallback where
   fromJSRef = return . fmap AudioBufferCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsAudioBufferCallback o
-toAudioBufferCallback :: IsAudioBufferCallback o => o -> AudioBufferCallback
-toAudioBufferCallback = unsafeCastGObject . toGObject
-
-instance IsAudioBufferCallback AudioBufferCallback
 instance IsGObject AudioBufferCallback where
   toGObject = GObject . castRef . unAudioBufferCallback
   unsafeCastGObject = AudioBufferCallback . castRef . unGObject
@@ -2076,11 +2032,6 @@ instance FromJSRef AudioBufferSourceNode where
   fromJSRef = return . fmap AudioBufferSourceNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsAudioBufferSourceNode o
-toAudioBufferSourceNode :: IsAudioBufferSourceNode o => o -> AudioBufferSourceNode
-toAudioBufferSourceNode = unsafeCastGObject . toGObject
-
-instance IsAudioBufferSourceNode AudioBufferSourceNode
 instance IsAudioNode AudioBufferSourceNode
 instance IsEventTarget AudioBufferSourceNode
 instance IsGObject AudioBufferSourceNode where
@@ -2154,11 +2105,6 @@ instance FromJSRef AudioDestinationNode where
   fromJSRef = return . fmap AudioDestinationNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsAudioDestinationNode o
-toAudioDestinationNode :: IsAudioDestinationNode o => o -> AudioDestinationNode
-toAudioDestinationNode = unsafeCastGObject . toGObject
-
-instance IsAudioDestinationNode AudioDestinationNode
 instance IsAudioNode AudioDestinationNode
 instance IsEventTarget AudioDestinationNode
 instance IsGObject AudioDestinationNode where
@@ -2190,11 +2136,6 @@ instance FromJSRef AudioListener where
   fromJSRef = return . fmap AudioListener . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsAudioListener o
-toAudioListener :: IsAudioListener o => o -> AudioListener
-toAudioListener = unsafeCastGObject . toGObject
-
-instance IsAudioListener AudioListener
 instance IsGObject AudioListener where
   toGObject = GObject . castRef . unAudioListener
   unsafeCastGObject = AudioListener . castRef . unGObject
@@ -2262,11 +2203,6 @@ instance FromJSRef AudioParam where
   fromJSRef = return . fmap AudioParam . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsAudioParam o
-toAudioParam :: IsAudioParam o => o -> AudioParam
-toAudioParam = unsafeCastGObject . toGObject
-
-instance IsAudioParam AudioParam
 instance IsGObject AudioParam where
   toGObject = GObject . castRef . unAudioParam
   unsafeCastGObject = AudioParam . castRef . unGObject
@@ -2299,11 +2235,6 @@ instance FromJSRef AudioProcessingEvent where
   fromJSRef = return . fmap AudioProcessingEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsAudioProcessingEvent o
-toAudioProcessingEvent :: IsAudioProcessingEvent o => o -> AudioProcessingEvent
-toAudioProcessingEvent = unsafeCastGObject . toGObject
-
-instance IsAudioProcessingEvent AudioProcessingEvent
 instance IsEvent AudioProcessingEvent
 instance IsGObject AudioProcessingEvent where
   toGObject = GObject . castRef . unAudioProcessingEvent
@@ -2338,11 +2269,6 @@ instance FromJSRef AudioStreamTrack where
   fromJSRef = return . fmap AudioStreamTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsMediaStreamTrack o => IsAudioStreamTrack o
-toAudioStreamTrack :: IsAudioStreamTrack o => o -> AudioStreamTrack
-toAudioStreamTrack = unsafeCastGObject . toGObject
-
-instance IsAudioStreamTrack AudioStreamTrack
 instance IsMediaStreamTrack AudioStreamTrack
 instance IsEventTarget AudioStreamTrack
 instance IsGObject AudioStreamTrack where
@@ -2374,11 +2300,6 @@ instance FromJSRef AudioTrack where
   fromJSRef = return . fmap AudioTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsAudioTrack o
-toAudioTrack :: IsAudioTrack o => o -> AudioTrack
-toAudioTrack = unsafeCastGObject . toGObject
-
-instance IsAudioTrack AudioTrack
 instance IsGObject AudioTrack where
   toGObject = GObject . castRef . unAudioTrack
   unsafeCastGObject = AudioTrack . castRef . unGObject
@@ -2411,11 +2332,6 @@ instance FromJSRef AudioTrackList where
   fromJSRef = return . fmap AudioTrackList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsAudioTrackList o
-toAudioTrackList :: IsAudioTrackList o => o -> AudioTrackList
-toAudioTrackList = unsafeCastGObject . toGObject
-
-instance IsAudioTrackList AudioTrackList
 instance IsEventTarget AudioTrackList
 instance IsGObject AudioTrackList where
   toGObject = GObject . castRef . unAudioTrackList
@@ -2449,11 +2365,6 @@ instance FromJSRef AutocompleteErrorEvent where
   fromJSRef = return . fmap AutocompleteErrorEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsAutocompleteErrorEvent o
-toAutocompleteErrorEvent :: IsAutocompleteErrorEvent o => o -> AutocompleteErrorEvent
-toAutocompleteErrorEvent = unsafeCastGObject . toGObject
-
-instance IsAutocompleteErrorEvent AutocompleteErrorEvent
 instance IsEvent AutocompleteErrorEvent
 instance IsGObject AutocompleteErrorEvent where
   toGObject = GObject . castRef . unAutocompleteErrorEvent
@@ -2484,11 +2395,6 @@ instance FromJSRef BarProp where
   fromJSRef = return . fmap BarProp . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsBarProp o
-toBarProp :: IsBarProp o => o -> BarProp
-toBarProp = unsafeCastGObject . toGObject
-
-instance IsBarProp BarProp
 instance IsGObject BarProp where
   toGObject = GObject . castRef . unBarProp
   unsafeCastGObject = BarProp . castRef . unGObject
@@ -2522,11 +2428,6 @@ instance FromJSRef BatteryManager where
   fromJSRef = return . fmap BatteryManager . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsBatteryManager o
-toBatteryManager :: IsBatteryManager o => o -> BatteryManager
-toBatteryManager = unsafeCastGObject . toGObject
-
-instance IsBatteryManager BatteryManager
 instance IsEventTarget BatteryManager
 instance IsGObject BatteryManager where
   toGObject = GObject . castRef . unBatteryManager
@@ -2560,11 +2461,6 @@ instance FromJSRef BeforeLoadEvent where
   fromJSRef = return . fmap BeforeLoadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsBeforeLoadEvent o
-toBeforeLoadEvent :: IsBeforeLoadEvent o => o -> BeforeLoadEvent
-toBeforeLoadEvent = unsafeCastGObject . toGObject
-
-instance IsBeforeLoadEvent BeforeLoadEvent
 instance IsEvent BeforeLoadEvent
 instance IsGObject BeforeLoadEvent where
   toGObject = GObject . castRef . unBeforeLoadEvent
@@ -2598,11 +2494,6 @@ instance FromJSRef BeforeUnloadEvent where
   fromJSRef = return . fmap BeforeUnloadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsBeforeUnloadEvent o
-toBeforeUnloadEvent :: IsBeforeUnloadEvent o => o -> BeforeUnloadEvent
-toBeforeUnloadEvent = unsafeCastGObject . toGObject
-
-instance IsBeforeUnloadEvent BeforeUnloadEvent
 instance IsEvent BeforeUnloadEvent
 instance IsGObject BeforeUnloadEvent where
   toGObject = GObject . castRef . unBeforeUnloadEvent
@@ -2637,11 +2528,6 @@ instance FromJSRef BiquadFilterNode where
   fromJSRef = return . fmap BiquadFilterNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsBiquadFilterNode o
-toBiquadFilterNode :: IsBiquadFilterNode o => o -> BiquadFilterNode
-toBiquadFilterNode = unsafeCastGObject . toGObject
-
-instance IsBiquadFilterNode BiquadFilterNode
 instance IsAudioNode BiquadFilterNode
 instance IsEventTarget BiquadFilterNode
 instance IsGObject BiquadFilterNode where
@@ -2714,11 +2600,6 @@ instance FromJSRef CDATASection where
   fromJSRef = return . fmap CDATASection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsText o => IsCDATASection o
-toCDATASection :: IsCDATASection o => o -> CDATASection
-toCDATASection = unsafeCastGObject . toGObject
-
-instance IsCDATASection CDATASection
 instance IsText CDATASection
 instance IsCharacterData CDATASection
 instance IsNode CDATASection
@@ -2756,11 +2637,6 @@ instance FromJSRef CSSCharsetRule where
   fromJSRef = return . fmap CSSCharsetRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSCharsetRule o
-toCSSCharsetRule :: IsCSSCharsetRule o => o -> CSSCharsetRule
-toCSSCharsetRule = unsafeCastGObject . toGObject
-
-instance IsCSSCharsetRule CSSCharsetRule
 instance IsCSSRule CSSCharsetRule
 instance IsGObject CSSCharsetRule where
   toGObject = GObject . castRef . unCSSCharsetRule
@@ -2794,11 +2670,6 @@ instance FromJSRef CSSFontFaceLoadEvent where
   fromJSRef = return . fmap CSSFontFaceLoadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsCSSFontFaceLoadEvent o
-toCSSFontFaceLoadEvent :: IsCSSFontFaceLoadEvent o => o -> CSSFontFaceLoadEvent
-toCSSFontFaceLoadEvent = unsafeCastGObject . toGObject
-
-instance IsCSSFontFaceLoadEvent CSSFontFaceLoadEvent
 instance IsEvent CSSFontFaceLoadEvent
 instance IsGObject CSSFontFaceLoadEvent where
   toGObject = GObject . castRef . unCSSFontFaceLoadEvent
@@ -2832,11 +2703,6 @@ instance FromJSRef CSSFontFaceRule where
   fromJSRef = return . fmap CSSFontFaceRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSFontFaceRule o
-toCSSFontFaceRule :: IsCSSFontFaceRule o => o -> CSSFontFaceRule
-toCSSFontFaceRule = unsafeCastGObject . toGObject
-
-instance IsCSSFontFaceRule CSSFontFaceRule
 instance IsCSSRule CSSFontFaceRule
 instance IsGObject CSSFontFaceRule where
   toGObject = GObject . castRef . unCSSFontFaceRule
@@ -2870,11 +2736,6 @@ instance FromJSRef CSSImportRule where
   fromJSRef = return . fmap CSSImportRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSImportRule o
-toCSSImportRule :: IsCSSImportRule o => o -> CSSImportRule
-toCSSImportRule = unsafeCastGObject . toGObject
-
-instance IsCSSImportRule CSSImportRule
 instance IsCSSRule CSSImportRule
 instance IsGObject CSSImportRule where
   toGObject = GObject . castRef . unCSSImportRule
@@ -2908,11 +2769,6 @@ instance FromJSRef CSSKeyframeRule where
   fromJSRef = return . fmap CSSKeyframeRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSKeyframeRule o
-toCSSKeyframeRule :: IsCSSKeyframeRule o => o -> CSSKeyframeRule
-toCSSKeyframeRule = unsafeCastGObject . toGObject
-
-instance IsCSSKeyframeRule CSSKeyframeRule
 instance IsCSSRule CSSKeyframeRule
 instance IsGObject CSSKeyframeRule where
   toGObject = GObject . castRef . unCSSKeyframeRule
@@ -2946,11 +2802,6 @@ instance FromJSRef CSSKeyframesRule where
   fromJSRef = return . fmap CSSKeyframesRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSKeyframesRule o
-toCSSKeyframesRule :: IsCSSKeyframesRule o => o -> CSSKeyframesRule
-toCSSKeyframesRule = unsafeCastGObject . toGObject
-
-instance IsCSSKeyframesRule CSSKeyframesRule
 instance IsCSSRule CSSKeyframesRule
 instance IsGObject CSSKeyframesRule where
   toGObject = GObject . castRef . unCSSKeyframesRule
@@ -2984,11 +2835,6 @@ instance FromJSRef CSSMediaRule where
   fromJSRef = return . fmap CSSMediaRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSMediaRule o
-toCSSMediaRule :: IsCSSMediaRule o => o -> CSSMediaRule
-toCSSMediaRule = unsafeCastGObject . toGObject
-
-instance IsCSSMediaRule CSSMediaRule
 instance IsCSSRule CSSMediaRule
 instance IsGObject CSSMediaRule where
   toGObject = GObject . castRef . unCSSMediaRule
@@ -3022,11 +2868,6 @@ instance FromJSRef CSSPageRule where
   fromJSRef = return . fmap CSSPageRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSPageRule o
-toCSSPageRule :: IsCSSPageRule o => o -> CSSPageRule
-toCSSPageRule = unsafeCastGObject . toGObject
-
-instance IsCSSPageRule CSSPageRule
 instance IsCSSRule CSSPageRule
 instance IsGObject CSSPageRule where
   toGObject = GObject . castRef . unCSSPageRule
@@ -3060,11 +2901,6 @@ instance FromJSRef CSSPrimitiveValue where
   fromJSRef = return . fmap CSSPrimitiveValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSValue o => IsCSSPrimitiveValue o
-toCSSPrimitiveValue :: IsCSSPrimitiveValue o => o -> CSSPrimitiveValue
-toCSSPrimitiveValue = unsafeCastGObject . toGObject
-
-instance IsCSSPrimitiveValue CSSPrimitiveValue
 instance IsCSSValue CSSPrimitiveValue
 instance IsGObject CSSPrimitiveValue where
   toGObject = GObject . castRef . unCSSPrimitiveValue
@@ -3130,11 +2966,6 @@ instance FromJSRef CSSRuleList where
   fromJSRef = return . fmap CSSRuleList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCSSRuleList o
-toCSSRuleList :: IsCSSRuleList o => o -> CSSRuleList
-toCSSRuleList = unsafeCastGObject . toGObject
-
-instance IsCSSRuleList CSSRuleList
 instance IsGObject CSSRuleList where
   toGObject = GObject . castRef . unCSSRuleList
   unsafeCastGObject = CSSRuleList . castRef . unGObject
@@ -3165,11 +2996,6 @@ instance FromJSRef CSSStyleDeclaration where
   fromJSRef = return . fmap CSSStyleDeclaration . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCSSStyleDeclaration o
-toCSSStyleDeclaration :: IsCSSStyleDeclaration o => o -> CSSStyleDeclaration
-toCSSStyleDeclaration = unsafeCastGObject . toGObject
-
-instance IsCSSStyleDeclaration CSSStyleDeclaration
 instance IsGObject CSSStyleDeclaration where
   toGObject = GObject . castRef . unCSSStyleDeclaration
   unsafeCastGObject = CSSStyleDeclaration . castRef . unGObject
@@ -3203,11 +3029,6 @@ instance FromJSRef CSSStyleRule where
   fromJSRef = return . fmap CSSStyleRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSStyleRule o
-toCSSStyleRule :: IsCSSStyleRule o => o -> CSSStyleRule
-toCSSStyleRule = unsafeCastGObject . toGObject
-
-instance IsCSSStyleRule CSSStyleRule
 instance IsCSSRule CSSStyleRule
 instance IsGObject CSSStyleRule where
   toGObject = GObject . castRef . unCSSStyleRule
@@ -3241,11 +3062,6 @@ instance FromJSRef CSSStyleSheet where
   fromJSRef = return . fmap CSSStyleSheet . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsStyleSheet o => IsCSSStyleSheet o
-toCSSStyleSheet :: IsCSSStyleSheet o => o -> CSSStyleSheet
-toCSSStyleSheet = unsafeCastGObject . toGObject
-
-instance IsCSSStyleSheet CSSStyleSheet
 instance IsStyleSheet CSSStyleSheet
 instance IsGObject CSSStyleSheet where
   toGObject = GObject . castRef . unCSSStyleSheet
@@ -3280,11 +3096,6 @@ instance FromJSRef CSSSupportsRule where
   fromJSRef = return . fmap CSSSupportsRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSSupportsRule o
-toCSSSupportsRule :: IsCSSSupportsRule o => o -> CSSSupportsRule
-toCSSSupportsRule = unsafeCastGObject . toGObject
-
-instance IsCSSSupportsRule CSSSupportsRule
 instance IsCSSRule CSSSupportsRule
 instance IsGObject CSSSupportsRule where
   toGObject = GObject . castRef . unCSSSupportsRule
@@ -3318,11 +3129,6 @@ instance FromJSRef CSSUnknownRule where
   fromJSRef = return . fmap CSSUnknownRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsCSSUnknownRule o
-toCSSUnknownRule :: IsCSSUnknownRule o => o -> CSSUnknownRule
-toCSSUnknownRule = unsafeCastGObject . toGObject
-
-instance IsCSSUnknownRule CSSUnknownRule
 instance IsCSSRule CSSUnknownRule
 instance IsGObject CSSUnknownRule where
   toGObject = GObject . castRef . unCSSUnknownRule
@@ -3426,11 +3232,6 @@ instance FromJSRef CanvasGradient where
   fromJSRef = return . fmap CanvasGradient . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCanvasGradient o
-toCanvasGradient :: IsCanvasGradient o => o -> CanvasGradient
-toCanvasGradient = unsafeCastGObject . toGObject
-
-instance IsCanvasGradient CanvasGradient
 instance IsGObject CanvasGradient where
   toGObject = GObject . castRef . unCanvasGradient
   unsafeCastGObject = CanvasGradient . castRef . unGObject
@@ -3460,11 +3261,6 @@ instance FromJSRef CanvasPattern where
   fromJSRef = return . fmap CanvasPattern . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCanvasPattern o
-toCanvasPattern :: IsCanvasPattern o => o -> CanvasPattern
-toCanvasPattern = unsafeCastGObject . toGObject
-
-instance IsCanvasPattern CanvasPattern
 instance IsGObject CanvasPattern where
   toGObject = GObject . castRef . unCanvasPattern
   unsafeCastGObject = CanvasPattern . castRef . unGObject
@@ -3494,11 +3290,6 @@ instance FromJSRef CanvasProxy where
   fromJSRef = return . fmap CanvasProxy . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCanvasProxy o
-toCanvasProxy :: IsCanvasProxy o => o -> CanvasProxy
-toCanvasProxy = unsafeCastGObject . toGObject
-
-instance IsCanvasProxy CanvasProxy
 instance IsGObject CanvasProxy where
   toGObject = GObject . castRef . unCanvasProxy
   unsafeCastGObject = CanvasProxy . castRef . unGObject
@@ -3565,11 +3356,6 @@ instance FromJSRef CanvasRenderingContext2D where
   fromJSRef = return . fmap CanvasRenderingContext2D . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCanvasRenderingContext o => IsCanvasRenderingContext2D o
-toCanvasRenderingContext2D :: IsCanvasRenderingContext2D o => o -> CanvasRenderingContext2D
-toCanvasRenderingContext2D = unsafeCastGObject . toGObject
-
-instance IsCanvasRenderingContext2D CanvasRenderingContext2D
 instance IsCanvasRenderingContext CanvasRenderingContext2D
 instance IsGObject CanvasRenderingContext2D where
   toGObject = GObject . castRef . unCanvasRenderingContext2D
@@ -3600,11 +3386,6 @@ instance FromJSRef CapabilityRange where
   fromJSRef = return . fmap CapabilityRange . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCapabilityRange o
-toCapabilityRange :: IsCapabilityRange o => o -> CapabilityRange
-toCapabilityRange = unsafeCastGObject . toGObject
-
-instance IsCapabilityRange CapabilityRange
 instance IsGObject CapabilityRange where
   toGObject = GObject . castRef . unCapabilityRange
   unsafeCastGObject = CapabilityRange . castRef . unGObject
@@ -3638,11 +3419,6 @@ instance FromJSRef ChannelMergerNode where
   fromJSRef = return . fmap ChannelMergerNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsChannelMergerNode o
-toChannelMergerNode :: IsChannelMergerNode o => o -> ChannelMergerNode
-toChannelMergerNode = unsafeCastGObject . toGObject
-
-instance IsChannelMergerNode ChannelMergerNode
 instance IsAudioNode ChannelMergerNode
 instance IsEventTarget ChannelMergerNode
 instance IsGObject ChannelMergerNode where
@@ -3678,11 +3454,6 @@ instance FromJSRef ChannelSplitterNode where
   fromJSRef = return . fmap ChannelSplitterNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsChannelSplitterNode o
-toChannelSplitterNode :: IsChannelSplitterNode o => o -> ChannelSplitterNode
-toChannelSplitterNode = unsafeCastGObject . toGObject
-
-instance IsChannelSplitterNode ChannelSplitterNode
 instance IsAudioNode ChannelSplitterNode
 instance IsEventTarget ChannelSplitterNode
 instance IsGObject ChannelSplitterNode where
@@ -3755,11 +3526,6 @@ instance FromJSRef ChildNode where
   fromJSRef = return . fmap ChildNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsChildNode o
-toChildNode :: IsChildNode o => o -> ChildNode
-toChildNode = unsafeCastGObject . toGObject
-
-instance IsChildNode ChildNode
 instance IsGObject ChildNode where
   toGObject = GObject . castRef . unChildNode
   unsafeCastGObject = ChildNode . castRef . unGObject
@@ -3789,11 +3555,6 @@ instance FromJSRef ClientRect where
   fromJSRef = return . fmap ClientRect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsClientRect o
-toClientRect :: IsClientRect o => o -> ClientRect
-toClientRect = unsafeCastGObject . toGObject
-
-instance IsClientRect ClientRect
 instance IsGObject ClientRect where
   toGObject = GObject . castRef . unClientRect
   unsafeCastGObject = ClientRect . castRef . unGObject
@@ -3823,11 +3584,6 @@ instance FromJSRef ClientRectList where
   fromJSRef = return . fmap ClientRectList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsClientRectList o
-toClientRectList :: IsClientRectList o => o -> ClientRectList
-toClientRectList = unsafeCastGObject . toGObject
-
-instance IsClientRectList ClientRectList
 instance IsGObject ClientRectList where
   toGObject = GObject . castRef . unClientRectList
   unsafeCastGObject = ClientRectList . castRef . unGObject
@@ -3860,11 +3616,6 @@ instance FromJSRef CloseEvent where
   fromJSRef = return . fmap CloseEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsCloseEvent o
-toCloseEvent :: IsCloseEvent o => o -> CloseEvent
-toCloseEvent = unsafeCastGObject . toGObject
-
-instance IsCloseEvent CloseEvent
 instance IsEvent CloseEvent
 instance IsGObject CloseEvent where
   toGObject = GObject . castRef . unCloseEvent
@@ -3895,11 +3646,6 @@ instance FromJSRef CommandLineAPIHost where
   fromJSRef = return . fmap CommandLineAPIHost . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCommandLineAPIHost o
-toCommandLineAPIHost :: IsCommandLineAPIHost o => o -> CommandLineAPIHost
-toCommandLineAPIHost = unsafeCastGObject . toGObject
-
-instance IsCommandLineAPIHost CommandLineAPIHost
 instance IsGObject CommandLineAPIHost where
   toGObject = GObject . castRef . unCommandLineAPIHost
   unsafeCastGObject = CommandLineAPIHost . castRef . unGObject
@@ -3934,11 +3680,6 @@ instance FromJSRef Comment where
   fromJSRef = return . fmap Comment . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCharacterData o => IsComment o
-toComment :: IsComment o => o -> Comment
-toComment = unsafeCastGObject . toGObject
-
-instance IsComment Comment
 instance IsCharacterData Comment
 instance IsNode Comment
 instance IsEventTarget Comment
@@ -3976,11 +3717,6 @@ instance FromJSRef CompositionEvent where
   fromJSRef = return . fmap CompositionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsUIEvent o => IsCompositionEvent o
-toCompositionEvent :: IsCompositionEvent o => o -> CompositionEvent
-toCompositionEvent = unsafeCastGObject . toGObject
-
-instance IsCompositionEvent CompositionEvent
 instance IsUIEvent CompositionEvent
 instance IsEvent CompositionEvent
 instance IsGObject CompositionEvent where
@@ -4016,11 +3752,6 @@ instance FromJSRef ConvolverNode where
   fromJSRef = return . fmap ConvolverNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsConvolverNode o
-toConvolverNode :: IsConvolverNode o => o -> ConvolverNode
-toConvolverNode = unsafeCastGObject . toGObject
-
-instance IsConvolverNode ConvolverNode
 instance IsAudioNode ConvolverNode
 instance IsEventTarget ConvolverNode
 instance IsGObject ConvolverNode where
@@ -4052,11 +3783,6 @@ instance FromJSRef Coordinates where
   fromJSRef = return . fmap Coordinates . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCoordinates o
-toCoordinates :: IsCoordinates o => o -> Coordinates
-toCoordinates = unsafeCastGObject . toGObject
-
-instance IsCoordinates Coordinates
 instance IsGObject Coordinates where
   toGObject = GObject . castRef . unCoordinates
   unsafeCastGObject = Coordinates . castRef . unGObject
@@ -4086,11 +3812,6 @@ instance FromJSRef Counter where
   fromJSRef = return . fmap Counter . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCounter o
-toCounter :: IsCounter o => o -> Counter
-toCounter = unsafeCastGObject . toGObject
-
-instance IsCounter Counter
 instance IsGObject Counter where
   toGObject = GObject . castRef . unCounter
   unsafeCastGObject = Counter . castRef . unGObject
@@ -4120,11 +3841,6 @@ instance FromJSRef Crypto where
   fromJSRef = return . fmap Crypto . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCrypto o
-toCrypto :: IsCrypto o => o -> Crypto
-toCrypto = unsafeCastGObject . toGObject
-
-instance IsCrypto Crypto
 instance IsGObject Crypto where
   toGObject = GObject . castRef . unCrypto
   unsafeCastGObject = Crypto . castRef . unGObject
@@ -4154,11 +3870,6 @@ instance FromJSRef CryptoKey where
   fromJSRef = return . fmap CryptoKey . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCryptoKey o
-toCryptoKey :: IsCryptoKey o => o -> CryptoKey
-toCryptoKey = unsafeCastGObject . toGObject
-
-instance IsCryptoKey CryptoKey
 instance IsGObject CryptoKey where
   toGObject = GObject . castRef . unCryptoKey
   unsafeCastGObject = CryptoKey . castRef . unGObject
@@ -4188,11 +3899,6 @@ instance FromJSRef CryptoKeyPair where
   fromJSRef = return . fmap CryptoKeyPair . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsCryptoKeyPair o
-toCryptoKeyPair :: IsCryptoKeyPair o => o -> CryptoKeyPair
-toCryptoKeyPair = unsafeCastGObject . toGObject
-
-instance IsCryptoKeyPair CryptoKeyPair
 instance IsGObject CryptoKeyPair where
   toGObject = GObject . castRef . unCryptoKeyPair
   unsafeCastGObject = CryptoKeyPair . castRef . unGObject
@@ -4225,11 +3931,6 @@ instance FromJSRef CustomEvent where
   fromJSRef = return . fmap CustomEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsCustomEvent o
-toCustomEvent :: IsCustomEvent o => o -> CustomEvent
-toCustomEvent = unsafeCastGObject . toGObject
-
-instance IsCustomEvent CustomEvent
 instance IsEvent CustomEvent
 instance IsGObject CustomEvent where
   toGObject = GObject . castRef . unCustomEvent
@@ -4263,11 +3964,6 @@ instance FromJSRef DOMApplicationCache where
   fromJSRef = return . fmap DOMApplicationCache . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsDOMApplicationCache o
-toDOMApplicationCache :: IsDOMApplicationCache o => o -> DOMApplicationCache
-toDOMApplicationCache = unsafeCastGObject . toGObject
-
-instance IsDOMApplicationCache DOMApplicationCache
 instance IsEventTarget DOMApplicationCache
 instance IsGObject DOMApplicationCache where
   toGObject = GObject . castRef . unDOMApplicationCache
@@ -4333,11 +4029,6 @@ instance FromJSRef DOMFormData where
   fromJSRef = return . fmap DOMFormData . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMFormData o
-toDOMFormData :: IsDOMFormData o => o -> DOMFormData
-toDOMFormData = unsafeCastGObject . toGObject
-
-instance IsDOMFormData DOMFormData
 instance IsGObject DOMFormData where
   toGObject = GObject . castRef . unDOMFormData
   unsafeCastGObject = DOMFormData . castRef . unGObject
@@ -4367,11 +4058,6 @@ instance FromJSRef DOMImplementation where
   fromJSRef = return . fmap DOMImplementation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMImplementation o
-toDOMImplementation :: IsDOMImplementation o => o -> DOMImplementation
-toDOMImplementation = unsafeCastGObject . toGObject
-
-instance IsDOMImplementation DOMImplementation
 instance IsGObject DOMImplementation where
   toGObject = GObject . castRef . unDOMImplementation
   unsafeCastGObject = DOMImplementation . castRef . unGObject
@@ -4402,11 +4088,6 @@ instance FromJSRef DOMMimeType where
   fromJSRef = return . fmap DOMMimeType . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMMimeType o
-toDOMMimeType :: IsDOMMimeType o => o -> DOMMimeType
-toDOMMimeType = unsafeCastGObject . toGObject
-
-instance IsDOMMimeType DOMMimeType
 instance IsGObject DOMMimeType where
   toGObject = GObject . castRef . unDOMMimeType
   unsafeCastGObject = DOMMimeType . castRef . unGObject
@@ -4437,11 +4118,6 @@ instance FromJSRef DOMMimeTypeArray where
   fromJSRef = return . fmap DOMMimeTypeArray . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMMimeTypeArray o
-toDOMMimeTypeArray :: IsDOMMimeTypeArray o => o -> DOMMimeTypeArray
-toDOMMimeTypeArray = unsafeCastGObject . toGObject
-
-instance IsDOMMimeTypeArray DOMMimeTypeArray
 instance IsGObject DOMMimeTypeArray where
   toGObject = GObject . castRef . unDOMMimeTypeArray
   unsafeCastGObject = DOMMimeTypeArray . castRef . unGObject
@@ -4472,11 +4148,6 @@ instance FromJSRef DOMNamedFlowCollection where
   fromJSRef = return . fmap DOMNamedFlowCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMNamedFlowCollection o
-toDOMNamedFlowCollection :: IsDOMNamedFlowCollection o => o -> DOMNamedFlowCollection
-toDOMNamedFlowCollection = unsafeCastGObject . toGObject
-
-instance IsDOMNamedFlowCollection DOMNamedFlowCollection
 instance IsGObject DOMNamedFlowCollection where
   toGObject = GObject . castRef . unDOMNamedFlowCollection
   unsafeCastGObject = DOMNamedFlowCollection . castRef . unGObject
@@ -4507,11 +4178,6 @@ instance FromJSRef DOMParser where
   fromJSRef = return . fmap DOMParser . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMParser o
-toDOMParser :: IsDOMParser o => o -> DOMParser
-toDOMParser = unsafeCastGObject . toGObject
-
-instance IsDOMParser DOMParser
 instance IsGObject DOMParser where
   toGObject = GObject . castRef . unDOMParser
   unsafeCastGObject = DOMParser . castRef . unGObject
@@ -4541,11 +4207,6 @@ instance FromJSRef DOMPath where
   fromJSRef = return . fmap DOMPath . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMPath o
-toDOMPath :: IsDOMPath o => o -> DOMPath
-toDOMPath = unsafeCastGObject . toGObject
-
-instance IsDOMPath DOMPath
 instance IsGObject DOMPath where
   toGObject = GObject . castRef . unDOMPath
   unsafeCastGObject = DOMPath . castRef . unGObject
@@ -4575,11 +4236,6 @@ instance FromJSRef DOMPlugin where
   fromJSRef = return . fmap DOMPlugin . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMPlugin o
-toDOMPlugin :: IsDOMPlugin o => o -> DOMPlugin
-toDOMPlugin = unsafeCastGObject . toGObject
-
-instance IsDOMPlugin DOMPlugin
 instance IsGObject DOMPlugin where
   toGObject = GObject . castRef . unDOMPlugin
   unsafeCastGObject = DOMPlugin . castRef . unGObject
@@ -4610,11 +4266,6 @@ instance FromJSRef DOMPluginArray where
   fromJSRef = return . fmap DOMPluginArray . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMPluginArray o
-toDOMPluginArray :: IsDOMPluginArray o => o -> DOMPluginArray
-toDOMPluginArray = unsafeCastGObject . toGObject
-
-instance IsDOMPluginArray DOMPluginArray
 instance IsGObject DOMPluginArray where
   toGObject = GObject . castRef . unDOMPluginArray
   unsafeCastGObject = DOMPluginArray . castRef . unGObject
@@ -4645,11 +4296,6 @@ instance FromJSRef DOMSecurityPolicy where
   fromJSRef = return . fmap DOMSecurityPolicy . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMSecurityPolicy o
-toDOMSecurityPolicy :: IsDOMSecurityPolicy o => o -> DOMSecurityPolicy
-toDOMSecurityPolicy = unsafeCastGObject . toGObject
-
-instance IsDOMSecurityPolicy DOMSecurityPolicy
 instance IsGObject DOMSecurityPolicy where
   toGObject = GObject . castRef . unDOMSecurityPolicy
   unsafeCastGObject = DOMSecurityPolicy . castRef . unGObject
@@ -4680,11 +4326,6 @@ instance FromJSRef DOMSelection where
   fromJSRef = return . fmap DOMSelection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMSelection o
-toDOMSelection :: IsDOMSelection o => o -> DOMSelection
-toDOMSelection = unsafeCastGObject . toGObject
-
-instance IsDOMSelection DOMSelection
 instance IsGObject DOMSelection where
   toGObject = GObject . castRef . unDOMSelection
   unsafeCastGObject = DOMSelection . castRef . unGObject
@@ -4718,11 +4359,6 @@ instance FromJSRef DOMSettableTokenList where
   fromJSRef = return . fmap DOMSettableTokenList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsDOMTokenList o => IsDOMSettableTokenList o
-toDOMSettableTokenList :: IsDOMSettableTokenList o => o -> DOMSettableTokenList
-toDOMSettableTokenList = unsafeCastGObject . toGObject
-
-instance IsDOMSettableTokenList DOMSettableTokenList
 instance IsDOMTokenList DOMSettableTokenList
 instance IsGObject DOMSettableTokenList where
   toGObject = GObject . castRef . unDOMSettableTokenList
@@ -4754,11 +4390,6 @@ instance FromJSRef DOMStringList where
   fromJSRef = return . fmap DOMStringList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMStringList o
-toDOMStringList :: IsDOMStringList o => o -> DOMStringList
-toDOMStringList = unsafeCastGObject . toGObject
-
-instance IsDOMStringList DOMStringList
 instance IsGObject DOMStringList where
   toGObject = GObject . castRef . unDOMStringList
   unsafeCastGObject = DOMStringList . castRef . unGObject
@@ -4789,11 +4420,6 @@ instance FromJSRef DOMStringMap where
   fromJSRef = return . fmap DOMStringMap . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMStringMap o
-toDOMStringMap :: IsDOMStringMap o => o -> DOMStringMap
-toDOMStringMap = unsafeCastGObject . toGObject
-
-instance IsDOMStringMap DOMStringMap
 instance IsGObject DOMStringMap where
   toGObject = GObject . castRef . unDOMStringMap
   unsafeCastGObject = DOMStringMap . castRef . unGObject
@@ -4858,11 +4484,6 @@ instance FromJSRef DOMURL where
   fromJSRef = return . fmap DOMURL . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMURL o
-toDOMURL :: IsDOMURL o => o -> DOMURL
-toDOMURL = unsafeCastGObject . toGObject
-
-instance IsDOMURL DOMURL
 instance IsGObject DOMURL where
   toGObject = GObject . castRef . unDOMURL
   unsafeCastGObject = DOMURL . castRef . unGObject
@@ -4895,11 +4516,6 @@ instance FromJSRef DOMWindow where
   fromJSRef = return . fmap DOMWindow . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsDOMWindow o
-toDOMWindow :: IsDOMWindow o => o -> DOMWindow
-toDOMWindow = unsafeCastGObject . toGObject
-
-instance IsDOMWindow DOMWindow
 instance IsEventTarget DOMWindow
 instance IsGObject DOMWindow where
   toGObject = GObject . castRef . unDOMWindow
@@ -4931,11 +4547,6 @@ instance FromJSRef DOMWindowCSS where
   fromJSRef = return . fmap DOMWindowCSS . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMWindowCSS o
-toDOMWindowCSS :: IsDOMWindowCSS o => o -> DOMWindowCSS
-toDOMWindowCSS = unsafeCastGObject . toGObject
-
-instance IsDOMWindowCSS DOMWindowCSS
 instance IsGObject DOMWindowCSS where
   toGObject = GObject . castRef . unDOMWindowCSS
   unsafeCastGObject = DOMWindowCSS . castRef . unGObject
@@ -4970,11 +4581,6 @@ instance FromJSRef DataCue where
   fromJSRef = return . fmap DataCue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsTextTrackCue o => IsDataCue o
-toDataCue :: IsDataCue o => o -> DataCue
-toDataCue = unsafeCastGObject . toGObject
-
-instance IsDataCue DataCue
 instance IsTextTrackCue DataCue
 instance IsEventTarget DataCue
 instance IsGObject DataCue where
@@ -5006,11 +4612,6 @@ instance FromJSRef DataTransfer where
   fromJSRef = return . fmap DataTransfer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDataTransfer o
-toDataTransfer :: IsDataTransfer o => o -> DataTransfer
-toDataTransfer = unsafeCastGObject . toGObject
-
-instance IsDataTransfer DataTransfer
 instance IsGObject DataTransfer where
   toGObject = GObject . castRef . unDataTransfer
   unsafeCastGObject = DataTransfer . castRef . unGObject
@@ -5040,11 +4641,6 @@ instance FromJSRef DataTransferItem where
   fromJSRef = return . fmap DataTransferItem . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDataTransferItem o
-toDataTransferItem :: IsDataTransferItem o => o -> DataTransferItem
-toDataTransferItem = unsafeCastGObject . toGObject
-
-instance IsDataTransferItem DataTransferItem
 instance IsGObject DataTransferItem where
   toGObject = GObject . castRef . unDataTransferItem
   unsafeCastGObject = DataTransferItem . castRef . unGObject
@@ -5074,11 +4670,6 @@ instance FromJSRef DataTransferItemList where
   fromJSRef = return . fmap DataTransferItemList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDataTransferItemList o
-toDataTransferItemList :: IsDataTransferItemList o => o -> DataTransferItemList
-toDataTransferItemList = unsafeCastGObject . toGObject
-
-instance IsDataTransferItemList DataTransferItemList
 instance IsGObject DataTransferItemList where
   toGObject = GObject . castRef . unDataTransferItemList
   unsafeCastGObject = DataTransferItemList . castRef . unGObject
@@ -5108,11 +4699,6 @@ instance FromJSRef Database where
   fromJSRef = return . fmap Database . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDatabase o
-toDatabase :: IsDatabase o => o -> Database
-toDatabase = unsafeCastGObject . toGObject
-
-instance IsDatabase Database
 instance IsGObject Database where
   toGObject = GObject . castRef . unDatabase
   unsafeCastGObject = Database . castRef . unGObject
@@ -5142,11 +4728,6 @@ instance FromJSRef DatabaseCallback where
   fromJSRef = return . fmap DatabaseCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDatabaseCallback o
-toDatabaseCallback :: IsDatabaseCallback o => o -> DatabaseCallback
-toDatabaseCallback = unsafeCastGObject . toGObject
-
-instance IsDatabaseCallback DatabaseCallback
 instance IsGObject DatabaseCallback where
   toGObject = GObject . castRef . unDatabaseCallback
   unsafeCastGObject = DatabaseCallback . castRef . unGObject
@@ -5156,40 +4737,6 @@ castToDatabaseCallback = castTo gTypeDatabaseCallback "DatabaseCallback"
 
 foreign import javascript unsafe "window[\"DatabaseCallback\"]" gTypeDatabaseCallback' :: JSRef GType
 gTypeDatabaseCallback = GType gTypeDatabaseCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DatabaseSync".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseSync Mozilla DatabaseSync documentation>
-newtype DatabaseSync = DatabaseSync (JSRef DatabaseSync) deriving (Eq)
-
-unDatabaseSync (DatabaseSync o) = o
-
-instance ToJSRef DatabaseSync where
-  toJSRef = return . unDatabaseSync
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DatabaseSync where
-  fromJSRef = return . fmap DatabaseSync . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsGObject o => IsDatabaseSync o
-toDatabaseSync :: IsDatabaseSync o => o -> DatabaseSync
-toDatabaseSync = unsafeCastGObject . toGObject
-
-instance IsDatabaseSync DatabaseSync
-instance IsGObject DatabaseSync where
-  toGObject = GObject . castRef . unDatabaseSync
-  unsafeCastGObject = DatabaseSync . castRef . unGObject
-
-castToDatabaseSync :: IsGObject obj => obj -> DatabaseSync
-castToDatabaseSync = castTo gTypeDatabaseSync "DatabaseSync"
-
-foreign import javascript unsafe "window[\"DatabaseSync\"]" gTypeDatabaseSync' :: JSRef GType
-gTypeDatabaseSync = GType gTypeDatabaseSync'
 #else
 #endif
 
@@ -5214,11 +4761,6 @@ instance FromJSRef DedicatedWorkerGlobalScope where
   fromJSRef = return . fmap DedicatedWorkerGlobalScope . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsWorkerGlobalScope o => IsDedicatedWorkerGlobalScope o
-toDedicatedWorkerGlobalScope :: IsDedicatedWorkerGlobalScope o => o -> DedicatedWorkerGlobalScope
-toDedicatedWorkerGlobalScope = unsafeCastGObject . toGObject
-
-instance IsDedicatedWorkerGlobalScope DedicatedWorkerGlobalScope
 instance IsWorkerGlobalScope DedicatedWorkerGlobalScope
 instance IsEventTarget DedicatedWorkerGlobalScope
 instance IsGObject DedicatedWorkerGlobalScope where
@@ -5254,11 +4796,6 @@ instance FromJSRef DelayNode where
   fromJSRef = return . fmap DelayNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsDelayNode o
-toDelayNode :: IsDelayNode o => o -> DelayNode
-toDelayNode = unsafeCastGObject . toGObject
-
-instance IsDelayNode DelayNode
 instance IsAudioNode DelayNode
 instance IsEventTarget DelayNode
 instance IsGObject DelayNode where
@@ -5293,11 +4830,6 @@ instance FromJSRef DeviceMotionEvent where
   fromJSRef = return . fmap DeviceMotionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsDeviceMotionEvent o
-toDeviceMotionEvent :: IsDeviceMotionEvent o => o -> DeviceMotionEvent
-toDeviceMotionEvent = unsafeCastGObject . toGObject
-
-instance IsDeviceMotionEvent DeviceMotionEvent
 instance IsEvent DeviceMotionEvent
 instance IsGObject DeviceMotionEvent where
   toGObject = GObject . castRef . unDeviceMotionEvent
@@ -5331,11 +4863,6 @@ instance FromJSRef DeviceOrientationEvent where
   fromJSRef = return . fmap DeviceOrientationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsDeviceOrientationEvent o
-toDeviceOrientationEvent :: IsDeviceOrientationEvent o => o -> DeviceOrientationEvent
-toDeviceOrientationEvent = unsafeCastGObject . toGObject
-
-instance IsDeviceOrientationEvent DeviceOrientationEvent
 instance IsEvent DeviceOrientationEvent
 instance IsGObject DeviceOrientationEvent where
   toGObject = GObject . castRef . unDeviceOrientationEvent
@@ -5369,11 +4896,6 @@ instance FromJSRef DeviceProximityEvent where
   fromJSRef = return . fmap DeviceProximityEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsDeviceProximityEvent o
-toDeviceProximityEvent :: IsDeviceProximityEvent o => o -> DeviceProximityEvent
-toDeviceProximityEvent = unsafeCastGObject . toGObject
-
-instance IsDeviceProximityEvent DeviceProximityEvent
 instance IsEvent DeviceProximityEvent
 instance IsGObject DeviceProximityEvent where
   toGObject = GObject . castRef . unDeviceProximityEvent
@@ -5449,11 +4971,6 @@ instance FromJSRef DocumentFragment where
   fromJSRef = return . fmap DocumentFragment . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsNode o => IsDocumentFragment o
-toDocumentFragment :: IsDocumentFragment o => o -> DocumentFragment
-toDocumentFragment = unsafeCastGObject . toGObject
-
-instance IsDocumentFragment DocumentFragment
 instance IsNode DocumentFragment
 instance IsEventTarget DocumentFragment
 instance IsGObject DocumentFragment where
@@ -5490,11 +5007,6 @@ instance FromJSRef DocumentType where
   fromJSRef = return . fmap DocumentType . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsNode o => IsDocumentType o
-toDocumentType :: IsDocumentType o => o -> DocumentType
-toDocumentType = unsafeCastGObject . toGObject
-
-instance IsDocumentType DocumentType
 instance IsNode DocumentType
 instance IsEventTarget DocumentType
 instance IsGObject DocumentType where
@@ -5531,11 +5043,6 @@ instance FromJSRef DynamicsCompressorNode where
   fromJSRef = return . fmap DynamicsCompressorNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsDynamicsCompressorNode o
-toDynamicsCompressorNode :: IsDynamicsCompressorNode o => o -> DynamicsCompressorNode
-toDynamicsCompressorNode = unsafeCastGObject . toGObject
-
-instance IsDynamicsCompressorNode DynamicsCompressorNode
 instance IsAudioNode DynamicsCompressorNode
 instance IsEventTarget DynamicsCompressorNode
 instance IsGObject DynamicsCompressorNode where
@@ -5547,6 +5054,64 @@ castToDynamicsCompressorNode = castTo gTypeDynamicsCompressorNode "DynamicsCompr
 
 foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynamicsCompressorNode' :: JSRef GType
 gTypeDynamicsCompressorNode = GType gTypeDynamicsCompressorNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EXTBlendMinMax".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EXTBlendMinMax Mozilla EXTBlendMinMax documentation>
+newtype EXTBlendMinMax = EXTBlendMinMax (JSRef EXTBlendMinMax) deriving (Eq)
+
+unEXTBlendMinMax (EXTBlendMinMax o) = o
+
+instance ToJSRef EXTBlendMinMax where
+  toJSRef = return . unEXTBlendMinMax
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef EXTBlendMinMax where
+  fromJSRef = return . fmap EXTBlendMinMax . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject EXTBlendMinMax where
+  toGObject = GObject . castRef . unEXTBlendMinMax
+  unsafeCastGObject = EXTBlendMinMax . castRef . unGObject
+
+castToEXTBlendMinMax :: IsGObject obj => obj -> EXTBlendMinMax
+castToEXTBlendMinMax = castTo gTypeEXTBlendMinMax "EXTBlendMinMax"
+
+foreign import javascript unsafe "window[\"EXTBlendMinMax\"]" gTypeEXTBlendMinMax' :: JSRef GType
+gTypeEXTBlendMinMax = GType gTypeEXTBlendMinMax'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EXTFragDepth".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EXTFragDepth Mozilla EXTFragDepth documentation>
+newtype EXTFragDepth = EXTFragDepth (JSRef EXTFragDepth) deriving (Eq)
+
+unEXTFragDepth (EXTFragDepth o) = o
+
+instance ToJSRef EXTFragDepth where
+  toJSRef = return . unEXTFragDepth
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef EXTFragDepth where
+  fromJSRef = return . fmap EXTFragDepth . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject EXTFragDepth where
+  toGObject = GObject . castRef . unEXTFragDepth
+  unsafeCastGObject = EXTFragDepth . castRef . unGObject
+
+castToEXTFragDepth :: IsGObject obj => obj -> EXTFragDepth
+castToEXTFragDepth = castTo gTypeEXTFragDepth "EXTFragDepth"
+
+foreign import javascript unsafe "window[\"EXTFragDepth\"]" gTypeEXTFragDepth' :: JSRef GType
+gTypeEXTFragDepth = GType gTypeEXTFragDepth'
 #else
 #endif
 
@@ -5567,11 +5132,6 @@ instance FromJSRef EXTShaderTextureLOD where
   fromJSRef = return . fmap EXTShaderTextureLOD . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsEXTShaderTextureLOD o
-toEXTShaderTextureLOD :: IsEXTShaderTextureLOD o => o -> EXTShaderTextureLOD
-toEXTShaderTextureLOD = unsafeCastGObject . toGObject
-
-instance IsEXTShaderTextureLOD EXTShaderTextureLOD
 instance IsGObject EXTShaderTextureLOD where
   toGObject = GObject . castRef . unEXTShaderTextureLOD
   unsafeCastGObject = EXTShaderTextureLOD . castRef . unGObject
@@ -5601,11 +5161,6 @@ instance FromJSRef EXTTextureFilterAnisotropic where
   fromJSRef = return . fmap EXTTextureFilterAnisotropic . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsEXTTextureFilterAnisotropic o
-toEXTTextureFilterAnisotropic :: IsEXTTextureFilterAnisotropic o => o -> EXTTextureFilterAnisotropic
-toEXTTextureFilterAnisotropic = unsafeCastGObject . toGObject
-
-instance IsEXTTextureFilterAnisotropic EXTTextureFilterAnisotropic
 instance IsGObject EXTTextureFilterAnisotropic where
   toGObject = GObject . castRef . unEXTTextureFilterAnisotropic
   unsafeCastGObject = EXTTextureFilterAnisotropic . castRef . unGObject
@@ -5615,6 +5170,35 @@ castToEXTTextureFilterAnisotropic = castTo gTypeEXTTextureFilterAnisotropic "EXT
 
 foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gTypeEXTTextureFilterAnisotropic' :: JSRef GType
 gTypeEXTTextureFilterAnisotropic = GType gTypeEXTTextureFilterAnisotropic'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.EXTsRGB".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EXTsRGB Mozilla EXTsRGB documentation>
+newtype EXTsRGB = EXTsRGB (JSRef EXTsRGB) deriving (Eq)
+
+unEXTsRGB (EXTsRGB o) = o
+
+instance ToJSRef EXTsRGB where
+  toJSRef = return . unEXTsRGB
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef EXTsRGB where
+  fromJSRef = return . fmap EXTsRGB . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject EXTsRGB where
+  toGObject = GObject . castRef . unEXTsRGB
+  unsafeCastGObject = EXTsRGB . castRef . unGObject
+
+castToEXTsRGB :: IsGObject obj => obj -> EXTsRGB
+castToEXTsRGB = castTo gTypeEXTsRGB "EXTsRGB"
+
+foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB' :: JSRef GType
+gTypeEXTsRGB = GType gTypeEXTsRGB'
 #else
 #endif
 
@@ -5680,11 +5264,6 @@ instance FromJSRef Entity where
   fromJSRef = return . fmap Entity . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsNode o => IsEntity o
-toEntity :: IsEntity o => o -> Entity
-toEntity = unsafeCastGObject . toGObject
-
-instance IsEntity Entity
 instance IsNode Entity
 instance IsEventTarget Entity
 instance IsGObject Entity where
@@ -5720,11 +5299,6 @@ instance FromJSRef EntityReference where
   fromJSRef = return . fmap EntityReference . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsNode o => IsEntityReference o
-toEntityReference :: IsEntityReference o => o -> EntityReference
-toEntityReference = unsafeCastGObject . toGObject
-
-instance IsEntityReference EntityReference
 instance IsNode EntityReference
 instance IsEventTarget EntityReference
 instance IsGObject EntityReference where
@@ -5760,11 +5334,6 @@ instance FromJSRef ErrorEvent where
   fromJSRef = return . fmap ErrorEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsErrorEvent o
-toErrorEvent :: IsErrorEvent o => o -> ErrorEvent
-toErrorEvent = unsafeCastGObject . toGObject
-
-instance IsErrorEvent ErrorEvent
 instance IsEvent ErrorEvent
 instance IsGObject ErrorEvent where
   toGObject = GObject . castRef . unErrorEvent
@@ -5830,11 +5399,6 @@ instance FromJSRef EventListener where
   fromJSRef = return . fmap EventListener . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsEventListener o
-toEventListener :: IsEventListener o => o -> EventListener
-toEventListener = unsafeCastGObject . toGObject
-
-instance IsEventListener EventListener
 instance IsGObject EventListener where
   toGObject = GObject . castRef . unEventListener
   unsafeCastGObject = EventListener . castRef . unGObject
@@ -5867,11 +5431,6 @@ instance FromJSRef EventSource where
   fromJSRef = return . fmap EventSource . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsEventSource o
-toEventSource :: IsEventSource o => o -> EventSource
-toEventSource = unsafeCastGObject . toGObject
-
-instance IsEventSource EventSource
 instance IsEventTarget EventSource
 instance IsGObject EventSource where
   toGObject = GObject . castRef . unEventSource
@@ -5940,11 +5499,6 @@ instance FromJSRef File where
   fromJSRef = return . fmap File . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsBlob o => IsFile o
-toFile :: IsFile o => o -> File
-toFile = unsafeCastGObject . toGObject
-
-instance IsFile File
 instance IsBlob File
 instance IsGObject File where
   toGObject = GObject . castRef . unFile
@@ -5976,11 +5530,6 @@ instance FromJSRef FileError where
   fromJSRef = return . fmap FileError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsFileError o
-toFileError :: IsFileError o => o -> FileError
-toFileError = unsafeCastGObject . toGObject
-
-instance IsFileError FileError
 instance IsGObject FileError where
   toGObject = GObject . castRef . unFileError
   unsafeCastGObject = FileError . castRef . unGObject
@@ -6010,11 +5559,6 @@ instance FromJSRef FileList where
   fromJSRef = return . fmap FileList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsFileList o
-toFileList :: IsFileList o => o -> FileList
-toFileList = unsafeCastGObject . toGObject
-
-instance IsFileList FileList
 instance IsGObject FileList where
   toGObject = GObject . castRef . unFileList
   unsafeCastGObject = FileList . castRef . unGObject
@@ -6048,11 +5592,6 @@ instance FromJSRef FileReader where
   fromJSRef = return . fmap FileReader . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsFileReader o
-toFileReader :: IsFileReader o => o -> FileReader
-toFileReader = unsafeCastGObject . toGObject
-
-instance IsFileReader FileReader
 instance IsEventTarget FileReader
 instance IsGObject FileReader where
   toGObject = GObject . castRef . unFileReader
@@ -6083,11 +5622,6 @@ instance FromJSRef FileReaderSync where
   fromJSRef = return . fmap FileReaderSync . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsFileReaderSync o
-toFileReaderSync :: IsFileReaderSync o => o -> FileReaderSync
-toFileReaderSync = unsafeCastGObject . toGObject
-
-instance IsFileReaderSync FileReaderSync
 instance IsGObject FileReaderSync where
   toGObject = GObject . castRef . unFileReaderSync
   unsafeCastGObject = FileReaderSync . castRef . unGObject
@@ -6121,11 +5655,6 @@ instance FromJSRef FocusEvent where
   fromJSRef = return . fmap FocusEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsUIEvent o => IsFocusEvent o
-toFocusEvent :: IsFocusEvent o => o -> FocusEvent
-toFocusEvent = unsafeCastGObject . toGObject
-
-instance IsFocusEvent FocusEvent
 instance IsUIEvent FocusEvent
 instance IsEvent FocusEvent
 instance IsGObject FocusEvent where
@@ -6160,11 +5689,6 @@ instance FromJSRef FontLoader where
   fromJSRef = return . fmap FontLoader . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsFontLoader o
-toFontLoader :: IsFontLoader o => o -> FontLoader
-toFontLoader = unsafeCastGObject . toGObject
-
-instance IsFontLoader FontLoader
 instance IsEventTarget FontLoader
 instance IsGObject FontLoader where
   toGObject = GObject . castRef . unFontLoader
@@ -6199,11 +5723,6 @@ instance FromJSRef GainNode where
   fromJSRef = return . fmap GainNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsGainNode o
-toGainNode :: IsGainNode o => o -> GainNode
-toGainNode = unsafeCastGObject . toGObject
-
-instance IsGainNode GainNode
 instance IsAudioNode GainNode
 instance IsEventTarget GainNode
 instance IsGObject GainNode where
@@ -6235,11 +5754,6 @@ instance FromJSRef Gamepad where
   fromJSRef = return . fmap Gamepad . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsGamepad o
-toGamepad :: IsGamepad o => o -> Gamepad
-toGamepad = unsafeCastGObject . toGObject
-
-instance IsGamepad Gamepad
 instance IsGObject Gamepad where
   toGObject = GObject . castRef . unGamepad
   unsafeCastGObject = Gamepad . castRef . unGObject
@@ -6269,11 +5783,6 @@ instance FromJSRef GamepadButton where
   fromJSRef = return . fmap GamepadButton . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsGamepadButton o
-toGamepadButton :: IsGamepadButton o => o -> GamepadButton
-toGamepadButton = unsafeCastGObject . toGObject
-
-instance IsGamepadButton GamepadButton
 instance IsGObject GamepadButton where
   toGObject = GObject . castRef . unGamepadButton
   unsafeCastGObject = GamepadButton . castRef . unGObject
@@ -6306,11 +5815,6 @@ instance FromJSRef GamepadEvent where
   fromJSRef = return . fmap GamepadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsGamepadEvent o
-toGamepadEvent :: IsGamepadEvent o => o -> GamepadEvent
-toGamepadEvent = unsafeCastGObject . toGObject
-
-instance IsGamepadEvent GamepadEvent
 instance IsEvent GamepadEvent
 instance IsGObject GamepadEvent where
   toGObject = GObject . castRef . unGamepadEvent
@@ -6341,11 +5845,6 @@ instance FromJSRef Geolocation where
   fromJSRef = return . fmap Geolocation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsGeolocation o
-toGeolocation :: IsGeolocation o => o -> Geolocation
-toGeolocation = unsafeCastGObject . toGObject
-
-instance IsGeolocation Geolocation
 instance IsGObject Geolocation where
   toGObject = GObject . castRef . unGeolocation
   unsafeCastGObject = Geolocation . castRef . unGObject
@@ -6376,11 +5875,6 @@ instance FromJSRef Geoposition where
   fromJSRef = return . fmap Geoposition . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsGeoposition o
-toGeoposition :: IsGeoposition o => o -> Geoposition
-toGeoposition = unsafeCastGObject . toGObject
-
-instance IsGeoposition Geoposition
 instance IsGObject Geoposition where
   toGObject = GObject . castRef . unGeoposition
   unsafeCastGObject = Geoposition . castRef . unGObject
@@ -6410,11 +5904,6 @@ instance FromJSRef HTMLAllCollection where
   fromJSRef = return . fmap HTMLAllCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsHTMLAllCollection o
-toHTMLAllCollection :: IsHTMLAllCollection o => o -> HTMLAllCollection
-toHTMLAllCollection = unsafeCastGObject . toGObject
-
-instance IsHTMLAllCollection HTMLAllCollection
 instance IsGObject HTMLAllCollection where
   toGObject = GObject . castRef . unHTMLAllCollection
   unsafeCastGObject = HTMLAllCollection . castRef . unGObject
@@ -6450,11 +5939,6 @@ instance FromJSRef HTMLAnchorElement where
   fromJSRef = return . fmap HTMLAnchorElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLAnchorElement o
-toHTMLAnchorElement :: IsHTMLAnchorElement o => o -> HTMLAnchorElement
-toHTMLAnchorElement = unsafeCastGObject . toGObject
-
-instance IsHTMLAnchorElement HTMLAnchorElement
 instance IsHTMLElement HTMLAnchorElement
 instance IsElement HTMLAnchorElement
 instance IsNode HTMLAnchorElement
@@ -6495,11 +5979,6 @@ instance FromJSRef HTMLAppletElement where
   fromJSRef = return . fmap HTMLAppletElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLAppletElement o
-toHTMLAppletElement :: IsHTMLAppletElement o => o -> HTMLAppletElement
-toHTMLAppletElement = unsafeCastGObject . toGObject
-
-instance IsHTMLAppletElement HTMLAppletElement
 instance IsHTMLElement HTMLAppletElement
 instance IsElement HTMLAppletElement
 instance IsNode HTMLAppletElement
@@ -6540,11 +6019,6 @@ instance FromJSRef HTMLAreaElement where
   fromJSRef = return . fmap HTMLAreaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLAreaElement o
-toHTMLAreaElement :: IsHTMLAreaElement o => o -> HTMLAreaElement
-toHTMLAreaElement = unsafeCastGObject . toGObject
-
-instance IsHTMLAreaElement HTMLAreaElement
 instance IsHTMLElement HTMLAreaElement
 instance IsElement HTMLAreaElement
 instance IsNode HTMLAreaElement
@@ -6582,11 +6056,6 @@ instance FromJSRef HTMLAudioElement where
   fromJSRef = return . fmap HTMLAudioElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLMediaElement o => IsHTMLAudioElement o
-toHTMLAudioElement :: IsHTMLAudioElement o => o -> HTMLAudioElement
-toHTMLAudioElement = unsafeCastGObject . toGObject
-
-instance IsHTMLAudioElement HTMLAudioElement
 instance IsHTMLMediaElement HTMLAudioElement
 instance IsGObject HTMLAudioElement where
   toGObject = GObject . castRef . unHTMLAudioElement
@@ -6624,11 +6093,6 @@ instance FromJSRef HTMLBRElement where
   fromJSRef = return . fmap HTMLBRElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLBRElement o
-toHTMLBRElement :: IsHTMLBRElement o => o -> HTMLBRElement
-toHTMLBRElement = unsafeCastGObject . toGObject
-
-instance IsHTMLBRElement HTMLBRElement
 instance IsHTMLElement HTMLBRElement
 instance IsElement HTMLBRElement
 instance IsNode HTMLBRElement
@@ -6669,11 +6133,6 @@ instance FromJSRef HTMLBaseElement where
   fromJSRef = return . fmap HTMLBaseElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLBaseElement o
-toHTMLBaseElement :: IsHTMLBaseElement o => o -> HTMLBaseElement
-toHTMLBaseElement = unsafeCastGObject . toGObject
-
-instance IsHTMLBaseElement HTMLBaseElement
 instance IsHTMLElement HTMLBaseElement
 instance IsElement HTMLBaseElement
 instance IsNode HTMLBaseElement
@@ -6714,11 +6173,6 @@ instance FromJSRef HTMLBaseFontElement where
   fromJSRef = return . fmap HTMLBaseFontElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLBaseFontElement o
-toHTMLBaseFontElement :: IsHTMLBaseFontElement o => o -> HTMLBaseFontElement
-toHTMLBaseFontElement = unsafeCastGObject . toGObject
-
-instance IsHTMLBaseFontElement HTMLBaseFontElement
 instance IsHTMLElement HTMLBaseFontElement
 instance IsElement HTMLBaseFontElement
 instance IsNode HTMLBaseFontElement
@@ -6759,11 +6213,6 @@ instance FromJSRef HTMLBodyElement where
   fromJSRef = return . fmap HTMLBodyElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLBodyElement o
-toHTMLBodyElement :: IsHTMLBodyElement o => o -> HTMLBodyElement
-toHTMLBodyElement = unsafeCastGObject . toGObject
-
-instance IsHTMLBodyElement HTMLBodyElement
 instance IsHTMLElement HTMLBodyElement
 instance IsElement HTMLBodyElement
 instance IsNode HTMLBodyElement
@@ -6804,11 +6253,6 @@ instance FromJSRef HTMLButtonElement where
   fromJSRef = return . fmap HTMLButtonElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLButtonElement o
-toHTMLButtonElement :: IsHTMLButtonElement o => o -> HTMLButtonElement
-toHTMLButtonElement = unsafeCastGObject . toGObject
-
-instance IsHTMLButtonElement HTMLButtonElement
 instance IsHTMLElement HTMLButtonElement
 instance IsElement HTMLButtonElement
 instance IsNode HTMLButtonElement
@@ -6849,11 +6293,6 @@ instance FromJSRef HTMLCanvasElement where
   fromJSRef = return . fmap HTMLCanvasElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLCanvasElement o
-toHTMLCanvasElement :: IsHTMLCanvasElement o => o -> HTMLCanvasElement
-toHTMLCanvasElement = unsafeCastGObject . toGObject
-
-instance IsHTMLCanvasElement HTMLCanvasElement
 instance IsHTMLElement HTMLCanvasElement
 instance IsElement HTMLCanvasElement
 instance IsNode HTMLCanvasElement
@@ -6929,11 +6368,6 @@ instance FromJSRef HTMLDListElement where
   fromJSRef = return . fmap HTMLDListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLDListElement o
-toHTMLDListElement :: IsHTMLDListElement o => o -> HTMLDListElement
-toHTMLDListElement = unsafeCastGObject . toGObject
-
-instance IsHTMLDListElement HTMLDListElement
 instance IsHTMLElement HTMLDListElement
 instance IsElement HTMLDListElement
 instance IsNode HTMLDListElement
@@ -6974,11 +6408,6 @@ instance FromJSRef HTMLDataListElement where
   fromJSRef = return . fmap HTMLDataListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLDataListElement o
-toHTMLDataListElement :: IsHTMLDataListElement o => o -> HTMLDataListElement
-toHTMLDataListElement = unsafeCastGObject . toGObject
-
-instance IsHTMLDataListElement HTMLDataListElement
 instance IsHTMLElement HTMLDataListElement
 instance IsElement HTMLDataListElement
 instance IsNode HTMLDataListElement
@@ -7018,11 +6447,6 @@ instance FromJSRef HTMLDetailsElement where
   fromJSRef = return . fmap HTMLDetailsElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLDetailsElement o
-toHTMLDetailsElement :: IsHTMLDetailsElement o => o -> HTMLDetailsElement
-toHTMLDetailsElement = unsafeCastGObject . toGObject
-
-instance IsHTMLDetailsElement HTMLDetailsElement
 instance IsHTMLElement HTMLDetailsElement
 instance IsElement HTMLDetailsElement
 instance IsNode HTMLDetailsElement
@@ -7063,11 +6487,6 @@ instance FromJSRef HTMLDirectoryElement where
   fromJSRef = return . fmap HTMLDirectoryElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLDirectoryElement o
-toHTMLDirectoryElement :: IsHTMLDirectoryElement o => o -> HTMLDirectoryElement
-toHTMLDirectoryElement = unsafeCastGObject . toGObject
-
-instance IsHTMLDirectoryElement HTMLDirectoryElement
 instance IsHTMLElement HTMLDirectoryElement
 instance IsElement HTMLDirectoryElement
 instance IsNode HTMLDirectoryElement
@@ -7108,11 +6527,6 @@ instance FromJSRef HTMLDivElement where
   fromJSRef = return . fmap HTMLDivElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLDivElement o
-toHTMLDivElement :: IsHTMLDivElement o => o -> HTMLDivElement
-toHTMLDivElement = unsafeCastGObject . toGObject
-
-instance IsHTMLDivElement HTMLDivElement
 instance IsHTMLElement HTMLDivElement
 instance IsElement HTMLDivElement
 instance IsNode HTMLDivElement
@@ -7152,11 +6566,6 @@ instance FromJSRef HTMLDocument where
   fromJSRef = return . fmap HTMLDocument . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsDocument o => IsHTMLDocument o
-toHTMLDocument :: IsHTMLDocument o => o -> HTMLDocument
-toHTMLDocument = unsafeCastGObject . toGObject
-
-instance IsHTMLDocument HTMLDocument
 instance IsDocument HTMLDocument
 instance IsNode HTMLDocument
 instance IsEventTarget HTMLDocument
@@ -7239,11 +6648,6 @@ instance FromJSRef HTMLEmbedElement where
   fromJSRef = return . fmap HTMLEmbedElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLEmbedElement o
-toHTMLEmbedElement :: IsHTMLEmbedElement o => o -> HTMLEmbedElement
-toHTMLEmbedElement = unsafeCastGObject . toGObject
-
-instance IsHTMLEmbedElement HTMLEmbedElement
 instance IsHTMLElement HTMLEmbedElement
 instance IsElement HTMLEmbedElement
 instance IsNode HTMLEmbedElement
@@ -7284,11 +6688,6 @@ instance FromJSRef HTMLFieldSetElement where
   fromJSRef = return . fmap HTMLFieldSetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLFieldSetElement o
-toHTMLFieldSetElement :: IsHTMLFieldSetElement o => o -> HTMLFieldSetElement
-toHTMLFieldSetElement = unsafeCastGObject . toGObject
-
-instance IsHTMLFieldSetElement HTMLFieldSetElement
 instance IsHTMLElement HTMLFieldSetElement
 instance IsElement HTMLFieldSetElement
 instance IsNode HTMLFieldSetElement
@@ -7329,11 +6728,6 @@ instance FromJSRef HTMLFontElement where
   fromJSRef = return . fmap HTMLFontElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLFontElement o
-toHTMLFontElement :: IsHTMLFontElement o => o -> HTMLFontElement
-toHTMLFontElement = unsafeCastGObject . toGObject
-
-instance IsHTMLFontElement HTMLFontElement
 instance IsHTMLElement HTMLFontElement
 instance IsElement HTMLFontElement
 instance IsNode HTMLFontElement
@@ -7371,11 +6765,6 @@ instance FromJSRef HTMLFormControlsCollection where
   fromJSRef = return . fmap HTMLFormControlsCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLCollection o => IsHTMLFormControlsCollection o
-toHTMLFormControlsCollection :: IsHTMLFormControlsCollection o => o -> HTMLFormControlsCollection
-toHTMLFormControlsCollection = unsafeCastGObject . toGObject
-
-instance IsHTMLFormControlsCollection HTMLFormControlsCollection
 instance IsHTMLCollection HTMLFormControlsCollection
 instance IsGObject HTMLFormControlsCollection where
   toGObject = GObject . castRef . unHTMLFormControlsCollection
@@ -7412,11 +6801,6 @@ instance FromJSRef HTMLFormElement where
   fromJSRef = return . fmap HTMLFormElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLFormElement o
-toHTMLFormElement :: IsHTMLFormElement o => o -> HTMLFormElement
-toHTMLFormElement = unsafeCastGObject . toGObject
-
-instance IsHTMLFormElement HTMLFormElement
 instance IsHTMLElement HTMLFormElement
 instance IsElement HTMLFormElement
 instance IsNode HTMLFormElement
@@ -7457,11 +6841,6 @@ instance FromJSRef HTMLFrameElement where
   fromJSRef = return . fmap HTMLFrameElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLFrameElement o
-toHTMLFrameElement :: IsHTMLFrameElement o => o -> HTMLFrameElement
-toHTMLFrameElement = unsafeCastGObject . toGObject
-
-instance IsHTMLFrameElement HTMLFrameElement
 instance IsHTMLElement HTMLFrameElement
 instance IsElement HTMLFrameElement
 instance IsNode HTMLFrameElement
@@ -7502,11 +6881,6 @@ instance FromJSRef HTMLFrameSetElement where
   fromJSRef = return . fmap HTMLFrameSetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLFrameSetElement o
-toHTMLFrameSetElement :: IsHTMLFrameSetElement o => o -> HTMLFrameSetElement
-toHTMLFrameSetElement = unsafeCastGObject . toGObject
-
-instance IsHTMLFrameSetElement HTMLFrameSetElement
 instance IsHTMLElement HTMLFrameSetElement
 instance IsElement HTMLFrameSetElement
 instance IsNode HTMLFrameSetElement
@@ -7547,11 +6921,6 @@ instance FromJSRef HTMLHRElement where
   fromJSRef = return . fmap HTMLHRElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLHRElement o
-toHTMLHRElement :: IsHTMLHRElement o => o -> HTMLHRElement
-toHTMLHRElement = unsafeCastGObject . toGObject
-
-instance IsHTMLHRElement HTMLHRElement
 instance IsHTMLElement HTMLHRElement
 instance IsElement HTMLHRElement
 instance IsNode HTMLHRElement
@@ -7592,11 +6961,6 @@ instance FromJSRef HTMLHeadElement where
   fromJSRef = return . fmap HTMLHeadElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLHeadElement o
-toHTMLHeadElement :: IsHTMLHeadElement o => o -> HTMLHeadElement
-toHTMLHeadElement = unsafeCastGObject . toGObject
-
-instance IsHTMLHeadElement HTMLHeadElement
 instance IsHTMLElement HTMLHeadElement
 instance IsElement HTMLHeadElement
 instance IsNode HTMLHeadElement
@@ -7637,11 +7001,6 @@ instance FromJSRef HTMLHeadingElement where
   fromJSRef = return . fmap HTMLHeadingElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLHeadingElement o
-toHTMLHeadingElement :: IsHTMLHeadingElement o => o -> HTMLHeadingElement
-toHTMLHeadingElement = unsafeCastGObject . toGObject
-
-instance IsHTMLHeadingElement HTMLHeadingElement
 instance IsHTMLElement HTMLHeadingElement
 instance IsElement HTMLHeadingElement
 instance IsNode HTMLHeadingElement
@@ -7682,11 +7041,6 @@ instance FromJSRef HTMLHtmlElement where
   fromJSRef = return . fmap HTMLHtmlElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLHtmlElement o
-toHTMLHtmlElement :: IsHTMLHtmlElement o => o -> HTMLHtmlElement
-toHTMLHtmlElement = unsafeCastGObject . toGObject
-
-instance IsHTMLHtmlElement HTMLHtmlElement
 instance IsHTMLElement HTMLHtmlElement
 instance IsElement HTMLHtmlElement
 instance IsNode HTMLHtmlElement
@@ -7727,11 +7081,6 @@ instance FromJSRef HTMLIFrameElement where
   fromJSRef = return . fmap HTMLIFrameElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLIFrameElement o
-toHTMLIFrameElement :: IsHTMLIFrameElement o => o -> HTMLIFrameElement
-toHTMLIFrameElement = unsafeCastGObject . toGObject
-
-instance IsHTMLIFrameElement HTMLIFrameElement
 instance IsHTMLElement HTMLIFrameElement
 instance IsElement HTMLIFrameElement
 instance IsNode HTMLIFrameElement
@@ -7772,11 +7121,6 @@ instance FromJSRef HTMLImageElement where
   fromJSRef = return . fmap HTMLImageElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLImageElement o
-toHTMLImageElement :: IsHTMLImageElement o => o -> HTMLImageElement
-toHTMLImageElement = unsafeCastGObject . toGObject
-
-instance IsHTMLImageElement HTMLImageElement
 instance IsHTMLElement HTMLImageElement
 instance IsElement HTMLImageElement
 instance IsNode HTMLImageElement
@@ -7817,11 +7161,6 @@ instance FromJSRef HTMLInputElement where
   fromJSRef = return . fmap HTMLInputElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLInputElement o
-toHTMLInputElement :: IsHTMLInputElement o => o -> HTMLInputElement
-toHTMLInputElement = unsafeCastGObject . toGObject
-
-instance IsHTMLInputElement HTMLInputElement
 instance IsHTMLElement HTMLInputElement
 instance IsElement HTMLInputElement
 instance IsNode HTMLInputElement
@@ -7862,11 +7201,6 @@ instance FromJSRef HTMLKeygenElement where
   fromJSRef = return . fmap HTMLKeygenElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLKeygenElement o
-toHTMLKeygenElement :: IsHTMLKeygenElement o => o -> HTMLKeygenElement
-toHTMLKeygenElement = unsafeCastGObject . toGObject
-
-instance IsHTMLKeygenElement HTMLKeygenElement
 instance IsHTMLElement HTMLKeygenElement
 instance IsElement HTMLKeygenElement
 instance IsNode HTMLKeygenElement
@@ -7907,11 +7241,6 @@ instance FromJSRef HTMLLIElement where
   fromJSRef = return . fmap HTMLLIElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLLIElement o
-toHTMLLIElement :: IsHTMLLIElement o => o -> HTMLLIElement
-toHTMLLIElement = unsafeCastGObject . toGObject
-
-instance IsHTMLLIElement HTMLLIElement
 instance IsHTMLElement HTMLLIElement
 instance IsElement HTMLLIElement
 instance IsNode HTMLLIElement
@@ -7952,11 +7281,6 @@ instance FromJSRef HTMLLabelElement where
   fromJSRef = return . fmap HTMLLabelElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLLabelElement o
-toHTMLLabelElement :: IsHTMLLabelElement o => o -> HTMLLabelElement
-toHTMLLabelElement = unsafeCastGObject . toGObject
-
-instance IsHTMLLabelElement HTMLLabelElement
 instance IsHTMLElement HTMLLabelElement
 instance IsElement HTMLLabelElement
 instance IsNode HTMLLabelElement
@@ -7997,11 +7321,6 @@ instance FromJSRef HTMLLegendElement where
   fromJSRef = return . fmap HTMLLegendElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLLegendElement o
-toHTMLLegendElement :: IsHTMLLegendElement o => o -> HTMLLegendElement
-toHTMLLegendElement = unsafeCastGObject . toGObject
-
-instance IsHTMLLegendElement HTMLLegendElement
 instance IsHTMLElement HTMLLegendElement
 instance IsElement HTMLLegendElement
 instance IsNode HTMLLegendElement
@@ -8042,11 +7361,6 @@ instance FromJSRef HTMLLinkElement where
   fromJSRef = return . fmap HTMLLinkElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLLinkElement o
-toHTMLLinkElement :: IsHTMLLinkElement o => o -> HTMLLinkElement
-toHTMLLinkElement = unsafeCastGObject . toGObject
-
-instance IsHTMLLinkElement HTMLLinkElement
 instance IsHTMLElement HTMLLinkElement
 instance IsElement HTMLLinkElement
 instance IsNode HTMLLinkElement
@@ -8087,11 +7401,6 @@ instance FromJSRef HTMLMapElement where
   fromJSRef = return . fmap HTMLMapElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLMapElement o
-toHTMLMapElement :: IsHTMLMapElement o => o -> HTMLMapElement
-toHTMLMapElement = unsafeCastGObject . toGObject
-
-instance IsHTMLMapElement HTMLMapElement
 instance IsHTMLElement HTMLMapElement
 instance IsElement HTMLMapElement
 instance IsNode HTMLMapElement
@@ -8132,11 +7441,6 @@ instance FromJSRef HTMLMarqueeElement where
   fromJSRef = return . fmap HTMLMarqueeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLMarqueeElement o
-toHTMLMarqueeElement :: IsHTMLMarqueeElement o => o -> HTMLMarqueeElement
-toHTMLMarqueeElement = unsafeCastGObject . toGObject
-
-instance IsHTMLMarqueeElement HTMLMarqueeElement
 instance IsHTMLElement HTMLMarqueeElement
 instance IsElement HTMLMarqueeElement
 instance IsNode HTMLMarqueeElement
@@ -8212,11 +7516,6 @@ instance FromJSRef HTMLMenuElement where
   fromJSRef = return . fmap HTMLMenuElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLMenuElement o
-toHTMLMenuElement :: IsHTMLMenuElement o => o -> HTMLMenuElement
-toHTMLMenuElement = unsafeCastGObject . toGObject
-
-instance IsHTMLMenuElement HTMLMenuElement
 instance IsHTMLElement HTMLMenuElement
 instance IsElement HTMLMenuElement
 instance IsNode HTMLMenuElement
@@ -8257,11 +7556,6 @@ instance FromJSRef HTMLMetaElement where
   fromJSRef = return . fmap HTMLMetaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLMetaElement o
-toHTMLMetaElement :: IsHTMLMetaElement o => o -> HTMLMetaElement
-toHTMLMetaElement = unsafeCastGObject . toGObject
-
-instance IsHTMLMetaElement HTMLMetaElement
 instance IsHTMLElement HTMLMetaElement
 instance IsElement HTMLMetaElement
 instance IsNode HTMLMetaElement
@@ -8302,11 +7596,6 @@ instance FromJSRef HTMLMeterElement where
   fromJSRef = return . fmap HTMLMeterElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLMeterElement o
-toHTMLMeterElement :: IsHTMLMeterElement o => o -> HTMLMeterElement
-toHTMLMeterElement = unsafeCastGObject . toGObject
-
-instance IsHTMLMeterElement HTMLMeterElement
 instance IsHTMLElement HTMLMeterElement
 instance IsElement HTMLMeterElement
 instance IsNode HTMLMeterElement
@@ -8346,11 +7635,6 @@ instance FromJSRef HTMLModElement where
   fromJSRef = return . fmap HTMLModElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLModElement o
-toHTMLModElement :: IsHTMLModElement o => o -> HTMLModElement
-toHTMLModElement = unsafeCastGObject . toGObject
-
-instance IsHTMLModElement HTMLModElement
 instance IsHTMLElement HTMLModElement
 instance IsElement HTMLModElement
 instance IsNode HTMLModElement
@@ -8391,11 +7675,6 @@ instance FromJSRef HTMLOListElement where
   fromJSRef = return . fmap HTMLOListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLOListElement o
-toHTMLOListElement :: IsHTMLOListElement o => o -> HTMLOListElement
-toHTMLOListElement = unsafeCastGObject . toGObject
-
-instance IsHTMLOListElement HTMLOListElement
 instance IsHTMLElement HTMLOListElement
 instance IsElement HTMLOListElement
 instance IsNode HTMLOListElement
@@ -8436,11 +7715,6 @@ instance FromJSRef HTMLObjectElement where
   fromJSRef = return . fmap HTMLObjectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLObjectElement o
-toHTMLObjectElement :: IsHTMLObjectElement o => o -> HTMLObjectElement
-toHTMLObjectElement = unsafeCastGObject . toGObject
-
-instance IsHTMLObjectElement HTMLObjectElement
 instance IsHTMLElement HTMLObjectElement
 instance IsElement HTMLObjectElement
 instance IsNode HTMLObjectElement
@@ -8481,11 +7755,6 @@ instance FromJSRef HTMLOptGroupElement where
   fromJSRef = return . fmap HTMLOptGroupElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLOptGroupElement o
-toHTMLOptGroupElement :: IsHTMLOptGroupElement o => o -> HTMLOptGroupElement
-toHTMLOptGroupElement = unsafeCastGObject . toGObject
-
-instance IsHTMLOptGroupElement HTMLOptGroupElement
 instance IsHTMLElement HTMLOptGroupElement
 instance IsElement HTMLOptGroupElement
 instance IsNode HTMLOptGroupElement
@@ -8526,11 +7795,6 @@ instance FromJSRef HTMLOptionElement where
   fromJSRef = return . fmap HTMLOptionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLOptionElement o
-toHTMLOptionElement :: IsHTMLOptionElement o => o -> HTMLOptionElement
-toHTMLOptionElement = unsafeCastGObject . toGObject
-
-instance IsHTMLOptionElement HTMLOptionElement
 instance IsHTMLElement HTMLOptionElement
 instance IsElement HTMLOptionElement
 instance IsNode HTMLOptionElement
@@ -8568,11 +7832,6 @@ instance FromJSRef HTMLOptionsCollection where
   fromJSRef = return . fmap HTMLOptionsCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLCollection o => IsHTMLOptionsCollection o
-toHTMLOptionsCollection :: IsHTMLOptionsCollection o => o -> HTMLOptionsCollection
-toHTMLOptionsCollection = unsafeCastGObject . toGObject
-
-instance IsHTMLOptionsCollection HTMLOptionsCollection
 instance IsHTMLCollection HTMLOptionsCollection
 instance IsGObject HTMLOptionsCollection where
   toGObject = GObject . castRef . unHTMLOptionsCollection
@@ -8610,11 +7869,6 @@ instance FromJSRef HTMLOutputElement where
   fromJSRef = return . fmap HTMLOutputElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLOutputElement o
-toHTMLOutputElement :: IsHTMLOutputElement o => o -> HTMLOutputElement
-toHTMLOutputElement = unsafeCastGObject . toGObject
-
-instance IsHTMLOutputElement HTMLOutputElement
 instance IsHTMLElement HTMLOutputElement
 instance IsElement HTMLOutputElement
 instance IsNode HTMLOutputElement
@@ -8654,11 +7908,6 @@ instance FromJSRef HTMLParagraphElement where
   fromJSRef = return . fmap HTMLParagraphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLParagraphElement o
-toHTMLParagraphElement :: IsHTMLParagraphElement o => o -> HTMLParagraphElement
-toHTMLParagraphElement = unsafeCastGObject . toGObject
-
-instance IsHTMLParagraphElement HTMLParagraphElement
 instance IsHTMLElement HTMLParagraphElement
 instance IsElement HTMLParagraphElement
 instance IsNode HTMLParagraphElement
@@ -8699,11 +7948,6 @@ instance FromJSRef HTMLParamElement where
   fromJSRef = return . fmap HTMLParamElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLParamElement o
-toHTMLParamElement :: IsHTMLParamElement o => o -> HTMLParamElement
-toHTMLParamElement = unsafeCastGObject . toGObject
-
-instance IsHTMLParamElement HTMLParamElement
 instance IsHTMLElement HTMLParamElement
 instance IsElement HTMLParamElement
 instance IsNode HTMLParamElement
@@ -8744,11 +7988,6 @@ instance FromJSRef HTMLPreElement where
   fromJSRef = return . fmap HTMLPreElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLPreElement o
-toHTMLPreElement :: IsHTMLPreElement o => o -> HTMLPreElement
-toHTMLPreElement = unsafeCastGObject . toGObject
-
-instance IsHTMLPreElement HTMLPreElement
 instance IsHTMLElement HTMLPreElement
 instance IsElement HTMLPreElement
 instance IsNode HTMLPreElement
@@ -8789,11 +8028,6 @@ instance FromJSRef HTMLProgressElement where
   fromJSRef = return . fmap HTMLProgressElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLProgressElement o
-toHTMLProgressElement :: IsHTMLProgressElement o => o -> HTMLProgressElement
-toHTMLProgressElement = unsafeCastGObject . toGObject
-
-instance IsHTMLProgressElement HTMLProgressElement
 instance IsHTMLElement HTMLProgressElement
 instance IsElement HTMLProgressElement
 instance IsNode HTMLProgressElement
@@ -8833,11 +8067,6 @@ instance FromJSRef HTMLQuoteElement where
   fromJSRef = return . fmap HTMLQuoteElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLQuoteElement o
-toHTMLQuoteElement :: IsHTMLQuoteElement o => o -> HTMLQuoteElement
-toHTMLQuoteElement = unsafeCastGObject . toGObject
-
-instance IsHTMLQuoteElement HTMLQuoteElement
 instance IsHTMLElement HTMLQuoteElement
 instance IsElement HTMLQuoteElement
 instance IsNode HTMLQuoteElement
@@ -8878,11 +8107,6 @@ instance FromJSRef HTMLScriptElement where
   fromJSRef = return . fmap HTMLScriptElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLScriptElement o
-toHTMLScriptElement :: IsHTMLScriptElement o => o -> HTMLScriptElement
-toHTMLScriptElement = unsafeCastGObject . toGObject
-
-instance IsHTMLScriptElement HTMLScriptElement
 instance IsHTMLElement HTMLScriptElement
 instance IsElement HTMLScriptElement
 instance IsNode HTMLScriptElement
@@ -8923,11 +8147,6 @@ instance FromJSRef HTMLSelectElement where
   fromJSRef = return . fmap HTMLSelectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLSelectElement o
-toHTMLSelectElement :: IsHTMLSelectElement o => o -> HTMLSelectElement
-toHTMLSelectElement = unsafeCastGObject . toGObject
-
-instance IsHTMLSelectElement HTMLSelectElement
 instance IsHTMLElement HTMLSelectElement
 instance IsElement HTMLSelectElement
 instance IsNode HTMLSelectElement
@@ -8968,11 +8187,6 @@ instance FromJSRef HTMLSourceElement where
   fromJSRef = return . fmap HTMLSourceElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLSourceElement o
-toHTMLSourceElement :: IsHTMLSourceElement o => o -> HTMLSourceElement
-toHTMLSourceElement = unsafeCastGObject . toGObject
-
-instance IsHTMLSourceElement HTMLSourceElement
 instance IsHTMLElement HTMLSourceElement
 instance IsElement HTMLSourceElement
 instance IsNode HTMLSourceElement
@@ -9012,11 +8226,6 @@ instance FromJSRef HTMLSpanElement where
   fromJSRef = return . fmap HTMLSpanElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLSpanElement o
-toHTMLSpanElement :: IsHTMLSpanElement o => o -> HTMLSpanElement
-toHTMLSpanElement = unsafeCastGObject . toGObject
-
-instance IsHTMLSpanElement HTMLSpanElement
 instance IsHTMLElement HTMLSpanElement
 instance IsElement HTMLSpanElement
 instance IsNode HTMLSpanElement
@@ -9056,11 +8265,6 @@ instance FromJSRef HTMLStyleElement where
   fromJSRef = return . fmap HTMLStyleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLStyleElement o
-toHTMLStyleElement :: IsHTMLStyleElement o => o -> HTMLStyleElement
-toHTMLStyleElement = unsafeCastGObject . toGObject
-
-instance IsHTMLStyleElement HTMLStyleElement
 instance IsHTMLElement HTMLStyleElement
 instance IsElement HTMLStyleElement
 instance IsNode HTMLStyleElement
@@ -9101,11 +8305,6 @@ instance FromJSRef HTMLTableCaptionElement where
   fromJSRef = return . fmap HTMLTableCaptionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTableCaptionElement o
-toHTMLTableCaptionElement :: IsHTMLTableCaptionElement o => o -> HTMLTableCaptionElement
-toHTMLTableCaptionElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTableCaptionElement HTMLTableCaptionElement
 instance IsHTMLElement HTMLTableCaptionElement
 instance IsElement HTMLTableCaptionElement
 instance IsNode HTMLTableCaptionElement
@@ -9146,11 +8345,6 @@ instance FromJSRef HTMLTableCellElement where
   fromJSRef = return . fmap HTMLTableCellElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTableCellElement o
-toHTMLTableCellElement :: IsHTMLTableCellElement o => o -> HTMLTableCellElement
-toHTMLTableCellElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTableCellElement HTMLTableCellElement
 instance IsHTMLElement HTMLTableCellElement
 instance IsElement HTMLTableCellElement
 instance IsNode HTMLTableCellElement
@@ -9191,11 +8385,6 @@ instance FromJSRef HTMLTableColElement where
   fromJSRef = return . fmap HTMLTableColElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTableColElement o
-toHTMLTableColElement :: IsHTMLTableColElement o => o -> HTMLTableColElement
-toHTMLTableColElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTableColElement HTMLTableColElement
 instance IsHTMLElement HTMLTableColElement
 instance IsElement HTMLTableColElement
 instance IsNode HTMLTableColElement
@@ -9236,11 +8425,6 @@ instance FromJSRef HTMLTableElement where
   fromJSRef = return . fmap HTMLTableElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTableElement o
-toHTMLTableElement :: IsHTMLTableElement o => o -> HTMLTableElement
-toHTMLTableElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTableElement HTMLTableElement
 instance IsHTMLElement HTMLTableElement
 instance IsElement HTMLTableElement
 instance IsNode HTMLTableElement
@@ -9281,11 +8465,6 @@ instance FromJSRef HTMLTableRowElement where
   fromJSRef = return . fmap HTMLTableRowElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTableRowElement o
-toHTMLTableRowElement :: IsHTMLTableRowElement o => o -> HTMLTableRowElement
-toHTMLTableRowElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTableRowElement HTMLTableRowElement
 instance IsHTMLElement HTMLTableRowElement
 instance IsElement HTMLTableRowElement
 instance IsNode HTMLTableRowElement
@@ -9326,11 +8505,6 @@ instance FromJSRef HTMLTableSectionElement where
   fromJSRef = return . fmap HTMLTableSectionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTableSectionElement o
-toHTMLTableSectionElement :: IsHTMLTableSectionElement o => o -> HTMLTableSectionElement
-toHTMLTableSectionElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTableSectionElement HTMLTableSectionElement
 instance IsHTMLElement HTMLTableSectionElement
 instance IsElement HTMLTableSectionElement
 instance IsNode HTMLTableSectionElement
@@ -9371,11 +8545,6 @@ instance FromJSRef HTMLTemplateElement where
   fromJSRef = return . fmap HTMLTemplateElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTemplateElement o
-toHTMLTemplateElement :: IsHTMLTemplateElement o => o -> HTMLTemplateElement
-toHTMLTemplateElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTemplateElement HTMLTemplateElement
 instance IsHTMLElement HTMLTemplateElement
 instance IsElement HTMLTemplateElement
 instance IsNode HTMLTemplateElement
@@ -9415,11 +8584,6 @@ instance FromJSRef HTMLTextAreaElement where
   fromJSRef = return . fmap HTMLTextAreaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTextAreaElement o
-toHTMLTextAreaElement :: IsHTMLTextAreaElement o => o -> HTMLTextAreaElement
-toHTMLTextAreaElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTextAreaElement HTMLTextAreaElement
 instance IsHTMLElement HTMLTextAreaElement
 instance IsElement HTMLTextAreaElement
 instance IsNode HTMLTextAreaElement
@@ -9460,11 +8624,6 @@ instance FromJSRef HTMLTitleElement where
   fromJSRef = return . fmap HTMLTitleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTitleElement o
-toHTMLTitleElement :: IsHTMLTitleElement o => o -> HTMLTitleElement
-toHTMLTitleElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTitleElement HTMLTitleElement
 instance IsHTMLElement HTMLTitleElement
 instance IsElement HTMLTitleElement
 instance IsNode HTMLTitleElement
@@ -9505,11 +8664,6 @@ instance FromJSRef HTMLTrackElement where
   fromJSRef = return . fmap HTMLTrackElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLTrackElement o
-toHTMLTrackElement :: IsHTMLTrackElement o => o -> HTMLTrackElement
-toHTMLTrackElement = unsafeCastGObject . toGObject
-
-instance IsHTMLTrackElement HTMLTrackElement
 instance IsHTMLElement HTMLTrackElement
 instance IsElement HTMLTrackElement
 instance IsNode HTMLTrackElement
@@ -9549,11 +8703,6 @@ instance FromJSRef HTMLUListElement where
   fromJSRef = return . fmap HTMLUListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLUListElement o
-toHTMLUListElement :: IsHTMLUListElement o => o -> HTMLUListElement
-toHTMLUListElement = unsafeCastGObject . toGObject
-
-instance IsHTMLUListElement HTMLUListElement
 instance IsHTMLElement HTMLUListElement
 instance IsElement HTMLUListElement
 instance IsNode HTMLUListElement
@@ -9594,11 +8743,6 @@ instance FromJSRef HTMLUnknownElement where
   fromJSRef = return . fmap HTMLUnknownElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLElement o => IsHTMLUnknownElement o
-toHTMLUnknownElement :: IsHTMLUnknownElement o => o -> HTMLUnknownElement
-toHTMLUnknownElement = unsafeCastGObject . toGObject
-
-instance IsHTMLUnknownElement HTMLUnknownElement
 instance IsHTMLElement HTMLUnknownElement
 instance IsElement HTMLUnknownElement
 instance IsNode HTMLUnknownElement
@@ -9635,11 +8779,6 @@ instance FromJSRef HTMLVideoElement where
   fromJSRef = return . fmap HTMLVideoElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsHTMLMediaElement o => IsHTMLVideoElement o
-toHTMLVideoElement :: IsHTMLVideoElement o => o -> HTMLVideoElement
-toHTMLVideoElement = unsafeCastGObject . toGObject
-
-instance IsHTMLVideoElement HTMLVideoElement
 instance IsHTMLMediaElement HTMLVideoElement
 instance IsGObject HTMLVideoElement where
   toGObject = GObject . castRef . unHTMLVideoElement
@@ -9674,11 +8813,6 @@ instance FromJSRef HashChangeEvent where
   fromJSRef = return . fmap HashChangeEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsHashChangeEvent o
-toHashChangeEvent :: IsHashChangeEvent o => o -> HashChangeEvent
-toHashChangeEvent = unsafeCastGObject . toGObject
-
-instance IsHashChangeEvent HashChangeEvent
 instance IsEvent HashChangeEvent
 instance IsGObject HashChangeEvent where
   toGObject = GObject . castRef . unHashChangeEvent
@@ -9709,11 +8843,6 @@ instance FromJSRef History where
   fromJSRef = return . fmap History . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsHistory o
-toHistory :: IsHistory o => o -> History
-toHistory = unsafeCastGObject . toGObject
-
-instance IsHistory History
 instance IsGObject History where
   toGObject = GObject . castRef . unHistory
   unsafeCastGObject = History . castRef . unGObject
@@ -9744,11 +8873,6 @@ instance FromJSRef IDBAny where
   fromJSRef = return . fmap IDBAny . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsIDBAny o
-toIDBAny :: IsIDBAny o => o -> IDBAny
-toIDBAny = unsafeCastGObject . toGObject
-
-instance IsIDBAny IDBAny
 instance IsGObject IDBAny where
   toGObject = GObject . castRef . unIDBAny
   unsafeCastGObject = IDBAny . castRef . unGObject
@@ -9815,11 +8939,6 @@ instance FromJSRef IDBCursorWithValue where
   fromJSRef = return . fmap IDBCursorWithValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsIDBCursor o => IsIDBCursorWithValue o
-toIDBCursorWithValue :: IsIDBCursorWithValue o => o -> IDBCursorWithValue
-toIDBCursorWithValue = unsafeCastGObject . toGObject
-
-instance IsIDBCursorWithValue IDBCursorWithValue
 instance IsIDBCursor IDBCursorWithValue
 instance IsGObject IDBCursorWithValue where
   toGObject = GObject . castRef . unIDBCursorWithValue
@@ -9853,11 +8972,6 @@ instance FromJSRef IDBDatabase where
   fromJSRef = return . fmap IDBDatabase . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsIDBDatabase o
-toIDBDatabase :: IsIDBDatabase o => o -> IDBDatabase
-toIDBDatabase = unsafeCastGObject . toGObject
-
-instance IsIDBDatabase IDBDatabase
 instance IsEventTarget IDBDatabase
 instance IsGObject IDBDatabase where
   toGObject = GObject . castRef . unIDBDatabase
@@ -9888,11 +9002,6 @@ instance FromJSRef IDBFactory where
   fromJSRef = return . fmap IDBFactory . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsIDBFactory o
-toIDBFactory :: IsIDBFactory o => o -> IDBFactory
-toIDBFactory = unsafeCastGObject . toGObject
-
-instance IsIDBFactory IDBFactory
 instance IsGObject IDBFactory where
   toGObject = GObject . castRef . unIDBFactory
   unsafeCastGObject = IDBFactory . castRef . unGObject
@@ -9922,11 +9031,6 @@ instance FromJSRef IDBIndex where
   fromJSRef = return . fmap IDBIndex . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsIDBIndex o
-toIDBIndex :: IsIDBIndex o => o -> IDBIndex
-toIDBIndex = unsafeCastGObject . toGObject
-
-instance IsIDBIndex IDBIndex
 instance IsGObject IDBIndex where
   toGObject = GObject . castRef . unIDBIndex
   unsafeCastGObject = IDBIndex . castRef . unGObject
@@ -9956,11 +9060,6 @@ instance FromJSRef IDBKeyRange where
   fromJSRef = return . fmap IDBKeyRange . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsIDBKeyRange o
-toIDBKeyRange :: IsIDBKeyRange o => o -> IDBKeyRange
-toIDBKeyRange = unsafeCastGObject . toGObject
-
-instance IsIDBKeyRange IDBKeyRange
 instance IsGObject IDBKeyRange where
   toGObject = GObject . castRef . unIDBKeyRange
   unsafeCastGObject = IDBKeyRange . castRef . unGObject
@@ -9990,11 +9089,6 @@ instance FromJSRef IDBObjectStore where
   fromJSRef = return . fmap IDBObjectStore . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsIDBObjectStore o
-toIDBObjectStore :: IsIDBObjectStore o => o -> IDBObjectStore
-toIDBObjectStore = unsafeCastGObject . toGObject
-
-instance IsIDBObjectStore IDBObjectStore
 instance IsGObject IDBObjectStore where
   toGObject = GObject . castRef . unIDBObjectStore
   unsafeCastGObject = IDBObjectStore . castRef . unGObject
@@ -10028,11 +9122,6 @@ instance FromJSRef IDBOpenDBRequest where
   fromJSRef = return . fmap IDBOpenDBRequest . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsIDBRequest o => IsIDBOpenDBRequest o
-toIDBOpenDBRequest :: IsIDBOpenDBRequest o => o -> IDBOpenDBRequest
-toIDBOpenDBRequest = unsafeCastGObject . toGObject
-
-instance IsIDBOpenDBRequest IDBOpenDBRequest
 instance IsIDBRequest IDBOpenDBRequest
 instance IsEventTarget IDBOpenDBRequest
 instance IsGObject IDBOpenDBRequest where
@@ -10105,11 +9194,6 @@ instance FromJSRef IDBTransaction where
   fromJSRef = return . fmap IDBTransaction . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsIDBTransaction o
-toIDBTransaction :: IsIDBTransaction o => o -> IDBTransaction
-toIDBTransaction = unsafeCastGObject . toGObject
-
-instance IsIDBTransaction IDBTransaction
 instance IsEventTarget IDBTransaction
 instance IsGObject IDBTransaction where
   toGObject = GObject . castRef . unIDBTransaction
@@ -10143,11 +9227,6 @@ instance FromJSRef IDBVersionChangeEvent where
   fromJSRef = return . fmap IDBVersionChangeEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsIDBVersionChangeEvent o
-toIDBVersionChangeEvent :: IsIDBVersionChangeEvent o => o -> IDBVersionChangeEvent
-toIDBVersionChangeEvent = unsafeCastGObject . toGObject
-
-instance IsIDBVersionChangeEvent IDBVersionChangeEvent
 instance IsEvent IDBVersionChangeEvent
 instance IsGObject IDBVersionChangeEvent where
   toGObject = GObject . castRef . unIDBVersionChangeEvent
@@ -10178,11 +9257,6 @@ instance FromJSRef ImageData where
   fromJSRef = return . fmap ImageData . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsImageData o
-toImageData :: IsImageData o => o -> ImageData
-toImageData = unsafeCastGObject . toGObject
-
-instance IsImageData ImageData
 instance IsGObject ImageData where
   toGObject = GObject . castRef . unImageData
   unsafeCastGObject = ImageData . castRef . unGObject
@@ -10212,11 +9286,6 @@ instance FromJSRef InspectorFrontendHost where
   fromJSRef = return . fmap InspectorFrontendHost . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsInspectorFrontendHost o
-toInspectorFrontendHost :: IsInspectorFrontendHost o => o -> InspectorFrontendHost
-toInspectorFrontendHost = unsafeCastGObject . toGObject
-
-instance IsInspectorFrontendHost InspectorFrontendHost
 instance IsGObject InspectorFrontendHost where
   toGObject = GObject . castRef . unInspectorFrontendHost
   unsafeCastGObject = InspectorFrontendHost . castRef . unGObject
@@ -10248,11 +9317,6 @@ instance FromJSRef InternalSettings where
   fromJSRef = return . fmap InternalSettings . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsInternalSettings o
-toInternalSettings :: IsInternalSettings o => o -> InternalSettings
-toInternalSettings = unsafeCastGObject . toGObject
-
-instance IsInternalSettings InternalSettings
 instance IsGObject InternalSettings where
   toGObject = GObject . castRef . unInternalSettings
   unsafeCastGObject = InternalSettings . castRef . unGObject
@@ -10282,11 +9346,6 @@ instance FromJSRef Internals where
   fromJSRef = return . fmap Internals . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsInternals o
-toInternals :: IsInternals o => o -> Internals
-toInternals = unsafeCastGObject . toGObject
-
-instance IsInternals Internals
 instance IsGObject Internals where
   toGObject = GObject . castRef . unInternals
   unsafeCastGObject = Internals . castRef . unGObject
@@ -10320,11 +9379,6 @@ instance FromJSRef KeyboardEvent where
   fromJSRef = return . fmap KeyboardEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsUIEvent o => IsKeyboardEvent o
-toKeyboardEvent :: IsKeyboardEvent o => o -> KeyboardEvent
-toKeyboardEvent = unsafeCastGObject . toGObject
-
-instance IsKeyboardEvent KeyboardEvent
 instance IsUIEvent KeyboardEvent
 instance IsEvent KeyboardEvent
 instance IsGObject KeyboardEvent where
@@ -10357,11 +9411,6 @@ instance FromJSRef Location where
   fromJSRef = return . fmap Location . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsLocation o
-toLocation :: IsLocation o => o -> Location
-toLocation = unsafeCastGObject . toGObject
-
-instance IsLocation Location
 instance IsGObject Location where
   toGObject = GObject . castRef . unLocation
   unsafeCastGObject = Location . castRef . unGObject
@@ -10392,11 +9441,6 @@ instance FromJSRef MallocStatistics where
   fromJSRef = return . fmap MallocStatistics . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMallocStatistics o
-toMallocStatistics :: IsMallocStatistics o => o -> MallocStatistics
-toMallocStatistics = unsafeCastGObject . toGObject
-
-instance IsMallocStatistics MallocStatistics
 instance IsGObject MallocStatistics where
   toGObject = GObject . castRef . unMallocStatistics
   unsafeCastGObject = MallocStatistics . castRef . unGObject
@@ -10429,11 +9473,6 @@ instance FromJSRef MediaController where
   fromJSRef = return . fmap MediaController . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsMediaController o
-toMediaController :: IsMediaController o => o -> MediaController
-toMediaController = unsafeCastGObject . toGObject
-
-instance IsMediaController MediaController
 instance IsEventTarget MediaController
 instance IsGObject MediaController where
   toGObject = GObject . castRef . unMediaController
@@ -10464,11 +9503,6 @@ instance FromJSRef MediaControlsHost where
   fromJSRef = return . fmap MediaControlsHost . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaControlsHost o
-toMediaControlsHost :: IsMediaControlsHost o => o -> MediaControlsHost
-toMediaControlsHost = unsafeCastGObject . toGObject
-
-instance IsMediaControlsHost MediaControlsHost
 instance IsGObject MediaControlsHost where
   toGObject = GObject . castRef . unMediaControlsHost
   unsafeCastGObject = MediaControlsHost . castRef . unGObject
@@ -10502,11 +9536,6 @@ instance FromJSRef MediaElementAudioSourceNode where
   fromJSRef = return . fmap MediaElementAudioSourceNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsMediaElementAudioSourceNode o
-toMediaElementAudioSourceNode :: IsMediaElementAudioSourceNode o => o -> MediaElementAudioSourceNode
-toMediaElementAudioSourceNode = unsafeCastGObject . toGObject
-
-instance IsMediaElementAudioSourceNode MediaElementAudioSourceNode
 instance IsAudioNode MediaElementAudioSourceNode
 instance IsEventTarget MediaElementAudioSourceNode
 instance IsGObject MediaElementAudioSourceNode where
@@ -10538,11 +9567,6 @@ instance FromJSRef MediaError where
   fromJSRef = return . fmap MediaError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaError o
-toMediaError :: IsMediaError o => o -> MediaError
-toMediaError = unsafeCastGObject . toGObject
-
-instance IsMediaError MediaError
 instance IsGObject MediaError where
   toGObject = GObject . castRef . unMediaError
   unsafeCastGObject = MediaError . castRef . unGObject
@@ -10573,11 +9597,6 @@ instance FromJSRef MediaKeyError where
   fromJSRef = return . fmap MediaKeyError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaKeyError o
-toMediaKeyError :: IsMediaKeyError o => o -> MediaKeyError
-toMediaKeyError = unsafeCastGObject . toGObject
-
-instance IsMediaKeyError MediaKeyError
 instance IsGObject MediaKeyError where
   toGObject = GObject . castRef . unMediaKeyError
   unsafeCastGObject = MediaKeyError . castRef . unGObject
@@ -10610,11 +9629,6 @@ instance FromJSRef MediaKeyEvent where
   fromJSRef = return . fmap MediaKeyEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsMediaKeyEvent o
-toMediaKeyEvent :: IsMediaKeyEvent o => o -> MediaKeyEvent
-toMediaKeyEvent = unsafeCastGObject . toGObject
-
-instance IsMediaKeyEvent MediaKeyEvent
 instance IsEvent MediaKeyEvent
 instance IsGObject MediaKeyEvent where
   toGObject = GObject . castRef . unMediaKeyEvent
@@ -10648,11 +9662,6 @@ instance FromJSRef MediaKeyMessageEvent where
   fromJSRef = return . fmap MediaKeyMessageEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsMediaKeyMessageEvent o
-toMediaKeyMessageEvent :: IsMediaKeyMessageEvent o => o -> MediaKeyMessageEvent
-toMediaKeyMessageEvent = unsafeCastGObject . toGObject
-
-instance IsMediaKeyMessageEvent MediaKeyMessageEvent
 instance IsEvent MediaKeyMessageEvent
 instance IsGObject MediaKeyMessageEvent where
   toGObject = GObject . castRef . unMediaKeyMessageEvent
@@ -10686,11 +9695,6 @@ instance FromJSRef MediaKeyNeededEvent where
   fromJSRef = return . fmap MediaKeyNeededEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsMediaKeyNeededEvent o
-toMediaKeyNeededEvent :: IsMediaKeyNeededEvent o => o -> MediaKeyNeededEvent
-toMediaKeyNeededEvent = unsafeCastGObject . toGObject
-
-instance IsMediaKeyNeededEvent MediaKeyNeededEvent
 instance IsEvent MediaKeyNeededEvent
 instance IsGObject MediaKeyNeededEvent where
   toGObject = GObject . castRef . unMediaKeyNeededEvent
@@ -10724,11 +9728,6 @@ instance FromJSRef MediaKeySession where
   fromJSRef = return . fmap MediaKeySession . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsMediaKeySession o
-toMediaKeySession :: IsMediaKeySession o => o -> MediaKeySession
-toMediaKeySession = unsafeCastGObject . toGObject
-
-instance IsMediaKeySession MediaKeySession
 instance IsEventTarget MediaKeySession
 instance IsGObject MediaKeySession where
   toGObject = GObject . castRef . unMediaKeySession
@@ -10759,11 +9758,6 @@ instance FromJSRef MediaKeys where
   fromJSRef = return . fmap MediaKeys . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaKeys o
-toMediaKeys :: IsMediaKeys o => o -> MediaKeys
-toMediaKeys = unsafeCastGObject . toGObject
-
-instance IsMediaKeys MediaKeys
 instance IsGObject MediaKeys where
   toGObject = GObject . castRef . unMediaKeys
   unsafeCastGObject = MediaKeys . castRef . unGObject
@@ -10793,11 +9787,6 @@ instance FromJSRef MediaList where
   fromJSRef = return . fmap MediaList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaList o
-toMediaList :: IsMediaList o => o -> MediaList
-toMediaList = unsafeCastGObject . toGObject
-
-instance IsMediaList MediaList
 instance IsGObject MediaList where
   toGObject = GObject . castRef . unMediaList
   unsafeCastGObject = MediaList . castRef . unGObject
@@ -10828,11 +9817,6 @@ instance FromJSRef MediaQueryList where
   fromJSRef = return . fmap MediaQueryList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaQueryList o
-toMediaQueryList :: IsMediaQueryList o => o -> MediaQueryList
-toMediaQueryList = unsafeCastGObject . toGObject
-
-instance IsMediaQueryList MediaQueryList
 instance IsGObject MediaQueryList where
   toGObject = GObject . castRef . unMediaQueryList
   unsafeCastGObject = MediaQueryList . castRef . unGObject
@@ -10863,11 +9847,6 @@ instance FromJSRef MediaQueryListListener where
   fromJSRef = return . fmap MediaQueryListListener . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaQueryListListener o
-toMediaQueryListListener :: IsMediaQueryListListener o => o -> MediaQueryListListener
-toMediaQueryListListener = unsafeCastGObject . toGObject
-
-instance IsMediaQueryListListener MediaQueryListListener
 instance IsGObject MediaQueryListListener where
   toGObject = GObject . castRef . unMediaQueryListListener
   unsafeCastGObject = MediaQueryListListener . castRef . unGObject
@@ -10900,11 +9879,6 @@ instance FromJSRef MediaSource where
   fromJSRef = return . fmap MediaSource . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsMediaSource o
-toMediaSource :: IsMediaSource o => o -> MediaSource
-toMediaSource = unsafeCastGObject . toGObject
-
-instance IsMediaSource MediaSource
 instance IsEventTarget MediaSource
 instance IsGObject MediaSource where
   toGObject = GObject . castRef . unMediaSource
@@ -10935,11 +9909,6 @@ instance FromJSRef MediaSourceStates where
   fromJSRef = return . fmap MediaSourceStates . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaSourceStates o
-toMediaSourceStates :: IsMediaSourceStates o => o -> MediaSourceStates
-toMediaSourceStates = unsafeCastGObject . toGObject
-
-instance IsMediaSourceStates MediaSourceStates
 instance IsGObject MediaSourceStates where
   toGObject = GObject . castRef . unMediaSourceStates
   unsafeCastGObject = MediaSourceStates . castRef . unGObject
@@ -10972,11 +9941,6 @@ instance FromJSRef MediaStream where
   fromJSRef = return . fmap MediaStream . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsMediaStream o
-toMediaStream :: IsMediaStream o => o -> MediaStream
-toMediaStream = unsafeCastGObject . toGObject
-
-instance IsMediaStream MediaStream
 instance IsEventTarget MediaStream
 instance IsGObject MediaStream where
   toGObject = GObject . castRef . unMediaStream
@@ -11011,11 +9975,6 @@ instance FromJSRef MediaStreamAudioDestinationNode where
   fromJSRef = return . fmap MediaStreamAudioDestinationNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsMediaStreamAudioDestinationNode o
-toMediaStreamAudioDestinationNode :: IsMediaStreamAudioDestinationNode o => o -> MediaStreamAudioDestinationNode
-toMediaStreamAudioDestinationNode = unsafeCastGObject . toGObject
-
-instance IsMediaStreamAudioDestinationNode MediaStreamAudioDestinationNode
 instance IsAudioNode MediaStreamAudioDestinationNode
 instance IsEventTarget MediaStreamAudioDestinationNode
 instance IsGObject MediaStreamAudioDestinationNode where
@@ -11051,11 +10010,6 @@ instance FromJSRef MediaStreamAudioSourceNode where
   fromJSRef = return . fmap MediaStreamAudioSourceNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsMediaStreamAudioSourceNode o
-toMediaStreamAudioSourceNode :: IsMediaStreamAudioSourceNode o => o -> MediaStreamAudioSourceNode
-toMediaStreamAudioSourceNode = unsafeCastGObject . toGObject
-
-instance IsMediaStreamAudioSourceNode MediaStreamAudioSourceNode
 instance IsAudioNode MediaStreamAudioSourceNode
 instance IsEventTarget MediaStreamAudioSourceNode
 instance IsGObject MediaStreamAudioSourceNode where
@@ -11124,11 +10078,6 @@ instance FromJSRef MediaStreamEvent where
   fromJSRef = return . fmap MediaStreamEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsMediaStreamEvent o
-toMediaStreamEvent :: IsMediaStreamEvent o => o -> MediaStreamEvent
-toMediaStreamEvent = unsafeCastGObject . toGObject
-
-instance IsMediaStreamEvent MediaStreamEvent
 instance IsEvent MediaStreamEvent
 instance IsGObject MediaStreamEvent where
   toGObject = GObject . castRef . unMediaStreamEvent
@@ -11200,11 +10149,6 @@ instance FromJSRef MediaStreamTrackEvent where
   fromJSRef = return . fmap MediaStreamTrackEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsMediaStreamTrackEvent o
-toMediaStreamTrackEvent :: IsMediaStreamTrackEvent o => o -> MediaStreamTrackEvent
-toMediaStreamTrackEvent = unsafeCastGObject . toGObject
-
-instance IsMediaStreamTrackEvent MediaStreamTrackEvent
 instance IsEvent MediaStreamTrackEvent
 instance IsGObject MediaStreamTrackEvent where
   toGObject = GObject . castRef . unMediaStreamTrackEvent
@@ -11235,11 +10179,6 @@ instance FromJSRef MediaStreamTrackSourcesCallback where
   fromJSRef = return . fmap MediaStreamTrackSourcesCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaStreamTrackSourcesCallback o
-toMediaStreamTrackSourcesCallback :: IsMediaStreamTrackSourcesCallback o => o -> MediaStreamTrackSourcesCallback
-toMediaStreamTrackSourcesCallback = unsafeCastGObject . toGObject
-
-instance IsMediaStreamTrackSourcesCallback MediaStreamTrackSourcesCallback
 instance IsGObject MediaStreamTrackSourcesCallback where
   toGObject = GObject . castRef . unMediaStreamTrackSourcesCallback
   unsafeCastGObject = MediaStreamTrackSourcesCallback . castRef . unGObject
@@ -11269,11 +10208,6 @@ instance FromJSRef MediaTrackConstraint where
   fromJSRef = return . fmap MediaTrackConstraint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaTrackConstraint o
-toMediaTrackConstraint :: IsMediaTrackConstraint o => o -> MediaTrackConstraint
-toMediaTrackConstraint = unsafeCastGObject . toGObject
-
-instance IsMediaTrackConstraint MediaTrackConstraint
 instance IsGObject MediaTrackConstraint where
   toGObject = GObject . castRef . unMediaTrackConstraint
   unsafeCastGObject = MediaTrackConstraint . castRef . unGObject
@@ -11303,11 +10237,6 @@ instance FromJSRef MediaTrackConstraintSet where
   fromJSRef = return . fmap MediaTrackConstraintSet . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaTrackConstraintSet o
-toMediaTrackConstraintSet :: IsMediaTrackConstraintSet o => o -> MediaTrackConstraintSet
-toMediaTrackConstraintSet = unsafeCastGObject . toGObject
-
-instance IsMediaTrackConstraintSet MediaTrackConstraintSet
 instance IsGObject MediaTrackConstraintSet where
   toGObject = GObject . castRef . unMediaTrackConstraintSet
   unsafeCastGObject = MediaTrackConstraintSet . castRef . unGObject
@@ -11337,11 +10266,6 @@ instance FromJSRef MediaTrackConstraints where
   fromJSRef = return . fmap MediaTrackConstraints . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMediaTrackConstraints o
-toMediaTrackConstraints :: IsMediaTrackConstraints o => o -> MediaTrackConstraints
-toMediaTrackConstraints = unsafeCastGObject . toGObject
-
-instance IsMediaTrackConstraints MediaTrackConstraints
 instance IsGObject MediaTrackConstraints where
   toGObject = GObject . castRef . unMediaTrackConstraints
   unsafeCastGObject = MediaTrackConstraints . castRef . unGObject
@@ -11371,11 +10295,6 @@ instance FromJSRef MemoryInfo where
   fromJSRef = return . fmap MemoryInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMemoryInfo o
-toMemoryInfo :: IsMemoryInfo o => o -> MemoryInfo
-toMemoryInfo = unsafeCastGObject . toGObject
-
-instance IsMemoryInfo MemoryInfo
 instance IsGObject MemoryInfo where
   toGObject = GObject . castRef . unMemoryInfo
   unsafeCastGObject = MemoryInfo . castRef . unGObject
@@ -11405,11 +10324,6 @@ instance FromJSRef MessageChannel where
   fromJSRef = return . fmap MessageChannel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMessageChannel o
-toMessageChannel :: IsMessageChannel o => o -> MessageChannel
-toMessageChannel = unsafeCastGObject . toGObject
-
-instance IsMessageChannel MessageChannel
 instance IsGObject MessageChannel where
   toGObject = GObject . castRef . unMessageChannel
   unsafeCastGObject = MessageChannel . castRef . unGObject
@@ -11442,11 +10356,6 @@ instance FromJSRef MessageEvent where
   fromJSRef = return . fmap MessageEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsMessageEvent o
-toMessageEvent :: IsMessageEvent o => o -> MessageEvent
-toMessageEvent = unsafeCastGObject . toGObject
-
-instance IsMessageEvent MessageEvent
 instance IsEvent MessageEvent
 instance IsGObject MessageEvent where
   toGObject = GObject . castRef . unMessageEvent
@@ -11480,11 +10389,6 @@ instance FromJSRef MessagePort where
   fromJSRef = return . fmap MessagePort . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsMessagePort o
-toMessagePort :: IsMessagePort o => o -> MessagePort
-toMessagePort = unsafeCastGObject . toGObject
-
-instance IsMessagePort MessagePort
 instance IsEventTarget MessagePort
 instance IsGObject MessagePort where
   toGObject = GObject . castRef . unMessagePort
@@ -11560,11 +10464,6 @@ instance FromJSRef MutationEvent where
   fromJSRef = return . fmap MutationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsMutationEvent o
-toMutationEvent :: IsMutationEvent o => o -> MutationEvent
-toMutationEvent = unsafeCastGObject . toGObject
-
-instance IsMutationEvent MutationEvent
 instance IsEvent MutationEvent
 instance IsGObject MutationEvent where
   toGObject = GObject . castRef . unMutationEvent
@@ -11595,11 +10494,6 @@ instance FromJSRef MutationObserver where
   fromJSRef = return . fmap MutationObserver . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMutationObserver o
-toMutationObserver :: IsMutationObserver o => o -> MutationObserver
-toMutationObserver = unsafeCastGObject . toGObject
-
-instance IsMutationObserver MutationObserver
 instance IsGObject MutationObserver where
   toGObject = GObject . castRef . unMutationObserver
   unsafeCastGObject = MutationObserver . castRef . unGObject
@@ -11629,11 +10523,6 @@ instance FromJSRef MutationRecord where
   fromJSRef = return . fmap MutationRecord . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsMutationRecord o
-toMutationRecord :: IsMutationRecord o => o -> MutationRecord
-toMutationRecord = unsafeCastGObject . toGObject
-
-instance IsMutationRecord MutationRecord
 instance IsGObject MutationRecord where
   toGObject = GObject . castRef . unMutationRecord
   unsafeCastGObject = MutationRecord . castRef . unGObject
@@ -11663,11 +10552,6 @@ instance FromJSRef NamedNodeMap where
   fromJSRef = return . fmap NamedNodeMap . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNamedNodeMap o
-toNamedNodeMap :: IsNamedNodeMap o => o -> NamedNodeMap
-toNamedNodeMap = unsafeCastGObject . toGObject
-
-instance IsNamedNodeMap NamedNodeMap
 instance IsGObject NamedNodeMap where
   toGObject = GObject . castRef . unNamedNodeMap
   unsafeCastGObject = NamedNodeMap . castRef . unGObject
@@ -11698,11 +10582,6 @@ instance FromJSRef Navigator where
   fromJSRef = return . fmap Navigator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNavigator o
-toNavigator :: IsNavigator o => o -> Navigator
-toNavigator = unsafeCastGObject . toGObject
-
-instance IsNavigator Navigator
 instance IsGObject Navigator where
   toGObject = GObject . castRef . unNavigator
   unsafeCastGObject = Navigator . castRef . unGObject
@@ -11736,11 +10615,6 @@ instance FromJSRef NavigatorUserMediaError where
   fromJSRef = return . fmap NavigatorUserMediaError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsDOMError o => IsNavigatorUserMediaError o
-toNavigatorUserMediaError :: IsNavigatorUserMediaError o => o -> NavigatorUserMediaError
-toNavigatorUserMediaError = unsafeCastGObject . toGObject
-
-instance IsNavigatorUserMediaError NavigatorUserMediaError
 instance IsDOMError NavigatorUserMediaError
 instance IsGObject NavigatorUserMediaError where
   toGObject = GObject . castRef . unNavigatorUserMediaError
@@ -11771,11 +10645,6 @@ instance FromJSRef NavigatorUserMediaErrorCallback where
   fromJSRef = return . fmap NavigatorUserMediaErrorCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNavigatorUserMediaErrorCallback o
-toNavigatorUserMediaErrorCallback :: IsNavigatorUserMediaErrorCallback o => o -> NavigatorUserMediaErrorCallback
-toNavigatorUserMediaErrorCallback = unsafeCastGObject . toGObject
-
-instance IsNavigatorUserMediaErrorCallback NavigatorUserMediaErrorCallback
 instance IsGObject NavigatorUserMediaErrorCallback where
   toGObject = GObject . castRef . unNavigatorUserMediaErrorCallback
   unsafeCastGObject = NavigatorUserMediaErrorCallback . castRef . unGObject
@@ -11805,11 +10674,6 @@ instance FromJSRef NavigatorUserMediaSuccessCallback where
   fromJSRef = return . fmap NavigatorUserMediaSuccessCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNavigatorUserMediaSuccessCallback o
-toNavigatorUserMediaSuccessCallback :: IsNavigatorUserMediaSuccessCallback o => o -> NavigatorUserMediaSuccessCallback
-toNavigatorUserMediaSuccessCallback = unsafeCastGObject . toGObject
-
-instance IsNavigatorUserMediaSuccessCallback NavigatorUserMediaSuccessCallback
 instance IsGObject NavigatorUserMediaSuccessCallback where
   toGObject = GObject . castRef . unNavigatorUserMediaSuccessCallback
   unsafeCastGObject = NavigatorUserMediaSuccessCallback . castRef . unGObject
@@ -11878,11 +10742,6 @@ instance FromJSRef NodeFilter where
   fromJSRef = return . fmap NodeFilter . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNodeFilter o
-toNodeFilter :: IsNodeFilter o => o -> NodeFilter
-toNodeFilter = unsafeCastGObject . toGObject
-
-instance IsNodeFilter NodeFilter
 instance IsGObject NodeFilter where
   toGObject = GObject . castRef . unNodeFilter
   unsafeCastGObject = NodeFilter . castRef . unGObject
@@ -11913,11 +10772,6 @@ instance FromJSRef NodeIterator where
   fromJSRef = return . fmap NodeIterator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNodeIterator o
-toNodeIterator :: IsNodeIterator o => o -> NodeIterator
-toNodeIterator = unsafeCastGObject . toGObject
-
-instance IsNodeIterator NodeIterator
 instance IsGObject NodeIterator where
   toGObject = GObject . castRef . unNodeIterator
   unsafeCastGObject = NodeIterator . castRef . unGObject
@@ -11968,46 +10822,6 @@ type IsNodeList o = NodeListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.Notation".
--- Base interface functions are in:
---
---     * "GHCJS.DOM.Node"
---     * "GHCJS.DOM.EventTarget"
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/Notation Mozilla Notation documentation>
-newtype Notation = Notation (JSRef Notation) deriving (Eq)
-
-unNotation (Notation o) = o
-
-instance ToJSRef Notation where
-  toJSRef = return . unNotation
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef Notation where
-  fromJSRef = return . fmap Notation . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsNode o => IsNotation o
-toNotation :: IsNotation o => o -> Notation
-toNotation = unsafeCastGObject . toGObject
-
-instance IsNotation Notation
-instance IsNode Notation
-instance IsEventTarget Notation
-instance IsGObject Notation where
-  toGObject = GObject . castRef . unNotation
-  unsafeCastGObject = Notation . castRef . unGObject
-
-castToNotation :: IsGObject obj => obj -> Notation
-castToNotation = castTo gTypeNotation "Notation"
-
-foreign import javascript unsafe "window[\"Notation\"]" gTypeNotation' :: JSRef GType
-gTypeNotation = GType gTypeNotation'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Notification".
 -- Base interface functions are in:
 --
@@ -12026,11 +10840,6 @@ instance FromJSRef Notification where
   fromJSRef = return . fmap Notification . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsNotification o
-toNotification :: IsNotification o => o -> Notification
-toNotification = unsafeCastGObject . toGObject
-
-instance IsNotification Notification
 instance IsEventTarget Notification
 instance IsGObject Notification where
   toGObject = GObject . castRef . unNotification
@@ -12061,11 +10870,6 @@ instance FromJSRef NotificationCenter where
   fromJSRef = return . fmap NotificationCenter . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNotificationCenter o
-toNotificationCenter :: IsNotificationCenter o => o -> NotificationCenter
-toNotificationCenter = unsafeCastGObject . toGObject
-
-instance IsNotificationCenter NotificationCenter
 instance IsGObject NotificationCenter where
   toGObject = GObject . castRef . unNotificationCenter
   unsafeCastGObject = NotificationCenter . castRef . unGObject
@@ -12095,11 +10899,6 @@ instance FromJSRef NotificationPermissionCallback where
   fromJSRef = return . fmap NotificationPermissionCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsNotificationPermissionCallback o
-toNotificationPermissionCallback :: IsNotificationPermissionCallback o => o -> NotificationPermissionCallback
-toNotificationPermissionCallback = unsafeCastGObject . toGObject
-
-instance IsNotificationPermissionCallback NotificationPermissionCallback
 instance IsGObject NotificationPermissionCallback where
   toGObject = GObject . castRef . unNotificationPermissionCallback
   unsafeCastGObject = NotificationPermissionCallback . castRef . unGObject
@@ -12129,11 +10928,6 @@ instance FromJSRef OESElementIndexUint where
   fromJSRef = return . fmap OESElementIndexUint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsOESElementIndexUint o
-toOESElementIndexUint :: IsOESElementIndexUint o => o -> OESElementIndexUint
-toOESElementIndexUint = unsafeCastGObject . toGObject
-
-instance IsOESElementIndexUint OESElementIndexUint
 instance IsGObject OESElementIndexUint where
   toGObject = GObject . castRef . unOESElementIndexUint
   unsafeCastGObject = OESElementIndexUint . castRef . unGObject
@@ -12163,11 +10957,6 @@ instance FromJSRef OESStandardDerivatives where
   fromJSRef = return . fmap OESStandardDerivatives . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsOESStandardDerivatives o
-toOESStandardDerivatives :: IsOESStandardDerivatives o => o -> OESStandardDerivatives
-toOESStandardDerivatives = unsafeCastGObject . toGObject
-
-instance IsOESStandardDerivatives OESStandardDerivatives
 instance IsGObject OESStandardDerivatives where
   toGObject = GObject . castRef . unOESStandardDerivatives
   unsafeCastGObject = OESStandardDerivatives . castRef . unGObject
@@ -12197,11 +10986,6 @@ instance FromJSRef OESTextureFloat where
   fromJSRef = return . fmap OESTextureFloat . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsOESTextureFloat o
-toOESTextureFloat :: IsOESTextureFloat o => o -> OESTextureFloat
-toOESTextureFloat = unsafeCastGObject . toGObject
-
-instance IsOESTextureFloat OESTextureFloat
 instance IsGObject OESTextureFloat where
   toGObject = GObject . castRef . unOESTextureFloat
   unsafeCastGObject = OESTextureFloat . castRef . unGObject
@@ -12231,11 +11015,6 @@ instance FromJSRef OESTextureFloatLinear where
   fromJSRef = return . fmap OESTextureFloatLinear . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsOESTextureFloatLinear o
-toOESTextureFloatLinear :: IsOESTextureFloatLinear o => o -> OESTextureFloatLinear
-toOESTextureFloatLinear = unsafeCastGObject . toGObject
-
-instance IsOESTextureFloatLinear OESTextureFloatLinear
 instance IsGObject OESTextureFloatLinear where
   toGObject = GObject . castRef . unOESTextureFloatLinear
   unsafeCastGObject = OESTextureFloatLinear . castRef . unGObject
@@ -12265,11 +11044,6 @@ instance FromJSRef OESTextureHalfFloat where
   fromJSRef = return . fmap OESTextureHalfFloat . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsOESTextureHalfFloat o
-toOESTextureHalfFloat :: IsOESTextureHalfFloat o => o -> OESTextureHalfFloat
-toOESTextureHalfFloat = unsafeCastGObject . toGObject
-
-instance IsOESTextureHalfFloat OESTextureHalfFloat
 instance IsGObject OESTextureHalfFloat where
   toGObject = GObject . castRef . unOESTextureHalfFloat
   unsafeCastGObject = OESTextureHalfFloat . castRef . unGObject
@@ -12299,11 +11073,6 @@ instance FromJSRef OESTextureHalfFloatLinear where
   fromJSRef = return . fmap OESTextureHalfFloatLinear . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsOESTextureHalfFloatLinear o
-toOESTextureHalfFloatLinear :: IsOESTextureHalfFloatLinear o => o -> OESTextureHalfFloatLinear
-toOESTextureHalfFloatLinear = unsafeCastGObject . toGObject
-
-instance IsOESTextureHalfFloatLinear OESTextureHalfFloatLinear
 instance IsGObject OESTextureHalfFloatLinear where
   toGObject = GObject . castRef . unOESTextureHalfFloatLinear
   unsafeCastGObject = OESTextureHalfFloatLinear . castRef . unGObject
@@ -12333,11 +11102,6 @@ instance FromJSRef OESVertexArrayObject where
   fromJSRef = return . fmap OESVertexArrayObject . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsOESVertexArrayObject o
-toOESVertexArrayObject :: IsOESVertexArrayObject o => o -> OESVertexArrayObject
-toOESVertexArrayObject = unsafeCastGObject . toGObject
-
-instance IsOESVertexArrayObject OESVertexArrayObject
 instance IsGObject OESVertexArrayObject where
   toGObject = GObject . castRef . unOESVertexArrayObject
   unsafeCastGObject = OESVertexArrayObject . castRef . unGObject
@@ -12370,11 +11134,6 @@ instance FromJSRef OfflineAudioCompletionEvent where
   fromJSRef = return . fmap OfflineAudioCompletionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsOfflineAudioCompletionEvent o
-toOfflineAudioCompletionEvent :: IsOfflineAudioCompletionEvent o => o -> OfflineAudioCompletionEvent
-toOfflineAudioCompletionEvent = unsafeCastGObject . toGObject
-
-instance IsOfflineAudioCompletionEvent OfflineAudioCompletionEvent
 instance IsEvent OfflineAudioCompletionEvent
 instance IsGObject OfflineAudioCompletionEvent where
   toGObject = GObject . castRef . unOfflineAudioCompletionEvent
@@ -12409,11 +11168,6 @@ instance FromJSRef OfflineAudioContext where
   fromJSRef = return . fmap OfflineAudioContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioContext o => IsOfflineAudioContext o
-toOfflineAudioContext :: IsOfflineAudioContext o => o -> OfflineAudioContext
-toOfflineAudioContext = unsafeCastGObject . toGObject
-
-instance IsOfflineAudioContext OfflineAudioContext
 instance IsAudioContext OfflineAudioContext
 instance IsEventTarget OfflineAudioContext
 instance IsGObject OfflineAudioContext where
@@ -12449,11 +11203,6 @@ instance FromJSRef OscillatorNode where
   fromJSRef = return . fmap OscillatorNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsOscillatorNode o
-toOscillatorNode :: IsOscillatorNode o => o -> OscillatorNode
-toOscillatorNode = unsafeCastGObject . toGObject
-
-instance IsOscillatorNode OscillatorNode
 instance IsAudioNode OscillatorNode
 instance IsEventTarget OscillatorNode
 instance IsGObject OscillatorNode where
@@ -12488,11 +11237,6 @@ instance FromJSRef OverflowEvent where
   fromJSRef = return . fmap OverflowEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsOverflowEvent o
-toOverflowEvent :: IsOverflowEvent o => o -> OverflowEvent
-toOverflowEvent = unsafeCastGObject . toGObject
-
-instance IsOverflowEvent OverflowEvent
 instance IsEvent OverflowEvent
 instance IsGObject OverflowEvent where
   toGObject = GObject . castRef . unOverflowEvent
@@ -12526,11 +11270,6 @@ instance FromJSRef PageTransitionEvent where
   fromJSRef = return . fmap PageTransitionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsPageTransitionEvent o
-toPageTransitionEvent :: IsPageTransitionEvent o => o -> PageTransitionEvent
-toPageTransitionEvent = unsafeCastGObject . toGObject
-
-instance IsPageTransitionEvent PageTransitionEvent
 instance IsEvent PageTransitionEvent
 instance IsGObject PageTransitionEvent where
   toGObject = GObject . castRef . unPageTransitionEvent
@@ -12565,11 +11304,6 @@ instance FromJSRef PannerNode where
   fromJSRef = return . fmap PannerNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsPannerNode o
-toPannerNode :: IsPannerNode o => o -> PannerNode
-toPannerNode = unsafeCastGObject . toGObject
-
-instance IsPannerNode PannerNode
 instance IsAudioNode PannerNode
 instance IsEventTarget PannerNode
 instance IsGObject PannerNode where
@@ -12604,11 +11338,6 @@ instance FromJSRef Performance where
   fromJSRef = return . fmap Performance . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsPerformance o
-toPerformance :: IsPerformance o => o -> Performance
-toPerformance = unsafeCastGObject . toGObject
-
-instance IsPerformance Performance
 instance IsEventTarget Performance
 instance IsGObject Performance where
   toGObject = GObject . castRef . unPerformance
@@ -12673,11 +11402,6 @@ instance FromJSRef PerformanceEntryList where
   fromJSRef = return . fmap PerformanceEntryList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsPerformanceEntryList o
-toPerformanceEntryList :: IsPerformanceEntryList o => o -> PerformanceEntryList
-toPerformanceEntryList = unsafeCastGObject . toGObject
-
-instance IsPerformanceEntryList PerformanceEntryList
 instance IsGObject PerformanceEntryList where
   toGObject = GObject . castRef . unPerformanceEntryList
   unsafeCastGObject = PerformanceEntryList . castRef . unGObject
@@ -12710,11 +11434,6 @@ instance FromJSRef PerformanceMark where
   fromJSRef = return . fmap PerformanceMark . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsPerformanceEntry o => IsPerformanceMark o
-toPerformanceMark :: IsPerformanceMark o => o -> PerformanceMark
-toPerformanceMark = unsafeCastGObject . toGObject
-
-instance IsPerformanceMark PerformanceMark
 instance IsPerformanceEntry PerformanceMark
 instance IsGObject PerformanceMark where
   toGObject = GObject . castRef . unPerformanceMark
@@ -12748,11 +11467,6 @@ instance FromJSRef PerformanceMeasure where
   fromJSRef = return . fmap PerformanceMeasure . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsPerformanceEntry o => IsPerformanceMeasure o
-toPerformanceMeasure :: IsPerformanceMeasure o => o -> PerformanceMeasure
-toPerformanceMeasure = unsafeCastGObject . toGObject
-
-instance IsPerformanceMeasure PerformanceMeasure
 instance IsPerformanceEntry PerformanceMeasure
 instance IsGObject PerformanceMeasure where
   toGObject = GObject . castRef . unPerformanceMeasure
@@ -12783,11 +11497,6 @@ instance FromJSRef PerformanceNavigation where
   fromJSRef = return . fmap PerformanceNavigation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsPerformanceNavigation o
-toPerformanceNavigation :: IsPerformanceNavigation o => o -> PerformanceNavigation
-toPerformanceNavigation = unsafeCastGObject . toGObject
-
-instance IsPerformanceNavigation PerformanceNavigation
 instance IsGObject PerformanceNavigation where
   toGObject = GObject . castRef . unPerformanceNavigation
   unsafeCastGObject = PerformanceNavigation . castRef . unGObject
@@ -12820,11 +11529,6 @@ instance FromJSRef PerformanceResourceTiming where
   fromJSRef = return . fmap PerformanceResourceTiming . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsPerformanceEntry o => IsPerformanceResourceTiming o
-toPerformanceResourceTiming :: IsPerformanceResourceTiming o => o -> PerformanceResourceTiming
-toPerformanceResourceTiming = unsafeCastGObject . toGObject
-
-instance IsPerformanceResourceTiming PerformanceResourceTiming
 instance IsPerformanceEntry PerformanceResourceTiming
 instance IsGObject PerformanceResourceTiming where
   toGObject = GObject . castRef . unPerformanceResourceTiming
@@ -12855,11 +11559,6 @@ instance FromJSRef PerformanceTiming where
   fromJSRef = return . fmap PerformanceTiming . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsPerformanceTiming o
-toPerformanceTiming :: IsPerformanceTiming o => o -> PerformanceTiming
-toPerformanceTiming = unsafeCastGObject . toGObject
-
-instance IsPerformanceTiming PerformanceTiming
 instance IsGObject PerformanceTiming where
   toGObject = GObject . castRef . unPerformanceTiming
   unsafeCastGObject = PerformanceTiming . castRef . unGObject
@@ -12889,11 +11588,6 @@ instance FromJSRef PeriodicWave where
   fromJSRef = return . fmap PeriodicWave . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsPeriodicWave o
-toPeriodicWave :: IsPeriodicWave o => o -> PeriodicWave
-toPeriodicWave = unsafeCastGObject . toGObject
-
-instance IsPeriodicWave PeriodicWave
 instance IsGObject PeriodicWave where
   toGObject = GObject . castRef . unPeriodicWave
   unsafeCastGObject = PeriodicWave . castRef . unGObject
@@ -12926,11 +11620,6 @@ instance FromJSRef PopStateEvent where
   fromJSRef = return . fmap PopStateEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsPopStateEvent o
-toPopStateEvent :: IsPopStateEvent o => o -> PopStateEvent
-toPopStateEvent = unsafeCastGObject . toGObject
-
-instance IsPopStateEvent PopStateEvent
 instance IsEvent PopStateEvent
 instance IsGObject PopStateEvent where
   toGObject = GObject . castRef . unPopStateEvent
@@ -12961,11 +11650,6 @@ instance FromJSRef PositionCallback where
   fromJSRef = return . fmap PositionCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsPositionCallback o
-toPositionCallback :: IsPositionCallback o => o -> PositionCallback
-toPositionCallback = unsafeCastGObject . toGObject
-
-instance IsPositionCallback PositionCallback
 instance IsGObject PositionCallback where
   toGObject = GObject . castRef . unPositionCallback
   unsafeCastGObject = PositionCallback . castRef . unGObject
@@ -12995,11 +11679,6 @@ instance FromJSRef PositionError where
   fromJSRef = return . fmap PositionError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsPositionError o
-toPositionError :: IsPositionError o => o -> PositionError
-toPositionError = unsafeCastGObject . toGObject
-
-instance IsPositionError PositionError
 instance IsGObject PositionError where
   toGObject = GObject . castRef . unPositionError
   unsafeCastGObject = PositionError . castRef . unGObject
@@ -13029,11 +11708,6 @@ instance FromJSRef PositionErrorCallback where
   fromJSRef = return . fmap PositionErrorCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsPositionErrorCallback o
-toPositionErrorCallback :: IsPositionErrorCallback o => o -> PositionErrorCallback
-toPositionErrorCallback = unsafeCastGObject . toGObject
-
-instance IsPositionErrorCallback PositionErrorCallback
 instance IsGObject PositionErrorCallback where
   toGObject = GObject . castRef . unPositionErrorCallback
   unsafeCastGObject = PositionErrorCallback . castRef . unGObject
@@ -13068,11 +11742,6 @@ instance FromJSRef ProcessingInstruction where
   fromJSRef = return . fmap ProcessingInstruction . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCharacterData o => IsProcessingInstruction o
-toProcessingInstruction :: IsProcessingInstruction o => o -> ProcessingInstruction
-toProcessingInstruction = unsafeCastGObject . toGObject
-
-instance IsProcessingInstruction ProcessingInstruction
 instance IsCharacterData ProcessingInstruction
 instance IsNode ProcessingInstruction
 instance IsEventTarget ProcessingInstruction
@@ -13144,11 +11813,6 @@ instance FromJSRef QuickTimePluginReplacement where
   fromJSRef = return . fmap QuickTimePluginReplacement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsQuickTimePluginReplacement o
-toQuickTimePluginReplacement :: IsQuickTimePluginReplacement o => o -> QuickTimePluginReplacement
-toQuickTimePluginReplacement = unsafeCastGObject . toGObject
-
-instance IsQuickTimePluginReplacement QuickTimePluginReplacement
 instance IsGObject QuickTimePluginReplacement where
   toGObject = GObject . castRef . unQuickTimePluginReplacement
   unsafeCastGObject = QuickTimePluginReplacement . castRef . unGObject
@@ -13178,11 +11842,6 @@ instance FromJSRef RGBColor where
   fromJSRef = return . fmap RGBColor . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRGBColor o
-toRGBColor :: IsRGBColor o => o -> RGBColor
-toRGBColor = unsafeCastGObject . toGObject
-
-instance IsRGBColor RGBColor
 instance IsGObject RGBColor where
   toGObject = GObject . castRef . unRGBColor
   unsafeCastGObject = RGBColor . castRef . unGObject
@@ -13212,11 +11871,6 @@ instance FromJSRef RTCConfiguration where
   fromJSRef = return . fmap RTCConfiguration . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCConfiguration o
-toRTCConfiguration :: IsRTCConfiguration o => o -> RTCConfiguration
-toRTCConfiguration = unsafeCastGObject . toGObject
-
-instance IsRTCConfiguration RTCConfiguration
 instance IsGObject RTCConfiguration where
   toGObject = GObject . castRef . unRTCConfiguration
   unsafeCastGObject = RTCConfiguration . castRef . unGObject
@@ -13249,11 +11903,6 @@ instance FromJSRef RTCDTMFSender where
   fromJSRef = return . fmap RTCDTMFSender . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsRTCDTMFSender o
-toRTCDTMFSender :: IsRTCDTMFSender o => o -> RTCDTMFSender
-toRTCDTMFSender = unsafeCastGObject . toGObject
-
-instance IsRTCDTMFSender RTCDTMFSender
 instance IsEventTarget RTCDTMFSender
 instance IsGObject RTCDTMFSender where
   toGObject = GObject . castRef . unRTCDTMFSender
@@ -13287,11 +11936,6 @@ instance FromJSRef RTCDTMFToneChangeEvent where
   fromJSRef = return . fmap RTCDTMFToneChangeEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsRTCDTMFToneChangeEvent o
-toRTCDTMFToneChangeEvent :: IsRTCDTMFToneChangeEvent o => o -> RTCDTMFToneChangeEvent
-toRTCDTMFToneChangeEvent = unsafeCastGObject . toGObject
-
-instance IsRTCDTMFToneChangeEvent RTCDTMFToneChangeEvent
 instance IsEvent RTCDTMFToneChangeEvent
 instance IsGObject RTCDTMFToneChangeEvent where
   toGObject = GObject . castRef . unRTCDTMFToneChangeEvent
@@ -13325,11 +11969,6 @@ instance FromJSRef RTCDataChannel where
   fromJSRef = return . fmap RTCDataChannel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsRTCDataChannel o
-toRTCDataChannel :: IsRTCDataChannel o => o -> RTCDataChannel
-toRTCDataChannel = unsafeCastGObject . toGObject
-
-instance IsRTCDataChannel RTCDataChannel
 instance IsEventTarget RTCDataChannel
 instance IsGObject RTCDataChannel where
   toGObject = GObject . castRef . unRTCDataChannel
@@ -13363,11 +12002,6 @@ instance FromJSRef RTCDataChannelEvent where
   fromJSRef = return . fmap RTCDataChannelEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsRTCDataChannelEvent o
-toRTCDataChannelEvent :: IsRTCDataChannelEvent o => o -> RTCDataChannelEvent
-toRTCDataChannelEvent = unsafeCastGObject . toGObject
-
-instance IsRTCDataChannelEvent RTCDataChannelEvent
 instance IsEvent RTCDataChannelEvent
 instance IsGObject RTCDataChannelEvent where
   toGObject = GObject . castRef . unRTCDataChannelEvent
@@ -13398,11 +12032,6 @@ instance FromJSRef RTCIceCandidate where
   fromJSRef = return . fmap RTCIceCandidate . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCIceCandidate o
-toRTCIceCandidate :: IsRTCIceCandidate o => o -> RTCIceCandidate
-toRTCIceCandidate = unsafeCastGObject . toGObject
-
-instance IsRTCIceCandidate RTCIceCandidate
 instance IsGObject RTCIceCandidate where
   toGObject = GObject . castRef . unRTCIceCandidate
   unsafeCastGObject = RTCIceCandidate . castRef . unGObject
@@ -13435,11 +12064,6 @@ instance FromJSRef RTCIceCandidateEvent where
   fromJSRef = return . fmap RTCIceCandidateEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsRTCIceCandidateEvent o
-toRTCIceCandidateEvent :: IsRTCIceCandidateEvent o => o -> RTCIceCandidateEvent
-toRTCIceCandidateEvent = unsafeCastGObject . toGObject
-
-instance IsRTCIceCandidateEvent RTCIceCandidateEvent
 instance IsEvent RTCIceCandidateEvent
 instance IsGObject RTCIceCandidateEvent where
   toGObject = GObject . castRef . unRTCIceCandidateEvent
@@ -13470,11 +12094,6 @@ instance FromJSRef RTCIceServer where
   fromJSRef = return . fmap RTCIceServer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCIceServer o
-toRTCIceServer :: IsRTCIceServer o => o -> RTCIceServer
-toRTCIceServer = unsafeCastGObject . toGObject
-
-instance IsRTCIceServer RTCIceServer
 instance IsGObject RTCIceServer where
   toGObject = GObject . castRef . unRTCIceServer
   unsafeCastGObject = RTCIceServer . castRef . unGObject
@@ -13507,11 +12126,6 @@ instance FromJSRef RTCPeerConnection where
   fromJSRef = return . fmap RTCPeerConnection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsRTCPeerConnection o
-toRTCPeerConnection :: IsRTCPeerConnection o => o -> RTCPeerConnection
-toRTCPeerConnection = unsafeCastGObject . toGObject
-
-instance IsRTCPeerConnection RTCPeerConnection
 instance IsEventTarget RTCPeerConnection
 instance IsGObject RTCPeerConnection where
   toGObject = GObject . castRef . unRTCPeerConnection
@@ -13542,11 +12156,6 @@ instance FromJSRef RTCPeerConnectionErrorCallback where
   fromJSRef = return . fmap RTCPeerConnectionErrorCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCPeerConnectionErrorCallback o
-toRTCPeerConnectionErrorCallback :: IsRTCPeerConnectionErrorCallback o => o -> RTCPeerConnectionErrorCallback
-toRTCPeerConnectionErrorCallback = unsafeCastGObject . toGObject
-
-instance IsRTCPeerConnectionErrorCallback RTCPeerConnectionErrorCallback
 instance IsGObject RTCPeerConnectionErrorCallback where
   toGObject = GObject . castRef . unRTCPeerConnectionErrorCallback
   unsafeCastGObject = RTCPeerConnectionErrorCallback . castRef . unGObject
@@ -13576,11 +12185,6 @@ instance FromJSRef RTCSessionDescription where
   fromJSRef = return . fmap RTCSessionDescription . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCSessionDescription o
-toRTCSessionDescription :: IsRTCSessionDescription o => o -> RTCSessionDescription
-toRTCSessionDescription = unsafeCastGObject . toGObject
-
-instance IsRTCSessionDescription RTCSessionDescription
 instance IsGObject RTCSessionDescription where
   toGObject = GObject . castRef . unRTCSessionDescription
   unsafeCastGObject = RTCSessionDescription . castRef . unGObject
@@ -13610,11 +12214,6 @@ instance FromJSRef RTCSessionDescriptionCallback where
   fromJSRef = return . fmap RTCSessionDescriptionCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCSessionDescriptionCallback o
-toRTCSessionDescriptionCallback :: IsRTCSessionDescriptionCallback o => o -> RTCSessionDescriptionCallback
-toRTCSessionDescriptionCallback = unsafeCastGObject . toGObject
-
-instance IsRTCSessionDescriptionCallback RTCSessionDescriptionCallback
 instance IsGObject RTCSessionDescriptionCallback where
   toGObject = GObject . castRef . unRTCSessionDescriptionCallback
   unsafeCastGObject = RTCSessionDescriptionCallback . castRef . unGObject
@@ -13644,11 +12243,6 @@ instance FromJSRef RTCStatsCallback where
   fromJSRef = return . fmap RTCStatsCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCStatsCallback o
-toRTCStatsCallback :: IsRTCStatsCallback o => o -> RTCStatsCallback
-toRTCStatsCallback = unsafeCastGObject . toGObject
-
-instance IsRTCStatsCallback RTCStatsCallback
 instance IsGObject RTCStatsCallback where
   toGObject = GObject . castRef . unRTCStatsCallback
   unsafeCastGObject = RTCStatsCallback . castRef . unGObject
@@ -13678,11 +12272,6 @@ instance FromJSRef RTCStatsReport where
   fromJSRef = return . fmap RTCStatsReport . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCStatsReport o
-toRTCStatsReport :: IsRTCStatsReport o => o -> RTCStatsReport
-toRTCStatsReport = unsafeCastGObject . toGObject
-
-instance IsRTCStatsReport RTCStatsReport
 instance IsGObject RTCStatsReport where
   toGObject = GObject . castRef . unRTCStatsReport
   unsafeCastGObject = RTCStatsReport . castRef . unGObject
@@ -13712,11 +12301,6 @@ instance FromJSRef RTCStatsResponse where
   fromJSRef = return . fmap RTCStatsResponse . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRTCStatsResponse o
-toRTCStatsResponse :: IsRTCStatsResponse o => o -> RTCStatsResponse
-toRTCStatsResponse = unsafeCastGObject . toGObject
-
-instance IsRTCStatsResponse RTCStatsResponse
 instance IsGObject RTCStatsResponse where
   toGObject = GObject . castRef . unRTCStatsResponse
   unsafeCastGObject = RTCStatsResponse . castRef . unGObject
@@ -13749,11 +12333,6 @@ instance FromJSRef RadioNodeList where
   fromJSRef = return . fmap RadioNodeList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsNodeList o => IsRadioNodeList o
-toRadioNodeList :: IsRadioNodeList o => o -> RadioNodeList
-toRadioNodeList = unsafeCastGObject . toGObject
-
-instance IsRadioNodeList RadioNodeList
 instance IsNodeList RadioNodeList
 instance IsGObject RadioNodeList where
   toGObject = GObject . castRef . unRadioNodeList
@@ -13784,11 +12363,6 @@ instance FromJSRef DOMRange where
   fromJSRef = return . fmap DOMRange . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMRange o
-toDOMRange :: IsDOMRange o => o -> DOMRange
-toDOMRange = unsafeCastGObject . toGObject
-
-instance IsDOMRange DOMRange
 instance IsGObject DOMRange where
   toGObject = GObject . castRef . unDOMRange
   unsafeCastGObject = DOMRange . castRef . unGObject
@@ -13800,6 +12374,35 @@ foreign import javascript unsafe "window[\"DOMRange\"]" gTypeDOMRange' :: JSRef 
 gTypeDOMRange = GType gTypeDOMRange'
 #else
 type IsDOMRange o = DOMRangeClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.ReadableStream".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation>
+newtype ReadableStream = ReadableStream (JSRef ReadableStream) deriving (Eq)
+
+unReadableStream (ReadableStream o) = o
+
+instance ToJSRef ReadableStream where
+  toJSRef = return . unReadableStream
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ReadableStream where
+  fromJSRef = return . fmap ReadableStream . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject ReadableStream where
+  toGObject = GObject . castRef . unReadableStream
+  unsafeCastGObject = ReadableStream . castRef . unGObject
+
+castToReadableStream :: IsGObject obj => obj -> ReadableStream
+castToReadableStream = castTo gTypeReadableStream "ReadableStream"
+
+foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStream' :: JSRef GType
+gTypeReadableStream = GType gTypeReadableStream'
+#else
 #endif
 
 
@@ -13819,11 +12422,6 @@ instance FromJSRef Rect where
   fromJSRef = return . fmap Rect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRect o
-toRect :: IsRect o => o -> Rect
-toRect = unsafeCastGObject . toGObject
-
-instance IsRect Rect
 instance IsGObject Rect where
   toGObject = GObject . castRef . unRect
   unsafeCastGObject = Rect . castRef . unGObject
@@ -13853,11 +12451,6 @@ instance FromJSRef RequestAnimationFrameCallback where
   fromJSRef = return . fmap RequestAnimationFrameCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsRequestAnimationFrameCallback o
-toRequestAnimationFrameCallback :: IsRequestAnimationFrameCallback o => o -> RequestAnimationFrameCallback
-toRequestAnimationFrameCallback = unsafeCastGObject . toGObject
-
-instance IsRequestAnimationFrameCallback RequestAnimationFrameCallback
 instance IsGObject RequestAnimationFrameCallback where
   toGObject = GObject . castRef . unRequestAnimationFrameCallback
   unsafeCastGObject = RequestAnimationFrameCallback . castRef . unGObject
@@ -13887,11 +12480,6 @@ instance FromJSRef SQLError where
   fromJSRef = return . fmap SQLError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLError o
-toSQLError :: IsSQLError o => o -> SQLError
-toSQLError = unsafeCastGObject . toGObject
-
-instance IsSQLError SQLError
 instance IsGObject SQLError where
   toGObject = GObject . castRef . unSQLError
   unsafeCastGObject = SQLError . castRef . unGObject
@@ -13921,11 +12509,6 @@ instance FromJSRef SQLResultSet where
   fromJSRef = return . fmap SQLResultSet . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLResultSet o
-toSQLResultSet :: IsSQLResultSet o => o -> SQLResultSet
-toSQLResultSet = unsafeCastGObject . toGObject
-
-instance IsSQLResultSet SQLResultSet
 instance IsGObject SQLResultSet where
   toGObject = GObject . castRef . unSQLResultSet
   unsafeCastGObject = SQLResultSet . castRef . unGObject
@@ -13955,11 +12538,6 @@ instance FromJSRef SQLResultSetRowList where
   fromJSRef = return . fmap SQLResultSetRowList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLResultSetRowList o
-toSQLResultSetRowList :: IsSQLResultSetRowList o => o -> SQLResultSetRowList
-toSQLResultSetRowList = unsafeCastGObject . toGObject
-
-instance IsSQLResultSetRowList SQLResultSetRowList
 instance IsGObject SQLResultSetRowList where
   toGObject = GObject . castRef . unSQLResultSetRowList
   unsafeCastGObject = SQLResultSetRowList . castRef . unGObject
@@ -13989,11 +12567,6 @@ instance FromJSRef SQLStatementCallback where
   fromJSRef = return . fmap SQLStatementCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLStatementCallback o
-toSQLStatementCallback :: IsSQLStatementCallback o => o -> SQLStatementCallback
-toSQLStatementCallback = unsafeCastGObject . toGObject
-
-instance IsSQLStatementCallback SQLStatementCallback
 instance IsGObject SQLStatementCallback where
   toGObject = GObject . castRef . unSQLStatementCallback
   unsafeCastGObject = SQLStatementCallback . castRef . unGObject
@@ -14023,11 +12596,6 @@ instance FromJSRef SQLStatementErrorCallback where
   fromJSRef = return . fmap SQLStatementErrorCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLStatementErrorCallback o
-toSQLStatementErrorCallback :: IsSQLStatementErrorCallback o => o -> SQLStatementErrorCallback
-toSQLStatementErrorCallback = unsafeCastGObject . toGObject
-
-instance IsSQLStatementErrorCallback SQLStatementErrorCallback
 instance IsGObject SQLStatementErrorCallback where
   toGObject = GObject . castRef . unSQLStatementErrorCallback
   unsafeCastGObject = SQLStatementErrorCallback . castRef . unGObject
@@ -14057,11 +12625,6 @@ instance FromJSRef SQLTransaction where
   fromJSRef = return . fmap SQLTransaction . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLTransaction o
-toSQLTransaction :: IsSQLTransaction o => o -> SQLTransaction
-toSQLTransaction = unsafeCastGObject . toGObject
-
-instance IsSQLTransaction SQLTransaction
 instance IsGObject SQLTransaction where
   toGObject = GObject . castRef . unSQLTransaction
   unsafeCastGObject = SQLTransaction . castRef . unGObject
@@ -14091,11 +12654,6 @@ instance FromJSRef SQLTransactionCallback where
   fromJSRef = return . fmap SQLTransactionCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLTransactionCallback o
-toSQLTransactionCallback :: IsSQLTransactionCallback o => o -> SQLTransactionCallback
-toSQLTransactionCallback = unsafeCastGObject . toGObject
-
-instance IsSQLTransactionCallback SQLTransactionCallback
 instance IsGObject SQLTransactionCallback where
   toGObject = GObject . castRef . unSQLTransactionCallback
   unsafeCastGObject = SQLTransactionCallback . castRef . unGObject
@@ -14125,11 +12683,6 @@ instance FromJSRef SQLTransactionErrorCallback where
   fromJSRef = return . fmap SQLTransactionErrorCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSQLTransactionErrorCallback o
-toSQLTransactionErrorCallback :: IsSQLTransactionErrorCallback o => o -> SQLTransactionErrorCallback
-toSQLTransactionErrorCallback = unsafeCastGObject . toGObject
-
-instance IsSQLTransactionErrorCallback SQLTransactionErrorCallback
 instance IsGObject SQLTransactionErrorCallback where
   toGObject = GObject . castRef . unSQLTransactionErrorCallback
   unsafeCastGObject = SQLTransactionErrorCallback . castRef . unGObject
@@ -14139,74 +12692,6 @@ castToSQLTransactionErrorCallback = castTo gTypeSQLTransactionErrorCallback "SQL
 
 foreign import javascript unsafe "window[\"SQLTransactionErrorCallback\"]" gTypeSQLTransactionErrorCallback' :: JSRef GType
 gTypeSQLTransactionErrorCallback = GType gTypeSQLTransactionErrorCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionSync".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionSync Mozilla SQLTransactionSync documentation>
-newtype SQLTransactionSync = SQLTransactionSync (JSRef SQLTransactionSync) deriving (Eq)
-
-unSQLTransactionSync (SQLTransactionSync o) = o
-
-instance ToJSRef SQLTransactionSync where
-  toJSRef = return . unSQLTransactionSync
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SQLTransactionSync where
-  fromJSRef = return . fmap SQLTransactionSync . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsGObject o => IsSQLTransactionSync o
-toSQLTransactionSync :: IsSQLTransactionSync o => o -> SQLTransactionSync
-toSQLTransactionSync = unsafeCastGObject . toGObject
-
-instance IsSQLTransactionSync SQLTransactionSync
-instance IsGObject SQLTransactionSync where
-  toGObject = GObject . castRef . unSQLTransactionSync
-  unsafeCastGObject = SQLTransactionSync . castRef . unGObject
-
-castToSQLTransactionSync :: IsGObject obj => obj -> SQLTransactionSync
-castToSQLTransactionSync = castTo gTypeSQLTransactionSync "SQLTransactionSync"
-
-foreign import javascript unsafe "window[\"SQLTransactionSync\"]" gTypeSQLTransactionSync' :: JSRef GType
-gTypeSQLTransactionSync = GType gTypeSQLTransactionSync'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionSyncCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionSyncCallback Mozilla SQLTransactionSyncCallback documentation>
-newtype SQLTransactionSyncCallback = SQLTransactionSyncCallback (JSRef SQLTransactionSyncCallback) deriving (Eq)
-
-unSQLTransactionSyncCallback (SQLTransactionSyncCallback o) = o
-
-instance ToJSRef SQLTransactionSyncCallback where
-  toJSRef = return . unSQLTransactionSyncCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SQLTransactionSyncCallback where
-  fromJSRef = return . fmap SQLTransactionSyncCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsGObject o => IsSQLTransactionSyncCallback o
-toSQLTransactionSyncCallback :: IsSQLTransactionSyncCallback o => o -> SQLTransactionSyncCallback
-toSQLTransactionSyncCallback = unsafeCastGObject . toGObject
-
-instance IsSQLTransactionSyncCallback SQLTransactionSyncCallback
-instance IsGObject SQLTransactionSyncCallback where
-  toGObject = GObject . castRef . unSQLTransactionSyncCallback
-  unsafeCastGObject = SQLTransactionSyncCallback . castRef . unGObject
-
-castToSQLTransactionSyncCallback :: IsGObject obj => obj -> SQLTransactionSyncCallback
-castToSQLTransactionSyncCallback = castTo gTypeSQLTransactionSyncCallback "SQLTransactionSyncCallback"
-
-foreign import javascript unsafe "window[\"SQLTransactionSyncCallback\"]" gTypeSQLTransactionSyncCallback' :: JSRef GType
-gTypeSQLTransactionSyncCallback = GType gTypeSQLTransactionSyncCallback'
 #else
 #endif
 
@@ -14234,11 +12719,6 @@ instance FromJSRef SVGAElement where
   fromJSRef = return . fmap SVGAElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGAElement o
-toSVGAElement :: IsSVGAElement o => o -> SVGAElement
-toSVGAElement = unsafeCastGObject . toGObject
-
-instance IsSVGAElement SVGAElement
 instance IsSVGGraphicsElement SVGAElement
 instance IsSVGElement SVGAElement
 instance IsElement SVGAElement
@@ -14279,11 +12759,6 @@ instance FromJSRef SVGAltGlyphDefElement where
   fromJSRef = return . fmap SVGAltGlyphDefElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGAltGlyphDefElement o
-toSVGAltGlyphDefElement :: IsSVGAltGlyphDefElement o => o -> SVGAltGlyphDefElement
-toSVGAltGlyphDefElement = unsafeCastGObject . toGObject
-
-instance IsSVGAltGlyphDefElement SVGAltGlyphDefElement
 instance IsSVGElement SVGAltGlyphDefElement
 instance IsElement SVGAltGlyphDefElement
 instance IsNode SVGAltGlyphDefElement
@@ -14326,11 +12801,6 @@ instance FromJSRef SVGAltGlyphElement where
   fromJSRef = return . fmap SVGAltGlyphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGTextPositioningElement o => IsSVGAltGlyphElement o
-toSVGAltGlyphElement :: IsSVGAltGlyphElement o => o -> SVGAltGlyphElement
-toSVGAltGlyphElement = unsafeCastGObject . toGObject
-
-instance IsSVGAltGlyphElement SVGAltGlyphElement
 instance IsSVGTextPositioningElement SVGAltGlyphElement
 instance IsSVGTextContentElement SVGAltGlyphElement
 instance IsSVGGraphicsElement SVGAltGlyphElement
@@ -14373,11 +12843,6 @@ instance FromJSRef SVGAltGlyphItemElement where
   fromJSRef = return . fmap SVGAltGlyphItemElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGAltGlyphItemElement o
-toSVGAltGlyphItemElement :: IsSVGAltGlyphItemElement o => o -> SVGAltGlyphItemElement
-toSVGAltGlyphItemElement = unsafeCastGObject . toGObject
-
-instance IsSVGAltGlyphItemElement SVGAltGlyphItemElement
 instance IsSVGElement SVGAltGlyphItemElement
 instance IsElement SVGAltGlyphItemElement
 instance IsNode SVGAltGlyphItemElement
@@ -14411,11 +12876,6 @@ instance FromJSRef SVGAngle where
   fromJSRef = return . fmap SVGAngle . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAngle o
-toSVGAngle :: IsSVGAngle o => o -> SVGAngle
-toSVGAngle = unsafeCastGObject . toGObject
-
-instance IsSVGAngle SVGAngle
 instance IsGObject SVGAngle where
   toGObject = GObject . castRef . unSVGAngle
   unsafeCastGObject = SVGAngle . castRef . unGObject
@@ -14452,11 +12912,6 @@ instance FromJSRef SVGAnimateColorElement where
   fromJSRef = return . fmap SVGAnimateColorElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGAnimationElement o => IsSVGAnimateColorElement o
-toSVGAnimateColorElement :: IsSVGAnimateColorElement o => o -> SVGAnimateColorElement
-toSVGAnimateColorElement = unsafeCastGObject . toGObject
-
-instance IsSVGAnimateColorElement SVGAnimateColorElement
 instance IsSVGAnimationElement SVGAnimateColorElement
 instance IsSVGElement SVGAnimateColorElement
 instance IsElement SVGAnimateColorElement
@@ -14498,11 +12953,6 @@ instance FromJSRef SVGAnimateElement where
   fromJSRef = return . fmap SVGAnimateElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGAnimationElement o => IsSVGAnimateElement o
-toSVGAnimateElement :: IsSVGAnimateElement o => o -> SVGAnimateElement
-toSVGAnimateElement = unsafeCastGObject . toGObject
-
-instance IsSVGAnimateElement SVGAnimateElement
 instance IsSVGAnimationElement SVGAnimateElement
 instance IsSVGElement SVGAnimateElement
 instance IsElement SVGAnimateElement
@@ -14544,11 +12994,6 @@ instance FromJSRef SVGAnimateMotionElement where
   fromJSRef = return . fmap SVGAnimateMotionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGAnimationElement o => IsSVGAnimateMotionElement o
-toSVGAnimateMotionElement :: IsSVGAnimateMotionElement o => o -> SVGAnimateMotionElement
-toSVGAnimateMotionElement = unsafeCastGObject . toGObject
-
-instance IsSVGAnimateMotionElement SVGAnimateMotionElement
 instance IsSVGAnimationElement SVGAnimateMotionElement
 instance IsSVGElement SVGAnimateMotionElement
 instance IsElement SVGAnimateMotionElement
@@ -14590,11 +13035,6 @@ instance FromJSRef SVGAnimateTransformElement where
   fromJSRef = return . fmap SVGAnimateTransformElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGAnimationElement o => IsSVGAnimateTransformElement o
-toSVGAnimateTransformElement :: IsSVGAnimateTransformElement o => o -> SVGAnimateTransformElement
-toSVGAnimateTransformElement = unsafeCastGObject . toGObject
-
-instance IsSVGAnimateTransformElement SVGAnimateTransformElement
 instance IsSVGAnimationElement SVGAnimateTransformElement
 instance IsSVGElement SVGAnimateTransformElement
 instance IsElement SVGAnimateTransformElement
@@ -14629,11 +13069,6 @@ instance FromJSRef SVGAnimatedAngle where
   fromJSRef = return . fmap SVGAnimatedAngle . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedAngle o
-toSVGAnimatedAngle :: IsSVGAnimatedAngle o => o -> SVGAnimatedAngle
-toSVGAnimatedAngle = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedAngle SVGAnimatedAngle
 instance IsGObject SVGAnimatedAngle where
   toGObject = GObject . castRef . unSVGAnimatedAngle
   unsafeCastGObject = SVGAnimatedAngle . castRef . unGObject
@@ -14663,11 +13098,6 @@ instance FromJSRef SVGAnimatedBoolean where
   fromJSRef = return . fmap SVGAnimatedBoolean . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedBoolean o
-toSVGAnimatedBoolean :: IsSVGAnimatedBoolean o => o -> SVGAnimatedBoolean
-toSVGAnimatedBoolean = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedBoolean SVGAnimatedBoolean
 instance IsGObject SVGAnimatedBoolean where
   toGObject = GObject . castRef . unSVGAnimatedBoolean
   unsafeCastGObject = SVGAnimatedBoolean . castRef . unGObject
@@ -14697,11 +13127,6 @@ instance FromJSRef SVGAnimatedEnumeration where
   fromJSRef = return . fmap SVGAnimatedEnumeration . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedEnumeration o
-toSVGAnimatedEnumeration :: IsSVGAnimatedEnumeration o => o -> SVGAnimatedEnumeration
-toSVGAnimatedEnumeration = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedEnumeration SVGAnimatedEnumeration
 instance IsGObject SVGAnimatedEnumeration where
   toGObject = GObject . castRef . unSVGAnimatedEnumeration
   unsafeCastGObject = SVGAnimatedEnumeration . castRef . unGObject
@@ -14731,11 +13156,6 @@ instance FromJSRef SVGAnimatedInteger where
   fromJSRef = return . fmap SVGAnimatedInteger . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedInteger o
-toSVGAnimatedInteger :: IsSVGAnimatedInteger o => o -> SVGAnimatedInteger
-toSVGAnimatedInteger = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedInteger SVGAnimatedInteger
 instance IsGObject SVGAnimatedInteger where
   toGObject = GObject . castRef . unSVGAnimatedInteger
   unsafeCastGObject = SVGAnimatedInteger . castRef . unGObject
@@ -14765,11 +13185,6 @@ instance FromJSRef SVGAnimatedLength where
   fromJSRef = return . fmap SVGAnimatedLength . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedLength o
-toSVGAnimatedLength :: IsSVGAnimatedLength o => o -> SVGAnimatedLength
-toSVGAnimatedLength = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedLength SVGAnimatedLength
 instance IsGObject SVGAnimatedLength where
   toGObject = GObject . castRef . unSVGAnimatedLength
   unsafeCastGObject = SVGAnimatedLength . castRef . unGObject
@@ -14799,11 +13214,6 @@ instance FromJSRef SVGAnimatedLengthList where
   fromJSRef = return . fmap SVGAnimatedLengthList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedLengthList o
-toSVGAnimatedLengthList :: IsSVGAnimatedLengthList o => o -> SVGAnimatedLengthList
-toSVGAnimatedLengthList = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedLengthList SVGAnimatedLengthList
 instance IsGObject SVGAnimatedLengthList where
   toGObject = GObject . castRef . unSVGAnimatedLengthList
   unsafeCastGObject = SVGAnimatedLengthList . castRef . unGObject
@@ -14833,11 +13243,6 @@ instance FromJSRef SVGAnimatedNumber where
   fromJSRef = return . fmap SVGAnimatedNumber . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedNumber o
-toSVGAnimatedNumber :: IsSVGAnimatedNumber o => o -> SVGAnimatedNumber
-toSVGAnimatedNumber = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedNumber SVGAnimatedNumber
 instance IsGObject SVGAnimatedNumber where
   toGObject = GObject . castRef . unSVGAnimatedNumber
   unsafeCastGObject = SVGAnimatedNumber . castRef . unGObject
@@ -14867,11 +13272,6 @@ instance FromJSRef SVGAnimatedNumberList where
   fromJSRef = return . fmap SVGAnimatedNumberList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedNumberList o
-toSVGAnimatedNumberList :: IsSVGAnimatedNumberList o => o -> SVGAnimatedNumberList
-toSVGAnimatedNumberList = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedNumberList SVGAnimatedNumberList
 instance IsGObject SVGAnimatedNumberList where
   toGObject = GObject . castRef . unSVGAnimatedNumberList
   unsafeCastGObject = SVGAnimatedNumberList . castRef . unGObject
@@ -14901,11 +13301,6 @@ instance FromJSRef SVGAnimatedPreserveAspectRatio where
   fromJSRef = return . fmap SVGAnimatedPreserveAspectRatio . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedPreserveAspectRatio o
-toSVGAnimatedPreserveAspectRatio :: IsSVGAnimatedPreserveAspectRatio o => o -> SVGAnimatedPreserveAspectRatio
-toSVGAnimatedPreserveAspectRatio = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedPreserveAspectRatio SVGAnimatedPreserveAspectRatio
 instance IsGObject SVGAnimatedPreserveAspectRatio where
   toGObject = GObject . castRef . unSVGAnimatedPreserveAspectRatio
   unsafeCastGObject = SVGAnimatedPreserveAspectRatio . castRef . unGObject
@@ -14935,11 +13330,6 @@ instance FromJSRef SVGAnimatedRect where
   fromJSRef = return . fmap SVGAnimatedRect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedRect o
-toSVGAnimatedRect :: IsSVGAnimatedRect o => o -> SVGAnimatedRect
-toSVGAnimatedRect = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedRect SVGAnimatedRect
 instance IsGObject SVGAnimatedRect where
   toGObject = GObject . castRef . unSVGAnimatedRect
   unsafeCastGObject = SVGAnimatedRect . castRef . unGObject
@@ -14969,11 +13359,6 @@ instance FromJSRef SVGAnimatedString where
   fromJSRef = return . fmap SVGAnimatedString . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedString o
-toSVGAnimatedString :: IsSVGAnimatedString o => o -> SVGAnimatedString
-toSVGAnimatedString = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedString SVGAnimatedString
 instance IsGObject SVGAnimatedString where
   toGObject = GObject . castRef . unSVGAnimatedString
   unsafeCastGObject = SVGAnimatedString . castRef . unGObject
@@ -15003,11 +13388,6 @@ instance FromJSRef SVGAnimatedTransformList where
   fromJSRef = return . fmap SVGAnimatedTransformList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGAnimatedTransformList o
-toSVGAnimatedTransformList :: IsSVGAnimatedTransformList o => o -> SVGAnimatedTransformList
-toSVGAnimatedTransformList = unsafeCastGObject . toGObject
-
-instance IsSVGAnimatedTransformList SVGAnimatedTransformList
 instance IsGObject SVGAnimatedTransformList where
   toGObject = GObject . castRef . unSVGAnimatedTransformList
   unsafeCastGObject = SVGAnimatedTransformList . castRef . unGObject
@@ -15088,11 +13468,6 @@ instance FromJSRef SVGCircleElement where
   fromJSRef = return . fmap SVGCircleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGCircleElement o
-toSVGCircleElement :: IsSVGCircleElement o => o -> SVGCircleElement
-toSVGCircleElement = unsafeCastGObject . toGObject
-
-instance IsSVGCircleElement SVGCircleElement
 instance IsSVGGraphicsElement SVGCircleElement
 instance IsSVGElement SVGCircleElement
 instance IsElement SVGCircleElement
@@ -15134,11 +13509,6 @@ instance FromJSRef SVGClipPathElement where
   fromJSRef = return . fmap SVGClipPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGClipPathElement o
-toSVGClipPathElement :: IsSVGClipPathElement o => o -> SVGClipPathElement
-toSVGClipPathElement = unsafeCastGObject . toGObject
-
-instance IsSVGClipPathElement SVGClipPathElement
 instance IsSVGGraphicsElement SVGClipPathElement
 instance IsSVGElement SVGClipPathElement
 instance IsElement SVGClipPathElement
@@ -15261,11 +13631,6 @@ instance FromJSRef SVGCursorElement where
   fromJSRef = return . fmap SVGCursorElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGCursorElement o
-toSVGCursorElement :: IsSVGCursorElement o => o -> SVGCursorElement
-toSVGCursorElement = unsafeCastGObject . toGObject
-
-instance IsSVGCursorElement SVGCursorElement
 instance IsSVGElement SVGCursorElement
 instance IsElement SVGCursorElement
 instance IsNode SVGCursorElement
@@ -15306,11 +13671,6 @@ instance FromJSRef SVGDefsElement where
   fromJSRef = return . fmap SVGDefsElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGDefsElement o
-toSVGDefsElement :: IsSVGDefsElement o => o -> SVGDefsElement
-toSVGDefsElement = unsafeCastGObject . toGObject
-
-instance IsSVGDefsElement SVGDefsElement
 instance IsSVGGraphicsElement SVGDefsElement
 instance IsSVGElement SVGDefsElement
 instance IsElement SVGDefsElement
@@ -15351,11 +13711,6 @@ instance FromJSRef SVGDescElement where
   fromJSRef = return . fmap SVGDescElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGDescElement o
-toSVGDescElement :: IsSVGDescElement o => o -> SVGDescElement
-toSVGDescElement = unsafeCastGObject . toGObject
-
-instance IsSVGDescElement SVGDescElement
 instance IsSVGElement SVGDescElement
 instance IsElement SVGDescElement
 instance IsNode SVGDescElement
@@ -15394,11 +13749,6 @@ instance FromJSRef SVGDocument where
   fromJSRef = return . fmap SVGDocument . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsDocument o => IsSVGDocument o
-toSVGDocument :: IsSVGDocument o => o -> SVGDocument
-toSVGDocument = unsafeCastGObject . toGObject
-
-instance IsSVGDocument SVGDocument
 instance IsDocument SVGDocument
 instance IsNode SVGDocument
 instance IsEventTarget SVGDocument
@@ -15458,78 +13808,6 @@ gTypeSVGElement = GType gTypeSVGElement'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SVGElementInstance".
--- Base interface functions are in:
---
---     * "GHCJS.DOM.EventTarget"
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElementInstance Mozilla SVGElementInstance documentation>
-newtype SVGElementInstance = SVGElementInstance (JSRef SVGElementInstance) deriving (Eq)
-
-unSVGElementInstance (SVGElementInstance o) = o
-
-instance ToJSRef SVGElementInstance where
-  toJSRef = return . unSVGElementInstance
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SVGElementInstance where
-  fromJSRef = return . fmap SVGElementInstance . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsEventTarget o => IsSVGElementInstance o
-toSVGElementInstance :: IsSVGElementInstance o => o -> SVGElementInstance
-toSVGElementInstance = unsafeCastGObject . toGObject
-
-instance IsSVGElementInstance SVGElementInstance
-instance IsEventTarget SVGElementInstance
-instance IsGObject SVGElementInstance where
-  toGObject = GObject . castRef . unSVGElementInstance
-  unsafeCastGObject = SVGElementInstance . castRef . unGObject
-
-castToSVGElementInstance :: IsGObject obj => obj -> SVGElementInstance
-castToSVGElementInstance = castTo gTypeSVGElementInstance "SVGElementInstance"
-
-foreign import javascript unsafe "window[\"SVGElementInstance\"]" gTypeSVGElementInstance' :: JSRef GType
-gTypeSVGElementInstance = GType gTypeSVGElementInstance'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SVGElementInstanceList".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElementInstanceList Mozilla SVGElementInstanceList documentation>
-newtype SVGElementInstanceList = SVGElementInstanceList (JSRef SVGElementInstanceList) deriving (Eq)
-
-unSVGElementInstanceList (SVGElementInstanceList o) = o
-
-instance ToJSRef SVGElementInstanceList where
-  toJSRef = return . unSVGElementInstanceList
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SVGElementInstanceList where
-  fromJSRef = return . fmap SVGElementInstanceList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsGObject o => IsSVGElementInstanceList o
-toSVGElementInstanceList :: IsSVGElementInstanceList o => o -> SVGElementInstanceList
-toSVGElementInstanceList = unsafeCastGObject . toGObject
-
-instance IsSVGElementInstanceList SVGElementInstanceList
-instance IsGObject SVGElementInstanceList where
-  toGObject = GObject . castRef . unSVGElementInstanceList
-  unsafeCastGObject = SVGElementInstanceList . castRef . unGObject
-
-castToSVGElementInstanceList :: IsGObject obj => obj -> SVGElementInstanceList
-castToSVGElementInstanceList = castTo gTypeSVGElementInstanceList "SVGElementInstanceList"
-
-foreign import javascript unsafe "window[\"SVGElementInstanceList\"]" gTypeSVGElementInstanceList' :: JSRef GType
-gTypeSVGElementInstanceList = GType gTypeSVGElementInstanceList'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGEllipseElement".
 -- Base interface functions are in:
 --
@@ -15552,11 +13830,6 @@ instance FromJSRef SVGEllipseElement where
   fromJSRef = return . fmap SVGEllipseElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGEllipseElement o
-toSVGEllipseElement :: IsSVGEllipseElement o => o -> SVGEllipseElement
-toSVGEllipseElement = unsafeCastGObject . toGObject
-
-instance IsSVGEllipseElement SVGEllipseElement
 instance IsSVGGraphicsElement SVGEllipseElement
 instance IsSVGElement SVGEllipseElement
 instance IsElement SVGEllipseElement
@@ -15591,11 +13864,6 @@ instance FromJSRef SVGExternalResourcesRequired where
   fromJSRef = return . fmap SVGExternalResourcesRequired . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGExternalResourcesRequired o
-toSVGExternalResourcesRequired :: IsSVGExternalResourcesRequired o => o -> SVGExternalResourcesRequired
-toSVGExternalResourcesRequired = unsafeCastGObject . toGObject
-
-instance IsSVGExternalResourcesRequired SVGExternalResourcesRequired
 instance IsGObject SVGExternalResourcesRequired where
   toGObject = GObject . castRef . unSVGExternalResourcesRequired
   unsafeCastGObject = SVGExternalResourcesRequired . castRef . unGObject
@@ -15631,11 +13899,6 @@ instance FromJSRef SVGFEBlendElement where
   fromJSRef = return . fmap SVGFEBlendElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEBlendElement o
-toSVGFEBlendElement :: IsSVGFEBlendElement o => o -> SVGFEBlendElement
-toSVGFEBlendElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEBlendElement SVGFEBlendElement
 instance IsSVGElement SVGFEBlendElement
 instance IsElement SVGFEBlendElement
 instance IsNode SVGFEBlendElement
@@ -15675,11 +13938,6 @@ instance FromJSRef SVGFEColorMatrixElement where
   fromJSRef = return . fmap SVGFEColorMatrixElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEColorMatrixElement o
-toSVGFEColorMatrixElement :: IsSVGFEColorMatrixElement o => o -> SVGFEColorMatrixElement
-toSVGFEColorMatrixElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEColorMatrixElement SVGFEColorMatrixElement
 instance IsSVGElement SVGFEColorMatrixElement
 instance IsElement SVGFEColorMatrixElement
 instance IsNode SVGFEColorMatrixElement
@@ -15719,11 +13977,6 @@ instance FromJSRef SVGFEComponentTransferElement where
   fromJSRef = return . fmap SVGFEComponentTransferElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEComponentTransferElement o
-toSVGFEComponentTransferElement :: IsSVGFEComponentTransferElement o => o -> SVGFEComponentTransferElement
-toSVGFEComponentTransferElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEComponentTransferElement SVGFEComponentTransferElement
 instance IsSVGElement SVGFEComponentTransferElement
 instance IsElement SVGFEComponentTransferElement
 instance IsNode SVGFEComponentTransferElement
@@ -15763,11 +14016,6 @@ instance FromJSRef SVGFECompositeElement where
   fromJSRef = return . fmap SVGFECompositeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFECompositeElement o
-toSVGFECompositeElement :: IsSVGFECompositeElement o => o -> SVGFECompositeElement
-toSVGFECompositeElement = unsafeCastGObject . toGObject
-
-instance IsSVGFECompositeElement SVGFECompositeElement
 instance IsSVGElement SVGFECompositeElement
 instance IsElement SVGFECompositeElement
 instance IsNode SVGFECompositeElement
@@ -15807,11 +14055,6 @@ instance FromJSRef SVGFEConvolveMatrixElement where
   fromJSRef = return . fmap SVGFEConvolveMatrixElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEConvolveMatrixElement o
-toSVGFEConvolveMatrixElement :: IsSVGFEConvolveMatrixElement o => o -> SVGFEConvolveMatrixElement
-toSVGFEConvolveMatrixElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEConvolveMatrixElement SVGFEConvolveMatrixElement
 instance IsSVGElement SVGFEConvolveMatrixElement
 instance IsElement SVGFEConvolveMatrixElement
 instance IsNode SVGFEConvolveMatrixElement
@@ -15851,11 +14094,6 @@ instance FromJSRef SVGFEDiffuseLightingElement where
   fromJSRef = return . fmap SVGFEDiffuseLightingElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEDiffuseLightingElement o
-toSVGFEDiffuseLightingElement :: IsSVGFEDiffuseLightingElement o => o -> SVGFEDiffuseLightingElement
-toSVGFEDiffuseLightingElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEDiffuseLightingElement SVGFEDiffuseLightingElement
 instance IsSVGElement SVGFEDiffuseLightingElement
 instance IsElement SVGFEDiffuseLightingElement
 instance IsNode SVGFEDiffuseLightingElement
@@ -15895,11 +14133,6 @@ instance FromJSRef SVGFEDisplacementMapElement where
   fromJSRef = return . fmap SVGFEDisplacementMapElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEDisplacementMapElement o
-toSVGFEDisplacementMapElement :: IsSVGFEDisplacementMapElement o => o -> SVGFEDisplacementMapElement
-toSVGFEDisplacementMapElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEDisplacementMapElement SVGFEDisplacementMapElement
 instance IsSVGElement SVGFEDisplacementMapElement
 instance IsElement SVGFEDisplacementMapElement
 instance IsNode SVGFEDisplacementMapElement
@@ -15939,11 +14172,6 @@ instance FromJSRef SVGFEDistantLightElement where
   fromJSRef = return . fmap SVGFEDistantLightElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEDistantLightElement o
-toSVGFEDistantLightElement :: IsSVGFEDistantLightElement o => o -> SVGFEDistantLightElement
-toSVGFEDistantLightElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEDistantLightElement SVGFEDistantLightElement
 instance IsSVGElement SVGFEDistantLightElement
 instance IsElement SVGFEDistantLightElement
 instance IsNode SVGFEDistantLightElement
@@ -15983,11 +14211,6 @@ instance FromJSRef SVGFEDropShadowElement where
   fromJSRef = return . fmap SVGFEDropShadowElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEDropShadowElement o
-toSVGFEDropShadowElement :: IsSVGFEDropShadowElement o => o -> SVGFEDropShadowElement
-toSVGFEDropShadowElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEDropShadowElement SVGFEDropShadowElement
 instance IsSVGElement SVGFEDropShadowElement
 instance IsElement SVGFEDropShadowElement
 instance IsNode SVGFEDropShadowElement
@@ -16027,11 +14250,6 @@ instance FromJSRef SVGFEFloodElement where
   fromJSRef = return . fmap SVGFEFloodElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEFloodElement o
-toSVGFEFloodElement :: IsSVGFEFloodElement o => o -> SVGFEFloodElement
-toSVGFEFloodElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEFloodElement SVGFEFloodElement
 instance IsSVGElement SVGFEFloodElement
 instance IsElement SVGFEFloodElement
 instance IsNode SVGFEFloodElement
@@ -16072,11 +14290,6 @@ instance FromJSRef SVGFEFuncAElement where
   fromJSRef = return . fmap SVGFEFuncAElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGComponentTransferFunctionElement o => IsSVGFEFuncAElement o
-toSVGFEFuncAElement :: IsSVGFEFuncAElement o => o -> SVGFEFuncAElement
-toSVGFEFuncAElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEFuncAElement SVGFEFuncAElement
 instance IsSVGComponentTransferFunctionElement SVGFEFuncAElement
 instance IsSVGElement SVGFEFuncAElement
 instance IsElement SVGFEFuncAElement
@@ -16118,11 +14331,6 @@ instance FromJSRef SVGFEFuncBElement where
   fromJSRef = return . fmap SVGFEFuncBElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGComponentTransferFunctionElement o => IsSVGFEFuncBElement o
-toSVGFEFuncBElement :: IsSVGFEFuncBElement o => o -> SVGFEFuncBElement
-toSVGFEFuncBElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEFuncBElement SVGFEFuncBElement
 instance IsSVGComponentTransferFunctionElement SVGFEFuncBElement
 instance IsSVGElement SVGFEFuncBElement
 instance IsElement SVGFEFuncBElement
@@ -16164,11 +14372,6 @@ instance FromJSRef SVGFEFuncGElement where
   fromJSRef = return . fmap SVGFEFuncGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGComponentTransferFunctionElement o => IsSVGFEFuncGElement o
-toSVGFEFuncGElement :: IsSVGFEFuncGElement o => o -> SVGFEFuncGElement
-toSVGFEFuncGElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEFuncGElement SVGFEFuncGElement
 instance IsSVGComponentTransferFunctionElement SVGFEFuncGElement
 instance IsSVGElement SVGFEFuncGElement
 instance IsElement SVGFEFuncGElement
@@ -16210,11 +14413,6 @@ instance FromJSRef SVGFEFuncRElement where
   fromJSRef = return . fmap SVGFEFuncRElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGComponentTransferFunctionElement o => IsSVGFEFuncRElement o
-toSVGFEFuncRElement :: IsSVGFEFuncRElement o => o -> SVGFEFuncRElement
-toSVGFEFuncRElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEFuncRElement SVGFEFuncRElement
 instance IsSVGComponentTransferFunctionElement SVGFEFuncRElement
 instance IsSVGElement SVGFEFuncRElement
 instance IsElement SVGFEFuncRElement
@@ -16255,11 +14453,6 @@ instance FromJSRef SVGFEGaussianBlurElement where
   fromJSRef = return . fmap SVGFEGaussianBlurElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEGaussianBlurElement o
-toSVGFEGaussianBlurElement :: IsSVGFEGaussianBlurElement o => o -> SVGFEGaussianBlurElement
-toSVGFEGaussianBlurElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEGaussianBlurElement SVGFEGaussianBlurElement
 instance IsSVGElement SVGFEGaussianBlurElement
 instance IsElement SVGFEGaussianBlurElement
 instance IsNode SVGFEGaussianBlurElement
@@ -16299,11 +14492,6 @@ instance FromJSRef SVGFEImageElement where
   fromJSRef = return . fmap SVGFEImageElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEImageElement o
-toSVGFEImageElement :: IsSVGFEImageElement o => o -> SVGFEImageElement
-toSVGFEImageElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEImageElement SVGFEImageElement
 instance IsSVGElement SVGFEImageElement
 instance IsElement SVGFEImageElement
 instance IsNode SVGFEImageElement
@@ -16343,11 +14531,6 @@ instance FromJSRef SVGFEMergeElement where
   fromJSRef = return . fmap SVGFEMergeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEMergeElement o
-toSVGFEMergeElement :: IsSVGFEMergeElement o => o -> SVGFEMergeElement
-toSVGFEMergeElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEMergeElement SVGFEMergeElement
 instance IsSVGElement SVGFEMergeElement
 instance IsElement SVGFEMergeElement
 instance IsNode SVGFEMergeElement
@@ -16387,11 +14570,6 @@ instance FromJSRef SVGFEMergeNodeElement where
   fromJSRef = return . fmap SVGFEMergeNodeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEMergeNodeElement o
-toSVGFEMergeNodeElement :: IsSVGFEMergeNodeElement o => o -> SVGFEMergeNodeElement
-toSVGFEMergeNodeElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEMergeNodeElement SVGFEMergeNodeElement
 instance IsSVGElement SVGFEMergeNodeElement
 instance IsElement SVGFEMergeNodeElement
 instance IsNode SVGFEMergeNodeElement
@@ -16431,11 +14609,6 @@ instance FromJSRef SVGFEMorphologyElement where
   fromJSRef = return . fmap SVGFEMorphologyElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEMorphologyElement o
-toSVGFEMorphologyElement :: IsSVGFEMorphologyElement o => o -> SVGFEMorphologyElement
-toSVGFEMorphologyElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEMorphologyElement SVGFEMorphologyElement
 instance IsSVGElement SVGFEMorphologyElement
 instance IsElement SVGFEMorphologyElement
 instance IsNode SVGFEMorphologyElement
@@ -16475,11 +14648,6 @@ instance FromJSRef SVGFEOffsetElement where
   fromJSRef = return . fmap SVGFEOffsetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEOffsetElement o
-toSVGFEOffsetElement :: IsSVGFEOffsetElement o => o -> SVGFEOffsetElement
-toSVGFEOffsetElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEOffsetElement SVGFEOffsetElement
 instance IsSVGElement SVGFEOffsetElement
 instance IsElement SVGFEOffsetElement
 instance IsNode SVGFEOffsetElement
@@ -16519,11 +14687,6 @@ instance FromJSRef SVGFEPointLightElement where
   fromJSRef = return . fmap SVGFEPointLightElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFEPointLightElement o
-toSVGFEPointLightElement :: IsSVGFEPointLightElement o => o -> SVGFEPointLightElement
-toSVGFEPointLightElement = unsafeCastGObject . toGObject
-
-instance IsSVGFEPointLightElement SVGFEPointLightElement
 instance IsSVGElement SVGFEPointLightElement
 instance IsElement SVGFEPointLightElement
 instance IsNode SVGFEPointLightElement
@@ -16563,11 +14726,6 @@ instance FromJSRef SVGFESpecularLightingElement where
   fromJSRef = return . fmap SVGFESpecularLightingElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFESpecularLightingElement o
-toSVGFESpecularLightingElement :: IsSVGFESpecularLightingElement o => o -> SVGFESpecularLightingElement
-toSVGFESpecularLightingElement = unsafeCastGObject . toGObject
-
-instance IsSVGFESpecularLightingElement SVGFESpecularLightingElement
 instance IsSVGElement SVGFESpecularLightingElement
 instance IsElement SVGFESpecularLightingElement
 instance IsNode SVGFESpecularLightingElement
@@ -16607,11 +14765,6 @@ instance FromJSRef SVGFESpotLightElement where
   fromJSRef = return . fmap SVGFESpotLightElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFESpotLightElement o
-toSVGFESpotLightElement :: IsSVGFESpotLightElement o => o -> SVGFESpotLightElement
-toSVGFESpotLightElement = unsafeCastGObject . toGObject
-
-instance IsSVGFESpotLightElement SVGFESpotLightElement
 instance IsSVGElement SVGFESpotLightElement
 instance IsElement SVGFESpotLightElement
 instance IsNode SVGFESpotLightElement
@@ -16651,11 +14804,6 @@ instance FromJSRef SVGFETileElement where
   fromJSRef = return . fmap SVGFETileElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFETileElement o
-toSVGFETileElement :: IsSVGFETileElement o => o -> SVGFETileElement
-toSVGFETileElement = unsafeCastGObject . toGObject
-
-instance IsSVGFETileElement SVGFETileElement
 instance IsSVGElement SVGFETileElement
 instance IsElement SVGFETileElement
 instance IsNode SVGFETileElement
@@ -16695,11 +14843,6 @@ instance FromJSRef SVGFETurbulenceElement where
   fromJSRef = return . fmap SVGFETurbulenceElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFETurbulenceElement o
-toSVGFETurbulenceElement :: IsSVGFETurbulenceElement o => o -> SVGFETurbulenceElement
-toSVGFETurbulenceElement = unsafeCastGObject . toGObject
-
-instance IsSVGFETurbulenceElement SVGFETurbulenceElement
 instance IsSVGElement SVGFETurbulenceElement
 instance IsElement SVGFETurbulenceElement
 instance IsNode SVGFETurbulenceElement
@@ -16739,11 +14882,6 @@ instance FromJSRef SVGFilterElement where
   fromJSRef = return . fmap SVGFilterElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFilterElement o
-toSVGFilterElement :: IsSVGFilterElement o => o -> SVGFilterElement
-toSVGFilterElement = unsafeCastGObject . toGObject
-
-instance IsSVGFilterElement SVGFilterElement
 instance IsSVGElement SVGFilterElement
 instance IsElement SVGFilterElement
 instance IsNode SVGFilterElement
@@ -16777,11 +14915,6 @@ instance FromJSRef SVGFilterPrimitiveStandardAttributes where
   fromJSRef = return . fmap SVGFilterPrimitiveStandardAttributes . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGFilterPrimitiveStandardAttributes o
-toSVGFilterPrimitiveStandardAttributes :: IsSVGFilterPrimitiveStandardAttributes o => o -> SVGFilterPrimitiveStandardAttributes
-toSVGFilterPrimitiveStandardAttributes = unsafeCastGObject . toGObject
-
-instance IsSVGFilterPrimitiveStandardAttributes SVGFilterPrimitiveStandardAttributes
 instance IsGObject SVGFilterPrimitiveStandardAttributes where
   toGObject = GObject . castRef . unSVGFilterPrimitiveStandardAttributes
   unsafeCastGObject = SVGFilterPrimitiveStandardAttributes . castRef . unGObject
@@ -16811,11 +14944,6 @@ instance FromJSRef SVGFitToViewBox where
   fromJSRef = return . fmap SVGFitToViewBox . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGFitToViewBox o
-toSVGFitToViewBox :: IsSVGFitToViewBox o => o -> SVGFitToViewBox
-toSVGFitToViewBox = unsafeCastGObject . toGObject
-
-instance IsSVGFitToViewBox SVGFitToViewBox
 instance IsGObject SVGFitToViewBox where
   toGObject = GObject . castRef . unSVGFitToViewBox
   unsafeCastGObject = SVGFitToViewBox . castRef . unGObject
@@ -16851,11 +14979,6 @@ instance FromJSRef SVGFontElement where
   fromJSRef = return . fmap SVGFontElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFontElement o
-toSVGFontElement :: IsSVGFontElement o => o -> SVGFontElement
-toSVGFontElement = unsafeCastGObject . toGObject
-
-instance IsSVGFontElement SVGFontElement
 instance IsSVGElement SVGFontElement
 instance IsElement SVGFontElement
 instance IsNode SVGFontElement
@@ -16895,11 +15018,6 @@ instance FromJSRef SVGFontFaceElement where
   fromJSRef = return . fmap SVGFontFaceElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFontFaceElement o
-toSVGFontFaceElement :: IsSVGFontFaceElement o => o -> SVGFontFaceElement
-toSVGFontFaceElement = unsafeCastGObject . toGObject
-
-instance IsSVGFontFaceElement SVGFontFaceElement
 instance IsSVGElement SVGFontFaceElement
 instance IsElement SVGFontFaceElement
 instance IsNode SVGFontFaceElement
@@ -16939,11 +15057,6 @@ instance FromJSRef SVGFontFaceFormatElement where
   fromJSRef = return . fmap SVGFontFaceFormatElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFontFaceFormatElement o
-toSVGFontFaceFormatElement :: IsSVGFontFaceFormatElement o => o -> SVGFontFaceFormatElement
-toSVGFontFaceFormatElement = unsafeCastGObject . toGObject
-
-instance IsSVGFontFaceFormatElement SVGFontFaceFormatElement
 instance IsSVGElement SVGFontFaceFormatElement
 instance IsElement SVGFontFaceFormatElement
 instance IsNode SVGFontFaceFormatElement
@@ -16983,11 +15096,6 @@ instance FromJSRef SVGFontFaceNameElement where
   fromJSRef = return . fmap SVGFontFaceNameElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFontFaceNameElement o
-toSVGFontFaceNameElement :: IsSVGFontFaceNameElement o => o -> SVGFontFaceNameElement
-toSVGFontFaceNameElement = unsafeCastGObject . toGObject
-
-instance IsSVGFontFaceNameElement SVGFontFaceNameElement
 instance IsSVGElement SVGFontFaceNameElement
 instance IsElement SVGFontFaceNameElement
 instance IsNode SVGFontFaceNameElement
@@ -17027,11 +15135,6 @@ instance FromJSRef SVGFontFaceSrcElement where
   fromJSRef = return . fmap SVGFontFaceSrcElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFontFaceSrcElement o
-toSVGFontFaceSrcElement :: IsSVGFontFaceSrcElement o => o -> SVGFontFaceSrcElement
-toSVGFontFaceSrcElement = unsafeCastGObject . toGObject
-
-instance IsSVGFontFaceSrcElement SVGFontFaceSrcElement
 instance IsSVGElement SVGFontFaceSrcElement
 instance IsElement SVGFontFaceSrcElement
 instance IsNode SVGFontFaceSrcElement
@@ -17071,11 +15174,6 @@ instance FromJSRef SVGFontFaceUriElement where
   fromJSRef = return . fmap SVGFontFaceUriElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGFontFaceUriElement o
-toSVGFontFaceUriElement :: IsSVGFontFaceUriElement o => o -> SVGFontFaceUriElement
-toSVGFontFaceUriElement = unsafeCastGObject . toGObject
-
-instance IsSVGFontFaceUriElement SVGFontFaceUriElement
 instance IsSVGElement SVGFontFaceUriElement
 instance IsElement SVGFontFaceUriElement
 instance IsNode SVGFontFaceUriElement
@@ -17116,11 +15214,6 @@ instance FromJSRef SVGForeignObjectElement where
   fromJSRef = return . fmap SVGForeignObjectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGForeignObjectElement o
-toSVGForeignObjectElement :: IsSVGForeignObjectElement o => o -> SVGForeignObjectElement
-toSVGForeignObjectElement = unsafeCastGObject . toGObject
-
-instance IsSVGForeignObjectElement SVGForeignObjectElement
 instance IsSVGGraphicsElement SVGForeignObjectElement
 instance IsSVGElement SVGForeignObjectElement
 instance IsElement SVGForeignObjectElement
@@ -17162,11 +15255,6 @@ instance FromJSRef SVGGElement where
   fromJSRef = return . fmap SVGGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGGElement o
-toSVGGElement :: IsSVGGElement o => o -> SVGGElement
-toSVGGElement = unsafeCastGObject . toGObject
-
-instance IsSVGGElement SVGGElement
 instance IsSVGGraphicsElement SVGGElement
 instance IsSVGElement SVGGElement
 instance IsElement SVGGElement
@@ -17207,11 +15295,6 @@ instance FromJSRef SVGGlyphElement where
   fromJSRef = return . fmap SVGGlyphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGGlyphElement o
-toSVGGlyphElement :: IsSVGGlyphElement o => o -> SVGGlyphElement
-toSVGGlyphElement = unsafeCastGObject . toGObject
-
-instance IsSVGGlyphElement SVGGlyphElement
 instance IsSVGElement SVGGlyphElement
 instance IsElement SVGGlyphElement
 instance IsNode SVGGlyphElement
@@ -17251,11 +15334,6 @@ instance FromJSRef SVGGlyphRefElement where
   fromJSRef = return . fmap SVGGlyphRefElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGGlyphRefElement o
-toSVGGlyphRefElement :: IsSVGGlyphRefElement o => o -> SVGGlyphRefElement
-toSVGGlyphRefElement = unsafeCastGObject . toGObject
-
-instance IsSVGGlyphRefElement SVGGlyphRefElement
 instance IsSVGElement SVGGlyphRefElement
 instance IsElement SVGGlyphRefElement
 instance IsNode SVGGlyphRefElement
@@ -17383,11 +15461,6 @@ instance FromJSRef SVGHKernElement where
   fromJSRef = return . fmap SVGHKernElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGHKernElement o
-toSVGHKernElement :: IsSVGHKernElement o => o -> SVGHKernElement
-toSVGHKernElement = unsafeCastGObject . toGObject
-
-instance IsSVGHKernElement SVGHKernElement
 instance IsSVGElement SVGHKernElement
 instance IsElement SVGHKernElement
 instance IsNode SVGHKernElement
@@ -17428,11 +15501,6 @@ instance FromJSRef SVGImageElement where
   fromJSRef = return . fmap SVGImageElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGImageElement o
-toSVGImageElement :: IsSVGImageElement o => o -> SVGImageElement
-toSVGImageElement = unsafeCastGObject . toGObject
-
-instance IsSVGImageElement SVGImageElement
 instance IsSVGGraphicsElement SVGImageElement
 instance IsSVGElement SVGImageElement
 instance IsElement SVGImageElement
@@ -17467,11 +15535,6 @@ instance FromJSRef SVGLength where
   fromJSRef = return . fmap SVGLength . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGLength o
-toSVGLength :: IsSVGLength o => o -> SVGLength
-toSVGLength = unsafeCastGObject . toGObject
-
-instance IsSVGLength SVGLength
 instance IsGObject SVGLength where
   toGObject = GObject . castRef . unSVGLength
   unsafeCastGObject = SVGLength . castRef . unGObject
@@ -17501,11 +15564,6 @@ instance FromJSRef SVGLengthList where
   fromJSRef = return . fmap SVGLengthList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGLengthList o
-toSVGLengthList :: IsSVGLengthList o => o -> SVGLengthList
-toSVGLengthList = unsafeCastGObject . toGObject
-
-instance IsSVGLengthList SVGLengthList
 instance IsGObject SVGLengthList where
   toGObject = GObject . castRef . unSVGLengthList
   unsafeCastGObject = SVGLengthList . castRef . unGObject
@@ -17542,11 +15600,6 @@ instance FromJSRef SVGLineElement where
   fromJSRef = return . fmap SVGLineElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGLineElement o
-toSVGLineElement :: IsSVGLineElement o => o -> SVGLineElement
-toSVGLineElement = unsafeCastGObject . toGObject
-
-instance IsSVGLineElement SVGLineElement
 instance IsSVGGraphicsElement SVGLineElement
 instance IsSVGElement SVGLineElement
 instance IsElement SVGLineElement
@@ -17588,11 +15641,6 @@ instance FromJSRef SVGLinearGradientElement where
   fromJSRef = return . fmap SVGLinearGradientElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGradientElement o => IsSVGLinearGradientElement o
-toSVGLinearGradientElement :: IsSVGLinearGradientElement o => o -> SVGLinearGradientElement
-toSVGLinearGradientElement = unsafeCastGObject . toGObject
-
-instance IsSVGLinearGradientElement SVGLinearGradientElement
 instance IsSVGGradientElement SVGLinearGradientElement
 instance IsSVGElement SVGLinearGradientElement
 instance IsElement SVGLinearGradientElement
@@ -17633,11 +15681,6 @@ instance FromJSRef SVGMPathElement where
   fromJSRef = return . fmap SVGMPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGMPathElement o
-toSVGMPathElement :: IsSVGMPathElement o => o -> SVGMPathElement
-toSVGMPathElement = unsafeCastGObject . toGObject
-
-instance IsSVGMPathElement SVGMPathElement
 instance IsSVGElement SVGMPathElement
 instance IsElement SVGMPathElement
 instance IsNode SVGMPathElement
@@ -17677,11 +15720,6 @@ instance FromJSRef SVGMarkerElement where
   fromJSRef = return . fmap SVGMarkerElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGMarkerElement o
-toSVGMarkerElement :: IsSVGMarkerElement o => o -> SVGMarkerElement
-toSVGMarkerElement = unsafeCastGObject . toGObject
-
-instance IsSVGMarkerElement SVGMarkerElement
 instance IsSVGElement SVGMarkerElement
 instance IsElement SVGMarkerElement
 instance IsNode SVGMarkerElement
@@ -17721,11 +15759,6 @@ instance FromJSRef SVGMaskElement where
   fromJSRef = return . fmap SVGMaskElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGMaskElement o
-toSVGMaskElement :: IsSVGMaskElement o => o -> SVGMaskElement
-toSVGMaskElement = unsafeCastGObject . toGObject
-
-instance IsSVGMaskElement SVGMaskElement
 instance IsSVGElement SVGMaskElement
 instance IsElement SVGMaskElement
 instance IsNode SVGMaskElement
@@ -17759,11 +15792,6 @@ instance FromJSRef SVGMatrix where
   fromJSRef = return . fmap SVGMatrix . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGMatrix o
-toSVGMatrix :: IsSVGMatrix o => o -> SVGMatrix
-toSVGMatrix = unsafeCastGObject . toGObject
-
-instance IsSVGMatrix SVGMatrix
 instance IsGObject SVGMatrix where
   toGObject = GObject . castRef . unSVGMatrix
   unsafeCastGObject = SVGMatrix . castRef . unGObject
@@ -17799,11 +15827,6 @@ instance FromJSRef SVGMetadataElement where
   fromJSRef = return . fmap SVGMetadataElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGMetadataElement o
-toSVGMetadataElement :: IsSVGMetadataElement o => o -> SVGMetadataElement
-toSVGMetadataElement = unsafeCastGObject . toGObject
-
-instance IsSVGMetadataElement SVGMetadataElement
 instance IsSVGElement SVGMetadataElement
 instance IsElement SVGMetadataElement
 instance IsNode SVGMetadataElement
@@ -17843,11 +15866,6 @@ instance FromJSRef SVGMissingGlyphElement where
   fromJSRef = return . fmap SVGMissingGlyphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGMissingGlyphElement o
-toSVGMissingGlyphElement :: IsSVGMissingGlyphElement o => o -> SVGMissingGlyphElement
-toSVGMissingGlyphElement = unsafeCastGObject . toGObject
-
-instance IsSVGMissingGlyphElement SVGMissingGlyphElement
 instance IsSVGElement SVGMissingGlyphElement
 instance IsElement SVGMissingGlyphElement
 instance IsNode SVGMissingGlyphElement
@@ -17881,11 +15899,6 @@ instance FromJSRef SVGNumber where
   fromJSRef = return . fmap SVGNumber . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGNumber o
-toSVGNumber :: IsSVGNumber o => o -> SVGNumber
-toSVGNumber = unsafeCastGObject . toGObject
-
-instance IsSVGNumber SVGNumber
 instance IsGObject SVGNumber where
   toGObject = GObject . castRef . unSVGNumber
   unsafeCastGObject = SVGNumber . castRef . unGObject
@@ -17915,11 +15928,6 @@ instance FromJSRef SVGNumberList where
   fromJSRef = return . fmap SVGNumberList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGNumberList o
-toSVGNumberList :: IsSVGNumberList o => o -> SVGNumberList
-toSVGNumberList = unsafeCastGObject . toGObject
-
-instance IsSVGNumberList SVGNumberList
 instance IsGObject SVGNumberList where
   toGObject = GObject . castRef . unSVGNumberList
   unsafeCastGObject = SVGNumberList . castRef . unGObject
@@ -17953,11 +15961,6 @@ instance FromJSRef SVGPaint where
   fromJSRef = return . fmap SVGPaint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGColor o => IsSVGPaint o
-toSVGPaint :: IsSVGPaint o => o -> SVGPaint
-toSVGPaint = unsafeCastGObject . toGObject
-
-instance IsSVGPaint SVGPaint
 instance IsSVGColor SVGPaint
 instance IsCSSValue SVGPaint
 instance IsGObject SVGPaint where
@@ -17996,11 +15999,6 @@ instance FromJSRef SVGPathElement where
   fromJSRef = return . fmap SVGPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGPathElement o
-toSVGPathElement :: IsSVGPathElement o => o -> SVGPathElement
-toSVGPathElement = unsafeCastGObject . toGObject
-
-instance IsSVGPathElement SVGPathElement
 instance IsSVGGraphicsElement SVGPathElement
 instance IsSVGElement SVGPathElement
 instance IsElement SVGPathElement
@@ -18072,11 +16070,6 @@ instance FromJSRef SVGPathSegArcAbs where
   fromJSRef = return . fmap SVGPathSegArcAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegArcAbs o
-toSVGPathSegArcAbs :: IsSVGPathSegArcAbs o => o -> SVGPathSegArcAbs
-toSVGPathSegArcAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegArcAbs SVGPathSegArcAbs
 instance IsSVGPathSeg SVGPathSegArcAbs
 instance IsGObject SVGPathSegArcAbs where
   toGObject = GObject . castRef . unSVGPathSegArcAbs
@@ -18110,11 +16103,6 @@ instance FromJSRef SVGPathSegArcRel where
   fromJSRef = return . fmap SVGPathSegArcRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegArcRel o
-toSVGPathSegArcRel :: IsSVGPathSegArcRel o => o -> SVGPathSegArcRel
-toSVGPathSegArcRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegArcRel SVGPathSegArcRel
 instance IsSVGPathSeg SVGPathSegArcRel
 instance IsGObject SVGPathSegArcRel where
   toGObject = GObject . castRef . unSVGPathSegArcRel
@@ -18148,11 +16136,6 @@ instance FromJSRef SVGPathSegClosePath where
   fromJSRef = return . fmap SVGPathSegClosePath . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegClosePath o
-toSVGPathSegClosePath :: IsSVGPathSegClosePath o => o -> SVGPathSegClosePath
-toSVGPathSegClosePath = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegClosePath SVGPathSegClosePath
 instance IsSVGPathSeg SVGPathSegClosePath
 instance IsGObject SVGPathSegClosePath where
   toGObject = GObject . castRef . unSVGPathSegClosePath
@@ -18186,11 +16169,6 @@ instance FromJSRef SVGPathSegCurvetoCubicAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoCubicAbs o
-toSVGPathSegCurvetoCubicAbs :: IsSVGPathSegCurvetoCubicAbs o => o -> SVGPathSegCurvetoCubicAbs
-toSVGPathSegCurvetoCubicAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoCubicAbs SVGPathSegCurvetoCubicAbs
 instance IsSVGPathSeg SVGPathSegCurvetoCubicAbs
 instance IsGObject SVGPathSegCurvetoCubicAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicAbs
@@ -18224,11 +16202,6 @@ instance FromJSRef SVGPathSegCurvetoCubicRel where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoCubicRel o
-toSVGPathSegCurvetoCubicRel :: IsSVGPathSegCurvetoCubicRel o => o -> SVGPathSegCurvetoCubicRel
-toSVGPathSegCurvetoCubicRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoCubicRel SVGPathSegCurvetoCubicRel
 instance IsSVGPathSeg SVGPathSegCurvetoCubicRel
 instance IsGObject SVGPathSegCurvetoCubicRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicRel
@@ -18262,11 +16235,6 @@ instance FromJSRef SVGPathSegCurvetoCubicSmoothAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicSmoothAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoCubicSmoothAbs o
-toSVGPathSegCurvetoCubicSmoothAbs :: IsSVGPathSegCurvetoCubicSmoothAbs o => o -> SVGPathSegCurvetoCubicSmoothAbs
-toSVGPathSegCurvetoCubicSmoothAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoCubicSmoothAbs SVGPathSegCurvetoCubicSmoothAbs
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothAbs
 instance IsGObject SVGPathSegCurvetoCubicSmoothAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicSmoothAbs
@@ -18300,11 +16268,6 @@ instance FromJSRef SVGPathSegCurvetoCubicSmoothRel where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicSmoothRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoCubicSmoothRel o
-toSVGPathSegCurvetoCubicSmoothRel :: IsSVGPathSegCurvetoCubicSmoothRel o => o -> SVGPathSegCurvetoCubicSmoothRel
-toSVGPathSegCurvetoCubicSmoothRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoCubicSmoothRel SVGPathSegCurvetoCubicSmoothRel
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothRel
 instance IsGObject SVGPathSegCurvetoCubicSmoothRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicSmoothRel
@@ -18338,11 +16301,6 @@ instance FromJSRef SVGPathSegCurvetoQuadraticAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoQuadraticAbs o
-toSVGPathSegCurvetoQuadraticAbs :: IsSVGPathSegCurvetoQuadraticAbs o => o -> SVGPathSegCurvetoQuadraticAbs
-toSVGPathSegCurvetoQuadraticAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoQuadraticAbs SVGPathSegCurvetoQuadraticAbs
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticAbs
 instance IsGObject SVGPathSegCurvetoQuadraticAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticAbs
@@ -18376,11 +16334,6 @@ instance FromJSRef SVGPathSegCurvetoQuadraticRel where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoQuadraticRel o
-toSVGPathSegCurvetoQuadraticRel :: IsSVGPathSegCurvetoQuadraticRel o => o -> SVGPathSegCurvetoQuadraticRel
-toSVGPathSegCurvetoQuadraticRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoQuadraticRel SVGPathSegCurvetoQuadraticRel
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticRel
 instance IsGObject SVGPathSegCurvetoQuadraticRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticRel
@@ -18414,11 +16367,6 @@ instance FromJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticSmoothAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoQuadraticSmoothAbs o
-toSVGPathSegCurvetoQuadraticSmoothAbs :: IsSVGPathSegCurvetoQuadraticSmoothAbs o => o -> SVGPathSegCurvetoQuadraticSmoothAbs
-toSVGPathSegCurvetoQuadraticSmoothAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoQuadraticSmoothAbs SVGPathSegCurvetoQuadraticSmoothAbs
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothAbs
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticSmoothAbs
@@ -18452,11 +16400,6 @@ instance FromJSRef SVGPathSegCurvetoQuadraticSmoothRel where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticSmoothRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegCurvetoQuadraticSmoothRel o
-toSVGPathSegCurvetoQuadraticSmoothRel :: IsSVGPathSegCurvetoQuadraticSmoothRel o => o -> SVGPathSegCurvetoQuadraticSmoothRel
-toSVGPathSegCurvetoQuadraticSmoothRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegCurvetoQuadraticSmoothRel SVGPathSegCurvetoQuadraticSmoothRel
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothRel
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticSmoothRel
@@ -18490,11 +16433,6 @@ instance FromJSRef SVGPathSegLinetoAbs where
   fromJSRef = return . fmap SVGPathSegLinetoAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegLinetoAbs o
-toSVGPathSegLinetoAbs :: IsSVGPathSegLinetoAbs o => o -> SVGPathSegLinetoAbs
-toSVGPathSegLinetoAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegLinetoAbs SVGPathSegLinetoAbs
 instance IsSVGPathSeg SVGPathSegLinetoAbs
 instance IsGObject SVGPathSegLinetoAbs where
   toGObject = GObject . castRef . unSVGPathSegLinetoAbs
@@ -18528,11 +16466,6 @@ instance FromJSRef SVGPathSegLinetoHorizontalAbs where
   fromJSRef = return . fmap SVGPathSegLinetoHorizontalAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegLinetoHorizontalAbs o
-toSVGPathSegLinetoHorizontalAbs :: IsSVGPathSegLinetoHorizontalAbs o => o -> SVGPathSegLinetoHorizontalAbs
-toSVGPathSegLinetoHorizontalAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegLinetoHorizontalAbs SVGPathSegLinetoHorizontalAbs
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalAbs
 instance IsGObject SVGPathSegLinetoHorizontalAbs where
   toGObject = GObject . castRef . unSVGPathSegLinetoHorizontalAbs
@@ -18566,11 +16499,6 @@ instance FromJSRef SVGPathSegLinetoHorizontalRel where
   fromJSRef = return . fmap SVGPathSegLinetoHorizontalRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegLinetoHorizontalRel o
-toSVGPathSegLinetoHorizontalRel :: IsSVGPathSegLinetoHorizontalRel o => o -> SVGPathSegLinetoHorizontalRel
-toSVGPathSegLinetoHorizontalRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegLinetoHorizontalRel SVGPathSegLinetoHorizontalRel
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalRel
 instance IsGObject SVGPathSegLinetoHorizontalRel where
   toGObject = GObject . castRef . unSVGPathSegLinetoHorizontalRel
@@ -18604,11 +16532,6 @@ instance FromJSRef SVGPathSegLinetoRel where
   fromJSRef = return . fmap SVGPathSegLinetoRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegLinetoRel o
-toSVGPathSegLinetoRel :: IsSVGPathSegLinetoRel o => o -> SVGPathSegLinetoRel
-toSVGPathSegLinetoRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegLinetoRel SVGPathSegLinetoRel
 instance IsSVGPathSeg SVGPathSegLinetoRel
 instance IsGObject SVGPathSegLinetoRel where
   toGObject = GObject . castRef . unSVGPathSegLinetoRel
@@ -18642,11 +16565,6 @@ instance FromJSRef SVGPathSegLinetoVerticalAbs where
   fromJSRef = return . fmap SVGPathSegLinetoVerticalAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegLinetoVerticalAbs o
-toSVGPathSegLinetoVerticalAbs :: IsSVGPathSegLinetoVerticalAbs o => o -> SVGPathSegLinetoVerticalAbs
-toSVGPathSegLinetoVerticalAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegLinetoVerticalAbs SVGPathSegLinetoVerticalAbs
 instance IsSVGPathSeg SVGPathSegLinetoVerticalAbs
 instance IsGObject SVGPathSegLinetoVerticalAbs where
   toGObject = GObject . castRef . unSVGPathSegLinetoVerticalAbs
@@ -18680,11 +16598,6 @@ instance FromJSRef SVGPathSegLinetoVerticalRel where
   fromJSRef = return . fmap SVGPathSegLinetoVerticalRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegLinetoVerticalRel o
-toSVGPathSegLinetoVerticalRel :: IsSVGPathSegLinetoVerticalRel o => o -> SVGPathSegLinetoVerticalRel
-toSVGPathSegLinetoVerticalRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegLinetoVerticalRel SVGPathSegLinetoVerticalRel
 instance IsSVGPathSeg SVGPathSegLinetoVerticalRel
 instance IsGObject SVGPathSegLinetoVerticalRel where
   toGObject = GObject . castRef . unSVGPathSegLinetoVerticalRel
@@ -18715,11 +16628,6 @@ instance FromJSRef SVGPathSegList where
   fromJSRef = return . fmap SVGPathSegList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGPathSegList o
-toSVGPathSegList :: IsSVGPathSegList o => o -> SVGPathSegList
-toSVGPathSegList = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegList SVGPathSegList
 instance IsGObject SVGPathSegList where
   toGObject = GObject . castRef . unSVGPathSegList
   unsafeCastGObject = SVGPathSegList . castRef . unGObject
@@ -18752,11 +16660,6 @@ instance FromJSRef SVGPathSegMovetoAbs where
   fromJSRef = return . fmap SVGPathSegMovetoAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegMovetoAbs o
-toSVGPathSegMovetoAbs :: IsSVGPathSegMovetoAbs o => o -> SVGPathSegMovetoAbs
-toSVGPathSegMovetoAbs = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegMovetoAbs SVGPathSegMovetoAbs
 instance IsSVGPathSeg SVGPathSegMovetoAbs
 instance IsGObject SVGPathSegMovetoAbs where
   toGObject = GObject . castRef . unSVGPathSegMovetoAbs
@@ -18790,11 +16693,6 @@ instance FromJSRef SVGPathSegMovetoRel where
   fromJSRef = return . fmap SVGPathSegMovetoRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGPathSeg o => IsSVGPathSegMovetoRel o
-toSVGPathSegMovetoRel :: IsSVGPathSegMovetoRel o => o -> SVGPathSegMovetoRel
-toSVGPathSegMovetoRel = unsafeCastGObject . toGObject
-
-instance IsSVGPathSegMovetoRel SVGPathSegMovetoRel
 instance IsSVGPathSeg SVGPathSegMovetoRel
 instance IsGObject SVGPathSegMovetoRel where
   toGObject = GObject . castRef . unSVGPathSegMovetoRel
@@ -18831,11 +16729,6 @@ instance FromJSRef SVGPatternElement where
   fromJSRef = return . fmap SVGPatternElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGPatternElement o
-toSVGPatternElement :: IsSVGPatternElement o => o -> SVGPatternElement
-toSVGPatternElement = unsafeCastGObject . toGObject
-
-instance IsSVGPatternElement SVGPatternElement
 instance IsSVGElement SVGPatternElement
 instance IsElement SVGPatternElement
 instance IsNode SVGPatternElement
@@ -18869,11 +16762,6 @@ instance FromJSRef SVGPoint where
   fromJSRef = return . fmap SVGPoint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGPoint o
-toSVGPoint :: IsSVGPoint o => o -> SVGPoint
-toSVGPoint = unsafeCastGObject . toGObject
-
-instance IsSVGPoint SVGPoint
 instance IsGObject SVGPoint where
   toGObject = GObject . castRef . unSVGPoint
   unsafeCastGObject = SVGPoint . castRef . unGObject
@@ -18903,11 +16791,6 @@ instance FromJSRef SVGPointList where
   fromJSRef = return . fmap SVGPointList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGPointList o
-toSVGPointList :: IsSVGPointList o => o -> SVGPointList
-toSVGPointList = unsafeCastGObject . toGObject
-
-instance IsSVGPointList SVGPointList
 instance IsGObject SVGPointList where
   toGObject = GObject . castRef . unSVGPointList
   unsafeCastGObject = SVGPointList . castRef . unGObject
@@ -18944,11 +16827,6 @@ instance FromJSRef SVGPolygonElement where
   fromJSRef = return . fmap SVGPolygonElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGPolygonElement o
-toSVGPolygonElement :: IsSVGPolygonElement o => o -> SVGPolygonElement
-toSVGPolygonElement = unsafeCastGObject . toGObject
-
-instance IsSVGPolygonElement SVGPolygonElement
 instance IsSVGGraphicsElement SVGPolygonElement
 instance IsSVGElement SVGPolygonElement
 instance IsElement SVGPolygonElement
@@ -18990,11 +16868,6 @@ instance FromJSRef SVGPolylineElement where
   fromJSRef = return . fmap SVGPolylineElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGPolylineElement o
-toSVGPolylineElement :: IsSVGPolylineElement o => o -> SVGPolylineElement
-toSVGPolylineElement = unsafeCastGObject . toGObject
-
-instance IsSVGPolylineElement SVGPolylineElement
 instance IsSVGGraphicsElement SVGPolylineElement
 instance IsSVGElement SVGPolylineElement
 instance IsElement SVGPolylineElement
@@ -19029,11 +16902,6 @@ instance FromJSRef SVGPreserveAspectRatio where
   fromJSRef = return . fmap SVGPreserveAspectRatio . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGPreserveAspectRatio o
-toSVGPreserveAspectRatio :: IsSVGPreserveAspectRatio o => o -> SVGPreserveAspectRatio
-toSVGPreserveAspectRatio = unsafeCastGObject . toGObject
-
-instance IsSVGPreserveAspectRatio SVGPreserveAspectRatio
 instance IsGObject SVGPreserveAspectRatio where
   toGObject = GObject . castRef . unSVGPreserveAspectRatio
   unsafeCastGObject = SVGPreserveAspectRatio . castRef . unGObject
@@ -19070,11 +16938,6 @@ instance FromJSRef SVGRadialGradientElement where
   fromJSRef = return . fmap SVGRadialGradientElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGradientElement o => IsSVGRadialGradientElement o
-toSVGRadialGradientElement :: IsSVGRadialGradientElement o => o -> SVGRadialGradientElement
-toSVGRadialGradientElement = unsafeCastGObject . toGObject
-
-instance IsSVGRadialGradientElement SVGRadialGradientElement
 instance IsSVGGradientElement SVGRadialGradientElement
 instance IsSVGElement SVGRadialGradientElement
 instance IsElement SVGRadialGradientElement
@@ -19109,11 +16972,6 @@ instance FromJSRef SVGRect where
   fromJSRef = return . fmap SVGRect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGRect o
-toSVGRect :: IsSVGRect o => o -> SVGRect
-toSVGRect = unsafeCastGObject . toGObject
-
-instance IsSVGRect SVGRect
 instance IsGObject SVGRect where
   toGObject = GObject . castRef . unSVGRect
   unsafeCastGObject = SVGRect . castRef . unGObject
@@ -19150,11 +17008,6 @@ instance FromJSRef SVGRectElement where
   fromJSRef = return . fmap SVGRectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGRectElement o
-toSVGRectElement :: IsSVGRectElement o => o -> SVGRectElement
-toSVGRectElement = unsafeCastGObject . toGObject
-
-instance IsSVGRectElement SVGRectElement
 instance IsSVGGraphicsElement SVGRectElement
 instance IsSVGElement SVGRectElement
 instance IsElement SVGRectElement
@@ -19189,11 +17042,6 @@ instance FromJSRef SVGRenderingIntent where
   fromJSRef = return . fmap SVGRenderingIntent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGRenderingIntent o
-toSVGRenderingIntent :: IsSVGRenderingIntent o => o -> SVGRenderingIntent
-toSVGRenderingIntent = unsafeCastGObject . toGObject
-
-instance IsSVGRenderingIntent SVGRenderingIntent
 instance IsGObject SVGRenderingIntent where
   toGObject = GObject . castRef . unSVGRenderingIntent
   unsafeCastGObject = SVGRenderingIntent . castRef . unGObject
@@ -19230,11 +17078,6 @@ instance FromJSRef SVGSVGElement where
   fromJSRef = return . fmap SVGSVGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGSVGElement o
-toSVGSVGElement :: IsSVGSVGElement o => o -> SVGSVGElement
-toSVGSVGElement = unsafeCastGObject . toGObject
-
-instance IsSVGSVGElement SVGSVGElement
 instance IsSVGGraphicsElement SVGSVGElement
 instance IsSVGElement SVGSVGElement
 instance IsElement SVGSVGElement
@@ -19275,11 +17118,6 @@ instance FromJSRef SVGScriptElement where
   fromJSRef = return . fmap SVGScriptElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGScriptElement o
-toSVGScriptElement :: IsSVGScriptElement o => o -> SVGScriptElement
-toSVGScriptElement = unsafeCastGObject . toGObject
-
-instance IsSVGScriptElement SVGScriptElement
 instance IsSVGElement SVGScriptElement
 instance IsElement SVGScriptElement
 instance IsNode SVGScriptElement
@@ -19320,11 +17158,6 @@ instance FromJSRef SVGSetElement where
   fromJSRef = return . fmap SVGSetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGAnimationElement o => IsSVGSetElement o
-toSVGSetElement :: IsSVGSetElement o => o -> SVGSetElement
-toSVGSetElement = unsafeCastGObject . toGObject
-
-instance IsSVGSetElement SVGSetElement
 instance IsSVGAnimationElement SVGSetElement
 instance IsSVGElement SVGSetElement
 instance IsElement SVGSetElement
@@ -19365,11 +17198,6 @@ instance FromJSRef SVGStopElement where
   fromJSRef = return . fmap SVGStopElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGStopElement o
-toSVGStopElement :: IsSVGStopElement o => o -> SVGStopElement
-toSVGStopElement = unsafeCastGObject . toGObject
-
-instance IsSVGStopElement SVGStopElement
 instance IsSVGElement SVGStopElement
 instance IsElement SVGStopElement
 instance IsNode SVGStopElement
@@ -19403,11 +17231,6 @@ instance FromJSRef SVGStringList where
   fromJSRef = return . fmap SVGStringList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGStringList o
-toSVGStringList :: IsSVGStringList o => o -> SVGStringList
-toSVGStringList = unsafeCastGObject . toGObject
-
-instance IsSVGStringList SVGStringList
 instance IsGObject SVGStringList where
   toGObject = GObject . castRef . unSVGStringList
   unsafeCastGObject = SVGStringList . castRef . unGObject
@@ -19443,11 +17266,6 @@ instance FromJSRef SVGStyleElement where
   fromJSRef = return . fmap SVGStyleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGStyleElement o
-toSVGStyleElement :: IsSVGStyleElement o => o -> SVGStyleElement
-toSVGStyleElement = unsafeCastGObject . toGObject
-
-instance IsSVGStyleElement SVGStyleElement
 instance IsSVGElement SVGStyleElement
 instance IsElement SVGStyleElement
 instance IsNode SVGStyleElement
@@ -19488,11 +17306,6 @@ instance FromJSRef SVGSwitchElement where
   fromJSRef = return . fmap SVGSwitchElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGSwitchElement o
-toSVGSwitchElement :: IsSVGSwitchElement o => o -> SVGSwitchElement
-toSVGSwitchElement = unsafeCastGObject . toGObject
-
-instance IsSVGSwitchElement SVGSwitchElement
 instance IsSVGGraphicsElement SVGSwitchElement
 instance IsSVGElement SVGSwitchElement
 instance IsElement SVGSwitchElement
@@ -19533,11 +17346,6 @@ instance FromJSRef SVGSymbolElement where
   fromJSRef = return . fmap SVGSymbolElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGSymbolElement o
-toSVGSymbolElement :: IsSVGSymbolElement o => o -> SVGSymbolElement
-toSVGSymbolElement = unsafeCastGObject . toGObject
-
-instance IsSVGSymbolElement SVGSymbolElement
 instance IsSVGElement SVGSymbolElement
 instance IsElement SVGSymbolElement
 instance IsNode SVGSymbolElement
@@ -19580,11 +17388,6 @@ instance FromJSRef SVGTRefElement where
   fromJSRef = return . fmap SVGTRefElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGTextPositioningElement o => IsSVGTRefElement o
-toSVGTRefElement :: IsSVGTRefElement o => o -> SVGTRefElement
-toSVGTRefElement = unsafeCastGObject . toGObject
-
-instance IsSVGTRefElement SVGTRefElement
 instance IsSVGTextPositioningElement SVGTRefElement
 instance IsSVGTextContentElement SVGTRefElement
 instance IsSVGGraphicsElement SVGTRefElement
@@ -19630,11 +17433,6 @@ instance FromJSRef SVGTSpanElement where
   fromJSRef = return . fmap SVGTSpanElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGTextPositioningElement o => IsSVGTSpanElement o
-toSVGTSpanElement :: IsSVGTSpanElement o => o -> SVGTSpanElement
-toSVGTSpanElement = unsafeCastGObject . toGObject
-
-instance IsSVGTSpanElement SVGTSpanElement
 instance IsSVGTextPositioningElement SVGTSpanElement
 instance IsSVGTextContentElement SVGTSpanElement
 instance IsSVGGraphicsElement SVGTSpanElement
@@ -19671,11 +17469,6 @@ instance FromJSRef SVGTests where
   fromJSRef = return . fmap SVGTests . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGTests o
-toSVGTests :: IsSVGTests o => o -> SVGTests
-toSVGTests = unsafeCastGObject . toGObject
-
-instance IsSVGTests SVGTests
 instance IsGObject SVGTests where
   toGObject = GObject . castRef . unSVGTests
   unsafeCastGObject = SVGTests . castRef . unGObject
@@ -19760,11 +17553,6 @@ instance FromJSRef SVGTextElement where
   fromJSRef = return . fmap SVGTextElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGTextPositioningElement o => IsSVGTextElement o
-toSVGTextElement :: IsSVGTextElement o => o -> SVGTextElement
-toSVGTextElement = unsafeCastGObject . toGObject
-
-instance IsSVGTextElement SVGTextElement
 instance IsSVGTextPositioningElement SVGTextElement
 instance IsSVGTextContentElement SVGTextElement
 instance IsSVGGraphicsElement SVGTextElement
@@ -19809,11 +17597,6 @@ instance FromJSRef SVGTextPathElement where
   fromJSRef = return . fmap SVGTextPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGTextContentElement o => IsSVGTextPathElement o
-toSVGTextPathElement :: IsSVGTextPathElement o => o -> SVGTextPathElement
-toSVGTextPathElement = unsafeCastGObject . toGObject
-
-instance IsSVGTextPathElement SVGTextPathElement
 instance IsSVGTextContentElement SVGTextPathElement
 instance IsSVGGraphicsElement SVGTextPathElement
 instance IsSVGElement SVGTextPathElement
@@ -19903,11 +17686,6 @@ instance FromJSRef SVGTitleElement where
   fromJSRef = return . fmap SVGTitleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGTitleElement o
-toSVGTitleElement :: IsSVGTitleElement o => o -> SVGTitleElement
-toSVGTitleElement = unsafeCastGObject . toGObject
-
-instance IsSVGTitleElement SVGTitleElement
 instance IsSVGElement SVGTitleElement
 instance IsElement SVGTitleElement
 instance IsNode SVGTitleElement
@@ -19941,11 +17719,6 @@ instance FromJSRef SVGTransform where
   fromJSRef = return . fmap SVGTransform . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGTransform o
-toSVGTransform :: IsSVGTransform o => o -> SVGTransform
-toSVGTransform = unsafeCastGObject . toGObject
-
-instance IsSVGTransform SVGTransform
 instance IsGObject SVGTransform where
   toGObject = GObject . castRef . unSVGTransform
   unsafeCastGObject = SVGTransform . castRef . unGObject
@@ -19975,11 +17748,6 @@ instance FromJSRef SVGTransformList where
   fromJSRef = return . fmap SVGTransformList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGTransformList o
-toSVGTransformList :: IsSVGTransformList o => o -> SVGTransformList
-toSVGTransformList = unsafeCastGObject . toGObject
-
-instance IsSVGTransformList SVGTransformList
 instance IsGObject SVGTransformList where
   toGObject = GObject . castRef . unSVGTransformList
   unsafeCastGObject = SVGTransformList . castRef . unGObject
@@ -20009,11 +17777,6 @@ instance FromJSRef SVGURIReference where
   fromJSRef = return . fmap SVGURIReference . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGURIReference o
-toSVGURIReference :: IsSVGURIReference o => o -> SVGURIReference
-toSVGURIReference = unsafeCastGObject . toGObject
-
-instance IsSVGURIReference SVGURIReference
 instance IsGObject SVGURIReference where
   toGObject = GObject . castRef . unSVGURIReference
   unsafeCastGObject = SVGURIReference . castRef . unGObject
@@ -20043,11 +17806,6 @@ instance FromJSRef SVGUnitTypes where
   fromJSRef = return . fmap SVGUnitTypes . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGUnitTypes o
-toSVGUnitTypes :: IsSVGUnitTypes o => o -> SVGUnitTypes
-toSVGUnitTypes = unsafeCastGObject . toGObject
-
-instance IsSVGUnitTypes SVGUnitTypes
 instance IsGObject SVGUnitTypes where
   toGObject = GObject . castRef . unSVGUnitTypes
   unsafeCastGObject = SVGUnitTypes . castRef . unGObject
@@ -20084,11 +17842,6 @@ instance FromJSRef SVGUseElement where
   fromJSRef = return . fmap SVGUseElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGGraphicsElement o => IsSVGUseElement o
-toSVGUseElement :: IsSVGUseElement o => o -> SVGUseElement
-toSVGUseElement = unsafeCastGObject . toGObject
-
-instance IsSVGUseElement SVGUseElement
 instance IsSVGGraphicsElement SVGUseElement
 instance IsSVGElement SVGUseElement
 instance IsElement SVGUseElement
@@ -20129,11 +17882,6 @@ instance FromJSRef SVGVKernElement where
   fromJSRef = return . fmap SVGVKernElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGVKernElement o
-toSVGVKernElement :: IsSVGVKernElement o => o -> SVGVKernElement
-toSVGVKernElement = unsafeCastGObject . toGObject
-
-instance IsSVGVKernElement SVGVKernElement
 instance IsSVGElement SVGVKernElement
 instance IsElement SVGVKernElement
 instance IsNode SVGVKernElement
@@ -20173,11 +17921,6 @@ instance FromJSRef SVGViewElement where
   fromJSRef = return . fmap SVGViewElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsSVGElement o => IsSVGViewElement o
-toSVGViewElement :: IsSVGViewElement o => o -> SVGViewElement
-toSVGViewElement = unsafeCastGObject . toGObject
-
-instance IsSVGViewElement SVGViewElement
 instance IsSVGElement SVGViewElement
 instance IsElement SVGViewElement
 instance IsNode SVGViewElement
@@ -20211,11 +17954,6 @@ instance FromJSRef SVGViewSpec where
   fromJSRef = return . fmap SVGViewSpec . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGViewSpec o
-toSVGViewSpec :: IsSVGViewSpec o => o -> SVGViewSpec
-toSVGViewSpec = unsafeCastGObject . toGObject
-
-instance IsSVGViewSpec SVGViewSpec
 instance IsGObject SVGViewSpec where
   toGObject = GObject . castRef . unSVGViewSpec
   unsafeCastGObject = SVGViewSpec . castRef . unGObject
@@ -20245,11 +17983,6 @@ instance FromJSRef SVGZoomAndPan where
   fromJSRef = return . fmap SVGZoomAndPan . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSVGZoomAndPan o
-toSVGZoomAndPan :: IsSVGZoomAndPan o => o -> SVGZoomAndPan
-toSVGZoomAndPan = unsafeCastGObject . toGObject
-
-instance IsSVGZoomAndPan SVGZoomAndPan
 instance IsGObject SVGZoomAndPan where
   toGObject = GObject . castRef . unSVGZoomAndPan
   unsafeCastGObject = SVGZoomAndPan . castRef . unGObject
@@ -20283,11 +18016,6 @@ instance FromJSRef SVGZoomEvent where
   fromJSRef = return . fmap SVGZoomEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsUIEvent o => IsSVGZoomEvent o
-toSVGZoomEvent :: IsSVGZoomEvent o => o -> SVGZoomEvent
-toSVGZoomEvent = unsafeCastGObject . toGObject
-
-instance IsSVGZoomEvent SVGZoomEvent
 instance IsUIEvent SVGZoomEvent
 instance IsEvent SVGZoomEvent
 instance IsGObject SVGZoomEvent where
@@ -20319,11 +18047,6 @@ instance FromJSRef DOMScreen where
   fromJSRef = return . fmap DOMScreen . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMScreen o
-toDOMScreen :: IsDOMScreen o => o -> DOMScreen
-toDOMScreen = unsafeCastGObject . toGObject
-
-instance IsDOMScreen DOMScreen
 instance IsGObject DOMScreen where
   toGObject = GObject . castRef . unDOMScreen
   unsafeCastGObject = DOMScreen . castRef . unGObject
@@ -20358,11 +18081,6 @@ instance FromJSRef ScriptProcessorNode where
   fromJSRef = return . fmap ScriptProcessorNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsScriptProcessorNode o
-toScriptProcessorNode :: IsScriptProcessorNode o => o -> ScriptProcessorNode
-toScriptProcessorNode = unsafeCastGObject . toGObject
-
-instance IsScriptProcessorNode ScriptProcessorNode
 instance IsAudioNode ScriptProcessorNode
 instance IsEventTarget ScriptProcessorNode
 instance IsGObject ScriptProcessorNode where
@@ -20394,11 +18112,6 @@ instance FromJSRef ScriptProfile where
   fromJSRef = return . fmap ScriptProfile . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsScriptProfile o
-toScriptProfile :: IsScriptProfile o => o -> ScriptProfile
-toScriptProfile = unsafeCastGObject . toGObject
-
-instance IsScriptProfile ScriptProfile
 instance IsGObject ScriptProfile where
   toGObject = GObject . castRef . unScriptProfile
   unsafeCastGObject = ScriptProfile . castRef . unGObject
@@ -20428,11 +18141,6 @@ instance FromJSRef ScriptProfileNode where
   fromJSRef = return . fmap ScriptProfileNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsScriptProfileNode o
-toScriptProfileNode :: IsScriptProfileNode o => o -> ScriptProfileNode
-toScriptProfileNode = unsafeCastGObject . toGObject
-
-instance IsScriptProfileNode ScriptProfileNode
 instance IsGObject ScriptProfileNode where
   toGObject = GObject . castRef . unScriptProfileNode
   unsafeCastGObject = ScriptProfileNode . castRef . unGObject
@@ -20465,11 +18173,6 @@ instance FromJSRef SecurityPolicyViolationEvent where
   fromJSRef = return . fmap SecurityPolicyViolationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsSecurityPolicyViolationEvent o
-toSecurityPolicyViolationEvent :: IsSecurityPolicyViolationEvent o => o -> SecurityPolicyViolationEvent
-toSecurityPolicyViolationEvent = unsafeCastGObject . toGObject
-
-instance IsSecurityPolicyViolationEvent SecurityPolicyViolationEvent
 instance IsEvent SecurityPolicyViolationEvent
 instance IsGObject SecurityPolicyViolationEvent where
   toGObject = GObject . castRef . unSecurityPolicyViolationEvent
@@ -20480,84 +18183,6 @@ castToSecurityPolicyViolationEvent = castTo gTypeSecurityPolicyViolationEvent "S
 
 foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTypeSecurityPolicyViolationEvent' :: JSRef GType
 gTypeSecurityPolicyViolationEvent = GType gTypeSecurityPolicyViolationEvent'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SharedWorker".
--- Base interface functions are in:
---
---     * "GHCJS.DOM.EventTarget"
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker Mozilla SharedWorker documentation>
-newtype SharedWorker = SharedWorker (JSRef SharedWorker) deriving (Eq)
-
-unSharedWorker (SharedWorker o) = o
-
-instance ToJSRef SharedWorker where
-  toJSRef = return . unSharedWorker
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SharedWorker where
-  fromJSRef = return . fmap SharedWorker . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsEventTarget o => IsSharedWorker o
-toSharedWorker :: IsSharedWorker o => o -> SharedWorker
-toSharedWorker = unsafeCastGObject . toGObject
-
-instance IsSharedWorker SharedWorker
-instance IsEventTarget SharedWorker
-instance IsGObject SharedWorker where
-  toGObject = GObject . castRef . unSharedWorker
-  unsafeCastGObject = SharedWorker . castRef . unGObject
-
-castToSharedWorker :: IsGObject obj => obj -> SharedWorker
-castToSharedWorker = castTo gTypeSharedWorker "SharedWorker"
-
-foreign import javascript unsafe "window[\"SharedWorker\"]" gTypeSharedWorker' :: JSRef GType
-gTypeSharedWorker = GType gTypeSharedWorker'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SharedWorkerGlobalScope".
--- Base interface functions are in:
---
---     * "GHCJS.DOM.WorkerGlobalScope"
---     * "GHCJS.DOM.EventTarget"
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SharedWorkerGlobalScope Mozilla SharedWorkerGlobalScope documentation>
-newtype SharedWorkerGlobalScope = SharedWorkerGlobalScope (JSRef SharedWorkerGlobalScope) deriving (Eq)
-
-unSharedWorkerGlobalScope (SharedWorkerGlobalScope o) = o
-
-instance ToJSRef SharedWorkerGlobalScope where
-  toJSRef = return . unSharedWorkerGlobalScope
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SharedWorkerGlobalScope where
-  fromJSRef = return . fmap SharedWorkerGlobalScope . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsWorkerGlobalScope o => IsSharedWorkerGlobalScope o
-toSharedWorkerGlobalScope :: IsSharedWorkerGlobalScope o => o -> SharedWorkerGlobalScope
-toSharedWorkerGlobalScope = unsafeCastGObject . toGObject
-
-instance IsSharedWorkerGlobalScope SharedWorkerGlobalScope
-instance IsWorkerGlobalScope SharedWorkerGlobalScope
-instance IsEventTarget SharedWorkerGlobalScope
-instance IsGObject SharedWorkerGlobalScope where
-  toGObject = GObject . castRef . unSharedWorkerGlobalScope
-  unsafeCastGObject = SharedWorkerGlobalScope . castRef . unGObject
-
-castToSharedWorkerGlobalScope :: IsGObject obj => obj -> SharedWorkerGlobalScope
-castToSharedWorkerGlobalScope = castTo gTypeSharedWorkerGlobalScope "SharedWorkerGlobalScope"
-
-foreign import javascript unsafe "window[\"SharedWorkerGlobalScope\"]" gTypeSharedWorkerGlobalScope' :: JSRef GType
-gTypeSharedWorkerGlobalScope = GType gTypeSharedWorkerGlobalScope'
 #else
 #endif
 
@@ -20581,11 +18206,6 @@ instance FromJSRef SourceBuffer where
   fromJSRef = return . fmap SourceBuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsSourceBuffer o
-toSourceBuffer :: IsSourceBuffer o => o -> SourceBuffer
-toSourceBuffer = unsafeCastGObject . toGObject
-
-instance IsSourceBuffer SourceBuffer
 instance IsEventTarget SourceBuffer
 instance IsGObject SourceBuffer where
   toGObject = GObject . castRef . unSourceBuffer
@@ -20619,11 +18239,6 @@ instance FromJSRef SourceBufferList where
   fromJSRef = return . fmap SourceBufferList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsSourceBufferList o
-toSourceBufferList :: IsSourceBufferList o => o -> SourceBufferList
-toSourceBufferList = unsafeCastGObject . toGObject
-
-instance IsSourceBufferList SourceBufferList
 instance IsEventTarget SourceBufferList
 instance IsGObject SourceBufferList where
   toGObject = GObject . castRef . unSourceBufferList
@@ -20654,11 +18269,6 @@ instance FromJSRef SourceInfo where
   fromJSRef = return . fmap SourceInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSourceInfo o
-toSourceInfo :: IsSourceInfo o => o -> SourceInfo
-toSourceInfo = unsafeCastGObject . toGObject
-
-instance IsSourceInfo SourceInfo
 instance IsGObject SourceInfo where
   toGObject = GObject . castRef . unSourceInfo
   unsafeCastGObject = SourceInfo . castRef . unGObject
@@ -20688,11 +18298,6 @@ instance FromJSRef SpeechSynthesis where
   fromJSRef = return . fmap SpeechSynthesis . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSpeechSynthesis o
-toSpeechSynthesis :: IsSpeechSynthesis o => o -> SpeechSynthesis
-toSpeechSynthesis = unsafeCastGObject . toGObject
-
-instance IsSpeechSynthesis SpeechSynthesis
 instance IsGObject SpeechSynthesis where
   toGObject = GObject . castRef . unSpeechSynthesis
   unsafeCastGObject = SpeechSynthesis . castRef . unGObject
@@ -20725,11 +18330,6 @@ instance FromJSRef SpeechSynthesisEvent where
   fromJSRef = return . fmap SpeechSynthesisEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsSpeechSynthesisEvent o
-toSpeechSynthesisEvent :: IsSpeechSynthesisEvent o => o -> SpeechSynthesisEvent
-toSpeechSynthesisEvent = unsafeCastGObject . toGObject
-
-instance IsSpeechSynthesisEvent SpeechSynthesisEvent
 instance IsEvent SpeechSynthesisEvent
 instance IsGObject SpeechSynthesisEvent where
   toGObject = GObject . castRef . unSpeechSynthesisEvent
@@ -20763,11 +18363,6 @@ instance FromJSRef SpeechSynthesisUtterance where
   fromJSRef = return . fmap SpeechSynthesisUtterance . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsSpeechSynthesisUtterance o
-toSpeechSynthesisUtterance :: IsSpeechSynthesisUtterance o => o -> SpeechSynthesisUtterance
-toSpeechSynthesisUtterance = unsafeCastGObject . toGObject
-
-instance IsSpeechSynthesisUtterance SpeechSynthesisUtterance
 instance IsEventTarget SpeechSynthesisUtterance
 instance IsGObject SpeechSynthesisUtterance where
   toGObject = GObject . castRef . unSpeechSynthesisUtterance
@@ -20798,11 +18393,6 @@ instance FromJSRef SpeechSynthesisVoice where
   fromJSRef = return . fmap SpeechSynthesisVoice . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSpeechSynthesisVoice o
-toSpeechSynthesisVoice :: IsSpeechSynthesisVoice o => o -> SpeechSynthesisVoice
-toSpeechSynthesisVoice = unsafeCastGObject . toGObject
-
-instance IsSpeechSynthesisVoice SpeechSynthesisVoice
 instance IsGObject SpeechSynthesisVoice where
   toGObject = GObject . castRef . unSpeechSynthesisVoice
   unsafeCastGObject = SpeechSynthesisVoice . castRef . unGObject
@@ -20832,11 +18422,6 @@ instance FromJSRef Storage where
   fromJSRef = return . fmap Storage . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStorage o
-toStorage :: IsStorage o => o -> Storage
-toStorage = unsafeCastGObject . toGObject
-
-instance IsStorage Storage
 instance IsGObject Storage where
   toGObject = GObject . castRef . unStorage
   unsafeCastGObject = Storage . castRef . unGObject
@@ -20867,11 +18452,6 @@ instance FromJSRef StorageErrorCallback where
   fromJSRef = return . fmap StorageErrorCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStorageErrorCallback o
-toStorageErrorCallback :: IsStorageErrorCallback o => o -> StorageErrorCallback
-toStorageErrorCallback = unsafeCastGObject . toGObject
-
-instance IsStorageErrorCallback StorageErrorCallback
 instance IsGObject StorageErrorCallback where
   toGObject = GObject . castRef . unStorageErrorCallback
   unsafeCastGObject = StorageErrorCallback . castRef . unGObject
@@ -20904,11 +18484,6 @@ instance FromJSRef StorageEvent where
   fromJSRef = return . fmap StorageEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsStorageEvent o
-toStorageEvent :: IsStorageEvent o => o -> StorageEvent
-toStorageEvent = unsafeCastGObject . toGObject
-
-instance IsStorageEvent StorageEvent
 instance IsEvent StorageEvent
 instance IsGObject StorageEvent where
   toGObject = GObject . castRef . unStorageEvent
@@ -20939,11 +18514,6 @@ instance FromJSRef StorageInfo where
   fromJSRef = return . fmap StorageInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStorageInfo o
-toStorageInfo :: IsStorageInfo o => o -> StorageInfo
-toStorageInfo = unsafeCastGObject . toGObject
-
-instance IsStorageInfo StorageInfo
 instance IsGObject StorageInfo where
   toGObject = GObject . castRef . unStorageInfo
   unsafeCastGObject = StorageInfo . castRef . unGObject
@@ -20974,11 +18544,6 @@ instance FromJSRef StorageQuota where
   fromJSRef = return . fmap StorageQuota . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStorageQuota o
-toStorageQuota :: IsStorageQuota o => o -> StorageQuota
-toStorageQuota = unsafeCastGObject . toGObject
-
-instance IsStorageQuota StorageQuota
 instance IsGObject StorageQuota where
   toGObject = GObject . castRef . unStorageQuota
   unsafeCastGObject = StorageQuota . castRef . unGObject
@@ -21008,11 +18573,6 @@ instance FromJSRef StorageQuotaCallback where
   fromJSRef = return . fmap StorageQuotaCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStorageQuotaCallback o
-toStorageQuotaCallback :: IsStorageQuotaCallback o => o -> StorageQuotaCallback
-toStorageQuotaCallback = unsafeCastGObject . toGObject
-
-instance IsStorageQuotaCallback StorageQuotaCallback
 instance IsGObject StorageQuotaCallback where
   toGObject = GObject . castRef . unStorageQuotaCallback
   unsafeCastGObject = StorageQuotaCallback . castRef . unGObject
@@ -21042,11 +18602,6 @@ instance FromJSRef StorageUsageCallback where
   fromJSRef = return . fmap StorageUsageCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStorageUsageCallback o
-toStorageUsageCallback :: IsStorageUsageCallback o => o -> StorageUsageCallback
-toStorageUsageCallback = unsafeCastGObject . toGObject
-
-instance IsStorageUsageCallback StorageUsageCallback
 instance IsGObject StorageUsageCallback where
   toGObject = GObject . castRef . unStorageUsageCallback
   unsafeCastGObject = StorageUsageCallback . castRef . unGObject
@@ -21076,11 +18631,6 @@ instance FromJSRef StringCallback where
   fromJSRef = return . fmap StringCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStringCallback o
-toStringCallback :: IsStringCallback o => o -> StringCallback
-toStringCallback = unsafeCastGObject . toGObject
-
-instance IsStringCallback StringCallback
 instance IsGObject StringCallback where
   toGObject = GObject . castRef . unStringCallback
   unsafeCastGObject = StringCallback . castRef . unGObject
@@ -21110,11 +18660,6 @@ instance FromJSRef StyleMedia where
   fromJSRef = return . fmap StyleMedia . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStyleMedia o
-toStyleMedia :: IsStyleMedia o => o -> StyleMedia
-toStyleMedia = unsafeCastGObject . toGObject
-
-instance IsStyleMedia StyleMedia
 instance IsGObject StyleMedia where
   toGObject = GObject . castRef . unStyleMedia
   unsafeCastGObject = StyleMedia . castRef . unGObject
@@ -21180,11 +18725,6 @@ instance FromJSRef StyleSheetList where
   fromJSRef = return . fmap StyleSheetList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsStyleSheetList o
-toStyleSheetList :: IsStyleSheetList o => o -> StyleSheetList
-toStyleSheetList = unsafeCastGObject . toGObject
-
-instance IsStyleSheetList StyleSheetList
 instance IsGObject StyleSheetList where
   toGObject = GObject . castRef . unStyleSheetList
   unsafeCastGObject = StyleSheetList . castRef . unGObject
@@ -21215,11 +18755,6 @@ instance FromJSRef SubtleCrypto where
   fromJSRef = return . fmap SubtleCrypto . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsSubtleCrypto o
-toSubtleCrypto :: IsSubtleCrypto o => o -> SubtleCrypto
-toSubtleCrypto = unsafeCastGObject . toGObject
-
-instance IsSubtleCrypto SubtleCrypto
 instance IsGObject SubtleCrypto where
   toGObject = GObject . castRef . unSubtleCrypto
   unsafeCastGObject = SubtleCrypto . castRef . unGObject
@@ -21296,11 +18831,6 @@ instance FromJSRef TextEvent where
   fromJSRef = return . fmap TextEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsUIEvent o => IsTextEvent o
-toTextEvent :: IsTextEvent o => o -> TextEvent
-toTextEvent = unsafeCastGObject . toGObject
-
-instance IsTextEvent TextEvent
 instance IsUIEvent TextEvent
 instance IsEvent TextEvent
 instance IsGObject TextEvent where
@@ -21332,11 +18862,6 @@ instance FromJSRef TextMetrics where
   fromJSRef = return . fmap TextMetrics . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTextMetrics o
-toTextMetrics :: IsTextMetrics o => o -> TextMetrics
-toTextMetrics = unsafeCastGObject . toGObject
-
-instance IsTextMetrics TextMetrics
 instance IsGObject TextMetrics where
   toGObject = GObject . castRef . unTextMetrics
   unsafeCastGObject = TextMetrics . castRef . unGObject
@@ -21366,11 +18891,6 @@ instance FromJSRef TextTrack where
   fromJSRef = return . fmap TextTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTextTrack o
-toTextTrack :: IsTextTrack o => o -> TextTrack
-toTextTrack = unsafeCastGObject . toGObject
-
-instance IsTextTrack TextTrack
 instance IsGObject TextTrack where
   toGObject = GObject . castRef . unTextTrack
   unsafeCastGObject = TextTrack . castRef . unGObject
@@ -21438,11 +18958,6 @@ instance FromJSRef TextTrackCueList where
   fromJSRef = return . fmap TextTrackCueList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTextTrackCueList o
-toTextTrackCueList :: IsTextTrackCueList o => o -> TextTrackCueList
-toTextTrackCueList = unsafeCastGObject . toGObject
-
-instance IsTextTrackCueList TextTrackCueList
 instance IsGObject TextTrackCueList where
   toGObject = GObject . castRef . unTextTrackCueList
   unsafeCastGObject = TextTrackCueList . castRef . unGObject
@@ -21475,11 +18990,6 @@ instance FromJSRef TextTrackList where
   fromJSRef = return . fmap TextTrackList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsTextTrackList o
-toTextTrackList :: IsTextTrackList o => o -> TextTrackList
-toTextTrackList = unsafeCastGObject . toGObject
-
-instance IsTextTrackList TextTrackList
 instance IsEventTarget TextTrackList
 instance IsGObject TextTrackList where
   toGObject = GObject . castRef . unTextTrackList
@@ -21510,11 +19020,6 @@ instance FromJSRef TimeRanges where
   fromJSRef = return . fmap TimeRanges . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTimeRanges o
-toTimeRanges :: IsTimeRanges o => o -> TimeRanges
-toTimeRanges = unsafeCastGObject . toGObject
-
-instance IsTimeRanges TimeRanges
 instance IsGObject TimeRanges where
   toGObject = GObject . castRef . unTimeRanges
   unsafeCastGObject = TimeRanges . castRef . unGObject
@@ -21545,11 +19050,6 @@ instance FromJSRef Touch where
   fromJSRef = return . fmap Touch . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTouch o
-toTouch :: IsTouch o => o -> Touch
-toTouch = unsafeCastGObject . toGObject
-
-instance IsTouch Touch
 instance IsGObject Touch where
   toGObject = GObject . castRef . unTouch
   unsafeCastGObject = Touch . castRef . unGObject
@@ -21583,11 +19083,6 @@ instance FromJSRef TouchEvent where
   fromJSRef = return . fmap TouchEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsUIEvent o => IsTouchEvent o
-toTouchEvent :: IsTouchEvent o => o -> TouchEvent
-toTouchEvent = unsafeCastGObject . toGObject
-
-instance IsTouchEvent TouchEvent
 instance IsUIEvent TouchEvent
 instance IsEvent TouchEvent
 instance IsGObject TouchEvent where
@@ -21619,11 +19114,6 @@ instance FromJSRef TouchList where
   fromJSRef = return . fmap TouchList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTouchList o
-toTouchList :: IsTouchList o => o -> TouchList
-toTouchList = unsafeCastGObject . toGObject
-
-instance IsTouchList TouchList
 instance IsGObject TouchList where
   toGObject = GObject . castRef . unTouchList
   unsafeCastGObject = TouchList . castRef . unGObject
@@ -21656,11 +19146,6 @@ instance FromJSRef TrackEvent where
   fromJSRef = return . fmap TrackEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsTrackEvent o
-toTrackEvent :: IsTrackEvent o => o -> TrackEvent
-toTrackEvent = unsafeCastGObject . toGObject
-
-instance IsTrackEvent TrackEvent
 instance IsEvent TrackEvent
 instance IsGObject TrackEvent where
   toGObject = GObject . castRef . unTrackEvent
@@ -21694,11 +19179,6 @@ instance FromJSRef TransitionEvent where
   fromJSRef = return . fmap TransitionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsTransitionEvent o
-toTransitionEvent :: IsTransitionEvent o => o -> TransitionEvent
-toTransitionEvent = unsafeCastGObject . toGObject
-
-instance IsTransitionEvent TransitionEvent
 instance IsEvent TransitionEvent
 instance IsGObject TransitionEvent where
   toGObject = GObject . castRef . unTransitionEvent
@@ -21729,11 +19209,6 @@ instance FromJSRef TreeWalker where
   fromJSRef = return . fmap TreeWalker . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTreeWalker o
-toTreeWalker :: IsTreeWalker o => o -> TreeWalker
-toTreeWalker = unsafeCastGObject . toGObject
-
-instance IsTreeWalker TreeWalker
 instance IsGObject TreeWalker where
   toGObject = GObject . castRef . unTreeWalker
   unsafeCastGObject = TreeWalker . castRef . unGObject
@@ -21764,11 +19239,6 @@ instance FromJSRef TypeConversions where
   fromJSRef = return . fmap TypeConversions . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsTypeConversions o
-toTypeConversions :: IsTypeConversions o => o -> TypeConversions
-toTypeConversions = unsafeCastGObject . toGObject
-
-instance IsTypeConversions TypeConversions
 instance IsGObject TypeConversions where
   toGObject = GObject . castRef . unTypeConversions
   unsafeCastGObject = TypeConversions . castRef . unGObject
@@ -21841,11 +19311,6 @@ instance FromJSRef UIRequestEvent where
   fromJSRef = return . fmap UIRequestEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsUIEvent o => IsUIRequestEvent o
-toUIRequestEvent :: IsUIRequestEvent o => o -> UIRequestEvent
-toUIRequestEvent = unsafeCastGObject . toGObject
-
-instance IsUIRequestEvent UIRequestEvent
 instance IsUIEvent UIRequestEvent
 instance IsEvent UIRequestEvent
 instance IsGObject UIRequestEvent where
@@ -21877,11 +19342,6 @@ instance FromJSRef URLUtils where
   fromJSRef = return . fmap URLUtils . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsURLUtils o
-toURLUtils :: IsURLUtils o => o -> URLUtils
-toURLUtils = unsafeCastGObject . toGObject
-
-instance IsURLUtils URLUtils
 instance IsGObject URLUtils where
   toGObject = GObject . castRef . unURLUtils
   unsafeCastGObject = URLUtils . castRef . unGObject
@@ -21911,11 +19371,6 @@ instance FromJSRef UserMessageHandler where
   fromJSRef = return . fmap UserMessageHandler . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsUserMessageHandler o
-toUserMessageHandler :: IsUserMessageHandler o => o -> UserMessageHandler
-toUserMessageHandler = unsafeCastGObject . toGObject
-
-instance IsUserMessageHandler UserMessageHandler
 instance IsGObject UserMessageHandler where
   toGObject = GObject . castRef . unUserMessageHandler
   unsafeCastGObject = UserMessageHandler . castRef . unGObject
@@ -21945,11 +19400,6 @@ instance FromJSRef UserMessageHandlersNamespace where
   fromJSRef = return . fmap UserMessageHandlersNamespace . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsUserMessageHandlersNamespace o
-toUserMessageHandlersNamespace :: IsUserMessageHandlersNamespace o => o -> UserMessageHandlersNamespace
-toUserMessageHandlersNamespace = unsafeCastGObject . toGObject
-
-instance IsUserMessageHandlersNamespace UserMessageHandlersNamespace
 instance IsGObject UserMessageHandlersNamespace where
   toGObject = GObject . castRef . unUserMessageHandlersNamespace
   unsafeCastGObject = UserMessageHandlersNamespace . castRef . unGObject
@@ -21983,11 +19433,6 @@ instance FromJSRef VTTCue where
   fromJSRef = return . fmap VTTCue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsTextTrackCue o => IsVTTCue o
-toVTTCue :: IsVTTCue o => o -> VTTCue
-toVTTCue = unsafeCastGObject . toGObject
-
-instance IsVTTCue VTTCue
 instance IsTextTrackCue VTTCue
 instance IsEventTarget VTTCue
 instance IsGObject VTTCue where
@@ -22019,11 +19464,6 @@ instance FromJSRef VTTRegion where
   fromJSRef = return . fmap VTTRegion . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsVTTRegion o
-toVTTRegion :: IsVTTRegion o => o -> VTTRegion
-toVTTRegion = unsafeCastGObject . toGObject
-
-instance IsVTTRegion VTTRegion
 instance IsGObject VTTRegion where
   toGObject = GObject . castRef . unVTTRegion
   unsafeCastGObject = VTTRegion . castRef . unGObject
@@ -22053,11 +19493,6 @@ instance FromJSRef VTTRegionList where
   fromJSRef = return . fmap VTTRegionList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsVTTRegionList o
-toVTTRegionList :: IsVTTRegionList o => o -> VTTRegionList
-toVTTRegionList = unsafeCastGObject . toGObject
-
-instance IsVTTRegionList VTTRegionList
 instance IsGObject VTTRegionList where
   toGObject = GObject . castRef . unVTTRegionList
   unsafeCastGObject = VTTRegionList . castRef . unGObject
@@ -22087,11 +19522,6 @@ instance FromJSRef ValidityState where
   fromJSRef = return . fmap ValidityState . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsValidityState o
-toValidityState :: IsValidityState o => o -> ValidityState
-toValidityState = unsafeCastGObject . toGObject
-
-instance IsValidityState ValidityState
 instance IsGObject ValidityState where
   toGObject = GObject . castRef . unValidityState
   unsafeCastGObject = ValidityState . castRef . unGObject
@@ -22122,11 +19552,6 @@ instance FromJSRef VideoPlaybackQuality where
   fromJSRef = return . fmap VideoPlaybackQuality . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsVideoPlaybackQuality o
-toVideoPlaybackQuality :: IsVideoPlaybackQuality o => o -> VideoPlaybackQuality
-toVideoPlaybackQuality = unsafeCastGObject . toGObject
-
-instance IsVideoPlaybackQuality VideoPlaybackQuality
 instance IsGObject VideoPlaybackQuality where
   toGObject = GObject . castRef . unVideoPlaybackQuality
   unsafeCastGObject = VideoPlaybackQuality . castRef . unGObject
@@ -22160,11 +19585,6 @@ instance FromJSRef VideoStreamTrack where
   fromJSRef = return . fmap VideoStreamTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsMediaStreamTrack o => IsVideoStreamTrack o
-toVideoStreamTrack :: IsVideoStreamTrack o => o -> VideoStreamTrack
-toVideoStreamTrack = unsafeCastGObject . toGObject
-
-instance IsVideoStreamTrack VideoStreamTrack
 instance IsMediaStreamTrack VideoStreamTrack
 instance IsEventTarget VideoStreamTrack
 instance IsGObject VideoStreamTrack where
@@ -22196,11 +19616,6 @@ instance FromJSRef VideoTrack where
   fromJSRef = return . fmap VideoTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsVideoTrack o
-toVideoTrack :: IsVideoTrack o => o -> VideoTrack
-toVideoTrack = unsafeCastGObject . toGObject
-
-instance IsVideoTrack VideoTrack
 instance IsGObject VideoTrack where
   toGObject = GObject . castRef . unVideoTrack
   unsafeCastGObject = VideoTrack . castRef . unGObject
@@ -22233,11 +19648,6 @@ instance FromJSRef VideoTrackList where
   fromJSRef = return . fmap VideoTrackList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsVideoTrackList o
-toVideoTrackList :: IsVideoTrackList o => o -> VideoTrackList
-toVideoTrackList = unsafeCastGObject . toGObject
-
-instance IsVideoTrackList VideoTrackList
 instance IsEventTarget VideoTrackList
 instance IsGObject VideoTrackList where
   toGObject = GObject . castRef . unVideoTrackList
@@ -22268,11 +19678,6 @@ instance FromJSRef VoidCallback where
   fromJSRef = return . fmap VoidCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsVoidCallback o
-toVoidCallback :: IsVoidCallback o => o -> VoidCallback
-toVoidCallback = unsafeCastGObject . toGObject
-
-instance IsVoidCallback VoidCallback
 instance IsGObject VoidCallback where
   toGObject = GObject . castRef . unVoidCallback
   unsafeCastGObject = VoidCallback . castRef . unGObject
@@ -22306,11 +19711,6 @@ instance FromJSRef WaveShaperNode where
   fromJSRef = return . fmap WaveShaperNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsAudioNode o => IsWaveShaperNode o
-toWaveShaperNode :: IsWaveShaperNode o => o -> WaveShaperNode
-toWaveShaperNode = unsafeCastGObject . toGObject
-
-instance IsWaveShaperNode WaveShaperNode
 instance IsAudioNode WaveShaperNode
 instance IsEventTarget WaveShaperNode
 instance IsGObject WaveShaperNode where
@@ -22322,6 +19722,41 @@ castToWaveShaperNode = castTo gTypeWaveShaperNode "WaveShaperNode"
 
 foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNode' :: JSRef GType
 gTypeWaveShaperNode = GType gTypeWaveShaperNode'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGL2RenderingContext".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.WebGLRenderingContextBase"
+--     * "GHCJS.DOM.CanvasRenderingContext"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext Mozilla WebGL2RenderingContext documentation>
+newtype WebGL2RenderingContext = WebGL2RenderingContext (JSRef WebGL2RenderingContext) deriving (Eq)
+
+unWebGL2RenderingContext (WebGL2RenderingContext o) = o
+
+instance ToJSRef WebGL2RenderingContext where
+  toJSRef = return . unWebGL2RenderingContext
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGL2RenderingContext where
+  fromJSRef = return . fmap WebGL2RenderingContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsWebGLRenderingContextBase WebGL2RenderingContext
+instance IsCanvasRenderingContext WebGL2RenderingContext
+instance IsGObject WebGL2RenderingContext where
+  toGObject = GObject . castRef . unWebGL2RenderingContext
+  unsafeCastGObject = WebGL2RenderingContext . castRef . unGObject
+
+castToWebGL2RenderingContext :: IsGObject obj => obj -> WebGL2RenderingContext
+castToWebGL2RenderingContext = castTo gTypeWebGL2RenderingContext "WebGL2RenderingContext"
+
+foreign import javascript unsafe "window[\"WebGL2RenderingContext\"]" gTypeWebGL2RenderingContext' :: JSRef GType
+gTypeWebGL2RenderingContext = GType gTypeWebGL2RenderingContext'
 #else
 #endif
 
@@ -22342,11 +19777,6 @@ instance FromJSRef WebGLActiveInfo where
   fromJSRef = return . fmap WebGLActiveInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLActiveInfo o
-toWebGLActiveInfo :: IsWebGLActiveInfo o => o -> WebGLActiveInfo
-toWebGLActiveInfo = unsafeCastGObject . toGObject
-
-instance IsWebGLActiveInfo WebGLActiveInfo
 instance IsGObject WebGLActiveInfo where
   toGObject = GObject . castRef . unWebGLActiveInfo
   unsafeCastGObject = WebGLActiveInfo . castRef . unGObject
@@ -22376,11 +19806,6 @@ instance FromJSRef WebGLBuffer where
   fromJSRef = return . fmap WebGLBuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLBuffer o
-toWebGLBuffer :: IsWebGLBuffer o => o -> WebGLBuffer
-toWebGLBuffer = unsafeCastGObject . toGObject
-
-instance IsWebGLBuffer WebGLBuffer
 instance IsGObject WebGLBuffer where
   toGObject = GObject . castRef . unWebGLBuffer
   unsafeCastGObject = WebGLBuffer . castRef . unGObject
@@ -22410,11 +19835,6 @@ instance FromJSRef WebGLCompressedTextureATC where
   fromJSRef = return . fmap WebGLCompressedTextureATC . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLCompressedTextureATC o
-toWebGLCompressedTextureATC :: IsWebGLCompressedTextureATC o => o -> WebGLCompressedTextureATC
-toWebGLCompressedTextureATC = unsafeCastGObject . toGObject
-
-instance IsWebGLCompressedTextureATC WebGLCompressedTextureATC
 instance IsGObject WebGLCompressedTextureATC where
   toGObject = GObject . castRef . unWebGLCompressedTextureATC
   unsafeCastGObject = WebGLCompressedTextureATC . castRef . unGObject
@@ -22444,11 +19864,6 @@ instance FromJSRef WebGLCompressedTexturePVRTC where
   fromJSRef = return . fmap WebGLCompressedTexturePVRTC . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLCompressedTexturePVRTC o
-toWebGLCompressedTexturePVRTC :: IsWebGLCompressedTexturePVRTC o => o -> WebGLCompressedTexturePVRTC
-toWebGLCompressedTexturePVRTC = unsafeCastGObject . toGObject
-
-instance IsWebGLCompressedTexturePVRTC WebGLCompressedTexturePVRTC
 instance IsGObject WebGLCompressedTexturePVRTC where
   toGObject = GObject . castRef . unWebGLCompressedTexturePVRTC
   unsafeCastGObject = WebGLCompressedTexturePVRTC . castRef . unGObject
@@ -22478,11 +19893,6 @@ instance FromJSRef WebGLCompressedTextureS3TC where
   fromJSRef = return . fmap WebGLCompressedTextureS3TC . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLCompressedTextureS3TC o
-toWebGLCompressedTextureS3TC :: IsWebGLCompressedTextureS3TC o => o -> WebGLCompressedTextureS3TC
-toWebGLCompressedTextureS3TC = unsafeCastGObject . toGObject
-
-instance IsWebGLCompressedTextureS3TC WebGLCompressedTextureS3TC
 instance IsGObject WebGLCompressedTextureS3TC where
   toGObject = GObject . castRef . unWebGLCompressedTextureS3TC
   unsafeCastGObject = WebGLCompressedTextureS3TC . castRef . unGObject
@@ -22512,11 +19922,6 @@ instance FromJSRef WebGLContextAttributes where
   fromJSRef = return . fmap WebGLContextAttributes . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLContextAttributes o
-toWebGLContextAttributes :: IsWebGLContextAttributes o => o -> WebGLContextAttributes
-toWebGLContextAttributes = unsafeCastGObject . toGObject
-
-instance IsWebGLContextAttributes WebGLContextAttributes
 instance IsGObject WebGLContextAttributes where
   toGObject = GObject . castRef . unWebGLContextAttributes
   unsafeCastGObject = WebGLContextAttributes . castRef . unGObject
@@ -22549,11 +19954,6 @@ instance FromJSRef WebGLContextEvent where
   fromJSRef = return . fmap WebGLContextEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsWebGLContextEvent o
-toWebGLContextEvent :: IsWebGLContextEvent o => o -> WebGLContextEvent
-toWebGLContextEvent = unsafeCastGObject . toGObject
-
-instance IsWebGLContextEvent WebGLContextEvent
 instance IsEvent WebGLContextEvent
 instance IsGObject WebGLContextEvent where
   toGObject = GObject . castRef . unWebGLContextEvent
@@ -22584,11 +19984,6 @@ instance FromJSRef WebGLDebugRendererInfo where
   fromJSRef = return . fmap WebGLDebugRendererInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLDebugRendererInfo o
-toWebGLDebugRendererInfo :: IsWebGLDebugRendererInfo o => o -> WebGLDebugRendererInfo
-toWebGLDebugRendererInfo = unsafeCastGObject . toGObject
-
-instance IsWebGLDebugRendererInfo WebGLDebugRendererInfo
 instance IsGObject WebGLDebugRendererInfo where
   toGObject = GObject . castRef . unWebGLDebugRendererInfo
   unsafeCastGObject = WebGLDebugRendererInfo . castRef . unGObject
@@ -22618,11 +20013,6 @@ instance FromJSRef WebGLDebugShaders where
   fromJSRef = return . fmap WebGLDebugShaders . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLDebugShaders o
-toWebGLDebugShaders :: IsWebGLDebugShaders o => o -> WebGLDebugShaders
-toWebGLDebugShaders = unsafeCastGObject . toGObject
-
-instance IsWebGLDebugShaders WebGLDebugShaders
 instance IsGObject WebGLDebugShaders where
   toGObject = GObject . castRef . unWebGLDebugShaders
   unsafeCastGObject = WebGLDebugShaders . castRef . unGObject
@@ -22652,11 +20042,6 @@ instance FromJSRef WebGLDepthTexture where
   fromJSRef = return . fmap WebGLDepthTexture . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLDepthTexture o
-toWebGLDepthTexture :: IsWebGLDepthTexture o => o -> WebGLDepthTexture
-toWebGLDepthTexture = unsafeCastGObject . toGObject
-
-instance IsWebGLDepthTexture WebGLDepthTexture
 instance IsGObject WebGLDepthTexture where
   toGObject = GObject . castRef . unWebGLDepthTexture
   unsafeCastGObject = WebGLDepthTexture . castRef . unGObject
@@ -22686,11 +20071,6 @@ instance FromJSRef WebGLDrawBuffers where
   fromJSRef = return . fmap WebGLDrawBuffers . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLDrawBuffers o
-toWebGLDrawBuffers :: IsWebGLDrawBuffers o => o -> WebGLDrawBuffers
-toWebGLDrawBuffers = unsafeCastGObject . toGObject
-
-instance IsWebGLDrawBuffers WebGLDrawBuffers
 instance IsGObject WebGLDrawBuffers where
   toGObject = GObject . castRef . unWebGLDrawBuffers
   unsafeCastGObject = WebGLDrawBuffers . castRef . unGObject
@@ -22720,11 +20100,6 @@ instance FromJSRef WebGLFramebuffer where
   fromJSRef = return . fmap WebGLFramebuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLFramebuffer o
-toWebGLFramebuffer :: IsWebGLFramebuffer o => o -> WebGLFramebuffer
-toWebGLFramebuffer = unsafeCastGObject . toGObject
-
-instance IsWebGLFramebuffer WebGLFramebuffer
 instance IsGObject WebGLFramebuffer where
   toGObject = GObject . castRef . unWebGLFramebuffer
   unsafeCastGObject = WebGLFramebuffer . castRef . unGObject
@@ -22754,11 +20129,6 @@ instance FromJSRef WebGLLoseContext where
   fromJSRef = return . fmap WebGLLoseContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLLoseContext o
-toWebGLLoseContext :: IsWebGLLoseContext o => o -> WebGLLoseContext
-toWebGLLoseContext = unsafeCastGObject . toGObject
-
-instance IsWebGLLoseContext WebGLLoseContext
 instance IsGObject WebGLLoseContext where
   toGObject = GObject . castRef . unWebGLLoseContext
   unsafeCastGObject = WebGLLoseContext . castRef . unGObject
@@ -22788,11 +20158,6 @@ instance FromJSRef WebGLProgram where
   fromJSRef = return . fmap WebGLProgram . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLProgram o
-toWebGLProgram :: IsWebGLProgram o => o -> WebGLProgram
-toWebGLProgram = unsafeCastGObject . toGObject
-
-instance IsWebGLProgram WebGLProgram
 instance IsGObject WebGLProgram where
   toGObject = GObject . castRef . unWebGLProgram
   unsafeCastGObject = WebGLProgram . castRef . unGObject
@@ -22802,6 +20167,35 @@ castToWebGLProgram = castTo gTypeWebGLProgram "WebGLProgram"
 
 foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram' :: JSRef GType
 gTypeWebGLProgram = GType gTypeWebGLProgram'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLQuery".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLQuery Mozilla WebGLQuery documentation>
+newtype WebGLQuery = WebGLQuery (JSRef WebGLQuery) deriving (Eq)
+
+unWebGLQuery (WebGLQuery o) = o
+
+instance ToJSRef WebGLQuery where
+  toJSRef = return . unWebGLQuery
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLQuery where
+  fromJSRef = return . fmap WebGLQuery . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject WebGLQuery where
+  toGObject = GObject . castRef . unWebGLQuery
+  unsafeCastGObject = WebGLQuery . castRef . unGObject
+
+castToWebGLQuery :: IsGObject obj => obj -> WebGLQuery
+castToWebGLQuery = castTo gTypeWebGLQuery "WebGLQuery"
+
+foreign import javascript unsafe "window[\"WebGLQuery\"]" gTypeWebGLQuery' :: JSRef GType
+gTypeWebGLQuery = GType gTypeWebGLQuery'
 #else
 #endif
 
@@ -22822,11 +20216,6 @@ instance FromJSRef WebGLRenderbuffer where
   fromJSRef = return . fmap WebGLRenderbuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLRenderbuffer o
-toWebGLRenderbuffer :: IsWebGLRenderbuffer o => o -> WebGLRenderbuffer
-toWebGLRenderbuffer = unsafeCastGObject . toGObject
-
-instance IsWebGLRenderbuffer WebGLRenderbuffer
 instance IsGObject WebGLRenderbuffer where
   toGObject = GObject . castRef . unWebGLRenderbuffer
   unsafeCastGObject = WebGLRenderbuffer . castRef . unGObject
@@ -22844,6 +20233,7 @@ gTypeWebGLRenderbuffer = GType gTypeWebGLRenderbuffer'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContext".
 -- Base interface functions are in:
 --
+--     * "GHCJS.DOM.WebGLRenderingContextBase"
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext Mozilla WebGLRenderingContext documentation>
@@ -22859,11 +20249,7 @@ instance FromJSRef WebGLRenderingContext where
   fromJSRef = return . fmap WebGLRenderingContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCanvasRenderingContext o => IsWebGLRenderingContext o
-toWebGLRenderingContext :: IsWebGLRenderingContext o => o -> WebGLRenderingContext
-toWebGLRenderingContext = unsafeCastGObject . toGObject
-
-instance IsWebGLRenderingContext WebGLRenderingContext
+instance IsWebGLRenderingContextBase WebGLRenderingContext
 instance IsCanvasRenderingContext WebGLRenderingContext
 instance IsGObject WebGLRenderingContext where
   toGObject = GObject . castRef . unWebGLRenderingContext
@@ -22874,6 +20260,73 @@ castToWebGLRenderingContext = castTo gTypeWebGLRenderingContext "WebGLRenderingC
 
 foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLRenderingContext' :: JSRef GType
 gTypeWebGLRenderingContext = GType gTypeWebGLRenderingContext'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContextBase".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CanvasRenderingContext"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase Mozilla WebGLRenderingContextBase documentation>
+newtype WebGLRenderingContextBase = WebGLRenderingContextBase (JSRef WebGLRenderingContextBase) deriving (Eq)
+
+unWebGLRenderingContextBase (WebGLRenderingContextBase o) = o
+
+instance ToJSRef WebGLRenderingContextBase where
+  toJSRef = return . unWebGLRenderingContextBase
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLRenderingContextBase where
+  fromJSRef = return . fmap WebGLRenderingContextBase . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+class IsCanvasRenderingContext o => IsWebGLRenderingContextBase o
+toWebGLRenderingContextBase :: IsWebGLRenderingContextBase o => o -> WebGLRenderingContextBase
+toWebGLRenderingContextBase = unsafeCastGObject . toGObject
+
+instance IsWebGLRenderingContextBase WebGLRenderingContextBase
+instance IsCanvasRenderingContext WebGLRenderingContextBase
+instance IsGObject WebGLRenderingContextBase where
+  toGObject = GObject . castRef . unWebGLRenderingContextBase
+  unsafeCastGObject = WebGLRenderingContextBase . castRef . unGObject
+
+castToWebGLRenderingContextBase :: IsGObject obj => obj -> WebGLRenderingContextBase
+castToWebGLRenderingContextBase = castTo gTypeWebGLRenderingContextBase "WebGLRenderingContextBase"
+
+foreign import javascript unsafe "window[\"WebGLRenderingContextBase\"]" gTypeWebGLRenderingContextBase' :: JSRef GType
+gTypeWebGLRenderingContextBase = GType gTypeWebGLRenderingContextBase'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLSampler".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSampler Mozilla WebGLSampler documentation>
+newtype WebGLSampler = WebGLSampler (JSRef WebGLSampler) deriving (Eq)
+
+unWebGLSampler (WebGLSampler o) = o
+
+instance ToJSRef WebGLSampler where
+  toJSRef = return . unWebGLSampler
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLSampler where
+  fromJSRef = return . fmap WebGLSampler . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject WebGLSampler where
+  toGObject = GObject . castRef . unWebGLSampler
+  unsafeCastGObject = WebGLSampler . castRef . unGObject
+
+castToWebGLSampler :: IsGObject obj => obj -> WebGLSampler
+castToWebGLSampler = castTo gTypeWebGLSampler "WebGLSampler"
+
+foreign import javascript unsafe "window[\"WebGLSampler\"]" gTypeWebGLSampler' :: JSRef GType
+gTypeWebGLSampler = GType gTypeWebGLSampler'
 #else
 #endif
 
@@ -22894,11 +20347,6 @@ instance FromJSRef WebGLShader where
   fromJSRef = return . fmap WebGLShader . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLShader o
-toWebGLShader :: IsWebGLShader o => o -> WebGLShader
-toWebGLShader = unsafeCastGObject . toGObject
-
-instance IsWebGLShader WebGLShader
 instance IsGObject WebGLShader where
   toGObject = GObject . castRef . unWebGLShader
   unsafeCastGObject = WebGLShader . castRef . unGObject
@@ -22928,11 +20376,6 @@ instance FromJSRef WebGLShaderPrecisionFormat where
   fromJSRef = return . fmap WebGLShaderPrecisionFormat . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLShaderPrecisionFormat o
-toWebGLShaderPrecisionFormat :: IsWebGLShaderPrecisionFormat o => o -> WebGLShaderPrecisionFormat
-toWebGLShaderPrecisionFormat = unsafeCastGObject . toGObject
-
-instance IsWebGLShaderPrecisionFormat WebGLShaderPrecisionFormat
 instance IsGObject WebGLShaderPrecisionFormat where
   toGObject = GObject . castRef . unWebGLShaderPrecisionFormat
   unsafeCastGObject = WebGLShaderPrecisionFormat . castRef . unGObject
@@ -22942,6 +20385,35 @@ castToWebGLShaderPrecisionFormat = castTo gTypeWebGLShaderPrecisionFormat "WebGL
 
 foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeWebGLShaderPrecisionFormat' :: JSRef GType
 gTypeWebGLShaderPrecisionFormat = GType gTypeWebGLShaderPrecisionFormat'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLSync".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSync Mozilla WebGLSync documentation>
+newtype WebGLSync = WebGLSync (JSRef WebGLSync) deriving (Eq)
+
+unWebGLSync (WebGLSync o) = o
+
+instance ToJSRef WebGLSync where
+  toJSRef = return . unWebGLSync
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLSync where
+  fromJSRef = return . fmap WebGLSync . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject WebGLSync where
+  toGObject = GObject . castRef . unWebGLSync
+  unsafeCastGObject = WebGLSync . castRef . unGObject
+
+castToWebGLSync :: IsGObject obj => obj -> WebGLSync
+castToWebGLSync = castTo gTypeWebGLSync "WebGLSync"
+
+foreign import javascript unsafe "window[\"WebGLSync\"]" gTypeWebGLSync' :: JSRef GType
+gTypeWebGLSync = GType gTypeWebGLSync'
 #else
 #endif
 
@@ -22962,11 +20434,6 @@ instance FromJSRef WebGLTexture where
   fromJSRef = return . fmap WebGLTexture . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLTexture o
-toWebGLTexture :: IsWebGLTexture o => o -> WebGLTexture
-toWebGLTexture = unsafeCastGObject . toGObject
-
-instance IsWebGLTexture WebGLTexture
 instance IsGObject WebGLTexture where
   toGObject = GObject . castRef . unWebGLTexture
   unsafeCastGObject = WebGLTexture . castRef . unGObject
@@ -22976,6 +20443,35 @@ castToWebGLTexture = castTo gTypeWebGLTexture "WebGLTexture"
 
 foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture' :: JSRef GType
 gTypeWebGLTexture = GType gTypeWebGLTexture'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLTransformFeedback".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTransformFeedback Mozilla WebGLTransformFeedback documentation>
+newtype WebGLTransformFeedback = WebGLTransformFeedback (JSRef WebGLTransformFeedback) deriving (Eq)
+
+unWebGLTransformFeedback (WebGLTransformFeedback o) = o
+
+instance ToJSRef WebGLTransformFeedback where
+  toJSRef = return . unWebGLTransformFeedback
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLTransformFeedback where
+  fromJSRef = return . fmap WebGLTransformFeedback . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject WebGLTransformFeedback where
+  toGObject = GObject . castRef . unWebGLTransformFeedback
+  unsafeCastGObject = WebGLTransformFeedback . castRef . unGObject
+
+castToWebGLTransformFeedback :: IsGObject obj => obj -> WebGLTransformFeedback
+castToWebGLTransformFeedback = castTo gTypeWebGLTransformFeedback "WebGLTransformFeedback"
+
+foreign import javascript unsafe "window[\"WebGLTransformFeedback\"]" gTypeWebGLTransformFeedback' :: JSRef GType
+gTypeWebGLTransformFeedback = GType gTypeWebGLTransformFeedback'
 #else
 #endif
 
@@ -22996,11 +20492,6 @@ instance FromJSRef WebGLUniformLocation where
   fromJSRef = return . fmap WebGLUniformLocation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLUniformLocation o
-toWebGLUniformLocation :: IsWebGLUniformLocation o => o -> WebGLUniformLocation
-toWebGLUniformLocation = unsafeCastGObject . toGObject
-
-instance IsWebGLUniformLocation WebGLUniformLocation
 instance IsGObject WebGLUniformLocation where
   toGObject = GObject . castRef . unWebGLUniformLocation
   unsafeCastGObject = WebGLUniformLocation . castRef . unGObject
@@ -23010,6 +20501,35 @@ castToWebGLUniformLocation = castTo gTypeWebGLUniformLocation "WebGLUniformLocat
 
 foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUniformLocation' :: JSRef GType
 gTypeWebGLUniformLocation = GType gTypeWebGLUniformLocation'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObject".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObject Mozilla WebGLVertexArrayObject documentation>
+newtype WebGLVertexArrayObject = WebGLVertexArrayObject (JSRef WebGLVertexArrayObject) deriving (Eq)
+
+unWebGLVertexArrayObject (WebGLVertexArrayObject o) = o
+
+instance ToJSRef WebGLVertexArrayObject where
+  toJSRef = return . unWebGLVertexArrayObject
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef WebGLVertexArrayObject where
+  fromJSRef = return . fmap WebGLVertexArrayObject . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject WebGLVertexArrayObject where
+  toGObject = GObject . castRef . unWebGLVertexArrayObject
+  unsafeCastGObject = WebGLVertexArrayObject . castRef . unGObject
+
+castToWebGLVertexArrayObject :: IsGObject obj => obj -> WebGLVertexArrayObject
+castToWebGLVertexArrayObject = castTo gTypeWebGLVertexArrayObject "WebGLVertexArrayObject"
+
+foreign import javascript unsafe "window[\"WebGLVertexArrayObject\"]" gTypeWebGLVertexArrayObject' :: JSRef GType
+gTypeWebGLVertexArrayObject = GType gTypeWebGLVertexArrayObject'
 #else
 #endif
 
@@ -23030,11 +20550,6 @@ instance FromJSRef WebGLVertexArrayObjectOES where
   fromJSRef = return . fmap WebGLVertexArrayObjectOES . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebGLVertexArrayObjectOES o
-toWebGLVertexArrayObjectOES :: IsWebGLVertexArrayObjectOES o => o -> WebGLVertexArrayObjectOES
-toWebGLVertexArrayObjectOES = unsafeCastGObject . toGObject
-
-instance IsWebGLVertexArrayObjectOES WebGLVertexArrayObjectOES
 instance IsGObject WebGLVertexArrayObjectOES where
   toGObject = GObject . castRef . unWebGLVertexArrayObjectOES
   unsafeCastGObject = WebGLVertexArrayObjectOES . castRef . unGObject
@@ -23067,11 +20582,6 @@ instance FromJSRef WebKitAnimationEvent where
   fromJSRef = return . fmap WebKitAnimationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsWebKitAnimationEvent o
-toWebKitAnimationEvent :: IsWebKitAnimationEvent o => o -> WebKitAnimationEvent
-toWebKitAnimationEvent = unsafeCastGObject . toGObject
-
-instance IsWebKitAnimationEvent WebKitAnimationEvent
 instance IsEvent WebKitAnimationEvent
 instance IsGObject WebKitAnimationEvent where
   toGObject = GObject . castRef . unWebKitAnimationEvent
@@ -23106,11 +20616,6 @@ instance FromJSRef WebKitCSSFilterValue where
   fromJSRef = return . fmap WebKitCSSFilterValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSValueList o => IsWebKitCSSFilterValue o
-toWebKitCSSFilterValue :: IsWebKitCSSFilterValue o => o -> WebKitCSSFilterValue
-toWebKitCSSFilterValue = unsafeCastGObject . toGObject
-
-instance IsWebKitCSSFilterValue WebKitCSSFilterValue
 instance IsCSSValueList WebKitCSSFilterValue
 instance IsCSSValue WebKitCSSFilterValue
 instance IsGObject WebKitCSSFilterValue where
@@ -23142,11 +20647,6 @@ instance FromJSRef WebKitCSSMatrix where
   fromJSRef = return . fmap WebKitCSSMatrix . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebKitCSSMatrix o
-toWebKitCSSMatrix :: IsWebKitCSSMatrix o => o -> WebKitCSSMatrix
-toWebKitCSSMatrix = unsafeCastGObject . toGObject
-
-instance IsWebKitCSSMatrix WebKitCSSMatrix
 instance IsGObject WebKitCSSMatrix where
   toGObject = GObject . castRef . unWebKitCSSMatrix
   unsafeCastGObject = WebKitCSSMatrix . castRef . unGObject
@@ -23179,11 +20679,6 @@ instance FromJSRef WebKitCSSRegionRule where
   fromJSRef = return . fmap WebKitCSSRegionRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsWebKitCSSRegionRule o
-toWebKitCSSRegionRule :: IsWebKitCSSRegionRule o => o -> WebKitCSSRegionRule
-toWebKitCSSRegionRule = unsafeCastGObject . toGObject
-
-instance IsWebKitCSSRegionRule WebKitCSSRegionRule
 instance IsCSSRule WebKitCSSRegionRule
 instance IsGObject WebKitCSSRegionRule where
   toGObject = GObject . castRef . unWebKitCSSRegionRule
@@ -23218,11 +20713,6 @@ instance FromJSRef WebKitCSSTransformValue where
   fromJSRef = return . fmap WebKitCSSTransformValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSValueList o => IsWebKitCSSTransformValue o
-toWebKitCSSTransformValue :: IsWebKitCSSTransformValue o => o -> WebKitCSSTransformValue
-toWebKitCSSTransformValue = unsafeCastGObject . toGObject
-
-instance IsWebKitCSSTransformValue WebKitCSSTransformValue
 instance IsCSSValueList WebKitCSSTransformValue
 instance IsCSSValue WebKitCSSTransformValue
 instance IsGObject WebKitCSSTransformValue where
@@ -23257,11 +20747,6 @@ instance FromJSRef WebKitCSSViewportRule where
   fromJSRef = return . fmap WebKitCSSViewportRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsCSSRule o => IsWebKitCSSViewportRule o
-toWebKitCSSViewportRule :: IsWebKitCSSViewportRule o => o -> WebKitCSSViewportRule
-toWebKitCSSViewportRule = unsafeCastGObject . toGObject
-
-instance IsWebKitCSSViewportRule WebKitCSSViewportRule
 instance IsCSSRule WebKitCSSViewportRule
 instance IsGObject WebKitCSSViewportRule where
   toGObject = GObject . castRef . unWebKitCSSViewportRule
@@ -23295,11 +20780,6 @@ instance FromJSRef WebKitNamedFlow where
   fromJSRef = return . fmap WebKitNamedFlow . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsWebKitNamedFlow o
-toWebKitNamedFlow :: IsWebKitNamedFlow o => o -> WebKitNamedFlow
-toWebKitNamedFlow = unsafeCastGObject . toGObject
-
-instance IsWebKitNamedFlow WebKitNamedFlow
 instance IsEventTarget WebKitNamedFlow
 instance IsGObject WebKitNamedFlow where
   toGObject = GObject . castRef . unWebKitNamedFlow
@@ -23331,11 +20811,6 @@ instance FromJSRef WebKitNamespace where
   fromJSRef = return . fmap WebKitNamespace . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebKitNamespace o
-toWebKitNamespace :: IsWebKitNamespace o => o -> WebKitNamespace
-toWebKitNamespace = unsafeCastGObject . toGObject
-
-instance IsWebKitNamespace WebKitNamespace
 instance IsGObject WebKitNamespace where
   toGObject = GObject . castRef . unWebKitNamespace
   unsafeCastGObject = WebKitNamespace . castRef . unGObject
@@ -23368,11 +20843,6 @@ instance FromJSRef WebKitPlaybackTargetAvailabilityEvent where
   fromJSRef = return . fmap WebKitPlaybackTargetAvailabilityEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsWebKitPlaybackTargetAvailabilityEvent o
-toWebKitPlaybackTargetAvailabilityEvent :: IsWebKitPlaybackTargetAvailabilityEvent o => o -> WebKitPlaybackTargetAvailabilityEvent
-toWebKitPlaybackTargetAvailabilityEvent = unsafeCastGObject . toGObject
-
-instance IsWebKitPlaybackTargetAvailabilityEvent WebKitPlaybackTargetAvailabilityEvent
 instance IsEvent WebKitPlaybackTargetAvailabilityEvent
 instance IsGObject WebKitPlaybackTargetAvailabilityEvent where
   toGObject = GObject . castRef . unWebKitPlaybackTargetAvailabilityEvent
@@ -23403,11 +20873,6 @@ instance FromJSRef WebKitPoint where
   fromJSRef = return . fmap WebKitPoint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWebKitPoint o
-toWebKitPoint :: IsWebKitPoint o => o -> WebKitPoint
-toWebKitPoint = unsafeCastGObject . toGObject
-
-instance IsWebKitPoint WebKitPoint
 instance IsGObject WebKitPoint where
   toGObject = GObject . castRef . unWebKitPoint
   unsafeCastGObject = WebKitPoint . castRef . unGObject
@@ -23441,11 +20906,6 @@ instance FromJSRef WebKitTransitionEvent where
   fromJSRef = return . fmap WebKitTransitionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEvent o => IsWebKitTransitionEvent o
-toWebKitTransitionEvent :: IsWebKitTransitionEvent o => o -> WebKitTransitionEvent
-toWebKitTransitionEvent = unsafeCastGObject . toGObject
-
-instance IsWebKitTransitionEvent WebKitTransitionEvent
 instance IsEvent WebKitTransitionEvent
 instance IsGObject WebKitTransitionEvent where
   toGObject = GObject . castRef . unWebKitTransitionEvent
@@ -23479,11 +20939,6 @@ instance FromJSRef WebSocket where
   fromJSRef = return . fmap WebSocket . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsWebSocket o
-toWebSocket :: IsWebSocket o => o -> WebSocket
-toWebSocket = unsafeCastGObject . toGObject
-
-instance IsWebSocket WebSocket
 instance IsEventTarget WebSocket
 instance IsGObject WebSocket where
   toGObject = GObject . castRef . unWebSocket
@@ -23519,11 +20974,6 @@ instance FromJSRef WheelEvent where
   fromJSRef = return . fmap WheelEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsMouseEvent o => IsWheelEvent o
-toWheelEvent :: IsWheelEvent o => o -> WheelEvent
-toWheelEvent = unsafeCastGObject . toGObject
-
-instance IsWheelEvent WheelEvent
 instance IsMouseEvent WheelEvent
 instance IsUIEvent WheelEvent
 instance IsEvent WheelEvent
@@ -23556,11 +21006,6 @@ instance FromJSRef WindowBase64 where
   fromJSRef = return . fmap WindowBase64 . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWindowBase64 o
-toWindowBase64 :: IsWindowBase64 o => o -> WindowBase64
-toWindowBase64 = unsafeCastGObject . toGObject
-
-instance IsWindowBase64 WindowBase64
 instance IsGObject WindowBase64 where
   toGObject = GObject . castRef . unWindowBase64
   unsafeCastGObject = WindowBase64 . castRef . unGObject
@@ -23590,11 +21035,6 @@ instance FromJSRef WindowTimers where
   fromJSRef = return . fmap WindowTimers . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWindowTimers o
-toWindowTimers :: IsWindowTimers o => o -> WindowTimers
-toWindowTimers = unsafeCastGObject . toGObject
-
-instance IsWindowTimers WindowTimers
 instance IsGObject WindowTimers where
   toGObject = GObject . castRef . unWindowTimers
   unsafeCastGObject = WindowTimers . castRef . unGObject
@@ -23627,11 +21067,6 @@ instance FromJSRef Worker where
   fromJSRef = return . fmap Worker . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsWorker o
-toWorker :: IsWorker o => o -> Worker
-toWorker = unsafeCastGObject . toGObject
-
-instance IsWorker Worker
 instance IsEventTarget Worker
 instance IsGObject Worker where
   toGObject = GObject . castRef . unWorker
@@ -23700,11 +21135,6 @@ instance FromJSRef WorkerLocation where
   fromJSRef = return . fmap WorkerLocation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWorkerLocation o
-toWorkerLocation :: IsWorkerLocation o => o -> WorkerLocation
-toWorkerLocation = unsafeCastGObject . toGObject
-
-instance IsWorkerLocation WorkerLocation
 instance IsGObject WorkerLocation where
   toGObject = GObject . castRef . unWorkerLocation
   unsafeCastGObject = WorkerLocation . castRef . unGObject
@@ -23734,11 +21164,6 @@ instance FromJSRef WorkerNavigator where
   fromJSRef = return . fmap WorkerNavigator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsWorkerNavigator o
-toWorkerNavigator :: IsWorkerNavigator o => o -> WorkerNavigator
-toWorkerNavigator = unsafeCastGObject . toGObject
-
-instance IsWorkerNavigator WorkerNavigator
 instance IsGObject WorkerNavigator where
   toGObject = GObject . castRef . unWorkerNavigator
   unsafeCastGObject = WorkerNavigator . castRef . unGObject
@@ -23771,11 +21196,6 @@ instance FromJSRef XMLHttpRequest where
   fromJSRef = return . fmap XMLHttpRequest . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsXMLHttpRequest o
-toXMLHttpRequest :: IsXMLHttpRequest o => o -> XMLHttpRequest
-toXMLHttpRequest = unsafeCastGObject . toGObject
-
-instance IsXMLHttpRequest XMLHttpRequest
 instance IsEventTarget XMLHttpRequest
 instance IsGObject XMLHttpRequest where
   toGObject = GObject . castRef . unXMLHttpRequest
@@ -23810,11 +21230,6 @@ instance FromJSRef XMLHttpRequestProgressEvent where
   fromJSRef = return . fmap XMLHttpRequestProgressEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsProgressEvent o => IsXMLHttpRequestProgressEvent o
-toXMLHttpRequestProgressEvent :: IsXMLHttpRequestProgressEvent o => o -> XMLHttpRequestProgressEvent
-toXMLHttpRequestProgressEvent = unsafeCastGObject . toGObject
-
-instance IsXMLHttpRequestProgressEvent XMLHttpRequestProgressEvent
 instance IsProgressEvent XMLHttpRequestProgressEvent
 instance IsEvent XMLHttpRequestProgressEvent
 instance IsGObject XMLHttpRequestProgressEvent where
@@ -23849,11 +21264,6 @@ instance FromJSRef XMLHttpRequestUpload where
   fromJSRef = return . fmap XMLHttpRequestUpload . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsEventTarget o => IsXMLHttpRequestUpload o
-toXMLHttpRequestUpload :: IsXMLHttpRequestUpload o => o -> XMLHttpRequestUpload
-toXMLHttpRequestUpload = unsafeCastGObject . toGObject
-
-instance IsXMLHttpRequestUpload XMLHttpRequestUpload
 instance IsEventTarget XMLHttpRequestUpload
 instance IsGObject XMLHttpRequestUpload where
   toGObject = GObject . castRef . unXMLHttpRequestUpload
@@ -23884,11 +21294,6 @@ instance FromJSRef XMLSerializer where
   fromJSRef = return . fmap XMLSerializer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsXMLSerializer o
-toXMLSerializer :: IsXMLSerializer o => o -> XMLSerializer
-toXMLSerializer = unsafeCastGObject . toGObject
-
-instance IsXMLSerializer XMLSerializer
 instance IsGObject XMLSerializer where
   toGObject = GObject . castRef . unXMLSerializer
   unsafeCastGObject = XMLSerializer . castRef . unGObject
@@ -23918,11 +21323,6 @@ instance FromJSRef XPathEvaluator where
   fromJSRef = return . fmap XPathEvaluator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsXPathEvaluator o
-toXPathEvaluator :: IsXPathEvaluator o => o -> XPathEvaluator
-toXPathEvaluator = unsafeCastGObject . toGObject
-
-instance IsXPathEvaluator XPathEvaluator
 instance IsGObject XPathEvaluator where
   toGObject = GObject . castRef . unXPathEvaluator
   unsafeCastGObject = XPathEvaluator . castRef . unGObject
@@ -23952,11 +21352,6 @@ instance FromJSRef XPathExpression where
   fromJSRef = return . fmap XPathExpression . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsXPathExpression o
-toXPathExpression :: IsXPathExpression o => o -> XPathExpression
-toXPathExpression = unsafeCastGObject . toGObject
-
-instance IsXPathExpression XPathExpression
 instance IsGObject XPathExpression where
   toGObject = GObject . castRef . unXPathExpression
   unsafeCastGObject = XPathExpression . castRef . unGObject
@@ -23987,11 +21382,6 @@ instance FromJSRef XPathNSResolver where
   fromJSRef = return . fmap XPathNSResolver . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsXPathNSResolver o
-toXPathNSResolver :: IsXPathNSResolver o => o -> XPathNSResolver
-toXPathNSResolver = unsafeCastGObject . toGObject
-
-instance IsXPathNSResolver XPathNSResolver
 instance IsGObject XPathNSResolver where
   toGObject = GObject . castRef . unXPathNSResolver
   unsafeCastGObject = XPathNSResolver . castRef . unGObject
@@ -24022,11 +21412,6 @@ instance FromJSRef XPathResult where
   fromJSRef = return . fmap XPathResult . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsXPathResult o
-toXPathResult :: IsXPathResult o => o -> XPathResult
-toXPathResult = unsafeCastGObject . toGObject
-
-instance IsXPathResult XPathResult
 instance IsGObject XPathResult where
   toGObject = GObject . castRef . unXPathResult
   unsafeCastGObject = XPathResult . castRef . unGObject
@@ -24057,11 +21442,6 @@ instance FromJSRef XSLTProcessor where
   fromJSRef = return . fmap XSLTProcessor . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsXSLTProcessor o
-toXSLTProcessor :: IsXSLTProcessor o => o -> XSLTProcessor
-toXSLTProcessor = unsafeCastGObject . toGObject
-
-instance IsXSLTProcessor XSLTProcessor
 instance IsGObject XSLTProcessor where
   toGObject = GObject . castRef . unXSLTProcessor
   unsafeCastGObject = XSLTProcessor . castRef . unGObject

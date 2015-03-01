@@ -1,31 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLLinkElement
-       (ghcjs_dom_html_link_element_set_disabled,
-        htmlLinkElementSetDisabled,
-        ghcjs_dom_html_link_element_get_disabled,
-        htmlLinkElementGetDisabled,
-        ghcjs_dom_html_link_element_set_charset, htmlLinkElementSetCharset,
-        ghcjs_dom_html_link_element_get_charset, htmlLinkElementGetCharset,
-        ghcjs_dom_html_link_element_set_href, htmlLinkElementSetHref,
-        ghcjs_dom_html_link_element_get_href, htmlLinkElementGetHref,
-        ghcjs_dom_html_link_element_set_hreflang,
-        htmlLinkElementSetHreflang,
-        ghcjs_dom_html_link_element_get_hreflang,
-        htmlLinkElementGetHreflang, ghcjs_dom_html_link_element_set_media,
-        htmlLinkElementSetMedia, ghcjs_dom_html_link_element_get_media,
-        htmlLinkElementGetMedia, ghcjs_dom_html_link_element_set_rel,
-        htmlLinkElementSetRel, ghcjs_dom_html_link_element_get_rel,
-        htmlLinkElementGetRel, ghcjs_dom_html_link_element_set_rev,
-        htmlLinkElementSetRev, ghcjs_dom_html_link_element_get_rev,
-        htmlLinkElementGetRev, ghcjs_dom_html_link_element_set_target,
-        htmlLinkElementSetTarget, ghcjs_dom_html_link_element_get_target,
-        htmlLinkElementGetTarget, ghcjs_dom_html_link_element_get_sheet,
-        htmlLinkElementGetSheet, ghcjs_dom_html_link_element_get_rel_list,
-        htmlLinkElementGetRelList, HTMLLinkElement, IsHTMLLinkElement,
-        castToHTMLLinkElement, gTypeHTMLLinkElement, toHTMLLinkElement)
+       (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
+        js_setCharset, setCharset, js_getCharset, getCharset, js_setHref,
+        setHref, js_getHref, getHref, js_setHreflang, setHreflang,
+        js_getHreflang, getHreflang, js_setMedia, setMedia, js_getMedia,
+        getMedia, js_setRel, setRel, js_getRel, getRel, js_setRev, setRev,
+        js_getRev, getRev, js_setSizes, setSizes, js_getSizes, getSizes,
+        js_setTarget, setTarget, js_getTarget, getTarget, js_getSheet,
+        getSheet, js_getRelList, getRelList, HTMLLinkElement,
+        castToHTMLLinkElement, gTypeHTMLLinkElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -35,257 +22,190 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        ghcjs_dom_html_link_element_set_disabled ::
-        JSRef HTMLLinkElement -> Bool -> IO ()
+        js_setDisabled :: JSRef HTMLLinkElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.disabled Mozilla HTMLLinkElement.disabled documentation> 
-htmlLinkElementSetDisabled ::
-                           (MonadIO m, IsHTMLLinkElement self) => self -> Bool -> m ()
-htmlLinkElementSetDisabled self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_disabled
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         val)
+setDisabled :: (MonadIO m) => HTMLLinkElement -> Bool -> m ()
+setDisabled self val
+  = liftIO (js_setDisabled (unHTMLLinkElement self) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        ghcjs_dom_html_link_element_get_disabled ::
-        JSRef HTMLLinkElement -> IO Bool
+        js_getDisabled :: JSRef HTMLLinkElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.disabled Mozilla HTMLLinkElement.disabled documentation> 
-htmlLinkElementGetDisabled ::
-                           (MonadIO m, IsHTMLLinkElement self) => self -> m Bool
-htmlLinkElementGetDisabled self
-  = liftIO
-      (ghcjs_dom_html_link_element_get_disabled
-         (unHTMLLinkElement (toHTMLLinkElement self)))
+getDisabled :: (MonadIO m) => HTMLLinkElement -> m Bool
+getDisabled self = liftIO (js_getDisabled (unHTMLLinkElement self))
  
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
-        ghcjs_dom_html_link_element_set_charset ::
-        JSRef HTMLLinkElement -> JSString -> IO ()
+        js_setCharset :: JSRef HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.charset Mozilla HTMLLinkElement.charset documentation> 
-htmlLinkElementSetCharset ::
-                          (MonadIO m, IsHTMLLinkElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlLinkElementSetCharset self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_charset
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         (toJSString val))
+setCharset ::
+           (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setCharset self val
+  = liftIO (js_setCharset (unHTMLLinkElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"charset\"]"
-        ghcjs_dom_html_link_element_get_charset ::
+foreign import javascript unsafe "$1[\"charset\"]" js_getCharset ::
         JSRef HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.charset Mozilla HTMLLinkElement.charset documentation> 
-htmlLinkElementGetCharset ::
-                          (MonadIO m, IsHTMLLinkElement self, FromJSString result) =>
-                            self -> m result
-htmlLinkElementGetCharset self
+getCharset ::
+           (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getCharset self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_link_element_get_charset
-            (unHTMLLinkElement (toHTMLLinkElement self))))
+      (fromJSString <$> (js_getCharset (unHTMLLinkElement self)))
  
-foreign import javascript unsafe "$1[\"href\"] = $2;"
-        ghcjs_dom_html_link_element_set_href ::
+foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         JSRef HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.href Mozilla HTMLLinkElement.href documentation> 
-htmlLinkElementSetHref ::
-                       (MonadIO m, IsHTMLLinkElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlLinkElementSetHref self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_href
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         (toJSString val))
+setHref ::
+        (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setHref self val
+  = liftIO (js_setHref (unHTMLLinkElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]"
-        ghcjs_dom_html_link_element_get_href ::
+foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
         JSRef HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.href Mozilla HTMLLinkElement.href documentation> 
-htmlLinkElementGetHref ::
-                       (MonadIO m, IsHTMLLinkElement self, FromJSString result) =>
-                         self -> m result
-htmlLinkElementGetHref self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_link_element_get_href
-            (unHTMLLinkElement (toHTMLLinkElement self))))
+getHref ::
+        (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getHref self
+  = liftIO (fromJSString <$> (js_getHref (unHTMLLinkElement self)))
  
 foreign import javascript unsafe "$1[\"hreflang\"] = $2;"
-        ghcjs_dom_html_link_element_set_hreflang ::
-        JSRef HTMLLinkElement -> JSString -> IO ()
+        js_setHreflang :: JSRef HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.hreflang Mozilla HTMLLinkElement.hreflang documentation> 
-htmlLinkElementSetHreflang ::
-                           (MonadIO m, IsHTMLLinkElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlLinkElementSetHreflang self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_hreflang
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         (toJSString val))
+setHreflang ::
+            (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setHreflang self val
+  = liftIO (js_setHreflang (unHTMLLinkElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"hreflang\"]"
-        ghcjs_dom_html_link_element_get_hreflang ::
-        JSRef HTMLLinkElement -> IO JSString
+foreign import javascript unsafe "$1[\"hreflang\"]" js_getHreflang
+        :: JSRef HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.hreflang Mozilla HTMLLinkElement.hreflang documentation> 
-htmlLinkElementGetHreflang ::
-                           (MonadIO m, IsHTMLLinkElement self, FromJSString result) =>
-                             self -> m result
-htmlLinkElementGetHreflang self
+getHreflang ::
+            (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getHreflang self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_link_element_get_hreflang
-            (unHTMLLinkElement (toHTMLLinkElement self))))
+      (fromJSString <$> (js_getHreflang (unHTMLLinkElement self)))
  
-foreign import javascript unsafe "$1[\"media\"] = $2;"
-        ghcjs_dom_html_link_element_set_media ::
-        JSRef HTMLLinkElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"media\"] = $2;" js_setMedia
+        :: JSRef HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.media Mozilla HTMLLinkElement.media documentation> 
-htmlLinkElementSetMedia ::
-                        (MonadIO m, IsHTMLLinkElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlLinkElementSetMedia self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_media
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         (toJSString val))
+setMedia ::
+         (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setMedia self val
+  = liftIO (js_setMedia (unHTMLLinkElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"media\"]"
-        ghcjs_dom_html_link_element_get_media ::
+foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
         JSRef HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.media Mozilla HTMLLinkElement.media documentation> 
-htmlLinkElementGetMedia ::
-                        (MonadIO m, IsHTMLLinkElement self, FromJSString result) =>
-                          self -> m result
-htmlLinkElementGetMedia self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_link_element_get_media
-            (unHTMLLinkElement (toHTMLLinkElement self))))
+getMedia ::
+         (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getMedia self
+  = liftIO (fromJSString <$> (js_getMedia (unHTMLLinkElement self)))
  
-foreign import javascript unsafe "$1[\"rel\"] = $2;"
-        ghcjs_dom_html_link_element_set_rel ::
+foreign import javascript unsafe "$1[\"rel\"] = $2;" js_setRel ::
         JSRef HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rel Mozilla HTMLLinkElement.rel documentation> 
-htmlLinkElementSetRel ::
-                      (MonadIO m, IsHTMLLinkElement self, ToJSString val) =>
-                        self -> val -> m ()
-htmlLinkElementSetRel self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_rel
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         (toJSString val))
+setRel ::
+       (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setRel self val
+  = liftIO (js_setRel (unHTMLLinkElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"rel\"]"
-        ghcjs_dom_html_link_element_get_rel ::
+foreign import javascript unsafe "$1[\"rel\"]" js_getRel ::
         JSRef HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rel Mozilla HTMLLinkElement.rel documentation> 
-htmlLinkElementGetRel ::
-                      (MonadIO m, IsHTMLLinkElement self, FromJSString result) =>
-                        self -> m result
-htmlLinkElementGetRel self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_link_element_get_rel
-            (unHTMLLinkElement (toHTMLLinkElement self))))
+getRel ::
+       (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getRel self
+  = liftIO (fromJSString <$> (js_getRel (unHTMLLinkElement self)))
  
-foreign import javascript unsafe "$1[\"rev\"] = $2;"
-        ghcjs_dom_html_link_element_set_rev ::
+foreign import javascript unsafe "$1[\"rev\"] = $2;" js_setRev ::
         JSRef HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rev Mozilla HTMLLinkElement.rev documentation> 
-htmlLinkElementSetRev ::
-                      (MonadIO m, IsHTMLLinkElement self, ToJSString val) =>
-                        self -> val -> m ()
-htmlLinkElementSetRev self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_rev
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         (toJSString val))
+setRev ::
+       (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setRev self val
+  = liftIO (js_setRev (unHTMLLinkElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"rev\"]"
-        ghcjs_dom_html_link_element_get_rev ::
+foreign import javascript unsafe "$1[\"rev\"]" js_getRev ::
         JSRef HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rev Mozilla HTMLLinkElement.rev documentation> 
-htmlLinkElementGetRev ::
-                      (MonadIO m, IsHTMLLinkElement self, FromJSString result) =>
-                        self -> m result
-htmlLinkElementGetRev self
+getRev ::
+       (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getRev self
+  = liftIO (fromJSString <$> (js_getRev (unHTMLLinkElement self)))
+ 
+foreign import javascript unsafe "$1[\"sizes\"] = $2;" js_setSizes
+        :: JSRef HTMLLinkElement -> JSRef DOMSettableTokenList -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
+setSizes ::
+         (MonadIO m) =>
+           HTMLLinkElement -> Maybe DOMSettableTokenList -> m ()
+setSizes self val
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_link_element_get_rev
-            (unHTMLLinkElement (toHTMLLinkElement self))))
+      (js_setSizes (unHTMLLinkElement self)
+         (maybe jsNull unDOMSettableTokenList val))
+ 
+foreign import javascript unsafe "$1[\"sizes\"]" js_getSizes ::
+        JSRef HTMLLinkElement -> IO (JSRef DOMSettableTokenList)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
+getSizes ::
+         (MonadIO m) => HTMLLinkElement -> m (Maybe DOMSettableTokenList)
+getSizes self
+  = liftIO ((js_getSizes (unHTMLLinkElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
-        ghcjs_dom_html_link_element_set_target ::
-        JSRef HTMLLinkElement -> JSString -> IO ()
+        js_setTarget :: JSRef HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.target Mozilla HTMLLinkElement.target documentation> 
-htmlLinkElementSetTarget ::
-                         (MonadIO m, IsHTMLLinkElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlLinkElementSetTarget self val
-  = liftIO
-      (ghcjs_dom_html_link_element_set_target
-         (unHTMLLinkElement (toHTMLLinkElement self))
-         (toJSString val))
+setTarget ::
+          (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setTarget self val
+  = liftIO (js_setTarget (unHTMLLinkElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"target\"]"
-        ghcjs_dom_html_link_element_get_target ::
+foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
         JSRef HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.target Mozilla HTMLLinkElement.target documentation> 
-htmlLinkElementGetTarget ::
-                         (MonadIO m, IsHTMLLinkElement self, FromJSString result) =>
-                           self -> m result
-htmlLinkElementGetTarget self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_link_element_get_target
-            (unHTMLLinkElement (toHTMLLinkElement self))))
+getTarget ::
+          (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getTarget self
+  = liftIO (fromJSString <$> (js_getTarget (unHTMLLinkElement self)))
  
-foreign import javascript unsafe "$1[\"sheet\"]"
-        ghcjs_dom_html_link_element_get_sheet ::
+foreign import javascript unsafe "$1[\"sheet\"]" js_getSheet ::
         JSRef HTMLLinkElement -> IO (JSRef StyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sheet Mozilla HTMLLinkElement.sheet documentation> 
-htmlLinkElementGetSheet ::
-                        (MonadIO m, IsHTMLLinkElement self) => self -> m (Maybe StyleSheet)
-htmlLinkElementGetSheet self
-  = liftIO
-      ((ghcjs_dom_html_link_element_get_sheet
-          (unHTMLLinkElement (toHTMLLinkElement self)))
-         >>= fromJSRef)
+getSheet :: (MonadIO m) => HTMLLinkElement -> m (Maybe StyleSheet)
+getSheet self
+  = liftIO ((js_getSheet (unHTMLLinkElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"relList\"]"
-        ghcjs_dom_html_link_element_get_rel_list ::
+foreign import javascript unsafe "$1[\"relList\"]" js_getRelList ::
         JSRef HTMLLinkElement -> IO (JSRef DOMTokenList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.relList Mozilla HTMLLinkElement.relList documentation> 
-htmlLinkElementGetRelList ::
-                          (MonadIO m, IsHTMLLinkElement self) =>
-                            self -> m (Maybe DOMTokenList)
-htmlLinkElementGetRelList self
-  = liftIO
-      ((ghcjs_dom_html_link_element_get_rel_list
-          (unHTMLLinkElement (toHTMLLinkElement self)))
-         >>= fromJSRef)
+getRelList ::
+           (MonadIO m) => HTMLLinkElement -> m (Maybe DOMTokenList)
+getRelList self
+  = liftIO ((js_getRelList (unHTMLLinkElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLLinkElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLLinkElement

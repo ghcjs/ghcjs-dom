@@ -1,52 +1,26 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.PerformanceTiming
-       (ghcjs_dom_performance_timing_get_navigation_start,
-        performanceTimingGetNavigationStart,
-        ghcjs_dom_performance_timing_get_unload_event_start,
-        performanceTimingGetUnloadEventStart,
-        ghcjs_dom_performance_timing_get_unload_event_end,
-        performanceTimingGetUnloadEventEnd,
-        ghcjs_dom_performance_timing_get_redirect_start,
-        performanceTimingGetRedirectStart,
-        ghcjs_dom_performance_timing_get_redirect_end,
-        performanceTimingGetRedirectEnd,
-        ghcjs_dom_performance_timing_get_fetch_start,
-        performanceTimingGetFetchStart,
-        ghcjs_dom_performance_timing_get_domain_lookup_start,
-        performanceTimingGetDomainLookupStart,
-        ghcjs_dom_performance_timing_get_domain_lookup_end,
-        performanceTimingGetDomainLookupEnd,
-        ghcjs_dom_performance_timing_get_connect_start,
-        performanceTimingGetConnectStart,
-        ghcjs_dom_performance_timing_get_connect_end,
-        performanceTimingGetConnectEnd,
-        ghcjs_dom_performance_timing_get_secure_connection_start,
-        performanceTimingGetSecureConnectionStart,
-        ghcjs_dom_performance_timing_get_request_start,
-        performanceTimingGetRequestStart,
-        ghcjs_dom_performance_timing_get_response_start,
-        performanceTimingGetResponseStart,
-        ghcjs_dom_performance_timing_get_response_end,
-        performanceTimingGetResponseEnd,
-        ghcjs_dom_performance_timing_get_dom_loading,
-        performanceTimingGetDomLoading,
-        ghcjs_dom_performance_timing_get_dom_interactive,
-        performanceTimingGetDomInteractive,
-        ghcjs_dom_performance_timing_get_dom_content_loaded_event_start,
-        performanceTimingGetDomContentLoadedEventStart,
-        ghcjs_dom_performance_timing_get_dom_content_loaded_event_end,
-        performanceTimingGetDomContentLoadedEventEnd,
-        ghcjs_dom_performance_timing_get_dom_complete,
-        performanceTimingGetDomComplete,
-        ghcjs_dom_performance_timing_get_load_event_start,
-        performanceTimingGetLoadEventStart,
-        ghcjs_dom_performance_timing_get_load_event_end,
-        performanceTimingGetLoadEventEnd, PerformanceTiming,
-        IsPerformanceTiming, castToPerformanceTiming,
-        gTypePerformanceTiming, toPerformanceTiming)
+       (js_getNavigationStart, getNavigationStart, js_getUnloadEventStart,
+        getUnloadEventStart, js_getUnloadEventEnd, getUnloadEventEnd,
+        js_getRedirectStart, getRedirectStart, js_getRedirectEnd,
+        getRedirectEnd, js_getFetchStart, getFetchStart,
+        js_getDomainLookupStart, getDomainLookupStart,
+        js_getDomainLookupEnd, getDomainLookupEnd, js_getConnectStart,
+        getConnectStart, js_getConnectEnd, getConnectEnd,
+        js_getSecureConnectionStart, getSecureConnectionStart,
+        js_getRequestStart, getRequestStart, js_getResponseStart,
+        getResponseStart, js_getResponseEnd, getResponseEnd,
+        js_getDomLoading, getDomLoading, js_getDomInteractive,
+        getDomInteractive, js_getDomContentLoadedEventStart,
+        getDomContentLoadedEventStart, js_getDomContentLoadedEventEnd,
+        getDomContentLoadedEventEnd, js_getDomComplete, getDomComplete,
+        js_getLoadEventStart, getLoadEventStart, js_getLoadEventEnd,
+        getLoadEventEnd, PerformanceTiming, castToPerformanceTiming,
+        gTypePerformanceTiming)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -56,285 +30,202 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"navigationStart\"]"
-        ghcjs_dom_performance_timing_get_navigation_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getNavigationStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.navigationStart Mozilla PerformanceTiming.navigationStart documentation> 
-performanceTimingGetNavigationStart ::
-                                    (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetNavigationStart self
+getNavigationStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getNavigationStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_navigation_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getNavigationStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"unloadEventStart\"]"
-        ghcjs_dom_performance_timing_get_unload_event_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getUnloadEventStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.unloadEventStart Mozilla PerformanceTiming.unloadEventStart documentation> 
-performanceTimingGetUnloadEventStart ::
-                                     (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetUnloadEventStart self
+getUnloadEventStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getUnloadEventStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_unload_event_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getUnloadEventStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"unloadEventEnd\"]"
-        ghcjs_dom_performance_timing_get_unload_event_end ::
-        JSRef PerformanceTiming -> IO Double
+        js_getUnloadEventEnd :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.unloadEventEnd Mozilla PerformanceTiming.unloadEventEnd documentation> 
-performanceTimingGetUnloadEventEnd ::
-                                   (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetUnloadEventEnd self
+getUnloadEventEnd :: (MonadIO m) => PerformanceTiming -> m Word64
+getUnloadEventEnd self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_unload_event_end
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getUnloadEventEnd (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"redirectStart\"]"
-        ghcjs_dom_performance_timing_get_redirect_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getRedirectStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.redirectStart Mozilla PerformanceTiming.redirectStart documentation> 
-performanceTimingGetRedirectStart ::
-                                  (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetRedirectStart self
+getRedirectStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getRedirectStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_redirect_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getRedirectStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"redirectEnd\"]"
-        ghcjs_dom_performance_timing_get_redirect_end ::
-        JSRef PerformanceTiming -> IO Double
+        js_getRedirectEnd :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.redirectEnd Mozilla PerformanceTiming.redirectEnd documentation> 
-performanceTimingGetRedirectEnd ::
-                                (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetRedirectEnd self
-  = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_redirect_end
-            (unPerformanceTiming (toPerformanceTiming self))))
+getRedirectEnd :: (MonadIO m) => PerformanceTiming -> m Word64
+getRedirectEnd self
+  = liftIO (round <$> (js_getRedirectEnd (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"fetchStart\"]"
-        ghcjs_dom_performance_timing_get_fetch_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getFetchStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.fetchStart Mozilla PerformanceTiming.fetchStart documentation> 
-performanceTimingGetFetchStart ::
-                               (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetFetchStart self
-  = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_fetch_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+getFetchStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getFetchStart self
+  = liftIO (round <$> (js_getFetchStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"domainLookupStart\"]"
-        ghcjs_dom_performance_timing_get_domain_lookup_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getDomainLookupStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.domainLookupStart Mozilla PerformanceTiming.domainLookupStart documentation> 
-performanceTimingGetDomainLookupStart ::
-                                      (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetDomainLookupStart self
+getDomainLookupStart ::
+                     (MonadIO m) => PerformanceTiming -> m Word64
+getDomainLookupStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_domain_lookup_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getDomainLookupStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"domainLookupEnd\"]"
-        ghcjs_dom_performance_timing_get_domain_lookup_end ::
-        JSRef PerformanceTiming -> IO Double
+        js_getDomainLookupEnd :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.domainLookupEnd Mozilla PerformanceTiming.domainLookupEnd documentation> 
-performanceTimingGetDomainLookupEnd ::
-                                    (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetDomainLookupEnd self
+getDomainLookupEnd :: (MonadIO m) => PerformanceTiming -> m Word64
+getDomainLookupEnd self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_domain_lookup_end
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getDomainLookupEnd (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"connectStart\"]"
-        ghcjs_dom_performance_timing_get_connect_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getConnectStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.connectStart Mozilla PerformanceTiming.connectStart documentation> 
-performanceTimingGetConnectStart ::
-                                 (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetConnectStart self
+getConnectStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getConnectStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_connect_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getConnectStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"connectEnd\"]"
-        ghcjs_dom_performance_timing_get_connect_end ::
-        JSRef PerformanceTiming -> IO Double
+        js_getConnectEnd :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.connectEnd Mozilla PerformanceTiming.connectEnd documentation> 
-performanceTimingGetConnectEnd ::
-                               (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetConnectEnd self
-  = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_connect_end
-            (unPerformanceTiming (toPerformanceTiming self))))
+getConnectEnd :: (MonadIO m) => PerformanceTiming -> m Word64
+getConnectEnd self
+  = liftIO (round <$> (js_getConnectEnd (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"secureConnectionStart\"]"
-        ghcjs_dom_performance_timing_get_secure_connection_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getSecureConnectionStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.secureConnectionStart Mozilla PerformanceTiming.secureConnectionStart documentation> 
-performanceTimingGetSecureConnectionStart ::
-                                          (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetSecureConnectionStart self
+getSecureConnectionStart ::
+                         (MonadIO m) => PerformanceTiming -> m Word64
+getSecureConnectionStart self
   = liftIO
       (round <$>
-         (ghcjs_dom_performance_timing_get_secure_connection_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+         (js_getSecureConnectionStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"requestStart\"]"
-        ghcjs_dom_performance_timing_get_request_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getRequestStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.requestStart Mozilla PerformanceTiming.requestStart documentation> 
-performanceTimingGetRequestStart ::
-                                 (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetRequestStart self
+getRequestStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getRequestStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_request_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getRequestStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"responseStart\"]"
-        ghcjs_dom_performance_timing_get_response_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getResponseStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.responseStart Mozilla PerformanceTiming.responseStart documentation> 
-performanceTimingGetResponseStart ::
-                                  (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetResponseStart self
+getResponseStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getResponseStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_response_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getResponseStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"responseEnd\"]"
-        ghcjs_dom_performance_timing_get_response_end ::
-        JSRef PerformanceTiming -> IO Double
+        js_getResponseEnd :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.responseEnd Mozilla PerformanceTiming.responseEnd documentation> 
-performanceTimingGetResponseEnd ::
-                                (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetResponseEnd self
-  = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_response_end
-            (unPerformanceTiming (toPerformanceTiming self))))
+getResponseEnd :: (MonadIO m) => PerformanceTiming -> m Word64
+getResponseEnd self
+  = liftIO (round <$> (js_getResponseEnd (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"domLoading\"]"
-        ghcjs_dom_performance_timing_get_dom_loading ::
-        JSRef PerformanceTiming -> IO Double
+        js_getDomLoading :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.domLoading Mozilla PerformanceTiming.domLoading documentation> 
-performanceTimingGetDomLoading ::
-                               (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetDomLoading self
-  = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_dom_loading
-            (unPerformanceTiming (toPerformanceTiming self))))
+getDomLoading :: (MonadIO m) => PerformanceTiming -> m Word64
+getDomLoading self
+  = liftIO (round <$> (js_getDomLoading (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"domInteractive\"]"
-        ghcjs_dom_performance_timing_get_dom_interactive ::
-        JSRef PerformanceTiming -> IO Double
+        js_getDomInteractive :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.domInteractive Mozilla PerformanceTiming.domInteractive documentation> 
-performanceTimingGetDomInteractive ::
-                                   (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetDomInteractive self
+getDomInteractive :: (MonadIO m) => PerformanceTiming -> m Word64
+getDomInteractive self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_dom_interactive
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getDomInteractive (unPerformanceTiming self)))
  
 foreign import javascript unsafe
         "$1[\"domContentLoadedEventStart\"]"
-        ghcjs_dom_performance_timing_get_dom_content_loaded_event_start ::
+        js_getDomContentLoadedEventStart ::
         JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.domContentLoadedEventStart Mozilla PerformanceTiming.domContentLoadedEventStart documentation> 
-performanceTimingGetDomContentLoadedEventStart ::
-                                               (MonadIO m, IsPerformanceTiming self) =>
-                                                 self -> m Word64
-performanceTimingGetDomContentLoadedEventStart self
+getDomContentLoadedEventStart ::
+                              (MonadIO m) => PerformanceTiming -> m Word64
+getDomContentLoadedEventStart self
   = liftIO
       (round <$>
-         (ghcjs_dom_performance_timing_get_dom_content_loaded_event_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+         (js_getDomContentLoadedEventStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"domContentLoadedEventEnd\"]"
-        ghcjs_dom_performance_timing_get_dom_content_loaded_event_end ::
+        js_getDomContentLoadedEventEnd ::
         JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.domContentLoadedEventEnd Mozilla PerformanceTiming.domContentLoadedEventEnd documentation> 
-performanceTimingGetDomContentLoadedEventEnd ::
-                                             (MonadIO m, IsPerformanceTiming self) =>
-                                               self -> m Word64
-performanceTimingGetDomContentLoadedEventEnd self
+getDomContentLoadedEventEnd ::
+                            (MonadIO m) => PerformanceTiming -> m Word64
+getDomContentLoadedEventEnd self
   = liftIO
       (round <$>
-         (ghcjs_dom_performance_timing_get_dom_content_loaded_event_end
-            (unPerformanceTiming (toPerformanceTiming self))))
+         (js_getDomContentLoadedEventEnd (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"domComplete\"]"
-        ghcjs_dom_performance_timing_get_dom_complete ::
-        JSRef PerformanceTiming -> IO Double
+        js_getDomComplete :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.domComplete Mozilla PerformanceTiming.domComplete documentation> 
-performanceTimingGetDomComplete ::
-                                (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetDomComplete self
-  = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_dom_complete
-            (unPerformanceTiming (toPerformanceTiming self))))
+getDomComplete :: (MonadIO m) => PerformanceTiming -> m Word64
+getDomComplete self
+  = liftIO (round <$> (js_getDomComplete (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"loadEventStart\"]"
-        ghcjs_dom_performance_timing_get_load_event_start ::
-        JSRef PerformanceTiming -> IO Double
+        js_getLoadEventStart :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.loadEventStart Mozilla PerformanceTiming.loadEventStart documentation> 
-performanceTimingGetLoadEventStart ::
-                                   (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetLoadEventStart self
+getLoadEventStart :: (MonadIO m) => PerformanceTiming -> m Word64
+getLoadEventStart self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_load_event_start
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getLoadEventStart (unPerformanceTiming self)))
  
 foreign import javascript unsafe "$1[\"loadEventEnd\"]"
-        ghcjs_dom_performance_timing_get_load_event_end ::
-        JSRef PerformanceTiming -> IO Double
+        js_getLoadEventEnd :: JSRef PerformanceTiming -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming.loadEventEnd Mozilla PerformanceTiming.loadEventEnd documentation> 
-performanceTimingGetLoadEventEnd ::
-                                 (MonadIO m, IsPerformanceTiming self) => self -> m Word64
-performanceTimingGetLoadEventEnd self
+getLoadEventEnd :: (MonadIO m) => PerformanceTiming -> m Word64
+getLoadEventEnd self
   = liftIO
-      (round <$>
-         (ghcjs_dom_performance_timing_get_load_event_end
-            (unPerformanceTiming (toPerformanceTiming self))))
+      (round <$> (js_getLoadEventEnd (unPerformanceTiming self)))
 #else
 module GHCJS.DOM.PerformanceTiming (
   ) where

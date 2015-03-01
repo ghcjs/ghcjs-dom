@@ -1,47 +1,20 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AudioBufferSourceNode
-       (ghcjs_dom_audio_buffer_source_node_start,
-        audioBufferSourceNodeStart,
-        ghcjs_dom_audio_buffer_source_node_stop, audioBufferSourceNodeStop,
-        ghcjs_dom_audio_buffer_source_node_note_on,
-        audioBufferSourceNodeNoteOn,
-        ghcjs_dom_audio_buffer_source_node_note_grain_on,
-        audioBufferSourceNodeNoteGrainOn,
-        ghcjs_dom_audio_buffer_source_node_note_off,
-        audioBufferSourceNodeNoteOff, cUNSCHEDULED_STATE, cSCHEDULED_STATE,
-        cPLAYING_STATE, cFINISHED_STATE,
-        ghcjs_dom_audio_buffer_source_node_set_buffer,
-        audioBufferSourceNodeSetBuffer,
-        ghcjs_dom_audio_buffer_source_node_get_buffer,
-        audioBufferSourceNodeGetBuffer,
-        ghcjs_dom_audio_buffer_source_node_get_playback_state,
-        audioBufferSourceNodeGetPlaybackState,
-        ghcjs_dom_audio_buffer_source_node_get_gain,
-        audioBufferSourceNodeGetGain,
-        ghcjs_dom_audio_buffer_source_node_get_playback_rate,
-        audioBufferSourceNodeGetPlaybackRate,
-        ghcjs_dom_audio_buffer_source_node_set_loop,
-        audioBufferSourceNodeSetLoop,
-        ghcjs_dom_audio_buffer_source_node_get_loop,
-        audioBufferSourceNodeGetLoop,
-        ghcjs_dom_audio_buffer_source_node_set_loop_start,
-        audioBufferSourceNodeSetLoopStart,
-        ghcjs_dom_audio_buffer_source_node_get_loop_start,
-        audioBufferSourceNodeGetLoopStart,
-        ghcjs_dom_audio_buffer_source_node_set_loop_end,
-        audioBufferSourceNodeSetLoopEnd,
-        ghcjs_dom_audio_buffer_source_node_get_loop_end,
-        audioBufferSourceNodeGetLoopEnd,
-        ghcjs_dom_audio_buffer_source_node_set_looping,
-        audioBufferSourceNodeSetLooping,
-        ghcjs_dom_audio_buffer_source_node_get_looping,
-        audioBufferSourceNodeGetLooping, audioBufferSourceNodeEnded,
-        AudioBufferSourceNode, IsAudioBufferSourceNode,
-        castToAudioBufferSourceNode, gTypeAudioBufferSourceNode,
-        toAudioBufferSourceNode)
+       (js_start, start, js_stop, stop, js_noteOn, noteOn, js_noteGrainOn,
+        noteGrainOn, js_noteOff, noteOff, pattern UNSCHEDULED_STATE,
+        pattern SCHEDULED_STATE, pattern PLAYING_STATE,
+        pattern FINISHED_STATE, js_setBuffer, setBuffer, js_getBuffer,
+        getBuffer, js_getPlaybackState, getPlaybackState, js_getGain,
+        getGain, js_getPlaybackRate, getPlaybackRate, js_setLoop, setLoop,
+        js_getLoop, getLoop, js_setLoopStart, setLoopStart,
+        js_getLoopStart, getLoopStart, js_setLoopEnd, setLoopEnd,
+        js_getLoopEnd, getLoopEnd, js_setLooping, setLooping,
+        js_getLooping, getLooping, ended, AudioBufferSourceNode,
+        castToAudioBufferSourceNode, gTypeAudioBufferSourceNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -51,260 +24,183 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"start\"]($2, $3, $4)"
-        ghcjs_dom_audio_buffer_source_node_start ::
+        js_start ::
         JSRef AudioBufferSourceNode -> Double -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.start Mozilla AudioBufferSourceNode.start documentation> 
-audioBufferSourceNodeStart ::
-                           (MonadIO m, IsAudioBufferSourceNode self) =>
-                             self -> Double -> Double -> Double -> m ()
-audioBufferSourceNodeStart self when grainOffset grainDuration
+start ::
+      (MonadIO m) =>
+        AudioBufferSourceNode -> Double -> Double -> Double -> m ()
+start self when grainOffset grainDuration
   = liftIO
-      (ghcjs_dom_audio_buffer_source_node_start
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         when
-         grainOffset
+      (js_start (unAudioBufferSourceNode self) when grainOffset
          grainDuration)
  
-foreign import javascript unsafe "$1[\"stop\"]($2)"
-        ghcjs_dom_audio_buffer_source_node_stop ::
+foreign import javascript unsafe "$1[\"stop\"]($2)" js_stop ::
         JSRef AudioBufferSourceNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.stop Mozilla AudioBufferSourceNode.stop documentation> 
-audioBufferSourceNodeStop ::
-                          (MonadIO m, IsAudioBufferSourceNode self) => self -> Double -> m ()
-audioBufferSourceNodeStop self when
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_stop
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         when)
+stop :: (MonadIO m) => AudioBufferSourceNode -> Double -> m ()
+stop self when
+  = liftIO (js_stop (unAudioBufferSourceNode self) when)
  
-foreign import javascript unsafe "$1[\"noteOn\"]($2)"
-        ghcjs_dom_audio_buffer_source_node_note_on ::
+foreign import javascript unsafe "$1[\"noteOn\"]($2)" js_noteOn ::
         JSRef AudioBufferSourceNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.noteOn Mozilla AudioBufferSourceNode.noteOn documentation> 
-audioBufferSourceNodeNoteOn ::
-                            (MonadIO m, IsAudioBufferSourceNode self) => self -> Double -> m ()
-audioBufferSourceNodeNoteOn self when
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_note_on
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         when)
+noteOn :: (MonadIO m) => AudioBufferSourceNode -> Double -> m ()
+noteOn self when
+  = liftIO (js_noteOn (unAudioBufferSourceNode self) when)
  
 foreign import javascript unsafe "$1[\"noteGrainOn\"]($2, $3, $4)"
-        ghcjs_dom_audio_buffer_source_node_note_grain_on ::
+        js_noteGrainOn ::
         JSRef AudioBufferSourceNode -> Double -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.noteGrainOn Mozilla AudioBufferSourceNode.noteGrainOn documentation> 
-audioBufferSourceNodeNoteGrainOn ::
-                                 (MonadIO m, IsAudioBufferSourceNode self) =>
-                                   self -> Double -> Double -> Double -> m ()
-audioBufferSourceNodeNoteGrainOn self when grainOffset
-  grainDuration
+noteGrainOn ::
+            (MonadIO m) =>
+              AudioBufferSourceNode -> Double -> Double -> Double -> m ()
+noteGrainOn self when grainOffset grainDuration
   = liftIO
-      (ghcjs_dom_audio_buffer_source_node_note_grain_on
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         when
-         grainOffset
+      (js_noteGrainOn (unAudioBufferSourceNode self) when grainOffset
          grainDuration)
  
-foreign import javascript unsafe "$1[\"noteOff\"]($2)"
-        ghcjs_dom_audio_buffer_source_node_note_off ::
-        JSRef AudioBufferSourceNode -> Double -> IO ()
+foreign import javascript unsafe "$1[\"noteOff\"]($2)" js_noteOff
+        :: JSRef AudioBufferSourceNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.noteOff Mozilla AudioBufferSourceNode.noteOff documentation> 
-audioBufferSourceNodeNoteOff ::
-                             (MonadIO m, IsAudioBufferSourceNode self) => self -> Double -> m ()
-audioBufferSourceNodeNoteOff self when
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_note_off
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         when)
-cUNSCHEDULED_STATE = 0
-cSCHEDULED_STATE = 1
-cPLAYING_STATE = 2
-cFINISHED_STATE = 3
+noteOff :: (MonadIO m) => AudioBufferSourceNode -> Double -> m ()
+noteOff self when
+  = liftIO (js_noteOff (unAudioBufferSourceNode self) when)
+pattern UNSCHEDULED_STATE = 0
+pattern SCHEDULED_STATE = 1
+pattern PLAYING_STATE = 2
+pattern FINISHED_STATE = 3
  
 foreign import javascript unsafe "$1[\"buffer\"] = $2;"
-        ghcjs_dom_audio_buffer_source_node_set_buffer ::
+        js_setBuffer ::
         JSRef AudioBufferSourceNode -> JSRef AudioBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.buffer Mozilla AudioBufferSourceNode.buffer documentation> 
-audioBufferSourceNodeSetBuffer ::
-                               (MonadIO m, IsAudioBufferSourceNode self, IsAudioBuffer val) =>
-                                 self -> Maybe val -> m ()
-audioBufferSourceNodeSetBuffer self val
+setBuffer ::
+          (MonadIO m) => AudioBufferSourceNode -> Maybe AudioBuffer -> m ()
+setBuffer self val
   = liftIO
-      (ghcjs_dom_audio_buffer_source_node_set_buffer
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         (maybe jsNull (unAudioBuffer . toAudioBuffer) val))
+      (js_setBuffer (unAudioBufferSourceNode self)
+         (maybe jsNull unAudioBuffer val))
  
-foreign import javascript unsafe "$1[\"buffer\"]"
-        ghcjs_dom_audio_buffer_source_node_get_buffer ::
+foreign import javascript unsafe "$1[\"buffer\"]" js_getBuffer ::
         JSRef AudioBufferSourceNode -> IO (JSRef AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.buffer Mozilla AudioBufferSourceNode.buffer documentation> 
-audioBufferSourceNodeGetBuffer ::
-                               (MonadIO m, IsAudioBufferSourceNode self) =>
-                                 self -> m (Maybe AudioBuffer)
-audioBufferSourceNodeGetBuffer self
+getBuffer ::
+          (MonadIO m) => AudioBufferSourceNode -> m (Maybe AudioBuffer)
+getBuffer self
   = liftIO
-      ((ghcjs_dom_audio_buffer_source_node_get_buffer
-          (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
-         >>= fromJSRef)
+      ((js_getBuffer (unAudioBufferSourceNode self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"playbackState\"]"
-        ghcjs_dom_audio_buffer_source_node_get_playback_state ::
-        JSRef AudioBufferSourceNode -> IO Word
+        js_getPlaybackState :: JSRef AudioBufferSourceNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.playbackState Mozilla AudioBufferSourceNode.playbackState documentation> 
-audioBufferSourceNodeGetPlaybackState ::
-                                      (MonadIO m, IsAudioBufferSourceNode self) => self -> m Word
-audioBufferSourceNodeGetPlaybackState self
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_get_playback_state
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
+getPlaybackState :: (MonadIO m) => AudioBufferSourceNode -> m Word
+getPlaybackState self
+  = liftIO (js_getPlaybackState (unAudioBufferSourceNode self))
  
-foreign import javascript unsafe "$1[\"gain\"]"
-        ghcjs_dom_audio_buffer_source_node_get_gain ::
+foreign import javascript unsafe "$1[\"gain\"]" js_getGain ::
         JSRef AudioBufferSourceNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.gain Mozilla AudioBufferSourceNode.gain documentation> 
-audioBufferSourceNodeGetGain ::
-                             (MonadIO m, IsAudioBufferSourceNode self) =>
-                               self -> m (Maybe AudioParam)
-audioBufferSourceNodeGetGain self
+getGain ::
+        (MonadIO m) => AudioBufferSourceNode -> m (Maybe AudioParam)
+getGain self
   = liftIO
-      ((ghcjs_dom_audio_buffer_source_node_get_gain
-          (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
-         >>= fromJSRef)
+      ((js_getGain (unAudioBufferSourceNode self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"playbackRate\"]"
-        ghcjs_dom_audio_buffer_source_node_get_playback_rate ::
+        js_getPlaybackRate ::
         JSRef AudioBufferSourceNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.playbackRate Mozilla AudioBufferSourceNode.playbackRate documentation> 
-audioBufferSourceNodeGetPlaybackRate ::
-                                     (MonadIO m, IsAudioBufferSourceNode self) =>
-                                       self -> m (Maybe AudioParam)
-audioBufferSourceNodeGetPlaybackRate self
+getPlaybackRate ::
+                (MonadIO m) => AudioBufferSourceNode -> m (Maybe AudioParam)
+getPlaybackRate self
   = liftIO
-      ((ghcjs_dom_audio_buffer_source_node_get_playback_rate
-          (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
-         >>= fromJSRef)
+      ((js_getPlaybackRate (unAudioBufferSourceNode self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"loop\"] = $2;"
-        ghcjs_dom_audio_buffer_source_node_set_loop ::
+foreign import javascript unsafe "$1[\"loop\"] = $2;" js_setLoop ::
         JSRef AudioBufferSourceNode -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loop Mozilla AudioBufferSourceNode.loop documentation> 
-audioBufferSourceNodeSetLoop ::
-                             (MonadIO m, IsAudioBufferSourceNode self) => self -> Bool -> m ()
-audioBufferSourceNodeSetLoop self val
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_set_loop
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         val)
+setLoop :: (MonadIO m) => AudioBufferSourceNode -> Bool -> m ()
+setLoop self val
+  = liftIO (js_setLoop (unAudioBufferSourceNode self) val)
  
 foreign import javascript unsafe "($1[\"loop\"] ? 1 : 0)"
-        ghcjs_dom_audio_buffer_source_node_get_loop ::
-        JSRef AudioBufferSourceNode -> IO Bool
+        js_getLoop :: JSRef AudioBufferSourceNode -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loop Mozilla AudioBufferSourceNode.loop documentation> 
-audioBufferSourceNodeGetLoop ::
-                             (MonadIO m, IsAudioBufferSourceNode self) => self -> m Bool
-audioBufferSourceNodeGetLoop self
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_get_loop
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
+getLoop :: (MonadIO m) => AudioBufferSourceNode -> m Bool
+getLoop self = liftIO (js_getLoop (unAudioBufferSourceNode self))
  
 foreign import javascript unsafe "$1[\"loopStart\"] = $2;"
-        ghcjs_dom_audio_buffer_source_node_set_loop_start ::
-        JSRef AudioBufferSourceNode -> Double -> IO ()
+        js_setLoopStart :: JSRef AudioBufferSourceNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopStart Mozilla AudioBufferSourceNode.loopStart documentation> 
-audioBufferSourceNodeSetLoopStart ::
-                                  (MonadIO m, IsAudioBufferSourceNode self) =>
-                                    self -> Double -> m ()
-audioBufferSourceNodeSetLoopStart self val
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_set_loop_start
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         val)
+setLoopStart ::
+             (MonadIO m) => AudioBufferSourceNode -> Double -> m ()
+setLoopStart self val
+  = liftIO (js_setLoopStart (unAudioBufferSourceNode self) val)
  
 foreign import javascript unsafe "$1[\"loopStart\"]"
-        ghcjs_dom_audio_buffer_source_node_get_loop_start ::
-        JSRef AudioBufferSourceNode -> IO Double
+        js_getLoopStart :: JSRef AudioBufferSourceNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopStart Mozilla AudioBufferSourceNode.loopStart documentation> 
-audioBufferSourceNodeGetLoopStart ::
-                                  (MonadIO m, IsAudioBufferSourceNode self) => self -> m Double
-audioBufferSourceNodeGetLoopStart self
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_get_loop_start
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
+getLoopStart :: (MonadIO m) => AudioBufferSourceNode -> m Double
+getLoopStart self
+  = liftIO (js_getLoopStart (unAudioBufferSourceNode self))
  
 foreign import javascript unsafe "$1[\"loopEnd\"] = $2;"
-        ghcjs_dom_audio_buffer_source_node_set_loop_end ::
-        JSRef AudioBufferSourceNode -> Double -> IO ()
+        js_setLoopEnd :: JSRef AudioBufferSourceNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopEnd Mozilla AudioBufferSourceNode.loopEnd documentation> 
-audioBufferSourceNodeSetLoopEnd ::
-                                (MonadIO m, IsAudioBufferSourceNode self) => self -> Double -> m ()
-audioBufferSourceNodeSetLoopEnd self val
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_set_loop_end
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         val)
+setLoopEnd ::
+           (MonadIO m) => AudioBufferSourceNode -> Double -> m ()
+setLoopEnd self val
+  = liftIO (js_setLoopEnd (unAudioBufferSourceNode self) val)
  
-foreign import javascript unsafe "$1[\"loopEnd\"]"
-        ghcjs_dom_audio_buffer_source_node_get_loop_end ::
+foreign import javascript unsafe "$1[\"loopEnd\"]" js_getLoopEnd ::
         JSRef AudioBufferSourceNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopEnd Mozilla AudioBufferSourceNode.loopEnd documentation> 
-audioBufferSourceNodeGetLoopEnd ::
-                                (MonadIO m, IsAudioBufferSourceNode self) => self -> m Double
-audioBufferSourceNodeGetLoopEnd self
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_get_loop_end
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
+getLoopEnd :: (MonadIO m) => AudioBufferSourceNode -> m Double
+getLoopEnd self
+  = liftIO (js_getLoopEnd (unAudioBufferSourceNode self))
  
 foreign import javascript unsafe "$1[\"looping\"] = $2;"
-        ghcjs_dom_audio_buffer_source_node_set_looping ::
-        JSRef AudioBufferSourceNode -> Bool -> IO ()
+        js_setLooping :: JSRef AudioBufferSourceNode -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.looping Mozilla AudioBufferSourceNode.looping documentation> 
-audioBufferSourceNodeSetLooping ::
-                                (MonadIO m, IsAudioBufferSourceNode self) => self -> Bool -> m ()
-audioBufferSourceNodeSetLooping self val
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_set_looping
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self))
-         val)
+setLooping :: (MonadIO m) => AudioBufferSourceNode -> Bool -> m ()
+setLooping self val
+  = liftIO (js_setLooping (unAudioBufferSourceNode self) val)
  
 foreign import javascript unsafe "($1[\"looping\"] ? 1 : 0)"
-        ghcjs_dom_audio_buffer_source_node_get_looping ::
-        JSRef AudioBufferSourceNode -> IO Bool
+        js_getLooping :: JSRef AudioBufferSourceNode -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.looping Mozilla AudioBufferSourceNode.looping documentation> 
-audioBufferSourceNodeGetLooping ::
-                                (MonadIO m, IsAudioBufferSourceNode self) => self -> m Bool
-audioBufferSourceNodeGetLooping self
-  = liftIO
-      (ghcjs_dom_audio_buffer_source_node_get_looping
-         (unAudioBufferSourceNode (toAudioBufferSourceNode self)))
+getLooping :: (MonadIO m) => AudioBufferSourceNode -> m Bool
+getLooping self
+  = liftIO (js_getLooping (unAudioBufferSourceNode self))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.ended Mozilla AudioBufferSourceNode.ended documentation> 
-audioBufferSourceNodeEnded ::
-                           (IsAudioBufferSourceNode self, IsEventTarget self) =>
-                             EventName self Event
-audioBufferSourceNodeEnded = unsafeEventName (toJSString "ended")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.onended Mozilla AudioBufferSourceNode.onended documentation> 
+ended :: EventName AudioBufferSourceNode Event
+ended = unsafeEventName (toJSString "ended")
 #else
 module GHCJS.DOM.AudioBufferSourceNode (
   ) where

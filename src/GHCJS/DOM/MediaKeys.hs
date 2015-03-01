@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.MediaKeys
-       (ghcjs_dom_media_keys_new, mediaKeysNew,
-        ghcjs_dom_media_keys_create_session, mediaKeysCreateSession,
-        ghcjs_dom_media_keys_is_type_supported, mediaKeysIsTypeSupported,
-        ghcjs_dom_media_keys_get_key_system, mediaKeysGetKeySystem,
-        MediaKeys, IsMediaKeys, castToMediaKeys, gTypeMediaKeys,
-        toMediaKeys)
+       (js_newMediaKeys, newMediaKeys, js_createSession, createSession,
+        js_isTypeSupported, isTypeSupported, js_getKeySystem, getKeySystem,
+        MediaKeys, castToMediaKeys, gTypeMediaKeys)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,70 +16,57 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"WebKitMediaKeys\"]($1)" ghcjs_dom_media_keys_new ::
+        "new window[\"WebKitMediaKeys\"]($1)" js_newMediaKeys ::
         JSString -> IO (JSRef MediaKeys)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation> 
-mediaKeysNew ::
+newMediaKeys ::
              (MonadIO m, ToJSString keySystem) => keySystem -> m MediaKeys
-mediaKeysNew keySystem
+newMediaKeys keySystem
   = liftIO
-      (ghcjs_dom_media_keys_new (toJSString keySystem) >>=
-         fromJSRefUnchecked)
+      (js_newMediaKeys (toJSString keySystem) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"createSession\"]($2, $3)"
-        ghcjs_dom_media_keys_create_session ::
+        js_createSession ::
         JSRef MediaKeys ->
           JSString -> JSRef Uint8Array -> IO (JSRef MediaKeySession)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.createSession Mozilla WebKitMediaKeys.createSession documentation> 
-mediaKeysCreateSession ::
-                       (MonadIO m, IsMediaKeys self, ToJSString type',
-                        IsUint8Array initData) =>
-                         self -> type' -> Maybe initData -> m (Maybe MediaKeySession)
-mediaKeysCreateSession self type' initData
+createSession ::
+              (MonadIO m, ToJSString type', IsUint8Array initData) =>
+                MediaKeys -> type' -> Maybe initData -> m (Maybe MediaKeySession)
+createSession self type' initData
   = liftIO
-      ((ghcjs_dom_media_keys_create_session
-          (unMediaKeys (toMediaKeys self))
-          (toJSString type')
+      ((js_createSession (unMediaKeys self) (toJSString type')
           (maybe jsNull (unUint8Array . toUint8Array) initData))
          >>= fromJSRef)
  
 foreign import javascript unsafe
-        "($1[\"isTypeSupported\"]($2,\n$3) ? 1 : 0)"
-        ghcjs_dom_media_keys_is_type_supported ::
+        "($1[\"isTypeSupported\"]($2,\n$3) ? 1 : 0)" js_isTypeSupported ::
         JSRef MediaKeys -> JSString -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.isTypeSupported Mozilla WebKitMediaKeys.isTypeSupported documentation> 
-mediaKeysIsTypeSupported ::
-                         (MonadIO m, IsMediaKeys self, ToJSString keySystem,
-                          ToJSString type') =>
-                           self -> keySystem -> type' -> m Bool
-mediaKeysIsTypeSupported self keySystem type'
+isTypeSupported ::
+                (MonadIO m, ToJSString keySystem, ToJSString type') =>
+                  MediaKeys -> keySystem -> type' -> m Bool
+isTypeSupported self keySystem type'
   = liftIO
-      (ghcjs_dom_media_keys_is_type_supported
-         (unMediaKeys (toMediaKeys self))
-         (toJSString keySystem)
+      (js_isTypeSupported (unMediaKeys self) (toJSString keySystem)
          (toJSString type'))
  
 foreign import javascript unsafe "$1[\"keySystem\"]"
-        ghcjs_dom_media_keys_get_key_system ::
-        JSRef MediaKeys -> IO JSString
+        js_getKeySystem :: JSRef MediaKeys -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.keySystem Mozilla WebKitMediaKeys.keySystem documentation> 
-mediaKeysGetKeySystem ::
-                      (MonadIO m, IsMediaKeys self, FromJSString result) =>
-                        self -> m result
-mediaKeysGetKeySystem self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_media_keys_get_key_system
-            (unMediaKeys (toMediaKeys self))))
+getKeySystem ::
+             (MonadIO m, FromJSString result) => MediaKeys -> m result
+getKeySystem self
+  = liftIO (fromJSString <$> (js_getKeySystem (unMediaKeys self)))
 #else
 module GHCJS.DOM.MediaKeys (
   ) where

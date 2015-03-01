@@ -1,32 +1,17 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLBodyElement
-       (ghcjs_dom_html_body_element_set_a_link, htmlBodyElementSetALink,
-        ghcjs_dom_html_body_element_get_a_link, htmlBodyElementGetALink,
-        ghcjs_dom_html_body_element_set_background,
-        htmlBodyElementSetBackground,
-        ghcjs_dom_html_body_element_get_background,
-        htmlBodyElementGetBackground,
-        ghcjs_dom_html_body_element_set_bg_color,
-        htmlBodyElementSetBgColor,
-        ghcjs_dom_html_body_element_get_bg_color,
-        htmlBodyElementGetBgColor, ghcjs_dom_html_body_element_set_link,
-        htmlBodyElementSetLink, ghcjs_dom_html_body_element_get_link,
-        htmlBodyElementGetLink, ghcjs_dom_html_body_element_set_text,
-        htmlBodyElementSetText, ghcjs_dom_html_body_element_get_text,
-        htmlBodyElementGetText, ghcjs_dom_html_body_element_set_v_link,
-        htmlBodyElementSetVLink, ghcjs_dom_html_body_element_get_v_link,
-        htmlBodyElementGetVLink, htmlBodyElementBeforeUnload,
-        htmlBodyElementHashChange, htmlBodyElementMessage,
-        htmlBodyElementOffline, htmlBodyElementOnline,
-        htmlBodyElementPopState, htmlBodyElementResize,
-        htmlBodyElementStorage, htmlBodyElementUnload,
-        htmlBodyElementOrientationChange, htmlBodyElementBlur,
-        htmlBodyElementError, htmlBodyElementFocus, htmlBodyElementLoad,
-        HTMLBodyElement, IsHTMLBodyElement, castToHTMLBodyElement,
-        gTypeHTMLBodyElement, toHTMLBodyElement)
+       (js_setALink, setALink, js_getALink, getALink, js_setBackground,
+        setBackground, js_getBackground, getBackground, js_setBgColor,
+        setBgColor, js_getBgColor, getBgColor, js_setLink, setLink,
+        js_getLink, getLink, js_setText, setText, js_getText, getText,
+        js_setVLink, setVLink, js_getVLink, getVLink, beforeUnload,
+        hashChange, message, offline, online, popState, resize, storage,
+        unload, orientationChange, blur, error, focus, load,
+        HTMLBodyElement, castToHTMLBodyElement, gTypeHTMLBodyElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -36,264 +21,177 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"aLink\"] = $2;"
-        ghcjs_dom_html_body_element_set_a_link ::
-        JSRef HTMLBodyElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"aLink\"] = $2;" js_setALink
+        :: JSRef HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
-htmlBodyElementSetALink ::
-                        (MonadIO m, IsHTMLBodyElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlBodyElementSetALink self val
-  = liftIO
-      (ghcjs_dom_html_body_element_set_a_link
-         (unHTMLBodyElement (toHTMLBodyElement self))
-         (toJSString val))
+setALink ::
+         (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setALink self val
+  = liftIO (js_setALink (unHTMLBodyElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"aLink\"]"
-        ghcjs_dom_html_body_element_get_a_link ::
+foreign import javascript unsafe "$1[\"aLink\"]" js_getALink ::
         JSRef HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
-htmlBodyElementGetALink ::
-                        (MonadIO m, IsHTMLBodyElement self, FromJSString result) =>
-                          self -> m result
-htmlBodyElementGetALink self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_body_element_get_a_link
-            (unHTMLBodyElement (toHTMLBodyElement self))))
+getALink ::
+         (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getALink self
+  = liftIO (fromJSString <$> (js_getALink (unHTMLBodyElement self)))
  
 foreign import javascript unsafe "$1[\"background\"] = $2;"
-        ghcjs_dom_html_body_element_set_background ::
-        JSRef HTMLBodyElement -> JSString -> IO ()
+        js_setBackground :: JSRef HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.background Mozilla HTMLBodyElement.background documentation> 
-htmlBodyElementSetBackground ::
-                             (MonadIO m, IsHTMLBodyElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlBodyElementSetBackground self val
+setBackground ::
+              (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setBackground self val
   = liftIO
-      (ghcjs_dom_html_body_element_set_background
-         (unHTMLBodyElement (toHTMLBodyElement self))
-         (toJSString val))
+      (js_setBackground (unHTMLBodyElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"background\"]"
-        ghcjs_dom_html_body_element_get_background ::
-        JSRef HTMLBodyElement -> IO JSString
+        js_getBackground :: JSRef HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.background Mozilla HTMLBodyElement.background documentation> 
-htmlBodyElementGetBackground ::
-                             (MonadIO m, IsHTMLBodyElement self, FromJSString result) =>
-                               self -> m result
-htmlBodyElementGetBackground self
+getBackground ::
+              (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getBackground self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_body_element_get_background
-            (unHTMLBodyElement (toHTMLBodyElement self))))
+      (fromJSString <$> (js_getBackground (unHTMLBodyElement self)))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        ghcjs_dom_html_body_element_set_bg_color ::
-        JSRef HTMLBodyElement -> JSString -> IO ()
+        js_setBgColor :: JSRef HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
-htmlBodyElementSetBgColor ::
-                          (MonadIO m, IsHTMLBodyElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlBodyElementSetBgColor self val
-  = liftIO
-      (ghcjs_dom_html_body_element_set_bg_color
-         (unHTMLBodyElement (toHTMLBodyElement self))
-         (toJSString val))
+setBgColor ::
+           (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setBgColor self val
+  = liftIO (js_setBgColor (unHTMLBodyElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"bgColor\"]"
-        ghcjs_dom_html_body_element_get_bg_color ::
+foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
         JSRef HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
-htmlBodyElementGetBgColor ::
-                          (MonadIO m, IsHTMLBodyElement self, FromJSString result) =>
-                            self -> m result
-htmlBodyElementGetBgColor self
+getBgColor ::
+           (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getBgColor self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_body_element_get_bg_color
-            (unHTMLBodyElement (toHTMLBodyElement self))))
+      (fromJSString <$> (js_getBgColor (unHTMLBodyElement self)))
  
-foreign import javascript unsafe "$1[\"link\"] = $2;"
-        ghcjs_dom_html_body_element_set_link ::
+foreign import javascript unsafe "$1[\"link\"] = $2;" js_setLink ::
         JSRef HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
-htmlBodyElementSetLink ::
-                       (MonadIO m, IsHTMLBodyElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlBodyElementSetLink self val
-  = liftIO
-      (ghcjs_dom_html_body_element_set_link
-         (unHTMLBodyElement (toHTMLBodyElement self))
-         (toJSString val))
+setLink ::
+        (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setLink self val
+  = liftIO (js_setLink (unHTMLBodyElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"link\"]"
-        ghcjs_dom_html_body_element_get_link ::
+foreign import javascript unsafe "$1[\"link\"]" js_getLink ::
         JSRef HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
-htmlBodyElementGetLink ::
-                       (MonadIO m, IsHTMLBodyElement self, FromJSString result) =>
-                         self -> m result
-htmlBodyElementGetLink self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_body_element_get_link
-            (unHTMLBodyElement (toHTMLBodyElement self))))
+getLink ::
+        (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getLink self
+  = liftIO (fromJSString <$> (js_getLink (unHTMLBodyElement self)))
  
-foreign import javascript unsafe "$1[\"text\"] = $2;"
-        ghcjs_dom_html_body_element_set_text ::
+foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
         JSRef HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
-htmlBodyElementSetText ::
-                       (MonadIO m, IsHTMLBodyElement self, ToJSString val) =>
-                         self -> val -> m ()
-htmlBodyElementSetText self val
-  = liftIO
-      (ghcjs_dom_html_body_element_set_text
-         (unHTMLBodyElement (toHTMLBodyElement self))
-         (toJSString val))
+setText ::
+        (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setText self val
+  = liftIO (js_setText (unHTMLBodyElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"text\"]"
-        ghcjs_dom_html_body_element_get_text ::
+foreign import javascript unsafe "$1[\"text\"]" js_getText ::
         JSRef HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
-htmlBodyElementGetText ::
-                       (MonadIO m, IsHTMLBodyElement self, FromJSString result) =>
-                         self -> m result
-htmlBodyElementGetText self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_body_element_get_text
-            (unHTMLBodyElement (toHTMLBodyElement self))))
+getText ::
+        (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getText self
+  = liftIO (fromJSString <$> (js_getText (unHTMLBodyElement self)))
  
-foreign import javascript unsafe "$1[\"vLink\"] = $2;"
-        ghcjs_dom_html_body_element_set_v_link ::
-        JSRef HTMLBodyElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"vLink\"] = $2;" js_setVLink
+        :: JSRef HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
-htmlBodyElementSetVLink ::
-                        (MonadIO m, IsHTMLBodyElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlBodyElementSetVLink self val
-  = liftIO
-      (ghcjs_dom_html_body_element_set_v_link
-         (unHTMLBodyElement (toHTMLBodyElement self))
-         (toJSString val))
+setVLink ::
+         (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setVLink self val
+  = liftIO (js_setVLink (unHTMLBodyElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"vLink\"]"
-        ghcjs_dom_html_body_element_get_v_link ::
+foreign import javascript unsafe "$1[\"vLink\"]" js_getVLink ::
         JSRef HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
-htmlBodyElementGetVLink ::
-                        (MonadIO m, IsHTMLBodyElement self, FromJSString result) =>
-                          self -> m result
-htmlBodyElementGetVLink self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_body_element_get_v_link
-            (unHTMLBodyElement (toHTMLBodyElement self))))
+getVLink ::
+         (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getVLink self
+  = liftIO (fromJSString <$> (js_getVLink (unHTMLBodyElement self)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.beforeUnload Mozilla HTMLBodyElement.beforeUnload documentation> 
-htmlBodyElementBeforeUnload ::
-                            (IsHTMLBodyElement self, IsEventTarget self) =>
-                              EventName self BeforeUnloadEvent
-htmlBodyElementBeforeUnload
-  = unsafeEventName (toJSString "beforeunload")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onbeforeunload Mozilla HTMLBodyElement.onbeforeunload documentation> 
+beforeUnload :: EventName HTMLBodyElement BeforeUnloadEvent
+beforeUnload = unsafeEventName (toJSString "beforeunload")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.hashChange Mozilla HTMLBodyElement.hashChange documentation> 
-htmlBodyElementHashChange ::
-                          (IsHTMLBodyElement self, IsEventTarget self) =>
-                            EventName self HashChangeEvent
-htmlBodyElementHashChange
-  = unsafeEventName (toJSString "hashchange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onhashchange Mozilla HTMLBodyElement.onhashchange documentation> 
+hashChange :: EventName HTMLBodyElement HashChangeEvent
+hashChange = unsafeEventName (toJSString "hashchange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.message Mozilla HTMLBodyElement.message documentation> 
-htmlBodyElementMessage ::
-                       (IsHTMLBodyElement self, IsEventTarget self) =>
-                         EventName self MessageEvent
-htmlBodyElementMessage = unsafeEventName (toJSString "message")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onmessage Mozilla HTMLBodyElement.onmessage documentation> 
+message :: EventName HTMLBodyElement MessageEvent
+message = unsafeEventName (toJSString "message")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.offline Mozilla HTMLBodyElement.offline documentation> 
-htmlBodyElementOffline ::
-                       (IsHTMLBodyElement self, IsEventTarget self) =>
-                         EventName self Event
-htmlBodyElementOffline = unsafeEventName (toJSString "offline")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onoffline Mozilla HTMLBodyElement.onoffline documentation> 
+offline :: EventName HTMLBodyElement Event
+offline = unsafeEventName (toJSString "offline")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.online Mozilla HTMLBodyElement.online documentation> 
-htmlBodyElementOnline ::
-                      (IsHTMLBodyElement self, IsEventTarget self) =>
-                        EventName self Event
-htmlBodyElementOnline = unsafeEventName (toJSString "online")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.ononline Mozilla HTMLBodyElement.ononline documentation> 
+online :: EventName HTMLBodyElement Event
+online = unsafeEventName (toJSString "online")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.popState Mozilla HTMLBodyElement.popState documentation> 
-htmlBodyElementPopState ::
-                        (IsHTMLBodyElement self, IsEventTarget self) =>
-                          EventName self PopStateEvent
-htmlBodyElementPopState = unsafeEventName (toJSString "popstate")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onpopstate Mozilla HTMLBodyElement.onpopstate documentation> 
+popState :: EventName HTMLBodyElement PopStateEvent
+popState = unsafeEventName (toJSString "popstate")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.resize Mozilla HTMLBodyElement.resize documentation> 
-htmlBodyElementResize ::
-                      (IsHTMLBodyElement self, IsEventTarget self) =>
-                        EventName self UIEvent
-htmlBodyElementResize = unsafeEventName (toJSString "resize")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onresize Mozilla HTMLBodyElement.onresize documentation> 
+resize :: EventName HTMLBodyElement UIEvent
+resize = unsafeEventName (toJSString "resize")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.storage Mozilla HTMLBodyElement.storage documentation> 
-htmlBodyElementStorage ::
-                       (IsHTMLBodyElement self, IsEventTarget self) =>
-                         EventName self StorageEvent
-htmlBodyElementStorage = unsafeEventName (toJSString "storage")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onstorage Mozilla HTMLBodyElement.onstorage documentation> 
+storage :: EventName HTMLBodyElement StorageEvent
+storage = unsafeEventName (toJSString "storage")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.unload Mozilla HTMLBodyElement.unload documentation> 
-htmlBodyElementUnload ::
-                      (IsHTMLBodyElement self, IsEventTarget self) =>
-                        EventName self UIEvent
-htmlBodyElementUnload = unsafeEventName (toJSString "unload")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onunload Mozilla HTMLBodyElement.onunload documentation> 
+unload :: EventName HTMLBodyElement UIEvent
+unload = unsafeEventName (toJSString "unload")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.orientationChange Mozilla HTMLBodyElement.orientationChange documentation> 
-htmlBodyElementOrientationChange ::
-                                 (IsHTMLBodyElement self, IsEventTarget self) =>
-                                   EventName self Event
-htmlBodyElementOrientationChange
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onorientationchange Mozilla HTMLBodyElement.onorientationchange documentation> 
+orientationChange :: EventName HTMLBodyElement Event
+orientationChange
   = unsafeEventName (toJSString "orientationchange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.blur Mozilla HTMLBodyElement.blur documentation> 
-htmlBodyElementBlur ::
-                    (IsHTMLBodyElement self, IsEventTarget self) =>
-                      EventName self FocusEvent
-htmlBodyElementBlur = unsafeEventName (toJSString "blur")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onblur Mozilla HTMLBodyElement.onblur documentation> 
+blur :: EventName HTMLBodyElement FocusEvent
+blur = unsafeEventName (toJSString "blur")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.error Mozilla HTMLBodyElement.error documentation> 
-htmlBodyElementError ::
-                     (IsHTMLBodyElement self, IsEventTarget self) =>
-                       EventName self UIEvent
-htmlBodyElementError = unsafeEventName (toJSString "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onerror Mozilla HTMLBodyElement.onerror documentation> 
+error :: EventName HTMLBodyElement UIEvent
+error = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.focus Mozilla HTMLBodyElement.focus documentation> 
-htmlBodyElementFocus ::
-                     (IsHTMLBodyElement self, IsEventTarget self) =>
-                       EventName self FocusEvent
-htmlBodyElementFocus = unsafeEventName (toJSString "focus")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onfocus Mozilla HTMLBodyElement.onfocus documentation> 
+focus :: EventName HTMLBodyElement FocusEvent
+focus = unsafeEventName (toJSString "focus")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.load Mozilla HTMLBodyElement.load documentation> 
-htmlBodyElementLoad ::
-                    (IsHTMLBodyElement self, IsEventTarget self) =>
-                      EventName self UIEvent
-htmlBodyElementLoad = unsafeEventName (toJSString "load")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onload Mozilla HTMLBodyElement.onload documentation> 
+load :: EventName HTMLBodyElement UIEvent
+load = unsafeEventName (toJSString "load")
 #else
 module GHCJS.DOM.HTMLBodyElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLBodyElement

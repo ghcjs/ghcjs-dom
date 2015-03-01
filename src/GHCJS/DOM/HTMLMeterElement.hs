@@ -1,25 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMeterElement
-       (ghcjs_dom_html_meter_element_set_value, htmlMeterElementSetValue,
-        ghcjs_dom_html_meter_element_get_value, htmlMeterElementGetValue,
-        ghcjs_dom_html_meter_element_set_min, htmlMeterElementSetMin,
-        ghcjs_dom_html_meter_element_get_min, htmlMeterElementGetMin,
-        ghcjs_dom_html_meter_element_set_max, htmlMeterElementSetMax,
-        ghcjs_dom_html_meter_element_get_max, htmlMeterElementGetMax,
-        ghcjs_dom_html_meter_element_set_low, htmlMeterElementSetLow,
-        ghcjs_dom_html_meter_element_get_low, htmlMeterElementGetLow,
-        ghcjs_dom_html_meter_element_set_high, htmlMeterElementSetHigh,
-        ghcjs_dom_html_meter_element_get_high, htmlMeterElementGetHigh,
-        ghcjs_dom_html_meter_element_set_optimum,
-        htmlMeterElementSetOptimum,
-        ghcjs_dom_html_meter_element_get_optimum,
-        htmlMeterElementGetOptimum,
-        ghcjs_dom_html_meter_element_get_labels, htmlMeterElementGetLabels,
-        HTMLMeterElement, IsHTMLMeterElement, castToHTMLMeterElement,
-        gTypeHTMLMeterElement, toHTMLMeterElement)
+       (js_setValue, setValue, js_getValue, getValue, js_setMin, setMin,
+        js_getMin, getMin, js_setMax, setMax, js_getMax, getMax, js_setLow,
+        setLow, js_getLow, getLow, js_setHigh, setHigh, js_getHigh,
+        getHigh, js_setOptimum, setOptimum, js_getOptimum, getOptimum,
+        js_getLabels, getLabels, HTMLMeterElement, castToHTMLMeterElement,
+        gTypeHTMLMeterElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -29,172 +19,104 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"value\"] = $2;"
-        ghcjs_dom_html_meter_element_set_value ::
-        JSRef HTMLMeterElement -> Double -> IO ()
+foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+        :: JSRef HTMLMeterElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.value Mozilla HTMLMeterElement.value documentation> 
-htmlMeterElementSetValue ::
-                         (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
-htmlMeterElementSetValue self val
-  = liftIO
-      (ghcjs_dom_html_meter_element_set_value
-         (unHTMLMeterElement (toHTMLMeterElement self))
-         val)
+setValue :: (MonadIO m) => HTMLMeterElement -> Double -> m ()
+setValue self val
+  = liftIO (js_setValue (unHTMLMeterElement self) val)
  
-foreign import javascript unsafe "$1[\"value\"]"
-        ghcjs_dom_html_meter_element_get_value ::
+foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
         JSRef HTMLMeterElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.value Mozilla HTMLMeterElement.value documentation> 
-htmlMeterElementGetValue ::
-                         (MonadIO m, IsHTMLMeterElement self) => self -> m Double
-htmlMeterElementGetValue self
-  = liftIO
-      (ghcjs_dom_html_meter_element_get_value
-         (unHTMLMeterElement (toHTMLMeterElement self)))
+getValue :: (MonadIO m) => HTMLMeterElement -> m Double
+getValue self = liftIO (js_getValue (unHTMLMeterElement self))
  
-foreign import javascript unsafe "$1[\"min\"] = $2;"
-        ghcjs_dom_html_meter_element_set_min ::
+foreign import javascript unsafe "$1[\"min\"] = $2;" js_setMin ::
         JSRef HTMLMeterElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.min Mozilla HTMLMeterElement.min documentation> 
-htmlMeterElementSetMin ::
-                       (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
-htmlMeterElementSetMin self val
-  = liftIO
-      (ghcjs_dom_html_meter_element_set_min
-         (unHTMLMeterElement (toHTMLMeterElement self))
-         val)
+setMin :: (MonadIO m) => HTMLMeterElement -> Double -> m ()
+setMin self val = liftIO (js_setMin (unHTMLMeterElement self) val)
  
-foreign import javascript unsafe "$1[\"min\"]"
-        ghcjs_dom_html_meter_element_get_min ::
+foreign import javascript unsafe "$1[\"min\"]" js_getMin ::
         JSRef HTMLMeterElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.min Mozilla HTMLMeterElement.min documentation> 
-htmlMeterElementGetMin ::
-                       (MonadIO m, IsHTMLMeterElement self) => self -> m Double
-htmlMeterElementGetMin self
-  = liftIO
-      (ghcjs_dom_html_meter_element_get_min
-         (unHTMLMeterElement (toHTMLMeterElement self)))
+getMin :: (MonadIO m) => HTMLMeterElement -> m Double
+getMin self = liftIO (js_getMin (unHTMLMeterElement self))
  
-foreign import javascript unsafe "$1[\"max\"] = $2;"
-        ghcjs_dom_html_meter_element_set_max ::
+foreign import javascript unsafe "$1[\"max\"] = $2;" js_setMax ::
         JSRef HTMLMeterElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.max Mozilla HTMLMeterElement.max documentation> 
-htmlMeterElementSetMax ::
-                       (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
-htmlMeterElementSetMax self val
-  = liftIO
-      (ghcjs_dom_html_meter_element_set_max
-         (unHTMLMeterElement (toHTMLMeterElement self))
-         val)
+setMax :: (MonadIO m) => HTMLMeterElement -> Double -> m ()
+setMax self val = liftIO (js_setMax (unHTMLMeterElement self) val)
  
-foreign import javascript unsafe "$1[\"max\"]"
-        ghcjs_dom_html_meter_element_get_max ::
+foreign import javascript unsafe "$1[\"max\"]" js_getMax ::
         JSRef HTMLMeterElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.max Mozilla HTMLMeterElement.max documentation> 
-htmlMeterElementGetMax ::
-                       (MonadIO m, IsHTMLMeterElement self) => self -> m Double
-htmlMeterElementGetMax self
-  = liftIO
-      (ghcjs_dom_html_meter_element_get_max
-         (unHTMLMeterElement (toHTMLMeterElement self)))
+getMax :: (MonadIO m) => HTMLMeterElement -> m Double
+getMax self = liftIO (js_getMax (unHTMLMeterElement self))
  
-foreign import javascript unsafe "$1[\"low\"] = $2;"
-        ghcjs_dom_html_meter_element_set_low ::
+foreign import javascript unsafe "$1[\"low\"] = $2;" js_setLow ::
         JSRef HTMLMeterElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.low Mozilla HTMLMeterElement.low documentation> 
-htmlMeterElementSetLow ::
-                       (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
-htmlMeterElementSetLow self val
-  = liftIO
-      (ghcjs_dom_html_meter_element_set_low
-         (unHTMLMeterElement (toHTMLMeterElement self))
-         val)
+setLow :: (MonadIO m) => HTMLMeterElement -> Double -> m ()
+setLow self val = liftIO (js_setLow (unHTMLMeterElement self) val)
  
-foreign import javascript unsafe "$1[\"low\"]"
-        ghcjs_dom_html_meter_element_get_low ::
+foreign import javascript unsafe "$1[\"low\"]" js_getLow ::
         JSRef HTMLMeterElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.low Mozilla HTMLMeterElement.low documentation> 
-htmlMeterElementGetLow ::
-                       (MonadIO m, IsHTMLMeterElement self) => self -> m Double
-htmlMeterElementGetLow self
-  = liftIO
-      (ghcjs_dom_html_meter_element_get_low
-         (unHTMLMeterElement (toHTMLMeterElement self)))
+getLow :: (MonadIO m) => HTMLMeterElement -> m Double
+getLow self = liftIO (js_getLow (unHTMLMeterElement self))
  
-foreign import javascript unsafe "$1[\"high\"] = $2;"
-        ghcjs_dom_html_meter_element_set_high ::
+foreign import javascript unsafe "$1[\"high\"] = $2;" js_setHigh ::
         JSRef HTMLMeterElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.high Mozilla HTMLMeterElement.high documentation> 
-htmlMeterElementSetHigh ::
-                        (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
-htmlMeterElementSetHigh self val
-  = liftIO
-      (ghcjs_dom_html_meter_element_set_high
-         (unHTMLMeterElement (toHTMLMeterElement self))
-         val)
+setHigh :: (MonadIO m) => HTMLMeterElement -> Double -> m ()
+setHigh self val
+  = liftIO (js_setHigh (unHTMLMeterElement self) val)
  
-foreign import javascript unsafe "$1[\"high\"]"
-        ghcjs_dom_html_meter_element_get_high ::
+foreign import javascript unsafe "$1[\"high\"]" js_getHigh ::
         JSRef HTMLMeterElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.high Mozilla HTMLMeterElement.high documentation> 
-htmlMeterElementGetHigh ::
-                        (MonadIO m, IsHTMLMeterElement self) => self -> m Double
-htmlMeterElementGetHigh self
-  = liftIO
-      (ghcjs_dom_html_meter_element_get_high
-         (unHTMLMeterElement (toHTMLMeterElement self)))
+getHigh :: (MonadIO m) => HTMLMeterElement -> m Double
+getHigh self = liftIO (js_getHigh (unHTMLMeterElement self))
  
 foreign import javascript unsafe "$1[\"optimum\"] = $2;"
-        ghcjs_dom_html_meter_element_set_optimum ::
-        JSRef HTMLMeterElement -> Double -> IO ()
+        js_setOptimum :: JSRef HTMLMeterElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.optimum Mozilla HTMLMeterElement.optimum documentation> 
-htmlMeterElementSetOptimum ::
-                           (MonadIO m, IsHTMLMeterElement self) => self -> Double -> m ()
-htmlMeterElementSetOptimum self val
-  = liftIO
-      (ghcjs_dom_html_meter_element_set_optimum
-         (unHTMLMeterElement (toHTMLMeterElement self))
-         val)
+setOptimum :: (MonadIO m) => HTMLMeterElement -> Double -> m ()
+setOptimum self val
+  = liftIO (js_setOptimum (unHTMLMeterElement self) val)
  
-foreign import javascript unsafe "$1[\"optimum\"]"
-        ghcjs_dom_html_meter_element_get_optimum ::
+foreign import javascript unsafe "$1[\"optimum\"]" js_getOptimum ::
         JSRef HTMLMeterElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.optimum Mozilla HTMLMeterElement.optimum documentation> 
-htmlMeterElementGetOptimum ::
-                           (MonadIO m, IsHTMLMeterElement self) => self -> m Double
-htmlMeterElementGetOptimum self
-  = liftIO
-      (ghcjs_dom_html_meter_element_get_optimum
-         (unHTMLMeterElement (toHTMLMeterElement self)))
+getOptimum :: (MonadIO m) => HTMLMeterElement -> m Double
+getOptimum self = liftIO (js_getOptimum (unHTMLMeterElement self))
  
-foreign import javascript unsafe "$1[\"labels\"]"
-        ghcjs_dom_html_meter_element_get_labels ::
+foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
         JSRef HTMLMeterElement -> IO (JSRef NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.labels Mozilla HTMLMeterElement.labels documentation> 
-htmlMeterElementGetLabels ::
-                          (MonadIO m, IsHTMLMeterElement self) => self -> m (Maybe NodeList)
-htmlMeterElementGetLabels self
-  = liftIO
-      ((ghcjs_dom_html_meter_element_get_labels
-          (unHTMLMeterElement (toHTMLMeterElement self)))
-         >>= fromJSRef)
+getLabels :: (MonadIO m) => HTMLMeterElement -> m (Maybe NodeList)
+getLabels self
+  = liftIO ((js_getLabels (unHTMLMeterElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLMeterElement (
   ) where

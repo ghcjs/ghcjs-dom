@@ -1,16 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGAnimatedPreserveAspectRatio
-       (ghcjs_dom_svg_animated_preserve_aspect_ratio_get_base_val,
-        svgAnimatedPreserveAspectRatioGetBaseVal,
-        ghcjs_dom_svg_animated_preserve_aspect_ratio_get_anim_val,
-        svgAnimatedPreserveAspectRatioGetAnimVal,
-        SVGAnimatedPreserveAspectRatio, IsSVGAnimatedPreserveAspectRatio,
+       (js_getBaseVal, getBaseVal, js_getAnimVal, getAnimVal,
+        SVGAnimatedPreserveAspectRatio,
         castToSVGAnimatedPreserveAspectRatio,
-        gTypeSVGAnimatedPreserveAspectRatio,
-        toSVGAnimatedPreserveAspectRatio)
+        gTypeSVGAnimatedPreserveAspectRatio)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,41 +17,35 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"baseVal\"]"
-        ghcjs_dom_svg_animated_preserve_aspect_ratio_get_base_val ::
+foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         JSRef SVGAnimatedPreserveAspectRatio ->
           IO (JSRef SVGPreserveAspectRatio)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio.baseVal Mozilla SVGAnimatedPreserveAspectRatio.baseVal documentation> 
-svgAnimatedPreserveAspectRatioGetBaseVal ::
-                                         (MonadIO m, IsSVGAnimatedPreserveAspectRatio self) =>
-                                           self -> m (Maybe SVGPreserveAspectRatio)
-svgAnimatedPreserveAspectRatioGetBaseVal self
+getBaseVal ::
+           (MonadIO m) =>
+             SVGAnimatedPreserveAspectRatio -> m (Maybe SVGPreserveAspectRatio)
+getBaseVal self
   = liftIO
-      ((ghcjs_dom_svg_animated_preserve_aspect_ratio_get_base_val
-          (unSVGAnimatedPreserveAspectRatio
-             (toSVGAnimatedPreserveAspectRatio self)))
-         >>= fromJSRef)
+      ((js_getBaseVal (unSVGAnimatedPreserveAspectRatio self)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"animVal\"]"
-        ghcjs_dom_svg_animated_preserve_aspect_ratio_get_anim_val ::
+foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
         JSRef SVGAnimatedPreserveAspectRatio ->
           IO (JSRef SVGPreserveAspectRatio)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio.animVal Mozilla SVGAnimatedPreserveAspectRatio.animVal documentation> 
-svgAnimatedPreserveAspectRatioGetAnimVal ::
-                                         (MonadIO m, IsSVGAnimatedPreserveAspectRatio self) =>
-                                           self -> m (Maybe SVGPreserveAspectRatio)
-svgAnimatedPreserveAspectRatioGetAnimVal self
+getAnimVal ::
+           (MonadIO m) =>
+             SVGAnimatedPreserveAspectRatio -> m (Maybe SVGPreserveAspectRatio)
+getAnimVal self
   = liftIO
-      ((ghcjs_dom_svg_animated_preserve_aspect_ratio_get_anim_val
-          (unSVGAnimatedPreserveAspectRatio
-             (toSVGAnimatedPreserveAspectRatio self)))
-         >>= fromJSRef)
+      ((js_getAnimVal (unSVGAnimatedPreserveAspectRatio self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.SVGAnimatedPreserveAspectRatio (
   ) where

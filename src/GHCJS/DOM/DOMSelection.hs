@@ -1,40 +1,23 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMSelection
-       (ghcjs_dom_dom_selection_collapse, domSelectionCollapse,
-        ghcjs_dom_dom_selection_collapse_to_end, domSelectionCollapseToEnd,
-        ghcjs_dom_dom_selection_collapse_to_start,
-        domSelectionCollapseToStart,
-        ghcjs_dom_dom_selection_delete_from_document,
-        domSelectionDeleteFromDocument,
-        ghcjs_dom_dom_selection_contains_node, domSelectionContainsNode,
-        ghcjs_dom_dom_selection_select_all_children,
-        domSelectionSelectAllChildren, ghcjs_dom_dom_selection_extend,
-        domSelectionExtend, ghcjs_dom_dom_selection_get_range_at,
-        domSelectionGetRangeAt, ghcjs_dom_dom_selection_remove_all_ranges,
-        domSelectionRemoveAllRanges, ghcjs_dom_dom_selection_add_range,
-        domSelectionAddRange, ghcjs_dom_dom_selection_modify,
-        domSelectionModify, ghcjs_dom_dom_selection_set_base_and_extent,
-        domSelectionSetBaseAndExtent, ghcjs_dom_dom_selection_set_position,
-        domSelectionSetPosition, ghcjs_dom_dom_selection_empty,
-        domSelectionEmpty, ghcjs_dom_dom_selection_get_anchor_node,
-        domSelectionGetAnchorNode,
-        ghcjs_dom_dom_selection_get_anchor_offset,
-        domSelectionGetAnchorOffset,
-        ghcjs_dom_dom_selection_get_focus_node, domSelectionGetFocusNode,
-        ghcjs_dom_dom_selection_get_focus_offset,
-        domSelectionGetFocusOffset,
-        ghcjs_dom_dom_selection_get_is_collapsed,
-        domSelectionGetIsCollapsed,
-        ghcjs_dom_dom_selection_get_range_count, domSelectionGetRangeCount,
-        ghcjs_dom_dom_selection_get_base_node, domSelectionGetBaseNode,
-        ghcjs_dom_dom_selection_get_base_offset, domSelectionGetBaseOffset,
-        ghcjs_dom_dom_selection_get_extent_node, domSelectionGetExtentNode,
-        ghcjs_dom_dom_selection_get_extent_offset,
-        domSelectionGetExtentOffset, DOMSelection, IsDOMSelection,
-        castToDOMSelection, gTypeDOMSelection, toDOMSelection)
+       (js_collapse, collapse, js_collapseToEnd, collapseToEnd,
+        js_collapseToStart, collapseToStart, js_deleteFromDocument,
+        deleteFromDocument, js_containsNode, containsNode,
+        js_selectAllChildren, selectAllChildren, js_extend, extend,
+        js_getRangeAt, getRangeAt, js_removeAllRanges, removeAllRanges,
+        js_addRange, addRange, js_modify, modify, js_setBaseAndExtent,
+        setBaseAndExtent, js_setPosition, setPosition, js_empty, empty,
+        js_getAnchorNode, getAnchorNode, js_getAnchorOffset,
+        getAnchorOffset, js_getFocusNode, getFocusNode, js_getFocusOffset,
+        getFocusOffset, js_getIsCollapsed, getIsCollapsed,
+        js_getRangeCount, getRangeCount, js_getBaseNode, getBaseNode,
+        js_getBaseOffset, getBaseOffset, js_getExtentNode, getExtentNode,
+        js_getExtentOffset, getExtentOffset, DOMSelection,
+        castToDOMSelection, gTypeDOMSelection)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -44,334 +27,244 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"collapse\"]($2, $3)"
-        ghcjs_dom_dom_selection_collapse ::
-        JSRef DOMSelection -> JSRef Node -> Int -> IO ()
+        js_collapse :: JSRef DOMSelection -> JSRef Node -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.collapse Mozilla Selection.collapse documentation> 
-domSelectionCollapse ::
-                     (MonadIO m, IsDOMSelection self, IsNode node) =>
-                       self -> Maybe node -> Int -> m ()
-domSelectionCollapse self node index
+collapse ::
+         (MonadIO m, IsNode node) =>
+           DOMSelection -> Maybe node -> Int -> m ()
+collapse self node index
   = liftIO
-      (ghcjs_dom_dom_selection_collapse
-         (unDOMSelection (toDOMSelection self))
+      (js_collapse (unDOMSelection self)
          (maybe jsNull (unNode . toNode) node)
          index)
  
 foreign import javascript unsafe "$1[\"collapseToEnd\"]()"
-        ghcjs_dom_dom_selection_collapse_to_end ::
-        JSRef DOMSelection -> IO ()
+        js_collapseToEnd :: JSRef DOMSelection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.collapseToEnd Mozilla Selection.collapseToEnd documentation> 
-domSelectionCollapseToEnd ::
-                          (MonadIO m, IsDOMSelection self) => self -> m ()
-domSelectionCollapseToEnd self
-  = liftIO
-      (ghcjs_dom_dom_selection_collapse_to_end
-         (unDOMSelection (toDOMSelection self)))
+collapseToEnd :: (MonadIO m) => DOMSelection -> m ()
+collapseToEnd self
+  = liftIO (js_collapseToEnd (unDOMSelection self))
  
 foreign import javascript unsafe "$1[\"collapseToStart\"]()"
-        ghcjs_dom_dom_selection_collapse_to_start ::
-        JSRef DOMSelection -> IO ()
+        js_collapseToStart :: JSRef DOMSelection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.collapseToStart Mozilla Selection.collapseToStart documentation> 
-domSelectionCollapseToStart ::
-                            (MonadIO m, IsDOMSelection self) => self -> m ()
-domSelectionCollapseToStart self
-  = liftIO
-      (ghcjs_dom_dom_selection_collapse_to_start
-         (unDOMSelection (toDOMSelection self)))
+collapseToStart :: (MonadIO m) => DOMSelection -> m ()
+collapseToStart self
+  = liftIO (js_collapseToStart (unDOMSelection self))
  
 foreign import javascript unsafe "$1[\"deleteFromDocument\"]()"
-        ghcjs_dom_dom_selection_delete_from_document ::
-        JSRef DOMSelection -> IO ()
+        js_deleteFromDocument :: JSRef DOMSelection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.deleteFromDocument Mozilla Selection.deleteFromDocument documentation> 
-domSelectionDeleteFromDocument ::
-                               (MonadIO m, IsDOMSelection self) => self -> m ()
-domSelectionDeleteFromDocument self
-  = liftIO
-      (ghcjs_dom_dom_selection_delete_from_document
-         (unDOMSelection (toDOMSelection self)))
+deleteFromDocument :: (MonadIO m) => DOMSelection -> m ()
+deleteFromDocument self
+  = liftIO (js_deleteFromDocument (unDOMSelection self))
  
 foreign import javascript unsafe
-        "($1[\"containsNode\"]($2,\n$3) ? 1 : 0)"
-        ghcjs_dom_dom_selection_contains_node ::
+        "($1[\"containsNode\"]($2,\n$3) ? 1 : 0)" js_containsNode ::
         JSRef DOMSelection -> JSRef Node -> Bool -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.containsNode Mozilla Selection.containsNode documentation> 
-domSelectionContainsNode ::
-                         (MonadIO m, IsDOMSelection self, IsNode node) =>
-                           self -> Maybe node -> Bool -> m Bool
-domSelectionContainsNode self node allowPartial
+containsNode ::
+             (MonadIO m, IsNode node) =>
+               DOMSelection -> Maybe node -> Bool -> m Bool
+containsNode self node allowPartial
   = liftIO
-      (ghcjs_dom_dom_selection_contains_node
-         (unDOMSelection (toDOMSelection self))
+      (js_containsNode (unDOMSelection self)
          (maybe jsNull (unNode . toNode) node)
          allowPartial)
  
 foreign import javascript unsafe "$1[\"selectAllChildren\"]($2)"
-        ghcjs_dom_dom_selection_select_all_children ::
-        JSRef DOMSelection -> JSRef Node -> IO ()
+        js_selectAllChildren :: JSRef DOMSelection -> JSRef Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.selectAllChildren Mozilla Selection.selectAllChildren documentation> 
-domSelectionSelectAllChildren ::
-                              (MonadIO m, IsDOMSelection self, IsNode node) =>
-                                self -> Maybe node -> m ()
-domSelectionSelectAllChildren self node
+selectAllChildren ::
+                  (MonadIO m, IsNode node) => DOMSelection -> Maybe node -> m ()
+selectAllChildren self node
   = liftIO
-      (ghcjs_dom_dom_selection_select_all_children
-         (unDOMSelection (toDOMSelection self))
+      (js_selectAllChildren (unDOMSelection self)
          (maybe jsNull (unNode . toNode) node))
  
-foreign import javascript unsafe "$1[\"extend\"]($2, $3)"
-        ghcjs_dom_dom_selection_extend ::
-        JSRef DOMSelection -> JSRef Node -> Int -> IO ()
+foreign import javascript unsafe "$1[\"extend\"]($2, $3)" js_extend
+        :: JSRef DOMSelection -> JSRef Node -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.extend Mozilla Selection.extend documentation> 
-domSelectionExtend ::
-                   (MonadIO m, IsDOMSelection self, IsNode node) =>
-                     self -> Maybe node -> Int -> m ()
-domSelectionExtend self node offset
+extend ::
+       (MonadIO m, IsNode node) =>
+         DOMSelection -> Maybe node -> Int -> m ()
+extend self node offset
   = liftIO
-      (ghcjs_dom_dom_selection_extend
-         (unDOMSelection (toDOMSelection self))
+      (js_extend (unDOMSelection self)
          (maybe jsNull (unNode . toNode) node)
          offset)
  
 foreign import javascript unsafe "$1[\"getRangeAt\"]($2)"
-        ghcjs_dom_dom_selection_get_range_at ::
-        JSRef DOMSelection -> Int -> IO (JSRef DOMRange)
+        js_getRangeAt :: JSRef DOMSelection -> Int -> IO (JSRef DOMRange)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.rangeAt Mozilla Selection.rangeAt documentation> 
-domSelectionGetRangeAt ::
-                       (MonadIO m, IsDOMSelection self) =>
-                         self -> Int -> m (Maybe DOMRange)
-domSelectionGetRangeAt self index
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.getRangeAt Mozilla Selection.getRangeAt documentation> 
+getRangeAt ::
+           (MonadIO m) => DOMSelection -> Int -> m (Maybe DOMRange)
+getRangeAt self index
   = liftIO
-      ((ghcjs_dom_dom_selection_get_range_at
-          (unDOMSelection (toDOMSelection self))
-          index)
-         >>= fromJSRef)
+      ((js_getRangeAt (unDOMSelection self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeAllRanges\"]()"
-        ghcjs_dom_dom_selection_remove_all_ranges ::
-        JSRef DOMSelection -> IO ()
+        js_removeAllRanges :: JSRef DOMSelection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.removeAllRanges Mozilla Selection.removeAllRanges documentation> 
-domSelectionRemoveAllRanges ::
-                            (MonadIO m, IsDOMSelection self) => self -> m ()
-domSelectionRemoveAllRanges self
-  = liftIO
-      (ghcjs_dom_dom_selection_remove_all_ranges
-         (unDOMSelection (toDOMSelection self)))
+removeAllRanges :: (MonadIO m) => DOMSelection -> m ()
+removeAllRanges self
+  = liftIO (js_removeAllRanges (unDOMSelection self))
  
-foreign import javascript unsafe "$1[\"addRange\"]($2)"
-        ghcjs_dom_dom_selection_add_range ::
-        JSRef DOMSelection -> JSRef DOMRange -> IO ()
+foreign import javascript unsafe "$1[\"addRange\"]($2)" js_addRange
+        :: JSRef DOMSelection -> JSRef DOMRange -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.addRange Mozilla Selection.addRange documentation> 
-domSelectionAddRange ::
-                     (MonadIO m, IsDOMSelection self, IsDOMRange range) =>
-                       self -> Maybe range -> m ()
-domSelectionAddRange self range
+addRange :: (MonadIO m) => DOMSelection -> Maybe DOMRange -> m ()
+addRange self range
   = liftIO
-      (ghcjs_dom_dom_selection_add_range
-         (unDOMSelection (toDOMSelection self))
-         (maybe jsNull (unDOMRange . toDOMRange) range))
+      (js_addRange (unDOMSelection self) (maybe jsNull unDOMRange range))
  
 foreign import javascript unsafe "$1[\"modify\"]($2, $3, $4)"
-        ghcjs_dom_dom_selection_modify ::
+        js_modify ::
         JSRef DOMSelection -> JSString -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.modify Mozilla Selection.modify documentation> 
-domSelectionModify ::
-                   (MonadIO m, IsDOMSelection self, ToJSString alter,
-                    ToJSString direction, ToJSString granularity) =>
-                     self -> alter -> direction -> granularity -> m ()
-domSelectionModify self alter direction granularity
+modify ::
+       (MonadIO m, ToJSString alter, ToJSString direction,
+        ToJSString granularity) =>
+         DOMSelection -> alter -> direction -> granularity -> m ()
+modify self alter direction granularity
   = liftIO
-      (ghcjs_dom_dom_selection_modify
-         (unDOMSelection (toDOMSelection self))
-         (toJSString alter)
+      (js_modify (unDOMSelection self) (toJSString alter)
          (toJSString direction)
          (toJSString granularity))
  
 foreign import javascript unsafe
-        "$1[\"setBaseAndExtent\"]($2, $3,\n$4, $5)"
-        ghcjs_dom_dom_selection_set_base_and_extent ::
+        "$1[\"setBaseAndExtent\"]($2, $3,\n$4, $5)" js_setBaseAndExtent ::
         JSRef DOMSelection ->
           JSRef Node -> Int -> JSRef Node -> Int -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.baseAndExtent Mozilla Selection.baseAndExtent documentation> 
-domSelectionSetBaseAndExtent ::
-                             (MonadIO m, IsDOMSelection self, IsNode baseNode,
-                              IsNode extentNode) =>
-                               self -> Maybe baseNode -> Int -> Maybe extentNode -> Int -> m ()
-domSelectionSetBaseAndExtent self baseNode baseOffset extentNode
-  extentOffset
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.setBaseAndExtent Mozilla Selection.setBaseAndExtent documentation> 
+setBaseAndExtent ::
+                 (MonadIO m, IsNode baseNode, IsNode extentNode) =>
+                   DOMSelection ->
+                     Maybe baseNode -> Int -> Maybe extentNode -> Int -> m ()
+setBaseAndExtent self baseNode baseOffset extentNode extentOffset
   = liftIO
-      (ghcjs_dom_dom_selection_set_base_and_extent
-         (unDOMSelection (toDOMSelection self))
+      (js_setBaseAndExtent (unDOMSelection self)
          (maybe jsNull (unNode . toNode) baseNode)
          baseOffset
          (maybe jsNull (unNode . toNode) extentNode)
          extentOffset)
  
 foreign import javascript unsafe "$1[\"setPosition\"]($2, $3)"
-        ghcjs_dom_dom_selection_set_position ::
-        JSRef DOMSelection -> JSRef Node -> Int -> IO ()
+        js_setPosition :: JSRef DOMSelection -> JSRef Node -> Int -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.position Mozilla Selection.position documentation> 
-domSelectionSetPosition ::
-                        (MonadIO m, IsDOMSelection self, IsNode node) =>
-                          self -> Maybe node -> Int -> m ()
-domSelectionSetPosition self node offset
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.setPosition Mozilla Selection.setPosition documentation> 
+setPosition ::
+            (MonadIO m, IsNode node) =>
+              DOMSelection -> Maybe node -> Int -> m ()
+setPosition self node offset
   = liftIO
-      (ghcjs_dom_dom_selection_set_position
-         (unDOMSelection (toDOMSelection self))
+      (js_setPosition (unDOMSelection self)
          (maybe jsNull (unNode . toNode) node)
          offset)
  
-foreign import javascript unsafe "$1[\"empty\"]()"
-        ghcjs_dom_dom_selection_empty :: JSRef DOMSelection -> IO ()
+foreign import javascript unsafe "$1[\"empty\"]()" js_empty ::
+        JSRef DOMSelection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.empty Mozilla Selection.empty documentation> 
-domSelectionEmpty ::
-                  (MonadIO m, IsDOMSelection self) => self -> m ()
-domSelectionEmpty self
-  = liftIO
-      (ghcjs_dom_dom_selection_empty
-         (unDOMSelection (toDOMSelection self)))
+empty :: (MonadIO m) => DOMSelection -> m ()
+empty self = liftIO (js_empty (unDOMSelection self))
  
 foreign import javascript unsafe "$1[\"anchorNode\"]"
-        ghcjs_dom_dom_selection_get_anchor_node ::
-        JSRef DOMSelection -> IO (JSRef Node)
+        js_getAnchorNode :: JSRef DOMSelection -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.anchorNode Mozilla Selection.anchorNode documentation> 
-domSelectionGetAnchorNode ::
-                          (MonadIO m, IsDOMSelection self) => self -> m (Maybe Node)
-domSelectionGetAnchorNode self
-  = liftIO
-      ((ghcjs_dom_dom_selection_get_anchor_node
-          (unDOMSelection (toDOMSelection self)))
-         >>= fromJSRef)
+getAnchorNode :: (MonadIO m) => DOMSelection -> m (Maybe Node)
+getAnchorNode self
+  = liftIO ((js_getAnchorNode (unDOMSelection self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"anchorOffset\"]"
-        ghcjs_dom_dom_selection_get_anchor_offset ::
-        JSRef DOMSelection -> IO Int
+        js_getAnchorOffset :: JSRef DOMSelection -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.anchorOffset Mozilla Selection.anchorOffset documentation> 
-domSelectionGetAnchorOffset ::
-                            (MonadIO m, IsDOMSelection self) => self -> m Int
-domSelectionGetAnchorOffset self
-  = liftIO
-      (ghcjs_dom_dom_selection_get_anchor_offset
-         (unDOMSelection (toDOMSelection self)))
+getAnchorOffset :: (MonadIO m) => DOMSelection -> m Int
+getAnchorOffset self
+  = liftIO (js_getAnchorOffset (unDOMSelection self))
  
 foreign import javascript unsafe "$1[\"focusNode\"]"
-        ghcjs_dom_dom_selection_get_focus_node ::
-        JSRef DOMSelection -> IO (JSRef Node)
+        js_getFocusNode :: JSRef DOMSelection -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.focusNode Mozilla Selection.focusNode documentation> 
-domSelectionGetFocusNode ::
-                         (MonadIO m, IsDOMSelection self) => self -> m (Maybe Node)
-domSelectionGetFocusNode self
-  = liftIO
-      ((ghcjs_dom_dom_selection_get_focus_node
-          (unDOMSelection (toDOMSelection self)))
-         >>= fromJSRef)
+getFocusNode :: (MonadIO m) => DOMSelection -> m (Maybe Node)
+getFocusNode self
+  = liftIO ((js_getFocusNode (unDOMSelection self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"focusOffset\"]"
-        ghcjs_dom_dom_selection_get_focus_offset ::
-        JSRef DOMSelection -> IO Int
+        js_getFocusOffset :: JSRef DOMSelection -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.focusOffset Mozilla Selection.focusOffset documentation> 
-domSelectionGetFocusOffset ::
-                           (MonadIO m, IsDOMSelection self) => self -> m Int
-domSelectionGetFocusOffset self
-  = liftIO
-      (ghcjs_dom_dom_selection_get_focus_offset
-         (unDOMSelection (toDOMSelection self)))
+getFocusOffset :: (MonadIO m) => DOMSelection -> m Int
+getFocusOffset self
+  = liftIO (js_getFocusOffset (unDOMSelection self))
  
 foreign import javascript unsafe "($1[\"isCollapsed\"] ? 1 : 0)"
-        ghcjs_dom_dom_selection_get_is_collapsed ::
-        JSRef DOMSelection -> IO Bool
+        js_getIsCollapsed :: JSRef DOMSelection -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.isCollapsed Mozilla Selection.isCollapsed documentation> 
-domSelectionGetIsCollapsed ::
-                           (MonadIO m, IsDOMSelection self) => self -> m Bool
-domSelectionGetIsCollapsed self
-  = liftIO
-      (ghcjs_dom_dom_selection_get_is_collapsed
-         (unDOMSelection (toDOMSelection self)))
+getIsCollapsed :: (MonadIO m) => DOMSelection -> m Bool
+getIsCollapsed self
+  = liftIO (js_getIsCollapsed (unDOMSelection self))
  
 foreign import javascript unsafe "$1[\"rangeCount\"]"
-        ghcjs_dom_dom_selection_get_range_count ::
-        JSRef DOMSelection -> IO Int
+        js_getRangeCount :: JSRef DOMSelection -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.rangeCount Mozilla Selection.rangeCount documentation> 
-domSelectionGetRangeCount ::
-                          (MonadIO m, IsDOMSelection self) => self -> m Int
-domSelectionGetRangeCount self
-  = liftIO
-      (ghcjs_dom_dom_selection_get_range_count
-         (unDOMSelection (toDOMSelection self)))
+getRangeCount :: (MonadIO m) => DOMSelection -> m Int
+getRangeCount self
+  = liftIO (js_getRangeCount (unDOMSelection self))
  
-foreign import javascript unsafe "$1[\"baseNode\"]"
-        ghcjs_dom_dom_selection_get_base_node ::
-        JSRef DOMSelection -> IO (JSRef Node)
+foreign import javascript unsafe "$1[\"baseNode\"]" js_getBaseNode
+        :: JSRef DOMSelection -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.baseNode Mozilla Selection.baseNode documentation> 
-domSelectionGetBaseNode ::
-                        (MonadIO m, IsDOMSelection self) => self -> m (Maybe Node)
-domSelectionGetBaseNode self
-  = liftIO
-      ((ghcjs_dom_dom_selection_get_base_node
-          (unDOMSelection (toDOMSelection self)))
-         >>= fromJSRef)
+getBaseNode :: (MonadIO m) => DOMSelection -> m (Maybe Node)
+getBaseNode self
+  = liftIO ((js_getBaseNode (unDOMSelection self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"baseOffset\"]"
-        ghcjs_dom_dom_selection_get_base_offset ::
-        JSRef DOMSelection -> IO Int
+        js_getBaseOffset :: JSRef DOMSelection -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.baseOffset Mozilla Selection.baseOffset documentation> 
-domSelectionGetBaseOffset ::
-                          (MonadIO m, IsDOMSelection self) => self -> m Int
-domSelectionGetBaseOffset self
-  = liftIO
-      (ghcjs_dom_dom_selection_get_base_offset
-         (unDOMSelection (toDOMSelection self)))
+getBaseOffset :: (MonadIO m) => DOMSelection -> m Int
+getBaseOffset self
+  = liftIO (js_getBaseOffset (unDOMSelection self))
  
 foreign import javascript unsafe "$1[\"extentNode\"]"
-        ghcjs_dom_dom_selection_get_extent_node ::
-        JSRef DOMSelection -> IO (JSRef Node)
+        js_getExtentNode :: JSRef DOMSelection -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.extentNode Mozilla Selection.extentNode documentation> 
-domSelectionGetExtentNode ::
-                          (MonadIO m, IsDOMSelection self) => self -> m (Maybe Node)
-domSelectionGetExtentNode self
-  = liftIO
-      ((ghcjs_dom_dom_selection_get_extent_node
-          (unDOMSelection (toDOMSelection self)))
-         >>= fromJSRef)
+getExtentNode :: (MonadIO m) => DOMSelection -> m (Maybe Node)
+getExtentNode self
+  = liftIO ((js_getExtentNode (unDOMSelection self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"extentOffset\"]"
-        ghcjs_dom_dom_selection_get_extent_offset ::
-        JSRef DOMSelection -> IO Int
+        js_getExtentOffset :: JSRef DOMSelection -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.extentOffset Mozilla Selection.extentOffset documentation> 
-domSelectionGetExtentOffset ::
-                            (MonadIO m, IsDOMSelection self) => self -> m Int
-domSelectionGetExtentOffset self
-  = liftIO
-      (ghcjs_dom_dom_selection_get_extent_offset
-         (unDOMSelection (toDOMSelection self)))
+getExtentOffset :: (MonadIO m) => DOMSelection -> m Int
+getExtentOffset self
+  = liftIO (js_getExtentOffset (unDOMSelection self))
 #else
 module GHCJS.DOM.DOMSelection (
   module Graphics.UI.Gtk.WebKit.DOM.DOMSelection

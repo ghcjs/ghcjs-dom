@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.IDBVersionChangeEvent
-       (ghcjs_dom_idb_version_change_event_get_old_version,
-        idbVersionChangeEventGetOldVersion,
-        ghcjs_dom_idb_version_change_event_get_new_version,
-        idbVersionChangeEventGetNewVersion, IDBVersionChangeEvent,
-        IsIDBVersionChangeEvent, castToIDBVersionChangeEvent,
-        gTypeIDBVersionChangeEvent, toIDBVersionChangeEvent)
+       (js_getOldVersion, getOldVersion, js_getNewVersion, getNewVersion,
+        IDBVersionChangeEvent, castToIDBVersionChangeEvent,
+        gTypeIDBVersionChangeEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,36 +16,30 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"oldVersion\"]"
-        ghcjs_dom_idb_version_change_event_get_old_version ::
-        JSRef IDBVersionChangeEvent -> IO Double
+        js_getOldVersion :: JSRef IDBVersionChangeEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent.oldVersion Mozilla IDBVersionChangeEvent.oldVersion documentation> 
-idbVersionChangeEventGetOldVersion ::
-                                   (MonadIO m, IsIDBVersionChangeEvent self) => self -> m Word64
-idbVersionChangeEventGetOldVersion self
+getOldVersion :: (MonadIO m) => IDBVersionChangeEvent -> m Word64
+getOldVersion self
   = liftIO
-      (round <$>
-         (ghcjs_dom_idb_version_change_event_get_old_version
-            (unIDBVersionChangeEvent (toIDBVersionChangeEvent self))))
+      (round <$> (js_getOldVersion (unIDBVersionChangeEvent self)))
  
 foreign import javascript unsafe "$1[\"newVersion\"]"
-        ghcjs_dom_idb_version_change_event_get_new_version ::
+        js_getNewVersion ::
         JSRef IDBVersionChangeEvent -> IO (JSRef (Maybe Double))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent.newVersion Mozilla IDBVersionChangeEvent.newVersion documentation> 
-idbVersionChangeEventGetNewVersion ::
-                                   (MonadIO m, IsIDBVersionChangeEvent self) =>
-                                     self -> m (Maybe Word64)
-idbVersionChangeEventGetNewVersion self
+getNewVersion ::
+              (MonadIO m) => IDBVersionChangeEvent -> m (Maybe Word64)
+getNewVersion self
   = liftIO
       (fmap round . pfromJSRef <$>
-         (ghcjs_dom_idb_version_change_event_get_new_version
-            (unIDBVersionChangeEvent (toIDBVersionChangeEvent self))))
+         (js_getNewVersion (unIDBVersionChangeEvent self)))
 #else
 module GHCJS.DOM.IDBVersionChangeEvent (
   ) where

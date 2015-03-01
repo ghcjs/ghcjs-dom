@@ -1,21 +1,17 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGTransform
-       (ghcjs_dom_svg_transform_set_matrix, svgTransformSetMatrix,
-        ghcjs_dom_svg_transform_set_translate, svgTransformSetTranslate,
-        ghcjs_dom_svg_transform_set_scale, svgTransformSetScale,
-        ghcjs_dom_svg_transform_set_rotate, svgTransformSetRotate,
-        ghcjs_dom_svg_transform_set_skew_x, svgTransformSetSkewX,
-        ghcjs_dom_svg_transform_set_skew_y, svgTransformSetSkewY,
-        cSVG_TRANSFORM_UNKNOWN, cSVG_TRANSFORM_MATRIX,
-        cSVG_TRANSFORM_TRANSLATE, cSVG_TRANSFORM_SCALE,
-        cSVG_TRANSFORM_ROTATE, cSVG_TRANSFORM_SKEWX, cSVG_TRANSFORM_SKEWY,
-        ghcjs_dom_svg_transform_get_matrix, svgTransformGetMatrix,
-        ghcjs_dom_svg_transform_get_angle, svgTransformGetAngle,
-        SVGTransform, IsSVGTransform, castToSVGTransform,
-        gTypeSVGTransform, toSVGTransform)
+       (js_setMatrix, setMatrix, js_setTranslate, setTranslate,
+        js_setScale, setScale, js_setRotate, setRotate, js_setSkewX,
+        setSkewX, js_setSkewY, setSkewY, pattern SVG_TRANSFORM_UNKNOWN,
+        pattern SVG_TRANSFORM_MATRIX, pattern SVG_TRANSFORM_TRANSLATE,
+        pattern SVG_TRANSFORM_SCALE, pattern SVG_TRANSFORM_ROTATE,
+        pattern SVG_TRANSFORM_SKEWX, pattern SVG_TRANSFORM_SKEWY,
+        js_getMatrix, getMatrix, js_getAngle, getAngle, SVGTransform,
+        castToSVGTransform, gTypeSVGTransform)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -25,124 +21,84 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"setMatrix\"]($2)"
-        ghcjs_dom_svg_transform_set_matrix ::
-        JSRef SVGTransform -> JSRef SVGMatrix -> IO ()
+        js_setMatrix :: JSRef SVGTransform -> JSRef SVGMatrix -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.matrix Mozilla SVGTransform.matrix documentation> 
-svgTransformSetMatrix ::
-                      (MonadIO m, IsSVGTransform self, IsSVGMatrix matrix) =>
-                        self -> Maybe matrix -> m ()
-svgTransformSetMatrix self matrix
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setMatrix Mozilla SVGTransform.setMatrix documentation> 
+setMatrix :: (MonadIO m) => SVGTransform -> Maybe SVGMatrix -> m ()
+setMatrix self matrix
   = liftIO
-      (ghcjs_dom_svg_transform_set_matrix
-         (unSVGTransform (toSVGTransform self))
-         (maybe jsNull (unSVGMatrix . toSVGMatrix) matrix))
+      (js_setMatrix (unSVGTransform self)
+         (maybe jsNull unSVGMatrix matrix))
  
 foreign import javascript unsafe "$1[\"setTranslate\"]($2, $3)"
-        ghcjs_dom_svg_transform_set_translate ::
-        JSRef SVGTransform -> Float -> Float -> IO ()
+        js_setTranslate :: JSRef SVGTransform -> Float -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.translate Mozilla SVGTransform.translate documentation> 
-svgTransformSetTranslate ::
-                         (MonadIO m, IsSVGTransform self) => self -> Float -> Float -> m ()
-svgTransformSetTranslate self tx ty
-  = liftIO
-      (ghcjs_dom_svg_transform_set_translate
-         (unSVGTransform (toSVGTransform self))
-         tx
-         ty)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setTranslate Mozilla SVGTransform.setTranslate documentation> 
+setTranslate ::
+             (MonadIO m) => SVGTransform -> Float -> Float -> m ()
+setTranslate self tx ty
+  = liftIO (js_setTranslate (unSVGTransform self) tx ty)
  
 foreign import javascript unsafe "$1[\"setScale\"]($2, $3)"
-        ghcjs_dom_svg_transform_set_scale ::
-        JSRef SVGTransform -> Float -> Float -> IO ()
+        js_setScale :: JSRef SVGTransform -> Float -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.scale Mozilla SVGTransform.scale documentation> 
-svgTransformSetScale ::
-                     (MonadIO m, IsSVGTransform self) => self -> Float -> Float -> m ()
-svgTransformSetScale self sx sy
-  = liftIO
-      (ghcjs_dom_svg_transform_set_scale
-         (unSVGTransform (toSVGTransform self))
-         sx
-         sy)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setScale Mozilla SVGTransform.setScale documentation> 
+setScale :: (MonadIO m) => SVGTransform -> Float -> Float -> m ()
+setScale self sx sy
+  = liftIO (js_setScale (unSVGTransform self) sx sy)
  
 foreign import javascript unsafe "$1[\"setRotate\"]($2, $3, $4)"
-        ghcjs_dom_svg_transform_set_rotate ::
+        js_setRotate ::
         JSRef SVGTransform -> Float -> Float -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.rotate Mozilla SVGTransform.rotate documentation> 
-svgTransformSetRotate ::
-                      (MonadIO m, IsSVGTransform self) =>
-                        self -> Float -> Float -> Float -> m ()
-svgTransformSetRotate self angle cx cy
-  = liftIO
-      (ghcjs_dom_svg_transform_set_rotate
-         (unSVGTransform (toSVGTransform self))
-         angle
-         cx
-         cy)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setRotate Mozilla SVGTransform.setRotate documentation> 
+setRotate ::
+          (MonadIO m) => SVGTransform -> Float -> Float -> Float -> m ()
+setRotate self angle cx cy
+  = liftIO (js_setRotate (unSVGTransform self) angle cx cy)
  
-foreign import javascript unsafe "$1[\"setSkewX\"]($2)"
-        ghcjs_dom_svg_transform_set_skew_x ::
-        JSRef SVGTransform -> Float -> IO ()
+foreign import javascript unsafe "$1[\"setSkewX\"]($2)" js_setSkewX
+        :: JSRef SVGTransform -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.skewX Mozilla SVGTransform.skewX documentation> 
-svgTransformSetSkewX ::
-                     (MonadIO m, IsSVGTransform self) => self -> Float -> m ()
-svgTransformSetSkewX self angle
-  = liftIO
-      (ghcjs_dom_svg_transform_set_skew_x
-         (unSVGTransform (toSVGTransform self))
-         angle)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setSkewX Mozilla SVGTransform.setSkewX documentation> 
+setSkewX :: (MonadIO m) => SVGTransform -> Float -> m ()
+setSkewX self angle
+  = liftIO (js_setSkewX (unSVGTransform self) angle)
  
-foreign import javascript unsafe "$1[\"setSkewY\"]($2)"
-        ghcjs_dom_svg_transform_set_skew_y ::
-        JSRef SVGTransform -> Float -> IO ()
+foreign import javascript unsafe "$1[\"setSkewY\"]($2)" js_setSkewY
+        :: JSRef SVGTransform -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.skewY Mozilla SVGTransform.skewY documentation> 
-svgTransformSetSkewY ::
-                     (MonadIO m, IsSVGTransform self) => self -> Float -> m ()
-svgTransformSetSkewY self angle
-  = liftIO
-      (ghcjs_dom_svg_transform_set_skew_y
-         (unSVGTransform (toSVGTransform self))
-         angle)
-cSVG_TRANSFORM_UNKNOWN = 0
-cSVG_TRANSFORM_MATRIX = 1
-cSVG_TRANSFORM_TRANSLATE = 2
-cSVG_TRANSFORM_SCALE = 3
-cSVG_TRANSFORM_ROTATE = 4
-cSVG_TRANSFORM_SKEWX = 5
-cSVG_TRANSFORM_SKEWY = 6
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setSkewY Mozilla SVGTransform.setSkewY documentation> 
+setSkewY :: (MonadIO m) => SVGTransform -> Float -> m ()
+setSkewY self angle
+  = liftIO (js_setSkewY (unSVGTransform self) angle)
+pattern SVG_TRANSFORM_UNKNOWN = 0
+pattern SVG_TRANSFORM_MATRIX = 1
+pattern SVG_TRANSFORM_TRANSLATE = 2
+pattern SVG_TRANSFORM_SCALE = 3
+pattern SVG_TRANSFORM_ROTATE = 4
+pattern SVG_TRANSFORM_SKEWX = 5
+pattern SVG_TRANSFORM_SKEWY = 6
  
-foreign import javascript unsafe "$1[\"matrix\"]"
-        ghcjs_dom_svg_transform_get_matrix ::
+foreign import javascript unsafe "$1[\"matrix\"]" js_getMatrix ::
         JSRef SVGTransform -> IO (JSRef SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.matrix Mozilla SVGTransform.matrix documentation> 
-svgTransformGetMatrix ::
-                      (MonadIO m, IsSVGTransform self) => self -> m (Maybe SVGMatrix)
-svgTransformGetMatrix self
-  = liftIO
-      ((ghcjs_dom_svg_transform_get_matrix
-          (unSVGTransform (toSVGTransform self)))
-         >>= fromJSRef)
+getMatrix :: (MonadIO m) => SVGTransform -> m (Maybe SVGMatrix)
+getMatrix self
+  = liftIO ((js_getMatrix (unSVGTransform self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"angle\"]"
-        ghcjs_dom_svg_transform_get_angle :: JSRef SVGTransform -> IO Float
+foreign import javascript unsafe "$1[\"angle\"]" js_getAngle ::
+        JSRef SVGTransform -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.angle Mozilla SVGTransform.angle documentation> 
-svgTransformGetAngle ::
-                     (MonadIO m, IsSVGTransform self) => self -> m Float
-svgTransformGetAngle self
-  = liftIO
-      (ghcjs_dom_svg_transform_get_angle
-         (unSVGTransform (toSVGTransform self)))
+getAngle :: (MonadIO m) => SVGTransform -> m Float
+getAngle self = liftIO (js_getAngle (unSVGTransform self))
 #else
 module GHCJS.DOM.SVGTransform (
   ) where

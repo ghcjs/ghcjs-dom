@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Geoposition
-       (ghcjs_dom_geoposition_get_coords, geopositionGetCoords,
-        ghcjs_dom_geoposition_get_timestamp, geopositionGetTimestamp,
-        Geoposition, IsGeoposition, castToGeoposition, gTypeGeoposition,
-        toGeoposition)
+       (js_getCoords, getCoords, js_getTimestamp, getTimestamp,
+        Geoposition, castToGeoposition, gTypeGeoposition)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,33 +15,24 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"coords\"]"
-        ghcjs_dom_geoposition_get_coords ::
+foreign import javascript unsafe "$1[\"coords\"]" js_getCoords ::
         JSRef Geoposition -> IO (JSRef Coordinates)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition.coords Mozilla Geoposition.coords documentation> 
-geopositionGetCoords ::
-                     (MonadIO m, IsGeoposition self) => self -> m (Maybe Coordinates)
-geopositionGetCoords self
-  = liftIO
-      ((ghcjs_dom_geoposition_get_coords
-          (unGeoposition (toGeoposition self)))
-         >>= fromJSRef)
+getCoords :: (MonadIO m) => Geoposition -> m (Maybe Coordinates)
+getCoords self
+  = liftIO ((js_getCoords (unGeoposition self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"timestamp\"]"
-        ghcjs_dom_geoposition_get_timestamp :: JSRef Geoposition -> IO Word
+        js_getTimestamp :: JSRef Geoposition -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition.timestamp Mozilla Geoposition.timestamp documentation> 
-geopositionGetTimestamp ::
-                        (MonadIO m, IsGeoposition self) => self -> m Word
-geopositionGetTimestamp self
-  = liftIO
-      (ghcjs_dom_geoposition_get_timestamp
-         (unGeoposition (toGeoposition self)))
+getTimestamp :: (MonadIO m) => Geoposition -> m Word
+getTimestamp self = liftIO (js_getTimestamp (unGeoposition self))
 #else
 module GHCJS.DOM.Geoposition (
   ) where

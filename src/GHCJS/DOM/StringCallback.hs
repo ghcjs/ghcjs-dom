@@ -1,11 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StringCallback
-       (ghcjs_dom_string_callback_handle_event, stringCallbackHandleEvent,
-        StringCallback, IsStringCallback, castToStringCallback,
-        gTypeStringCallback, toStringCallback)
+       (newStringCallbackSync, newStringCallbackSync',
+        newStringCallbackAsync, newStringCallbackAsync', StringCallback,
+        castToStringCallback, gTypeStringCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -15,24 +16,53 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
- 
-foreign import javascript unsafe
-        "($1[\"handleEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_string_callback_handle_event ::
-        JSRef StringCallback -> JSString -> IO Bool
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback.handleEvent Mozilla StringCallback.handleEvent documentation> 
-stringCallbackHandleEvent ::
-                          (MonadIO m, IsStringCallback self, ToJSString data') =>
-                            self -> data' -> m Bool
-stringCallbackHandleEvent self data'
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation> 
+newStringCallbackSync ::
+                      (MonadIO m, FromJSString data') =>
+                        (data' -> IO Bool) -> m StringCallback
+newStringCallbackSync callback
   = liftIO
-      (ghcjs_dom_string_callback_handle_event
-         (unStringCallback (toStringCallback self))
-         (toJSString data'))
+      (StringCallback . castRef <$>
+         syncCallback1 AlwaysRetain True
+           (\ data' ->
+              fromJSRefUnchecked data' >>= \ data'' -> callback data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation> 
+newStringCallbackSync' ::
+                       (MonadIO m, FromJSString data') =>
+                         ForeignRetention -> Bool -> (data' -> IO Bool) -> m StringCallback
+newStringCallbackSync' retention continueAsync callback
+  = liftIO
+      (StringCallback . castRef <$>
+         syncCallback1 retention continueAsync
+           (\ data' ->
+              fromJSRefUnchecked data' >>= \ data'' -> callback data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation> 
+newStringCallbackAsync ::
+                       (MonadIO m, FromJSString data') =>
+                         (data' -> IO Bool) -> m StringCallback
+newStringCallbackAsync callback
+  = liftIO
+      (StringCallback . castRef <$>
+         asyncCallback1 AlwaysRetain
+           (\ data' ->
+              fromJSRefUnchecked data' >>= \ data'' -> callback data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation> 
+newStringCallbackAsync' ::
+                        (MonadIO m, FromJSString data') =>
+                          ForeignRetention -> (data' -> IO Bool) -> m StringCallback
+newStringCallbackAsync' retention callback
+  = liftIO
+      (StringCallback . castRef <$>
+         asyncCallback1 retention
+           (\ data' ->
+              fromJSRefUnchecked data' >>= \ data'' -> callback data''))
 #else
 module GHCJS.DOM.StringCallback (
   ) where

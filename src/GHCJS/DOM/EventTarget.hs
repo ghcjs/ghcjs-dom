@@ -1,15 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.EventTarget
-       (ghcjs_dom_event_target_add_event_listener,
-        eventTargetAddEventListener,
-        ghcjs_dom_event_target_remove_event_listener,
-        eventTargetRemoveEventListener,
-        ghcjs_dom_event_target_dispatch_event, eventTargetDispatchEvent,
-        EventTarget, IsEventTarget, castToEventTarget, gTypeEventTarget,
-        toEventTarget)
+       (js_addEventListener, addEventListener, js_removeEventListener,
+        removeEventListener, js_dispatchEvent, dispatchEvent, EventTarget,
+        castToEventTarget, gTypeEventTarget, IsEventTarget, toEventTarget)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,56 +20,49 @@ import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "$1[\"addEventListener\"]($2, $3,\n$4)"
-        ghcjs_dom_event_target_add_event_listener ::
+        "$1[\"addEventListener\"]($2, $3,\n$4)" js_addEventListener ::
         JSRef EventTarget ->
           JSString -> JSRef EventListener -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener Mozilla EventTarget.addEventListener documentation> 
-eventTargetAddEventListener ::
-                            (MonadIO m, IsEventTarget self, ToJSString type',
-                             IsEventListener listener) =>
-                              self -> type' -> Maybe listener -> Bool -> m ()
-eventTargetAddEventListener self type' listener useCapture
+addEventListener ::
+                 (MonadIO m, IsEventTarget self, ToJSString type') =>
+                   self -> type' -> Maybe EventListener -> Bool -> m ()
+addEventListener self type' listener useCapture
   = liftIO
-      (ghcjs_dom_event_target_add_event_listener
-         (unEventTarget (toEventTarget self))
+      (js_addEventListener (unEventTarget (toEventTarget self))
          (toJSString type')
-         (maybe jsNull (unEventListener . toEventListener) listener)
+         (maybe jsNull unEventListener listener)
          useCapture)
  
 foreign import javascript unsafe
-        "$1[\"removeEventListener\"]($2,\n$3, $4)"
-        ghcjs_dom_event_target_remove_event_listener ::
+        "$1[\"removeEventListener\"]($2,\n$3, $4)" js_removeEventListener
+        ::
         JSRef EventTarget ->
           JSString -> JSRef EventListener -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.removeEventListener Mozilla EventTarget.removeEventListener documentation> 
-eventTargetRemoveEventListener ::
-                               (MonadIO m, IsEventTarget self, ToJSString type',
-                                IsEventListener listener) =>
-                                 self -> type' -> Maybe listener -> Bool -> m ()
-eventTargetRemoveEventListener self type' listener useCapture
+removeEventListener ::
+                    (MonadIO m, IsEventTarget self, ToJSString type') =>
+                      self -> type' -> Maybe EventListener -> Bool -> m ()
+removeEventListener self type' listener useCapture
   = liftIO
-      (ghcjs_dom_event_target_remove_event_listener
-         (unEventTarget (toEventTarget self))
+      (js_removeEventListener (unEventTarget (toEventTarget self))
          (toJSString type')
-         (maybe jsNull (unEventListener . toEventListener) listener)
+         (maybe jsNull unEventListener listener)
          useCapture)
  
 foreign import javascript unsafe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)"
-        ghcjs_dom_event_target_dispatch_event ::
+        "($1[\"dispatchEvent\"]($2) ? 1 : 0)" js_dispatchEvent ::
         JSRef EventTarget -> JSRef Event -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.dispatchEvent Mozilla EventTarget.dispatchEvent documentation> 
-eventTargetDispatchEvent ::
-                         (MonadIO m, IsEventTarget self, IsEvent event) =>
-                           self -> Maybe event -> m Bool
-eventTargetDispatchEvent self event
+dispatchEvent ::
+              (MonadIO m, IsEventTarget self, IsEvent event) =>
+                self -> Maybe event -> m Bool
+dispatchEvent self event
   = liftIO
-      (ghcjs_dom_event_target_dispatch_event
-         (unEventTarget (toEventTarget self))
+      (js_dispatchEvent (unEventTarget (toEventTarget self))
          (maybe jsNull (unEvent . toEvent) event))
 #else
 module GHCJS.DOM.EventTarget (

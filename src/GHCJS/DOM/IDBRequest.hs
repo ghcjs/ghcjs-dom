@@ -1,15 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.IDBRequest
-       (ghcjs_dom_idb_request_get_result, idbRequestGetResult,
-        ghcjs_dom_idb_request_get_error, idbRequestGetError,
-        ghcjs_dom_idb_request_get_source, idbRequestGetSource,
-        ghcjs_dom_idb_request_get_transaction, idbRequestGetTransaction,
-        ghcjs_dom_idb_request_get_ready_state, idbRequestGetReadyState,
-        idbRequestSuccess, idbRequestError, IDBRequest, IsIDBRequest,
-        castToIDBRequest, gTypeIDBRequest, toIDBRequest)
+       (js_getResult, getResult, js_getError, getError, js_getSource,
+        getSource, js_getTransaction, getTransaction, js_getReadyState,
+        getReadyState, success, error, IDBRequest, castToIDBRequest,
+        gTypeIDBRequest, IsIDBRequest, toIDBRequest)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,85 +17,72 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"result\"]"
-        ghcjs_dom_idb_request_get_result ::
+foreign import javascript unsafe "$1[\"result\"]" js_getResult ::
         JSRef IDBRequest -> IO (JSRef IDBAny)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.result Mozilla IDBRequest.result documentation> 
-idbRequestGetResult ::
-                    (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBAny)
-idbRequestGetResult self
+getResult ::
+          (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBAny)
+getResult self
   = liftIO
-      ((ghcjs_dom_idb_request_get_result
-          (unIDBRequest (toIDBRequest self)))
-         >>= fromJSRef)
+      ((js_getResult (unIDBRequest (toIDBRequest self))) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"error\"]"
-        ghcjs_dom_idb_request_get_error ::
+foreign import javascript unsafe "$1[\"error\"]" js_getError ::
         JSRef IDBRequest -> IO (JSRef DOMError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.error Mozilla IDBRequest.error documentation> 
-idbRequestGetError ::
-                   (MonadIO m, IsIDBRequest self) => self -> m (Maybe DOMError)
-idbRequestGetError self
+getError ::
+         (MonadIO m, IsIDBRequest self) => self -> m (Maybe DOMError)
+getError self
   = liftIO
-      ((ghcjs_dom_idb_request_get_error
-          (unIDBRequest (toIDBRequest self)))
-         >>= fromJSRef)
+      ((js_getError (unIDBRequest (toIDBRequest self))) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"source\"]"
-        ghcjs_dom_idb_request_get_source ::
+foreign import javascript unsafe "$1[\"source\"]" js_getSource ::
         JSRef IDBRequest -> IO (JSRef IDBAny)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.source Mozilla IDBRequest.source documentation> 
-idbRequestGetSource ::
-                    (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBAny)
-idbRequestGetSource self
+getSource ::
+          (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBAny)
+getSource self
   = liftIO
-      ((ghcjs_dom_idb_request_get_source
-          (unIDBRequest (toIDBRequest self)))
-         >>= fromJSRef)
+      ((js_getSource (unIDBRequest (toIDBRequest self))) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"transaction\"]"
-        ghcjs_dom_idb_request_get_transaction ::
-        JSRef IDBRequest -> IO (JSRef IDBTransaction)
+        js_getTransaction :: JSRef IDBRequest -> IO (JSRef IDBTransaction)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.transaction Mozilla IDBRequest.transaction documentation> 
-idbRequestGetTransaction ::
-                         (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBTransaction)
-idbRequestGetTransaction self
+getTransaction ::
+               (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBTransaction)
+getTransaction self
   = liftIO
-      ((ghcjs_dom_idb_request_get_transaction
-          (unIDBRequest (toIDBRequest self)))
-         >>= fromJSRef)
+      ((js_getTransaction (unIDBRequest (toIDBRequest self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        ghcjs_dom_idb_request_get_ready_state ::
-        JSRef IDBRequest -> IO JSString
+        js_getReadyState :: JSRef IDBRequest -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.readyState Mozilla IDBRequest.readyState documentation> 
-idbRequestGetReadyState ::
-                        (MonadIO m, IsIDBRequest self, FromJSString result) =>
-                          self -> m result
-idbRequestGetReadyState self
+getReadyState ::
+              (MonadIO m, IsIDBRequest self, FromJSString result) =>
+                self -> m result
+getReadyState self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_idb_request_get_ready_state
-            (unIDBRequest (toIDBRequest self))))
+         (js_getReadyState (unIDBRequest (toIDBRequest self))))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.success Mozilla IDBRequest.success documentation> 
-idbRequestSuccess ::
-                  (IsIDBRequest self, IsEventTarget self) => EventName self Event
-idbRequestSuccess = unsafeEventName (toJSString "success")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.onsuccess Mozilla IDBRequest.onsuccess documentation> 
+success ::
+        (IsIDBRequest self, IsEventTarget self) => EventName self Event
+success = unsafeEventName (toJSString "success")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.error Mozilla IDBRequest.error documentation> 
-idbRequestError ::
-                (IsIDBRequest self, IsEventTarget self) => EventName self Event
-idbRequestError = unsafeEventName (toJSString "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.onerror Mozilla IDBRequest.onerror documentation> 
+error ::
+      (IsIDBRequest self, IsEventTarget self) => EventName self Event
+error = unsafeEventName (toJSString "error")
 #else
 module GHCJS.DOM.IDBRequest (
   ) where

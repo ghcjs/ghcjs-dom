@@ -1,10 +1,10 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.GainNode
-       (ghcjs_dom_gain_node_get_gain, gainNodeGetGain, GainNode,
-        IsGainNode, castToGainNode, gTypeGainNode, toGainNode)
+       (js_getGain, getGain, GainNode, castToGainNode, gTypeGainNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -14,21 +14,17 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"gain\"]"
-        ghcjs_dom_gain_node_get_gain ::
+foreign import javascript unsafe "$1[\"gain\"]" js_getGain ::
         JSRef GainNode -> IO (JSRef AudioParam)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GainNode.gain Mozilla GainNode.gain documentation> 
-gainNodeGetGain ::
-                (MonadIO m, IsGainNode self) => self -> m (Maybe AudioParam)
-gainNodeGetGain self
-  = liftIO
-      ((ghcjs_dom_gain_node_get_gain (unGainNode (toGainNode self))) >>=
-         fromJSRef)
+getGain :: (MonadIO m) => GainNode -> m (Maybe AudioParam)
+getGain self
+  = liftIO ((js_getGain (unGainNode self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.GainNode (
   ) where

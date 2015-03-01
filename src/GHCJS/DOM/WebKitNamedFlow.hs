@@ -1,18 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitNamedFlow
-       (ghcjs_dom_webkit_named_flow_get_regions_by_content,
-        webKitNamedFlowGetRegionsByContent,
-        ghcjs_dom_webkit_named_flow_get_regions, webKitNamedFlowGetRegions,
-        ghcjs_dom_webkit_named_flow_get_content, webKitNamedFlowGetContent,
-        ghcjs_dom_webkit_named_flow_get_name, webKitNamedFlowGetName,
-        ghcjs_dom_webkit_named_flow_get_overset, webKitNamedFlowGetOverset,
-        ghcjs_dom_webkit_named_flow_get_first_empty_region_index,
-        webKitNamedFlowGetFirstEmptyRegionIndex, WebKitNamedFlow,
-        IsWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow,
-        toWebKitNamedFlow)
+       (js_getRegionsByContent, getRegionsByContent, js_getRegions,
+        getRegions, js_getContent, getContent, js_getName, getName,
+        js_getOverset, getOverset, js_getFirstEmptyRegionIndex,
+        getFirstEmptyRegionIndex, WebKitNamedFlow, castToWebKitNamedFlow,
+        gTypeWebKitNamedFlow)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,88 +18,63 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getRegionsByContent\"]($2)"
-        ghcjs_dom_webkit_named_flow_get_regions_by_content ::
+        js_getRegionsByContent ::
         JSRef WebKitNamedFlow -> JSRef Node -> IO (JSRef NodeList)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.regionsByContent Mozilla WebKitNamedFlow.regionsByContent documentation> 
-webKitNamedFlowGetRegionsByContent ::
-                                   (MonadIO m, IsWebKitNamedFlow self, IsNode contentNode) =>
-                                     self -> Maybe contentNode -> m (Maybe NodeList)
-webKitNamedFlowGetRegionsByContent self contentNode
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegionsByContent Mozilla WebKitNamedFlow.getRegionsByContent documentation> 
+getRegionsByContent ::
+                    (MonadIO m, IsNode contentNode) =>
+                      WebKitNamedFlow -> Maybe contentNode -> m (Maybe NodeList)
+getRegionsByContent self contentNode
   = liftIO
-      ((ghcjs_dom_webkit_named_flow_get_regions_by_content
-          (unWebKitNamedFlow (toWebKitNamedFlow self))
+      ((js_getRegionsByContent (unWebKitNamedFlow self)
           (maybe jsNull (unNode . toNode) contentNode))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getRegions\"]()"
-        ghcjs_dom_webkit_named_flow_get_regions ::
-        JSRef WebKitNamedFlow -> IO (JSRef NodeList)
+        js_getRegions :: JSRef WebKitNamedFlow -> IO (JSRef NodeList)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.regions Mozilla WebKitNamedFlow.regions documentation> 
-webKitNamedFlowGetRegions ::
-                          (MonadIO m, IsWebKitNamedFlow self) => self -> m (Maybe NodeList)
-webKitNamedFlowGetRegions self
-  = liftIO
-      ((ghcjs_dom_webkit_named_flow_get_regions
-          (unWebKitNamedFlow (toWebKitNamedFlow self)))
-         >>= fromJSRef)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegions Mozilla WebKitNamedFlow.getRegions documentation> 
+getRegions :: (MonadIO m) => WebKitNamedFlow -> m (Maybe NodeList)
+getRegions self
+  = liftIO ((js_getRegions (unWebKitNamedFlow self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getContent\"]()"
-        ghcjs_dom_webkit_named_flow_get_content ::
-        JSRef WebKitNamedFlow -> IO (JSRef NodeList)
+        js_getContent :: JSRef WebKitNamedFlow -> IO (JSRef NodeList)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.content Mozilla WebKitNamedFlow.content documentation> 
-webKitNamedFlowGetContent ::
-                          (MonadIO m, IsWebKitNamedFlow self) => self -> m (Maybe NodeList)
-webKitNamedFlowGetContent self
-  = liftIO
-      ((ghcjs_dom_webkit_named_flow_get_content
-          (unWebKitNamedFlow (toWebKitNamedFlow self)))
-         >>= fromJSRef)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getContent Mozilla WebKitNamedFlow.getContent documentation> 
+getContent :: (MonadIO m) => WebKitNamedFlow -> m (Maybe NodeList)
+getContent self
+  = liftIO ((js_getContent (unWebKitNamedFlow self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_webkit_named_flow_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef WebKitNamedFlow -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.name Mozilla WebKitNamedFlow.name documentation> 
-webKitNamedFlowGetName ::
-                       (MonadIO m, IsWebKitNamedFlow self, FromJSString result) =>
-                         self -> m result
-webKitNamedFlowGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_webkit_named_flow_get_name
-            (unWebKitNamedFlow (toWebKitNamedFlow self))))
+getName ::
+        (MonadIO m, FromJSString result) => WebKitNamedFlow -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unWebKitNamedFlow self)))
  
 foreign import javascript unsafe "($1[\"overset\"] ? 1 : 0)"
-        ghcjs_dom_webkit_named_flow_get_overset ::
-        JSRef WebKitNamedFlow -> IO Bool
+        js_getOverset :: JSRef WebKitNamedFlow -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.overset Mozilla WebKitNamedFlow.overset documentation> 
-webKitNamedFlowGetOverset ::
-                          (MonadIO m, IsWebKitNamedFlow self) => self -> m Bool
-webKitNamedFlowGetOverset self
-  = liftIO
-      (ghcjs_dom_webkit_named_flow_get_overset
-         (unWebKitNamedFlow (toWebKitNamedFlow self)))
+getOverset :: (MonadIO m) => WebKitNamedFlow -> m Bool
+getOverset self = liftIO (js_getOverset (unWebKitNamedFlow self))
  
 foreign import javascript unsafe "$1[\"firstEmptyRegionIndex\"]"
-        ghcjs_dom_webkit_named_flow_get_first_empty_region_index ::
-        JSRef WebKitNamedFlow -> IO Int
+        js_getFirstEmptyRegionIndex :: JSRef WebKitNamedFlow -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.firstEmptyRegionIndex Mozilla WebKitNamedFlow.firstEmptyRegionIndex documentation> 
-webKitNamedFlowGetFirstEmptyRegionIndex ::
-                                        (MonadIO m, IsWebKitNamedFlow self) => self -> m Int
-webKitNamedFlowGetFirstEmptyRegionIndex self
-  = liftIO
-      (ghcjs_dom_webkit_named_flow_get_first_empty_region_index
-         (unWebKitNamedFlow (toWebKitNamedFlow self)))
+getFirstEmptyRegionIndex :: (MonadIO m) => WebKitNamedFlow -> m Int
+getFirstEmptyRegionIndex self
+  = liftIO (js_getFirstEmptyRegionIndex (unWebKitNamedFlow self))
 #else
 module GHCJS.DOM.WebKitNamedFlow (
   module Graphics.UI.Gtk.WebKit.DOM.WebKitNamedFlow

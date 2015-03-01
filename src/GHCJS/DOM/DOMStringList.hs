@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMStringList
-       (ghcjs_dom_dom_string_list_item, domStringListItem,
-        ghcjs_dom_dom_string_list_contains, domStringListContains,
-        ghcjs_dom_dom_string_list_get_length, domStringListGetLength,
-        DOMStringList, IsDOMStringList, castToDOMStringList,
-        gTypeDOMStringList, toDOMStringList)
+       (js_item, item, js_contains, contains, js_getLength, getLength,
+        DOMStringList, castToDOMStringList, gTypeDOMStringList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,50 +15,35 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_dom_string_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef DOMStringList -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList.item Mozilla DOMStringList.item documentation> 
-domStringListItem ::
-                  (MonadIO m, IsDOMStringList self, FromJSString result) =>
-                    self -> Word -> m result
-domStringListItem self index
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_dom_string_list_item
-            (unDOMStringList (toDOMStringList self))
-            index))
+item ::
+     (MonadIO m, FromJSString result) =>
+       DOMStringList -> Word -> m result
+item self index
+  = liftIO (fromJSString <$> (js_item (unDOMStringList self) index))
  
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
-        ghcjs_dom_dom_string_list_contains ::
-        JSRef DOMStringList -> JSString -> IO Bool
+        js_contains :: JSRef DOMStringList -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList.contains Mozilla DOMStringList.contains documentation> 
-domStringListContains ::
-                      (MonadIO m, IsDOMStringList self, ToJSString string) =>
-                        self -> string -> m Bool
-domStringListContains self string
-  = liftIO
-      (ghcjs_dom_dom_string_list_contains
-         (unDOMStringList (toDOMStringList self))
-         (toJSString string))
+contains ::
+         (MonadIO m, ToJSString string) => DOMStringList -> string -> m Bool
+contains self string
+  = liftIO (js_contains (unDOMStringList self) (toJSString string))
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_dom_string_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef DOMStringList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList.length Mozilla DOMStringList.length documentation> 
-domStringListGetLength ::
-                       (MonadIO m, IsDOMStringList self) => self -> m Word
-domStringListGetLength self
-  = liftIO
-      (ghcjs_dom_dom_string_list_get_length
-         (unDOMStringList (toDOMStringList self)))
+getLength :: (MonadIO m) => DOMStringList -> m Word
+getLength self = liftIO (js_getLength (unDOMStringList self))
 #else
 module GHCJS.DOM.DOMStringList (
   module Graphics.UI.Gtk.WebKit.DOM.DOMStringList

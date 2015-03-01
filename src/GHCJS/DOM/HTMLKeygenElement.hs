@@ -1,41 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLKeygenElement
-       (ghcjs_dom_html_keygen_element_check_validity,
-        htmlKeygenElementCheckValidity,
-        ghcjs_dom_html_keygen_element_set_custom_validity,
-        htmlKeygenElementSetCustomValidity,
-        ghcjs_dom_html_keygen_element_set_autofocus,
-        htmlKeygenElementSetAutofocus,
-        ghcjs_dom_html_keygen_element_get_autofocus,
-        htmlKeygenElementGetAutofocus,
-        ghcjs_dom_html_keygen_element_set_challenge,
-        htmlKeygenElementSetChallenge,
-        ghcjs_dom_html_keygen_element_get_challenge,
-        htmlKeygenElementGetChallenge,
-        ghcjs_dom_html_keygen_element_set_disabled,
-        htmlKeygenElementSetDisabled,
-        ghcjs_dom_html_keygen_element_get_disabled,
-        htmlKeygenElementGetDisabled,
-        ghcjs_dom_html_keygen_element_get_form, htmlKeygenElementGetForm,
-        ghcjs_dom_html_keygen_element_set_keytype,
-        htmlKeygenElementSetKeytype,
-        ghcjs_dom_html_keygen_element_get_keytype,
-        htmlKeygenElementGetKeytype,
-        ghcjs_dom_html_keygen_element_set_name, htmlKeygenElementSetName,
-        ghcjs_dom_html_keygen_element_get_name, htmlKeygenElementGetName,
-        ghcjs_dom_html_keygen_element_get_will_validate,
-        htmlKeygenElementGetWillValidate,
-        ghcjs_dom_html_keygen_element_get_validity,
-        htmlKeygenElementGetValidity,
-        ghcjs_dom_html_keygen_element_get_validation_message,
-        htmlKeygenElementGetValidationMessage,
-        ghcjs_dom_html_keygen_element_get_labels,
-        htmlKeygenElementGetLabels, HTMLKeygenElement, IsHTMLKeygenElement,
-        castToHTMLKeygenElement, gTypeHTMLKeygenElement,
-        toHTMLKeygenElement)
+       (js_checkValidity, checkValidity, js_setCustomValidity,
+        setCustomValidity, js_setAutofocus, setAutofocus, js_getAutofocus,
+        getAutofocus, js_setChallenge, setChallenge, js_getChallenge,
+        getChallenge, js_setDisabled, setDisabled, js_getDisabled,
+        getDisabled, js_getForm, getForm, js_setKeytype, setKeytype,
+        js_getKeytype, getKeytype, js_setName, setName, js_getName,
+        getName, js_getWillValidate, getWillValidate, js_getValidity,
+        getValidity, js_getValidationMessage, getValidationMessage,
+        js_getLabels, getLabels, HTMLKeygenElement,
+        castToHTMLKeygenElement, gTypeHTMLKeygenElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -45,237 +23,166 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"checkValidity\"]() ? 1 : 0)"
-        ghcjs_dom_html_keygen_element_check_validity ::
+        "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
         JSRef HTMLKeygenElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.checkValidity Mozilla HTMLKeygenElement.checkValidity documentation> 
-htmlKeygenElementCheckValidity ::
-                               (MonadIO m, IsHTMLKeygenElement self) => self -> m Bool
-htmlKeygenElementCheckValidity self
-  = liftIO
-      (ghcjs_dom_html_keygen_element_check_validity
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+checkValidity :: (MonadIO m) => HTMLKeygenElement -> m Bool
+checkValidity self
+  = liftIO (js_checkValidity (unHTMLKeygenElement self))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
-        ghcjs_dom_html_keygen_element_set_custom_validity ::
+        js_setCustomValidity ::
         JSRef HTMLKeygenElement -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.customValidity Mozilla HTMLKeygenElement.customValidity documentation> 
-htmlKeygenElementSetCustomValidity ::
-                                   (MonadIO m, IsHTMLKeygenElement self, ToJSString error) =>
-                                     self -> error -> m ()
-htmlKeygenElementSetCustomValidity self error
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.setCustomValidity Mozilla HTMLKeygenElement.setCustomValidity documentation> 
+setCustomValidity ::
+                  (MonadIO m, ToJSString error) => HTMLKeygenElement -> error -> m ()
+setCustomValidity self error
   = liftIO
-      (ghcjs_dom_html_keygen_element_set_custom_validity
-         (unHTMLKeygenElement (toHTMLKeygenElement self))
+      (js_setCustomValidity (unHTMLKeygenElement self)
          (toJSString error))
  
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
-        ghcjs_dom_html_keygen_element_set_autofocus ::
-        JSRef HTMLKeygenElement -> Bool -> IO ()
+        js_setAutofocus :: JSRef HTMLKeygenElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.autofocus Mozilla HTMLKeygenElement.autofocus documentation> 
-htmlKeygenElementSetAutofocus ::
-                              (MonadIO m, IsHTMLKeygenElement self) => self -> Bool -> m ()
-htmlKeygenElementSetAutofocus self val
-  = liftIO
-      (ghcjs_dom_html_keygen_element_set_autofocus
-         (unHTMLKeygenElement (toHTMLKeygenElement self))
-         val)
+setAutofocus :: (MonadIO m) => HTMLKeygenElement -> Bool -> m ()
+setAutofocus self val
+  = liftIO (js_setAutofocus (unHTMLKeygenElement self) val)
  
 foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
-        ghcjs_dom_html_keygen_element_get_autofocus ::
-        JSRef HTMLKeygenElement -> IO Bool
+        js_getAutofocus :: JSRef HTMLKeygenElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.autofocus Mozilla HTMLKeygenElement.autofocus documentation> 
-htmlKeygenElementGetAutofocus ::
-                              (MonadIO m, IsHTMLKeygenElement self) => self -> m Bool
-htmlKeygenElementGetAutofocus self
-  = liftIO
-      (ghcjs_dom_html_keygen_element_get_autofocus
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+getAutofocus :: (MonadIO m) => HTMLKeygenElement -> m Bool
+getAutofocus self
+  = liftIO (js_getAutofocus (unHTMLKeygenElement self))
  
 foreign import javascript unsafe "$1[\"challenge\"] = $2;"
-        ghcjs_dom_html_keygen_element_set_challenge ::
-        JSRef HTMLKeygenElement -> JSString -> IO ()
+        js_setChallenge :: JSRef HTMLKeygenElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.challenge Mozilla HTMLKeygenElement.challenge documentation> 
-htmlKeygenElementSetChallenge ::
-                              (MonadIO m, IsHTMLKeygenElement self, ToJSString val) =>
-                                self -> val -> m ()
-htmlKeygenElementSetChallenge self val
+setChallenge ::
+             (MonadIO m, ToJSString val) => HTMLKeygenElement -> val -> m ()
+setChallenge self val
   = liftIO
-      (ghcjs_dom_html_keygen_element_set_challenge
-         (unHTMLKeygenElement (toHTMLKeygenElement self))
-         (toJSString val))
+      (js_setChallenge (unHTMLKeygenElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"challenge\"]"
-        ghcjs_dom_html_keygen_element_get_challenge ::
-        JSRef HTMLKeygenElement -> IO JSString
+        js_getChallenge :: JSRef HTMLKeygenElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.challenge Mozilla HTMLKeygenElement.challenge documentation> 
-htmlKeygenElementGetChallenge ::
-                              (MonadIO m, IsHTMLKeygenElement self, FromJSString result) =>
-                                self -> m result
-htmlKeygenElementGetChallenge self
+getChallenge ::
+             (MonadIO m, FromJSString result) => HTMLKeygenElement -> m result
+getChallenge self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_keygen_element_get_challenge
-            (unHTMLKeygenElement (toHTMLKeygenElement self))))
+      (fromJSString <$> (js_getChallenge (unHTMLKeygenElement self)))
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        ghcjs_dom_html_keygen_element_set_disabled ::
-        JSRef HTMLKeygenElement -> Bool -> IO ()
+        js_setDisabled :: JSRef HTMLKeygenElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.disabled Mozilla HTMLKeygenElement.disabled documentation> 
-htmlKeygenElementSetDisabled ::
-                             (MonadIO m, IsHTMLKeygenElement self) => self -> Bool -> m ()
-htmlKeygenElementSetDisabled self val
-  = liftIO
-      (ghcjs_dom_html_keygen_element_set_disabled
-         (unHTMLKeygenElement (toHTMLKeygenElement self))
-         val)
+setDisabled :: (MonadIO m) => HTMLKeygenElement -> Bool -> m ()
+setDisabled self val
+  = liftIO (js_setDisabled (unHTMLKeygenElement self) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        ghcjs_dom_html_keygen_element_get_disabled ::
-        JSRef HTMLKeygenElement -> IO Bool
+        js_getDisabled :: JSRef HTMLKeygenElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.disabled Mozilla HTMLKeygenElement.disabled documentation> 
-htmlKeygenElementGetDisabled ::
-                             (MonadIO m, IsHTMLKeygenElement self) => self -> m Bool
-htmlKeygenElementGetDisabled self
-  = liftIO
-      (ghcjs_dom_html_keygen_element_get_disabled
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+getDisabled :: (MonadIO m) => HTMLKeygenElement -> m Bool
+getDisabled self
+  = liftIO (js_getDisabled (unHTMLKeygenElement self))
  
-foreign import javascript unsafe "$1[\"form\"]"
-        ghcjs_dom_html_keygen_element_get_form ::
+foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
         JSRef HTMLKeygenElement -> IO (JSRef HTMLFormElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.form Mozilla HTMLKeygenElement.form documentation> 
-htmlKeygenElementGetForm ::
-                         (MonadIO m, IsHTMLKeygenElement self) =>
-                           self -> m (Maybe HTMLFormElement)
-htmlKeygenElementGetForm self
-  = liftIO
-      ((ghcjs_dom_html_keygen_element_get_form
-          (unHTMLKeygenElement (toHTMLKeygenElement self)))
-         >>= fromJSRef)
+getForm ::
+        (MonadIO m) => HTMLKeygenElement -> m (Maybe HTMLFormElement)
+getForm self
+  = liftIO ((js_getForm (unHTMLKeygenElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"keytype\"] = $2;"
-        ghcjs_dom_html_keygen_element_set_keytype ::
-        JSRef HTMLKeygenElement -> JSString -> IO ()
+        js_setKeytype :: JSRef HTMLKeygenElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.keytype Mozilla HTMLKeygenElement.keytype documentation> 
-htmlKeygenElementSetKeytype ::
-                            (MonadIO m, IsHTMLKeygenElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlKeygenElementSetKeytype self val
+setKeytype ::
+           (MonadIO m, ToJSString val) => HTMLKeygenElement -> val -> m ()
+setKeytype self val
   = liftIO
-      (ghcjs_dom_html_keygen_element_set_keytype
-         (unHTMLKeygenElement (toHTMLKeygenElement self))
-         (toJSString val))
+      (js_setKeytype (unHTMLKeygenElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"keytype\"]"
-        ghcjs_dom_html_keygen_element_get_keytype ::
+foreign import javascript unsafe "$1[\"keytype\"]" js_getKeytype ::
         JSRef HTMLKeygenElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.keytype Mozilla HTMLKeygenElement.keytype documentation> 
-htmlKeygenElementGetKeytype ::
-                            (MonadIO m, IsHTMLKeygenElement self, FromJSString result) =>
-                              self -> m result
-htmlKeygenElementGetKeytype self
+getKeytype ::
+           (MonadIO m, FromJSString result) => HTMLKeygenElement -> m result
+getKeytype self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_keygen_element_get_keytype
-            (unHTMLKeygenElement (toHTMLKeygenElement self))))
+      (fromJSString <$> (js_getKeytype (unHTMLKeygenElement self)))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;"
-        ghcjs_dom_html_keygen_element_set_name ::
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLKeygenElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.name Mozilla HTMLKeygenElement.name documentation> 
-htmlKeygenElementSetName ::
-                         (MonadIO m, IsHTMLKeygenElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlKeygenElementSetName self val
-  = liftIO
-      (ghcjs_dom_html_keygen_element_set_name
-         (unHTMLKeygenElement (toHTMLKeygenElement self))
-         (toJSString val))
+setName ::
+        (MonadIO m, ToJSString val) => HTMLKeygenElement -> val -> m ()
+setName self val
+  = liftIO (js_setName (unHTMLKeygenElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_html_keygen_element_get_name ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef HTMLKeygenElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.name Mozilla HTMLKeygenElement.name documentation> 
-htmlKeygenElementGetName ::
-                         (MonadIO m, IsHTMLKeygenElement self, FromJSString result) =>
-                           self -> m result
-htmlKeygenElementGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_keygen_element_get_name
-            (unHTMLKeygenElement (toHTMLKeygenElement self))))
+getName ::
+        (MonadIO m, FromJSString result) => HTMLKeygenElement -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unHTMLKeygenElement self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
-        ghcjs_dom_html_keygen_element_get_will_validate ::
-        JSRef HTMLKeygenElement -> IO Bool
+        js_getWillValidate :: JSRef HTMLKeygenElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.willValidate Mozilla HTMLKeygenElement.willValidate documentation> 
-htmlKeygenElementGetWillValidate ::
-                                 (MonadIO m, IsHTMLKeygenElement self) => self -> m Bool
-htmlKeygenElementGetWillValidate self
-  = liftIO
-      (ghcjs_dom_html_keygen_element_get_will_validate
-         (unHTMLKeygenElement (toHTMLKeygenElement self)))
+getWillValidate :: (MonadIO m) => HTMLKeygenElement -> m Bool
+getWillValidate self
+  = liftIO (js_getWillValidate (unHTMLKeygenElement self))
  
-foreign import javascript unsafe "$1[\"validity\"]"
-        ghcjs_dom_html_keygen_element_get_validity ::
-        JSRef HTMLKeygenElement -> IO (JSRef ValidityState)
+foreign import javascript unsafe "$1[\"validity\"]" js_getValidity
+        :: JSRef HTMLKeygenElement -> IO (JSRef ValidityState)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.validity Mozilla HTMLKeygenElement.validity documentation> 
-htmlKeygenElementGetValidity ::
-                             (MonadIO m, IsHTMLKeygenElement self) =>
-                               self -> m (Maybe ValidityState)
-htmlKeygenElementGetValidity self
+getValidity ::
+            (MonadIO m) => HTMLKeygenElement -> m (Maybe ValidityState)
+getValidity self
   = liftIO
-      ((ghcjs_dom_html_keygen_element_get_validity
-          (unHTMLKeygenElement (toHTMLKeygenElement self)))
-         >>= fromJSRef)
+      ((js_getValidity (unHTMLKeygenElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
-        ghcjs_dom_html_keygen_element_get_validation_message ::
-        JSRef HTMLKeygenElement -> IO JSString
+        js_getValidationMessage :: JSRef HTMLKeygenElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.validationMessage Mozilla HTMLKeygenElement.validationMessage documentation> 
-htmlKeygenElementGetValidationMessage ::
-                                      (MonadIO m, IsHTMLKeygenElement self, FromJSString result) =>
-                                        self -> m result
-htmlKeygenElementGetValidationMessage self
+getValidationMessage ::
+                     (MonadIO m, FromJSString result) => HTMLKeygenElement -> m result
+getValidationMessage self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_keygen_element_get_validation_message
-            (unHTMLKeygenElement (toHTMLKeygenElement self))))
+         (js_getValidationMessage (unHTMLKeygenElement self)))
  
-foreign import javascript unsafe "$1[\"labels\"]"
-        ghcjs_dom_html_keygen_element_get_labels ::
+foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
         JSRef HTMLKeygenElement -> IO (JSRef NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.labels Mozilla HTMLKeygenElement.labels documentation> 
-htmlKeygenElementGetLabels ::
-                           (MonadIO m, IsHTMLKeygenElement self) => self -> m (Maybe NodeList)
-htmlKeygenElementGetLabels self
-  = liftIO
-      ((ghcjs_dom_html_keygen_element_get_labels
-          (unHTMLKeygenElement (toHTMLKeygenElement self)))
-         >>= fromJSRef)
+getLabels :: (MonadIO m) => HTMLKeygenElement -> m (Maybe NodeList)
+getLabels self
+  = liftIO ((js_getLabels (unHTMLKeygenElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.HTMLKeygenElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLKeygenElement

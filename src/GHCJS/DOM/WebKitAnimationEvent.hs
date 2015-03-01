@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitAnimationEvent
-       (ghcjs_dom_webkit_animation_event_get_animation_name,
-        webKitAnimationEventGetAnimationName,
-        ghcjs_dom_webkit_animation_event_get_elapsed_time,
-        webKitAnimationEventGetElapsedTime, WebKitAnimationEvent,
-        IsWebKitAnimationEvent, castToWebKitAnimationEvent,
-        gTypeWebKitAnimationEvent, toWebKitAnimationEvent)
+       (js_getAnimationName, getAnimationName, js_getElapsedTime,
+        getElapsedTime, WebKitAnimationEvent, castToWebKitAnimationEvent,
+        gTypeWebKitAnimationEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,36 +16,29 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"animationName\"]"
-        ghcjs_dom_webkit_animation_event_get_animation_name ::
-        JSRef WebKitAnimationEvent -> IO JSString
+        js_getAnimationName :: JSRef WebKitAnimationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitAnimationEvent.animationName Mozilla WebKitAnimationEvent.animationName documentation> 
-webKitAnimationEventGetAnimationName ::
-                                     (MonadIO m, IsWebKitAnimationEvent self,
-                                      FromJSString result) =>
-                                       self -> m result
-webKitAnimationEventGetAnimationName self
+getAnimationName ::
+                 (MonadIO m, FromJSString result) =>
+                   WebKitAnimationEvent -> m result
+getAnimationName self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_webkit_animation_event_get_animation_name
-            (unWebKitAnimationEvent (toWebKitAnimationEvent self))))
+         (js_getAnimationName (unWebKitAnimationEvent self)))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
-        ghcjs_dom_webkit_animation_event_get_elapsed_time ::
-        JSRef WebKitAnimationEvent -> IO Double
+        js_getElapsedTime :: JSRef WebKitAnimationEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitAnimationEvent.elapsedTime Mozilla WebKitAnimationEvent.elapsedTime documentation> 
-webKitAnimationEventGetElapsedTime ::
-                                   (MonadIO m, IsWebKitAnimationEvent self) => self -> m Double
-webKitAnimationEventGetElapsedTime self
-  = liftIO
-      (ghcjs_dom_webkit_animation_event_get_elapsed_time
-         (unWebKitAnimationEvent (toWebKitAnimationEvent self)))
+getElapsedTime :: (MonadIO m) => WebKitAnimationEvent -> m Double
+getElapsedTime self
+  = liftIO (js_getElapsedTime (unWebKitAnimationEvent self))
 #else
 module GHCJS.DOM.WebKitAnimationEvent (
   ) where

@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DataTransferItem
-       (ghcjs_dom_data_transfer_item_get_as_string,
-        dataTransferItemGetAsString,
-        ghcjs_dom_data_transfer_item_get_as_file,
-        dataTransferItemGetAsFile, ghcjs_dom_data_transfer_item_get_kind,
-        dataTransferItemGetKind, DataTransferItem, IsDataTransferItem,
-        castToDataTransferItem, gTypeDataTransferItem, toDataTransferItem)
+       (js_getAsString, getAsString, js_getAsFile, getAsFile, js_getKind,
+        getKind, DataTransferItem, castToDataTransferItem,
+        gTypeDataTransferItem)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,50 +16,38 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getAsString\"]($2)"
-        ghcjs_dom_data_transfer_item_get_as_string ::
+        js_getAsString ::
         JSRef DataTransferItem -> JSRef StringCallback -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.asString Mozilla DataTransferItem.asString documentation> 
-dataTransferItemGetAsString ::
-                            (MonadIO m, IsDataTransferItem self, IsStringCallback callback) =>
-                              self -> Maybe callback -> m ()
-dataTransferItemGetAsString self callback
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.getAsString Mozilla DataTransferItem.getAsString documentation> 
+getAsString ::
+            (MonadIO m) => DataTransferItem -> Maybe StringCallback -> m ()
+getAsString self callback
   = liftIO
-      (ghcjs_dom_data_transfer_item_get_as_string
-         (unDataTransferItem (toDataTransferItem self))
-         (maybe jsNull (unStringCallback . toStringCallback) callback))
+      (js_getAsString (unDataTransferItem self)
+         (maybe jsNull unStringCallback callback))
  
-foreign import javascript unsafe "$1[\"getAsFile\"]()"
-        ghcjs_dom_data_transfer_item_get_as_file ::
-        JSRef DataTransferItem -> IO (JSRef Blob)
+foreign import javascript unsafe "$1[\"getAsFile\"]()" js_getAsFile
+        :: JSRef DataTransferItem -> IO (JSRef Blob)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.asFile Mozilla DataTransferItem.asFile documentation> 
-dataTransferItemGetAsFile ::
-                          (MonadIO m, IsDataTransferItem self) => self -> m (Maybe Blob)
-dataTransferItemGetAsFile self
-  = liftIO
-      ((ghcjs_dom_data_transfer_item_get_as_file
-          (unDataTransferItem (toDataTransferItem self)))
-         >>= fromJSRef)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.getAsFile Mozilla DataTransferItem.getAsFile documentation> 
+getAsFile :: (MonadIO m) => DataTransferItem -> m (Maybe Blob)
+getAsFile self
+  = liftIO ((js_getAsFile (unDataTransferItem self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"kind\"]"
-        ghcjs_dom_data_transfer_item_get_kind ::
+foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
         JSRef DataTransferItem -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.kind Mozilla DataTransferItem.kind documentation> 
-dataTransferItemGetKind ::
-                        (MonadIO m, IsDataTransferItem self, FromJSString result) =>
-                          self -> m result
-dataTransferItemGetKind self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_data_transfer_item_get_kind
-            (unDataTransferItem (toDataTransferItem self))))
+getKind ::
+        (MonadIO m, FromJSString result) => DataTransferItem -> m result
+getKind self
+  = liftIO (fromJSString <$> (js_getKind (unDataTransferItem self)))
 #else
 module GHCJS.DOM.DataTransferItem (
   ) where

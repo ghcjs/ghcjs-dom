@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.CapabilityRange
-       (ghcjs_dom_capability_range_get_max, capabilityRangeGetMax,
-        ghcjs_dom_capability_range_get_min, capabilityRangeGetMin,
-        ghcjs_dom_capability_range_get_supported,
-        capabilityRangeGetSupported, CapabilityRange, IsCapabilityRange,
-        castToCapabilityRange, gTypeCapabilityRange, toCapabilityRange)
+       (js_getMax, getMax, js_getMin, getMin, js_getSupported,
+        getSupported, CapabilityRange, castToCapabilityRange,
+        gTypeCapabilityRange)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,45 +16,31 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"max\"]"
-        ghcjs_dom_capability_range_get_max ::
+foreign import javascript unsafe "$1[\"max\"]" js_getMax ::
         JSRef CapabilityRange -> IO (JSRef a)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.max Mozilla CapabilityRange.max documentation> 
-capabilityRangeGetMax ::
-                      (MonadIO m, IsCapabilityRange self) => self -> m (JSRef a)
-capabilityRangeGetMax self
-  = liftIO
-      (ghcjs_dom_capability_range_get_max
-         (unCapabilityRange (toCapabilityRange self)))
+getMax :: (MonadIO m) => CapabilityRange -> m (JSRef a)
+getMax self = liftIO (js_getMax (unCapabilityRange self))
  
-foreign import javascript unsafe "$1[\"min\"]"
-        ghcjs_dom_capability_range_get_min ::
+foreign import javascript unsafe "$1[\"min\"]" js_getMin ::
         JSRef CapabilityRange -> IO (JSRef a)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.min Mozilla CapabilityRange.min documentation> 
-capabilityRangeGetMin ::
-                      (MonadIO m, IsCapabilityRange self) => self -> m (JSRef a)
-capabilityRangeGetMin self
-  = liftIO
-      (ghcjs_dom_capability_range_get_min
-         (unCapabilityRange (toCapabilityRange self)))
+getMin :: (MonadIO m) => CapabilityRange -> m (JSRef a)
+getMin self = liftIO (js_getMin (unCapabilityRange self))
  
 foreign import javascript unsafe "($1[\"supported\"] ? 1 : 0)"
-        ghcjs_dom_capability_range_get_supported ::
-        JSRef CapabilityRange -> IO Bool
+        js_getSupported :: JSRef CapabilityRange -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.supported Mozilla CapabilityRange.supported documentation> 
-capabilityRangeGetSupported ::
-                            (MonadIO m, IsCapabilityRange self) => self -> m Bool
-capabilityRangeGetSupported self
-  = liftIO
-      (ghcjs_dom_capability_range_get_supported
-         (unCapabilityRange (toCapabilityRange self)))
+getSupported :: (MonadIO m) => CapabilityRange -> m Bool
+getSupported self
+  = liftIO (js_getSupported (unCapabilityRange self))
 #else
 module GHCJS.DOM.CapabilityRange (
   ) where

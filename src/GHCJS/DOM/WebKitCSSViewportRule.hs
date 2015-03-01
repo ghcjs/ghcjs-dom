@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitCSSViewportRule
-       (ghcjs_dom_webkit_css_viewport_rule_get_style,
-        webKitCSSViewportRuleGetStyle, WebKitCSSViewportRule,
-        IsWebKitCSSViewportRule, castToWebKitCSSViewportRule,
-        gTypeWebKitCSSViewportRule, toWebKitCSSViewportRule)
+       (js_getStyle, getStyle, WebKitCSSViewportRule,
+        castToWebKitCSSViewportRule, gTypeWebKitCSSViewportRule)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,20 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"style\"]"
-        ghcjs_dom_webkit_css_viewport_rule_get_style ::
+foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
         JSRef WebKitCSSViewportRule -> IO (JSRef CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSViewportRule.style Mozilla WebKitCSSViewportRule.style documentation> 
-webKitCSSViewportRuleGetStyle ::
-                              (MonadIO m, IsWebKitCSSViewportRule self) =>
-                                self -> m (Maybe CSSStyleDeclaration)
-webKitCSSViewportRuleGetStyle self
+getStyle ::
+         (MonadIO m) =>
+           WebKitCSSViewportRule -> m (Maybe CSSStyleDeclaration)
+getStyle self
   = liftIO
-      ((ghcjs_dom_webkit_css_viewport_rule_get_style
-          (unWebKitCSSViewportRule (toWebKitCSSViewportRule self)))
-         >>= fromJSRef)
+      ((js_getStyle (unWebKitCSSViewportRule self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.WebKitCSSViewportRule (
   ) where

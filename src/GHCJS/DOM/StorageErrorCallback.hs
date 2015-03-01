@@ -1,12 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.StorageErrorCallback
-       (storageErrorCallbackNewSync, storageErrorCallbackNewAsync,
-        StorageErrorCallback, IsStorageErrorCallback,
-        castToStorageErrorCallback, gTypeStorageErrorCallback,
-        toStorageErrorCallback)
+       (newStorageErrorCallbackSync, newStorageErrorCallbackSync',
+        newStorageErrorCallbackAsync, newStorageErrorCallbackAsync',
+        StorageErrorCallback, castToStorageErrorCallback,
+        gTypeStorageErrorCallback)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,15 +17,15 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation> 
-storageErrorCallbackNewSync ::
+newStorageErrorCallbackSync ::
                             (MonadIO m) =>
                               (Maybe DOMCoreException -> IO Bool) -> m StorageErrorCallback
-storageErrorCallbackNewSync callback
+newStorageErrorCallbackSync callback
   = liftIO
       (StorageErrorCallback . castRef <$>
          syncCallback1 AlwaysRetain True
@@ -32,12 +33,12 @@ storageErrorCallbackNewSync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation> 
-storageErrorCallbackNewSync' ::
+newStorageErrorCallbackSync' ::
                              (MonadIO m) =>
                                ForeignRetention ->
                                  Bool ->
                                    (Maybe DOMCoreException -> IO Bool) -> m StorageErrorCallback
-storageErrorCallbackNewSync' retention continueAsync callback
+newStorageErrorCallbackSync' retention continueAsync callback
   = liftIO
       (StorageErrorCallback . castRef <$>
          syncCallback1 retention continueAsync
@@ -45,10 +46,10 @@ storageErrorCallbackNewSync' retention continueAsync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation> 
-storageErrorCallbackNewAsync ::
+newStorageErrorCallbackAsync ::
                              (MonadIO m) =>
                                (Maybe DOMCoreException -> IO Bool) -> m StorageErrorCallback
-storageErrorCallbackNewAsync callback
+newStorageErrorCallbackAsync callback
   = liftIO
       (StorageErrorCallback . castRef <$>
          asyncCallback1 AlwaysRetain
@@ -56,11 +57,11 @@ storageErrorCallbackNewAsync callback
               fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation> 
-storageErrorCallbackNewAsync' ::
+newStorageErrorCallbackAsync' ::
                               (MonadIO m) =>
                                 ForeignRetention ->
                                   (Maybe DOMCoreException -> IO Bool) -> m StorageErrorCallback
-storageErrorCallbackNewAsync' retention callback
+newStorageErrorCallbackAsync' retention callback
   = liftIO
       (StorageErrorCallback . castRef <$>
          asyncCallback1 retention

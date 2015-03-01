@@ -1,18 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGAltGlyphElement
-       (ghcjs_dom_svg_alt_glyph_element_set_glyph_ref,
-        svgAltGlyphElementSetGlyphRef,
-        ghcjs_dom_svg_alt_glyph_element_get_glyph_ref,
-        svgAltGlyphElementGetGlyphRef,
-        ghcjs_dom_svg_alt_glyph_element_set_format,
-        svgAltGlyphElementSetFormat,
-        ghcjs_dom_svg_alt_glyph_element_get_format,
-        svgAltGlyphElementGetFormat, SVGAltGlyphElement,
-        IsSVGAltGlyphElement, castToSVGAltGlyphElement,
-        gTypeSVGAltGlyphElement, toSVGAltGlyphElement)
+       (js_setGlyphRef, setGlyphRef, js_getGlyphRef, getGlyphRef,
+        js_setFormat, setFormat, js_getFormat, getFormat,
+        SVGAltGlyphElement, castToSVGAltGlyphElement,
+        gTypeSVGAltGlyphElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,65 +17,49 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"glyphRef\"] = $2;"
-        ghcjs_dom_svg_alt_glyph_element_set_glyph_ref ::
-        JSRef SVGAltGlyphElement -> JSString -> IO ()
+        js_setGlyphRef :: JSRef SVGAltGlyphElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.glyphRef Mozilla SVGAltGlyphElement.glyphRef documentation> 
-svgAltGlyphElementSetGlyphRef ::
-                              (MonadIO m, IsSVGAltGlyphElement self, ToJSString val) =>
-                                self -> val -> m ()
-svgAltGlyphElementSetGlyphRef self val
+setGlyphRef ::
+            (MonadIO m, ToJSString val) => SVGAltGlyphElement -> val -> m ()
+setGlyphRef self val
   = liftIO
-      (ghcjs_dom_svg_alt_glyph_element_set_glyph_ref
-         (unSVGAltGlyphElement (toSVGAltGlyphElement self))
-         (toJSString val))
+      (js_setGlyphRef (unSVGAltGlyphElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"glyphRef\"]"
-        ghcjs_dom_svg_alt_glyph_element_get_glyph_ref ::
-        JSRef SVGAltGlyphElement -> IO JSString
+foreign import javascript unsafe "$1[\"glyphRef\"]" js_getGlyphRef
+        :: JSRef SVGAltGlyphElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.glyphRef Mozilla SVGAltGlyphElement.glyphRef documentation> 
-svgAltGlyphElementGetGlyphRef ::
-                              (MonadIO m, IsSVGAltGlyphElement self, FromJSString result) =>
-                                self -> m result
-svgAltGlyphElementGetGlyphRef self
+getGlyphRef ::
+            (MonadIO m, FromJSString result) => SVGAltGlyphElement -> m result
+getGlyphRef self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_alt_glyph_element_get_glyph_ref
-            (unSVGAltGlyphElement (toSVGAltGlyphElement self))))
+      (fromJSString <$> (js_getGlyphRef (unSVGAltGlyphElement self)))
  
 foreign import javascript unsafe "$1[\"format\"] = $2;"
-        ghcjs_dom_svg_alt_glyph_element_set_format ::
-        JSRef SVGAltGlyphElement -> JSString -> IO ()
+        js_setFormat :: JSRef SVGAltGlyphElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.format Mozilla SVGAltGlyphElement.format documentation> 
-svgAltGlyphElementSetFormat ::
-                            (MonadIO m, IsSVGAltGlyphElement self, ToJSString val) =>
-                              self -> val -> m ()
-svgAltGlyphElementSetFormat self val
+setFormat ::
+          (MonadIO m, ToJSString val) => SVGAltGlyphElement -> val -> m ()
+setFormat self val
   = liftIO
-      (ghcjs_dom_svg_alt_glyph_element_set_format
-         (unSVGAltGlyphElement (toSVGAltGlyphElement self))
-         (toJSString val))
+      (js_setFormat (unSVGAltGlyphElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"format\"]"
-        ghcjs_dom_svg_alt_glyph_element_get_format ::
+foreign import javascript unsafe "$1[\"format\"]" js_getFormat ::
         JSRef SVGAltGlyphElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement.format Mozilla SVGAltGlyphElement.format documentation> 
-svgAltGlyphElementGetFormat ::
-                            (MonadIO m, IsSVGAltGlyphElement self, FromJSString result) =>
-                              self -> m result
-svgAltGlyphElementGetFormat self
+getFormat ::
+          (MonadIO m, FromJSString result) => SVGAltGlyphElement -> m result
+getFormat self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_alt_glyph_element_get_format
-            (unSVGAltGlyphElement (toSVGAltGlyphElement self))))
+      (fromJSString <$> (js_getFormat (unSVGAltGlyphElement self)))
 #else
 module GHCJS.DOM.SVGAltGlyphElement (
   ) where

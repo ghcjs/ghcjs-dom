@@ -1,45 +1,28 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Navigator
-       (ghcjs_dom_navigator_get_gamepads, navigatorGetGamepads,
-        ghcjs_dom_navigator_webkit_get_user_media,
-        navigatorWebkitGetUserMedia,
-        ghcjs_dom_navigator_register_protocol_handler,
-        navigatorRegisterProtocolHandler,
-        ghcjs_dom_navigator_is_protocol_handler_registered,
-        navigatorIsProtocolHandlerRegistered,
-        ghcjs_dom_navigator_unregister_protocol_handler,
-        navigatorUnregisterProtocolHandler,
-        ghcjs_dom_navigator_vibratePattern, navigatorVibratePattern,
-        ghcjs_dom_navigator_vibrate, navigatorVibrate,
-        ghcjs_dom_navigator_java_enabled, navigatorJavaEnabled,
-        ghcjs_dom_navigator_get_storage_updates,
-        navigatorGetStorageUpdates, ghcjs_dom_navigator_get_webkit_battery,
-        navigatorGetWebkitBattery, ghcjs_dom_navigator_get_geolocation,
-        navigatorGetGeolocation,
-        ghcjs_dom_navigator_get_webkit_temporary_storage,
-        navigatorGetWebkitTemporaryStorage,
-        ghcjs_dom_navigator_get_webkit_persistent_storage,
-        navigatorGetWebkitPersistentStorage,
-        ghcjs_dom_navigator_get_app_code_name, navigatorGetAppCodeName,
-        ghcjs_dom_navigator_get_app_name, navigatorGetAppName,
-        ghcjs_dom_navigator_get_app_version, navigatorGetAppVersion,
-        ghcjs_dom_navigator_get_language, navigatorGetLanguage,
-        ghcjs_dom_navigator_get_user_agent, navigatorGetUserAgent,
-        ghcjs_dom_navigator_get_platform, navigatorGetPlatform,
-        ghcjs_dom_navigator_get_plugins, navigatorGetPlugins,
-        ghcjs_dom_navigator_get_mime_types, navigatorGetMimeTypes,
-        ghcjs_dom_navigator_get_product, navigatorGetProduct,
-        ghcjs_dom_navigator_get_product_sub, navigatorGetProductSub,
-        ghcjs_dom_navigator_get_vendor, navigatorGetVendor,
-        ghcjs_dom_navigator_get_vendor_sub, navigatorGetVendorSub,
-        ghcjs_dom_navigator_get_cookie_enabled, navigatorGetCookieEnabled,
-        ghcjs_dom_navigator_get_on_line, navigatorGetOnLine,
-        ghcjs_dom_navigator_get_hardware_concurrency,
-        navigatorGetHardwareConcurrency, Navigator, IsNavigator,
-        castToNavigator, gTypeNavigator, toNavigator)
+       (js_getGamepads, getGamepads, js_webkitGetUserMedia,
+        webkitGetUserMedia, js_registerProtocolHandler,
+        registerProtocolHandler, js_isProtocolHandlerRegistered,
+        isProtocolHandlerRegistered, js_unregisterProtocolHandler,
+        unregisterProtocolHandler, js_vibratePattern, vibratePattern,
+        js_vibrate, vibrate, js_javaEnabled, javaEnabled,
+        js_getStorageUpdates, getStorageUpdates, js_getWebkitBattery,
+        getWebkitBattery, js_getGeolocation, getGeolocation,
+        js_getWebkitTemporaryStorage, getWebkitTemporaryStorage,
+        js_getWebkitPersistentStorage, getWebkitPersistentStorage,
+        js_getAppCodeName, getAppCodeName, js_getAppName, getAppName,
+        js_getAppVersion, getAppVersion, js_getLanguage, getLanguage,
+        js_getUserAgent, getUserAgent, js_getPlatform, getPlatform,
+        js_getPlugins, getPlugins, js_getMimeTypes, getMimeTypes,
+        js_getProduct, getProduct, js_getProductSub, getProductSub,
+        js_getVendor, getVendor, js_getVendorSub, getVendorSub,
+        js_getCookieEnabled, getCookieEnabled, js_getOnLine, getOnLine,
+        js_getHardwareConcurrency, getHardwareConcurrency, Navigator,
+        castToNavigator, gTypeNavigator)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -49,395 +32,287 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getGamepads\"]()"
-        ghcjs_dom_navigator_get_gamepads ::
-        JSRef Navigator -> IO (JSRef [Maybe Gamepad])
+        js_getGamepads :: JSRef Navigator -> IO (JSRef [Maybe Gamepad])
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.gamepads Mozilla Navigator.gamepads documentation> 
-navigatorGetGamepads ::
-                     (MonadIO m, IsNavigator self) => self -> m [Maybe Gamepad]
-navigatorGetGamepads self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getGamepads Mozilla Navigator.getGamepads documentation> 
+getGamepads :: (MonadIO m) => Navigator -> m [Maybe Gamepad]
+getGamepads self
   = liftIO
-      ((ghcjs_dom_navigator_get_gamepads
-          (unNavigator (toNavigator self)))
-         >>= fromJSRefUnchecked)
+      ((js_getGamepads (unNavigator self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
-        "$1[\"webkitGetUserMedia\"]($2, $3,\n$4)"
-        ghcjs_dom_navigator_webkit_get_user_media ::
+        "$1[\"webkitGetUserMedia\"]($2, $3,\n$4)" js_webkitGetUserMedia ::
         JSRef Navigator ->
           JSRef Dictionary ->
             JSRef NavigatorUserMediaSuccessCallback ->
               JSRef NavigatorUserMediaErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitGetUserMedia Mozilla Navigator.webkitGetUserMedia documentation> 
-navigatorWebkitGetUserMedia ::
-                            (MonadIO m, IsNavigator self, IsDictionary options,
-                             IsNavigatorUserMediaSuccessCallback successCallback,
-                             IsNavigatorUserMediaErrorCallback errorCallback) =>
-                              self ->
-                                Maybe options ->
-                                  Maybe successCallback -> Maybe errorCallback -> m ()
-navigatorWebkitGetUserMedia self options successCallback
-  errorCallback
+webkitGetUserMedia ::
+                   (MonadIO m, IsDictionary options) =>
+                     Navigator ->
+                       Maybe options ->
+                         Maybe NavigatorUserMediaSuccessCallback ->
+                           Maybe NavigatorUserMediaErrorCallback -> m ()
+webkitGetUserMedia self options successCallback errorCallback
   = liftIO
-      (ghcjs_dom_navigator_webkit_get_user_media
-         (unNavigator (toNavigator self))
+      (js_webkitGetUserMedia (unNavigator self)
          (maybe jsNull (unDictionary . toDictionary) options)
-         (maybe jsNull
-            (unNavigatorUserMediaSuccessCallback .
-               toNavigatorUserMediaSuccessCallback)
-            successCallback)
-         (maybe jsNull
-            (unNavigatorUserMediaErrorCallback .
-               toNavigatorUserMediaErrorCallback)
-            errorCallback))
+         (maybe jsNull unNavigatorUserMediaSuccessCallback successCallback)
+         (maybe jsNull unNavigatorUserMediaErrorCallback errorCallback))
  
 foreign import javascript unsafe
         "$1[\"registerProtocolHandler\"]($2,\n$3, $4)"
-        ghcjs_dom_navigator_register_protocol_handler ::
+        js_registerProtocolHandler ::
         JSRef Navigator -> JSString -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.registerProtocolHandler Mozilla Navigator.registerProtocolHandler documentation> 
-navigatorRegisterProtocolHandler ::
-                                 (MonadIO m, IsNavigator self, ToJSString scheme, ToJSString url,
-                                  ToJSString title) =>
-                                   self -> scheme -> url -> title -> m ()
-navigatorRegisterProtocolHandler self scheme url title
+registerProtocolHandler ::
+                        (MonadIO m, ToJSString scheme, ToJSString url, ToJSString title) =>
+                          Navigator -> scheme -> url -> title -> m ()
+registerProtocolHandler self scheme url title
   = liftIO
-      (ghcjs_dom_navigator_register_protocol_handler
-         (unNavigator (toNavigator self))
-         (toJSString scheme)
+      (js_registerProtocolHandler (unNavigator self) (toJSString scheme)
          (toJSString url)
          (toJSString title))
  
 foreign import javascript unsafe
         "$1[\"isProtocolHandlerRegistered\"]($2,\n$3)"
-        ghcjs_dom_navigator_is_protocol_handler_registered ::
+        js_isProtocolHandlerRegistered ::
         JSRef Navigator -> JSString -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.isProtocolHandlerRegistered Mozilla Navigator.isProtocolHandlerRegistered documentation> 
-navigatorIsProtocolHandlerRegistered ::
-                                     (MonadIO m, IsNavigator self, ToJSString scheme,
-                                      ToJSString url, FromJSString result) =>
-                                       self -> scheme -> url -> m result
-navigatorIsProtocolHandlerRegistered self scheme url
+isProtocolHandlerRegistered ::
+                            (MonadIO m, ToJSString scheme, ToJSString url,
+                             FromJSString result) =>
+                              Navigator -> scheme -> url -> m result
+isProtocolHandlerRegistered self scheme url
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_navigator_is_protocol_handler_registered
-            (unNavigator (toNavigator self))
+         (js_isProtocolHandlerRegistered (unNavigator self)
             (toJSString scheme)
             (toJSString url)))
  
 foreign import javascript unsafe
         "$1[\"unregisterProtocolHandler\"]($2,\n$3)"
-        ghcjs_dom_navigator_unregister_protocol_handler ::
+        js_unregisterProtocolHandler ::
         JSRef Navigator -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.unregisterProtocolHandler Mozilla Navigator.unregisterProtocolHandler documentation> 
-navigatorUnregisterProtocolHandler ::
-                                   (MonadIO m, IsNavigator self, ToJSString scheme,
-                                    ToJSString url) =>
-                                     self -> scheme -> url -> m ()
-navigatorUnregisterProtocolHandler self scheme url
+unregisterProtocolHandler ::
+                          (MonadIO m, ToJSString scheme, ToJSString url) =>
+                            Navigator -> scheme -> url -> m ()
+unregisterProtocolHandler self scheme url
   = liftIO
-      (ghcjs_dom_navigator_unregister_protocol_handler
-         (unNavigator (toNavigator self))
+      (js_unregisterProtocolHandler (unNavigator self)
          (toJSString scheme)
          (toJSString url))
  
 foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
-        ghcjs_dom_navigator_vibratePattern ::
-        JSRef Navigator -> JSRef [Word] -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibratePattern Mozilla Navigator.vibratePattern documentation> 
-navigatorVibratePattern ::
-                        (MonadIO m, IsNavigator self) => self -> [Word] -> m Bool
-navigatorVibratePattern self pattern
-  = liftIO
-      (toJSRef pattern >>=
-         \ pattern' ->
-           ghcjs_dom_navigator_vibratePattern (unNavigator (toNavigator self))
-             pattern')
- 
-foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
-        ghcjs_dom_navigator_vibrate :: JSRef Navigator -> Word -> IO Bool
+        js_vibratePattern :: JSRef Navigator -> JSRef [Word] -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
-navigatorVibrate ::
-                 (MonadIO m, IsNavigator self) => self -> Word -> m Bool
-navigatorVibrate self time
+vibratePattern :: (MonadIO m) => Navigator -> [Word] -> m Bool
+vibratePattern self pattern'
   = liftIO
-      (ghcjs_dom_navigator_vibrate (unNavigator (toNavigator self)) time)
+      (toJSRef pattern' >>=
+         \ pattern'' -> js_vibratePattern (unNavigator self) pattern'')
+ 
+foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
+        js_vibrate :: JSRef Navigator -> Word -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
+vibrate :: (MonadIO m) => Navigator -> Word -> m Bool
+vibrate self time = liftIO (js_vibrate (unNavigator self) time)
  
 foreign import javascript unsafe "($1[\"javaEnabled\"]() ? 1 : 0)"
-        ghcjs_dom_navigator_java_enabled :: JSRef Navigator -> IO Bool
+        js_javaEnabled :: JSRef Navigator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.javaEnabled Mozilla Navigator.javaEnabled documentation> 
-navigatorJavaEnabled ::
-                     (MonadIO m, IsNavigator self) => self -> m Bool
-navigatorJavaEnabled self
-  = liftIO
-      (ghcjs_dom_navigator_java_enabled (unNavigator (toNavigator self)))
+javaEnabled :: (MonadIO m) => Navigator -> m Bool
+javaEnabled self = liftIO (js_javaEnabled (unNavigator self))
  
 foreign import javascript unsafe "$1[\"getStorageUpdates\"]()"
-        ghcjs_dom_navigator_get_storage_updates :: JSRef Navigator -> IO ()
+        js_getStorageUpdates :: JSRef Navigator -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.storageUpdates Mozilla Navigator.storageUpdates documentation> 
-navigatorGetStorageUpdates ::
-                           (MonadIO m, IsNavigator self) => self -> m ()
-navigatorGetStorageUpdates self
-  = liftIO
-      (ghcjs_dom_navigator_get_storage_updates
-         (unNavigator (toNavigator self)))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getStorageUpdates Mozilla Navigator.getStorageUpdates documentation> 
+getStorageUpdates :: (MonadIO m) => Navigator -> m ()
+getStorageUpdates self
+  = liftIO (js_getStorageUpdates (unNavigator self))
  
 foreign import javascript unsafe "$1[\"webkitBattery\"]"
-        ghcjs_dom_navigator_get_webkit_battery ::
-        JSRef Navigator -> IO (JSRef BatteryManager)
+        js_getWebkitBattery :: JSRef Navigator -> IO (JSRef BatteryManager)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitBattery Mozilla Navigator.webkitBattery documentation> 
-navigatorGetWebkitBattery ::
-                          (MonadIO m, IsNavigator self) => self -> m (Maybe BatteryManager)
-navigatorGetWebkitBattery self
-  = liftIO
-      ((ghcjs_dom_navigator_get_webkit_battery
-          (unNavigator (toNavigator self)))
-         >>= fromJSRef)
+getWebkitBattery ::
+                 (MonadIO m) => Navigator -> m (Maybe BatteryManager)
+getWebkitBattery self
+  = liftIO ((js_getWebkitBattery (unNavigator self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"geolocation\"]"
-        ghcjs_dom_navigator_get_geolocation ::
-        JSRef Navigator -> IO (JSRef Geolocation)
+        js_getGeolocation :: JSRef Navigator -> IO (JSRef Geolocation)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.geolocation Mozilla Navigator.geolocation documentation> 
-navigatorGetGeolocation ::
-                        (MonadIO m, IsNavigator self) => self -> m (Maybe Geolocation)
-navigatorGetGeolocation self
-  = liftIO
-      ((ghcjs_dom_navigator_get_geolocation
-          (unNavigator (toNavigator self)))
-         >>= fromJSRef)
+getGeolocation :: (MonadIO m) => Navigator -> m (Maybe Geolocation)
+getGeolocation self
+  = liftIO ((js_getGeolocation (unNavigator self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitTemporaryStorage\"]"
-        ghcjs_dom_navigator_get_webkit_temporary_storage ::
+        js_getWebkitTemporaryStorage ::
         JSRef Navigator -> IO (JSRef StorageQuota)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitTemporaryStorage Mozilla Navigator.webkitTemporaryStorage documentation> 
-navigatorGetWebkitTemporaryStorage ::
-                                   (MonadIO m, IsNavigator self) => self -> m (Maybe StorageQuota)
-navigatorGetWebkitTemporaryStorage self
+getWebkitTemporaryStorage ::
+                          (MonadIO m) => Navigator -> m (Maybe StorageQuota)
+getWebkitTemporaryStorage self
   = liftIO
-      ((ghcjs_dom_navigator_get_webkit_temporary_storage
-          (unNavigator (toNavigator self)))
-         >>= fromJSRef)
+      ((js_getWebkitTemporaryStorage (unNavigator self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
-        ghcjs_dom_navigator_get_webkit_persistent_storage ::
+        js_getWebkitPersistentStorage ::
         JSRef Navigator -> IO (JSRef StorageQuota)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitPersistentStorage Mozilla Navigator.webkitPersistentStorage documentation> 
-navigatorGetWebkitPersistentStorage ::
-                                    (MonadIO m, IsNavigator self) => self -> m (Maybe StorageQuota)
-navigatorGetWebkitPersistentStorage self
+getWebkitPersistentStorage ::
+                           (MonadIO m) => Navigator -> m (Maybe StorageQuota)
+getWebkitPersistentStorage self
   = liftIO
-      ((ghcjs_dom_navigator_get_webkit_persistent_storage
-          (unNavigator (toNavigator self)))
-         >>= fromJSRef)
+      ((js_getWebkitPersistentStorage (unNavigator self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"appCodeName\"]"
-        ghcjs_dom_navigator_get_app_code_name ::
-        JSRef Navigator -> IO JSString
+        js_getAppCodeName :: JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.appCodeName Mozilla Navigator.appCodeName documentation> 
-navigatorGetAppCodeName ::
-                        (MonadIO m, IsNavigator self, FromJSString result) =>
-                          self -> m result
-navigatorGetAppCodeName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_app_code_name
-            (unNavigator (toNavigator self))))
+getAppCodeName ::
+               (MonadIO m, FromJSString result) => Navigator -> m result
+getAppCodeName self
+  = liftIO (fromJSString <$> (js_getAppCodeName (unNavigator self)))
  
-foreign import javascript unsafe "$1[\"appName\"]"
-        ghcjs_dom_navigator_get_app_name :: JSRef Navigator -> IO JSString
+foreign import javascript unsafe "$1[\"appName\"]" js_getAppName ::
+        JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.appName Mozilla Navigator.appName documentation> 
-navigatorGetAppName ::
-                    (MonadIO m, IsNavigator self, FromJSString result) =>
-                      self -> m result
-navigatorGetAppName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_app_name
-            (unNavigator (toNavigator self))))
+getAppName ::
+           (MonadIO m, FromJSString result) => Navigator -> m result
+getAppName self
+  = liftIO (fromJSString <$> (js_getAppName (unNavigator self)))
  
 foreign import javascript unsafe "$1[\"appVersion\"]"
-        ghcjs_dom_navigator_get_app_version ::
-        JSRef Navigator -> IO JSString
+        js_getAppVersion :: JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.appVersion Mozilla Navigator.appVersion documentation> 
-navigatorGetAppVersion ::
-                       (MonadIO m, IsNavigator self, FromJSString result) =>
-                         self -> m result
-navigatorGetAppVersion self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_app_version
-            (unNavigator (toNavigator self))))
+getAppVersion ::
+              (MonadIO m, FromJSString result) => Navigator -> m result
+getAppVersion self
+  = liftIO (fromJSString <$> (js_getAppVersion (unNavigator self)))
  
-foreign import javascript unsafe "$1[\"language\"]"
-        ghcjs_dom_navigator_get_language :: JSRef Navigator -> IO JSString
+foreign import javascript unsafe "$1[\"language\"]" js_getLanguage
+        :: JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.language Mozilla Navigator.language documentation> 
-navigatorGetLanguage ::
-                     (MonadIO m, IsNavigator self, FromJSString result) =>
-                       self -> m result
-navigatorGetLanguage self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_language
-            (unNavigator (toNavigator self))))
+getLanguage ::
+            (MonadIO m, FromJSString result) => Navigator -> m result
+getLanguage self
+  = liftIO (fromJSString <$> (js_getLanguage (unNavigator self)))
  
 foreign import javascript unsafe "$1[\"userAgent\"]"
-        ghcjs_dom_navigator_get_user_agent ::
-        JSRef Navigator -> IO JSString
+        js_getUserAgent :: JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.userAgent Mozilla Navigator.userAgent documentation> 
-navigatorGetUserAgent ::
-                      (MonadIO m, IsNavigator self, FromJSString result) =>
-                        self -> m result
-navigatorGetUserAgent self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_user_agent
-            (unNavigator (toNavigator self))))
+getUserAgent ::
+             (MonadIO m, FromJSString result) => Navigator -> m result
+getUserAgent self
+  = liftIO (fromJSString <$> (js_getUserAgent (unNavigator self)))
  
-foreign import javascript unsafe "$1[\"platform\"]"
-        ghcjs_dom_navigator_get_platform :: JSRef Navigator -> IO JSString
+foreign import javascript unsafe "$1[\"platform\"]" js_getPlatform
+        :: JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.platform Mozilla Navigator.platform documentation> 
-navigatorGetPlatform ::
-                     (MonadIO m, IsNavigator self, FromJSString result) =>
-                       self -> m result
-navigatorGetPlatform self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_platform
-            (unNavigator (toNavigator self))))
+getPlatform ::
+            (MonadIO m, FromJSString result) => Navigator -> m result
+getPlatform self
+  = liftIO (fromJSString <$> (js_getPlatform (unNavigator self)))
  
-foreign import javascript unsafe "$1[\"plugins\"]"
-        ghcjs_dom_navigator_get_plugins ::
+foreign import javascript unsafe "$1[\"plugins\"]" js_getPlugins ::
         JSRef Navigator -> IO (JSRef DOMPluginArray)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.plugins Mozilla Navigator.plugins documentation> 
-navigatorGetPlugins ::
-                    (MonadIO m, IsNavigator self) => self -> m (Maybe DOMPluginArray)
-navigatorGetPlugins self
-  = liftIO
-      ((ghcjs_dom_navigator_get_plugins (unNavigator (toNavigator self)))
-         >>= fromJSRef)
+getPlugins :: (MonadIO m) => Navigator -> m (Maybe DOMPluginArray)
+getPlugins self
+  = liftIO ((js_getPlugins (unNavigator self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"mimeTypes\"]"
-        ghcjs_dom_navigator_get_mime_types ::
-        JSRef Navigator -> IO (JSRef DOMMimeTypeArray)
+        js_getMimeTypes :: JSRef Navigator -> IO (JSRef DOMMimeTypeArray)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.mimeTypes Mozilla Navigator.mimeTypes documentation> 
-navigatorGetMimeTypes ::
-                      (MonadIO m, IsNavigator self) => self -> m (Maybe DOMMimeTypeArray)
-navigatorGetMimeTypes self
-  = liftIO
-      ((ghcjs_dom_navigator_get_mime_types
-          (unNavigator (toNavigator self)))
-         >>= fromJSRef)
+getMimeTypes ::
+             (MonadIO m) => Navigator -> m (Maybe DOMMimeTypeArray)
+getMimeTypes self
+  = liftIO ((js_getMimeTypes (unNavigator self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"product\"]"
-        ghcjs_dom_navigator_get_product :: JSRef Navigator -> IO JSString
+foreign import javascript unsafe "$1[\"product\"]" js_getProduct ::
+        JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.product Mozilla Navigator.product documentation> 
-navigatorGetProduct ::
-                    (MonadIO m, IsNavigator self, FromJSString result) =>
-                      self -> m result
-navigatorGetProduct self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_product (unNavigator (toNavigator self))))
+getProduct ::
+           (MonadIO m, FromJSString result) => Navigator -> m result
+getProduct self
+  = liftIO (fromJSString <$> (js_getProduct (unNavigator self)))
  
 foreign import javascript unsafe "$1[\"productSub\"]"
-        ghcjs_dom_navigator_get_product_sub ::
-        JSRef Navigator -> IO JSString
+        js_getProductSub :: JSRef Navigator -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.productSub Mozilla Navigator.productSub documentation> 
-navigatorGetProductSub ::
-                       (MonadIO m, IsNavigator self, FromJSString result) =>
-                         self -> m result
-navigatorGetProductSub self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_product_sub
-            (unNavigator (toNavigator self))))
+getProductSub ::
+              (MonadIO m, FromJSString result) => Navigator -> m result
+getProductSub self
+  = liftIO (fromJSString <$> (js_getProductSub (unNavigator self)))
  
-foreign import javascript unsafe "$1[\"vendor\"]"
-        ghcjs_dom_navigator_get_vendor :: JSRef Navigator -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vendor Mozilla Navigator.vendor documentation> 
-navigatorGetVendor ::
-                   (MonadIO m, IsNavigator self, FromJSString result) =>
-                     self -> m result
-navigatorGetVendor self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_vendor (unNavigator (toNavigator self))))
- 
-foreign import javascript unsafe "$1[\"vendorSub\"]"
-        ghcjs_dom_navigator_get_vendor_sub ::
+foreign import javascript unsafe "$1[\"vendor\"]" js_getVendor ::
         JSRef Navigator -> IO JSString
 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vendor Mozilla Navigator.vendor documentation> 
+getVendor ::
+          (MonadIO m, FromJSString result) => Navigator -> m result
+getVendor self
+  = liftIO (fromJSString <$> (js_getVendor (unNavigator self)))
+ 
+foreign import javascript unsafe "$1[\"vendorSub\"]"
+        js_getVendorSub :: JSRef Navigator -> IO JSString
+
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vendorSub Mozilla Navigator.vendorSub documentation> 
-navigatorGetVendorSub ::
-                      (MonadIO m, IsNavigator self, FromJSString result) =>
-                        self -> m result
-navigatorGetVendorSub self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_navigator_get_vendor_sub
-            (unNavigator (toNavigator self))))
+getVendorSub ::
+             (MonadIO m, FromJSString result) => Navigator -> m result
+getVendorSub self
+  = liftIO (fromJSString <$> (js_getVendorSub (unNavigator self)))
  
 foreign import javascript unsafe "($1[\"cookieEnabled\"] ? 1 : 0)"
-        ghcjs_dom_navigator_get_cookie_enabled ::
-        JSRef Navigator -> IO Bool
+        js_getCookieEnabled :: JSRef Navigator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.cookieEnabled Mozilla Navigator.cookieEnabled documentation> 
-navigatorGetCookieEnabled ::
-                          (MonadIO m, IsNavigator self) => self -> m Bool
-navigatorGetCookieEnabled self
-  = liftIO
-      (ghcjs_dom_navigator_get_cookie_enabled
-         (unNavigator (toNavigator self)))
+getCookieEnabled :: (MonadIO m) => Navigator -> m Bool
+getCookieEnabled self
+  = liftIO (js_getCookieEnabled (unNavigator self))
  
 foreign import javascript unsafe "($1[\"onLine\"] ? 1 : 0)"
-        ghcjs_dom_navigator_get_on_line :: JSRef Navigator -> IO Bool
+        js_getOnLine :: JSRef Navigator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.onLine Mozilla Navigator.onLine documentation> 
-navigatorGetOnLine ::
-                   (MonadIO m, IsNavigator self) => self -> m Bool
-navigatorGetOnLine self
-  = liftIO
-      (ghcjs_dom_navigator_get_on_line (unNavigator (toNavigator self)))
+getOnLine :: (MonadIO m) => Navigator -> m Bool
+getOnLine self = liftIO (js_getOnLine (unNavigator self))
  
 foreign import javascript unsafe "$1[\"hardwareConcurrency\"]"
-        ghcjs_dom_navigator_get_hardware_concurrency ::
-        JSRef Navigator -> IO Int
+        js_getHardwareConcurrency :: JSRef Navigator -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.hardwareConcurrency Mozilla Navigator.hardwareConcurrency documentation> 
-navigatorGetHardwareConcurrency ::
-                                (MonadIO m, IsNavigator self) => self -> m Int
-navigatorGetHardwareConcurrency self
-  = liftIO
-      (ghcjs_dom_navigator_get_hardware_concurrency
-         (unNavigator (toNavigator self)))
+getHardwareConcurrency :: (MonadIO m) => Navigator -> m Int
+getHardwareConcurrency self
+  = liftIO (js_getHardwareConcurrency (unNavigator self))
 #else
 module GHCJS.DOM.Navigator (
   module Graphics.UI.Gtk.WebKit.DOM.Navigator

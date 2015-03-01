@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGClipPathElement
-       (ghcjs_dom_svg_clip_path_element_get_clip_path_units,
-        svgClipPathElementGetClipPathUnits, SVGClipPathElement,
-        IsSVGClipPathElement, castToSVGClipPathElement,
-        gTypeSVGClipPathElement, toSVGClipPathElement)
+       (js_getClipPathUnits, getClipPathUnits, SVGClipPathElement,
+        castToSVGClipPathElement, gTypeSVGClipPathElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,21 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"clipPathUnits\"]"
-        ghcjs_dom_svg_clip_path_element_get_clip_path_units ::
+        js_getClipPathUnits ::
         JSRef SVGClipPathElement -> IO (JSRef SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGClipPathElement.clipPathUnits Mozilla SVGClipPathElement.clipPathUnits documentation> 
-svgClipPathElementGetClipPathUnits ::
-                                   (MonadIO m, IsSVGClipPathElement self) =>
-                                     self -> m (Maybe SVGAnimatedEnumeration)
-svgClipPathElementGetClipPathUnits self
+getClipPathUnits ::
+                 (MonadIO m) =>
+                   SVGClipPathElement -> m (Maybe SVGAnimatedEnumeration)
+getClipPathUnits self
   = liftIO
-      ((ghcjs_dom_svg_clip_path_element_get_clip_path_units
-          (unSVGClipPathElement (toSVGClipPathElement self)))
-         >>= fromJSRef)
+      ((js_getClipPathUnits (unSVGClipPathElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGClipPathElement (
   ) where

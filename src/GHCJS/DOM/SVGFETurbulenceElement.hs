@@ -1,23 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFETurbulenceElement
-       (cSVG_TURBULENCE_TYPE_UNKNOWN, cSVG_TURBULENCE_TYPE_FRACTALNOISE,
-        cSVG_TURBULENCE_TYPE_TURBULENCE, cSVG_STITCHTYPE_UNKNOWN,
-        cSVG_STITCHTYPE_STITCH, cSVG_STITCHTYPE_NOSTITCH,
-        ghcjs_dom_svgfe_turbulence_element_get_base_frequency_x,
-        svgfeTurbulenceElementGetBaseFrequencyX,
-        ghcjs_dom_svgfe_turbulence_element_get_base_frequency_y,
-        svgfeTurbulenceElementGetBaseFrequencyY,
-        ghcjs_dom_svgfe_turbulence_element_get_num_octaves,
-        svgfeTurbulenceElementGetNumOctaves,
-        ghcjs_dom_svgfe_turbulence_element_get_seed,
-        svgfeTurbulenceElementGetSeed,
-        ghcjs_dom_svgfe_turbulence_element_get_stitch_tiles,
-        svgfeTurbulenceElementGetStitchTiles, SVGFETurbulenceElement,
-        IsSVGFETurbulenceElement, castToSVGFETurbulenceElement,
-        gTypeSVGFETurbulenceElement, toSVGFETurbulenceElement)
+       (pattern SVG_TURBULENCE_TYPE_UNKNOWN,
+        pattern SVG_TURBULENCE_TYPE_FRACTALNOISE,
+        pattern SVG_TURBULENCE_TYPE_TURBULENCE,
+        pattern SVG_STITCHTYPE_UNKNOWN, pattern SVG_STITCHTYPE_STITCH,
+        pattern SVG_STITCHTYPE_NOSTITCH, js_getBaseFrequencyX,
+        getBaseFrequencyX, js_getBaseFrequencyY, getBaseFrequencyY,
+        js_getNumOctaves, getNumOctaves, js_getSeed, getSeed,
+        js_getStitchTiles, getStitchTiles, SVGFETurbulenceElement,
+        castToSVGFETurbulenceElement, gTypeSVGFETurbulenceElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,85 +22,76 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
-cSVG_TURBULENCE_TYPE_UNKNOWN = 0
-cSVG_TURBULENCE_TYPE_FRACTALNOISE = 1
-cSVG_TURBULENCE_TYPE_TURBULENCE = 2
-cSVG_STITCHTYPE_UNKNOWN = 0
-cSVG_STITCHTYPE_STITCH = 1
-cSVG_STITCHTYPE_NOSTITCH = 2
+pattern SVG_TURBULENCE_TYPE_UNKNOWN = 0
+pattern SVG_TURBULENCE_TYPE_FRACTALNOISE = 1
+pattern SVG_TURBULENCE_TYPE_TURBULENCE = 2
+pattern SVG_STITCHTYPE_UNKNOWN = 0
+pattern SVG_STITCHTYPE_STITCH = 1
+pattern SVG_STITCHTYPE_NOSTITCH = 2
  
 foreign import javascript unsafe "$1[\"baseFrequencyX\"]"
-        ghcjs_dom_svgfe_turbulence_element_get_base_frequency_x ::
+        js_getBaseFrequencyX ::
         JSRef SVGFETurbulenceElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyX Mozilla SVGFETurbulenceElement.baseFrequencyX documentation> 
-svgfeTurbulenceElementGetBaseFrequencyX ::
-                                        (MonadIO m, IsSVGFETurbulenceElement self) =>
-                                          self -> m (Maybe SVGAnimatedNumber)
-svgfeTurbulenceElementGetBaseFrequencyX self
+getBaseFrequencyX ::
+                  (MonadIO m) =>
+                    SVGFETurbulenceElement -> m (Maybe SVGAnimatedNumber)
+getBaseFrequencyX self
   = liftIO
-      ((ghcjs_dom_svgfe_turbulence_element_get_base_frequency_x
-          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-         >>= fromJSRef)
+      ((js_getBaseFrequencyX (unSVGFETurbulenceElement self)) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"baseFrequencyY\"]"
-        ghcjs_dom_svgfe_turbulence_element_get_base_frequency_y ::
+        js_getBaseFrequencyY ::
         JSRef SVGFETurbulenceElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyY Mozilla SVGFETurbulenceElement.baseFrequencyY documentation> 
-svgfeTurbulenceElementGetBaseFrequencyY ::
-                                        (MonadIO m, IsSVGFETurbulenceElement self) =>
-                                          self -> m (Maybe SVGAnimatedNumber)
-svgfeTurbulenceElementGetBaseFrequencyY self
+getBaseFrequencyY ::
+                  (MonadIO m) =>
+                    SVGFETurbulenceElement -> m (Maybe SVGAnimatedNumber)
+getBaseFrequencyY self
   = liftIO
-      ((ghcjs_dom_svgfe_turbulence_element_get_base_frequency_y
-          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-         >>= fromJSRef)
+      ((js_getBaseFrequencyY (unSVGFETurbulenceElement self)) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"numOctaves\"]"
-        ghcjs_dom_svgfe_turbulence_element_get_num_octaves ::
+        js_getNumOctaves ::
         JSRef SVGFETurbulenceElement -> IO (JSRef SVGAnimatedInteger)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.numOctaves Mozilla SVGFETurbulenceElement.numOctaves documentation> 
-svgfeTurbulenceElementGetNumOctaves ::
-                                    (MonadIO m, IsSVGFETurbulenceElement self) =>
-                                      self -> m (Maybe SVGAnimatedInteger)
-svgfeTurbulenceElementGetNumOctaves self
+getNumOctaves ::
+              (MonadIO m) =>
+                SVGFETurbulenceElement -> m (Maybe SVGAnimatedInteger)
+getNumOctaves self
   = liftIO
-      ((ghcjs_dom_svgfe_turbulence_element_get_num_octaves
-          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-         >>= fromJSRef)
+      ((js_getNumOctaves (unSVGFETurbulenceElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"seed\"]"
-        ghcjs_dom_svgfe_turbulence_element_get_seed ::
+foreign import javascript unsafe "$1[\"seed\"]" js_getSeed ::
         JSRef SVGFETurbulenceElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.seed Mozilla SVGFETurbulenceElement.seed documentation> 
-svgfeTurbulenceElementGetSeed ::
-                              (MonadIO m, IsSVGFETurbulenceElement self) =>
-                                self -> m (Maybe SVGAnimatedNumber)
-svgfeTurbulenceElementGetSeed self
+getSeed ::
+        (MonadIO m) =>
+          SVGFETurbulenceElement -> m (Maybe SVGAnimatedNumber)
+getSeed self
   = liftIO
-      ((ghcjs_dom_svgfe_turbulence_element_get_seed
-          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-         >>= fromJSRef)
+      ((js_getSeed (unSVGFETurbulenceElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"stitchTiles\"]"
-        ghcjs_dom_svgfe_turbulence_element_get_stitch_tiles ::
+        js_getStitchTiles ::
         JSRef SVGFETurbulenceElement -> IO (JSRef SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.stitchTiles Mozilla SVGFETurbulenceElement.stitchTiles documentation> 
-svgfeTurbulenceElementGetStitchTiles ::
-                                     (MonadIO m, IsSVGFETurbulenceElement self) =>
-                                       self -> m (Maybe SVGAnimatedEnumeration)
-svgfeTurbulenceElementGetStitchTiles self
+getStitchTiles ::
+               (MonadIO m) =>
+                 SVGFETurbulenceElement -> m (Maybe SVGAnimatedEnumeration)
+getStitchTiles self
   = liftIO
-      ((ghcjs_dom_svgfe_turbulence_element_get_stitch_tiles
-          (unSVGFETurbulenceElement (toSVGFETurbulenceElement self)))
-         >>= fromJSRef)
+      ((js_getStitchTiles (unSVGFETurbulenceElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGFETurbulenceElement (
   ) where

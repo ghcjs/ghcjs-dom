@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.UserMessageHandler
-       (ghcjs_dom_user_message_handler_post_message,
-        userMessageHandlerPostMessage, UserMessageHandler,
-        IsUserMessageHandler, castToUserMessageHandler,
-        gTypeUserMessageHandler, toUserMessageHandler)
+       (js_postMessage, postMessage, UserMessageHandler,
+        castToUserMessageHandler, gTypeUserMessageHandler)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,21 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2)"
-        ghcjs_dom_user_message_handler_post_message ::
+        js_postMessage ::
         JSRef UserMessageHandler -> JSRef SerializedScriptValue -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandler.postMessage Mozilla UserMessageHandler.postMessage documentation> 
-userMessageHandlerPostMessage ::
-                              (MonadIO m, IsUserMessageHandler self,
-                               IsSerializedScriptValue message) =>
-                                self -> Maybe message -> m ()
-userMessageHandlerPostMessage self message
+postMessage ::
+            (MonadIO m, IsSerializedScriptValue message) =>
+              UserMessageHandler -> Maybe message -> m ()
+postMessage self message
   = liftIO
-      (ghcjs_dom_user_message_handler_post_message
-         (unUserMessageHandler (toUserMessageHandler self))
+      (js_postMessage (unUserMessageHandler self)
          (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
             message))
 #else

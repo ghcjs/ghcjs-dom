@@ -1,17 +1,17 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitCSSFilterValue
-       (ghcjs_dom_webkit_css_filter_value_get, webKitCSSFilterValue_get,
-        cCSS_FILTER_REFERENCE, cCSS_FILTER_GRAYSCALE, cCSS_FILTER_SEPIA,
-        cCSS_FILTER_SATURATE, cCSS_FILTER_HUE_ROTATE, cCSS_FILTER_INVERT,
-        cCSS_FILTER_OPACITY, cCSS_FILTER_BRIGHTNESS, cCSS_FILTER_CONTRAST,
-        cCSS_FILTER_BLUR, cCSS_FILTER_DROP_SHADOW,
-        ghcjs_dom_webkit_css_filter_value_get_operation_type,
-        webKitCSSFilterValueGetOperationType, WebKitCSSFilterValue,
-        IsWebKitCSSFilterValue, castToWebKitCSSFilterValue,
-        gTypeWebKitCSSFilterValue, toWebKitCSSFilterValue)
+       (js__get, _get, pattern CSS_FILTER_REFERENCE,
+        pattern CSS_FILTER_GRAYSCALE, pattern CSS_FILTER_SEPIA,
+        pattern CSS_FILTER_SATURATE, pattern CSS_FILTER_HUE_ROTATE,
+        pattern CSS_FILTER_INVERT, pattern CSS_FILTER_OPACITY,
+        pattern CSS_FILTER_BRIGHTNESS, pattern CSS_FILTER_CONTRAST,
+        pattern CSS_FILTER_BLUR, pattern CSS_FILTER_DROP_SHADOW,
+        js_getOperationType, getOperationType, WebKitCSSFilterValue,
+        castToWebKitCSSFilterValue, gTypeWebKitCSSFilterValue)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,47 +21,38 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"_get\"]($2)"
-        ghcjs_dom_webkit_css_filter_value_get ::
+foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
         JSRef WebKitCSSFilterValue -> Word -> IO (JSRef CSSValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue._get Mozilla WebKitCSSFilterValue._get documentation> 
-webKitCSSFilterValue_get ::
-                         (MonadIO m, IsWebKitCSSFilterValue self) =>
-                           self -> Word -> m (Maybe CSSValue)
-webKitCSSFilterValue_get self index
+_get ::
+     (MonadIO m) => WebKitCSSFilterValue -> Word -> m (Maybe CSSValue)
+_get self index
   = liftIO
-      ((ghcjs_dom_webkit_css_filter_value_get
-          (unWebKitCSSFilterValue (toWebKitCSSFilterValue self))
-          index)
-         >>= fromJSRef)
-cCSS_FILTER_REFERENCE = 1
-cCSS_FILTER_GRAYSCALE = 2
-cCSS_FILTER_SEPIA = 3
-cCSS_FILTER_SATURATE = 4
-cCSS_FILTER_HUE_ROTATE = 5
-cCSS_FILTER_INVERT = 6
-cCSS_FILTER_OPACITY = 7
-cCSS_FILTER_BRIGHTNESS = 8
-cCSS_FILTER_CONTRAST = 9
-cCSS_FILTER_BLUR = 10
-cCSS_FILTER_DROP_SHADOW = 11
+      ((js__get (unWebKitCSSFilterValue self) index) >>= fromJSRef)
+pattern CSS_FILTER_REFERENCE = 1
+pattern CSS_FILTER_GRAYSCALE = 2
+pattern CSS_FILTER_SEPIA = 3
+pattern CSS_FILTER_SATURATE = 4
+pattern CSS_FILTER_HUE_ROTATE = 5
+pattern CSS_FILTER_INVERT = 6
+pattern CSS_FILTER_OPACITY = 7
+pattern CSS_FILTER_BRIGHTNESS = 8
+pattern CSS_FILTER_CONTRAST = 9
+pattern CSS_FILTER_BLUR = 10
+pattern CSS_FILTER_DROP_SHADOW = 11
  
 foreign import javascript unsafe "$1[\"operationType\"]"
-        ghcjs_dom_webkit_css_filter_value_get_operation_type ::
-        JSRef WebKitCSSFilterValue -> IO Word
+        js_getOperationType :: JSRef WebKitCSSFilterValue -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue.operationType Mozilla WebKitCSSFilterValue.operationType documentation> 
-webKitCSSFilterValueGetOperationType ::
-                                     (MonadIO m, IsWebKitCSSFilterValue self) => self -> m Word
-webKitCSSFilterValueGetOperationType self
-  = liftIO
-      (ghcjs_dom_webkit_css_filter_value_get_operation_type
-         (unWebKitCSSFilterValue (toWebKitCSSFilterValue self)))
+getOperationType :: (MonadIO m) => WebKitCSSFilterValue -> m Word
+getOperationType self
+  = liftIO (js_getOperationType (unWebKitCSSFilterValue self))
 #else
 module GHCJS.DOM.WebKitCSSFilterValue (
   ) where

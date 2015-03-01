@@ -1,23 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFilterPrimitiveStandardAttributes
-       (ghcjs_dom_svg_filter_primitive_standard_attributes_get_x,
-        svgFilterPrimitiveStandardAttributesGetX,
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_y,
-        svgFilterPrimitiveStandardAttributesGetY,
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_width,
-        svgFilterPrimitiveStandardAttributesGetWidth,
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_height,
-        svgFilterPrimitiveStandardAttributesGetHeight,
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_result,
-        svgFilterPrimitiveStandardAttributesGetResult,
+       (js_getX, getX, js_getY, getY, js_getWidth, getWidth, js_getHeight,
+        getHeight, js_getResult, getResult,
         SVGFilterPrimitiveStandardAttributes,
-        IsSVGFilterPrimitiveStandardAttributes,
         castToSVGFilterPrimitiveStandardAttributes,
-        gTypeSVGFilterPrimitiveStandardAttributes,
-        toSVGFilterPrimitiveStandardAttributes)
+        gTypeSVGFilterPrimitiveStandardAttributes)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,92 +18,74 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGFilterPrimitiveStandardAttributes ->
           IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.x Mozilla SVGFilterPrimitiveStandardAttributes.x documentation> 
-svgFilterPrimitiveStandardAttributesGetX ::
-                                         (MonadIO m, IsSVGFilterPrimitiveStandardAttributes self) =>
-                                           self -> m (Maybe SVGAnimatedLength)
-svgFilterPrimitiveStandardAttributesGetX self
+getX ::
+     (MonadIO m) =>
+       SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
+getX self
   = liftIO
-      ((ghcjs_dom_svg_filter_primitive_standard_attributes_get_x
-          (unSVGFilterPrimitiveStandardAttributes
-             (toSVGFilterPrimitiveStandardAttributes self)))
-         >>= fromJSRef)
+      ((js_getX (unSVGFilterPrimitiveStandardAttributes self)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGFilterPrimitiveStandardAttributes ->
           IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.y Mozilla SVGFilterPrimitiveStandardAttributes.y documentation> 
-svgFilterPrimitiveStandardAttributesGetY ::
-                                         (MonadIO m, IsSVGFilterPrimitiveStandardAttributes self) =>
-                                           self -> m (Maybe SVGAnimatedLength)
-svgFilterPrimitiveStandardAttributesGetY self
+getY ::
+     (MonadIO m) =>
+       SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
+getY self
   = liftIO
-      ((ghcjs_dom_svg_filter_primitive_standard_attributes_get_y
-          (unSVGFilterPrimitiveStandardAttributes
-             (toSVGFilterPrimitiveStandardAttributes self)))
-         >>= fromJSRef)
+      ((js_getY (unSVGFilterPrimitiveStandardAttributes self)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef SVGFilterPrimitiveStandardAttributes ->
           IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.width Mozilla SVGFilterPrimitiveStandardAttributes.width documentation> 
-svgFilterPrimitiveStandardAttributesGetWidth ::
-                                             (MonadIO m,
-                                              IsSVGFilterPrimitiveStandardAttributes self) =>
-                                               self -> m (Maybe SVGAnimatedLength)
-svgFilterPrimitiveStandardAttributesGetWidth self
+getWidth ::
+         (MonadIO m) =>
+           SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
+getWidth self
   = liftIO
-      ((ghcjs_dom_svg_filter_primitive_standard_attributes_get_width
-          (unSVGFilterPrimitiveStandardAttributes
-             (toSVGFilterPrimitiveStandardAttributes self)))
-         >>= fromJSRef)
+      ((js_getWidth (unSVGFilterPrimitiveStandardAttributes self)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef SVGFilterPrimitiveStandardAttributes ->
           IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.height Mozilla SVGFilterPrimitiveStandardAttributes.height documentation> 
-svgFilterPrimitiveStandardAttributesGetHeight ::
-                                              (MonadIO m,
-                                               IsSVGFilterPrimitiveStandardAttributes self) =>
-                                                self -> m (Maybe SVGAnimatedLength)
-svgFilterPrimitiveStandardAttributesGetHeight self
+getHeight ::
+          (MonadIO m) =>
+            SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
+getHeight self
   = liftIO
-      ((ghcjs_dom_svg_filter_primitive_standard_attributes_get_height
-          (unSVGFilterPrimitiveStandardAttributes
-             (toSVGFilterPrimitiveStandardAttributes self)))
-         >>= fromJSRef)
+      ((js_getHeight (unSVGFilterPrimitiveStandardAttributes self)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"result\"]"
-        ghcjs_dom_svg_filter_primitive_standard_attributes_get_result ::
+foreign import javascript unsafe "$1[\"result\"]" js_getResult ::
         JSRef SVGFilterPrimitiveStandardAttributes ->
           IO (JSRef SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.result Mozilla SVGFilterPrimitiveStandardAttributes.result documentation> 
-svgFilterPrimitiveStandardAttributesGetResult ::
-                                              (MonadIO m,
-                                               IsSVGFilterPrimitiveStandardAttributes self) =>
-                                                self -> m (Maybe SVGAnimatedString)
-svgFilterPrimitiveStandardAttributesGetResult self
+getResult ::
+          (MonadIO m) =>
+            SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedString)
+getResult self
   = liftIO
-      ((ghcjs_dom_svg_filter_primitive_standard_attributes_get_result
-          (unSVGFilterPrimitiveStandardAttributes
-             (toSVGFilterPrimitiveStandardAttributes self)))
-         >>= fromJSRef)
+      ((js_getResult (unSVGFilterPrimitiveStandardAttributes self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.SVGFilterPrimitiveStandardAttributes (
   ) where

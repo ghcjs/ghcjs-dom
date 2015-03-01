@@ -1,15 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DOMPlugin
-       (ghcjs_dom_dom_plugin_item, domPluginItem,
-        ghcjs_dom_dom_plugin_named_item, domPluginNamedItem,
-        ghcjs_dom_dom_plugin_get_name, domPluginGetName,
-        ghcjs_dom_dom_plugin_get_filename, domPluginGetFilename,
-        ghcjs_dom_dom_plugin_get_description, domPluginGetDescription,
-        ghcjs_dom_dom_plugin_get_length, domPluginGetLength, DOMPlugin,
-        IsDOMPlugin, castToDOMPlugin, gTypeDOMPlugin, toDOMPlugin)
+       (js_item, item, js_namedItem, namedItem, js_getName, getName,
+        js_getFilename, getFilename, js_getDescription, getDescription,
+        js_getLength, getLength, DOMPlugin, castToDOMPlugin,
+        gTypeDOMPlugin)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,85 +17,63 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_dom_plugin_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef DOMPlugin -> Word -> IO (JSRef DOMMimeType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.item Mozilla Plugin.item documentation> 
-domPluginItem ::
-              (MonadIO m, IsDOMPlugin self) =>
-                self -> Word -> m (Maybe DOMMimeType)
-domPluginItem self index
-  = liftIO
-      ((ghcjs_dom_dom_plugin_item (unDOMPlugin (toDOMPlugin self)) index)
-         >>= fromJSRef)
+item :: (MonadIO m) => DOMPlugin -> Word -> m (Maybe DOMMimeType)
+item self index
+  = liftIO ((js_item (unDOMPlugin self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        ghcjs_dom_dom_plugin_named_item ::
+        js_namedItem ::
         JSRef DOMPlugin -> JSString -> IO (JSRef DOMMimeType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.namedItem Mozilla Plugin.namedItem documentation> 
-domPluginNamedItem ::
-                   (MonadIO m, IsDOMPlugin self, ToJSString name) =>
-                     self -> name -> m (Maybe DOMMimeType)
-domPluginNamedItem self name
+namedItem ::
+          (MonadIO m, ToJSString name) =>
+            DOMPlugin -> name -> m (Maybe DOMMimeType)
+namedItem self name
   = liftIO
-      ((ghcjs_dom_dom_plugin_named_item (unDOMPlugin (toDOMPlugin self))
-          (toJSString name))
-         >>= fromJSRef)
+      ((js_namedItem (unDOMPlugin self) (toJSString name)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"name\"]"
-        ghcjs_dom_dom_plugin_get_name :: JSRef DOMPlugin -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.name Mozilla Plugin.name documentation> 
-domPluginGetName ::
-                 (MonadIO m, IsDOMPlugin self, FromJSString result) =>
-                   self -> m result
-domPluginGetName self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_dom_plugin_get_name (unDOMPlugin (toDOMPlugin self))))
- 
-foreign import javascript unsafe "$1[\"filename\"]"
-        ghcjs_dom_dom_plugin_get_filename :: JSRef DOMPlugin -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.filename Mozilla Plugin.filename documentation> 
-domPluginGetFilename ::
-                     (MonadIO m, IsDOMPlugin self, FromJSString result) =>
-                       self -> m result
-domPluginGetFilename self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_dom_plugin_get_filename
-            (unDOMPlugin (toDOMPlugin self))))
- 
-foreign import javascript unsafe "$1[\"description\"]"
-        ghcjs_dom_dom_plugin_get_description ::
+foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef DOMPlugin -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.description Mozilla Plugin.description documentation> 
-domPluginGetDescription ::
-                        (MonadIO m, IsDOMPlugin self, FromJSString result) =>
-                          self -> m result
-domPluginGetDescription self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_dom_plugin_get_description
-            (unDOMPlugin (toDOMPlugin self))))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.name Mozilla Plugin.name documentation> 
+getName ::
+        (MonadIO m, FromJSString result) => DOMPlugin -> m result
+getName self
+  = liftIO (fromJSString <$> (js_getName (unDOMPlugin self)))
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_dom_plugin_get_length :: JSRef DOMPlugin -> IO Word
+foreign import javascript unsafe "$1[\"filename\"]" js_getFilename
+        :: JSRef DOMPlugin -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.filename Mozilla Plugin.filename documentation> 
+getFilename ::
+            (MonadIO m, FromJSString result) => DOMPlugin -> m result
+getFilename self
+  = liftIO (fromJSString <$> (js_getFilename (unDOMPlugin self)))
+ 
+foreign import javascript unsafe "$1[\"description\"]"
+        js_getDescription :: JSRef DOMPlugin -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.description Mozilla Plugin.description documentation> 
+getDescription ::
+               (MonadIO m, FromJSString result) => DOMPlugin -> m result
+getDescription self
+  = liftIO (fromJSString <$> (js_getDescription (unDOMPlugin self)))
+ 
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+        JSRef DOMPlugin -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.length Mozilla Plugin.length documentation> 
-domPluginGetLength ::
-                   (MonadIO m, IsDOMPlugin self) => self -> m Word
-domPluginGetLength self
-  = liftIO
-      (ghcjs_dom_dom_plugin_get_length (unDOMPlugin (toDOMPlugin self)))
+getLength :: (MonadIO m) => DOMPlugin -> m Word
+getLength self = liftIO (js_getLength (unDOMPlugin self))
 #else
 module GHCJS.DOM.DOMPlugin (
   module Graphics.UI.Gtk.WebKit.DOM.DOMPlugin

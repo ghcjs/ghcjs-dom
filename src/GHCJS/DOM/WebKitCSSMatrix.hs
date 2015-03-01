@@ -1,66 +1,27 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.WebKitCSSMatrix
-       (ghcjs_dom_webkit_css_matrix_new, webKitCSSMatrixNew,
-        ghcjs_dom_webkit_css_matrix_set_matrix_value,
-        webKitCSSMatrixSetMatrixValue,
-        ghcjs_dom_webkit_css_matrix_multiply, webKitCSSMatrixMultiply,
-        ghcjs_dom_webkit_css_matrix_inverse, webKitCSSMatrixInverse,
-        ghcjs_dom_webkit_css_matrix_translate, webKitCSSMatrixTranslate,
-        ghcjs_dom_webkit_css_matrix_scale, webKitCSSMatrixScale,
-        ghcjs_dom_webkit_css_matrix_rotate, webKitCSSMatrixRotate,
-        ghcjs_dom_webkit_css_matrix_rotate_axis_angle,
-        webKitCSSMatrixRotateAxisAngle, ghcjs_dom_webkit_css_matrix_skew_x,
-        webKitCSSMatrixSkewX, ghcjs_dom_webkit_css_matrix_skew_y,
-        webKitCSSMatrixSkewY, ghcjs_dom_webkit_css_matrix_to_string,
-        webKitCSSMatrixToString, ghcjs_dom_webkit_css_matrix_set_a,
-        webKitCSSMatrixSetA, ghcjs_dom_webkit_css_matrix_get_a,
-        webKitCSSMatrixGetA, ghcjs_dom_webkit_css_matrix_set_b,
-        webKitCSSMatrixSetB, ghcjs_dom_webkit_css_matrix_get_b,
-        webKitCSSMatrixGetB, ghcjs_dom_webkit_css_matrix_set_c,
-        webKitCSSMatrixSetC, ghcjs_dom_webkit_css_matrix_get_c,
-        webKitCSSMatrixGetC, ghcjs_dom_webkit_css_matrix_set_d,
-        webKitCSSMatrixSetD, ghcjs_dom_webkit_css_matrix_get_d,
-        webKitCSSMatrixGetD, ghcjs_dom_webkit_css_matrix_set_e,
-        webKitCSSMatrixSetE, ghcjs_dom_webkit_css_matrix_get_e,
-        webKitCSSMatrixGetE, ghcjs_dom_webkit_css_matrix_set_f,
-        webKitCSSMatrixSetF, ghcjs_dom_webkit_css_matrix_get_f,
-        webKitCSSMatrixGetF, ghcjs_dom_webkit_css_matrix_set_m11,
-        webKitCSSMatrixSetM11, ghcjs_dom_webkit_css_matrix_get_m11,
-        webKitCSSMatrixGetM11, ghcjs_dom_webkit_css_matrix_set_m12,
-        webKitCSSMatrixSetM12, ghcjs_dom_webkit_css_matrix_get_m12,
-        webKitCSSMatrixGetM12, ghcjs_dom_webkit_css_matrix_set_m13,
-        webKitCSSMatrixSetM13, ghcjs_dom_webkit_css_matrix_get_m13,
-        webKitCSSMatrixGetM13, ghcjs_dom_webkit_css_matrix_set_m14,
-        webKitCSSMatrixSetM14, ghcjs_dom_webkit_css_matrix_get_m14,
-        webKitCSSMatrixGetM14, ghcjs_dom_webkit_css_matrix_set_m21,
-        webKitCSSMatrixSetM21, ghcjs_dom_webkit_css_matrix_get_m21,
-        webKitCSSMatrixGetM21, ghcjs_dom_webkit_css_matrix_set_m22,
-        webKitCSSMatrixSetM22, ghcjs_dom_webkit_css_matrix_get_m22,
-        webKitCSSMatrixGetM22, ghcjs_dom_webkit_css_matrix_set_m23,
-        webKitCSSMatrixSetM23, ghcjs_dom_webkit_css_matrix_get_m23,
-        webKitCSSMatrixGetM23, ghcjs_dom_webkit_css_matrix_set_m24,
-        webKitCSSMatrixSetM24, ghcjs_dom_webkit_css_matrix_get_m24,
-        webKitCSSMatrixGetM24, ghcjs_dom_webkit_css_matrix_set_m31,
-        webKitCSSMatrixSetM31, ghcjs_dom_webkit_css_matrix_get_m31,
-        webKitCSSMatrixGetM31, ghcjs_dom_webkit_css_matrix_set_m32,
-        webKitCSSMatrixSetM32, ghcjs_dom_webkit_css_matrix_get_m32,
-        webKitCSSMatrixGetM32, ghcjs_dom_webkit_css_matrix_set_m33,
-        webKitCSSMatrixSetM33, ghcjs_dom_webkit_css_matrix_get_m33,
-        webKitCSSMatrixGetM33, ghcjs_dom_webkit_css_matrix_set_m34,
-        webKitCSSMatrixSetM34, ghcjs_dom_webkit_css_matrix_get_m34,
-        webKitCSSMatrixGetM34, ghcjs_dom_webkit_css_matrix_set_m41,
-        webKitCSSMatrixSetM41, ghcjs_dom_webkit_css_matrix_get_m41,
-        webKitCSSMatrixGetM41, ghcjs_dom_webkit_css_matrix_set_m42,
-        webKitCSSMatrixSetM42, ghcjs_dom_webkit_css_matrix_get_m42,
-        webKitCSSMatrixGetM42, ghcjs_dom_webkit_css_matrix_set_m43,
-        webKitCSSMatrixSetM43, ghcjs_dom_webkit_css_matrix_get_m43,
-        webKitCSSMatrixGetM43, ghcjs_dom_webkit_css_matrix_set_m44,
-        webKitCSSMatrixSetM44, ghcjs_dom_webkit_css_matrix_get_m44,
-        webKitCSSMatrixGetM44, WebKitCSSMatrix, IsWebKitCSSMatrix,
-        castToWebKitCSSMatrix, gTypeWebKitCSSMatrix, toWebKitCSSMatrix)
+       (js_newWebKitCSSMatrix, newWebKitCSSMatrix, js_setMatrixValue,
+        setMatrixValue, js_multiply, multiply, js_inverse, inverse,
+        js_translate, translate, js_scale, scale, js_rotate, rotate,
+        js_rotateAxisAngle, rotateAxisAngle, js_skewX, skewX, js_skewY,
+        skewY, js_toString, toString, js_setA, setA, js_getA, getA,
+        js_setB, setB, js_getB, getB, js_setC, setC, js_getC, getC,
+        js_setD, setD, js_getD, getD, js_setE, setE, js_getE, getE,
+        js_setF, setF, js_getF, getF, js_setM11, setM11, js_getM11, getM11,
+        js_setM12, setM12, js_getM12, getM12, js_setM13, setM13, js_getM13,
+        getM13, js_setM14, setM14, js_getM14, getM14, js_setM21, setM21,
+        js_getM21, getM21, js_setM22, setM22, js_getM22, getM22, js_setM23,
+        setM23, js_getM23, getM23, js_setM24, setM24, js_getM24, getM24,
+        js_setM31, setM31, js_getM31, getM31, js_setM32, setM32, js_getM32,
+        getM32, js_setM33, setM33, js_getM33, getM33, js_setM34, setM34,
+        js_getM34, getM34, js_setM41, setM41, js_getM41, getM41, js_setM42,
+        setM42, js_getM42, getM42, js_setM43, setM43, js_getM43, getM43,
+        js_setM44, setM44, js_getM44, getM44, WebKitCSSMatrix,
+        castToWebKitCSSMatrix, gTypeWebKitCSSMatrix)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -70,737 +31,451 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "new window[\"WebKitCSSMatrix\"]($1)"
-        ghcjs_dom_webkit_css_matrix_new ::
+        "new window[\"WebKitCSSMatrix\"]($1)" js_newWebKitCSSMatrix ::
         JSString -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix Mozilla WebKitCSSMatrix documentation> 
-webKitCSSMatrixNew ::
+newWebKitCSSMatrix ::
                    (MonadIO m, ToJSString cssValue) => cssValue -> m WebKitCSSMatrix
-webKitCSSMatrixNew cssValue
+newWebKitCSSMatrix cssValue
   = liftIO
-      (ghcjs_dom_webkit_css_matrix_new (toJSString cssValue) >>=
+      (js_newWebKitCSSMatrix (toJSString cssValue) >>=
          fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"setMatrixValue\"]($2)"
-        ghcjs_dom_webkit_css_matrix_set_matrix_value ::
-        JSRef WebKitCSSMatrix -> JSString -> IO ()
+        js_setMatrixValue :: JSRef WebKitCSSMatrix -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.matrixValue Mozilla WebKitCSSMatrix.matrixValue documentation> 
-webKitCSSMatrixSetMatrixValue ::
-                              (MonadIO m, IsWebKitCSSMatrix self, ToJSString string) =>
-                                self -> string -> m ()
-webKitCSSMatrixSetMatrixValue self string
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.setMatrixValue Mozilla WebKitCSSMatrix.setMatrixValue documentation> 
+setMatrixValue ::
+               (MonadIO m, ToJSString string) => WebKitCSSMatrix -> string -> m ()
+setMatrixValue self string
   = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_matrix_value
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         (toJSString string))
+      (js_setMatrixValue (unWebKitCSSMatrix self) (toJSString string))
  
-foreign import javascript unsafe "$1[\"multiply\"]($2)"
-        ghcjs_dom_webkit_css_matrix_multiply ::
+foreign import javascript unsafe "$1[\"multiply\"]($2)" js_multiply
+        ::
         JSRef WebKitCSSMatrix ->
           JSRef WebKitCSSMatrix -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.multiply Mozilla WebKitCSSMatrix.multiply documentation> 
-webKitCSSMatrixMultiply ::
-                        (MonadIO m, IsWebKitCSSMatrix self,
-                         IsWebKitCSSMatrix secondMatrix) =>
-                          self -> Maybe secondMatrix -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixMultiply self secondMatrix
+multiply ::
+         (MonadIO m) =>
+           WebKitCSSMatrix ->
+             Maybe WebKitCSSMatrix -> m (Maybe WebKitCSSMatrix)
+multiply self secondMatrix
   = liftIO
-      ((ghcjs_dom_webkit_css_matrix_multiply
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-          (maybe jsNull (unWebKitCSSMatrix . toWebKitCSSMatrix)
-             secondMatrix))
+      ((js_multiply (unWebKitCSSMatrix self)
+          (maybe jsNull unWebKitCSSMatrix secondMatrix))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"inverse\"]()"
-        ghcjs_dom_webkit_css_matrix_inverse ::
+foreign import javascript unsafe "$1[\"inverse\"]()" js_inverse ::
         JSRef WebKitCSSMatrix -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.inverse Mozilla WebKitCSSMatrix.inverse documentation> 
-webKitCSSMatrixInverse ::
-                       (MonadIO m, IsWebKitCSSMatrix self) =>
-                         self -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixInverse self
-  = liftIO
-      ((ghcjs_dom_webkit_css_matrix_inverse
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
-         >>= fromJSRef)
+inverse ::
+        (MonadIO m) => WebKitCSSMatrix -> m (Maybe WebKitCSSMatrix)
+inverse self
+  = liftIO ((js_inverse (unWebKitCSSMatrix self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"translate\"]($2, $3, $4)"
-        ghcjs_dom_webkit_css_matrix_translate ::
+        js_translate ::
         JSRef WebKitCSSMatrix ->
           Double -> Double -> Double -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.translate Mozilla WebKitCSSMatrix.translate documentation> 
-webKitCSSMatrixTranslate ::
-                         (MonadIO m, IsWebKitCSSMatrix self) =>
-                           self -> Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixTranslate self x y z
+translate ::
+          (MonadIO m) =>
+            WebKitCSSMatrix ->
+              Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
+translate self x y z
   = liftIO
-      ((ghcjs_dom_webkit_css_matrix_translate
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-          x
-          y
-          z)
-         >>= fromJSRef)
+      ((js_translate (unWebKitCSSMatrix self) x y z) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"scale\"]($2, $3, $4)"
-        ghcjs_dom_webkit_css_matrix_scale ::
+        js_scale ::
         JSRef WebKitCSSMatrix ->
           Double -> Double -> Double -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.scale Mozilla WebKitCSSMatrix.scale documentation> 
-webKitCSSMatrixScale ::
-                     (MonadIO m, IsWebKitCSSMatrix self) =>
-                       self -> Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixScale self scaleX scaleY scaleZ
+scale ::
+      (MonadIO m) =>
+        WebKitCSSMatrix ->
+          Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
+scale self scaleX scaleY scaleZ
   = liftIO
-      ((ghcjs_dom_webkit_css_matrix_scale
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-          scaleX
-          scaleY
-          scaleZ)
-         >>= fromJSRef)
+      ((js_scale (unWebKitCSSMatrix self) scaleX scaleY scaleZ) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"rotate\"]($2, $3, $4)"
-        ghcjs_dom_webkit_css_matrix_rotate ::
+        js_rotate ::
         JSRef WebKitCSSMatrix ->
           Double -> Double -> Double -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.rotate Mozilla WebKitCSSMatrix.rotate documentation> 
-webKitCSSMatrixRotate ::
-                      (MonadIO m, IsWebKitCSSMatrix self) =>
-                        self -> Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixRotate self rotX rotY rotZ
+rotate ::
+       (MonadIO m) =>
+         WebKitCSSMatrix ->
+           Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
+rotate self rotX rotY rotZ
   = liftIO
-      ((ghcjs_dom_webkit_css_matrix_rotate
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-          rotX
-          rotY
-          rotZ)
-         >>= fromJSRef)
+      ((js_rotate (unWebKitCSSMatrix self) rotX rotY rotZ) >>= fromJSRef)
  
 foreign import javascript unsafe
-        "$1[\"rotateAxisAngle\"]($2, $3,\n$4, $5)"
-        ghcjs_dom_webkit_css_matrix_rotate_axis_angle ::
+        "$1[\"rotateAxisAngle\"]($2, $3,\n$4, $5)" js_rotateAxisAngle ::
         JSRef WebKitCSSMatrix ->
           Double -> Double -> Double -> Double -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.rotateAxisAngle Mozilla WebKitCSSMatrix.rotateAxisAngle documentation> 
-webKitCSSMatrixRotateAxisAngle ::
-                               (MonadIO m, IsWebKitCSSMatrix self) =>
-                                 self ->
-                                   Double -> Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixRotateAxisAngle self x y z angle
+rotateAxisAngle ::
+                (MonadIO m) =>
+                  WebKitCSSMatrix ->
+                    Double -> Double -> Double -> Double -> m (Maybe WebKitCSSMatrix)
+rotateAxisAngle self x y z angle
   = liftIO
-      ((ghcjs_dom_webkit_css_matrix_rotate_axis_angle
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-          x
-          y
-          z
-          angle)
-         >>= fromJSRef)
+      ((js_rotateAxisAngle (unWebKitCSSMatrix self) x y z angle) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"skewX\"]($2)"
-        ghcjs_dom_webkit_css_matrix_skew_x ::
+foreign import javascript unsafe "$1[\"skewX\"]($2)" js_skewX ::
         JSRef WebKitCSSMatrix -> Double -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.skewX Mozilla WebKitCSSMatrix.skewX documentation> 
-webKitCSSMatrixSkewX ::
-                     (MonadIO m, IsWebKitCSSMatrix self) =>
-                       self -> Double -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixSkewX self angle
-  = liftIO
-      ((ghcjs_dom_webkit_css_matrix_skew_x
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-          angle)
-         >>= fromJSRef)
+skewX ::
+      (MonadIO m) =>
+        WebKitCSSMatrix -> Double -> m (Maybe WebKitCSSMatrix)
+skewX self angle
+  = liftIO ((js_skewX (unWebKitCSSMatrix self) angle) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"skewY\"]($2)"
-        ghcjs_dom_webkit_css_matrix_skew_y ::
+foreign import javascript unsafe "$1[\"skewY\"]($2)" js_skewY ::
         JSRef WebKitCSSMatrix -> Double -> IO (JSRef WebKitCSSMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.skewY Mozilla WebKitCSSMatrix.skewY documentation> 
-webKitCSSMatrixSkewY ::
-                     (MonadIO m, IsWebKitCSSMatrix self) =>
-                       self -> Double -> m (Maybe WebKitCSSMatrix)
-webKitCSSMatrixSkewY self angle
-  = liftIO
-      ((ghcjs_dom_webkit_css_matrix_skew_y
-          (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-          angle)
-         >>= fromJSRef)
+skewY ::
+      (MonadIO m) =>
+        WebKitCSSMatrix -> Double -> m (Maybe WebKitCSSMatrix)
+skewY self angle
+  = liftIO ((js_skewY (unWebKitCSSMatrix self) angle) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"toString\"]()"
-        ghcjs_dom_webkit_css_matrix_to_string ::
-        JSRef WebKitCSSMatrix -> IO JSString
+foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+        :: JSRef WebKitCSSMatrix -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.toString Mozilla WebKitCSSMatrix.toString documentation> 
-webKitCSSMatrixToString ::
-                        (MonadIO m, IsWebKitCSSMatrix self, FromJSString result) =>
-                          self -> m result
-webKitCSSMatrixToString self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_webkit_css_matrix_to_string
-            (unWebKitCSSMatrix (toWebKitCSSMatrix self))))
+toString ::
+         (MonadIO m, FromJSString result) => WebKitCSSMatrix -> m result
+toString self
+  = liftIO (fromJSString <$> (js_toString (unWebKitCSSMatrix self)))
  
-foreign import javascript unsafe "$1[\"a\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_a ::
+foreign import javascript unsafe "$1[\"a\"] = $2;" js_setA ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.a Mozilla WebKitCSSMatrix.a documentation> 
-webKitCSSMatrixSetA ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetA self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_a
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setA :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setA self val = liftIO (js_setA (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"a\"]"
-        ghcjs_dom_webkit_css_matrix_get_a ::
+foreign import javascript unsafe "$1[\"a\"]" js_getA ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.a Mozilla WebKitCSSMatrix.a documentation> 
-webKitCSSMatrixGetA ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetA self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_a
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getA :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getA self = liftIO (js_getA (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"b\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_b ::
+foreign import javascript unsafe "$1[\"b\"] = $2;" js_setB ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.b Mozilla WebKitCSSMatrix.b documentation> 
-webKitCSSMatrixSetB ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetB self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_b
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setB :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setB self val = liftIO (js_setB (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"b\"]"
-        ghcjs_dom_webkit_css_matrix_get_b ::
+foreign import javascript unsafe "$1[\"b\"]" js_getB ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.b Mozilla WebKitCSSMatrix.b documentation> 
-webKitCSSMatrixGetB ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetB self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_b
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getB :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getB self = liftIO (js_getB (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"c\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_c ::
+foreign import javascript unsafe "$1[\"c\"] = $2;" js_setC ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.c Mozilla WebKitCSSMatrix.c documentation> 
-webKitCSSMatrixSetC ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetC self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_c
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setC :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setC self val = liftIO (js_setC (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"c\"]"
-        ghcjs_dom_webkit_css_matrix_get_c ::
+foreign import javascript unsafe "$1[\"c\"]" js_getC ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.c Mozilla WebKitCSSMatrix.c documentation> 
-webKitCSSMatrixGetC ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetC self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_c
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getC :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getC self = liftIO (js_getC (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"d\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_d ::
+foreign import javascript unsafe "$1[\"d\"] = $2;" js_setD ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.d Mozilla WebKitCSSMatrix.d documentation> 
-webKitCSSMatrixSetD ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetD self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_d
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setD :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setD self val = liftIO (js_setD (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"d\"]"
-        ghcjs_dom_webkit_css_matrix_get_d ::
+foreign import javascript unsafe "$1[\"d\"]" js_getD ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.d Mozilla WebKitCSSMatrix.d documentation> 
-webKitCSSMatrixGetD ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetD self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_d
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getD :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getD self = liftIO (js_getD (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"e\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_e ::
+foreign import javascript unsafe "$1[\"e\"] = $2;" js_setE ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.e Mozilla WebKitCSSMatrix.e documentation> 
-webKitCSSMatrixSetE ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetE self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_e
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setE :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setE self val = liftIO (js_setE (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"e\"]"
-        ghcjs_dom_webkit_css_matrix_get_e ::
+foreign import javascript unsafe "$1[\"e\"]" js_getE ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.e Mozilla WebKitCSSMatrix.e documentation> 
-webKitCSSMatrixGetE ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetE self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_e
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getE :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getE self = liftIO (js_getE (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"f\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_f ::
+foreign import javascript unsafe "$1[\"f\"] = $2;" js_setF ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.f Mozilla WebKitCSSMatrix.f documentation> 
-webKitCSSMatrixSetF ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetF self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_f
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setF :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setF self val = liftIO (js_setF (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"f\"]"
-        ghcjs_dom_webkit_css_matrix_get_f ::
+foreign import javascript unsafe "$1[\"f\"]" js_getF ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.f Mozilla WebKitCSSMatrix.f documentation> 
-webKitCSSMatrixGetF ::
-                    (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetF self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_f
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getF :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getF self = liftIO (js_getF (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m11\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m11 ::
+foreign import javascript unsafe "$1[\"m11\"] = $2;" js_setM11 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m11 Mozilla WebKitCSSMatrix.m11 documentation> 
-webKitCSSMatrixSetM11 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM11 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m11
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM11 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM11 self val = liftIO (js_setM11 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m11\"]"
-        ghcjs_dom_webkit_css_matrix_get_m11 ::
+foreign import javascript unsafe "$1[\"m11\"]" js_getM11 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m11 Mozilla WebKitCSSMatrix.m11 documentation> 
-webKitCSSMatrixGetM11 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM11 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m11
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM11 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM11 self = liftIO (js_getM11 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m12\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m12 ::
+foreign import javascript unsafe "$1[\"m12\"] = $2;" js_setM12 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m12 Mozilla WebKitCSSMatrix.m12 documentation> 
-webKitCSSMatrixSetM12 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM12 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m12
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM12 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM12 self val = liftIO (js_setM12 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m12\"]"
-        ghcjs_dom_webkit_css_matrix_get_m12 ::
+foreign import javascript unsafe "$1[\"m12\"]" js_getM12 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m12 Mozilla WebKitCSSMatrix.m12 documentation> 
-webKitCSSMatrixGetM12 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM12 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m12
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM12 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM12 self = liftIO (js_getM12 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m13\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m13 ::
+foreign import javascript unsafe "$1[\"m13\"] = $2;" js_setM13 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m13 Mozilla WebKitCSSMatrix.m13 documentation> 
-webKitCSSMatrixSetM13 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM13 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m13
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM13 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM13 self val = liftIO (js_setM13 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m13\"]"
-        ghcjs_dom_webkit_css_matrix_get_m13 ::
+foreign import javascript unsafe "$1[\"m13\"]" js_getM13 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m13 Mozilla WebKitCSSMatrix.m13 documentation> 
-webKitCSSMatrixGetM13 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM13 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m13
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM13 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM13 self = liftIO (js_getM13 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m14\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m14 ::
+foreign import javascript unsafe "$1[\"m14\"] = $2;" js_setM14 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m14 Mozilla WebKitCSSMatrix.m14 documentation> 
-webKitCSSMatrixSetM14 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM14 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m14
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM14 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM14 self val = liftIO (js_setM14 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m14\"]"
-        ghcjs_dom_webkit_css_matrix_get_m14 ::
+foreign import javascript unsafe "$1[\"m14\"]" js_getM14 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m14 Mozilla WebKitCSSMatrix.m14 documentation> 
-webKitCSSMatrixGetM14 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM14 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m14
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM14 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM14 self = liftIO (js_getM14 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m21\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m21 ::
+foreign import javascript unsafe "$1[\"m21\"] = $2;" js_setM21 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m21 Mozilla WebKitCSSMatrix.m21 documentation> 
-webKitCSSMatrixSetM21 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM21 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m21
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM21 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM21 self val = liftIO (js_setM21 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m21\"]"
-        ghcjs_dom_webkit_css_matrix_get_m21 ::
+foreign import javascript unsafe "$1[\"m21\"]" js_getM21 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m21 Mozilla WebKitCSSMatrix.m21 documentation> 
-webKitCSSMatrixGetM21 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM21 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m21
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM21 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM21 self = liftIO (js_getM21 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m22\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m22 ::
+foreign import javascript unsafe "$1[\"m22\"] = $2;" js_setM22 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m22 Mozilla WebKitCSSMatrix.m22 documentation> 
-webKitCSSMatrixSetM22 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM22 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m22
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM22 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM22 self val = liftIO (js_setM22 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m22\"]"
-        ghcjs_dom_webkit_css_matrix_get_m22 ::
+foreign import javascript unsafe "$1[\"m22\"]" js_getM22 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m22 Mozilla WebKitCSSMatrix.m22 documentation> 
-webKitCSSMatrixGetM22 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM22 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m22
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM22 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM22 self = liftIO (js_getM22 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m23\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m23 ::
+foreign import javascript unsafe "$1[\"m23\"] = $2;" js_setM23 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m23 Mozilla WebKitCSSMatrix.m23 documentation> 
-webKitCSSMatrixSetM23 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM23 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m23
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM23 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM23 self val = liftIO (js_setM23 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m23\"]"
-        ghcjs_dom_webkit_css_matrix_get_m23 ::
+foreign import javascript unsafe "$1[\"m23\"]" js_getM23 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m23 Mozilla WebKitCSSMatrix.m23 documentation> 
-webKitCSSMatrixGetM23 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM23 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m23
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM23 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM23 self = liftIO (js_getM23 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m24\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m24 ::
+foreign import javascript unsafe "$1[\"m24\"] = $2;" js_setM24 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m24 Mozilla WebKitCSSMatrix.m24 documentation> 
-webKitCSSMatrixSetM24 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM24 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m24
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM24 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM24 self val = liftIO (js_setM24 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m24\"]"
-        ghcjs_dom_webkit_css_matrix_get_m24 ::
+foreign import javascript unsafe "$1[\"m24\"]" js_getM24 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m24 Mozilla WebKitCSSMatrix.m24 documentation> 
-webKitCSSMatrixGetM24 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM24 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m24
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM24 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM24 self = liftIO (js_getM24 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m31\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m31 ::
+foreign import javascript unsafe "$1[\"m31\"] = $2;" js_setM31 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m31 Mozilla WebKitCSSMatrix.m31 documentation> 
-webKitCSSMatrixSetM31 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM31 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m31
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM31 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM31 self val = liftIO (js_setM31 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m31\"]"
-        ghcjs_dom_webkit_css_matrix_get_m31 ::
+foreign import javascript unsafe "$1[\"m31\"]" js_getM31 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m31 Mozilla WebKitCSSMatrix.m31 documentation> 
-webKitCSSMatrixGetM31 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM31 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m31
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM31 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM31 self = liftIO (js_getM31 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m32\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m32 ::
+foreign import javascript unsafe "$1[\"m32\"] = $2;" js_setM32 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m32 Mozilla WebKitCSSMatrix.m32 documentation> 
-webKitCSSMatrixSetM32 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM32 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m32
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM32 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM32 self val = liftIO (js_setM32 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m32\"]"
-        ghcjs_dom_webkit_css_matrix_get_m32 ::
+foreign import javascript unsafe "$1[\"m32\"]" js_getM32 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m32 Mozilla WebKitCSSMatrix.m32 documentation> 
-webKitCSSMatrixGetM32 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM32 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m32
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM32 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM32 self = liftIO (js_getM32 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m33\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m33 ::
+foreign import javascript unsafe "$1[\"m33\"] = $2;" js_setM33 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m33 Mozilla WebKitCSSMatrix.m33 documentation> 
-webKitCSSMatrixSetM33 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM33 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m33
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM33 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM33 self val = liftIO (js_setM33 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m33\"]"
-        ghcjs_dom_webkit_css_matrix_get_m33 ::
+foreign import javascript unsafe "$1[\"m33\"]" js_getM33 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m33 Mozilla WebKitCSSMatrix.m33 documentation> 
-webKitCSSMatrixGetM33 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM33 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m33
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM33 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM33 self = liftIO (js_getM33 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m34\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m34 ::
+foreign import javascript unsafe "$1[\"m34\"] = $2;" js_setM34 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m34 Mozilla WebKitCSSMatrix.m34 documentation> 
-webKitCSSMatrixSetM34 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM34 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m34
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM34 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM34 self val = liftIO (js_setM34 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m34\"]"
-        ghcjs_dom_webkit_css_matrix_get_m34 ::
+foreign import javascript unsafe "$1[\"m34\"]" js_getM34 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m34 Mozilla WebKitCSSMatrix.m34 documentation> 
-webKitCSSMatrixGetM34 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM34 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m34
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM34 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM34 self = liftIO (js_getM34 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m41\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m41 ::
+foreign import javascript unsafe "$1[\"m41\"] = $2;" js_setM41 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m41 Mozilla WebKitCSSMatrix.m41 documentation> 
-webKitCSSMatrixSetM41 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM41 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m41
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM41 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM41 self val = liftIO (js_setM41 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m41\"]"
-        ghcjs_dom_webkit_css_matrix_get_m41 ::
+foreign import javascript unsafe "$1[\"m41\"]" js_getM41 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m41 Mozilla WebKitCSSMatrix.m41 documentation> 
-webKitCSSMatrixGetM41 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM41 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m41
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM41 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM41 self = liftIO (js_getM41 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m42\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m42 ::
+foreign import javascript unsafe "$1[\"m42\"] = $2;" js_setM42 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m42 Mozilla WebKitCSSMatrix.m42 documentation> 
-webKitCSSMatrixSetM42 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM42 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m42
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM42 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM42 self val = liftIO (js_setM42 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m42\"]"
-        ghcjs_dom_webkit_css_matrix_get_m42 ::
+foreign import javascript unsafe "$1[\"m42\"]" js_getM42 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m42 Mozilla WebKitCSSMatrix.m42 documentation> 
-webKitCSSMatrixGetM42 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM42 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m42
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM42 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM42 self = liftIO (js_getM42 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m43\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m43 ::
+foreign import javascript unsafe "$1[\"m43\"] = $2;" js_setM43 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m43 Mozilla WebKitCSSMatrix.m43 documentation> 
-webKitCSSMatrixSetM43 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM43 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m43
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM43 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM43 self val = liftIO (js_setM43 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m43\"]"
-        ghcjs_dom_webkit_css_matrix_get_m43 ::
+foreign import javascript unsafe "$1[\"m43\"]" js_getM43 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m43 Mozilla WebKitCSSMatrix.m43 documentation> 
-webKitCSSMatrixGetM43 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM43 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m43
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM43 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM43 self = liftIO (js_getM43 (unWebKitCSSMatrix self))
  
-foreign import javascript unsafe "$1[\"m44\"] = $2;"
-        ghcjs_dom_webkit_css_matrix_set_m44 ::
+foreign import javascript unsafe "$1[\"m44\"] = $2;" js_setM44 ::
         JSRef WebKitCSSMatrix -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m44 Mozilla WebKitCSSMatrix.m44 documentation> 
-webKitCSSMatrixSetM44 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> Double -> m ()
-webKitCSSMatrixSetM44 self val
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_set_m44
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self))
-         val)
+setM44 :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
+setM44 self val = liftIO (js_setM44 (unWebKitCSSMatrix self) val)
  
-foreign import javascript unsafe "$1[\"m44\"]"
-        ghcjs_dom_webkit_css_matrix_get_m44 ::
+foreign import javascript unsafe "$1[\"m44\"]" js_getM44 ::
         JSRef WebKitCSSMatrix -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.m44 Mozilla WebKitCSSMatrix.m44 documentation> 
-webKitCSSMatrixGetM44 ::
-                      (MonadIO m, IsWebKitCSSMatrix self) => self -> m Double
-webKitCSSMatrixGetM44 self
-  = liftIO
-      (ghcjs_dom_webkit_css_matrix_get_m44
-         (unWebKitCSSMatrix (toWebKitCSSMatrix self)))
+getM44 :: (MonadIO m) => WebKitCSSMatrix -> m Double
+getM44 self = liftIO (js_getM44 (unWebKitCSSMatrix self))
 #else
 module GHCJS.DOM.WebKitCSSMatrix (
   ) where

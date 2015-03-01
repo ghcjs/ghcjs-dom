@@ -1,28 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGTransformList
-       (ghcjs_dom_svg_transform_list_clear, svgTransformListClear,
-        ghcjs_dom_svg_transform_list_initialize,
-        svgTransformListInitialize, ghcjs_dom_svg_transform_list_get_item,
-        svgTransformListGetItem,
-        ghcjs_dom_svg_transform_list_insert_item_before,
-        svgTransformListInsertItemBefore,
-        ghcjs_dom_svg_transform_list_replace_item,
-        svgTransformListReplaceItem,
-        ghcjs_dom_svg_transform_list_remove_item,
-        svgTransformListRemoveItem,
-        ghcjs_dom_svg_transform_list_append_item,
-        svgTransformListAppendItem,
-        ghcjs_dom_svg_transform_list_create_svg_transform_from_matrix,
-        svgTransformListCreateSVGTransformFromMatrix,
-        ghcjs_dom_svg_transform_list_consolidate,
-        svgTransformListConsolidate,
-        ghcjs_dom_svg_transform_list_get_number_of_items,
-        svgTransformListGetNumberOfItems, SVGTransformList,
-        IsSVGTransformList, castToSVGTransformList, gTypeSVGTransformList,
-        toSVGTransformList)
+       (js_clear, clear, js_initialize, initialize, js_getItem, getItem,
+        js_insertItemBefore, insertItemBefore, js_replaceItem, replaceItem,
+        js_removeItem, removeItem, js_appendItem, appendItem,
+        js_createSVGTransformFromMatrix, createSVGTransformFromMatrix,
+        js_consolidate, consolidate, js_getNumberOfItems, getNumberOfItems,
+        SVGTransformList, castToSVGTransformList, gTypeSVGTransformList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -32,161 +19,134 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"clear\"]()"
-        ghcjs_dom_svg_transform_list_clear ::
+foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
         JSRef SVGTransformList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.clear Mozilla SVGTransformList.clear documentation> 
-svgTransformListClear ::
-                      (MonadIO m, IsSVGTransformList self) => self -> m ()
-svgTransformListClear self
-  = liftIO
-      (ghcjs_dom_svg_transform_list_clear
-         (unSVGTransformList (toSVGTransformList self)))
+clear :: (MonadIO m) => SVGTransformList -> m ()
+clear self = liftIO (js_clear (unSVGTransformList self))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
-        ghcjs_dom_svg_transform_list_initialize ::
+        js_initialize ::
         JSRef SVGTransformList ->
           JSRef SVGTransform -> IO (JSRef SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.initialize Mozilla SVGTransformList.initialize documentation> 
-svgTransformListInitialize ::
-                           (MonadIO m, IsSVGTransformList self, IsSVGTransform item) =>
-                             self -> Maybe item -> m (Maybe SVGTransform)
-svgTransformListInitialize self item
+initialize ::
+           (MonadIO m) =>
+             SVGTransformList -> Maybe SVGTransform -> m (Maybe SVGTransform)
+initialize self item
   = liftIO
-      ((ghcjs_dom_svg_transform_list_initialize
-          (unSVGTransformList (toSVGTransformList self))
-          (maybe jsNull (unSVGTransform . toSVGTransform) item))
+      ((js_initialize (unSVGTransformList self)
+          (maybe jsNull unSVGTransform item))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"getItem\"]($2)"
-        ghcjs_dom_svg_transform_list_get_item ::
-        JSRef SVGTransformList -> Word -> IO (JSRef SVGTransform)
+foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
+        :: JSRef SVGTransformList -> Word -> IO (JSRef SVGTransform)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.item Mozilla SVGTransformList.item documentation> 
-svgTransformListGetItem ::
-                        (MonadIO m, IsSVGTransformList self) =>
-                          self -> Word -> m (Maybe SVGTransform)
-svgTransformListGetItem self index
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.getItem Mozilla SVGTransformList.getItem documentation> 
+getItem ::
+        (MonadIO m) => SVGTransformList -> Word -> m (Maybe SVGTransform)
+getItem self index
   = liftIO
-      ((ghcjs_dom_svg_transform_list_get_item
-          (unSVGTransformList (toSVGTransformList self))
-          index)
-         >>= fromJSRef)
+      ((js_getItem (unSVGTransformList self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
-        ghcjs_dom_svg_transform_list_insert_item_before ::
+        js_insertItemBefore ::
         JSRef SVGTransformList ->
           JSRef SVGTransform -> Word -> IO (JSRef SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.insertItemBefore Mozilla SVGTransformList.insertItemBefore documentation> 
-svgTransformListInsertItemBefore ::
-                                 (MonadIO m, IsSVGTransformList self, IsSVGTransform item) =>
-                                   self -> Maybe item -> Word -> m (Maybe SVGTransform)
-svgTransformListInsertItemBefore self item index
+insertItemBefore ::
+                 (MonadIO m) =>
+                   SVGTransformList ->
+                     Maybe SVGTransform -> Word -> m (Maybe SVGTransform)
+insertItemBefore self item index
   = liftIO
-      ((ghcjs_dom_svg_transform_list_insert_item_before
-          (unSVGTransformList (toSVGTransformList self))
-          (maybe jsNull (unSVGTransform . toSVGTransform) item)
+      ((js_insertItemBefore (unSVGTransformList self)
+          (maybe jsNull unSVGTransform item)
           index)
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
-        ghcjs_dom_svg_transform_list_replace_item ::
+        js_replaceItem ::
         JSRef SVGTransformList ->
           JSRef SVGTransform -> Word -> IO (JSRef SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.replaceItem Mozilla SVGTransformList.replaceItem documentation> 
-svgTransformListReplaceItem ::
-                            (MonadIO m, IsSVGTransformList self, IsSVGTransform item) =>
-                              self -> Maybe item -> Word -> m (Maybe SVGTransform)
-svgTransformListReplaceItem self item index
+replaceItem ::
+            (MonadIO m) =>
+              SVGTransformList ->
+                Maybe SVGTransform -> Word -> m (Maybe SVGTransform)
+replaceItem self item index
   = liftIO
-      ((ghcjs_dom_svg_transform_list_replace_item
-          (unSVGTransformList (toSVGTransformList self))
-          (maybe jsNull (unSVGTransform . toSVGTransform) item)
+      ((js_replaceItem (unSVGTransformList self)
+          (maybe jsNull unSVGTransform item)
           index)
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
-        ghcjs_dom_svg_transform_list_remove_item ::
+        js_removeItem ::
         JSRef SVGTransformList -> Word -> IO (JSRef SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.removeItem Mozilla SVGTransformList.removeItem documentation> 
-svgTransformListRemoveItem ::
-                           (MonadIO m, IsSVGTransformList self) =>
-                             self -> Word -> m (Maybe SVGTransform)
-svgTransformListRemoveItem self index
+removeItem ::
+           (MonadIO m) => SVGTransformList -> Word -> m (Maybe SVGTransform)
+removeItem self index
   = liftIO
-      ((ghcjs_dom_svg_transform_list_remove_item
-          (unSVGTransformList (toSVGTransformList self))
-          index)
-         >>= fromJSRef)
+      ((js_removeItem (unSVGTransformList self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
-        ghcjs_dom_svg_transform_list_append_item ::
+        js_appendItem ::
         JSRef SVGTransformList ->
           JSRef SVGTransform -> IO (JSRef SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.appendItem Mozilla SVGTransformList.appendItem documentation> 
-svgTransformListAppendItem ::
-                           (MonadIO m, IsSVGTransformList self, IsSVGTransform item) =>
-                             self -> Maybe item -> m (Maybe SVGTransform)
-svgTransformListAppendItem self item
+appendItem ::
+           (MonadIO m) =>
+             SVGTransformList -> Maybe SVGTransform -> m (Maybe SVGTransform)
+appendItem self item
   = liftIO
-      ((ghcjs_dom_svg_transform_list_append_item
-          (unSVGTransformList (toSVGTransformList self))
-          (maybe jsNull (unSVGTransform . toSVGTransform) item))
+      ((js_appendItem (unSVGTransformList self)
+          (maybe jsNull unSVGTransform item))
          >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createSVGTransformFromMatrix\"]($2)"
-        ghcjs_dom_svg_transform_list_create_svg_transform_from_matrix ::
+        js_createSVGTransformFromMatrix ::
         JSRef SVGTransformList ->
           JSRef SVGMatrix -> IO (JSRef SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.createSVGTransformFromMatrix Mozilla SVGTransformList.createSVGTransformFromMatrix documentation> 
-svgTransformListCreateSVGTransformFromMatrix ::
-                                             (MonadIO m, IsSVGTransformList self,
-                                              IsSVGMatrix matrix) =>
-                                               self -> Maybe matrix -> m (Maybe SVGTransform)
-svgTransformListCreateSVGTransformFromMatrix self matrix
+createSVGTransformFromMatrix ::
+                             (MonadIO m) =>
+                               SVGTransformList -> Maybe SVGMatrix -> m (Maybe SVGTransform)
+createSVGTransformFromMatrix self matrix
   = liftIO
-      ((ghcjs_dom_svg_transform_list_create_svg_transform_from_matrix
-          (unSVGTransformList (toSVGTransformList self))
-          (maybe jsNull (unSVGMatrix . toSVGMatrix) matrix))
+      ((js_createSVGTransformFromMatrix (unSVGTransformList self)
+          (maybe jsNull unSVGMatrix matrix))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"consolidate\"]()"
-        ghcjs_dom_svg_transform_list_consolidate ::
-        JSRef SVGTransformList -> IO (JSRef SVGTransform)
+        js_consolidate :: JSRef SVGTransformList -> IO (JSRef SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.consolidate Mozilla SVGTransformList.consolidate documentation> 
-svgTransformListConsolidate ::
-                            (MonadIO m, IsSVGTransformList self) =>
-                              self -> m (Maybe SVGTransform)
-svgTransformListConsolidate self
-  = liftIO
-      ((ghcjs_dom_svg_transform_list_consolidate
-          (unSVGTransformList (toSVGTransformList self)))
-         >>= fromJSRef)
+consolidate ::
+            (MonadIO m) => SVGTransformList -> m (Maybe SVGTransform)
+consolidate self
+  = liftIO ((js_consolidate (unSVGTransformList self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
-        ghcjs_dom_svg_transform_list_get_number_of_items ::
-        JSRef SVGTransformList -> IO Word
+        js_getNumberOfItems :: JSRef SVGTransformList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.numberOfItems Mozilla SVGTransformList.numberOfItems documentation> 
-svgTransformListGetNumberOfItems ::
-                                 (MonadIO m, IsSVGTransformList self) => self -> m Word
-svgTransformListGetNumberOfItems self
-  = liftIO
-      (ghcjs_dom_svg_transform_list_get_number_of_items
-         (unSVGTransformList (toSVGTransformList self)))
+getNumberOfItems :: (MonadIO m) => SVGTransformList -> m Word
+getNumberOfItems self
+  = liftIO (js_getNumberOfItems (unSVGTransformList self))
 #else
 module GHCJS.DOM.SVGTransformList (
   ) where

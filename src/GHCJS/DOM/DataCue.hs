@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.DataCue
-       (ghcjs_dom_data_cue_new, dataCueNew, ghcjs_dom_data_cue_set_data,
-        dataCueSetData, ghcjs_dom_data_cue_get_data, dataCueGetData,
-        ghcjs_dom_data_cue_set_value, dataCueSetValue,
-        ghcjs_dom_data_cue_get_value, dataCueGetValue, DataCue, IsDataCue,
-        castToDataCue, gTypeDataCue, toDataCue)
+       (js_newDataCue, newDataCue, js_newDataCue', newDataCue',
+        js_setData, setData, js_getData, getData, js_setValue, setValue,
+        js_getValue, getValue, DataCue, castToDataCue, gTypeDataCue)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,75 +16,61 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "new window[\"WebKitDataCue\"]()"
-        ghcjs_dom_data_cue_new :: IO (JSRef DataCue)
+        js_newDataCue :: IO (JSRef DataCue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation> 
-dataCueNew :: (MonadIO m) => m DataCue
-dataCueNew = liftIO (ghcjs_dom_data_cue_new >>= fromJSRefUnchecked)
+newDataCue :: (MonadIO m) => m DataCue
+newDataCue = liftIO (js_newDataCue >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
-        "new window[\"WebKitDataCue\"]($1,\n$2, $3, $4)"
-        ghcjs_dom_data_cue_new' ::
+        "new window[\"WebKitDataCue\"]($1,\n$2, $3, $4)" js_newDataCue' ::
         Double -> Double -> JSRef a -> JSString -> IO (JSRef DataCue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation> 
-dataCueNew' ::
+newDataCue' ::
             (MonadIO m, ToJSString type') =>
               Double -> Double -> JSRef a -> type' -> m DataCue
-dataCueNew' startTime endTime value type'
+newDataCue' startTime endTime value type'
   = liftIO
-      (ghcjs_dom_data_cue_new' startTime endTime value (toJSString type')
-         >>= fromJSRefUnchecked)
+      (js_newDataCue' startTime endTime value (toJSString type') >>=
+         fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"data\"] = $2;"
-        ghcjs_dom_data_cue_set_data ::
+foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::
         JSRef DataCue -> JSRef ArrayBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.data Mozilla WebKitDataCue.data documentation> 
-dataCueSetData ::
-               (MonadIO m, IsDataCue self, IsArrayBuffer val) =>
-                 self -> Maybe val -> m ()
-dataCueSetData self val
+setData ::
+        (MonadIO m, IsArrayBuffer val) => DataCue -> Maybe val -> m ()
+setData self val
   = liftIO
-      (ghcjs_dom_data_cue_set_data (unDataCue (toDataCue self))
+      (js_setData (unDataCue self)
          (maybe jsNull (unArrayBuffer . toArrayBuffer) val))
  
-foreign import javascript unsafe "$1[\"data\"]"
-        ghcjs_dom_data_cue_get_data ::
+foreign import javascript unsafe "$1[\"data\"]" js_getData ::
         JSRef DataCue -> IO (JSRef ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.data Mozilla WebKitDataCue.data documentation> 
-dataCueGetData ::
-               (MonadIO m, IsDataCue self) => self -> m (Maybe ArrayBuffer)
-dataCueGetData self
-  = liftIO
-      ((ghcjs_dom_data_cue_get_data (unDataCue (toDataCue self))) >>=
-         fromJSRef)
+getData :: (MonadIO m) => DataCue -> m (Maybe ArrayBuffer)
+getData self = liftIO ((js_getData (unDataCue self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"value\"] = $2;"
-        ghcjs_dom_data_cue_set_value :: JSRef DataCue -> JSRef a -> IO ()
+foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+        :: JSRef DataCue -> JSRef a -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.value Mozilla WebKitDataCue.value documentation> 
-dataCueSetValue ::
-                (MonadIO m, IsDataCue self) => self -> JSRef a -> m ()
-dataCueSetValue self val
-  = liftIO
-      (ghcjs_dom_data_cue_set_value (unDataCue (toDataCue self)) val)
+setValue :: (MonadIO m) => DataCue -> JSRef a -> m ()
+setValue self val = liftIO (js_setValue (unDataCue self) val)
  
-foreign import javascript unsafe "$1[\"value\"]"
-        ghcjs_dom_data_cue_get_value :: JSRef DataCue -> IO (JSRef a)
+foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+        JSRef DataCue -> IO (JSRef a)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.value Mozilla WebKitDataCue.value documentation> 
-dataCueGetValue ::
-                (MonadIO m, IsDataCue self) => self -> m (JSRef a)
-dataCueGetValue self
-  = liftIO
-      (ghcjs_dom_data_cue_get_value (unDataCue (toDataCue self)))
+getValue :: (MonadIO m) => DataCue -> m (JSRef a)
+getValue self = liftIO (js_getValue (unDataCue self))
 #else
 module GHCJS.DOM.DataCue (
   ) where

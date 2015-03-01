@@ -1,17 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGStyleElement
-       (ghcjs_dom_svg_style_element_set_disabled,
-        svgStyleElementSetDisabled,
-        ghcjs_dom_svg_style_element_get_disabled,
-        svgStyleElementGetDisabled, ghcjs_dom_svg_style_element_set_media,
-        svgStyleElementSetMedia, ghcjs_dom_svg_style_element_get_media,
-        svgStyleElementGetMedia, ghcjs_dom_svg_style_element_set_title,
-        svgStyleElementSetTitle, ghcjs_dom_svg_style_element_get_title,
-        svgStyleElementGetTitle, SVGStyleElement, IsSVGStyleElement,
-        castToSVGStyleElement, gTypeSVGStyleElement, toSVGStyleElement)
+       (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
+        js_setMedia, setMedia, js_getMedia, getMedia, js_setTitle,
+        setTitle, js_getTitle, getTitle, SVGStyleElement,
+        castToSVGStyleElement, gTypeSVGStyleElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,90 +17,60 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        ghcjs_dom_svg_style_element_set_disabled ::
-        JSRef SVGStyleElement -> Bool -> IO ()
+        js_setDisabled :: JSRef SVGStyleElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.disabled Mozilla SVGStyleElement.disabled documentation> 
-svgStyleElementSetDisabled ::
-                           (MonadIO m, IsSVGStyleElement self) => self -> Bool -> m ()
-svgStyleElementSetDisabled self val
-  = liftIO
-      (ghcjs_dom_svg_style_element_set_disabled
-         (unSVGStyleElement (toSVGStyleElement self))
-         val)
+setDisabled :: (MonadIO m) => SVGStyleElement -> Bool -> m ()
+setDisabled self val
+  = liftIO (js_setDisabled (unSVGStyleElement self) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        ghcjs_dom_svg_style_element_get_disabled ::
-        JSRef SVGStyleElement -> IO Bool
+        js_getDisabled :: JSRef SVGStyleElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.disabled Mozilla SVGStyleElement.disabled documentation> 
-svgStyleElementGetDisabled ::
-                           (MonadIO m, IsSVGStyleElement self) => self -> m Bool
-svgStyleElementGetDisabled self
-  = liftIO
-      (ghcjs_dom_svg_style_element_get_disabled
-         (unSVGStyleElement (toSVGStyleElement self)))
+getDisabled :: (MonadIO m) => SVGStyleElement -> m Bool
+getDisabled self = liftIO (js_getDisabled (unSVGStyleElement self))
  
-foreign import javascript unsafe "$1[\"media\"] = $2;"
-        ghcjs_dom_svg_style_element_set_media ::
-        JSRef SVGStyleElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"media\"] = $2;" js_setMedia
+        :: JSRef SVGStyleElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.media Mozilla SVGStyleElement.media documentation> 
-svgStyleElementSetMedia ::
-                        (MonadIO m, IsSVGStyleElement self, ToJSString val) =>
-                          self -> val -> m ()
-svgStyleElementSetMedia self val
-  = liftIO
-      (ghcjs_dom_svg_style_element_set_media
-         (unSVGStyleElement (toSVGStyleElement self))
-         (toJSString val))
+setMedia ::
+         (MonadIO m, ToJSString val) => SVGStyleElement -> val -> m ()
+setMedia self val
+  = liftIO (js_setMedia (unSVGStyleElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"media\"]"
-        ghcjs_dom_svg_style_element_get_media ::
+foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
         JSRef SVGStyleElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.media Mozilla SVGStyleElement.media documentation> 
-svgStyleElementGetMedia ::
-                        (MonadIO m, IsSVGStyleElement self, FromJSString result) =>
-                          self -> m result
-svgStyleElementGetMedia self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_style_element_get_media
-            (unSVGStyleElement (toSVGStyleElement self))))
+getMedia ::
+         (MonadIO m, FromJSString result) => SVGStyleElement -> m result
+getMedia self
+  = liftIO (fromJSString <$> (js_getMedia (unSVGStyleElement self)))
  
-foreign import javascript unsafe "$1[\"title\"] = $2;"
-        ghcjs_dom_svg_style_element_set_title ::
-        JSRef SVGStyleElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"title\"] = $2;" js_setTitle
+        :: JSRef SVGStyleElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.title Mozilla SVGStyleElement.title documentation> 
-svgStyleElementSetTitle ::
-                        (MonadIO m, IsSVGStyleElement self, ToJSString val) =>
-                          self -> val -> m ()
-svgStyleElementSetTitle self val
-  = liftIO
-      (ghcjs_dom_svg_style_element_set_title
-         (unSVGStyleElement (toSVGStyleElement self))
-         (toJSString val))
+setTitle ::
+         (MonadIO m, ToJSString val) => SVGStyleElement -> val -> m ()
+setTitle self val
+  = liftIO (js_setTitle (unSVGStyleElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"title\"]"
-        ghcjs_dom_svg_style_element_get_title ::
+foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
         JSRef SVGStyleElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.title Mozilla SVGStyleElement.title documentation> 
-svgStyleElementGetTitle ::
-                        (MonadIO m, IsSVGStyleElement self, FromJSString result) =>
-                          self -> m result
-svgStyleElementGetTitle self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_svg_style_element_get_title
-            (unSVGStyleElement (toSVGStyleElement self))))
+getTitle ::
+         (MonadIO m, FromJSString result) => SVGStyleElement -> m result
+getTitle self
+  = liftIO (fromJSString <$> (js_getTitle (unSVGStyleElement self)))
 #else
 module GHCJS.DOM.SVGStyleElement (
   ) where

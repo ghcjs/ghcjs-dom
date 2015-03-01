@@ -1,70 +1,46 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.InternalSettings
-       (ghcjs_dom_internal_settings_set_touch_event_emulation_enabled,
-        internalSettingsSetTouchEventEmulationEnabled,
-        ghcjs_dom_internal_settings_set_standard_font_family,
-        internalSettingsSetStandardFontFamily,
-        ghcjs_dom_internal_settings_set_serif_font_family,
-        internalSettingsSetSerifFontFamily,
-        ghcjs_dom_internal_settings_set_sans_serif_font_family,
-        internalSettingsSetSansSerifFontFamily,
-        ghcjs_dom_internal_settings_set_fixed_font_family,
-        internalSettingsSetFixedFontFamily,
-        ghcjs_dom_internal_settings_set_cursive_font_family,
-        internalSettingsSetCursiveFontFamily,
-        ghcjs_dom_internal_settings_set_fantasy_font_family,
-        internalSettingsSetFantasyFontFamily,
-        ghcjs_dom_internal_settings_set_pictograph_font_family,
-        internalSettingsSetPictographFontFamily,
-        ghcjs_dom_internal_settings_set_font_fallback_prefers_pictographs,
-        internalSettingsSetFontFallbackPrefersPictographs,
-        ghcjs_dom_internal_settings_set_text_autosizing_enabled,
-        internalSettingsSetTextAutosizingEnabled,
-        ghcjs_dom_internal_settings_set_text_autosizing_window_size_override,
-        internalSettingsSetTextAutosizingWindowSizeOverride,
-        ghcjs_dom_internal_settings_set_text_autosizing_font_scale_factor,
-        internalSettingsSetTextAutosizingFontScaleFactor,
-        ghcjs_dom_internal_settings_set_css_shapes_enabled,
-        internalSettingsSetCSSShapesEnabled,
-        ghcjs_dom_internal_settings_set_can_start_media,
-        internalSettingsSetCanStartMedia,
-        ghcjs_dom_internal_settings_set_should_display_track_kind,
-        internalSettingsSetShouldDisplayTrackKind,
-        ghcjs_dom_internal_settings_should_display_track_kind,
-        internalSettingsShouldDisplayTrackKind,
-        ghcjs_dom_internal_settings_set_default_video_poster_url,
-        internalSettingsSetDefaultVideoPosterURL,
-        ghcjs_dom_internal_settings_set_time_without_mouse_movement_before_hiding_controls,
-        internalSettingsSetTimeWithoutMouseMovementBeforeHidingControls,
-        ghcjs_dom_internal_settings_set_media_type_override,
-        internalSettingsSetMediaTypeOverride,
-        ghcjs_dom_internal_settings_set_plugin_replacement_enabled,
-        internalSettingsSetPluginReplacementEnabled,
-        ghcjs_dom_internal_settings_set_editing_behavior,
-        internalSettingsSetEditingBehavior,
-        ghcjs_dom_internal_settings_set_should_convert_position_style_on_copy,
-        internalSettingsSetShouldConvertPositionStyleOnCopy,
-        ghcjs_dom_internal_settings_set_lang_attribute_aware_form_control_ui_enabled,
-        internalSettingsSetLangAttributeAwareFormControlUIEnabled,
-        ghcjs_dom_internal_settings_set_storage_blocking_policy,
-        internalSettingsSetStorageBlockingPolicy,
-        ghcjs_dom_internal_settings_set_images_enabled,
-        internalSettingsSetImagesEnabled,
-        ghcjs_dom_internal_settings_set_use_legacy_background_size_shorthand_behavior,
-        internalSettingsSetUseLegacyBackgroundSizeShorthandBehavior,
-        ghcjs_dom_internal_settings_set_autoscroll_for_drag_and_drop_enabled,
-        internalSettingsSetAutoscrollForDragAndDropEnabled,
-        ghcjs_dom_internal_settings_set_background_should_extend_beyond_page,
-        internalSettingsSetBackgroundShouldExtendBeyondPage,
-        ghcjs_dom_internal_settings_set_scrolling_tree_includes_frames,
-        internalSettingsSetScrollingTreeIncludesFrames,
-        ghcjs_dom_internal_settings_set_minimum_timer_interval,
-        internalSettingsSetMinimumTimerInterval, InternalSettings,
-        IsInternalSettings, castToInternalSettings, gTypeInternalSettings,
-        toInternalSettings)
+       (js_setTouchEventEmulationEnabled, setTouchEventEmulationEnabled,
+        js_setStandardFontFamily, setStandardFontFamily,
+        js_setSerifFontFamily, setSerifFontFamily,
+        js_setSansSerifFontFamily, setSansSerifFontFamily,
+        js_setFixedFontFamily, setFixedFontFamily, js_setCursiveFontFamily,
+        setCursiveFontFamily, js_setFantasyFontFamily,
+        setFantasyFontFamily, js_setPictographFontFamily,
+        setPictographFontFamily, js_setFontFallbackPrefersPictographs,
+        setFontFallbackPrefersPictographs, js_setTextAutosizingEnabled,
+        setTextAutosizingEnabled, js_setTextAutosizingWindowSizeOverride,
+        setTextAutosizingWindowSizeOverride,
+        js_setTextAutosizingFontScaleFactor,
+        setTextAutosizingFontScaleFactor, js_setCSSShapesEnabled,
+        setCSSShapesEnabled, js_setCanStartMedia, setCanStartMedia,
+        js_setShouldDisplayTrackKind, setShouldDisplayTrackKind,
+        js_shouldDisplayTrackKind, shouldDisplayTrackKind,
+        js_setDefaultVideoPosterURL, setDefaultVideoPosterURL,
+        js_setTimeWithoutMouseMovementBeforeHidingControls,
+        setTimeWithoutMouseMovementBeforeHidingControls,
+        js_setMediaTypeOverride, setMediaTypeOverride,
+        js_setPluginReplacementEnabled, setPluginReplacementEnabled,
+        js_setEditingBehavior, setEditingBehavior,
+        js_setShouldConvertPositionStyleOnCopy,
+        setShouldConvertPositionStyleOnCopy,
+        js_setLangAttributeAwareFormControlUIEnabled,
+        setLangAttributeAwareFormControlUIEnabled,
+        js_setStorageBlockingPolicy, setStorageBlockingPolicy,
+        js_setImagesEnabled, setImagesEnabled,
+        js_setUseLegacyBackgroundSizeShorthandBehavior,
+        setUseLegacyBackgroundSizeShorthandBehavior,
+        js_setAutoscrollForDragAndDropEnabled,
+        setAutoscrollForDragAndDropEnabled,
+        js_setBackgroundShouldExtendBeyondPage,
+        setBackgroundShouldExtendBeyondPage,
+        js_setScrollingTreeIncludesFrames, setScrollingTreeIncludesFrames,
+        js_setMinimumTimerInterval, setMinimumTimerInterval,
+        InternalSettings, castToInternalSettings, gTypeInternalSettings)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -74,475 +50,395 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "$1[\"setTouchEventEmulationEnabled\"]($2)"
-        ghcjs_dom_internal_settings_set_touch_event_emulation_enabled ::
+        js_setTouchEventEmulationEnabled ::
         JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.touchEventEmulationEnabled Mozilla InternalSettings.touchEventEmulationEnabled documentation> 
-internalSettingsSetTouchEventEmulationEnabled ::
-                                              (MonadIO m, IsInternalSettings self) =>
-                                                self -> Bool -> m ()
-internalSettingsSetTouchEventEmulationEnabled self enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setTouchEventEmulationEnabled Mozilla InternalSettings.setTouchEventEmulationEnabled documentation> 
+setTouchEventEmulationEnabled ::
+                              (MonadIO m) => InternalSettings -> Bool -> m ()
+setTouchEventEmulationEnabled self enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_touch_event_emulation_enabled
-         (unInternalSettings (toInternalSettings self))
+      (js_setTouchEventEmulationEnabled (unInternalSettings self)
          enabled)
  
 foreign import javascript unsafe
-        "$1[\"setStandardFontFamily\"]($2,\n$3)"
-        ghcjs_dom_internal_settings_set_standard_font_family ::
-        JSRef InternalSettings -> JSString -> JSString -> IO ()
+        "$1[\"setStandardFontFamily\"]($2,\n$3)" js_setStandardFontFamily
+        :: JSRef InternalSettings -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.standardFontFamily Mozilla InternalSettings.standardFontFamily documentation> 
-internalSettingsSetStandardFontFamily ::
-                                      (MonadIO m, IsInternalSettings self, ToJSString family',
-                                       ToJSString script) =>
-                                        self -> family' -> script -> m ()
-internalSettingsSetStandardFontFamily self family' script
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setStandardFontFamily Mozilla InternalSettings.setStandardFontFamily documentation> 
+setStandardFontFamily ::
+                      (MonadIO m, ToJSString family', ToJSString script) =>
+                        InternalSettings -> family' -> script -> m ()
+setStandardFontFamily self family' script
   = liftIO
-      (ghcjs_dom_internal_settings_set_standard_font_family
-         (unInternalSettings (toInternalSettings self))
+      (js_setStandardFontFamily (unInternalSettings self)
          (toJSString family')
          (toJSString script))
  
 foreign import javascript unsafe
-        "$1[\"setSerifFontFamily\"]($2, $3)"
-        ghcjs_dom_internal_settings_set_serif_font_family ::
+        "$1[\"setSerifFontFamily\"]($2, $3)" js_setSerifFontFamily ::
         JSRef InternalSettings -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.serifFontFamily Mozilla InternalSettings.serifFontFamily documentation> 
-internalSettingsSetSerifFontFamily ::
-                                   (MonadIO m, IsInternalSettings self, ToJSString family',
-                                    ToJSString script) =>
-                                     self -> family' -> script -> m ()
-internalSettingsSetSerifFontFamily self family' script
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setSerifFontFamily Mozilla InternalSettings.setSerifFontFamily documentation> 
+setSerifFontFamily ::
+                   (MonadIO m, ToJSString family', ToJSString script) =>
+                     InternalSettings -> family' -> script -> m ()
+setSerifFontFamily self family' script
   = liftIO
-      (ghcjs_dom_internal_settings_set_serif_font_family
-         (unInternalSettings (toInternalSettings self))
+      (js_setSerifFontFamily (unInternalSettings self)
          (toJSString family')
          (toJSString script))
  
 foreign import javascript unsafe
-        "$1[\"setSansSerifFontFamily\"]($2,\n$3)"
-        ghcjs_dom_internal_settings_set_sans_serif_font_family ::
-        JSRef InternalSettings -> JSString -> JSString -> IO ()
+        "$1[\"setSansSerifFontFamily\"]($2,\n$3)" js_setSansSerifFontFamily
+        :: JSRef InternalSettings -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.sansSerifFontFamily Mozilla InternalSettings.sansSerifFontFamily documentation> 
-internalSettingsSetSansSerifFontFamily ::
-                                       (MonadIO m, IsInternalSettings self, ToJSString family',
-                                        ToJSString script) =>
-                                         self -> family' -> script -> m ()
-internalSettingsSetSansSerifFontFamily self family' script
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setSansSerifFontFamily Mozilla InternalSettings.setSansSerifFontFamily documentation> 
+setSansSerifFontFamily ::
+                       (MonadIO m, ToJSString family', ToJSString script) =>
+                         InternalSettings -> family' -> script -> m ()
+setSansSerifFontFamily self family' script
   = liftIO
-      (ghcjs_dom_internal_settings_set_sans_serif_font_family
-         (unInternalSettings (toInternalSettings self))
+      (js_setSansSerifFontFamily (unInternalSettings self)
          (toJSString family')
          (toJSString script))
  
 foreign import javascript unsafe
-        "$1[\"setFixedFontFamily\"]($2, $3)"
-        ghcjs_dom_internal_settings_set_fixed_font_family ::
+        "$1[\"setFixedFontFamily\"]($2, $3)" js_setFixedFontFamily ::
         JSRef InternalSettings -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.fixedFontFamily Mozilla InternalSettings.fixedFontFamily documentation> 
-internalSettingsSetFixedFontFamily ::
-                                   (MonadIO m, IsInternalSettings self, ToJSString family',
-                                    ToJSString script) =>
-                                     self -> family' -> script -> m ()
-internalSettingsSetFixedFontFamily self family' script
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setFixedFontFamily Mozilla InternalSettings.setFixedFontFamily documentation> 
+setFixedFontFamily ::
+                   (MonadIO m, ToJSString family', ToJSString script) =>
+                     InternalSettings -> family' -> script -> m ()
+setFixedFontFamily self family' script
   = liftIO
-      (ghcjs_dom_internal_settings_set_fixed_font_family
-         (unInternalSettings (toInternalSettings self))
+      (js_setFixedFontFamily (unInternalSettings self)
          (toJSString family')
          (toJSString script))
  
 foreign import javascript unsafe
-        "$1[\"setCursiveFontFamily\"]($2,\n$3)"
-        ghcjs_dom_internal_settings_set_cursive_font_family ::
+        "$1[\"setCursiveFontFamily\"]($2,\n$3)" js_setCursiveFontFamily ::
         JSRef InternalSettings -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.cursiveFontFamily Mozilla InternalSettings.cursiveFontFamily documentation> 
-internalSettingsSetCursiveFontFamily ::
-                                     (MonadIO m, IsInternalSettings self, ToJSString family',
-                                      ToJSString script) =>
-                                       self -> family' -> script -> m ()
-internalSettingsSetCursiveFontFamily self family' script
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setCursiveFontFamily Mozilla InternalSettings.setCursiveFontFamily documentation> 
+setCursiveFontFamily ::
+                     (MonadIO m, ToJSString family', ToJSString script) =>
+                       InternalSettings -> family' -> script -> m ()
+setCursiveFontFamily self family' script
   = liftIO
-      (ghcjs_dom_internal_settings_set_cursive_font_family
-         (unInternalSettings (toInternalSettings self))
+      (js_setCursiveFontFamily (unInternalSettings self)
          (toJSString family')
          (toJSString script))
  
 foreign import javascript unsafe
-        "$1[\"setFantasyFontFamily\"]($2,\n$3)"
-        ghcjs_dom_internal_settings_set_fantasy_font_family ::
+        "$1[\"setFantasyFontFamily\"]($2,\n$3)" js_setFantasyFontFamily ::
         JSRef InternalSettings -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.fantasyFontFamily Mozilla InternalSettings.fantasyFontFamily documentation> 
-internalSettingsSetFantasyFontFamily ::
-                                     (MonadIO m, IsInternalSettings self, ToJSString family',
-                                      ToJSString script) =>
-                                       self -> family' -> script -> m ()
-internalSettingsSetFantasyFontFamily self family' script
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setFantasyFontFamily Mozilla InternalSettings.setFantasyFontFamily documentation> 
+setFantasyFontFamily ::
+                     (MonadIO m, ToJSString family', ToJSString script) =>
+                       InternalSettings -> family' -> script -> m ()
+setFantasyFontFamily self family' script
   = liftIO
-      (ghcjs_dom_internal_settings_set_fantasy_font_family
-         (unInternalSettings (toInternalSettings self))
+      (js_setFantasyFontFamily (unInternalSettings self)
          (toJSString family')
          (toJSString script))
  
 foreign import javascript unsafe
         "$1[\"setPictographFontFamily\"]($2,\n$3)"
-        ghcjs_dom_internal_settings_set_pictograph_font_family ::
+        js_setPictographFontFamily ::
         JSRef InternalSettings -> JSString -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.pictographFontFamily Mozilla InternalSettings.pictographFontFamily documentation> 
-internalSettingsSetPictographFontFamily ::
-                                        (MonadIO m, IsInternalSettings self, ToJSString family',
-                                         ToJSString script) =>
-                                          self -> family' -> script -> m ()
-internalSettingsSetPictographFontFamily self family' script
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setPictographFontFamily Mozilla InternalSettings.setPictographFontFamily documentation> 
+setPictographFontFamily ::
+                        (MonadIO m, ToJSString family', ToJSString script) =>
+                          InternalSettings -> family' -> script -> m ()
+setPictographFontFamily self family' script
   = liftIO
-      (ghcjs_dom_internal_settings_set_pictograph_font_family
-         (unInternalSettings (toInternalSettings self))
+      (js_setPictographFontFamily (unInternalSettings self)
          (toJSString family')
          (toJSString script))
  
 foreign import javascript unsafe
         "$1[\"setFontFallbackPrefersPictographs\"]($2)"
-        ghcjs_dom_internal_settings_set_font_fallback_prefers_pictographs
-        :: JSRef InternalSettings -> Bool -> IO ()
+        js_setFontFallbackPrefersPictographs ::
+        JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.fontFallbackPrefersPictographs Mozilla InternalSettings.fontFallbackPrefersPictographs documentation> 
-internalSettingsSetFontFallbackPrefersPictographs ::
-                                                  (MonadIO m, IsInternalSettings self) =>
-                                                    self -> Bool -> m ()
-internalSettingsSetFontFallbackPrefersPictographs self
-  preferPictographs
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setFontFallbackPrefersPictographs Mozilla InternalSettings.setFontFallbackPrefersPictographs documentation> 
+setFontFallbackPrefersPictographs ::
+                                  (MonadIO m) => InternalSettings -> Bool -> m ()
+setFontFallbackPrefersPictographs self preferPictographs
   = liftIO
-      (ghcjs_dom_internal_settings_set_font_fallback_prefers_pictographs
-         (unInternalSettings (toInternalSettings self))
+      (js_setFontFallbackPrefersPictographs (unInternalSettings self)
          preferPictographs)
  
 foreign import javascript unsafe
-        "$1[\"setTextAutosizingEnabled\"]($2)"
-        ghcjs_dom_internal_settings_set_text_autosizing_enabled ::
-        JSRef InternalSettings -> Bool -> IO ()
+        "$1[\"setTextAutosizingEnabled\"]($2)" js_setTextAutosizingEnabled
+        :: JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.textAutosizingEnabled Mozilla InternalSettings.textAutosizingEnabled documentation> 
-internalSettingsSetTextAutosizingEnabled ::
-                                         (MonadIO m, IsInternalSettings self) =>
-                                           self -> Bool -> m ()
-internalSettingsSetTextAutosizingEnabled self enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setTextAutosizingEnabled Mozilla InternalSettings.setTextAutosizingEnabled documentation> 
+setTextAutosizingEnabled ::
+                         (MonadIO m) => InternalSettings -> Bool -> m ()
+setTextAutosizingEnabled self enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_text_autosizing_enabled
-         (unInternalSettings (toInternalSettings self))
-         enabled)
+      (js_setTextAutosizingEnabled (unInternalSettings self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setTextAutosizingWindowSizeOverride\"]($2,\n$3)"
-        ghcjs_dom_internal_settings_set_text_autosizing_window_size_override
-        :: JSRef InternalSettings -> Int -> Int -> IO ()
+        js_setTextAutosizingWindowSizeOverride ::
+        JSRef InternalSettings -> Int -> Int -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.textAutosizingWindowSizeOverride Mozilla InternalSettings.textAutosizingWindowSizeOverride documentation> 
-internalSettingsSetTextAutosizingWindowSizeOverride ::
-                                                    (MonadIO m, IsInternalSettings self) =>
-                                                      self -> Int -> Int -> m ()
-internalSettingsSetTextAutosizingWindowSizeOverride self width
-  height
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setTextAutosizingWindowSizeOverride Mozilla InternalSettings.setTextAutosizingWindowSizeOverride documentation> 
+setTextAutosizingWindowSizeOverride ::
+                                    (MonadIO m) => InternalSettings -> Int -> Int -> m ()
+setTextAutosizingWindowSizeOverride self width height
   = liftIO
-      (ghcjs_dom_internal_settings_set_text_autosizing_window_size_override
-         (unInternalSettings (toInternalSettings self))
+      (js_setTextAutosizingWindowSizeOverride (unInternalSettings self)
          width
          height)
  
 foreign import javascript unsafe
         "$1[\"setTextAutosizingFontScaleFactor\"]($2)"
-        ghcjs_dom_internal_settings_set_text_autosizing_font_scale_factor
-        :: JSRef InternalSettings -> Float -> IO ()
+        js_setTextAutosizingFontScaleFactor ::
+        JSRef InternalSettings -> Float -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.textAutosizingFontScaleFactor Mozilla InternalSettings.textAutosizingFontScaleFactor documentation> 
-internalSettingsSetTextAutosizingFontScaleFactor ::
-                                                 (MonadIO m, IsInternalSettings self) =>
-                                                   self -> Float -> m ()
-internalSettingsSetTextAutosizingFontScaleFactor self
-  fontScaleFactor
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setTextAutosizingFontScaleFactor Mozilla InternalSettings.setTextAutosizingFontScaleFactor documentation> 
+setTextAutosizingFontScaleFactor ::
+                                 (MonadIO m) => InternalSettings -> Float -> m ()
+setTextAutosizingFontScaleFactor self fontScaleFactor
   = liftIO
-      (ghcjs_dom_internal_settings_set_text_autosizing_font_scale_factor
-         (unInternalSettings (toInternalSettings self))
+      (js_setTextAutosizingFontScaleFactor (unInternalSettings self)
          fontScaleFactor)
  
 foreign import javascript unsafe "$1[\"setCSSShapesEnabled\"]($2)"
-        ghcjs_dom_internal_settings_set_css_shapes_enabled ::
-        JSRef InternalSettings -> Bool -> IO ()
+        js_setCSSShapesEnabled :: JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.cssShapesEnabled Mozilla InternalSettings.cssShapesEnabled documentation> 
-internalSettingsSetCSSShapesEnabled ::
-                                    (MonadIO m, IsInternalSettings self) => self -> Bool -> m ()
-internalSettingsSetCSSShapesEnabled self enabled
-  = liftIO
-      (ghcjs_dom_internal_settings_set_css_shapes_enabled
-         (unInternalSettings (toInternalSettings self))
-         enabled)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setCSSShapesEnabled Mozilla InternalSettings.setCSSShapesEnabled documentation> 
+setCSSShapesEnabled ::
+                    (MonadIO m) => InternalSettings -> Bool -> m ()
+setCSSShapesEnabled self enabled
+  = liftIO (js_setCSSShapesEnabled (unInternalSettings self) enabled)
  
 foreign import javascript unsafe "$1[\"setCanStartMedia\"]($2)"
-        ghcjs_dom_internal_settings_set_can_start_media ::
-        JSRef InternalSettings -> Bool -> IO ()
+        js_setCanStartMedia :: JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.canStartMedia Mozilla InternalSettings.canStartMedia documentation> 
-internalSettingsSetCanStartMedia ::
-                                 (MonadIO m, IsInternalSettings self) => self -> Bool -> m ()
-internalSettingsSetCanStartMedia self enabled
-  = liftIO
-      (ghcjs_dom_internal_settings_set_can_start_media
-         (unInternalSettings (toInternalSettings self))
-         enabled)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setCanStartMedia Mozilla InternalSettings.setCanStartMedia documentation> 
+setCanStartMedia :: (MonadIO m) => InternalSettings -> Bool -> m ()
+setCanStartMedia self enabled
+  = liftIO (js_setCanStartMedia (unInternalSettings self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setShouldDisplayTrackKind\"]($2,\n$3)"
-        ghcjs_dom_internal_settings_set_should_display_track_kind ::
+        js_setShouldDisplayTrackKind ::
         JSRef InternalSettings -> JSString -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.shouldDisplayTrackKind Mozilla InternalSettings.shouldDisplayTrackKind documentation> 
-internalSettingsSetShouldDisplayTrackKind ::
-                                          (MonadIO m, IsInternalSettings self, ToJSString kind) =>
-                                            self -> kind -> Bool -> m ()
-internalSettingsSetShouldDisplayTrackKind self kind enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setShouldDisplayTrackKind Mozilla InternalSettings.setShouldDisplayTrackKind documentation> 
+setShouldDisplayTrackKind ::
+                          (MonadIO m, ToJSString kind) =>
+                            InternalSettings -> kind -> Bool -> m ()
+setShouldDisplayTrackKind self kind enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_should_display_track_kind
-         (unInternalSettings (toInternalSettings self))
+      (js_setShouldDisplayTrackKind (unInternalSettings self)
          (toJSString kind)
          enabled)
  
 foreign import javascript unsafe
         "($1[\"shouldDisplayTrackKind\"]($2) ? 1 : 0)"
-        ghcjs_dom_internal_settings_should_display_track_kind ::
+        js_shouldDisplayTrackKind ::
         JSRef InternalSettings -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.shouldDisplayTrackKind Mozilla InternalSettings.shouldDisplayTrackKind documentation> 
-internalSettingsShouldDisplayTrackKind ::
-                                       (MonadIO m, IsInternalSettings self, ToJSString trackKind) =>
-                                         self -> trackKind -> m Bool
-internalSettingsShouldDisplayTrackKind self trackKind
+shouldDisplayTrackKind ::
+                       (MonadIO m, ToJSString trackKind) =>
+                         InternalSettings -> trackKind -> m Bool
+shouldDisplayTrackKind self trackKind
   = liftIO
-      (ghcjs_dom_internal_settings_should_display_track_kind
-         (unInternalSettings (toInternalSettings self))
+      (js_shouldDisplayTrackKind (unInternalSettings self)
          (toJSString trackKind))
  
 foreign import javascript unsafe
-        "$1[\"setDefaultVideoPosterURL\"]($2)"
-        ghcjs_dom_internal_settings_set_default_video_poster_url ::
-        JSRef InternalSettings -> JSString -> IO ()
+        "$1[\"setDefaultVideoPosterURL\"]($2)" js_setDefaultVideoPosterURL
+        :: JSRef InternalSettings -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.defaultVideoPosterURL Mozilla InternalSettings.defaultVideoPosterURL documentation> 
-internalSettingsSetDefaultVideoPosterURL ::
-                                         (MonadIO m, IsInternalSettings self, ToJSString poster) =>
-                                           self -> poster -> m ()
-internalSettingsSetDefaultVideoPosterURL self poster
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setDefaultVideoPosterURL Mozilla InternalSettings.setDefaultVideoPosterURL documentation> 
+setDefaultVideoPosterURL ::
+                         (MonadIO m, ToJSString poster) =>
+                           InternalSettings -> poster -> m ()
+setDefaultVideoPosterURL self poster
   = liftIO
-      (ghcjs_dom_internal_settings_set_default_video_poster_url
-         (unInternalSettings (toInternalSettings self))
+      (js_setDefaultVideoPosterURL (unInternalSettings self)
          (toJSString poster))
  
 foreign import javascript unsafe
         "$1[\"setTimeWithoutMouseMovementBeforeHidingControls\"]($2)"
-        ghcjs_dom_internal_settings_set_time_without_mouse_movement_before_hiding_controls
-        :: JSRef InternalSettings -> Double -> IO ()
+        js_setTimeWithoutMouseMovementBeforeHidingControls ::
+        JSRef InternalSettings -> Double -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.timeWithoutMouseMovementBeforeHidingControls Mozilla InternalSettings.timeWithoutMouseMovementBeforeHidingControls documentation> 
-internalSettingsSetTimeWithoutMouseMovementBeforeHidingControls ::
-                                                                (MonadIO m,
-                                                                 IsInternalSettings self) =>
-                                                                  self -> Double -> m ()
-internalSettingsSetTimeWithoutMouseMovementBeforeHidingControls
-  self time
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setTimeWithoutMouseMovementBeforeHidingControls Mozilla InternalSettings.setTimeWithoutMouseMovementBeforeHidingControls documentation> 
+setTimeWithoutMouseMovementBeforeHidingControls ::
+                                                (MonadIO m) => InternalSettings -> Double -> m ()
+setTimeWithoutMouseMovementBeforeHidingControls self time
   = liftIO
-      (ghcjs_dom_internal_settings_set_time_without_mouse_movement_before_hiding_controls
-         (unInternalSettings (toInternalSettings self))
+      (js_setTimeWithoutMouseMovementBeforeHidingControls
+         (unInternalSettings self)
          time)
  
 foreign import javascript unsafe "$1[\"setMediaTypeOverride\"]($2)"
-        ghcjs_dom_internal_settings_set_media_type_override ::
+        js_setMediaTypeOverride ::
         JSRef InternalSettings -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.mediaTypeOverride Mozilla InternalSettings.mediaTypeOverride documentation> 
-internalSettingsSetMediaTypeOverride ::
-                                     (MonadIO m, IsInternalSettings self,
-                                      ToJSString mediaTypeOverride) =>
-                                       self -> mediaTypeOverride -> m ()
-internalSettingsSetMediaTypeOverride self mediaTypeOverride
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setMediaTypeOverride Mozilla InternalSettings.setMediaTypeOverride documentation> 
+setMediaTypeOverride ::
+                     (MonadIO m, ToJSString mediaTypeOverride) =>
+                       InternalSettings -> mediaTypeOverride -> m ()
+setMediaTypeOverride self mediaTypeOverride
   = liftIO
-      (ghcjs_dom_internal_settings_set_media_type_override
-         (unInternalSettings (toInternalSettings self))
+      (js_setMediaTypeOverride (unInternalSettings self)
          (toJSString mediaTypeOverride))
  
 foreign import javascript unsafe
         "$1[\"setPluginReplacementEnabled\"]($2)"
-        ghcjs_dom_internal_settings_set_plugin_replacement_enabled ::
+        js_setPluginReplacementEnabled ::
         JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.pluginReplacementEnabled Mozilla InternalSettings.pluginReplacementEnabled documentation> 
-internalSettingsSetPluginReplacementEnabled ::
-                                            (MonadIO m, IsInternalSettings self) =>
-                                              self -> Bool -> m ()
-internalSettingsSetPluginReplacementEnabled self enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setPluginReplacementEnabled Mozilla InternalSettings.setPluginReplacementEnabled documentation> 
+setPluginReplacementEnabled ::
+                            (MonadIO m) => InternalSettings -> Bool -> m ()
+setPluginReplacementEnabled self enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_plugin_replacement_enabled
-         (unInternalSettings (toInternalSettings self))
-         enabled)
+      (js_setPluginReplacementEnabled (unInternalSettings self) enabled)
  
 foreign import javascript unsafe "$1[\"setEditingBehavior\"]($2)"
-        ghcjs_dom_internal_settings_set_editing_behavior ::
+        js_setEditingBehavior ::
         JSRef InternalSettings -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.editingBehavior Mozilla InternalSettings.editingBehavior documentation> 
-internalSettingsSetEditingBehavior ::
-                                   (MonadIO m, IsInternalSettings self, ToJSString behavior) =>
-                                     self -> behavior -> m ()
-internalSettingsSetEditingBehavior self behavior
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setEditingBehavior Mozilla InternalSettings.setEditingBehavior documentation> 
+setEditingBehavior ::
+                   (MonadIO m, ToJSString behavior) =>
+                     InternalSettings -> behavior -> m ()
+setEditingBehavior self behavior
   = liftIO
-      (ghcjs_dom_internal_settings_set_editing_behavior
-         (unInternalSettings (toInternalSettings self))
+      (js_setEditingBehavior (unInternalSettings self)
          (toJSString behavior))
  
 foreign import javascript unsafe
         "$1[\"setShouldConvertPositionStyleOnCopy\"]($2)"
-        ghcjs_dom_internal_settings_set_should_convert_position_style_on_copy
-        :: JSRef InternalSettings -> Bool -> IO ()
+        js_setShouldConvertPositionStyleOnCopy ::
+        JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.shouldConvertPositionStyleOnCopy Mozilla InternalSettings.shouldConvertPositionStyleOnCopy documentation> 
-internalSettingsSetShouldConvertPositionStyleOnCopy ::
-                                                    (MonadIO m, IsInternalSettings self) =>
-                                                      self -> Bool -> m ()
-internalSettingsSetShouldConvertPositionStyleOnCopy self convert
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setShouldConvertPositionStyleOnCopy Mozilla InternalSettings.setShouldConvertPositionStyleOnCopy documentation> 
+setShouldConvertPositionStyleOnCopy ::
+                                    (MonadIO m) => InternalSettings -> Bool -> m ()
+setShouldConvertPositionStyleOnCopy self convert
   = liftIO
-      (ghcjs_dom_internal_settings_set_should_convert_position_style_on_copy
-         (unInternalSettings (toInternalSettings self))
+      (js_setShouldConvertPositionStyleOnCopy (unInternalSettings self)
          convert)
  
 foreign import javascript unsafe
         "$1[\"setLangAttributeAwareFormControlUIEnabled\"]($2)"
-        ghcjs_dom_internal_settings_set_lang_attribute_aware_form_control_ui_enabled
-        :: JSRef InternalSettings -> Bool -> IO ()
+        js_setLangAttributeAwareFormControlUIEnabled ::
+        JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.langAttributeAwareFormControlUIEnabled Mozilla InternalSettings.langAttributeAwareFormControlUIEnabled documentation> 
-internalSettingsSetLangAttributeAwareFormControlUIEnabled ::
-                                                          (MonadIO m, IsInternalSettings self) =>
-                                                            self -> Bool -> m ()
-internalSettingsSetLangAttributeAwareFormControlUIEnabled self
-  enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setLangAttributeAwareFormControlUIEnabled Mozilla InternalSettings.setLangAttributeAwareFormControlUIEnabled documentation> 
+setLangAttributeAwareFormControlUIEnabled ::
+                                          (MonadIO m) => InternalSettings -> Bool -> m ()
+setLangAttributeAwareFormControlUIEnabled self enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_lang_attribute_aware_form_control_ui_enabled
-         (unInternalSettings (toInternalSettings self))
+      (js_setLangAttributeAwareFormControlUIEnabled
+         (unInternalSettings self)
          enabled)
  
 foreign import javascript unsafe
-        "$1[\"setStorageBlockingPolicy\"]($2)"
-        ghcjs_dom_internal_settings_set_storage_blocking_policy ::
-        JSRef InternalSettings -> JSString -> IO ()
+        "$1[\"setStorageBlockingPolicy\"]($2)" js_setStorageBlockingPolicy
+        :: JSRef InternalSettings -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.storageBlockingPolicy Mozilla InternalSettings.storageBlockingPolicy documentation> 
-internalSettingsSetStorageBlockingPolicy ::
-                                         (MonadIO m, IsInternalSettings self, ToJSString policy) =>
-                                           self -> policy -> m ()
-internalSettingsSetStorageBlockingPolicy self policy
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setStorageBlockingPolicy Mozilla InternalSettings.setStorageBlockingPolicy documentation> 
+setStorageBlockingPolicy ::
+                         (MonadIO m, ToJSString policy) =>
+                           InternalSettings -> policy -> m ()
+setStorageBlockingPolicy self policy
   = liftIO
-      (ghcjs_dom_internal_settings_set_storage_blocking_policy
-         (unInternalSettings (toInternalSettings self))
+      (js_setStorageBlockingPolicy (unInternalSettings self)
          (toJSString policy))
  
 foreign import javascript unsafe "$1[\"setImagesEnabled\"]($2)"
-        ghcjs_dom_internal_settings_set_images_enabled ::
-        JSRef InternalSettings -> Bool -> IO ()
+        js_setImagesEnabled :: JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.imagesEnabled Mozilla InternalSettings.imagesEnabled documentation> 
-internalSettingsSetImagesEnabled ::
-                                 (MonadIO m, IsInternalSettings self) => self -> Bool -> m ()
-internalSettingsSetImagesEnabled self enabled
-  = liftIO
-      (ghcjs_dom_internal_settings_set_images_enabled
-         (unInternalSettings (toInternalSettings self))
-         enabled)
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setImagesEnabled Mozilla InternalSettings.setImagesEnabled documentation> 
+setImagesEnabled :: (MonadIO m) => InternalSettings -> Bool -> m ()
+setImagesEnabled self enabled
+  = liftIO (js_setImagesEnabled (unInternalSettings self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setUseLegacyBackgroundSizeShorthandBehavior\"]($2)"
-        ghcjs_dom_internal_settings_set_use_legacy_background_size_shorthand_behavior
-        :: JSRef InternalSettings -> Bool -> IO ()
+        js_setUseLegacyBackgroundSizeShorthandBehavior ::
+        JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.useLegacyBackgroundSizeShorthandBehavior Mozilla InternalSettings.useLegacyBackgroundSizeShorthandBehavior documentation> 
-internalSettingsSetUseLegacyBackgroundSizeShorthandBehavior ::
-                                                            (MonadIO m, IsInternalSettings self) =>
-                                                              self -> Bool -> m ()
-internalSettingsSetUseLegacyBackgroundSizeShorthandBehavior self
-  enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setUseLegacyBackgroundSizeShorthandBehavior Mozilla InternalSettings.setUseLegacyBackgroundSizeShorthandBehavior documentation> 
+setUseLegacyBackgroundSizeShorthandBehavior ::
+                                            (MonadIO m) => InternalSettings -> Bool -> m ()
+setUseLegacyBackgroundSizeShorthandBehavior self enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_use_legacy_background_size_shorthand_behavior
-         (unInternalSettings (toInternalSettings self))
+      (js_setUseLegacyBackgroundSizeShorthandBehavior
+         (unInternalSettings self)
          enabled)
  
 foreign import javascript unsafe
         "$1[\"setAutoscrollForDragAndDropEnabled\"]($2)"
-        ghcjs_dom_internal_settings_set_autoscroll_for_drag_and_drop_enabled
-        :: JSRef InternalSettings -> Bool -> IO ()
+        js_setAutoscrollForDragAndDropEnabled ::
+        JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.autoscrollForDragAndDropEnabled Mozilla InternalSettings.autoscrollForDragAndDropEnabled documentation> 
-internalSettingsSetAutoscrollForDragAndDropEnabled ::
-                                                   (MonadIO m, IsInternalSettings self) =>
-                                                     self -> Bool -> m ()
-internalSettingsSetAutoscrollForDragAndDropEnabled self enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setAutoscrollForDragAndDropEnabled Mozilla InternalSettings.setAutoscrollForDragAndDropEnabled documentation> 
+setAutoscrollForDragAndDropEnabled ::
+                                   (MonadIO m) => InternalSettings -> Bool -> m ()
+setAutoscrollForDragAndDropEnabled self enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_autoscroll_for_drag_and_drop_enabled
-         (unInternalSettings (toInternalSettings self))
+      (js_setAutoscrollForDragAndDropEnabled (unInternalSettings self)
          enabled)
  
 foreign import javascript unsafe
         "$1[\"setBackgroundShouldExtendBeyondPage\"]($2)"
-        ghcjs_dom_internal_settings_set_background_should_extend_beyond_page
-        :: JSRef InternalSettings -> Bool -> IO ()
+        js_setBackgroundShouldExtendBeyondPage ::
+        JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.backgroundShouldExtendBeyondPage Mozilla InternalSettings.backgroundShouldExtendBeyondPage documentation> 
-internalSettingsSetBackgroundShouldExtendBeyondPage ::
-                                                    (MonadIO m, IsInternalSettings self) =>
-                                                      self -> Bool -> m ()
-internalSettingsSetBackgroundShouldExtendBeyondPage self
-  hasExtendedBackground
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setBackgroundShouldExtendBeyondPage Mozilla InternalSettings.setBackgroundShouldExtendBeyondPage documentation> 
+setBackgroundShouldExtendBeyondPage ::
+                                    (MonadIO m) => InternalSettings -> Bool -> m ()
+setBackgroundShouldExtendBeyondPage self hasExtendedBackground
   = liftIO
-      (ghcjs_dom_internal_settings_set_background_should_extend_beyond_page
-         (unInternalSettings (toInternalSettings self))
+      (js_setBackgroundShouldExtendBeyondPage (unInternalSettings self)
          hasExtendedBackground)
  
 foreign import javascript unsafe
         "$1[\"setScrollingTreeIncludesFrames\"]($2)"
-        ghcjs_dom_internal_settings_set_scrolling_tree_includes_frames ::
+        js_setScrollingTreeIncludesFrames ::
         JSRef InternalSettings -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.scrollingTreeIncludesFrames Mozilla InternalSettings.scrollingTreeIncludesFrames documentation> 
-internalSettingsSetScrollingTreeIncludesFrames ::
-                                               (MonadIO m, IsInternalSettings self) =>
-                                                 self -> Bool -> m ()
-internalSettingsSetScrollingTreeIncludesFrames self enabled
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setScrollingTreeIncludesFrames Mozilla InternalSettings.setScrollingTreeIncludesFrames documentation> 
+setScrollingTreeIncludesFrames ::
+                               (MonadIO m) => InternalSettings -> Bool -> m ()
+setScrollingTreeIncludesFrames self enabled
   = liftIO
-      (ghcjs_dom_internal_settings_set_scrolling_tree_includes_frames
-         (unInternalSettings (toInternalSettings self))
+      (js_setScrollingTreeIncludesFrames (unInternalSettings self)
          enabled)
  
 foreign import javascript unsafe
-        "$1[\"setMinimumTimerInterval\"]($2)"
-        ghcjs_dom_internal_settings_set_minimum_timer_interval ::
+        "$1[\"setMinimumTimerInterval\"]($2)" js_setMinimumTimerInterval ::
         JSRef InternalSettings -> Double -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.minimumTimerInterval Mozilla InternalSettings.minimumTimerInterval documentation> 
-internalSettingsSetMinimumTimerInterval ::
-                                        (MonadIO m, IsInternalSettings self) =>
-                                          self -> Double -> m ()
-internalSettingsSetMinimumTimerInterval self intervalInSeconds
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.setMinimumTimerInterval Mozilla InternalSettings.setMinimumTimerInterval documentation> 
+setMinimumTimerInterval ::
+                        (MonadIO m) => InternalSettings -> Double -> m ()
+setMinimumTimerInterval self intervalInSeconds
   = liftIO
-      (ghcjs_dom_internal_settings_set_minimum_timer_interval
-         (unInternalSettings (toInternalSettings self))
+      (js_setMinimumTimerInterval (unInternalSettings self)
          intervalInSeconds)
 #else
 module GHCJS.DOM.InternalSettings (

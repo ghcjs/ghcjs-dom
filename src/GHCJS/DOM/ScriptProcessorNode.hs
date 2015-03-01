@@ -1,13 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.ScriptProcessorNode
-       (scriptProcessorNodeAudioProcess,
-        ghcjs_dom_script_processor_node_get_buffer_size,
-        scriptProcessorNodeGetBufferSize, ScriptProcessorNode,
-        IsScriptProcessorNode, castToScriptProcessorNode,
-        gTypeScriptProcessorNode, toScriptProcessorNode)
+       (audioProcess, js_getBufferSize, getBufferSize,
+        ScriptProcessorNode, castToScriptProcessorNode,
+        gTypeScriptProcessorNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,28 +16,21 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode.audioProcess Mozilla ScriptProcessorNode.audioProcess documentation> 
-scriptProcessorNodeAudioProcess ::
-                                (IsScriptProcessorNode self, IsEventTarget self) =>
-                                  EventName self AudioProcessingEvent
-scriptProcessorNodeAudioProcess
-  = unsafeEventName (toJSString "audioprocess")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode.onaudioprocess Mozilla ScriptProcessorNode.onaudioprocess documentation> 
+audioProcess :: EventName ScriptProcessorNode AudioProcessingEvent
+audioProcess = unsafeEventName (toJSString "audioprocess")
  
 foreign import javascript unsafe "$1[\"bufferSize\"]"
-        ghcjs_dom_script_processor_node_get_buffer_size ::
-        JSRef ScriptProcessorNode -> IO Int
+        js_getBufferSize :: JSRef ScriptProcessorNode -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode.bufferSize Mozilla ScriptProcessorNode.bufferSize documentation> 
-scriptProcessorNodeGetBufferSize ::
-                                 (MonadIO m, IsScriptProcessorNode self) => self -> m Int
-scriptProcessorNodeGetBufferSize self
-  = liftIO
-      (ghcjs_dom_script_processor_node_get_buffer_size
-         (unScriptProcessorNode (toScriptProcessorNode self)))
+getBufferSize :: (MonadIO m) => ScriptProcessorNode -> m Int
+getBufferSize self
+  = liftIO (js_getBufferSize (unScriptProcessorNode self))
 #else
 module GHCJS.DOM.ScriptProcessorNode (
   ) where

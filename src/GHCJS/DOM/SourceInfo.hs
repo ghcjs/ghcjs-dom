@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SourceInfo
-       (ghcjs_dom_source_info_get_source_id, sourceInfoGetSourceId,
-        ghcjs_dom_source_info_get_kind, sourceInfoGetKind,
-        ghcjs_dom_source_info_get_label, sourceInfoGetLabel, SourceInfo,
-        IsSourceInfo, castToSourceInfo, gTypeSourceInfo, toSourceInfo)
+       (js_getSourceId, getSourceId, js_getKind, getKind, js_getLabel,
+        getLabel, SourceInfo, castToSourceInfo, gTypeSourceInfo)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,49 +15,36 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"sourceId\"]"
-        ghcjs_dom_source_info_get_source_id ::
-        JSRef SourceInfo -> IO JSString
+foreign import javascript unsafe "$1[\"sourceId\"]" js_getSourceId
+        :: JSRef SourceInfo -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceInfo.sourceId Mozilla SourceInfo.sourceId documentation> 
-sourceInfoGetSourceId ::
-                      (MonadIO m, IsSourceInfo self, FromJSString result) =>
-                        self -> m result
-sourceInfoGetSourceId self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_source_info_get_source_id
-            (unSourceInfo (toSourceInfo self))))
+getSourceId ::
+            (MonadIO m, FromJSString result) => SourceInfo -> m result
+getSourceId self
+  = liftIO (fromJSString <$> (js_getSourceId (unSourceInfo self)))
  
-foreign import javascript unsafe "$1[\"kind\"]"
-        ghcjs_dom_source_info_get_kind :: JSRef SourceInfo -> IO JSString
+foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
+        JSRef SourceInfo -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceInfo.kind Mozilla SourceInfo.kind documentation> 
-sourceInfoGetKind ::
-                  (MonadIO m, IsSourceInfo self, FromJSString result) =>
-                    self -> m result
-sourceInfoGetKind self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_source_info_get_kind
-            (unSourceInfo (toSourceInfo self))))
+getKind ::
+        (MonadIO m, FromJSString result) => SourceInfo -> m result
+getKind self
+  = liftIO (fromJSString <$> (js_getKind (unSourceInfo self)))
  
-foreign import javascript unsafe "$1[\"label\"]"
-        ghcjs_dom_source_info_get_label :: JSRef SourceInfo -> IO JSString
+foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+        JSRef SourceInfo -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceInfo.label Mozilla SourceInfo.label documentation> 
-sourceInfoGetLabel ::
-                   (MonadIO m, IsSourceInfo self, FromJSString result) =>
-                     self -> m result
-sourceInfoGetLabel self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_source_info_get_label
-            (unSourceInfo (toSourceInfo self))))
+getLabel ::
+         (MonadIO m, FromJSString result) => SourceInfo -> m result
+getLabel self
+  = liftIO (fromJSString <$> (js_getLabel (unSourceInfo self)))
 #else
 module GHCJS.DOM.SourceInfo (
   ) where

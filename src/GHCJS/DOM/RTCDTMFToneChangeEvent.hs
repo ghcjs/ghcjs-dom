@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.RTCDTMFToneChangeEvent
-       (ghcjs_dom_rtcdtmf_tone_change_event_get_tone,
-        rtcdtmfToneChangeEventGetTone, RTCDTMFToneChangeEvent,
-        IsRTCDTMFToneChangeEvent, castToRTCDTMFToneChangeEvent,
-        gTypeRTCDTMFToneChangeEvent, toRTCDTMFToneChangeEvent)
+       (js_getTone, getTone, RTCDTMFToneChangeEvent,
+        castToRTCDTMFToneChangeEvent, gTypeRTCDTMFToneChangeEvent)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,23 +15,20 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"tone\"]"
-        ghcjs_dom_rtcdtmf_tone_change_event_get_tone ::
+foreign import javascript unsafe "$1[\"tone\"]" js_getTone ::
         JSRef RTCDTMFToneChangeEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFToneChangeEvent.tone Mozilla RTCDTMFToneChangeEvent.tone documentation> 
-rtcdtmfToneChangeEventGetTone ::
-                              (MonadIO m, IsRTCDTMFToneChangeEvent self, FromJSString result) =>
-                                self -> m result
-rtcdtmfToneChangeEventGetTone self
+getTone ::
+        (MonadIO m, FromJSString result) =>
+          RTCDTMFToneChangeEvent -> m result
+getTone self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_rtcdtmf_tone_change_event_get_tone
-            (unRTCDTMFToneChangeEvent (toRTCDTMFToneChangeEvent self))))
+      (fromJSString <$> (js_getTone (unRTCDTMFToneChangeEvent self)))
 #else
 module GHCJS.DOM.RTCDTMFToneChangeEvent (
   ) where

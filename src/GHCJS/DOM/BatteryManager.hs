@@ -1,18 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.BatteryManager
-       (ghcjs_dom_battery_manager_get_charging, batteryManagerGetCharging,
-        ghcjs_dom_battery_manager_get_charging_time,
-        batteryManagerGetChargingTime,
-        ghcjs_dom_battery_manager_get_discharging_time,
-        batteryManagerGetDischargingTime,
-        ghcjs_dom_battery_manager_get_level, batteryManagerGetLevel,
-        batteryManagerChargingChange, batteryManagerChargingTimeChange,
-        batteryManagerDischargingTimeChange, batteryManagerLevelChange,
-        BatteryManager, IsBatteryManager, castToBatteryManager,
-        gTypeBatteryManager, toBatteryManager)
+       (js_getCharging, getCharging, js_getChargingTime, getChargingTime,
+        js_getDischargingTime, getDischargingTime, js_getLevel, getLevel,
+        chargingChange, chargingTimeChange, dischargingTimeChange,
+        levelChange, BatteryManager, castToBatteryManager,
+        gTypeBatteryManager)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,82 +18,57 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "($1[\"charging\"] ? 1 : 0)"
-        ghcjs_dom_battery_manager_get_charging ::
-        JSRef BatteryManager -> IO Bool
+        js_getCharging :: JSRef BatteryManager -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.charging Mozilla BatteryManager.charging documentation> 
-batteryManagerGetCharging ::
-                          (MonadIO m, IsBatteryManager self) => self -> m Bool
-batteryManagerGetCharging self
-  = liftIO
-      (ghcjs_dom_battery_manager_get_charging
-         (unBatteryManager (toBatteryManager self)))
+getCharging :: (MonadIO m) => BatteryManager -> m Bool
+getCharging self = liftIO (js_getCharging (unBatteryManager self))
  
 foreign import javascript unsafe "$1[\"chargingTime\"]"
-        ghcjs_dom_battery_manager_get_charging_time ::
-        JSRef BatteryManager -> IO Double
+        js_getChargingTime :: JSRef BatteryManager -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.chargingTime Mozilla BatteryManager.chargingTime documentation> 
-batteryManagerGetChargingTime ::
-                              (MonadIO m, IsBatteryManager self) => self -> m Double
-batteryManagerGetChargingTime self
-  = liftIO
-      (ghcjs_dom_battery_manager_get_charging_time
-         (unBatteryManager (toBatteryManager self)))
+getChargingTime :: (MonadIO m) => BatteryManager -> m Double
+getChargingTime self
+  = liftIO (js_getChargingTime (unBatteryManager self))
  
 foreign import javascript unsafe "$1[\"dischargingTime\"]"
-        ghcjs_dom_battery_manager_get_discharging_time ::
-        JSRef BatteryManager -> IO Double
+        js_getDischargingTime :: JSRef BatteryManager -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.dischargingTime Mozilla BatteryManager.dischargingTime documentation> 
-batteryManagerGetDischargingTime ::
-                                 (MonadIO m, IsBatteryManager self) => self -> m Double
-batteryManagerGetDischargingTime self
-  = liftIO
-      (ghcjs_dom_battery_manager_get_discharging_time
-         (unBatteryManager (toBatteryManager self)))
+getDischargingTime :: (MonadIO m) => BatteryManager -> m Double
+getDischargingTime self
+  = liftIO (js_getDischargingTime (unBatteryManager self))
  
-foreign import javascript unsafe "$1[\"level\"]"
-        ghcjs_dom_battery_manager_get_level ::
+foreign import javascript unsafe "$1[\"level\"]" js_getLevel ::
         JSRef BatteryManager -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.level Mozilla BatteryManager.level documentation> 
-batteryManagerGetLevel ::
-                       (MonadIO m, IsBatteryManager self) => self -> m Double
-batteryManagerGetLevel self
-  = liftIO
-      (ghcjs_dom_battery_manager_get_level
-         (unBatteryManager (toBatteryManager self)))
+getLevel :: (MonadIO m) => BatteryManager -> m Double
+getLevel self = liftIO (js_getLevel (unBatteryManager self))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.chargingChange Mozilla BatteryManager.chargingChange documentation> 
-batteryManagerChargingChange ::
-                             (IsBatteryManager self, IsEventTarget self) => EventName self Event
-batteryManagerChargingChange
-  = unsafeEventName (toJSString "chargingchange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.onchargingchange Mozilla BatteryManager.onchargingchange documentation> 
+chargingChange :: EventName BatteryManager Event
+chargingChange = unsafeEventName (toJSString "chargingchange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.chargingTimeChange Mozilla BatteryManager.chargingTimeChange documentation> 
-batteryManagerChargingTimeChange ::
-                                 (IsBatteryManager self, IsEventTarget self) => EventName self Event
-batteryManagerChargingTimeChange
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.onchargingtimechange Mozilla BatteryManager.onchargingtimechange documentation> 
+chargingTimeChange :: EventName BatteryManager Event
+chargingTimeChange
   = unsafeEventName (toJSString "chargingtimechange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.dischargingTimeChange Mozilla BatteryManager.dischargingTimeChange documentation> 
-batteryManagerDischargingTimeChange ::
-                                    (IsBatteryManager self, IsEventTarget self) =>
-                                      EventName self Event
-batteryManagerDischargingTimeChange
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.ondischargingtimechange Mozilla BatteryManager.ondischargingtimechange documentation> 
+dischargingTimeChange :: EventName BatteryManager Event
+dischargingTimeChange
   = unsafeEventName (toJSString "dischargingtimechange")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.levelChange Mozilla BatteryManager.levelChange documentation> 
-batteryManagerLevelChange ::
-                          (IsBatteryManager self, IsEventTarget self) => EventName self Event
-batteryManagerLevelChange
-  = unsafeEventName (toJSString "levelchange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.onlevelchange Mozilla BatteryManager.onlevelchange documentation> 
+levelChange :: EventName BatteryManager Event
+levelChange = unsafeEventName (toJSString "levelchange")
 #else
 module GHCJS.DOM.BatteryManager (
   ) where

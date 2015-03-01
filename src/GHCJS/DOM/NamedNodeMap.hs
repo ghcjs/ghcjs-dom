@@ -1,20 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.NamedNodeMap
-       (ghcjs_dom_named_node_map_get_named_item, namedNodeMapGetNamedItem,
-        ghcjs_dom_named_node_map_set_named_item, namedNodeMapSetNamedItem,
-        ghcjs_dom_named_node_map_remove_named_item,
-        namedNodeMapRemoveNamedItem, ghcjs_dom_named_node_map_item,
-        namedNodeMapItem, ghcjs_dom_named_node_map_get_named_item_ns,
-        namedNodeMapGetNamedItemNS,
-        ghcjs_dom_named_node_map_set_named_item_ns,
-        namedNodeMapSetNamedItemNS,
-        ghcjs_dom_named_node_map_remove_named_item_ns,
-        namedNodeMapRemoveNamedItemNS, ghcjs_dom_named_node_map_get_length,
-        namedNodeMapGetLength, NamedNodeMap, IsNamedNodeMap,
-        castToNamedNodeMap, gTypeNamedNodeMap, toNamedNodeMap)
+       (js_getNamedItem, getNamedItem, js_setNamedItem, setNamedItem,
+        js_removeNamedItem, removeNamedItem, js_item, item,
+        js_getNamedItemNS, getNamedItemNS, js_setNamedItemNS,
+        setNamedItemNS, js_removeNamedItemNS, removeNamedItemNS,
+        js_getLength, getLength, NamedNodeMap, castToNamedNodeMap,
+        gTypeNamedNodeMap)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,130 +19,107 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"getNamedItem\"]($2)"
-        ghcjs_dom_named_node_map_get_named_item ::
+        js_getNamedItem ::
         JSRef NamedNodeMap -> JSString -> IO (JSRef Node)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.namedItem Mozilla NamedNodeMap.namedItem documentation> 
-namedNodeMapGetNamedItem ::
-                         (MonadIO m, IsNamedNodeMap self, ToJSString name) =>
-                           self -> name -> m (Maybe Node)
-namedNodeMapGetNamedItem self name
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
+getNamedItem ::
+             (MonadIO m, ToJSString name) =>
+               NamedNodeMap -> name -> m (Maybe Node)
+getNamedItem self name
   = liftIO
-      ((ghcjs_dom_named_node_map_get_named_item
-          (unNamedNodeMap (toNamedNodeMap self))
-          (toJSString name))
-         >>= fromJSRef)
+      ((js_getNamedItem (unNamedNodeMap self) (toJSString name)) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"setNamedItem\"]($2)"
-        ghcjs_dom_named_node_map_set_named_item ::
+        js_setNamedItem ::
         JSRef NamedNodeMap -> JSRef Node -> IO (JSRef Node)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.namedItem Mozilla NamedNodeMap.namedItem documentation> 
-namedNodeMapSetNamedItem ::
-                         (MonadIO m, IsNamedNodeMap self, IsNode node) =>
-                           self -> Maybe node -> m (Maybe Node)
-namedNodeMapSetNamedItem self node
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItem Mozilla NamedNodeMap.setNamedItem documentation> 
+setNamedItem ::
+             (MonadIO m, IsNode node) =>
+               NamedNodeMap -> Maybe node -> m (Maybe Node)
+setNamedItem self node
   = liftIO
-      ((ghcjs_dom_named_node_map_set_named_item
-          (unNamedNodeMap (toNamedNodeMap self))
+      ((js_setNamedItem (unNamedNodeMap self)
           (maybe jsNull (unNode . toNode) node))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"removeNamedItem\"]($2)"
-        ghcjs_dom_named_node_map_remove_named_item ::
+        js_removeNamedItem ::
         JSRef NamedNodeMap -> JSString -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItem Mozilla NamedNodeMap.removeNamedItem documentation> 
-namedNodeMapRemoveNamedItem ::
-                            (MonadIO m, IsNamedNodeMap self, ToJSString name) =>
-                              self -> name -> m (Maybe Node)
-namedNodeMapRemoveNamedItem self name
+removeNamedItem ::
+                (MonadIO m, ToJSString name) =>
+                  NamedNodeMap -> name -> m (Maybe Node)
+removeNamedItem self name
   = liftIO
-      ((ghcjs_dom_named_node_map_remove_named_item
-          (unNamedNodeMap (toNamedNodeMap self))
-          (toJSString name))
-         >>= fromJSRef)
+      ((js_removeNamedItem (unNamedNodeMap self) (toJSString name)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_named_node_map_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef NamedNodeMap -> Word -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.item Mozilla NamedNodeMap.item documentation> 
-namedNodeMapItem ::
-                 (MonadIO m, IsNamedNodeMap self) => self -> Word -> m (Maybe Node)
-namedNodeMapItem self index
-  = liftIO
-      ((ghcjs_dom_named_node_map_item
-          (unNamedNodeMap (toNamedNodeMap self))
-          index)
-         >>= fromJSRef)
+item :: (MonadIO m) => NamedNodeMap -> Word -> m (Maybe Node)
+item self index
+  = liftIO ((js_item (unNamedNodeMap self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getNamedItemNS\"]($2, $3)"
-        ghcjs_dom_named_node_map_get_named_item_ns ::
+        js_getNamedItemNS ::
         JSRef NamedNodeMap -> JSString -> JSString -> IO (JSRef Node)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.namedItemNS Mozilla NamedNodeMap.namedItemNS documentation> 
-namedNodeMapGetNamedItemNS ::
-                           (MonadIO m, IsNamedNodeMap self, ToJSString namespaceURI,
-                            ToJSString localName) =>
-                             self -> namespaceURI -> localName -> m (Maybe Node)
-namedNodeMapGetNamedItemNS self namespaceURI localName
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItemNS Mozilla NamedNodeMap.getNamedItemNS documentation> 
+getNamedItemNS ::
+               (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                 NamedNodeMap -> namespaceURI -> localName -> m (Maybe Node)
+getNamedItemNS self namespaceURI localName
   = liftIO
-      ((ghcjs_dom_named_node_map_get_named_item_ns
-          (unNamedNodeMap (toNamedNodeMap self))
-          (toJSString namespaceURI)
+      ((js_getNamedItemNS (unNamedNodeMap self) (toJSString namespaceURI)
           (toJSString localName))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"setNamedItemNS\"]($2)"
-        ghcjs_dom_named_node_map_set_named_item_ns ::
+        js_setNamedItemNS ::
         JSRef NamedNodeMap -> JSRef Node -> IO (JSRef Node)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.namedItemNS Mozilla NamedNodeMap.namedItemNS documentation> 
-namedNodeMapSetNamedItemNS ::
-                           (MonadIO m, IsNamedNodeMap self, IsNode node) =>
-                             self -> Maybe node -> m (Maybe Node)
-namedNodeMapSetNamedItemNS self node
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItemNS Mozilla NamedNodeMap.setNamedItemNS documentation> 
+setNamedItemNS ::
+               (MonadIO m, IsNode node) =>
+                 NamedNodeMap -> Maybe node -> m (Maybe Node)
+setNamedItemNS self node
   = liftIO
-      ((ghcjs_dom_named_node_map_set_named_item_ns
-          (unNamedNodeMap (toNamedNodeMap self))
+      ((js_setNamedItemNS (unNamedNodeMap self)
           (maybe jsNull (unNode . toNode) node))
          >>= fromJSRef)
  
 foreign import javascript unsafe
-        "$1[\"removeNamedItemNS\"]($2, $3)"
-        ghcjs_dom_named_node_map_remove_named_item_ns ::
+        "$1[\"removeNamedItemNS\"]($2, $3)" js_removeNamedItemNS ::
         JSRef NamedNodeMap -> JSString -> JSString -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItemNS Mozilla NamedNodeMap.removeNamedItemNS documentation> 
-namedNodeMapRemoveNamedItemNS ::
-                              (MonadIO m, IsNamedNodeMap self, ToJSString namespaceURI,
-                               ToJSString localName) =>
-                                self -> namespaceURI -> localName -> m (Maybe Node)
-namedNodeMapRemoveNamedItemNS self namespaceURI localName
+removeNamedItemNS ::
+                  (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                    NamedNodeMap -> namespaceURI -> localName -> m (Maybe Node)
+removeNamedItemNS self namespaceURI localName
   = liftIO
-      ((ghcjs_dom_named_node_map_remove_named_item_ns
-          (unNamedNodeMap (toNamedNodeMap self))
+      ((js_removeNamedItemNS (unNamedNodeMap self)
           (toJSString namespaceURI)
           (toJSString localName))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_named_node_map_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef NamedNodeMap -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.length Mozilla NamedNodeMap.length documentation> 
-namedNodeMapGetLength ::
-                      (MonadIO m, IsNamedNodeMap self) => self -> m Word
-namedNodeMapGetLength self
-  = liftIO
-      (ghcjs_dom_named_node_map_get_length
-         (unNamedNodeMap (toNamedNodeMap self)))
+getLength :: (MonadIO m) => NamedNodeMap -> m Word
+getLength self = liftIO (js_getLength (unNamedNodeMap self))
 #else
 module GHCJS.DOM.NamedNodeMap (
   module Graphics.UI.Gtk.WebKit.DOM.NamedNodeMap

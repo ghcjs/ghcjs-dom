@@ -1,16 +1,13 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.FontLoader
-       (ghcjs_dom_font_loader_check_font, fontLoaderCheckFont,
-        ghcjs_dom_font_loader_load_font, fontLoaderLoadFont,
-        ghcjs_dom_font_loader_notify_when_fonts_ready,
-        fontLoaderNotifyWhenFontsReady, fontLoaderLoading,
-        fontLoaderLoadingDone, fontLoaderLoadStart, fontLoaderLoad,
-        fontLoaderError, ghcjs_dom_font_loader_get_loading,
-        fontLoaderGetLoading, FontLoader, IsFontLoader, castToFontLoader,
-        gTypeFontLoader, toFontLoader)
+       (js_checkFont, checkFont, js_loadFont, loadFont,
+        js_notifyWhenFontsReady, notifyWhenFontsReady, loading,
+        loadingDone, loadStart, load, error, js_getLoading, getLoading,
+        FontLoader, castToFontLoader, gTypeFontLoader)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,89 +17,73 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "($1[\"checkFont\"]($2,\n$3) ? 1 : 0)"
-        ghcjs_dom_font_loader_check_font ::
+        "($1[\"checkFont\"]($2,\n$3) ? 1 : 0)" js_checkFont ::
         JSRef FontLoader -> JSString -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.checkFont Mozilla FontLoader.checkFont documentation> 
-fontLoaderCheckFont ::
-                    (MonadIO m, IsFontLoader self, ToJSString font, ToJSString text) =>
-                      self -> font -> text -> m Bool
-fontLoaderCheckFont self font text
+checkFont ::
+          (MonadIO m, ToJSString font, ToJSString text) =>
+            FontLoader -> font -> text -> m Bool
+checkFont self font text
   = liftIO
-      (ghcjs_dom_font_loader_check_font
-         (unFontLoader (toFontLoader self))
-         (toJSString font)
+      (js_checkFont (unFontLoader self) (toJSString font)
          (toJSString text))
  
-foreign import javascript unsafe "$1[\"loadFont\"]($2)"
-        ghcjs_dom_font_loader_load_font ::
-        JSRef FontLoader -> JSRef Dictionary -> IO ()
+foreign import javascript unsafe "$1[\"loadFont\"]($2)" js_loadFont
+        :: JSRef FontLoader -> JSRef Dictionary -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.loadFont Mozilla FontLoader.loadFont documentation> 
-fontLoaderLoadFont ::
-                   (MonadIO m, IsFontLoader self, IsDictionary params) =>
-                     self -> Maybe params -> m ()
-fontLoaderLoadFont self params
+loadFont ::
+         (MonadIO m, IsDictionary params) =>
+           FontLoader -> Maybe params -> m ()
+loadFont self params
   = liftIO
-      (ghcjs_dom_font_loader_load_font (unFontLoader (toFontLoader self))
+      (js_loadFont (unFontLoader self)
          (maybe jsNull (unDictionary . toDictionary) params))
  
 foreign import javascript unsafe "$1[\"notifyWhenFontsReady\"]($2)"
-        ghcjs_dom_font_loader_notify_when_fonts_ready ::
+        js_notifyWhenFontsReady ::
         JSRef FontLoader -> JSRef VoidCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.notifyWhenFontsReady Mozilla FontLoader.notifyWhenFontsReady documentation> 
-fontLoaderNotifyWhenFontsReady ::
-                               (MonadIO m, IsFontLoader self, IsVoidCallback callback) =>
-                                 self -> Maybe callback -> m ()
-fontLoaderNotifyWhenFontsReady self callback
+notifyWhenFontsReady ::
+                     (MonadIO m) => FontLoader -> Maybe VoidCallback -> m ()
+notifyWhenFontsReady self callback
   = liftIO
-      (ghcjs_dom_font_loader_notify_when_fonts_ready
-         (unFontLoader (toFontLoader self))
-         (maybe jsNull (unVoidCallback . toVoidCallback) callback))
+      (js_notifyWhenFontsReady (unFontLoader self)
+         (maybe jsNull unVoidCallback callback))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.loading Mozilla FontLoader.loading documentation> 
-fontLoaderLoading ::
-                  (IsFontLoader self, IsEventTarget self) => EventName self Event
-fontLoaderLoading = unsafeEventName (toJSString "loading")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.onloading Mozilla FontLoader.onloading documentation> 
+loading :: EventName FontLoader Event
+loading = unsafeEventName (toJSString "loading")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.loadingDone Mozilla FontLoader.loadingDone documentation> 
-fontLoaderLoadingDone ::
-                      (IsFontLoader self, IsEventTarget self) => EventName self Event
-fontLoaderLoadingDone = unsafeEventName (toJSString "loadingdone")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.onloadingdone Mozilla FontLoader.onloadingdone documentation> 
+loadingDone :: EventName FontLoader Event
+loadingDone = unsafeEventName (toJSString "loadingdone")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.loadStart Mozilla FontLoader.loadStart documentation> 
-fontLoaderLoadStart ::
-                    (IsFontLoader self, IsEventTarget self) =>
-                      EventName self ProgressEvent
-fontLoaderLoadStart = unsafeEventName (toJSString "loadstart")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.onloadstart Mozilla FontLoader.onloadstart documentation> 
+loadStart :: EventName FontLoader ProgressEvent
+loadStart = unsafeEventName (toJSString "loadstart")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.load Mozilla FontLoader.load documentation> 
-fontLoaderLoad ::
-               (IsFontLoader self, IsEventTarget self) => EventName self UIEvent
-fontLoaderLoad = unsafeEventName (toJSString "load")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.onload Mozilla FontLoader.onload documentation> 
+load :: EventName FontLoader UIEvent
+load = unsafeEventName (toJSString "load")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.error Mozilla FontLoader.error documentation> 
-fontLoaderError ::
-                (IsFontLoader self, IsEventTarget self) => EventName self UIEvent
-fontLoaderError = unsafeEventName (toJSString "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.onerror Mozilla FontLoader.onerror documentation> 
+error :: EventName FontLoader UIEvent
+error = unsafeEventName (toJSString "error")
  
 foreign import javascript unsafe "($1[\"loading\"] ? 1 : 0)"
-        ghcjs_dom_font_loader_get_loading :: JSRef FontLoader -> IO Bool
+        js_getLoading :: JSRef FontLoader -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.loading Mozilla FontLoader.loading documentation> 
-fontLoaderGetLoading ::
-                     (MonadIO m, IsFontLoader self) => self -> m Bool
-fontLoaderGetLoading self
-  = liftIO
-      (ghcjs_dom_font_loader_get_loading
-         (unFontLoader (toFontLoader self)))
+getLoading :: (MonadIO m) => FontLoader -> m Bool
+getLoading self = liftIO (js_getLoading (unFontLoader self))
 #else
 module GHCJS.DOM.FontLoader (
   ) where

@@ -1,26 +1,15 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGFESpotLightElement
-       (ghcjs_dom_svgfe_spot_light_element_get_x,
-        svgfeSpotLightElementGetX,
-        ghcjs_dom_svgfe_spot_light_element_get_y,
-        svgfeSpotLightElementGetY,
-        ghcjs_dom_svgfe_spot_light_element_get_z,
-        svgfeSpotLightElementGetZ,
-        ghcjs_dom_svgfe_spot_light_element_get_points_at_x,
-        svgfeSpotLightElementGetPointsAtX,
-        ghcjs_dom_svgfe_spot_light_element_get_points_at_y,
-        svgfeSpotLightElementGetPointsAtY,
-        ghcjs_dom_svgfe_spot_light_element_get_points_at_z,
-        svgfeSpotLightElementGetPointsAtZ,
-        ghcjs_dom_svgfe_spot_light_element_get_specular_exponent,
-        svgfeSpotLightElementGetSpecularExponent,
-        ghcjs_dom_svgfe_spot_light_element_get_limiting_cone_angle,
-        svgfeSpotLightElementGetLimitingConeAngle, SVGFESpotLightElement,
-        IsSVGFESpotLightElement, castToSVGFESpotLightElement,
-        gTypeSVGFESpotLightElement, toSVGFESpotLightElement)
+       (js_getX, getX, js_getY, getY, js_getZ, getZ, js_getPointsAtX,
+        getPointsAtX, js_getPointsAtY, getPointsAtY, js_getPointsAtZ,
+        getPointsAtZ, js_getSpecularExponent, getSpecularExponent,
+        js_getLimitingConeAngle, getLimitingConeAngle,
+        SVGFESpotLightElement, castToSVGFESpotLightElement,
+        gTypeSVGFESpotLightElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -30,121 +19,93 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_x ::
+foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.x Mozilla SVGFESpotLightElement.x documentation> 
-svgfeSpotLightElementGetX ::
-                          (MonadIO m, IsSVGFESpotLightElement self) =>
-                            self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetX self
-  = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_x
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+getX ::
+     (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getX self
+  = liftIO ((js_getX (unSVGFESpotLightElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_y ::
+foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.y Mozilla SVGFESpotLightElement.y documentation> 
-svgfeSpotLightElementGetY ::
-                          (MonadIO m, IsSVGFESpotLightElement self) =>
-                            self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetY self
-  = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_y
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+getY ::
+     (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getY self
+  = liftIO ((js_getY (unSVGFESpotLightElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"z\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_z ::
+foreign import javascript unsafe "$1[\"z\"]" js_getZ ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.z Mozilla SVGFESpotLightElement.z documentation> 
-svgfeSpotLightElementGetZ ::
-                          (MonadIO m, IsSVGFESpotLightElement self) =>
-                            self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetZ self
-  = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_z
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+getZ ::
+     (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getZ self
+  = liftIO ((js_getZ (unSVGFESpotLightElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"pointsAtX\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_points_at_x ::
+        js_getPointsAtX ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtX Mozilla SVGFESpotLightElement.pointsAtX documentation> 
-svgfeSpotLightElementGetPointsAtX ::
-                                  (MonadIO m, IsSVGFESpotLightElement self) =>
-                                    self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetPointsAtX self
+getPointsAtX ::
+             (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getPointsAtX self
   = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_points_at_x
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+      ((js_getPointsAtX (unSVGFESpotLightElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"pointsAtY\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_points_at_y ::
+        js_getPointsAtY ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtY Mozilla SVGFESpotLightElement.pointsAtY documentation> 
-svgfeSpotLightElementGetPointsAtY ::
-                                  (MonadIO m, IsSVGFESpotLightElement self) =>
-                                    self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetPointsAtY self
+getPointsAtY ::
+             (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getPointsAtY self
   = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_points_at_y
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+      ((js_getPointsAtY (unSVGFESpotLightElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"pointsAtZ\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_points_at_z ::
+        js_getPointsAtZ ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtZ Mozilla SVGFESpotLightElement.pointsAtZ documentation> 
-svgfeSpotLightElementGetPointsAtZ ::
-                                  (MonadIO m, IsSVGFESpotLightElement self) =>
-                                    self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetPointsAtZ self
+getPointsAtZ ::
+             (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getPointsAtZ self
   = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_points_at_z
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+      ((js_getPointsAtZ (unSVGFESpotLightElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"specularExponent\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_specular_exponent ::
+        js_getSpecularExponent ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.specularExponent Mozilla SVGFESpotLightElement.specularExponent documentation> 
-svgfeSpotLightElementGetSpecularExponent ::
-                                         (MonadIO m, IsSVGFESpotLightElement self) =>
-                                           self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetSpecularExponent self
+getSpecularExponent ::
+                    (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getSpecularExponent self
   = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_specular_exponent
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+      ((js_getSpecularExponent (unSVGFESpotLightElement self)) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"limitingConeAngle\"]"
-        ghcjs_dom_svgfe_spot_light_element_get_limiting_cone_angle ::
+        js_getLimitingConeAngle ::
         JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.limitingConeAngle Mozilla SVGFESpotLightElement.limitingConeAngle documentation> 
-svgfeSpotLightElementGetLimitingConeAngle ::
-                                          (MonadIO m, IsSVGFESpotLightElement self) =>
-                                            self -> m (Maybe SVGAnimatedNumber)
-svgfeSpotLightElementGetLimitingConeAngle self
+getLimitingConeAngle ::
+                     (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
+getLimitingConeAngle self
   = liftIO
-      ((ghcjs_dom_svgfe_spot_light_element_get_limiting_cone_angle
-          (unSVGFESpotLightElement (toSVGFESpotLightElement self)))
-         >>= fromJSRef)
+      ((js_getLimitingConeAngle (unSVGFESpotLightElement self)) >>=
+         fromJSRef)
 #else
 module GHCJS.DOM.SVGFESpotLightElement (
   ) where

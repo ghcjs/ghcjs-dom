@@ -1,28 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.TextTrack
-       (ghcjs_dom_text_track_add_cue, textTrackAddCue,
-        ghcjs_dom_text_track_remove_cue, textTrackRemoveCue,
-        ghcjs_dom_text_track_add_region, textTrackAddRegion,
-        ghcjs_dom_text_track_remove_region, textTrackRemoveRegion,
-        ghcjs_dom_text_track_get_id, textTrackGetId,
-        ghcjs_dom_text_track_set_kind, textTrackSetKind,
-        ghcjs_dom_text_track_get_kind, textTrackGetKind,
-        ghcjs_dom_text_track_get_label, textTrackGetLabel,
-        ghcjs_dom_text_track_set_language, textTrackSetLanguage,
-        ghcjs_dom_text_track_get_language, textTrackGetLanguage,
-        ghcjs_dom_text_track_get_in_band_metadata_track_dispatch_type,
-        textTrackGetInBandMetadataTrackDispatchType,
-        ghcjs_dom_text_track_set_mode, textTrackSetMode,
-        ghcjs_dom_text_track_get_mode, textTrackGetMode,
-        ghcjs_dom_text_track_get_cues, textTrackGetCues,
-        ghcjs_dom_text_track_get_active_cues, textTrackGetActiveCues,
-        textTrackCueChange, ghcjs_dom_text_track_get_regions,
-        textTrackGetRegions, ghcjs_dom_text_track_get_source_buffer,
-        textTrackGetSourceBuffer, TextTrack(..), IsTextTrack,
-        castToTextTrack, gTypeTextTrack, toTextTrack)
+       (js_addCue, addCue, js_removeCue, removeCue, js_addRegion,
+        addRegion, js_removeRegion, removeRegion, js_getId, getId,
+        js_setKind, setKind, js_getKind, getKind, js_getLabel, getLabel,
+        js_setLanguage, setLanguage, js_getLanguage, getLanguage,
+        js_getInBandMetadataTrackDispatchType,
+        getInBandMetadataTrackDispatchType, js_setMode, setMode,
+        js_getMode, getMode, js_getCues, getCues, js_getActiveCues,
+        getActiveCues, cueChange, js_getRegions, getRegions,
+        js_getSourceBuffer, getSourceBuffer, TextTrack, castToTextTrack,
+        gTypeTextTrack)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -32,231 +23,168 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"addCue\"]($2)"
-        ghcjs_dom_text_track_add_cue ::
+foreign import javascript unsafe "$1[\"addCue\"]($2)" js_addCue ::
         JSRef TextTrack -> JSRef TextTrackCue -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.addCue Mozilla TextTrack.addCue documentation> 
-textTrackAddCue ::
-                (MonadIO m, IsTextTrack self, IsTextTrackCue cue) =>
-                  self -> Maybe cue -> m ()
-textTrackAddCue self cue
+addCue ::
+       (MonadIO m, IsTextTrackCue cue) => TextTrack -> Maybe cue -> m ()
+addCue self cue
   = liftIO
-      (ghcjs_dom_text_track_add_cue (unTextTrack (toTextTrack self))
+      (js_addCue (unTextTrack self)
          (maybe jsNull (unTextTrackCue . toTextTrackCue) cue))
  
 foreign import javascript unsafe "$1[\"removeCue\"]($2)"
-        ghcjs_dom_text_track_remove_cue ::
-        JSRef TextTrack -> JSRef TextTrackCue -> IO ()
+        js_removeCue :: JSRef TextTrack -> JSRef TextTrackCue -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.removeCue Mozilla TextTrack.removeCue documentation> 
-textTrackRemoveCue ::
-                   (MonadIO m, IsTextTrack self, IsTextTrackCue cue) =>
-                     self -> Maybe cue -> m ()
-textTrackRemoveCue self cue
+removeCue ::
+          (MonadIO m, IsTextTrackCue cue) => TextTrack -> Maybe cue -> m ()
+removeCue self cue
   = liftIO
-      (ghcjs_dom_text_track_remove_cue (unTextTrack (toTextTrack self))
+      (js_removeCue (unTextTrack self)
          (maybe jsNull (unTextTrackCue . toTextTrackCue) cue))
  
 foreign import javascript unsafe "$1[\"addRegion\"]($2)"
-        ghcjs_dom_text_track_add_region ::
-        JSRef TextTrack -> JSRef VTTRegion -> IO ()
+        js_addRegion :: JSRef TextTrack -> JSRef VTTRegion -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.addRegion Mozilla TextTrack.addRegion documentation> 
-textTrackAddRegion ::
-                   (MonadIO m, IsTextTrack self, IsVTTRegion region) =>
-                     self -> Maybe region -> m ()
-textTrackAddRegion self region
+addRegion :: (MonadIO m) => TextTrack -> Maybe VTTRegion -> m ()
+addRegion self region
   = liftIO
-      (ghcjs_dom_text_track_add_region (unTextTrack (toTextTrack self))
-         (maybe jsNull (unVTTRegion . toVTTRegion) region))
+      (js_addRegion (unTextTrack self) (maybe jsNull unVTTRegion region))
  
 foreign import javascript unsafe "$1[\"removeRegion\"]($2)"
-        ghcjs_dom_text_track_remove_region ::
-        JSRef TextTrack -> JSRef VTTRegion -> IO ()
+        js_removeRegion :: JSRef TextTrack -> JSRef VTTRegion -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.removeRegion Mozilla TextTrack.removeRegion documentation> 
-textTrackRemoveRegion ::
-                      (MonadIO m, IsTextTrack self, IsVTTRegion region) =>
-                        self -> Maybe region -> m ()
-textTrackRemoveRegion self region
+removeRegion :: (MonadIO m) => TextTrack -> Maybe VTTRegion -> m ()
+removeRegion self region
   = liftIO
-      (ghcjs_dom_text_track_remove_region
-         (unTextTrack (toTextTrack self))
-         (maybe jsNull (unVTTRegion . toVTTRegion) region))
+      (js_removeRegion (unTextTrack self)
+         (maybe jsNull unVTTRegion region))
  
-foreign import javascript unsafe "$1[\"id\"]"
-        ghcjs_dom_text_track_get_id :: JSRef TextTrack -> IO JSString
+foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+        JSRef TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.id Mozilla TextTrack.id documentation> 
-textTrackGetId ::
-               (MonadIO m, IsTextTrack self, FromJSString result) =>
-                 self -> m result
-textTrackGetId self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_text_track_get_id (unTextTrack (toTextTrack self))))
+getId :: (MonadIO m, FromJSString result) => TextTrack -> m result
+getId self
+  = liftIO (fromJSString <$> (js_getId (unTextTrack self)))
  
-foreign import javascript unsafe "$1[\"kind\"] = $2;"
-        ghcjs_dom_text_track_set_kind ::
+foreign import javascript unsafe "$1[\"kind\"] = $2;" js_setKind ::
         JSRef TextTrack -> JSRef TextTrackKind -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.kind Mozilla TextTrack.kind documentation> 
-textTrackSetKind ::
-                 (MonadIO m, IsTextTrack self) => self -> TextTrackKind -> m ()
-textTrackSetKind self val
-  = liftIO
-      (ghcjs_dom_text_track_set_kind (unTextTrack (toTextTrack self))
-         (ptoJSRef val))
+setKind :: (MonadIO m) => TextTrack -> TextTrackKind -> m ()
+setKind self val
+  = liftIO (js_setKind (unTextTrack self) (ptoJSRef val))
  
-foreign import javascript unsafe "$1[\"kind\"]"
-        ghcjs_dom_text_track_get_kind ::
+foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
         JSRef TextTrack -> IO (JSRef TextTrackKind)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.kind Mozilla TextTrack.kind documentation> 
-textTrackGetKind ::
-                 (MonadIO m, IsTextTrack self) => self -> m TextTrackKind
-textTrackGetKind self
-  = liftIO
-      ((ghcjs_dom_text_track_get_kind (unTextTrack (toTextTrack self)))
-         >>= fromJSRefUnchecked)
+getKind :: (MonadIO m) => TextTrack -> m TextTrackKind
+getKind self
+  = liftIO ((js_getKind (unTextTrack self)) >>= fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"label\"]"
-        ghcjs_dom_text_track_get_label :: JSRef TextTrack -> IO JSString
+foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+        JSRef TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.label Mozilla TextTrack.label documentation> 
-textTrackGetLabel ::
-                  (MonadIO m, IsTextTrack self, FromJSString result) =>
-                    self -> m result
-textTrackGetLabel self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_text_track_get_label (unTextTrack (toTextTrack self))))
+getLabel ::
+         (MonadIO m, FromJSString result) => TextTrack -> m result
+getLabel self
+  = liftIO (fromJSString <$> (js_getLabel (unTextTrack self)))
  
 foreign import javascript unsafe "$1[\"language\"] = $2;"
-        ghcjs_dom_text_track_set_language ::
-        JSRef TextTrack -> JSString -> IO ()
+        js_setLanguage :: JSRef TextTrack -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.language Mozilla TextTrack.language documentation> 
-textTrackSetLanguage ::
-                     (MonadIO m, IsTextTrack self, ToJSString val) =>
-                       self -> val -> m ()
-textTrackSetLanguage self val
-  = liftIO
-      (ghcjs_dom_text_track_set_language (unTextTrack (toTextTrack self))
-         (toJSString val))
+setLanguage ::
+            (MonadIO m, ToJSString val) => TextTrack -> val -> m ()
+setLanguage self val
+  = liftIO (js_setLanguage (unTextTrack self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"language\"]"
-        ghcjs_dom_text_track_get_language :: JSRef TextTrack -> IO JSString
+foreign import javascript unsafe "$1[\"language\"]" js_getLanguage
+        :: JSRef TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.language Mozilla TextTrack.language documentation> 
-textTrackGetLanguage ::
-                     (MonadIO m, IsTextTrack self, FromJSString result) =>
-                       self -> m result
-textTrackGetLanguage self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_text_track_get_language
-            (unTextTrack (toTextTrack self))))
+getLanguage ::
+            (MonadIO m, FromJSString result) => TextTrack -> m result
+getLanguage self
+  = liftIO (fromJSString <$> (js_getLanguage (unTextTrack self)))
  
 foreign import javascript unsafe
         "$1[\"inBandMetadataTrackDispatchType\"]"
-        ghcjs_dom_text_track_get_in_band_metadata_track_dispatch_type ::
+        js_getInBandMetadataTrackDispatchType ::
         JSRef TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.inBandMetadataTrackDispatchType Mozilla TextTrack.inBandMetadataTrackDispatchType documentation> 
-textTrackGetInBandMetadataTrackDispatchType ::
-                                            (MonadIO m, IsTextTrack self, FromJSString result) =>
-                                              self -> m result
-textTrackGetInBandMetadataTrackDispatchType self
+getInBandMetadataTrackDispatchType ::
+                                   (MonadIO m, FromJSString result) => TextTrack -> m result
+getInBandMetadataTrackDispatchType self
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_text_track_get_in_band_metadata_track_dispatch_type
-            (unTextTrack (toTextTrack self))))
+         (js_getInBandMetadataTrackDispatchType (unTextTrack self)))
  
-foreign import javascript unsafe "$1[\"mode\"] = $2;"
-        ghcjs_dom_text_track_set_mode ::
+foreign import javascript unsafe "$1[\"mode\"] = $2;" js_setMode ::
         JSRef TextTrack -> JSRef TextTrackMode -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.mode Mozilla TextTrack.mode documentation> 
-textTrackSetMode ::
-                 (MonadIO m, IsTextTrack self) => self -> TextTrackMode -> m ()
-textTrackSetMode self val
-  = liftIO
-      (ghcjs_dom_text_track_set_mode (unTextTrack (toTextTrack self))
-         (ptoJSRef val))
+setMode :: (MonadIO m) => TextTrack -> TextTrackMode -> m ()
+setMode self val
+  = liftIO (js_setMode (unTextTrack self) (ptoJSRef val))
  
-foreign import javascript unsafe "$1[\"mode\"]"
-        ghcjs_dom_text_track_get_mode ::
+foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
         JSRef TextTrack -> IO (JSRef TextTrackMode)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.mode Mozilla TextTrack.mode documentation> 
-textTrackGetMode ::
-                 (MonadIO m, IsTextTrack self) => self -> m TextTrackMode
-textTrackGetMode self
-  = liftIO
-      ((ghcjs_dom_text_track_get_mode (unTextTrack (toTextTrack self)))
-         >>= fromJSRefUnchecked)
+getMode :: (MonadIO m) => TextTrack -> m TextTrackMode
+getMode self
+  = liftIO ((js_getMode (unTextTrack self)) >>= fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"cues\"]"
-        ghcjs_dom_text_track_get_cues ::
+foreign import javascript unsafe "$1[\"cues\"]" js_getCues ::
         JSRef TextTrack -> IO (JSRef TextTrackCueList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.cues Mozilla TextTrack.cues documentation> 
-textTrackGetCues ::
-                 (MonadIO m, IsTextTrack self) => self -> m (Maybe TextTrackCueList)
-textTrackGetCues self
-  = liftIO
-      ((ghcjs_dom_text_track_get_cues (unTextTrack (toTextTrack self)))
-         >>= fromJSRef)
+getCues :: (MonadIO m) => TextTrack -> m (Maybe TextTrackCueList)
+getCues self
+  = liftIO ((js_getCues (unTextTrack self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"activeCues\"]"
-        ghcjs_dom_text_track_get_active_cues ::
-        JSRef TextTrack -> IO (JSRef TextTrackCueList)
+        js_getActiveCues :: JSRef TextTrack -> IO (JSRef TextTrackCueList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.activeCues Mozilla TextTrack.activeCues documentation> 
-textTrackGetActiveCues ::
-                       (MonadIO m, IsTextTrack self) => self -> m (Maybe TextTrackCueList)
-textTrackGetActiveCues self
-  = liftIO
-      ((ghcjs_dom_text_track_get_active_cues
-          (unTextTrack (toTextTrack self)))
-         >>= fromJSRef)
+getActiveCues ::
+              (MonadIO m) => TextTrack -> m (Maybe TextTrackCueList)
+getActiveCues self
+  = liftIO ((js_getActiveCues (unTextTrack self)) >>= fromJSRef)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.cueChange Mozilla TextTrack.cueChange documentation> 
-textTrackCueChange ::
-                   (IsTextTrack self, IsEventTarget self) => EventName self Event
-textTrackCueChange = unsafeEventName (toJSString "cuechange")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.oncuechange Mozilla TextTrack.oncuechange documentation> 
+cueChange :: EventName TextTrack Event
+cueChange = unsafeEventName (toJSString "cuechange")
  
-foreign import javascript unsafe "$1[\"regions\"]"
-        ghcjs_dom_text_track_get_regions ::
+foreign import javascript unsafe "$1[\"regions\"]" js_getRegions ::
         JSRef TextTrack -> IO (JSRef VTTRegionList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.regions Mozilla TextTrack.regions documentation> 
-textTrackGetRegions ::
-                    (MonadIO m, IsTextTrack self) => self -> m (Maybe VTTRegionList)
-textTrackGetRegions self
-  = liftIO
-      ((ghcjs_dom_text_track_get_regions
-          (unTextTrack (toTextTrack self)))
-         >>= fromJSRef)
+getRegions :: (MonadIO m) => TextTrack -> m (Maybe VTTRegionList)
+getRegions self
+  = liftIO ((js_getRegions (unTextTrack self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"sourceBuffer\"]"
-        ghcjs_dom_text_track_get_source_buffer ::
-        JSRef TextTrack -> IO (JSRef SourceBuffer)
+        js_getSourceBuffer :: JSRef TextTrack -> IO (JSRef SourceBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.sourceBuffer Mozilla TextTrack.sourceBuffer documentation> 
-textTrackGetSourceBuffer ::
-                         (MonadIO m, IsTextTrack self) => self -> m (Maybe SourceBuffer)
-textTrackGetSourceBuffer self
-  = liftIO
-      ((ghcjs_dom_text_track_get_source_buffer
-          (unTextTrack (toTextTrack self)))
-         >>= fromJSRef)
+getSourceBuffer ::
+                (MonadIO m) => TextTrack -> m (Maybe SourceBuffer)
+getSourceBuffer self
+  = liftIO ((js_getSourceBuffer (unTextTrack self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.TextTrack (
   ) where

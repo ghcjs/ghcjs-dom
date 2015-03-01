@@ -1,17 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Screen
-       (ghcjs_dom_screen_get_height, screenGetHeight,
-        ghcjs_dom_screen_get_width, screenGetWidth,
-        ghcjs_dom_screen_get_color_depth, screenGetColorDepth,
-        ghcjs_dom_screen_get_pixel_depth, screenGetPixelDepth,
-        ghcjs_dom_screen_get_avail_left, screenGetAvailLeft,
-        ghcjs_dom_screen_get_avail_top, screenGetAvailTop,
-        ghcjs_dom_screen_get_avail_height, screenGetAvailHeight,
-        ghcjs_dom_screen_get_avail_width, screenGetAvailWidth, DOMScreen,
-        IsDOMScreen, castToDOMScreen, gTypeDOMScreen, toDOMScreen)
+       (js_getHeight, getHeight, js_getWidth, getWidth, js_getColorDepth,
+        getColorDepth, js_getPixelDepth, getPixelDepth, js_getAvailLeft,
+        getAvailLeft, js_getAvailTop, getAvailTop, js_getAvailHeight,
+        getAvailHeight, js_getAvailWidth, getAvailWidth, DOMScreen,
+        castToDOMScreen, gTypeDOMScreen)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,87 +18,65 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_screen_get_height :: JSRef DOMScreen -> IO Word
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+        JSRef DOMScreen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.height Mozilla Screen.height documentation> 
-screenGetHeight :: (MonadIO m, IsDOMScreen self) => self -> m Word
-screenGetHeight self
-  = liftIO
-      (ghcjs_dom_screen_get_height (unDOMScreen (toDOMScreen self)))
+getHeight :: (MonadIO m) => DOMScreen -> m Word
+getHeight self = liftIO (js_getHeight (unDOMScreen self))
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_screen_get_width :: JSRef DOMScreen -> IO Word
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+        JSRef DOMScreen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.width Mozilla Screen.width documentation> 
-screenGetWidth :: (MonadIO m, IsDOMScreen self) => self -> m Word
-screenGetWidth self
-  = liftIO
-      (ghcjs_dom_screen_get_width (unDOMScreen (toDOMScreen self)))
+getWidth :: (MonadIO m) => DOMScreen -> m Word
+getWidth self = liftIO (js_getWidth (unDOMScreen self))
  
 foreign import javascript unsafe "$1[\"colorDepth\"]"
-        ghcjs_dom_screen_get_color_depth :: JSRef DOMScreen -> IO Word
+        js_getColorDepth :: JSRef DOMScreen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.colorDepth Mozilla Screen.colorDepth documentation> 
-screenGetColorDepth ::
-                    (MonadIO m, IsDOMScreen self) => self -> m Word
-screenGetColorDepth self
-  = liftIO
-      (ghcjs_dom_screen_get_color_depth (unDOMScreen (toDOMScreen self)))
+getColorDepth :: (MonadIO m) => DOMScreen -> m Word
+getColorDepth self = liftIO (js_getColorDepth (unDOMScreen self))
  
 foreign import javascript unsafe "$1[\"pixelDepth\"]"
-        ghcjs_dom_screen_get_pixel_depth :: JSRef DOMScreen -> IO Word
+        js_getPixelDepth :: JSRef DOMScreen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.pixelDepth Mozilla Screen.pixelDepth documentation> 
-screenGetPixelDepth ::
-                    (MonadIO m, IsDOMScreen self) => self -> m Word
-screenGetPixelDepth self
-  = liftIO
-      (ghcjs_dom_screen_get_pixel_depth (unDOMScreen (toDOMScreen self)))
+getPixelDepth :: (MonadIO m) => DOMScreen -> m Word
+getPixelDepth self = liftIO (js_getPixelDepth (unDOMScreen self))
  
 foreign import javascript unsafe "$1[\"availLeft\"]"
-        ghcjs_dom_screen_get_avail_left :: JSRef DOMScreen -> IO Int
+        js_getAvailLeft :: JSRef DOMScreen -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availLeft Mozilla Screen.availLeft documentation> 
-screenGetAvailLeft ::
-                   (MonadIO m, IsDOMScreen self) => self -> m Int
-screenGetAvailLeft self
-  = liftIO
-      (ghcjs_dom_screen_get_avail_left (unDOMScreen (toDOMScreen self)))
+getAvailLeft :: (MonadIO m) => DOMScreen -> m Int
+getAvailLeft self = liftIO (js_getAvailLeft (unDOMScreen self))
  
-foreign import javascript unsafe "$1[\"availTop\"]"
-        ghcjs_dom_screen_get_avail_top :: JSRef DOMScreen -> IO Int
+foreign import javascript unsafe "$1[\"availTop\"]" js_getAvailTop
+        :: JSRef DOMScreen -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availTop Mozilla Screen.availTop documentation> 
-screenGetAvailTop :: (MonadIO m, IsDOMScreen self) => self -> m Int
-screenGetAvailTop self
-  = liftIO
-      (ghcjs_dom_screen_get_avail_top (unDOMScreen (toDOMScreen self)))
+getAvailTop :: (MonadIO m) => DOMScreen -> m Int
+getAvailTop self = liftIO (js_getAvailTop (unDOMScreen self))
  
 foreign import javascript unsafe "$1[\"availHeight\"]"
-        ghcjs_dom_screen_get_avail_height :: JSRef DOMScreen -> IO Word
+        js_getAvailHeight :: JSRef DOMScreen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availHeight Mozilla Screen.availHeight documentation> 
-screenGetAvailHeight ::
-                     (MonadIO m, IsDOMScreen self) => self -> m Word
-screenGetAvailHeight self
-  = liftIO
-      (ghcjs_dom_screen_get_avail_height
-         (unDOMScreen (toDOMScreen self)))
+getAvailHeight :: (MonadIO m) => DOMScreen -> m Word
+getAvailHeight self = liftIO (js_getAvailHeight (unDOMScreen self))
  
 foreign import javascript unsafe "$1[\"availWidth\"]"
-        ghcjs_dom_screen_get_avail_width :: JSRef DOMScreen -> IO Word
+        js_getAvailWidth :: JSRef DOMScreen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availWidth Mozilla Screen.availWidth documentation> 
-screenGetAvailWidth ::
-                    (MonadIO m, IsDOMScreen self) => self -> m Word
-screenGetAvailWidth self
-  = liftIO
-      (ghcjs_dom_screen_get_avail_width (unDOMScreen (toDOMScreen self)))
+getAvailWidth :: (MonadIO m) => DOMScreen -> m Word
+getAvailWidth self = liftIO (js_getAvailWidth (unDOMScreen self))
 #else
 module GHCJS.DOM.Screen (
   module Graphics.UI.Gtk.WebKit.DOM.Screen

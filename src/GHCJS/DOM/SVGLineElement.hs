@@ -1,14 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SVGLineElement
-       (ghcjs_dom_svg_line_element_get_x1, svgLineElementGetX1,
-        ghcjs_dom_svg_line_element_get_y1, svgLineElementGetY1,
-        ghcjs_dom_svg_line_element_get_x2, svgLineElementGetX2,
-        ghcjs_dom_svg_line_element_get_y2, svgLineElementGetY2,
-        SVGLineElement, IsSVGLineElement, castToSVGLineElement,
-        gTypeSVGLineElement, toSVGLineElement)
+       (js_getX1, getX1, js_getY1, getY1, js_getX2, getX2, js_getY2,
+        getY2, SVGLineElement, castToSVGLineElement, gTypeSVGLineElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,65 +15,45 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"x1\"]"
-        ghcjs_dom_svg_line_element_get_x1 ::
+foreign import javascript unsafe "$1[\"x1\"]" js_getX1 ::
         JSRef SVGLineElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.x1 Mozilla SVGLineElement.x1 documentation> 
-svgLineElementGetX1 ::
-                    (MonadIO m, IsSVGLineElement self) =>
-                      self -> m (Maybe SVGAnimatedLength)
-svgLineElementGetX1 self
-  = liftIO
-      ((ghcjs_dom_svg_line_element_get_x1
-          (unSVGLineElement (toSVGLineElement self)))
-         >>= fromJSRef)
+getX1 ::
+      (MonadIO m) => SVGLineElement -> m (Maybe SVGAnimatedLength)
+getX1 self
+  = liftIO ((js_getX1 (unSVGLineElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y1\"]"
-        ghcjs_dom_svg_line_element_get_y1 ::
+foreign import javascript unsafe "$1[\"y1\"]" js_getY1 ::
         JSRef SVGLineElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.y1 Mozilla SVGLineElement.y1 documentation> 
-svgLineElementGetY1 ::
-                    (MonadIO m, IsSVGLineElement self) =>
-                      self -> m (Maybe SVGAnimatedLength)
-svgLineElementGetY1 self
-  = liftIO
-      ((ghcjs_dom_svg_line_element_get_y1
-          (unSVGLineElement (toSVGLineElement self)))
-         >>= fromJSRef)
+getY1 ::
+      (MonadIO m) => SVGLineElement -> m (Maybe SVGAnimatedLength)
+getY1 self
+  = liftIO ((js_getY1 (unSVGLineElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"x2\"]"
-        ghcjs_dom_svg_line_element_get_x2 ::
+foreign import javascript unsafe "$1[\"x2\"]" js_getX2 ::
         JSRef SVGLineElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.x2 Mozilla SVGLineElement.x2 documentation> 
-svgLineElementGetX2 ::
-                    (MonadIO m, IsSVGLineElement self) =>
-                      self -> m (Maybe SVGAnimatedLength)
-svgLineElementGetX2 self
-  = liftIO
-      ((ghcjs_dom_svg_line_element_get_x2
-          (unSVGLineElement (toSVGLineElement self)))
-         >>= fromJSRef)
+getX2 ::
+      (MonadIO m) => SVGLineElement -> m (Maybe SVGAnimatedLength)
+getX2 self
+  = liftIO ((js_getX2 (unSVGLineElement self)) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"y2\"]"
-        ghcjs_dom_svg_line_element_get_y2 ::
+foreign import javascript unsafe "$1[\"y2\"]" js_getY2 ::
         JSRef SVGLineElement -> IO (JSRef SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement.y2 Mozilla SVGLineElement.y2 documentation> 
-svgLineElementGetY2 ::
-                    (MonadIO m, IsSVGLineElement self) =>
-                      self -> m (Maybe SVGAnimatedLength)
-svgLineElementGetY2 self
-  = liftIO
-      ((ghcjs_dom_svg_line_element_get_y2
-          (unSVGLineElement (toSVGLineElement self)))
-         >>= fromJSRef)
+getY2 ::
+      (MonadIO m) => SVGLineElement -> m (Maybe SVGAnimatedLength)
+getY2 self
+  = liftIO ((js_getY2 (unSVGLineElement self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.SVGLineElement (
   ) where

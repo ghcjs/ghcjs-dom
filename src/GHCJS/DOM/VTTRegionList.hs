@@ -1,13 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.VTTRegionList
-       (ghcjs_dom_vtt_region_list_item, vttRegionListItem,
-        ghcjs_dom_vtt_region_list_get_region_by_id,
-        vttRegionListGetRegionById, ghcjs_dom_vtt_region_list_get_length,
-        vttRegionListGetLength, VTTRegionList, IsVTTRegionList,
-        castToVTTRegionList, gTypeVTTRegionList, toVTTRegionList)
+       (js_item, item, js_getRegionById, getRegionById, js_getLength,
+        getLength, VTTRegionList, castToVTTRegionList, gTypeVTTRegionList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -17,51 +15,37 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_vtt_region_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef VTTRegionList -> Word -> IO (JSRef VTTRegion)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.item Mozilla VTTRegionList.item documentation> 
-vttRegionListItem ::
-                  (MonadIO m, IsVTTRegionList self) =>
-                    self -> Word -> m (Maybe VTTRegion)
-vttRegionListItem self index
-  = liftIO
-      ((ghcjs_dom_vtt_region_list_item
-          (unVTTRegionList (toVTTRegionList self))
-          index)
-         >>= fromJSRef)
+item :: (MonadIO m) => VTTRegionList -> Word -> m (Maybe VTTRegion)
+item self index
+  = liftIO ((js_item (unVTTRegionList self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"getRegionById\"]($2)"
-        ghcjs_dom_vtt_region_list_get_region_by_id ::
+        js_getRegionById ::
         JSRef VTTRegionList -> JSString -> IO (JSRef VTTRegion)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.regionById Mozilla VTTRegionList.regionById documentation> 
-vttRegionListGetRegionById ::
-                           (MonadIO m, IsVTTRegionList self, ToJSString id) =>
-                             self -> id -> m (Maybe VTTRegion)
-vttRegionListGetRegionById self id
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.getRegionById Mozilla VTTRegionList.getRegionById documentation> 
+getRegionById ::
+              (MonadIO m, ToJSString id) =>
+                VTTRegionList -> id -> m (Maybe VTTRegion)
+getRegionById self id
   = liftIO
-      ((ghcjs_dom_vtt_region_list_get_region_by_id
-          (unVTTRegionList (toVTTRegionList self))
-          (toJSString id))
-         >>= fromJSRef)
+      ((js_getRegionById (unVTTRegionList self) (toJSString id)) >>=
+         fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_vtt_region_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef VTTRegionList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.length Mozilla VTTRegionList.length documentation> 
-vttRegionListGetLength ::
-                       (MonadIO m, IsVTTRegionList self) => self -> m Word
-vttRegionListGetLength self
-  = liftIO
-      (ghcjs_dom_vtt_region_list_get_length
-         (unVTTRegionList (toVTTRegionList self)))
+getLength :: (MonadIO m) => VTTRegionList -> m Word
+getLength self = liftIO (js_getLength (unVTTRegionList self))
 #else
 module GHCJS.DOM.VTTRegionList (
   ) where

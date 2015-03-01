@@ -1,31 +1,19 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.AnalyserNode
-       (ghcjs_dom_analyser_node_get_float_frequency_data,
-        analyserNodeGetFloatFrequencyData,
-        ghcjs_dom_analyser_node_get_byte_frequency_data,
-        analyserNodeGetByteFrequencyData,
-        ghcjs_dom_analyser_node_get_byte_time_domain_data,
-        analyserNodeGetByteTimeDomainData,
-        ghcjs_dom_analyser_node_set_fft_size, analyserNodeSetFftSize,
-        ghcjs_dom_analyser_node_get_fft_size, analyserNodeGetFftSize,
-        ghcjs_dom_analyser_node_get_frequency_bin_count,
-        analyserNodeGetFrequencyBinCount,
-        ghcjs_dom_analyser_node_set_min_decibels,
-        analyserNodeSetMinDecibels,
-        ghcjs_dom_analyser_node_get_min_decibels,
-        analyserNodeGetMinDecibels,
-        ghcjs_dom_analyser_node_set_max_decibels,
-        analyserNodeSetMaxDecibels,
-        ghcjs_dom_analyser_node_get_max_decibels,
-        analyserNodeGetMaxDecibels,
-        ghcjs_dom_analyser_node_set_smoothing_time_constant,
-        analyserNodeSetSmoothingTimeConstant,
-        ghcjs_dom_analyser_node_get_smoothing_time_constant,
-        analyserNodeGetSmoothingTimeConstant, AnalyserNode, IsAnalyserNode,
-        castToAnalyserNode, gTypeAnalyserNode, toAnalyserNode)
+       (js_getFloatFrequencyData, getFloatFrequencyData,
+        js_getByteFrequencyData, getByteFrequencyData,
+        js_getByteTimeDomainData, getByteTimeDomainData, js_setFftSize,
+        setFftSize, js_getFftSize, getFftSize, js_getFrequencyBinCount,
+        getFrequencyBinCount, js_setMinDecibels, setMinDecibels,
+        js_getMinDecibels, getMinDecibels, js_setMaxDecibels,
+        setMaxDecibels, js_getMaxDecibels, getMaxDecibels,
+        js_setSmoothingTimeConstant, setSmoothingTimeConstant,
+        js_getSmoothingTimeConstant, getSmoothingTimeConstant,
+        AnalyserNode, castToAnalyserNode, gTypeAnalyserNode)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -35,166 +23,121 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
-        "$1[\"getFloatFrequencyData\"]($2)"
-        ghcjs_dom_analyser_node_get_float_frequency_data ::
+        "$1[\"getFloatFrequencyData\"]($2)" js_getFloatFrequencyData ::
         JSRef AnalyserNode -> JSRef Float32Array -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.floatFrequencyData Mozilla AnalyserNode.floatFrequencyData documentation> 
-analyserNodeGetFloatFrequencyData ::
-                                  (MonadIO m, IsAnalyserNode self, IsFloat32Array array) =>
-                                    self -> Maybe array -> m ()
-analyserNodeGetFloatFrequencyData self array
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.getFloatFrequencyData Mozilla AnalyserNode.getFloatFrequencyData documentation> 
+getFloatFrequencyData ::
+                      (MonadIO m, IsFloat32Array array) =>
+                        AnalyserNode -> Maybe array -> m ()
+getFloatFrequencyData self array
   = liftIO
-      (ghcjs_dom_analyser_node_get_float_frequency_data
-         (unAnalyserNode (toAnalyserNode self))
+      (js_getFloatFrequencyData (unAnalyserNode self)
          (maybe jsNull (unFloat32Array . toFloat32Array) array))
  
 foreign import javascript unsafe "$1[\"getByteFrequencyData\"]($2)"
-        ghcjs_dom_analyser_node_get_byte_frequency_data ::
+        js_getByteFrequencyData ::
         JSRef AnalyserNode -> JSRef Uint8Array -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.byteFrequencyData Mozilla AnalyserNode.byteFrequencyData documentation> 
-analyserNodeGetByteFrequencyData ::
-                                 (MonadIO m, IsAnalyserNode self, IsUint8Array array) =>
-                                   self -> Maybe array -> m ()
-analyserNodeGetByteFrequencyData self array
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.getByteFrequencyData Mozilla AnalyserNode.getByteFrequencyData documentation> 
+getByteFrequencyData ::
+                     (MonadIO m, IsUint8Array array) =>
+                       AnalyserNode -> Maybe array -> m ()
+getByteFrequencyData self array
   = liftIO
-      (ghcjs_dom_analyser_node_get_byte_frequency_data
-         (unAnalyserNode (toAnalyserNode self))
+      (js_getByteFrequencyData (unAnalyserNode self)
          (maybe jsNull (unUint8Array . toUint8Array) array))
  
 foreign import javascript unsafe
-        "$1[\"getByteTimeDomainData\"]($2)"
-        ghcjs_dom_analyser_node_get_byte_time_domain_data ::
+        "$1[\"getByteTimeDomainData\"]($2)" js_getByteTimeDomainData ::
         JSRef AnalyserNode -> JSRef Uint8Array -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.byteTimeDomainData Mozilla AnalyserNode.byteTimeDomainData documentation> 
-analyserNodeGetByteTimeDomainData ::
-                                  (MonadIO m, IsAnalyserNode self, IsUint8Array array) =>
-                                    self -> Maybe array -> m ()
-analyserNodeGetByteTimeDomainData self array
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.getByteTimeDomainData Mozilla AnalyserNode.getByteTimeDomainData documentation> 
+getByteTimeDomainData ::
+                      (MonadIO m, IsUint8Array array) =>
+                        AnalyserNode -> Maybe array -> m ()
+getByteTimeDomainData self array
   = liftIO
-      (ghcjs_dom_analyser_node_get_byte_time_domain_data
-         (unAnalyserNode (toAnalyserNode self))
+      (js_getByteTimeDomainData (unAnalyserNode self)
          (maybe jsNull (unUint8Array . toUint8Array) array))
  
 foreign import javascript unsafe "$1[\"fftSize\"] = $2;"
-        ghcjs_dom_analyser_node_set_fft_size ::
-        JSRef AnalyserNode -> Word -> IO ()
+        js_setFftSize :: JSRef AnalyserNode -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.fftSize Mozilla AnalyserNode.fftSize documentation> 
-analyserNodeSetFftSize ::
-                       (MonadIO m, IsAnalyserNode self) => self -> Word -> m ()
-analyserNodeSetFftSize self val
-  = liftIO
-      (ghcjs_dom_analyser_node_set_fft_size
-         (unAnalyserNode (toAnalyserNode self))
-         val)
+setFftSize :: (MonadIO m) => AnalyserNode -> Word -> m ()
+setFftSize self val
+  = liftIO (js_setFftSize (unAnalyserNode self) val)
  
-foreign import javascript unsafe "$1[\"fftSize\"]"
-        ghcjs_dom_analyser_node_get_fft_size ::
+foreign import javascript unsafe "$1[\"fftSize\"]" js_getFftSize ::
         JSRef AnalyserNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.fftSize Mozilla AnalyserNode.fftSize documentation> 
-analyserNodeGetFftSize ::
-                       (MonadIO m, IsAnalyserNode self) => self -> m Word
-analyserNodeGetFftSize self
-  = liftIO
-      (ghcjs_dom_analyser_node_get_fft_size
-         (unAnalyserNode (toAnalyserNode self)))
+getFftSize :: (MonadIO m) => AnalyserNode -> m Word
+getFftSize self = liftIO (js_getFftSize (unAnalyserNode self))
  
 foreign import javascript unsafe "$1[\"frequencyBinCount\"]"
-        ghcjs_dom_analyser_node_get_frequency_bin_count ::
-        JSRef AnalyserNode -> IO Word
+        js_getFrequencyBinCount :: JSRef AnalyserNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.frequencyBinCount Mozilla AnalyserNode.frequencyBinCount documentation> 
-analyserNodeGetFrequencyBinCount ::
-                                 (MonadIO m, IsAnalyserNode self) => self -> m Word
-analyserNodeGetFrequencyBinCount self
-  = liftIO
-      (ghcjs_dom_analyser_node_get_frequency_bin_count
-         (unAnalyserNode (toAnalyserNode self)))
+getFrequencyBinCount :: (MonadIO m) => AnalyserNode -> m Word
+getFrequencyBinCount self
+  = liftIO (js_getFrequencyBinCount (unAnalyserNode self))
  
 foreign import javascript unsafe "$1[\"minDecibels\"] = $2;"
-        ghcjs_dom_analyser_node_set_min_decibels ::
-        JSRef AnalyserNode -> Double -> IO ()
+        js_setMinDecibels :: JSRef AnalyserNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.minDecibels Mozilla AnalyserNode.minDecibels documentation> 
-analyserNodeSetMinDecibels ::
-                           (MonadIO m, IsAnalyserNode self) => self -> Double -> m ()
-analyserNodeSetMinDecibels self val
-  = liftIO
-      (ghcjs_dom_analyser_node_set_min_decibels
-         (unAnalyserNode (toAnalyserNode self))
-         val)
+setMinDecibels :: (MonadIO m) => AnalyserNode -> Double -> m ()
+setMinDecibels self val
+  = liftIO (js_setMinDecibels (unAnalyserNode self) val)
  
 foreign import javascript unsafe "$1[\"minDecibels\"]"
-        ghcjs_dom_analyser_node_get_min_decibels ::
-        JSRef AnalyserNode -> IO Double
+        js_getMinDecibels :: JSRef AnalyserNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.minDecibels Mozilla AnalyserNode.minDecibels documentation> 
-analyserNodeGetMinDecibels ::
-                           (MonadIO m, IsAnalyserNode self) => self -> m Double
-analyserNodeGetMinDecibels self
-  = liftIO
-      (ghcjs_dom_analyser_node_get_min_decibels
-         (unAnalyserNode (toAnalyserNode self)))
+getMinDecibels :: (MonadIO m) => AnalyserNode -> m Double
+getMinDecibels self
+  = liftIO (js_getMinDecibels (unAnalyserNode self))
  
 foreign import javascript unsafe "$1[\"maxDecibels\"] = $2;"
-        ghcjs_dom_analyser_node_set_max_decibels ::
-        JSRef AnalyserNode -> Double -> IO ()
+        js_setMaxDecibels :: JSRef AnalyserNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.maxDecibels Mozilla AnalyserNode.maxDecibels documentation> 
-analyserNodeSetMaxDecibels ::
-                           (MonadIO m, IsAnalyserNode self) => self -> Double -> m ()
-analyserNodeSetMaxDecibels self val
-  = liftIO
-      (ghcjs_dom_analyser_node_set_max_decibels
-         (unAnalyserNode (toAnalyserNode self))
-         val)
+setMaxDecibels :: (MonadIO m) => AnalyserNode -> Double -> m ()
+setMaxDecibels self val
+  = liftIO (js_setMaxDecibels (unAnalyserNode self) val)
  
 foreign import javascript unsafe "$1[\"maxDecibels\"]"
-        ghcjs_dom_analyser_node_get_max_decibels ::
-        JSRef AnalyserNode -> IO Double
+        js_getMaxDecibels :: JSRef AnalyserNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.maxDecibels Mozilla AnalyserNode.maxDecibels documentation> 
-analyserNodeGetMaxDecibels ::
-                           (MonadIO m, IsAnalyserNode self) => self -> m Double
-analyserNodeGetMaxDecibels self
-  = liftIO
-      (ghcjs_dom_analyser_node_get_max_decibels
-         (unAnalyserNode (toAnalyserNode self)))
+getMaxDecibels :: (MonadIO m) => AnalyserNode -> m Double
+getMaxDecibels self
+  = liftIO (js_getMaxDecibels (unAnalyserNode self))
  
 foreign import javascript unsafe
-        "$1[\"smoothingTimeConstant\"] = $2;"
-        ghcjs_dom_analyser_node_set_smoothing_time_constant ::
-        JSRef AnalyserNode -> Double -> IO ()
+        "$1[\"smoothingTimeConstant\"] = $2;" js_setSmoothingTimeConstant
+        :: JSRef AnalyserNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.smoothingTimeConstant Mozilla AnalyserNode.smoothingTimeConstant documentation> 
-analyserNodeSetSmoothingTimeConstant ::
-                                     (MonadIO m, IsAnalyserNode self) => self -> Double -> m ()
-analyserNodeSetSmoothingTimeConstant self val
-  = liftIO
-      (ghcjs_dom_analyser_node_set_smoothing_time_constant
-         (unAnalyserNode (toAnalyserNode self))
-         val)
+setSmoothingTimeConstant ::
+                         (MonadIO m) => AnalyserNode -> Double -> m ()
+setSmoothingTimeConstant self val
+  = liftIO (js_setSmoothingTimeConstant (unAnalyserNode self) val)
  
 foreign import javascript unsafe "$1[\"smoothingTimeConstant\"]"
-        ghcjs_dom_analyser_node_get_smoothing_time_constant ::
-        JSRef AnalyserNode -> IO Double
+        js_getSmoothingTimeConstant :: JSRef AnalyserNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.smoothingTimeConstant Mozilla AnalyserNode.smoothingTimeConstant documentation> 
-analyserNodeGetSmoothingTimeConstant ::
-                                     (MonadIO m, IsAnalyserNode self) => self -> m Double
-analyserNodeGetSmoothingTimeConstant self
-  = liftIO
-      (ghcjs_dom_analyser_node_get_smoothing_time_constant
-         (unAnalyserNode (toAnalyserNode self)))
+getSmoothingTimeConstant :: (MonadIO m) => AnalyserNode -> m Double
+getSmoothingTimeConstant self
+  = liftIO (js_getSmoothingTimeConstant (unAnalyserNode self))
 #else
 module GHCJS.DOM.AnalyserNode (
   ) where

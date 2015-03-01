@@ -1,54 +1,22 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLMarqueeElement
-       (ghcjs_dom_html_marquee_element_start, htmlMarqueeElementStart,
-        ghcjs_dom_html_marquee_element_stop, htmlMarqueeElementStop,
-        ghcjs_dom_html_marquee_element_set_behavior,
-        htmlMarqueeElementSetBehavior,
-        ghcjs_dom_html_marquee_element_get_behavior,
-        htmlMarqueeElementGetBehavior,
-        ghcjs_dom_html_marquee_element_set_bg_color,
-        htmlMarqueeElementSetBgColor,
-        ghcjs_dom_html_marquee_element_get_bg_color,
-        htmlMarqueeElementGetBgColor,
-        ghcjs_dom_html_marquee_element_set_direction,
-        htmlMarqueeElementSetDirection,
-        ghcjs_dom_html_marquee_element_get_direction,
-        htmlMarqueeElementGetDirection,
-        ghcjs_dom_html_marquee_element_set_height,
-        htmlMarqueeElementSetHeight,
-        ghcjs_dom_html_marquee_element_get_height,
-        htmlMarqueeElementGetHeight,
-        ghcjs_dom_html_marquee_element_set_hspace,
-        htmlMarqueeElementSetHspace,
-        ghcjs_dom_html_marquee_element_get_hspace,
-        htmlMarqueeElementGetHspace,
-        ghcjs_dom_html_marquee_element_set_loop, htmlMarqueeElementSetLoop,
-        ghcjs_dom_html_marquee_element_get_loop, htmlMarqueeElementGetLoop,
-        ghcjs_dom_html_marquee_element_set_scroll_amount,
-        htmlMarqueeElementSetScrollAmount,
-        ghcjs_dom_html_marquee_element_get_scroll_amount,
-        htmlMarqueeElementGetScrollAmount,
-        ghcjs_dom_html_marquee_element_set_scroll_delay,
-        htmlMarqueeElementSetScrollDelay,
-        ghcjs_dom_html_marquee_element_get_scroll_delay,
-        htmlMarqueeElementGetScrollDelay,
-        ghcjs_dom_html_marquee_element_set_true_speed,
-        htmlMarqueeElementSetTrueSpeed,
-        ghcjs_dom_html_marquee_element_get_true_speed,
-        htmlMarqueeElementGetTrueSpeed,
-        ghcjs_dom_html_marquee_element_set_vspace,
-        htmlMarqueeElementSetVspace,
-        ghcjs_dom_html_marquee_element_get_vspace,
-        htmlMarqueeElementGetVspace,
-        ghcjs_dom_html_marquee_element_set_width,
-        htmlMarqueeElementSetWidth,
-        ghcjs_dom_html_marquee_element_get_width,
-        htmlMarqueeElementGetWidth, HTMLMarqueeElement,
-        IsHTMLMarqueeElement, castToHTMLMarqueeElement,
-        gTypeHTMLMarqueeElement, toHTMLMarqueeElement)
+       (js_start, start, js_stop, stop, js_setBehavior, setBehavior,
+        js_getBehavior, getBehavior, js_setBgColor, setBgColor,
+        js_getBgColor, getBgColor, js_setDirection, setDirection,
+        js_getDirection, getDirection, js_setHeight, setHeight,
+        js_getHeight, getHeight, js_setHspace, setHspace, js_getHspace,
+        getHspace, js_setLoop, setLoop, js_getLoop, getLoop,
+        js_setScrollAmount, setScrollAmount, js_getScrollAmount,
+        getScrollAmount, js_setScrollDelay, setScrollDelay,
+        js_getScrollDelay, getScrollDelay, js_setTrueSpeed, setTrueSpeed,
+        js_getTrueSpeed, getTrueSpeed, js_setVspace, setVspace,
+        js_getVspace, getVspace, js_setWidth, setWidth, js_getWidth,
+        getWidth, HTMLMarqueeElement, castToHTMLMarqueeElement,
+        gTypeHTMLMarqueeElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -58,323 +26,215 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"start\"]()"
-        ghcjs_dom_html_marquee_element_start ::
+foreign import javascript unsafe "$1[\"start\"]()" js_start ::
         JSRef HTMLMarqueeElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.start Mozilla HTMLMarqueeElement.start documentation> 
-htmlMarqueeElementStart ::
-                        (MonadIO m, IsHTMLMarqueeElement self) => self -> m ()
-htmlMarqueeElementStart self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_start
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+start :: (MonadIO m) => HTMLMarqueeElement -> m ()
+start self = liftIO (js_start (unHTMLMarqueeElement self))
  
-foreign import javascript unsafe "$1[\"stop\"]()"
-        ghcjs_dom_html_marquee_element_stop ::
+foreign import javascript unsafe "$1[\"stop\"]()" js_stop ::
         JSRef HTMLMarqueeElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.stop Mozilla HTMLMarqueeElement.stop documentation> 
-htmlMarqueeElementStop ::
-                       (MonadIO m, IsHTMLMarqueeElement self) => self -> m ()
-htmlMarqueeElementStop self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_stop
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+stop :: (MonadIO m) => HTMLMarqueeElement -> m ()
+stop self = liftIO (js_stop (unHTMLMarqueeElement self))
  
 foreign import javascript unsafe "$1[\"behavior\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_behavior ::
-        JSRef HTMLMarqueeElement -> JSString -> IO ()
+        js_setBehavior :: JSRef HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.behavior Mozilla HTMLMarqueeElement.behavior documentation> 
-htmlMarqueeElementSetBehavior ::
-                              (MonadIO m, IsHTMLMarqueeElement self, ToJSString val) =>
-                                self -> val -> m ()
-htmlMarqueeElementSetBehavior self val
+setBehavior ::
+            (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
+setBehavior self val
   = liftIO
-      (ghcjs_dom_html_marquee_element_set_behavior
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         (toJSString val))
+      (js_setBehavior (unHTMLMarqueeElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"behavior\"]"
-        ghcjs_dom_html_marquee_element_get_behavior ::
-        JSRef HTMLMarqueeElement -> IO JSString
+foreign import javascript unsafe "$1[\"behavior\"]" js_getBehavior
+        :: JSRef HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.behavior Mozilla HTMLMarqueeElement.behavior documentation> 
-htmlMarqueeElementGetBehavior ::
-                              (MonadIO m, IsHTMLMarqueeElement self, FromJSString result) =>
-                                self -> m result
-htmlMarqueeElementGetBehavior self
+getBehavior ::
+            (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
+getBehavior self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_marquee_element_get_behavior
-            (unHTMLMarqueeElement (toHTMLMarqueeElement self))))
+      (fromJSString <$> (js_getBehavior (unHTMLMarqueeElement self)))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_bg_color ::
-        JSRef HTMLMarqueeElement -> JSString -> IO ()
+        js_setBgColor :: JSRef HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.bgColor Mozilla HTMLMarqueeElement.bgColor documentation> 
-htmlMarqueeElementSetBgColor ::
-                             (MonadIO m, IsHTMLMarqueeElement self, ToJSString val) =>
-                               self -> val -> m ()
-htmlMarqueeElementSetBgColor self val
+setBgColor ::
+           (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
+setBgColor self val
   = liftIO
-      (ghcjs_dom_html_marquee_element_set_bg_color
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         (toJSString val))
+      (js_setBgColor (unHTMLMarqueeElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"bgColor\"]"
-        ghcjs_dom_html_marquee_element_get_bg_color ::
+foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
         JSRef HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.bgColor Mozilla HTMLMarqueeElement.bgColor documentation> 
-htmlMarqueeElementGetBgColor ::
-                             (MonadIO m, IsHTMLMarqueeElement self, FromJSString result) =>
-                               self -> m result
-htmlMarqueeElementGetBgColor self
+getBgColor ::
+           (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
+getBgColor self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_marquee_element_get_bg_color
-            (unHTMLMarqueeElement (toHTMLMarqueeElement self))))
+      (fromJSString <$> (js_getBgColor (unHTMLMarqueeElement self)))
  
 foreign import javascript unsafe "$1[\"direction\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_direction ::
-        JSRef HTMLMarqueeElement -> JSString -> IO ()
+        js_setDirection :: JSRef HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.direction Mozilla HTMLMarqueeElement.direction documentation> 
-htmlMarqueeElementSetDirection ::
-                               (MonadIO m, IsHTMLMarqueeElement self, ToJSString val) =>
-                                 self -> val -> m ()
-htmlMarqueeElementSetDirection self val
+setDirection ::
+             (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
+setDirection self val
   = liftIO
-      (ghcjs_dom_html_marquee_element_set_direction
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         (toJSString val))
+      (js_setDirection (unHTMLMarqueeElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"direction\"]"
-        ghcjs_dom_html_marquee_element_get_direction ::
-        JSRef HTMLMarqueeElement -> IO JSString
+        js_getDirection :: JSRef HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.direction Mozilla HTMLMarqueeElement.direction documentation> 
-htmlMarqueeElementGetDirection ::
-                               (MonadIO m, IsHTMLMarqueeElement self, FromJSString result) =>
-                                 self -> m result
-htmlMarqueeElementGetDirection self
+getDirection ::
+             (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
+getDirection self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_marquee_element_get_direction
-            (unHTMLMarqueeElement (toHTMLMarqueeElement self))))
+      (fromJSString <$> (js_getDirection (unHTMLMarqueeElement self)))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_height ::
-        JSRef HTMLMarqueeElement -> JSString -> IO ()
+        js_setHeight :: JSRef HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.height Mozilla HTMLMarqueeElement.height documentation> 
-htmlMarqueeElementSetHeight ::
-                            (MonadIO m, IsHTMLMarqueeElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlMarqueeElementSetHeight self val
+setHeight ::
+          (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
+setHeight self val
   = liftIO
-      (ghcjs_dom_html_marquee_element_set_height
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         (toJSString val))
+      (js_setHeight (unHTMLMarqueeElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_html_marquee_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.height Mozilla HTMLMarqueeElement.height documentation> 
-htmlMarqueeElementGetHeight ::
-                            (MonadIO m, IsHTMLMarqueeElement self, FromJSString result) =>
-                              self -> m result
-htmlMarqueeElementGetHeight self
+getHeight ::
+          (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
+getHeight self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_marquee_element_get_height
-            (unHTMLMarqueeElement (toHTMLMarqueeElement self))))
+      (fromJSString <$> (js_getHeight (unHTMLMarqueeElement self)))
  
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_hspace ::
-        JSRef HTMLMarqueeElement -> Word -> IO ()
+        js_setHspace :: JSRef HTMLMarqueeElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.hspace Mozilla HTMLMarqueeElement.hspace documentation> 
-htmlMarqueeElementSetHspace ::
-                            (MonadIO m, IsHTMLMarqueeElement self) => self -> Word -> m ()
-htmlMarqueeElementSetHspace self val
-  = liftIO
-      (ghcjs_dom_html_marquee_element_set_hspace
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         val)
+setHspace :: (MonadIO m) => HTMLMarqueeElement -> Word -> m ()
+setHspace self val
+  = liftIO (js_setHspace (unHTMLMarqueeElement self) val)
  
-foreign import javascript unsafe "$1[\"hspace\"]"
-        ghcjs_dom_html_marquee_element_get_hspace ::
+foreign import javascript unsafe "$1[\"hspace\"]" js_getHspace ::
         JSRef HTMLMarqueeElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.hspace Mozilla HTMLMarqueeElement.hspace documentation> 
-htmlMarqueeElementGetHspace ::
-                            (MonadIO m, IsHTMLMarqueeElement self) => self -> m Word
-htmlMarqueeElementGetHspace self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_get_hspace
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+getHspace :: (MonadIO m) => HTMLMarqueeElement -> m Word
+getHspace self = liftIO (js_getHspace (unHTMLMarqueeElement self))
  
-foreign import javascript unsafe "$1[\"loop\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_loop ::
+foreign import javascript unsafe "$1[\"loop\"] = $2;" js_setLoop ::
         JSRef HTMLMarqueeElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.loop Mozilla HTMLMarqueeElement.loop documentation> 
-htmlMarqueeElementSetLoop ::
-                          (MonadIO m, IsHTMLMarqueeElement self) => self -> Int -> m ()
-htmlMarqueeElementSetLoop self val
-  = liftIO
-      (ghcjs_dom_html_marquee_element_set_loop
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         val)
+setLoop :: (MonadIO m) => HTMLMarqueeElement -> Int -> m ()
+setLoop self val
+  = liftIO (js_setLoop (unHTMLMarqueeElement self) val)
  
-foreign import javascript unsafe "$1[\"loop\"]"
-        ghcjs_dom_html_marquee_element_get_loop ::
+foreign import javascript unsafe "$1[\"loop\"]" js_getLoop ::
         JSRef HTMLMarqueeElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.loop Mozilla HTMLMarqueeElement.loop documentation> 
-htmlMarqueeElementGetLoop ::
-                          (MonadIO m, IsHTMLMarqueeElement self) => self -> m Int
-htmlMarqueeElementGetLoop self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_get_loop
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+getLoop :: (MonadIO m) => HTMLMarqueeElement -> m Int
+getLoop self = liftIO (js_getLoop (unHTMLMarqueeElement self))
  
 foreign import javascript unsafe "$1[\"scrollAmount\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_scroll_amount ::
-        JSRef HTMLMarqueeElement -> Int -> IO ()
+        js_setScrollAmount :: JSRef HTMLMarqueeElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollAmount Mozilla HTMLMarqueeElement.scrollAmount documentation> 
-htmlMarqueeElementSetScrollAmount ::
-                                  (MonadIO m, IsHTMLMarqueeElement self) => self -> Int -> m ()
-htmlMarqueeElementSetScrollAmount self val
-  = liftIO
-      (ghcjs_dom_html_marquee_element_set_scroll_amount
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         val)
+setScrollAmount :: (MonadIO m) => HTMLMarqueeElement -> Int -> m ()
+setScrollAmount self val
+  = liftIO (js_setScrollAmount (unHTMLMarqueeElement self) val)
  
 foreign import javascript unsafe "$1[\"scrollAmount\"]"
-        ghcjs_dom_html_marquee_element_get_scroll_amount ::
-        JSRef HTMLMarqueeElement -> IO Int
+        js_getScrollAmount :: JSRef HTMLMarqueeElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollAmount Mozilla HTMLMarqueeElement.scrollAmount documentation> 
-htmlMarqueeElementGetScrollAmount ::
-                                  (MonadIO m, IsHTMLMarqueeElement self) => self -> m Int
-htmlMarqueeElementGetScrollAmount self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_get_scroll_amount
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+getScrollAmount :: (MonadIO m) => HTMLMarqueeElement -> m Int
+getScrollAmount self
+  = liftIO (js_getScrollAmount (unHTMLMarqueeElement self))
  
 foreign import javascript unsafe "$1[\"scrollDelay\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_scroll_delay ::
-        JSRef HTMLMarqueeElement -> Int -> IO ()
+        js_setScrollDelay :: JSRef HTMLMarqueeElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollDelay Mozilla HTMLMarqueeElement.scrollDelay documentation> 
-htmlMarqueeElementSetScrollDelay ::
-                                 (MonadIO m, IsHTMLMarqueeElement self) => self -> Int -> m ()
-htmlMarqueeElementSetScrollDelay self val
-  = liftIO
-      (ghcjs_dom_html_marquee_element_set_scroll_delay
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         val)
+setScrollDelay :: (MonadIO m) => HTMLMarqueeElement -> Int -> m ()
+setScrollDelay self val
+  = liftIO (js_setScrollDelay (unHTMLMarqueeElement self) val)
  
 foreign import javascript unsafe "$1[\"scrollDelay\"]"
-        ghcjs_dom_html_marquee_element_get_scroll_delay ::
-        JSRef HTMLMarqueeElement -> IO Int
+        js_getScrollDelay :: JSRef HTMLMarqueeElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollDelay Mozilla HTMLMarqueeElement.scrollDelay documentation> 
-htmlMarqueeElementGetScrollDelay ::
-                                 (MonadIO m, IsHTMLMarqueeElement self) => self -> m Int
-htmlMarqueeElementGetScrollDelay self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_get_scroll_delay
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+getScrollDelay :: (MonadIO m) => HTMLMarqueeElement -> m Int
+getScrollDelay self
+  = liftIO (js_getScrollDelay (unHTMLMarqueeElement self))
  
 foreign import javascript unsafe "$1[\"trueSpeed\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_true_speed ::
-        JSRef HTMLMarqueeElement -> Bool -> IO ()
+        js_setTrueSpeed :: JSRef HTMLMarqueeElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.trueSpeed Mozilla HTMLMarqueeElement.trueSpeed documentation> 
-htmlMarqueeElementSetTrueSpeed ::
-                               (MonadIO m, IsHTMLMarqueeElement self) => self -> Bool -> m ()
-htmlMarqueeElementSetTrueSpeed self val
-  = liftIO
-      (ghcjs_dom_html_marquee_element_set_true_speed
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         val)
+setTrueSpeed :: (MonadIO m) => HTMLMarqueeElement -> Bool -> m ()
+setTrueSpeed self val
+  = liftIO (js_setTrueSpeed (unHTMLMarqueeElement self) val)
  
 foreign import javascript unsafe "($1[\"trueSpeed\"] ? 1 : 0)"
-        ghcjs_dom_html_marquee_element_get_true_speed ::
-        JSRef HTMLMarqueeElement -> IO Bool
+        js_getTrueSpeed :: JSRef HTMLMarqueeElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.trueSpeed Mozilla HTMLMarqueeElement.trueSpeed documentation> 
-htmlMarqueeElementGetTrueSpeed ::
-                               (MonadIO m, IsHTMLMarqueeElement self) => self -> m Bool
-htmlMarqueeElementGetTrueSpeed self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_get_true_speed
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+getTrueSpeed :: (MonadIO m) => HTMLMarqueeElement -> m Bool
+getTrueSpeed self
+  = liftIO (js_getTrueSpeed (unHTMLMarqueeElement self))
  
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_vspace ::
-        JSRef HTMLMarqueeElement -> Word -> IO ()
+        js_setVspace :: JSRef HTMLMarqueeElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.vspace Mozilla HTMLMarqueeElement.vspace documentation> 
-htmlMarqueeElementSetVspace ::
-                            (MonadIO m, IsHTMLMarqueeElement self) => self -> Word -> m ()
-htmlMarqueeElementSetVspace self val
-  = liftIO
-      (ghcjs_dom_html_marquee_element_set_vspace
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         val)
+setVspace :: (MonadIO m) => HTMLMarqueeElement -> Word -> m ()
+setVspace self val
+  = liftIO (js_setVspace (unHTMLMarqueeElement self) val)
  
-foreign import javascript unsafe "$1[\"vspace\"]"
-        ghcjs_dom_html_marquee_element_get_vspace ::
+foreign import javascript unsafe "$1[\"vspace\"]" js_getVspace ::
         JSRef HTMLMarqueeElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.vspace Mozilla HTMLMarqueeElement.vspace documentation> 
-htmlMarqueeElementGetVspace ::
-                            (MonadIO m, IsHTMLMarqueeElement self) => self -> m Word
-htmlMarqueeElementGetVspace self
-  = liftIO
-      (ghcjs_dom_html_marquee_element_get_vspace
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self)))
+getVspace :: (MonadIO m) => HTMLMarqueeElement -> m Word
+getVspace self = liftIO (js_getVspace (unHTMLMarqueeElement self))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;"
-        ghcjs_dom_html_marquee_element_set_width ::
-        JSRef HTMLMarqueeElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+        :: JSRef HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.width Mozilla HTMLMarqueeElement.width documentation> 
-htmlMarqueeElementSetWidth ::
-                           (MonadIO m, IsHTMLMarqueeElement self, ToJSString val) =>
-                             self -> val -> m ()
-htmlMarqueeElementSetWidth self val
-  = liftIO
-      (ghcjs_dom_html_marquee_element_set_width
-         (unHTMLMarqueeElement (toHTMLMarqueeElement self))
-         (toJSString val))
+setWidth ::
+         (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
+setWidth self val
+  = liftIO (js_setWidth (unHTMLMarqueeElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_html_marquee_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.width Mozilla HTMLMarqueeElement.width documentation> 
-htmlMarqueeElementGetWidth ::
-                           (MonadIO m, IsHTMLMarqueeElement self, FromJSString result) =>
-                             self -> m result
-htmlMarqueeElementGetWidth self
+getWidth ::
+         (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
+getWidth self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_marquee_element_get_width
-            (unHTMLMarqueeElement (toHTMLMarqueeElement self))))
+      (fromJSString <$> (js_getWidth (unHTMLMarqueeElement self)))
 #else
 module GHCJS.DOM.HTMLMarqueeElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLMarqueeElement

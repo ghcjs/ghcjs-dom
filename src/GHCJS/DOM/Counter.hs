@@ -1,12 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.Counter
-       (ghcjs_dom_counter_get_identifier, counterGetIdentifier,
-        ghcjs_dom_counter_get_list_style, counterGetListStyle,
-        ghcjs_dom_counter_get_separator, counterGetSeparator, Counter,
-        IsCounter, castToCounter, gTypeCounter, toCounter)
+       (js_getIdentifier, getIdentifier, js_getListStyle, getListStyle,
+        js_getSeparator, getSeparator, Counter, castToCounter,
+        gTypeCounter)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,45 +16,36 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"identifier\"]"
-        ghcjs_dom_counter_get_identifier :: JSRef Counter -> IO JSString
+        js_getIdentifier :: JSRef Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.identifier Mozilla Counter.identifier documentation> 
-counterGetIdentifier ::
-                     (MonadIO m, IsCounter self, FromJSString result) =>
-                       self -> m result
-counterGetIdentifier self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_counter_get_identifier (unCounter (toCounter self))))
+getIdentifier ::
+              (MonadIO m, FromJSString result) => Counter -> m result
+getIdentifier self
+  = liftIO (fromJSString <$> (js_getIdentifier (unCounter self)))
  
 foreign import javascript unsafe "$1[\"listStyle\"]"
-        ghcjs_dom_counter_get_list_style :: JSRef Counter -> IO JSString
+        js_getListStyle :: JSRef Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.listStyle Mozilla Counter.listStyle documentation> 
-counterGetListStyle ::
-                    (MonadIO m, IsCounter self, FromJSString result) =>
-                      self -> m result
-counterGetListStyle self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_counter_get_list_style (unCounter (toCounter self))))
+getListStyle ::
+             (MonadIO m, FromJSString result) => Counter -> m result
+getListStyle self
+  = liftIO (fromJSString <$> (js_getListStyle (unCounter self)))
  
 foreign import javascript unsafe "$1[\"separator\"]"
-        ghcjs_dom_counter_get_separator :: JSRef Counter -> IO JSString
+        js_getSeparator :: JSRef Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.separator Mozilla Counter.separator documentation> 
-counterGetSeparator ::
-                    (MonadIO m, IsCounter self, FromJSString result) =>
-                      self -> m result
-counterGetSeparator self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_counter_get_separator (unCounter (toCounter self))))
+getSeparator ::
+             (MonadIO m, FromJSString result) => Counter -> m result
+getSeparator self
+  = liftIO (fromJSString <$> (js_getSeparator (unCounter self)))
 #else
 module GHCJS.DOM.Counter (
   ) where

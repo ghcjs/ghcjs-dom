@@ -1,40 +1,17 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SpeechSynthesisUtterance
-       (ghcjs_dom_speech_synthesis_utterance_new,
-        speechSynthesisUtteranceNew,
-        ghcjs_dom_speech_synthesis_utterance_set_text,
-        speechSynthesisUtteranceSetText,
-        ghcjs_dom_speech_synthesis_utterance_get_text,
-        speechSynthesisUtteranceGetText,
-        ghcjs_dom_speech_synthesis_utterance_set_lang,
-        speechSynthesisUtteranceSetLang,
-        ghcjs_dom_speech_synthesis_utterance_get_lang,
-        speechSynthesisUtteranceGetLang,
-        ghcjs_dom_speech_synthesis_utterance_set_voice,
-        speechSynthesisUtteranceSetVoice,
-        ghcjs_dom_speech_synthesis_utterance_get_voice,
-        speechSynthesisUtteranceGetVoice,
-        ghcjs_dom_speech_synthesis_utterance_set_volume,
-        speechSynthesisUtteranceSetVolume,
-        ghcjs_dom_speech_synthesis_utterance_get_volume,
-        speechSynthesisUtteranceGetVolume,
-        ghcjs_dom_speech_synthesis_utterance_set_rate,
-        speechSynthesisUtteranceSetRate,
-        ghcjs_dom_speech_synthesis_utterance_get_rate,
-        speechSynthesisUtteranceGetRate,
-        ghcjs_dom_speech_synthesis_utterance_set_pitch,
-        speechSynthesisUtteranceSetPitch,
-        ghcjs_dom_speech_synthesis_utterance_get_pitch,
-        speechSynthesisUtteranceGetPitch, speechSynthesisUtteranceStart,
-        speechSynthesisUtteranceEnd, speechSynthesisUtteranceError,
-        speechSynthesisUtterancePause, speechSynthesisUtteranceResume,
-        speechSynthesisUtteranceMark, speechSynthesisUtteranceBoundary,
-        SpeechSynthesisUtterance, IsSpeechSynthesisUtterance,
-        castToSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance,
-        toSpeechSynthesisUtterance)
+       (js_newSpeechSynthesisUtterance, newSpeechSynthesisUtterance,
+        js_setText, setText, js_getText, getText, js_setLang, setLang,
+        js_getLang, getLang, js_setVoice, setVoice, js_getVoice, getVoice,
+        js_setVolume, setVolume, js_getVolume, getVolume, js_setRate,
+        setRate, js_getRate, getRate, js_setPitch, setPitch, js_getPitch,
+        getPitch, start, end, error, pause, resume, mark, boundary,
+        SpeechSynthesisUtterance, castToSpeechSynthesisUtterance,
+        gTypeSpeechSynthesisUtterance)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -44,236 +21,169 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe
         "new window[\"SpeechSynthesisUtterance\"]($1)"
-        ghcjs_dom_speech_synthesis_utterance_new ::
+        js_newSpeechSynthesisUtterance ::
         JSString -> IO (JSRef SpeechSynthesisUtterance)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance Mozilla SpeechSynthesisUtterance documentation> 
-speechSynthesisUtteranceNew ::
+newSpeechSynthesisUtterance ::
                             (MonadIO m, ToJSString text) => text -> m SpeechSynthesisUtterance
-speechSynthesisUtteranceNew text
+newSpeechSynthesisUtterance text
   = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_new (toJSString text) >>=
+      (js_newSpeechSynthesisUtterance (toJSString text) >>=
          fromJSRefUnchecked)
  
-foreign import javascript unsafe "$1[\"text\"] = $2;"
-        ghcjs_dom_speech_synthesis_utterance_set_text ::
+foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
         JSRef SpeechSynthesisUtterance -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.text Mozilla SpeechSynthesisUtterance.text documentation> 
-speechSynthesisUtteranceSetText ::
-                                (MonadIO m, IsSpeechSynthesisUtterance self, ToJSString val) =>
-                                  self -> val -> m ()
-speechSynthesisUtteranceSetText self val
+setText ::
+        (MonadIO m, ToJSString val) =>
+          SpeechSynthesisUtterance -> val -> m ()
+setText self val
   = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_set_text
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))
-         (toJSString val))
+      (js_setText (unSpeechSynthesisUtterance self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"text\"]"
-        ghcjs_dom_speech_synthesis_utterance_get_text ::
+foreign import javascript unsafe "$1[\"text\"]" js_getText ::
         JSRef SpeechSynthesisUtterance -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.text Mozilla SpeechSynthesisUtterance.text documentation> 
-speechSynthesisUtteranceGetText ::
-                                (MonadIO m, IsSpeechSynthesisUtterance self,
-                                 FromJSString result) =>
-                                  self -> m result
-speechSynthesisUtteranceGetText self
+getText ::
+        (MonadIO m, FromJSString result) =>
+          SpeechSynthesisUtterance -> m result
+getText self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_speech_synthesis_utterance_get_text
-            (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))))
+      (fromJSString <$> (js_getText (unSpeechSynthesisUtterance self)))
  
-foreign import javascript unsafe "$1[\"lang\"] = $2;"
-        ghcjs_dom_speech_synthesis_utterance_set_lang ::
+foreign import javascript unsafe "$1[\"lang\"] = $2;" js_setLang ::
         JSRef SpeechSynthesisUtterance -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.lang Mozilla SpeechSynthesisUtterance.lang documentation> 
-speechSynthesisUtteranceSetLang ::
-                                (MonadIO m, IsSpeechSynthesisUtterance self, ToJSString val) =>
-                                  self -> val -> m ()
-speechSynthesisUtteranceSetLang self val
+setLang ::
+        (MonadIO m, ToJSString val) =>
+          SpeechSynthesisUtterance -> val -> m ()
+setLang self val
   = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_set_lang
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))
-         (toJSString val))
+      (js_setLang (unSpeechSynthesisUtterance self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"lang\"]"
-        ghcjs_dom_speech_synthesis_utterance_get_lang ::
+foreign import javascript unsafe "$1[\"lang\"]" js_getLang ::
         JSRef SpeechSynthesisUtterance -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.lang Mozilla SpeechSynthesisUtterance.lang documentation> 
-speechSynthesisUtteranceGetLang ::
-                                (MonadIO m, IsSpeechSynthesisUtterance self,
-                                 FromJSString result) =>
-                                  self -> m result
-speechSynthesisUtteranceGetLang self
+getLang ::
+        (MonadIO m, FromJSString result) =>
+          SpeechSynthesisUtterance -> m result
+getLang self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_speech_synthesis_utterance_get_lang
-            (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))))
+      (fromJSString <$> (js_getLang (unSpeechSynthesisUtterance self)))
  
-foreign import javascript unsafe "$1[\"voice\"] = $2;"
-        ghcjs_dom_speech_synthesis_utterance_set_voice ::
+foreign import javascript unsafe "$1[\"voice\"] = $2;" js_setVoice
+        ::
         JSRef SpeechSynthesisUtterance ->
           JSRef SpeechSynthesisVoice -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.voice Mozilla SpeechSynthesisUtterance.voice documentation> 
-speechSynthesisUtteranceSetVoice ::
-                                 (MonadIO m, IsSpeechSynthesisUtterance self,
-                                  IsSpeechSynthesisVoice val) =>
-                                   self -> Maybe val -> m ()
-speechSynthesisUtteranceSetVoice self val
+setVoice ::
+         (MonadIO m) =>
+           SpeechSynthesisUtterance -> Maybe SpeechSynthesisVoice -> m ()
+setVoice self val
   = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_set_voice
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))
-         (maybe jsNull (unSpeechSynthesisVoice . toSpeechSynthesisVoice)
-            val))
+      (js_setVoice (unSpeechSynthesisUtterance self)
+         (maybe jsNull unSpeechSynthesisVoice val))
  
-foreign import javascript unsafe "$1[\"voice\"]"
-        ghcjs_dom_speech_synthesis_utterance_get_voice ::
+foreign import javascript unsafe "$1[\"voice\"]" js_getVoice ::
         JSRef SpeechSynthesisUtterance -> IO (JSRef SpeechSynthesisVoice)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.voice Mozilla SpeechSynthesisUtterance.voice documentation> 
-speechSynthesisUtteranceGetVoice ::
-                                 (MonadIO m, IsSpeechSynthesisUtterance self) =>
-                                   self -> m (Maybe SpeechSynthesisVoice)
-speechSynthesisUtteranceGetVoice self
+getVoice ::
+         (MonadIO m) =>
+           SpeechSynthesisUtterance -> m (Maybe SpeechSynthesisVoice)
+getVoice self
   = liftIO
-      ((ghcjs_dom_speech_synthesis_utterance_get_voice
-          (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self)))
-         >>= fromJSRef)
+      ((js_getVoice (unSpeechSynthesisUtterance self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"volume\"] = $2;"
-        ghcjs_dom_speech_synthesis_utterance_set_volume ::
-        JSRef SpeechSynthesisUtterance -> Float -> IO ()
+        js_setVolume :: JSRef SpeechSynthesisUtterance -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.volume Mozilla SpeechSynthesisUtterance.volume documentation> 
-speechSynthesisUtteranceSetVolume ::
-                                  (MonadIO m, IsSpeechSynthesisUtterance self) =>
-                                    self -> Float -> m ()
-speechSynthesisUtteranceSetVolume self val
-  = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_set_volume
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))
-         val)
+setVolume ::
+          (MonadIO m) => SpeechSynthesisUtterance -> Float -> m ()
+setVolume self val
+  = liftIO (js_setVolume (unSpeechSynthesisUtterance self) val)
  
-foreign import javascript unsafe "$1[\"volume\"]"
-        ghcjs_dom_speech_synthesis_utterance_get_volume ::
+foreign import javascript unsafe "$1[\"volume\"]" js_getVolume ::
         JSRef SpeechSynthesisUtterance -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.volume Mozilla SpeechSynthesisUtterance.volume documentation> 
-speechSynthesisUtteranceGetVolume ::
-                                  (MonadIO m, IsSpeechSynthesisUtterance self) => self -> m Float
-speechSynthesisUtteranceGetVolume self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_get_volume
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self)))
+getVolume :: (MonadIO m) => SpeechSynthesisUtterance -> m Float
+getVolume self
+  = liftIO (js_getVolume (unSpeechSynthesisUtterance self))
  
-foreign import javascript unsafe "$1[\"rate\"] = $2;"
-        ghcjs_dom_speech_synthesis_utterance_set_rate ::
+foreign import javascript unsafe "$1[\"rate\"] = $2;" js_setRate ::
         JSRef SpeechSynthesisUtterance -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.rate Mozilla SpeechSynthesisUtterance.rate documentation> 
-speechSynthesisUtteranceSetRate ::
-                                (MonadIO m, IsSpeechSynthesisUtterance self) =>
-                                  self -> Float -> m ()
-speechSynthesisUtteranceSetRate self val
-  = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_set_rate
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))
-         val)
+setRate :: (MonadIO m) => SpeechSynthesisUtterance -> Float -> m ()
+setRate self val
+  = liftIO (js_setRate (unSpeechSynthesisUtterance self) val)
  
-foreign import javascript unsafe "$1[\"rate\"]"
-        ghcjs_dom_speech_synthesis_utterance_get_rate ::
+foreign import javascript unsafe "$1[\"rate\"]" js_getRate ::
         JSRef SpeechSynthesisUtterance -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.rate Mozilla SpeechSynthesisUtterance.rate documentation> 
-speechSynthesisUtteranceGetRate ::
-                                (MonadIO m, IsSpeechSynthesisUtterance self) => self -> m Float
-speechSynthesisUtteranceGetRate self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_get_rate
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self)))
+getRate :: (MonadIO m) => SpeechSynthesisUtterance -> m Float
+getRate self
+  = liftIO (js_getRate (unSpeechSynthesisUtterance self))
  
-foreign import javascript unsafe "$1[\"pitch\"] = $2;"
-        ghcjs_dom_speech_synthesis_utterance_set_pitch ::
-        JSRef SpeechSynthesisUtterance -> Float -> IO ()
+foreign import javascript unsafe "$1[\"pitch\"] = $2;" js_setPitch
+        :: JSRef SpeechSynthesisUtterance -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.pitch Mozilla SpeechSynthesisUtterance.pitch documentation> 
-speechSynthesisUtteranceSetPitch ::
-                                 (MonadIO m, IsSpeechSynthesisUtterance self) =>
-                                   self -> Float -> m ()
-speechSynthesisUtteranceSetPitch self val
-  = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_set_pitch
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self))
-         val)
+setPitch ::
+         (MonadIO m) => SpeechSynthesisUtterance -> Float -> m ()
+setPitch self val
+  = liftIO (js_setPitch (unSpeechSynthesisUtterance self) val)
  
-foreign import javascript unsafe "$1[\"pitch\"]"
-        ghcjs_dom_speech_synthesis_utterance_get_pitch ::
+foreign import javascript unsafe "$1[\"pitch\"]" js_getPitch ::
         JSRef SpeechSynthesisUtterance -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.pitch Mozilla SpeechSynthesisUtterance.pitch documentation> 
-speechSynthesisUtteranceGetPitch ::
-                                 (MonadIO m, IsSpeechSynthesisUtterance self) => self -> m Float
-speechSynthesisUtteranceGetPitch self
-  = liftIO
-      (ghcjs_dom_speech_synthesis_utterance_get_pitch
-         (unSpeechSynthesisUtterance (toSpeechSynthesisUtterance self)))
+getPitch :: (MonadIO m) => SpeechSynthesisUtterance -> m Float
+getPitch self
+  = liftIO (js_getPitch (unSpeechSynthesisUtterance self))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.start Mozilla SpeechSynthesisUtterance.start documentation> 
-speechSynthesisUtteranceStart ::
-                              (IsSpeechSynthesisUtterance self, IsEventTarget self) =>
-                                EventName self Event
-speechSynthesisUtteranceStart
-  = unsafeEventName (toJSString "start")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onstart Mozilla SpeechSynthesisUtterance.onstart documentation> 
+start :: EventName SpeechSynthesisUtterance Event
+start = unsafeEventName (toJSString "start")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.end Mozilla SpeechSynthesisUtterance.end documentation> 
-speechSynthesisUtteranceEnd ::
-                            (IsSpeechSynthesisUtterance self, IsEventTarget self) =>
-                              EventName self Event
-speechSynthesisUtteranceEnd = unsafeEventName (toJSString "end")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onend Mozilla SpeechSynthesisUtterance.onend documentation> 
+end :: EventName SpeechSynthesisUtterance Event
+end = unsafeEventName (toJSString "end")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.error Mozilla SpeechSynthesisUtterance.error documentation> 
-speechSynthesisUtteranceError ::
-                              (IsSpeechSynthesisUtterance self, IsEventTarget self) =>
-                                EventName self UIEvent
-speechSynthesisUtteranceError
-  = unsafeEventName (toJSString "error")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onerror Mozilla SpeechSynthesisUtterance.onerror documentation> 
+error :: EventName SpeechSynthesisUtterance UIEvent
+error = unsafeEventName (toJSString "error")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.pause Mozilla SpeechSynthesisUtterance.pause documentation> 
-speechSynthesisUtterancePause ::
-                              (IsSpeechSynthesisUtterance self, IsEventTarget self) =>
-                                EventName self Event
-speechSynthesisUtterancePause
-  = unsafeEventName (toJSString "pause")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onpause Mozilla SpeechSynthesisUtterance.onpause documentation> 
+pause :: EventName SpeechSynthesisUtterance Event
+pause = unsafeEventName (toJSString "pause")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.resume Mozilla SpeechSynthesisUtterance.resume documentation> 
-speechSynthesisUtteranceResume ::
-                               (IsSpeechSynthesisUtterance self, IsEventTarget self) =>
-                                 EventName self Event
-speechSynthesisUtteranceResume
-  = unsafeEventName (toJSString "resume")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onresume Mozilla SpeechSynthesisUtterance.onresume documentation> 
+resume :: EventName SpeechSynthesisUtterance Event
+resume = unsafeEventName (toJSString "resume")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.mark Mozilla SpeechSynthesisUtterance.mark documentation> 
-speechSynthesisUtteranceMark ::
-                             (IsSpeechSynthesisUtterance self, IsEventTarget self) =>
-                               EventName self Event
-speechSynthesisUtteranceMark = unsafeEventName (toJSString "mark")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onmark Mozilla SpeechSynthesisUtterance.onmark documentation> 
+mark :: EventName SpeechSynthesisUtterance Event
+mark = unsafeEventName (toJSString "mark")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.boundary Mozilla SpeechSynthesisUtterance.boundary documentation> 
-speechSynthesisUtteranceBoundary ::
-                                 (IsSpeechSynthesisUtterance self, IsEventTarget self) =>
-                                   EventName self Event
-speechSynthesisUtteranceBoundary
-  = unsafeEventName (toJSString "boundary")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onboundary Mozilla SpeechSynthesisUtterance.onboundary documentation> 
+boundary :: EventName SpeechSynthesisUtterance Event
+boundary = unsafeEventName (toJSString "boundary")
 #else
 module GHCJS.DOM.SpeechSynthesisUtterance (
   ) where

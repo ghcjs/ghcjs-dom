@@ -1,34 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLScriptElement
-       (ghcjs_dom_html_script_element_set_text, htmlScriptElementSetText,
-        ghcjs_dom_html_script_element_get_text, htmlScriptElementGetText,
-        ghcjs_dom_html_script_element_set_html_for,
-        htmlScriptElementSetHtmlFor,
-        ghcjs_dom_html_script_element_get_html_for,
-        htmlScriptElementGetHtmlFor,
-        ghcjs_dom_html_script_element_set_event, htmlScriptElementSetEvent,
-        ghcjs_dom_html_script_element_get_event, htmlScriptElementGetEvent,
-        ghcjs_dom_html_script_element_set_charset,
-        htmlScriptElementSetCharset,
-        ghcjs_dom_html_script_element_get_charset,
-        htmlScriptElementGetCharset,
-        ghcjs_dom_html_script_element_set_async, htmlScriptElementSetAsync,
-        ghcjs_dom_html_script_element_get_async, htmlScriptElementGetAsync,
-        ghcjs_dom_html_script_element_set_defer, htmlScriptElementSetDefer,
-        ghcjs_dom_html_script_element_get_defer, htmlScriptElementGetDefer,
-        ghcjs_dom_html_script_element_set_src, htmlScriptElementSetSrc,
-        ghcjs_dom_html_script_element_get_src, htmlScriptElementGetSrc,
-        ghcjs_dom_html_script_element_set_cross_origin,
-        htmlScriptElementSetCrossOrigin,
-        ghcjs_dom_html_script_element_get_cross_origin,
-        htmlScriptElementGetCrossOrigin,
-        ghcjs_dom_html_script_element_set_nonce, htmlScriptElementSetNonce,
-        ghcjs_dom_html_script_element_get_nonce, htmlScriptElementGetNonce,
-        HTMLScriptElement, IsHTMLScriptElement, castToHTMLScriptElement,
-        gTypeHTMLScriptElement, toHTMLScriptElement)
+       (js_setText, setText, js_getText, getText, js_setHtmlFor,
+        setHtmlFor, js_getHtmlFor, getHtmlFor, js_setEvent, setEvent,
+        js_getEvent, getEvent, js_setCharset, setCharset, js_getCharset,
+        getCharset, js_setAsync, setAsync, js_getAsync, getAsync,
+        js_setDefer, setDefer, js_getDefer, getDefer, js_setSrc, setSrc,
+        js_getSrc, getSrc, js_setCrossOrigin, setCrossOrigin,
+        js_getCrossOrigin, getCrossOrigin, js_setNonce, setNonce,
+        js_getNonce, getNonce, HTMLScriptElement, castToHTMLScriptElement,
+        gTypeHTMLScriptElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -38,255 +22,173 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"text\"] = $2;"
-        ghcjs_dom_html_script_element_set_text ::
+foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
         JSRef HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
-htmlScriptElementSetText ::
-                         (MonadIO m, IsHTMLScriptElement self, ToJSString val) =>
-                           self -> val -> m ()
-htmlScriptElementSetText self val
-  = liftIO
-      (ghcjs_dom_html_script_element_set_text
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         (toJSString val))
+setText ::
+        (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setText self val
+  = liftIO (js_setText (unHTMLScriptElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"text\"]"
-        ghcjs_dom_html_script_element_get_text ::
+foreign import javascript unsafe "$1[\"text\"]" js_getText ::
         JSRef HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
-htmlScriptElementGetText ::
-                         (MonadIO m, IsHTMLScriptElement self, FromJSString result) =>
-                           self -> m result
-htmlScriptElementGetText self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_script_element_get_text
-            (unHTMLScriptElement (toHTMLScriptElement self))))
+getText ::
+        (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getText self
+  = liftIO (fromJSString <$> (js_getText (unHTMLScriptElement self)))
  
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
-        ghcjs_dom_html_script_element_set_html_for ::
-        JSRef HTMLScriptElement -> JSString -> IO ()
+        js_setHtmlFor :: JSRef HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.htmlFor Mozilla HTMLScriptElement.htmlFor documentation> 
-htmlScriptElementSetHtmlFor ::
-                            (MonadIO m, IsHTMLScriptElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlScriptElementSetHtmlFor self val
+setHtmlFor ::
+           (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setHtmlFor self val
   = liftIO
-      (ghcjs_dom_html_script_element_set_html_for
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         (toJSString val))
+      (js_setHtmlFor (unHTMLScriptElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"htmlFor\"]"
-        ghcjs_dom_html_script_element_get_html_for ::
+foreign import javascript unsafe "$1[\"htmlFor\"]" js_getHtmlFor ::
         JSRef HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.htmlFor Mozilla HTMLScriptElement.htmlFor documentation> 
-htmlScriptElementGetHtmlFor ::
-                            (MonadIO m, IsHTMLScriptElement self, FromJSString result) =>
-                              self -> m result
-htmlScriptElementGetHtmlFor self
+getHtmlFor ::
+           (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getHtmlFor self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_script_element_get_html_for
-            (unHTMLScriptElement (toHTMLScriptElement self))))
+      (fromJSString <$> (js_getHtmlFor (unHTMLScriptElement self)))
  
-foreign import javascript unsafe "$1[\"event\"] = $2;"
-        ghcjs_dom_html_script_element_set_event ::
-        JSRef HTMLScriptElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"event\"] = $2;" js_setEvent
+        :: JSRef HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.event Mozilla HTMLScriptElement.event documentation> 
-htmlScriptElementSetEvent ::
-                          (MonadIO m, IsHTMLScriptElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlScriptElementSetEvent self val
-  = liftIO
-      (ghcjs_dom_html_script_element_set_event
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         (toJSString val))
+setEvent ::
+         (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setEvent self val
+  = liftIO (js_setEvent (unHTMLScriptElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"event\"]"
-        ghcjs_dom_html_script_element_get_event ::
+foreign import javascript unsafe "$1[\"event\"]" js_getEvent ::
         JSRef HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.event Mozilla HTMLScriptElement.event documentation> 
-htmlScriptElementGetEvent ::
-                          (MonadIO m, IsHTMLScriptElement self, FromJSString result) =>
-                            self -> m result
-htmlScriptElementGetEvent self
+getEvent ::
+         (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getEvent self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_script_element_get_event
-            (unHTMLScriptElement (toHTMLScriptElement self))))
+      (fromJSString <$> (js_getEvent (unHTMLScriptElement self)))
  
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
-        ghcjs_dom_html_script_element_set_charset ::
-        JSRef HTMLScriptElement -> JSString -> IO ()
+        js_setCharset :: JSRef HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.charset Mozilla HTMLScriptElement.charset documentation> 
-htmlScriptElementSetCharset ::
-                            (MonadIO m, IsHTMLScriptElement self, ToJSString val) =>
-                              self -> val -> m ()
-htmlScriptElementSetCharset self val
+setCharset ::
+           (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setCharset self val
   = liftIO
-      (ghcjs_dom_html_script_element_set_charset
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         (toJSString val))
+      (js_setCharset (unHTMLScriptElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"charset\"]"
-        ghcjs_dom_html_script_element_get_charset ::
+foreign import javascript unsafe "$1[\"charset\"]" js_getCharset ::
         JSRef HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.charset Mozilla HTMLScriptElement.charset documentation> 
-htmlScriptElementGetCharset ::
-                            (MonadIO m, IsHTMLScriptElement self, FromJSString result) =>
-                              self -> m result
-htmlScriptElementGetCharset self
+getCharset ::
+           (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getCharset self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_script_element_get_charset
-            (unHTMLScriptElement (toHTMLScriptElement self))))
+      (fromJSString <$> (js_getCharset (unHTMLScriptElement self)))
  
-foreign import javascript unsafe "$1[\"async\"] = $2;"
-        ghcjs_dom_html_script_element_set_async ::
-        JSRef HTMLScriptElement -> Bool -> IO ()
+foreign import javascript unsafe "$1[\"async\"] = $2;" js_setAsync
+        :: JSRef HTMLScriptElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.async Mozilla HTMLScriptElement.async documentation> 
-htmlScriptElementSetAsync ::
-                          (MonadIO m, IsHTMLScriptElement self) => self -> Bool -> m ()
-htmlScriptElementSetAsync self val
-  = liftIO
-      (ghcjs_dom_html_script_element_set_async
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         val)
+setAsync :: (MonadIO m) => HTMLScriptElement -> Bool -> m ()
+setAsync self val
+  = liftIO (js_setAsync (unHTMLScriptElement self) val)
  
 foreign import javascript unsafe "($1[\"async\"] ? 1 : 0)"
-        ghcjs_dom_html_script_element_get_async ::
-        JSRef HTMLScriptElement -> IO Bool
+        js_getAsync :: JSRef HTMLScriptElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.async Mozilla HTMLScriptElement.async documentation> 
-htmlScriptElementGetAsync ::
-                          (MonadIO m, IsHTMLScriptElement self) => self -> m Bool
-htmlScriptElementGetAsync self
-  = liftIO
-      (ghcjs_dom_html_script_element_get_async
-         (unHTMLScriptElement (toHTMLScriptElement self)))
+getAsync :: (MonadIO m) => HTMLScriptElement -> m Bool
+getAsync self = liftIO (js_getAsync (unHTMLScriptElement self))
  
-foreign import javascript unsafe "$1[\"defer\"] = $2;"
-        ghcjs_dom_html_script_element_set_defer ::
-        JSRef HTMLScriptElement -> Bool -> IO ()
+foreign import javascript unsafe "$1[\"defer\"] = $2;" js_setDefer
+        :: JSRef HTMLScriptElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.defer Mozilla HTMLScriptElement.defer documentation> 
-htmlScriptElementSetDefer ::
-                          (MonadIO m, IsHTMLScriptElement self) => self -> Bool -> m ()
-htmlScriptElementSetDefer self val
-  = liftIO
-      (ghcjs_dom_html_script_element_set_defer
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         val)
+setDefer :: (MonadIO m) => HTMLScriptElement -> Bool -> m ()
+setDefer self val
+  = liftIO (js_setDefer (unHTMLScriptElement self) val)
  
 foreign import javascript unsafe "($1[\"defer\"] ? 1 : 0)"
-        ghcjs_dom_html_script_element_get_defer ::
-        JSRef HTMLScriptElement -> IO Bool
+        js_getDefer :: JSRef HTMLScriptElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.defer Mozilla HTMLScriptElement.defer documentation> 
-htmlScriptElementGetDefer ::
-                          (MonadIO m, IsHTMLScriptElement self) => self -> m Bool
-htmlScriptElementGetDefer self
-  = liftIO
-      (ghcjs_dom_html_script_element_get_defer
-         (unHTMLScriptElement (toHTMLScriptElement self)))
+getDefer :: (MonadIO m) => HTMLScriptElement -> m Bool
+getDefer self = liftIO (js_getDefer (unHTMLScriptElement self))
  
-foreign import javascript unsafe "$1[\"src\"] = $2;"
-        ghcjs_dom_html_script_element_set_src ::
+foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         JSRef HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.src Mozilla HTMLScriptElement.src documentation> 
-htmlScriptElementSetSrc ::
-                        (MonadIO m, IsHTMLScriptElement self, ToJSString val) =>
-                          self -> val -> m ()
-htmlScriptElementSetSrc self val
-  = liftIO
-      (ghcjs_dom_html_script_element_set_src
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         (toJSString val))
+setSrc ::
+       (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setSrc self val
+  = liftIO (js_setSrc (unHTMLScriptElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]"
-        ghcjs_dom_html_script_element_get_src ::
+foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
         JSRef HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.src Mozilla HTMLScriptElement.src documentation> 
-htmlScriptElementGetSrc ::
-                        (MonadIO m, IsHTMLScriptElement self, FromJSString result) =>
-                          self -> m result
-htmlScriptElementGetSrc self
-  = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_script_element_get_src
-            (unHTMLScriptElement (toHTMLScriptElement self))))
+getSrc ::
+       (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getSrc self
+  = liftIO (fromJSString <$> (js_getSrc (unHTMLScriptElement self)))
  
 foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
-        ghcjs_dom_html_script_element_set_cross_origin ::
-        JSRef HTMLScriptElement -> JSString -> IO ()
+        js_setCrossOrigin :: JSRef HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.crossOrigin Mozilla HTMLScriptElement.crossOrigin documentation> 
-htmlScriptElementSetCrossOrigin ::
-                                (MonadIO m, IsHTMLScriptElement self, ToJSString val) =>
-                                  self -> val -> m ()
-htmlScriptElementSetCrossOrigin self val
+setCrossOrigin ::
+               (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setCrossOrigin self val
   = liftIO
-      (ghcjs_dom_html_script_element_set_cross_origin
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         (toJSString val))
+      (js_setCrossOrigin (unHTMLScriptElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"crossOrigin\"]"
-        ghcjs_dom_html_script_element_get_cross_origin ::
-        JSRef HTMLScriptElement -> IO JSString
+        js_getCrossOrigin :: JSRef HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.crossOrigin Mozilla HTMLScriptElement.crossOrigin documentation> 
-htmlScriptElementGetCrossOrigin ::
-                                (MonadIO m, IsHTMLScriptElement self, FromJSString result) =>
-                                  self -> m result
-htmlScriptElementGetCrossOrigin self
+getCrossOrigin ::
+               (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getCrossOrigin self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_script_element_get_cross_origin
-            (unHTMLScriptElement (toHTMLScriptElement self))))
+      (fromJSString <$> (js_getCrossOrigin (unHTMLScriptElement self)))
  
-foreign import javascript unsafe "$1[\"nonce\"] = $2;"
-        ghcjs_dom_html_script_element_set_nonce ::
-        JSRef HTMLScriptElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"nonce\"] = $2;" js_setNonce
+        :: JSRef HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.nonce Mozilla HTMLScriptElement.nonce documentation> 
-htmlScriptElementSetNonce ::
-                          (MonadIO m, IsHTMLScriptElement self, ToJSString val) =>
-                            self -> val -> m ()
-htmlScriptElementSetNonce self val
-  = liftIO
-      (ghcjs_dom_html_script_element_set_nonce
-         (unHTMLScriptElement (toHTMLScriptElement self))
-         (toJSString val))
+setNonce ::
+         (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setNonce self val
+  = liftIO (js_setNonce (unHTMLScriptElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"nonce\"]"
-        ghcjs_dom_html_script_element_get_nonce ::
+foreign import javascript unsafe "$1[\"nonce\"]" js_getNonce ::
         JSRef HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.nonce Mozilla HTMLScriptElement.nonce documentation> 
-htmlScriptElementGetNonce ::
-                          (MonadIO m, IsHTMLScriptElement self, FromJSString result) =>
-                            self -> m result
-htmlScriptElementGetNonce self
+getNonce ::
+         (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getNonce self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_script_element_get_nonce
-            (unHTMLScriptElement (toHTMLScriptElement self))))
+      (fromJSString <$> (js_getNonce (unHTMLScriptElement self)))
 #else
 module GHCJS.DOM.HTMLScriptElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLScriptElement

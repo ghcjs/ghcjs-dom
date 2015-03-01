@@ -1,14 +1,12 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLTableCaptionElement
-       (ghcjs_dom_html_table_caption_element_set_align,
-        htmlTableCaptionElementSetAlign,
-        ghcjs_dom_html_table_caption_element_get_align,
-        htmlTableCaptionElementGetAlign, HTMLTableCaptionElement,
-        IsHTMLTableCaptionElement, castToHTMLTableCaptionElement,
-        gTypeHTMLTableCaptionElement, toHTMLTableCaptionElement)
+       (js_setAlign, setAlign, js_getAlign, getAlign,
+        HTMLTableCaptionElement, castToHTMLTableCaptionElement,
+        gTypeHTMLTableCaptionElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -18,37 +16,31 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"align\"] = $2;"
-        ghcjs_dom_html_table_caption_element_set_align ::
-        JSRef HTMLTableCaptionElement -> JSString -> IO ()
+foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+        :: JSRef HTMLTableCaptionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement.align Mozilla HTMLTableCaptionElement.align documentation> 
-htmlTableCaptionElementSetAlign ::
-                                (MonadIO m, IsHTMLTableCaptionElement self, ToJSString val) =>
-                                  self -> val -> m ()
-htmlTableCaptionElementSetAlign self val
+setAlign ::
+         (MonadIO m, ToJSString val) =>
+           HTMLTableCaptionElement -> val -> m ()
+setAlign self val
   = liftIO
-      (ghcjs_dom_html_table_caption_element_set_align
-         (unHTMLTableCaptionElement (toHTMLTableCaptionElement self))
-         (toJSString val))
+      (js_setAlign (unHTMLTableCaptionElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]"
-        ghcjs_dom_html_table_caption_element_get_align ::
+foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         JSRef HTMLTableCaptionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement.align Mozilla HTMLTableCaptionElement.align documentation> 
-htmlTableCaptionElementGetAlign ::
-                                (MonadIO m, IsHTMLTableCaptionElement self, FromJSString result) =>
-                                  self -> m result
-htmlTableCaptionElementGetAlign self
+getAlign ::
+         (MonadIO m, FromJSString result) =>
+           HTMLTableCaptionElement -> m result
+getAlign self
   = liftIO
-      (fromJSString <$>
-         (ghcjs_dom_html_table_caption_element_get_align
-            (unHTMLTableCaptionElement (toHTMLTableCaptionElement self))))
+      (fromJSString <$> (js_getAlign (unHTMLTableCaptionElement self)))
 #else
 module GHCJS.DOM.HTMLTableCaptionElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLTableCaptionElement

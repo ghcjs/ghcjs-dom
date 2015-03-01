@@ -1,22 +1,14 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLCanvasElement
-       (ghcjs_dom_html_canvas_element_to_data_url,
-        htmlCanvasElementToDataURL,
-        ghcjs_dom_html_canvas_element_get_context,
-        htmlCanvasElementGetContext,
-        ghcjs_dom_html_canvas_element_probably_supports_context,
-        htmlCanvasElementProbablySupportsContext,
-        ghcjs_dom_html_canvas_element_set_width, htmlCanvasElementSetWidth,
-        ghcjs_dom_html_canvas_element_get_width, htmlCanvasElementGetWidth,
-        ghcjs_dom_html_canvas_element_set_height,
-        htmlCanvasElementSetHeight,
-        ghcjs_dom_html_canvas_element_get_height,
-        htmlCanvasElementGetHeight, HTMLCanvasElement, IsHTMLCanvasElement,
-        castToHTMLCanvasElement, gTypeHTMLCanvasElement,
-        toHTMLCanvasElement)
+       (js_toDataURL, toDataURL, js_getContext, getContext,
+        js_probablySupportsContext, probablySupportsContext, js_setWidth,
+        setWidth, js_getWidth, getWidth, js_setHeight, setHeight,
+        js_getHeight, getHeight, HTMLCanvasElement,
+        castToHTMLCanvasElement, gTypeHTMLCanvasElement)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,105 +18,76 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
 foreign import javascript unsafe "$1[\"toDataURL\"]($2)"
-        ghcjs_dom_html_canvas_element_to_data_url ::
-        JSRef HTMLCanvasElement -> JSString -> IO JSString
+        js_toDataURL :: JSRef HTMLCanvasElement -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL Mozilla HTMLCanvasElement.toDataURL documentation> 
-htmlCanvasElementToDataURL ::
-                           (MonadIO m, IsHTMLCanvasElement self, ToJSString type',
-                            FromJSString result) =>
-                             self -> type' -> m result
-htmlCanvasElementToDataURL self type'
+toDataURL ::
+          (MonadIO m, ToJSString type', FromJSString result) =>
+            HTMLCanvasElement -> type' -> m result
+toDataURL self type'
   = liftIO
       (fromJSString <$>
-         (ghcjs_dom_html_canvas_element_to_data_url
-            (unHTMLCanvasElement (toHTMLCanvasElement self))
-            (toJSString type')))
+         (js_toDataURL (unHTMLCanvasElement self) (toJSString type')))
  
 foreign import javascript unsafe "$1[\"getContext\"]($2)"
-        ghcjs_dom_html_canvas_element_get_context ::
+        js_getContext ::
         JSRef HTMLCanvasElement -> JSString -> IO (JSRef a)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.context Mozilla HTMLCanvasElement.context documentation> 
-htmlCanvasElementGetContext ::
-                            (MonadIO m, IsHTMLCanvasElement self, ToJSString contextId) =>
-                              self -> contextId -> m (JSRef a)
-htmlCanvasElementGetContext self contextId
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.getContext Mozilla HTMLCanvasElement.getContext documentation> 
+getContext ::
+           (MonadIO m, ToJSString contextId) =>
+             HTMLCanvasElement -> contextId -> m (JSRef a)
+getContext self contextId
   = liftIO
-      (ghcjs_dom_html_canvas_element_get_context
-         (unHTMLCanvasElement (toHTMLCanvasElement self))
-         (toJSString contextId))
+      (js_getContext (unHTMLCanvasElement self) (toJSString contextId))
  
 foreign import javascript unsafe
-        "$1[\"probablySupportsContext\"]($2)"
-        ghcjs_dom_html_canvas_element_probably_supports_context ::
+        "$1[\"probablySupportsContext\"]($2)" js_probablySupportsContext ::
         JSRef HTMLCanvasElement -> JSString -> IO (JSRef a)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.probablySupportsContext Mozilla HTMLCanvasElement.probablySupportsContext documentation> 
-htmlCanvasElementProbablySupportsContext ::
-                                         (MonadIO m, IsHTMLCanvasElement self,
-                                          ToJSString contextId) =>
-                                           self -> contextId -> m (JSRef a)
-htmlCanvasElementProbablySupportsContext self contextId
+probablySupportsContext ::
+                        (MonadIO m, ToJSString contextId) =>
+                          HTMLCanvasElement -> contextId -> m (JSRef a)
+probablySupportsContext self contextId
   = liftIO
-      (ghcjs_dom_html_canvas_element_probably_supports_context
-         (unHTMLCanvasElement (toHTMLCanvasElement self))
+      (js_probablySupportsContext (unHTMLCanvasElement self)
          (toJSString contextId))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;"
-        ghcjs_dom_html_canvas_element_set_width ::
-        JSRef HTMLCanvasElement -> Int -> IO ()
+foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+        :: JSRef HTMLCanvasElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
-htmlCanvasElementSetWidth ::
-                          (MonadIO m, IsHTMLCanvasElement self) => self -> Int -> m ()
-htmlCanvasElementSetWidth self val
-  = liftIO
-      (ghcjs_dom_html_canvas_element_set_width
-         (unHTMLCanvasElement (toHTMLCanvasElement self))
-         val)
+setWidth :: (MonadIO m) => HTMLCanvasElement -> Int -> m ()
+setWidth self val
+  = liftIO (js_setWidth (unHTMLCanvasElement self) val)
  
-foreign import javascript unsafe "$1[\"width\"]"
-        ghcjs_dom_html_canvas_element_get_width ::
+foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef HTMLCanvasElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
-htmlCanvasElementGetWidth ::
-                          (MonadIO m, IsHTMLCanvasElement self) => self -> m Int
-htmlCanvasElementGetWidth self
-  = liftIO
-      (ghcjs_dom_html_canvas_element_get_width
-         (unHTMLCanvasElement (toHTMLCanvasElement self)))
+getWidth :: (MonadIO m) => HTMLCanvasElement -> m Int
+getWidth self = liftIO (js_getWidth (unHTMLCanvasElement self))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        ghcjs_dom_html_canvas_element_set_height ::
-        JSRef HTMLCanvasElement -> Int -> IO ()
+        js_setHeight :: JSRef HTMLCanvasElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 
-htmlCanvasElementSetHeight ::
-                           (MonadIO m, IsHTMLCanvasElement self) => self -> Int -> m ()
-htmlCanvasElementSetHeight self val
-  = liftIO
-      (ghcjs_dom_html_canvas_element_set_height
-         (unHTMLCanvasElement (toHTMLCanvasElement self))
-         val)
+setHeight :: (MonadIO m) => HTMLCanvasElement -> Int -> m ()
+setHeight self val
+  = liftIO (js_setHeight (unHTMLCanvasElement self) val)
  
-foreign import javascript unsafe "$1[\"height\"]"
-        ghcjs_dom_html_canvas_element_get_height ::
+foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         JSRef HTMLCanvasElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 
-htmlCanvasElementGetHeight ::
-                           (MonadIO m, IsHTMLCanvasElement self) => self -> m Int
-htmlCanvasElementGetHeight self
-  = liftIO
-      (ghcjs_dom_html_canvas_element_get_height
-         (unHTMLCanvasElement (toHTMLCanvasElement self)))
+getHeight :: (MonadIO m) => HTMLCanvasElement -> m Int
+getHeight self = liftIO (js_getHeight (unHTMLCanvasElement self))
 #else
 module GHCJS.DOM.HTMLCanvasElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLCanvasElement

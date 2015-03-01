@@ -1,12 +1,11 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, PatternSynonyms #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.SourceBufferList
-       (ghcjs_dom_source_buffer_list_item, sourceBufferListItem,
-        ghcjs_dom_source_buffer_list_get_length, sourceBufferListGetLength,
-        SourceBufferList, IsSourceBufferList, castToSourceBufferList,
-        gTypeSourceBufferList, toSourceBufferList)
+       (js_item, item, js_getLength, getLength, SourceBufferList,
+        castToSourceBufferList, gTypeSourceBufferList)
        where
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -16,36 +15,25 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM
+import GHCJS.DOM.EventM (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
-foreign import javascript unsafe "$1[\"item\"]($2)"
-        ghcjs_dom_source_buffer_list_item ::
+foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         JSRef SourceBufferList -> Word -> IO (JSRef SourceBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBufferList.item Mozilla SourceBufferList.item documentation> 
-sourceBufferListItem ::
-                     (MonadIO m, IsSourceBufferList self) =>
-                       self -> Word -> m (Maybe SourceBuffer)
-sourceBufferListItem self index
-  = liftIO
-      ((ghcjs_dom_source_buffer_list_item
-          (unSourceBufferList (toSourceBufferList self))
-          index)
-         >>= fromJSRef)
+item ::
+     (MonadIO m) => SourceBufferList -> Word -> m (Maybe SourceBuffer)
+item self index
+  = liftIO ((js_item (unSourceBufferList self) index) >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"length\"]"
-        ghcjs_dom_source_buffer_list_get_length ::
+foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef SourceBufferList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBufferList.length Mozilla SourceBufferList.length documentation> 
-sourceBufferListGetLength ::
-                          (MonadIO m, IsSourceBufferList self) => self -> m Word
-sourceBufferListGetLength self
-  = liftIO
-      (ghcjs_dom_source_buffer_list_get_length
-         (unSourceBufferList (toSourceBufferList self)))
+getLength :: (MonadIO m) => SourceBufferList -> m Word
+getLength self = liftIO (js_getLength (unSourceBufferList self))
 #else
 module GHCJS.DOM.SourceBufferList (
   ) where
