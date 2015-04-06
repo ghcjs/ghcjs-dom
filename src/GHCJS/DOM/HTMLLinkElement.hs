@@ -7,10 +7,9 @@ module GHCJS.DOM.HTMLLinkElement
         setHref, js_getHref, getHref, js_setHreflang, setHreflang,
         js_getHreflang, getHreflang, js_setMedia, setMedia, js_getMedia,
         getMedia, js_setRel, setRel, js_getRel, getRel, js_setRev, setRev,
-        js_getRev, getRev, js_setSizes, setSizes, js_getSizes, getSizes,
-        js_setTarget, setTarget, js_getTarget, getTarget, js_getSheet,
-        getSheet, js_getRelList, getRelList, HTMLLinkElement,
-        castToHTMLLinkElement, gTypeHTMLLinkElement)
+        js_getRev, getRev, js_setTarget, setTarget, js_getTarget,
+        getTarget, js_getSheet, getSheet, js_getRelList, getRelList,
+        HTMLLinkElement, castToHTMLLinkElement, gTypeHTMLLinkElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
@@ -22,7 +21,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -150,27 +149,6 @@ getRev ::
        (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getRev self
   = liftIO (fromJSString <$> (js_getRev (unHTMLLinkElement self)))
- 
-foreign import javascript unsafe "$1[\"sizes\"] = $2;" js_setSizes
-        :: JSRef HTMLLinkElement -> JSRef DOMSettableTokenList -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
-setSizes ::
-         (MonadIO m) =>
-           HTMLLinkElement -> Maybe DOMSettableTokenList -> m ()
-setSizes self val
-  = liftIO
-      (js_setSizes (unHTMLLinkElement self)
-         (maybe jsNull unDOMSettableTokenList val))
- 
-foreign import javascript unsafe "$1[\"sizes\"]" js_getSizes ::
-        JSRef HTMLLinkElement -> IO (JSRef DOMSettableTokenList)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
-getSizes ::
-         (MonadIO m) => HTMLLinkElement -> m (Maybe DOMSettableTokenList)
-getSizes self
-  = liftIO ((js_getSizes (unHTMLLinkElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         js_setTarget :: JSRef HTMLLinkElement -> JSString -> IO ()

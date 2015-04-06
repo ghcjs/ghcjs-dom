@@ -20,7 +20,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -137,5 +137,7 @@ exit ::
 exit = unsafeEventName (toJSString "exit")
 #else
 module GHCJS.DOM.TextTrackCue (
+  module Graphics.UI.Gtk.WebKit.DOM.TextTrackCue
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.TextTrackCue
 #endif

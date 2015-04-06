@@ -1,10 +1,8 @@
 {-# LANGUAGE ConstraintKinds #-}
 module GHCJS.DOM.EventM
 (
-  Signal (..)
-, EventM (..)
+  EventM (..)
 , EventName
-, unsafeEventName
 , newListener
 , addListener
 , removeListener
@@ -72,15 +70,7 @@ import           GHCJS.DOM.EventTarget
 import           GHCJS.DOM.EventTargetClosures
 import           Data.Word (Word)
 
-type Signal target callback = target -> callback -> IO (IO ())
-
 type EventM t e = ReaderT e IO
-
-newtype EventName t e = EventName DOMString
-newtype SaferEventListener t e = SaferEventListener EventListener
-
-unsafeEventName :: DOMString -> EventName t e
-unsafeEventName = EventName
 
 newListener :: (IsEvent e) => EventM t e () -> IO (SaferEventListener t e)
 newListener f = SaferEventListener <$> eventListenerNew (runReaderT f)

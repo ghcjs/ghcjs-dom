@@ -2,11 +2,11 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.HTMLOptionsCollection
-       (js_namedItem, namedItem, js_add, add, js_remove, remove,
-        js_setSelectedIndex, setSelectedIndex, js_getSelectedIndex,
-        getSelectedIndex, js_setLength, setLength, js_getLength, getLength,
-        HTMLOptionsCollection, castToHTMLOptionsCollection,
-        gTypeHTMLOptionsCollection)
+       (js_namedItem, namedItem, js_addBefore, addBefore, js_add, add,
+        js_remove, remove, js_setSelectedIndex, setSelectedIndex,
+        js_getSelectedIndex, getSelectedIndex, js_setLength, setLength,
+        js_getLength, getLength, HTMLOptionsCollection,
+        castToHTMLOptionsCollection, gTypeHTMLOptionsCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
@@ -18,7 +18,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -35,18 +35,32 @@ namedItem self name
       ((js_namedItem (unHTMLOptionsCollection self) (toJSString name))
          >>= fromJSRef)
  
-foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_add ::
+foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_addBefore
+        ::
         JSRef HTMLOptionsCollection ->
-          JSRef HTMLOptionElement -> Word -> IO ()
+          JSRef HTMLElement -> JSRef HTMLElement -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.add Mozilla HTMLOptionsCollection.add documentation> 
+addBefore ::
+          (MonadIO m, IsHTMLElement element, IsHTMLElement before) =>
+            HTMLOptionsCollection -> Maybe element -> Maybe before -> m ()
+addBefore self element before
+  = liftIO
+      (js_addBefore (unHTMLOptionsCollection self)
+         (maybe jsNull (unHTMLElement . toHTMLElement) element)
+         (maybe jsNull (unHTMLElement . toHTMLElement) before))
+ 
+foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_add ::
+        JSRef HTMLOptionsCollection -> JSRef HTMLElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.add Mozilla HTMLOptionsCollection.add documentation> 
 add ::
-    (MonadIO m) =>
-      HTMLOptionsCollection -> Maybe HTMLOptionElement -> Word -> m ()
-add self option index
+    (MonadIO m, IsHTMLElement element) =>
+      HTMLOptionsCollection -> Maybe element -> Int -> m ()
+add self element index
   = liftIO
       (js_add (unHTMLOptionsCollection self)
-         (maybe jsNull unHTMLOptionElement option)
+         (maybe jsNull (unHTMLElement . toHTMLElement) element)
          index)
  
 foreign import javascript unsafe "$1[\"remove\"]($2)" js_remove ::

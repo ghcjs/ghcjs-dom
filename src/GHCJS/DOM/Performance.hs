@@ -23,7 +23,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -166,5 +166,7 @@ webKitResourceTimingBufferFull
   = unsafeEventName (toJSString "webkitresourcetimingbufferfull")
 #else
 module GHCJS.DOM.Performance (
+  module Graphics.UI.Gtk.WebKit.DOM.Performance
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.Performance
 #endif

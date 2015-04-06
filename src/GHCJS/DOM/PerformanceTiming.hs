@@ -30,7 +30,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -228,5 +228,7 @@ getLoadEventEnd self
       (round <$> (js_getLoadEventEnd (unPerformanceTiming self)))
 #else
 module GHCJS.DOM.PerformanceTiming (
+  module Graphics.UI.Gtk.WebKit.DOM.PerformanceTiming
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.PerformanceTiming
 #endif

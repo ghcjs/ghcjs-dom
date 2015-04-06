@@ -2,7 +2,9 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.File
-       (js_getName, getName, File, castToFile, gTypeFile) where
+       (js_getName, getName, js_getLastModifiedDate, getLastModifiedDate,
+        File, castToFile, gTypeFile)
+       where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
@@ -13,7 +15,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -23,6 +25,14 @@ foreign import javascript unsafe "$1[\"name\"]" js_getName ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/File.name Mozilla File.name documentation> 
 getName :: (MonadIO m, FromJSString result) => File -> m result
 getName self = liftIO (fromJSString <$> (js_getName (unFile self)))
+ 
+foreign import javascript unsafe "$1[\"lastModifiedDate\"]"
+        js_getLastModifiedDate :: JSRef File -> IO (JSRef Date)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/File.lastModifiedDate Mozilla File.lastModifiedDate documentation> 
+getLastModifiedDate :: (MonadIO m) => File -> m (Maybe Date)
+getLastModifiedDate self
+  = liftIO ((js_getLastModifiedDate (unFile self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.File (
   module Graphics.UI.Gtk.WebKit.DOM.File

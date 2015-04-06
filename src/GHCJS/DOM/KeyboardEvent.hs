@@ -3,14 +3,15 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.KeyboardEvent
        (js_getModifierState, getModifierState, js_initKeyboardEvent,
-        initKeyboardEvent, pattern KEY_LOCATION_STANDARD,
-        pattern KEY_LOCATION_LEFT, pattern KEY_LOCATION_RIGHT,
-        pattern KEY_LOCATION_NUMPAD, js_getKeyIdentifier, getKeyIdentifier,
-        js_getLocation, getLocation, js_getKeyLocation, getKeyLocation,
-        js_getCtrlKey, getCtrlKey, js_getShiftKey, getShiftKey,
-        js_getAltKey, getAltKey, js_getMetaKey, getMetaKey,
-        js_getAltGraphKey, getAltGraphKey, KeyboardEvent,
-        castToKeyboardEvent, gTypeKeyboardEvent)
+        initKeyboardEvent, js_initKeyboardEvent', initKeyboardEvent',
+        pattern KEY_LOCATION_STANDARD, pattern KEY_LOCATION_LEFT,
+        pattern KEY_LOCATION_RIGHT, pattern KEY_LOCATION_NUMPAD,
+        js_getKeyIdentifier, getKeyIdentifier, js_getLocation, getLocation,
+        js_getKeyLocation, getKeyLocation, js_getCtrlKey, getCtrlKey,
+        js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
+        js_getMetaKey, getMetaKey, js_getAltGraphKey, getAltGraphKey,
+        js_getKeyCode, getKeyCode, js_getCharCode, getCharCode,
+        KeyboardEvent, castToKeyboardEvent, gTypeKeyboardEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
@@ -22,7 +23,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -73,6 +74,39 @@ initKeyboardEvent self type' canBubble cancelable view
          shiftKey
          metaKey
          altGraphKey)
+ 
+foreign import javascript unsafe
+        "$1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11)"
+        js_initKeyboardEvent' ::
+        JSRef KeyboardEvent ->
+          JSString ->
+            Bool ->
+              Bool ->
+                JSRef DOMWindow ->
+                  JSString -> Word -> Bool -> Bool -> Bool -> Bool -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.initKeyboardEvent Mozilla KeyboardEvent.initKeyboardEvent documentation> 
+initKeyboardEvent' ::
+                   (MonadIO m, ToJSString type', ToJSString keyIdentifier) =>
+                     KeyboardEvent ->
+                       type' ->
+                         Bool ->
+                           Bool ->
+                             Maybe DOMWindow ->
+                               keyIdentifier -> Word -> Bool -> Bool -> Bool -> Bool -> m ()
+initKeyboardEvent' self type' canBubble cancelable view
+  keyIdentifier location ctrlKey altKey shiftKey metaKey
+  = liftIO
+      (js_initKeyboardEvent' (unKeyboardEvent self) (toJSString type')
+         canBubble
+         cancelable
+         (maybe jsNull unDOMWindow view)
+         (toJSString keyIdentifier)
+         location
+         ctrlKey
+         altKey
+         shiftKey
+         metaKey)
 pattern KEY_LOCATION_STANDARD = 0
 pattern KEY_LOCATION_LEFT = 1
 pattern KEY_LOCATION_RIGHT = 2
@@ -138,6 +172,20 @@ foreign import javascript unsafe "($1[\"altGraphKey\"] ? 1 : 0)"
 getAltGraphKey :: (MonadIO m) => KeyboardEvent -> m Bool
 getAltGraphKey self
   = liftIO (js_getAltGraphKey (unKeyboardEvent self))
+ 
+foreign import javascript unsafe "$1[\"keyCode\"]" js_getKeyCode ::
+        JSRef KeyboardEvent -> IO Int
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.keyCode Mozilla KeyboardEvent.keyCode documentation> 
+getKeyCode :: (MonadIO m) => KeyboardEvent -> m Int
+getKeyCode self = liftIO (js_getKeyCode (unKeyboardEvent self))
+ 
+foreign import javascript unsafe "$1[\"charCode\"]" js_getCharCode
+        :: JSRef KeyboardEvent -> IO Int
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.charCode Mozilla KeyboardEvent.charCode documentation> 
+getCharCode :: (MonadIO m) => KeyboardEvent -> m Int
+getCharCode self = liftIO (js_getCharCode (unKeyboardEvent self))
 #else
 module GHCJS.DOM.KeyboardEvent (
   module Graphics.UI.Gtk.WebKit.DOM.KeyboardEvent

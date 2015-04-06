@@ -21,7 +21,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -123,5 +123,7 @@ getWebkitDirectionInvertedFromDevice self
       (js_getWebkitDirectionInvertedFromDevice (unWheelEvent self))
 #else
 module GHCJS.DOM.WheelEvent (
+  module Graphics.UI.Gtk.WebKit.DOM.WheelEvent
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.WheelEvent
 #endif

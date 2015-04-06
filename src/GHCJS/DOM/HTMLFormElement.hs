@@ -16,8 +16,8 @@ module GHCJS.DOM.HTMLFormElement
         getElements, js_getLength, getLength, js_setAutocorrect,
         setAutocorrect, js_getAutocorrect, getAutocorrect,
         js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, HTMLFormElement, castToHTMLFormElement,
-        gTypeHTMLFormElement)
+        getAutocapitalize, autocomplete, autocompleteerror,
+        HTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
@@ -29,7 +29,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -289,6 +289,15 @@ getAutocapitalize ::
 getAutocapitalize self
   = liftIO
       (fromJSString <$> (js_getAutocapitalize (unHTMLFormElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.onautocomplete Mozilla HTMLFormElement.onautocomplete documentation> 
+autocomplete :: EventName HTMLFormElement onautocomplete
+autocomplete = unsafeEventName (toJSString "autocomplete")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.onautocompleteerror Mozilla HTMLFormElement.onautocompleteerror documentation> 
+autocompleteerror :: EventName HTMLFormElement onautocompleteerror
+autocompleteerror
+  = unsafeEventName (toJSString "autocompleteerror")
 #else
 module GHCJS.DOM.HTMLFormElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLFormElement

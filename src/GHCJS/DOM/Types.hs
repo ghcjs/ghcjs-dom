@@ -656,6 +656,7 @@ module GHCJS.DOM.Types (
 #else
     propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
   , module Graphics.UI.Gtk.WebKit.Types
+  , IsGObject
   , IsDOMAttr
   , IsBlob
   , IsCDATASection
@@ -2310,6 +2311,7 @@ castToAudioTrack = castTo gTypeAudioTrack "AudioTrack"
 foreign import javascript unsafe "window[\"AudioTrack\"]" gTypeAudioTrack' :: JSRef GType
 gTypeAudioTrack = GType gTypeAudioTrack'
 #else
+type IsAudioTrack o = AudioTrackClass o
 #endif
 
 
@@ -2343,6 +2345,7 @@ castToAudioTrackList = castTo gTypeAudioTrackList "AudioTrackList"
 foreign import javascript unsafe "window[\"AudioTrackList\"]" gTypeAudioTrackList' :: JSRef GType
 gTypeAudioTrackList = GType gTypeAudioTrackList'
 #else
+type IsAudioTrackList o = AudioTrackListClass o
 #endif
 
 
@@ -2439,6 +2442,7 @@ castToBatteryManager = castTo gTypeBatteryManager "BatteryManager"
 foreign import javascript unsafe "window[\"BatteryManager\"]" gTypeBatteryManager' :: JSRef GType
 gTypeBatteryManager = GType gTypeBatteryManager'
 #else
+type IsBatteryManager o = BatteryManagerClass o
 #endif
 
 
@@ -11349,6 +11353,7 @@ castToPerformance = castTo gTypePerformance "Performance"
 foreign import javascript unsafe "window[\"Performance\"]" gTypePerformance' :: JSRef GType
 gTypePerformance = GType gTypePerformance'
 #else
+type IsPerformance o = PerformanceClass o
 #endif
 
 
@@ -11507,6 +11512,7 @@ castToPerformanceNavigation = castTo gTypePerformanceNavigation "PerformanceNavi
 foreign import javascript unsafe "window[\"PerformanceNavigation\"]" gTypePerformanceNavigation' :: JSRef GType
 gTypePerformanceNavigation = GType gTypePerformanceNavigation'
 #else
+type IsPerformanceNavigation o = PerformanceNavigationClass o
 #endif
 
 
@@ -11569,6 +11575,7 @@ castToPerformanceTiming = castTo gTypePerformanceTiming "PerformanceTiming"
 foreign import javascript unsafe "window[\"PerformanceTiming\"]" gTypePerformanceTiming' :: JSRef GType
 gTypePerformanceTiming = GType gTypePerformanceTiming'
 #else
+type IsPerformanceTiming o = PerformanceTimingClass o
 #endif
 
 
@@ -18554,6 +18561,7 @@ castToStorageQuota = castTo gTypeStorageQuota "StorageQuota"
 foreign import javascript unsafe "window[\"StorageQuota\"]" gTypeStorageQuota' :: JSRef GType
 gTypeStorageQuota = GType gTypeStorageQuota'
 #else
+type IsStorageQuota o = StorageQuotaClass o
 #endif
 
 
@@ -18901,6 +18909,7 @@ castToTextTrack = castTo gTypeTextTrack "TextTrack"
 foreign import javascript unsafe "window[\"TextTrack\"]" gTypeTextTrack' :: JSRef GType
 gTypeTextTrack = GType gTypeTextTrack'
 #else
+type IsTextTrack o = TextTrackClass o
 #endif
 
 
@@ -18939,6 +18948,7 @@ castToTextTrackCue = castTo gTypeTextTrackCue "TextTrackCue"
 foreign import javascript unsafe "window[\"TextTrackCue\"]" gTypeTextTrackCue' :: JSRef GType
 gTypeTextTrackCue = GType gTypeTextTrackCue'
 #else
+type IsTextTrackCue o = TextTrackCueClass o
 #endif
 
 
@@ -18968,6 +18978,7 @@ castToTextTrackCueList = castTo gTypeTextTrackCueList "TextTrackCueList"
 foreign import javascript unsafe "window[\"TextTrackCueList\"]" gTypeTextTrackCueList' :: JSRef GType
 gTypeTextTrackCueList = GType gTypeTextTrackCueList'
 #else
+type IsTextTrackCueList o = TextTrackCueListClass o
 #endif
 
 
@@ -19001,6 +19012,7 @@ castToTextTrackList = castTo gTypeTextTrackList "TextTrackList"
 foreign import javascript unsafe "window[\"TextTrackList\"]" gTypeTextTrackList' :: JSRef GType
 gTypeTextTrackList = GType gTypeTextTrackList'
 #else
+type IsTextTrackList o = TextTrackListClass o
 #endif
 
 
@@ -19060,6 +19072,7 @@ castToTouch = castTo gTypeTouch "Touch"
 foreign import javascript unsafe "window[\"Touch\"]" gTypeTouch' :: JSRef GType
 gTypeTouch = GType gTypeTouch'
 #else
+type IsTouch o = TouchClass o
 #endif
 
 
@@ -19626,6 +19639,7 @@ castToVideoTrack = castTo gTypeVideoTrack "VideoTrack"
 foreign import javascript unsafe "window[\"VideoTrack\"]" gTypeVideoTrack' :: JSRef GType
 gTypeVideoTrack = GType gTypeVideoTrack'
 #else
+type IsVideoTrack o = VideoTrackClass o
 #endif
 
 
@@ -19659,6 +19673,7 @@ castToVideoTrackList = castTo gTypeVideoTrackList "VideoTrackList"
 foreign import javascript unsafe "window[\"VideoTrackList\"]" gTypeVideoTrackList' :: JSRef GType
 gTypeVideoTrackList = GType gTypeVideoTrackList'
 #else
+type IsVideoTrackList o = VideoTrackListClass o
 #endif
 
 
@@ -20987,6 +21002,7 @@ castToWheelEvent = castTo gTypeWheelEvent "WheelEvent"
 foreign import javascript unsafe "window[\"WheelEvent\"]" gTypeWheelEvent' :: JSRef GType
 gTypeWheelEvent = GType gTypeWheelEvent'
 #else
+type IsWheelEvent o = WheelEventClass o
 #endif
 
 

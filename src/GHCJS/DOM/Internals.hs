@@ -10,6 +10,7 @@ module GHCJS.DOM.Internals
         isLoadingFromMemoryCache, js_xhrResponseSource, xhrResponseSource,
         js_clearMemoryCache, clearMemoryCache, js_pruneMemoryCacheToSize,
         pruneMemoryCacheToSize, js_memoryCacheSize, memoryCacheSize,
+        js_clearPageCache, clearPageCache, js_pageCacheSize, pageCacheSize,
         js_computedStyleIncludingVisitedInfo,
         computedStyleIncludingVisitedInfo, js_ensureShadowRoot,
         ensureShadowRoot, js_createShadowRoot, createShadowRoot,
@@ -180,7 +181,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -308,6 +309,20 @@ foreign import javascript unsafe "$1[\"memoryCacheSize\"]()"
 memoryCacheSize :: (MonadIO m) => Internals -> m Int
 memoryCacheSize self
   = liftIO (js_memoryCacheSize (unInternals self))
+ 
+foreign import javascript unsafe "$1[\"clearPageCache\"]()"
+        js_clearPageCache :: JSRef Internals -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.clearPageCache Mozilla Internals.clearPageCache documentation> 
+clearPageCache :: (MonadIO m) => Internals -> m ()
+clearPageCache self = liftIO (js_clearPageCache (unInternals self))
+ 
+foreign import javascript unsafe "$1[\"pageCacheSize\"]()"
+        js_pageCacheSize :: JSRef Internals -> IO Word
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pageCacheSize Mozilla Internals.pageCacheSize documentation> 
+pageCacheSize :: (MonadIO m) => Internals -> m Word
+pageCacheSize self = liftIO (js_pageCacheSize (unInternals self))
  
 foreign import javascript unsafe
         "$1[\"computedStyleIncludingVisitedInfo\"]($2)"

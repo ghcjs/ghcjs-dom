@@ -39,34 +39,44 @@ module GHCJS.DOM.Document
         getInputEncoding, js_getXmlEncoding, getXmlEncoding,
         js_setXmlVersion, setXmlVersion, js_getXmlVersion, getXmlVersion,
         js_setXmlStandalone, setXmlStandalone, js_getXmlStandalone,
-        getXmlStandalone, js_setDocumentURI, setDocumentURI,
-        js_getDocumentURI, getDocumentURI, js_getDefaultView,
-        getDefaultView, js_getStyleSheets, getStyleSheets,
-        js_getContentType, getContentType, js_setTitle, setTitle,
-        js_getTitle, getTitle, js_getReferrer, getReferrer, js_getDomain,
-        getDomain, js_getURL, getURL, js_setCookie, setCookie,
-        js_getCookie, getCookie, js_setBody, setBody, js_getBody, getBody,
-        js_getHead, getHead, js_getImages, getImages, js_getApplets,
-        getApplets, js_getLinks, getLinks, js_getForms, getForms,
-        js_getAnchors, getAnchors, js_getLastModified, getLastModified,
-        js_setCharset, setCharset, js_getCharset, getCharset,
-        js_getDefaultCharset, getDefaultCharset, js_getReadyState,
-        getReadyState, js_getCharacterSet, getCharacterSet,
-        js_getPreferredStylesheetSet, getPreferredStylesheetSet,
-        js_setSelectedStylesheetSet, setSelectedStylesheetSet,
-        js_getSelectedStylesheetSet, getSelectedStylesheetSet,
-        js_getActiveElement, getActiveElement, js_getCompatMode,
-        getCompatMode, js_getWebkitIsFullScreen, getWebkitIsFullScreen,
-        js_getWebkitFullScreenKeyboardInputAllowed,
+        getXmlStandalone, js_getDocumentURI, getDocumentURI,
+        js_getDefaultView, getDefaultView, js_getStyleSheets,
+        getStyleSheets, js_getContentType, getContentType, js_setTitle,
+        setTitle, js_getTitle, getTitle, js_getReferrer, getReferrer,
+        js_getDomain, getDomain, js_getURL, getURL, js_setCookie,
+        setCookie, js_getCookie, getCookie, js_setBody, setBody,
+        js_getBody, getBody, js_getHead, getHead, js_getImages, getImages,
+        js_getApplets, getApplets, js_getLinks, getLinks, js_getForms,
+        getForms, js_getAnchors, getAnchors, js_getLastModified,
+        getLastModified, js_setCharset, setCharset, js_getCharset,
+        getCharset, js_getDefaultCharset, getDefaultCharset,
+        js_getReadyState, getReadyState, js_getCharacterSet,
+        getCharacterSet, js_getPreferredStylesheetSet,
+        getPreferredStylesheetSet, js_setSelectedStylesheetSet,
+        setSelectedStylesheetSet, js_getSelectedStylesheetSet,
+        getSelectedStylesheetSet, js_getActiveElement, getActiveElement,
+        js_getCompatMode, getCompatMode, js_getWebkitIsFullScreen,
+        getWebkitIsFullScreen, js_getWebkitFullScreenKeyboardInputAllowed,
         getWebkitFullScreenKeyboardInputAllowed,
         js_getWebkitCurrentFullScreenElement,
         getWebkitCurrentFullScreenElement, js_getWebkitFullscreenEnabled,
         getWebkitFullscreenEnabled, js_getWebkitFullscreenElement,
         getWebkitFullscreenElement, js_getPointerLockElement,
-        getPointerLockElement, js_getVisibilityState, getVisibilityState,
-        js_getHidden, getHidden, js_getSecurityPolicy, getSecurityPolicy,
-        js_getCurrentScript, getCurrentScript, js_getOrigin, getOrigin,
-        Document, castToDocument, gTypeDocument, IsDocument, toDocument)
+        getPointerLockElement, abort, blur, change, click, contextMenu,
+        dblClick, drag, dragEnd, dragEnter, dragLeave, dragOver, dragStart,
+        drop, error, focus, input, invalid, keyDown, keyPress, keyUp, load,
+        mouseDown, mouseEnter, mouseLeave, mouseMove, mouseOut, mouseOver,
+        mouseUp, mouseWheel, readyStateChange, scroll, select, submit,
+        wheel, beforeCut, cut, beforeCopy, copy, beforePaste, paste, reset,
+        search, selectStart, selectionchange, touchStart, touchMove,
+        touchEnd, touchCancel, webKitFullscreenChange,
+        webKitFullscreenError, pointerlockchange, pointerlockerror,
+        securitypolicyviolation, webKitWillRevealBottom,
+        webKitWillRevealLeft, webKitWillRevealRight, webKitWillRevealTop,
+        js_getVisibilityState, getVisibilityState, js_getHidden, getHidden,
+        js_getSecurityPolicy, getSecurityPolicy, js_getCurrentScript,
+        getCurrentScript, js_getOrigin, getOrigin, Document,
+        castToDocument, gTypeDocument, IsDocument, toDocument)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
 import GHCJS.Types (JSRef(..), JSString, castRef)
@@ -78,7 +88,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -837,16 +847,6 @@ getXmlStandalone :: (MonadIO m, IsDocument self) => self -> m Bool
 getXmlStandalone self
   = liftIO (js_getXmlStandalone (unDocument (toDocument self)))
  
-foreign import javascript unsafe "$1[\"documentURI\"] = $2;"
-        js_setDocumentURI :: JSRef Document -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentURI Mozilla Document.documentURI documentation> 
-setDocumentURI ::
-               (MonadIO m, IsDocument self, ToJSString val) => self -> val -> m ()
-setDocumentURI self val
-  = liftIO
-      (js_setDocumentURI (unDocument (toDocument self)) (toJSString val))
- 
 foreign import javascript unsafe "$1[\"documentURI\"]"
         js_getDocumentURI :: JSRef Document -> IO JSString
 
@@ -1246,6 +1246,304 @@ getPointerLockElement self
   = liftIO
       ((js_getPointerLockElement (unDocument (toDocument self))) >>=
          fromJSRef)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onabort Mozilla Document.onabort documentation> 
+abort ::
+      (IsDocument self, IsEventTarget self) => EventName self UIEvent
+abort = unsafeEventName (toJSString "abort")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onblur Mozilla Document.onblur documentation> 
+blur ::
+     (IsDocument self, IsEventTarget self) => EventName self FocusEvent
+blur = unsafeEventName (toJSString "blur")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onchange Mozilla Document.onchange documentation> 
+change ::
+       (IsDocument self, IsEventTarget self) => EventName self Event
+change = unsafeEventName (toJSString "change")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onclick Mozilla Document.onclick documentation> 
+click ::
+      (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+click = unsafeEventName (toJSString "click")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.oncontextmenu Mozilla Document.oncontextmenu documentation> 
+contextMenu ::
+            (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+contextMenu = unsafeEventName (toJSString "contextmenu")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondblclick Mozilla Document.ondblclick documentation> 
+dblClick ::
+         (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+dblClick = unsafeEventName (toJSString "dblclick")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondrag Mozilla Document.ondrag documentation> 
+drag ::
+     (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+drag = unsafeEventName (toJSString "drag")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondragend Mozilla Document.ondragend documentation> 
+dragEnd ::
+        (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+dragEnd = unsafeEventName (toJSString "dragend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondragenter Mozilla Document.ondragenter documentation> 
+dragEnter ::
+          (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+dragEnter = unsafeEventName (toJSString "dragenter")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondragleave Mozilla Document.ondragleave documentation> 
+dragLeave ::
+          (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+dragLeave = unsafeEventName (toJSString "dragleave")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondragover Mozilla Document.ondragover documentation> 
+dragOver ::
+         (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+dragOver = unsafeEventName (toJSString "dragover")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondragstart Mozilla Document.ondragstart documentation> 
+dragStart ::
+          (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+dragStart = unsafeEventName (toJSString "dragstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ondrop Mozilla Document.ondrop documentation> 
+drop ::
+     (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+drop = unsafeEventName (toJSString "drop")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onerror Mozilla Document.onerror documentation> 
+error ::
+      (IsDocument self, IsEventTarget self) => EventName self UIEvent
+error = unsafeEventName (toJSString "error")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onfocus Mozilla Document.onfocus documentation> 
+focus ::
+      (IsDocument self, IsEventTarget self) => EventName self FocusEvent
+focus = unsafeEventName (toJSString "focus")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.oninput Mozilla Document.oninput documentation> 
+input ::
+      (IsDocument self, IsEventTarget self) => EventName self Event
+input = unsafeEventName (toJSString "input")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.oninvalid Mozilla Document.oninvalid documentation> 
+invalid ::
+        (IsDocument self, IsEventTarget self) => EventName self Event
+invalid = unsafeEventName (toJSString "invalid")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onkeydown Mozilla Document.onkeydown documentation> 
+keyDown ::
+        (IsDocument self, IsEventTarget self) =>
+          EventName self KeyboardEvent
+keyDown = unsafeEventName (toJSString "keydown")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onkeypress Mozilla Document.onkeypress documentation> 
+keyPress ::
+         (IsDocument self, IsEventTarget self) =>
+           EventName self KeyboardEvent
+keyPress = unsafeEventName (toJSString "keypress")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onkeyup Mozilla Document.onkeyup documentation> 
+keyUp ::
+      (IsDocument self, IsEventTarget self) =>
+        EventName self KeyboardEvent
+keyUp = unsafeEventName (toJSString "keyup")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onload Mozilla Document.onload documentation> 
+load ::
+     (IsDocument self, IsEventTarget self) => EventName self UIEvent
+load = unsafeEventName (toJSString "load")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmousedown Mozilla Document.onmousedown documentation> 
+mouseDown ::
+          (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseDown = unsafeEventName (toJSString "mousedown")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmouseenter Mozilla Document.onmouseenter documentation> 
+mouseEnter ::
+           (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseEnter = unsafeEventName (toJSString "mouseenter")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmouseleave Mozilla Document.onmouseleave documentation> 
+mouseLeave ::
+           (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseLeave = unsafeEventName (toJSString "mouseleave")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmousemove Mozilla Document.onmousemove documentation> 
+mouseMove ::
+          (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseMove = unsafeEventName (toJSString "mousemove")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmouseout Mozilla Document.onmouseout documentation> 
+mouseOut ::
+         (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseOut = unsafeEventName (toJSString "mouseout")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmouseover Mozilla Document.onmouseover documentation> 
+mouseOver ::
+          (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseOver = unsafeEventName (toJSString "mouseover")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmouseup Mozilla Document.onmouseup documentation> 
+mouseUp ::
+        (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseUp = unsafeEventName (toJSString "mouseup")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onmousewheel Mozilla Document.onmousewheel documentation> 
+mouseWheel ::
+           (IsDocument self, IsEventTarget self) => EventName self MouseEvent
+mouseWheel = unsafeEventName (toJSString "mousewheel")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onreadystatechange Mozilla Document.onreadystatechange documentation> 
+readyStateChange ::
+                 (IsDocument self, IsEventTarget self) => EventName self Event
+readyStateChange = unsafeEventName (toJSString "readystatechange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onscroll Mozilla Document.onscroll documentation> 
+scroll ::
+       (IsDocument self, IsEventTarget self) => EventName self UIEvent
+scroll = unsafeEventName (toJSString "scroll")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onselect Mozilla Document.onselect documentation> 
+select ::
+       (IsDocument self, IsEventTarget self) => EventName self UIEvent
+select = unsafeEventName (toJSString "select")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onsubmit Mozilla Document.onsubmit documentation> 
+submit ::
+       (IsDocument self, IsEventTarget self) => EventName self Event
+submit = unsafeEventName (toJSString "submit")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onwheel Mozilla Document.onwheel documentation> 
+wheel ::
+      (IsDocument self, IsEventTarget self) => EventName self WheelEvent
+wheel = unsafeEventName (toJSString "wheel")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onbeforecut Mozilla Document.onbeforecut documentation> 
+beforeCut ::
+          (IsDocument self, IsEventTarget self) => EventName self Event
+beforeCut = unsafeEventName (toJSString "beforecut")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.oncut Mozilla Document.oncut documentation> 
+cut ::
+    (IsDocument self, IsEventTarget self) => EventName self Event
+cut = unsafeEventName (toJSString "cut")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onbeforecopy Mozilla Document.onbeforecopy documentation> 
+beforeCopy ::
+           (IsDocument self, IsEventTarget self) => EventName self Event
+beforeCopy = unsafeEventName (toJSString "beforecopy")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.oncopy Mozilla Document.oncopy documentation> 
+copy ::
+     (IsDocument self, IsEventTarget self) => EventName self Event
+copy = unsafeEventName (toJSString "copy")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onbeforepaste Mozilla Document.onbeforepaste documentation> 
+beforePaste ::
+            (IsDocument self, IsEventTarget self) => EventName self Event
+beforePaste = unsafeEventName (toJSString "beforepaste")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onpaste Mozilla Document.onpaste documentation> 
+paste ::
+      (IsDocument self, IsEventTarget self) => EventName self Event
+paste = unsafeEventName (toJSString "paste")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onreset Mozilla Document.onreset documentation> 
+reset ::
+      (IsDocument self, IsEventTarget self) => EventName self Event
+reset = unsafeEventName (toJSString "reset")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onsearch Mozilla Document.onsearch documentation> 
+search ::
+       (IsDocument self, IsEventTarget self) => EventName self Event
+search = unsafeEventName (toJSString "search")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onselectstart Mozilla Document.onselectstart documentation> 
+selectStart ::
+            (IsDocument self, IsEventTarget self) => EventName self Event
+selectStart = unsafeEventName (toJSString "selectstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onselectionchange Mozilla Document.onselectionchange documentation> 
+selectionchange ::
+                (IsDocument self, IsEventTarget self) =>
+                  EventName self onselectionchange
+selectionchange = unsafeEventName (toJSString "selectionchange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ontouchstart Mozilla Document.ontouchstart documentation> 
+touchStart ::
+           (IsDocument self, IsEventTarget self) => EventName self TouchEvent
+touchStart = unsafeEventName (toJSString "touchstart")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ontouchmove Mozilla Document.ontouchmove documentation> 
+touchMove ::
+          (IsDocument self, IsEventTarget self) => EventName self TouchEvent
+touchMove = unsafeEventName (toJSString "touchmove")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ontouchend Mozilla Document.ontouchend documentation> 
+touchEnd ::
+         (IsDocument self, IsEventTarget self) => EventName self TouchEvent
+touchEnd = unsafeEventName (toJSString "touchend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.ontouchcancel Mozilla Document.ontouchcancel documentation> 
+touchCancel ::
+            (IsDocument self, IsEventTarget self) => EventName self TouchEvent
+touchCancel = unsafeEventName (toJSString "touchcancel")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onwebkitfullscreenchange Mozilla Document.onwebkitfullscreenchange documentation> 
+webKitFullscreenChange ::
+                       (IsDocument self, IsEventTarget self) => EventName self Event
+webKitFullscreenChange
+  = unsafeEventName (toJSString "webkitfullscreenchange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onwebkitfullscreenerror Mozilla Document.onwebkitfullscreenerror documentation> 
+webKitFullscreenError ::
+                      (IsDocument self, IsEventTarget self) => EventName self Event
+webKitFullscreenError
+  = unsafeEventName (toJSString "webkitfullscreenerror")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onpointerlockchange Mozilla Document.onpointerlockchange documentation> 
+pointerlockchange ::
+                  (IsDocument self, IsEventTarget self) => EventName self Event
+pointerlockchange
+  = unsafeEventName (toJSString "pointerlockchange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onpointerlockerror Mozilla Document.onpointerlockerror documentation> 
+pointerlockerror ::
+                 (IsDocument self, IsEventTarget self) => EventName self Event
+pointerlockerror = unsafeEventName (toJSString "pointerlockerror")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onsecuritypolicyviolation Mozilla Document.onsecuritypolicyviolation documentation> 
+securitypolicyviolation ::
+                        (IsDocument self, IsEventTarget self) =>
+                          EventName self onsecuritypolicyviolation
+securitypolicyviolation
+  = unsafeEventName (toJSString "securitypolicyviolation")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onwebkitwillrevealbottom Mozilla Document.onwebkitwillrevealbottom documentation> 
+webKitWillRevealBottom ::
+                       (IsDocument self, IsEventTarget self) => EventName self Event
+webKitWillRevealBottom
+  = unsafeEventName (toJSString "webkitwillrevealbottom")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onwebkitwillrevealleft Mozilla Document.onwebkitwillrevealleft documentation> 
+webKitWillRevealLeft ::
+                     (IsDocument self, IsEventTarget self) => EventName self Event
+webKitWillRevealLeft
+  = unsafeEventName (toJSString "webkitwillrevealleft")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onwebkitwillrevealright Mozilla Document.onwebkitwillrevealright documentation> 
+webKitWillRevealRight ::
+                      (IsDocument self, IsEventTarget self) => EventName self Event
+webKitWillRevealRight
+  = unsafeEventName (toJSString "webkitwillrevealright")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onwebkitwillrevealtop Mozilla Document.onwebkitwillrevealtop documentation> 
+webKitWillRevealTop ::
+                    (IsDocument self, IsEventTarget self) => EventName self Event
+webKitWillRevealTop
+  = unsafeEventName (toJSString "webkitwillrevealtop")
  
 foreign import javascript unsafe "$1[\"visibilityState\"]"
         js_getVisibilityState :: JSRef Document -> IO JSString

@@ -7,7 +7,8 @@ module GHCJS.DOM.HTMLMediaElement
         js_webkitGenerateKeyRequest, webkitGenerateKeyRequest,
         js_webkitAddKey, webkitAddKey, js_webkitCancelKeyRequest,
         webkitCancelKeyRequest, js_webkitSetMediaKeys, webkitSetMediaKeys,
-        js_addTextTrack, addTextTrack, js_webkitShowPlaybackTargetPicker,
+        js_addTextTrack, addTextTrack, js_getVideoPlaybackQuality,
+        getVideoPlaybackQuality, js_webkitShowPlaybackTargetPicker,
         webkitShowPlaybackTargetPicker, pattern NETWORK_EMPTY,
         pattern NETWORK_IDLE, pattern NETWORK_LOADING,
         pattern NETWORK_NO_SOURCE, pattern HAVE_NOTHING,
@@ -47,7 +48,8 @@ module GHCJS.DOM.HTMLMediaElement
         js_getWebkitCurrentPlaybackTargetIsWireless,
         getWebkitCurrentPlaybackTargetIsWireless,
         webKitCurrentPlaybackTargetIsWirelessChanged,
-        webKitPlaybackTargetAvailabilityChanged, HTMLMediaElement,
+        webKitPlaybackTargetAvailabilityChanged, js_setSrcObject,
+        setSrcObject, js_getSrcObject, getSrcObject, HTMLMediaElement,
         castToHTMLMediaElement, gTypeHTMLMediaElement, IsHTMLMediaElement,
         toHTMLMediaElement)
        where
@@ -61,7 +63,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -198,6 +200,20 @@ addTextTrack self kind label language
           (toJSString kind)
           (toJSString label)
           (toJSString language))
+         >>= fromJSRef)
+ 
+foreign import javascript unsafe
+        "$1[\"getVideoPlaybackQuality\"]()" js_getVideoPlaybackQuality ::
+        JSRef HTMLMediaElement -> IO (JSRef VideoPlaybackQuality)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.getVideoPlaybackQuality Mozilla HTMLMediaElement.getVideoPlaybackQuality documentation> 
+getVideoPlaybackQuality ::
+                        (MonadIO m, IsHTMLMediaElement self) =>
+                          self -> m (Maybe VideoPlaybackQuality)
+getVideoPlaybackQuality self
+  = liftIO
+      ((js_getVideoPlaybackQuality
+          (unHTMLMediaElement (toHTMLMediaElement self)))
          >>= fromJSRef)
  
 foreign import javascript unsafe
@@ -899,6 +915,32 @@ webKitPlaybackTargetAvailabilityChanged ::
 webKitPlaybackTargetAvailabilityChanged
   = unsafeEventName
       (toJSString "webkitplaybacktargetavailabilitychanged")
+ 
+foreign import javascript unsafe "$1[\"srcObject\"] = $2;"
+        js_setSrcObject ::
+        JSRef HTMLMediaElement -> JSRef MediaStream -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.srcObject Mozilla HTMLMediaElement.srcObject documentation> 
+setSrcObject ::
+             (MonadIO m, IsHTMLMediaElement self) =>
+               self -> Maybe MediaStream -> m ()
+setSrcObject self val
+  = liftIO
+      (js_setSrcObject (unHTMLMediaElement (toHTMLMediaElement self))
+         (maybe jsNull unMediaStream val))
+ 
+foreign import javascript unsafe "$1[\"srcObject\"]"
+        js_getSrcObject ::
+        JSRef HTMLMediaElement -> IO (JSRef (Maybe MediaStream))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.srcObject Mozilla HTMLMediaElement.srcObject documentation> 
+getSrcObject ::
+             (MonadIO m, IsHTMLMediaElement self) =>
+               self -> m (Maybe MediaStream)
+getSrcObject self
+  = liftIO
+      ((js_getSrcObject (unHTMLMediaElement (toHTMLMediaElement self)))
+         >>= fromJSRefUnchecked)
 #else
 module GHCJS.DOM.HTMLMediaElement (
   module Graphics.UI.Gtk.WebKit.DOM.HTMLMediaElement

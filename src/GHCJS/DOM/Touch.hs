@@ -20,7 +20,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -111,5 +111,7 @@ getWebkitForce :: (MonadIO m) => Touch -> m Float
 getWebkitForce self = liftIO (js_getWebkitForce (unTouch self))
 #else
 module GHCJS.DOM.Touch (
+  module Graphics.UI.Gtk.WebKit.DOM.Touch
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.Touch
 #endif

@@ -2,12 +2,18 @@
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
 module GHCJS.DOM.EventTargetClosures
-       (eventListenerNew) where
+       (EventName(..), SaferEventListener(..), unsafeEventName, eventListenerNew) where
 
 import Control.Applicative ((<$>))
 import GHCJS.Types
 import GHCJS.Foreign
 import GHCJS.DOM.Types
+
+newtype EventName t e = EventName DOMString
+newtype SaferEventListener t e = SaferEventListener EventListener
+
+unsafeEventName :: DOMString -> EventName t e
+unsafeEventName = EventName
 
 eventListenerNew :: IsEvent event => (event -> IO ()) -> IO EventListener
 eventListenerNew callback = EventListener . castRef <$> syncCallback1 AlwaysRetain True (callback . unsafeCastGObject . GObject)

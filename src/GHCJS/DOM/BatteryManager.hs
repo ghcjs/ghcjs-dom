@@ -18,7 +18,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -71,5 +71,7 @@ levelChange :: EventName BatteryManager Event
 levelChange = unsafeEventName (toJSString "levelchange")
 #else
 module GHCJS.DOM.BatteryManager (
+  module Graphics.UI.Gtk.WebKit.DOM.BatteryManager
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.BatteryManager
 #endif

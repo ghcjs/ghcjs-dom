@@ -17,7 +17,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
 pattern TYPE_NAVIGATE = 0
@@ -34,5 +34,7 @@ getRedirectCount self
   = liftIO (js_getRedirectCount (unPerformanceNavigation self))
 #else
 module GHCJS.DOM.PerformanceNavigation (
+  module Graphics.UI.Gtk.WebKit.DOM.PerformanceNavigation
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.PerformanceNavigation
 #endif

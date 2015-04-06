@@ -23,7 +23,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -187,5 +187,7 @@ getSourceBuffer self
   = liftIO ((js_getSourceBuffer (unTextTrack self)) >>= fromJSRef)
 #else
 module GHCJS.DOM.TextTrack (
+  module Graphics.UI.Gtk.WebKit.DOM.TextTrack
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.TextTrack
 #endif

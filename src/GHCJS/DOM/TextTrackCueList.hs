@@ -15,7 +15,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventM (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
 
  
@@ -49,5 +49,7 @@ getLength :: (MonadIO m) => TextTrackCueList -> m Word
 getLength self = liftIO (js_getLength (unTextTrackCueList self))
 #else
 module GHCJS.DOM.TextTrackCueList (
+  module Graphics.UI.Gtk.WebKit.DOM.TextTrackCueList
   ) where
+import Graphics.UI.Gtk.WebKit.DOM.TextTrackCueList
 #endif
