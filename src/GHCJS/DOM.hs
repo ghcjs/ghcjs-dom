@@ -41,7 +41,7 @@ import Control.Monad.IO.Class (liftIO)
 #endif
 
 import GHCJS.DOM.Types
-import GHCJS.DOM.DOMWindow (getNavigator, getDocument)
+import GHCJS.DOM.Window (getNavigator, getDocument)
 import GHCJS.DOM.Navigator (getUserAgent)
 import Foreign (ForeignPtr, nullPtr, Ptr)
 import Control.Monad (unless, forever, liftM)
@@ -59,32 +59,32 @@ postGUISync = id
 
 #ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$r = window"
-  ghcjs_currentWindow :: IO (JSRef DOMWindow)
+  ghcjs_currentWindow :: IO (JSRef Window)
 foreign import javascript unsafe "$r = document"
   ghcjs_currentDocument :: IO (JSRef Document)
 #else
-ghcjs_currentWindow :: IO (JSRef DOMWindow)
+ghcjs_currentWindow :: IO (JSRef Window)
 ghcjs_currentWindow = undefined
 ghcjs_currentDocument :: IO (JSRef Document)
 ghcjs_currentDocument = undefined
 #endif
 
-currentWindow :: IO (Maybe DOMWindow)
-currentWindow = fmap DOMWindow . maybeJSNullOrUndefined <$> ghcjs_currentWindow
+currentWindow :: IO (Maybe Window)
+currentWindow = fmap Window . maybeJSNullOrUndefined <$> ghcjs_currentWindow
 currentDocument :: IO (Maybe Document)
 currentDocument = fmap Document . maybeJSNullOrUndefined <$> ghcjs_currentDocument
 
-type WebView = DOMWindow
+type WebView = Window
 castToWebView = id
 
-webViewGetDomDocument :: DOMWindow -> IO (Maybe Document)
+webViewGetDomDocument :: Window -> IO (Maybe Document)
 webViewGetDomDocument = getDocument
 #else
 foreign import ccall safe "ghcjs_currentWindow"
-  ghcjs_currentWindow :: IO (Ptr DOMWindow)
+  ghcjs_currentWindow :: IO (Ptr Window)
 
-currentWindow :: IO (Maybe DOMWindow)
-currentWindow = maybeNull (makeNewGObject mkDOMWindow) ghcjs_currentWindow
+currentWindow :: IO (Maybe Window)
+currentWindow = maybeNull (makeNewGObject mkWindow) ghcjs_currentWindow
 
 foreign import ccall unsafe "ghcjs_currentDocument"
   ghcjs_currentDocument :: IO (Ptr Document)

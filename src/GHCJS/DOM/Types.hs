@@ -1,8 +1,6 @@
-{-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE CPP #-}
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds #-}
+{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances #-}
 #else
 {-# LANGUAGE ConstraintKinds #-}
 #endif
@@ -10,10 +8,34 @@ module GHCJS.DOM.Types (
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
   -- * Object
     maybeJSNullOrUndefined, propagateGError, GType(..)
-  , GObject(..), IsGObject, toGObject, unGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA, objectToString
+  , GObject(..), IsGObject, toGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA, objectToString
 
   -- * DOMString
-  , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString
+  , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString, ToJSString(..), FromJSString(..), toJSString, fromJSString
+
+  -- * Callbacks
+  , AudioBufferCallback
+  , DatabaseCallback
+  , MediaQueryListListener
+  , MediaStreamTrackSourcesCallback
+  , NavigatorUserMediaErrorCallback
+  , NavigatorUserMediaSuccessCallback
+  , NotificationPermissionCallback
+  , PositionCallback
+  , PositionErrorCallback
+  , RequestAnimationFrameCallback
+  , RTCPeerConnectionErrorCallback
+  , RTCSessionDescriptionCallback
+  , RTCStatsCallback
+  , SQLStatementCallback
+  , SQLStatementErrorCallback
+  , SQLTransactionCallback
+  , SQLTransactionErrorCallback
+  , StorageErrorCallback
+  , StorageQuotaCallback
+  , StorageUsageCallback
+  , StringCallback
+  , VoidCallback
 
   -- * Dictionaries
   , Dictionary(Dictionary), unDictionary, IsDictionary, toDictionary
@@ -56,7 +78,7 @@ module GHCJS.DOM.Types (
   -- * CanvasStyle (fill & stroke style)
   , CanvasStyle(CanvasStyle), unCanvasStyle, IsCanvasStyle, toCanvasStyle
 
-  , DOMCoreException(DOMCoreException), unDOMCoreException, IsDOMCoreException, toDOMCoreException
+  , DOMException(DOMException), unDOMException, IsDOMException, toDOMException
   , DOMURLConstructor(DOMURLConstructor), unDOMURLConstructor, IsDOMURLConstructor, toDOMURLConstructor
 
   -- * WebGL typedefs
@@ -64,7 +86,7 @@ module GHCJS.DOM.Types (
   , GLintptr(..), GLsizeiptr(..), GLubyte(..), GLushort(..), GLuint(..), GLfloat(..), GLclampf(..)
   , GLint64, GLuint64
 
-  -- * Inteface types from IDL files
+  -- * Interface types from IDL files
 
 -- AUTO GENERATION STARTS HERE
   , ANGLEInstancedArrays(ANGLEInstancedArrays), unANGLEInstancedArrays, castToANGLEInstancedArrays, gTypeANGLEInstancedArrays
@@ -74,9 +96,9 @@ module GHCJS.DOM.Types (
   , AllVideoCapabilities(AllVideoCapabilities), unAllVideoCapabilities, castToAllVideoCapabilities, gTypeAllVideoCapabilities
   , AnalyserNode(AnalyserNode), unAnalyserNode, castToAnalyserNode, gTypeAnalyserNode
   , AnimationEvent(AnimationEvent), unAnimationEvent, castToAnimationEvent, gTypeAnimationEvent
-  , DOMAttr(DOMAttr), unDOMAttr, castToDOMAttr, gTypeDOMAttr
+  , ApplicationCache(ApplicationCache), unApplicationCache, castToApplicationCache, gTypeApplicationCache
+  , Attr(Attr), unAttr, castToAttr, gTypeAttr
   , AudioBuffer(AudioBuffer), unAudioBuffer, castToAudioBuffer, gTypeAudioBuffer
-  , AudioBufferCallback(AudioBufferCallback), unAudioBufferCallback, castToAudioBufferCallback, gTypeAudioBufferCallback
   , AudioBufferSourceNode(AudioBufferSourceNode), unAudioBufferSourceNode, castToAudioBufferSourceNode, gTypeAudioBufferSourceNode
   , AudioContext(AudioContext), unAudioContext, IsAudioContext, toAudioContext, castToAudioContext, gTypeAudioContext
   , AudioDestinationNode(AudioDestinationNode), unAudioDestinationNode, castToAudioDestinationNode, gTypeAudioDestinationNode
@@ -95,6 +117,7 @@ module GHCJS.DOM.Types (
   , BiquadFilterNode(BiquadFilterNode), unBiquadFilterNode, castToBiquadFilterNode, gTypeBiquadFilterNode
   , Blob(Blob), unBlob, IsBlob, toBlob, castToBlob, gTypeBlob
   , CDATASection(CDATASection), unCDATASection, castToCDATASection, gTypeCDATASection
+  , CSS(CSS), unCSS, castToCSS, gTypeCSS
   , CSSCharsetRule(CSSCharsetRule), unCSSCharsetRule, castToCSSCharsetRule, gTypeCSSCharsetRule
   , CSSFontFaceLoadEvent(CSSFontFaceLoadEvent), unCSSFontFaceLoadEvent, castToCSSFontFaceLoadEvent, gTypeCSSFontFaceLoadEvent
   , CSSFontFaceRule(CSSFontFaceRule), unCSSFontFaceRule, castToCSSFontFaceRule, gTypeCSSFontFaceRule
@@ -136,32 +159,19 @@ module GHCJS.DOM.Types (
   , CryptoKey(CryptoKey), unCryptoKey, castToCryptoKey, gTypeCryptoKey
   , CryptoKeyPair(CryptoKeyPair), unCryptoKeyPair, castToCryptoKeyPair, gTypeCryptoKeyPair
   , CustomEvent(CustomEvent), unCustomEvent, castToCustomEvent, gTypeCustomEvent
-  , DOMApplicationCache(DOMApplicationCache), unDOMApplicationCache, castToDOMApplicationCache, gTypeDOMApplicationCache
   , DOMError(DOMError), unDOMError, IsDOMError, toDOMError, castToDOMError, gTypeDOMError
-  , DOMFormData(DOMFormData), unDOMFormData, castToDOMFormData, gTypeDOMFormData
   , DOMImplementation(DOMImplementation), unDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
-  , DOMMimeType(DOMMimeType), unDOMMimeType, castToDOMMimeType, gTypeDOMMimeType
-  , DOMMimeTypeArray(DOMMimeTypeArray), unDOMMimeTypeArray, castToDOMMimeTypeArray, gTypeDOMMimeTypeArray
   , DOMNamedFlowCollection(DOMNamedFlowCollection), unDOMNamedFlowCollection, castToDOMNamedFlowCollection, gTypeDOMNamedFlowCollection
   , DOMParser(DOMParser), unDOMParser, castToDOMParser, gTypeDOMParser
-  , DOMPath(DOMPath), unDOMPath, castToDOMPath, gTypeDOMPath
-  , DOMPlugin(DOMPlugin), unDOMPlugin, castToDOMPlugin, gTypeDOMPlugin
-  , DOMPluginArray(DOMPluginArray), unDOMPluginArray, castToDOMPluginArray, gTypeDOMPluginArray
-  , DOMSecurityPolicy(DOMSecurityPolicy), unDOMSecurityPolicy, castToDOMSecurityPolicy, gTypeDOMSecurityPolicy
-  , DOMSelection(DOMSelection), unDOMSelection, castToDOMSelection, gTypeDOMSelection
   , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, castToDOMSettableTokenList, gTypeDOMSettableTokenList
   , DOMStringList(DOMStringList), unDOMStringList, castToDOMStringList, gTypeDOMStringList
   , DOMStringMap(DOMStringMap), unDOMStringMap, castToDOMStringMap, gTypeDOMStringMap
   , DOMTokenList(DOMTokenList), unDOMTokenList, IsDOMTokenList, toDOMTokenList, castToDOMTokenList, gTypeDOMTokenList
-  , DOMURL(DOMURL), unDOMURL, castToDOMURL, gTypeDOMURL
-  , DOMWindow(DOMWindow), unDOMWindow, castToDOMWindow, gTypeDOMWindow
-  , DOMWindowCSS(DOMWindowCSS), unDOMWindowCSS, castToDOMWindowCSS, gTypeDOMWindowCSS
   , DataCue(DataCue), unDataCue, castToDataCue, gTypeDataCue
   , DataTransfer(DataTransfer), unDataTransfer, castToDataTransfer, gTypeDataTransfer
   , DataTransferItem(DataTransferItem), unDataTransferItem, castToDataTransferItem, gTypeDataTransferItem
   , DataTransferItemList(DataTransferItemList), unDataTransferItemList, castToDataTransferItemList, gTypeDataTransferItemList
   , Database(Database), unDatabase, castToDatabase, gTypeDatabase
-  , DatabaseCallback(DatabaseCallback), unDatabaseCallback, castToDatabaseCallback, gTypeDatabaseCallback
   , DedicatedWorkerGlobalScope(DedicatedWorkerGlobalScope), unDedicatedWorkerGlobalScope, castToDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope
   , DelayNode(DelayNode), unDelayNode, castToDelayNode, gTypeDelayNode
   , DeviceMotionEvent(DeviceMotionEvent), unDeviceMotionEvent, castToDeviceMotionEvent, gTypeDeviceMotionEvent
@@ -191,6 +201,7 @@ module GHCJS.DOM.Types (
   , FileReaderSync(FileReaderSync), unFileReaderSync, castToFileReaderSync, gTypeFileReaderSync
   , FocusEvent(FocusEvent), unFocusEvent, castToFocusEvent, gTypeFocusEvent
   , FontLoader(FontLoader), unFontLoader, castToFontLoader, gTypeFontLoader
+  , FormData(FormData), unFormData, castToFormData, gTypeFormData
   , GainNode(GainNode), unGainNode, castToGainNode, gTypeGainNode
   , Gamepad(Gamepad), unGamepad, castToGamepad, gTypeGamepad
   , GamepadButton(GamepadButton), unGamepadButton, castToGamepadButton, gTypeGamepadButton
@@ -304,7 +315,6 @@ module GHCJS.DOM.Types (
   , MediaKeys(MediaKeys), unMediaKeys, castToMediaKeys, gTypeMediaKeys
   , MediaList(MediaList), unMediaList, castToMediaList, gTypeMediaList
   , MediaQueryList(MediaQueryList), unMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
-  , MediaQueryListListener(MediaQueryListListener), unMediaQueryListListener, castToMediaQueryListListener, gTypeMediaQueryListListener
   , MediaSource(MediaSource), unMediaSource, castToMediaSource, gTypeMediaSource
   , MediaSourceStates(MediaSourceStates), unMediaSourceStates, castToMediaSourceStates, gTypeMediaSourceStates
   , MediaStream(MediaStream), unMediaStream, castToMediaStream, gTypeMediaStream
@@ -314,7 +324,6 @@ module GHCJS.DOM.Types (
   , MediaStreamEvent(MediaStreamEvent), unMediaStreamEvent, castToMediaStreamEvent, gTypeMediaStreamEvent
   , MediaStreamTrack(MediaStreamTrack), unMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack, castToMediaStreamTrack, gTypeMediaStreamTrack
   , MediaStreamTrackEvent(MediaStreamTrackEvent), unMediaStreamTrackEvent, castToMediaStreamTrackEvent, gTypeMediaStreamTrackEvent
-  , MediaStreamTrackSourcesCallback(MediaStreamTrackSourcesCallback), unMediaStreamTrackSourcesCallback, castToMediaStreamTrackSourcesCallback, gTypeMediaStreamTrackSourcesCallback
   , MediaTrackConstraint(MediaTrackConstraint), unMediaTrackConstraint, castToMediaTrackConstraint, gTypeMediaTrackConstraint
   , MediaTrackConstraintSet(MediaTrackConstraintSet), unMediaTrackConstraintSet, castToMediaTrackConstraintSet, gTypeMediaTrackConstraintSet
   , MediaTrackConstraints(MediaTrackConstraints), unMediaTrackConstraints, castToMediaTrackConstraints, gTypeMediaTrackConstraints
@@ -322,6 +331,8 @@ module GHCJS.DOM.Types (
   , MessageChannel(MessageChannel), unMessageChannel, castToMessageChannel, gTypeMessageChannel
   , MessageEvent(MessageEvent), unMessageEvent, castToMessageEvent, gTypeMessageEvent
   , MessagePort(MessagePort), unMessagePort, castToMessagePort, gTypeMessagePort
+  , MimeType(MimeType), unMimeType, castToMimeType, gTypeMimeType
+  , MimeTypeArray(MimeTypeArray), unMimeTypeArray, castToMimeTypeArray, gTypeMimeTypeArray
   , MouseEvent(MouseEvent), unMouseEvent, IsMouseEvent, toMouseEvent, castToMouseEvent, gTypeMouseEvent
   , MutationEvent(MutationEvent), unMutationEvent, castToMutationEvent, gTypeMutationEvent
   , MutationObserver(MutationObserver), unMutationObserver, castToMutationObserver, gTypeMutationObserver
@@ -329,15 +340,12 @@ module GHCJS.DOM.Types (
   , NamedNodeMap(NamedNodeMap), unNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
   , Navigator(Navigator), unNavigator, castToNavigator, gTypeNavigator
   , NavigatorUserMediaError(NavigatorUserMediaError), unNavigatorUserMediaError, castToNavigatorUserMediaError, gTypeNavigatorUserMediaError
-  , NavigatorUserMediaErrorCallback(NavigatorUserMediaErrorCallback), unNavigatorUserMediaErrorCallback, castToNavigatorUserMediaErrorCallback, gTypeNavigatorUserMediaErrorCallback
-  , NavigatorUserMediaSuccessCallback(NavigatorUserMediaSuccessCallback), unNavigatorUserMediaSuccessCallback, castToNavigatorUserMediaSuccessCallback, gTypeNavigatorUserMediaSuccessCallback
   , Node(Node), unNode, IsNode, toNode, castToNode, gTypeNode
   , NodeFilter(NodeFilter), unNodeFilter, castToNodeFilter, gTypeNodeFilter
   , NodeIterator(NodeIterator), unNodeIterator, castToNodeIterator, gTypeNodeIterator
   , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, castToNodeList, gTypeNodeList
   , Notification(Notification), unNotification, castToNotification, gTypeNotification
   , NotificationCenter(NotificationCenter), unNotificationCenter, castToNotificationCenter, gTypeNotificationCenter
-  , NotificationPermissionCallback(NotificationPermissionCallback), unNotificationPermissionCallback, castToNotificationPermissionCallback, gTypeNotificationPermissionCallback
   , OESElementIndexUint(OESElementIndexUint), unOESElementIndexUint, castToOESElementIndexUint, gTypeOESElementIndexUint
   , OESStandardDerivatives(OESStandardDerivatives), unOESStandardDerivatives, castToOESStandardDerivatives, gTypeOESStandardDerivatives
   , OESTextureFloat(OESTextureFloat), unOESTextureFloat, castToOESTextureFloat, gTypeOESTextureFloat
@@ -351,6 +359,7 @@ module GHCJS.DOM.Types (
   , OverflowEvent(OverflowEvent), unOverflowEvent, castToOverflowEvent, gTypeOverflowEvent
   , PageTransitionEvent(PageTransitionEvent), unPageTransitionEvent, castToPageTransitionEvent, gTypePageTransitionEvent
   , PannerNode(PannerNode), unPannerNode, castToPannerNode, gTypePannerNode
+  , Path2D(Path2D), unPath2D, castToPath2D, gTypePath2D
   , Performance(Performance), unPerformance, castToPerformance, gTypePerformance
   , PerformanceEntry(PerformanceEntry), unPerformanceEntry, IsPerformanceEntry, toPerformanceEntry, castToPerformanceEntry, gTypePerformanceEntry
   , PerformanceEntryList(PerformanceEntryList), unPerformanceEntryList, castToPerformanceEntryList, gTypePerformanceEntryList
@@ -360,10 +369,10 @@ module GHCJS.DOM.Types (
   , PerformanceResourceTiming(PerformanceResourceTiming), unPerformanceResourceTiming, castToPerformanceResourceTiming, gTypePerformanceResourceTiming
   , PerformanceTiming(PerformanceTiming), unPerformanceTiming, castToPerformanceTiming, gTypePerformanceTiming
   , PeriodicWave(PeriodicWave), unPeriodicWave, castToPeriodicWave, gTypePeriodicWave
+  , Plugin(Plugin), unPlugin, castToPlugin, gTypePlugin
+  , PluginArray(PluginArray), unPluginArray, castToPluginArray, gTypePluginArray
   , PopStateEvent(PopStateEvent), unPopStateEvent, castToPopStateEvent, gTypePopStateEvent
-  , PositionCallback(PositionCallback), unPositionCallback, castToPositionCallback, gTypePositionCallback
   , PositionError(PositionError), unPositionError, castToPositionError, gTypePositionError
-  , PositionErrorCallback(PositionErrorCallback), unPositionErrorCallback, castToPositionErrorCallback, gTypePositionErrorCallback
   , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
   , ProgressEvent(ProgressEvent), unProgressEvent, IsProgressEvent, toProgressEvent, castToProgressEvent, gTypeProgressEvent
   , QuickTimePluginReplacement(QuickTimePluginReplacement), unQuickTimePluginReplacement, castToQuickTimePluginReplacement, gTypeQuickTimePluginReplacement
@@ -377,25 +386,17 @@ module GHCJS.DOM.Types (
   , RTCIceCandidateEvent(RTCIceCandidateEvent), unRTCIceCandidateEvent, castToRTCIceCandidateEvent, gTypeRTCIceCandidateEvent
   , RTCIceServer(RTCIceServer), unRTCIceServer, castToRTCIceServer, gTypeRTCIceServer
   , RTCPeerConnection(RTCPeerConnection), unRTCPeerConnection, castToRTCPeerConnection, gTypeRTCPeerConnection
-  , RTCPeerConnectionErrorCallback(RTCPeerConnectionErrorCallback), unRTCPeerConnectionErrorCallback, castToRTCPeerConnectionErrorCallback, gTypeRTCPeerConnectionErrorCallback
   , RTCSessionDescription(RTCSessionDescription), unRTCSessionDescription, castToRTCSessionDescription, gTypeRTCSessionDescription
-  , RTCSessionDescriptionCallback(RTCSessionDescriptionCallback), unRTCSessionDescriptionCallback, castToRTCSessionDescriptionCallback, gTypeRTCSessionDescriptionCallback
-  , RTCStatsCallback(RTCStatsCallback), unRTCStatsCallback, castToRTCStatsCallback, gTypeRTCStatsCallback
   , RTCStatsReport(RTCStatsReport), unRTCStatsReport, castToRTCStatsReport, gTypeRTCStatsReport
   , RTCStatsResponse(RTCStatsResponse), unRTCStatsResponse, castToRTCStatsResponse, gTypeRTCStatsResponse
   , RadioNodeList(RadioNodeList), unRadioNodeList, castToRadioNodeList, gTypeRadioNodeList
-  , DOMRange(DOMRange), unDOMRange, castToDOMRange, gTypeDOMRange
+  , Range(Range), unRange, castToRange, gTypeRange
   , ReadableStream(ReadableStream), unReadableStream, castToReadableStream, gTypeReadableStream
   , Rect(Rect), unRect, castToRect, gTypeRect
-  , RequestAnimationFrameCallback(RequestAnimationFrameCallback), unRequestAnimationFrameCallback, castToRequestAnimationFrameCallback, gTypeRequestAnimationFrameCallback
   , SQLError(SQLError), unSQLError, castToSQLError, gTypeSQLError
   , SQLResultSet(SQLResultSet), unSQLResultSet, castToSQLResultSet, gTypeSQLResultSet
   , SQLResultSetRowList(SQLResultSetRowList), unSQLResultSetRowList, castToSQLResultSetRowList, gTypeSQLResultSetRowList
-  , SQLStatementCallback(SQLStatementCallback), unSQLStatementCallback, castToSQLStatementCallback, gTypeSQLStatementCallback
-  , SQLStatementErrorCallback(SQLStatementErrorCallback), unSQLStatementErrorCallback, castToSQLStatementErrorCallback, gTypeSQLStatementErrorCallback
   , SQLTransaction(SQLTransaction), unSQLTransaction, castToSQLTransaction, gTypeSQLTransaction
-  , SQLTransactionCallback(SQLTransactionCallback), unSQLTransactionCallback, castToSQLTransactionCallback, gTypeSQLTransactionCallback
-  , SQLTransactionErrorCallback(SQLTransactionErrorCallback), unSQLTransactionErrorCallback, castToSQLTransactionErrorCallback, gTypeSQLTransactionErrorCallback
   , SVGAElement(SVGAElement), unSVGAElement, castToSVGAElement, gTypeSVGAElement
   , SVGAltGlyphDefElement(SVGAltGlyphDefElement), unSVGAltGlyphDefElement, castToSVGAltGlyphDefElement, gTypeSVGAltGlyphDefElement
   , SVGAltGlyphElement(SVGAltGlyphElement), unSVGAltGlyphElement, castToSVGAltGlyphElement, gTypeSVGAltGlyphElement
@@ -542,11 +543,13 @@ module GHCJS.DOM.Types (
   , SVGViewSpec(SVGViewSpec), unSVGViewSpec, castToSVGViewSpec, gTypeSVGViewSpec
   , SVGZoomAndPan(SVGZoomAndPan), unSVGZoomAndPan, castToSVGZoomAndPan, gTypeSVGZoomAndPan
   , SVGZoomEvent(SVGZoomEvent), unSVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent
-  , DOMScreen(DOMScreen), unDOMScreen, castToDOMScreen, gTypeDOMScreen
+  , Screen(Screen), unScreen, castToScreen, gTypeScreen
   , ScriptProcessorNode(ScriptProcessorNode), unScriptProcessorNode, castToScriptProcessorNode, gTypeScriptProcessorNode
   , ScriptProfile(ScriptProfile), unScriptProfile, castToScriptProfile, gTypeScriptProfile
   , ScriptProfileNode(ScriptProfileNode), unScriptProfileNode, castToScriptProfileNode, gTypeScriptProfileNode
+  , SecurityPolicy(SecurityPolicy), unSecurityPolicy, castToSecurityPolicy, gTypeSecurityPolicy
   , SecurityPolicyViolationEvent(SecurityPolicyViolationEvent), unSecurityPolicyViolationEvent, castToSecurityPolicyViolationEvent, gTypeSecurityPolicyViolationEvent
+  , Selection(Selection), unSelection, castToSelection, gTypeSelection
   , SourceBuffer(SourceBuffer), unSourceBuffer, castToSourceBuffer, gTypeSourceBuffer
   , SourceBufferList(SourceBufferList), unSourceBufferList, castToSourceBufferList, gTypeSourceBufferList
   , SourceInfo(SourceInfo), unSourceInfo, castToSourceInfo, gTypeSourceInfo
@@ -555,13 +558,9 @@ module GHCJS.DOM.Types (
   , SpeechSynthesisUtterance(SpeechSynthesisUtterance), unSpeechSynthesisUtterance, castToSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance
   , SpeechSynthesisVoice(SpeechSynthesisVoice), unSpeechSynthesisVoice, castToSpeechSynthesisVoice, gTypeSpeechSynthesisVoice
   , Storage(Storage), unStorage, castToStorage, gTypeStorage
-  , StorageErrorCallback(StorageErrorCallback), unStorageErrorCallback, castToStorageErrorCallback, gTypeStorageErrorCallback
   , StorageEvent(StorageEvent), unStorageEvent, castToStorageEvent, gTypeStorageEvent
   , StorageInfo(StorageInfo), unStorageInfo, castToStorageInfo, gTypeStorageInfo
   , StorageQuota(StorageQuota), unStorageQuota, castToStorageQuota, gTypeStorageQuota
-  , StorageQuotaCallback(StorageQuotaCallback), unStorageQuotaCallback, castToStorageQuotaCallback, gTypeStorageQuotaCallback
-  , StorageUsageCallback(StorageUsageCallback), unStorageUsageCallback, castToStorageUsageCallback, gTypeStorageUsageCallback
-  , StringCallback(StringCallback), unStringCallback, castToStringCallback, gTypeStringCallback
   , StyleMedia(StyleMedia), unStyleMedia, castToStyleMedia, gTypeStyleMedia
   , StyleSheet(StyleSheet), unStyleSheet, IsStyleSheet, toStyleSheet, castToStyleSheet, gTypeStyleSheet
   , StyleSheetList(StyleSheetList), unStyleSheetList, castToStyleSheetList, gTypeStyleSheetList
@@ -583,6 +582,7 @@ module GHCJS.DOM.Types (
   , TypeConversions(TypeConversions), unTypeConversions, castToTypeConversions, gTypeTypeConversions
   , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, castToUIEvent, gTypeUIEvent
   , UIRequestEvent(UIRequestEvent), unUIRequestEvent, castToUIRequestEvent, gTypeUIRequestEvent
+  , URL(URL), unURL, castToURL, gTypeURL
   , URLUtils(URLUtils), unURLUtils, castToURLUtils, gTypeURLUtils
   , UserMessageHandler(UserMessageHandler), unUserMessageHandler, castToUserMessageHandler, gTypeUserMessageHandler
   , UserMessageHandlersNamespace(UserMessageHandlersNamespace), unUserMessageHandlersNamespace, castToUserMessageHandlersNamespace, gTypeUserMessageHandlersNamespace
@@ -594,7 +594,6 @@ module GHCJS.DOM.Types (
   , VideoStreamTrack(VideoStreamTrack), unVideoStreamTrack, castToVideoStreamTrack, gTypeVideoStreamTrack
   , VideoTrack(VideoTrack), unVideoTrack, castToVideoTrack, gTypeVideoTrack
   , VideoTrackList(VideoTrackList), unVideoTrackList, castToVideoTrackList, gTypeVideoTrackList
-  , VoidCallback(VoidCallback), unVoidCallback, castToVoidCallback, gTypeVoidCallback
   , WaveShaperNode(WaveShaperNode), unWaveShaperNode, castToWaveShaperNode, gTypeWaveShaperNode
   , WebGL2RenderingContext(WebGL2RenderingContext), unWebGL2RenderingContext, castToWebGL2RenderingContext, gTypeWebGL2RenderingContext
   , WebGLActiveInfo(WebGLActiveInfo), unWebGLActiveInfo, castToWebGLActiveInfo, gTypeWebGLActiveInfo
@@ -637,6 +636,7 @@ module GHCJS.DOM.Types (
   , WebKitTransitionEvent(WebKitTransitionEvent), unWebKitTransitionEvent, castToWebKitTransitionEvent, gTypeWebKitTransitionEvent
   , WebSocket(WebSocket), unWebSocket, castToWebSocket, gTypeWebSocket
   , WheelEvent(WheelEvent), unWheelEvent, castToWheelEvent, gTypeWheelEvent
+  , Window(Window), unWindow, castToWindow, gTypeWindow
   , WindowBase64(WindowBase64), unWindowBase64, castToWindowBase64, gTypeWindowBase64
   , WindowTimers(WindowTimers), unWindowTimers, castToWindowTimers, gTypeWindowTimers
   , Worker(Worker), unWorker, castToWorker, gTypeWorker
@@ -657,7 +657,7 @@ module GHCJS.DOM.Types (
     propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
   , module Graphics.UI.Gtk.WebKit.Types
   , IsGObject
-  , IsDOMAttr
+  , IsAttr
   , IsBlob
   , IsCDATASection
   , IsCSSRule
@@ -667,17 +667,18 @@ module GHCJS.DOM.Types (
   , IsCSSValue
   , IsCharacterData
   , IsComment
-  , IsDOMApplicationCache
+  , IsApplicationCache
   , IsDOMImplementation
-  , IsDOMMimeType
-  , IsDOMMimeTypeArray
-  , IsDOMPlugin
-  , IsDOMPluginArray
-  , IsDOMSelection
+  , IsMimeType
+  , IsMimeTypeArray
+  , IsPlugin
+  , IsPluginArray
+  , IsSelection
   , IsDOMSettableTokenList
   , IsDOMStringList
   , IsDOMTokenList
-  , IsDOMWindow
+  , IsWindow
+  , IsCSS
   , IsDocument
   , IsDocumentFragment
   , IsDocumentType
@@ -765,8 +766,8 @@ module GHCJS.DOM.Types (
   , IsNodeIterator
   , IsNodeList
   , IsProcessingInstruction
-  , IsDOMRange
-  , IsDOMScreen
+  , IsRange
+  , IsScreen
   , IsStorage
   , IsStyleMedia
   , IsStyleSheet
@@ -785,13 +786,17 @@ module GHCJS.DOM.Types (
   ) where
 
 import Control.Applicative ((<$>))
+import qualified Data.Text as T (Text)
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+import qualified Data.Text.Lazy as LT (Text)
+import Data.JSString (pack, unpack)
+import Data.JSString.Text (textToJSString, textFromJSString, lazyTextToJSString, lazyTextFromJSString)
 import GHCJS.Types (JSRef(..), castRef, nullRef, isNull, isUndefined, JSString(..))
-import GHCJS.Foreign (ToJSString(..), FromJSString(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
+import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Foreign.Callback (Callback(..))
 import Control.Monad.IO.Class (MonadIO(..))
 #else
-import qualified Data.Text as T (Text)
 import Data.Maybe (isNothing)
 import Foreign.C (CString)
 import Graphics.UI.Gtk.WebKit.Types
@@ -810,6 +815,12 @@ maybeJSNullOrUndefined r = Just r
 propagateGError = id
 
 data GType = GType (JSRef GType)
+
+instance Eq (JSRef a) where
+  a == b = js_eq a b
+
+foreign import javascript unsafe
+  "$1===$2" js_eq :: JSRef a -> JSRef a -> Bool
 
 #ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "h$isInstanceOf $1 $2"
@@ -838,15 +849,21 @@ castTo gtype objTypeName obj =
 isA :: IsGObject o => o -> GType -> Bool
 isA obj = typeInstanceIsA (unGObject $ toGObject obj)
 
-data GObject = GObject (JSRef GObject)
-
-unGObject (GObject o) = o
+newtype GObject = GObject { unGObject :: JSRef GObject }
 
 class (ToJSRef o, FromJSRef o) => IsGObject o where
   -- | Safe upcast.
   toGObject         :: o -> GObject
   -- | Unchecked downcast.
   unsafeCastGObject :: GObject -> o
+
+instance PToJSRef GObject where
+  pToJSRef = unGObject
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef GObject where
+  pFromJSRef = GObject
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef GObject where
   toJSRef = return . unGObject
@@ -856,9 +873,27 @@ instance FromJSRef GObject where
   fromJSRef = return . fmap GObject . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
+--instance IsGObject o => PToJSRef o where
+--  pToJSRef = castRef . unGObject . toGObject
+--  {-# INLINE pToJSRef #-}
+--
+--instance IsGObject o => PFromJSRef o where
+--  pFromJSRef = unsafeCastGObject . GObject . castRef
+--  {-# INLINE pFromJSRef #-}
+--
+--instance IsGObject o => ToJSRef o where
+--  toJSRef = return . castRef . unGObject . toGObject
+--  {-# INLINE toJSRef #-}
+--
+--instance IsGObject o => FromJSRef o where
+--  fromJSRef = return . fmap (unsafeCastGObject . GObject . castRef) . maybeJSNullOrUndefined
+--  {-# INLINE fromJSRef #-}
+
 instance IsGObject GObject where
   toGObject = id
+  {-# INLINE toGObject #-}
   unsafeCastGObject = id
+  {-# INLINE unsafeCastGObject #-}
 
 castToGObject :: IsGObject obj => obj -> obj
 castToGObject = id
@@ -881,6 +916,24 @@ objectToString self = liftIO (fromJSString <$> (js_objectToString (unGObject (to
 --   give it back as is.
 type DOMString = JSString
 
+class (PToJSRef a, ToJSRef a) => ToJSString a
+class (PFromJSRef a, FromJSRef a) => FromJSString a
+
+toJSString :: ToJSString a => a -> JSString
+toJSString = pFromJSRef . castRef . pToJSRef
+{-# INLINE toJSString #-}
+
+fromJSString :: FromJSString a => JSString -> a
+fromJSString = pFromJSRef . castRef . pToJSRef
+{-# INLINE fromJSString #-}
+
+instance ToJSString   [Char]
+instance FromJSString [Char]
+instance ToJSString   T.Text
+instance FromJSString T.Text
+instance ToJSString   JSString
+instance FromJSString JSString
+
 type ToDOMString s = ToJSString s
 type FromDOMString s = FromJSString s
 #endif
@@ -899,11 +952,43 @@ type FromDOMString s = GlibString s
 
 type IsDOMString s = (ToDOMString s, FromDOMString s)
 
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- Callbacks
+type AudioBufferCallback = Callback (JSRef (Maybe AudioBuffer) -> IO ())
+type DatabaseCallback = Callback (JSRef (Maybe Database) -> IO ())
+type MediaQueryListListener = Callback (JSRef (Maybe MediaQueryList) -> IO ())
+type MediaStreamTrackSourcesCallback = Callback (JSRef [Maybe SourceInfo] -> IO ())
+type NavigatorUserMediaErrorCallback = Callback (JSRef (Maybe NavigatorUserMediaError) -> IO ())
+type NavigatorUserMediaSuccessCallback = Callback (JSRef (Maybe MediaStream) -> IO ())
+type NotificationPermissionCallback permission = Callback (JSRef permission -> IO ())
+type PositionCallback = Callback (JSRef (Maybe Geoposition) -> IO ())
+type PositionErrorCallback = Callback (JSRef (Maybe PositionError) -> IO ())
+type RequestAnimationFrameCallback = Callback (JSRef Double -> IO ())
+type RTCPeerConnectionErrorCallback = Callback (JSRef (Maybe DOMError) -> IO ())
+type RTCSessionDescriptionCallback = Callback (JSRef (Maybe RTCSessionDescription) -> IO ())
+type RTCStatsCallback = Callback (JSRef (Maybe RTCStatsResponse) -> IO ())
+type SQLStatementCallback = Callback (JSRef (Maybe SQLTransaction) -> JSRef (Maybe SQLResultSet) -> IO ())
+type SQLStatementErrorCallback = Callback (JSRef (Maybe SQLTransaction) -> JSRef (Maybe SQLError) -> IO ())
+type SQLTransactionCallback = Callback (JSRef (Maybe SQLTransaction) -> IO ())
+type SQLTransactionErrorCallback = Callback (JSRef (Maybe SQLError) -> IO ())
+type StorageErrorCallback = Callback (JSRef (Maybe DOMException) -> IO ())
+type StorageQuotaCallback = Callback (JSRef Double -> IO ())
+type StorageUsageCallback = Callback (JSRef Double -> JSRef Double -> IO ())
+type StringCallback s = Callback (JSRef s -> IO ())
+type VoidCallback = Callback (IO ())
+#endif
+
 -- Custom types
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype SerializedScriptValue = SerializedScriptValue (JSRef SerializedScriptValue) deriving (Eq)
+newtype SerializedScriptValue = SerializedScriptValue { unSerializedScriptValue :: JSRef SerializedScriptValue }  deriving (Eq)
 
-unSerializedScriptValue (SerializedScriptValue o) = o
+instance PToJSRef SerializedScriptValue where
+  pToJSRef = unSerializedScriptValue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SerializedScriptValue where
+  pFromJSRef = SerializedScriptValue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SerializedScriptValue where
   toJSRef = return . unSerializedScriptValue
@@ -927,9 +1012,15 @@ instance IsGObject SerializedScriptValue where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype PositionOptions = PositionOptions (JSRef PositionOptions) deriving (Eq)
+newtype PositionOptions = PositionOptions { unPositionOptions :: JSRef PositionOptions } deriving (Eq)
 
-unPositionOptions (PositionOptions o) = o
+instance PToJSRef PositionOptions where
+  pToJSRef = unPositionOptions
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PositionOptions where
+  pFromJSRef = PositionOptions
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PositionOptions where
   toJSRef = return . unPositionOptions
@@ -953,9 +1044,15 @@ instance IsGObject PositionOptions where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Dictionary = Dictionary (JSRef Dictionary) deriving (Eq)
+newtype Dictionary = Dictionary { unDictionary :: JSRef Dictionary } deriving (Eq)
 
-unDictionary (Dictionary o) = o
+instance PToJSRef Dictionary where
+  pToJSRef = unDictionary
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Dictionary where
+  pFromJSRef = Dictionary
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Dictionary where
   toJSRef = return . unDictionary
@@ -979,9 +1076,15 @@ instance IsGObject Dictionary where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype BlobPropertyBag = BlobPropertyBag (JSRef BlobPropertyBag) deriving (Eq)
+newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSRef BlobPropertyBag } deriving (Eq)
 
-unBlobPropertyBag (BlobPropertyBag o) = o
+instance PToJSRef BlobPropertyBag where
+  pToJSRef = unBlobPropertyBag
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef BlobPropertyBag where
+  pFromJSRef = BlobPropertyBag
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef BlobPropertyBag where
   toJSRef = return . unBlobPropertyBag
@@ -1005,9 +1108,15 @@ instance IsGObject BlobPropertyBag where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype MutationCallback = MutationCallback (JSRef MutationCallback) deriving (Eq)
+newtype MutationCallback = MutationCallback { unMutationCallback :: JSRef MutationCallback } deriving (Eq)
 
-unMutationCallback (MutationCallback o) = o
+instance PToJSRef MutationCallback where
+  pToJSRef = unMutationCallback
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MutationCallback where
+  pFromJSRef = MutationCallback
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MutationCallback where
   toJSRef = return . unMutationCallback
@@ -1031,9 +1140,15 @@ instance IsGObject MutationCallback where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Promise = Promise (JSRef Promise) deriving (Eq)
+newtype Promise = Promise { unPromise :: JSRef Promise } deriving (Eq)
 
-unPromise (Promise o) = o
+instance PToJSRef Promise where
+  pToJSRef = unPromise
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Promise where
+  pFromJSRef = Promise
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Promise where
   toJSRef = return . unPromise
@@ -1063,9 +1178,15 @@ gTypePromise = GType gTypePromise'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ArrayBuffer = ArrayBuffer (JSRef ArrayBuffer) deriving (Eq)
+newtype ArrayBuffer = ArrayBuffer { unArrayBuffer :: JSRef ArrayBuffer } deriving (Eq)
 
-unArrayBuffer (ArrayBuffer o) = o
+instance PToJSRef ArrayBuffer where
+  pToJSRef = unArrayBuffer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ArrayBuffer where
+  pFromJSRef = ArrayBuffer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ArrayBuffer where
   toJSRef = return . unArrayBuffer
@@ -1094,9 +1215,15 @@ gTypeArrayBuffer = GType gTypeArrayBuffer'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Float32Array = Float32Array (JSRef Float32Array) deriving (Eq)
+newtype Float32Array = Float32Array { unFloat32Array :: JSRef Float32Array } deriving (Eq)
 
-unFloat32Array (Float32Array o) = o
+instance PToJSRef Float32Array where
+  pToJSRef = unFloat32Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Float32Array where
+  pFromJSRef = Float32Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Float32Array where
   toJSRef = return . unFloat32Array
@@ -1126,9 +1253,15 @@ gTypeFloat32Array = GType gTypeFloat32Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Float64Array = Float64Array (JSRef Float64Array) deriving (Eq)
+newtype Float64Array = Float64Array { unFloat64Array :: JSRef Float64Array } deriving (Eq)
 
-unFloat64Array (Float64Array o) = o
+instance PToJSRef Float64Array where
+  pToJSRef = unFloat64Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Float64Array where
+  pFromJSRef = Float64Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Float64Array where
   toJSRef = return . unFloat64Array
@@ -1158,9 +1291,15 @@ gTypeFloat64Array = GType gTypeFloat64Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint8Array = Uint8Array (JSRef Uint8Array) deriving (Eq)
+newtype Uint8Array = Uint8Array { unUint8Array :: JSRef Uint8Array } deriving (Eq)
 
-unUint8Array (Uint8Array o) = o
+instance PToJSRef Uint8Array where
+  pToJSRef = unUint8Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Uint8Array where
+  pFromJSRef = Uint8Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Uint8Array where
   toJSRef = return . unUint8Array
@@ -1190,9 +1329,15 @@ gTypeUint8Array = GType gTypeUint8Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint8ClampedArray = Uint8ClampedArray (JSRef Uint8ClampedArray) deriving (Eq)
+newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSRef Uint8ClampedArray } deriving (Eq)
 
-unUint8ClampedArray (Uint8ClampedArray o) = o
+instance PToJSRef Uint8ClampedArray where
+  pToJSRef = unUint8ClampedArray
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Uint8ClampedArray where
+  pFromJSRef = Uint8ClampedArray
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Uint8ClampedArray where
   toJSRef = return . unUint8ClampedArray
@@ -1222,9 +1367,15 @@ gTypeUint8ClampedArray = GType gTypeUint8ClampedArray'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint16Array = Uint16Array (JSRef Uint16Array) deriving (Eq)
+newtype Uint16Array = Uint16Array { unUint16Array :: JSRef Uint16Array } deriving (Eq)
 
-unUint16Array (Uint16Array o) = o
+instance PToJSRef Uint16Array where
+  pToJSRef = unUint16Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Uint16Array where
+  pFromJSRef = Uint16Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Uint16Array where
   toJSRef = return . unUint16Array
@@ -1254,9 +1405,15 @@ gTypeUint16Array = GType gTypeUint16Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint32Array = Uint32Array (JSRef Uint32Array) deriving (Eq)
+newtype Uint32Array = Uint32Array { unUint32Array :: JSRef Uint32Array } deriving (Eq)
 
-unUint32Array (Uint32Array o) = o
+instance PToJSRef Uint32Array where
+  pToJSRef = unUint32Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Uint32Array where
+  pFromJSRef = Uint32Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Uint32Array where
   toJSRef = return . unUint32Array
@@ -1286,9 +1443,15 @@ gTypeUint32Array = GType gTypeUint32Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int8Array = Int8Array (JSRef Int8Array) deriving (Eq)
+newtype Int8Array = Int8Array { unInt8Array :: JSRef Int8Array } deriving (Eq)
 
-unInt8Array (Int8Array o) = o
+instance PToJSRef Int8Array where
+  pToJSRef = unInt8Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Int8Array where
+  pFromJSRef = Int8Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Int8Array where
   toJSRef = return . unInt8Array
@@ -1318,9 +1481,15 @@ gTypeInt8Array = GType gTypeInt8Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int16Array = Int16Array (JSRef Int16Array) deriving (Eq)
+newtype Int16Array = Int16Array { unInt16Array :: JSRef Int16Array } deriving (Eq)
 
-unInt16Array (Int16Array o) = o
+instance PToJSRef Int16Array where
+  pToJSRef = unInt16Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Int16Array where
+  pFromJSRef = Int16Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Int16Array where
   toJSRef = return . unInt16Array
@@ -1350,9 +1519,15 @@ gTypeInt16Array = GType gTypeInt16Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int32Array = Int32Array (JSRef Int32Array) deriving (Eq)
+newtype Int32Array = Int32Array { unInt32Array :: JSRef Int32Array } deriving (Eq)
 
-unInt32Array (Int32Array o) = o
+instance PToJSRef Int32Array where
+  pToJSRef = unInt32Array
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Int32Array where
+  pFromJSRef = Int32Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Int32Array where
   toJSRef = return . unInt32Array
@@ -1382,9 +1557,15 @@ gTypeInt32Array = GType gTypeInt32Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ObjectArray = ObjectArray (JSRef ObjectArray) deriving (Eq)
+newtype ObjectArray = ObjectArray { unObjectArray :: JSRef ObjectArray } deriving (Eq)
 
-unObjectArray (ObjectArray o) = o
+instance PToJSRef ObjectArray where
+  pToJSRef = unObjectArray
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ObjectArray where
+  pFromJSRef = ObjectArray
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ObjectArray where
   toJSRef = return . unObjectArray
@@ -1408,9 +1589,15 @@ instance IsGObject ObjectArray where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ArrayBufferView = ArrayBufferView (JSRef ArrayBufferView) deriving (Eq)
+newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSRef ArrayBufferView } deriving (Eq)
 
-unArrayBufferView (ArrayBufferView o) = o
+instance PToJSRef ArrayBufferView where
+  pToJSRef = unArrayBufferView
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ArrayBufferView where
+  pFromJSRef = ArrayBufferView
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ArrayBufferView where
   toJSRef = return . unArrayBufferView
@@ -1434,9 +1621,15 @@ instance IsGObject ArrayBufferView where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Array = Array (JSRef Array) deriving (Eq)
+newtype Array = Array { unArray :: JSRef Array } deriving (Eq)
 
-unArray (Array o) = o
+instance PToJSRef Array where
+  pToJSRef = unArray
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Array where
+  pFromJSRef = Array
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Array where
   toJSRef = return . unArray
@@ -1466,9 +1659,15 @@ gTypeArray = GType gTypeArray'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Date = Date (JSRef Date) deriving (Eq)
+newtype Date = Date { unDate :: JSRef Date } deriving (Eq)
 
-unDate (Date o) = o
+instance PToJSRef Date where
+  pToJSRef = unDate
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Date where
+  pFromJSRef = Date
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Date where
   toJSRef = return . unDate
@@ -1498,9 +1697,15 @@ gTypeDate = GType gTypeDate'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Acceleration = Acceleration (JSRef Acceleration) deriving (Eq)
+newtype Acceleration = Acceleration { unAcceleration :: JSRef Acceleration } deriving (Eq)
 
-unAcceleration (Acceleration o) = o
+instance PToJSRef Acceleration where
+  pToJSRef = unAcceleration
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Acceleration where
+  pFromJSRef = Acceleration
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Acceleration where
   toJSRef = return . unAcceleration
@@ -1524,9 +1729,15 @@ instance IsGObject Acceleration where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype RotationRate = RotationRate (JSRef RotationRate) deriving (Eq)
+newtype RotationRate = RotationRate { unRotationRate :: JSRef RotationRate } deriving (Eq)
 
-unRotationRate (RotationRate o) = o
+instance PToJSRef RotationRate where
+  pToJSRef = unRotationRate
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RotationRate where
+  pFromJSRef = RotationRate
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RotationRate where
   toJSRef = return . unRotationRate
@@ -1550,9 +1761,15 @@ instance IsGObject RotationRate where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Algorithm = Algorithm (JSRef Algorithm) deriving (Eq)
+newtype Algorithm = Algorithm { unAlgorithm :: JSRef Algorithm } deriving (Eq)
 
-unAlgorithm (Algorithm o) = o
+instance PToJSRef Algorithm where
+  pToJSRef = unAlgorithm
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Algorithm where
+  pFromJSRef = Algorithm
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Algorithm where
   toJSRef = return . unAlgorithm
@@ -1576,9 +1793,15 @@ instance IsGObject Algorithm where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype CryptoOperationData = CryptoOperationData (JSRef CryptoOperationData) deriving (Eq)
+newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSRef CryptoOperationData } deriving (Eq)
 
-unCryptoOperationData (CryptoOperationData o) = o
+instance PToJSRef CryptoOperationData where
+  pToJSRef = unCryptoOperationData
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CryptoOperationData where
+  pFromJSRef = CryptoOperationData
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CryptoOperationData where
   toJSRef = return . unCryptoOperationData
@@ -1603,9 +1826,15 @@ instance IsCryptoOperationData ArrayBufferView
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype CanvasStyle = CanvasStyle (JSRef CanvasStyle) deriving (Eq)
+newtype CanvasStyle = CanvasStyle { unCanvasStyle :: JSRef CanvasStyle } deriving (Eq)
 
-unCanvasStyle (CanvasStyle o) = o
+instance PToJSRef CanvasStyle where
+  pToJSRef = unCanvasStyle
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CanvasStyle where
+  pFromJSRef = CanvasStyle
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CanvasStyle where
   toJSRef = return . unCanvasStyle
@@ -1630,34 +1859,46 @@ instance IsCanvasStyle CanvasPattern
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype DOMCoreException = DOMCoreException (JSRef DOMCoreException) deriving (Eq)
+newtype DOMException = DOMException { unDOMException :: JSRef DOMException } deriving (Eq)
 
-unDOMCoreException (DOMCoreException o) = o
+instance PToJSRef DOMException where
+  pToJSRef = unDOMException
+  {-# INLINE pToJSRef #-}
 
-instance ToJSRef DOMCoreException where
-  toJSRef = return . unDOMCoreException
+instance PFromJSRef DOMException where
+  pFromJSRef = DOMException
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef DOMException where
+  toJSRef = return . unDOMException
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMCoreException where
-  fromJSRef = return . fmap DOMCoreException . maybeJSNullOrUndefined
+instance FromJSRef DOMException where
+  fromJSRef = return . fmap DOMException . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsDOMCoreException o
-toDOMCoreException :: IsDOMCoreException o => o -> DOMCoreException
-toDOMCoreException = unsafeCastGObject . toGObject
+class IsGObject o => IsDOMException o
+toDOMException :: IsDOMException o => o -> DOMException
+toDOMException = unsafeCastGObject . toGObject
 
-instance IsDOMCoreException DOMCoreException
-instance IsGObject DOMCoreException where
-  toGObject = GObject . castRef . unDOMCoreException
-  unsafeCastGObject = DOMCoreException . castRef . unGObject
+instance IsDOMException DOMException
+instance IsGObject DOMException where
+  toGObject = GObject . castRef . unDOMException
+  unsafeCastGObject = DOMException . castRef . unGObject
 #else
--- TODO work out how we can support DOMCoreException in native code
+-- TODO work out how we can support DOMException in native code
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype DOMURLConstructor = DOMURLConstructor (JSRef DOMURLConstructor) deriving (Eq)
+newtype DOMURLConstructor = DOMURLConstructor { unDOMURLConstructor :: JSRef DOMURLConstructor } deriving (Eq)
 
-unDOMURLConstructor (DOMURLConstructor o) = o
+instance PToJSRef DOMURLConstructor where
+  pToJSRef = unDOMURLConstructor
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMURLConstructor where
+  pFromJSRef = DOMURLConstructor
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMURLConstructor where
   toJSRef = return . unDOMURLConstructor
@@ -1702,9 +1943,18 @@ type GLclampf = Double
 -- | Functions for this inteface are in "GHCJS.DOM.ANGLEInstancedArrays".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ANGLEInstancedArrays Mozilla ANGLEInstancedArrays documentation>
-newtype ANGLEInstancedArrays = ANGLEInstancedArrays (JSRef ANGLEInstancedArrays) deriving (Eq)
+newtype ANGLEInstancedArrays = ANGLEInstancedArrays { unANGLEInstancedArrays :: JSRef ANGLEInstancedArrays }
 
-unANGLEInstancedArrays (ANGLEInstancedArrays o) = o
+instance Eq (ANGLEInstancedArrays) where
+  (ANGLEInstancedArrays a) == (ANGLEInstancedArrays b) = js_eq a b
+
+instance PToJSRef ANGLEInstancedArrays where
+  pToJSRef = unANGLEInstancedArrays
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ANGLEInstancedArrays where
+  pFromJSRef = ANGLEInstancedArrays
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ANGLEInstancedArrays where
   toJSRef = return . unANGLEInstancedArrays
@@ -1716,7 +1966,9 @@ instance FromJSRef ANGLEInstancedArrays where
 
 instance IsGObject ANGLEInstancedArrays where
   toGObject = GObject . castRef . unANGLEInstancedArrays
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ANGLEInstancedArrays . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToANGLEInstancedArrays :: IsGObject obj => obj -> ANGLEInstancedArrays
 castToANGLEInstancedArrays = castTo gTypeANGLEInstancedArrays "ANGLEInstancedArrays"
@@ -1731,9 +1983,18 @@ gTypeANGLEInstancedArrays = GType gTypeANGLEInstancedArrays'
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractView".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView Mozilla AbstractView documentation>
-newtype AbstractView = AbstractView (JSRef AbstractView) deriving (Eq)
+newtype AbstractView = AbstractView { unAbstractView :: JSRef AbstractView }
 
-unAbstractView (AbstractView o) = o
+instance Eq (AbstractView) where
+  (AbstractView a) == (AbstractView b) = js_eq a b
+
+instance PToJSRef AbstractView where
+  pToJSRef = unAbstractView
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AbstractView where
+  pFromJSRef = AbstractView
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AbstractView where
   toJSRef = return . unAbstractView
@@ -1745,7 +2006,9 @@ instance FromJSRef AbstractView where
 
 instance IsGObject AbstractView where
   toGObject = GObject . castRef . unAbstractView
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AbstractView . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAbstractView :: IsGObject obj => obj -> AbstractView
 castToAbstractView = castTo gTypeAbstractView "AbstractView"
@@ -1760,9 +2023,18 @@ gTypeAbstractView = GType gTypeAbstractView'
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractWorker".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractWorker Mozilla AbstractWorker documentation>
-newtype AbstractWorker = AbstractWorker (JSRef AbstractWorker) deriving (Eq)
+newtype AbstractWorker = AbstractWorker { unAbstractWorker :: JSRef AbstractWorker }
 
-unAbstractWorker (AbstractWorker o) = o
+instance Eq (AbstractWorker) where
+  (AbstractWorker a) == (AbstractWorker b) = js_eq a b
+
+instance PToJSRef AbstractWorker where
+  pToJSRef = unAbstractWorker
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AbstractWorker where
+  pFromJSRef = AbstractWorker
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AbstractWorker where
   toJSRef = return . unAbstractWorker
@@ -1774,7 +2046,9 @@ instance FromJSRef AbstractWorker where
 
 instance IsGObject AbstractWorker where
   toGObject = GObject . castRef . unAbstractWorker
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AbstractWorker . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAbstractWorker :: IsGObject obj => obj -> AbstractWorker
 castToAbstractWorker = castTo gTypeAbstractWorker "AbstractWorker"
@@ -1792,9 +2066,18 @@ gTypeAbstractWorker = GType gTypeAbstractWorker'
 --     * "GHCJS.DOM.MediaStreamCapabilities"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AllAudioCapabilities Mozilla AllAudioCapabilities documentation>
-newtype AllAudioCapabilities = AllAudioCapabilities (JSRef AllAudioCapabilities) deriving (Eq)
+newtype AllAudioCapabilities = AllAudioCapabilities { unAllAudioCapabilities :: JSRef AllAudioCapabilities }
 
-unAllAudioCapabilities (AllAudioCapabilities o) = o
+instance Eq (AllAudioCapabilities) where
+  (AllAudioCapabilities a) == (AllAudioCapabilities b) = js_eq a b
+
+instance PToJSRef AllAudioCapabilities where
+  pToJSRef = unAllAudioCapabilities
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AllAudioCapabilities where
+  pFromJSRef = AllAudioCapabilities
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AllAudioCapabilities where
   toJSRef = return . unAllAudioCapabilities
@@ -1807,7 +2090,9 @@ instance FromJSRef AllAudioCapabilities where
 instance IsMediaStreamCapabilities AllAudioCapabilities
 instance IsGObject AllAudioCapabilities where
   toGObject = GObject . castRef . unAllAudioCapabilities
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AllAudioCapabilities . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAllAudioCapabilities :: IsGObject obj => obj -> AllAudioCapabilities
 castToAllAudioCapabilities = castTo gTypeAllAudioCapabilities "AllAudioCapabilities"
@@ -1825,9 +2110,18 @@ gTypeAllAudioCapabilities = GType gTypeAllAudioCapabilities'
 --     * "GHCJS.DOM.MediaStreamCapabilities"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities Mozilla AllVideoCapabilities documentation>
-newtype AllVideoCapabilities = AllVideoCapabilities (JSRef AllVideoCapabilities) deriving (Eq)
+newtype AllVideoCapabilities = AllVideoCapabilities { unAllVideoCapabilities :: JSRef AllVideoCapabilities }
 
-unAllVideoCapabilities (AllVideoCapabilities o) = o
+instance Eq (AllVideoCapabilities) where
+  (AllVideoCapabilities a) == (AllVideoCapabilities b) = js_eq a b
+
+instance PToJSRef AllVideoCapabilities where
+  pToJSRef = unAllVideoCapabilities
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AllVideoCapabilities where
+  pFromJSRef = AllVideoCapabilities
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AllVideoCapabilities where
   toJSRef = return . unAllVideoCapabilities
@@ -1840,7 +2134,9 @@ instance FromJSRef AllVideoCapabilities where
 instance IsMediaStreamCapabilities AllVideoCapabilities
 instance IsGObject AllVideoCapabilities where
   toGObject = GObject . castRef . unAllVideoCapabilities
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AllVideoCapabilities . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAllVideoCapabilities :: IsGObject obj => obj -> AllVideoCapabilities
 castToAllVideoCapabilities = castTo gTypeAllVideoCapabilities "AllVideoCapabilities"
@@ -1859,9 +2155,18 @@ gTypeAllVideoCapabilities = GType gTypeAllVideoCapabilities'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode Mozilla AnalyserNode documentation>
-newtype AnalyserNode = AnalyserNode (JSRef AnalyserNode) deriving (Eq)
+newtype AnalyserNode = AnalyserNode { unAnalyserNode :: JSRef AnalyserNode }
 
-unAnalyserNode (AnalyserNode o) = o
+instance Eq (AnalyserNode) where
+  (AnalyserNode a) == (AnalyserNode b) = js_eq a b
+
+instance PToJSRef AnalyserNode where
+  pToJSRef = unAnalyserNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AnalyserNode where
+  pFromJSRef = AnalyserNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AnalyserNode where
   toJSRef = return . unAnalyserNode
@@ -1875,7 +2180,9 @@ instance IsAudioNode AnalyserNode
 instance IsEventTarget AnalyserNode
 instance IsGObject AnalyserNode where
   toGObject = GObject . castRef . unAnalyserNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AnalyserNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAnalyserNode :: IsGObject obj => obj -> AnalyserNode
 castToAnalyserNode = castTo gTypeAnalyserNode "AnalyserNode"
@@ -1893,9 +2200,18 @@ gTypeAnalyserNode = GType gTypeAnalyserNode'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent Mozilla AnimationEvent documentation>
-newtype AnimationEvent = AnimationEvent (JSRef AnimationEvent) deriving (Eq)
+newtype AnimationEvent = AnimationEvent { unAnimationEvent :: JSRef AnimationEvent }
 
-unAnimationEvent (AnimationEvent o) = o
+instance Eq (AnimationEvent) where
+  (AnimationEvent a) == (AnimationEvent b) = js_eq a b
+
+instance PToJSRef AnimationEvent where
+  pToJSRef = unAnimationEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AnimationEvent where
+  pFromJSRef = AnimationEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AnimationEvent where
   toJSRef = return . unAnimationEvent
@@ -1908,7 +2224,9 @@ instance FromJSRef AnimationEvent where
 instance IsEvent AnimationEvent
 instance IsGObject AnimationEvent where
   toGObject = GObject . castRef . unAnimationEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AnimationEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAnimationEvent :: IsGObject obj => obj -> AnimationEvent
 castToAnimationEvent = castTo gTypeAnimationEvent "AnimationEvent"
@@ -1920,38 +2238,94 @@ gTypeAnimationEvent = GType gTypeAnimationEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMAttr".
+-- | Functions for this inteface are in "GHCJS.DOM.ApplicationCache".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache Mozilla ApplicationCache documentation>
+newtype ApplicationCache = ApplicationCache { unApplicationCache :: JSRef ApplicationCache }
+
+instance Eq (ApplicationCache) where
+  (ApplicationCache a) == (ApplicationCache b) = js_eq a b
+
+instance PToJSRef ApplicationCache where
+  pToJSRef = unApplicationCache
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ApplicationCache where
+  pFromJSRef = ApplicationCache
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef ApplicationCache where
+  toJSRef = return . unApplicationCache
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef ApplicationCache where
+  fromJSRef = return . fmap ApplicationCache . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsEventTarget ApplicationCache
+instance IsGObject ApplicationCache where
+  toGObject = GObject . castRef . unApplicationCache
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = ApplicationCache . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToApplicationCache :: IsGObject obj => obj -> ApplicationCache
+castToApplicationCache = castTo gTypeApplicationCache "ApplicationCache"
+
+foreign import javascript unsafe "window[\"ApplicationCache\"]" gTypeApplicationCache' :: JSRef GType
+gTypeApplicationCache = GType gTypeApplicationCache'
+#else
+type IsApplicationCache o = ApplicationCacheClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Attr".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.Node"
 --     * "GHCJS.DOM.EventTarget"
 --
--- <https://developer.mozilla.org/en-US/docs/Web/API/DOMAttr Mozilla DOMAttr documentation>
-newtype DOMAttr = DOMAttr (JSRef DOMAttr) deriving (Eq)
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Attr Mozilla Attr documentation>
+newtype Attr = Attr { unAttr :: JSRef Attr }
 
-unDOMAttr (DOMAttr o) = o
+instance Eq (Attr) where
+  (Attr a) == (Attr b) = js_eq a b
 
-instance ToJSRef DOMAttr where
-  toJSRef = return . unDOMAttr
+instance PToJSRef Attr where
+  pToJSRef = unAttr
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Attr where
+  pFromJSRef = Attr
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef Attr where
+  toJSRef = return . unAttr
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMAttr where
-  fromJSRef = return . fmap DOMAttr . maybeJSNullOrUndefined
+instance FromJSRef Attr where
+  fromJSRef = return . fmap Attr . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-instance IsNode DOMAttr
-instance IsEventTarget DOMAttr
-instance IsGObject DOMAttr where
-  toGObject = GObject . castRef . unDOMAttr
-  unsafeCastGObject = DOMAttr . castRef . unGObject
+instance IsNode Attr
+instance IsEventTarget Attr
+instance IsGObject Attr where
+  toGObject = GObject . castRef . unAttr
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = Attr . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
-castToDOMAttr :: IsGObject obj => obj -> DOMAttr
-castToDOMAttr = castTo gTypeDOMAttr "DOMAttr"
+castToAttr :: IsGObject obj => obj -> Attr
+castToAttr = castTo gTypeAttr "Attr"
 
-foreign import javascript unsafe "window[\"DOMAttr\"]" gTypeDOMAttr' :: JSRef GType
-gTypeDOMAttr = GType gTypeDOMAttr'
+foreign import javascript unsafe "window[\"Attr\"]" gTypeAttr' :: JSRef GType
+gTypeAttr = GType gTypeAttr'
 #else
-type IsDOMAttr o = DOMAttrClass o
+type IsAttr o = AttrClass o
 #endif
 
 
@@ -1959,9 +2333,18 @@ type IsDOMAttr o = DOMAttrClass o
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer Mozilla AudioBuffer documentation>
-newtype AudioBuffer = AudioBuffer (JSRef AudioBuffer) deriving (Eq)
+newtype AudioBuffer = AudioBuffer { unAudioBuffer :: JSRef AudioBuffer }
 
-unAudioBuffer (AudioBuffer o) = o
+instance Eq (AudioBuffer) where
+  (AudioBuffer a) == (AudioBuffer b) = js_eq a b
+
+instance PToJSRef AudioBuffer where
+  pToJSRef = unAudioBuffer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioBuffer where
+  pFromJSRef = AudioBuffer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioBuffer where
   toJSRef = return . unAudioBuffer
@@ -1973,42 +2356,15 @@ instance FromJSRef AudioBuffer where
 
 instance IsGObject AudioBuffer where
   toGObject = GObject . castRef . unAudioBuffer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioBuffer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioBuffer :: IsGObject obj => obj -> AudioBuffer
 castToAudioBuffer = castTo gTypeAudioBuffer "AudioBuffer"
 
 foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer' :: JSRef GType
 gTypeAudioBuffer = GType gTypeAudioBuffer'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.AudioBufferCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation>
-newtype AudioBufferCallback = AudioBufferCallback (JSRef AudioBufferCallback) deriving (Eq)
-
-unAudioBufferCallback (AudioBufferCallback o) = o
-
-instance ToJSRef AudioBufferCallback where
-  toJSRef = return . unAudioBufferCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef AudioBufferCallback where
-  fromJSRef = return . fmap AudioBufferCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject AudioBufferCallback where
-  toGObject = GObject . castRef . unAudioBufferCallback
-  unsafeCastGObject = AudioBufferCallback . castRef . unGObject
-
-castToAudioBufferCallback :: IsGObject obj => obj -> AudioBufferCallback
-castToAudioBufferCallback = castTo gTypeAudioBufferCallback "AudioBufferCallback"
-
-foreign import javascript unsafe "window[\"AudioBufferCallback\"]" gTypeAudioBufferCallback' :: JSRef GType
-gTypeAudioBufferCallback = GType gTypeAudioBufferCallback'
 #else
 #endif
 
@@ -2021,9 +2377,18 @@ gTypeAudioBufferCallback = GType gTypeAudioBufferCallback'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode Mozilla AudioBufferSourceNode documentation>
-newtype AudioBufferSourceNode = AudioBufferSourceNode (JSRef AudioBufferSourceNode) deriving (Eq)
+newtype AudioBufferSourceNode = AudioBufferSourceNode { unAudioBufferSourceNode :: JSRef AudioBufferSourceNode }
 
-unAudioBufferSourceNode (AudioBufferSourceNode o) = o
+instance Eq (AudioBufferSourceNode) where
+  (AudioBufferSourceNode a) == (AudioBufferSourceNode b) = js_eq a b
+
+instance PToJSRef AudioBufferSourceNode where
+  pToJSRef = unAudioBufferSourceNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioBufferSourceNode where
+  pFromJSRef = AudioBufferSourceNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioBufferSourceNode where
   toJSRef = return . unAudioBufferSourceNode
@@ -2037,7 +2402,9 @@ instance IsAudioNode AudioBufferSourceNode
 instance IsEventTarget AudioBufferSourceNode
 instance IsGObject AudioBufferSourceNode where
   toGObject = GObject . castRef . unAudioBufferSourceNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioBufferSourceNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioBufferSourceNode :: IsGObject obj => obj -> AudioBufferSourceNode
 castToAudioBufferSourceNode = castTo gTypeAudioBufferSourceNode "AudioBufferSourceNode"
@@ -2055,9 +2422,18 @@ gTypeAudioBufferSourceNode = GType gTypeAudioBufferSourceNode'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext Mozilla AudioContext documentation>
-newtype AudioContext = AudioContext (JSRef AudioContext) deriving (Eq)
+newtype AudioContext = AudioContext { unAudioContext :: JSRef AudioContext }
 
-unAudioContext (AudioContext o) = o
+instance Eq (AudioContext) where
+  (AudioContext a) == (AudioContext b) = js_eq a b
+
+instance PToJSRef AudioContext where
+  pToJSRef = unAudioContext
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioContext where
+  pFromJSRef = AudioContext
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioContext where
   toJSRef = return . unAudioContext
@@ -2075,7 +2451,9 @@ instance IsAudioContext AudioContext
 instance IsEventTarget AudioContext
 instance IsGObject AudioContext where
   toGObject = GObject . castRef . unAudioContext
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioContext . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioContext :: IsGObject obj => obj -> AudioContext
 castToAudioContext = castTo gTypeAudioContext "AudioContext"
@@ -2094,9 +2472,18 @@ gTypeAudioContext = GType gTypeAudioContext'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioDestinationNode Mozilla AudioDestinationNode documentation>
-newtype AudioDestinationNode = AudioDestinationNode (JSRef AudioDestinationNode) deriving (Eq)
+newtype AudioDestinationNode = AudioDestinationNode { unAudioDestinationNode :: JSRef AudioDestinationNode }
 
-unAudioDestinationNode (AudioDestinationNode o) = o
+instance Eq (AudioDestinationNode) where
+  (AudioDestinationNode a) == (AudioDestinationNode b) = js_eq a b
+
+instance PToJSRef AudioDestinationNode where
+  pToJSRef = unAudioDestinationNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioDestinationNode where
+  pFromJSRef = AudioDestinationNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioDestinationNode where
   toJSRef = return . unAudioDestinationNode
@@ -2110,7 +2497,9 @@ instance IsAudioNode AudioDestinationNode
 instance IsEventTarget AudioDestinationNode
 instance IsGObject AudioDestinationNode where
   toGObject = GObject . castRef . unAudioDestinationNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioDestinationNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioDestinationNode :: IsGObject obj => obj -> AudioDestinationNode
 castToAudioDestinationNode = castTo gTypeAudioDestinationNode "AudioDestinationNode"
@@ -2125,9 +2514,18 @@ gTypeAudioDestinationNode = GType gTypeAudioDestinationNode'
 -- | Functions for this inteface are in "GHCJS.DOM.AudioListener".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener Mozilla AudioListener documentation>
-newtype AudioListener = AudioListener (JSRef AudioListener) deriving (Eq)
+newtype AudioListener = AudioListener { unAudioListener :: JSRef AudioListener }
 
-unAudioListener (AudioListener o) = o
+instance Eq (AudioListener) where
+  (AudioListener a) == (AudioListener b) = js_eq a b
+
+instance PToJSRef AudioListener where
+  pToJSRef = unAudioListener
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioListener where
+  pFromJSRef = AudioListener
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioListener where
   toJSRef = return . unAudioListener
@@ -2139,7 +2537,9 @@ instance FromJSRef AudioListener where
 
 instance IsGObject AudioListener where
   toGObject = GObject . castRef . unAudioListener
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioListener . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioListener :: IsGObject obj => obj -> AudioListener
 castToAudioListener = castTo gTypeAudioListener "AudioListener"
@@ -2157,9 +2557,18 @@ gTypeAudioListener = GType gTypeAudioListener'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode Mozilla AudioNode documentation>
-newtype AudioNode = AudioNode (JSRef AudioNode) deriving (Eq)
+newtype AudioNode = AudioNode { unAudioNode :: JSRef AudioNode }
 
-unAudioNode (AudioNode o) = o
+instance Eq (AudioNode) where
+  (AudioNode a) == (AudioNode b) = js_eq a b
+
+instance PToJSRef AudioNode where
+  pToJSRef = unAudioNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioNode where
+  pFromJSRef = AudioNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioNode where
   toJSRef = return . unAudioNode
@@ -2177,7 +2586,9 @@ instance IsAudioNode AudioNode
 instance IsEventTarget AudioNode
 instance IsGObject AudioNode where
   toGObject = GObject . castRef . unAudioNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioNode :: IsGObject obj => obj -> AudioNode
 castToAudioNode = castTo gTypeAudioNode "AudioNode"
@@ -2192,9 +2603,18 @@ gTypeAudioNode = GType gTypeAudioNode'
 -- | Functions for this inteface are in "GHCJS.DOM.AudioParam".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam Mozilla AudioParam documentation>
-newtype AudioParam = AudioParam (JSRef AudioParam) deriving (Eq)
+newtype AudioParam = AudioParam { unAudioParam :: JSRef AudioParam }
 
-unAudioParam (AudioParam o) = o
+instance Eq (AudioParam) where
+  (AudioParam a) == (AudioParam b) = js_eq a b
+
+instance PToJSRef AudioParam where
+  pToJSRef = unAudioParam
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioParam where
+  pFromJSRef = AudioParam
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioParam where
   toJSRef = return . unAudioParam
@@ -2206,7 +2626,9 @@ instance FromJSRef AudioParam where
 
 instance IsGObject AudioParam where
   toGObject = GObject . castRef . unAudioParam
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioParam . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioParam :: IsGObject obj => obj -> AudioParam
 castToAudioParam = castTo gTypeAudioParam "AudioParam"
@@ -2224,9 +2646,18 @@ gTypeAudioParam = GType gTypeAudioParam'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent Mozilla AudioProcessingEvent documentation>
-newtype AudioProcessingEvent = AudioProcessingEvent (JSRef AudioProcessingEvent) deriving (Eq)
+newtype AudioProcessingEvent = AudioProcessingEvent { unAudioProcessingEvent :: JSRef AudioProcessingEvent }
 
-unAudioProcessingEvent (AudioProcessingEvent o) = o
+instance Eq (AudioProcessingEvent) where
+  (AudioProcessingEvent a) == (AudioProcessingEvent b) = js_eq a b
+
+instance PToJSRef AudioProcessingEvent where
+  pToJSRef = unAudioProcessingEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioProcessingEvent where
+  pFromJSRef = AudioProcessingEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioProcessingEvent where
   toJSRef = return . unAudioProcessingEvent
@@ -2239,7 +2670,9 @@ instance FromJSRef AudioProcessingEvent where
 instance IsEvent AudioProcessingEvent
 instance IsGObject AudioProcessingEvent where
   toGObject = GObject . castRef . unAudioProcessingEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioProcessingEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioProcessingEvent :: IsGObject obj => obj -> AudioProcessingEvent
 castToAudioProcessingEvent = castTo gTypeAudioProcessingEvent "AudioProcessingEvent"
@@ -2258,9 +2691,18 @@ gTypeAudioProcessingEvent = GType gTypeAudioProcessingEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioStreamTrack Mozilla AudioStreamTrack documentation>
-newtype AudioStreamTrack = AudioStreamTrack (JSRef AudioStreamTrack) deriving (Eq)
+newtype AudioStreamTrack = AudioStreamTrack { unAudioStreamTrack :: JSRef AudioStreamTrack }
 
-unAudioStreamTrack (AudioStreamTrack o) = o
+instance Eq (AudioStreamTrack) where
+  (AudioStreamTrack a) == (AudioStreamTrack b) = js_eq a b
+
+instance PToJSRef AudioStreamTrack where
+  pToJSRef = unAudioStreamTrack
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioStreamTrack where
+  pFromJSRef = AudioStreamTrack
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioStreamTrack where
   toJSRef = return . unAudioStreamTrack
@@ -2274,7 +2716,9 @@ instance IsMediaStreamTrack AudioStreamTrack
 instance IsEventTarget AudioStreamTrack
 instance IsGObject AudioStreamTrack where
   toGObject = GObject . castRef . unAudioStreamTrack
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioStreamTrack . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioStreamTrack :: IsGObject obj => obj -> AudioStreamTrack
 castToAudioStreamTrack = castTo gTypeAudioStreamTrack "AudioStreamTrack"
@@ -2289,9 +2733,18 @@ gTypeAudioStreamTrack = GType gTypeAudioStreamTrack'
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrack".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack Mozilla AudioTrack documentation>
-newtype AudioTrack = AudioTrack (JSRef AudioTrack) deriving (Eq)
+newtype AudioTrack = AudioTrack { unAudioTrack :: JSRef AudioTrack }
 
-unAudioTrack (AudioTrack o) = o
+instance Eq (AudioTrack) where
+  (AudioTrack a) == (AudioTrack b) = js_eq a b
+
+instance PToJSRef AudioTrack where
+  pToJSRef = unAudioTrack
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioTrack where
+  pFromJSRef = AudioTrack
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioTrack where
   toJSRef = return . unAudioTrack
@@ -2303,7 +2756,9 @@ instance FromJSRef AudioTrack where
 
 instance IsGObject AudioTrack where
   toGObject = GObject . castRef . unAudioTrack
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioTrack . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioTrack :: IsGObject obj => obj -> AudioTrack
 castToAudioTrack = castTo gTypeAudioTrack "AudioTrack"
@@ -2322,9 +2777,18 @@ type IsAudioTrack o = AudioTrackClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList Mozilla AudioTrackList documentation>
-newtype AudioTrackList = AudioTrackList (JSRef AudioTrackList) deriving (Eq)
+newtype AudioTrackList = AudioTrackList { unAudioTrackList :: JSRef AudioTrackList }
 
-unAudioTrackList (AudioTrackList o) = o
+instance Eq (AudioTrackList) where
+  (AudioTrackList a) == (AudioTrackList b) = js_eq a b
+
+instance PToJSRef AudioTrackList where
+  pToJSRef = unAudioTrackList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AudioTrackList where
+  pFromJSRef = AudioTrackList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AudioTrackList where
   toJSRef = return . unAudioTrackList
@@ -2337,7 +2801,9 @@ instance FromJSRef AudioTrackList where
 instance IsEventTarget AudioTrackList
 instance IsGObject AudioTrackList where
   toGObject = GObject . castRef . unAudioTrackList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AudioTrackList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAudioTrackList :: IsGObject obj => obj -> AudioTrackList
 castToAudioTrackList = castTo gTypeAudioTrackList "AudioTrackList"
@@ -2356,9 +2822,18 @@ type IsAudioTrackList o = AudioTrackListClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AutocompleteErrorEvent Mozilla AutocompleteErrorEvent documentation>
-newtype AutocompleteErrorEvent = AutocompleteErrorEvent (JSRef AutocompleteErrorEvent) deriving (Eq)
+newtype AutocompleteErrorEvent = AutocompleteErrorEvent { unAutocompleteErrorEvent :: JSRef AutocompleteErrorEvent }
 
-unAutocompleteErrorEvent (AutocompleteErrorEvent o) = o
+instance Eq (AutocompleteErrorEvent) where
+  (AutocompleteErrorEvent a) == (AutocompleteErrorEvent b) = js_eq a b
+
+instance PToJSRef AutocompleteErrorEvent where
+  pToJSRef = unAutocompleteErrorEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef AutocompleteErrorEvent where
+  pFromJSRef = AutocompleteErrorEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef AutocompleteErrorEvent where
   toJSRef = return . unAutocompleteErrorEvent
@@ -2371,7 +2846,9 @@ instance FromJSRef AutocompleteErrorEvent where
 instance IsEvent AutocompleteErrorEvent
 instance IsGObject AutocompleteErrorEvent where
   toGObject = GObject . castRef . unAutocompleteErrorEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = AutocompleteErrorEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToAutocompleteErrorEvent :: IsGObject obj => obj -> AutocompleteErrorEvent
 castToAutocompleteErrorEvent = castTo gTypeAutocompleteErrorEvent "AutocompleteErrorEvent"
@@ -2386,9 +2863,18 @@ gTypeAutocompleteErrorEvent = GType gTypeAutocompleteErrorEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.BarProp".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BarProp Mozilla BarProp documentation>
-newtype BarProp = BarProp (JSRef BarProp) deriving (Eq)
+newtype BarProp = BarProp { unBarProp :: JSRef BarProp }
 
-unBarProp (BarProp o) = o
+instance Eq (BarProp) where
+  (BarProp a) == (BarProp b) = js_eq a b
+
+instance PToJSRef BarProp where
+  pToJSRef = unBarProp
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef BarProp where
+  pFromJSRef = BarProp
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef BarProp where
   toJSRef = return . unBarProp
@@ -2400,7 +2886,9 @@ instance FromJSRef BarProp where
 
 instance IsGObject BarProp where
   toGObject = GObject . castRef . unBarProp
+  {-# INLINE toGObject #-}
   unsafeCastGObject = BarProp . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToBarProp :: IsGObject obj => obj -> BarProp
 castToBarProp = castTo gTypeBarProp "BarProp"
@@ -2419,9 +2907,18 @@ type IsBarProp o = BarPropClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager Mozilla BatteryManager documentation>
-newtype BatteryManager = BatteryManager (JSRef BatteryManager) deriving (Eq)
+newtype BatteryManager = BatteryManager { unBatteryManager :: JSRef BatteryManager }
 
-unBatteryManager (BatteryManager o) = o
+instance Eq (BatteryManager) where
+  (BatteryManager a) == (BatteryManager b) = js_eq a b
+
+instance PToJSRef BatteryManager where
+  pToJSRef = unBatteryManager
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef BatteryManager where
+  pFromJSRef = BatteryManager
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef BatteryManager where
   toJSRef = return . unBatteryManager
@@ -2434,7 +2931,9 @@ instance FromJSRef BatteryManager where
 instance IsEventTarget BatteryManager
 instance IsGObject BatteryManager where
   toGObject = GObject . castRef . unBatteryManager
+  {-# INLINE toGObject #-}
   unsafeCastGObject = BatteryManager . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToBatteryManager :: IsGObject obj => obj -> BatteryManager
 castToBatteryManager = castTo gTypeBatteryManager "BatteryManager"
@@ -2453,9 +2952,18 @@ type IsBatteryManager o = BatteryManagerClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BeforeLoadEvent Mozilla BeforeLoadEvent documentation>
-newtype BeforeLoadEvent = BeforeLoadEvent (JSRef BeforeLoadEvent) deriving (Eq)
+newtype BeforeLoadEvent = BeforeLoadEvent { unBeforeLoadEvent :: JSRef BeforeLoadEvent }
 
-unBeforeLoadEvent (BeforeLoadEvent o) = o
+instance Eq (BeforeLoadEvent) where
+  (BeforeLoadEvent a) == (BeforeLoadEvent b) = js_eq a b
+
+instance PToJSRef BeforeLoadEvent where
+  pToJSRef = unBeforeLoadEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef BeforeLoadEvent where
+  pFromJSRef = BeforeLoadEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef BeforeLoadEvent where
   toJSRef = return . unBeforeLoadEvent
@@ -2468,7 +2976,9 @@ instance FromJSRef BeforeLoadEvent where
 instance IsEvent BeforeLoadEvent
 instance IsGObject BeforeLoadEvent where
   toGObject = GObject . castRef . unBeforeLoadEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = BeforeLoadEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToBeforeLoadEvent :: IsGObject obj => obj -> BeforeLoadEvent
 castToBeforeLoadEvent = castTo gTypeBeforeLoadEvent "BeforeLoadEvent"
@@ -2486,9 +2996,18 @@ gTypeBeforeLoadEvent = GType gTypeBeforeLoadEvent'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent Mozilla BeforeUnloadEvent documentation>
-newtype BeforeUnloadEvent = BeforeUnloadEvent (JSRef BeforeUnloadEvent) deriving (Eq)
+newtype BeforeUnloadEvent = BeforeUnloadEvent { unBeforeUnloadEvent :: JSRef BeforeUnloadEvent }
 
-unBeforeUnloadEvent (BeforeUnloadEvent o) = o
+instance Eq (BeforeUnloadEvent) where
+  (BeforeUnloadEvent a) == (BeforeUnloadEvent b) = js_eq a b
+
+instance PToJSRef BeforeUnloadEvent where
+  pToJSRef = unBeforeUnloadEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef BeforeUnloadEvent where
+  pFromJSRef = BeforeUnloadEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef BeforeUnloadEvent where
   toJSRef = return . unBeforeUnloadEvent
@@ -2501,7 +3020,9 @@ instance FromJSRef BeforeUnloadEvent where
 instance IsEvent BeforeUnloadEvent
 instance IsGObject BeforeUnloadEvent where
   toGObject = GObject . castRef . unBeforeUnloadEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = BeforeUnloadEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToBeforeUnloadEvent :: IsGObject obj => obj -> BeforeUnloadEvent
 castToBeforeUnloadEvent = castTo gTypeBeforeUnloadEvent "BeforeUnloadEvent"
@@ -2520,9 +3041,18 @@ gTypeBeforeUnloadEvent = GType gTypeBeforeUnloadEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode Mozilla BiquadFilterNode documentation>
-newtype BiquadFilterNode = BiquadFilterNode (JSRef BiquadFilterNode) deriving (Eq)
+newtype BiquadFilterNode = BiquadFilterNode { unBiquadFilterNode :: JSRef BiquadFilterNode }
 
-unBiquadFilterNode (BiquadFilterNode o) = o
+instance Eq (BiquadFilterNode) where
+  (BiquadFilterNode a) == (BiquadFilterNode b) = js_eq a b
+
+instance PToJSRef BiquadFilterNode where
+  pToJSRef = unBiquadFilterNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef BiquadFilterNode where
+  pFromJSRef = BiquadFilterNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef BiquadFilterNode where
   toJSRef = return . unBiquadFilterNode
@@ -2536,7 +3066,9 @@ instance IsAudioNode BiquadFilterNode
 instance IsEventTarget BiquadFilterNode
 instance IsGObject BiquadFilterNode where
   toGObject = GObject . castRef . unBiquadFilterNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = BiquadFilterNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToBiquadFilterNode :: IsGObject obj => obj -> BiquadFilterNode
 castToBiquadFilterNode = castTo gTypeBiquadFilterNode "BiquadFilterNode"
@@ -2551,9 +3083,18 @@ gTypeBiquadFilterNode = GType gTypeBiquadFilterNode'
 -- | Functions for this inteface are in "GHCJS.DOM.Blob".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation>
-newtype Blob = Blob (JSRef Blob) deriving (Eq)
+newtype Blob = Blob { unBlob :: JSRef Blob }
 
-unBlob (Blob o) = o
+instance Eq (Blob) where
+  (Blob a) == (Blob b) = js_eq a b
+
+instance PToJSRef Blob where
+  pToJSRef = unBlob
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Blob where
+  pFromJSRef = Blob
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Blob where
   toJSRef = return . unBlob
@@ -2570,7 +3111,9 @@ toBlob = unsafeCastGObject . toGObject
 instance IsBlob Blob
 instance IsGObject Blob where
   toGObject = GObject . castRef . unBlob
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Blob . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToBlob :: IsGObject obj => obj -> Blob
 castToBlob = castTo gTypeBlob "Blob"
@@ -2592,9 +3135,18 @@ type IsBlob o = BlobClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CDATASection Mozilla CDATASection documentation>
-newtype CDATASection = CDATASection (JSRef CDATASection) deriving (Eq)
+newtype CDATASection = CDATASection { unCDATASection :: JSRef CDATASection }
 
-unCDATASection (CDATASection o) = o
+instance Eq (CDATASection) where
+  (CDATASection a) == (CDATASection b) = js_eq a b
+
+instance PToJSRef CDATASection where
+  pToJSRef = unCDATASection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CDATASection where
+  pFromJSRef = CDATASection
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CDATASection where
   toJSRef = return . unCDATASection
@@ -2610,7 +3162,9 @@ instance IsNode CDATASection
 instance IsEventTarget CDATASection
 instance IsGObject CDATASection where
   toGObject = GObject . castRef . unCDATASection
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CDATASection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCDATASection :: IsGObject obj => obj -> CDATASection
 castToCDATASection = castTo gTypeCDATASection "CDATASection"
@@ -2623,15 +3177,65 @@ type IsCDATASection o = CDATASectionClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.CSS".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CSS Mozilla CSS documentation>
+newtype CSS = CSS { unCSS :: JSRef CSS }
+
+instance Eq (CSS) where
+  (CSS a) == (CSS b) = js_eq a b
+
+instance PToJSRef CSS where
+  pToJSRef = unCSS
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSS where
+  pFromJSRef = CSS
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef CSS where
+  toJSRef = return . unCSS
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef CSS where
+  fromJSRef = return . fmap CSS . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject CSS where
+  toGObject = GObject . castRef . unCSS
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = CSS . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToCSS :: IsGObject obj => obj -> CSS
+castToCSS = castTo gTypeCSS "CSS"
+
+foreign import javascript unsafe "window[\"CSS\"]" gTypeCSS' :: JSRef GType
+gTypeCSS = GType gTypeCSS'
+#else
+type IsCSS o = CSSClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSCharsetRule".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule Mozilla CSSCharsetRule documentation>
-newtype CSSCharsetRule = CSSCharsetRule (JSRef CSSCharsetRule) deriving (Eq)
+newtype CSSCharsetRule = CSSCharsetRule { unCSSCharsetRule :: JSRef CSSCharsetRule }
 
-unCSSCharsetRule (CSSCharsetRule o) = o
+instance Eq (CSSCharsetRule) where
+  (CSSCharsetRule a) == (CSSCharsetRule b) = js_eq a b
+
+instance PToJSRef CSSCharsetRule where
+  pToJSRef = unCSSCharsetRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSCharsetRule where
+  pFromJSRef = CSSCharsetRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSCharsetRule where
   toJSRef = return . unCSSCharsetRule
@@ -2644,7 +3248,9 @@ instance FromJSRef CSSCharsetRule where
 instance IsCSSRule CSSCharsetRule
 instance IsGObject CSSCharsetRule where
   toGObject = GObject . castRef . unCSSCharsetRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSCharsetRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSCharsetRule :: IsGObject obj => obj -> CSSCharsetRule
 castToCSSCharsetRule = castTo gTypeCSSCharsetRule "CSSCharsetRule"
@@ -2662,9 +3268,18 @@ gTypeCSSCharsetRule = GType gTypeCSSCharsetRule'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent Mozilla CSSFontFaceLoadEvent documentation>
-newtype CSSFontFaceLoadEvent = CSSFontFaceLoadEvent (JSRef CSSFontFaceLoadEvent) deriving (Eq)
+newtype CSSFontFaceLoadEvent = CSSFontFaceLoadEvent { unCSSFontFaceLoadEvent :: JSRef CSSFontFaceLoadEvent }
 
-unCSSFontFaceLoadEvent (CSSFontFaceLoadEvent o) = o
+instance Eq (CSSFontFaceLoadEvent) where
+  (CSSFontFaceLoadEvent a) == (CSSFontFaceLoadEvent b) = js_eq a b
+
+instance PToJSRef CSSFontFaceLoadEvent where
+  pToJSRef = unCSSFontFaceLoadEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSFontFaceLoadEvent where
+  pFromJSRef = CSSFontFaceLoadEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSFontFaceLoadEvent where
   toJSRef = return . unCSSFontFaceLoadEvent
@@ -2677,7 +3292,9 @@ instance FromJSRef CSSFontFaceLoadEvent where
 instance IsEvent CSSFontFaceLoadEvent
 instance IsGObject CSSFontFaceLoadEvent where
   toGObject = GObject . castRef . unCSSFontFaceLoadEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSFontFaceLoadEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSFontFaceLoadEvent :: IsGObject obj => obj -> CSSFontFaceLoadEvent
 castToCSSFontFaceLoadEvent = castTo gTypeCSSFontFaceLoadEvent "CSSFontFaceLoadEvent"
@@ -2695,9 +3312,18 @@ gTypeCSSFontFaceLoadEvent = GType gTypeCSSFontFaceLoadEvent'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceRule Mozilla CSSFontFaceRule documentation>
-newtype CSSFontFaceRule = CSSFontFaceRule (JSRef CSSFontFaceRule) deriving (Eq)
+newtype CSSFontFaceRule = CSSFontFaceRule { unCSSFontFaceRule :: JSRef CSSFontFaceRule }
 
-unCSSFontFaceRule (CSSFontFaceRule o) = o
+instance Eq (CSSFontFaceRule) where
+  (CSSFontFaceRule a) == (CSSFontFaceRule b) = js_eq a b
+
+instance PToJSRef CSSFontFaceRule where
+  pToJSRef = unCSSFontFaceRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSFontFaceRule where
+  pFromJSRef = CSSFontFaceRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSFontFaceRule where
   toJSRef = return . unCSSFontFaceRule
@@ -2710,7 +3336,9 @@ instance FromJSRef CSSFontFaceRule where
 instance IsCSSRule CSSFontFaceRule
 instance IsGObject CSSFontFaceRule where
   toGObject = GObject . castRef . unCSSFontFaceRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSFontFaceRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSFontFaceRule :: IsGObject obj => obj -> CSSFontFaceRule
 castToCSSFontFaceRule = castTo gTypeCSSFontFaceRule "CSSFontFaceRule"
@@ -2728,9 +3356,18 @@ gTypeCSSFontFaceRule = GType gTypeCSSFontFaceRule'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule Mozilla CSSImportRule documentation>
-newtype CSSImportRule = CSSImportRule (JSRef CSSImportRule) deriving (Eq)
+newtype CSSImportRule = CSSImportRule { unCSSImportRule :: JSRef CSSImportRule }
 
-unCSSImportRule (CSSImportRule o) = o
+instance Eq (CSSImportRule) where
+  (CSSImportRule a) == (CSSImportRule b) = js_eq a b
+
+instance PToJSRef CSSImportRule where
+  pToJSRef = unCSSImportRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSImportRule where
+  pFromJSRef = CSSImportRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSImportRule where
   toJSRef = return . unCSSImportRule
@@ -2743,7 +3380,9 @@ instance FromJSRef CSSImportRule where
 instance IsCSSRule CSSImportRule
 instance IsGObject CSSImportRule where
   toGObject = GObject . castRef . unCSSImportRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSImportRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSImportRule :: IsGObject obj => obj -> CSSImportRule
 castToCSSImportRule = castTo gTypeCSSImportRule "CSSImportRule"
@@ -2761,9 +3400,18 @@ gTypeCSSImportRule = GType gTypeCSSImportRule'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule Mozilla CSSKeyframeRule documentation>
-newtype CSSKeyframeRule = CSSKeyframeRule (JSRef CSSKeyframeRule) deriving (Eq)
+newtype CSSKeyframeRule = CSSKeyframeRule { unCSSKeyframeRule :: JSRef CSSKeyframeRule }
 
-unCSSKeyframeRule (CSSKeyframeRule o) = o
+instance Eq (CSSKeyframeRule) where
+  (CSSKeyframeRule a) == (CSSKeyframeRule b) = js_eq a b
+
+instance PToJSRef CSSKeyframeRule where
+  pToJSRef = unCSSKeyframeRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSKeyframeRule where
+  pFromJSRef = CSSKeyframeRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSKeyframeRule where
   toJSRef = return . unCSSKeyframeRule
@@ -2776,7 +3424,9 @@ instance FromJSRef CSSKeyframeRule where
 instance IsCSSRule CSSKeyframeRule
 instance IsGObject CSSKeyframeRule where
   toGObject = GObject . castRef . unCSSKeyframeRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSKeyframeRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSKeyframeRule :: IsGObject obj => obj -> CSSKeyframeRule
 castToCSSKeyframeRule = castTo gTypeCSSKeyframeRule "CSSKeyframeRule"
@@ -2794,9 +3444,18 @@ gTypeCSSKeyframeRule = GType gTypeCSSKeyframeRule'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule Mozilla CSSKeyframesRule documentation>
-newtype CSSKeyframesRule = CSSKeyframesRule (JSRef CSSKeyframesRule) deriving (Eq)
+newtype CSSKeyframesRule = CSSKeyframesRule { unCSSKeyframesRule :: JSRef CSSKeyframesRule }
 
-unCSSKeyframesRule (CSSKeyframesRule o) = o
+instance Eq (CSSKeyframesRule) where
+  (CSSKeyframesRule a) == (CSSKeyframesRule b) = js_eq a b
+
+instance PToJSRef CSSKeyframesRule where
+  pToJSRef = unCSSKeyframesRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSKeyframesRule where
+  pFromJSRef = CSSKeyframesRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSKeyframesRule where
   toJSRef = return . unCSSKeyframesRule
@@ -2809,7 +3468,9 @@ instance FromJSRef CSSKeyframesRule where
 instance IsCSSRule CSSKeyframesRule
 instance IsGObject CSSKeyframesRule where
   toGObject = GObject . castRef . unCSSKeyframesRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSKeyframesRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSKeyframesRule :: IsGObject obj => obj -> CSSKeyframesRule
 castToCSSKeyframesRule = castTo gTypeCSSKeyframesRule "CSSKeyframesRule"
@@ -2827,9 +3488,18 @@ gTypeCSSKeyframesRule = GType gTypeCSSKeyframesRule'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule Mozilla CSSMediaRule documentation>
-newtype CSSMediaRule = CSSMediaRule (JSRef CSSMediaRule) deriving (Eq)
+newtype CSSMediaRule = CSSMediaRule { unCSSMediaRule :: JSRef CSSMediaRule }
 
-unCSSMediaRule (CSSMediaRule o) = o
+instance Eq (CSSMediaRule) where
+  (CSSMediaRule a) == (CSSMediaRule b) = js_eq a b
+
+instance PToJSRef CSSMediaRule where
+  pToJSRef = unCSSMediaRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSMediaRule where
+  pFromJSRef = CSSMediaRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSMediaRule where
   toJSRef = return . unCSSMediaRule
@@ -2842,7 +3512,9 @@ instance FromJSRef CSSMediaRule where
 instance IsCSSRule CSSMediaRule
 instance IsGObject CSSMediaRule where
   toGObject = GObject . castRef . unCSSMediaRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSMediaRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSMediaRule :: IsGObject obj => obj -> CSSMediaRule
 castToCSSMediaRule = castTo gTypeCSSMediaRule "CSSMediaRule"
@@ -2860,9 +3532,18 @@ gTypeCSSMediaRule = GType gTypeCSSMediaRule'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule Mozilla CSSPageRule documentation>
-newtype CSSPageRule = CSSPageRule (JSRef CSSPageRule) deriving (Eq)
+newtype CSSPageRule = CSSPageRule { unCSSPageRule :: JSRef CSSPageRule }
 
-unCSSPageRule (CSSPageRule o) = o
+instance Eq (CSSPageRule) where
+  (CSSPageRule a) == (CSSPageRule b) = js_eq a b
+
+instance PToJSRef CSSPageRule where
+  pToJSRef = unCSSPageRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSPageRule where
+  pFromJSRef = CSSPageRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSPageRule where
   toJSRef = return . unCSSPageRule
@@ -2875,7 +3556,9 @@ instance FromJSRef CSSPageRule where
 instance IsCSSRule CSSPageRule
 instance IsGObject CSSPageRule where
   toGObject = GObject . castRef . unCSSPageRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSPageRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSPageRule :: IsGObject obj => obj -> CSSPageRule
 castToCSSPageRule = castTo gTypeCSSPageRule "CSSPageRule"
@@ -2893,9 +3576,18 @@ gTypeCSSPageRule = GType gTypeCSSPageRule'
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue Mozilla CSSPrimitiveValue documentation>
-newtype CSSPrimitiveValue = CSSPrimitiveValue (JSRef CSSPrimitiveValue) deriving (Eq)
+newtype CSSPrimitiveValue = CSSPrimitiveValue { unCSSPrimitiveValue :: JSRef CSSPrimitiveValue }
 
-unCSSPrimitiveValue (CSSPrimitiveValue o) = o
+instance Eq (CSSPrimitiveValue) where
+  (CSSPrimitiveValue a) == (CSSPrimitiveValue b) = js_eq a b
+
+instance PToJSRef CSSPrimitiveValue where
+  pToJSRef = unCSSPrimitiveValue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSPrimitiveValue where
+  pFromJSRef = CSSPrimitiveValue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSPrimitiveValue where
   toJSRef = return . unCSSPrimitiveValue
@@ -2908,7 +3600,9 @@ instance FromJSRef CSSPrimitiveValue where
 instance IsCSSValue CSSPrimitiveValue
 instance IsGObject CSSPrimitiveValue where
   toGObject = GObject . castRef . unCSSPrimitiveValue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSPrimitiveValue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSPrimitiveValue :: IsGObject obj => obj -> CSSPrimitiveValue
 castToCSSPrimitiveValue = castTo gTypeCSSPrimitiveValue "CSSPrimitiveValue"
@@ -2923,9 +3617,18 @@ gTypeCSSPrimitiveValue = GType gTypeCSSPrimitiveValue'
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRule".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule Mozilla CSSRule documentation>
-newtype CSSRule = CSSRule (JSRef CSSRule) deriving (Eq)
+newtype CSSRule = CSSRule { unCSSRule :: JSRef CSSRule }
 
-unCSSRule (CSSRule o) = o
+instance Eq (CSSRule) where
+  (CSSRule a) == (CSSRule b) = js_eq a b
+
+instance PToJSRef CSSRule where
+  pToJSRef = unCSSRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSRule where
+  pFromJSRef = CSSRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSRule where
   toJSRef = return . unCSSRule
@@ -2942,7 +3645,9 @@ toCSSRule = unsafeCastGObject . toGObject
 instance IsCSSRule CSSRule
 instance IsGObject CSSRule where
   toGObject = GObject . castRef . unCSSRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSRule :: IsGObject obj => obj -> CSSRule
 castToCSSRule = castTo gTypeCSSRule "CSSRule"
@@ -2958,9 +3663,18 @@ type IsCSSRule o = CSSRuleClass o
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRuleList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList Mozilla CSSRuleList documentation>
-newtype CSSRuleList = CSSRuleList (JSRef CSSRuleList) deriving (Eq)
+newtype CSSRuleList = CSSRuleList { unCSSRuleList :: JSRef CSSRuleList }
 
-unCSSRuleList (CSSRuleList o) = o
+instance Eq (CSSRuleList) where
+  (CSSRuleList a) == (CSSRuleList b) = js_eq a b
+
+instance PToJSRef CSSRuleList where
+  pToJSRef = unCSSRuleList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSRuleList where
+  pFromJSRef = CSSRuleList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSRuleList where
   toJSRef = return . unCSSRuleList
@@ -2972,7 +3686,9 @@ instance FromJSRef CSSRuleList where
 
 instance IsGObject CSSRuleList where
   toGObject = GObject . castRef . unCSSRuleList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSRuleList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSRuleList :: IsGObject obj => obj -> CSSRuleList
 castToCSSRuleList = castTo gTypeCSSRuleList "CSSRuleList"
@@ -2988,9 +3704,18 @@ type IsCSSRuleList o = CSSRuleListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleDeclaration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration Mozilla CSSStyleDeclaration documentation>
-newtype CSSStyleDeclaration = CSSStyleDeclaration (JSRef CSSStyleDeclaration) deriving (Eq)
+newtype CSSStyleDeclaration = CSSStyleDeclaration { unCSSStyleDeclaration :: JSRef CSSStyleDeclaration }
 
-unCSSStyleDeclaration (CSSStyleDeclaration o) = o
+instance Eq (CSSStyleDeclaration) where
+  (CSSStyleDeclaration a) == (CSSStyleDeclaration b) = js_eq a b
+
+instance PToJSRef CSSStyleDeclaration where
+  pToJSRef = unCSSStyleDeclaration
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSStyleDeclaration where
+  pFromJSRef = CSSStyleDeclaration
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSStyleDeclaration where
   toJSRef = return . unCSSStyleDeclaration
@@ -3002,7 +3727,9 @@ instance FromJSRef CSSStyleDeclaration where
 
 instance IsGObject CSSStyleDeclaration where
   toGObject = GObject . castRef . unCSSStyleDeclaration
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSStyleDeclaration . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSStyleDeclaration :: IsGObject obj => obj -> CSSStyleDeclaration
 castToCSSStyleDeclaration = castTo gTypeCSSStyleDeclaration "CSSStyleDeclaration"
@@ -3021,9 +3748,18 @@ type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule Mozilla CSSStyleRule documentation>
-newtype CSSStyleRule = CSSStyleRule (JSRef CSSStyleRule) deriving (Eq)
+newtype CSSStyleRule = CSSStyleRule { unCSSStyleRule :: JSRef CSSStyleRule }
 
-unCSSStyleRule (CSSStyleRule o) = o
+instance Eq (CSSStyleRule) where
+  (CSSStyleRule a) == (CSSStyleRule b) = js_eq a b
+
+instance PToJSRef CSSStyleRule where
+  pToJSRef = unCSSStyleRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSStyleRule where
+  pFromJSRef = CSSStyleRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSStyleRule where
   toJSRef = return . unCSSStyleRule
@@ -3036,7 +3772,9 @@ instance FromJSRef CSSStyleRule where
 instance IsCSSRule CSSStyleRule
 instance IsGObject CSSStyleRule where
   toGObject = GObject . castRef . unCSSStyleRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSStyleRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSStyleRule :: IsGObject obj => obj -> CSSStyleRule
 castToCSSStyleRule = castTo gTypeCSSStyleRule "CSSStyleRule"
@@ -3054,9 +3792,18 @@ gTypeCSSStyleRule = GType gTypeCSSStyleRule'
 --     * "GHCJS.DOM.StyleSheet"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet Mozilla CSSStyleSheet documentation>
-newtype CSSStyleSheet = CSSStyleSheet (JSRef CSSStyleSheet) deriving (Eq)
+newtype CSSStyleSheet = CSSStyleSheet { unCSSStyleSheet :: JSRef CSSStyleSheet }
 
-unCSSStyleSheet (CSSStyleSheet o) = o
+instance Eq (CSSStyleSheet) where
+  (CSSStyleSheet a) == (CSSStyleSheet b) = js_eq a b
+
+instance PToJSRef CSSStyleSheet where
+  pToJSRef = unCSSStyleSheet
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSStyleSheet where
+  pFromJSRef = CSSStyleSheet
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSStyleSheet where
   toJSRef = return . unCSSStyleSheet
@@ -3069,7 +3816,9 @@ instance FromJSRef CSSStyleSheet where
 instance IsStyleSheet CSSStyleSheet
 instance IsGObject CSSStyleSheet where
   toGObject = GObject . castRef . unCSSStyleSheet
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSStyleSheet . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSStyleSheet :: IsGObject obj => obj -> CSSStyleSheet
 castToCSSStyleSheet = castTo gTypeCSSStyleSheet "CSSStyleSheet"
@@ -3088,9 +3837,18 @@ type IsCSSStyleSheet o = CSSStyleSheetClass o
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule Mozilla CSSSupportsRule documentation>
-newtype CSSSupportsRule = CSSSupportsRule (JSRef CSSSupportsRule) deriving (Eq)
+newtype CSSSupportsRule = CSSSupportsRule { unCSSSupportsRule :: JSRef CSSSupportsRule }
 
-unCSSSupportsRule (CSSSupportsRule o) = o
+instance Eq (CSSSupportsRule) where
+  (CSSSupportsRule a) == (CSSSupportsRule b) = js_eq a b
+
+instance PToJSRef CSSSupportsRule where
+  pToJSRef = unCSSSupportsRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSSupportsRule where
+  pFromJSRef = CSSSupportsRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSSupportsRule where
   toJSRef = return . unCSSSupportsRule
@@ -3103,7 +3861,9 @@ instance FromJSRef CSSSupportsRule where
 instance IsCSSRule CSSSupportsRule
 instance IsGObject CSSSupportsRule where
   toGObject = GObject . castRef . unCSSSupportsRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSSupportsRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSSupportsRule :: IsGObject obj => obj -> CSSSupportsRule
 castToCSSSupportsRule = castTo gTypeCSSSupportsRule "CSSSupportsRule"
@@ -3121,9 +3881,18 @@ gTypeCSSSupportsRule = GType gTypeCSSSupportsRule'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSUnknownRule Mozilla CSSUnknownRule documentation>
-newtype CSSUnknownRule = CSSUnknownRule (JSRef CSSUnknownRule) deriving (Eq)
+newtype CSSUnknownRule = CSSUnknownRule { unCSSUnknownRule :: JSRef CSSUnknownRule }
 
-unCSSUnknownRule (CSSUnknownRule o) = o
+instance Eq (CSSUnknownRule) where
+  (CSSUnknownRule a) == (CSSUnknownRule b) = js_eq a b
+
+instance PToJSRef CSSUnknownRule where
+  pToJSRef = unCSSUnknownRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSUnknownRule where
+  pFromJSRef = CSSUnknownRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSUnknownRule where
   toJSRef = return . unCSSUnknownRule
@@ -3136,7 +3905,9 @@ instance FromJSRef CSSUnknownRule where
 instance IsCSSRule CSSUnknownRule
 instance IsGObject CSSUnknownRule where
   toGObject = GObject . castRef . unCSSUnknownRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSUnknownRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSUnknownRule :: IsGObject obj => obj -> CSSUnknownRule
 castToCSSUnknownRule = castTo gTypeCSSUnknownRule "CSSUnknownRule"
@@ -3151,9 +3922,18 @@ gTypeCSSUnknownRule = GType gTypeCSSUnknownRule'
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValue".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue Mozilla CSSValue documentation>
-newtype CSSValue = CSSValue (JSRef CSSValue) deriving (Eq)
+newtype CSSValue = CSSValue { unCSSValue :: JSRef CSSValue }
 
-unCSSValue (CSSValue o) = o
+instance Eq (CSSValue) where
+  (CSSValue a) == (CSSValue b) = js_eq a b
+
+instance PToJSRef CSSValue where
+  pToJSRef = unCSSValue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSValue where
+  pFromJSRef = CSSValue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSValue where
   toJSRef = return . unCSSValue
@@ -3170,7 +3950,9 @@ toCSSValue = unsafeCastGObject . toGObject
 instance IsCSSValue CSSValue
 instance IsGObject CSSValue where
   toGObject = GObject . castRef . unCSSValue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSValue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSValue :: IsGObject obj => obj -> CSSValue
 castToCSSValue = castTo gTypeCSSValue "CSSValue"
@@ -3189,9 +3971,18 @@ type IsCSSValue o = CSSValueClass o
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSValueList Mozilla CSSValueList documentation>
-newtype CSSValueList = CSSValueList (JSRef CSSValueList) deriving (Eq)
+newtype CSSValueList = CSSValueList { unCSSValueList :: JSRef CSSValueList }
 
-unCSSValueList (CSSValueList o) = o
+instance Eq (CSSValueList) where
+  (CSSValueList a) == (CSSValueList b) = js_eq a b
+
+instance PToJSRef CSSValueList where
+  pToJSRef = unCSSValueList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CSSValueList where
+  pFromJSRef = CSSValueList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CSSValueList where
   toJSRef = return . unCSSValueList
@@ -3209,7 +4000,9 @@ instance IsCSSValueList CSSValueList
 instance IsCSSValue CSSValueList
 instance IsGObject CSSValueList where
   toGObject = GObject . castRef . unCSSValueList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CSSValueList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCSSValueList :: IsGObject obj => obj -> CSSValueList
 castToCSSValueList = castTo gTypeCSSValueList "CSSValueList"
@@ -3224,9 +4017,18 @@ gTypeCSSValueList = GType gTypeCSSValueList'
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasGradient".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient Mozilla CanvasGradient documentation>
-newtype CanvasGradient = CanvasGradient (JSRef CanvasGradient) deriving (Eq)
+newtype CanvasGradient = CanvasGradient { unCanvasGradient :: JSRef CanvasGradient }
 
-unCanvasGradient (CanvasGradient o) = o
+instance Eq (CanvasGradient) where
+  (CanvasGradient a) == (CanvasGradient b) = js_eq a b
+
+instance PToJSRef CanvasGradient where
+  pToJSRef = unCanvasGradient
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CanvasGradient where
+  pFromJSRef = CanvasGradient
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CanvasGradient where
   toJSRef = return . unCanvasGradient
@@ -3238,7 +4040,9 @@ instance FromJSRef CanvasGradient where
 
 instance IsGObject CanvasGradient where
   toGObject = GObject . castRef . unCanvasGradient
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CanvasGradient . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCanvasGradient :: IsGObject obj => obj -> CanvasGradient
 castToCanvasGradient = castTo gTypeCanvasGradient "CanvasGradient"
@@ -3253,9 +4057,18 @@ gTypeCanvasGradient = GType gTypeCanvasGradient'
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasPattern".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern Mozilla CanvasPattern documentation>
-newtype CanvasPattern = CanvasPattern (JSRef CanvasPattern) deriving (Eq)
+newtype CanvasPattern = CanvasPattern { unCanvasPattern :: JSRef CanvasPattern }
 
-unCanvasPattern (CanvasPattern o) = o
+instance Eq (CanvasPattern) where
+  (CanvasPattern a) == (CanvasPattern b) = js_eq a b
+
+instance PToJSRef CanvasPattern where
+  pToJSRef = unCanvasPattern
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CanvasPattern where
+  pFromJSRef = CanvasPattern
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CanvasPattern where
   toJSRef = return . unCanvasPattern
@@ -3267,7 +4080,9 @@ instance FromJSRef CanvasPattern where
 
 instance IsGObject CanvasPattern where
   toGObject = GObject . castRef . unCanvasPattern
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CanvasPattern . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCanvasPattern :: IsGObject obj => obj -> CanvasPattern
 castToCanvasPattern = castTo gTypeCanvasPattern "CanvasPattern"
@@ -3282,9 +4097,18 @@ gTypeCanvasPattern = GType gTypeCanvasPattern'
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasProxy".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasProxy Mozilla CanvasProxy documentation>
-newtype CanvasProxy = CanvasProxy (JSRef CanvasProxy) deriving (Eq)
+newtype CanvasProxy = CanvasProxy { unCanvasProxy :: JSRef CanvasProxy }
 
-unCanvasProxy (CanvasProxy o) = o
+instance Eq (CanvasProxy) where
+  (CanvasProxy a) == (CanvasProxy b) = js_eq a b
+
+instance PToJSRef CanvasProxy where
+  pToJSRef = unCanvasProxy
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CanvasProxy where
+  pFromJSRef = CanvasProxy
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CanvasProxy where
   toJSRef = return . unCanvasProxy
@@ -3296,7 +4120,9 @@ instance FromJSRef CanvasProxy where
 
 instance IsGObject CanvasProxy where
   toGObject = GObject . castRef . unCanvasProxy
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CanvasProxy . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCanvasProxy :: IsGObject obj => obj -> CanvasProxy
 castToCanvasProxy = castTo gTypeCanvasProxy "CanvasProxy"
@@ -3311,9 +4137,18 @@ gTypeCanvasProxy = GType gTypeCanvasProxy'
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext Mozilla CanvasRenderingContext documentation>
-newtype CanvasRenderingContext = CanvasRenderingContext (JSRef CanvasRenderingContext) deriving (Eq)
+newtype CanvasRenderingContext = CanvasRenderingContext { unCanvasRenderingContext :: JSRef CanvasRenderingContext }
 
-unCanvasRenderingContext (CanvasRenderingContext o) = o
+instance Eq (CanvasRenderingContext) where
+  (CanvasRenderingContext a) == (CanvasRenderingContext b) = js_eq a b
+
+instance PToJSRef CanvasRenderingContext where
+  pToJSRef = unCanvasRenderingContext
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CanvasRenderingContext where
+  pFromJSRef = CanvasRenderingContext
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CanvasRenderingContext where
   toJSRef = return . unCanvasRenderingContext
@@ -3330,7 +4165,9 @@ toCanvasRenderingContext = unsafeCastGObject . toGObject
 instance IsCanvasRenderingContext CanvasRenderingContext
 instance IsGObject CanvasRenderingContext where
   toGObject = GObject . castRef . unCanvasRenderingContext
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CanvasRenderingContext . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCanvasRenderingContext :: IsGObject obj => obj -> CanvasRenderingContext
 castToCanvasRenderingContext = castTo gTypeCanvasRenderingContext "CanvasRenderingContext"
@@ -3348,9 +4185,18 @@ gTypeCanvasRenderingContext = GType gTypeCanvasRenderingContext'
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D Mozilla CanvasRenderingContext2D documentation>
-newtype CanvasRenderingContext2D = CanvasRenderingContext2D (JSRef CanvasRenderingContext2D) deriving (Eq)
+newtype CanvasRenderingContext2D = CanvasRenderingContext2D { unCanvasRenderingContext2D :: JSRef CanvasRenderingContext2D }
 
-unCanvasRenderingContext2D (CanvasRenderingContext2D o) = o
+instance Eq (CanvasRenderingContext2D) where
+  (CanvasRenderingContext2D a) == (CanvasRenderingContext2D b) = js_eq a b
+
+instance PToJSRef CanvasRenderingContext2D where
+  pToJSRef = unCanvasRenderingContext2D
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CanvasRenderingContext2D where
+  pFromJSRef = CanvasRenderingContext2D
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CanvasRenderingContext2D where
   toJSRef = return . unCanvasRenderingContext2D
@@ -3363,7 +4209,9 @@ instance FromJSRef CanvasRenderingContext2D where
 instance IsCanvasRenderingContext CanvasRenderingContext2D
 instance IsGObject CanvasRenderingContext2D where
   toGObject = GObject . castRef . unCanvasRenderingContext2D
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CanvasRenderingContext2D . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCanvasRenderingContext2D :: IsGObject obj => obj -> CanvasRenderingContext2D
 castToCanvasRenderingContext2D = castTo gTypeCanvasRenderingContext2D "CanvasRenderingContext2D"
@@ -3378,9 +4226,18 @@ gTypeCanvasRenderingContext2D = GType gTypeCanvasRenderingContext2D'
 -- | Functions for this inteface are in "GHCJS.DOM.CapabilityRange".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange Mozilla CapabilityRange documentation>
-newtype CapabilityRange = CapabilityRange (JSRef CapabilityRange) deriving (Eq)
+newtype CapabilityRange = CapabilityRange { unCapabilityRange :: JSRef CapabilityRange }
 
-unCapabilityRange (CapabilityRange o) = o
+instance Eq (CapabilityRange) where
+  (CapabilityRange a) == (CapabilityRange b) = js_eq a b
+
+instance PToJSRef CapabilityRange where
+  pToJSRef = unCapabilityRange
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CapabilityRange where
+  pFromJSRef = CapabilityRange
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CapabilityRange where
   toJSRef = return . unCapabilityRange
@@ -3392,7 +4249,9 @@ instance FromJSRef CapabilityRange where
 
 instance IsGObject CapabilityRange where
   toGObject = GObject . castRef . unCapabilityRange
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CapabilityRange . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCapabilityRange :: IsGObject obj => obj -> CapabilityRange
 castToCapabilityRange = castTo gTypeCapabilityRange "CapabilityRange"
@@ -3411,9 +4270,18 @@ gTypeCapabilityRange = GType gTypeCapabilityRange'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode Mozilla ChannelMergerNode documentation>
-newtype ChannelMergerNode = ChannelMergerNode (JSRef ChannelMergerNode) deriving (Eq)
+newtype ChannelMergerNode = ChannelMergerNode { unChannelMergerNode :: JSRef ChannelMergerNode }
 
-unChannelMergerNode (ChannelMergerNode o) = o
+instance Eq (ChannelMergerNode) where
+  (ChannelMergerNode a) == (ChannelMergerNode b) = js_eq a b
+
+instance PToJSRef ChannelMergerNode where
+  pToJSRef = unChannelMergerNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ChannelMergerNode where
+  pFromJSRef = ChannelMergerNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ChannelMergerNode where
   toJSRef = return . unChannelMergerNode
@@ -3427,7 +4295,9 @@ instance IsAudioNode ChannelMergerNode
 instance IsEventTarget ChannelMergerNode
 instance IsGObject ChannelMergerNode where
   toGObject = GObject . castRef . unChannelMergerNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ChannelMergerNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToChannelMergerNode :: IsGObject obj => obj -> ChannelMergerNode
 castToChannelMergerNode = castTo gTypeChannelMergerNode "ChannelMergerNode"
@@ -3446,9 +4316,18 @@ gTypeChannelMergerNode = GType gTypeChannelMergerNode'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode Mozilla ChannelSplitterNode documentation>
-newtype ChannelSplitterNode = ChannelSplitterNode (JSRef ChannelSplitterNode) deriving (Eq)
+newtype ChannelSplitterNode = ChannelSplitterNode { unChannelSplitterNode :: JSRef ChannelSplitterNode }
 
-unChannelSplitterNode (ChannelSplitterNode o) = o
+instance Eq (ChannelSplitterNode) where
+  (ChannelSplitterNode a) == (ChannelSplitterNode b) = js_eq a b
+
+instance PToJSRef ChannelSplitterNode where
+  pToJSRef = unChannelSplitterNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ChannelSplitterNode where
+  pFromJSRef = ChannelSplitterNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ChannelSplitterNode where
   toJSRef = return . unChannelSplitterNode
@@ -3462,7 +4341,9 @@ instance IsAudioNode ChannelSplitterNode
 instance IsEventTarget ChannelSplitterNode
 instance IsGObject ChannelSplitterNode where
   toGObject = GObject . castRef . unChannelSplitterNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ChannelSplitterNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToChannelSplitterNode :: IsGObject obj => obj -> ChannelSplitterNode
 castToChannelSplitterNode = castTo gTypeChannelSplitterNode "ChannelSplitterNode"
@@ -3481,9 +4362,18 @@ gTypeChannelSplitterNode = GType gTypeChannelSplitterNode'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData Mozilla CharacterData documentation>
-newtype CharacterData = CharacterData (JSRef CharacterData) deriving (Eq)
+newtype CharacterData = CharacterData { unCharacterData :: JSRef CharacterData }
 
-unCharacterData (CharacterData o) = o
+instance Eq (CharacterData) where
+  (CharacterData a) == (CharacterData b) = js_eq a b
+
+instance PToJSRef CharacterData where
+  pToJSRef = unCharacterData
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CharacterData where
+  pFromJSRef = CharacterData
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CharacterData where
   toJSRef = return . unCharacterData
@@ -3502,7 +4392,9 @@ instance IsNode CharacterData
 instance IsEventTarget CharacterData
 instance IsGObject CharacterData where
   toGObject = GObject . castRef . unCharacterData
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CharacterData . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCharacterData :: IsGObject obj => obj -> CharacterData
 castToCharacterData = castTo gTypeCharacterData "CharacterData"
@@ -3518,9 +4410,18 @@ type IsCharacterData o = CharacterDataClass o
 -- | Functions for this inteface are in "GHCJS.DOM.ChildNode".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode Mozilla ChildNode documentation>
-newtype ChildNode = ChildNode (JSRef ChildNode) deriving (Eq)
+newtype ChildNode = ChildNode { unChildNode :: JSRef ChildNode }
 
-unChildNode (ChildNode o) = o
+instance Eq (ChildNode) where
+  (ChildNode a) == (ChildNode b) = js_eq a b
+
+instance PToJSRef ChildNode where
+  pToJSRef = unChildNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ChildNode where
+  pFromJSRef = ChildNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ChildNode where
   toJSRef = return . unChildNode
@@ -3532,7 +4433,9 @@ instance FromJSRef ChildNode where
 
 instance IsGObject ChildNode where
   toGObject = GObject . castRef . unChildNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ChildNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToChildNode :: IsGObject obj => obj -> ChildNode
 castToChildNode = castTo gTypeChildNode "ChildNode"
@@ -3547,9 +4450,18 @@ gTypeChildNode = GType gTypeChildNode'
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect Mozilla ClientRect documentation>
-newtype ClientRect = ClientRect (JSRef ClientRect) deriving (Eq)
+newtype ClientRect = ClientRect { unClientRect :: JSRef ClientRect }
 
-unClientRect (ClientRect o) = o
+instance Eq (ClientRect) where
+  (ClientRect a) == (ClientRect b) = js_eq a b
+
+instance PToJSRef ClientRect where
+  pToJSRef = unClientRect
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ClientRect where
+  pFromJSRef = ClientRect
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ClientRect where
   toJSRef = return . unClientRect
@@ -3561,7 +4473,9 @@ instance FromJSRef ClientRect where
 
 instance IsGObject ClientRect where
   toGObject = GObject . castRef . unClientRect
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ClientRect . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToClientRect :: IsGObject obj => obj -> ClientRect
 castToClientRect = castTo gTypeClientRect "ClientRect"
@@ -3576,9 +4490,18 @@ gTypeClientRect = GType gTypeClientRect'
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRectList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList Mozilla ClientRectList documentation>
-newtype ClientRectList = ClientRectList (JSRef ClientRectList) deriving (Eq)
+newtype ClientRectList = ClientRectList { unClientRectList :: JSRef ClientRectList }
 
-unClientRectList (ClientRectList o) = o
+instance Eq (ClientRectList) where
+  (ClientRectList a) == (ClientRectList b) = js_eq a b
+
+instance PToJSRef ClientRectList where
+  pToJSRef = unClientRectList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ClientRectList where
+  pFromJSRef = ClientRectList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ClientRectList where
   toJSRef = return . unClientRectList
@@ -3590,7 +4513,9 @@ instance FromJSRef ClientRectList where
 
 instance IsGObject ClientRectList where
   toGObject = GObject . castRef . unClientRectList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ClientRectList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToClientRectList :: IsGObject obj => obj -> ClientRectList
 castToClientRectList = castTo gTypeClientRectList "ClientRectList"
@@ -3608,9 +4533,18 @@ gTypeClientRectList = GType gTypeClientRectList'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent Mozilla CloseEvent documentation>
-newtype CloseEvent = CloseEvent (JSRef CloseEvent) deriving (Eq)
+newtype CloseEvent = CloseEvent { unCloseEvent :: JSRef CloseEvent }
 
-unCloseEvent (CloseEvent o) = o
+instance Eq (CloseEvent) where
+  (CloseEvent a) == (CloseEvent b) = js_eq a b
+
+instance PToJSRef CloseEvent where
+  pToJSRef = unCloseEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CloseEvent where
+  pFromJSRef = CloseEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CloseEvent where
   toJSRef = return . unCloseEvent
@@ -3623,7 +4557,9 @@ instance FromJSRef CloseEvent where
 instance IsEvent CloseEvent
 instance IsGObject CloseEvent where
   toGObject = GObject . castRef . unCloseEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CloseEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCloseEvent :: IsGObject obj => obj -> CloseEvent
 castToCloseEvent = castTo gTypeCloseEvent "CloseEvent"
@@ -3638,9 +4574,18 @@ gTypeCloseEvent = GType gTypeCloseEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.CommandLineAPIHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost Mozilla CommandLineAPIHost documentation>
-newtype CommandLineAPIHost = CommandLineAPIHost (JSRef CommandLineAPIHost) deriving (Eq)
+newtype CommandLineAPIHost = CommandLineAPIHost { unCommandLineAPIHost :: JSRef CommandLineAPIHost }
 
-unCommandLineAPIHost (CommandLineAPIHost o) = o
+instance Eq (CommandLineAPIHost) where
+  (CommandLineAPIHost a) == (CommandLineAPIHost b) = js_eq a b
+
+instance PToJSRef CommandLineAPIHost where
+  pToJSRef = unCommandLineAPIHost
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CommandLineAPIHost where
+  pFromJSRef = CommandLineAPIHost
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CommandLineAPIHost where
   toJSRef = return . unCommandLineAPIHost
@@ -3652,7 +4597,9 @@ instance FromJSRef CommandLineAPIHost where
 
 instance IsGObject CommandLineAPIHost where
   toGObject = GObject . castRef . unCommandLineAPIHost
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CommandLineAPIHost . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCommandLineAPIHost :: IsGObject obj => obj -> CommandLineAPIHost
 castToCommandLineAPIHost = castTo gTypeCommandLineAPIHost "CommandLineAPIHost"
@@ -3672,9 +4619,18 @@ gTypeCommandLineAPIHost = GType gTypeCommandLineAPIHost'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Comment Mozilla Comment documentation>
-newtype Comment = Comment (JSRef Comment) deriving (Eq)
+newtype Comment = Comment { unComment :: JSRef Comment }
 
-unComment (Comment o) = o
+instance Eq (Comment) where
+  (Comment a) == (Comment b) = js_eq a b
+
+instance PToJSRef Comment where
+  pToJSRef = unComment
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Comment where
+  pFromJSRef = Comment
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Comment where
   toJSRef = return . unComment
@@ -3689,7 +4645,9 @@ instance IsNode Comment
 instance IsEventTarget Comment
 instance IsGObject Comment where
   toGObject = GObject . castRef . unComment
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Comment . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToComment :: IsGObject obj => obj -> Comment
 castToComment = castTo gTypeComment "Comment"
@@ -3709,9 +4667,18 @@ type IsComment o = CommentClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent Mozilla CompositionEvent documentation>
-newtype CompositionEvent = CompositionEvent (JSRef CompositionEvent) deriving (Eq)
+newtype CompositionEvent = CompositionEvent { unCompositionEvent :: JSRef CompositionEvent }
 
-unCompositionEvent (CompositionEvent o) = o
+instance Eq (CompositionEvent) where
+  (CompositionEvent a) == (CompositionEvent b) = js_eq a b
+
+instance PToJSRef CompositionEvent where
+  pToJSRef = unCompositionEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CompositionEvent where
+  pFromJSRef = CompositionEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CompositionEvent where
   toJSRef = return . unCompositionEvent
@@ -3725,7 +4692,9 @@ instance IsUIEvent CompositionEvent
 instance IsEvent CompositionEvent
 instance IsGObject CompositionEvent where
   toGObject = GObject . castRef . unCompositionEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CompositionEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCompositionEvent :: IsGObject obj => obj -> CompositionEvent
 castToCompositionEvent = castTo gTypeCompositionEvent "CompositionEvent"
@@ -3744,9 +4713,18 @@ gTypeCompositionEvent = GType gTypeCompositionEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode Mozilla ConvolverNode documentation>
-newtype ConvolverNode = ConvolverNode (JSRef ConvolverNode) deriving (Eq)
+newtype ConvolverNode = ConvolverNode { unConvolverNode :: JSRef ConvolverNode }
 
-unConvolverNode (ConvolverNode o) = o
+instance Eq (ConvolverNode) where
+  (ConvolverNode a) == (ConvolverNode b) = js_eq a b
+
+instance PToJSRef ConvolverNode where
+  pToJSRef = unConvolverNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ConvolverNode where
+  pFromJSRef = ConvolverNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ConvolverNode where
   toJSRef = return . unConvolverNode
@@ -3760,7 +4738,9 @@ instance IsAudioNode ConvolverNode
 instance IsEventTarget ConvolverNode
 instance IsGObject ConvolverNode where
   toGObject = GObject . castRef . unConvolverNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ConvolverNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToConvolverNode :: IsGObject obj => obj -> ConvolverNode
 castToConvolverNode = castTo gTypeConvolverNode "ConvolverNode"
@@ -3775,9 +4755,18 @@ gTypeConvolverNode = GType gTypeConvolverNode'
 -- | Functions for this inteface are in "GHCJS.DOM.Coordinates".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates Mozilla Coordinates documentation>
-newtype Coordinates = Coordinates (JSRef Coordinates) deriving (Eq)
+newtype Coordinates = Coordinates { unCoordinates :: JSRef Coordinates }
 
-unCoordinates (Coordinates o) = o
+instance Eq (Coordinates) where
+  (Coordinates a) == (Coordinates b) = js_eq a b
+
+instance PToJSRef Coordinates where
+  pToJSRef = unCoordinates
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Coordinates where
+  pFromJSRef = Coordinates
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Coordinates where
   toJSRef = return . unCoordinates
@@ -3789,7 +4778,9 @@ instance FromJSRef Coordinates where
 
 instance IsGObject Coordinates where
   toGObject = GObject . castRef . unCoordinates
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Coordinates . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCoordinates :: IsGObject obj => obj -> Coordinates
 castToCoordinates = castTo gTypeCoordinates "Coordinates"
@@ -3804,9 +4795,18 @@ gTypeCoordinates = GType gTypeCoordinates'
 -- | Functions for this inteface are in "GHCJS.DOM.Counter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Counter Mozilla Counter documentation>
-newtype Counter = Counter (JSRef Counter) deriving (Eq)
+newtype Counter = Counter { unCounter :: JSRef Counter }
 
-unCounter (Counter o) = o
+instance Eq (Counter) where
+  (Counter a) == (Counter b) = js_eq a b
+
+instance PToJSRef Counter where
+  pToJSRef = unCounter
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Counter where
+  pFromJSRef = Counter
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Counter where
   toJSRef = return . unCounter
@@ -3818,7 +4818,9 @@ instance FromJSRef Counter where
 
 instance IsGObject Counter where
   toGObject = GObject . castRef . unCounter
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Counter . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCounter :: IsGObject obj => obj -> Counter
 castToCounter = castTo gTypeCounter "Counter"
@@ -3833,9 +4835,18 @@ gTypeCounter = GType gTypeCounter'
 -- | Functions for this inteface are in "GHCJS.DOM.Crypto".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Crypto Mozilla Crypto documentation>
-newtype Crypto = Crypto (JSRef Crypto) deriving (Eq)
+newtype Crypto = Crypto { unCrypto :: JSRef Crypto }
 
-unCrypto (Crypto o) = o
+instance Eq (Crypto) where
+  (Crypto a) == (Crypto b) = js_eq a b
+
+instance PToJSRef Crypto where
+  pToJSRef = unCrypto
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Crypto where
+  pFromJSRef = Crypto
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Crypto where
   toJSRef = return . unCrypto
@@ -3847,7 +4858,9 @@ instance FromJSRef Crypto where
 
 instance IsGObject Crypto where
   toGObject = GObject . castRef . unCrypto
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Crypto . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCrypto :: IsGObject obj => obj -> Crypto
 castToCrypto = castTo gTypeCrypto "Crypto"
@@ -3861,10 +4874,19 @@ gTypeCrypto = GType gTypeCrypto'
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKey".
 --
--- <https://developer.mozilla.org/en-US/docs/Web/API/Key Mozilla Key documentation>
-newtype CryptoKey = CryptoKey (JSRef CryptoKey) deriving (Eq)
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey Mozilla CryptoKey documentation>
+newtype CryptoKey = CryptoKey { unCryptoKey :: JSRef CryptoKey }
 
-unCryptoKey (CryptoKey o) = o
+instance Eq (CryptoKey) where
+  (CryptoKey a) == (CryptoKey b) = js_eq a b
+
+instance PToJSRef CryptoKey where
+  pToJSRef = unCryptoKey
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CryptoKey where
+  pFromJSRef = CryptoKey
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CryptoKey where
   toJSRef = return . unCryptoKey
@@ -3876,12 +4898,14 @@ instance FromJSRef CryptoKey where
 
 instance IsGObject CryptoKey where
   toGObject = GObject . castRef . unCryptoKey
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CryptoKey . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCryptoKey :: IsGObject obj => obj -> CryptoKey
 castToCryptoKey = castTo gTypeCryptoKey "CryptoKey"
 
-foreign import javascript unsafe "window[\"Key\"]" gTypeCryptoKey' :: JSRef GType
+foreign import javascript unsafe "window[\"CryptoKey\"]" gTypeCryptoKey' :: JSRef GType
 gTypeCryptoKey = GType gTypeCryptoKey'
 #else
 #endif
@@ -3890,10 +4914,19 @@ gTypeCryptoKey = GType gTypeCryptoKey'
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKeyPair".
 --
--- <https://developer.mozilla.org/en-US/docs/Web/API/KeyPair Mozilla KeyPair documentation>
-newtype CryptoKeyPair = CryptoKeyPair (JSRef CryptoKeyPair) deriving (Eq)
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair Mozilla CryptoKeyPair documentation>
+newtype CryptoKeyPair = CryptoKeyPair { unCryptoKeyPair :: JSRef CryptoKeyPair }
 
-unCryptoKeyPair (CryptoKeyPair o) = o
+instance Eq (CryptoKeyPair) where
+  (CryptoKeyPair a) == (CryptoKeyPair b) = js_eq a b
+
+instance PToJSRef CryptoKeyPair where
+  pToJSRef = unCryptoKeyPair
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CryptoKeyPair where
+  pFromJSRef = CryptoKeyPair
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CryptoKeyPair where
   toJSRef = return . unCryptoKeyPair
@@ -3905,12 +4938,14 @@ instance FromJSRef CryptoKeyPair where
 
 instance IsGObject CryptoKeyPair where
   toGObject = GObject . castRef . unCryptoKeyPair
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CryptoKeyPair . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCryptoKeyPair :: IsGObject obj => obj -> CryptoKeyPair
 castToCryptoKeyPair = castTo gTypeCryptoKeyPair "CryptoKeyPair"
 
-foreign import javascript unsafe "window[\"KeyPair\"]" gTypeCryptoKeyPair' :: JSRef GType
+foreign import javascript unsafe "window[\"CryptoKeyPair\"]" gTypeCryptoKeyPair' :: JSRef GType
 gTypeCryptoKeyPair = GType gTypeCryptoKeyPair'
 #else
 #endif
@@ -3923,9 +4958,18 @@ gTypeCryptoKeyPair = GType gTypeCryptoKeyPair'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent Mozilla CustomEvent documentation>
-newtype CustomEvent = CustomEvent (JSRef CustomEvent) deriving (Eq)
+newtype CustomEvent = CustomEvent { unCustomEvent :: JSRef CustomEvent }
 
-unCustomEvent (CustomEvent o) = o
+instance Eq (CustomEvent) where
+  (CustomEvent a) == (CustomEvent b) = js_eq a b
+
+instance PToJSRef CustomEvent where
+  pToJSRef = unCustomEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef CustomEvent where
+  pFromJSRef = CustomEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef CustomEvent where
   toJSRef = return . unCustomEvent
@@ -3938,7 +4982,9 @@ instance FromJSRef CustomEvent where
 instance IsEvent CustomEvent
 instance IsGObject CustomEvent where
   toGObject = GObject . castRef . unCustomEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = CustomEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToCustomEvent :: IsGObject obj => obj -> CustomEvent
 castToCustomEvent = castTo gTypeCustomEvent "CustomEvent"
@@ -3950,46 +4996,21 @@ gTypeCustomEvent = GType gTypeCustomEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMApplicationCache".
--- Base interface functions are in:
---
---     * "GHCJS.DOM.EventTarget"
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/DOMApplicationCache Mozilla DOMApplicationCache documentation>
-newtype DOMApplicationCache = DOMApplicationCache (JSRef DOMApplicationCache) deriving (Eq)
-
-unDOMApplicationCache (DOMApplicationCache o) = o
-
-instance ToJSRef DOMApplicationCache where
-  toJSRef = return . unDOMApplicationCache
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMApplicationCache where
-  fromJSRef = return . fmap DOMApplicationCache . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsEventTarget DOMApplicationCache
-instance IsGObject DOMApplicationCache where
-  toGObject = GObject . castRef . unDOMApplicationCache
-  unsafeCastGObject = DOMApplicationCache . castRef . unGObject
-
-castToDOMApplicationCache :: IsGObject obj => obj -> DOMApplicationCache
-castToDOMApplicationCache = castTo gTypeDOMApplicationCache "DOMApplicationCache"
-
-foreign import javascript unsafe "window[\"DOMApplicationCache\"]" gTypeDOMApplicationCache' :: JSRef GType
-gTypeDOMApplicationCache = GType gTypeDOMApplicationCache'
-#else
-type IsDOMApplicationCache o = DOMApplicationCacheClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMError Mozilla DOMError documentation>
-newtype DOMError = DOMError (JSRef DOMError) deriving (Eq)
+newtype DOMError = DOMError { unDOMError :: JSRef DOMError }
 
-unDOMError (DOMError o) = o
+instance Eq (DOMError) where
+  (DOMError a) == (DOMError b) = js_eq a b
+
+instance PToJSRef DOMError where
+  pToJSRef = unDOMError
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMError where
+  pFromJSRef = DOMError
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMError where
   toJSRef = return . unDOMError
@@ -4006,7 +5027,9 @@ toDOMError = unsafeCastGObject . toGObject
 instance IsDOMError DOMError
 instance IsGObject DOMError where
   toGObject = GObject . castRef . unDOMError
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMError . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMError :: IsGObject obj => obj -> DOMError
 castToDOMError = castTo gTypeDOMError "DOMError"
@@ -4018,41 +5041,21 @@ gTypeDOMError = GType gTypeDOMError'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMFormData".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation>
-newtype DOMFormData = DOMFormData (JSRef DOMFormData) deriving (Eq)
-
-unDOMFormData (DOMFormData o) = o
-
-instance ToJSRef DOMFormData where
-  toJSRef = return . unDOMFormData
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMFormData where
-  fromJSRef = return . fmap DOMFormData . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMFormData where
-  toGObject = GObject . castRef . unDOMFormData
-  unsafeCastGObject = DOMFormData . castRef . unGObject
-
-castToDOMFormData :: IsGObject obj => obj -> DOMFormData
-castToDOMFormData = castTo gTypeDOMFormData "DOMFormData"
-
-foreign import javascript unsafe "window[\"FormData\"]" gTypeDOMFormData' :: JSRef GType
-gTypeDOMFormData = GType gTypeDOMFormData'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMImplementation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation Mozilla DOMImplementation documentation>
-newtype DOMImplementation = DOMImplementation (JSRef DOMImplementation) deriving (Eq)
+newtype DOMImplementation = DOMImplementation { unDOMImplementation :: JSRef DOMImplementation }
 
-unDOMImplementation (DOMImplementation o) = o
+instance Eq (DOMImplementation) where
+  (DOMImplementation a) == (DOMImplementation b) = js_eq a b
+
+instance PToJSRef DOMImplementation where
+  pToJSRef = unDOMImplementation
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMImplementation where
+  pFromJSRef = DOMImplementation
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMImplementation where
   toJSRef = return . unDOMImplementation
@@ -4064,7 +5067,9 @@ instance FromJSRef DOMImplementation where
 
 instance IsGObject DOMImplementation where
   toGObject = GObject . castRef . unDOMImplementation
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMImplementation . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMImplementation :: IsGObject obj => obj -> DOMImplementation
 castToDOMImplementation = castTo gTypeDOMImplementation "DOMImplementation"
@@ -4077,72 +5082,21 @@ type IsDOMImplementation o = DOMImplementationClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMMimeType".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/MimeType Mozilla MimeType documentation>
-newtype DOMMimeType = DOMMimeType (JSRef DOMMimeType) deriving (Eq)
-
-unDOMMimeType (DOMMimeType o) = o
-
-instance ToJSRef DOMMimeType where
-  toJSRef = return . unDOMMimeType
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMMimeType where
-  fromJSRef = return . fmap DOMMimeType . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMMimeType where
-  toGObject = GObject . castRef . unDOMMimeType
-  unsafeCastGObject = DOMMimeType . castRef . unGObject
-
-castToDOMMimeType :: IsGObject obj => obj -> DOMMimeType
-castToDOMMimeType = castTo gTypeDOMMimeType "DOMMimeType"
-
-foreign import javascript unsafe "window[\"MimeType\"]" gTypeDOMMimeType' :: JSRef GType
-gTypeDOMMimeType = GType gTypeDOMMimeType'
-#else
-type IsDOMMimeType o = DOMMimeTypeClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMMimeTypeArray".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray Mozilla MimeTypeArray documentation>
-newtype DOMMimeTypeArray = DOMMimeTypeArray (JSRef DOMMimeTypeArray) deriving (Eq)
-
-unDOMMimeTypeArray (DOMMimeTypeArray o) = o
-
-instance ToJSRef DOMMimeTypeArray where
-  toJSRef = return . unDOMMimeTypeArray
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMMimeTypeArray where
-  fromJSRef = return . fmap DOMMimeTypeArray . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMMimeTypeArray where
-  toGObject = GObject . castRef . unDOMMimeTypeArray
-  unsafeCastGObject = DOMMimeTypeArray . castRef . unGObject
-
-castToDOMMimeTypeArray :: IsGObject obj => obj -> DOMMimeTypeArray
-castToDOMMimeTypeArray = castTo gTypeDOMMimeTypeArray "DOMMimeTypeArray"
-
-foreign import javascript unsafe "window[\"MimeTypeArray\"]" gTypeDOMMimeTypeArray' :: JSRef GType
-gTypeDOMMimeTypeArray = GType gTypeDOMMimeTypeArray'
-#else
-type IsDOMMimeTypeArray o = DOMMimeTypeArrayClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMNamedFlowCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlowCollection Mozilla WebKitNamedFlowCollection documentation>
-newtype DOMNamedFlowCollection = DOMNamedFlowCollection (JSRef DOMNamedFlowCollection) deriving (Eq)
+newtype DOMNamedFlowCollection = DOMNamedFlowCollection { unDOMNamedFlowCollection :: JSRef DOMNamedFlowCollection }
 
-unDOMNamedFlowCollection (DOMNamedFlowCollection o) = o
+instance Eq (DOMNamedFlowCollection) where
+  (DOMNamedFlowCollection a) == (DOMNamedFlowCollection b) = js_eq a b
+
+instance PToJSRef DOMNamedFlowCollection where
+  pToJSRef = unDOMNamedFlowCollection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMNamedFlowCollection where
+  pFromJSRef = DOMNamedFlowCollection
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMNamedFlowCollection where
   toJSRef = return . unDOMNamedFlowCollection
@@ -4154,7 +5108,9 @@ instance FromJSRef DOMNamedFlowCollection where
 
 instance IsGObject DOMNamedFlowCollection where
   toGObject = GObject . castRef . unDOMNamedFlowCollection
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMNamedFlowCollection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMNamedFlowCollection :: IsGObject obj => obj -> DOMNamedFlowCollection
 castToDOMNamedFlowCollection = castTo gTypeDOMNamedFlowCollection "DOMNamedFlowCollection"
@@ -4170,9 +5126,18 @@ type IsDOMNamedFlowCollection o = DOMNamedFlowCollectionClass o
 -- | Functions for this inteface are in "GHCJS.DOM.DOMParser".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser Mozilla DOMParser documentation>
-newtype DOMParser = DOMParser (JSRef DOMParser) deriving (Eq)
+newtype DOMParser = DOMParser { unDOMParser :: JSRef DOMParser }
 
-unDOMParser (DOMParser o) = o
+instance Eq (DOMParser) where
+  (DOMParser a) == (DOMParser b) = js_eq a b
+
+instance PToJSRef DOMParser where
+  pToJSRef = unDOMParser
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMParser where
+  pFromJSRef = DOMParser
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMParser where
   toJSRef = return . unDOMParser
@@ -4184,7 +5149,9 @@ instance FromJSRef DOMParser where
 
 instance IsGObject DOMParser where
   toGObject = GObject . castRef . unDOMParser
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMParser . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMParser :: IsGObject obj => obj -> DOMParser
 castToDOMParser = castTo gTypeDOMParser "DOMParser"
@@ -4196,164 +5163,24 @@ gTypeDOMParser = GType gTypeDOMParser'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMPath".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation>
-newtype DOMPath = DOMPath (JSRef DOMPath) deriving (Eq)
-
-unDOMPath (DOMPath o) = o
-
-instance ToJSRef DOMPath where
-  toJSRef = return . unDOMPath
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMPath where
-  fromJSRef = return . fmap DOMPath . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMPath where
-  toGObject = GObject . castRef . unDOMPath
-  unsafeCastGObject = DOMPath . castRef . unGObject
-
-castToDOMPath :: IsGObject obj => obj -> DOMPath
-castToDOMPath = castTo gTypeDOMPath "DOMPath"
-
-foreign import javascript unsafe "window[\"Path2D\"]" gTypeDOMPath' :: JSRef GType
-gTypeDOMPath = GType gTypeDOMPath'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMPlugin".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/Plugin Mozilla Plugin documentation>
-newtype DOMPlugin = DOMPlugin (JSRef DOMPlugin) deriving (Eq)
-
-unDOMPlugin (DOMPlugin o) = o
-
-instance ToJSRef DOMPlugin where
-  toJSRef = return . unDOMPlugin
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMPlugin where
-  fromJSRef = return . fmap DOMPlugin . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMPlugin where
-  toGObject = GObject . castRef . unDOMPlugin
-  unsafeCastGObject = DOMPlugin . castRef . unGObject
-
-castToDOMPlugin :: IsGObject obj => obj -> DOMPlugin
-castToDOMPlugin = castTo gTypeDOMPlugin "DOMPlugin"
-
-foreign import javascript unsafe "window[\"Plugin\"]" gTypeDOMPlugin' :: JSRef GType
-gTypeDOMPlugin = GType gTypeDOMPlugin'
-#else
-type IsDOMPlugin o = DOMPluginClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMPluginArray".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray Mozilla PluginArray documentation>
-newtype DOMPluginArray = DOMPluginArray (JSRef DOMPluginArray) deriving (Eq)
-
-unDOMPluginArray (DOMPluginArray o) = o
-
-instance ToJSRef DOMPluginArray where
-  toJSRef = return . unDOMPluginArray
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMPluginArray where
-  fromJSRef = return . fmap DOMPluginArray . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMPluginArray where
-  toGObject = GObject . castRef . unDOMPluginArray
-  unsafeCastGObject = DOMPluginArray . castRef . unGObject
-
-castToDOMPluginArray :: IsGObject obj => obj -> DOMPluginArray
-castToDOMPluginArray = castTo gTypeDOMPluginArray "DOMPluginArray"
-
-foreign import javascript unsafe "window[\"PluginArray\"]" gTypeDOMPluginArray' :: JSRef GType
-gTypeDOMPluginArray = GType gTypeDOMPluginArray'
-#else
-type IsDOMPluginArray o = DOMPluginArrayClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMSecurityPolicy".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy Mozilla SecurityPolicy documentation>
-newtype DOMSecurityPolicy = DOMSecurityPolicy (JSRef DOMSecurityPolicy) deriving (Eq)
-
-unDOMSecurityPolicy (DOMSecurityPolicy o) = o
-
-instance ToJSRef DOMSecurityPolicy where
-  toJSRef = return . unDOMSecurityPolicy
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMSecurityPolicy where
-  fromJSRef = return . fmap DOMSecurityPolicy . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMSecurityPolicy where
-  toGObject = GObject . castRef . unDOMSecurityPolicy
-  unsafeCastGObject = DOMSecurityPolicy . castRef . unGObject
-
-castToDOMSecurityPolicy :: IsGObject obj => obj -> DOMSecurityPolicy
-castToDOMSecurityPolicy = castTo gTypeDOMSecurityPolicy "DOMSecurityPolicy"
-
-foreign import javascript unsafe "window[\"SecurityPolicy\"]" gTypeDOMSecurityPolicy' :: JSRef GType
-gTypeDOMSecurityPolicy = GType gTypeDOMSecurityPolicy'
-#else
-type IsDOMSecurityPolicy o = DOMSecurityPolicyClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMSelection".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/Selection Mozilla Selection documentation>
-newtype DOMSelection = DOMSelection (JSRef DOMSelection) deriving (Eq)
-
-unDOMSelection (DOMSelection o) = o
-
-instance ToJSRef DOMSelection where
-  toJSRef = return . unDOMSelection
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMSelection where
-  fromJSRef = return . fmap DOMSelection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMSelection where
-  toGObject = GObject . castRef . unDOMSelection
-  unsafeCastGObject = DOMSelection . castRef . unGObject
-
-castToDOMSelection :: IsGObject obj => obj -> DOMSelection
-castToDOMSelection = castTo gTypeDOMSelection "DOMSelection"
-
-foreign import javascript unsafe "window[\"Selection\"]" gTypeDOMSelection' :: JSRef GType
-gTypeDOMSelection = GType gTypeDOMSelection'
-#else
-type IsDOMSelection o = DOMSelectionClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMSettableTokenList".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.DOMTokenList"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList Mozilla DOMSettableTokenList documentation>
-newtype DOMSettableTokenList = DOMSettableTokenList (JSRef DOMSettableTokenList) deriving (Eq)
+newtype DOMSettableTokenList = DOMSettableTokenList { unDOMSettableTokenList :: JSRef DOMSettableTokenList }
 
-unDOMSettableTokenList (DOMSettableTokenList o) = o
+instance Eq (DOMSettableTokenList) where
+  (DOMSettableTokenList a) == (DOMSettableTokenList b) = js_eq a b
+
+instance PToJSRef DOMSettableTokenList where
+  pToJSRef = unDOMSettableTokenList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMSettableTokenList where
+  pFromJSRef = DOMSettableTokenList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMSettableTokenList where
   toJSRef = return . unDOMSettableTokenList
@@ -4366,7 +5193,9 @@ instance FromJSRef DOMSettableTokenList where
 instance IsDOMTokenList DOMSettableTokenList
 instance IsGObject DOMSettableTokenList where
   toGObject = GObject . castRef . unDOMSettableTokenList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMSettableTokenList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMSettableTokenList :: IsGObject obj => obj -> DOMSettableTokenList
 castToDOMSettableTokenList = castTo gTypeDOMSettableTokenList "DOMSettableTokenList"
@@ -4382,9 +5211,18 @@ type IsDOMSettableTokenList o = DOMSettableTokenListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList Mozilla DOMStringList documentation>
-newtype DOMStringList = DOMStringList (JSRef DOMStringList) deriving (Eq)
+newtype DOMStringList = DOMStringList { unDOMStringList :: JSRef DOMStringList }
 
-unDOMStringList (DOMStringList o) = o
+instance Eq (DOMStringList) where
+  (DOMStringList a) == (DOMStringList b) = js_eq a b
+
+instance PToJSRef DOMStringList where
+  pToJSRef = unDOMStringList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMStringList where
+  pFromJSRef = DOMStringList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMStringList where
   toJSRef = return . unDOMStringList
@@ -4396,7 +5234,9 @@ instance FromJSRef DOMStringList where
 
 instance IsGObject DOMStringList where
   toGObject = GObject . castRef . unDOMStringList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMStringList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMStringList :: IsGObject obj => obj -> DOMStringList
 castToDOMStringList = castTo gTypeDOMStringList "DOMStringList"
@@ -4412,9 +5252,18 @@ type IsDOMStringList o = DOMStringListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringMap".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringMap Mozilla DOMStringMap documentation>
-newtype DOMStringMap = DOMStringMap (JSRef DOMStringMap) deriving (Eq)
+newtype DOMStringMap = DOMStringMap { unDOMStringMap :: JSRef DOMStringMap }
 
-unDOMStringMap (DOMStringMap o) = o
+instance Eq (DOMStringMap) where
+  (DOMStringMap a) == (DOMStringMap b) = js_eq a b
+
+instance PToJSRef DOMStringMap where
+  pToJSRef = unDOMStringMap
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMStringMap where
+  pFromJSRef = DOMStringMap
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMStringMap where
   toJSRef = return . unDOMStringMap
@@ -4426,7 +5275,9 @@ instance FromJSRef DOMStringMap where
 
 instance IsGObject DOMStringMap where
   toGObject = GObject . castRef . unDOMStringMap
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMStringMap . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMStringMap :: IsGObject obj => obj -> DOMStringMap
 castToDOMStringMap = castTo gTypeDOMStringMap "DOMStringMap"
@@ -4441,9 +5292,18 @@ gTypeDOMStringMap = GType gTypeDOMStringMap'
 -- | Functions for this inteface are in "GHCJS.DOM.DOMTokenList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList Mozilla DOMTokenList documentation>
-newtype DOMTokenList = DOMTokenList (JSRef DOMTokenList) deriving (Eq)
+newtype DOMTokenList = DOMTokenList { unDOMTokenList :: JSRef DOMTokenList }
 
-unDOMTokenList (DOMTokenList o) = o
+instance Eq (DOMTokenList) where
+  (DOMTokenList a) == (DOMTokenList b) = js_eq a b
+
+instance PToJSRef DOMTokenList where
+  pToJSRef = unDOMTokenList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DOMTokenList where
+  pFromJSRef = DOMTokenList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DOMTokenList where
   toJSRef = return . unDOMTokenList
@@ -4460,7 +5320,9 @@ toDOMTokenList = unsafeCastGObject . toGObject
 instance IsDOMTokenList DOMTokenList
 instance IsGObject DOMTokenList where
   toGObject = GObject . castRef . unDOMTokenList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DOMTokenList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDOMTokenList :: IsGObject obj => obj -> DOMTokenList
 castToDOMTokenList = castTo gTypeDOMTokenList "DOMTokenList"
@@ -4473,99 +5335,6 @@ type IsDOMTokenList o = DOMTokenListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMURL".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation>
-newtype DOMURL = DOMURL (JSRef DOMURL) deriving (Eq)
-
-unDOMURL (DOMURL o) = o
-
-instance ToJSRef DOMURL where
-  toJSRef = return . unDOMURL
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMURL where
-  fromJSRef = return . fmap DOMURL . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMURL where
-  toGObject = GObject . castRef . unDOMURL
-  unsafeCastGObject = DOMURL . castRef . unGObject
-
-castToDOMURL :: IsGObject obj => obj -> DOMURL
-castToDOMURL = castTo gTypeDOMURL "DOMURL"
-
-foreign import javascript unsafe "window[\"URL\"]" gTypeDOMURL' :: JSRef GType
-gTypeDOMURL = GType gTypeDOMURL'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMWindow".
--- Base interface functions are in:
---
---     * "GHCJS.DOM.EventTarget"
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/Window Mozilla Window documentation>
-newtype DOMWindow = DOMWindow (JSRef DOMWindow) deriving (Eq)
-
-unDOMWindow (DOMWindow o) = o
-
-instance ToJSRef DOMWindow where
-  toJSRef = return . unDOMWindow
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMWindow where
-  fromJSRef = return . fmap DOMWindow . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsEventTarget DOMWindow
-instance IsGObject DOMWindow where
-  toGObject = GObject . castRef . unDOMWindow
-  unsafeCastGObject = DOMWindow . castRef . unGObject
-
-castToDOMWindow :: IsGObject obj => obj -> DOMWindow
-castToDOMWindow = castTo gTypeDOMWindow "DOMWindow"
-
-foreign import javascript unsafe "window[\"Window\"]" gTypeDOMWindow' :: JSRef GType
-gTypeDOMWindow = GType gTypeDOMWindow'
-#else
-type IsDOMWindow o = DOMWindowClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMWindowCSS".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/CSS Mozilla CSS documentation>
-newtype DOMWindowCSS = DOMWindowCSS (JSRef DOMWindowCSS) deriving (Eq)
-
-unDOMWindowCSS (DOMWindowCSS o) = o
-
-instance ToJSRef DOMWindowCSS where
-  toJSRef = return . unDOMWindowCSS
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMWindowCSS where
-  fromJSRef = return . fmap DOMWindowCSS . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DOMWindowCSS where
-  toGObject = GObject . castRef . unDOMWindowCSS
-  unsafeCastGObject = DOMWindowCSS . castRef . unGObject
-
-castToDOMWindowCSS :: IsGObject obj => obj -> DOMWindowCSS
-castToDOMWindowCSS = castTo gTypeDOMWindowCSS "DOMWindowCSS"
-
-foreign import javascript unsafe "window[\"CSS\"]" gTypeDOMWindowCSS' :: JSRef GType
-gTypeDOMWindowCSS = GType gTypeDOMWindowCSS'
-#else
-type IsDOMWindowCSS o = DOMWindowCSSClass o
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DataCue".
 -- Base interface functions are in:
 --
@@ -4573,9 +5342,18 @@ type IsDOMWindowCSS o = DOMWindowCSSClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation>
-newtype DataCue = DataCue (JSRef DataCue) deriving (Eq)
+newtype DataCue = DataCue { unDataCue :: JSRef DataCue }
 
-unDataCue (DataCue o) = o
+instance Eq (DataCue) where
+  (DataCue a) == (DataCue b) = js_eq a b
+
+instance PToJSRef DataCue where
+  pToJSRef = unDataCue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DataCue where
+  pFromJSRef = DataCue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DataCue where
   toJSRef = return . unDataCue
@@ -4589,7 +5367,9 @@ instance IsTextTrackCue DataCue
 instance IsEventTarget DataCue
 instance IsGObject DataCue where
   toGObject = GObject . castRef . unDataCue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DataCue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDataCue :: IsGObject obj => obj -> DataCue
 castToDataCue = castTo gTypeDataCue "DataCue"
@@ -4604,9 +5384,18 @@ gTypeDataCue = GType gTypeDataCue'
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransfer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer Mozilla DataTransfer documentation>
-newtype DataTransfer = DataTransfer (JSRef DataTransfer) deriving (Eq)
+newtype DataTransfer = DataTransfer { unDataTransfer :: JSRef DataTransfer }
 
-unDataTransfer (DataTransfer o) = o
+instance Eq (DataTransfer) where
+  (DataTransfer a) == (DataTransfer b) = js_eq a b
+
+instance PToJSRef DataTransfer where
+  pToJSRef = unDataTransfer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DataTransfer where
+  pFromJSRef = DataTransfer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DataTransfer where
   toJSRef = return . unDataTransfer
@@ -4618,7 +5407,9 @@ instance FromJSRef DataTransfer where
 
 instance IsGObject DataTransfer where
   toGObject = GObject . castRef . unDataTransfer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DataTransfer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDataTransfer :: IsGObject obj => obj -> DataTransfer
 castToDataTransfer = castTo gTypeDataTransfer "DataTransfer"
@@ -4633,9 +5424,18 @@ gTypeDataTransfer = GType gTypeDataTransfer'
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItem".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem Mozilla DataTransferItem documentation>
-newtype DataTransferItem = DataTransferItem (JSRef DataTransferItem) deriving (Eq)
+newtype DataTransferItem = DataTransferItem { unDataTransferItem :: JSRef DataTransferItem }
 
-unDataTransferItem (DataTransferItem o) = o
+instance Eq (DataTransferItem) where
+  (DataTransferItem a) == (DataTransferItem b) = js_eq a b
+
+instance PToJSRef DataTransferItem where
+  pToJSRef = unDataTransferItem
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DataTransferItem where
+  pFromJSRef = DataTransferItem
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DataTransferItem where
   toJSRef = return . unDataTransferItem
@@ -4647,7 +5447,9 @@ instance FromJSRef DataTransferItem where
 
 instance IsGObject DataTransferItem where
   toGObject = GObject . castRef . unDataTransferItem
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DataTransferItem . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDataTransferItem :: IsGObject obj => obj -> DataTransferItem
 castToDataTransferItem = castTo gTypeDataTransferItem "DataTransferItem"
@@ -4662,9 +5464,18 @@ gTypeDataTransferItem = GType gTypeDataTransferItem'
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItemList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList Mozilla DataTransferItemList documentation>
-newtype DataTransferItemList = DataTransferItemList (JSRef DataTransferItemList) deriving (Eq)
+newtype DataTransferItemList = DataTransferItemList { unDataTransferItemList :: JSRef DataTransferItemList }
 
-unDataTransferItemList (DataTransferItemList o) = o
+instance Eq (DataTransferItemList) where
+  (DataTransferItemList a) == (DataTransferItemList b) = js_eq a b
+
+instance PToJSRef DataTransferItemList where
+  pToJSRef = unDataTransferItemList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DataTransferItemList where
+  pFromJSRef = DataTransferItemList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DataTransferItemList where
   toJSRef = return . unDataTransferItemList
@@ -4676,7 +5487,9 @@ instance FromJSRef DataTransferItemList where
 
 instance IsGObject DataTransferItemList where
   toGObject = GObject . castRef . unDataTransferItemList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DataTransferItemList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDataTransferItemList :: IsGObject obj => obj -> DataTransferItemList
 castToDataTransferItemList = castTo gTypeDataTransferItemList "DataTransferItemList"
@@ -4691,9 +5504,18 @@ gTypeDataTransferItemList = GType gTypeDataTransferItemList'
 -- | Functions for this inteface are in "GHCJS.DOM.Database".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Database Mozilla Database documentation>
-newtype Database = Database (JSRef Database) deriving (Eq)
+newtype Database = Database { unDatabase :: JSRef Database }
 
-unDatabase (Database o) = o
+instance Eq (Database) where
+  (Database a) == (Database b) = js_eq a b
+
+instance PToJSRef Database where
+  pToJSRef = unDatabase
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Database where
+  pFromJSRef = Database
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Database where
   toJSRef = return . unDatabase
@@ -4705,42 +5527,15 @@ instance FromJSRef Database where
 
 instance IsGObject Database where
   toGObject = GObject . castRef . unDatabase
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Database . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDatabase :: IsGObject obj => obj -> Database
 castToDatabase = castTo gTypeDatabase "Database"
 
 foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase' :: JSRef GType
 gTypeDatabase = GType gTypeDatabase'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DatabaseCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseCallback Mozilla DatabaseCallback documentation>
-newtype DatabaseCallback = DatabaseCallback (JSRef DatabaseCallback) deriving (Eq)
-
-unDatabaseCallback (DatabaseCallback o) = o
-
-instance ToJSRef DatabaseCallback where
-  toJSRef = return . unDatabaseCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DatabaseCallback where
-  fromJSRef = return . fmap DatabaseCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject DatabaseCallback where
-  toGObject = GObject . castRef . unDatabaseCallback
-  unsafeCastGObject = DatabaseCallback . castRef . unGObject
-
-castToDatabaseCallback :: IsGObject obj => obj -> DatabaseCallback
-castToDatabaseCallback = castTo gTypeDatabaseCallback "DatabaseCallback"
-
-foreign import javascript unsafe "window[\"DatabaseCallback\"]" gTypeDatabaseCallback' :: JSRef GType
-gTypeDatabaseCallback = GType gTypeDatabaseCallback'
 #else
 #endif
 
@@ -4753,9 +5548,18 @@ gTypeDatabaseCallback = GType gTypeDatabaseCallback'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope Mozilla DedicatedWorkerGlobalScope documentation>
-newtype DedicatedWorkerGlobalScope = DedicatedWorkerGlobalScope (JSRef DedicatedWorkerGlobalScope) deriving (Eq)
+newtype DedicatedWorkerGlobalScope = DedicatedWorkerGlobalScope { unDedicatedWorkerGlobalScope :: JSRef DedicatedWorkerGlobalScope }
 
-unDedicatedWorkerGlobalScope (DedicatedWorkerGlobalScope o) = o
+instance Eq (DedicatedWorkerGlobalScope) where
+  (DedicatedWorkerGlobalScope a) == (DedicatedWorkerGlobalScope b) = js_eq a b
+
+instance PToJSRef DedicatedWorkerGlobalScope where
+  pToJSRef = unDedicatedWorkerGlobalScope
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DedicatedWorkerGlobalScope where
+  pFromJSRef = DedicatedWorkerGlobalScope
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DedicatedWorkerGlobalScope where
   toJSRef = return . unDedicatedWorkerGlobalScope
@@ -4769,7 +5573,9 @@ instance IsWorkerGlobalScope DedicatedWorkerGlobalScope
 instance IsEventTarget DedicatedWorkerGlobalScope
 instance IsGObject DedicatedWorkerGlobalScope where
   toGObject = GObject . castRef . unDedicatedWorkerGlobalScope
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DedicatedWorkerGlobalScope . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDedicatedWorkerGlobalScope :: IsGObject obj => obj -> DedicatedWorkerGlobalScope
 castToDedicatedWorkerGlobalScope = castTo gTypeDedicatedWorkerGlobalScope "DedicatedWorkerGlobalScope"
@@ -4788,9 +5594,18 @@ gTypeDedicatedWorkerGlobalScope = GType gTypeDedicatedWorkerGlobalScope'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DelayNode Mozilla DelayNode documentation>
-newtype DelayNode = DelayNode (JSRef DelayNode) deriving (Eq)
+newtype DelayNode = DelayNode { unDelayNode :: JSRef DelayNode }
 
-unDelayNode (DelayNode o) = o
+instance Eq (DelayNode) where
+  (DelayNode a) == (DelayNode b) = js_eq a b
+
+instance PToJSRef DelayNode where
+  pToJSRef = unDelayNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DelayNode where
+  pFromJSRef = DelayNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DelayNode where
   toJSRef = return . unDelayNode
@@ -4804,7 +5619,9 @@ instance IsAudioNode DelayNode
 instance IsEventTarget DelayNode
 instance IsGObject DelayNode where
   toGObject = GObject . castRef . unDelayNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DelayNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDelayNode :: IsGObject obj => obj -> DelayNode
 castToDelayNode = castTo gTypeDelayNode "DelayNode"
@@ -4822,9 +5639,18 @@ gTypeDelayNode = GType gTypeDelayNode'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent Mozilla DeviceMotionEvent documentation>
-newtype DeviceMotionEvent = DeviceMotionEvent (JSRef DeviceMotionEvent) deriving (Eq)
+newtype DeviceMotionEvent = DeviceMotionEvent { unDeviceMotionEvent :: JSRef DeviceMotionEvent }
 
-unDeviceMotionEvent (DeviceMotionEvent o) = o
+instance Eq (DeviceMotionEvent) where
+  (DeviceMotionEvent a) == (DeviceMotionEvent b) = js_eq a b
+
+instance PToJSRef DeviceMotionEvent where
+  pToJSRef = unDeviceMotionEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DeviceMotionEvent where
+  pFromJSRef = DeviceMotionEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DeviceMotionEvent where
   toJSRef = return . unDeviceMotionEvent
@@ -4837,7 +5663,9 @@ instance FromJSRef DeviceMotionEvent where
 instance IsEvent DeviceMotionEvent
 instance IsGObject DeviceMotionEvent where
   toGObject = GObject . castRef . unDeviceMotionEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DeviceMotionEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDeviceMotionEvent :: IsGObject obj => obj -> DeviceMotionEvent
 castToDeviceMotionEvent = castTo gTypeDeviceMotionEvent "DeviceMotionEvent"
@@ -4855,9 +5683,18 @@ gTypeDeviceMotionEvent = GType gTypeDeviceMotionEvent'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent Mozilla DeviceOrientationEvent documentation>
-newtype DeviceOrientationEvent = DeviceOrientationEvent (JSRef DeviceOrientationEvent) deriving (Eq)
+newtype DeviceOrientationEvent = DeviceOrientationEvent { unDeviceOrientationEvent :: JSRef DeviceOrientationEvent }
 
-unDeviceOrientationEvent (DeviceOrientationEvent o) = o
+instance Eq (DeviceOrientationEvent) where
+  (DeviceOrientationEvent a) == (DeviceOrientationEvent b) = js_eq a b
+
+instance PToJSRef DeviceOrientationEvent where
+  pToJSRef = unDeviceOrientationEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DeviceOrientationEvent where
+  pFromJSRef = DeviceOrientationEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DeviceOrientationEvent where
   toJSRef = return . unDeviceOrientationEvent
@@ -4870,7 +5707,9 @@ instance FromJSRef DeviceOrientationEvent where
 instance IsEvent DeviceOrientationEvent
 instance IsGObject DeviceOrientationEvent where
   toGObject = GObject . castRef . unDeviceOrientationEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DeviceOrientationEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDeviceOrientationEvent :: IsGObject obj => obj -> DeviceOrientationEvent
 castToDeviceOrientationEvent = castTo gTypeDeviceOrientationEvent "DeviceOrientationEvent"
@@ -4888,9 +5727,18 @@ gTypeDeviceOrientationEvent = GType gTypeDeviceOrientationEvent'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceProximityEvent Mozilla DeviceProximityEvent documentation>
-newtype DeviceProximityEvent = DeviceProximityEvent (JSRef DeviceProximityEvent) deriving (Eq)
+newtype DeviceProximityEvent = DeviceProximityEvent { unDeviceProximityEvent :: JSRef DeviceProximityEvent }
 
-unDeviceProximityEvent (DeviceProximityEvent o) = o
+instance Eq (DeviceProximityEvent) where
+  (DeviceProximityEvent a) == (DeviceProximityEvent b) = js_eq a b
+
+instance PToJSRef DeviceProximityEvent where
+  pToJSRef = unDeviceProximityEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DeviceProximityEvent where
+  pFromJSRef = DeviceProximityEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DeviceProximityEvent where
   toJSRef = return . unDeviceProximityEvent
@@ -4903,7 +5751,9 @@ instance FromJSRef DeviceProximityEvent where
 instance IsEvent DeviceProximityEvent
 instance IsGObject DeviceProximityEvent where
   toGObject = GObject . castRef . unDeviceProximityEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DeviceProximityEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDeviceProximityEvent :: IsGObject obj => obj -> DeviceProximityEvent
 castToDeviceProximityEvent = castTo gTypeDeviceProximityEvent "DeviceProximityEvent"
@@ -4922,9 +5772,18 @@ gTypeDeviceProximityEvent = GType gTypeDeviceProximityEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Document Mozilla Document documentation>
-newtype Document = Document (JSRef Document) deriving (Eq)
+newtype Document = Document { unDocument :: JSRef Document }
 
-unDocument (Document o) = o
+instance Eq (Document) where
+  (Document a) == (Document b) = js_eq a b
+
+instance PToJSRef Document where
+  pToJSRef = unDocument
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Document where
+  pFromJSRef = Document
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Document where
   toJSRef = return . unDocument
@@ -4943,7 +5802,9 @@ instance IsNode Document
 instance IsEventTarget Document
 instance IsGObject Document where
   toGObject = GObject . castRef . unDocument
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Document . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDocument :: IsGObject obj => obj -> Document
 castToDocument = castTo gTypeDocument "Document"
@@ -4963,9 +5824,18 @@ type IsDocument o = DocumentClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment Mozilla DocumentFragment documentation>
-newtype DocumentFragment = DocumentFragment (JSRef DocumentFragment) deriving (Eq)
+newtype DocumentFragment = DocumentFragment { unDocumentFragment :: JSRef DocumentFragment }
 
-unDocumentFragment (DocumentFragment o) = o
+instance Eq (DocumentFragment) where
+  (DocumentFragment a) == (DocumentFragment b) = js_eq a b
+
+instance PToJSRef DocumentFragment where
+  pToJSRef = unDocumentFragment
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DocumentFragment where
+  pFromJSRef = DocumentFragment
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DocumentFragment where
   toJSRef = return . unDocumentFragment
@@ -4979,7 +5849,9 @@ instance IsNode DocumentFragment
 instance IsEventTarget DocumentFragment
 instance IsGObject DocumentFragment where
   toGObject = GObject . castRef . unDocumentFragment
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DocumentFragment . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDocumentFragment :: IsGObject obj => obj -> DocumentFragment
 castToDocumentFragment = castTo gTypeDocumentFragment "DocumentFragment"
@@ -4999,9 +5871,18 @@ type IsDocumentFragment o = DocumentFragmentClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType Mozilla DocumentType documentation>
-newtype DocumentType = DocumentType (JSRef DocumentType) deriving (Eq)
+newtype DocumentType = DocumentType { unDocumentType :: JSRef DocumentType }
 
-unDocumentType (DocumentType o) = o
+instance Eq (DocumentType) where
+  (DocumentType a) == (DocumentType b) = js_eq a b
+
+instance PToJSRef DocumentType where
+  pToJSRef = unDocumentType
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DocumentType where
+  pFromJSRef = DocumentType
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DocumentType where
   toJSRef = return . unDocumentType
@@ -5015,7 +5896,9 @@ instance IsNode DocumentType
 instance IsEventTarget DocumentType
 instance IsGObject DocumentType where
   toGObject = GObject . castRef . unDocumentType
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DocumentType . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDocumentType :: IsGObject obj => obj -> DocumentType
 castToDocumentType = castTo gTypeDocumentType "DocumentType"
@@ -5035,9 +5918,18 @@ type IsDocumentType o = DocumentTypeClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode Mozilla DynamicsCompressorNode documentation>
-newtype DynamicsCompressorNode = DynamicsCompressorNode (JSRef DynamicsCompressorNode) deriving (Eq)
+newtype DynamicsCompressorNode = DynamicsCompressorNode { unDynamicsCompressorNode :: JSRef DynamicsCompressorNode }
 
-unDynamicsCompressorNode (DynamicsCompressorNode o) = o
+instance Eq (DynamicsCompressorNode) where
+  (DynamicsCompressorNode a) == (DynamicsCompressorNode b) = js_eq a b
+
+instance PToJSRef DynamicsCompressorNode where
+  pToJSRef = unDynamicsCompressorNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef DynamicsCompressorNode where
+  pFromJSRef = DynamicsCompressorNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef DynamicsCompressorNode where
   toJSRef = return . unDynamicsCompressorNode
@@ -5051,7 +5943,9 @@ instance IsAudioNode DynamicsCompressorNode
 instance IsEventTarget DynamicsCompressorNode
 instance IsGObject DynamicsCompressorNode where
   toGObject = GObject . castRef . unDynamicsCompressorNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = DynamicsCompressorNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToDynamicsCompressorNode :: IsGObject obj => obj -> DynamicsCompressorNode
 castToDynamicsCompressorNode = castTo gTypeDynamicsCompressorNode "DynamicsCompressorNode"
@@ -5066,9 +5960,18 @@ gTypeDynamicsCompressorNode = GType gTypeDynamicsCompressorNode'
 -- | Functions for this inteface are in "GHCJS.DOM.EXTBlendMinMax".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTBlendMinMax Mozilla EXTBlendMinMax documentation>
-newtype EXTBlendMinMax = EXTBlendMinMax (JSRef EXTBlendMinMax) deriving (Eq)
+newtype EXTBlendMinMax = EXTBlendMinMax { unEXTBlendMinMax :: JSRef EXTBlendMinMax }
 
-unEXTBlendMinMax (EXTBlendMinMax o) = o
+instance Eq (EXTBlendMinMax) where
+  (EXTBlendMinMax a) == (EXTBlendMinMax b) = js_eq a b
+
+instance PToJSRef EXTBlendMinMax where
+  pToJSRef = unEXTBlendMinMax
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EXTBlendMinMax where
+  pFromJSRef = EXTBlendMinMax
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EXTBlendMinMax where
   toJSRef = return . unEXTBlendMinMax
@@ -5080,7 +5983,9 @@ instance FromJSRef EXTBlendMinMax where
 
 instance IsGObject EXTBlendMinMax where
   toGObject = GObject . castRef . unEXTBlendMinMax
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EXTBlendMinMax . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEXTBlendMinMax :: IsGObject obj => obj -> EXTBlendMinMax
 castToEXTBlendMinMax = castTo gTypeEXTBlendMinMax "EXTBlendMinMax"
@@ -5095,9 +6000,18 @@ gTypeEXTBlendMinMax = GType gTypeEXTBlendMinMax'
 -- | Functions for this inteface are in "GHCJS.DOM.EXTFragDepth".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTFragDepth Mozilla EXTFragDepth documentation>
-newtype EXTFragDepth = EXTFragDepth (JSRef EXTFragDepth) deriving (Eq)
+newtype EXTFragDepth = EXTFragDepth { unEXTFragDepth :: JSRef EXTFragDepth }
 
-unEXTFragDepth (EXTFragDepth o) = o
+instance Eq (EXTFragDepth) where
+  (EXTFragDepth a) == (EXTFragDepth b) = js_eq a b
+
+instance PToJSRef EXTFragDepth where
+  pToJSRef = unEXTFragDepth
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EXTFragDepth where
+  pFromJSRef = EXTFragDepth
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EXTFragDepth where
   toJSRef = return . unEXTFragDepth
@@ -5109,7 +6023,9 @@ instance FromJSRef EXTFragDepth where
 
 instance IsGObject EXTFragDepth where
   toGObject = GObject . castRef . unEXTFragDepth
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EXTFragDepth . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEXTFragDepth :: IsGObject obj => obj -> EXTFragDepth
 castToEXTFragDepth = castTo gTypeEXTFragDepth "EXTFragDepth"
@@ -5124,9 +6040,18 @@ gTypeEXTFragDepth = GType gTypeEXTFragDepth'
 -- | Functions for this inteface are in "GHCJS.DOM.EXTShaderTextureLOD".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTShaderTextureLOD Mozilla EXTShaderTextureLOD documentation>
-newtype EXTShaderTextureLOD = EXTShaderTextureLOD (JSRef EXTShaderTextureLOD) deriving (Eq)
+newtype EXTShaderTextureLOD = EXTShaderTextureLOD { unEXTShaderTextureLOD :: JSRef EXTShaderTextureLOD }
 
-unEXTShaderTextureLOD (EXTShaderTextureLOD o) = o
+instance Eq (EXTShaderTextureLOD) where
+  (EXTShaderTextureLOD a) == (EXTShaderTextureLOD b) = js_eq a b
+
+instance PToJSRef EXTShaderTextureLOD where
+  pToJSRef = unEXTShaderTextureLOD
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EXTShaderTextureLOD where
+  pFromJSRef = EXTShaderTextureLOD
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EXTShaderTextureLOD where
   toJSRef = return . unEXTShaderTextureLOD
@@ -5138,7 +6063,9 @@ instance FromJSRef EXTShaderTextureLOD where
 
 instance IsGObject EXTShaderTextureLOD where
   toGObject = GObject . castRef . unEXTShaderTextureLOD
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EXTShaderTextureLOD . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEXTShaderTextureLOD :: IsGObject obj => obj -> EXTShaderTextureLOD
 castToEXTShaderTextureLOD = castTo gTypeEXTShaderTextureLOD "EXTShaderTextureLOD"
@@ -5153,9 +6080,18 @@ gTypeEXTShaderTextureLOD = GType gTypeEXTShaderTextureLOD'
 -- | Functions for this inteface are in "GHCJS.DOM.EXTTextureFilterAnisotropic".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTTextureFilterAnisotropic Mozilla EXTTextureFilterAnisotropic documentation>
-newtype EXTTextureFilterAnisotropic = EXTTextureFilterAnisotropic (JSRef EXTTextureFilterAnisotropic) deriving (Eq)
+newtype EXTTextureFilterAnisotropic = EXTTextureFilterAnisotropic { unEXTTextureFilterAnisotropic :: JSRef EXTTextureFilterAnisotropic }
 
-unEXTTextureFilterAnisotropic (EXTTextureFilterAnisotropic o) = o
+instance Eq (EXTTextureFilterAnisotropic) where
+  (EXTTextureFilterAnisotropic a) == (EXTTextureFilterAnisotropic b) = js_eq a b
+
+instance PToJSRef EXTTextureFilterAnisotropic where
+  pToJSRef = unEXTTextureFilterAnisotropic
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EXTTextureFilterAnisotropic where
+  pFromJSRef = EXTTextureFilterAnisotropic
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EXTTextureFilterAnisotropic where
   toJSRef = return . unEXTTextureFilterAnisotropic
@@ -5167,7 +6103,9 @@ instance FromJSRef EXTTextureFilterAnisotropic where
 
 instance IsGObject EXTTextureFilterAnisotropic where
   toGObject = GObject . castRef . unEXTTextureFilterAnisotropic
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EXTTextureFilterAnisotropic . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEXTTextureFilterAnisotropic :: IsGObject obj => obj -> EXTTextureFilterAnisotropic
 castToEXTTextureFilterAnisotropic = castTo gTypeEXTTextureFilterAnisotropic "EXTTextureFilterAnisotropic"
@@ -5182,9 +6120,18 @@ gTypeEXTTextureFilterAnisotropic = GType gTypeEXTTextureFilterAnisotropic'
 -- | Functions for this inteface are in "GHCJS.DOM.EXTsRGB".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTsRGB Mozilla EXTsRGB documentation>
-newtype EXTsRGB = EXTsRGB (JSRef EXTsRGB) deriving (Eq)
+newtype EXTsRGB = EXTsRGB { unEXTsRGB :: JSRef EXTsRGB }
 
-unEXTsRGB (EXTsRGB o) = o
+instance Eq (EXTsRGB) where
+  (EXTsRGB a) == (EXTsRGB b) = js_eq a b
+
+instance PToJSRef EXTsRGB where
+  pToJSRef = unEXTsRGB
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EXTsRGB where
+  pFromJSRef = EXTsRGB
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EXTsRGB where
   toJSRef = return . unEXTsRGB
@@ -5196,7 +6143,9 @@ instance FromJSRef EXTsRGB where
 
 instance IsGObject EXTsRGB where
   toGObject = GObject . castRef . unEXTsRGB
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EXTsRGB . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEXTsRGB :: IsGObject obj => obj -> EXTsRGB
 castToEXTsRGB = castTo gTypeEXTsRGB "EXTsRGB"
@@ -5215,9 +6164,18 @@ gTypeEXTsRGB = GType gTypeEXTsRGB'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Element Mozilla Element documentation>
-newtype Element = Element (JSRef Element) deriving (Eq)
+newtype Element = Element { unElement :: JSRef Element }
 
-unElement (Element o) = o
+instance Eq (Element) where
+  (Element a) == (Element b) = js_eq a b
+
+instance PToJSRef Element where
+  pToJSRef = unElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Element where
+  pFromJSRef = Element
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Element where
   toJSRef = return . unElement
@@ -5236,7 +6194,9 @@ instance IsNode Element
 instance IsEventTarget Element
 instance IsGObject Element where
   toGObject = GObject . castRef . unElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Element . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToElement :: IsGObject obj => obj -> Element
 castToElement = castTo gTypeElement "Element"
@@ -5256,9 +6216,18 @@ type IsElement o = ElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Entity Mozilla Entity documentation>
-newtype Entity = Entity (JSRef Entity) deriving (Eq)
+newtype Entity = Entity { unEntity :: JSRef Entity }
 
-unEntity (Entity o) = o
+instance Eq (Entity) where
+  (Entity a) == (Entity b) = js_eq a b
+
+instance PToJSRef Entity where
+  pToJSRef = unEntity
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Entity where
+  pFromJSRef = Entity
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Entity where
   toJSRef = return . unEntity
@@ -5272,7 +6241,9 @@ instance IsNode Entity
 instance IsEventTarget Entity
 instance IsGObject Entity where
   toGObject = GObject . castRef . unEntity
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Entity . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEntity :: IsGObject obj => obj -> Entity
 castToEntity = castTo gTypeEntity "Entity"
@@ -5291,9 +6262,18 @@ gTypeEntity = GType gTypeEntity'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EntityReference Mozilla EntityReference documentation>
-newtype EntityReference = EntityReference (JSRef EntityReference) deriving (Eq)
+newtype EntityReference = EntityReference { unEntityReference :: JSRef EntityReference }
 
-unEntityReference (EntityReference o) = o
+instance Eq (EntityReference) where
+  (EntityReference a) == (EntityReference b) = js_eq a b
+
+instance PToJSRef EntityReference where
+  pToJSRef = unEntityReference
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EntityReference where
+  pFromJSRef = EntityReference
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EntityReference where
   toJSRef = return . unEntityReference
@@ -5307,7 +6287,9 @@ instance IsNode EntityReference
 instance IsEventTarget EntityReference
 instance IsGObject EntityReference where
   toGObject = GObject . castRef . unEntityReference
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EntityReference . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEntityReference :: IsGObject obj => obj -> EntityReference
 castToEntityReference = castTo gTypeEntityReference "EntityReference"
@@ -5326,9 +6308,18 @@ type IsEntityReference o = EntityReferenceClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent Mozilla ErrorEvent documentation>
-newtype ErrorEvent = ErrorEvent (JSRef ErrorEvent) deriving (Eq)
+newtype ErrorEvent = ErrorEvent { unErrorEvent :: JSRef ErrorEvent }
 
-unErrorEvent (ErrorEvent o) = o
+instance Eq (ErrorEvent) where
+  (ErrorEvent a) == (ErrorEvent b) = js_eq a b
+
+instance PToJSRef ErrorEvent where
+  pToJSRef = unErrorEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ErrorEvent where
+  pFromJSRef = ErrorEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ErrorEvent where
   toJSRef = return . unErrorEvent
@@ -5341,7 +6332,9 @@ instance FromJSRef ErrorEvent where
 instance IsEvent ErrorEvent
 instance IsGObject ErrorEvent where
   toGObject = GObject . castRef . unErrorEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ErrorEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToErrorEvent :: IsGObject obj => obj -> ErrorEvent
 castToErrorEvent = castTo gTypeErrorEvent "ErrorEvent"
@@ -5356,9 +6349,18 @@ gTypeErrorEvent = GType gTypeErrorEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.Event".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Event Mozilla Event documentation>
-newtype Event = Event (JSRef Event) deriving (Eq)
+newtype Event = Event { unEvent :: JSRef Event }
 
-unEvent (Event o) = o
+instance Eq (Event) where
+  (Event a) == (Event b) = js_eq a b
+
+instance PToJSRef Event where
+  pToJSRef = unEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Event where
+  pFromJSRef = Event
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Event where
   toJSRef = return . unEvent
@@ -5375,7 +6377,9 @@ toEvent = unsafeCastGObject . toGObject
 instance IsEvent Event
 instance IsGObject Event where
   toGObject = GObject . castRef . unEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Event . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEvent :: IsGObject obj => obj -> Event
 castToEvent = castTo gTypeEvent "Event"
@@ -5391,9 +6395,18 @@ type IsEvent o = EventClass o
 -- | Functions for this inteface are in "GHCJS.DOM.EventListener".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventListener Mozilla EventListener documentation>
-newtype EventListener = EventListener (JSRef EventListener) deriving (Eq)
+newtype EventListener = EventListener { unEventListener :: JSRef EventListener }
 
-unEventListener (EventListener o) = o
+instance Eq (EventListener) where
+  (EventListener a) == (EventListener b) = js_eq a b
+
+instance PToJSRef EventListener where
+  pToJSRef = unEventListener
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EventListener where
+  pFromJSRef = EventListener
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EventListener where
   toJSRef = return . unEventListener
@@ -5405,7 +6418,9 @@ instance FromJSRef EventListener where
 
 instance IsGObject EventListener where
   toGObject = GObject . castRef . unEventListener
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EventListener . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEventListener :: IsGObject obj => obj -> EventListener
 castToEventListener = castTo gTypeEventListener "EventListener"
@@ -5423,9 +6438,18 @@ gTypeEventListener = GType gTypeEventListener'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventSource Mozilla EventSource documentation>
-newtype EventSource = EventSource (JSRef EventSource) deriving (Eq)
+newtype EventSource = EventSource { unEventSource :: JSRef EventSource }
 
-unEventSource (EventSource o) = o
+instance Eq (EventSource) where
+  (EventSource a) == (EventSource b) = js_eq a b
+
+instance PToJSRef EventSource where
+  pToJSRef = unEventSource
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EventSource where
+  pFromJSRef = EventSource
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EventSource where
   toJSRef = return . unEventSource
@@ -5438,7 +6462,9 @@ instance FromJSRef EventSource where
 instance IsEventTarget EventSource
 instance IsGObject EventSource where
   toGObject = GObject . castRef . unEventSource
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EventSource . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEventSource :: IsGObject obj => obj -> EventSource
 castToEventSource = castTo gTypeEventSource "EventSource"
@@ -5453,9 +6479,18 @@ gTypeEventSource = GType gTypeEventSource'
 -- | Functions for this inteface are in "GHCJS.DOM.EventTarget".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget Mozilla EventTarget documentation>
-newtype EventTarget = EventTarget (JSRef EventTarget) deriving (Eq)
+newtype EventTarget = EventTarget { unEventTarget :: JSRef EventTarget }
 
-unEventTarget (EventTarget o) = o
+instance Eq (EventTarget) where
+  (EventTarget a) == (EventTarget b) = js_eq a b
+
+instance PToJSRef EventTarget where
+  pToJSRef = unEventTarget
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef EventTarget where
+  pFromJSRef = EventTarget
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef EventTarget where
   toJSRef = return . unEventTarget
@@ -5472,7 +6507,9 @@ toEventTarget = unsafeCastGObject . toGObject
 instance IsEventTarget EventTarget
 instance IsGObject EventTarget where
   toGObject = GObject . castRef . unEventTarget
+  {-# INLINE toGObject #-}
   unsafeCastGObject = EventTarget . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToEventTarget :: IsGObject obj => obj -> EventTarget
 castToEventTarget = castTo gTypeEventTarget "EventTarget"
@@ -5491,9 +6528,18 @@ type IsEventTarget o = EventTargetClass o
 --     * "GHCJS.DOM.Blob"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/File Mozilla File documentation>
-newtype File = File (JSRef File) deriving (Eq)
+newtype File = File { unFile :: JSRef File }
 
-unFile (File o) = o
+instance Eq (File) where
+  (File a) == (File b) = js_eq a b
+
+instance PToJSRef File where
+  pToJSRef = unFile
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef File where
+  pFromJSRef = File
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef File where
   toJSRef = return . unFile
@@ -5506,7 +6552,9 @@ instance FromJSRef File where
 instance IsBlob File
 instance IsGObject File where
   toGObject = GObject . castRef . unFile
+  {-# INLINE toGObject #-}
   unsafeCastGObject = File . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToFile :: IsGObject obj => obj -> File
 castToFile = castTo gTypeFile "File"
@@ -5522,9 +6570,18 @@ type IsFile o = FileClass o
 -- | Functions for this inteface are in "GHCJS.DOM.FileError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileError Mozilla FileError documentation>
-newtype FileError = FileError (JSRef FileError) deriving (Eq)
+newtype FileError = FileError { unFileError :: JSRef FileError }
 
-unFileError (FileError o) = o
+instance Eq (FileError) where
+  (FileError a) == (FileError b) = js_eq a b
+
+instance PToJSRef FileError where
+  pToJSRef = unFileError
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef FileError where
+  pFromJSRef = FileError
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef FileError where
   toJSRef = return . unFileError
@@ -5536,7 +6593,9 @@ instance FromJSRef FileError where
 
 instance IsGObject FileError where
   toGObject = GObject . castRef . unFileError
+  {-# INLINE toGObject #-}
   unsafeCastGObject = FileError . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToFileError :: IsGObject obj => obj -> FileError
 castToFileError = castTo gTypeFileError "FileError"
@@ -5551,9 +6610,18 @@ gTypeFileError = GType gTypeFileError'
 -- | Functions for this inteface are in "GHCJS.DOM.FileList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileList Mozilla FileList documentation>
-newtype FileList = FileList (JSRef FileList) deriving (Eq)
+newtype FileList = FileList { unFileList :: JSRef FileList }
 
-unFileList (FileList o) = o
+instance Eq (FileList) where
+  (FileList a) == (FileList b) = js_eq a b
+
+instance PToJSRef FileList where
+  pToJSRef = unFileList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef FileList where
+  pFromJSRef = FileList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef FileList where
   toJSRef = return . unFileList
@@ -5565,7 +6633,9 @@ instance FromJSRef FileList where
 
 instance IsGObject FileList where
   toGObject = GObject . castRef . unFileList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = FileList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToFileList :: IsGObject obj => obj -> FileList
 castToFileList = castTo gTypeFileList "FileList"
@@ -5584,9 +6654,18 @@ type IsFileList o = FileListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileReader Mozilla FileReader documentation>
-newtype FileReader = FileReader (JSRef FileReader) deriving (Eq)
+newtype FileReader = FileReader { unFileReader :: JSRef FileReader }
 
-unFileReader (FileReader o) = o
+instance Eq (FileReader) where
+  (FileReader a) == (FileReader b) = js_eq a b
+
+instance PToJSRef FileReader where
+  pToJSRef = unFileReader
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef FileReader where
+  pFromJSRef = FileReader
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef FileReader where
   toJSRef = return . unFileReader
@@ -5599,7 +6678,9 @@ instance FromJSRef FileReader where
 instance IsEventTarget FileReader
 instance IsGObject FileReader where
   toGObject = GObject . castRef . unFileReader
+  {-# INLINE toGObject #-}
   unsafeCastGObject = FileReader . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToFileReader :: IsGObject obj => obj -> FileReader
 castToFileReader = castTo gTypeFileReader "FileReader"
@@ -5614,9 +6695,18 @@ gTypeFileReader = GType gTypeFileReader'
 -- | Functions for this inteface are in "GHCJS.DOM.FileReaderSync".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync Mozilla FileReaderSync documentation>
-newtype FileReaderSync = FileReaderSync (JSRef FileReaderSync) deriving (Eq)
+newtype FileReaderSync = FileReaderSync { unFileReaderSync :: JSRef FileReaderSync }
 
-unFileReaderSync (FileReaderSync o) = o
+instance Eq (FileReaderSync) where
+  (FileReaderSync a) == (FileReaderSync b) = js_eq a b
+
+instance PToJSRef FileReaderSync where
+  pToJSRef = unFileReaderSync
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef FileReaderSync where
+  pFromJSRef = FileReaderSync
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef FileReaderSync where
   toJSRef = return . unFileReaderSync
@@ -5628,7 +6718,9 @@ instance FromJSRef FileReaderSync where
 
 instance IsGObject FileReaderSync where
   toGObject = GObject . castRef . unFileReaderSync
+  {-# INLINE toGObject #-}
   unsafeCastGObject = FileReaderSync . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToFileReaderSync :: IsGObject obj => obj -> FileReaderSync
 castToFileReaderSync = castTo gTypeFileReaderSync "FileReaderSync"
@@ -5647,9 +6739,18 @@ gTypeFileReaderSync = GType gTypeFileReaderSync'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent Mozilla FocusEvent documentation>
-newtype FocusEvent = FocusEvent (JSRef FocusEvent) deriving (Eq)
+newtype FocusEvent = FocusEvent { unFocusEvent :: JSRef FocusEvent }
 
-unFocusEvent (FocusEvent o) = o
+instance Eq (FocusEvent) where
+  (FocusEvent a) == (FocusEvent b) = js_eq a b
+
+instance PToJSRef FocusEvent where
+  pToJSRef = unFocusEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef FocusEvent where
+  pFromJSRef = FocusEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef FocusEvent where
   toJSRef = return . unFocusEvent
@@ -5663,7 +6764,9 @@ instance IsUIEvent FocusEvent
 instance IsEvent FocusEvent
 instance IsGObject FocusEvent where
   toGObject = GObject . castRef . unFocusEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = FocusEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToFocusEvent :: IsGObject obj => obj -> FocusEvent
 castToFocusEvent = castTo gTypeFocusEvent "FocusEvent"
@@ -5681,9 +6784,18 @@ gTypeFocusEvent = GType gTypeFocusEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader Mozilla FontLoader documentation>
-newtype FontLoader = FontLoader (JSRef FontLoader) deriving (Eq)
+newtype FontLoader = FontLoader { unFontLoader :: JSRef FontLoader }
 
-unFontLoader (FontLoader o) = o
+instance Eq (FontLoader) where
+  (FontLoader a) == (FontLoader b) = js_eq a b
+
+instance PToJSRef FontLoader where
+  pToJSRef = unFontLoader
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef FontLoader where
+  pFromJSRef = FontLoader
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef FontLoader where
   toJSRef = return . unFontLoader
@@ -5696,13 +6808,55 @@ instance FromJSRef FontLoader where
 instance IsEventTarget FontLoader
 instance IsGObject FontLoader where
   toGObject = GObject . castRef . unFontLoader
+  {-# INLINE toGObject #-}
   unsafeCastGObject = FontLoader . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToFontLoader :: IsGObject obj => obj -> FontLoader
 castToFontLoader = castTo gTypeFontLoader "FontLoader"
 
 foreign import javascript unsafe "window[\"FontLoader\"]" gTypeFontLoader' :: JSRef GType
 gTypeFontLoader = GType gTypeFontLoader'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.FormData".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation>
+newtype FormData = FormData { unFormData :: JSRef FormData }
+
+instance Eq (FormData) where
+  (FormData a) == (FormData b) = js_eq a b
+
+instance PToJSRef FormData where
+  pToJSRef = unFormData
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef FormData where
+  pFromJSRef = FormData
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef FormData where
+  toJSRef = return . unFormData
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef FormData where
+  fromJSRef = return . fmap FormData . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject FormData where
+  toGObject = GObject . castRef . unFormData
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = FormData . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToFormData :: IsGObject obj => obj -> FormData
+castToFormData = castTo gTypeFormData "FormData"
+
+foreign import javascript unsafe "window[\"FormData\"]" gTypeFormData' :: JSRef GType
+gTypeFormData = GType gTypeFormData'
 #else
 #endif
 
@@ -5715,9 +6869,18 @@ gTypeFontLoader = GType gTypeFontLoader'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/GainNode Mozilla GainNode documentation>
-newtype GainNode = GainNode (JSRef GainNode) deriving (Eq)
+newtype GainNode = GainNode { unGainNode :: JSRef GainNode }
 
-unGainNode (GainNode o) = o
+instance Eq (GainNode) where
+  (GainNode a) == (GainNode b) = js_eq a b
+
+instance PToJSRef GainNode where
+  pToJSRef = unGainNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef GainNode where
+  pFromJSRef = GainNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef GainNode where
   toJSRef = return . unGainNode
@@ -5731,7 +6894,9 @@ instance IsAudioNode GainNode
 instance IsEventTarget GainNode
 instance IsGObject GainNode where
   toGObject = GObject . castRef . unGainNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = GainNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToGainNode :: IsGObject obj => obj -> GainNode
 castToGainNode = castTo gTypeGainNode "GainNode"
@@ -5746,9 +6911,18 @@ gTypeGainNode = GType gTypeGainNode'
 -- | Functions for this inteface are in "GHCJS.DOM.Gamepad".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad Mozilla Gamepad documentation>
-newtype Gamepad = Gamepad (JSRef Gamepad) deriving (Eq)
+newtype Gamepad = Gamepad { unGamepad :: JSRef Gamepad }
 
-unGamepad (Gamepad o) = o
+instance Eq (Gamepad) where
+  (Gamepad a) == (Gamepad b) = js_eq a b
+
+instance PToJSRef Gamepad where
+  pToJSRef = unGamepad
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Gamepad where
+  pFromJSRef = Gamepad
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Gamepad where
   toJSRef = return . unGamepad
@@ -5760,7 +6934,9 @@ instance FromJSRef Gamepad where
 
 instance IsGObject Gamepad where
   toGObject = GObject . castRef . unGamepad
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Gamepad . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToGamepad :: IsGObject obj => obj -> Gamepad
 castToGamepad = castTo gTypeGamepad "Gamepad"
@@ -5775,9 +6951,18 @@ gTypeGamepad = GType gTypeGamepad'
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadButton".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/GamepadButton Mozilla GamepadButton documentation>
-newtype GamepadButton = GamepadButton (JSRef GamepadButton) deriving (Eq)
+newtype GamepadButton = GamepadButton { unGamepadButton :: JSRef GamepadButton }
 
-unGamepadButton (GamepadButton o) = o
+instance Eq (GamepadButton) where
+  (GamepadButton a) == (GamepadButton b) = js_eq a b
+
+instance PToJSRef GamepadButton where
+  pToJSRef = unGamepadButton
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef GamepadButton where
+  pFromJSRef = GamepadButton
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef GamepadButton where
   toJSRef = return . unGamepadButton
@@ -5789,7 +6974,9 @@ instance FromJSRef GamepadButton where
 
 instance IsGObject GamepadButton where
   toGObject = GObject . castRef . unGamepadButton
+  {-# INLINE toGObject #-}
   unsafeCastGObject = GamepadButton . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToGamepadButton :: IsGObject obj => obj -> GamepadButton
 castToGamepadButton = castTo gTypeGamepadButton "GamepadButton"
@@ -5807,9 +6994,18 @@ gTypeGamepadButton = GType gTypeGamepadButton'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/GamepadEvent Mozilla GamepadEvent documentation>
-newtype GamepadEvent = GamepadEvent (JSRef GamepadEvent) deriving (Eq)
+newtype GamepadEvent = GamepadEvent { unGamepadEvent :: JSRef GamepadEvent }
 
-unGamepadEvent (GamepadEvent o) = o
+instance Eq (GamepadEvent) where
+  (GamepadEvent a) == (GamepadEvent b) = js_eq a b
+
+instance PToJSRef GamepadEvent where
+  pToJSRef = unGamepadEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef GamepadEvent where
+  pFromJSRef = GamepadEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef GamepadEvent where
   toJSRef = return . unGamepadEvent
@@ -5822,7 +7018,9 @@ instance FromJSRef GamepadEvent where
 instance IsEvent GamepadEvent
 instance IsGObject GamepadEvent where
   toGObject = GObject . castRef . unGamepadEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = GamepadEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToGamepadEvent :: IsGObject obj => obj -> GamepadEvent
 castToGamepadEvent = castTo gTypeGamepadEvent "GamepadEvent"
@@ -5837,9 +7035,18 @@ gTypeGamepadEvent = GType gTypeGamepadEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.Geolocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation Mozilla Geolocation documentation>
-newtype Geolocation = Geolocation (JSRef Geolocation) deriving (Eq)
+newtype Geolocation = Geolocation { unGeolocation :: JSRef Geolocation }
 
-unGeolocation (Geolocation o) = o
+instance Eq (Geolocation) where
+  (Geolocation a) == (Geolocation b) = js_eq a b
+
+instance PToJSRef Geolocation where
+  pToJSRef = unGeolocation
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Geolocation where
+  pFromJSRef = Geolocation
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Geolocation where
   toJSRef = return . unGeolocation
@@ -5851,7 +7058,9 @@ instance FromJSRef Geolocation where
 
 instance IsGObject Geolocation where
   toGObject = GObject . castRef . unGeolocation
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Geolocation . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToGeolocation :: IsGObject obj => obj -> Geolocation
 castToGeolocation = castTo gTypeGeolocation "Geolocation"
@@ -5867,9 +7076,18 @@ type IsGeolocation o = GeolocationClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Geoposition".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition Mozilla Geoposition documentation>
-newtype Geoposition = Geoposition (JSRef Geoposition) deriving (Eq)
+newtype Geoposition = Geoposition { unGeoposition :: JSRef Geoposition }
 
-unGeoposition (Geoposition o) = o
+instance Eq (Geoposition) where
+  (Geoposition a) == (Geoposition b) = js_eq a b
+
+instance PToJSRef Geoposition where
+  pToJSRef = unGeoposition
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Geoposition where
+  pFromJSRef = Geoposition
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Geoposition where
   toJSRef = return . unGeoposition
@@ -5881,7 +7099,9 @@ instance FromJSRef Geoposition where
 
 instance IsGObject Geoposition where
   toGObject = GObject . castRef . unGeoposition
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Geoposition . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToGeoposition :: IsGObject obj => obj -> Geoposition
 castToGeoposition = castTo gTypeGeoposition "Geoposition"
@@ -5896,9 +7116,18 @@ gTypeGeoposition = GType gTypeGeoposition'
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAllCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection Mozilla HTMLAllCollection documentation>
-newtype HTMLAllCollection = HTMLAllCollection (JSRef HTMLAllCollection) deriving (Eq)
+newtype HTMLAllCollection = HTMLAllCollection { unHTMLAllCollection :: JSRef HTMLAllCollection }
 
-unHTMLAllCollection (HTMLAllCollection o) = o
+instance Eq (HTMLAllCollection) where
+  (HTMLAllCollection a) == (HTMLAllCollection b) = js_eq a b
+
+instance PToJSRef HTMLAllCollection where
+  pToJSRef = unHTMLAllCollection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLAllCollection where
+  pFromJSRef = HTMLAllCollection
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLAllCollection where
   toJSRef = return . unHTMLAllCollection
@@ -5910,7 +7139,9 @@ instance FromJSRef HTMLAllCollection where
 
 instance IsGObject HTMLAllCollection where
   toGObject = GObject . castRef . unHTMLAllCollection
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLAllCollection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLAllCollection :: IsGObject obj => obj -> HTMLAllCollection
 castToHTMLAllCollection = castTo gTypeHTMLAllCollection "HTMLAllCollection"
@@ -5931,9 +7162,18 @@ gTypeHTMLAllCollection = GType gTypeHTMLAllCollection'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement Mozilla HTMLAnchorElement documentation>
-newtype HTMLAnchorElement = HTMLAnchorElement (JSRef HTMLAnchorElement) deriving (Eq)
+newtype HTMLAnchorElement = HTMLAnchorElement { unHTMLAnchorElement :: JSRef HTMLAnchorElement }
 
-unHTMLAnchorElement (HTMLAnchorElement o) = o
+instance Eq (HTMLAnchorElement) where
+  (HTMLAnchorElement a) == (HTMLAnchorElement b) = js_eq a b
+
+instance PToJSRef HTMLAnchorElement where
+  pToJSRef = unHTMLAnchorElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLAnchorElement where
+  pFromJSRef = HTMLAnchorElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLAnchorElement where
   toJSRef = return . unHTMLAnchorElement
@@ -5949,7 +7189,9 @@ instance IsNode HTMLAnchorElement
 instance IsEventTarget HTMLAnchorElement
 instance IsGObject HTMLAnchorElement where
   toGObject = GObject . castRef . unHTMLAnchorElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLAnchorElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLAnchorElement :: IsGObject obj => obj -> HTMLAnchorElement
 castToHTMLAnchorElement = castTo gTypeHTMLAnchorElement "HTMLAnchorElement"
@@ -5971,9 +7213,18 @@ type IsHTMLAnchorElement o = HTMLAnchorElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement Mozilla HTMLAppletElement documentation>
-newtype HTMLAppletElement = HTMLAppletElement (JSRef HTMLAppletElement) deriving (Eq)
+newtype HTMLAppletElement = HTMLAppletElement { unHTMLAppletElement :: JSRef HTMLAppletElement }
 
-unHTMLAppletElement (HTMLAppletElement o) = o
+instance Eq (HTMLAppletElement) where
+  (HTMLAppletElement a) == (HTMLAppletElement b) = js_eq a b
+
+instance PToJSRef HTMLAppletElement where
+  pToJSRef = unHTMLAppletElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLAppletElement where
+  pFromJSRef = HTMLAppletElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLAppletElement where
   toJSRef = return . unHTMLAppletElement
@@ -5989,7 +7240,9 @@ instance IsNode HTMLAppletElement
 instance IsEventTarget HTMLAppletElement
 instance IsGObject HTMLAppletElement where
   toGObject = GObject . castRef . unHTMLAppletElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLAppletElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLAppletElement :: IsGObject obj => obj -> HTMLAppletElement
 castToHTMLAppletElement = castTo gTypeHTMLAppletElement "HTMLAppletElement"
@@ -6011,9 +7264,18 @@ type IsHTMLAppletElement o = HTMLAppletElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement Mozilla HTMLAreaElement documentation>
-newtype HTMLAreaElement = HTMLAreaElement (JSRef HTMLAreaElement) deriving (Eq)
+newtype HTMLAreaElement = HTMLAreaElement { unHTMLAreaElement :: JSRef HTMLAreaElement }
 
-unHTMLAreaElement (HTMLAreaElement o) = o
+instance Eq (HTMLAreaElement) where
+  (HTMLAreaElement a) == (HTMLAreaElement b) = js_eq a b
+
+instance PToJSRef HTMLAreaElement where
+  pToJSRef = unHTMLAreaElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLAreaElement where
+  pFromJSRef = HTMLAreaElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLAreaElement where
   toJSRef = return . unHTMLAreaElement
@@ -6029,7 +7291,9 @@ instance IsNode HTMLAreaElement
 instance IsEventTarget HTMLAreaElement
 instance IsGObject HTMLAreaElement where
   toGObject = GObject . castRef . unHTMLAreaElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLAreaElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLAreaElement :: IsGObject obj => obj -> HTMLAreaElement
 castToHTMLAreaElement = castTo gTypeHTMLAreaElement "HTMLAreaElement"
@@ -6046,11 +7310,24 @@ type IsHTMLAreaElement o = HTMLAreaElementClass o
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.HTMLMediaElement"
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement Mozilla HTMLAudioElement documentation>
-newtype HTMLAudioElement = HTMLAudioElement (JSRef HTMLAudioElement) deriving (Eq)
+newtype HTMLAudioElement = HTMLAudioElement { unHTMLAudioElement :: JSRef HTMLAudioElement }
 
-unHTMLAudioElement (HTMLAudioElement o) = o
+instance Eq (HTMLAudioElement) where
+  (HTMLAudioElement a) == (HTMLAudioElement b) = js_eq a b
+
+instance PToJSRef HTMLAudioElement where
+  pToJSRef = unHTMLAudioElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLAudioElement where
+  pFromJSRef = HTMLAudioElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLAudioElement where
   toJSRef = return . unHTMLAudioElement
@@ -6061,9 +7338,15 @@ instance FromJSRef HTMLAudioElement where
   {-# INLINE fromJSRef #-}
 
 instance IsHTMLMediaElement HTMLAudioElement
+instance IsHTMLElement HTMLAudioElement
+instance IsElement HTMLAudioElement
+instance IsNode HTMLAudioElement
+instance IsEventTarget HTMLAudioElement
 instance IsGObject HTMLAudioElement where
   toGObject = GObject . castRef . unHTMLAudioElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLAudioElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLAudioElement :: IsGObject obj => obj -> HTMLAudioElement
 castToHTMLAudioElement = castTo gTypeHTMLAudioElement "HTMLAudioElement"
@@ -6085,9 +7368,18 @@ type IsHTMLAudioElement o = HTMLAudioElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement Mozilla HTMLBRElement documentation>
-newtype HTMLBRElement = HTMLBRElement (JSRef HTMLBRElement) deriving (Eq)
+newtype HTMLBRElement = HTMLBRElement { unHTMLBRElement :: JSRef HTMLBRElement }
 
-unHTMLBRElement (HTMLBRElement o) = o
+instance Eq (HTMLBRElement) where
+  (HTMLBRElement a) == (HTMLBRElement b) = js_eq a b
+
+instance PToJSRef HTMLBRElement where
+  pToJSRef = unHTMLBRElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLBRElement where
+  pFromJSRef = HTMLBRElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLBRElement where
   toJSRef = return . unHTMLBRElement
@@ -6103,7 +7395,9 @@ instance IsNode HTMLBRElement
 instance IsEventTarget HTMLBRElement
 instance IsGObject HTMLBRElement where
   toGObject = GObject . castRef . unHTMLBRElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLBRElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLBRElement :: IsGObject obj => obj -> HTMLBRElement
 castToHTMLBRElement = castTo gTypeHTMLBRElement "HTMLBRElement"
@@ -6125,9 +7419,18 @@ type IsHTMLBRElement o = HTMLBRElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement Mozilla HTMLBaseElement documentation>
-newtype HTMLBaseElement = HTMLBaseElement (JSRef HTMLBaseElement) deriving (Eq)
+newtype HTMLBaseElement = HTMLBaseElement { unHTMLBaseElement :: JSRef HTMLBaseElement }
 
-unHTMLBaseElement (HTMLBaseElement o) = o
+instance Eq (HTMLBaseElement) where
+  (HTMLBaseElement a) == (HTMLBaseElement b) = js_eq a b
+
+instance PToJSRef HTMLBaseElement where
+  pToJSRef = unHTMLBaseElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLBaseElement where
+  pFromJSRef = HTMLBaseElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLBaseElement where
   toJSRef = return . unHTMLBaseElement
@@ -6143,7 +7446,9 @@ instance IsNode HTMLBaseElement
 instance IsEventTarget HTMLBaseElement
 instance IsGObject HTMLBaseElement where
   toGObject = GObject . castRef . unHTMLBaseElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLBaseElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLBaseElement :: IsGObject obj => obj -> HTMLBaseElement
 castToHTMLBaseElement = castTo gTypeHTMLBaseElement "HTMLBaseElement"
@@ -6165,9 +7470,18 @@ type IsHTMLBaseElement o = HTMLBaseElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement Mozilla HTMLBaseFontElement documentation>
-newtype HTMLBaseFontElement = HTMLBaseFontElement (JSRef HTMLBaseFontElement) deriving (Eq)
+newtype HTMLBaseFontElement = HTMLBaseFontElement { unHTMLBaseFontElement :: JSRef HTMLBaseFontElement }
 
-unHTMLBaseFontElement (HTMLBaseFontElement o) = o
+instance Eq (HTMLBaseFontElement) where
+  (HTMLBaseFontElement a) == (HTMLBaseFontElement b) = js_eq a b
+
+instance PToJSRef HTMLBaseFontElement where
+  pToJSRef = unHTMLBaseFontElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLBaseFontElement where
+  pFromJSRef = HTMLBaseFontElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLBaseFontElement where
   toJSRef = return . unHTMLBaseFontElement
@@ -6183,7 +7497,9 @@ instance IsNode HTMLBaseFontElement
 instance IsEventTarget HTMLBaseFontElement
 instance IsGObject HTMLBaseFontElement where
   toGObject = GObject . castRef . unHTMLBaseFontElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLBaseFontElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLBaseFontElement :: IsGObject obj => obj -> HTMLBaseFontElement
 castToHTMLBaseFontElement = castTo gTypeHTMLBaseFontElement "HTMLBaseFontElement"
@@ -6205,9 +7521,18 @@ type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement Mozilla HTMLBodyElement documentation>
-newtype HTMLBodyElement = HTMLBodyElement (JSRef HTMLBodyElement) deriving (Eq)
+newtype HTMLBodyElement = HTMLBodyElement { unHTMLBodyElement :: JSRef HTMLBodyElement }
 
-unHTMLBodyElement (HTMLBodyElement o) = o
+instance Eq (HTMLBodyElement) where
+  (HTMLBodyElement a) == (HTMLBodyElement b) = js_eq a b
+
+instance PToJSRef HTMLBodyElement where
+  pToJSRef = unHTMLBodyElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLBodyElement where
+  pFromJSRef = HTMLBodyElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLBodyElement where
   toJSRef = return . unHTMLBodyElement
@@ -6223,7 +7548,9 @@ instance IsNode HTMLBodyElement
 instance IsEventTarget HTMLBodyElement
 instance IsGObject HTMLBodyElement where
   toGObject = GObject . castRef . unHTMLBodyElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLBodyElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLBodyElement :: IsGObject obj => obj -> HTMLBodyElement
 castToHTMLBodyElement = castTo gTypeHTMLBodyElement "HTMLBodyElement"
@@ -6245,9 +7572,18 @@ type IsHTMLBodyElement o = HTMLBodyElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement Mozilla HTMLButtonElement documentation>
-newtype HTMLButtonElement = HTMLButtonElement (JSRef HTMLButtonElement) deriving (Eq)
+newtype HTMLButtonElement = HTMLButtonElement { unHTMLButtonElement :: JSRef HTMLButtonElement }
 
-unHTMLButtonElement (HTMLButtonElement o) = o
+instance Eq (HTMLButtonElement) where
+  (HTMLButtonElement a) == (HTMLButtonElement b) = js_eq a b
+
+instance PToJSRef HTMLButtonElement where
+  pToJSRef = unHTMLButtonElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLButtonElement where
+  pFromJSRef = HTMLButtonElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLButtonElement where
   toJSRef = return . unHTMLButtonElement
@@ -6263,7 +7599,9 @@ instance IsNode HTMLButtonElement
 instance IsEventTarget HTMLButtonElement
 instance IsGObject HTMLButtonElement where
   toGObject = GObject . castRef . unHTMLButtonElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLButtonElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLButtonElement :: IsGObject obj => obj -> HTMLButtonElement
 castToHTMLButtonElement = castTo gTypeHTMLButtonElement "HTMLButtonElement"
@@ -6285,9 +7623,18 @@ type IsHTMLButtonElement o = HTMLButtonElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement Mozilla HTMLCanvasElement documentation>
-newtype HTMLCanvasElement = HTMLCanvasElement (JSRef HTMLCanvasElement) deriving (Eq)
+newtype HTMLCanvasElement = HTMLCanvasElement { unHTMLCanvasElement :: JSRef HTMLCanvasElement }
 
-unHTMLCanvasElement (HTMLCanvasElement o) = o
+instance Eq (HTMLCanvasElement) where
+  (HTMLCanvasElement a) == (HTMLCanvasElement b) = js_eq a b
+
+instance PToJSRef HTMLCanvasElement where
+  pToJSRef = unHTMLCanvasElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLCanvasElement where
+  pFromJSRef = HTMLCanvasElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLCanvasElement where
   toJSRef = return . unHTMLCanvasElement
@@ -6303,7 +7650,9 @@ instance IsNode HTMLCanvasElement
 instance IsEventTarget HTMLCanvasElement
 instance IsGObject HTMLCanvasElement where
   toGObject = GObject . castRef . unHTMLCanvasElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLCanvasElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLCanvasElement :: IsGObject obj => obj -> HTMLCanvasElement
 castToHTMLCanvasElement = castTo gTypeHTMLCanvasElement "HTMLCanvasElement"
@@ -6319,9 +7668,18 @@ type IsHTMLCanvasElement o = HTMLCanvasElementClass o
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection Mozilla HTMLCollection documentation>
-newtype HTMLCollection = HTMLCollection (JSRef HTMLCollection) deriving (Eq)
+newtype HTMLCollection = HTMLCollection { unHTMLCollection :: JSRef HTMLCollection }
 
-unHTMLCollection (HTMLCollection o) = o
+instance Eq (HTMLCollection) where
+  (HTMLCollection a) == (HTMLCollection b) = js_eq a b
+
+instance PToJSRef HTMLCollection where
+  pToJSRef = unHTMLCollection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLCollection where
+  pFromJSRef = HTMLCollection
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLCollection where
   toJSRef = return . unHTMLCollection
@@ -6338,7 +7696,9 @@ toHTMLCollection = unsafeCastGObject . toGObject
 instance IsHTMLCollection HTMLCollection
 instance IsGObject HTMLCollection where
   toGObject = GObject . castRef . unHTMLCollection
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLCollection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLCollection :: IsGObject obj => obj -> HTMLCollection
 castToHTMLCollection = castTo gTypeHTMLCollection "HTMLCollection"
@@ -6360,9 +7720,18 @@ type IsHTMLCollection o = HTMLCollectionClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement Mozilla HTMLDListElement documentation>
-newtype HTMLDListElement = HTMLDListElement (JSRef HTMLDListElement) deriving (Eq)
+newtype HTMLDListElement = HTMLDListElement { unHTMLDListElement :: JSRef HTMLDListElement }
 
-unHTMLDListElement (HTMLDListElement o) = o
+instance Eq (HTMLDListElement) where
+  (HTMLDListElement a) == (HTMLDListElement b) = js_eq a b
+
+instance PToJSRef HTMLDListElement where
+  pToJSRef = unHTMLDListElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLDListElement where
+  pFromJSRef = HTMLDListElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLDListElement where
   toJSRef = return . unHTMLDListElement
@@ -6378,7 +7747,9 @@ instance IsNode HTMLDListElement
 instance IsEventTarget HTMLDListElement
 instance IsGObject HTMLDListElement where
   toGObject = GObject . castRef . unHTMLDListElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLDListElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLDListElement :: IsGObject obj => obj -> HTMLDListElement
 castToHTMLDListElement = castTo gTypeHTMLDListElement "HTMLDListElement"
@@ -6400,9 +7771,18 @@ type IsHTMLDListElement o = HTMLDListElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDataListElement Mozilla HTMLDataListElement documentation>
-newtype HTMLDataListElement = HTMLDataListElement (JSRef HTMLDataListElement) deriving (Eq)
+newtype HTMLDataListElement = HTMLDataListElement { unHTMLDataListElement :: JSRef HTMLDataListElement }
 
-unHTMLDataListElement (HTMLDataListElement o) = o
+instance Eq (HTMLDataListElement) where
+  (HTMLDataListElement a) == (HTMLDataListElement b) = js_eq a b
+
+instance PToJSRef HTMLDataListElement where
+  pToJSRef = unHTMLDataListElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLDataListElement where
+  pFromJSRef = HTMLDataListElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLDataListElement where
   toJSRef = return . unHTMLDataListElement
@@ -6418,7 +7798,9 @@ instance IsNode HTMLDataListElement
 instance IsEventTarget HTMLDataListElement
 instance IsGObject HTMLDataListElement where
   toGObject = GObject . castRef . unHTMLDataListElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLDataListElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLDataListElement :: IsGObject obj => obj -> HTMLDataListElement
 castToHTMLDataListElement = castTo gTypeHTMLDataListElement "HTMLDataListElement"
@@ -6439,9 +7821,18 @@ gTypeHTMLDataListElement = GType gTypeHTMLDataListElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement Mozilla HTMLDetailsElement documentation>
-newtype HTMLDetailsElement = HTMLDetailsElement (JSRef HTMLDetailsElement) deriving (Eq)
+newtype HTMLDetailsElement = HTMLDetailsElement { unHTMLDetailsElement :: JSRef HTMLDetailsElement }
 
-unHTMLDetailsElement (HTMLDetailsElement o) = o
+instance Eq (HTMLDetailsElement) where
+  (HTMLDetailsElement a) == (HTMLDetailsElement b) = js_eq a b
+
+instance PToJSRef HTMLDetailsElement where
+  pToJSRef = unHTMLDetailsElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLDetailsElement where
+  pFromJSRef = HTMLDetailsElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLDetailsElement where
   toJSRef = return . unHTMLDetailsElement
@@ -6457,7 +7848,9 @@ instance IsNode HTMLDetailsElement
 instance IsEventTarget HTMLDetailsElement
 instance IsGObject HTMLDetailsElement where
   toGObject = GObject . castRef . unHTMLDetailsElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLDetailsElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLDetailsElement :: IsGObject obj => obj -> HTMLDetailsElement
 castToHTMLDetailsElement = castTo gTypeHTMLDetailsElement "HTMLDetailsElement"
@@ -6479,9 +7872,18 @@ type IsHTMLDetailsElement o = HTMLDetailsElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement Mozilla HTMLDirectoryElement documentation>
-newtype HTMLDirectoryElement = HTMLDirectoryElement (JSRef HTMLDirectoryElement) deriving (Eq)
+newtype HTMLDirectoryElement = HTMLDirectoryElement { unHTMLDirectoryElement :: JSRef HTMLDirectoryElement }
 
-unHTMLDirectoryElement (HTMLDirectoryElement o) = o
+instance Eq (HTMLDirectoryElement) where
+  (HTMLDirectoryElement a) == (HTMLDirectoryElement b) = js_eq a b
+
+instance PToJSRef HTMLDirectoryElement where
+  pToJSRef = unHTMLDirectoryElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLDirectoryElement where
+  pFromJSRef = HTMLDirectoryElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLDirectoryElement where
   toJSRef = return . unHTMLDirectoryElement
@@ -6497,7 +7899,9 @@ instance IsNode HTMLDirectoryElement
 instance IsEventTarget HTMLDirectoryElement
 instance IsGObject HTMLDirectoryElement where
   toGObject = GObject . castRef . unHTMLDirectoryElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLDirectoryElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLDirectoryElement :: IsGObject obj => obj -> HTMLDirectoryElement
 castToHTMLDirectoryElement = castTo gTypeHTMLDirectoryElement "HTMLDirectoryElement"
@@ -6519,9 +7923,18 @@ type IsHTMLDirectoryElement o = HTMLDirectoryElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement Mozilla HTMLDivElement documentation>
-newtype HTMLDivElement = HTMLDivElement (JSRef HTMLDivElement) deriving (Eq)
+newtype HTMLDivElement = HTMLDivElement { unHTMLDivElement :: JSRef HTMLDivElement }
 
-unHTMLDivElement (HTMLDivElement o) = o
+instance Eq (HTMLDivElement) where
+  (HTMLDivElement a) == (HTMLDivElement b) = js_eq a b
+
+instance PToJSRef HTMLDivElement where
+  pToJSRef = unHTMLDivElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLDivElement where
+  pFromJSRef = HTMLDivElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLDivElement where
   toJSRef = return . unHTMLDivElement
@@ -6537,7 +7950,9 @@ instance IsNode HTMLDivElement
 instance IsEventTarget HTMLDivElement
 instance IsGObject HTMLDivElement where
   toGObject = GObject . castRef . unHTMLDivElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLDivElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLDivElement :: IsGObject obj => obj -> HTMLDivElement
 castToHTMLDivElement = castTo gTypeHTMLDivElement "HTMLDivElement"
@@ -6558,9 +7973,18 @@ type IsHTMLDivElement o = HTMLDivElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument Mozilla HTMLDocument documentation>
-newtype HTMLDocument = HTMLDocument (JSRef HTMLDocument) deriving (Eq)
+newtype HTMLDocument = HTMLDocument { unHTMLDocument :: JSRef HTMLDocument }
 
-unHTMLDocument (HTMLDocument o) = o
+instance Eq (HTMLDocument) where
+  (HTMLDocument a) == (HTMLDocument b) = js_eq a b
+
+instance PToJSRef HTMLDocument where
+  pToJSRef = unHTMLDocument
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLDocument where
+  pFromJSRef = HTMLDocument
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLDocument where
   toJSRef = return . unHTMLDocument
@@ -6575,7 +7999,9 @@ instance IsNode HTMLDocument
 instance IsEventTarget HTMLDocument
 instance IsGObject HTMLDocument where
   toGObject = GObject . castRef . unHTMLDocument
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLDocument . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLDocument :: IsGObject obj => obj -> HTMLDocument
 castToHTMLDocument = castTo gTypeHTMLDocument "HTMLDocument"
@@ -6596,9 +8022,18 @@ type IsHTMLDocument o = HTMLDocumentClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement Mozilla HTMLElement documentation>
-newtype HTMLElement = HTMLElement (JSRef HTMLElement) deriving (Eq)
+newtype HTMLElement = HTMLElement { unHTMLElement :: JSRef HTMLElement }
 
-unHTMLElement (HTMLElement o) = o
+instance Eq (HTMLElement) where
+  (HTMLElement a) == (HTMLElement b) = js_eq a b
+
+instance PToJSRef HTMLElement where
+  pToJSRef = unHTMLElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLElement where
+  pFromJSRef = HTMLElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLElement where
   toJSRef = return . unHTMLElement
@@ -6618,7 +8053,9 @@ instance IsNode HTMLElement
 instance IsEventTarget HTMLElement
 instance IsGObject HTMLElement where
   toGObject = GObject . castRef . unHTMLElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLElement :: IsGObject obj => obj -> HTMLElement
 castToHTMLElement = castTo gTypeHTMLElement "HTMLElement"
@@ -6640,9 +8077,18 @@ type IsHTMLElement o = HTMLElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement Mozilla HTMLEmbedElement documentation>
-newtype HTMLEmbedElement = HTMLEmbedElement (JSRef HTMLEmbedElement) deriving (Eq)
+newtype HTMLEmbedElement = HTMLEmbedElement { unHTMLEmbedElement :: JSRef HTMLEmbedElement }
 
-unHTMLEmbedElement (HTMLEmbedElement o) = o
+instance Eq (HTMLEmbedElement) where
+  (HTMLEmbedElement a) == (HTMLEmbedElement b) = js_eq a b
+
+instance PToJSRef HTMLEmbedElement where
+  pToJSRef = unHTMLEmbedElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLEmbedElement where
+  pFromJSRef = HTMLEmbedElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLEmbedElement where
   toJSRef = return . unHTMLEmbedElement
@@ -6658,7 +8104,9 @@ instance IsNode HTMLEmbedElement
 instance IsEventTarget HTMLEmbedElement
 instance IsGObject HTMLEmbedElement where
   toGObject = GObject . castRef . unHTMLEmbedElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLEmbedElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLEmbedElement :: IsGObject obj => obj -> HTMLEmbedElement
 castToHTMLEmbedElement = castTo gTypeHTMLEmbedElement "HTMLEmbedElement"
@@ -6680,9 +8128,18 @@ type IsHTMLEmbedElement o = HTMLEmbedElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement Mozilla HTMLFieldSetElement documentation>
-newtype HTMLFieldSetElement = HTMLFieldSetElement (JSRef HTMLFieldSetElement) deriving (Eq)
+newtype HTMLFieldSetElement = HTMLFieldSetElement { unHTMLFieldSetElement :: JSRef HTMLFieldSetElement }
 
-unHTMLFieldSetElement (HTMLFieldSetElement o) = o
+instance Eq (HTMLFieldSetElement) where
+  (HTMLFieldSetElement a) == (HTMLFieldSetElement b) = js_eq a b
+
+instance PToJSRef HTMLFieldSetElement where
+  pToJSRef = unHTMLFieldSetElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLFieldSetElement where
+  pFromJSRef = HTMLFieldSetElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLFieldSetElement where
   toJSRef = return . unHTMLFieldSetElement
@@ -6698,7 +8155,9 @@ instance IsNode HTMLFieldSetElement
 instance IsEventTarget HTMLFieldSetElement
 instance IsGObject HTMLFieldSetElement where
   toGObject = GObject . castRef . unHTMLFieldSetElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLFieldSetElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLFieldSetElement :: IsGObject obj => obj -> HTMLFieldSetElement
 castToHTMLFieldSetElement = castTo gTypeHTMLFieldSetElement "HTMLFieldSetElement"
@@ -6720,9 +8179,18 @@ type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement Mozilla HTMLFontElement documentation>
-newtype HTMLFontElement = HTMLFontElement (JSRef HTMLFontElement) deriving (Eq)
+newtype HTMLFontElement = HTMLFontElement { unHTMLFontElement :: JSRef HTMLFontElement }
 
-unHTMLFontElement (HTMLFontElement o) = o
+instance Eq (HTMLFontElement) where
+  (HTMLFontElement a) == (HTMLFontElement b) = js_eq a b
+
+instance PToJSRef HTMLFontElement where
+  pToJSRef = unHTMLFontElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLFontElement where
+  pFromJSRef = HTMLFontElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLFontElement where
   toJSRef = return . unHTMLFontElement
@@ -6738,7 +8206,9 @@ instance IsNode HTMLFontElement
 instance IsEventTarget HTMLFontElement
 instance IsGObject HTMLFontElement where
   toGObject = GObject . castRef . unHTMLFontElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLFontElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLFontElement :: IsGObject obj => obj -> HTMLFontElement
 castToHTMLFontElement = castTo gTypeHTMLFontElement "HTMLFontElement"
@@ -6757,9 +8227,18 @@ type IsHTMLFontElement o = HTMLFontElementClass o
 --     * "GHCJS.DOM.HTMLCollection"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection Mozilla HTMLFormControlsCollection documentation>
-newtype HTMLFormControlsCollection = HTMLFormControlsCollection (JSRef HTMLFormControlsCollection) deriving (Eq)
+newtype HTMLFormControlsCollection = HTMLFormControlsCollection { unHTMLFormControlsCollection :: JSRef HTMLFormControlsCollection }
 
-unHTMLFormControlsCollection (HTMLFormControlsCollection o) = o
+instance Eq (HTMLFormControlsCollection) where
+  (HTMLFormControlsCollection a) == (HTMLFormControlsCollection b) = js_eq a b
+
+instance PToJSRef HTMLFormControlsCollection where
+  pToJSRef = unHTMLFormControlsCollection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLFormControlsCollection where
+  pFromJSRef = HTMLFormControlsCollection
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLFormControlsCollection where
   toJSRef = return . unHTMLFormControlsCollection
@@ -6772,7 +8251,9 @@ instance FromJSRef HTMLFormControlsCollection where
 instance IsHTMLCollection HTMLFormControlsCollection
 instance IsGObject HTMLFormControlsCollection where
   toGObject = GObject . castRef . unHTMLFormControlsCollection
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLFormControlsCollection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLFormControlsCollection :: IsGObject obj => obj -> HTMLFormControlsCollection
 castToHTMLFormControlsCollection = castTo gTypeHTMLFormControlsCollection "HTMLFormControlsCollection"
@@ -6793,9 +8274,18 @@ gTypeHTMLFormControlsCollection = GType gTypeHTMLFormControlsCollection'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement Mozilla HTMLFormElement documentation>
-newtype HTMLFormElement = HTMLFormElement (JSRef HTMLFormElement) deriving (Eq)
+newtype HTMLFormElement = HTMLFormElement { unHTMLFormElement :: JSRef HTMLFormElement }
 
-unHTMLFormElement (HTMLFormElement o) = o
+instance Eq (HTMLFormElement) where
+  (HTMLFormElement a) == (HTMLFormElement b) = js_eq a b
+
+instance PToJSRef HTMLFormElement where
+  pToJSRef = unHTMLFormElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLFormElement where
+  pFromJSRef = HTMLFormElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLFormElement where
   toJSRef = return . unHTMLFormElement
@@ -6811,7 +8301,9 @@ instance IsNode HTMLFormElement
 instance IsEventTarget HTMLFormElement
 instance IsGObject HTMLFormElement where
   toGObject = GObject . castRef . unHTMLFormElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLFormElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLFormElement :: IsGObject obj => obj -> HTMLFormElement
 castToHTMLFormElement = castTo gTypeHTMLFormElement "HTMLFormElement"
@@ -6833,9 +8325,18 @@ type IsHTMLFormElement o = HTMLFormElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement Mozilla HTMLFrameElement documentation>
-newtype HTMLFrameElement = HTMLFrameElement (JSRef HTMLFrameElement) deriving (Eq)
+newtype HTMLFrameElement = HTMLFrameElement { unHTMLFrameElement :: JSRef HTMLFrameElement }
 
-unHTMLFrameElement (HTMLFrameElement o) = o
+instance Eq (HTMLFrameElement) where
+  (HTMLFrameElement a) == (HTMLFrameElement b) = js_eq a b
+
+instance PToJSRef HTMLFrameElement where
+  pToJSRef = unHTMLFrameElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLFrameElement where
+  pFromJSRef = HTMLFrameElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLFrameElement where
   toJSRef = return . unHTMLFrameElement
@@ -6851,7 +8352,9 @@ instance IsNode HTMLFrameElement
 instance IsEventTarget HTMLFrameElement
 instance IsGObject HTMLFrameElement where
   toGObject = GObject . castRef . unHTMLFrameElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLFrameElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLFrameElement :: IsGObject obj => obj -> HTMLFrameElement
 castToHTMLFrameElement = castTo gTypeHTMLFrameElement "HTMLFrameElement"
@@ -6873,9 +8376,18 @@ type IsHTMLFrameElement o = HTMLFrameElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement Mozilla HTMLFrameSetElement documentation>
-newtype HTMLFrameSetElement = HTMLFrameSetElement (JSRef HTMLFrameSetElement) deriving (Eq)
+newtype HTMLFrameSetElement = HTMLFrameSetElement { unHTMLFrameSetElement :: JSRef HTMLFrameSetElement }
 
-unHTMLFrameSetElement (HTMLFrameSetElement o) = o
+instance Eq (HTMLFrameSetElement) where
+  (HTMLFrameSetElement a) == (HTMLFrameSetElement b) = js_eq a b
+
+instance PToJSRef HTMLFrameSetElement where
+  pToJSRef = unHTMLFrameSetElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLFrameSetElement where
+  pFromJSRef = HTMLFrameSetElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLFrameSetElement where
   toJSRef = return . unHTMLFrameSetElement
@@ -6891,7 +8403,9 @@ instance IsNode HTMLFrameSetElement
 instance IsEventTarget HTMLFrameSetElement
 instance IsGObject HTMLFrameSetElement where
   toGObject = GObject . castRef . unHTMLFrameSetElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLFrameSetElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLFrameSetElement :: IsGObject obj => obj -> HTMLFrameSetElement
 castToHTMLFrameSetElement = castTo gTypeHTMLFrameSetElement "HTMLFrameSetElement"
@@ -6913,9 +8427,18 @@ type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement Mozilla HTMLHRElement documentation>
-newtype HTMLHRElement = HTMLHRElement (JSRef HTMLHRElement) deriving (Eq)
+newtype HTMLHRElement = HTMLHRElement { unHTMLHRElement :: JSRef HTMLHRElement }
 
-unHTMLHRElement (HTMLHRElement o) = o
+instance Eq (HTMLHRElement) where
+  (HTMLHRElement a) == (HTMLHRElement b) = js_eq a b
+
+instance PToJSRef HTMLHRElement where
+  pToJSRef = unHTMLHRElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLHRElement where
+  pFromJSRef = HTMLHRElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLHRElement where
   toJSRef = return . unHTMLHRElement
@@ -6931,7 +8454,9 @@ instance IsNode HTMLHRElement
 instance IsEventTarget HTMLHRElement
 instance IsGObject HTMLHRElement where
   toGObject = GObject . castRef . unHTMLHRElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLHRElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLHRElement :: IsGObject obj => obj -> HTMLHRElement
 castToHTMLHRElement = castTo gTypeHTMLHRElement "HTMLHRElement"
@@ -6953,9 +8478,18 @@ type IsHTMLHRElement o = HTMLHRElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadElement Mozilla HTMLHeadElement documentation>
-newtype HTMLHeadElement = HTMLHeadElement (JSRef HTMLHeadElement) deriving (Eq)
+newtype HTMLHeadElement = HTMLHeadElement { unHTMLHeadElement :: JSRef HTMLHeadElement }
 
-unHTMLHeadElement (HTMLHeadElement o) = o
+instance Eq (HTMLHeadElement) where
+  (HTMLHeadElement a) == (HTMLHeadElement b) = js_eq a b
+
+instance PToJSRef HTMLHeadElement where
+  pToJSRef = unHTMLHeadElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLHeadElement where
+  pFromJSRef = HTMLHeadElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLHeadElement where
   toJSRef = return . unHTMLHeadElement
@@ -6971,7 +8505,9 @@ instance IsNode HTMLHeadElement
 instance IsEventTarget HTMLHeadElement
 instance IsGObject HTMLHeadElement where
   toGObject = GObject . castRef . unHTMLHeadElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLHeadElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLHeadElement :: IsGObject obj => obj -> HTMLHeadElement
 castToHTMLHeadElement = castTo gTypeHTMLHeadElement "HTMLHeadElement"
@@ -6993,9 +8529,18 @@ type IsHTMLHeadElement o = HTMLHeadElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement Mozilla HTMLHeadingElement documentation>
-newtype HTMLHeadingElement = HTMLHeadingElement (JSRef HTMLHeadingElement) deriving (Eq)
+newtype HTMLHeadingElement = HTMLHeadingElement { unHTMLHeadingElement :: JSRef HTMLHeadingElement }
 
-unHTMLHeadingElement (HTMLHeadingElement o) = o
+instance Eq (HTMLHeadingElement) where
+  (HTMLHeadingElement a) == (HTMLHeadingElement b) = js_eq a b
+
+instance PToJSRef HTMLHeadingElement where
+  pToJSRef = unHTMLHeadingElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLHeadingElement where
+  pFromJSRef = HTMLHeadingElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLHeadingElement where
   toJSRef = return . unHTMLHeadingElement
@@ -7011,7 +8556,9 @@ instance IsNode HTMLHeadingElement
 instance IsEventTarget HTMLHeadingElement
 instance IsGObject HTMLHeadingElement where
   toGObject = GObject . castRef . unHTMLHeadingElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLHeadingElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLHeadingElement :: IsGObject obj => obj -> HTMLHeadingElement
 castToHTMLHeadingElement = castTo gTypeHTMLHeadingElement "HTMLHeadingElement"
@@ -7033,9 +8580,18 @@ type IsHTMLHeadingElement o = HTMLHeadingElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement Mozilla HTMLHtmlElement documentation>
-newtype HTMLHtmlElement = HTMLHtmlElement (JSRef HTMLHtmlElement) deriving (Eq)
+newtype HTMLHtmlElement = HTMLHtmlElement { unHTMLHtmlElement :: JSRef HTMLHtmlElement }
 
-unHTMLHtmlElement (HTMLHtmlElement o) = o
+instance Eq (HTMLHtmlElement) where
+  (HTMLHtmlElement a) == (HTMLHtmlElement b) = js_eq a b
+
+instance PToJSRef HTMLHtmlElement where
+  pToJSRef = unHTMLHtmlElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLHtmlElement where
+  pFromJSRef = HTMLHtmlElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLHtmlElement where
   toJSRef = return . unHTMLHtmlElement
@@ -7051,7 +8607,9 @@ instance IsNode HTMLHtmlElement
 instance IsEventTarget HTMLHtmlElement
 instance IsGObject HTMLHtmlElement where
   toGObject = GObject . castRef . unHTMLHtmlElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLHtmlElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLHtmlElement :: IsGObject obj => obj -> HTMLHtmlElement
 castToHTMLHtmlElement = castTo gTypeHTMLHtmlElement "HTMLHtmlElement"
@@ -7073,9 +8631,18 @@ type IsHTMLHtmlElement o = HTMLHtmlElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement Mozilla HTMLIFrameElement documentation>
-newtype HTMLIFrameElement = HTMLIFrameElement (JSRef HTMLIFrameElement) deriving (Eq)
+newtype HTMLIFrameElement = HTMLIFrameElement { unHTMLIFrameElement :: JSRef HTMLIFrameElement }
 
-unHTMLIFrameElement (HTMLIFrameElement o) = o
+instance Eq (HTMLIFrameElement) where
+  (HTMLIFrameElement a) == (HTMLIFrameElement b) = js_eq a b
+
+instance PToJSRef HTMLIFrameElement where
+  pToJSRef = unHTMLIFrameElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLIFrameElement where
+  pFromJSRef = HTMLIFrameElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLIFrameElement where
   toJSRef = return . unHTMLIFrameElement
@@ -7091,7 +8658,9 @@ instance IsNode HTMLIFrameElement
 instance IsEventTarget HTMLIFrameElement
 instance IsGObject HTMLIFrameElement where
   toGObject = GObject . castRef . unHTMLIFrameElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLIFrameElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLIFrameElement :: IsGObject obj => obj -> HTMLIFrameElement
 castToHTMLIFrameElement = castTo gTypeHTMLIFrameElement "HTMLIFrameElement"
@@ -7113,9 +8682,18 @@ type IsHTMLIFrameElement o = HTMLIFrameElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement Mozilla HTMLImageElement documentation>
-newtype HTMLImageElement = HTMLImageElement (JSRef HTMLImageElement) deriving (Eq)
+newtype HTMLImageElement = HTMLImageElement { unHTMLImageElement :: JSRef HTMLImageElement }
 
-unHTMLImageElement (HTMLImageElement o) = o
+instance Eq (HTMLImageElement) where
+  (HTMLImageElement a) == (HTMLImageElement b) = js_eq a b
+
+instance PToJSRef HTMLImageElement where
+  pToJSRef = unHTMLImageElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLImageElement where
+  pFromJSRef = HTMLImageElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLImageElement where
   toJSRef = return . unHTMLImageElement
@@ -7131,7 +8709,9 @@ instance IsNode HTMLImageElement
 instance IsEventTarget HTMLImageElement
 instance IsGObject HTMLImageElement where
   toGObject = GObject . castRef . unHTMLImageElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLImageElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLImageElement :: IsGObject obj => obj -> HTMLImageElement
 castToHTMLImageElement = castTo gTypeHTMLImageElement "HTMLImageElement"
@@ -7153,9 +8733,18 @@ type IsHTMLImageElement o = HTMLImageElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement Mozilla HTMLInputElement documentation>
-newtype HTMLInputElement = HTMLInputElement (JSRef HTMLInputElement) deriving (Eq)
+newtype HTMLInputElement = HTMLInputElement { unHTMLInputElement :: JSRef HTMLInputElement }
 
-unHTMLInputElement (HTMLInputElement o) = o
+instance Eq (HTMLInputElement) where
+  (HTMLInputElement a) == (HTMLInputElement b) = js_eq a b
+
+instance PToJSRef HTMLInputElement where
+  pToJSRef = unHTMLInputElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLInputElement where
+  pFromJSRef = HTMLInputElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLInputElement where
   toJSRef = return . unHTMLInputElement
@@ -7171,7 +8760,9 @@ instance IsNode HTMLInputElement
 instance IsEventTarget HTMLInputElement
 instance IsGObject HTMLInputElement where
   toGObject = GObject . castRef . unHTMLInputElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLInputElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLInputElement :: IsGObject obj => obj -> HTMLInputElement
 castToHTMLInputElement = castTo gTypeHTMLInputElement "HTMLInputElement"
@@ -7193,9 +8784,18 @@ type IsHTMLInputElement o = HTMLInputElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement Mozilla HTMLKeygenElement documentation>
-newtype HTMLKeygenElement = HTMLKeygenElement (JSRef HTMLKeygenElement) deriving (Eq)
+newtype HTMLKeygenElement = HTMLKeygenElement { unHTMLKeygenElement :: JSRef HTMLKeygenElement }
 
-unHTMLKeygenElement (HTMLKeygenElement o) = o
+instance Eq (HTMLKeygenElement) where
+  (HTMLKeygenElement a) == (HTMLKeygenElement b) = js_eq a b
+
+instance PToJSRef HTMLKeygenElement where
+  pToJSRef = unHTMLKeygenElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLKeygenElement where
+  pFromJSRef = HTMLKeygenElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLKeygenElement where
   toJSRef = return . unHTMLKeygenElement
@@ -7211,7 +8811,9 @@ instance IsNode HTMLKeygenElement
 instance IsEventTarget HTMLKeygenElement
 instance IsGObject HTMLKeygenElement where
   toGObject = GObject . castRef . unHTMLKeygenElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLKeygenElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLKeygenElement :: IsGObject obj => obj -> HTMLKeygenElement
 castToHTMLKeygenElement = castTo gTypeHTMLKeygenElement "HTMLKeygenElement"
@@ -7233,9 +8835,18 @@ type IsHTMLKeygenElement o = HTMLKeygenElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLIElement Mozilla HTMLLIElement documentation>
-newtype HTMLLIElement = HTMLLIElement (JSRef HTMLLIElement) deriving (Eq)
+newtype HTMLLIElement = HTMLLIElement { unHTMLLIElement :: JSRef HTMLLIElement }
 
-unHTMLLIElement (HTMLLIElement o) = o
+instance Eq (HTMLLIElement) where
+  (HTMLLIElement a) == (HTMLLIElement b) = js_eq a b
+
+instance PToJSRef HTMLLIElement where
+  pToJSRef = unHTMLLIElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLLIElement where
+  pFromJSRef = HTMLLIElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLLIElement where
   toJSRef = return . unHTMLLIElement
@@ -7251,7 +8862,9 @@ instance IsNode HTMLLIElement
 instance IsEventTarget HTMLLIElement
 instance IsGObject HTMLLIElement where
   toGObject = GObject . castRef . unHTMLLIElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLLIElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLLIElement :: IsGObject obj => obj -> HTMLLIElement
 castToHTMLLIElement = castTo gTypeHTMLLIElement "HTMLLIElement"
@@ -7273,9 +8886,18 @@ type IsHTMLLIElement o = HTMLLIElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement Mozilla HTMLLabelElement documentation>
-newtype HTMLLabelElement = HTMLLabelElement (JSRef HTMLLabelElement) deriving (Eq)
+newtype HTMLLabelElement = HTMLLabelElement { unHTMLLabelElement :: JSRef HTMLLabelElement }
 
-unHTMLLabelElement (HTMLLabelElement o) = o
+instance Eq (HTMLLabelElement) where
+  (HTMLLabelElement a) == (HTMLLabelElement b) = js_eq a b
+
+instance PToJSRef HTMLLabelElement where
+  pToJSRef = unHTMLLabelElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLLabelElement where
+  pFromJSRef = HTMLLabelElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLLabelElement where
   toJSRef = return . unHTMLLabelElement
@@ -7291,7 +8913,9 @@ instance IsNode HTMLLabelElement
 instance IsEventTarget HTMLLabelElement
 instance IsGObject HTMLLabelElement where
   toGObject = GObject . castRef . unHTMLLabelElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLLabelElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLLabelElement :: IsGObject obj => obj -> HTMLLabelElement
 castToHTMLLabelElement = castTo gTypeHTMLLabelElement "HTMLLabelElement"
@@ -7313,9 +8937,18 @@ type IsHTMLLabelElement o = HTMLLabelElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLegendElement Mozilla HTMLLegendElement documentation>
-newtype HTMLLegendElement = HTMLLegendElement (JSRef HTMLLegendElement) deriving (Eq)
+newtype HTMLLegendElement = HTMLLegendElement { unHTMLLegendElement :: JSRef HTMLLegendElement }
 
-unHTMLLegendElement (HTMLLegendElement o) = o
+instance Eq (HTMLLegendElement) where
+  (HTMLLegendElement a) == (HTMLLegendElement b) = js_eq a b
+
+instance PToJSRef HTMLLegendElement where
+  pToJSRef = unHTMLLegendElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLLegendElement where
+  pFromJSRef = HTMLLegendElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLLegendElement where
   toJSRef = return . unHTMLLegendElement
@@ -7331,7 +8964,9 @@ instance IsNode HTMLLegendElement
 instance IsEventTarget HTMLLegendElement
 instance IsGObject HTMLLegendElement where
   toGObject = GObject . castRef . unHTMLLegendElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLLegendElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLLegendElement :: IsGObject obj => obj -> HTMLLegendElement
 castToHTMLLegendElement = castTo gTypeHTMLLegendElement "HTMLLegendElement"
@@ -7353,9 +8988,18 @@ type IsHTMLLegendElement o = HTMLLegendElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement Mozilla HTMLLinkElement documentation>
-newtype HTMLLinkElement = HTMLLinkElement (JSRef HTMLLinkElement) deriving (Eq)
+newtype HTMLLinkElement = HTMLLinkElement { unHTMLLinkElement :: JSRef HTMLLinkElement }
 
-unHTMLLinkElement (HTMLLinkElement o) = o
+instance Eq (HTMLLinkElement) where
+  (HTMLLinkElement a) == (HTMLLinkElement b) = js_eq a b
+
+instance PToJSRef HTMLLinkElement where
+  pToJSRef = unHTMLLinkElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLLinkElement where
+  pFromJSRef = HTMLLinkElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLLinkElement where
   toJSRef = return . unHTMLLinkElement
@@ -7371,7 +9015,9 @@ instance IsNode HTMLLinkElement
 instance IsEventTarget HTMLLinkElement
 instance IsGObject HTMLLinkElement where
   toGObject = GObject . castRef . unHTMLLinkElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLLinkElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLLinkElement :: IsGObject obj => obj -> HTMLLinkElement
 castToHTMLLinkElement = castTo gTypeHTMLLinkElement "HTMLLinkElement"
@@ -7393,9 +9039,18 @@ type IsHTMLLinkElement o = HTMLLinkElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMapElement Mozilla HTMLMapElement documentation>
-newtype HTMLMapElement = HTMLMapElement (JSRef HTMLMapElement) deriving (Eq)
+newtype HTMLMapElement = HTMLMapElement { unHTMLMapElement :: JSRef HTMLMapElement }
 
-unHTMLMapElement (HTMLMapElement o) = o
+instance Eq (HTMLMapElement) where
+  (HTMLMapElement a) == (HTMLMapElement b) = js_eq a b
+
+instance PToJSRef HTMLMapElement where
+  pToJSRef = unHTMLMapElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLMapElement where
+  pFromJSRef = HTMLMapElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLMapElement where
   toJSRef = return . unHTMLMapElement
@@ -7411,7 +9066,9 @@ instance IsNode HTMLMapElement
 instance IsEventTarget HTMLMapElement
 instance IsGObject HTMLMapElement where
   toGObject = GObject . castRef . unHTMLMapElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLMapElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLMapElement :: IsGObject obj => obj -> HTMLMapElement
 castToHTMLMapElement = castTo gTypeHTMLMapElement "HTMLMapElement"
@@ -7433,9 +9090,18 @@ type IsHTMLMapElement o = HTMLMapElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement Mozilla HTMLMarqueeElement documentation>
-newtype HTMLMarqueeElement = HTMLMarqueeElement (JSRef HTMLMarqueeElement) deriving (Eq)
+newtype HTMLMarqueeElement = HTMLMarqueeElement { unHTMLMarqueeElement :: JSRef HTMLMarqueeElement }
 
-unHTMLMarqueeElement (HTMLMarqueeElement o) = o
+instance Eq (HTMLMarqueeElement) where
+  (HTMLMarqueeElement a) == (HTMLMarqueeElement b) = js_eq a b
+
+instance PToJSRef HTMLMarqueeElement where
+  pToJSRef = unHTMLMarqueeElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLMarqueeElement where
+  pFromJSRef = HTMLMarqueeElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLMarqueeElement where
   toJSRef = return . unHTMLMarqueeElement
@@ -7451,7 +9117,9 @@ instance IsNode HTMLMarqueeElement
 instance IsEventTarget HTMLMarqueeElement
 instance IsGObject HTMLMarqueeElement where
   toGObject = GObject . castRef . unHTMLMarqueeElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLMarqueeElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLMarqueeElement :: IsGObject obj => obj -> HTMLMarqueeElement
 castToHTMLMarqueeElement = castTo gTypeHTMLMarqueeElement "HTMLMarqueeElement"
@@ -7465,11 +9133,26 @@ type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMediaElement".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement Mozilla HTMLMediaElement documentation>
-newtype HTMLMediaElement = HTMLMediaElement (JSRef HTMLMediaElement) deriving (Eq)
+newtype HTMLMediaElement = HTMLMediaElement { unHTMLMediaElement :: JSRef HTMLMediaElement }
 
-unHTMLMediaElement (HTMLMediaElement o) = o
+instance Eq (HTMLMediaElement) where
+  (HTMLMediaElement a) == (HTMLMediaElement b) = js_eq a b
+
+instance PToJSRef HTMLMediaElement where
+  pToJSRef = unHTMLMediaElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLMediaElement where
+  pFromJSRef = HTMLMediaElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLMediaElement where
   toJSRef = return . unHTMLMediaElement
@@ -7479,14 +9162,20 @@ instance FromJSRef HTMLMediaElement where
   fromJSRef = return . fmap HTMLMediaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-class IsGObject o => IsHTMLMediaElement o
+class IsHTMLElement o => IsHTMLMediaElement o
 toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
 toHTMLMediaElement = unsafeCastGObject . toGObject
 
 instance IsHTMLMediaElement HTMLMediaElement
+instance IsHTMLElement HTMLMediaElement
+instance IsElement HTMLMediaElement
+instance IsNode HTMLMediaElement
+instance IsEventTarget HTMLMediaElement
 instance IsGObject HTMLMediaElement where
   toGObject = GObject . castRef . unHTMLMediaElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLMediaElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLMediaElement :: IsGObject obj => obj -> HTMLMediaElement
 castToHTMLMediaElement = castTo gTypeHTMLMediaElement "HTMLMediaElement"
@@ -7508,9 +9197,18 @@ type IsHTMLMediaElement o = HTMLMediaElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMenuElement Mozilla HTMLMenuElement documentation>
-newtype HTMLMenuElement = HTMLMenuElement (JSRef HTMLMenuElement) deriving (Eq)
+newtype HTMLMenuElement = HTMLMenuElement { unHTMLMenuElement :: JSRef HTMLMenuElement }
 
-unHTMLMenuElement (HTMLMenuElement o) = o
+instance Eq (HTMLMenuElement) where
+  (HTMLMenuElement a) == (HTMLMenuElement b) = js_eq a b
+
+instance PToJSRef HTMLMenuElement where
+  pToJSRef = unHTMLMenuElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLMenuElement where
+  pFromJSRef = HTMLMenuElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLMenuElement where
   toJSRef = return . unHTMLMenuElement
@@ -7526,7 +9224,9 @@ instance IsNode HTMLMenuElement
 instance IsEventTarget HTMLMenuElement
 instance IsGObject HTMLMenuElement where
   toGObject = GObject . castRef . unHTMLMenuElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLMenuElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLMenuElement :: IsGObject obj => obj -> HTMLMenuElement
 castToHTMLMenuElement = castTo gTypeHTMLMenuElement "HTMLMenuElement"
@@ -7548,9 +9248,18 @@ type IsHTMLMenuElement o = HTMLMenuElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement Mozilla HTMLMetaElement documentation>
-newtype HTMLMetaElement = HTMLMetaElement (JSRef HTMLMetaElement) deriving (Eq)
+newtype HTMLMetaElement = HTMLMetaElement { unHTMLMetaElement :: JSRef HTMLMetaElement }
 
-unHTMLMetaElement (HTMLMetaElement o) = o
+instance Eq (HTMLMetaElement) where
+  (HTMLMetaElement a) == (HTMLMetaElement b) = js_eq a b
+
+instance PToJSRef HTMLMetaElement where
+  pToJSRef = unHTMLMetaElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLMetaElement where
+  pFromJSRef = HTMLMetaElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLMetaElement where
   toJSRef = return . unHTMLMetaElement
@@ -7566,7 +9275,9 @@ instance IsNode HTMLMetaElement
 instance IsEventTarget HTMLMetaElement
 instance IsGObject HTMLMetaElement where
   toGObject = GObject . castRef . unHTMLMetaElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLMetaElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLMetaElement :: IsGObject obj => obj -> HTMLMetaElement
 castToHTMLMetaElement = castTo gTypeHTMLMetaElement "HTMLMetaElement"
@@ -7588,9 +9299,18 @@ type IsHTMLMetaElement o = HTMLMetaElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement Mozilla HTMLMeterElement documentation>
-newtype HTMLMeterElement = HTMLMeterElement (JSRef HTMLMeterElement) deriving (Eq)
+newtype HTMLMeterElement = HTMLMeterElement { unHTMLMeterElement :: JSRef HTMLMeterElement }
 
-unHTMLMeterElement (HTMLMeterElement o) = o
+instance Eq (HTMLMeterElement) where
+  (HTMLMeterElement a) == (HTMLMeterElement b) = js_eq a b
+
+instance PToJSRef HTMLMeterElement where
+  pToJSRef = unHTMLMeterElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLMeterElement where
+  pFromJSRef = HTMLMeterElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLMeterElement where
   toJSRef = return . unHTMLMeterElement
@@ -7606,7 +9326,9 @@ instance IsNode HTMLMeterElement
 instance IsEventTarget HTMLMeterElement
 instance IsGObject HTMLMeterElement where
   toGObject = GObject . castRef . unHTMLMeterElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLMeterElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLMeterElement :: IsGObject obj => obj -> HTMLMeterElement
 castToHTMLMeterElement = castTo gTypeHTMLMeterElement "HTMLMeterElement"
@@ -7627,9 +9349,18 @@ gTypeHTMLMeterElement = GType gTypeHTMLMeterElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement Mozilla HTMLModElement documentation>
-newtype HTMLModElement = HTMLModElement (JSRef HTMLModElement) deriving (Eq)
+newtype HTMLModElement = HTMLModElement { unHTMLModElement :: JSRef HTMLModElement }
 
-unHTMLModElement (HTMLModElement o) = o
+instance Eq (HTMLModElement) where
+  (HTMLModElement a) == (HTMLModElement b) = js_eq a b
+
+instance PToJSRef HTMLModElement where
+  pToJSRef = unHTMLModElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLModElement where
+  pFromJSRef = HTMLModElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLModElement where
   toJSRef = return . unHTMLModElement
@@ -7645,7 +9376,9 @@ instance IsNode HTMLModElement
 instance IsEventTarget HTMLModElement
 instance IsGObject HTMLModElement where
   toGObject = GObject . castRef . unHTMLModElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLModElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLModElement :: IsGObject obj => obj -> HTMLModElement
 castToHTMLModElement = castTo gTypeHTMLModElement "HTMLModElement"
@@ -7667,9 +9400,18 @@ type IsHTMLModElement o = HTMLModElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement Mozilla HTMLOListElement documentation>
-newtype HTMLOListElement = HTMLOListElement (JSRef HTMLOListElement) deriving (Eq)
+newtype HTMLOListElement = HTMLOListElement { unHTMLOListElement :: JSRef HTMLOListElement }
 
-unHTMLOListElement (HTMLOListElement o) = o
+instance Eq (HTMLOListElement) where
+  (HTMLOListElement a) == (HTMLOListElement b) = js_eq a b
+
+instance PToJSRef HTMLOListElement where
+  pToJSRef = unHTMLOListElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLOListElement where
+  pFromJSRef = HTMLOListElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLOListElement where
   toJSRef = return . unHTMLOListElement
@@ -7685,7 +9427,9 @@ instance IsNode HTMLOListElement
 instance IsEventTarget HTMLOListElement
 instance IsGObject HTMLOListElement where
   toGObject = GObject . castRef . unHTMLOListElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLOListElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLOListElement :: IsGObject obj => obj -> HTMLOListElement
 castToHTMLOListElement = castTo gTypeHTMLOListElement "HTMLOListElement"
@@ -7707,9 +9451,18 @@ type IsHTMLOListElement o = HTMLOListElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement Mozilla HTMLObjectElement documentation>
-newtype HTMLObjectElement = HTMLObjectElement (JSRef HTMLObjectElement) deriving (Eq)
+newtype HTMLObjectElement = HTMLObjectElement { unHTMLObjectElement :: JSRef HTMLObjectElement }
 
-unHTMLObjectElement (HTMLObjectElement o) = o
+instance Eq (HTMLObjectElement) where
+  (HTMLObjectElement a) == (HTMLObjectElement b) = js_eq a b
+
+instance PToJSRef HTMLObjectElement where
+  pToJSRef = unHTMLObjectElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLObjectElement where
+  pFromJSRef = HTMLObjectElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLObjectElement where
   toJSRef = return . unHTMLObjectElement
@@ -7725,7 +9478,9 @@ instance IsNode HTMLObjectElement
 instance IsEventTarget HTMLObjectElement
 instance IsGObject HTMLObjectElement where
   toGObject = GObject . castRef . unHTMLObjectElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLObjectElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLObjectElement :: IsGObject obj => obj -> HTMLObjectElement
 castToHTMLObjectElement = castTo gTypeHTMLObjectElement "HTMLObjectElement"
@@ -7747,9 +9502,18 @@ type IsHTMLObjectElement o = HTMLObjectElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement Mozilla HTMLOptGroupElement documentation>
-newtype HTMLOptGroupElement = HTMLOptGroupElement (JSRef HTMLOptGroupElement) deriving (Eq)
+newtype HTMLOptGroupElement = HTMLOptGroupElement { unHTMLOptGroupElement :: JSRef HTMLOptGroupElement }
 
-unHTMLOptGroupElement (HTMLOptGroupElement o) = o
+instance Eq (HTMLOptGroupElement) where
+  (HTMLOptGroupElement a) == (HTMLOptGroupElement b) = js_eq a b
+
+instance PToJSRef HTMLOptGroupElement where
+  pToJSRef = unHTMLOptGroupElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLOptGroupElement where
+  pFromJSRef = HTMLOptGroupElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLOptGroupElement where
   toJSRef = return . unHTMLOptGroupElement
@@ -7765,7 +9529,9 @@ instance IsNode HTMLOptGroupElement
 instance IsEventTarget HTMLOptGroupElement
 instance IsGObject HTMLOptGroupElement where
   toGObject = GObject . castRef . unHTMLOptGroupElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLOptGroupElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLOptGroupElement :: IsGObject obj => obj -> HTMLOptGroupElement
 castToHTMLOptGroupElement = castTo gTypeHTMLOptGroupElement "HTMLOptGroupElement"
@@ -7787,9 +9553,18 @@ type IsHTMLOptGroupElement o = HTMLOptGroupElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement Mozilla HTMLOptionElement documentation>
-newtype HTMLOptionElement = HTMLOptionElement (JSRef HTMLOptionElement) deriving (Eq)
+newtype HTMLOptionElement = HTMLOptionElement { unHTMLOptionElement :: JSRef HTMLOptionElement }
 
-unHTMLOptionElement (HTMLOptionElement o) = o
+instance Eq (HTMLOptionElement) where
+  (HTMLOptionElement a) == (HTMLOptionElement b) = js_eq a b
+
+instance PToJSRef HTMLOptionElement where
+  pToJSRef = unHTMLOptionElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLOptionElement where
+  pFromJSRef = HTMLOptionElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLOptionElement where
   toJSRef = return . unHTMLOptionElement
@@ -7805,7 +9580,9 @@ instance IsNode HTMLOptionElement
 instance IsEventTarget HTMLOptionElement
 instance IsGObject HTMLOptionElement where
   toGObject = GObject . castRef . unHTMLOptionElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLOptionElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLOptionElement :: IsGObject obj => obj -> HTMLOptionElement
 castToHTMLOptionElement = castTo gTypeHTMLOptionElement "HTMLOptionElement"
@@ -7824,9 +9601,18 @@ type IsHTMLOptionElement o = HTMLOptionElementClass o
 --     * "GHCJS.DOM.HTMLCollection"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection Mozilla HTMLOptionsCollection documentation>
-newtype HTMLOptionsCollection = HTMLOptionsCollection (JSRef HTMLOptionsCollection) deriving (Eq)
+newtype HTMLOptionsCollection = HTMLOptionsCollection { unHTMLOptionsCollection :: JSRef HTMLOptionsCollection }
 
-unHTMLOptionsCollection (HTMLOptionsCollection o) = o
+instance Eq (HTMLOptionsCollection) where
+  (HTMLOptionsCollection a) == (HTMLOptionsCollection b) = js_eq a b
+
+instance PToJSRef HTMLOptionsCollection where
+  pToJSRef = unHTMLOptionsCollection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLOptionsCollection where
+  pFromJSRef = HTMLOptionsCollection
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLOptionsCollection where
   toJSRef = return . unHTMLOptionsCollection
@@ -7839,7 +9625,9 @@ instance FromJSRef HTMLOptionsCollection where
 instance IsHTMLCollection HTMLOptionsCollection
 instance IsGObject HTMLOptionsCollection where
   toGObject = GObject . castRef . unHTMLOptionsCollection
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLOptionsCollection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLOptionsCollection :: IsGObject obj => obj -> HTMLOptionsCollection
 castToHTMLOptionsCollection = castTo gTypeHTMLOptionsCollection "HTMLOptionsCollection"
@@ -7861,9 +9649,18 @@ type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement Mozilla HTMLOutputElement documentation>
-newtype HTMLOutputElement = HTMLOutputElement (JSRef HTMLOutputElement) deriving (Eq)
+newtype HTMLOutputElement = HTMLOutputElement { unHTMLOutputElement :: JSRef HTMLOutputElement }
 
-unHTMLOutputElement (HTMLOutputElement o) = o
+instance Eq (HTMLOutputElement) where
+  (HTMLOutputElement a) == (HTMLOutputElement b) = js_eq a b
+
+instance PToJSRef HTMLOutputElement where
+  pToJSRef = unHTMLOutputElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLOutputElement where
+  pFromJSRef = HTMLOutputElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLOutputElement where
   toJSRef = return . unHTMLOutputElement
@@ -7879,7 +9676,9 @@ instance IsNode HTMLOutputElement
 instance IsEventTarget HTMLOutputElement
 instance IsGObject HTMLOutputElement where
   toGObject = GObject . castRef . unHTMLOutputElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLOutputElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLOutputElement :: IsGObject obj => obj -> HTMLOutputElement
 castToHTMLOutputElement = castTo gTypeHTMLOutputElement "HTMLOutputElement"
@@ -7900,9 +9699,18 @@ gTypeHTMLOutputElement = GType gTypeHTMLOutputElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParagraphElement Mozilla HTMLParagraphElement documentation>
-newtype HTMLParagraphElement = HTMLParagraphElement (JSRef HTMLParagraphElement) deriving (Eq)
+newtype HTMLParagraphElement = HTMLParagraphElement { unHTMLParagraphElement :: JSRef HTMLParagraphElement }
 
-unHTMLParagraphElement (HTMLParagraphElement o) = o
+instance Eq (HTMLParagraphElement) where
+  (HTMLParagraphElement a) == (HTMLParagraphElement b) = js_eq a b
+
+instance PToJSRef HTMLParagraphElement where
+  pToJSRef = unHTMLParagraphElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLParagraphElement where
+  pFromJSRef = HTMLParagraphElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLParagraphElement where
   toJSRef = return . unHTMLParagraphElement
@@ -7918,7 +9726,9 @@ instance IsNode HTMLParagraphElement
 instance IsEventTarget HTMLParagraphElement
 instance IsGObject HTMLParagraphElement where
   toGObject = GObject . castRef . unHTMLParagraphElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLParagraphElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLParagraphElement :: IsGObject obj => obj -> HTMLParagraphElement
 castToHTMLParagraphElement = castTo gTypeHTMLParagraphElement "HTMLParagraphElement"
@@ -7940,9 +9750,18 @@ type IsHTMLParagraphElement o = HTMLParagraphElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement Mozilla HTMLParamElement documentation>
-newtype HTMLParamElement = HTMLParamElement (JSRef HTMLParamElement) deriving (Eq)
+newtype HTMLParamElement = HTMLParamElement { unHTMLParamElement :: JSRef HTMLParamElement }
 
-unHTMLParamElement (HTMLParamElement o) = o
+instance Eq (HTMLParamElement) where
+  (HTMLParamElement a) == (HTMLParamElement b) = js_eq a b
+
+instance PToJSRef HTMLParamElement where
+  pToJSRef = unHTMLParamElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLParamElement where
+  pFromJSRef = HTMLParamElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLParamElement where
   toJSRef = return . unHTMLParamElement
@@ -7958,7 +9777,9 @@ instance IsNode HTMLParamElement
 instance IsEventTarget HTMLParamElement
 instance IsGObject HTMLParamElement where
   toGObject = GObject . castRef . unHTMLParamElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLParamElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLParamElement :: IsGObject obj => obj -> HTMLParamElement
 castToHTMLParamElement = castTo gTypeHTMLParamElement "HTMLParamElement"
@@ -7980,9 +9801,18 @@ type IsHTMLParamElement o = HTMLParamElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLPreElement Mozilla HTMLPreElement documentation>
-newtype HTMLPreElement = HTMLPreElement (JSRef HTMLPreElement) deriving (Eq)
+newtype HTMLPreElement = HTMLPreElement { unHTMLPreElement :: JSRef HTMLPreElement }
 
-unHTMLPreElement (HTMLPreElement o) = o
+instance Eq (HTMLPreElement) where
+  (HTMLPreElement a) == (HTMLPreElement b) = js_eq a b
+
+instance PToJSRef HTMLPreElement where
+  pToJSRef = unHTMLPreElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLPreElement where
+  pFromJSRef = HTMLPreElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLPreElement where
   toJSRef = return . unHTMLPreElement
@@ -7998,7 +9828,9 @@ instance IsNode HTMLPreElement
 instance IsEventTarget HTMLPreElement
 instance IsGObject HTMLPreElement where
   toGObject = GObject . castRef . unHTMLPreElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLPreElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLPreElement :: IsGObject obj => obj -> HTMLPreElement
 castToHTMLPreElement = castTo gTypeHTMLPreElement "HTMLPreElement"
@@ -8020,9 +9852,18 @@ type IsHTMLPreElement o = HTMLPreElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement Mozilla HTMLProgressElement documentation>
-newtype HTMLProgressElement = HTMLProgressElement (JSRef HTMLProgressElement) deriving (Eq)
+newtype HTMLProgressElement = HTMLProgressElement { unHTMLProgressElement :: JSRef HTMLProgressElement }
 
-unHTMLProgressElement (HTMLProgressElement o) = o
+instance Eq (HTMLProgressElement) where
+  (HTMLProgressElement a) == (HTMLProgressElement b) = js_eq a b
+
+instance PToJSRef HTMLProgressElement where
+  pToJSRef = unHTMLProgressElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLProgressElement where
+  pFromJSRef = HTMLProgressElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLProgressElement where
   toJSRef = return . unHTMLProgressElement
@@ -8038,7 +9879,9 @@ instance IsNode HTMLProgressElement
 instance IsEventTarget HTMLProgressElement
 instance IsGObject HTMLProgressElement where
   toGObject = GObject . castRef . unHTMLProgressElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLProgressElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLProgressElement :: IsGObject obj => obj -> HTMLProgressElement
 castToHTMLProgressElement = castTo gTypeHTMLProgressElement "HTMLProgressElement"
@@ -8059,9 +9902,18 @@ gTypeHTMLProgressElement = GType gTypeHTMLProgressElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement Mozilla HTMLQuoteElement documentation>
-newtype HTMLQuoteElement = HTMLQuoteElement (JSRef HTMLQuoteElement) deriving (Eq)
+newtype HTMLQuoteElement = HTMLQuoteElement { unHTMLQuoteElement :: JSRef HTMLQuoteElement }
 
-unHTMLQuoteElement (HTMLQuoteElement o) = o
+instance Eq (HTMLQuoteElement) where
+  (HTMLQuoteElement a) == (HTMLQuoteElement b) = js_eq a b
+
+instance PToJSRef HTMLQuoteElement where
+  pToJSRef = unHTMLQuoteElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLQuoteElement where
+  pFromJSRef = HTMLQuoteElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLQuoteElement where
   toJSRef = return . unHTMLQuoteElement
@@ -8077,7 +9929,9 @@ instance IsNode HTMLQuoteElement
 instance IsEventTarget HTMLQuoteElement
 instance IsGObject HTMLQuoteElement where
   toGObject = GObject . castRef . unHTMLQuoteElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLQuoteElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLQuoteElement :: IsGObject obj => obj -> HTMLQuoteElement
 castToHTMLQuoteElement = castTo gTypeHTMLQuoteElement "HTMLQuoteElement"
@@ -8099,9 +9953,18 @@ type IsHTMLQuoteElement o = HTMLQuoteElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement Mozilla HTMLScriptElement documentation>
-newtype HTMLScriptElement = HTMLScriptElement (JSRef HTMLScriptElement) deriving (Eq)
+newtype HTMLScriptElement = HTMLScriptElement { unHTMLScriptElement :: JSRef HTMLScriptElement }
 
-unHTMLScriptElement (HTMLScriptElement o) = o
+instance Eq (HTMLScriptElement) where
+  (HTMLScriptElement a) == (HTMLScriptElement b) = js_eq a b
+
+instance PToJSRef HTMLScriptElement where
+  pToJSRef = unHTMLScriptElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLScriptElement where
+  pFromJSRef = HTMLScriptElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLScriptElement where
   toJSRef = return . unHTMLScriptElement
@@ -8117,7 +9980,9 @@ instance IsNode HTMLScriptElement
 instance IsEventTarget HTMLScriptElement
 instance IsGObject HTMLScriptElement where
   toGObject = GObject . castRef . unHTMLScriptElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLScriptElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLScriptElement :: IsGObject obj => obj -> HTMLScriptElement
 castToHTMLScriptElement = castTo gTypeHTMLScriptElement "HTMLScriptElement"
@@ -8139,9 +10004,18 @@ type IsHTMLScriptElement o = HTMLScriptElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement Mozilla HTMLSelectElement documentation>
-newtype HTMLSelectElement = HTMLSelectElement (JSRef HTMLSelectElement) deriving (Eq)
+newtype HTMLSelectElement = HTMLSelectElement { unHTMLSelectElement :: JSRef HTMLSelectElement }
 
-unHTMLSelectElement (HTMLSelectElement o) = o
+instance Eq (HTMLSelectElement) where
+  (HTMLSelectElement a) == (HTMLSelectElement b) = js_eq a b
+
+instance PToJSRef HTMLSelectElement where
+  pToJSRef = unHTMLSelectElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLSelectElement where
+  pFromJSRef = HTMLSelectElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLSelectElement where
   toJSRef = return . unHTMLSelectElement
@@ -8157,7 +10031,9 @@ instance IsNode HTMLSelectElement
 instance IsEventTarget HTMLSelectElement
 instance IsGObject HTMLSelectElement where
   toGObject = GObject . castRef . unHTMLSelectElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLSelectElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLSelectElement :: IsGObject obj => obj -> HTMLSelectElement
 castToHTMLSelectElement = castTo gTypeHTMLSelectElement "HTMLSelectElement"
@@ -8179,9 +10055,18 @@ type IsHTMLSelectElement o = HTMLSelectElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement Mozilla HTMLSourceElement documentation>
-newtype HTMLSourceElement = HTMLSourceElement (JSRef HTMLSourceElement) deriving (Eq)
+newtype HTMLSourceElement = HTMLSourceElement { unHTMLSourceElement :: JSRef HTMLSourceElement }
 
-unHTMLSourceElement (HTMLSourceElement o) = o
+instance Eq (HTMLSourceElement) where
+  (HTMLSourceElement a) == (HTMLSourceElement b) = js_eq a b
+
+instance PToJSRef HTMLSourceElement where
+  pToJSRef = unHTMLSourceElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLSourceElement where
+  pFromJSRef = HTMLSourceElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLSourceElement where
   toJSRef = return . unHTMLSourceElement
@@ -8197,7 +10082,9 @@ instance IsNode HTMLSourceElement
 instance IsEventTarget HTMLSourceElement
 instance IsGObject HTMLSourceElement where
   toGObject = GObject . castRef . unHTMLSourceElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLSourceElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLSourceElement :: IsGObject obj => obj -> HTMLSourceElement
 castToHTMLSourceElement = castTo gTypeHTMLSourceElement "HTMLSourceElement"
@@ -8218,9 +10105,18 @@ gTypeHTMLSourceElement = GType gTypeHTMLSourceElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSpanElement Mozilla HTMLSpanElement documentation>
-newtype HTMLSpanElement = HTMLSpanElement (JSRef HTMLSpanElement) deriving (Eq)
+newtype HTMLSpanElement = HTMLSpanElement { unHTMLSpanElement :: JSRef HTMLSpanElement }
 
-unHTMLSpanElement (HTMLSpanElement o) = o
+instance Eq (HTMLSpanElement) where
+  (HTMLSpanElement a) == (HTMLSpanElement b) = js_eq a b
+
+instance PToJSRef HTMLSpanElement where
+  pToJSRef = unHTMLSpanElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLSpanElement where
+  pFromJSRef = HTMLSpanElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLSpanElement where
   toJSRef = return . unHTMLSpanElement
@@ -8236,7 +10132,9 @@ instance IsNode HTMLSpanElement
 instance IsEventTarget HTMLSpanElement
 instance IsGObject HTMLSpanElement where
   toGObject = GObject . castRef . unHTMLSpanElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLSpanElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLSpanElement :: IsGObject obj => obj -> HTMLSpanElement
 castToHTMLSpanElement = castTo gTypeHTMLSpanElement "HTMLSpanElement"
@@ -8257,9 +10155,18 @@ gTypeHTMLSpanElement = GType gTypeHTMLSpanElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement Mozilla HTMLStyleElement documentation>
-newtype HTMLStyleElement = HTMLStyleElement (JSRef HTMLStyleElement) deriving (Eq)
+newtype HTMLStyleElement = HTMLStyleElement { unHTMLStyleElement :: JSRef HTMLStyleElement }
 
-unHTMLStyleElement (HTMLStyleElement o) = o
+instance Eq (HTMLStyleElement) where
+  (HTMLStyleElement a) == (HTMLStyleElement b) = js_eq a b
+
+instance PToJSRef HTMLStyleElement where
+  pToJSRef = unHTMLStyleElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLStyleElement where
+  pFromJSRef = HTMLStyleElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLStyleElement where
   toJSRef = return . unHTMLStyleElement
@@ -8275,7 +10182,9 @@ instance IsNode HTMLStyleElement
 instance IsEventTarget HTMLStyleElement
 instance IsGObject HTMLStyleElement where
   toGObject = GObject . castRef . unHTMLStyleElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLStyleElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLStyleElement :: IsGObject obj => obj -> HTMLStyleElement
 castToHTMLStyleElement = castTo gTypeHTMLStyleElement "HTMLStyleElement"
@@ -8297,9 +10206,18 @@ type IsHTMLStyleElement o = HTMLStyleElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement Mozilla HTMLTableCaptionElement documentation>
-newtype HTMLTableCaptionElement = HTMLTableCaptionElement (JSRef HTMLTableCaptionElement) deriving (Eq)
+newtype HTMLTableCaptionElement = HTMLTableCaptionElement { unHTMLTableCaptionElement :: JSRef HTMLTableCaptionElement }
 
-unHTMLTableCaptionElement (HTMLTableCaptionElement o) = o
+instance Eq (HTMLTableCaptionElement) where
+  (HTMLTableCaptionElement a) == (HTMLTableCaptionElement b) = js_eq a b
+
+instance PToJSRef HTMLTableCaptionElement where
+  pToJSRef = unHTMLTableCaptionElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTableCaptionElement where
+  pFromJSRef = HTMLTableCaptionElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTableCaptionElement where
   toJSRef = return . unHTMLTableCaptionElement
@@ -8315,7 +10233,9 @@ instance IsNode HTMLTableCaptionElement
 instance IsEventTarget HTMLTableCaptionElement
 instance IsGObject HTMLTableCaptionElement where
   toGObject = GObject . castRef . unHTMLTableCaptionElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTableCaptionElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTableCaptionElement :: IsGObject obj => obj -> HTMLTableCaptionElement
 castToHTMLTableCaptionElement = castTo gTypeHTMLTableCaptionElement "HTMLTableCaptionElement"
@@ -8337,9 +10257,18 @@ type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement Mozilla HTMLTableCellElement documentation>
-newtype HTMLTableCellElement = HTMLTableCellElement (JSRef HTMLTableCellElement) deriving (Eq)
+newtype HTMLTableCellElement = HTMLTableCellElement { unHTMLTableCellElement :: JSRef HTMLTableCellElement }
 
-unHTMLTableCellElement (HTMLTableCellElement o) = o
+instance Eq (HTMLTableCellElement) where
+  (HTMLTableCellElement a) == (HTMLTableCellElement b) = js_eq a b
+
+instance PToJSRef HTMLTableCellElement where
+  pToJSRef = unHTMLTableCellElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTableCellElement where
+  pFromJSRef = HTMLTableCellElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTableCellElement where
   toJSRef = return . unHTMLTableCellElement
@@ -8355,7 +10284,9 @@ instance IsNode HTMLTableCellElement
 instance IsEventTarget HTMLTableCellElement
 instance IsGObject HTMLTableCellElement where
   toGObject = GObject . castRef . unHTMLTableCellElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTableCellElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTableCellElement :: IsGObject obj => obj -> HTMLTableCellElement
 castToHTMLTableCellElement = castTo gTypeHTMLTableCellElement "HTMLTableCellElement"
@@ -8377,9 +10308,18 @@ type IsHTMLTableCellElement o = HTMLTableCellElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement Mozilla HTMLTableColElement documentation>
-newtype HTMLTableColElement = HTMLTableColElement (JSRef HTMLTableColElement) deriving (Eq)
+newtype HTMLTableColElement = HTMLTableColElement { unHTMLTableColElement :: JSRef HTMLTableColElement }
 
-unHTMLTableColElement (HTMLTableColElement o) = o
+instance Eq (HTMLTableColElement) where
+  (HTMLTableColElement a) == (HTMLTableColElement b) = js_eq a b
+
+instance PToJSRef HTMLTableColElement where
+  pToJSRef = unHTMLTableColElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTableColElement where
+  pFromJSRef = HTMLTableColElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTableColElement where
   toJSRef = return . unHTMLTableColElement
@@ -8395,7 +10335,9 @@ instance IsNode HTMLTableColElement
 instance IsEventTarget HTMLTableColElement
 instance IsGObject HTMLTableColElement where
   toGObject = GObject . castRef . unHTMLTableColElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTableColElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTableColElement :: IsGObject obj => obj -> HTMLTableColElement
 castToHTMLTableColElement = castTo gTypeHTMLTableColElement "HTMLTableColElement"
@@ -8417,9 +10359,18 @@ type IsHTMLTableColElement o = HTMLTableColElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement Mozilla HTMLTableElement documentation>
-newtype HTMLTableElement = HTMLTableElement (JSRef HTMLTableElement) deriving (Eq)
+newtype HTMLTableElement = HTMLTableElement { unHTMLTableElement :: JSRef HTMLTableElement }
 
-unHTMLTableElement (HTMLTableElement o) = o
+instance Eq (HTMLTableElement) where
+  (HTMLTableElement a) == (HTMLTableElement b) = js_eq a b
+
+instance PToJSRef HTMLTableElement where
+  pToJSRef = unHTMLTableElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTableElement where
+  pFromJSRef = HTMLTableElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTableElement where
   toJSRef = return . unHTMLTableElement
@@ -8435,7 +10386,9 @@ instance IsNode HTMLTableElement
 instance IsEventTarget HTMLTableElement
 instance IsGObject HTMLTableElement where
   toGObject = GObject . castRef . unHTMLTableElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTableElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTableElement :: IsGObject obj => obj -> HTMLTableElement
 castToHTMLTableElement = castTo gTypeHTMLTableElement "HTMLTableElement"
@@ -8457,9 +10410,18 @@ type IsHTMLTableElement o = HTMLTableElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement Mozilla HTMLTableRowElement documentation>
-newtype HTMLTableRowElement = HTMLTableRowElement (JSRef HTMLTableRowElement) deriving (Eq)
+newtype HTMLTableRowElement = HTMLTableRowElement { unHTMLTableRowElement :: JSRef HTMLTableRowElement }
 
-unHTMLTableRowElement (HTMLTableRowElement o) = o
+instance Eq (HTMLTableRowElement) where
+  (HTMLTableRowElement a) == (HTMLTableRowElement b) = js_eq a b
+
+instance PToJSRef HTMLTableRowElement where
+  pToJSRef = unHTMLTableRowElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTableRowElement where
+  pFromJSRef = HTMLTableRowElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTableRowElement where
   toJSRef = return . unHTMLTableRowElement
@@ -8475,7 +10437,9 @@ instance IsNode HTMLTableRowElement
 instance IsEventTarget HTMLTableRowElement
 instance IsGObject HTMLTableRowElement where
   toGObject = GObject . castRef . unHTMLTableRowElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTableRowElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTableRowElement :: IsGObject obj => obj -> HTMLTableRowElement
 castToHTMLTableRowElement = castTo gTypeHTMLTableRowElement "HTMLTableRowElement"
@@ -8497,9 +10461,18 @@ type IsHTMLTableRowElement o = HTMLTableRowElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement Mozilla HTMLTableSectionElement documentation>
-newtype HTMLTableSectionElement = HTMLTableSectionElement (JSRef HTMLTableSectionElement) deriving (Eq)
+newtype HTMLTableSectionElement = HTMLTableSectionElement { unHTMLTableSectionElement :: JSRef HTMLTableSectionElement }
 
-unHTMLTableSectionElement (HTMLTableSectionElement o) = o
+instance Eq (HTMLTableSectionElement) where
+  (HTMLTableSectionElement a) == (HTMLTableSectionElement b) = js_eq a b
+
+instance PToJSRef HTMLTableSectionElement where
+  pToJSRef = unHTMLTableSectionElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTableSectionElement where
+  pFromJSRef = HTMLTableSectionElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTableSectionElement where
   toJSRef = return . unHTMLTableSectionElement
@@ -8515,7 +10488,9 @@ instance IsNode HTMLTableSectionElement
 instance IsEventTarget HTMLTableSectionElement
 instance IsGObject HTMLTableSectionElement where
   toGObject = GObject . castRef . unHTMLTableSectionElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTableSectionElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTableSectionElement :: IsGObject obj => obj -> HTMLTableSectionElement
 castToHTMLTableSectionElement = castTo gTypeHTMLTableSectionElement "HTMLTableSectionElement"
@@ -8537,9 +10512,18 @@ type IsHTMLTableSectionElement o = HTMLTableSectionElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTemplateElement Mozilla HTMLTemplateElement documentation>
-newtype HTMLTemplateElement = HTMLTemplateElement (JSRef HTMLTemplateElement) deriving (Eq)
+newtype HTMLTemplateElement = HTMLTemplateElement { unHTMLTemplateElement :: JSRef HTMLTemplateElement }
 
-unHTMLTemplateElement (HTMLTemplateElement o) = o
+instance Eq (HTMLTemplateElement) where
+  (HTMLTemplateElement a) == (HTMLTemplateElement b) = js_eq a b
+
+instance PToJSRef HTMLTemplateElement where
+  pToJSRef = unHTMLTemplateElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTemplateElement where
+  pFromJSRef = HTMLTemplateElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTemplateElement where
   toJSRef = return . unHTMLTemplateElement
@@ -8555,7 +10539,9 @@ instance IsNode HTMLTemplateElement
 instance IsEventTarget HTMLTemplateElement
 instance IsGObject HTMLTemplateElement where
   toGObject = GObject . castRef . unHTMLTemplateElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTemplateElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTemplateElement :: IsGObject obj => obj -> HTMLTemplateElement
 castToHTMLTemplateElement = castTo gTypeHTMLTemplateElement "HTMLTemplateElement"
@@ -8576,9 +10562,18 @@ gTypeHTMLTemplateElement = GType gTypeHTMLTemplateElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement Mozilla HTMLTextAreaElement documentation>
-newtype HTMLTextAreaElement = HTMLTextAreaElement (JSRef HTMLTextAreaElement) deriving (Eq)
+newtype HTMLTextAreaElement = HTMLTextAreaElement { unHTMLTextAreaElement :: JSRef HTMLTextAreaElement }
 
-unHTMLTextAreaElement (HTMLTextAreaElement o) = o
+instance Eq (HTMLTextAreaElement) where
+  (HTMLTextAreaElement a) == (HTMLTextAreaElement b) = js_eq a b
+
+instance PToJSRef HTMLTextAreaElement where
+  pToJSRef = unHTMLTextAreaElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTextAreaElement where
+  pFromJSRef = HTMLTextAreaElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTextAreaElement where
   toJSRef = return . unHTMLTextAreaElement
@@ -8594,7 +10589,9 @@ instance IsNode HTMLTextAreaElement
 instance IsEventTarget HTMLTextAreaElement
 instance IsGObject HTMLTextAreaElement where
   toGObject = GObject . castRef . unHTMLTextAreaElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTextAreaElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTextAreaElement :: IsGObject obj => obj -> HTMLTextAreaElement
 castToHTMLTextAreaElement = castTo gTypeHTMLTextAreaElement "HTMLTextAreaElement"
@@ -8616,9 +10613,18 @@ type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement Mozilla HTMLTitleElement documentation>
-newtype HTMLTitleElement = HTMLTitleElement (JSRef HTMLTitleElement) deriving (Eq)
+newtype HTMLTitleElement = HTMLTitleElement { unHTMLTitleElement :: JSRef HTMLTitleElement }
 
-unHTMLTitleElement (HTMLTitleElement o) = o
+instance Eq (HTMLTitleElement) where
+  (HTMLTitleElement a) == (HTMLTitleElement b) = js_eq a b
+
+instance PToJSRef HTMLTitleElement where
+  pToJSRef = unHTMLTitleElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTitleElement where
+  pFromJSRef = HTMLTitleElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTitleElement where
   toJSRef = return . unHTMLTitleElement
@@ -8634,7 +10640,9 @@ instance IsNode HTMLTitleElement
 instance IsEventTarget HTMLTitleElement
 instance IsGObject HTMLTitleElement where
   toGObject = GObject . castRef . unHTMLTitleElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTitleElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTitleElement :: IsGObject obj => obj -> HTMLTitleElement
 castToHTMLTitleElement = castTo gTypeHTMLTitleElement "HTMLTitleElement"
@@ -8656,9 +10664,18 @@ type IsHTMLTitleElement o = HTMLTitleElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement Mozilla HTMLTrackElement documentation>
-newtype HTMLTrackElement = HTMLTrackElement (JSRef HTMLTrackElement) deriving (Eq)
+newtype HTMLTrackElement = HTMLTrackElement { unHTMLTrackElement :: JSRef HTMLTrackElement }
 
-unHTMLTrackElement (HTMLTrackElement o) = o
+instance Eq (HTMLTrackElement) where
+  (HTMLTrackElement a) == (HTMLTrackElement b) = js_eq a b
+
+instance PToJSRef HTMLTrackElement where
+  pToJSRef = unHTMLTrackElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLTrackElement where
+  pFromJSRef = HTMLTrackElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLTrackElement where
   toJSRef = return . unHTMLTrackElement
@@ -8674,7 +10691,9 @@ instance IsNode HTMLTrackElement
 instance IsEventTarget HTMLTrackElement
 instance IsGObject HTMLTrackElement where
   toGObject = GObject . castRef . unHTMLTrackElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLTrackElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLTrackElement :: IsGObject obj => obj -> HTMLTrackElement
 castToHTMLTrackElement = castTo gTypeHTMLTrackElement "HTMLTrackElement"
@@ -8695,9 +10714,18 @@ gTypeHTMLTrackElement = GType gTypeHTMLTrackElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUListElement Mozilla HTMLUListElement documentation>
-newtype HTMLUListElement = HTMLUListElement (JSRef HTMLUListElement) deriving (Eq)
+newtype HTMLUListElement = HTMLUListElement { unHTMLUListElement :: JSRef HTMLUListElement }
 
-unHTMLUListElement (HTMLUListElement o) = o
+instance Eq (HTMLUListElement) where
+  (HTMLUListElement a) == (HTMLUListElement b) = js_eq a b
+
+instance PToJSRef HTMLUListElement where
+  pToJSRef = unHTMLUListElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLUListElement where
+  pFromJSRef = HTMLUListElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLUListElement where
   toJSRef = return . unHTMLUListElement
@@ -8713,7 +10741,9 @@ instance IsNode HTMLUListElement
 instance IsEventTarget HTMLUListElement
 instance IsGObject HTMLUListElement where
   toGObject = GObject . castRef . unHTMLUListElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLUListElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLUListElement :: IsGObject obj => obj -> HTMLUListElement
 castToHTMLUListElement = castTo gTypeHTMLUListElement "HTMLUListElement"
@@ -8735,9 +10765,18 @@ type IsHTMLUListElement o = HTMLUListElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUnknownElement Mozilla HTMLUnknownElement documentation>
-newtype HTMLUnknownElement = HTMLUnknownElement (JSRef HTMLUnknownElement) deriving (Eq)
+newtype HTMLUnknownElement = HTMLUnknownElement { unHTMLUnknownElement :: JSRef HTMLUnknownElement }
 
-unHTMLUnknownElement (HTMLUnknownElement o) = o
+instance Eq (HTMLUnknownElement) where
+  (HTMLUnknownElement a) == (HTMLUnknownElement b) = js_eq a b
+
+instance PToJSRef HTMLUnknownElement where
+  pToJSRef = unHTMLUnknownElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLUnknownElement where
+  pFromJSRef = HTMLUnknownElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLUnknownElement where
   toJSRef = return . unHTMLUnknownElement
@@ -8753,7 +10792,9 @@ instance IsNode HTMLUnknownElement
 instance IsEventTarget HTMLUnknownElement
 instance IsGObject HTMLUnknownElement where
   toGObject = GObject . castRef . unHTMLUnknownElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLUnknownElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLUnknownElement :: IsGObject obj => obj -> HTMLUnknownElement
 castToHTMLUnknownElement = castTo gTypeHTMLUnknownElement "HTMLUnknownElement"
@@ -8769,11 +10810,24 @@ gTypeHTMLUnknownElement = GType gTypeHTMLUnknownElement'
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.HTMLMediaElement"
+--     * "GHCJS.DOM.HTMLElement"
+--     * "GHCJS.DOM.Element"
+--     * "GHCJS.DOM.Node"
+--     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement Mozilla HTMLVideoElement documentation>
-newtype HTMLVideoElement = HTMLVideoElement (JSRef HTMLVideoElement) deriving (Eq)
+newtype HTMLVideoElement = HTMLVideoElement { unHTMLVideoElement :: JSRef HTMLVideoElement }
 
-unHTMLVideoElement (HTMLVideoElement o) = o
+instance Eq (HTMLVideoElement) where
+  (HTMLVideoElement a) == (HTMLVideoElement b) = js_eq a b
+
+instance PToJSRef HTMLVideoElement where
+  pToJSRef = unHTMLVideoElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HTMLVideoElement where
+  pFromJSRef = HTMLVideoElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HTMLVideoElement where
   toJSRef = return . unHTMLVideoElement
@@ -8784,9 +10838,15 @@ instance FromJSRef HTMLVideoElement where
   {-# INLINE fromJSRef #-}
 
 instance IsHTMLMediaElement HTMLVideoElement
+instance IsHTMLElement HTMLVideoElement
+instance IsElement HTMLVideoElement
+instance IsNode HTMLVideoElement
+instance IsEventTarget HTMLVideoElement
 instance IsGObject HTMLVideoElement where
   toGObject = GObject . castRef . unHTMLVideoElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HTMLVideoElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHTMLVideoElement :: IsGObject obj => obj -> HTMLVideoElement
 castToHTMLVideoElement = castTo gTypeHTMLVideoElement "HTMLVideoElement"
@@ -8805,9 +10865,18 @@ type IsHTMLVideoElement o = HTMLVideoElementClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent Mozilla HashChangeEvent documentation>
-newtype HashChangeEvent = HashChangeEvent (JSRef HashChangeEvent) deriving (Eq)
+newtype HashChangeEvent = HashChangeEvent { unHashChangeEvent :: JSRef HashChangeEvent }
 
-unHashChangeEvent (HashChangeEvent o) = o
+instance Eq (HashChangeEvent) where
+  (HashChangeEvent a) == (HashChangeEvent b) = js_eq a b
+
+instance PToJSRef HashChangeEvent where
+  pToJSRef = unHashChangeEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef HashChangeEvent where
+  pFromJSRef = HashChangeEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef HashChangeEvent where
   toJSRef = return . unHashChangeEvent
@@ -8820,7 +10889,9 @@ instance FromJSRef HashChangeEvent where
 instance IsEvent HashChangeEvent
 instance IsGObject HashChangeEvent where
   toGObject = GObject . castRef . unHashChangeEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = HashChangeEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHashChangeEvent :: IsGObject obj => obj -> HashChangeEvent
 castToHashChangeEvent = castTo gTypeHashChangeEvent "HashChangeEvent"
@@ -8835,9 +10906,18 @@ gTypeHashChangeEvent = GType gTypeHashChangeEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.History".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/History Mozilla History documentation>
-newtype History = History (JSRef History) deriving (Eq)
+newtype History = History { unHistory :: JSRef History }
 
-unHistory (History o) = o
+instance Eq (History) where
+  (History a) == (History b) = js_eq a b
+
+instance PToJSRef History where
+  pToJSRef = unHistory
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef History where
+  pFromJSRef = History
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef History where
   toJSRef = return . unHistory
@@ -8849,7 +10929,9 @@ instance FromJSRef History where
 
 instance IsGObject History where
   toGObject = GObject . castRef . unHistory
+  {-# INLINE toGObject #-}
   unsafeCastGObject = History . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToHistory :: IsGObject obj => obj -> History
 castToHistory = castTo gTypeHistory "History"
@@ -8865,9 +10947,18 @@ type IsHistory o = HistoryClass o
 -- | Functions for this inteface are in "GHCJS.DOM.IDBAny".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBAny Mozilla IDBAny documentation>
-newtype IDBAny = IDBAny (JSRef IDBAny) deriving (Eq)
+newtype IDBAny = IDBAny { unIDBAny :: JSRef IDBAny }
 
-unIDBAny (IDBAny o) = o
+instance Eq (IDBAny) where
+  (IDBAny a) == (IDBAny b) = js_eq a b
+
+instance PToJSRef IDBAny where
+  pToJSRef = unIDBAny
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBAny where
+  pFromJSRef = IDBAny
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBAny where
   toJSRef = return . unIDBAny
@@ -8879,7 +10970,9 @@ instance FromJSRef IDBAny where
 
 instance IsGObject IDBAny where
   toGObject = GObject . castRef . unIDBAny
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBAny . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBAny :: IsGObject obj => obj -> IDBAny
 castToIDBAny = castTo gTypeIDBAny "IDBAny"
@@ -8894,9 +10987,18 @@ gTypeIDBAny = GType gTypeIDBAny'
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor Mozilla IDBCursor documentation>
-newtype IDBCursor = IDBCursor (JSRef IDBCursor) deriving (Eq)
+newtype IDBCursor = IDBCursor { unIDBCursor :: JSRef IDBCursor }
 
-unIDBCursor (IDBCursor o) = o
+instance Eq (IDBCursor) where
+  (IDBCursor a) == (IDBCursor b) = js_eq a b
+
+instance PToJSRef IDBCursor where
+  pToJSRef = unIDBCursor
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBCursor where
+  pFromJSRef = IDBCursor
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBCursor where
   toJSRef = return . unIDBCursor
@@ -8913,7 +11015,9 @@ toIDBCursor = unsafeCastGObject . toGObject
 instance IsIDBCursor IDBCursor
 instance IsGObject IDBCursor where
   toGObject = GObject . castRef . unIDBCursor
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBCursor . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBCursor :: IsGObject obj => obj -> IDBCursor
 castToIDBCursor = castTo gTypeIDBCursor "IDBCursor"
@@ -8931,9 +11035,18 @@ gTypeIDBCursor = GType gTypeIDBCursor'
 --     * "GHCJS.DOM.IDBCursor"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursorWithValue Mozilla IDBCursorWithValue documentation>
-newtype IDBCursorWithValue = IDBCursorWithValue (JSRef IDBCursorWithValue) deriving (Eq)
+newtype IDBCursorWithValue = IDBCursorWithValue { unIDBCursorWithValue :: JSRef IDBCursorWithValue }
 
-unIDBCursorWithValue (IDBCursorWithValue o) = o
+instance Eq (IDBCursorWithValue) where
+  (IDBCursorWithValue a) == (IDBCursorWithValue b) = js_eq a b
+
+instance PToJSRef IDBCursorWithValue where
+  pToJSRef = unIDBCursorWithValue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBCursorWithValue where
+  pFromJSRef = IDBCursorWithValue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBCursorWithValue where
   toJSRef = return . unIDBCursorWithValue
@@ -8946,7 +11059,9 @@ instance FromJSRef IDBCursorWithValue where
 instance IsIDBCursor IDBCursorWithValue
 instance IsGObject IDBCursorWithValue where
   toGObject = GObject . castRef . unIDBCursorWithValue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBCursorWithValue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBCursorWithValue :: IsGObject obj => obj -> IDBCursorWithValue
 castToIDBCursorWithValue = castTo gTypeIDBCursorWithValue "IDBCursorWithValue"
@@ -8964,9 +11079,18 @@ gTypeIDBCursorWithValue = GType gTypeIDBCursorWithValue'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase Mozilla IDBDatabase documentation>
-newtype IDBDatabase = IDBDatabase (JSRef IDBDatabase) deriving (Eq)
+newtype IDBDatabase = IDBDatabase { unIDBDatabase :: JSRef IDBDatabase }
 
-unIDBDatabase (IDBDatabase o) = o
+instance Eq (IDBDatabase) where
+  (IDBDatabase a) == (IDBDatabase b) = js_eq a b
+
+instance PToJSRef IDBDatabase where
+  pToJSRef = unIDBDatabase
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBDatabase where
+  pFromJSRef = IDBDatabase
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBDatabase where
   toJSRef = return . unIDBDatabase
@@ -8979,7 +11103,9 @@ instance FromJSRef IDBDatabase where
 instance IsEventTarget IDBDatabase
 instance IsGObject IDBDatabase where
   toGObject = GObject . castRef . unIDBDatabase
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBDatabase . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBDatabase :: IsGObject obj => obj -> IDBDatabase
 castToIDBDatabase = castTo gTypeIDBDatabase "IDBDatabase"
@@ -8994,9 +11120,18 @@ gTypeIDBDatabase = GType gTypeIDBDatabase'
 -- | Functions for this inteface are in "GHCJS.DOM.IDBFactory".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory Mozilla IDBFactory documentation>
-newtype IDBFactory = IDBFactory (JSRef IDBFactory) deriving (Eq)
+newtype IDBFactory = IDBFactory { unIDBFactory :: JSRef IDBFactory }
 
-unIDBFactory (IDBFactory o) = o
+instance Eq (IDBFactory) where
+  (IDBFactory a) == (IDBFactory b) = js_eq a b
+
+instance PToJSRef IDBFactory where
+  pToJSRef = unIDBFactory
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBFactory where
+  pFromJSRef = IDBFactory
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBFactory where
   toJSRef = return . unIDBFactory
@@ -9008,7 +11143,9 @@ instance FromJSRef IDBFactory where
 
 instance IsGObject IDBFactory where
   toGObject = GObject . castRef . unIDBFactory
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBFactory . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBFactory :: IsGObject obj => obj -> IDBFactory
 castToIDBFactory = castTo gTypeIDBFactory "IDBFactory"
@@ -9023,9 +11160,18 @@ gTypeIDBFactory = GType gTypeIDBFactory'
 -- | Functions for this inteface are in "GHCJS.DOM.IDBIndex".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex Mozilla IDBIndex documentation>
-newtype IDBIndex = IDBIndex (JSRef IDBIndex) deriving (Eq)
+newtype IDBIndex = IDBIndex { unIDBIndex :: JSRef IDBIndex }
 
-unIDBIndex (IDBIndex o) = o
+instance Eq (IDBIndex) where
+  (IDBIndex a) == (IDBIndex b) = js_eq a b
+
+instance PToJSRef IDBIndex where
+  pToJSRef = unIDBIndex
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBIndex where
+  pFromJSRef = IDBIndex
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBIndex where
   toJSRef = return . unIDBIndex
@@ -9037,7 +11183,9 @@ instance FromJSRef IDBIndex where
 
 instance IsGObject IDBIndex where
   toGObject = GObject . castRef . unIDBIndex
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBIndex . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBIndex :: IsGObject obj => obj -> IDBIndex
 castToIDBIndex = castTo gTypeIDBIndex "IDBIndex"
@@ -9052,9 +11200,18 @@ gTypeIDBIndex = GType gTypeIDBIndex'
 -- | Functions for this inteface are in "GHCJS.DOM.IDBKeyRange".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange Mozilla IDBKeyRange documentation>
-newtype IDBKeyRange = IDBKeyRange (JSRef IDBKeyRange) deriving (Eq)
+newtype IDBKeyRange = IDBKeyRange { unIDBKeyRange :: JSRef IDBKeyRange }
 
-unIDBKeyRange (IDBKeyRange o) = o
+instance Eq (IDBKeyRange) where
+  (IDBKeyRange a) == (IDBKeyRange b) = js_eq a b
+
+instance PToJSRef IDBKeyRange where
+  pToJSRef = unIDBKeyRange
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBKeyRange where
+  pFromJSRef = IDBKeyRange
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBKeyRange where
   toJSRef = return . unIDBKeyRange
@@ -9066,7 +11223,9 @@ instance FromJSRef IDBKeyRange where
 
 instance IsGObject IDBKeyRange where
   toGObject = GObject . castRef . unIDBKeyRange
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBKeyRange . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBKeyRange :: IsGObject obj => obj -> IDBKeyRange
 castToIDBKeyRange = castTo gTypeIDBKeyRange "IDBKeyRange"
@@ -9081,9 +11240,18 @@ gTypeIDBKeyRange = GType gTypeIDBKeyRange'
 -- | Functions for this inteface are in "GHCJS.DOM.IDBObjectStore".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore Mozilla IDBObjectStore documentation>
-newtype IDBObjectStore = IDBObjectStore (JSRef IDBObjectStore) deriving (Eq)
+newtype IDBObjectStore = IDBObjectStore { unIDBObjectStore :: JSRef IDBObjectStore }
 
-unIDBObjectStore (IDBObjectStore o) = o
+instance Eq (IDBObjectStore) where
+  (IDBObjectStore a) == (IDBObjectStore b) = js_eq a b
+
+instance PToJSRef IDBObjectStore where
+  pToJSRef = unIDBObjectStore
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBObjectStore where
+  pFromJSRef = IDBObjectStore
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBObjectStore where
   toJSRef = return . unIDBObjectStore
@@ -9095,7 +11263,9 @@ instance FromJSRef IDBObjectStore where
 
 instance IsGObject IDBObjectStore where
   toGObject = GObject . castRef . unIDBObjectStore
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBObjectStore . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBObjectStore :: IsGObject obj => obj -> IDBObjectStore
 castToIDBObjectStore = castTo gTypeIDBObjectStore "IDBObjectStore"
@@ -9114,9 +11284,18 @@ gTypeIDBObjectStore = GType gTypeIDBObjectStore'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBOpenDBRequest Mozilla IDBOpenDBRequest documentation>
-newtype IDBOpenDBRequest = IDBOpenDBRequest (JSRef IDBOpenDBRequest) deriving (Eq)
+newtype IDBOpenDBRequest = IDBOpenDBRequest { unIDBOpenDBRequest :: JSRef IDBOpenDBRequest }
 
-unIDBOpenDBRequest (IDBOpenDBRequest o) = o
+instance Eq (IDBOpenDBRequest) where
+  (IDBOpenDBRequest a) == (IDBOpenDBRequest b) = js_eq a b
+
+instance PToJSRef IDBOpenDBRequest where
+  pToJSRef = unIDBOpenDBRequest
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBOpenDBRequest where
+  pFromJSRef = IDBOpenDBRequest
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBOpenDBRequest where
   toJSRef = return . unIDBOpenDBRequest
@@ -9130,7 +11309,9 @@ instance IsIDBRequest IDBOpenDBRequest
 instance IsEventTarget IDBOpenDBRequest
 instance IsGObject IDBOpenDBRequest where
   toGObject = GObject . castRef . unIDBOpenDBRequest
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBOpenDBRequest . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBOpenDBRequest :: IsGObject obj => obj -> IDBOpenDBRequest
 castToIDBOpenDBRequest = castTo gTypeIDBOpenDBRequest "IDBOpenDBRequest"
@@ -9148,9 +11329,18 @@ gTypeIDBOpenDBRequest = GType gTypeIDBOpenDBRequest'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest Mozilla IDBRequest documentation>
-newtype IDBRequest = IDBRequest (JSRef IDBRequest) deriving (Eq)
+newtype IDBRequest = IDBRequest { unIDBRequest :: JSRef IDBRequest }
 
-unIDBRequest (IDBRequest o) = o
+instance Eq (IDBRequest) where
+  (IDBRequest a) == (IDBRequest b) = js_eq a b
+
+instance PToJSRef IDBRequest where
+  pToJSRef = unIDBRequest
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBRequest where
+  pFromJSRef = IDBRequest
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBRequest where
   toJSRef = return . unIDBRequest
@@ -9168,7 +11358,9 @@ instance IsIDBRequest IDBRequest
 instance IsEventTarget IDBRequest
 instance IsGObject IDBRequest where
   toGObject = GObject . castRef . unIDBRequest
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBRequest . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBRequest :: IsGObject obj => obj -> IDBRequest
 castToIDBRequest = castTo gTypeIDBRequest "IDBRequest"
@@ -9186,9 +11378,18 @@ gTypeIDBRequest = GType gTypeIDBRequest'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction Mozilla IDBTransaction documentation>
-newtype IDBTransaction = IDBTransaction (JSRef IDBTransaction) deriving (Eq)
+newtype IDBTransaction = IDBTransaction { unIDBTransaction :: JSRef IDBTransaction }
 
-unIDBTransaction (IDBTransaction o) = o
+instance Eq (IDBTransaction) where
+  (IDBTransaction a) == (IDBTransaction b) = js_eq a b
+
+instance PToJSRef IDBTransaction where
+  pToJSRef = unIDBTransaction
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBTransaction where
+  pFromJSRef = IDBTransaction
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBTransaction where
   toJSRef = return . unIDBTransaction
@@ -9201,7 +11402,9 @@ instance FromJSRef IDBTransaction where
 instance IsEventTarget IDBTransaction
 instance IsGObject IDBTransaction where
   toGObject = GObject . castRef . unIDBTransaction
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBTransaction . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBTransaction :: IsGObject obj => obj -> IDBTransaction
 castToIDBTransaction = castTo gTypeIDBTransaction "IDBTransaction"
@@ -9219,9 +11422,18 @@ gTypeIDBTransaction = GType gTypeIDBTransaction'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent Mozilla IDBVersionChangeEvent documentation>
-newtype IDBVersionChangeEvent = IDBVersionChangeEvent (JSRef IDBVersionChangeEvent) deriving (Eq)
+newtype IDBVersionChangeEvent = IDBVersionChangeEvent { unIDBVersionChangeEvent :: JSRef IDBVersionChangeEvent }
 
-unIDBVersionChangeEvent (IDBVersionChangeEvent o) = o
+instance Eq (IDBVersionChangeEvent) where
+  (IDBVersionChangeEvent a) == (IDBVersionChangeEvent b) = js_eq a b
+
+instance PToJSRef IDBVersionChangeEvent where
+  pToJSRef = unIDBVersionChangeEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef IDBVersionChangeEvent where
+  pFromJSRef = IDBVersionChangeEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef IDBVersionChangeEvent where
   toJSRef = return . unIDBVersionChangeEvent
@@ -9234,7 +11446,9 @@ instance FromJSRef IDBVersionChangeEvent where
 instance IsEvent IDBVersionChangeEvent
 instance IsGObject IDBVersionChangeEvent where
   toGObject = GObject . castRef . unIDBVersionChangeEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = IDBVersionChangeEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToIDBVersionChangeEvent :: IsGObject obj => obj -> IDBVersionChangeEvent
 castToIDBVersionChangeEvent = castTo gTypeIDBVersionChangeEvent "IDBVersionChangeEvent"
@@ -9249,9 +11463,18 @@ gTypeIDBVersionChangeEvent = GType gTypeIDBVersionChangeEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.ImageData".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation>
-newtype ImageData = ImageData (JSRef ImageData) deriving (Eq)
+newtype ImageData = ImageData { unImageData :: JSRef ImageData }
 
-unImageData (ImageData o) = o
+instance Eq (ImageData) where
+  (ImageData a) == (ImageData b) = js_eq a b
+
+instance PToJSRef ImageData where
+  pToJSRef = unImageData
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ImageData where
+  pFromJSRef = ImageData
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ImageData where
   toJSRef = return . unImageData
@@ -9263,7 +11486,9 @@ instance FromJSRef ImageData where
 
 instance IsGObject ImageData where
   toGObject = GObject . castRef . unImageData
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ImageData . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToImageData :: IsGObject obj => obj -> ImageData
 castToImageData = castTo gTypeImageData "ImageData"
@@ -9278,9 +11503,18 @@ gTypeImageData = GType gTypeImageData'
 -- | Functions for this inteface are in "GHCJS.DOM.InspectorFrontendHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost Mozilla InspectorFrontendHost documentation>
-newtype InspectorFrontendHost = InspectorFrontendHost (JSRef InspectorFrontendHost) deriving (Eq)
+newtype InspectorFrontendHost = InspectorFrontendHost { unInspectorFrontendHost :: JSRef InspectorFrontendHost }
 
-unInspectorFrontendHost (InspectorFrontendHost o) = o
+instance Eq (InspectorFrontendHost) where
+  (InspectorFrontendHost a) == (InspectorFrontendHost b) = js_eq a b
+
+instance PToJSRef InspectorFrontendHost where
+  pToJSRef = unInspectorFrontendHost
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef InspectorFrontendHost where
+  pFromJSRef = InspectorFrontendHost
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef InspectorFrontendHost where
   toJSRef = return . unInspectorFrontendHost
@@ -9292,7 +11526,9 @@ instance FromJSRef InspectorFrontendHost where
 
 instance IsGObject InspectorFrontendHost where
   toGObject = GObject . castRef . unInspectorFrontendHost
+  {-# INLINE toGObject #-}
   unsafeCastGObject = InspectorFrontendHost . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToInspectorFrontendHost :: IsGObject obj => obj -> InspectorFrontendHost
 castToInspectorFrontendHost = castTo gTypeInspectorFrontendHost "InspectorFrontendHost"
@@ -9309,9 +11545,18 @@ gTypeInspectorFrontendHost = GType gTypeInspectorFrontendHost'
 --
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings Mozilla InternalSettings documentation>
-newtype InternalSettings = InternalSettings (JSRef InternalSettings) deriving (Eq)
+newtype InternalSettings = InternalSettings { unInternalSettings :: JSRef InternalSettings }
 
-unInternalSettings (InternalSettings o) = o
+instance Eq (InternalSettings) where
+  (InternalSettings a) == (InternalSettings b) = js_eq a b
+
+instance PToJSRef InternalSettings where
+  pToJSRef = unInternalSettings
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef InternalSettings where
+  pFromJSRef = InternalSettings
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef InternalSettings where
   toJSRef = return . unInternalSettings
@@ -9323,7 +11568,9 @@ instance FromJSRef InternalSettings where
 
 instance IsGObject InternalSettings where
   toGObject = GObject . castRef . unInternalSettings
+  {-# INLINE toGObject #-}
   unsafeCastGObject = InternalSettings . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToInternalSettings :: IsGObject obj => obj -> InternalSettings
 castToInternalSettings = castTo gTypeInternalSettings "InternalSettings"
@@ -9338,9 +11585,18 @@ gTypeInternalSettings = GType gTypeInternalSettings'
 -- | Functions for this inteface are in "GHCJS.DOM.Internals".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Internals Mozilla Internals documentation>
-newtype Internals = Internals (JSRef Internals) deriving (Eq)
+newtype Internals = Internals { unInternals :: JSRef Internals }
 
-unInternals (Internals o) = o
+instance Eq (Internals) where
+  (Internals a) == (Internals b) = js_eq a b
+
+instance PToJSRef Internals where
+  pToJSRef = unInternals
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Internals where
+  pFromJSRef = Internals
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Internals where
   toJSRef = return . unInternals
@@ -9352,7 +11608,9 @@ instance FromJSRef Internals where
 
 instance IsGObject Internals where
   toGObject = GObject . castRef . unInternals
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Internals . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToInternals :: IsGObject obj => obj -> Internals
 castToInternals = castTo gTypeInternals "Internals"
@@ -9371,9 +11629,18 @@ gTypeInternals = GType gTypeInternals'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent Mozilla KeyboardEvent documentation>
-newtype KeyboardEvent = KeyboardEvent (JSRef KeyboardEvent) deriving (Eq)
+newtype KeyboardEvent = KeyboardEvent { unKeyboardEvent :: JSRef KeyboardEvent }
 
-unKeyboardEvent (KeyboardEvent o) = o
+instance Eq (KeyboardEvent) where
+  (KeyboardEvent a) == (KeyboardEvent b) = js_eq a b
+
+instance PToJSRef KeyboardEvent where
+  pToJSRef = unKeyboardEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef KeyboardEvent where
+  pFromJSRef = KeyboardEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef KeyboardEvent where
   toJSRef = return . unKeyboardEvent
@@ -9387,7 +11654,9 @@ instance IsUIEvent KeyboardEvent
 instance IsEvent KeyboardEvent
 instance IsGObject KeyboardEvent where
   toGObject = GObject . castRef . unKeyboardEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = KeyboardEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToKeyboardEvent :: IsGObject obj => obj -> KeyboardEvent
 castToKeyboardEvent = castTo gTypeKeyboardEvent "KeyboardEvent"
@@ -9403,9 +11672,18 @@ type IsKeyboardEvent o = KeyboardEventClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Location".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Location Mozilla Location documentation>
-newtype Location = Location (JSRef Location) deriving (Eq)
+newtype Location = Location { unLocation :: JSRef Location }
 
-unLocation (Location o) = o
+instance Eq (Location) where
+  (Location a) == (Location b) = js_eq a b
+
+instance PToJSRef Location where
+  pToJSRef = unLocation
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Location where
+  pFromJSRef = Location
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Location where
   toJSRef = return . unLocation
@@ -9417,7 +11695,9 @@ instance FromJSRef Location where
 
 instance IsGObject Location where
   toGObject = GObject . castRef . unLocation
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Location . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToLocation :: IsGObject obj => obj -> Location
 castToLocation = castTo gTypeLocation "Location"
@@ -9433,9 +11713,18 @@ type IsLocation o = LocationClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MallocStatistics".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MallocStatistics Mozilla MallocStatistics documentation>
-newtype MallocStatistics = MallocStatistics (JSRef MallocStatistics) deriving (Eq)
+newtype MallocStatistics = MallocStatistics { unMallocStatistics :: JSRef MallocStatistics }
 
-unMallocStatistics (MallocStatistics o) = o
+instance Eq (MallocStatistics) where
+  (MallocStatistics a) == (MallocStatistics b) = js_eq a b
+
+instance PToJSRef MallocStatistics where
+  pToJSRef = unMallocStatistics
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MallocStatistics where
+  pFromJSRef = MallocStatistics
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MallocStatistics where
   toJSRef = return . unMallocStatistics
@@ -9447,7 +11736,9 @@ instance FromJSRef MallocStatistics where
 
 instance IsGObject MallocStatistics where
   toGObject = GObject . castRef . unMallocStatistics
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MallocStatistics . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMallocStatistics :: IsGObject obj => obj -> MallocStatistics
 castToMallocStatistics = castTo gTypeMallocStatistics "MallocStatistics"
@@ -9465,9 +11756,18 @@ gTypeMallocStatistics = GType gTypeMallocStatistics'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaController Mozilla MediaController documentation>
-newtype MediaController = MediaController (JSRef MediaController) deriving (Eq)
+newtype MediaController = MediaController { unMediaController :: JSRef MediaController }
 
-unMediaController (MediaController o) = o
+instance Eq (MediaController) where
+  (MediaController a) == (MediaController b) = js_eq a b
+
+instance PToJSRef MediaController where
+  pToJSRef = unMediaController
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaController where
+  pFromJSRef = MediaController
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaController where
   toJSRef = return . unMediaController
@@ -9480,7 +11780,9 @@ instance FromJSRef MediaController where
 instance IsEventTarget MediaController
 instance IsGObject MediaController where
   toGObject = GObject . castRef . unMediaController
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaController . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaController :: IsGObject obj => obj -> MediaController
 castToMediaController = castTo gTypeMediaController "MediaController"
@@ -9495,9 +11797,18 @@ gTypeMediaController = GType gTypeMediaController'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaControlsHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost Mozilla MediaControlsHost documentation>
-newtype MediaControlsHost = MediaControlsHost (JSRef MediaControlsHost) deriving (Eq)
+newtype MediaControlsHost = MediaControlsHost { unMediaControlsHost :: JSRef MediaControlsHost }
 
-unMediaControlsHost (MediaControlsHost o) = o
+instance Eq (MediaControlsHost) where
+  (MediaControlsHost a) == (MediaControlsHost b) = js_eq a b
+
+instance PToJSRef MediaControlsHost where
+  pToJSRef = unMediaControlsHost
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaControlsHost where
+  pFromJSRef = MediaControlsHost
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaControlsHost where
   toJSRef = return . unMediaControlsHost
@@ -9509,7 +11820,9 @@ instance FromJSRef MediaControlsHost where
 
 instance IsGObject MediaControlsHost where
   toGObject = GObject . castRef . unMediaControlsHost
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaControlsHost . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaControlsHost :: IsGObject obj => obj -> MediaControlsHost
 castToMediaControlsHost = castTo gTypeMediaControlsHost "MediaControlsHost"
@@ -9528,9 +11841,18 @@ gTypeMediaControlsHost = GType gTypeMediaControlsHost'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaElementAudioSourceNode Mozilla MediaElementAudioSourceNode documentation>
-newtype MediaElementAudioSourceNode = MediaElementAudioSourceNode (JSRef MediaElementAudioSourceNode) deriving (Eq)
+newtype MediaElementAudioSourceNode = MediaElementAudioSourceNode { unMediaElementAudioSourceNode :: JSRef MediaElementAudioSourceNode }
 
-unMediaElementAudioSourceNode (MediaElementAudioSourceNode o) = o
+instance Eq (MediaElementAudioSourceNode) where
+  (MediaElementAudioSourceNode a) == (MediaElementAudioSourceNode b) = js_eq a b
+
+instance PToJSRef MediaElementAudioSourceNode where
+  pToJSRef = unMediaElementAudioSourceNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaElementAudioSourceNode where
+  pFromJSRef = MediaElementAudioSourceNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaElementAudioSourceNode where
   toJSRef = return . unMediaElementAudioSourceNode
@@ -9544,7 +11866,9 @@ instance IsAudioNode MediaElementAudioSourceNode
 instance IsEventTarget MediaElementAudioSourceNode
 instance IsGObject MediaElementAudioSourceNode where
   toGObject = GObject . castRef . unMediaElementAudioSourceNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaElementAudioSourceNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaElementAudioSourceNode :: IsGObject obj => obj -> MediaElementAudioSourceNode
 castToMediaElementAudioSourceNode = castTo gTypeMediaElementAudioSourceNode "MediaElementAudioSourceNode"
@@ -9559,9 +11883,18 @@ gTypeMediaElementAudioSourceNode = GType gTypeMediaElementAudioSourceNode'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaError Mozilla MediaError documentation>
-newtype MediaError = MediaError (JSRef MediaError) deriving (Eq)
+newtype MediaError = MediaError { unMediaError :: JSRef MediaError }
 
-unMediaError (MediaError o) = o
+instance Eq (MediaError) where
+  (MediaError a) == (MediaError b) = js_eq a b
+
+instance PToJSRef MediaError where
+  pToJSRef = unMediaError
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaError where
+  pFromJSRef = MediaError
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaError where
   toJSRef = return . unMediaError
@@ -9573,7 +11906,9 @@ instance FromJSRef MediaError where
 
 instance IsGObject MediaError where
   toGObject = GObject . castRef . unMediaError
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaError . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaError :: IsGObject obj => obj -> MediaError
 castToMediaError = castTo gTypeMediaError "MediaError"
@@ -9589,9 +11924,18 @@ type IsMediaError o = MediaErrorClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError Mozilla WebKitMediaKeyError documentation>
-newtype MediaKeyError = MediaKeyError (JSRef MediaKeyError) deriving (Eq)
+newtype MediaKeyError = MediaKeyError { unMediaKeyError :: JSRef MediaKeyError }
 
-unMediaKeyError (MediaKeyError o) = o
+instance Eq (MediaKeyError) where
+  (MediaKeyError a) == (MediaKeyError b) = js_eq a b
+
+instance PToJSRef MediaKeyError where
+  pToJSRef = unMediaKeyError
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaKeyError where
+  pFromJSRef = MediaKeyError
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaKeyError where
   toJSRef = return . unMediaKeyError
@@ -9603,7 +11947,9 @@ instance FromJSRef MediaKeyError where
 
 instance IsGObject MediaKeyError where
   toGObject = GObject . castRef . unMediaKeyError
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaKeyError . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaKeyError :: IsGObject obj => obj -> MediaKeyError
 castToMediaKeyError = castTo gTypeMediaKeyError "MediaKeyError"
@@ -9621,9 +11967,18 @@ gTypeMediaKeyError = GType gTypeMediaKeyError'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent Mozilla MediaKeyEvent documentation>
-newtype MediaKeyEvent = MediaKeyEvent (JSRef MediaKeyEvent) deriving (Eq)
+newtype MediaKeyEvent = MediaKeyEvent { unMediaKeyEvent :: JSRef MediaKeyEvent }
 
-unMediaKeyEvent (MediaKeyEvent o) = o
+instance Eq (MediaKeyEvent) where
+  (MediaKeyEvent a) == (MediaKeyEvent b) = js_eq a b
+
+instance PToJSRef MediaKeyEvent where
+  pToJSRef = unMediaKeyEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaKeyEvent where
+  pFromJSRef = MediaKeyEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaKeyEvent where
   toJSRef = return . unMediaKeyEvent
@@ -9636,7 +11991,9 @@ instance FromJSRef MediaKeyEvent where
 instance IsEvent MediaKeyEvent
 instance IsGObject MediaKeyEvent where
   toGObject = GObject . castRef . unMediaKeyEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaKeyEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaKeyEvent :: IsGObject obj => obj -> MediaKeyEvent
 castToMediaKeyEvent = castTo gTypeMediaKeyEvent "MediaKeyEvent"
@@ -9654,9 +12011,18 @@ gTypeMediaKeyEvent = GType gTypeMediaKeyEvent'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent Mozilla WebKitMediaKeyMessageEvent documentation>
-newtype MediaKeyMessageEvent = MediaKeyMessageEvent (JSRef MediaKeyMessageEvent) deriving (Eq)
+newtype MediaKeyMessageEvent = MediaKeyMessageEvent { unMediaKeyMessageEvent :: JSRef MediaKeyMessageEvent }
 
-unMediaKeyMessageEvent (MediaKeyMessageEvent o) = o
+instance Eq (MediaKeyMessageEvent) where
+  (MediaKeyMessageEvent a) == (MediaKeyMessageEvent b) = js_eq a b
+
+instance PToJSRef MediaKeyMessageEvent where
+  pToJSRef = unMediaKeyMessageEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaKeyMessageEvent where
+  pFromJSRef = MediaKeyMessageEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaKeyMessageEvent where
   toJSRef = return . unMediaKeyMessageEvent
@@ -9669,7 +12035,9 @@ instance FromJSRef MediaKeyMessageEvent where
 instance IsEvent MediaKeyMessageEvent
 instance IsGObject MediaKeyMessageEvent where
   toGObject = GObject . castRef . unMediaKeyMessageEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaKeyMessageEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaKeyMessageEvent :: IsGObject obj => obj -> MediaKeyMessageEvent
 castToMediaKeyMessageEvent = castTo gTypeMediaKeyMessageEvent "MediaKeyMessageEvent"
@@ -9687,9 +12055,18 @@ gTypeMediaKeyMessageEvent = GType gTypeMediaKeyMessageEvent'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyNeededEvent Mozilla MediaKeyNeededEvent documentation>
-newtype MediaKeyNeededEvent = MediaKeyNeededEvent (JSRef MediaKeyNeededEvent) deriving (Eq)
+newtype MediaKeyNeededEvent = MediaKeyNeededEvent { unMediaKeyNeededEvent :: JSRef MediaKeyNeededEvent }
 
-unMediaKeyNeededEvent (MediaKeyNeededEvent o) = o
+instance Eq (MediaKeyNeededEvent) where
+  (MediaKeyNeededEvent a) == (MediaKeyNeededEvent b) = js_eq a b
+
+instance PToJSRef MediaKeyNeededEvent where
+  pToJSRef = unMediaKeyNeededEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaKeyNeededEvent where
+  pFromJSRef = MediaKeyNeededEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaKeyNeededEvent where
   toJSRef = return . unMediaKeyNeededEvent
@@ -9702,7 +12079,9 @@ instance FromJSRef MediaKeyNeededEvent where
 instance IsEvent MediaKeyNeededEvent
 instance IsGObject MediaKeyNeededEvent where
   toGObject = GObject . castRef . unMediaKeyNeededEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaKeyNeededEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaKeyNeededEvent :: IsGObject obj => obj -> MediaKeyNeededEvent
 castToMediaKeyNeededEvent = castTo gTypeMediaKeyNeededEvent "MediaKeyNeededEvent"
@@ -9720,9 +12099,18 @@ gTypeMediaKeyNeededEvent = GType gTypeMediaKeyNeededEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession Mozilla WebKitMediaKeySession documentation>
-newtype MediaKeySession = MediaKeySession (JSRef MediaKeySession) deriving (Eq)
+newtype MediaKeySession = MediaKeySession { unMediaKeySession :: JSRef MediaKeySession }
 
-unMediaKeySession (MediaKeySession o) = o
+instance Eq (MediaKeySession) where
+  (MediaKeySession a) == (MediaKeySession b) = js_eq a b
+
+instance PToJSRef MediaKeySession where
+  pToJSRef = unMediaKeySession
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaKeySession where
+  pFromJSRef = MediaKeySession
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaKeySession where
   toJSRef = return . unMediaKeySession
@@ -9735,7 +12123,9 @@ instance FromJSRef MediaKeySession where
 instance IsEventTarget MediaKeySession
 instance IsGObject MediaKeySession where
   toGObject = GObject . castRef . unMediaKeySession
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaKeySession . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaKeySession :: IsGObject obj => obj -> MediaKeySession
 castToMediaKeySession = castTo gTypeMediaKeySession "MediaKeySession"
@@ -9750,9 +12140,18 @@ gTypeMediaKeySession = GType gTypeMediaKeySession'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeys".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation>
-newtype MediaKeys = MediaKeys (JSRef MediaKeys) deriving (Eq)
+newtype MediaKeys = MediaKeys { unMediaKeys :: JSRef MediaKeys }
 
-unMediaKeys (MediaKeys o) = o
+instance Eq (MediaKeys) where
+  (MediaKeys a) == (MediaKeys b) = js_eq a b
+
+instance PToJSRef MediaKeys where
+  pToJSRef = unMediaKeys
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaKeys where
+  pFromJSRef = MediaKeys
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaKeys where
   toJSRef = return . unMediaKeys
@@ -9764,7 +12163,9 @@ instance FromJSRef MediaKeys where
 
 instance IsGObject MediaKeys where
   toGObject = GObject . castRef . unMediaKeys
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaKeys . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaKeys :: IsGObject obj => obj -> MediaKeys
 castToMediaKeys = castTo gTypeMediaKeys "MediaKeys"
@@ -9779,9 +12180,18 @@ gTypeMediaKeys = GType gTypeMediaKeys'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaList Mozilla MediaList documentation>
-newtype MediaList = MediaList (JSRef MediaList) deriving (Eq)
+newtype MediaList = MediaList { unMediaList :: JSRef MediaList }
 
-unMediaList (MediaList o) = o
+instance Eq (MediaList) where
+  (MediaList a) == (MediaList b) = js_eq a b
+
+instance PToJSRef MediaList where
+  pToJSRef = unMediaList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaList where
+  pFromJSRef = MediaList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaList where
   toJSRef = return . unMediaList
@@ -9793,7 +12203,9 @@ instance FromJSRef MediaList where
 
 instance IsGObject MediaList where
   toGObject = GObject . castRef . unMediaList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaList :: IsGObject obj => obj -> MediaList
 castToMediaList = castTo gTypeMediaList "MediaList"
@@ -9809,9 +12221,18 @@ type IsMediaList o = MediaListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MediaQueryList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList Mozilla MediaQueryList documentation>
-newtype MediaQueryList = MediaQueryList (JSRef MediaQueryList) deriving (Eq)
+newtype MediaQueryList = MediaQueryList { unMediaQueryList :: JSRef MediaQueryList }
 
-unMediaQueryList (MediaQueryList o) = o
+instance Eq (MediaQueryList) where
+  (MediaQueryList a) == (MediaQueryList b) = js_eq a b
+
+instance PToJSRef MediaQueryList where
+  pToJSRef = unMediaQueryList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaQueryList where
+  pFromJSRef = MediaQueryList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaQueryList where
   toJSRef = return . unMediaQueryList
@@ -9823,7 +12244,9 @@ instance FromJSRef MediaQueryList where
 
 instance IsGObject MediaQueryList where
   toGObject = GObject . castRef . unMediaQueryList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaQueryList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaQueryList :: IsGObject obj => obj -> MediaQueryList
 castToMediaQueryList = castTo gTypeMediaQueryList "MediaQueryList"
@@ -9836,44 +12259,24 @@ type IsMediaQueryList o = MediaQueryListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.MediaQueryListListener".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation>
-newtype MediaQueryListListener = MediaQueryListListener (JSRef MediaQueryListListener) deriving (Eq)
-
-unMediaQueryListListener (MediaQueryListListener o) = o
-
-instance ToJSRef MediaQueryListListener where
-  toJSRef = return . unMediaQueryListListener
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef MediaQueryListListener where
-  fromJSRef = return . fmap MediaQueryListListener . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject MediaQueryListListener where
-  toGObject = GObject . castRef . unMediaQueryListListener
-  unsafeCastGObject = MediaQueryListListener . castRef . unGObject
-
-castToMediaQueryListListener :: IsGObject obj => obj -> MediaQueryListListener
-castToMediaQueryListListener = castTo gTypeMediaQueryListListener "MediaQueryListListener"
-
-foreign import javascript unsafe "window[\"MediaQueryListListener\"]" gTypeMediaQueryListListener' :: JSRef GType
-gTypeMediaQueryListListener = GType gTypeMediaQueryListListener'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSource".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource Mozilla MediaSource documentation>
-newtype MediaSource = MediaSource (JSRef MediaSource) deriving (Eq)
+newtype MediaSource = MediaSource { unMediaSource :: JSRef MediaSource }
 
-unMediaSource (MediaSource o) = o
+instance Eq (MediaSource) where
+  (MediaSource a) == (MediaSource b) = js_eq a b
+
+instance PToJSRef MediaSource where
+  pToJSRef = unMediaSource
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaSource where
+  pFromJSRef = MediaSource
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaSource where
   toJSRef = return . unMediaSource
@@ -9886,7 +12289,9 @@ instance FromJSRef MediaSource where
 instance IsEventTarget MediaSource
 instance IsGObject MediaSource where
   toGObject = GObject . castRef . unMediaSource
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaSource . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaSource :: IsGObject obj => obj -> MediaSource
 castToMediaSource = castTo gTypeMediaSource "MediaSource"
@@ -9901,9 +12306,18 @@ gTypeMediaSource = GType gTypeMediaSource'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSourceStates".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates Mozilla MediaSourceStates documentation>
-newtype MediaSourceStates = MediaSourceStates (JSRef MediaSourceStates) deriving (Eq)
+newtype MediaSourceStates = MediaSourceStates { unMediaSourceStates :: JSRef MediaSourceStates }
 
-unMediaSourceStates (MediaSourceStates o) = o
+instance Eq (MediaSourceStates) where
+  (MediaSourceStates a) == (MediaSourceStates b) = js_eq a b
+
+instance PToJSRef MediaSourceStates where
+  pToJSRef = unMediaSourceStates
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaSourceStates where
+  pFromJSRef = MediaSourceStates
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaSourceStates where
   toJSRef = return . unMediaSourceStates
@@ -9915,7 +12329,9 @@ instance FromJSRef MediaSourceStates where
 
 instance IsGObject MediaSourceStates where
   toGObject = GObject . castRef . unMediaSourceStates
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaSourceStates . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaSourceStates :: IsGObject obj => obj -> MediaSourceStates
 castToMediaSourceStates = castTo gTypeMediaSourceStates "MediaSourceStates"
@@ -9933,9 +12349,18 @@ gTypeMediaSourceStates = GType gTypeMediaSourceStates'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation>
-newtype MediaStream = MediaStream (JSRef MediaStream) deriving (Eq)
+newtype MediaStream = MediaStream { unMediaStream :: JSRef MediaStream }
 
-unMediaStream (MediaStream o) = o
+instance Eq (MediaStream) where
+  (MediaStream a) == (MediaStream b) = js_eq a b
+
+instance PToJSRef MediaStream where
+  pToJSRef = unMediaStream
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaStream where
+  pFromJSRef = MediaStream
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaStream where
   toJSRef = return . unMediaStream
@@ -9948,7 +12373,9 @@ instance FromJSRef MediaStream where
 instance IsEventTarget MediaStream
 instance IsGObject MediaStream where
   toGObject = GObject . castRef . unMediaStream
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaStream . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaStream :: IsGObject obj => obj -> MediaStream
 castToMediaStream = castTo gTypeMediaStream "MediaStream"
@@ -9967,9 +12394,18 @@ gTypeMediaStream = GType gTypeMediaStream'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode Mozilla MediaStreamAudioDestinationNode documentation>
-newtype MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode (JSRef MediaStreamAudioDestinationNode) deriving (Eq)
+newtype MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode { unMediaStreamAudioDestinationNode :: JSRef MediaStreamAudioDestinationNode }
 
-unMediaStreamAudioDestinationNode (MediaStreamAudioDestinationNode o) = o
+instance Eq (MediaStreamAudioDestinationNode) where
+  (MediaStreamAudioDestinationNode a) == (MediaStreamAudioDestinationNode b) = js_eq a b
+
+instance PToJSRef MediaStreamAudioDestinationNode where
+  pToJSRef = unMediaStreamAudioDestinationNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaStreamAudioDestinationNode where
+  pFromJSRef = MediaStreamAudioDestinationNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaStreamAudioDestinationNode where
   toJSRef = return . unMediaStreamAudioDestinationNode
@@ -9983,7 +12419,9 @@ instance IsAudioNode MediaStreamAudioDestinationNode
 instance IsEventTarget MediaStreamAudioDestinationNode
 instance IsGObject MediaStreamAudioDestinationNode where
   toGObject = GObject . castRef . unMediaStreamAudioDestinationNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaStreamAudioDestinationNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaStreamAudioDestinationNode :: IsGObject obj => obj -> MediaStreamAudioDestinationNode
 castToMediaStreamAudioDestinationNode = castTo gTypeMediaStreamAudioDestinationNode "MediaStreamAudioDestinationNode"
@@ -10002,9 +12440,18 @@ gTypeMediaStreamAudioDestinationNode = GType gTypeMediaStreamAudioDestinationNod
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode Mozilla MediaStreamAudioSourceNode documentation>
-newtype MediaStreamAudioSourceNode = MediaStreamAudioSourceNode (JSRef MediaStreamAudioSourceNode) deriving (Eq)
+newtype MediaStreamAudioSourceNode = MediaStreamAudioSourceNode { unMediaStreamAudioSourceNode :: JSRef MediaStreamAudioSourceNode }
 
-unMediaStreamAudioSourceNode (MediaStreamAudioSourceNode o) = o
+instance Eq (MediaStreamAudioSourceNode) where
+  (MediaStreamAudioSourceNode a) == (MediaStreamAudioSourceNode b) = js_eq a b
+
+instance PToJSRef MediaStreamAudioSourceNode where
+  pToJSRef = unMediaStreamAudioSourceNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaStreamAudioSourceNode where
+  pFromJSRef = MediaStreamAudioSourceNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaStreamAudioSourceNode where
   toJSRef = return . unMediaStreamAudioSourceNode
@@ -10018,7 +12465,9 @@ instance IsAudioNode MediaStreamAudioSourceNode
 instance IsEventTarget MediaStreamAudioSourceNode
 instance IsGObject MediaStreamAudioSourceNode where
   toGObject = GObject . castRef . unMediaStreamAudioSourceNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaStreamAudioSourceNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaStreamAudioSourceNode :: IsGObject obj => obj -> MediaStreamAudioSourceNode
 castToMediaStreamAudioSourceNode = castTo gTypeMediaStreamAudioSourceNode "MediaStreamAudioSourceNode"
@@ -10033,9 +12482,18 @@ gTypeMediaStreamAudioSourceNode = GType gTypeMediaStreamAudioSourceNode'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamCapabilities".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamCapabilities Mozilla MediaStreamCapabilities documentation>
-newtype MediaStreamCapabilities = MediaStreamCapabilities (JSRef MediaStreamCapabilities) deriving (Eq)
+newtype MediaStreamCapabilities = MediaStreamCapabilities { unMediaStreamCapabilities :: JSRef MediaStreamCapabilities }
 
-unMediaStreamCapabilities (MediaStreamCapabilities o) = o
+instance Eq (MediaStreamCapabilities) where
+  (MediaStreamCapabilities a) == (MediaStreamCapabilities b) = js_eq a b
+
+instance PToJSRef MediaStreamCapabilities where
+  pToJSRef = unMediaStreamCapabilities
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaStreamCapabilities where
+  pFromJSRef = MediaStreamCapabilities
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaStreamCapabilities where
   toJSRef = return . unMediaStreamCapabilities
@@ -10052,7 +12510,9 @@ toMediaStreamCapabilities = unsafeCastGObject . toGObject
 instance IsMediaStreamCapabilities MediaStreamCapabilities
 instance IsGObject MediaStreamCapabilities where
   toGObject = GObject . castRef . unMediaStreamCapabilities
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaStreamCapabilities . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaStreamCapabilities :: IsGObject obj => obj -> MediaStreamCapabilities
 castToMediaStreamCapabilities = castTo gTypeMediaStreamCapabilities "MediaStreamCapabilities"
@@ -10070,9 +12530,18 @@ gTypeMediaStreamCapabilities = GType gTypeMediaStreamCapabilities'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamEvent Mozilla MediaStreamEvent documentation>
-newtype MediaStreamEvent = MediaStreamEvent (JSRef MediaStreamEvent) deriving (Eq)
+newtype MediaStreamEvent = MediaStreamEvent { unMediaStreamEvent :: JSRef MediaStreamEvent }
 
-unMediaStreamEvent (MediaStreamEvent o) = o
+instance Eq (MediaStreamEvent) where
+  (MediaStreamEvent a) == (MediaStreamEvent b) = js_eq a b
+
+instance PToJSRef MediaStreamEvent where
+  pToJSRef = unMediaStreamEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaStreamEvent where
+  pFromJSRef = MediaStreamEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaStreamEvent where
   toJSRef = return . unMediaStreamEvent
@@ -10085,7 +12554,9 @@ instance FromJSRef MediaStreamEvent where
 instance IsEvent MediaStreamEvent
 instance IsGObject MediaStreamEvent where
   toGObject = GObject . castRef . unMediaStreamEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaStreamEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaStreamEvent :: IsGObject obj => obj -> MediaStreamEvent
 castToMediaStreamEvent = castTo gTypeMediaStreamEvent "MediaStreamEvent"
@@ -10103,9 +12574,18 @@ gTypeMediaStreamEvent = GType gTypeMediaStreamEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack Mozilla MediaStreamTrack documentation>
-newtype MediaStreamTrack = MediaStreamTrack (JSRef MediaStreamTrack) deriving (Eq)
+newtype MediaStreamTrack = MediaStreamTrack { unMediaStreamTrack :: JSRef MediaStreamTrack }
 
-unMediaStreamTrack (MediaStreamTrack o) = o
+instance Eq (MediaStreamTrack) where
+  (MediaStreamTrack a) == (MediaStreamTrack b) = js_eq a b
+
+instance PToJSRef MediaStreamTrack where
+  pToJSRef = unMediaStreamTrack
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaStreamTrack where
+  pFromJSRef = MediaStreamTrack
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaStreamTrack where
   toJSRef = return . unMediaStreamTrack
@@ -10123,7 +12603,9 @@ instance IsMediaStreamTrack MediaStreamTrack
 instance IsEventTarget MediaStreamTrack
 instance IsGObject MediaStreamTrack where
   toGObject = GObject . castRef . unMediaStreamTrack
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaStreamTrack . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaStreamTrack :: IsGObject obj => obj -> MediaStreamTrack
 castToMediaStreamTrack = castTo gTypeMediaStreamTrack "MediaStreamTrack"
@@ -10141,9 +12623,18 @@ gTypeMediaStreamTrack = GType gTypeMediaStreamTrack'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackEvent Mozilla MediaStreamTrackEvent documentation>
-newtype MediaStreamTrackEvent = MediaStreamTrackEvent (JSRef MediaStreamTrackEvent) deriving (Eq)
+newtype MediaStreamTrackEvent = MediaStreamTrackEvent { unMediaStreamTrackEvent :: JSRef MediaStreamTrackEvent }
 
-unMediaStreamTrackEvent (MediaStreamTrackEvent o) = o
+instance Eq (MediaStreamTrackEvent) where
+  (MediaStreamTrackEvent a) == (MediaStreamTrackEvent b) = js_eq a b
+
+instance PToJSRef MediaStreamTrackEvent where
+  pToJSRef = unMediaStreamTrackEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaStreamTrackEvent where
+  pFromJSRef = MediaStreamTrackEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaStreamTrackEvent where
   toJSRef = return . unMediaStreamTrackEvent
@@ -10156,7 +12647,9 @@ instance FromJSRef MediaStreamTrackEvent where
 instance IsEvent MediaStreamTrackEvent
 instance IsGObject MediaStreamTrackEvent where
   toGObject = GObject . castRef . unMediaStreamTrackEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaStreamTrackEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaStreamTrackEvent :: IsGObject obj => obj -> MediaStreamTrackEvent
 castToMediaStreamTrackEvent = castTo gTypeMediaStreamTrackEvent "MediaStreamTrackEvent"
@@ -10168,41 +12661,21 @@ gTypeMediaStreamTrackEvent = GType gTypeMediaStreamTrackEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrackSourcesCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation>
-newtype MediaStreamTrackSourcesCallback = MediaStreamTrackSourcesCallback (JSRef MediaStreamTrackSourcesCallback) deriving (Eq)
-
-unMediaStreamTrackSourcesCallback (MediaStreamTrackSourcesCallback o) = o
-
-instance ToJSRef MediaStreamTrackSourcesCallback where
-  toJSRef = return . unMediaStreamTrackSourcesCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef MediaStreamTrackSourcesCallback where
-  fromJSRef = return . fmap MediaStreamTrackSourcesCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject MediaStreamTrackSourcesCallback where
-  toGObject = GObject . castRef . unMediaStreamTrackSourcesCallback
-  unsafeCastGObject = MediaStreamTrackSourcesCallback . castRef . unGObject
-
-castToMediaStreamTrackSourcesCallback :: IsGObject obj => obj -> MediaStreamTrackSourcesCallback
-castToMediaStreamTrackSourcesCallback = castTo gTypeMediaStreamTrackSourcesCallback "MediaStreamTrackSourcesCallback"
-
-foreign import javascript unsafe "window[\"MediaStreamTrackSourcesCallback\"]" gTypeMediaStreamTrackSourcesCallback' :: JSRef GType
-gTypeMediaStreamTrackSourcesCallback = GType gTypeMediaStreamTrackSourcesCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraint Mozilla MediaTrackConstraint documentation>
-newtype MediaTrackConstraint = MediaTrackConstraint (JSRef MediaTrackConstraint) deriving (Eq)
+newtype MediaTrackConstraint = MediaTrackConstraint { unMediaTrackConstraint :: JSRef MediaTrackConstraint }
 
-unMediaTrackConstraint (MediaTrackConstraint o) = o
+instance Eq (MediaTrackConstraint) where
+  (MediaTrackConstraint a) == (MediaTrackConstraint b) = js_eq a b
+
+instance PToJSRef MediaTrackConstraint where
+  pToJSRef = unMediaTrackConstraint
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaTrackConstraint where
+  pFromJSRef = MediaTrackConstraint
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaTrackConstraint where
   toJSRef = return . unMediaTrackConstraint
@@ -10214,7 +12687,9 @@ instance FromJSRef MediaTrackConstraint where
 
 instance IsGObject MediaTrackConstraint where
   toGObject = GObject . castRef . unMediaTrackConstraint
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaTrackConstraint . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaTrackConstraint :: IsGObject obj => obj -> MediaTrackConstraint
 castToMediaTrackConstraint = castTo gTypeMediaTrackConstraint "MediaTrackConstraint"
@@ -10229,9 +12704,18 @@ gTypeMediaTrackConstraint = GType gTypeMediaTrackConstraint'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraintSet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraintSet Mozilla MediaTrackConstraintSet documentation>
-newtype MediaTrackConstraintSet = MediaTrackConstraintSet (JSRef MediaTrackConstraintSet) deriving (Eq)
+newtype MediaTrackConstraintSet = MediaTrackConstraintSet { unMediaTrackConstraintSet :: JSRef MediaTrackConstraintSet }
 
-unMediaTrackConstraintSet (MediaTrackConstraintSet o) = o
+instance Eq (MediaTrackConstraintSet) where
+  (MediaTrackConstraintSet a) == (MediaTrackConstraintSet b) = js_eq a b
+
+instance PToJSRef MediaTrackConstraintSet where
+  pToJSRef = unMediaTrackConstraintSet
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaTrackConstraintSet where
+  pFromJSRef = MediaTrackConstraintSet
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaTrackConstraintSet where
   toJSRef = return . unMediaTrackConstraintSet
@@ -10243,7 +12727,9 @@ instance FromJSRef MediaTrackConstraintSet where
 
 instance IsGObject MediaTrackConstraintSet where
   toGObject = GObject . castRef . unMediaTrackConstraintSet
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaTrackConstraintSet . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaTrackConstraintSet :: IsGObject obj => obj -> MediaTrackConstraintSet
 castToMediaTrackConstraintSet = castTo gTypeMediaTrackConstraintSet "MediaTrackConstraintSet"
@@ -10258,9 +12744,18 @@ gTypeMediaTrackConstraintSet = GType gTypeMediaTrackConstraintSet'
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraints".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints Mozilla MediaTrackConstraints documentation>
-newtype MediaTrackConstraints = MediaTrackConstraints (JSRef MediaTrackConstraints) deriving (Eq)
+newtype MediaTrackConstraints = MediaTrackConstraints { unMediaTrackConstraints :: JSRef MediaTrackConstraints }
 
-unMediaTrackConstraints (MediaTrackConstraints o) = o
+instance Eq (MediaTrackConstraints) where
+  (MediaTrackConstraints a) == (MediaTrackConstraints b) = js_eq a b
+
+instance PToJSRef MediaTrackConstraints where
+  pToJSRef = unMediaTrackConstraints
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MediaTrackConstraints where
+  pFromJSRef = MediaTrackConstraints
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MediaTrackConstraints where
   toJSRef = return . unMediaTrackConstraints
@@ -10272,7 +12767,9 @@ instance FromJSRef MediaTrackConstraints where
 
 instance IsGObject MediaTrackConstraints where
   toGObject = GObject . castRef . unMediaTrackConstraints
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MediaTrackConstraints . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMediaTrackConstraints :: IsGObject obj => obj -> MediaTrackConstraints
 castToMediaTrackConstraints = castTo gTypeMediaTrackConstraints "MediaTrackConstraints"
@@ -10287,9 +12784,18 @@ gTypeMediaTrackConstraints = GType gTypeMediaTrackConstraints'
 -- | Functions for this inteface are in "GHCJS.DOM.MemoryInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo Mozilla MemoryInfo documentation>
-newtype MemoryInfo = MemoryInfo (JSRef MemoryInfo) deriving (Eq)
+newtype MemoryInfo = MemoryInfo { unMemoryInfo :: JSRef MemoryInfo }
 
-unMemoryInfo (MemoryInfo o) = o
+instance Eq (MemoryInfo) where
+  (MemoryInfo a) == (MemoryInfo b) = js_eq a b
+
+instance PToJSRef MemoryInfo where
+  pToJSRef = unMemoryInfo
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MemoryInfo where
+  pFromJSRef = MemoryInfo
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MemoryInfo where
   toJSRef = return . unMemoryInfo
@@ -10301,7 +12807,9 @@ instance FromJSRef MemoryInfo where
 
 instance IsGObject MemoryInfo where
   toGObject = GObject . castRef . unMemoryInfo
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MemoryInfo . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMemoryInfo :: IsGObject obj => obj -> MemoryInfo
 castToMemoryInfo = castTo gTypeMemoryInfo "MemoryInfo"
@@ -10316,9 +12824,18 @@ gTypeMemoryInfo = GType gTypeMemoryInfo'
 -- | Functions for this inteface are in "GHCJS.DOM.MessageChannel".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel Mozilla MessageChannel documentation>
-newtype MessageChannel = MessageChannel (JSRef MessageChannel) deriving (Eq)
+newtype MessageChannel = MessageChannel { unMessageChannel :: JSRef MessageChannel }
 
-unMessageChannel (MessageChannel o) = o
+instance Eq (MessageChannel) where
+  (MessageChannel a) == (MessageChannel b) = js_eq a b
+
+instance PToJSRef MessageChannel where
+  pToJSRef = unMessageChannel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MessageChannel where
+  pFromJSRef = MessageChannel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MessageChannel where
   toJSRef = return . unMessageChannel
@@ -10330,7 +12847,9 @@ instance FromJSRef MessageChannel where
 
 instance IsGObject MessageChannel where
   toGObject = GObject . castRef . unMessageChannel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MessageChannel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMessageChannel :: IsGObject obj => obj -> MessageChannel
 castToMessageChannel = castTo gTypeMessageChannel "MessageChannel"
@@ -10348,9 +12867,18 @@ gTypeMessageChannel = GType gTypeMessageChannel'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent Mozilla MessageEvent documentation>
-newtype MessageEvent = MessageEvent (JSRef MessageEvent) deriving (Eq)
+newtype MessageEvent = MessageEvent { unMessageEvent :: JSRef MessageEvent }
 
-unMessageEvent (MessageEvent o) = o
+instance Eq (MessageEvent) where
+  (MessageEvent a) == (MessageEvent b) = js_eq a b
+
+instance PToJSRef MessageEvent where
+  pToJSRef = unMessageEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MessageEvent where
+  pFromJSRef = MessageEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MessageEvent where
   toJSRef = return . unMessageEvent
@@ -10363,7 +12891,9 @@ instance FromJSRef MessageEvent where
 instance IsEvent MessageEvent
 instance IsGObject MessageEvent where
   toGObject = GObject . castRef . unMessageEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MessageEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMessageEvent :: IsGObject obj => obj -> MessageEvent
 castToMessageEvent = castTo gTypeMessageEvent "MessageEvent"
@@ -10381,9 +12911,18 @@ gTypeMessageEvent = GType gTypeMessageEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort Mozilla MessagePort documentation>
-newtype MessagePort = MessagePort (JSRef MessagePort) deriving (Eq)
+newtype MessagePort = MessagePort { unMessagePort :: JSRef MessagePort }
 
-unMessagePort (MessagePort o) = o
+instance Eq (MessagePort) where
+  (MessagePort a) == (MessagePort b) = js_eq a b
+
+instance PToJSRef MessagePort where
+  pToJSRef = unMessagePort
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MessagePort where
+  pFromJSRef = MessagePort
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MessagePort where
   toJSRef = return . unMessagePort
@@ -10396,7 +12935,9 @@ instance FromJSRef MessagePort where
 instance IsEventTarget MessagePort
 instance IsGObject MessagePort where
   toGObject = GObject . castRef . unMessagePort
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MessagePort . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMessagePort :: IsGObject obj => obj -> MessagePort
 castToMessagePort = castTo gTypeMessagePort "MessagePort"
@@ -10409,6 +12950,88 @@ type IsMessagePort o = MessagePortClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MimeType".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MimeType Mozilla MimeType documentation>
+newtype MimeType = MimeType { unMimeType :: JSRef MimeType }
+
+instance Eq (MimeType) where
+  (MimeType a) == (MimeType b) = js_eq a b
+
+instance PToJSRef MimeType where
+  pToJSRef = unMimeType
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MimeType where
+  pFromJSRef = MimeType
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef MimeType where
+  toJSRef = return . unMimeType
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MimeType where
+  fromJSRef = return . fmap MimeType . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject MimeType where
+  toGObject = GObject . castRef . unMimeType
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = MimeType . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToMimeType :: IsGObject obj => obj -> MimeType
+castToMimeType = castTo gTypeMimeType "MimeType"
+
+foreign import javascript unsafe "window[\"MimeType\"]" gTypeMimeType' :: JSRef GType
+gTypeMimeType = GType gTypeMimeType'
+#else
+type IsMimeType o = MimeTypeClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.MimeTypeArray".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray Mozilla MimeTypeArray documentation>
+newtype MimeTypeArray = MimeTypeArray { unMimeTypeArray :: JSRef MimeTypeArray }
+
+instance Eq (MimeTypeArray) where
+  (MimeTypeArray a) == (MimeTypeArray b) = js_eq a b
+
+instance PToJSRef MimeTypeArray where
+  pToJSRef = unMimeTypeArray
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MimeTypeArray where
+  pFromJSRef = MimeTypeArray
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef MimeTypeArray where
+  toJSRef = return . unMimeTypeArray
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef MimeTypeArray where
+  fromJSRef = return . fmap MimeTypeArray . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject MimeTypeArray where
+  toGObject = GObject . castRef . unMimeTypeArray
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = MimeTypeArray . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToMimeTypeArray :: IsGObject obj => obj -> MimeTypeArray
+castToMimeTypeArray = castTo gTypeMimeTypeArray "MimeTypeArray"
+
+foreign import javascript unsafe "window[\"MimeTypeArray\"]" gTypeMimeTypeArray' :: JSRef GType
+gTypeMimeTypeArray = GType gTypeMimeTypeArray'
+#else
+type IsMimeTypeArray o = MimeTypeArrayClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MouseEvent".
 -- Base interface functions are in:
 --
@@ -10416,9 +13039,18 @@ type IsMessagePort o = MessagePortClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent Mozilla MouseEvent documentation>
-newtype MouseEvent = MouseEvent (JSRef MouseEvent) deriving (Eq)
+newtype MouseEvent = MouseEvent { unMouseEvent :: JSRef MouseEvent }
 
-unMouseEvent (MouseEvent o) = o
+instance Eq (MouseEvent) where
+  (MouseEvent a) == (MouseEvent b) = js_eq a b
+
+instance PToJSRef MouseEvent where
+  pToJSRef = unMouseEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MouseEvent where
+  pFromJSRef = MouseEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MouseEvent where
   toJSRef = return . unMouseEvent
@@ -10437,7 +13069,9 @@ instance IsUIEvent MouseEvent
 instance IsEvent MouseEvent
 instance IsGObject MouseEvent where
   toGObject = GObject . castRef . unMouseEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MouseEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMouseEvent :: IsGObject obj => obj -> MouseEvent
 castToMouseEvent = castTo gTypeMouseEvent "MouseEvent"
@@ -10456,9 +13090,18 @@ type IsMouseEvent o = MouseEventClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent Mozilla MutationEvent documentation>
-newtype MutationEvent = MutationEvent (JSRef MutationEvent) deriving (Eq)
+newtype MutationEvent = MutationEvent { unMutationEvent :: JSRef MutationEvent }
 
-unMutationEvent (MutationEvent o) = o
+instance Eq (MutationEvent) where
+  (MutationEvent a) == (MutationEvent b) = js_eq a b
+
+instance PToJSRef MutationEvent where
+  pToJSRef = unMutationEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MutationEvent where
+  pFromJSRef = MutationEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MutationEvent where
   toJSRef = return . unMutationEvent
@@ -10471,7 +13114,9 @@ instance FromJSRef MutationEvent where
 instance IsEvent MutationEvent
 instance IsGObject MutationEvent where
   toGObject = GObject . castRef . unMutationEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MutationEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMutationEvent :: IsGObject obj => obj -> MutationEvent
 castToMutationEvent = castTo gTypeMutationEvent "MutationEvent"
@@ -10486,9 +13131,18 @@ gTypeMutationEvent = GType gTypeMutationEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.MutationObserver".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver Mozilla MutationObserver documentation>
-newtype MutationObserver = MutationObserver (JSRef MutationObserver) deriving (Eq)
+newtype MutationObserver = MutationObserver { unMutationObserver :: JSRef MutationObserver }
 
-unMutationObserver (MutationObserver o) = o
+instance Eq (MutationObserver) where
+  (MutationObserver a) == (MutationObserver b) = js_eq a b
+
+instance PToJSRef MutationObserver where
+  pToJSRef = unMutationObserver
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MutationObserver where
+  pFromJSRef = MutationObserver
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MutationObserver where
   toJSRef = return . unMutationObserver
@@ -10500,7 +13154,9 @@ instance FromJSRef MutationObserver where
 
 instance IsGObject MutationObserver where
   toGObject = GObject . castRef . unMutationObserver
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MutationObserver . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMutationObserver :: IsGObject obj => obj -> MutationObserver
 castToMutationObserver = castTo gTypeMutationObserver "MutationObserver"
@@ -10515,9 +13171,18 @@ gTypeMutationObserver = GType gTypeMutationObserver'
 -- | Functions for this inteface are in "GHCJS.DOM.MutationRecord".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord Mozilla MutationRecord documentation>
-newtype MutationRecord = MutationRecord (JSRef MutationRecord) deriving (Eq)
+newtype MutationRecord = MutationRecord { unMutationRecord :: JSRef MutationRecord }
 
-unMutationRecord (MutationRecord o) = o
+instance Eq (MutationRecord) where
+  (MutationRecord a) == (MutationRecord b) = js_eq a b
+
+instance PToJSRef MutationRecord where
+  pToJSRef = unMutationRecord
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef MutationRecord where
+  pFromJSRef = MutationRecord
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef MutationRecord where
   toJSRef = return . unMutationRecord
@@ -10529,7 +13194,9 @@ instance FromJSRef MutationRecord where
 
 instance IsGObject MutationRecord where
   toGObject = GObject . castRef . unMutationRecord
+  {-# INLINE toGObject #-}
   unsafeCastGObject = MutationRecord . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToMutationRecord :: IsGObject obj => obj -> MutationRecord
 castToMutationRecord = castTo gTypeMutationRecord "MutationRecord"
@@ -10544,9 +13211,18 @@ gTypeMutationRecord = GType gTypeMutationRecord'
 -- | Functions for this inteface are in "GHCJS.DOM.NamedNodeMap".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap Mozilla NamedNodeMap documentation>
-newtype NamedNodeMap = NamedNodeMap (JSRef NamedNodeMap) deriving (Eq)
+newtype NamedNodeMap = NamedNodeMap { unNamedNodeMap :: JSRef NamedNodeMap }
 
-unNamedNodeMap (NamedNodeMap o) = o
+instance Eq (NamedNodeMap) where
+  (NamedNodeMap a) == (NamedNodeMap b) = js_eq a b
+
+instance PToJSRef NamedNodeMap where
+  pToJSRef = unNamedNodeMap
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef NamedNodeMap where
+  pFromJSRef = NamedNodeMap
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef NamedNodeMap where
   toJSRef = return . unNamedNodeMap
@@ -10558,7 +13234,9 @@ instance FromJSRef NamedNodeMap where
 
 instance IsGObject NamedNodeMap where
   toGObject = GObject . castRef . unNamedNodeMap
+  {-# INLINE toGObject #-}
   unsafeCastGObject = NamedNodeMap . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNamedNodeMap :: IsGObject obj => obj -> NamedNodeMap
 castToNamedNodeMap = castTo gTypeNamedNodeMap "NamedNodeMap"
@@ -10574,9 +13252,18 @@ type IsNamedNodeMap o = NamedNodeMapClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Navigator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Navigator Mozilla Navigator documentation>
-newtype Navigator = Navigator (JSRef Navigator) deriving (Eq)
+newtype Navigator = Navigator { unNavigator :: JSRef Navigator }
 
-unNavigator (Navigator o) = o
+instance Eq (Navigator) where
+  (Navigator a) == (Navigator b) = js_eq a b
+
+instance PToJSRef Navigator where
+  pToJSRef = unNavigator
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Navigator where
+  pFromJSRef = Navigator
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Navigator where
   toJSRef = return . unNavigator
@@ -10588,7 +13275,9 @@ instance FromJSRef Navigator where
 
 instance IsGObject Navigator where
   toGObject = GObject . castRef . unNavigator
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Navigator . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNavigator :: IsGObject obj => obj -> Navigator
 castToNavigator = castTo gTypeNavigator "Navigator"
@@ -10607,9 +13296,18 @@ type IsNavigator o = NavigatorClass o
 --     * "GHCJS.DOM.DOMError"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaError Mozilla NavigatorUserMediaError documentation>
-newtype NavigatorUserMediaError = NavigatorUserMediaError (JSRef NavigatorUserMediaError) deriving (Eq)
+newtype NavigatorUserMediaError = NavigatorUserMediaError { unNavigatorUserMediaError :: JSRef NavigatorUserMediaError }
 
-unNavigatorUserMediaError (NavigatorUserMediaError o) = o
+instance Eq (NavigatorUserMediaError) where
+  (NavigatorUserMediaError a) == (NavigatorUserMediaError b) = js_eq a b
+
+instance PToJSRef NavigatorUserMediaError where
+  pToJSRef = unNavigatorUserMediaError
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef NavigatorUserMediaError where
+  pFromJSRef = NavigatorUserMediaError
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef NavigatorUserMediaError where
   toJSRef = return . unNavigatorUserMediaError
@@ -10622,7 +13320,9 @@ instance FromJSRef NavigatorUserMediaError where
 instance IsDOMError NavigatorUserMediaError
 instance IsGObject NavigatorUserMediaError where
   toGObject = GObject . castRef . unNavigatorUserMediaError
+  {-# INLINE toGObject #-}
   unsafeCastGObject = NavigatorUserMediaError . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNavigatorUserMediaError :: IsGObject obj => obj -> NavigatorUserMediaError
 castToNavigatorUserMediaError = castTo gTypeNavigatorUserMediaError "NavigatorUserMediaError"
@@ -10634,73 +13334,24 @@ gTypeNavigatorUserMediaError = GType gTypeNavigatorUserMediaError'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaErrorCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation>
-newtype NavigatorUserMediaErrorCallback = NavigatorUserMediaErrorCallback (JSRef NavigatorUserMediaErrorCallback) deriving (Eq)
-
-unNavigatorUserMediaErrorCallback (NavigatorUserMediaErrorCallback o) = o
-
-instance ToJSRef NavigatorUserMediaErrorCallback where
-  toJSRef = return . unNavigatorUserMediaErrorCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef NavigatorUserMediaErrorCallback where
-  fromJSRef = return . fmap NavigatorUserMediaErrorCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject NavigatorUserMediaErrorCallback where
-  toGObject = GObject . castRef . unNavigatorUserMediaErrorCallback
-  unsafeCastGObject = NavigatorUserMediaErrorCallback . castRef . unGObject
-
-castToNavigatorUserMediaErrorCallback :: IsGObject obj => obj -> NavigatorUserMediaErrorCallback
-castToNavigatorUserMediaErrorCallback = castTo gTypeNavigatorUserMediaErrorCallback "NavigatorUserMediaErrorCallback"
-
-foreign import javascript unsafe "window[\"NavigatorUserMediaErrorCallback\"]" gTypeNavigatorUserMediaErrorCallback' :: JSRef GType
-gTypeNavigatorUserMediaErrorCallback = GType gTypeNavigatorUserMediaErrorCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaSuccessCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaSuccessCallback Mozilla NavigatorUserMediaSuccessCallback documentation>
-newtype NavigatorUserMediaSuccessCallback = NavigatorUserMediaSuccessCallback (JSRef NavigatorUserMediaSuccessCallback) deriving (Eq)
-
-unNavigatorUserMediaSuccessCallback (NavigatorUserMediaSuccessCallback o) = o
-
-instance ToJSRef NavigatorUserMediaSuccessCallback where
-  toJSRef = return . unNavigatorUserMediaSuccessCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef NavigatorUserMediaSuccessCallback where
-  fromJSRef = return . fmap NavigatorUserMediaSuccessCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject NavigatorUserMediaSuccessCallback where
-  toGObject = GObject . castRef . unNavigatorUserMediaSuccessCallback
-  unsafeCastGObject = NavigatorUserMediaSuccessCallback . castRef . unGObject
-
-castToNavigatorUserMediaSuccessCallback :: IsGObject obj => obj -> NavigatorUserMediaSuccessCallback
-castToNavigatorUserMediaSuccessCallback = castTo gTypeNavigatorUserMediaSuccessCallback "NavigatorUserMediaSuccessCallback"
-
-foreign import javascript unsafe "window[\"NavigatorUserMediaSuccessCallback\"]" gTypeNavigatorUserMediaSuccessCallback' :: JSRef GType
-gTypeNavigatorUserMediaSuccessCallback = GType gTypeNavigatorUserMediaSuccessCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Node".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Node Mozilla Node documentation>
-newtype Node = Node (JSRef Node) deriving (Eq)
+newtype Node = Node { unNode :: JSRef Node }
 
-unNode (Node o) = o
+instance Eq (Node) where
+  (Node a) == (Node b) = js_eq a b
+
+instance PToJSRef Node where
+  pToJSRef = unNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Node where
+  pFromJSRef = Node
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Node where
   toJSRef = return . unNode
@@ -10718,7 +13369,9 @@ instance IsNode Node
 instance IsEventTarget Node
 instance IsGObject Node where
   toGObject = GObject . castRef . unNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Node . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNode :: IsGObject obj => obj -> Node
 castToNode = castTo gTypeNode "Node"
@@ -10734,9 +13387,18 @@ type IsNode o = NodeClass o
 -- | Functions for this inteface are in "GHCJS.DOM.NodeFilter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter Mozilla NodeFilter documentation>
-newtype NodeFilter = NodeFilter (JSRef NodeFilter) deriving (Eq)
+newtype NodeFilter = NodeFilter { unNodeFilter :: JSRef NodeFilter }
 
-unNodeFilter (NodeFilter o) = o
+instance Eq (NodeFilter) where
+  (NodeFilter a) == (NodeFilter b) = js_eq a b
+
+instance PToJSRef NodeFilter where
+  pToJSRef = unNodeFilter
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef NodeFilter where
+  pFromJSRef = NodeFilter
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef NodeFilter where
   toJSRef = return . unNodeFilter
@@ -10748,7 +13410,9 @@ instance FromJSRef NodeFilter where
 
 instance IsGObject NodeFilter where
   toGObject = GObject . castRef . unNodeFilter
+  {-# INLINE toGObject #-}
   unsafeCastGObject = NodeFilter . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNodeFilter :: IsGObject obj => obj -> NodeFilter
 castToNodeFilter = castTo gTypeNodeFilter "NodeFilter"
@@ -10764,9 +13428,18 @@ type IsNodeFilter o = NodeFilterClass o
 -- | Functions for this inteface are in "GHCJS.DOM.NodeIterator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator Mozilla NodeIterator documentation>
-newtype NodeIterator = NodeIterator (JSRef NodeIterator) deriving (Eq)
+newtype NodeIterator = NodeIterator { unNodeIterator :: JSRef NodeIterator }
 
-unNodeIterator (NodeIterator o) = o
+instance Eq (NodeIterator) where
+  (NodeIterator a) == (NodeIterator b) = js_eq a b
+
+instance PToJSRef NodeIterator where
+  pToJSRef = unNodeIterator
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef NodeIterator where
+  pFromJSRef = NodeIterator
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef NodeIterator where
   toJSRef = return . unNodeIterator
@@ -10778,7 +13451,9 @@ instance FromJSRef NodeIterator where
 
 instance IsGObject NodeIterator where
   toGObject = GObject . castRef . unNodeIterator
+  {-# INLINE toGObject #-}
   unsafeCastGObject = NodeIterator . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNodeIterator :: IsGObject obj => obj -> NodeIterator
 castToNodeIterator = castTo gTypeNodeIterator "NodeIterator"
@@ -10794,9 +13469,18 @@ type IsNodeIterator o = NodeIteratorClass o
 -- | Functions for this inteface are in "GHCJS.DOM.NodeList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeList Mozilla NodeList documentation>
-newtype NodeList = NodeList (JSRef NodeList) deriving (Eq)
+newtype NodeList = NodeList { unNodeList :: JSRef NodeList }
 
-unNodeList (NodeList o) = o
+instance Eq (NodeList) where
+  (NodeList a) == (NodeList b) = js_eq a b
+
+instance PToJSRef NodeList where
+  pToJSRef = unNodeList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef NodeList where
+  pFromJSRef = NodeList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef NodeList where
   toJSRef = return . unNodeList
@@ -10813,7 +13497,9 @@ toNodeList = unsafeCastGObject . toGObject
 instance IsNodeList NodeList
 instance IsGObject NodeList where
   toGObject = GObject . castRef . unNodeList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = NodeList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNodeList :: IsGObject obj => obj -> NodeList
 castToNodeList = castTo gTypeNodeList "NodeList"
@@ -10832,9 +13518,18 @@ type IsNodeList o = NodeListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Notification Mozilla Notification documentation>
-newtype Notification = Notification (JSRef Notification) deriving (Eq)
+newtype Notification = Notification { unNotification :: JSRef Notification }
 
-unNotification (Notification o) = o
+instance Eq (Notification) where
+  (Notification a) == (Notification b) = js_eq a b
+
+instance PToJSRef Notification where
+  pToJSRef = unNotification
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Notification where
+  pFromJSRef = Notification
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Notification where
   toJSRef = return . unNotification
@@ -10847,7 +13542,9 @@ instance FromJSRef Notification where
 instance IsEventTarget Notification
 instance IsGObject Notification where
   toGObject = GObject . castRef . unNotification
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Notification . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNotification :: IsGObject obj => obj -> Notification
 castToNotification = castTo gTypeNotification "Notification"
@@ -10862,9 +13559,18 @@ gTypeNotification = GType gTypeNotification'
 -- | Functions for this inteface are in "GHCJS.DOM.NotificationCenter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter Mozilla NotificationCenter documentation>
-newtype NotificationCenter = NotificationCenter (JSRef NotificationCenter) deriving (Eq)
+newtype NotificationCenter = NotificationCenter { unNotificationCenter :: JSRef NotificationCenter }
 
-unNotificationCenter (NotificationCenter o) = o
+instance Eq (NotificationCenter) where
+  (NotificationCenter a) == (NotificationCenter b) = js_eq a b
+
+instance PToJSRef NotificationCenter where
+  pToJSRef = unNotificationCenter
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef NotificationCenter where
+  pFromJSRef = NotificationCenter
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef NotificationCenter where
   toJSRef = return . unNotificationCenter
@@ -10876,7 +13582,9 @@ instance FromJSRef NotificationCenter where
 
 instance IsGObject NotificationCenter where
   toGObject = GObject . castRef . unNotificationCenter
+  {-# INLINE toGObject #-}
   unsafeCastGObject = NotificationCenter . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToNotificationCenter :: IsGObject obj => obj -> NotificationCenter
 castToNotificationCenter = castTo gTypeNotificationCenter "NotificationCenter"
@@ -10888,41 +13596,21 @@ gTypeNotificationCenter = GType gTypeNotificationCenter'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.NotificationPermissionCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationPermissionCallback Mozilla NotificationPermissionCallback documentation>
-newtype NotificationPermissionCallback = NotificationPermissionCallback (JSRef NotificationPermissionCallback) deriving (Eq)
-
-unNotificationPermissionCallback (NotificationPermissionCallback o) = o
-
-instance ToJSRef NotificationPermissionCallback where
-  toJSRef = return . unNotificationPermissionCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef NotificationPermissionCallback where
-  fromJSRef = return . fmap NotificationPermissionCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject NotificationPermissionCallback where
-  toGObject = GObject . castRef . unNotificationPermissionCallback
-  unsafeCastGObject = NotificationPermissionCallback . castRef . unGObject
-
-castToNotificationPermissionCallback :: IsGObject obj => obj -> NotificationPermissionCallback
-castToNotificationPermissionCallback = castTo gTypeNotificationPermissionCallback "NotificationPermissionCallback"
-
-foreign import javascript unsafe "window[\"NotificationPermissionCallback\"]" gTypeNotificationPermissionCallback' :: JSRef GType
-gTypeNotificationPermissionCallback = GType gTypeNotificationPermissionCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESElementIndexUint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESElementIndexUint Mozilla OESElementIndexUint documentation>
-newtype OESElementIndexUint = OESElementIndexUint (JSRef OESElementIndexUint) deriving (Eq)
+newtype OESElementIndexUint = OESElementIndexUint { unOESElementIndexUint :: JSRef OESElementIndexUint }
 
-unOESElementIndexUint (OESElementIndexUint o) = o
+instance Eq (OESElementIndexUint) where
+  (OESElementIndexUint a) == (OESElementIndexUint b) = js_eq a b
+
+instance PToJSRef OESElementIndexUint where
+  pToJSRef = unOESElementIndexUint
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OESElementIndexUint where
+  pFromJSRef = OESElementIndexUint
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OESElementIndexUint where
   toJSRef = return . unOESElementIndexUint
@@ -10934,7 +13622,9 @@ instance FromJSRef OESElementIndexUint where
 
 instance IsGObject OESElementIndexUint where
   toGObject = GObject . castRef . unOESElementIndexUint
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OESElementIndexUint . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOESElementIndexUint :: IsGObject obj => obj -> OESElementIndexUint
 castToOESElementIndexUint = castTo gTypeOESElementIndexUint "OESElementIndexUint"
@@ -10949,9 +13639,18 @@ gTypeOESElementIndexUint = GType gTypeOESElementIndexUint'
 -- | Functions for this inteface are in "GHCJS.DOM.OESStandardDerivatives".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESStandardDerivatives Mozilla OESStandardDerivatives documentation>
-newtype OESStandardDerivatives = OESStandardDerivatives (JSRef OESStandardDerivatives) deriving (Eq)
+newtype OESStandardDerivatives = OESStandardDerivatives { unOESStandardDerivatives :: JSRef OESStandardDerivatives }
 
-unOESStandardDerivatives (OESStandardDerivatives o) = o
+instance Eq (OESStandardDerivatives) where
+  (OESStandardDerivatives a) == (OESStandardDerivatives b) = js_eq a b
+
+instance PToJSRef OESStandardDerivatives where
+  pToJSRef = unOESStandardDerivatives
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OESStandardDerivatives where
+  pFromJSRef = OESStandardDerivatives
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OESStandardDerivatives where
   toJSRef = return . unOESStandardDerivatives
@@ -10963,7 +13662,9 @@ instance FromJSRef OESStandardDerivatives where
 
 instance IsGObject OESStandardDerivatives where
   toGObject = GObject . castRef . unOESStandardDerivatives
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OESStandardDerivatives . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOESStandardDerivatives :: IsGObject obj => obj -> OESStandardDerivatives
 castToOESStandardDerivatives = castTo gTypeOESStandardDerivatives "OESStandardDerivatives"
@@ -10978,9 +13679,18 @@ gTypeOESStandardDerivatives = GType gTypeOESStandardDerivatives'
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloat Mozilla OESTextureFloat documentation>
-newtype OESTextureFloat = OESTextureFloat (JSRef OESTextureFloat) deriving (Eq)
+newtype OESTextureFloat = OESTextureFloat { unOESTextureFloat :: JSRef OESTextureFloat }
 
-unOESTextureFloat (OESTextureFloat o) = o
+instance Eq (OESTextureFloat) where
+  (OESTextureFloat a) == (OESTextureFloat b) = js_eq a b
+
+instance PToJSRef OESTextureFloat where
+  pToJSRef = unOESTextureFloat
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OESTextureFloat where
+  pFromJSRef = OESTextureFloat
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OESTextureFloat where
   toJSRef = return . unOESTextureFloat
@@ -10992,7 +13702,9 @@ instance FromJSRef OESTextureFloat where
 
 instance IsGObject OESTextureFloat where
   toGObject = GObject . castRef . unOESTextureFloat
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OESTextureFloat . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOESTextureFloat :: IsGObject obj => obj -> OESTextureFloat
 castToOESTextureFloat = castTo gTypeOESTextureFloat "OESTextureFloat"
@@ -11007,9 +13719,18 @@ gTypeOESTextureFloat = GType gTypeOESTextureFloat'
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloatLinear".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloatLinear Mozilla OESTextureFloatLinear documentation>
-newtype OESTextureFloatLinear = OESTextureFloatLinear (JSRef OESTextureFloatLinear) deriving (Eq)
+newtype OESTextureFloatLinear = OESTextureFloatLinear { unOESTextureFloatLinear :: JSRef OESTextureFloatLinear }
 
-unOESTextureFloatLinear (OESTextureFloatLinear o) = o
+instance Eq (OESTextureFloatLinear) where
+  (OESTextureFloatLinear a) == (OESTextureFloatLinear b) = js_eq a b
+
+instance PToJSRef OESTextureFloatLinear where
+  pToJSRef = unOESTextureFloatLinear
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OESTextureFloatLinear where
+  pFromJSRef = OESTextureFloatLinear
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OESTextureFloatLinear where
   toJSRef = return . unOESTextureFloatLinear
@@ -11021,7 +13742,9 @@ instance FromJSRef OESTextureFloatLinear where
 
 instance IsGObject OESTextureFloatLinear where
   toGObject = GObject . castRef . unOESTextureFloatLinear
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OESTextureFloatLinear . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOESTextureFloatLinear :: IsGObject obj => obj -> OESTextureFloatLinear
 castToOESTextureFloatLinear = castTo gTypeOESTextureFloatLinear "OESTextureFloatLinear"
@@ -11036,9 +13759,18 @@ gTypeOESTextureFloatLinear = GType gTypeOESTextureFloatLinear'
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloat Mozilla OESTextureHalfFloat documentation>
-newtype OESTextureHalfFloat = OESTextureHalfFloat (JSRef OESTextureHalfFloat) deriving (Eq)
+newtype OESTextureHalfFloat = OESTextureHalfFloat { unOESTextureHalfFloat :: JSRef OESTextureHalfFloat }
 
-unOESTextureHalfFloat (OESTextureHalfFloat o) = o
+instance Eq (OESTextureHalfFloat) where
+  (OESTextureHalfFloat a) == (OESTextureHalfFloat b) = js_eq a b
+
+instance PToJSRef OESTextureHalfFloat where
+  pToJSRef = unOESTextureHalfFloat
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OESTextureHalfFloat where
+  pFromJSRef = OESTextureHalfFloat
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OESTextureHalfFloat where
   toJSRef = return . unOESTextureHalfFloat
@@ -11050,7 +13782,9 @@ instance FromJSRef OESTextureHalfFloat where
 
 instance IsGObject OESTextureHalfFloat where
   toGObject = GObject . castRef . unOESTextureHalfFloat
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OESTextureHalfFloat . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOESTextureHalfFloat :: IsGObject obj => obj -> OESTextureHalfFloat
 castToOESTextureHalfFloat = castTo gTypeOESTextureHalfFloat "OESTextureHalfFloat"
@@ -11065,9 +13799,18 @@ gTypeOESTextureHalfFloat = GType gTypeOESTextureHalfFloat'
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloatLinear".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloatLinear Mozilla OESTextureHalfFloatLinear documentation>
-newtype OESTextureHalfFloatLinear = OESTextureHalfFloatLinear (JSRef OESTextureHalfFloatLinear) deriving (Eq)
+newtype OESTextureHalfFloatLinear = OESTextureHalfFloatLinear { unOESTextureHalfFloatLinear :: JSRef OESTextureHalfFloatLinear }
 
-unOESTextureHalfFloatLinear (OESTextureHalfFloatLinear o) = o
+instance Eq (OESTextureHalfFloatLinear) where
+  (OESTextureHalfFloatLinear a) == (OESTextureHalfFloatLinear b) = js_eq a b
+
+instance PToJSRef OESTextureHalfFloatLinear where
+  pToJSRef = unOESTextureHalfFloatLinear
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OESTextureHalfFloatLinear where
+  pFromJSRef = OESTextureHalfFloatLinear
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OESTextureHalfFloatLinear where
   toJSRef = return . unOESTextureHalfFloatLinear
@@ -11079,7 +13822,9 @@ instance FromJSRef OESTextureHalfFloatLinear where
 
 instance IsGObject OESTextureHalfFloatLinear where
   toGObject = GObject . castRef . unOESTextureHalfFloatLinear
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OESTextureHalfFloatLinear . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOESTextureHalfFloatLinear :: IsGObject obj => obj -> OESTextureHalfFloatLinear
 castToOESTextureHalfFloatLinear = castTo gTypeOESTextureHalfFloatLinear "OESTextureHalfFloatLinear"
@@ -11094,9 +13839,18 @@ gTypeOESTextureHalfFloatLinear = GType gTypeOESTextureHalfFloatLinear'
 -- | Functions for this inteface are in "GHCJS.DOM.OESVertexArrayObject".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject Mozilla OESVertexArrayObject documentation>
-newtype OESVertexArrayObject = OESVertexArrayObject (JSRef OESVertexArrayObject) deriving (Eq)
+newtype OESVertexArrayObject = OESVertexArrayObject { unOESVertexArrayObject :: JSRef OESVertexArrayObject }
 
-unOESVertexArrayObject (OESVertexArrayObject o) = o
+instance Eq (OESVertexArrayObject) where
+  (OESVertexArrayObject a) == (OESVertexArrayObject b) = js_eq a b
+
+instance PToJSRef OESVertexArrayObject where
+  pToJSRef = unOESVertexArrayObject
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OESVertexArrayObject where
+  pFromJSRef = OESVertexArrayObject
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OESVertexArrayObject where
   toJSRef = return . unOESVertexArrayObject
@@ -11108,7 +13862,9 @@ instance FromJSRef OESVertexArrayObject where
 
 instance IsGObject OESVertexArrayObject where
   toGObject = GObject . castRef . unOESVertexArrayObject
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OESVertexArrayObject . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOESVertexArrayObject :: IsGObject obj => obj -> OESVertexArrayObject
 castToOESVertexArrayObject = castTo gTypeOESVertexArrayObject "OESVertexArrayObject"
@@ -11126,9 +13882,18 @@ gTypeOESVertexArrayObject = GType gTypeOESVertexArrayObject'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioCompletionEvent Mozilla OfflineAudioCompletionEvent documentation>
-newtype OfflineAudioCompletionEvent = OfflineAudioCompletionEvent (JSRef OfflineAudioCompletionEvent) deriving (Eq)
+newtype OfflineAudioCompletionEvent = OfflineAudioCompletionEvent { unOfflineAudioCompletionEvent :: JSRef OfflineAudioCompletionEvent }
 
-unOfflineAudioCompletionEvent (OfflineAudioCompletionEvent o) = o
+instance Eq (OfflineAudioCompletionEvent) where
+  (OfflineAudioCompletionEvent a) == (OfflineAudioCompletionEvent b) = js_eq a b
+
+instance PToJSRef OfflineAudioCompletionEvent where
+  pToJSRef = unOfflineAudioCompletionEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OfflineAudioCompletionEvent where
+  pFromJSRef = OfflineAudioCompletionEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OfflineAudioCompletionEvent where
   toJSRef = return . unOfflineAudioCompletionEvent
@@ -11141,7 +13906,9 @@ instance FromJSRef OfflineAudioCompletionEvent where
 instance IsEvent OfflineAudioCompletionEvent
 instance IsGObject OfflineAudioCompletionEvent where
   toGObject = GObject . castRef . unOfflineAudioCompletionEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OfflineAudioCompletionEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOfflineAudioCompletionEvent :: IsGObject obj => obj -> OfflineAudioCompletionEvent
 castToOfflineAudioCompletionEvent = castTo gTypeOfflineAudioCompletionEvent "OfflineAudioCompletionEvent"
@@ -11160,9 +13927,18 @@ gTypeOfflineAudioCompletionEvent = GType gTypeOfflineAudioCompletionEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioContext Mozilla OfflineAudioContext documentation>
-newtype OfflineAudioContext = OfflineAudioContext (JSRef OfflineAudioContext) deriving (Eq)
+newtype OfflineAudioContext = OfflineAudioContext { unOfflineAudioContext :: JSRef OfflineAudioContext }
 
-unOfflineAudioContext (OfflineAudioContext o) = o
+instance Eq (OfflineAudioContext) where
+  (OfflineAudioContext a) == (OfflineAudioContext b) = js_eq a b
+
+instance PToJSRef OfflineAudioContext where
+  pToJSRef = unOfflineAudioContext
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OfflineAudioContext where
+  pFromJSRef = OfflineAudioContext
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OfflineAudioContext where
   toJSRef = return . unOfflineAudioContext
@@ -11176,7 +13952,9 @@ instance IsAudioContext OfflineAudioContext
 instance IsEventTarget OfflineAudioContext
 instance IsGObject OfflineAudioContext where
   toGObject = GObject . castRef . unOfflineAudioContext
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OfflineAudioContext . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOfflineAudioContext :: IsGObject obj => obj -> OfflineAudioContext
 castToOfflineAudioContext = castTo gTypeOfflineAudioContext "OfflineAudioContext"
@@ -11195,9 +13973,18 @@ gTypeOfflineAudioContext = GType gTypeOfflineAudioContext'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode Mozilla OscillatorNode documentation>
-newtype OscillatorNode = OscillatorNode (JSRef OscillatorNode) deriving (Eq)
+newtype OscillatorNode = OscillatorNode { unOscillatorNode :: JSRef OscillatorNode }
 
-unOscillatorNode (OscillatorNode o) = o
+instance Eq (OscillatorNode) where
+  (OscillatorNode a) == (OscillatorNode b) = js_eq a b
+
+instance PToJSRef OscillatorNode where
+  pToJSRef = unOscillatorNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OscillatorNode where
+  pFromJSRef = OscillatorNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OscillatorNode where
   toJSRef = return . unOscillatorNode
@@ -11211,7 +13998,9 @@ instance IsAudioNode OscillatorNode
 instance IsEventTarget OscillatorNode
 instance IsGObject OscillatorNode where
   toGObject = GObject . castRef . unOscillatorNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OscillatorNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOscillatorNode :: IsGObject obj => obj -> OscillatorNode
 castToOscillatorNode = castTo gTypeOscillatorNode "OscillatorNode"
@@ -11229,9 +14018,18 @@ gTypeOscillatorNode = GType gTypeOscillatorNode'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent Mozilla OverflowEvent documentation>
-newtype OverflowEvent = OverflowEvent (JSRef OverflowEvent) deriving (Eq)
+newtype OverflowEvent = OverflowEvent { unOverflowEvent :: JSRef OverflowEvent }
 
-unOverflowEvent (OverflowEvent o) = o
+instance Eq (OverflowEvent) where
+  (OverflowEvent a) == (OverflowEvent b) = js_eq a b
+
+instance PToJSRef OverflowEvent where
+  pToJSRef = unOverflowEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef OverflowEvent where
+  pFromJSRef = OverflowEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef OverflowEvent where
   toJSRef = return . unOverflowEvent
@@ -11244,7 +14042,9 @@ instance FromJSRef OverflowEvent where
 instance IsEvent OverflowEvent
 instance IsGObject OverflowEvent where
   toGObject = GObject . castRef . unOverflowEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = OverflowEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToOverflowEvent :: IsGObject obj => obj -> OverflowEvent
 castToOverflowEvent = castTo gTypeOverflowEvent "OverflowEvent"
@@ -11262,9 +14062,18 @@ gTypeOverflowEvent = GType gTypeOverflowEvent'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PageTransitionEvent Mozilla PageTransitionEvent documentation>
-newtype PageTransitionEvent = PageTransitionEvent (JSRef PageTransitionEvent) deriving (Eq)
+newtype PageTransitionEvent = PageTransitionEvent { unPageTransitionEvent :: JSRef PageTransitionEvent }
 
-unPageTransitionEvent (PageTransitionEvent o) = o
+instance Eq (PageTransitionEvent) where
+  (PageTransitionEvent a) == (PageTransitionEvent b) = js_eq a b
+
+instance PToJSRef PageTransitionEvent where
+  pToJSRef = unPageTransitionEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PageTransitionEvent where
+  pFromJSRef = PageTransitionEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PageTransitionEvent where
   toJSRef = return . unPageTransitionEvent
@@ -11277,7 +14086,9 @@ instance FromJSRef PageTransitionEvent where
 instance IsEvent PageTransitionEvent
 instance IsGObject PageTransitionEvent where
   toGObject = GObject . castRef . unPageTransitionEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PageTransitionEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPageTransitionEvent :: IsGObject obj => obj -> PageTransitionEvent
 castToPageTransitionEvent = castTo gTypePageTransitionEvent "PageTransitionEvent"
@@ -11296,9 +14107,18 @@ gTypePageTransitionEvent = GType gTypePageTransitionEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode Mozilla webkitAudioPannerNode documentation>
-newtype PannerNode = PannerNode (JSRef PannerNode) deriving (Eq)
+newtype PannerNode = PannerNode { unPannerNode :: JSRef PannerNode }
 
-unPannerNode (PannerNode o) = o
+instance Eq (PannerNode) where
+  (PannerNode a) == (PannerNode b) = js_eq a b
+
+instance PToJSRef PannerNode where
+  pToJSRef = unPannerNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PannerNode where
+  pFromJSRef = PannerNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PannerNode where
   toJSRef = return . unPannerNode
@@ -11312,7 +14132,9 @@ instance IsAudioNode PannerNode
 instance IsEventTarget PannerNode
 instance IsGObject PannerNode where
   toGObject = GObject . castRef . unPannerNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PannerNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPannerNode :: IsGObject obj => obj -> PannerNode
 castToPannerNode = castTo gTypePannerNode "PannerNode"
@@ -11324,15 +14146,64 @@ gTypePannerNode = GType gTypePannerNode'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Path2D".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation>
+newtype Path2D = Path2D { unPath2D :: JSRef Path2D }
+
+instance Eq (Path2D) where
+  (Path2D a) == (Path2D b) = js_eq a b
+
+instance PToJSRef Path2D where
+  pToJSRef = unPath2D
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Path2D where
+  pFromJSRef = Path2D
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef Path2D where
+  toJSRef = return . unPath2D
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Path2D where
+  fromJSRef = return . fmap Path2D . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject Path2D where
+  toGObject = GObject . castRef . unPath2D
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = Path2D . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToPath2D :: IsGObject obj => obj -> Path2D
+castToPath2D = castTo gTypePath2D "Path2D"
+
+foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D' :: JSRef GType
+gTypePath2D = GType gTypePath2D'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Performance".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Performance Mozilla Performance documentation>
-newtype Performance = Performance (JSRef Performance) deriving (Eq)
+newtype Performance = Performance { unPerformance :: JSRef Performance }
 
-unPerformance (Performance o) = o
+instance Eq (Performance) where
+  (Performance a) == (Performance b) = js_eq a b
+
+instance PToJSRef Performance where
+  pToJSRef = unPerformance
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Performance where
+  pFromJSRef = Performance
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Performance where
   toJSRef = return . unPerformance
@@ -11345,7 +14216,9 @@ instance FromJSRef Performance where
 instance IsEventTarget Performance
 instance IsGObject Performance where
   toGObject = GObject . castRef . unPerformance
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Performance . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformance :: IsGObject obj => obj -> Performance
 castToPerformance = castTo gTypePerformance "Performance"
@@ -11361,9 +14234,18 @@ type IsPerformance o = PerformanceClass o
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntry".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry Mozilla PerformanceEntry documentation>
-newtype PerformanceEntry = PerformanceEntry (JSRef PerformanceEntry) deriving (Eq)
+newtype PerformanceEntry = PerformanceEntry { unPerformanceEntry :: JSRef PerformanceEntry }
 
-unPerformanceEntry (PerformanceEntry o) = o
+instance Eq (PerformanceEntry) where
+  (PerformanceEntry a) == (PerformanceEntry b) = js_eq a b
+
+instance PToJSRef PerformanceEntry where
+  pToJSRef = unPerformanceEntry
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PerformanceEntry where
+  pFromJSRef = PerformanceEntry
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PerformanceEntry where
   toJSRef = return . unPerformanceEntry
@@ -11380,7 +14262,9 @@ toPerformanceEntry = unsafeCastGObject . toGObject
 instance IsPerformanceEntry PerformanceEntry
 instance IsGObject PerformanceEntry where
   toGObject = GObject . castRef . unPerformanceEntry
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PerformanceEntry . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformanceEntry :: IsGObject obj => obj -> PerformanceEntry
 castToPerformanceEntry = castTo gTypePerformanceEntry "PerformanceEntry"
@@ -11395,9 +14279,18 @@ gTypePerformanceEntry = GType gTypePerformanceEntry'
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntryList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntryList Mozilla PerformanceEntryList documentation>
-newtype PerformanceEntryList = PerformanceEntryList (JSRef PerformanceEntryList) deriving (Eq)
+newtype PerformanceEntryList = PerformanceEntryList { unPerformanceEntryList :: JSRef PerformanceEntryList }
 
-unPerformanceEntryList (PerformanceEntryList o) = o
+instance Eq (PerformanceEntryList) where
+  (PerformanceEntryList a) == (PerformanceEntryList b) = js_eq a b
+
+instance PToJSRef PerformanceEntryList where
+  pToJSRef = unPerformanceEntryList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PerformanceEntryList where
+  pFromJSRef = PerformanceEntryList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PerformanceEntryList where
   toJSRef = return . unPerformanceEntryList
@@ -11409,7 +14302,9 @@ instance FromJSRef PerformanceEntryList where
 
 instance IsGObject PerformanceEntryList where
   toGObject = GObject . castRef . unPerformanceEntryList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PerformanceEntryList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformanceEntryList :: IsGObject obj => obj -> PerformanceEntryList
 castToPerformanceEntryList = castTo gTypePerformanceEntryList "PerformanceEntryList"
@@ -11427,9 +14322,18 @@ gTypePerformanceEntryList = GType gTypePerformanceEntryList'
 --     * "GHCJS.DOM.PerformanceEntry"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMark Mozilla PerformanceMark documentation>
-newtype PerformanceMark = PerformanceMark (JSRef PerformanceMark) deriving (Eq)
+newtype PerformanceMark = PerformanceMark { unPerformanceMark :: JSRef PerformanceMark }
 
-unPerformanceMark (PerformanceMark o) = o
+instance Eq (PerformanceMark) where
+  (PerformanceMark a) == (PerformanceMark b) = js_eq a b
+
+instance PToJSRef PerformanceMark where
+  pToJSRef = unPerformanceMark
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PerformanceMark where
+  pFromJSRef = PerformanceMark
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PerformanceMark where
   toJSRef = return . unPerformanceMark
@@ -11442,7 +14346,9 @@ instance FromJSRef PerformanceMark where
 instance IsPerformanceEntry PerformanceMark
 instance IsGObject PerformanceMark where
   toGObject = GObject . castRef . unPerformanceMark
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PerformanceMark . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformanceMark :: IsGObject obj => obj -> PerformanceMark
 castToPerformanceMark = castTo gTypePerformanceMark "PerformanceMark"
@@ -11460,9 +14366,18 @@ gTypePerformanceMark = GType gTypePerformanceMark'
 --     * "GHCJS.DOM.PerformanceEntry"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure Mozilla PerformanceMeasure documentation>
-newtype PerformanceMeasure = PerformanceMeasure (JSRef PerformanceMeasure) deriving (Eq)
+newtype PerformanceMeasure = PerformanceMeasure { unPerformanceMeasure :: JSRef PerformanceMeasure }
 
-unPerformanceMeasure (PerformanceMeasure o) = o
+instance Eq (PerformanceMeasure) where
+  (PerformanceMeasure a) == (PerformanceMeasure b) = js_eq a b
+
+instance PToJSRef PerformanceMeasure where
+  pToJSRef = unPerformanceMeasure
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PerformanceMeasure where
+  pFromJSRef = PerformanceMeasure
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PerformanceMeasure where
   toJSRef = return . unPerformanceMeasure
@@ -11475,7 +14390,9 @@ instance FromJSRef PerformanceMeasure where
 instance IsPerformanceEntry PerformanceMeasure
 instance IsGObject PerformanceMeasure where
   toGObject = GObject . castRef . unPerformanceMeasure
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PerformanceMeasure . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformanceMeasure :: IsGObject obj => obj -> PerformanceMeasure
 castToPerformanceMeasure = castTo gTypePerformanceMeasure "PerformanceMeasure"
@@ -11490,9 +14407,18 @@ gTypePerformanceMeasure = GType gTypePerformanceMeasure'
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceNavigation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation Mozilla PerformanceNavigation documentation>
-newtype PerformanceNavigation = PerformanceNavigation (JSRef PerformanceNavigation) deriving (Eq)
+newtype PerformanceNavigation = PerformanceNavigation { unPerformanceNavigation :: JSRef PerformanceNavigation }
 
-unPerformanceNavigation (PerformanceNavigation o) = o
+instance Eq (PerformanceNavigation) where
+  (PerformanceNavigation a) == (PerformanceNavigation b) = js_eq a b
+
+instance PToJSRef PerformanceNavigation where
+  pToJSRef = unPerformanceNavigation
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PerformanceNavigation where
+  pFromJSRef = PerformanceNavigation
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PerformanceNavigation where
   toJSRef = return . unPerformanceNavigation
@@ -11504,7 +14430,9 @@ instance FromJSRef PerformanceNavigation where
 
 instance IsGObject PerformanceNavigation where
   toGObject = GObject . castRef . unPerformanceNavigation
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PerformanceNavigation . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformanceNavigation :: IsGObject obj => obj -> PerformanceNavigation
 castToPerformanceNavigation = castTo gTypePerformanceNavigation "PerformanceNavigation"
@@ -11523,9 +14451,18 @@ type IsPerformanceNavigation o = PerformanceNavigationClass o
 --     * "GHCJS.DOM.PerformanceEntry"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming Mozilla PerformanceResourceTiming documentation>
-newtype PerformanceResourceTiming = PerformanceResourceTiming (JSRef PerformanceResourceTiming) deriving (Eq)
+newtype PerformanceResourceTiming = PerformanceResourceTiming { unPerformanceResourceTiming :: JSRef PerformanceResourceTiming }
 
-unPerformanceResourceTiming (PerformanceResourceTiming o) = o
+instance Eq (PerformanceResourceTiming) where
+  (PerformanceResourceTiming a) == (PerformanceResourceTiming b) = js_eq a b
+
+instance PToJSRef PerformanceResourceTiming where
+  pToJSRef = unPerformanceResourceTiming
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PerformanceResourceTiming where
+  pFromJSRef = PerformanceResourceTiming
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PerformanceResourceTiming where
   toJSRef = return . unPerformanceResourceTiming
@@ -11538,7 +14475,9 @@ instance FromJSRef PerformanceResourceTiming where
 instance IsPerformanceEntry PerformanceResourceTiming
 instance IsGObject PerformanceResourceTiming where
   toGObject = GObject . castRef . unPerformanceResourceTiming
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PerformanceResourceTiming . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformanceResourceTiming :: IsGObject obj => obj -> PerformanceResourceTiming
 castToPerformanceResourceTiming = castTo gTypePerformanceResourceTiming "PerformanceResourceTiming"
@@ -11553,9 +14492,18 @@ gTypePerformanceResourceTiming = GType gTypePerformanceResourceTiming'
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceTiming".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming Mozilla PerformanceTiming documentation>
-newtype PerformanceTiming = PerformanceTiming (JSRef PerformanceTiming) deriving (Eq)
+newtype PerformanceTiming = PerformanceTiming { unPerformanceTiming :: JSRef PerformanceTiming }
 
-unPerformanceTiming (PerformanceTiming o) = o
+instance Eq (PerformanceTiming) where
+  (PerformanceTiming a) == (PerformanceTiming b) = js_eq a b
+
+instance PToJSRef PerformanceTiming where
+  pToJSRef = unPerformanceTiming
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PerformanceTiming where
+  pFromJSRef = PerformanceTiming
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PerformanceTiming where
   toJSRef = return . unPerformanceTiming
@@ -11567,7 +14515,9 @@ instance FromJSRef PerformanceTiming where
 
 instance IsGObject PerformanceTiming where
   toGObject = GObject . castRef . unPerformanceTiming
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PerformanceTiming . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPerformanceTiming :: IsGObject obj => obj -> PerformanceTiming
 castToPerformanceTiming = castTo gTypePerformanceTiming "PerformanceTiming"
@@ -11583,9 +14533,18 @@ type IsPerformanceTiming o = PerformanceTimingClass o
 -- | Functions for this inteface are in "GHCJS.DOM.PeriodicWave".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PeriodicWave Mozilla PeriodicWave documentation>
-newtype PeriodicWave = PeriodicWave (JSRef PeriodicWave) deriving (Eq)
+newtype PeriodicWave = PeriodicWave { unPeriodicWave :: JSRef PeriodicWave }
 
-unPeriodicWave (PeriodicWave o) = o
+instance Eq (PeriodicWave) where
+  (PeriodicWave a) == (PeriodicWave b) = js_eq a b
+
+instance PToJSRef PeriodicWave where
+  pToJSRef = unPeriodicWave
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PeriodicWave where
+  pFromJSRef = PeriodicWave
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PeriodicWave where
   toJSRef = return . unPeriodicWave
@@ -11597,7 +14556,9 @@ instance FromJSRef PeriodicWave where
 
 instance IsGObject PeriodicWave where
   toGObject = GObject . castRef . unPeriodicWave
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PeriodicWave . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPeriodicWave :: IsGObject obj => obj -> PeriodicWave
 castToPeriodicWave = castTo gTypePeriodicWave "PeriodicWave"
@@ -11609,15 +14570,106 @@ gTypePeriodicWave = GType gTypePeriodicWave'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Plugin".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Plugin Mozilla Plugin documentation>
+newtype Plugin = Plugin { unPlugin :: JSRef Plugin }
+
+instance Eq (Plugin) where
+  (Plugin a) == (Plugin b) = js_eq a b
+
+instance PToJSRef Plugin where
+  pToJSRef = unPlugin
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Plugin where
+  pFromJSRef = Plugin
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef Plugin where
+  toJSRef = return . unPlugin
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Plugin where
+  fromJSRef = return . fmap Plugin . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject Plugin where
+  toGObject = GObject . castRef . unPlugin
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = Plugin . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToPlugin :: IsGObject obj => obj -> Plugin
+castToPlugin = castTo gTypePlugin "Plugin"
+
+foreign import javascript unsafe "window[\"Plugin\"]" gTypePlugin' :: JSRef GType
+gTypePlugin = GType gTypePlugin'
+#else
+type IsPlugin o = PluginClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.PluginArray".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray Mozilla PluginArray documentation>
+newtype PluginArray = PluginArray { unPluginArray :: JSRef PluginArray }
+
+instance Eq (PluginArray) where
+  (PluginArray a) == (PluginArray b) = js_eq a b
+
+instance PToJSRef PluginArray where
+  pToJSRef = unPluginArray
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PluginArray where
+  pFromJSRef = PluginArray
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef PluginArray where
+  toJSRef = return . unPluginArray
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef PluginArray where
+  fromJSRef = return . fmap PluginArray . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject PluginArray where
+  toGObject = GObject . castRef . unPluginArray
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = PluginArray . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToPluginArray :: IsGObject obj => obj -> PluginArray
+castToPluginArray = castTo gTypePluginArray "PluginArray"
+
+foreign import javascript unsafe "window[\"PluginArray\"]" gTypePluginArray' :: JSRef GType
+gTypePluginArray = GType gTypePluginArray'
+#else
+type IsPluginArray o = PluginArrayClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PopStateEvent".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PopStateEvent Mozilla PopStateEvent documentation>
-newtype PopStateEvent = PopStateEvent (JSRef PopStateEvent) deriving (Eq)
+newtype PopStateEvent = PopStateEvent { unPopStateEvent :: JSRef PopStateEvent }
 
-unPopStateEvent (PopStateEvent o) = o
+instance Eq (PopStateEvent) where
+  (PopStateEvent a) == (PopStateEvent b) = js_eq a b
+
+instance PToJSRef PopStateEvent where
+  pToJSRef = unPopStateEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PopStateEvent where
+  pFromJSRef = PopStateEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PopStateEvent where
   toJSRef = return . unPopStateEvent
@@ -11630,7 +14682,9 @@ instance FromJSRef PopStateEvent where
 instance IsEvent PopStateEvent
 instance IsGObject PopStateEvent where
   toGObject = GObject . castRef . unPopStateEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PopStateEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPopStateEvent :: IsGObject obj => obj -> PopStateEvent
 castToPopStateEvent = castTo gTypePopStateEvent "PopStateEvent"
@@ -11642,41 +14696,21 @@ gTypePopStateEvent = GType gTypePopStateEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.PositionCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation>
-newtype PositionCallback = PositionCallback (JSRef PositionCallback) deriving (Eq)
-
-unPositionCallback (PositionCallback o) = o
-
-instance ToJSRef PositionCallback where
-  toJSRef = return . unPositionCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef PositionCallback where
-  fromJSRef = return . fmap PositionCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject PositionCallback where
-  toGObject = GObject . castRef . unPositionCallback
-  unsafeCastGObject = PositionCallback . castRef . unGObject
-
-castToPositionCallback :: IsGObject obj => obj -> PositionCallback
-castToPositionCallback = castTo gTypePositionCallback "PositionCallback"
-
-foreign import javascript unsafe "window[\"PositionCallback\"]" gTypePositionCallback' :: JSRef GType
-gTypePositionCallback = GType gTypePositionCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PositionError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PositionError Mozilla PositionError documentation>
-newtype PositionError = PositionError (JSRef PositionError) deriving (Eq)
+newtype PositionError = PositionError { unPositionError :: JSRef PositionError }
 
-unPositionError (PositionError o) = o
+instance Eq (PositionError) where
+  (PositionError a) == (PositionError b) = js_eq a b
+
+instance PToJSRef PositionError where
+  pToJSRef = unPositionError
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef PositionError where
+  pFromJSRef = PositionError
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef PositionError where
   toJSRef = return . unPositionError
@@ -11688,42 +14722,15 @@ instance FromJSRef PositionError where
 
 instance IsGObject PositionError where
   toGObject = GObject . castRef . unPositionError
+  {-# INLINE toGObject #-}
   unsafeCastGObject = PositionError . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToPositionError :: IsGObject obj => obj -> PositionError
 castToPositionError = castTo gTypePositionError "PositionError"
 
 foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError' :: JSRef GType
 gTypePositionError = GType gTypePositionError'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.PositionErrorCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/PositionErrorCallback Mozilla PositionErrorCallback documentation>
-newtype PositionErrorCallback = PositionErrorCallback (JSRef PositionErrorCallback) deriving (Eq)
-
-unPositionErrorCallback (PositionErrorCallback o) = o
-
-instance ToJSRef PositionErrorCallback where
-  toJSRef = return . unPositionErrorCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef PositionErrorCallback where
-  fromJSRef = return . fmap PositionErrorCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject PositionErrorCallback where
-  toGObject = GObject . castRef . unPositionErrorCallback
-  unsafeCastGObject = PositionErrorCallback . castRef . unGObject
-
-castToPositionErrorCallback :: IsGObject obj => obj -> PositionErrorCallback
-castToPositionErrorCallback = castTo gTypePositionErrorCallback "PositionErrorCallback"
-
-foreign import javascript unsafe "window[\"PositionErrorCallback\"]" gTypePositionErrorCallback' :: JSRef GType
-gTypePositionErrorCallback = GType gTypePositionErrorCallback'
 #else
 #endif
 
@@ -11737,9 +14744,18 @@ gTypePositionErrorCallback = GType gTypePositionErrorCallback'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ProcessingInstruction Mozilla ProcessingInstruction documentation>
-newtype ProcessingInstruction = ProcessingInstruction (JSRef ProcessingInstruction) deriving (Eq)
+newtype ProcessingInstruction = ProcessingInstruction { unProcessingInstruction :: JSRef ProcessingInstruction }
 
-unProcessingInstruction (ProcessingInstruction o) = o
+instance Eq (ProcessingInstruction) where
+  (ProcessingInstruction a) == (ProcessingInstruction b) = js_eq a b
+
+instance PToJSRef ProcessingInstruction where
+  pToJSRef = unProcessingInstruction
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ProcessingInstruction where
+  pFromJSRef = ProcessingInstruction
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ProcessingInstruction where
   toJSRef = return . unProcessingInstruction
@@ -11754,7 +14770,9 @@ instance IsNode ProcessingInstruction
 instance IsEventTarget ProcessingInstruction
 instance IsGObject ProcessingInstruction where
   toGObject = GObject . castRef . unProcessingInstruction
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ProcessingInstruction . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToProcessingInstruction :: IsGObject obj => obj -> ProcessingInstruction
 castToProcessingInstruction = castTo gTypeProcessingInstruction "ProcessingInstruction"
@@ -11773,9 +14791,18 @@ type IsProcessingInstruction o = ProcessingInstructionClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent Mozilla ProgressEvent documentation>
-newtype ProgressEvent = ProgressEvent (JSRef ProgressEvent) deriving (Eq)
+newtype ProgressEvent = ProgressEvent { unProgressEvent :: JSRef ProgressEvent }
 
-unProgressEvent (ProgressEvent o) = o
+instance Eq (ProgressEvent) where
+  (ProgressEvent a) == (ProgressEvent b) = js_eq a b
+
+instance PToJSRef ProgressEvent where
+  pToJSRef = unProgressEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ProgressEvent where
+  pFromJSRef = ProgressEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ProgressEvent where
   toJSRef = return . unProgressEvent
@@ -11793,7 +14820,9 @@ instance IsProgressEvent ProgressEvent
 instance IsEvent ProgressEvent
 instance IsGObject ProgressEvent where
   toGObject = GObject . castRef . unProgressEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ProgressEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToProgressEvent :: IsGObject obj => obj -> ProgressEvent
 castToProgressEvent = castTo gTypeProgressEvent "ProgressEvent"
@@ -11808,9 +14837,18 @@ gTypeProgressEvent = GType gTypeProgressEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.QuickTimePluginReplacement".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement Mozilla QuickTimePluginReplacement documentation>
-newtype QuickTimePluginReplacement = QuickTimePluginReplacement (JSRef QuickTimePluginReplacement) deriving (Eq)
+newtype QuickTimePluginReplacement = QuickTimePluginReplacement { unQuickTimePluginReplacement :: JSRef QuickTimePluginReplacement }
 
-unQuickTimePluginReplacement (QuickTimePluginReplacement o) = o
+instance Eq (QuickTimePluginReplacement) where
+  (QuickTimePluginReplacement a) == (QuickTimePluginReplacement b) = js_eq a b
+
+instance PToJSRef QuickTimePluginReplacement where
+  pToJSRef = unQuickTimePluginReplacement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef QuickTimePluginReplacement where
+  pFromJSRef = QuickTimePluginReplacement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef QuickTimePluginReplacement where
   toJSRef = return . unQuickTimePluginReplacement
@@ -11822,7 +14860,9 @@ instance FromJSRef QuickTimePluginReplacement where
 
 instance IsGObject QuickTimePluginReplacement where
   toGObject = GObject . castRef . unQuickTimePluginReplacement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = QuickTimePluginReplacement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToQuickTimePluginReplacement :: IsGObject obj => obj -> QuickTimePluginReplacement
 castToQuickTimePluginReplacement = castTo gTypeQuickTimePluginReplacement "QuickTimePluginReplacement"
@@ -11837,9 +14877,18 @@ gTypeQuickTimePluginReplacement = GType gTypeQuickTimePluginReplacement'
 -- | Functions for this inteface are in "GHCJS.DOM.RGBColor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor Mozilla RGBColor documentation>
-newtype RGBColor = RGBColor (JSRef RGBColor) deriving (Eq)
+newtype RGBColor = RGBColor { unRGBColor :: JSRef RGBColor }
 
-unRGBColor (RGBColor o) = o
+instance Eq (RGBColor) where
+  (RGBColor a) == (RGBColor b) = js_eq a b
+
+instance PToJSRef RGBColor where
+  pToJSRef = unRGBColor
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RGBColor where
+  pFromJSRef = RGBColor
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RGBColor where
   toJSRef = return . unRGBColor
@@ -11851,7 +14900,9 @@ instance FromJSRef RGBColor where
 
 instance IsGObject RGBColor where
   toGObject = GObject . castRef . unRGBColor
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RGBColor . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRGBColor :: IsGObject obj => obj -> RGBColor
 castToRGBColor = castTo gTypeRGBColor "RGBColor"
@@ -11866,9 +14917,18 @@ gTypeRGBColor = GType gTypeRGBColor'
 -- | Functions for this inteface are in "GHCJS.DOM.RTCConfiguration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration Mozilla RTCConfiguration documentation>
-newtype RTCConfiguration = RTCConfiguration (JSRef RTCConfiguration) deriving (Eq)
+newtype RTCConfiguration = RTCConfiguration { unRTCConfiguration :: JSRef RTCConfiguration }
 
-unRTCConfiguration (RTCConfiguration o) = o
+instance Eq (RTCConfiguration) where
+  (RTCConfiguration a) == (RTCConfiguration b) = js_eq a b
+
+instance PToJSRef RTCConfiguration where
+  pToJSRef = unRTCConfiguration
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCConfiguration where
+  pFromJSRef = RTCConfiguration
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCConfiguration where
   toJSRef = return . unRTCConfiguration
@@ -11880,7 +14940,9 @@ instance FromJSRef RTCConfiguration where
 
 instance IsGObject RTCConfiguration where
   toGObject = GObject . castRef . unRTCConfiguration
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCConfiguration . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCConfiguration :: IsGObject obj => obj -> RTCConfiguration
 castToRTCConfiguration = castTo gTypeRTCConfiguration "RTCConfiguration"
@@ -11898,9 +14960,18 @@ gTypeRTCConfiguration = GType gTypeRTCConfiguration'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender Mozilla RTCDTMFSender documentation>
-newtype RTCDTMFSender = RTCDTMFSender (JSRef RTCDTMFSender) deriving (Eq)
+newtype RTCDTMFSender = RTCDTMFSender { unRTCDTMFSender :: JSRef RTCDTMFSender }
 
-unRTCDTMFSender (RTCDTMFSender o) = o
+instance Eq (RTCDTMFSender) where
+  (RTCDTMFSender a) == (RTCDTMFSender b) = js_eq a b
+
+instance PToJSRef RTCDTMFSender where
+  pToJSRef = unRTCDTMFSender
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCDTMFSender where
+  pFromJSRef = RTCDTMFSender
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCDTMFSender where
   toJSRef = return . unRTCDTMFSender
@@ -11913,7 +14984,9 @@ instance FromJSRef RTCDTMFSender where
 instance IsEventTarget RTCDTMFSender
 instance IsGObject RTCDTMFSender where
   toGObject = GObject . castRef . unRTCDTMFSender
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCDTMFSender . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCDTMFSender :: IsGObject obj => obj -> RTCDTMFSender
 castToRTCDTMFSender = castTo gTypeRTCDTMFSender "RTCDTMFSender"
@@ -11931,9 +15004,18 @@ gTypeRTCDTMFSender = GType gTypeRTCDTMFSender'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFToneChangeEvent Mozilla RTCDTMFToneChangeEvent documentation>
-newtype RTCDTMFToneChangeEvent = RTCDTMFToneChangeEvent (JSRef RTCDTMFToneChangeEvent) deriving (Eq)
+newtype RTCDTMFToneChangeEvent = RTCDTMFToneChangeEvent { unRTCDTMFToneChangeEvent :: JSRef RTCDTMFToneChangeEvent }
 
-unRTCDTMFToneChangeEvent (RTCDTMFToneChangeEvent o) = o
+instance Eq (RTCDTMFToneChangeEvent) where
+  (RTCDTMFToneChangeEvent a) == (RTCDTMFToneChangeEvent b) = js_eq a b
+
+instance PToJSRef RTCDTMFToneChangeEvent where
+  pToJSRef = unRTCDTMFToneChangeEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCDTMFToneChangeEvent where
+  pFromJSRef = RTCDTMFToneChangeEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCDTMFToneChangeEvent where
   toJSRef = return . unRTCDTMFToneChangeEvent
@@ -11946,7 +15028,9 @@ instance FromJSRef RTCDTMFToneChangeEvent where
 instance IsEvent RTCDTMFToneChangeEvent
 instance IsGObject RTCDTMFToneChangeEvent where
   toGObject = GObject . castRef . unRTCDTMFToneChangeEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCDTMFToneChangeEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCDTMFToneChangeEvent :: IsGObject obj => obj -> RTCDTMFToneChangeEvent
 castToRTCDTMFToneChangeEvent = castTo gTypeRTCDTMFToneChangeEvent "RTCDTMFToneChangeEvent"
@@ -11964,9 +15048,18 @@ gTypeRTCDTMFToneChangeEvent = GType gTypeRTCDTMFToneChangeEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel Mozilla RTCDataChannel documentation>
-newtype RTCDataChannel = RTCDataChannel (JSRef RTCDataChannel) deriving (Eq)
+newtype RTCDataChannel = RTCDataChannel { unRTCDataChannel :: JSRef RTCDataChannel }
 
-unRTCDataChannel (RTCDataChannel o) = o
+instance Eq (RTCDataChannel) where
+  (RTCDataChannel a) == (RTCDataChannel b) = js_eq a b
+
+instance PToJSRef RTCDataChannel where
+  pToJSRef = unRTCDataChannel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCDataChannel where
+  pFromJSRef = RTCDataChannel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCDataChannel where
   toJSRef = return . unRTCDataChannel
@@ -11979,7 +15072,9 @@ instance FromJSRef RTCDataChannel where
 instance IsEventTarget RTCDataChannel
 instance IsGObject RTCDataChannel where
   toGObject = GObject . castRef . unRTCDataChannel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCDataChannel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCDataChannel :: IsGObject obj => obj -> RTCDataChannel
 castToRTCDataChannel = castTo gTypeRTCDataChannel "RTCDataChannel"
@@ -11997,9 +15092,18 @@ gTypeRTCDataChannel = GType gTypeRTCDataChannel'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelEvent Mozilla RTCDataChannelEvent documentation>
-newtype RTCDataChannelEvent = RTCDataChannelEvent (JSRef RTCDataChannelEvent) deriving (Eq)
+newtype RTCDataChannelEvent = RTCDataChannelEvent { unRTCDataChannelEvent :: JSRef RTCDataChannelEvent }
 
-unRTCDataChannelEvent (RTCDataChannelEvent o) = o
+instance Eq (RTCDataChannelEvent) where
+  (RTCDataChannelEvent a) == (RTCDataChannelEvent b) = js_eq a b
+
+instance PToJSRef RTCDataChannelEvent where
+  pToJSRef = unRTCDataChannelEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCDataChannelEvent where
+  pFromJSRef = RTCDataChannelEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCDataChannelEvent where
   toJSRef = return . unRTCDataChannelEvent
@@ -12012,7 +15116,9 @@ instance FromJSRef RTCDataChannelEvent where
 instance IsEvent RTCDataChannelEvent
 instance IsGObject RTCDataChannelEvent where
   toGObject = GObject . castRef . unRTCDataChannelEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCDataChannelEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCDataChannelEvent :: IsGObject obj => obj -> RTCDataChannelEvent
 castToRTCDataChannelEvent = castTo gTypeRTCDataChannelEvent "RTCDataChannelEvent"
@@ -12027,9 +15133,18 @@ gTypeRTCDataChannelEvent = GType gTypeRTCDataChannelEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidate".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate Mozilla RTCIceCandidate documentation>
-newtype RTCIceCandidate = RTCIceCandidate (JSRef RTCIceCandidate) deriving (Eq)
+newtype RTCIceCandidate = RTCIceCandidate { unRTCIceCandidate :: JSRef RTCIceCandidate }
 
-unRTCIceCandidate (RTCIceCandidate o) = o
+instance Eq (RTCIceCandidate) where
+  (RTCIceCandidate a) == (RTCIceCandidate b) = js_eq a b
+
+instance PToJSRef RTCIceCandidate where
+  pToJSRef = unRTCIceCandidate
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCIceCandidate where
+  pFromJSRef = RTCIceCandidate
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCIceCandidate where
   toJSRef = return . unRTCIceCandidate
@@ -12041,7 +15156,9 @@ instance FromJSRef RTCIceCandidate where
 
 instance IsGObject RTCIceCandidate where
   toGObject = GObject . castRef . unRTCIceCandidate
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCIceCandidate . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCIceCandidate :: IsGObject obj => obj -> RTCIceCandidate
 castToRTCIceCandidate = castTo gTypeRTCIceCandidate "RTCIceCandidate"
@@ -12059,9 +15176,18 @@ gTypeRTCIceCandidate = GType gTypeRTCIceCandidate'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateEvent Mozilla RTCIceCandidateEvent documentation>
-newtype RTCIceCandidateEvent = RTCIceCandidateEvent (JSRef RTCIceCandidateEvent) deriving (Eq)
+newtype RTCIceCandidateEvent = RTCIceCandidateEvent { unRTCIceCandidateEvent :: JSRef RTCIceCandidateEvent }
 
-unRTCIceCandidateEvent (RTCIceCandidateEvent o) = o
+instance Eq (RTCIceCandidateEvent) where
+  (RTCIceCandidateEvent a) == (RTCIceCandidateEvent b) = js_eq a b
+
+instance PToJSRef RTCIceCandidateEvent where
+  pToJSRef = unRTCIceCandidateEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCIceCandidateEvent where
+  pFromJSRef = RTCIceCandidateEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCIceCandidateEvent where
   toJSRef = return . unRTCIceCandidateEvent
@@ -12074,7 +15200,9 @@ instance FromJSRef RTCIceCandidateEvent where
 instance IsEvent RTCIceCandidateEvent
 instance IsGObject RTCIceCandidateEvent where
   toGObject = GObject . castRef . unRTCIceCandidateEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCIceCandidateEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCIceCandidateEvent :: IsGObject obj => obj -> RTCIceCandidateEvent
 castToRTCIceCandidateEvent = castTo gTypeRTCIceCandidateEvent "RTCIceCandidateEvent"
@@ -12089,9 +15217,18 @@ gTypeRTCIceCandidateEvent = GType gTypeRTCIceCandidateEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceServer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceServer Mozilla RTCIceServer documentation>
-newtype RTCIceServer = RTCIceServer (JSRef RTCIceServer) deriving (Eq)
+newtype RTCIceServer = RTCIceServer { unRTCIceServer :: JSRef RTCIceServer }
 
-unRTCIceServer (RTCIceServer o) = o
+instance Eq (RTCIceServer) where
+  (RTCIceServer a) == (RTCIceServer b) = js_eq a b
+
+instance PToJSRef RTCIceServer where
+  pToJSRef = unRTCIceServer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCIceServer where
+  pFromJSRef = RTCIceServer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCIceServer where
   toJSRef = return . unRTCIceServer
@@ -12103,7 +15240,9 @@ instance FromJSRef RTCIceServer where
 
 instance IsGObject RTCIceServer where
   toGObject = GObject . castRef . unRTCIceServer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCIceServer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCIceServer :: IsGObject obj => obj -> RTCIceServer
 castToRTCIceServer = castTo gTypeRTCIceServer "RTCIceServer"
@@ -12121,9 +15260,18 @@ gTypeRTCIceServer = GType gTypeRTCIceServer'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection Mozilla webkitRTCPeerConnection documentation>
-newtype RTCPeerConnection = RTCPeerConnection (JSRef RTCPeerConnection) deriving (Eq)
+newtype RTCPeerConnection = RTCPeerConnection { unRTCPeerConnection :: JSRef RTCPeerConnection }
 
-unRTCPeerConnection (RTCPeerConnection o) = o
+instance Eq (RTCPeerConnection) where
+  (RTCPeerConnection a) == (RTCPeerConnection b) = js_eq a b
+
+instance PToJSRef RTCPeerConnection where
+  pToJSRef = unRTCPeerConnection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCPeerConnection where
+  pFromJSRef = RTCPeerConnection
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCPeerConnection where
   toJSRef = return . unRTCPeerConnection
@@ -12136,7 +15284,9 @@ instance FromJSRef RTCPeerConnection where
 instance IsEventTarget RTCPeerConnection
 instance IsGObject RTCPeerConnection where
   toGObject = GObject . castRef . unRTCPeerConnection
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCPeerConnection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCPeerConnection :: IsGObject obj => obj -> RTCPeerConnection
 castToRTCPeerConnection = castTo gTypeRTCPeerConnection "RTCPeerConnection"
@@ -12148,41 +15298,21 @@ gTypeRTCPeerConnection = GType gTypeRTCPeerConnection'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnectionErrorCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionErrorCallback Mozilla RTCPeerConnectionErrorCallback documentation>
-newtype RTCPeerConnectionErrorCallback = RTCPeerConnectionErrorCallback (JSRef RTCPeerConnectionErrorCallback) deriving (Eq)
-
-unRTCPeerConnectionErrorCallback (RTCPeerConnectionErrorCallback o) = o
-
-instance ToJSRef RTCPeerConnectionErrorCallback where
-  toJSRef = return . unRTCPeerConnectionErrorCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef RTCPeerConnectionErrorCallback where
-  fromJSRef = return . fmap RTCPeerConnectionErrorCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject RTCPeerConnectionErrorCallback where
-  toGObject = GObject . castRef . unRTCPeerConnectionErrorCallback
-  unsafeCastGObject = RTCPeerConnectionErrorCallback . castRef . unGObject
-
-castToRTCPeerConnectionErrorCallback :: IsGObject obj => obj -> RTCPeerConnectionErrorCallback
-castToRTCPeerConnectionErrorCallback = castTo gTypeRTCPeerConnectionErrorCallback "RTCPeerConnectionErrorCallback"
-
-foreign import javascript unsafe "window[\"RTCPeerConnectionErrorCallback\"]" gTypeRTCPeerConnectionErrorCallback' :: JSRef GType
-gTypeRTCPeerConnectionErrorCallback = GType gTypeRTCPeerConnectionErrorCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescription".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription Mozilla RTCSessionDescription documentation>
-newtype RTCSessionDescription = RTCSessionDescription (JSRef RTCSessionDescription) deriving (Eq)
+newtype RTCSessionDescription = RTCSessionDescription { unRTCSessionDescription :: JSRef RTCSessionDescription }
 
-unRTCSessionDescription (RTCSessionDescription o) = o
+instance Eq (RTCSessionDescription) where
+  (RTCSessionDescription a) == (RTCSessionDescription b) = js_eq a b
+
+instance PToJSRef RTCSessionDescription where
+  pToJSRef = unRTCSessionDescription
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCSessionDescription where
+  pFromJSRef = RTCSessionDescription
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCSessionDescription where
   toJSRef = return . unRTCSessionDescription
@@ -12194,7 +15324,9 @@ instance FromJSRef RTCSessionDescription where
 
 instance IsGObject RTCSessionDescription where
   toGObject = GObject . castRef . unRTCSessionDescription
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCSessionDescription . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCSessionDescription :: IsGObject obj => obj -> RTCSessionDescription
 castToRTCSessionDescription = castTo gTypeRTCSessionDescription "RTCSessionDescription"
@@ -12206,70 +15338,21 @@ gTypeRTCSessionDescription = GType gTypeRTCSessionDescription'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescriptionCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation>
-newtype RTCSessionDescriptionCallback = RTCSessionDescriptionCallback (JSRef RTCSessionDescriptionCallback) deriving (Eq)
-
-unRTCSessionDescriptionCallback (RTCSessionDescriptionCallback o) = o
-
-instance ToJSRef RTCSessionDescriptionCallback where
-  toJSRef = return . unRTCSessionDescriptionCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef RTCSessionDescriptionCallback where
-  fromJSRef = return . fmap RTCSessionDescriptionCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject RTCSessionDescriptionCallback where
-  toGObject = GObject . castRef . unRTCSessionDescriptionCallback
-  unsafeCastGObject = RTCSessionDescriptionCallback . castRef . unGObject
-
-castToRTCSessionDescriptionCallback :: IsGObject obj => obj -> RTCSessionDescriptionCallback
-castToRTCSessionDescriptionCallback = castTo gTypeRTCSessionDescriptionCallback "RTCSessionDescriptionCallback"
-
-foreign import javascript unsafe "window[\"RTCSessionDescriptionCallback\"]" gTypeRTCSessionDescriptionCallback' :: JSRef GType
-gTypeRTCSessionDescriptionCallback = GType gTypeRTCSessionDescriptionCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.RTCStatsCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsCallback Mozilla RTCStatsCallback documentation>
-newtype RTCStatsCallback = RTCStatsCallback (JSRef RTCStatsCallback) deriving (Eq)
-
-unRTCStatsCallback (RTCStatsCallback o) = o
-
-instance ToJSRef RTCStatsCallback where
-  toJSRef = return . unRTCStatsCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef RTCStatsCallback where
-  fromJSRef = return . fmap RTCStatsCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject RTCStatsCallback where
-  toGObject = GObject . castRef . unRTCStatsCallback
-  unsafeCastGObject = RTCStatsCallback . castRef . unGObject
-
-castToRTCStatsCallback :: IsGObject obj => obj -> RTCStatsCallback
-castToRTCStatsCallback = castTo gTypeRTCStatsCallback "RTCStatsCallback"
-
-foreign import javascript unsafe "window[\"RTCStatsCallback\"]" gTypeRTCStatsCallback' :: JSRef GType
-gTypeRTCStatsCallback = GType gTypeRTCStatsCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsReport".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport Mozilla RTCStatsReport documentation>
-newtype RTCStatsReport = RTCStatsReport (JSRef RTCStatsReport) deriving (Eq)
+newtype RTCStatsReport = RTCStatsReport { unRTCStatsReport :: JSRef RTCStatsReport }
 
-unRTCStatsReport (RTCStatsReport o) = o
+instance Eq (RTCStatsReport) where
+  (RTCStatsReport a) == (RTCStatsReport b) = js_eq a b
+
+instance PToJSRef RTCStatsReport where
+  pToJSRef = unRTCStatsReport
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCStatsReport where
+  pFromJSRef = RTCStatsReport
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCStatsReport where
   toJSRef = return . unRTCStatsReport
@@ -12281,7 +15364,9 @@ instance FromJSRef RTCStatsReport where
 
 instance IsGObject RTCStatsReport where
   toGObject = GObject . castRef . unRTCStatsReport
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCStatsReport . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCStatsReport :: IsGObject obj => obj -> RTCStatsReport
 castToRTCStatsReport = castTo gTypeRTCStatsReport "RTCStatsReport"
@@ -12296,9 +15381,18 @@ gTypeRTCStatsReport = GType gTypeRTCStatsReport'
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsResponse".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsResponse Mozilla RTCStatsResponse documentation>
-newtype RTCStatsResponse = RTCStatsResponse (JSRef RTCStatsResponse) deriving (Eq)
+newtype RTCStatsResponse = RTCStatsResponse { unRTCStatsResponse :: JSRef RTCStatsResponse }
 
-unRTCStatsResponse (RTCStatsResponse o) = o
+instance Eq (RTCStatsResponse) where
+  (RTCStatsResponse a) == (RTCStatsResponse b) = js_eq a b
+
+instance PToJSRef RTCStatsResponse where
+  pToJSRef = unRTCStatsResponse
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RTCStatsResponse where
+  pFromJSRef = RTCStatsResponse
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RTCStatsResponse where
   toJSRef = return . unRTCStatsResponse
@@ -12310,7 +15404,9 @@ instance FromJSRef RTCStatsResponse where
 
 instance IsGObject RTCStatsResponse where
   toGObject = GObject . castRef . unRTCStatsResponse
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RTCStatsResponse . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRTCStatsResponse :: IsGObject obj => obj -> RTCStatsResponse
 castToRTCStatsResponse = castTo gTypeRTCStatsResponse "RTCStatsResponse"
@@ -12328,9 +15424,18 @@ gTypeRTCStatsResponse = GType gTypeRTCStatsResponse'
 --     * "GHCJS.DOM.NodeList"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RadioNodeList Mozilla RadioNodeList documentation>
-newtype RadioNodeList = RadioNodeList (JSRef RadioNodeList) deriving (Eq)
+newtype RadioNodeList = RadioNodeList { unRadioNodeList :: JSRef RadioNodeList }
 
-unRadioNodeList (RadioNodeList o) = o
+instance Eq (RadioNodeList) where
+  (RadioNodeList a) == (RadioNodeList b) = js_eq a b
+
+instance PToJSRef RadioNodeList where
+  pToJSRef = unRadioNodeList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef RadioNodeList where
+  pFromJSRef = RadioNodeList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef RadioNodeList where
   toJSRef = return . unRadioNodeList
@@ -12343,7 +15448,9 @@ instance FromJSRef RadioNodeList where
 instance IsNodeList RadioNodeList
 instance IsGObject RadioNodeList where
   toGObject = GObject . castRef . unRadioNodeList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = RadioNodeList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRadioNodeList :: IsGObject obj => obj -> RadioNodeList
 castToRadioNodeList = castTo gTypeRadioNodeList "RadioNodeList"
@@ -12355,32 +15462,43 @@ gTypeRadioNodeList = GType gTypeRadioNodeList'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMRange".
+-- | Functions for this inteface are in "GHCJS.DOM.Range".
 --
--- <https://developer.mozilla.org/en-US/docs/Web/API/DOMRange Mozilla DOMRange documentation>
-newtype DOMRange = DOMRange (JSRef DOMRange) deriving (Eq)
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Range Mozilla Range documentation>
+newtype Range = Range { unRange :: JSRef Range }
 
-unDOMRange (DOMRange o) = o
+instance Eq (Range) where
+  (Range a) == (Range b) = js_eq a b
 
-instance ToJSRef DOMRange where
-  toJSRef = return . unDOMRange
+instance PToJSRef Range where
+  pToJSRef = unRange
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Range where
+  pFromJSRef = Range
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef Range where
+  toJSRef = return . unRange
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMRange where
-  fromJSRef = return . fmap DOMRange . maybeJSNullOrUndefined
+instance FromJSRef Range where
+  fromJSRef = return . fmap Range . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-instance IsGObject DOMRange where
-  toGObject = GObject . castRef . unDOMRange
-  unsafeCastGObject = DOMRange . castRef . unGObject
+instance IsGObject Range where
+  toGObject = GObject . castRef . unRange
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = Range . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
-castToDOMRange :: IsGObject obj => obj -> DOMRange
-castToDOMRange = castTo gTypeDOMRange "DOMRange"
+castToRange :: IsGObject obj => obj -> Range
+castToRange = castTo gTypeRange "Range"
 
-foreign import javascript unsafe "window[\"DOMRange\"]" gTypeDOMRange' :: JSRef GType
-gTypeDOMRange = GType gTypeDOMRange'
+foreign import javascript unsafe "window[\"Range\"]" gTypeRange' :: JSRef GType
+gTypeRange = GType gTypeRange'
 #else
-type IsDOMRange o = DOMRangeClass o
+type IsRange o = RangeClass o
 #endif
 
 
@@ -12388,9 +15506,18 @@ type IsDOMRange o = DOMRangeClass o
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStream".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation>
-newtype ReadableStream = ReadableStream (JSRef ReadableStream) deriving (Eq)
+newtype ReadableStream = ReadableStream { unReadableStream :: JSRef ReadableStream }
 
-unReadableStream (ReadableStream o) = o
+instance Eq (ReadableStream) where
+  (ReadableStream a) == (ReadableStream b) = js_eq a b
+
+instance PToJSRef ReadableStream where
+  pToJSRef = unReadableStream
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ReadableStream where
+  pFromJSRef = ReadableStream
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ReadableStream where
   toJSRef = return . unReadableStream
@@ -12402,7 +15529,9 @@ instance FromJSRef ReadableStream where
 
 instance IsGObject ReadableStream where
   toGObject = GObject . castRef . unReadableStream
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ReadableStream . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToReadableStream :: IsGObject obj => obj -> ReadableStream
 castToReadableStream = castTo gTypeReadableStream "ReadableStream"
@@ -12417,9 +15546,18 @@ gTypeReadableStream = GType gTypeReadableStream'
 -- | Functions for this inteface are in "GHCJS.DOM.Rect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Rect Mozilla Rect documentation>
-newtype Rect = Rect (JSRef Rect) deriving (Eq)
+newtype Rect = Rect { unRect :: JSRef Rect }
 
-unRect (Rect o) = o
+instance Eq (Rect) where
+  (Rect a) == (Rect b) = js_eq a b
+
+instance PToJSRef Rect where
+  pToJSRef = unRect
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Rect where
+  pFromJSRef = Rect
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Rect where
   toJSRef = return . unRect
@@ -12431,7 +15569,9 @@ instance FromJSRef Rect where
 
 instance IsGObject Rect where
   toGObject = GObject . castRef . unRect
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Rect . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToRect :: IsGObject obj => obj -> Rect
 castToRect = castTo gTypeRect "Rect"
@@ -12443,41 +15583,21 @@ gTypeRect = GType gTypeRect'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.RequestAnimationFrameCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation>
-newtype RequestAnimationFrameCallback = RequestAnimationFrameCallback (JSRef RequestAnimationFrameCallback) deriving (Eq)
-
-unRequestAnimationFrameCallback (RequestAnimationFrameCallback o) = o
-
-instance ToJSRef RequestAnimationFrameCallback where
-  toJSRef = return . unRequestAnimationFrameCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef RequestAnimationFrameCallback where
-  fromJSRef = return . fmap RequestAnimationFrameCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject RequestAnimationFrameCallback where
-  toGObject = GObject . castRef . unRequestAnimationFrameCallback
-  unsafeCastGObject = RequestAnimationFrameCallback . castRef . unGObject
-
-castToRequestAnimationFrameCallback :: IsGObject obj => obj -> RequestAnimationFrameCallback
-castToRequestAnimationFrameCallback = castTo gTypeRequestAnimationFrameCallback "RequestAnimationFrameCallback"
-
-foreign import javascript unsafe "window[\"RequestAnimationFrameCallback\"]" gTypeRequestAnimationFrameCallback' :: JSRef GType
-gTypeRequestAnimationFrameCallback = GType gTypeRequestAnimationFrameCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SQLError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLError Mozilla SQLError documentation>
-newtype SQLError = SQLError (JSRef SQLError) deriving (Eq)
+newtype SQLError = SQLError { unSQLError :: JSRef SQLError }
 
-unSQLError (SQLError o) = o
+instance Eq (SQLError) where
+  (SQLError a) == (SQLError b) = js_eq a b
+
+instance PToJSRef SQLError where
+  pToJSRef = unSQLError
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SQLError where
+  pFromJSRef = SQLError
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SQLError where
   toJSRef = return . unSQLError
@@ -12489,7 +15609,9 @@ instance FromJSRef SQLError where
 
 instance IsGObject SQLError where
   toGObject = GObject . castRef . unSQLError
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SQLError . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSQLError :: IsGObject obj => obj -> SQLError
 castToSQLError = castTo gTypeSQLError "SQLError"
@@ -12504,9 +15626,18 @@ gTypeSQLError = GType gTypeSQLError'
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet Mozilla SQLResultSet documentation>
-newtype SQLResultSet = SQLResultSet (JSRef SQLResultSet) deriving (Eq)
+newtype SQLResultSet = SQLResultSet { unSQLResultSet :: JSRef SQLResultSet }
 
-unSQLResultSet (SQLResultSet o) = o
+instance Eq (SQLResultSet) where
+  (SQLResultSet a) == (SQLResultSet b) = js_eq a b
+
+instance PToJSRef SQLResultSet where
+  pToJSRef = unSQLResultSet
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SQLResultSet where
+  pFromJSRef = SQLResultSet
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SQLResultSet where
   toJSRef = return . unSQLResultSet
@@ -12518,7 +15649,9 @@ instance FromJSRef SQLResultSet where
 
 instance IsGObject SQLResultSet where
   toGObject = GObject . castRef . unSQLResultSet
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SQLResultSet . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSQLResultSet :: IsGObject obj => obj -> SQLResultSet
 castToSQLResultSet = castTo gTypeSQLResultSet "SQLResultSet"
@@ -12533,9 +15666,18 @@ gTypeSQLResultSet = GType gTypeSQLResultSet'
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSetRowList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList Mozilla SQLResultSetRowList documentation>
-newtype SQLResultSetRowList = SQLResultSetRowList (JSRef SQLResultSetRowList) deriving (Eq)
+newtype SQLResultSetRowList = SQLResultSetRowList { unSQLResultSetRowList :: JSRef SQLResultSetRowList }
 
-unSQLResultSetRowList (SQLResultSetRowList o) = o
+instance Eq (SQLResultSetRowList) where
+  (SQLResultSetRowList a) == (SQLResultSetRowList b) = js_eq a b
+
+instance PToJSRef SQLResultSetRowList where
+  pToJSRef = unSQLResultSetRowList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SQLResultSetRowList where
+  pFromJSRef = SQLResultSetRowList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SQLResultSetRowList where
   toJSRef = return . unSQLResultSetRowList
@@ -12547,7 +15689,9 @@ instance FromJSRef SQLResultSetRowList where
 
 instance IsGObject SQLResultSetRowList where
   toGObject = GObject . castRef . unSQLResultSetRowList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SQLResultSetRowList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSQLResultSetRowList :: IsGObject obj => obj -> SQLResultSetRowList
 castToSQLResultSetRowList = castTo gTypeSQLResultSetRowList "SQLResultSetRowList"
@@ -12559,70 +15703,21 @@ gTypeSQLResultSetRowList = GType gTypeSQLResultSetRowList'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SQLStatementCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementCallback Mozilla SQLStatementCallback documentation>
-newtype SQLStatementCallback = SQLStatementCallback (JSRef SQLStatementCallback) deriving (Eq)
-
-unSQLStatementCallback (SQLStatementCallback o) = o
-
-instance ToJSRef SQLStatementCallback where
-  toJSRef = return . unSQLStatementCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SQLStatementCallback where
-  fromJSRef = return . fmap SQLStatementCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject SQLStatementCallback where
-  toGObject = GObject . castRef . unSQLStatementCallback
-  unsafeCastGObject = SQLStatementCallback . castRef . unGObject
-
-castToSQLStatementCallback :: IsGObject obj => obj -> SQLStatementCallback
-castToSQLStatementCallback = castTo gTypeSQLStatementCallback "SQLStatementCallback"
-
-foreign import javascript unsafe "window[\"SQLStatementCallback\"]" gTypeSQLStatementCallback' :: JSRef GType
-gTypeSQLStatementCallback = GType gTypeSQLStatementCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SQLStatementErrorCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation>
-newtype SQLStatementErrorCallback = SQLStatementErrorCallback (JSRef SQLStatementErrorCallback) deriving (Eq)
-
-unSQLStatementErrorCallback (SQLStatementErrorCallback o) = o
-
-instance ToJSRef SQLStatementErrorCallback where
-  toJSRef = return . unSQLStatementErrorCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SQLStatementErrorCallback where
-  fromJSRef = return . fmap SQLStatementErrorCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject SQLStatementErrorCallback where
-  toGObject = GObject . castRef . unSQLStatementErrorCallback
-  unsafeCastGObject = SQLStatementErrorCallback . castRef . unGObject
-
-castToSQLStatementErrorCallback :: IsGObject obj => obj -> SQLStatementErrorCallback
-castToSQLStatementErrorCallback = castTo gTypeSQLStatementErrorCallback "SQLStatementErrorCallback"
-
-foreign import javascript unsafe "window[\"SQLStatementErrorCallback\"]" gTypeSQLStatementErrorCallback' :: JSRef GType
-gTypeSQLStatementErrorCallback = GType gTypeSQLStatementErrorCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SQLTransaction".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransaction Mozilla SQLTransaction documentation>
-newtype SQLTransaction = SQLTransaction (JSRef SQLTransaction) deriving (Eq)
+newtype SQLTransaction = SQLTransaction { unSQLTransaction :: JSRef SQLTransaction }
 
-unSQLTransaction (SQLTransaction o) = o
+instance Eq (SQLTransaction) where
+  (SQLTransaction a) == (SQLTransaction b) = js_eq a b
+
+instance PToJSRef SQLTransaction where
+  pToJSRef = unSQLTransaction
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SQLTransaction where
+  pFromJSRef = SQLTransaction
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SQLTransaction where
   toJSRef = return . unSQLTransaction
@@ -12634,71 +15729,15 @@ instance FromJSRef SQLTransaction where
 
 instance IsGObject SQLTransaction where
   toGObject = GObject . castRef . unSQLTransaction
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SQLTransaction . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSQLTransaction :: IsGObject obj => obj -> SQLTransaction
 castToSQLTransaction = castTo gTypeSQLTransaction "SQLTransaction"
 
 foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransaction' :: JSRef GType
 gTypeSQLTransaction = GType gTypeSQLTransaction'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation>
-newtype SQLTransactionCallback = SQLTransactionCallback (JSRef SQLTransactionCallback) deriving (Eq)
-
-unSQLTransactionCallback (SQLTransactionCallback o) = o
-
-instance ToJSRef SQLTransactionCallback where
-  toJSRef = return . unSQLTransactionCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SQLTransactionCallback where
-  fromJSRef = return . fmap SQLTransactionCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject SQLTransactionCallback where
-  toGObject = GObject . castRef . unSQLTransactionCallback
-  unsafeCastGObject = SQLTransactionCallback . castRef . unGObject
-
-castToSQLTransactionCallback :: IsGObject obj => obj -> SQLTransactionCallback
-castToSQLTransactionCallback = castTo gTypeSQLTransactionCallback "SQLTransactionCallback"
-
-foreign import javascript unsafe "window[\"SQLTransactionCallback\"]" gTypeSQLTransactionCallback' :: JSRef GType
-gTypeSQLTransactionCallback = GType gTypeSQLTransactionCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.SQLTransactionErrorCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation>
-newtype SQLTransactionErrorCallback = SQLTransactionErrorCallback (JSRef SQLTransactionErrorCallback) deriving (Eq)
-
-unSQLTransactionErrorCallback (SQLTransactionErrorCallback o) = o
-
-instance ToJSRef SQLTransactionErrorCallback where
-  toJSRef = return . unSQLTransactionErrorCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef SQLTransactionErrorCallback where
-  fromJSRef = return . fmap SQLTransactionErrorCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject SQLTransactionErrorCallback where
-  toGObject = GObject . castRef . unSQLTransactionErrorCallback
-  unsafeCastGObject = SQLTransactionErrorCallback . castRef . unGObject
-
-castToSQLTransactionErrorCallback :: IsGObject obj => obj -> SQLTransactionErrorCallback
-castToSQLTransactionErrorCallback = castTo gTypeSQLTransactionErrorCallback "SQLTransactionErrorCallback"
-
-foreign import javascript unsafe "window[\"SQLTransactionErrorCallback\"]" gTypeSQLTransactionErrorCallback' :: JSRef GType
-gTypeSQLTransactionErrorCallback = GType gTypeSQLTransactionErrorCallback'
 #else
 #endif
 
@@ -12714,9 +15753,18 @@ gTypeSQLTransactionErrorCallback = GType gTypeSQLTransactionErrorCallback'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement Mozilla SVGAElement documentation>
-newtype SVGAElement = SVGAElement (JSRef SVGAElement) deriving (Eq)
+newtype SVGAElement = SVGAElement { unSVGAElement :: JSRef SVGAElement }
 
-unSVGAElement (SVGAElement o) = o
+instance Eq (SVGAElement) where
+  (SVGAElement a) == (SVGAElement b) = js_eq a b
+
+instance PToJSRef SVGAElement where
+  pToJSRef = unSVGAElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAElement where
+  pFromJSRef = SVGAElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAElement where
   toJSRef = return . unSVGAElement
@@ -12733,7 +15781,9 @@ instance IsNode SVGAElement
 instance IsEventTarget SVGAElement
 instance IsGObject SVGAElement where
   toGObject = GObject . castRef . unSVGAElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAElement :: IsGObject obj => obj -> SVGAElement
 castToSVGAElement = castTo gTypeSVGAElement "SVGAElement"
@@ -12754,9 +15804,18 @@ gTypeSVGAElement = GType gTypeSVGAElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphDefElement Mozilla SVGAltGlyphDefElement documentation>
-newtype SVGAltGlyphDefElement = SVGAltGlyphDefElement (JSRef SVGAltGlyphDefElement) deriving (Eq)
+newtype SVGAltGlyphDefElement = SVGAltGlyphDefElement { unSVGAltGlyphDefElement :: JSRef SVGAltGlyphDefElement }
 
-unSVGAltGlyphDefElement (SVGAltGlyphDefElement o) = o
+instance Eq (SVGAltGlyphDefElement) where
+  (SVGAltGlyphDefElement a) == (SVGAltGlyphDefElement b) = js_eq a b
+
+instance PToJSRef SVGAltGlyphDefElement where
+  pToJSRef = unSVGAltGlyphDefElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAltGlyphDefElement where
+  pFromJSRef = SVGAltGlyphDefElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAltGlyphDefElement where
   toJSRef = return . unSVGAltGlyphDefElement
@@ -12772,7 +15831,9 @@ instance IsNode SVGAltGlyphDefElement
 instance IsEventTarget SVGAltGlyphDefElement
 instance IsGObject SVGAltGlyphDefElement where
   toGObject = GObject . castRef . unSVGAltGlyphDefElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAltGlyphDefElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAltGlyphDefElement :: IsGObject obj => obj -> SVGAltGlyphDefElement
 castToSVGAltGlyphDefElement = castTo gTypeSVGAltGlyphDefElement "SVGAltGlyphDefElement"
@@ -12796,9 +15857,18 @@ gTypeSVGAltGlyphDefElement = GType gTypeSVGAltGlyphDefElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement Mozilla SVGAltGlyphElement documentation>
-newtype SVGAltGlyphElement = SVGAltGlyphElement (JSRef SVGAltGlyphElement) deriving (Eq)
+newtype SVGAltGlyphElement = SVGAltGlyphElement { unSVGAltGlyphElement :: JSRef SVGAltGlyphElement }
 
-unSVGAltGlyphElement (SVGAltGlyphElement o) = o
+instance Eq (SVGAltGlyphElement) where
+  (SVGAltGlyphElement a) == (SVGAltGlyphElement b) = js_eq a b
+
+instance PToJSRef SVGAltGlyphElement where
+  pToJSRef = unSVGAltGlyphElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAltGlyphElement where
+  pFromJSRef = SVGAltGlyphElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAltGlyphElement where
   toJSRef = return . unSVGAltGlyphElement
@@ -12817,7 +15887,9 @@ instance IsNode SVGAltGlyphElement
 instance IsEventTarget SVGAltGlyphElement
 instance IsGObject SVGAltGlyphElement where
   toGObject = GObject . castRef . unSVGAltGlyphElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAltGlyphElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAltGlyphElement :: IsGObject obj => obj -> SVGAltGlyphElement
 castToSVGAltGlyphElement = castTo gTypeSVGAltGlyphElement "SVGAltGlyphElement"
@@ -12838,9 +15910,18 @@ gTypeSVGAltGlyphElement = GType gTypeSVGAltGlyphElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphItemElement Mozilla SVGAltGlyphItemElement documentation>
-newtype SVGAltGlyphItemElement = SVGAltGlyphItemElement (JSRef SVGAltGlyphItemElement) deriving (Eq)
+newtype SVGAltGlyphItemElement = SVGAltGlyphItemElement { unSVGAltGlyphItemElement :: JSRef SVGAltGlyphItemElement }
 
-unSVGAltGlyphItemElement (SVGAltGlyphItemElement o) = o
+instance Eq (SVGAltGlyphItemElement) where
+  (SVGAltGlyphItemElement a) == (SVGAltGlyphItemElement b) = js_eq a b
+
+instance PToJSRef SVGAltGlyphItemElement where
+  pToJSRef = unSVGAltGlyphItemElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAltGlyphItemElement where
+  pFromJSRef = SVGAltGlyphItemElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAltGlyphItemElement where
   toJSRef = return . unSVGAltGlyphItemElement
@@ -12856,7 +15937,9 @@ instance IsNode SVGAltGlyphItemElement
 instance IsEventTarget SVGAltGlyphItemElement
 instance IsGObject SVGAltGlyphItemElement where
   toGObject = GObject . castRef . unSVGAltGlyphItemElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAltGlyphItemElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAltGlyphItemElement :: IsGObject obj => obj -> SVGAltGlyphItemElement
 castToSVGAltGlyphItemElement = castTo gTypeSVGAltGlyphItemElement "SVGAltGlyphItemElement"
@@ -12871,9 +15954,18 @@ gTypeSVGAltGlyphItemElement = GType gTypeSVGAltGlyphItemElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAngle".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle Mozilla SVGAngle documentation>
-newtype SVGAngle = SVGAngle (JSRef SVGAngle) deriving (Eq)
+newtype SVGAngle = SVGAngle { unSVGAngle :: JSRef SVGAngle }
 
-unSVGAngle (SVGAngle o) = o
+instance Eq (SVGAngle) where
+  (SVGAngle a) == (SVGAngle b) = js_eq a b
+
+instance PToJSRef SVGAngle where
+  pToJSRef = unSVGAngle
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAngle where
+  pFromJSRef = SVGAngle
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAngle where
   toJSRef = return . unSVGAngle
@@ -12885,7 +15977,9 @@ instance FromJSRef SVGAngle where
 
 instance IsGObject SVGAngle where
   toGObject = GObject . castRef . unSVGAngle
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAngle . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAngle :: IsGObject obj => obj -> SVGAngle
 castToSVGAngle = castTo gTypeSVGAngle "SVGAngle"
@@ -12907,9 +16001,18 @@ gTypeSVGAngle = GType gTypeSVGAngle'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateColorElement Mozilla SVGAnimateColorElement documentation>
-newtype SVGAnimateColorElement = SVGAnimateColorElement (JSRef SVGAnimateColorElement) deriving (Eq)
+newtype SVGAnimateColorElement = SVGAnimateColorElement { unSVGAnimateColorElement :: JSRef SVGAnimateColorElement }
 
-unSVGAnimateColorElement (SVGAnimateColorElement o) = o
+instance Eq (SVGAnimateColorElement) where
+  (SVGAnimateColorElement a) == (SVGAnimateColorElement b) = js_eq a b
+
+instance PToJSRef SVGAnimateColorElement where
+  pToJSRef = unSVGAnimateColorElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimateColorElement where
+  pFromJSRef = SVGAnimateColorElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimateColorElement where
   toJSRef = return . unSVGAnimateColorElement
@@ -12926,7 +16029,9 @@ instance IsNode SVGAnimateColorElement
 instance IsEventTarget SVGAnimateColorElement
 instance IsGObject SVGAnimateColorElement where
   toGObject = GObject . castRef . unSVGAnimateColorElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimateColorElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimateColorElement :: IsGObject obj => obj -> SVGAnimateColorElement
 castToSVGAnimateColorElement = castTo gTypeSVGAnimateColorElement "SVGAnimateColorElement"
@@ -12948,9 +16053,18 @@ gTypeSVGAnimateColorElement = GType gTypeSVGAnimateColorElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateElement Mozilla SVGAnimateElement documentation>
-newtype SVGAnimateElement = SVGAnimateElement (JSRef SVGAnimateElement) deriving (Eq)
+newtype SVGAnimateElement = SVGAnimateElement { unSVGAnimateElement :: JSRef SVGAnimateElement }
 
-unSVGAnimateElement (SVGAnimateElement o) = o
+instance Eq (SVGAnimateElement) where
+  (SVGAnimateElement a) == (SVGAnimateElement b) = js_eq a b
+
+instance PToJSRef SVGAnimateElement where
+  pToJSRef = unSVGAnimateElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimateElement where
+  pFromJSRef = SVGAnimateElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimateElement where
   toJSRef = return . unSVGAnimateElement
@@ -12967,7 +16081,9 @@ instance IsNode SVGAnimateElement
 instance IsEventTarget SVGAnimateElement
 instance IsGObject SVGAnimateElement where
   toGObject = GObject . castRef . unSVGAnimateElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimateElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimateElement :: IsGObject obj => obj -> SVGAnimateElement
 castToSVGAnimateElement = castTo gTypeSVGAnimateElement "SVGAnimateElement"
@@ -12989,9 +16105,18 @@ gTypeSVGAnimateElement = GType gTypeSVGAnimateElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateMotionElement Mozilla SVGAnimateMotionElement documentation>
-newtype SVGAnimateMotionElement = SVGAnimateMotionElement (JSRef SVGAnimateMotionElement) deriving (Eq)
+newtype SVGAnimateMotionElement = SVGAnimateMotionElement { unSVGAnimateMotionElement :: JSRef SVGAnimateMotionElement }
 
-unSVGAnimateMotionElement (SVGAnimateMotionElement o) = o
+instance Eq (SVGAnimateMotionElement) where
+  (SVGAnimateMotionElement a) == (SVGAnimateMotionElement b) = js_eq a b
+
+instance PToJSRef SVGAnimateMotionElement where
+  pToJSRef = unSVGAnimateMotionElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimateMotionElement where
+  pFromJSRef = SVGAnimateMotionElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimateMotionElement where
   toJSRef = return . unSVGAnimateMotionElement
@@ -13008,7 +16133,9 @@ instance IsNode SVGAnimateMotionElement
 instance IsEventTarget SVGAnimateMotionElement
 instance IsGObject SVGAnimateMotionElement where
   toGObject = GObject . castRef . unSVGAnimateMotionElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimateMotionElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimateMotionElement :: IsGObject obj => obj -> SVGAnimateMotionElement
 castToSVGAnimateMotionElement = castTo gTypeSVGAnimateMotionElement "SVGAnimateMotionElement"
@@ -13030,9 +16157,18 @@ gTypeSVGAnimateMotionElement = GType gTypeSVGAnimateMotionElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateTransformElement Mozilla SVGAnimateTransformElement documentation>
-newtype SVGAnimateTransformElement = SVGAnimateTransformElement (JSRef SVGAnimateTransformElement) deriving (Eq)
+newtype SVGAnimateTransformElement = SVGAnimateTransformElement { unSVGAnimateTransformElement :: JSRef SVGAnimateTransformElement }
 
-unSVGAnimateTransformElement (SVGAnimateTransformElement o) = o
+instance Eq (SVGAnimateTransformElement) where
+  (SVGAnimateTransformElement a) == (SVGAnimateTransformElement b) = js_eq a b
+
+instance PToJSRef SVGAnimateTransformElement where
+  pToJSRef = unSVGAnimateTransformElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimateTransformElement where
+  pFromJSRef = SVGAnimateTransformElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimateTransformElement where
   toJSRef = return . unSVGAnimateTransformElement
@@ -13049,7 +16185,9 @@ instance IsNode SVGAnimateTransformElement
 instance IsEventTarget SVGAnimateTransformElement
 instance IsGObject SVGAnimateTransformElement where
   toGObject = GObject . castRef . unSVGAnimateTransformElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimateTransformElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimateTransformElement :: IsGObject obj => obj -> SVGAnimateTransformElement
 castToSVGAnimateTransformElement = castTo gTypeSVGAnimateTransformElement "SVGAnimateTransformElement"
@@ -13064,9 +16202,18 @@ gTypeSVGAnimateTransformElement = GType gTypeSVGAnimateTransformElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedAngle".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedAngle Mozilla SVGAnimatedAngle documentation>
-newtype SVGAnimatedAngle = SVGAnimatedAngle (JSRef SVGAnimatedAngle) deriving (Eq)
+newtype SVGAnimatedAngle = SVGAnimatedAngle { unSVGAnimatedAngle :: JSRef SVGAnimatedAngle }
 
-unSVGAnimatedAngle (SVGAnimatedAngle o) = o
+instance Eq (SVGAnimatedAngle) where
+  (SVGAnimatedAngle a) == (SVGAnimatedAngle b) = js_eq a b
+
+instance PToJSRef SVGAnimatedAngle where
+  pToJSRef = unSVGAnimatedAngle
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedAngle where
+  pFromJSRef = SVGAnimatedAngle
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedAngle where
   toJSRef = return . unSVGAnimatedAngle
@@ -13078,7 +16225,9 @@ instance FromJSRef SVGAnimatedAngle where
 
 instance IsGObject SVGAnimatedAngle where
   toGObject = GObject . castRef . unSVGAnimatedAngle
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedAngle . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedAngle :: IsGObject obj => obj -> SVGAnimatedAngle
 castToSVGAnimatedAngle = castTo gTypeSVGAnimatedAngle "SVGAnimatedAngle"
@@ -13093,9 +16242,18 @@ gTypeSVGAnimatedAngle = GType gTypeSVGAnimatedAngle'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedBoolean".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean Mozilla SVGAnimatedBoolean documentation>
-newtype SVGAnimatedBoolean = SVGAnimatedBoolean (JSRef SVGAnimatedBoolean) deriving (Eq)
+newtype SVGAnimatedBoolean = SVGAnimatedBoolean { unSVGAnimatedBoolean :: JSRef SVGAnimatedBoolean }
 
-unSVGAnimatedBoolean (SVGAnimatedBoolean o) = o
+instance Eq (SVGAnimatedBoolean) where
+  (SVGAnimatedBoolean a) == (SVGAnimatedBoolean b) = js_eq a b
+
+instance PToJSRef SVGAnimatedBoolean where
+  pToJSRef = unSVGAnimatedBoolean
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedBoolean where
+  pFromJSRef = SVGAnimatedBoolean
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedBoolean where
   toJSRef = return . unSVGAnimatedBoolean
@@ -13107,7 +16265,9 @@ instance FromJSRef SVGAnimatedBoolean where
 
 instance IsGObject SVGAnimatedBoolean where
   toGObject = GObject . castRef . unSVGAnimatedBoolean
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedBoolean . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedBoolean :: IsGObject obj => obj -> SVGAnimatedBoolean
 castToSVGAnimatedBoolean = castTo gTypeSVGAnimatedBoolean "SVGAnimatedBoolean"
@@ -13122,9 +16282,18 @@ gTypeSVGAnimatedBoolean = GType gTypeSVGAnimatedBoolean'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedEnumeration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration Mozilla SVGAnimatedEnumeration documentation>
-newtype SVGAnimatedEnumeration = SVGAnimatedEnumeration (JSRef SVGAnimatedEnumeration) deriving (Eq)
+newtype SVGAnimatedEnumeration = SVGAnimatedEnumeration { unSVGAnimatedEnumeration :: JSRef SVGAnimatedEnumeration }
 
-unSVGAnimatedEnumeration (SVGAnimatedEnumeration o) = o
+instance Eq (SVGAnimatedEnumeration) where
+  (SVGAnimatedEnumeration a) == (SVGAnimatedEnumeration b) = js_eq a b
+
+instance PToJSRef SVGAnimatedEnumeration where
+  pToJSRef = unSVGAnimatedEnumeration
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedEnumeration where
+  pFromJSRef = SVGAnimatedEnumeration
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedEnumeration where
   toJSRef = return . unSVGAnimatedEnumeration
@@ -13136,7 +16305,9 @@ instance FromJSRef SVGAnimatedEnumeration where
 
 instance IsGObject SVGAnimatedEnumeration where
   toGObject = GObject . castRef . unSVGAnimatedEnumeration
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedEnumeration . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedEnumeration :: IsGObject obj => obj -> SVGAnimatedEnumeration
 castToSVGAnimatedEnumeration = castTo gTypeSVGAnimatedEnumeration "SVGAnimatedEnumeration"
@@ -13151,9 +16322,18 @@ gTypeSVGAnimatedEnumeration = GType gTypeSVGAnimatedEnumeration'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedInteger".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger Mozilla SVGAnimatedInteger documentation>
-newtype SVGAnimatedInteger = SVGAnimatedInteger (JSRef SVGAnimatedInteger) deriving (Eq)
+newtype SVGAnimatedInteger = SVGAnimatedInteger { unSVGAnimatedInteger :: JSRef SVGAnimatedInteger }
 
-unSVGAnimatedInteger (SVGAnimatedInteger o) = o
+instance Eq (SVGAnimatedInteger) where
+  (SVGAnimatedInteger a) == (SVGAnimatedInteger b) = js_eq a b
+
+instance PToJSRef SVGAnimatedInteger where
+  pToJSRef = unSVGAnimatedInteger
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedInteger where
+  pFromJSRef = SVGAnimatedInteger
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedInteger where
   toJSRef = return . unSVGAnimatedInteger
@@ -13165,7 +16345,9 @@ instance FromJSRef SVGAnimatedInteger where
 
 instance IsGObject SVGAnimatedInteger where
   toGObject = GObject . castRef . unSVGAnimatedInteger
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedInteger . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedInteger :: IsGObject obj => obj -> SVGAnimatedInteger
 castToSVGAnimatedInteger = castTo gTypeSVGAnimatedInteger "SVGAnimatedInteger"
@@ -13180,9 +16362,18 @@ gTypeSVGAnimatedInteger = GType gTypeSVGAnimatedInteger'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLength".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength Mozilla SVGAnimatedLength documentation>
-newtype SVGAnimatedLength = SVGAnimatedLength (JSRef SVGAnimatedLength) deriving (Eq)
+newtype SVGAnimatedLength = SVGAnimatedLength { unSVGAnimatedLength :: JSRef SVGAnimatedLength }
 
-unSVGAnimatedLength (SVGAnimatedLength o) = o
+instance Eq (SVGAnimatedLength) where
+  (SVGAnimatedLength a) == (SVGAnimatedLength b) = js_eq a b
+
+instance PToJSRef SVGAnimatedLength where
+  pToJSRef = unSVGAnimatedLength
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedLength where
+  pFromJSRef = SVGAnimatedLength
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedLength where
   toJSRef = return . unSVGAnimatedLength
@@ -13194,7 +16385,9 @@ instance FromJSRef SVGAnimatedLength where
 
 instance IsGObject SVGAnimatedLength where
   toGObject = GObject . castRef . unSVGAnimatedLength
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedLength . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedLength :: IsGObject obj => obj -> SVGAnimatedLength
 castToSVGAnimatedLength = castTo gTypeSVGAnimatedLength "SVGAnimatedLength"
@@ -13209,9 +16402,18 @@ gTypeSVGAnimatedLength = GType gTypeSVGAnimatedLength'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLengthList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList Mozilla SVGAnimatedLengthList documentation>
-newtype SVGAnimatedLengthList = SVGAnimatedLengthList (JSRef SVGAnimatedLengthList) deriving (Eq)
+newtype SVGAnimatedLengthList = SVGAnimatedLengthList { unSVGAnimatedLengthList :: JSRef SVGAnimatedLengthList }
 
-unSVGAnimatedLengthList (SVGAnimatedLengthList o) = o
+instance Eq (SVGAnimatedLengthList) where
+  (SVGAnimatedLengthList a) == (SVGAnimatedLengthList b) = js_eq a b
+
+instance PToJSRef SVGAnimatedLengthList where
+  pToJSRef = unSVGAnimatedLengthList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedLengthList where
+  pFromJSRef = SVGAnimatedLengthList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedLengthList where
   toJSRef = return . unSVGAnimatedLengthList
@@ -13223,7 +16425,9 @@ instance FromJSRef SVGAnimatedLengthList where
 
 instance IsGObject SVGAnimatedLengthList where
   toGObject = GObject . castRef . unSVGAnimatedLengthList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedLengthList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedLengthList :: IsGObject obj => obj -> SVGAnimatedLengthList
 castToSVGAnimatedLengthList = castTo gTypeSVGAnimatedLengthList "SVGAnimatedLengthList"
@@ -13238,9 +16442,18 @@ gTypeSVGAnimatedLengthList = GType gTypeSVGAnimatedLengthList'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumber".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber Mozilla SVGAnimatedNumber documentation>
-newtype SVGAnimatedNumber = SVGAnimatedNumber (JSRef SVGAnimatedNumber) deriving (Eq)
+newtype SVGAnimatedNumber = SVGAnimatedNumber { unSVGAnimatedNumber :: JSRef SVGAnimatedNumber }
 
-unSVGAnimatedNumber (SVGAnimatedNumber o) = o
+instance Eq (SVGAnimatedNumber) where
+  (SVGAnimatedNumber a) == (SVGAnimatedNumber b) = js_eq a b
+
+instance PToJSRef SVGAnimatedNumber where
+  pToJSRef = unSVGAnimatedNumber
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedNumber where
+  pFromJSRef = SVGAnimatedNumber
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedNumber where
   toJSRef = return . unSVGAnimatedNumber
@@ -13252,7 +16465,9 @@ instance FromJSRef SVGAnimatedNumber where
 
 instance IsGObject SVGAnimatedNumber where
   toGObject = GObject . castRef . unSVGAnimatedNumber
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedNumber . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedNumber :: IsGObject obj => obj -> SVGAnimatedNumber
 castToSVGAnimatedNumber = castTo gTypeSVGAnimatedNumber "SVGAnimatedNumber"
@@ -13267,9 +16482,18 @@ gTypeSVGAnimatedNumber = GType gTypeSVGAnimatedNumber'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumberList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList Mozilla SVGAnimatedNumberList documentation>
-newtype SVGAnimatedNumberList = SVGAnimatedNumberList (JSRef SVGAnimatedNumberList) deriving (Eq)
+newtype SVGAnimatedNumberList = SVGAnimatedNumberList { unSVGAnimatedNumberList :: JSRef SVGAnimatedNumberList }
 
-unSVGAnimatedNumberList (SVGAnimatedNumberList o) = o
+instance Eq (SVGAnimatedNumberList) where
+  (SVGAnimatedNumberList a) == (SVGAnimatedNumberList b) = js_eq a b
+
+instance PToJSRef SVGAnimatedNumberList where
+  pToJSRef = unSVGAnimatedNumberList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedNumberList where
+  pFromJSRef = SVGAnimatedNumberList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedNumberList where
   toJSRef = return . unSVGAnimatedNumberList
@@ -13281,7 +16505,9 @@ instance FromJSRef SVGAnimatedNumberList where
 
 instance IsGObject SVGAnimatedNumberList where
   toGObject = GObject . castRef . unSVGAnimatedNumberList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedNumberList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedNumberList :: IsGObject obj => obj -> SVGAnimatedNumberList
 castToSVGAnimatedNumberList = castTo gTypeSVGAnimatedNumberList "SVGAnimatedNumberList"
@@ -13296,9 +16522,18 @@ gTypeSVGAnimatedNumberList = GType gTypeSVGAnimatedNumberList'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedPreserveAspectRatio".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio Mozilla SVGAnimatedPreserveAspectRatio documentation>
-newtype SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio (JSRef SVGAnimatedPreserveAspectRatio) deriving (Eq)
+newtype SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio { unSVGAnimatedPreserveAspectRatio :: JSRef SVGAnimatedPreserveAspectRatio }
 
-unSVGAnimatedPreserveAspectRatio (SVGAnimatedPreserveAspectRatio o) = o
+instance Eq (SVGAnimatedPreserveAspectRatio) where
+  (SVGAnimatedPreserveAspectRatio a) == (SVGAnimatedPreserveAspectRatio b) = js_eq a b
+
+instance PToJSRef SVGAnimatedPreserveAspectRatio where
+  pToJSRef = unSVGAnimatedPreserveAspectRatio
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedPreserveAspectRatio where
+  pFromJSRef = SVGAnimatedPreserveAspectRatio
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedPreserveAspectRatio where
   toJSRef = return . unSVGAnimatedPreserveAspectRatio
@@ -13310,7 +16545,9 @@ instance FromJSRef SVGAnimatedPreserveAspectRatio where
 
 instance IsGObject SVGAnimatedPreserveAspectRatio where
   toGObject = GObject . castRef . unSVGAnimatedPreserveAspectRatio
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedPreserveAspectRatio . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedPreserveAspectRatio :: IsGObject obj => obj -> SVGAnimatedPreserveAspectRatio
 castToSVGAnimatedPreserveAspectRatio = castTo gTypeSVGAnimatedPreserveAspectRatio "SVGAnimatedPreserveAspectRatio"
@@ -13325,9 +16562,18 @@ gTypeSVGAnimatedPreserveAspectRatio = GType gTypeSVGAnimatedPreserveAspectRatio'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedRect Mozilla SVGAnimatedRect documentation>
-newtype SVGAnimatedRect = SVGAnimatedRect (JSRef SVGAnimatedRect) deriving (Eq)
+newtype SVGAnimatedRect = SVGAnimatedRect { unSVGAnimatedRect :: JSRef SVGAnimatedRect }
 
-unSVGAnimatedRect (SVGAnimatedRect o) = o
+instance Eq (SVGAnimatedRect) where
+  (SVGAnimatedRect a) == (SVGAnimatedRect b) = js_eq a b
+
+instance PToJSRef SVGAnimatedRect where
+  pToJSRef = unSVGAnimatedRect
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedRect where
+  pFromJSRef = SVGAnimatedRect
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedRect where
   toJSRef = return . unSVGAnimatedRect
@@ -13339,7 +16585,9 @@ instance FromJSRef SVGAnimatedRect where
 
 instance IsGObject SVGAnimatedRect where
   toGObject = GObject . castRef . unSVGAnimatedRect
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedRect . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedRect :: IsGObject obj => obj -> SVGAnimatedRect
 castToSVGAnimatedRect = castTo gTypeSVGAnimatedRect "SVGAnimatedRect"
@@ -13354,9 +16602,18 @@ gTypeSVGAnimatedRect = GType gTypeSVGAnimatedRect'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedString".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString Mozilla SVGAnimatedString documentation>
-newtype SVGAnimatedString = SVGAnimatedString (JSRef SVGAnimatedString) deriving (Eq)
+newtype SVGAnimatedString = SVGAnimatedString { unSVGAnimatedString :: JSRef SVGAnimatedString }
 
-unSVGAnimatedString (SVGAnimatedString o) = o
+instance Eq (SVGAnimatedString) where
+  (SVGAnimatedString a) == (SVGAnimatedString b) = js_eq a b
+
+instance PToJSRef SVGAnimatedString where
+  pToJSRef = unSVGAnimatedString
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedString where
+  pFromJSRef = SVGAnimatedString
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedString where
   toJSRef = return . unSVGAnimatedString
@@ -13368,7 +16625,9 @@ instance FromJSRef SVGAnimatedString where
 
 instance IsGObject SVGAnimatedString where
   toGObject = GObject . castRef . unSVGAnimatedString
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedString . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedString :: IsGObject obj => obj -> SVGAnimatedString
 castToSVGAnimatedString = castTo gTypeSVGAnimatedString "SVGAnimatedString"
@@ -13383,9 +16642,18 @@ gTypeSVGAnimatedString = GType gTypeSVGAnimatedString'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedTransformList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList Mozilla SVGAnimatedTransformList documentation>
-newtype SVGAnimatedTransformList = SVGAnimatedTransformList (JSRef SVGAnimatedTransformList) deriving (Eq)
+newtype SVGAnimatedTransformList = SVGAnimatedTransformList { unSVGAnimatedTransformList :: JSRef SVGAnimatedTransformList }
 
-unSVGAnimatedTransformList (SVGAnimatedTransformList o) = o
+instance Eq (SVGAnimatedTransformList) where
+  (SVGAnimatedTransformList a) == (SVGAnimatedTransformList b) = js_eq a b
+
+instance PToJSRef SVGAnimatedTransformList where
+  pToJSRef = unSVGAnimatedTransformList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimatedTransformList where
+  pFromJSRef = SVGAnimatedTransformList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimatedTransformList where
   toJSRef = return . unSVGAnimatedTransformList
@@ -13397,7 +16665,9 @@ instance FromJSRef SVGAnimatedTransformList where
 
 instance IsGObject SVGAnimatedTransformList where
   toGObject = GObject . castRef . unSVGAnimatedTransformList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimatedTransformList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimatedTransformList :: IsGObject obj => obj -> SVGAnimatedTransformList
 castToSVGAnimatedTransformList = castTo gTypeSVGAnimatedTransformList "SVGAnimatedTransformList"
@@ -13418,9 +16688,18 @@ gTypeSVGAnimatedTransformList = GType gTypeSVGAnimatedTransformList'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement Mozilla SVGAnimationElement documentation>
-newtype SVGAnimationElement = SVGAnimationElement (JSRef SVGAnimationElement) deriving (Eq)
+newtype SVGAnimationElement = SVGAnimationElement { unSVGAnimationElement :: JSRef SVGAnimationElement }
 
-unSVGAnimationElement (SVGAnimationElement o) = o
+instance Eq (SVGAnimationElement) where
+  (SVGAnimationElement a) == (SVGAnimationElement b) = js_eq a b
+
+instance PToJSRef SVGAnimationElement where
+  pToJSRef = unSVGAnimationElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGAnimationElement where
+  pFromJSRef = SVGAnimationElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGAnimationElement where
   toJSRef = return . unSVGAnimationElement
@@ -13441,7 +16720,9 @@ instance IsNode SVGAnimationElement
 instance IsEventTarget SVGAnimationElement
 instance IsGObject SVGAnimationElement where
   toGObject = GObject . castRef . unSVGAnimationElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGAnimationElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGAnimationElement :: IsGObject obj => obj -> SVGAnimationElement
 castToSVGAnimationElement = castTo gTypeSVGAnimationElement "SVGAnimationElement"
@@ -13463,9 +16744,18 @@ gTypeSVGAnimationElement = GType gTypeSVGAnimationElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement Mozilla SVGCircleElement documentation>
-newtype SVGCircleElement = SVGCircleElement (JSRef SVGCircleElement) deriving (Eq)
+newtype SVGCircleElement = SVGCircleElement { unSVGCircleElement :: JSRef SVGCircleElement }
 
-unSVGCircleElement (SVGCircleElement o) = o
+instance Eq (SVGCircleElement) where
+  (SVGCircleElement a) == (SVGCircleElement b) = js_eq a b
+
+instance PToJSRef SVGCircleElement where
+  pToJSRef = unSVGCircleElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGCircleElement where
+  pFromJSRef = SVGCircleElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGCircleElement where
   toJSRef = return . unSVGCircleElement
@@ -13482,7 +16772,9 @@ instance IsNode SVGCircleElement
 instance IsEventTarget SVGCircleElement
 instance IsGObject SVGCircleElement where
   toGObject = GObject . castRef . unSVGCircleElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGCircleElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGCircleElement :: IsGObject obj => obj -> SVGCircleElement
 castToSVGCircleElement = castTo gTypeSVGCircleElement "SVGCircleElement"
@@ -13504,9 +16796,18 @@ gTypeSVGCircleElement = GType gTypeSVGCircleElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGClipPathElement Mozilla SVGClipPathElement documentation>
-newtype SVGClipPathElement = SVGClipPathElement (JSRef SVGClipPathElement) deriving (Eq)
+newtype SVGClipPathElement = SVGClipPathElement { unSVGClipPathElement :: JSRef SVGClipPathElement }
 
-unSVGClipPathElement (SVGClipPathElement o) = o
+instance Eq (SVGClipPathElement) where
+  (SVGClipPathElement a) == (SVGClipPathElement b) = js_eq a b
+
+instance PToJSRef SVGClipPathElement where
+  pToJSRef = unSVGClipPathElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGClipPathElement where
+  pFromJSRef = SVGClipPathElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGClipPathElement where
   toJSRef = return . unSVGClipPathElement
@@ -13523,7 +16824,9 @@ instance IsNode SVGClipPathElement
 instance IsEventTarget SVGClipPathElement
 instance IsGObject SVGClipPathElement where
   toGObject = GObject . castRef . unSVGClipPathElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGClipPathElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGClipPathElement :: IsGObject obj => obj -> SVGClipPathElement
 castToSVGClipPathElement = castTo gTypeSVGClipPathElement "SVGClipPathElement"
@@ -13541,9 +16844,18 @@ gTypeSVGClipPathElement = GType gTypeSVGClipPathElement'
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor Mozilla SVGColor documentation>
-newtype SVGColor = SVGColor (JSRef SVGColor) deriving (Eq)
+newtype SVGColor = SVGColor { unSVGColor :: JSRef SVGColor }
 
-unSVGColor (SVGColor o) = o
+instance Eq (SVGColor) where
+  (SVGColor a) == (SVGColor b) = js_eq a b
+
+instance PToJSRef SVGColor where
+  pToJSRef = unSVGColor
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGColor where
+  pFromJSRef = SVGColor
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGColor where
   toJSRef = return . unSVGColor
@@ -13561,7 +16873,9 @@ instance IsSVGColor SVGColor
 instance IsCSSValue SVGColor
 instance IsGObject SVGColor where
   toGObject = GObject . castRef . unSVGColor
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGColor . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGColor :: IsGObject obj => obj -> SVGColor
 castToSVGColor = castTo gTypeSVGColor "SVGColor"
@@ -13582,9 +16896,18 @@ gTypeSVGColor = GType gTypeSVGColor'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement Mozilla SVGComponentTransferFunctionElement documentation>
-newtype SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement (JSRef SVGComponentTransferFunctionElement) deriving (Eq)
+newtype SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement { unSVGComponentTransferFunctionElement :: JSRef SVGComponentTransferFunctionElement }
 
-unSVGComponentTransferFunctionElement (SVGComponentTransferFunctionElement o) = o
+instance Eq (SVGComponentTransferFunctionElement) where
+  (SVGComponentTransferFunctionElement a) == (SVGComponentTransferFunctionElement b) = js_eq a b
+
+instance PToJSRef SVGComponentTransferFunctionElement where
+  pToJSRef = unSVGComponentTransferFunctionElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGComponentTransferFunctionElement where
+  pFromJSRef = SVGComponentTransferFunctionElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGComponentTransferFunctionElement where
   toJSRef = return . unSVGComponentTransferFunctionElement
@@ -13605,7 +16928,9 @@ instance IsNode SVGComponentTransferFunctionElement
 instance IsEventTarget SVGComponentTransferFunctionElement
 instance IsGObject SVGComponentTransferFunctionElement where
   toGObject = GObject . castRef . unSVGComponentTransferFunctionElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGComponentTransferFunctionElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGComponentTransferFunctionElement :: IsGObject obj => obj -> SVGComponentTransferFunctionElement
 castToSVGComponentTransferFunctionElement = castTo gTypeSVGComponentTransferFunctionElement "SVGComponentTransferFunctionElement"
@@ -13626,9 +16951,18 @@ gTypeSVGComponentTransferFunctionElement = GType gTypeSVGComponentTransferFuncti
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGCursorElement Mozilla SVGCursorElement documentation>
-newtype SVGCursorElement = SVGCursorElement (JSRef SVGCursorElement) deriving (Eq)
+newtype SVGCursorElement = SVGCursorElement { unSVGCursorElement :: JSRef SVGCursorElement }
 
-unSVGCursorElement (SVGCursorElement o) = o
+instance Eq (SVGCursorElement) where
+  (SVGCursorElement a) == (SVGCursorElement b) = js_eq a b
+
+instance PToJSRef SVGCursorElement where
+  pToJSRef = unSVGCursorElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGCursorElement where
+  pFromJSRef = SVGCursorElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGCursorElement where
   toJSRef = return . unSVGCursorElement
@@ -13644,7 +16978,9 @@ instance IsNode SVGCursorElement
 instance IsEventTarget SVGCursorElement
 instance IsGObject SVGCursorElement where
   toGObject = GObject . castRef . unSVGCursorElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGCursorElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGCursorElement :: IsGObject obj => obj -> SVGCursorElement
 castToSVGCursorElement = castTo gTypeSVGCursorElement "SVGCursorElement"
@@ -13666,9 +17002,18 @@ gTypeSVGCursorElement = GType gTypeSVGCursorElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDefsElement Mozilla SVGDefsElement documentation>
-newtype SVGDefsElement = SVGDefsElement (JSRef SVGDefsElement) deriving (Eq)
+newtype SVGDefsElement = SVGDefsElement { unSVGDefsElement :: JSRef SVGDefsElement }
 
-unSVGDefsElement (SVGDefsElement o) = o
+instance Eq (SVGDefsElement) where
+  (SVGDefsElement a) == (SVGDefsElement b) = js_eq a b
+
+instance PToJSRef SVGDefsElement where
+  pToJSRef = unSVGDefsElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGDefsElement where
+  pFromJSRef = SVGDefsElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGDefsElement where
   toJSRef = return . unSVGDefsElement
@@ -13685,7 +17030,9 @@ instance IsNode SVGDefsElement
 instance IsEventTarget SVGDefsElement
 instance IsGObject SVGDefsElement where
   toGObject = GObject . castRef . unSVGDefsElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGDefsElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGDefsElement :: IsGObject obj => obj -> SVGDefsElement
 castToSVGDefsElement = castTo gTypeSVGDefsElement "SVGDefsElement"
@@ -13706,9 +17053,18 @@ gTypeSVGDefsElement = GType gTypeSVGDefsElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDescElement Mozilla SVGDescElement documentation>
-newtype SVGDescElement = SVGDescElement (JSRef SVGDescElement) deriving (Eq)
+newtype SVGDescElement = SVGDescElement { unSVGDescElement :: JSRef SVGDescElement }
 
-unSVGDescElement (SVGDescElement o) = o
+instance Eq (SVGDescElement) where
+  (SVGDescElement a) == (SVGDescElement b) = js_eq a b
+
+instance PToJSRef SVGDescElement where
+  pToJSRef = unSVGDescElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGDescElement where
+  pFromJSRef = SVGDescElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGDescElement where
   toJSRef = return . unSVGDescElement
@@ -13724,7 +17080,9 @@ instance IsNode SVGDescElement
 instance IsEventTarget SVGDescElement
 instance IsGObject SVGDescElement where
   toGObject = GObject . castRef . unSVGDescElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGDescElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGDescElement :: IsGObject obj => obj -> SVGDescElement
 castToSVGDescElement = castTo gTypeSVGDescElement "SVGDescElement"
@@ -13744,9 +17102,18 @@ gTypeSVGDescElement = GType gTypeSVGDescElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument Mozilla SVGDocument documentation>
-newtype SVGDocument = SVGDocument (JSRef SVGDocument) deriving (Eq)
+newtype SVGDocument = SVGDocument { unSVGDocument :: JSRef SVGDocument }
 
-unSVGDocument (SVGDocument o) = o
+instance Eq (SVGDocument) where
+  (SVGDocument a) == (SVGDocument b) = js_eq a b
+
+instance PToJSRef SVGDocument where
+  pToJSRef = unSVGDocument
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGDocument where
+  pFromJSRef = SVGDocument
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGDocument where
   toJSRef = return . unSVGDocument
@@ -13761,7 +17128,9 @@ instance IsNode SVGDocument
 instance IsEventTarget SVGDocument
 instance IsGObject SVGDocument where
   toGObject = GObject . castRef . unSVGDocument
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGDocument . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGDocument :: IsGObject obj => obj -> SVGDocument
 castToSVGDocument = castTo gTypeSVGDocument "SVGDocument"
@@ -13781,9 +17150,18 @@ gTypeSVGDocument = GType gTypeSVGDocument'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement Mozilla SVGElement documentation>
-newtype SVGElement = SVGElement (JSRef SVGElement) deriving (Eq)
+newtype SVGElement = SVGElement { unSVGElement :: JSRef SVGElement }
 
-unSVGElement (SVGElement o) = o
+instance Eq (SVGElement) where
+  (SVGElement a) == (SVGElement b) = js_eq a b
+
+instance PToJSRef SVGElement where
+  pToJSRef = unSVGElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGElement where
+  pFromJSRef = SVGElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGElement where
   toJSRef = return . unSVGElement
@@ -13803,7 +17181,9 @@ instance IsNode SVGElement
 instance IsEventTarget SVGElement
 instance IsGObject SVGElement where
   toGObject = GObject . castRef . unSVGElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGElement :: IsGObject obj => obj -> SVGElement
 castToSVGElement = castTo gTypeSVGElement "SVGElement"
@@ -13825,9 +17205,18 @@ gTypeSVGElement = GType gTypeSVGElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGEllipseElement Mozilla SVGEllipseElement documentation>
-newtype SVGEllipseElement = SVGEllipseElement (JSRef SVGEllipseElement) deriving (Eq)
+newtype SVGEllipseElement = SVGEllipseElement { unSVGEllipseElement :: JSRef SVGEllipseElement }
 
-unSVGEllipseElement (SVGEllipseElement o) = o
+instance Eq (SVGEllipseElement) where
+  (SVGEllipseElement a) == (SVGEllipseElement b) = js_eq a b
+
+instance PToJSRef SVGEllipseElement where
+  pToJSRef = unSVGEllipseElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGEllipseElement where
+  pFromJSRef = SVGEllipseElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGEllipseElement where
   toJSRef = return . unSVGEllipseElement
@@ -13844,7 +17233,9 @@ instance IsNode SVGEllipseElement
 instance IsEventTarget SVGEllipseElement
 instance IsGObject SVGEllipseElement where
   toGObject = GObject . castRef . unSVGEllipseElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGEllipseElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGEllipseElement :: IsGObject obj => obj -> SVGEllipseElement
 castToSVGEllipseElement = castTo gTypeSVGEllipseElement "SVGEllipseElement"
@@ -13859,9 +17250,18 @@ gTypeSVGEllipseElement = GType gTypeSVGEllipseElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGExternalResourcesRequired".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGExternalResourcesRequired Mozilla SVGExternalResourcesRequired documentation>
-newtype SVGExternalResourcesRequired = SVGExternalResourcesRequired (JSRef SVGExternalResourcesRequired) deriving (Eq)
+newtype SVGExternalResourcesRequired = SVGExternalResourcesRequired { unSVGExternalResourcesRequired :: JSRef SVGExternalResourcesRequired }
 
-unSVGExternalResourcesRequired (SVGExternalResourcesRequired o) = o
+instance Eq (SVGExternalResourcesRequired) where
+  (SVGExternalResourcesRequired a) == (SVGExternalResourcesRequired b) = js_eq a b
+
+instance PToJSRef SVGExternalResourcesRequired where
+  pToJSRef = unSVGExternalResourcesRequired
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGExternalResourcesRequired where
+  pFromJSRef = SVGExternalResourcesRequired
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGExternalResourcesRequired where
   toJSRef = return . unSVGExternalResourcesRequired
@@ -13873,7 +17273,9 @@ instance FromJSRef SVGExternalResourcesRequired where
 
 instance IsGObject SVGExternalResourcesRequired where
   toGObject = GObject . castRef . unSVGExternalResourcesRequired
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGExternalResourcesRequired . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGExternalResourcesRequired :: IsGObject obj => obj -> SVGExternalResourcesRequired
 castToSVGExternalResourcesRequired = castTo gTypeSVGExternalResourcesRequired "SVGExternalResourcesRequired"
@@ -13894,9 +17296,18 @@ gTypeSVGExternalResourcesRequired = GType gTypeSVGExternalResourcesRequired'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement Mozilla SVGFEBlendElement documentation>
-newtype SVGFEBlendElement = SVGFEBlendElement (JSRef SVGFEBlendElement) deriving (Eq)
+newtype SVGFEBlendElement = SVGFEBlendElement { unSVGFEBlendElement :: JSRef SVGFEBlendElement }
 
-unSVGFEBlendElement (SVGFEBlendElement o) = o
+instance Eq (SVGFEBlendElement) where
+  (SVGFEBlendElement a) == (SVGFEBlendElement b) = js_eq a b
+
+instance PToJSRef SVGFEBlendElement where
+  pToJSRef = unSVGFEBlendElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEBlendElement where
+  pFromJSRef = SVGFEBlendElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEBlendElement where
   toJSRef = return . unSVGFEBlendElement
@@ -13912,7 +17323,9 @@ instance IsNode SVGFEBlendElement
 instance IsEventTarget SVGFEBlendElement
 instance IsGObject SVGFEBlendElement where
   toGObject = GObject . castRef . unSVGFEBlendElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEBlendElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEBlendElement :: IsGObject obj => obj -> SVGFEBlendElement
 castToSVGFEBlendElement = castTo gTypeSVGFEBlendElement "SVGFEBlendElement"
@@ -13933,9 +17346,18 @@ gTypeSVGFEBlendElement = GType gTypeSVGFEBlendElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement Mozilla SVGFEColorMatrixElement documentation>
-newtype SVGFEColorMatrixElement = SVGFEColorMatrixElement (JSRef SVGFEColorMatrixElement) deriving (Eq)
+newtype SVGFEColorMatrixElement = SVGFEColorMatrixElement { unSVGFEColorMatrixElement :: JSRef SVGFEColorMatrixElement }
 
-unSVGFEColorMatrixElement (SVGFEColorMatrixElement o) = o
+instance Eq (SVGFEColorMatrixElement) where
+  (SVGFEColorMatrixElement a) == (SVGFEColorMatrixElement b) = js_eq a b
+
+instance PToJSRef SVGFEColorMatrixElement where
+  pToJSRef = unSVGFEColorMatrixElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEColorMatrixElement where
+  pFromJSRef = SVGFEColorMatrixElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEColorMatrixElement where
   toJSRef = return . unSVGFEColorMatrixElement
@@ -13951,7 +17373,9 @@ instance IsNode SVGFEColorMatrixElement
 instance IsEventTarget SVGFEColorMatrixElement
 instance IsGObject SVGFEColorMatrixElement where
   toGObject = GObject . castRef . unSVGFEColorMatrixElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEColorMatrixElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEColorMatrixElement :: IsGObject obj => obj -> SVGFEColorMatrixElement
 castToSVGFEColorMatrixElement = castTo gTypeSVGFEColorMatrixElement "SVGFEColorMatrixElement"
@@ -13972,9 +17396,18 @@ gTypeSVGFEColorMatrixElement = GType gTypeSVGFEColorMatrixElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEComponentTransferElement Mozilla SVGFEComponentTransferElement documentation>
-newtype SVGFEComponentTransferElement = SVGFEComponentTransferElement (JSRef SVGFEComponentTransferElement) deriving (Eq)
+newtype SVGFEComponentTransferElement = SVGFEComponentTransferElement { unSVGFEComponentTransferElement :: JSRef SVGFEComponentTransferElement }
 
-unSVGFEComponentTransferElement (SVGFEComponentTransferElement o) = o
+instance Eq (SVGFEComponentTransferElement) where
+  (SVGFEComponentTransferElement a) == (SVGFEComponentTransferElement b) = js_eq a b
+
+instance PToJSRef SVGFEComponentTransferElement where
+  pToJSRef = unSVGFEComponentTransferElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEComponentTransferElement where
+  pFromJSRef = SVGFEComponentTransferElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEComponentTransferElement where
   toJSRef = return . unSVGFEComponentTransferElement
@@ -13990,7 +17423,9 @@ instance IsNode SVGFEComponentTransferElement
 instance IsEventTarget SVGFEComponentTransferElement
 instance IsGObject SVGFEComponentTransferElement where
   toGObject = GObject . castRef . unSVGFEComponentTransferElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEComponentTransferElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEComponentTransferElement :: IsGObject obj => obj -> SVGFEComponentTransferElement
 castToSVGFEComponentTransferElement = castTo gTypeSVGFEComponentTransferElement "SVGFEComponentTransferElement"
@@ -14011,9 +17446,18 @@ gTypeSVGFEComponentTransferElement = GType gTypeSVGFEComponentTransferElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement Mozilla SVGFECompositeElement documentation>
-newtype SVGFECompositeElement = SVGFECompositeElement (JSRef SVGFECompositeElement) deriving (Eq)
+newtype SVGFECompositeElement = SVGFECompositeElement { unSVGFECompositeElement :: JSRef SVGFECompositeElement }
 
-unSVGFECompositeElement (SVGFECompositeElement o) = o
+instance Eq (SVGFECompositeElement) where
+  (SVGFECompositeElement a) == (SVGFECompositeElement b) = js_eq a b
+
+instance PToJSRef SVGFECompositeElement where
+  pToJSRef = unSVGFECompositeElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFECompositeElement where
+  pFromJSRef = SVGFECompositeElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFECompositeElement where
   toJSRef = return . unSVGFECompositeElement
@@ -14029,7 +17473,9 @@ instance IsNode SVGFECompositeElement
 instance IsEventTarget SVGFECompositeElement
 instance IsGObject SVGFECompositeElement where
   toGObject = GObject . castRef . unSVGFECompositeElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFECompositeElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFECompositeElement :: IsGObject obj => obj -> SVGFECompositeElement
 castToSVGFECompositeElement = castTo gTypeSVGFECompositeElement "SVGFECompositeElement"
@@ -14050,9 +17496,18 @@ gTypeSVGFECompositeElement = GType gTypeSVGFECompositeElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement Mozilla SVGFEConvolveMatrixElement documentation>
-newtype SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement (JSRef SVGFEConvolveMatrixElement) deriving (Eq)
+newtype SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement { unSVGFEConvolveMatrixElement :: JSRef SVGFEConvolveMatrixElement }
 
-unSVGFEConvolveMatrixElement (SVGFEConvolveMatrixElement o) = o
+instance Eq (SVGFEConvolveMatrixElement) where
+  (SVGFEConvolveMatrixElement a) == (SVGFEConvolveMatrixElement b) = js_eq a b
+
+instance PToJSRef SVGFEConvolveMatrixElement where
+  pToJSRef = unSVGFEConvolveMatrixElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEConvolveMatrixElement where
+  pFromJSRef = SVGFEConvolveMatrixElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEConvolveMatrixElement where
   toJSRef = return . unSVGFEConvolveMatrixElement
@@ -14068,7 +17523,9 @@ instance IsNode SVGFEConvolveMatrixElement
 instance IsEventTarget SVGFEConvolveMatrixElement
 instance IsGObject SVGFEConvolveMatrixElement where
   toGObject = GObject . castRef . unSVGFEConvolveMatrixElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEConvolveMatrixElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEConvolveMatrixElement :: IsGObject obj => obj -> SVGFEConvolveMatrixElement
 castToSVGFEConvolveMatrixElement = castTo gTypeSVGFEConvolveMatrixElement "SVGFEConvolveMatrixElement"
@@ -14089,9 +17546,18 @@ gTypeSVGFEConvolveMatrixElement = GType gTypeSVGFEConvolveMatrixElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement Mozilla SVGFEDiffuseLightingElement documentation>
-newtype SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement (JSRef SVGFEDiffuseLightingElement) deriving (Eq)
+newtype SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement { unSVGFEDiffuseLightingElement :: JSRef SVGFEDiffuseLightingElement }
 
-unSVGFEDiffuseLightingElement (SVGFEDiffuseLightingElement o) = o
+instance Eq (SVGFEDiffuseLightingElement) where
+  (SVGFEDiffuseLightingElement a) == (SVGFEDiffuseLightingElement b) = js_eq a b
+
+instance PToJSRef SVGFEDiffuseLightingElement where
+  pToJSRef = unSVGFEDiffuseLightingElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEDiffuseLightingElement where
+  pFromJSRef = SVGFEDiffuseLightingElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEDiffuseLightingElement where
   toJSRef = return . unSVGFEDiffuseLightingElement
@@ -14107,7 +17573,9 @@ instance IsNode SVGFEDiffuseLightingElement
 instance IsEventTarget SVGFEDiffuseLightingElement
 instance IsGObject SVGFEDiffuseLightingElement where
   toGObject = GObject . castRef . unSVGFEDiffuseLightingElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEDiffuseLightingElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEDiffuseLightingElement :: IsGObject obj => obj -> SVGFEDiffuseLightingElement
 castToSVGFEDiffuseLightingElement = castTo gTypeSVGFEDiffuseLightingElement "SVGFEDiffuseLightingElement"
@@ -14128,9 +17596,18 @@ gTypeSVGFEDiffuseLightingElement = GType gTypeSVGFEDiffuseLightingElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement Mozilla SVGFEDisplacementMapElement documentation>
-newtype SVGFEDisplacementMapElement = SVGFEDisplacementMapElement (JSRef SVGFEDisplacementMapElement) deriving (Eq)
+newtype SVGFEDisplacementMapElement = SVGFEDisplacementMapElement { unSVGFEDisplacementMapElement :: JSRef SVGFEDisplacementMapElement }
 
-unSVGFEDisplacementMapElement (SVGFEDisplacementMapElement o) = o
+instance Eq (SVGFEDisplacementMapElement) where
+  (SVGFEDisplacementMapElement a) == (SVGFEDisplacementMapElement b) = js_eq a b
+
+instance PToJSRef SVGFEDisplacementMapElement where
+  pToJSRef = unSVGFEDisplacementMapElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEDisplacementMapElement where
+  pFromJSRef = SVGFEDisplacementMapElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEDisplacementMapElement where
   toJSRef = return . unSVGFEDisplacementMapElement
@@ -14146,7 +17623,9 @@ instance IsNode SVGFEDisplacementMapElement
 instance IsEventTarget SVGFEDisplacementMapElement
 instance IsGObject SVGFEDisplacementMapElement where
   toGObject = GObject . castRef . unSVGFEDisplacementMapElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEDisplacementMapElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEDisplacementMapElement :: IsGObject obj => obj -> SVGFEDisplacementMapElement
 castToSVGFEDisplacementMapElement = castTo gTypeSVGFEDisplacementMapElement "SVGFEDisplacementMapElement"
@@ -14167,9 +17646,18 @@ gTypeSVGFEDisplacementMapElement = GType gTypeSVGFEDisplacementMapElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement Mozilla SVGFEDistantLightElement documentation>
-newtype SVGFEDistantLightElement = SVGFEDistantLightElement (JSRef SVGFEDistantLightElement) deriving (Eq)
+newtype SVGFEDistantLightElement = SVGFEDistantLightElement { unSVGFEDistantLightElement :: JSRef SVGFEDistantLightElement }
 
-unSVGFEDistantLightElement (SVGFEDistantLightElement o) = o
+instance Eq (SVGFEDistantLightElement) where
+  (SVGFEDistantLightElement a) == (SVGFEDistantLightElement b) = js_eq a b
+
+instance PToJSRef SVGFEDistantLightElement where
+  pToJSRef = unSVGFEDistantLightElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEDistantLightElement where
+  pFromJSRef = SVGFEDistantLightElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEDistantLightElement where
   toJSRef = return . unSVGFEDistantLightElement
@@ -14185,7 +17673,9 @@ instance IsNode SVGFEDistantLightElement
 instance IsEventTarget SVGFEDistantLightElement
 instance IsGObject SVGFEDistantLightElement where
   toGObject = GObject . castRef . unSVGFEDistantLightElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEDistantLightElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEDistantLightElement :: IsGObject obj => obj -> SVGFEDistantLightElement
 castToSVGFEDistantLightElement = castTo gTypeSVGFEDistantLightElement "SVGFEDistantLightElement"
@@ -14206,9 +17696,18 @@ gTypeSVGFEDistantLightElement = GType gTypeSVGFEDistantLightElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement Mozilla SVGFEDropShadowElement documentation>
-newtype SVGFEDropShadowElement = SVGFEDropShadowElement (JSRef SVGFEDropShadowElement) deriving (Eq)
+newtype SVGFEDropShadowElement = SVGFEDropShadowElement { unSVGFEDropShadowElement :: JSRef SVGFEDropShadowElement }
 
-unSVGFEDropShadowElement (SVGFEDropShadowElement o) = o
+instance Eq (SVGFEDropShadowElement) where
+  (SVGFEDropShadowElement a) == (SVGFEDropShadowElement b) = js_eq a b
+
+instance PToJSRef SVGFEDropShadowElement where
+  pToJSRef = unSVGFEDropShadowElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEDropShadowElement where
+  pFromJSRef = SVGFEDropShadowElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEDropShadowElement where
   toJSRef = return . unSVGFEDropShadowElement
@@ -14224,7 +17723,9 @@ instance IsNode SVGFEDropShadowElement
 instance IsEventTarget SVGFEDropShadowElement
 instance IsGObject SVGFEDropShadowElement where
   toGObject = GObject . castRef . unSVGFEDropShadowElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEDropShadowElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEDropShadowElement :: IsGObject obj => obj -> SVGFEDropShadowElement
 castToSVGFEDropShadowElement = castTo gTypeSVGFEDropShadowElement "SVGFEDropShadowElement"
@@ -14245,9 +17746,18 @@ gTypeSVGFEDropShadowElement = GType gTypeSVGFEDropShadowElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFloodElement Mozilla SVGFEFloodElement documentation>
-newtype SVGFEFloodElement = SVGFEFloodElement (JSRef SVGFEFloodElement) deriving (Eq)
+newtype SVGFEFloodElement = SVGFEFloodElement { unSVGFEFloodElement :: JSRef SVGFEFloodElement }
 
-unSVGFEFloodElement (SVGFEFloodElement o) = o
+instance Eq (SVGFEFloodElement) where
+  (SVGFEFloodElement a) == (SVGFEFloodElement b) = js_eq a b
+
+instance PToJSRef SVGFEFloodElement where
+  pToJSRef = unSVGFEFloodElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEFloodElement where
+  pFromJSRef = SVGFEFloodElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEFloodElement where
   toJSRef = return . unSVGFEFloodElement
@@ -14263,7 +17773,9 @@ instance IsNode SVGFEFloodElement
 instance IsEventTarget SVGFEFloodElement
 instance IsGObject SVGFEFloodElement where
   toGObject = GObject . castRef . unSVGFEFloodElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEFloodElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEFloodElement :: IsGObject obj => obj -> SVGFEFloodElement
 castToSVGFEFloodElement = castTo gTypeSVGFEFloodElement "SVGFEFloodElement"
@@ -14285,9 +17797,18 @@ gTypeSVGFEFloodElement = GType gTypeSVGFEFloodElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncAElement Mozilla SVGFEFuncAElement documentation>
-newtype SVGFEFuncAElement = SVGFEFuncAElement (JSRef SVGFEFuncAElement) deriving (Eq)
+newtype SVGFEFuncAElement = SVGFEFuncAElement { unSVGFEFuncAElement :: JSRef SVGFEFuncAElement }
 
-unSVGFEFuncAElement (SVGFEFuncAElement o) = o
+instance Eq (SVGFEFuncAElement) where
+  (SVGFEFuncAElement a) == (SVGFEFuncAElement b) = js_eq a b
+
+instance PToJSRef SVGFEFuncAElement where
+  pToJSRef = unSVGFEFuncAElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEFuncAElement where
+  pFromJSRef = SVGFEFuncAElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEFuncAElement where
   toJSRef = return . unSVGFEFuncAElement
@@ -14304,7 +17825,9 @@ instance IsNode SVGFEFuncAElement
 instance IsEventTarget SVGFEFuncAElement
 instance IsGObject SVGFEFuncAElement where
   toGObject = GObject . castRef . unSVGFEFuncAElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEFuncAElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEFuncAElement :: IsGObject obj => obj -> SVGFEFuncAElement
 castToSVGFEFuncAElement = castTo gTypeSVGFEFuncAElement "SVGFEFuncAElement"
@@ -14326,9 +17849,18 @@ gTypeSVGFEFuncAElement = GType gTypeSVGFEFuncAElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncBElement Mozilla SVGFEFuncBElement documentation>
-newtype SVGFEFuncBElement = SVGFEFuncBElement (JSRef SVGFEFuncBElement) deriving (Eq)
+newtype SVGFEFuncBElement = SVGFEFuncBElement { unSVGFEFuncBElement :: JSRef SVGFEFuncBElement }
 
-unSVGFEFuncBElement (SVGFEFuncBElement o) = o
+instance Eq (SVGFEFuncBElement) where
+  (SVGFEFuncBElement a) == (SVGFEFuncBElement b) = js_eq a b
+
+instance PToJSRef SVGFEFuncBElement where
+  pToJSRef = unSVGFEFuncBElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEFuncBElement where
+  pFromJSRef = SVGFEFuncBElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEFuncBElement where
   toJSRef = return . unSVGFEFuncBElement
@@ -14345,7 +17877,9 @@ instance IsNode SVGFEFuncBElement
 instance IsEventTarget SVGFEFuncBElement
 instance IsGObject SVGFEFuncBElement where
   toGObject = GObject . castRef . unSVGFEFuncBElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEFuncBElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEFuncBElement :: IsGObject obj => obj -> SVGFEFuncBElement
 castToSVGFEFuncBElement = castTo gTypeSVGFEFuncBElement "SVGFEFuncBElement"
@@ -14367,9 +17901,18 @@ gTypeSVGFEFuncBElement = GType gTypeSVGFEFuncBElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncGElement Mozilla SVGFEFuncGElement documentation>
-newtype SVGFEFuncGElement = SVGFEFuncGElement (JSRef SVGFEFuncGElement) deriving (Eq)
+newtype SVGFEFuncGElement = SVGFEFuncGElement { unSVGFEFuncGElement :: JSRef SVGFEFuncGElement }
 
-unSVGFEFuncGElement (SVGFEFuncGElement o) = o
+instance Eq (SVGFEFuncGElement) where
+  (SVGFEFuncGElement a) == (SVGFEFuncGElement b) = js_eq a b
+
+instance PToJSRef SVGFEFuncGElement where
+  pToJSRef = unSVGFEFuncGElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEFuncGElement where
+  pFromJSRef = SVGFEFuncGElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEFuncGElement where
   toJSRef = return . unSVGFEFuncGElement
@@ -14386,7 +17929,9 @@ instance IsNode SVGFEFuncGElement
 instance IsEventTarget SVGFEFuncGElement
 instance IsGObject SVGFEFuncGElement where
   toGObject = GObject . castRef . unSVGFEFuncGElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEFuncGElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEFuncGElement :: IsGObject obj => obj -> SVGFEFuncGElement
 castToSVGFEFuncGElement = castTo gTypeSVGFEFuncGElement "SVGFEFuncGElement"
@@ -14408,9 +17953,18 @@ gTypeSVGFEFuncGElement = GType gTypeSVGFEFuncGElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncRElement Mozilla SVGFEFuncRElement documentation>
-newtype SVGFEFuncRElement = SVGFEFuncRElement (JSRef SVGFEFuncRElement) deriving (Eq)
+newtype SVGFEFuncRElement = SVGFEFuncRElement { unSVGFEFuncRElement :: JSRef SVGFEFuncRElement }
 
-unSVGFEFuncRElement (SVGFEFuncRElement o) = o
+instance Eq (SVGFEFuncRElement) where
+  (SVGFEFuncRElement a) == (SVGFEFuncRElement b) = js_eq a b
+
+instance PToJSRef SVGFEFuncRElement where
+  pToJSRef = unSVGFEFuncRElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEFuncRElement where
+  pFromJSRef = SVGFEFuncRElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEFuncRElement where
   toJSRef = return . unSVGFEFuncRElement
@@ -14427,7 +17981,9 @@ instance IsNode SVGFEFuncRElement
 instance IsEventTarget SVGFEFuncRElement
 instance IsGObject SVGFEFuncRElement where
   toGObject = GObject . castRef . unSVGFEFuncRElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEFuncRElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEFuncRElement :: IsGObject obj => obj -> SVGFEFuncRElement
 castToSVGFEFuncRElement = castTo gTypeSVGFEFuncRElement "SVGFEFuncRElement"
@@ -14448,9 +18004,18 @@ gTypeSVGFEFuncRElement = GType gTypeSVGFEFuncRElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement Mozilla SVGFEGaussianBlurElement documentation>
-newtype SVGFEGaussianBlurElement = SVGFEGaussianBlurElement (JSRef SVGFEGaussianBlurElement) deriving (Eq)
+newtype SVGFEGaussianBlurElement = SVGFEGaussianBlurElement { unSVGFEGaussianBlurElement :: JSRef SVGFEGaussianBlurElement }
 
-unSVGFEGaussianBlurElement (SVGFEGaussianBlurElement o) = o
+instance Eq (SVGFEGaussianBlurElement) where
+  (SVGFEGaussianBlurElement a) == (SVGFEGaussianBlurElement b) = js_eq a b
+
+instance PToJSRef SVGFEGaussianBlurElement where
+  pToJSRef = unSVGFEGaussianBlurElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEGaussianBlurElement where
+  pFromJSRef = SVGFEGaussianBlurElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEGaussianBlurElement where
   toJSRef = return . unSVGFEGaussianBlurElement
@@ -14466,7 +18031,9 @@ instance IsNode SVGFEGaussianBlurElement
 instance IsEventTarget SVGFEGaussianBlurElement
 instance IsGObject SVGFEGaussianBlurElement where
   toGObject = GObject . castRef . unSVGFEGaussianBlurElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEGaussianBlurElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEGaussianBlurElement :: IsGObject obj => obj -> SVGFEGaussianBlurElement
 castToSVGFEGaussianBlurElement = castTo gTypeSVGFEGaussianBlurElement "SVGFEGaussianBlurElement"
@@ -14487,9 +18054,18 @@ gTypeSVGFEGaussianBlurElement = GType gTypeSVGFEGaussianBlurElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEImageElement Mozilla SVGFEImageElement documentation>
-newtype SVGFEImageElement = SVGFEImageElement (JSRef SVGFEImageElement) deriving (Eq)
+newtype SVGFEImageElement = SVGFEImageElement { unSVGFEImageElement :: JSRef SVGFEImageElement }
 
-unSVGFEImageElement (SVGFEImageElement o) = o
+instance Eq (SVGFEImageElement) where
+  (SVGFEImageElement a) == (SVGFEImageElement b) = js_eq a b
+
+instance PToJSRef SVGFEImageElement where
+  pToJSRef = unSVGFEImageElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEImageElement where
+  pFromJSRef = SVGFEImageElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEImageElement where
   toJSRef = return . unSVGFEImageElement
@@ -14505,7 +18081,9 @@ instance IsNode SVGFEImageElement
 instance IsEventTarget SVGFEImageElement
 instance IsGObject SVGFEImageElement where
   toGObject = GObject . castRef . unSVGFEImageElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEImageElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEImageElement :: IsGObject obj => obj -> SVGFEImageElement
 castToSVGFEImageElement = castTo gTypeSVGFEImageElement "SVGFEImageElement"
@@ -14526,9 +18104,18 @@ gTypeSVGFEImageElement = GType gTypeSVGFEImageElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeElement Mozilla SVGFEMergeElement documentation>
-newtype SVGFEMergeElement = SVGFEMergeElement (JSRef SVGFEMergeElement) deriving (Eq)
+newtype SVGFEMergeElement = SVGFEMergeElement { unSVGFEMergeElement :: JSRef SVGFEMergeElement }
 
-unSVGFEMergeElement (SVGFEMergeElement o) = o
+instance Eq (SVGFEMergeElement) where
+  (SVGFEMergeElement a) == (SVGFEMergeElement b) = js_eq a b
+
+instance PToJSRef SVGFEMergeElement where
+  pToJSRef = unSVGFEMergeElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEMergeElement where
+  pFromJSRef = SVGFEMergeElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEMergeElement where
   toJSRef = return . unSVGFEMergeElement
@@ -14544,7 +18131,9 @@ instance IsNode SVGFEMergeElement
 instance IsEventTarget SVGFEMergeElement
 instance IsGObject SVGFEMergeElement where
   toGObject = GObject . castRef . unSVGFEMergeElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEMergeElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEMergeElement :: IsGObject obj => obj -> SVGFEMergeElement
 castToSVGFEMergeElement = castTo gTypeSVGFEMergeElement "SVGFEMergeElement"
@@ -14565,9 +18154,18 @@ gTypeSVGFEMergeElement = GType gTypeSVGFEMergeElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeNodeElement Mozilla SVGFEMergeNodeElement documentation>
-newtype SVGFEMergeNodeElement = SVGFEMergeNodeElement (JSRef SVGFEMergeNodeElement) deriving (Eq)
+newtype SVGFEMergeNodeElement = SVGFEMergeNodeElement { unSVGFEMergeNodeElement :: JSRef SVGFEMergeNodeElement }
 
-unSVGFEMergeNodeElement (SVGFEMergeNodeElement o) = o
+instance Eq (SVGFEMergeNodeElement) where
+  (SVGFEMergeNodeElement a) == (SVGFEMergeNodeElement b) = js_eq a b
+
+instance PToJSRef SVGFEMergeNodeElement where
+  pToJSRef = unSVGFEMergeNodeElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEMergeNodeElement where
+  pFromJSRef = SVGFEMergeNodeElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEMergeNodeElement where
   toJSRef = return . unSVGFEMergeNodeElement
@@ -14583,7 +18181,9 @@ instance IsNode SVGFEMergeNodeElement
 instance IsEventTarget SVGFEMergeNodeElement
 instance IsGObject SVGFEMergeNodeElement where
   toGObject = GObject . castRef . unSVGFEMergeNodeElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEMergeNodeElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEMergeNodeElement :: IsGObject obj => obj -> SVGFEMergeNodeElement
 castToSVGFEMergeNodeElement = castTo gTypeSVGFEMergeNodeElement "SVGFEMergeNodeElement"
@@ -14604,9 +18204,18 @@ gTypeSVGFEMergeNodeElement = GType gTypeSVGFEMergeNodeElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement Mozilla SVGFEMorphologyElement documentation>
-newtype SVGFEMorphologyElement = SVGFEMorphologyElement (JSRef SVGFEMorphologyElement) deriving (Eq)
+newtype SVGFEMorphologyElement = SVGFEMorphologyElement { unSVGFEMorphologyElement :: JSRef SVGFEMorphologyElement }
 
-unSVGFEMorphologyElement (SVGFEMorphologyElement o) = o
+instance Eq (SVGFEMorphologyElement) where
+  (SVGFEMorphologyElement a) == (SVGFEMorphologyElement b) = js_eq a b
+
+instance PToJSRef SVGFEMorphologyElement where
+  pToJSRef = unSVGFEMorphologyElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEMorphologyElement where
+  pFromJSRef = SVGFEMorphologyElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEMorphologyElement where
   toJSRef = return . unSVGFEMorphologyElement
@@ -14622,7 +18231,9 @@ instance IsNode SVGFEMorphologyElement
 instance IsEventTarget SVGFEMorphologyElement
 instance IsGObject SVGFEMorphologyElement where
   toGObject = GObject . castRef . unSVGFEMorphologyElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEMorphologyElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEMorphologyElement :: IsGObject obj => obj -> SVGFEMorphologyElement
 castToSVGFEMorphologyElement = castTo gTypeSVGFEMorphologyElement "SVGFEMorphologyElement"
@@ -14643,9 +18254,18 @@ gTypeSVGFEMorphologyElement = GType gTypeSVGFEMorphologyElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEOffsetElement Mozilla SVGFEOffsetElement documentation>
-newtype SVGFEOffsetElement = SVGFEOffsetElement (JSRef SVGFEOffsetElement) deriving (Eq)
+newtype SVGFEOffsetElement = SVGFEOffsetElement { unSVGFEOffsetElement :: JSRef SVGFEOffsetElement }
 
-unSVGFEOffsetElement (SVGFEOffsetElement o) = o
+instance Eq (SVGFEOffsetElement) where
+  (SVGFEOffsetElement a) == (SVGFEOffsetElement b) = js_eq a b
+
+instance PToJSRef SVGFEOffsetElement where
+  pToJSRef = unSVGFEOffsetElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEOffsetElement where
+  pFromJSRef = SVGFEOffsetElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEOffsetElement where
   toJSRef = return . unSVGFEOffsetElement
@@ -14661,7 +18281,9 @@ instance IsNode SVGFEOffsetElement
 instance IsEventTarget SVGFEOffsetElement
 instance IsGObject SVGFEOffsetElement where
   toGObject = GObject . castRef . unSVGFEOffsetElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEOffsetElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEOffsetElement :: IsGObject obj => obj -> SVGFEOffsetElement
 castToSVGFEOffsetElement = castTo gTypeSVGFEOffsetElement "SVGFEOffsetElement"
@@ -14682,9 +18304,18 @@ gTypeSVGFEOffsetElement = GType gTypeSVGFEOffsetElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement Mozilla SVGFEPointLightElement documentation>
-newtype SVGFEPointLightElement = SVGFEPointLightElement (JSRef SVGFEPointLightElement) deriving (Eq)
+newtype SVGFEPointLightElement = SVGFEPointLightElement { unSVGFEPointLightElement :: JSRef SVGFEPointLightElement }
 
-unSVGFEPointLightElement (SVGFEPointLightElement o) = o
+instance Eq (SVGFEPointLightElement) where
+  (SVGFEPointLightElement a) == (SVGFEPointLightElement b) = js_eq a b
+
+instance PToJSRef SVGFEPointLightElement where
+  pToJSRef = unSVGFEPointLightElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFEPointLightElement where
+  pFromJSRef = SVGFEPointLightElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFEPointLightElement where
   toJSRef = return . unSVGFEPointLightElement
@@ -14700,7 +18331,9 @@ instance IsNode SVGFEPointLightElement
 instance IsEventTarget SVGFEPointLightElement
 instance IsGObject SVGFEPointLightElement where
   toGObject = GObject . castRef . unSVGFEPointLightElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFEPointLightElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFEPointLightElement :: IsGObject obj => obj -> SVGFEPointLightElement
 castToSVGFEPointLightElement = castTo gTypeSVGFEPointLightElement "SVGFEPointLightElement"
@@ -14721,9 +18354,18 @@ gTypeSVGFEPointLightElement = GType gTypeSVGFEPointLightElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement Mozilla SVGFESpecularLightingElement documentation>
-newtype SVGFESpecularLightingElement = SVGFESpecularLightingElement (JSRef SVGFESpecularLightingElement) deriving (Eq)
+newtype SVGFESpecularLightingElement = SVGFESpecularLightingElement { unSVGFESpecularLightingElement :: JSRef SVGFESpecularLightingElement }
 
-unSVGFESpecularLightingElement (SVGFESpecularLightingElement o) = o
+instance Eq (SVGFESpecularLightingElement) where
+  (SVGFESpecularLightingElement a) == (SVGFESpecularLightingElement b) = js_eq a b
+
+instance PToJSRef SVGFESpecularLightingElement where
+  pToJSRef = unSVGFESpecularLightingElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFESpecularLightingElement where
+  pFromJSRef = SVGFESpecularLightingElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFESpecularLightingElement where
   toJSRef = return . unSVGFESpecularLightingElement
@@ -14739,7 +18381,9 @@ instance IsNode SVGFESpecularLightingElement
 instance IsEventTarget SVGFESpecularLightingElement
 instance IsGObject SVGFESpecularLightingElement where
   toGObject = GObject . castRef . unSVGFESpecularLightingElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFESpecularLightingElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFESpecularLightingElement :: IsGObject obj => obj -> SVGFESpecularLightingElement
 castToSVGFESpecularLightingElement = castTo gTypeSVGFESpecularLightingElement "SVGFESpecularLightingElement"
@@ -14760,9 +18404,18 @@ gTypeSVGFESpecularLightingElement = GType gTypeSVGFESpecularLightingElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement Mozilla SVGFESpotLightElement documentation>
-newtype SVGFESpotLightElement = SVGFESpotLightElement (JSRef SVGFESpotLightElement) deriving (Eq)
+newtype SVGFESpotLightElement = SVGFESpotLightElement { unSVGFESpotLightElement :: JSRef SVGFESpotLightElement }
 
-unSVGFESpotLightElement (SVGFESpotLightElement o) = o
+instance Eq (SVGFESpotLightElement) where
+  (SVGFESpotLightElement a) == (SVGFESpotLightElement b) = js_eq a b
+
+instance PToJSRef SVGFESpotLightElement where
+  pToJSRef = unSVGFESpotLightElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFESpotLightElement where
+  pFromJSRef = SVGFESpotLightElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFESpotLightElement where
   toJSRef = return . unSVGFESpotLightElement
@@ -14778,7 +18431,9 @@ instance IsNode SVGFESpotLightElement
 instance IsEventTarget SVGFESpotLightElement
 instance IsGObject SVGFESpotLightElement where
   toGObject = GObject . castRef . unSVGFESpotLightElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFESpotLightElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFESpotLightElement :: IsGObject obj => obj -> SVGFESpotLightElement
 castToSVGFESpotLightElement = castTo gTypeSVGFESpotLightElement "SVGFESpotLightElement"
@@ -14799,9 +18454,18 @@ gTypeSVGFESpotLightElement = GType gTypeSVGFESpotLightElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETileElement Mozilla SVGFETileElement documentation>
-newtype SVGFETileElement = SVGFETileElement (JSRef SVGFETileElement) deriving (Eq)
+newtype SVGFETileElement = SVGFETileElement { unSVGFETileElement :: JSRef SVGFETileElement }
 
-unSVGFETileElement (SVGFETileElement o) = o
+instance Eq (SVGFETileElement) where
+  (SVGFETileElement a) == (SVGFETileElement b) = js_eq a b
+
+instance PToJSRef SVGFETileElement where
+  pToJSRef = unSVGFETileElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFETileElement where
+  pFromJSRef = SVGFETileElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFETileElement where
   toJSRef = return . unSVGFETileElement
@@ -14817,7 +18481,9 @@ instance IsNode SVGFETileElement
 instance IsEventTarget SVGFETileElement
 instance IsGObject SVGFETileElement where
   toGObject = GObject . castRef . unSVGFETileElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFETileElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFETileElement :: IsGObject obj => obj -> SVGFETileElement
 castToSVGFETileElement = castTo gTypeSVGFETileElement "SVGFETileElement"
@@ -14838,9 +18504,18 @@ gTypeSVGFETileElement = GType gTypeSVGFETileElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement Mozilla SVGFETurbulenceElement documentation>
-newtype SVGFETurbulenceElement = SVGFETurbulenceElement (JSRef SVGFETurbulenceElement) deriving (Eq)
+newtype SVGFETurbulenceElement = SVGFETurbulenceElement { unSVGFETurbulenceElement :: JSRef SVGFETurbulenceElement }
 
-unSVGFETurbulenceElement (SVGFETurbulenceElement o) = o
+instance Eq (SVGFETurbulenceElement) where
+  (SVGFETurbulenceElement a) == (SVGFETurbulenceElement b) = js_eq a b
+
+instance PToJSRef SVGFETurbulenceElement where
+  pToJSRef = unSVGFETurbulenceElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFETurbulenceElement where
+  pFromJSRef = SVGFETurbulenceElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFETurbulenceElement where
   toJSRef = return . unSVGFETurbulenceElement
@@ -14856,7 +18531,9 @@ instance IsNode SVGFETurbulenceElement
 instance IsEventTarget SVGFETurbulenceElement
 instance IsGObject SVGFETurbulenceElement where
   toGObject = GObject . castRef . unSVGFETurbulenceElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFETurbulenceElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFETurbulenceElement :: IsGObject obj => obj -> SVGFETurbulenceElement
 castToSVGFETurbulenceElement = castTo gTypeSVGFETurbulenceElement "SVGFETurbulenceElement"
@@ -14877,9 +18554,18 @@ gTypeSVGFETurbulenceElement = GType gTypeSVGFETurbulenceElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement Mozilla SVGFilterElement documentation>
-newtype SVGFilterElement = SVGFilterElement (JSRef SVGFilterElement) deriving (Eq)
+newtype SVGFilterElement = SVGFilterElement { unSVGFilterElement :: JSRef SVGFilterElement }
 
-unSVGFilterElement (SVGFilterElement o) = o
+instance Eq (SVGFilterElement) where
+  (SVGFilterElement a) == (SVGFilterElement b) = js_eq a b
+
+instance PToJSRef SVGFilterElement where
+  pToJSRef = unSVGFilterElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFilterElement where
+  pFromJSRef = SVGFilterElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFilterElement where
   toJSRef = return . unSVGFilterElement
@@ -14895,7 +18581,9 @@ instance IsNode SVGFilterElement
 instance IsEventTarget SVGFilterElement
 instance IsGObject SVGFilterElement where
   toGObject = GObject . castRef . unSVGFilterElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFilterElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFilterElement :: IsGObject obj => obj -> SVGFilterElement
 castToSVGFilterElement = castTo gTypeSVGFilterElement "SVGFilterElement"
@@ -14910,9 +18598,18 @@ gTypeSVGFilterElement = GType gTypeSVGFilterElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes Mozilla SVGFilterPrimitiveStandardAttributes documentation>
-newtype SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttributes (JSRef SVGFilterPrimitiveStandardAttributes) deriving (Eq)
+newtype SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttributes { unSVGFilterPrimitiveStandardAttributes :: JSRef SVGFilterPrimitiveStandardAttributes }
 
-unSVGFilterPrimitiveStandardAttributes (SVGFilterPrimitiveStandardAttributes o) = o
+instance Eq (SVGFilterPrimitiveStandardAttributes) where
+  (SVGFilterPrimitiveStandardAttributes a) == (SVGFilterPrimitiveStandardAttributes b) = js_eq a b
+
+instance PToJSRef SVGFilterPrimitiveStandardAttributes where
+  pToJSRef = unSVGFilterPrimitiveStandardAttributes
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFilterPrimitiveStandardAttributes where
+  pFromJSRef = SVGFilterPrimitiveStandardAttributes
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFilterPrimitiveStandardAttributes where
   toJSRef = return . unSVGFilterPrimitiveStandardAttributes
@@ -14924,7 +18621,9 @@ instance FromJSRef SVGFilterPrimitiveStandardAttributes where
 
 instance IsGObject SVGFilterPrimitiveStandardAttributes where
   toGObject = GObject . castRef . unSVGFilterPrimitiveStandardAttributes
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFilterPrimitiveStandardAttributes . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFilterPrimitiveStandardAttributes :: IsGObject obj => obj -> SVGFilterPrimitiveStandardAttributes
 castToSVGFilterPrimitiveStandardAttributes = castTo gTypeSVGFilterPrimitiveStandardAttributes "SVGFilterPrimitiveStandardAttributes"
@@ -14939,9 +18638,18 @@ gTypeSVGFilterPrimitiveStandardAttributes = GType gTypeSVGFilterPrimitiveStandar
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFitToViewBox".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox Mozilla SVGFitToViewBox documentation>
-newtype SVGFitToViewBox = SVGFitToViewBox (JSRef SVGFitToViewBox) deriving (Eq)
+newtype SVGFitToViewBox = SVGFitToViewBox { unSVGFitToViewBox :: JSRef SVGFitToViewBox }
 
-unSVGFitToViewBox (SVGFitToViewBox o) = o
+instance Eq (SVGFitToViewBox) where
+  (SVGFitToViewBox a) == (SVGFitToViewBox b) = js_eq a b
+
+instance PToJSRef SVGFitToViewBox where
+  pToJSRef = unSVGFitToViewBox
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFitToViewBox where
+  pFromJSRef = SVGFitToViewBox
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFitToViewBox where
   toJSRef = return . unSVGFitToViewBox
@@ -14953,7 +18661,9 @@ instance FromJSRef SVGFitToViewBox where
 
 instance IsGObject SVGFitToViewBox where
   toGObject = GObject . castRef . unSVGFitToViewBox
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFitToViewBox . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFitToViewBox :: IsGObject obj => obj -> SVGFitToViewBox
 castToSVGFitToViewBox = castTo gTypeSVGFitToViewBox "SVGFitToViewBox"
@@ -14974,9 +18684,18 @@ gTypeSVGFitToViewBox = GType gTypeSVGFitToViewBox'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontElement Mozilla SVGFontElement documentation>
-newtype SVGFontElement = SVGFontElement (JSRef SVGFontElement) deriving (Eq)
+newtype SVGFontElement = SVGFontElement { unSVGFontElement :: JSRef SVGFontElement }
 
-unSVGFontElement (SVGFontElement o) = o
+instance Eq (SVGFontElement) where
+  (SVGFontElement a) == (SVGFontElement b) = js_eq a b
+
+instance PToJSRef SVGFontElement where
+  pToJSRef = unSVGFontElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFontElement where
+  pFromJSRef = SVGFontElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFontElement where
   toJSRef = return . unSVGFontElement
@@ -14992,7 +18711,9 @@ instance IsNode SVGFontElement
 instance IsEventTarget SVGFontElement
 instance IsGObject SVGFontElement where
   toGObject = GObject . castRef . unSVGFontElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFontElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFontElement :: IsGObject obj => obj -> SVGFontElement
 castToSVGFontElement = castTo gTypeSVGFontElement "SVGFontElement"
@@ -15013,9 +18734,18 @@ gTypeSVGFontElement = GType gTypeSVGFontElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceElement Mozilla SVGFontFaceElement documentation>
-newtype SVGFontFaceElement = SVGFontFaceElement (JSRef SVGFontFaceElement) deriving (Eq)
+newtype SVGFontFaceElement = SVGFontFaceElement { unSVGFontFaceElement :: JSRef SVGFontFaceElement }
 
-unSVGFontFaceElement (SVGFontFaceElement o) = o
+instance Eq (SVGFontFaceElement) where
+  (SVGFontFaceElement a) == (SVGFontFaceElement b) = js_eq a b
+
+instance PToJSRef SVGFontFaceElement where
+  pToJSRef = unSVGFontFaceElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFontFaceElement where
+  pFromJSRef = SVGFontFaceElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFontFaceElement where
   toJSRef = return . unSVGFontFaceElement
@@ -15031,7 +18761,9 @@ instance IsNode SVGFontFaceElement
 instance IsEventTarget SVGFontFaceElement
 instance IsGObject SVGFontFaceElement where
   toGObject = GObject . castRef . unSVGFontFaceElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFontFaceElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFontFaceElement :: IsGObject obj => obj -> SVGFontFaceElement
 castToSVGFontFaceElement = castTo gTypeSVGFontFaceElement "SVGFontFaceElement"
@@ -15052,9 +18784,18 @@ gTypeSVGFontFaceElement = GType gTypeSVGFontFaceElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceFormatElement Mozilla SVGFontFaceFormatElement documentation>
-newtype SVGFontFaceFormatElement = SVGFontFaceFormatElement (JSRef SVGFontFaceFormatElement) deriving (Eq)
+newtype SVGFontFaceFormatElement = SVGFontFaceFormatElement { unSVGFontFaceFormatElement :: JSRef SVGFontFaceFormatElement }
 
-unSVGFontFaceFormatElement (SVGFontFaceFormatElement o) = o
+instance Eq (SVGFontFaceFormatElement) where
+  (SVGFontFaceFormatElement a) == (SVGFontFaceFormatElement b) = js_eq a b
+
+instance PToJSRef SVGFontFaceFormatElement where
+  pToJSRef = unSVGFontFaceFormatElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFontFaceFormatElement where
+  pFromJSRef = SVGFontFaceFormatElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFontFaceFormatElement where
   toJSRef = return . unSVGFontFaceFormatElement
@@ -15070,7 +18811,9 @@ instance IsNode SVGFontFaceFormatElement
 instance IsEventTarget SVGFontFaceFormatElement
 instance IsGObject SVGFontFaceFormatElement where
   toGObject = GObject . castRef . unSVGFontFaceFormatElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFontFaceFormatElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFontFaceFormatElement :: IsGObject obj => obj -> SVGFontFaceFormatElement
 castToSVGFontFaceFormatElement = castTo gTypeSVGFontFaceFormatElement "SVGFontFaceFormatElement"
@@ -15091,9 +18834,18 @@ gTypeSVGFontFaceFormatElement = GType gTypeSVGFontFaceFormatElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceNameElement Mozilla SVGFontFaceNameElement documentation>
-newtype SVGFontFaceNameElement = SVGFontFaceNameElement (JSRef SVGFontFaceNameElement) deriving (Eq)
+newtype SVGFontFaceNameElement = SVGFontFaceNameElement { unSVGFontFaceNameElement :: JSRef SVGFontFaceNameElement }
 
-unSVGFontFaceNameElement (SVGFontFaceNameElement o) = o
+instance Eq (SVGFontFaceNameElement) where
+  (SVGFontFaceNameElement a) == (SVGFontFaceNameElement b) = js_eq a b
+
+instance PToJSRef SVGFontFaceNameElement where
+  pToJSRef = unSVGFontFaceNameElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFontFaceNameElement where
+  pFromJSRef = SVGFontFaceNameElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFontFaceNameElement where
   toJSRef = return . unSVGFontFaceNameElement
@@ -15109,7 +18861,9 @@ instance IsNode SVGFontFaceNameElement
 instance IsEventTarget SVGFontFaceNameElement
 instance IsGObject SVGFontFaceNameElement where
   toGObject = GObject . castRef . unSVGFontFaceNameElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFontFaceNameElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFontFaceNameElement :: IsGObject obj => obj -> SVGFontFaceNameElement
 castToSVGFontFaceNameElement = castTo gTypeSVGFontFaceNameElement "SVGFontFaceNameElement"
@@ -15130,9 +18884,18 @@ gTypeSVGFontFaceNameElement = GType gTypeSVGFontFaceNameElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceSrcElement Mozilla SVGFontFaceSrcElement documentation>
-newtype SVGFontFaceSrcElement = SVGFontFaceSrcElement (JSRef SVGFontFaceSrcElement) deriving (Eq)
+newtype SVGFontFaceSrcElement = SVGFontFaceSrcElement { unSVGFontFaceSrcElement :: JSRef SVGFontFaceSrcElement }
 
-unSVGFontFaceSrcElement (SVGFontFaceSrcElement o) = o
+instance Eq (SVGFontFaceSrcElement) where
+  (SVGFontFaceSrcElement a) == (SVGFontFaceSrcElement b) = js_eq a b
+
+instance PToJSRef SVGFontFaceSrcElement where
+  pToJSRef = unSVGFontFaceSrcElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFontFaceSrcElement where
+  pFromJSRef = SVGFontFaceSrcElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFontFaceSrcElement where
   toJSRef = return . unSVGFontFaceSrcElement
@@ -15148,7 +18911,9 @@ instance IsNode SVGFontFaceSrcElement
 instance IsEventTarget SVGFontFaceSrcElement
 instance IsGObject SVGFontFaceSrcElement where
   toGObject = GObject . castRef . unSVGFontFaceSrcElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFontFaceSrcElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFontFaceSrcElement :: IsGObject obj => obj -> SVGFontFaceSrcElement
 castToSVGFontFaceSrcElement = castTo gTypeSVGFontFaceSrcElement "SVGFontFaceSrcElement"
@@ -15169,9 +18934,18 @@ gTypeSVGFontFaceSrcElement = GType gTypeSVGFontFaceSrcElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceUriElement Mozilla SVGFontFaceUriElement documentation>
-newtype SVGFontFaceUriElement = SVGFontFaceUriElement (JSRef SVGFontFaceUriElement) deriving (Eq)
+newtype SVGFontFaceUriElement = SVGFontFaceUriElement { unSVGFontFaceUriElement :: JSRef SVGFontFaceUriElement }
 
-unSVGFontFaceUriElement (SVGFontFaceUriElement o) = o
+instance Eq (SVGFontFaceUriElement) where
+  (SVGFontFaceUriElement a) == (SVGFontFaceUriElement b) = js_eq a b
+
+instance PToJSRef SVGFontFaceUriElement where
+  pToJSRef = unSVGFontFaceUriElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGFontFaceUriElement where
+  pFromJSRef = SVGFontFaceUriElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGFontFaceUriElement where
   toJSRef = return . unSVGFontFaceUriElement
@@ -15187,7 +18961,9 @@ instance IsNode SVGFontFaceUriElement
 instance IsEventTarget SVGFontFaceUriElement
 instance IsGObject SVGFontFaceUriElement where
   toGObject = GObject . castRef . unSVGFontFaceUriElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGFontFaceUriElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGFontFaceUriElement :: IsGObject obj => obj -> SVGFontFaceUriElement
 castToSVGFontFaceUriElement = castTo gTypeSVGFontFaceUriElement "SVGFontFaceUriElement"
@@ -15209,9 +18985,18 @@ gTypeSVGFontFaceUriElement = GType gTypeSVGFontFaceUriElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGForeignObjectElement Mozilla SVGForeignObjectElement documentation>
-newtype SVGForeignObjectElement = SVGForeignObjectElement (JSRef SVGForeignObjectElement) deriving (Eq)
+newtype SVGForeignObjectElement = SVGForeignObjectElement { unSVGForeignObjectElement :: JSRef SVGForeignObjectElement }
 
-unSVGForeignObjectElement (SVGForeignObjectElement o) = o
+instance Eq (SVGForeignObjectElement) where
+  (SVGForeignObjectElement a) == (SVGForeignObjectElement b) = js_eq a b
+
+instance PToJSRef SVGForeignObjectElement where
+  pToJSRef = unSVGForeignObjectElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGForeignObjectElement where
+  pFromJSRef = SVGForeignObjectElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGForeignObjectElement where
   toJSRef = return . unSVGForeignObjectElement
@@ -15228,7 +19013,9 @@ instance IsNode SVGForeignObjectElement
 instance IsEventTarget SVGForeignObjectElement
 instance IsGObject SVGForeignObjectElement where
   toGObject = GObject . castRef . unSVGForeignObjectElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGForeignObjectElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGForeignObjectElement :: IsGObject obj => obj -> SVGForeignObjectElement
 castToSVGForeignObjectElement = castTo gTypeSVGForeignObjectElement "SVGForeignObjectElement"
@@ -15250,9 +19037,18 @@ gTypeSVGForeignObjectElement = GType gTypeSVGForeignObjectElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGElement Mozilla SVGGElement documentation>
-newtype SVGGElement = SVGGElement (JSRef SVGGElement) deriving (Eq)
+newtype SVGGElement = SVGGElement { unSVGGElement :: JSRef SVGGElement }
 
-unSVGGElement (SVGGElement o) = o
+instance Eq (SVGGElement) where
+  (SVGGElement a) == (SVGGElement b) = js_eq a b
+
+instance PToJSRef SVGGElement where
+  pToJSRef = unSVGGElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGGElement where
+  pFromJSRef = SVGGElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGGElement where
   toJSRef = return . unSVGGElement
@@ -15269,7 +19065,9 @@ instance IsNode SVGGElement
 instance IsEventTarget SVGGElement
 instance IsGObject SVGGElement where
   toGObject = GObject . castRef . unSVGGElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGGElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGGElement :: IsGObject obj => obj -> SVGGElement
 castToSVGGElement = castTo gTypeSVGGElement "SVGGElement"
@@ -15290,9 +19088,18 @@ gTypeSVGGElement = GType gTypeSVGGElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphElement Mozilla SVGGlyphElement documentation>
-newtype SVGGlyphElement = SVGGlyphElement (JSRef SVGGlyphElement) deriving (Eq)
+newtype SVGGlyphElement = SVGGlyphElement { unSVGGlyphElement :: JSRef SVGGlyphElement }
 
-unSVGGlyphElement (SVGGlyphElement o) = o
+instance Eq (SVGGlyphElement) where
+  (SVGGlyphElement a) == (SVGGlyphElement b) = js_eq a b
+
+instance PToJSRef SVGGlyphElement where
+  pToJSRef = unSVGGlyphElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGGlyphElement where
+  pFromJSRef = SVGGlyphElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGGlyphElement where
   toJSRef = return . unSVGGlyphElement
@@ -15308,7 +19115,9 @@ instance IsNode SVGGlyphElement
 instance IsEventTarget SVGGlyphElement
 instance IsGObject SVGGlyphElement where
   toGObject = GObject . castRef . unSVGGlyphElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGGlyphElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGGlyphElement :: IsGObject obj => obj -> SVGGlyphElement
 castToSVGGlyphElement = castTo gTypeSVGGlyphElement "SVGGlyphElement"
@@ -15329,9 +19138,18 @@ gTypeSVGGlyphElement = GType gTypeSVGGlyphElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement Mozilla SVGGlyphRefElement documentation>
-newtype SVGGlyphRefElement = SVGGlyphRefElement (JSRef SVGGlyphRefElement) deriving (Eq)
+newtype SVGGlyphRefElement = SVGGlyphRefElement { unSVGGlyphRefElement :: JSRef SVGGlyphRefElement }
 
-unSVGGlyphRefElement (SVGGlyphRefElement o) = o
+instance Eq (SVGGlyphRefElement) where
+  (SVGGlyphRefElement a) == (SVGGlyphRefElement b) = js_eq a b
+
+instance PToJSRef SVGGlyphRefElement where
+  pToJSRef = unSVGGlyphRefElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGGlyphRefElement where
+  pFromJSRef = SVGGlyphRefElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGGlyphRefElement where
   toJSRef = return . unSVGGlyphRefElement
@@ -15347,7 +19165,9 @@ instance IsNode SVGGlyphRefElement
 instance IsEventTarget SVGGlyphRefElement
 instance IsGObject SVGGlyphRefElement where
   toGObject = GObject . castRef . unSVGGlyphRefElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGGlyphRefElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGGlyphRefElement :: IsGObject obj => obj -> SVGGlyphRefElement
 castToSVGGlyphRefElement = castTo gTypeSVGGlyphRefElement "SVGGlyphRefElement"
@@ -15368,9 +19188,18 @@ gTypeSVGGlyphRefElement = GType gTypeSVGGlyphRefElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement Mozilla SVGGradientElement documentation>
-newtype SVGGradientElement = SVGGradientElement (JSRef SVGGradientElement) deriving (Eq)
+newtype SVGGradientElement = SVGGradientElement { unSVGGradientElement :: JSRef SVGGradientElement }
 
-unSVGGradientElement (SVGGradientElement o) = o
+instance Eq (SVGGradientElement) where
+  (SVGGradientElement a) == (SVGGradientElement b) = js_eq a b
+
+instance PToJSRef SVGGradientElement where
+  pToJSRef = unSVGGradientElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGGradientElement where
+  pFromJSRef = SVGGradientElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGGradientElement where
   toJSRef = return . unSVGGradientElement
@@ -15391,7 +19220,9 @@ instance IsNode SVGGradientElement
 instance IsEventTarget SVGGradientElement
 instance IsGObject SVGGradientElement where
   toGObject = GObject . castRef . unSVGGradientElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGGradientElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGGradientElement :: IsGObject obj => obj -> SVGGradientElement
 castToSVGGradientElement = castTo gTypeSVGGradientElement "SVGGradientElement"
@@ -15412,9 +19243,18 @@ gTypeSVGGradientElement = GType gTypeSVGGradientElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement Mozilla SVGGraphicsElement documentation>
-newtype SVGGraphicsElement = SVGGraphicsElement (JSRef SVGGraphicsElement) deriving (Eq)
+newtype SVGGraphicsElement = SVGGraphicsElement { unSVGGraphicsElement :: JSRef SVGGraphicsElement }
 
-unSVGGraphicsElement (SVGGraphicsElement o) = o
+instance Eq (SVGGraphicsElement) where
+  (SVGGraphicsElement a) == (SVGGraphicsElement b) = js_eq a b
+
+instance PToJSRef SVGGraphicsElement where
+  pToJSRef = unSVGGraphicsElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGGraphicsElement where
+  pFromJSRef = SVGGraphicsElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGGraphicsElement where
   toJSRef = return . unSVGGraphicsElement
@@ -15435,7 +19275,9 @@ instance IsNode SVGGraphicsElement
 instance IsEventTarget SVGGraphicsElement
 instance IsGObject SVGGraphicsElement where
   toGObject = GObject . castRef . unSVGGraphicsElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGGraphicsElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGGraphicsElement :: IsGObject obj => obj -> SVGGraphicsElement
 castToSVGGraphicsElement = castTo gTypeSVGGraphicsElement "SVGGraphicsElement"
@@ -15456,9 +19298,18 @@ gTypeSVGGraphicsElement = GType gTypeSVGGraphicsElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGHKernElement Mozilla SVGHKernElement documentation>
-newtype SVGHKernElement = SVGHKernElement (JSRef SVGHKernElement) deriving (Eq)
+newtype SVGHKernElement = SVGHKernElement { unSVGHKernElement :: JSRef SVGHKernElement }
 
-unSVGHKernElement (SVGHKernElement o) = o
+instance Eq (SVGHKernElement) where
+  (SVGHKernElement a) == (SVGHKernElement b) = js_eq a b
+
+instance PToJSRef SVGHKernElement where
+  pToJSRef = unSVGHKernElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGHKernElement where
+  pFromJSRef = SVGHKernElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGHKernElement where
   toJSRef = return . unSVGHKernElement
@@ -15474,7 +19325,9 @@ instance IsNode SVGHKernElement
 instance IsEventTarget SVGHKernElement
 instance IsGObject SVGHKernElement where
   toGObject = GObject . castRef . unSVGHKernElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGHKernElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGHKernElement :: IsGObject obj => obj -> SVGHKernElement
 castToSVGHKernElement = castTo gTypeSVGHKernElement "SVGHKernElement"
@@ -15496,9 +19349,18 @@ gTypeSVGHKernElement = GType gTypeSVGHKernElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement Mozilla SVGImageElement documentation>
-newtype SVGImageElement = SVGImageElement (JSRef SVGImageElement) deriving (Eq)
+newtype SVGImageElement = SVGImageElement { unSVGImageElement :: JSRef SVGImageElement }
 
-unSVGImageElement (SVGImageElement o) = o
+instance Eq (SVGImageElement) where
+  (SVGImageElement a) == (SVGImageElement b) = js_eq a b
+
+instance PToJSRef SVGImageElement where
+  pToJSRef = unSVGImageElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGImageElement where
+  pFromJSRef = SVGImageElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGImageElement where
   toJSRef = return . unSVGImageElement
@@ -15515,7 +19377,9 @@ instance IsNode SVGImageElement
 instance IsEventTarget SVGImageElement
 instance IsGObject SVGImageElement where
   toGObject = GObject . castRef . unSVGImageElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGImageElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGImageElement :: IsGObject obj => obj -> SVGImageElement
 castToSVGImageElement = castTo gTypeSVGImageElement "SVGImageElement"
@@ -15530,9 +19394,18 @@ gTypeSVGImageElement = GType gTypeSVGImageElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLength".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength Mozilla SVGLength documentation>
-newtype SVGLength = SVGLength (JSRef SVGLength) deriving (Eq)
+newtype SVGLength = SVGLength { unSVGLength :: JSRef SVGLength }
 
-unSVGLength (SVGLength o) = o
+instance Eq (SVGLength) where
+  (SVGLength a) == (SVGLength b) = js_eq a b
+
+instance PToJSRef SVGLength where
+  pToJSRef = unSVGLength
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGLength where
+  pFromJSRef = SVGLength
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGLength where
   toJSRef = return . unSVGLength
@@ -15544,7 +19417,9 @@ instance FromJSRef SVGLength where
 
 instance IsGObject SVGLength where
   toGObject = GObject . castRef . unSVGLength
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGLength . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGLength :: IsGObject obj => obj -> SVGLength
 castToSVGLength = castTo gTypeSVGLength "SVGLength"
@@ -15559,9 +19434,18 @@ gTypeSVGLength = GType gTypeSVGLength'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLengthList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList Mozilla SVGLengthList documentation>
-newtype SVGLengthList = SVGLengthList (JSRef SVGLengthList) deriving (Eq)
+newtype SVGLengthList = SVGLengthList { unSVGLengthList :: JSRef SVGLengthList }
 
-unSVGLengthList (SVGLengthList o) = o
+instance Eq (SVGLengthList) where
+  (SVGLengthList a) == (SVGLengthList b) = js_eq a b
+
+instance PToJSRef SVGLengthList where
+  pToJSRef = unSVGLengthList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGLengthList where
+  pFromJSRef = SVGLengthList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGLengthList where
   toJSRef = return . unSVGLengthList
@@ -15573,7 +19457,9 @@ instance FromJSRef SVGLengthList where
 
 instance IsGObject SVGLengthList where
   toGObject = GObject . castRef . unSVGLengthList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGLengthList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGLengthList :: IsGObject obj => obj -> SVGLengthList
 castToSVGLengthList = castTo gTypeSVGLengthList "SVGLengthList"
@@ -15595,9 +19481,18 @@ gTypeSVGLengthList = GType gTypeSVGLengthList'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement Mozilla SVGLineElement documentation>
-newtype SVGLineElement = SVGLineElement (JSRef SVGLineElement) deriving (Eq)
+newtype SVGLineElement = SVGLineElement { unSVGLineElement :: JSRef SVGLineElement }
 
-unSVGLineElement (SVGLineElement o) = o
+instance Eq (SVGLineElement) where
+  (SVGLineElement a) == (SVGLineElement b) = js_eq a b
+
+instance PToJSRef SVGLineElement where
+  pToJSRef = unSVGLineElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGLineElement where
+  pFromJSRef = SVGLineElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGLineElement where
   toJSRef = return . unSVGLineElement
@@ -15614,7 +19509,9 @@ instance IsNode SVGLineElement
 instance IsEventTarget SVGLineElement
 instance IsGObject SVGLineElement where
   toGObject = GObject . castRef . unSVGLineElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGLineElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGLineElement :: IsGObject obj => obj -> SVGLineElement
 castToSVGLineElement = castTo gTypeSVGLineElement "SVGLineElement"
@@ -15636,9 +19533,18 @@ gTypeSVGLineElement = GType gTypeSVGLineElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLinearGradientElement Mozilla SVGLinearGradientElement documentation>
-newtype SVGLinearGradientElement = SVGLinearGradientElement (JSRef SVGLinearGradientElement) deriving (Eq)
+newtype SVGLinearGradientElement = SVGLinearGradientElement { unSVGLinearGradientElement :: JSRef SVGLinearGradientElement }
 
-unSVGLinearGradientElement (SVGLinearGradientElement o) = o
+instance Eq (SVGLinearGradientElement) where
+  (SVGLinearGradientElement a) == (SVGLinearGradientElement b) = js_eq a b
+
+instance PToJSRef SVGLinearGradientElement where
+  pToJSRef = unSVGLinearGradientElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGLinearGradientElement where
+  pFromJSRef = SVGLinearGradientElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGLinearGradientElement where
   toJSRef = return . unSVGLinearGradientElement
@@ -15655,7 +19561,9 @@ instance IsNode SVGLinearGradientElement
 instance IsEventTarget SVGLinearGradientElement
 instance IsGObject SVGLinearGradientElement where
   toGObject = GObject . castRef . unSVGLinearGradientElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGLinearGradientElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGLinearGradientElement :: IsGObject obj => obj -> SVGLinearGradientElement
 castToSVGLinearGradientElement = castTo gTypeSVGLinearGradientElement "SVGLinearGradientElement"
@@ -15676,9 +19584,18 @@ gTypeSVGLinearGradientElement = GType gTypeSVGLinearGradientElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMPathElement Mozilla SVGMPathElement documentation>
-newtype SVGMPathElement = SVGMPathElement (JSRef SVGMPathElement) deriving (Eq)
+newtype SVGMPathElement = SVGMPathElement { unSVGMPathElement :: JSRef SVGMPathElement }
 
-unSVGMPathElement (SVGMPathElement o) = o
+instance Eq (SVGMPathElement) where
+  (SVGMPathElement a) == (SVGMPathElement b) = js_eq a b
+
+instance PToJSRef SVGMPathElement where
+  pToJSRef = unSVGMPathElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGMPathElement where
+  pFromJSRef = SVGMPathElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGMPathElement where
   toJSRef = return . unSVGMPathElement
@@ -15694,7 +19611,9 @@ instance IsNode SVGMPathElement
 instance IsEventTarget SVGMPathElement
 instance IsGObject SVGMPathElement where
   toGObject = GObject . castRef . unSVGMPathElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGMPathElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGMPathElement :: IsGObject obj => obj -> SVGMPathElement
 castToSVGMPathElement = castTo gTypeSVGMPathElement "SVGMPathElement"
@@ -15715,9 +19634,18 @@ gTypeSVGMPathElement = GType gTypeSVGMPathElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement Mozilla SVGMarkerElement documentation>
-newtype SVGMarkerElement = SVGMarkerElement (JSRef SVGMarkerElement) deriving (Eq)
+newtype SVGMarkerElement = SVGMarkerElement { unSVGMarkerElement :: JSRef SVGMarkerElement }
 
-unSVGMarkerElement (SVGMarkerElement o) = o
+instance Eq (SVGMarkerElement) where
+  (SVGMarkerElement a) == (SVGMarkerElement b) = js_eq a b
+
+instance PToJSRef SVGMarkerElement where
+  pToJSRef = unSVGMarkerElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGMarkerElement where
+  pFromJSRef = SVGMarkerElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGMarkerElement where
   toJSRef = return . unSVGMarkerElement
@@ -15733,7 +19661,9 @@ instance IsNode SVGMarkerElement
 instance IsEventTarget SVGMarkerElement
 instance IsGObject SVGMarkerElement where
   toGObject = GObject . castRef . unSVGMarkerElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGMarkerElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGMarkerElement :: IsGObject obj => obj -> SVGMarkerElement
 castToSVGMarkerElement = castTo gTypeSVGMarkerElement "SVGMarkerElement"
@@ -15754,9 +19684,18 @@ gTypeSVGMarkerElement = GType gTypeSVGMarkerElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement Mozilla SVGMaskElement documentation>
-newtype SVGMaskElement = SVGMaskElement (JSRef SVGMaskElement) deriving (Eq)
+newtype SVGMaskElement = SVGMaskElement { unSVGMaskElement :: JSRef SVGMaskElement }
 
-unSVGMaskElement (SVGMaskElement o) = o
+instance Eq (SVGMaskElement) where
+  (SVGMaskElement a) == (SVGMaskElement b) = js_eq a b
+
+instance PToJSRef SVGMaskElement where
+  pToJSRef = unSVGMaskElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGMaskElement where
+  pFromJSRef = SVGMaskElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGMaskElement where
   toJSRef = return . unSVGMaskElement
@@ -15772,7 +19711,9 @@ instance IsNode SVGMaskElement
 instance IsEventTarget SVGMaskElement
 instance IsGObject SVGMaskElement where
   toGObject = GObject . castRef . unSVGMaskElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGMaskElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGMaskElement :: IsGObject obj => obj -> SVGMaskElement
 castToSVGMaskElement = castTo gTypeSVGMaskElement "SVGMaskElement"
@@ -15787,9 +19728,18 @@ gTypeSVGMaskElement = GType gTypeSVGMaskElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMatrix".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix Mozilla SVGMatrix documentation>
-newtype SVGMatrix = SVGMatrix (JSRef SVGMatrix) deriving (Eq)
+newtype SVGMatrix = SVGMatrix { unSVGMatrix :: JSRef SVGMatrix }
 
-unSVGMatrix (SVGMatrix o) = o
+instance Eq (SVGMatrix) where
+  (SVGMatrix a) == (SVGMatrix b) = js_eq a b
+
+instance PToJSRef SVGMatrix where
+  pToJSRef = unSVGMatrix
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGMatrix where
+  pFromJSRef = SVGMatrix
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGMatrix where
   toJSRef = return . unSVGMatrix
@@ -15801,7 +19751,9 @@ instance FromJSRef SVGMatrix where
 
 instance IsGObject SVGMatrix where
   toGObject = GObject . castRef . unSVGMatrix
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGMatrix . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGMatrix :: IsGObject obj => obj -> SVGMatrix
 castToSVGMatrix = castTo gTypeSVGMatrix "SVGMatrix"
@@ -15822,9 +19774,18 @@ gTypeSVGMatrix = GType gTypeSVGMatrix'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMetadataElement Mozilla SVGMetadataElement documentation>
-newtype SVGMetadataElement = SVGMetadataElement (JSRef SVGMetadataElement) deriving (Eq)
+newtype SVGMetadataElement = SVGMetadataElement { unSVGMetadataElement :: JSRef SVGMetadataElement }
 
-unSVGMetadataElement (SVGMetadataElement o) = o
+instance Eq (SVGMetadataElement) where
+  (SVGMetadataElement a) == (SVGMetadataElement b) = js_eq a b
+
+instance PToJSRef SVGMetadataElement where
+  pToJSRef = unSVGMetadataElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGMetadataElement where
+  pFromJSRef = SVGMetadataElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGMetadataElement where
   toJSRef = return . unSVGMetadataElement
@@ -15840,7 +19801,9 @@ instance IsNode SVGMetadataElement
 instance IsEventTarget SVGMetadataElement
 instance IsGObject SVGMetadataElement where
   toGObject = GObject . castRef . unSVGMetadataElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGMetadataElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGMetadataElement :: IsGObject obj => obj -> SVGMetadataElement
 castToSVGMetadataElement = castTo gTypeSVGMetadataElement "SVGMetadataElement"
@@ -15861,9 +19824,18 @@ gTypeSVGMetadataElement = GType gTypeSVGMetadataElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMissingGlyphElement Mozilla SVGMissingGlyphElement documentation>
-newtype SVGMissingGlyphElement = SVGMissingGlyphElement (JSRef SVGMissingGlyphElement) deriving (Eq)
+newtype SVGMissingGlyphElement = SVGMissingGlyphElement { unSVGMissingGlyphElement :: JSRef SVGMissingGlyphElement }
 
-unSVGMissingGlyphElement (SVGMissingGlyphElement o) = o
+instance Eq (SVGMissingGlyphElement) where
+  (SVGMissingGlyphElement a) == (SVGMissingGlyphElement b) = js_eq a b
+
+instance PToJSRef SVGMissingGlyphElement where
+  pToJSRef = unSVGMissingGlyphElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGMissingGlyphElement where
+  pFromJSRef = SVGMissingGlyphElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGMissingGlyphElement where
   toJSRef = return . unSVGMissingGlyphElement
@@ -15879,7 +19851,9 @@ instance IsNode SVGMissingGlyphElement
 instance IsEventTarget SVGMissingGlyphElement
 instance IsGObject SVGMissingGlyphElement where
   toGObject = GObject . castRef . unSVGMissingGlyphElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGMissingGlyphElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGMissingGlyphElement :: IsGObject obj => obj -> SVGMissingGlyphElement
 castToSVGMissingGlyphElement = castTo gTypeSVGMissingGlyphElement "SVGMissingGlyphElement"
@@ -15894,9 +19868,18 @@ gTypeSVGMissingGlyphElement = GType gTypeSVGMissingGlyphElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumber".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumber Mozilla SVGNumber documentation>
-newtype SVGNumber = SVGNumber (JSRef SVGNumber) deriving (Eq)
+newtype SVGNumber = SVGNumber { unSVGNumber :: JSRef SVGNumber }
 
-unSVGNumber (SVGNumber o) = o
+instance Eq (SVGNumber) where
+  (SVGNumber a) == (SVGNumber b) = js_eq a b
+
+instance PToJSRef SVGNumber where
+  pToJSRef = unSVGNumber
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGNumber where
+  pFromJSRef = SVGNumber
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGNumber where
   toJSRef = return . unSVGNumber
@@ -15908,7 +19891,9 @@ instance FromJSRef SVGNumber where
 
 instance IsGObject SVGNumber where
   toGObject = GObject . castRef . unSVGNumber
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGNumber . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGNumber :: IsGObject obj => obj -> SVGNumber
 castToSVGNumber = castTo gTypeSVGNumber "SVGNumber"
@@ -15923,9 +19908,18 @@ gTypeSVGNumber = GType gTypeSVGNumber'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumberList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList Mozilla SVGNumberList documentation>
-newtype SVGNumberList = SVGNumberList (JSRef SVGNumberList) deriving (Eq)
+newtype SVGNumberList = SVGNumberList { unSVGNumberList :: JSRef SVGNumberList }
 
-unSVGNumberList (SVGNumberList o) = o
+instance Eq (SVGNumberList) where
+  (SVGNumberList a) == (SVGNumberList b) = js_eq a b
+
+instance PToJSRef SVGNumberList where
+  pToJSRef = unSVGNumberList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGNumberList where
+  pFromJSRef = SVGNumberList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGNumberList where
   toJSRef = return . unSVGNumberList
@@ -15937,7 +19931,9 @@ instance FromJSRef SVGNumberList where
 
 instance IsGObject SVGNumberList where
   toGObject = GObject . castRef . unSVGNumberList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGNumberList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGNumberList :: IsGObject obj => obj -> SVGNumberList
 castToSVGNumberList = castTo gTypeSVGNumberList "SVGNumberList"
@@ -15956,9 +19952,18 @@ gTypeSVGNumberList = GType gTypeSVGNumberList'
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint Mozilla SVGPaint documentation>
-newtype SVGPaint = SVGPaint (JSRef SVGPaint) deriving (Eq)
+newtype SVGPaint = SVGPaint { unSVGPaint :: JSRef SVGPaint }
 
-unSVGPaint (SVGPaint o) = o
+instance Eq (SVGPaint) where
+  (SVGPaint a) == (SVGPaint b) = js_eq a b
+
+instance PToJSRef SVGPaint where
+  pToJSRef = unSVGPaint
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPaint where
+  pFromJSRef = SVGPaint
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPaint where
   toJSRef = return . unSVGPaint
@@ -15972,7 +19977,9 @@ instance IsSVGColor SVGPaint
 instance IsCSSValue SVGPaint
 instance IsGObject SVGPaint where
   toGObject = GObject . castRef . unSVGPaint
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPaint . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPaint :: IsGObject obj => obj -> SVGPaint
 castToSVGPaint = castTo gTypeSVGPaint "SVGPaint"
@@ -15994,9 +20001,18 @@ gTypeSVGPaint = GType gTypeSVGPaint'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement Mozilla SVGPathElement documentation>
-newtype SVGPathElement = SVGPathElement (JSRef SVGPathElement) deriving (Eq)
+newtype SVGPathElement = SVGPathElement { unSVGPathElement :: JSRef SVGPathElement }
 
-unSVGPathElement (SVGPathElement o) = o
+instance Eq (SVGPathElement) where
+  (SVGPathElement a) == (SVGPathElement b) = js_eq a b
+
+instance PToJSRef SVGPathElement where
+  pToJSRef = unSVGPathElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathElement where
+  pFromJSRef = SVGPathElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathElement where
   toJSRef = return . unSVGPathElement
@@ -16013,7 +20029,9 @@ instance IsNode SVGPathElement
 instance IsEventTarget SVGPathElement
 instance IsGObject SVGPathElement where
   toGObject = GObject . castRef . unSVGPathElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathElement :: IsGObject obj => obj -> SVGPathElement
 castToSVGPathElement = castTo gTypeSVGPathElement "SVGPathElement"
@@ -16028,9 +20046,18 @@ gTypeSVGPathElement = GType gTypeSVGPathElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSeg".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg Mozilla SVGPathSeg documentation>
-newtype SVGPathSeg = SVGPathSeg (JSRef SVGPathSeg) deriving (Eq)
+newtype SVGPathSeg = SVGPathSeg { unSVGPathSeg :: JSRef SVGPathSeg }
 
-unSVGPathSeg (SVGPathSeg o) = o
+instance Eq (SVGPathSeg) where
+  (SVGPathSeg a) == (SVGPathSeg b) = js_eq a b
+
+instance PToJSRef SVGPathSeg where
+  pToJSRef = unSVGPathSeg
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSeg where
+  pFromJSRef = SVGPathSeg
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSeg where
   toJSRef = return . unSVGPathSeg
@@ -16047,7 +20074,9 @@ toSVGPathSeg = unsafeCastGObject . toGObject
 instance IsSVGPathSeg SVGPathSeg
 instance IsGObject SVGPathSeg where
   toGObject = GObject . castRef . unSVGPathSeg
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSeg . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSeg :: IsGObject obj => obj -> SVGPathSeg
 castToSVGPathSeg = castTo gTypeSVGPathSeg "SVGPathSeg"
@@ -16065,9 +20094,18 @@ gTypeSVGPathSeg = GType gTypeSVGPathSeg'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs Mozilla SVGPathSegArcAbs documentation>
-newtype SVGPathSegArcAbs = SVGPathSegArcAbs (JSRef SVGPathSegArcAbs) deriving (Eq)
+newtype SVGPathSegArcAbs = SVGPathSegArcAbs { unSVGPathSegArcAbs :: JSRef SVGPathSegArcAbs }
 
-unSVGPathSegArcAbs (SVGPathSegArcAbs o) = o
+instance Eq (SVGPathSegArcAbs) where
+  (SVGPathSegArcAbs a) == (SVGPathSegArcAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegArcAbs where
+  pToJSRef = unSVGPathSegArcAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegArcAbs where
+  pFromJSRef = SVGPathSegArcAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegArcAbs where
   toJSRef = return . unSVGPathSegArcAbs
@@ -16080,7 +20118,9 @@ instance FromJSRef SVGPathSegArcAbs where
 instance IsSVGPathSeg SVGPathSegArcAbs
 instance IsGObject SVGPathSegArcAbs where
   toGObject = GObject . castRef . unSVGPathSegArcAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegArcAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegArcAbs :: IsGObject obj => obj -> SVGPathSegArcAbs
 castToSVGPathSegArcAbs = castTo gTypeSVGPathSegArcAbs "SVGPathSegArcAbs"
@@ -16098,9 +20138,18 @@ gTypeSVGPathSegArcAbs = GType gTypeSVGPathSegArcAbs'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel Mozilla SVGPathSegArcRel documentation>
-newtype SVGPathSegArcRel = SVGPathSegArcRel (JSRef SVGPathSegArcRel) deriving (Eq)
+newtype SVGPathSegArcRel = SVGPathSegArcRel { unSVGPathSegArcRel :: JSRef SVGPathSegArcRel }
 
-unSVGPathSegArcRel (SVGPathSegArcRel o) = o
+instance Eq (SVGPathSegArcRel) where
+  (SVGPathSegArcRel a) == (SVGPathSegArcRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegArcRel where
+  pToJSRef = unSVGPathSegArcRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegArcRel where
+  pFromJSRef = SVGPathSegArcRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegArcRel where
   toJSRef = return . unSVGPathSegArcRel
@@ -16113,7 +20162,9 @@ instance FromJSRef SVGPathSegArcRel where
 instance IsSVGPathSeg SVGPathSegArcRel
 instance IsGObject SVGPathSegArcRel where
   toGObject = GObject . castRef . unSVGPathSegArcRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegArcRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegArcRel :: IsGObject obj => obj -> SVGPathSegArcRel
 castToSVGPathSegArcRel = castTo gTypeSVGPathSegArcRel "SVGPathSegArcRel"
@@ -16131,9 +20182,18 @@ gTypeSVGPathSegArcRel = GType gTypeSVGPathSegArcRel'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegClosePath Mozilla SVGPathSegClosePath documentation>
-newtype SVGPathSegClosePath = SVGPathSegClosePath (JSRef SVGPathSegClosePath) deriving (Eq)
+newtype SVGPathSegClosePath = SVGPathSegClosePath { unSVGPathSegClosePath :: JSRef SVGPathSegClosePath }
 
-unSVGPathSegClosePath (SVGPathSegClosePath o) = o
+instance Eq (SVGPathSegClosePath) where
+  (SVGPathSegClosePath a) == (SVGPathSegClosePath b) = js_eq a b
+
+instance PToJSRef SVGPathSegClosePath where
+  pToJSRef = unSVGPathSegClosePath
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegClosePath where
+  pFromJSRef = SVGPathSegClosePath
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegClosePath where
   toJSRef = return . unSVGPathSegClosePath
@@ -16146,7 +20206,9 @@ instance FromJSRef SVGPathSegClosePath where
 instance IsSVGPathSeg SVGPathSegClosePath
 instance IsGObject SVGPathSegClosePath where
   toGObject = GObject . castRef . unSVGPathSegClosePath
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegClosePath . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegClosePath :: IsGObject obj => obj -> SVGPathSegClosePath
 castToSVGPathSegClosePath = castTo gTypeSVGPathSegClosePath "SVGPathSegClosePath"
@@ -16164,9 +20226,18 @@ gTypeSVGPathSegClosePath = GType gTypeSVGPathSegClosePath'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs Mozilla SVGPathSegCurvetoCubicAbs documentation>
-newtype SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs (JSRef SVGPathSegCurvetoCubicAbs) deriving (Eq)
+newtype SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs { unSVGPathSegCurvetoCubicAbs :: JSRef SVGPathSegCurvetoCubicAbs }
 
-unSVGPathSegCurvetoCubicAbs (SVGPathSegCurvetoCubicAbs o) = o
+instance Eq (SVGPathSegCurvetoCubicAbs) where
+  (SVGPathSegCurvetoCubicAbs a) == (SVGPathSegCurvetoCubicAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoCubicAbs where
+  pToJSRef = unSVGPathSegCurvetoCubicAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoCubicAbs where
+  pFromJSRef = SVGPathSegCurvetoCubicAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoCubicAbs where
   toJSRef = return . unSVGPathSegCurvetoCubicAbs
@@ -16179,7 +20250,9 @@ instance FromJSRef SVGPathSegCurvetoCubicAbs where
 instance IsSVGPathSeg SVGPathSegCurvetoCubicAbs
 instance IsGObject SVGPathSegCurvetoCubicAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoCubicAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoCubicAbs :: IsGObject obj => obj -> SVGPathSegCurvetoCubicAbs
 castToSVGPathSegCurvetoCubicAbs = castTo gTypeSVGPathSegCurvetoCubicAbs "SVGPathSegCurvetoCubicAbs"
@@ -16197,9 +20270,18 @@ gTypeSVGPathSegCurvetoCubicAbs = GType gTypeSVGPathSegCurvetoCubicAbs'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicRel Mozilla SVGPathSegCurvetoCubicRel documentation>
-newtype SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel (JSRef SVGPathSegCurvetoCubicRel) deriving (Eq)
+newtype SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel { unSVGPathSegCurvetoCubicRel :: JSRef SVGPathSegCurvetoCubicRel }
 
-unSVGPathSegCurvetoCubicRel (SVGPathSegCurvetoCubicRel o) = o
+instance Eq (SVGPathSegCurvetoCubicRel) where
+  (SVGPathSegCurvetoCubicRel a) == (SVGPathSegCurvetoCubicRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoCubicRel where
+  pToJSRef = unSVGPathSegCurvetoCubicRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoCubicRel where
+  pFromJSRef = SVGPathSegCurvetoCubicRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoCubicRel where
   toJSRef = return . unSVGPathSegCurvetoCubicRel
@@ -16212,7 +20294,9 @@ instance FromJSRef SVGPathSegCurvetoCubicRel where
 instance IsSVGPathSeg SVGPathSegCurvetoCubicRel
 instance IsGObject SVGPathSegCurvetoCubicRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoCubicRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoCubicRel :: IsGObject obj => obj -> SVGPathSegCurvetoCubicRel
 castToSVGPathSegCurvetoCubicRel = castTo gTypeSVGPathSegCurvetoCubicRel "SVGPathSegCurvetoCubicRel"
@@ -16230,9 +20314,18 @@ gTypeSVGPathSegCurvetoCubicRel = GType gTypeSVGPathSegCurvetoCubicRel'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothAbs Mozilla SVGPathSegCurvetoCubicSmoothAbs documentation>
-newtype SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs (JSRef SVGPathSegCurvetoCubicSmoothAbs) deriving (Eq)
+newtype SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs { unSVGPathSegCurvetoCubicSmoothAbs :: JSRef SVGPathSegCurvetoCubicSmoothAbs }
 
-unSVGPathSegCurvetoCubicSmoothAbs (SVGPathSegCurvetoCubicSmoothAbs o) = o
+instance Eq (SVGPathSegCurvetoCubicSmoothAbs) where
+  (SVGPathSegCurvetoCubicSmoothAbs a) == (SVGPathSegCurvetoCubicSmoothAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoCubicSmoothAbs where
+  pToJSRef = unSVGPathSegCurvetoCubicSmoothAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoCubicSmoothAbs where
+  pFromJSRef = SVGPathSegCurvetoCubicSmoothAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoCubicSmoothAbs where
   toJSRef = return . unSVGPathSegCurvetoCubicSmoothAbs
@@ -16245,7 +20338,9 @@ instance FromJSRef SVGPathSegCurvetoCubicSmoothAbs where
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothAbs
 instance IsGObject SVGPathSegCurvetoCubicSmoothAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicSmoothAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoCubicSmoothAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoCubicSmoothAbs :: IsGObject obj => obj -> SVGPathSegCurvetoCubicSmoothAbs
 castToSVGPathSegCurvetoCubicSmoothAbs = castTo gTypeSVGPathSegCurvetoCubicSmoothAbs "SVGPathSegCurvetoCubicSmoothAbs"
@@ -16263,9 +20358,18 @@ gTypeSVGPathSegCurvetoCubicSmoothAbs = GType gTypeSVGPathSegCurvetoCubicSmoothAb
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel Mozilla SVGPathSegCurvetoCubicSmoothRel documentation>
-newtype SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel (JSRef SVGPathSegCurvetoCubicSmoothRel) deriving (Eq)
+newtype SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel { unSVGPathSegCurvetoCubicSmoothRel :: JSRef SVGPathSegCurvetoCubicSmoothRel }
 
-unSVGPathSegCurvetoCubicSmoothRel (SVGPathSegCurvetoCubicSmoothRel o) = o
+instance Eq (SVGPathSegCurvetoCubicSmoothRel) where
+  (SVGPathSegCurvetoCubicSmoothRel a) == (SVGPathSegCurvetoCubicSmoothRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoCubicSmoothRel where
+  pToJSRef = unSVGPathSegCurvetoCubicSmoothRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoCubicSmoothRel where
+  pFromJSRef = SVGPathSegCurvetoCubicSmoothRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoCubicSmoothRel where
   toJSRef = return . unSVGPathSegCurvetoCubicSmoothRel
@@ -16278,7 +20382,9 @@ instance FromJSRef SVGPathSegCurvetoCubicSmoothRel where
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothRel
 instance IsGObject SVGPathSegCurvetoCubicSmoothRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoCubicSmoothRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoCubicSmoothRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoCubicSmoothRel :: IsGObject obj => obj -> SVGPathSegCurvetoCubicSmoothRel
 castToSVGPathSegCurvetoCubicSmoothRel = castTo gTypeSVGPathSegCurvetoCubicSmoothRel "SVGPathSegCurvetoCubicSmoothRel"
@@ -16296,9 +20402,18 @@ gTypeSVGPathSegCurvetoCubicSmoothRel = GType gTypeSVGPathSegCurvetoCubicSmoothRe
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs Mozilla SVGPathSegCurvetoQuadraticAbs documentation>
-newtype SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs (JSRef SVGPathSegCurvetoQuadraticAbs) deriving (Eq)
+newtype SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs { unSVGPathSegCurvetoQuadraticAbs :: JSRef SVGPathSegCurvetoQuadraticAbs }
 
-unSVGPathSegCurvetoQuadraticAbs (SVGPathSegCurvetoQuadraticAbs o) = o
+instance Eq (SVGPathSegCurvetoQuadraticAbs) where
+  (SVGPathSegCurvetoQuadraticAbs a) == (SVGPathSegCurvetoQuadraticAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoQuadraticAbs where
+  pToJSRef = unSVGPathSegCurvetoQuadraticAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoQuadraticAbs where
+  pFromJSRef = SVGPathSegCurvetoQuadraticAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoQuadraticAbs where
   toJSRef = return . unSVGPathSegCurvetoQuadraticAbs
@@ -16311,7 +20426,9 @@ instance FromJSRef SVGPathSegCurvetoQuadraticAbs where
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticAbs
 instance IsGObject SVGPathSegCurvetoQuadraticAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoQuadraticAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoQuadraticAbs :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticAbs
 castToSVGPathSegCurvetoQuadraticAbs = castTo gTypeSVGPathSegCurvetoQuadraticAbs "SVGPathSegCurvetoQuadraticAbs"
@@ -16329,9 +20446,18 @@ gTypeSVGPathSegCurvetoQuadraticAbs = GType gTypeSVGPathSegCurvetoQuadraticAbs'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticRel Mozilla SVGPathSegCurvetoQuadraticRel documentation>
-newtype SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel (JSRef SVGPathSegCurvetoQuadraticRel) deriving (Eq)
+newtype SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel { unSVGPathSegCurvetoQuadraticRel :: JSRef SVGPathSegCurvetoQuadraticRel }
 
-unSVGPathSegCurvetoQuadraticRel (SVGPathSegCurvetoQuadraticRel o) = o
+instance Eq (SVGPathSegCurvetoQuadraticRel) where
+  (SVGPathSegCurvetoQuadraticRel a) == (SVGPathSegCurvetoQuadraticRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoQuadraticRel where
+  pToJSRef = unSVGPathSegCurvetoQuadraticRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoQuadraticRel where
+  pFromJSRef = SVGPathSegCurvetoQuadraticRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoQuadraticRel where
   toJSRef = return . unSVGPathSegCurvetoQuadraticRel
@@ -16344,7 +20470,9 @@ instance FromJSRef SVGPathSegCurvetoQuadraticRel where
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticRel
 instance IsGObject SVGPathSegCurvetoQuadraticRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoQuadraticRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoQuadraticRel :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticRel
 castToSVGPathSegCurvetoQuadraticRel = castTo gTypeSVGPathSegCurvetoQuadraticRel "SVGPathSegCurvetoQuadraticRel"
@@ -16362,9 +20490,18 @@ gTypeSVGPathSegCurvetoQuadraticRel = GType gTypeSVGPathSegCurvetoQuadraticRel'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs Mozilla SVGPathSegCurvetoQuadraticSmoothAbs documentation>
-newtype SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAbs (JSRef SVGPathSegCurvetoQuadraticSmoothAbs) deriving (Eq)
+newtype SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAbs { unSVGPathSegCurvetoQuadraticSmoothAbs :: JSRef SVGPathSegCurvetoQuadraticSmoothAbs }
 
-unSVGPathSegCurvetoQuadraticSmoothAbs (SVGPathSegCurvetoQuadraticSmoothAbs o) = o
+instance Eq (SVGPathSegCurvetoQuadraticSmoothAbs) where
+  (SVGPathSegCurvetoQuadraticSmoothAbs a) == (SVGPathSegCurvetoQuadraticSmoothAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
+  pToJSRef = unSVGPathSegCurvetoQuadraticSmoothAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
+  pFromJSRef = SVGPathSegCurvetoQuadraticSmoothAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
   toJSRef = return . unSVGPathSegCurvetoQuadraticSmoothAbs
@@ -16377,7 +20514,9 @@ instance FromJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothAbs
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothAbs where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticSmoothAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoQuadraticSmoothAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoQuadraticSmoothAbs :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticSmoothAbs
 castToSVGPathSegCurvetoQuadraticSmoothAbs = castTo gTypeSVGPathSegCurvetoQuadraticSmoothAbs "SVGPathSegCurvetoQuadraticSmoothAbs"
@@ -16395,9 +20534,18 @@ gTypeSVGPathSegCurvetoQuadraticSmoothAbs = GType gTypeSVGPathSegCurvetoQuadratic
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothRel Mozilla SVGPathSegCurvetoQuadraticSmoothRel documentation>
-newtype SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRel (JSRef SVGPathSegCurvetoQuadraticSmoothRel) deriving (Eq)
+newtype SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRel { unSVGPathSegCurvetoQuadraticSmoothRel :: JSRef SVGPathSegCurvetoQuadraticSmoothRel }
 
-unSVGPathSegCurvetoQuadraticSmoothRel (SVGPathSegCurvetoQuadraticSmoothRel o) = o
+instance Eq (SVGPathSegCurvetoQuadraticSmoothRel) where
+  (SVGPathSegCurvetoQuadraticSmoothRel a) == (SVGPathSegCurvetoQuadraticSmoothRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegCurvetoQuadraticSmoothRel where
+  pToJSRef = unSVGPathSegCurvetoQuadraticSmoothRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegCurvetoQuadraticSmoothRel where
+  pFromJSRef = SVGPathSegCurvetoQuadraticSmoothRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegCurvetoQuadraticSmoothRel where
   toJSRef = return . unSVGPathSegCurvetoQuadraticSmoothRel
@@ -16410,7 +20558,9 @@ instance FromJSRef SVGPathSegCurvetoQuadraticSmoothRel where
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothRel
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothRel where
   toGObject = GObject . castRef . unSVGPathSegCurvetoQuadraticSmoothRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegCurvetoQuadraticSmoothRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegCurvetoQuadraticSmoothRel :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticSmoothRel
 castToSVGPathSegCurvetoQuadraticSmoothRel = castTo gTypeSVGPathSegCurvetoQuadraticSmoothRel "SVGPathSegCurvetoQuadraticSmoothRel"
@@ -16428,9 +20578,18 @@ gTypeSVGPathSegCurvetoQuadraticSmoothRel = GType gTypeSVGPathSegCurvetoQuadratic
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoAbs Mozilla SVGPathSegLinetoAbs documentation>
-newtype SVGPathSegLinetoAbs = SVGPathSegLinetoAbs (JSRef SVGPathSegLinetoAbs) deriving (Eq)
+newtype SVGPathSegLinetoAbs = SVGPathSegLinetoAbs { unSVGPathSegLinetoAbs :: JSRef SVGPathSegLinetoAbs }
 
-unSVGPathSegLinetoAbs (SVGPathSegLinetoAbs o) = o
+instance Eq (SVGPathSegLinetoAbs) where
+  (SVGPathSegLinetoAbs a) == (SVGPathSegLinetoAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegLinetoAbs where
+  pToJSRef = unSVGPathSegLinetoAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegLinetoAbs where
+  pFromJSRef = SVGPathSegLinetoAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegLinetoAbs where
   toJSRef = return . unSVGPathSegLinetoAbs
@@ -16443,7 +20602,9 @@ instance FromJSRef SVGPathSegLinetoAbs where
 instance IsSVGPathSeg SVGPathSegLinetoAbs
 instance IsGObject SVGPathSegLinetoAbs where
   toGObject = GObject . castRef . unSVGPathSegLinetoAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegLinetoAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegLinetoAbs :: IsGObject obj => obj -> SVGPathSegLinetoAbs
 castToSVGPathSegLinetoAbs = castTo gTypeSVGPathSegLinetoAbs "SVGPathSegLinetoAbs"
@@ -16461,9 +20622,18 @@ gTypeSVGPathSegLinetoAbs = GType gTypeSVGPathSegLinetoAbs'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalAbs Mozilla SVGPathSegLinetoHorizontalAbs documentation>
-newtype SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs (JSRef SVGPathSegLinetoHorizontalAbs) deriving (Eq)
+newtype SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs { unSVGPathSegLinetoHorizontalAbs :: JSRef SVGPathSegLinetoHorizontalAbs }
 
-unSVGPathSegLinetoHorizontalAbs (SVGPathSegLinetoHorizontalAbs o) = o
+instance Eq (SVGPathSegLinetoHorizontalAbs) where
+  (SVGPathSegLinetoHorizontalAbs a) == (SVGPathSegLinetoHorizontalAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegLinetoHorizontalAbs where
+  pToJSRef = unSVGPathSegLinetoHorizontalAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegLinetoHorizontalAbs where
+  pFromJSRef = SVGPathSegLinetoHorizontalAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegLinetoHorizontalAbs where
   toJSRef = return . unSVGPathSegLinetoHorizontalAbs
@@ -16476,7 +20646,9 @@ instance FromJSRef SVGPathSegLinetoHorizontalAbs where
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalAbs
 instance IsGObject SVGPathSegLinetoHorizontalAbs where
   toGObject = GObject . castRef . unSVGPathSegLinetoHorizontalAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegLinetoHorizontalAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegLinetoHorizontalAbs :: IsGObject obj => obj -> SVGPathSegLinetoHorizontalAbs
 castToSVGPathSegLinetoHorizontalAbs = castTo gTypeSVGPathSegLinetoHorizontalAbs "SVGPathSegLinetoHorizontalAbs"
@@ -16494,9 +20666,18 @@ gTypeSVGPathSegLinetoHorizontalAbs = GType gTypeSVGPathSegLinetoHorizontalAbs'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalRel Mozilla SVGPathSegLinetoHorizontalRel documentation>
-newtype SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel (JSRef SVGPathSegLinetoHorizontalRel) deriving (Eq)
+newtype SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel { unSVGPathSegLinetoHorizontalRel :: JSRef SVGPathSegLinetoHorizontalRel }
 
-unSVGPathSegLinetoHorizontalRel (SVGPathSegLinetoHorizontalRel o) = o
+instance Eq (SVGPathSegLinetoHorizontalRel) where
+  (SVGPathSegLinetoHorizontalRel a) == (SVGPathSegLinetoHorizontalRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegLinetoHorizontalRel where
+  pToJSRef = unSVGPathSegLinetoHorizontalRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegLinetoHorizontalRel where
+  pFromJSRef = SVGPathSegLinetoHorizontalRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegLinetoHorizontalRel where
   toJSRef = return . unSVGPathSegLinetoHorizontalRel
@@ -16509,7 +20690,9 @@ instance FromJSRef SVGPathSegLinetoHorizontalRel where
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalRel
 instance IsGObject SVGPathSegLinetoHorizontalRel where
   toGObject = GObject . castRef . unSVGPathSegLinetoHorizontalRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegLinetoHorizontalRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegLinetoHorizontalRel :: IsGObject obj => obj -> SVGPathSegLinetoHorizontalRel
 castToSVGPathSegLinetoHorizontalRel = castTo gTypeSVGPathSegLinetoHorizontalRel "SVGPathSegLinetoHorizontalRel"
@@ -16527,9 +20710,18 @@ gTypeSVGPathSegLinetoHorizontalRel = GType gTypeSVGPathSegLinetoHorizontalRel'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoRel Mozilla SVGPathSegLinetoRel documentation>
-newtype SVGPathSegLinetoRel = SVGPathSegLinetoRel (JSRef SVGPathSegLinetoRel) deriving (Eq)
+newtype SVGPathSegLinetoRel = SVGPathSegLinetoRel { unSVGPathSegLinetoRel :: JSRef SVGPathSegLinetoRel }
 
-unSVGPathSegLinetoRel (SVGPathSegLinetoRel o) = o
+instance Eq (SVGPathSegLinetoRel) where
+  (SVGPathSegLinetoRel a) == (SVGPathSegLinetoRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegLinetoRel where
+  pToJSRef = unSVGPathSegLinetoRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegLinetoRel where
+  pFromJSRef = SVGPathSegLinetoRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegLinetoRel where
   toJSRef = return . unSVGPathSegLinetoRel
@@ -16542,7 +20734,9 @@ instance FromJSRef SVGPathSegLinetoRel where
 instance IsSVGPathSeg SVGPathSegLinetoRel
 instance IsGObject SVGPathSegLinetoRel where
   toGObject = GObject . castRef . unSVGPathSegLinetoRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegLinetoRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegLinetoRel :: IsGObject obj => obj -> SVGPathSegLinetoRel
 castToSVGPathSegLinetoRel = castTo gTypeSVGPathSegLinetoRel "SVGPathSegLinetoRel"
@@ -16560,9 +20754,18 @@ gTypeSVGPathSegLinetoRel = GType gTypeSVGPathSegLinetoRel'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalAbs Mozilla SVGPathSegLinetoVerticalAbs documentation>
-newtype SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs (JSRef SVGPathSegLinetoVerticalAbs) deriving (Eq)
+newtype SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs { unSVGPathSegLinetoVerticalAbs :: JSRef SVGPathSegLinetoVerticalAbs }
 
-unSVGPathSegLinetoVerticalAbs (SVGPathSegLinetoVerticalAbs o) = o
+instance Eq (SVGPathSegLinetoVerticalAbs) where
+  (SVGPathSegLinetoVerticalAbs a) == (SVGPathSegLinetoVerticalAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegLinetoVerticalAbs where
+  pToJSRef = unSVGPathSegLinetoVerticalAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegLinetoVerticalAbs where
+  pFromJSRef = SVGPathSegLinetoVerticalAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegLinetoVerticalAbs where
   toJSRef = return . unSVGPathSegLinetoVerticalAbs
@@ -16575,7 +20778,9 @@ instance FromJSRef SVGPathSegLinetoVerticalAbs where
 instance IsSVGPathSeg SVGPathSegLinetoVerticalAbs
 instance IsGObject SVGPathSegLinetoVerticalAbs where
   toGObject = GObject . castRef . unSVGPathSegLinetoVerticalAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegLinetoVerticalAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegLinetoVerticalAbs :: IsGObject obj => obj -> SVGPathSegLinetoVerticalAbs
 castToSVGPathSegLinetoVerticalAbs = castTo gTypeSVGPathSegLinetoVerticalAbs "SVGPathSegLinetoVerticalAbs"
@@ -16593,9 +20798,18 @@ gTypeSVGPathSegLinetoVerticalAbs = GType gTypeSVGPathSegLinetoVerticalAbs'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalRel Mozilla SVGPathSegLinetoVerticalRel documentation>
-newtype SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel (JSRef SVGPathSegLinetoVerticalRel) deriving (Eq)
+newtype SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel { unSVGPathSegLinetoVerticalRel :: JSRef SVGPathSegLinetoVerticalRel }
 
-unSVGPathSegLinetoVerticalRel (SVGPathSegLinetoVerticalRel o) = o
+instance Eq (SVGPathSegLinetoVerticalRel) where
+  (SVGPathSegLinetoVerticalRel a) == (SVGPathSegLinetoVerticalRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegLinetoVerticalRel where
+  pToJSRef = unSVGPathSegLinetoVerticalRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegLinetoVerticalRel where
+  pFromJSRef = SVGPathSegLinetoVerticalRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegLinetoVerticalRel where
   toJSRef = return . unSVGPathSegLinetoVerticalRel
@@ -16608,7 +20822,9 @@ instance FromJSRef SVGPathSegLinetoVerticalRel where
 instance IsSVGPathSeg SVGPathSegLinetoVerticalRel
 instance IsGObject SVGPathSegLinetoVerticalRel where
   toGObject = GObject . castRef . unSVGPathSegLinetoVerticalRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegLinetoVerticalRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegLinetoVerticalRel :: IsGObject obj => obj -> SVGPathSegLinetoVerticalRel
 castToSVGPathSegLinetoVerticalRel = castTo gTypeSVGPathSegLinetoVerticalRel "SVGPathSegLinetoVerticalRel"
@@ -16623,9 +20839,18 @@ gTypeSVGPathSegLinetoVerticalRel = GType gTypeSVGPathSegLinetoVerticalRel'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList Mozilla SVGPathSegList documentation>
-newtype SVGPathSegList = SVGPathSegList (JSRef SVGPathSegList) deriving (Eq)
+newtype SVGPathSegList = SVGPathSegList { unSVGPathSegList :: JSRef SVGPathSegList }
 
-unSVGPathSegList (SVGPathSegList o) = o
+instance Eq (SVGPathSegList) where
+  (SVGPathSegList a) == (SVGPathSegList b) = js_eq a b
+
+instance PToJSRef SVGPathSegList where
+  pToJSRef = unSVGPathSegList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegList where
+  pFromJSRef = SVGPathSegList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegList where
   toJSRef = return . unSVGPathSegList
@@ -16637,7 +20862,9 @@ instance FromJSRef SVGPathSegList where
 
 instance IsGObject SVGPathSegList where
   toGObject = GObject . castRef . unSVGPathSegList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegList :: IsGObject obj => obj -> SVGPathSegList
 castToSVGPathSegList = castTo gTypeSVGPathSegList "SVGPathSegList"
@@ -16655,9 +20882,18 @@ gTypeSVGPathSegList = GType gTypeSVGPathSegList'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoAbs Mozilla SVGPathSegMovetoAbs documentation>
-newtype SVGPathSegMovetoAbs = SVGPathSegMovetoAbs (JSRef SVGPathSegMovetoAbs) deriving (Eq)
+newtype SVGPathSegMovetoAbs = SVGPathSegMovetoAbs { unSVGPathSegMovetoAbs :: JSRef SVGPathSegMovetoAbs }
 
-unSVGPathSegMovetoAbs (SVGPathSegMovetoAbs o) = o
+instance Eq (SVGPathSegMovetoAbs) where
+  (SVGPathSegMovetoAbs a) == (SVGPathSegMovetoAbs b) = js_eq a b
+
+instance PToJSRef SVGPathSegMovetoAbs where
+  pToJSRef = unSVGPathSegMovetoAbs
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegMovetoAbs where
+  pFromJSRef = SVGPathSegMovetoAbs
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegMovetoAbs where
   toJSRef = return . unSVGPathSegMovetoAbs
@@ -16670,7 +20906,9 @@ instance FromJSRef SVGPathSegMovetoAbs where
 instance IsSVGPathSeg SVGPathSegMovetoAbs
 instance IsGObject SVGPathSegMovetoAbs where
   toGObject = GObject . castRef . unSVGPathSegMovetoAbs
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegMovetoAbs . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegMovetoAbs :: IsGObject obj => obj -> SVGPathSegMovetoAbs
 castToSVGPathSegMovetoAbs = castTo gTypeSVGPathSegMovetoAbs "SVGPathSegMovetoAbs"
@@ -16688,9 +20926,18 @@ gTypeSVGPathSegMovetoAbs = GType gTypeSVGPathSegMovetoAbs'
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel Mozilla SVGPathSegMovetoRel documentation>
-newtype SVGPathSegMovetoRel = SVGPathSegMovetoRel (JSRef SVGPathSegMovetoRel) deriving (Eq)
+newtype SVGPathSegMovetoRel = SVGPathSegMovetoRel { unSVGPathSegMovetoRel :: JSRef SVGPathSegMovetoRel }
 
-unSVGPathSegMovetoRel (SVGPathSegMovetoRel o) = o
+instance Eq (SVGPathSegMovetoRel) where
+  (SVGPathSegMovetoRel a) == (SVGPathSegMovetoRel b) = js_eq a b
+
+instance PToJSRef SVGPathSegMovetoRel where
+  pToJSRef = unSVGPathSegMovetoRel
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPathSegMovetoRel where
+  pFromJSRef = SVGPathSegMovetoRel
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPathSegMovetoRel where
   toJSRef = return . unSVGPathSegMovetoRel
@@ -16703,7 +20950,9 @@ instance FromJSRef SVGPathSegMovetoRel where
 instance IsSVGPathSeg SVGPathSegMovetoRel
 instance IsGObject SVGPathSegMovetoRel where
   toGObject = GObject . castRef . unSVGPathSegMovetoRel
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPathSegMovetoRel . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPathSegMovetoRel :: IsGObject obj => obj -> SVGPathSegMovetoRel
 castToSVGPathSegMovetoRel = castTo gTypeSVGPathSegMovetoRel "SVGPathSegMovetoRel"
@@ -16724,9 +20973,18 @@ gTypeSVGPathSegMovetoRel = GType gTypeSVGPathSegMovetoRel'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement Mozilla SVGPatternElement documentation>
-newtype SVGPatternElement = SVGPatternElement (JSRef SVGPatternElement) deriving (Eq)
+newtype SVGPatternElement = SVGPatternElement { unSVGPatternElement :: JSRef SVGPatternElement }
 
-unSVGPatternElement (SVGPatternElement o) = o
+instance Eq (SVGPatternElement) where
+  (SVGPatternElement a) == (SVGPatternElement b) = js_eq a b
+
+instance PToJSRef SVGPatternElement where
+  pToJSRef = unSVGPatternElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPatternElement where
+  pFromJSRef = SVGPatternElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPatternElement where
   toJSRef = return . unSVGPatternElement
@@ -16742,7 +21000,9 @@ instance IsNode SVGPatternElement
 instance IsEventTarget SVGPatternElement
 instance IsGObject SVGPatternElement where
   toGObject = GObject . castRef . unSVGPatternElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPatternElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPatternElement :: IsGObject obj => obj -> SVGPatternElement
 castToSVGPatternElement = castTo gTypeSVGPatternElement "SVGPatternElement"
@@ -16757,9 +21017,18 @@ gTypeSVGPatternElement = GType gTypeSVGPatternElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPoint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint Mozilla SVGPoint documentation>
-newtype SVGPoint = SVGPoint (JSRef SVGPoint) deriving (Eq)
+newtype SVGPoint = SVGPoint { unSVGPoint :: JSRef SVGPoint }
 
-unSVGPoint (SVGPoint o) = o
+instance Eq (SVGPoint) where
+  (SVGPoint a) == (SVGPoint b) = js_eq a b
+
+instance PToJSRef SVGPoint where
+  pToJSRef = unSVGPoint
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPoint where
+  pFromJSRef = SVGPoint
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPoint where
   toJSRef = return . unSVGPoint
@@ -16771,7 +21040,9 @@ instance FromJSRef SVGPoint where
 
 instance IsGObject SVGPoint where
   toGObject = GObject . castRef . unSVGPoint
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPoint . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPoint :: IsGObject obj => obj -> SVGPoint
 castToSVGPoint = castTo gTypeSVGPoint "SVGPoint"
@@ -16786,9 +21057,18 @@ gTypeSVGPoint = GType gTypeSVGPoint'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPointList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList Mozilla SVGPointList documentation>
-newtype SVGPointList = SVGPointList (JSRef SVGPointList) deriving (Eq)
+newtype SVGPointList = SVGPointList { unSVGPointList :: JSRef SVGPointList }
 
-unSVGPointList (SVGPointList o) = o
+instance Eq (SVGPointList) where
+  (SVGPointList a) == (SVGPointList b) = js_eq a b
+
+instance PToJSRef SVGPointList where
+  pToJSRef = unSVGPointList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPointList where
+  pFromJSRef = SVGPointList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPointList where
   toJSRef = return . unSVGPointList
@@ -16800,7 +21080,9 @@ instance FromJSRef SVGPointList where
 
 instance IsGObject SVGPointList where
   toGObject = GObject . castRef . unSVGPointList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPointList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPointList :: IsGObject obj => obj -> SVGPointList
 castToSVGPointList = castTo gTypeSVGPointList "SVGPointList"
@@ -16822,9 +21104,18 @@ gTypeSVGPointList = GType gTypeSVGPointList'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolygonElement Mozilla SVGPolygonElement documentation>
-newtype SVGPolygonElement = SVGPolygonElement (JSRef SVGPolygonElement) deriving (Eq)
+newtype SVGPolygonElement = SVGPolygonElement { unSVGPolygonElement :: JSRef SVGPolygonElement }
 
-unSVGPolygonElement (SVGPolygonElement o) = o
+instance Eq (SVGPolygonElement) where
+  (SVGPolygonElement a) == (SVGPolygonElement b) = js_eq a b
+
+instance PToJSRef SVGPolygonElement where
+  pToJSRef = unSVGPolygonElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPolygonElement where
+  pFromJSRef = SVGPolygonElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPolygonElement where
   toJSRef = return . unSVGPolygonElement
@@ -16841,7 +21132,9 @@ instance IsNode SVGPolygonElement
 instance IsEventTarget SVGPolygonElement
 instance IsGObject SVGPolygonElement where
   toGObject = GObject . castRef . unSVGPolygonElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPolygonElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPolygonElement :: IsGObject obj => obj -> SVGPolygonElement
 castToSVGPolygonElement = castTo gTypeSVGPolygonElement "SVGPolygonElement"
@@ -16863,9 +21156,18 @@ gTypeSVGPolygonElement = GType gTypeSVGPolygonElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement Mozilla SVGPolylineElement documentation>
-newtype SVGPolylineElement = SVGPolylineElement (JSRef SVGPolylineElement) deriving (Eq)
+newtype SVGPolylineElement = SVGPolylineElement { unSVGPolylineElement :: JSRef SVGPolylineElement }
 
-unSVGPolylineElement (SVGPolylineElement o) = o
+instance Eq (SVGPolylineElement) where
+  (SVGPolylineElement a) == (SVGPolylineElement b) = js_eq a b
+
+instance PToJSRef SVGPolylineElement where
+  pToJSRef = unSVGPolylineElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPolylineElement where
+  pFromJSRef = SVGPolylineElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPolylineElement where
   toJSRef = return . unSVGPolylineElement
@@ -16882,7 +21184,9 @@ instance IsNode SVGPolylineElement
 instance IsEventTarget SVGPolylineElement
 instance IsGObject SVGPolylineElement where
   toGObject = GObject . castRef . unSVGPolylineElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPolylineElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPolylineElement :: IsGObject obj => obj -> SVGPolylineElement
 castToSVGPolylineElement = castTo gTypeSVGPolylineElement "SVGPolylineElement"
@@ -16897,9 +21201,18 @@ gTypeSVGPolylineElement = GType gTypeSVGPolylineElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPreserveAspectRatio".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio Mozilla SVGPreserveAspectRatio documentation>
-newtype SVGPreserveAspectRatio = SVGPreserveAspectRatio (JSRef SVGPreserveAspectRatio) deriving (Eq)
+newtype SVGPreserveAspectRatio = SVGPreserveAspectRatio { unSVGPreserveAspectRatio :: JSRef SVGPreserveAspectRatio }
 
-unSVGPreserveAspectRatio (SVGPreserveAspectRatio o) = o
+instance Eq (SVGPreserveAspectRatio) where
+  (SVGPreserveAspectRatio a) == (SVGPreserveAspectRatio b) = js_eq a b
+
+instance PToJSRef SVGPreserveAspectRatio where
+  pToJSRef = unSVGPreserveAspectRatio
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGPreserveAspectRatio where
+  pFromJSRef = SVGPreserveAspectRatio
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGPreserveAspectRatio where
   toJSRef = return . unSVGPreserveAspectRatio
@@ -16911,7 +21224,9 @@ instance FromJSRef SVGPreserveAspectRatio where
 
 instance IsGObject SVGPreserveAspectRatio where
   toGObject = GObject . castRef . unSVGPreserveAspectRatio
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGPreserveAspectRatio . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGPreserveAspectRatio :: IsGObject obj => obj -> SVGPreserveAspectRatio
 castToSVGPreserveAspectRatio = castTo gTypeSVGPreserveAspectRatio "SVGPreserveAspectRatio"
@@ -16933,9 +21248,18 @@ gTypeSVGPreserveAspectRatio = GType gTypeSVGPreserveAspectRatio'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement Mozilla SVGRadialGradientElement documentation>
-newtype SVGRadialGradientElement = SVGRadialGradientElement (JSRef SVGRadialGradientElement) deriving (Eq)
+newtype SVGRadialGradientElement = SVGRadialGradientElement { unSVGRadialGradientElement :: JSRef SVGRadialGradientElement }
 
-unSVGRadialGradientElement (SVGRadialGradientElement o) = o
+instance Eq (SVGRadialGradientElement) where
+  (SVGRadialGradientElement a) == (SVGRadialGradientElement b) = js_eq a b
+
+instance PToJSRef SVGRadialGradientElement where
+  pToJSRef = unSVGRadialGradientElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGRadialGradientElement where
+  pFromJSRef = SVGRadialGradientElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGRadialGradientElement where
   toJSRef = return . unSVGRadialGradientElement
@@ -16952,7 +21276,9 @@ instance IsNode SVGRadialGradientElement
 instance IsEventTarget SVGRadialGradientElement
 instance IsGObject SVGRadialGradientElement where
   toGObject = GObject . castRef . unSVGRadialGradientElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGRadialGradientElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGRadialGradientElement :: IsGObject obj => obj -> SVGRadialGradientElement
 castToSVGRadialGradientElement = castTo gTypeSVGRadialGradientElement "SVGRadialGradientElement"
@@ -16967,9 +21293,18 @@ gTypeSVGRadialGradientElement = GType gTypeSVGRadialGradientElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect Mozilla SVGRect documentation>
-newtype SVGRect = SVGRect (JSRef SVGRect) deriving (Eq)
+newtype SVGRect = SVGRect { unSVGRect :: JSRef SVGRect }
 
-unSVGRect (SVGRect o) = o
+instance Eq (SVGRect) where
+  (SVGRect a) == (SVGRect b) = js_eq a b
+
+instance PToJSRef SVGRect where
+  pToJSRef = unSVGRect
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGRect where
+  pFromJSRef = SVGRect
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGRect where
   toJSRef = return . unSVGRect
@@ -16981,7 +21316,9 @@ instance FromJSRef SVGRect where
 
 instance IsGObject SVGRect where
   toGObject = GObject . castRef . unSVGRect
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGRect . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGRect :: IsGObject obj => obj -> SVGRect
 castToSVGRect = castTo gTypeSVGRect "SVGRect"
@@ -17003,9 +21340,18 @@ gTypeSVGRect = GType gTypeSVGRect'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement Mozilla SVGRectElement documentation>
-newtype SVGRectElement = SVGRectElement (JSRef SVGRectElement) deriving (Eq)
+newtype SVGRectElement = SVGRectElement { unSVGRectElement :: JSRef SVGRectElement }
 
-unSVGRectElement (SVGRectElement o) = o
+instance Eq (SVGRectElement) where
+  (SVGRectElement a) == (SVGRectElement b) = js_eq a b
+
+instance PToJSRef SVGRectElement where
+  pToJSRef = unSVGRectElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGRectElement where
+  pFromJSRef = SVGRectElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGRectElement where
   toJSRef = return . unSVGRectElement
@@ -17022,7 +21368,9 @@ instance IsNode SVGRectElement
 instance IsEventTarget SVGRectElement
 instance IsGObject SVGRectElement where
   toGObject = GObject . castRef . unSVGRectElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGRectElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGRectElement :: IsGObject obj => obj -> SVGRectElement
 castToSVGRectElement = castTo gTypeSVGRectElement "SVGRectElement"
@@ -17037,9 +21385,18 @@ gTypeSVGRectElement = GType gTypeSVGRectElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRenderingIntent".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRenderingIntent Mozilla SVGRenderingIntent documentation>
-newtype SVGRenderingIntent = SVGRenderingIntent (JSRef SVGRenderingIntent) deriving (Eq)
+newtype SVGRenderingIntent = SVGRenderingIntent { unSVGRenderingIntent :: JSRef SVGRenderingIntent }
 
-unSVGRenderingIntent (SVGRenderingIntent o) = o
+instance Eq (SVGRenderingIntent) where
+  (SVGRenderingIntent a) == (SVGRenderingIntent b) = js_eq a b
+
+instance PToJSRef SVGRenderingIntent where
+  pToJSRef = unSVGRenderingIntent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGRenderingIntent where
+  pFromJSRef = SVGRenderingIntent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGRenderingIntent where
   toJSRef = return . unSVGRenderingIntent
@@ -17051,7 +21408,9 @@ instance FromJSRef SVGRenderingIntent where
 
 instance IsGObject SVGRenderingIntent where
   toGObject = GObject . castRef . unSVGRenderingIntent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGRenderingIntent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGRenderingIntent :: IsGObject obj => obj -> SVGRenderingIntent
 castToSVGRenderingIntent = castTo gTypeSVGRenderingIntent "SVGRenderingIntent"
@@ -17073,9 +21432,18 @@ gTypeSVGRenderingIntent = GType gTypeSVGRenderingIntent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement Mozilla SVGSVGElement documentation>
-newtype SVGSVGElement = SVGSVGElement (JSRef SVGSVGElement) deriving (Eq)
+newtype SVGSVGElement = SVGSVGElement { unSVGSVGElement :: JSRef SVGSVGElement }
 
-unSVGSVGElement (SVGSVGElement o) = o
+instance Eq (SVGSVGElement) where
+  (SVGSVGElement a) == (SVGSVGElement b) = js_eq a b
+
+instance PToJSRef SVGSVGElement where
+  pToJSRef = unSVGSVGElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGSVGElement where
+  pFromJSRef = SVGSVGElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGSVGElement where
   toJSRef = return . unSVGSVGElement
@@ -17092,7 +21460,9 @@ instance IsNode SVGSVGElement
 instance IsEventTarget SVGSVGElement
 instance IsGObject SVGSVGElement where
   toGObject = GObject . castRef . unSVGSVGElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGSVGElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGSVGElement :: IsGObject obj => obj -> SVGSVGElement
 castToSVGSVGElement = castTo gTypeSVGSVGElement "SVGSVGElement"
@@ -17113,9 +21483,18 @@ gTypeSVGSVGElement = GType gTypeSVGSVGElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGScriptElement Mozilla SVGScriptElement documentation>
-newtype SVGScriptElement = SVGScriptElement (JSRef SVGScriptElement) deriving (Eq)
+newtype SVGScriptElement = SVGScriptElement { unSVGScriptElement :: JSRef SVGScriptElement }
 
-unSVGScriptElement (SVGScriptElement o) = o
+instance Eq (SVGScriptElement) where
+  (SVGScriptElement a) == (SVGScriptElement b) = js_eq a b
+
+instance PToJSRef SVGScriptElement where
+  pToJSRef = unSVGScriptElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGScriptElement where
+  pFromJSRef = SVGScriptElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGScriptElement where
   toJSRef = return . unSVGScriptElement
@@ -17131,7 +21510,9 @@ instance IsNode SVGScriptElement
 instance IsEventTarget SVGScriptElement
 instance IsGObject SVGScriptElement where
   toGObject = GObject . castRef . unSVGScriptElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGScriptElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGScriptElement :: IsGObject obj => obj -> SVGScriptElement
 castToSVGScriptElement = castTo gTypeSVGScriptElement "SVGScriptElement"
@@ -17153,9 +21534,18 @@ gTypeSVGScriptElement = GType gTypeSVGScriptElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSetElement Mozilla SVGSetElement documentation>
-newtype SVGSetElement = SVGSetElement (JSRef SVGSetElement) deriving (Eq)
+newtype SVGSetElement = SVGSetElement { unSVGSetElement :: JSRef SVGSetElement }
 
-unSVGSetElement (SVGSetElement o) = o
+instance Eq (SVGSetElement) where
+  (SVGSetElement a) == (SVGSetElement b) = js_eq a b
+
+instance PToJSRef SVGSetElement where
+  pToJSRef = unSVGSetElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGSetElement where
+  pFromJSRef = SVGSetElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGSetElement where
   toJSRef = return . unSVGSetElement
@@ -17172,7 +21562,9 @@ instance IsNode SVGSetElement
 instance IsEventTarget SVGSetElement
 instance IsGObject SVGSetElement where
   toGObject = GObject . castRef . unSVGSetElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGSetElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGSetElement :: IsGObject obj => obj -> SVGSetElement
 castToSVGSetElement = castTo gTypeSVGSetElement "SVGSetElement"
@@ -17193,9 +21585,18 @@ gTypeSVGSetElement = GType gTypeSVGSetElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement Mozilla SVGStopElement documentation>
-newtype SVGStopElement = SVGStopElement (JSRef SVGStopElement) deriving (Eq)
+newtype SVGStopElement = SVGStopElement { unSVGStopElement :: JSRef SVGStopElement }
 
-unSVGStopElement (SVGStopElement o) = o
+instance Eq (SVGStopElement) where
+  (SVGStopElement a) == (SVGStopElement b) = js_eq a b
+
+instance PToJSRef SVGStopElement where
+  pToJSRef = unSVGStopElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGStopElement where
+  pFromJSRef = SVGStopElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGStopElement where
   toJSRef = return . unSVGStopElement
@@ -17211,7 +21612,9 @@ instance IsNode SVGStopElement
 instance IsEventTarget SVGStopElement
 instance IsGObject SVGStopElement where
   toGObject = GObject . castRef . unSVGStopElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGStopElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGStopElement :: IsGObject obj => obj -> SVGStopElement
 castToSVGStopElement = castTo gTypeSVGStopElement "SVGStopElement"
@@ -17226,9 +21629,18 @@ gTypeSVGStopElement = GType gTypeSVGStopElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStringList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList Mozilla SVGStringList documentation>
-newtype SVGStringList = SVGStringList (JSRef SVGStringList) deriving (Eq)
+newtype SVGStringList = SVGStringList { unSVGStringList :: JSRef SVGStringList }
 
-unSVGStringList (SVGStringList o) = o
+instance Eq (SVGStringList) where
+  (SVGStringList a) == (SVGStringList b) = js_eq a b
+
+instance PToJSRef SVGStringList where
+  pToJSRef = unSVGStringList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGStringList where
+  pFromJSRef = SVGStringList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGStringList where
   toJSRef = return . unSVGStringList
@@ -17240,7 +21652,9 @@ instance FromJSRef SVGStringList where
 
 instance IsGObject SVGStringList where
   toGObject = GObject . castRef . unSVGStringList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGStringList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGStringList :: IsGObject obj => obj -> SVGStringList
 castToSVGStringList = castTo gTypeSVGStringList "SVGStringList"
@@ -17261,9 +21675,18 @@ gTypeSVGStringList = GType gTypeSVGStringList'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement Mozilla SVGStyleElement documentation>
-newtype SVGStyleElement = SVGStyleElement (JSRef SVGStyleElement) deriving (Eq)
+newtype SVGStyleElement = SVGStyleElement { unSVGStyleElement :: JSRef SVGStyleElement }
 
-unSVGStyleElement (SVGStyleElement o) = o
+instance Eq (SVGStyleElement) where
+  (SVGStyleElement a) == (SVGStyleElement b) = js_eq a b
+
+instance PToJSRef SVGStyleElement where
+  pToJSRef = unSVGStyleElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGStyleElement where
+  pFromJSRef = SVGStyleElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGStyleElement where
   toJSRef = return . unSVGStyleElement
@@ -17279,7 +21702,9 @@ instance IsNode SVGStyleElement
 instance IsEventTarget SVGStyleElement
 instance IsGObject SVGStyleElement where
   toGObject = GObject . castRef . unSVGStyleElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGStyleElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGStyleElement :: IsGObject obj => obj -> SVGStyleElement
 castToSVGStyleElement = castTo gTypeSVGStyleElement "SVGStyleElement"
@@ -17301,9 +21726,18 @@ gTypeSVGStyleElement = GType gTypeSVGStyleElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSwitchElement Mozilla SVGSwitchElement documentation>
-newtype SVGSwitchElement = SVGSwitchElement (JSRef SVGSwitchElement) deriving (Eq)
+newtype SVGSwitchElement = SVGSwitchElement { unSVGSwitchElement :: JSRef SVGSwitchElement }
 
-unSVGSwitchElement (SVGSwitchElement o) = o
+instance Eq (SVGSwitchElement) where
+  (SVGSwitchElement a) == (SVGSwitchElement b) = js_eq a b
+
+instance PToJSRef SVGSwitchElement where
+  pToJSRef = unSVGSwitchElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGSwitchElement where
+  pFromJSRef = SVGSwitchElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGSwitchElement where
   toJSRef = return . unSVGSwitchElement
@@ -17320,7 +21754,9 @@ instance IsNode SVGSwitchElement
 instance IsEventTarget SVGSwitchElement
 instance IsGObject SVGSwitchElement where
   toGObject = GObject . castRef . unSVGSwitchElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGSwitchElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGSwitchElement :: IsGObject obj => obj -> SVGSwitchElement
 castToSVGSwitchElement = castTo gTypeSVGSwitchElement "SVGSwitchElement"
@@ -17341,9 +21777,18 @@ gTypeSVGSwitchElement = GType gTypeSVGSwitchElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSymbolElement Mozilla SVGSymbolElement documentation>
-newtype SVGSymbolElement = SVGSymbolElement (JSRef SVGSymbolElement) deriving (Eq)
+newtype SVGSymbolElement = SVGSymbolElement { unSVGSymbolElement :: JSRef SVGSymbolElement }
 
-unSVGSymbolElement (SVGSymbolElement o) = o
+instance Eq (SVGSymbolElement) where
+  (SVGSymbolElement a) == (SVGSymbolElement b) = js_eq a b
+
+instance PToJSRef SVGSymbolElement where
+  pToJSRef = unSVGSymbolElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGSymbolElement where
+  pFromJSRef = SVGSymbolElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGSymbolElement where
   toJSRef = return . unSVGSymbolElement
@@ -17359,7 +21804,9 @@ instance IsNode SVGSymbolElement
 instance IsEventTarget SVGSymbolElement
 instance IsGObject SVGSymbolElement where
   toGObject = GObject . castRef . unSVGSymbolElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGSymbolElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGSymbolElement :: IsGObject obj => obj -> SVGSymbolElement
 castToSVGSymbolElement = castTo gTypeSVGSymbolElement "SVGSymbolElement"
@@ -17383,9 +21830,18 @@ gTypeSVGSymbolElement = GType gTypeSVGSymbolElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTRefElement Mozilla SVGTRefElement documentation>
-newtype SVGTRefElement = SVGTRefElement (JSRef SVGTRefElement) deriving (Eq)
+newtype SVGTRefElement = SVGTRefElement { unSVGTRefElement :: JSRef SVGTRefElement }
 
-unSVGTRefElement (SVGTRefElement o) = o
+instance Eq (SVGTRefElement) where
+  (SVGTRefElement a) == (SVGTRefElement b) = js_eq a b
+
+instance PToJSRef SVGTRefElement where
+  pToJSRef = unSVGTRefElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTRefElement where
+  pFromJSRef = SVGTRefElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTRefElement where
   toJSRef = return . unSVGTRefElement
@@ -17404,7 +21860,9 @@ instance IsNode SVGTRefElement
 instance IsEventTarget SVGTRefElement
 instance IsGObject SVGTRefElement where
   toGObject = GObject . castRef . unSVGTRefElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTRefElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTRefElement :: IsGObject obj => obj -> SVGTRefElement
 castToSVGTRefElement = castTo gTypeSVGTRefElement "SVGTRefElement"
@@ -17428,9 +21886,18 @@ gTypeSVGTRefElement = GType gTypeSVGTRefElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTSpanElement Mozilla SVGTSpanElement documentation>
-newtype SVGTSpanElement = SVGTSpanElement (JSRef SVGTSpanElement) deriving (Eq)
+newtype SVGTSpanElement = SVGTSpanElement { unSVGTSpanElement :: JSRef SVGTSpanElement }
 
-unSVGTSpanElement (SVGTSpanElement o) = o
+instance Eq (SVGTSpanElement) where
+  (SVGTSpanElement a) == (SVGTSpanElement b) = js_eq a b
+
+instance PToJSRef SVGTSpanElement where
+  pToJSRef = unSVGTSpanElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTSpanElement where
+  pFromJSRef = SVGTSpanElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTSpanElement where
   toJSRef = return . unSVGTSpanElement
@@ -17449,7 +21916,9 @@ instance IsNode SVGTSpanElement
 instance IsEventTarget SVGTSpanElement
 instance IsGObject SVGTSpanElement where
   toGObject = GObject . castRef . unSVGTSpanElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTSpanElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTSpanElement :: IsGObject obj => obj -> SVGTSpanElement
 castToSVGTSpanElement = castTo gTypeSVGTSpanElement "SVGTSpanElement"
@@ -17464,9 +21933,18 @@ gTypeSVGTSpanElement = GType gTypeSVGTSpanElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTests".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests Mozilla SVGTests documentation>
-newtype SVGTests = SVGTests (JSRef SVGTests) deriving (Eq)
+newtype SVGTests = SVGTests { unSVGTests :: JSRef SVGTests }
 
-unSVGTests (SVGTests o) = o
+instance Eq (SVGTests) where
+  (SVGTests a) == (SVGTests b) = js_eq a b
+
+instance PToJSRef SVGTests where
+  pToJSRef = unSVGTests
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTests where
+  pFromJSRef = SVGTests
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTests where
   toJSRef = return . unSVGTests
@@ -17478,7 +21956,9 @@ instance FromJSRef SVGTests where
 
 instance IsGObject SVGTests where
   toGObject = GObject . castRef . unSVGTests
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTests . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTests :: IsGObject obj => obj -> SVGTests
 castToSVGTests = castTo gTypeSVGTests "SVGTests"
@@ -17500,9 +21980,18 @@ gTypeSVGTests = GType gTypeSVGTests'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement Mozilla SVGTextContentElement documentation>
-newtype SVGTextContentElement = SVGTextContentElement (JSRef SVGTextContentElement) deriving (Eq)
+newtype SVGTextContentElement = SVGTextContentElement { unSVGTextContentElement :: JSRef SVGTextContentElement }
 
-unSVGTextContentElement (SVGTextContentElement o) = o
+instance Eq (SVGTextContentElement) where
+  (SVGTextContentElement a) == (SVGTextContentElement b) = js_eq a b
+
+instance PToJSRef SVGTextContentElement where
+  pToJSRef = unSVGTextContentElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTextContentElement where
+  pFromJSRef = SVGTextContentElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTextContentElement where
   toJSRef = return . unSVGTextContentElement
@@ -17524,7 +22013,9 @@ instance IsNode SVGTextContentElement
 instance IsEventTarget SVGTextContentElement
 instance IsGObject SVGTextContentElement where
   toGObject = GObject . castRef . unSVGTextContentElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTextContentElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTextContentElement :: IsGObject obj => obj -> SVGTextContentElement
 castToSVGTextContentElement = castTo gTypeSVGTextContentElement "SVGTextContentElement"
@@ -17548,9 +22039,18 @@ gTypeSVGTextContentElement = GType gTypeSVGTextContentElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextElement Mozilla SVGTextElement documentation>
-newtype SVGTextElement = SVGTextElement (JSRef SVGTextElement) deriving (Eq)
+newtype SVGTextElement = SVGTextElement { unSVGTextElement :: JSRef SVGTextElement }
 
-unSVGTextElement (SVGTextElement o) = o
+instance Eq (SVGTextElement) where
+  (SVGTextElement a) == (SVGTextElement b) = js_eq a b
+
+instance PToJSRef SVGTextElement where
+  pToJSRef = unSVGTextElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTextElement where
+  pFromJSRef = SVGTextElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTextElement where
   toJSRef = return . unSVGTextElement
@@ -17569,7 +22069,9 @@ instance IsNode SVGTextElement
 instance IsEventTarget SVGTextElement
 instance IsGObject SVGTextElement where
   toGObject = GObject . castRef . unSVGTextElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTextElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTextElement :: IsGObject obj => obj -> SVGTextElement
 castToSVGTextElement = castTo gTypeSVGTextElement "SVGTextElement"
@@ -17592,9 +22094,18 @@ gTypeSVGTextElement = GType gTypeSVGTextElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement Mozilla SVGTextPathElement documentation>
-newtype SVGTextPathElement = SVGTextPathElement (JSRef SVGTextPathElement) deriving (Eq)
+newtype SVGTextPathElement = SVGTextPathElement { unSVGTextPathElement :: JSRef SVGTextPathElement }
 
-unSVGTextPathElement (SVGTextPathElement o) = o
+instance Eq (SVGTextPathElement) where
+  (SVGTextPathElement a) == (SVGTextPathElement b) = js_eq a b
+
+instance PToJSRef SVGTextPathElement where
+  pToJSRef = unSVGTextPathElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTextPathElement where
+  pFromJSRef = SVGTextPathElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTextPathElement where
   toJSRef = return . unSVGTextPathElement
@@ -17612,7 +22123,9 @@ instance IsNode SVGTextPathElement
 instance IsEventTarget SVGTextPathElement
 instance IsGObject SVGTextPathElement where
   toGObject = GObject . castRef . unSVGTextPathElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTextPathElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTextPathElement :: IsGObject obj => obj -> SVGTextPathElement
 castToSVGTextPathElement = castTo gTypeSVGTextPathElement "SVGTextPathElement"
@@ -17635,9 +22148,18 @@ gTypeSVGTextPathElement = GType gTypeSVGTextPathElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement Mozilla SVGTextPositioningElement documentation>
-newtype SVGTextPositioningElement = SVGTextPositioningElement (JSRef SVGTextPositioningElement) deriving (Eq)
+newtype SVGTextPositioningElement = SVGTextPositioningElement { unSVGTextPositioningElement :: JSRef SVGTextPositioningElement }
 
-unSVGTextPositioningElement (SVGTextPositioningElement o) = o
+instance Eq (SVGTextPositioningElement) where
+  (SVGTextPositioningElement a) == (SVGTextPositioningElement b) = js_eq a b
+
+instance PToJSRef SVGTextPositioningElement where
+  pToJSRef = unSVGTextPositioningElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTextPositioningElement where
+  pFromJSRef = SVGTextPositioningElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTextPositioningElement where
   toJSRef = return . unSVGTextPositioningElement
@@ -17660,7 +22182,9 @@ instance IsNode SVGTextPositioningElement
 instance IsEventTarget SVGTextPositioningElement
 instance IsGObject SVGTextPositioningElement where
   toGObject = GObject . castRef . unSVGTextPositioningElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTextPositioningElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTextPositioningElement :: IsGObject obj => obj -> SVGTextPositioningElement
 castToSVGTextPositioningElement = castTo gTypeSVGTextPositioningElement "SVGTextPositioningElement"
@@ -17681,9 +22205,18 @@ gTypeSVGTextPositioningElement = GType gTypeSVGTextPositioningElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTitleElement Mozilla SVGTitleElement documentation>
-newtype SVGTitleElement = SVGTitleElement (JSRef SVGTitleElement) deriving (Eq)
+newtype SVGTitleElement = SVGTitleElement { unSVGTitleElement :: JSRef SVGTitleElement }
 
-unSVGTitleElement (SVGTitleElement o) = o
+instance Eq (SVGTitleElement) where
+  (SVGTitleElement a) == (SVGTitleElement b) = js_eq a b
+
+instance PToJSRef SVGTitleElement where
+  pToJSRef = unSVGTitleElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTitleElement where
+  pFromJSRef = SVGTitleElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTitleElement where
   toJSRef = return . unSVGTitleElement
@@ -17699,7 +22232,9 @@ instance IsNode SVGTitleElement
 instance IsEventTarget SVGTitleElement
 instance IsGObject SVGTitleElement where
   toGObject = GObject . castRef . unSVGTitleElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTitleElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTitleElement :: IsGObject obj => obj -> SVGTitleElement
 castToSVGTitleElement = castTo gTypeSVGTitleElement "SVGTitleElement"
@@ -17714,9 +22249,18 @@ gTypeSVGTitleElement = GType gTypeSVGTitleElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransform".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform Mozilla SVGTransform documentation>
-newtype SVGTransform = SVGTransform (JSRef SVGTransform) deriving (Eq)
+newtype SVGTransform = SVGTransform { unSVGTransform :: JSRef SVGTransform }
 
-unSVGTransform (SVGTransform o) = o
+instance Eq (SVGTransform) where
+  (SVGTransform a) == (SVGTransform b) = js_eq a b
+
+instance PToJSRef SVGTransform where
+  pToJSRef = unSVGTransform
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTransform where
+  pFromJSRef = SVGTransform
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTransform where
   toJSRef = return . unSVGTransform
@@ -17728,7 +22272,9 @@ instance FromJSRef SVGTransform where
 
 instance IsGObject SVGTransform where
   toGObject = GObject . castRef . unSVGTransform
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTransform . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTransform :: IsGObject obj => obj -> SVGTransform
 castToSVGTransform = castTo gTypeSVGTransform "SVGTransform"
@@ -17743,9 +22289,18 @@ gTypeSVGTransform = GType gTypeSVGTransform'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransformList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList Mozilla SVGTransformList documentation>
-newtype SVGTransformList = SVGTransformList (JSRef SVGTransformList) deriving (Eq)
+newtype SVGTransformList = SVGTransformList { unSVGTransformList :: JSRef SVGTransformList }
 
-unSVGTransformList (SVGTransformList o) = o
+instance Eq (SVGTransformList) where
+  (SVGTransformList a) == (SVGTransformList b) = js_eq a b
+
+instance PToJSRef SVGTransformList where
+  pToJSRef = unSVGTransformList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGTransformList where
+  pFromJSRef = SVGTransformList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGTransformList where
   toJSRef = return . unSVGTransformList
@@ -17757,7 +22312,9 @@ instance FromJSRef SVGTransformList where
 
 instance IsGObject SVGTransformList where
   toGObject = GObject . castRef . unSVGTransformList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGTransformList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGTransformList :: IsGObject obj => obj -> SVGTransformList
 castToSVGTransformList = castTo gTypeSVGTransformList "SVGTransformList"
@@ -17772,9 +22329,18 @@ gTypeSVGTransformList = GType gTypeSVGTransformList'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGURIReference".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGURIReference Mozilla SVGURIReference documentation>
-newtype SVGURIReference = SVGURIReference (JSRef SVGURIReference) deriving (Eq)
+newtype SVGURIReference = SVGURIReference { unSVGURIReference :: JSRef SVGURIReference }
 
-unSVGURIReference (SVGURIReference o) = o
+instance Eq (SVGURIReference) where
+  (SVGURIReference a) == (SVGURIReference b) = js_eq a b
+
+instance PToJSRef SVGURIReference where
+  pToJSRef = unSVGURIReference
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGURIReference where
+  pFromJSRef = SVGURIReference
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGURIReference where
   toJSRef = return . unSVGURIReference
@@ -17786,7 +22352,9 @@ instance FromJSRef SVGURIReference where
 
 instance IsGObject SVGURIReference where
   toGObject = GObject . castRef . unSVGURIReference
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGURIReference . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGURIReference :: IsGObject obj => obj -> SVGURIReference
 castToSVGURIReference = castTo gTypeSVGURIReference "SVGURIReference"
@@ -17801,9 +22369,18 @@ gTypeSVGURIReference = GType gTypeSVGURIReference'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUnitTypes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGUnitTypes Mozilla SVGUnitTypes documentation>
-newtype SVGUnitTypes = SVGUnitTypes (JSRef SVGUnitTypes) deriving (Eq)
+newtype SVGUnitTypes = SVGUnitTypes { unSVGUnitTypes :: JSRef SVGUnitTypes }
 
-unSVGUnitTypes (SVGUnitTypes o) = o
+instance Eq (SVGUnitTypes) where
+  (SVGUnitTypes a) == (SVGUnitTypes b) = js_eq a b
+
+instance PToJSRef SVGUnitTypes where
+  pToJSRef = unSVGUnitTypes
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGUnitTypes where
+  pFromJSRef = SVGUnitTypes
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGUnitTypes where
   toJSRef = return . unSVGUnitTypes
@@ -17815,7 +22392,9 @@ instance FromJSRef SVGUnitTypes where
 
 instance IsGObject SVGUnitTypes where
   toGObject = GObject . castRef . unSVGUnitTypes
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGUnitTypes . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGUnitTypes :: IsGObject obj => obj -> SVGUnitTypes
 castToSVGUnitTypes = castTo gTypeSVGUnitTypes "SVGUnitTypes"
@@ -17837,9 +22416,18 @@ gTypeSVGUnitTypes = GType gTypeSVGUnitTypes'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement Mozilla SVGUseElement documentation>
-newtype SVGUseElement = SVGUseElement (JSRef SVGUseElement) deriving (Eq)
+newtype SVGUseElement = SVGUseElement { unSVGUseElement :: JSRef SVGUseElement }
 
-unSVGUseElement (SVGUseElement o) = o
+instance Eq (SVGUseElement) where
+  (SVGUseElement a) == (SVGUseElement b) = js_eq a b
+
+instance PToJSRef SVGUseElement where
+  pToJSRef = unSVGUseElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGUseElement where
+  pFromJSRef = SVGUseElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGUseElement where
   toJSRef = return . unSVGUseElement
@@ -17856,7 +22444,9 @@ instance IsNode SVGUseElement
 instance IsEventTarget SVGUseElement
 instance IsGObject SVGUseElement where
   toGObject = GObject . castRef . unSVGUseElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGUseElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGUseElement :: IsGObject obj => obj -> SVGUseElement
 castToSVGUseElement = castTo gTypeSVGUseElement "SVGUseElement"
@@ -17877,9 +22467,18 @@ gTypeSVGUseElement = GType gTypeSVGUseElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGVKernElement Mozilla SVGVKernElement documentation>
-newtype SVGVKernElement = SVGVKernElement (JSRef SVGVKernElement) deriving (Eq)
+newtype SVGVKernElement = SVGVKernElement { unSVGVKernElement :: JSRef SVGVKernElement }
 
-unSVGVKernElement (SVGVKernElement o) = o
+instance Eq (SVGVKernElement) where
+  (SVGVKernElement a) == (SVGVKernElement b) = js_eq a b
+
+instance PToJSRef SVGVKernElement where
+  pToJSRef = unSVGVKernElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGVKernElement where
+  pFromJSRef = SVGVKernElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGVKernElement where
   toJSRef = return . unSVGVKernElement
@@ -17895,7 +22494,9 @@ instance IsNode SVGVKernElement
 instance IsEventTarget SVGVKernElement
 instance IsGObject SVGVKernElement where
   toGObject = GObject . castRef . unSVGVKernElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGVKernElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGVKernElement :: IsGObject obj => obj -> SVGVKernElement
 castToSVGVKernElement = castTo gTypeSVGVKernElement "SVGVKernElement"
@@ -17916,9 +22517,18 @@ gTypeSVGVKernElement = GType gTypeSVGVKernElement'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewElement Mozilla SVGViewElement documentation>
-newtype SVGViewElement = SVGViewElement (JSRef SVGViewElement) deriving (Eq)
+newtype SVGViewElement = SVGViewElement { unSVGViewElement :: JSRef SVGViewElement }
 
-unSVGViewElement (SVGViewElement o) = o
+instance Eq (SVGViewElement) where
+  (SVGViewElement a) == (SVGViewElement b) = js_eq a b
+
+instance PToJSRef SVGViewElement where
+  pToJSRef = unSVGViewElement
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGViewElement where
+  pFromJSRef = SVGViewElement
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGViewElement where
   toJSRef = return . unSVGViewElement
@@ -17934,7 +22544,9 @@ instance IsNode SVGViewElement
 instance IsEventTarget SVGViewElement
 instance IsGObject SVGViewElement where
   toGObject = GObject . castRef . unSVGViewElement
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGViewElement . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGViewElement :: IsGObject obj => obj -> SVGViewElement
 castToSVGViewElement = castTo gTypeSVGViewElement "SVGViewElement"
@@ -17949,9 +22561,18 @@ gTypeSVGViewElement = GType gTypeSVGViewElement'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewSpec".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec Mozilla SVGViewSpec documentation>
-newtype SVGViewSpec = SVGViewSpec (JSRef SVGViewSpec) deriving (Eq)
+newtype SVGViewSpec = SVGViewSpec { unSVGViewSpec :: JSRef SVGViewSpec }
 
-unSVGViewSpec (SVGViewSpec o) = o
+instance Eq (SVGViewSpec) where
+  (SVGViewSpec a) == (SVGViewSpec b) = js_eq a b
+
+instance PToJSRef SVGViewSpec where
+  pToJSRef = unSVGViewSpec
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGViewSpec where
+  pFromJSRef = SVGViewSpec
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGViewSpec where
   toJSRef = return . unSVGViewSpec
@@ -17963,7 +22584,9 @@ instance FromJSRef SVGViewSpec where
 
 instance IsGObject SVGViewSpec where
   toGObject = GObject . castRef . unSVGViewSpec
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGViewSpec . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGViewSpec :: IsGObject obj => obj -> SVGViewSpec
 castToSVGViewSpec = castTo gTypeSVGViewSpec "SVGViewSpec"
@@ -17978,9 +22601,18 @@ gTypeSVGViewSpec = GType gTypeSVGViewSpec'
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomAndPan".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan Mozilla SVGZoomAndPan documentation>
-newtype SVGZoomAndPan = SVGZoomAndPan (JSRef SVGZoomAndPan) deriving (Eq)
+newtype SVGZoomAndPan = SVGZoomAndPan { unSVGZoomAndPan :: JSRef SVGZoomAndPan }
 
-unSVGZoomAndPan (SVGZoomAndPan o) = o
+instance Eq (SVGZoomAndPan) where
+  (SVGZoomAndPan a) == (SVGZoomAndPan b) = js_eq a b
+
+instance PToJSRef SVGZoomAndPan where
+  pToJSRef = unSVGZoomAndPan
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGZoomAndPan where
+  pFromJSRef = SVGZoomAndPan
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGZoomAndPan where
   toJSRef = return . unSVGZoomAndPan
@@ -17992,7 +22624,9 @@ instance FromJSRef SVGZoomAndPan where
 
 instance IsGObject SVGZoomAndPan where
   toGObject = GObject . castRef . unSVGZoomAndPan
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGZoomAndPan . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGZoomAndPan :: IsGObject obj => obj -> SVGZoomAndPan
 castToSVGZoomAndPan = castTo gTypeSVGZoomAndPan "SVGZoomAndPan"
@@ -18011,9 +22645,18 @@ gTypeSVGZoomAndPan = GType gTypeSVGZoomAndPan'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent Mozilla SVGZoomEvent documentation>
-newtype SVGZoomEvent = SVGZoomEvent (JSRef SVGZoomEvent) deriving (Eq)
+newtype SVGZoomEvent = SVGZoomEvent { unSVGZoomEvent :: JSRef SVGZoomEvent }
 
-unSVGZoomEvent (SVGZoomEvent o) = o
+instance Eq (SVGZoomEvent) where
+  (SVGZoomEvent a) == (SVGZoomEvent b) = js_eq a b
+
+instance PToJSRef SVGZoomEvent where
+  pToJSRef = unSVGZoomEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SVGZoomEvent where
+  pFromJSRef = SVGZoomEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SVGZoomEvent where
   toJSRef = return . unSVGZoomEvent
@@ -18027,7 +22670,9 @@ instance IsUIEvent SVGZoomEvent
 instance IsEvent SVGZoomEvent
 instance IsGObject SVGZoomEvent where
   toGObject = GObject . castRef . unSVGZoomEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SVGZoomEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSVGZoomEvent :: IsGObject obj => obj -> SVGZoomEvent
 castToSVGZoomEvent = castTo gTypeSVGZoomEvent "SVGZoomEvent"
@@ -18039,32 +22684,43 @@ gTypeSVGZoomEvent = GType gTypeSVGZoomEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.DOMScreen".
+-- | Functions for this inteface are in "GHCJS.DOM.Screen".
 --
--- <https://developer.mozilla.org/en-US/docs/Web/API/DOMScreen Mozilla DOMScreen documentation>
-newtype DOMScreen = DOMScreen (JSRef DOMScreen) deriving (Eq)
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Screen Mozilla Screen documentation>
+newtype Screen = Screen { unScreen :: JSRef Screen }
 
-unDOMScreen (DOMScreen o) = o
+instance Eq (Screen) where
+  (Screen a) == (Screen b) = js_eq a b
 
-instance ToJSRef DOMScreen where
-  toJSRef = return . unDOMScreen
+instance PToJSRef Screen where
+  pToJSRef = unScreen
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Screen where
+  pFromJSRef = Screen
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef Screen where
+  toJSRef = return . unScreen
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMScreen where
-  fromJSRef = return . fmap DOMScreen . maybeJSNullOrUndefined
+instance FromJSRef Screen where
+  fromJSRef = return . fmap Screen . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
-instance IsGObject DOMScreen where
-  toGObject = GObject . castRef . unDOMScreen
-  unsafeCastGObject = DOMScreen . castRef . unGObject
+instance IsGObject Screen where
+  toGObject = GObject . castRef . unScreen
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = Screen . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
-castToDOMScreen :: IsGObject obj => obj -> DOMScreen
-castToDOMScreen = castTo gTypeDOMScreen "DOMScreen"
+castToScreen :: IsGObject obj => obj -> Screen
+castToScreen = castTo gTypeScreen "Screen"
 
-foreign import javascript unsafe "window[\"DOMScreen\"]" gTypeDOMScreen' :: JSRef GType
-gTypeDOMScreen = GType gTypeDOMScreen'
+foreign import javascript unsafe "window[\"Screen\"]" gTypeScreen' :: JSRef GType
+gTypeScreen = GType gTypeScreen'
 #else
-type IsDOMScreen o = DOMScreenClass o
+type IsScreen o = ScreenClass o
 #endif
 
 
@@ -18076,9 +22732,18 @@ type IsDOMScreen o = DOMScreenClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode Mozilla ScriptProcessorNode documentation>
-newtype ScriptProcessorNode = ScriptProcessorNode (JSRef ScriptProcessorNode) deriving (Eq)
+newtype ScriptProcessorNode = ScriptProcessorNode { unScriptProcessorNode :: JSRef ScriptProcessorNode }
 
-unScriptProcessorNode (ScriptProcessorNode o) = o
+instance Eq (ScriptProcessorNode) where
+  (ScriptProcessorNode a) == (ScriptProcessorNode b) = js_eq a b
+
+instance PToJSRef ScriptProcessorNode where
+  pToJSRef = unScriptProcessorNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ScriptProcessorNode where
+  pFromJSRef = ScriptProcessorNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ScriptProcessorNode where
   toJSRef = return . unScriptProcessorNode
@@ -18092,7 +22757,9 @@ instance IsAudioNode ScriptProcessorNode
 instance IsEventTarget ScriptProcessorNode
 instance IsGObject ScriptProcessorNode where
   toGObject = GObject . castRef . unScriptProcessorNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ScriptProcessorNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToScriptProcessorNode :: IsGObject obj => obj -> ScriptProcessorNode
 castToScriptProcessorNode = castTo gTypeScriptProcessorNode "ScriptProcessorNode"
@@ -18107,9 +22774,18 @@ gTypeScriptProcessorNode = GType gTypeScriptProcessorNode'
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfile".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile Mozilla ScriptProfile documentation>
-newtype ScriptProfile = ScriptProfile (JSRef ScriptProfile) deriving (Eq)
+newtype ScriptProfile = ScriptProfile { unScriptProfile :: JSRef ScriptProfile }
 
-unScriptProfile (ScriptProfile o) = o
+instance Eq (ScriptProfile) where
+  (ScriptProfile a) == (ScriptProfile b) = js_eq a b
+
+instance PToJSRef ScriptProfile where
+  pToJSRef = unScriptProfile
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ScriptProfile where
+  pFromJSRef = ScriptProfile
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ScriptProfile where
   toJSRef = return . unScriptProfile
@@ -18121,7 +22797,9 @@ instance FromJSRef ScriptProfile where
 
 instance IsGObject ScriptProfile where
   toGObject = GObject . castRef . unScriptProfile
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ScriptProfile . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToScriptProfile :: IsGObject obj => obj -> ScriptProfile
 castToScriptProfile = castTo gTypeScriptProfile "ScriptProfile"
@@ -18136,9 +22814,18 @@ gTypeScriptProfile = GType gTypeScriptProfile'
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfileNode".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode Mozilla ScriptProfileNode documentation>
-newtype ScriptProfileNode = ScriptProfileNode (JSRef ScriptProfileNode) deriving (Eq)
+newtype ScriptProfileNode = ScriptProfileNode { unScriptProfileNode :: JSRef ScriptProfileNode }
 
-unScriptProfileNode (ScriptProfileNode o) = o
+instance Eq (ScriptProfileNode) where
+  (ScriptProfileNode a) == (ScriptProfileNode b) = js_eq a b
+
+instance PToJSRef ScriptProfileNode where
+  pToJSRef = unScriptProfileNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ScriptProfileNode where
+  pFromJSRef = ScriptProfileNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ScriptProfileNode where
   toJSRef = return . unScriptProfileNode
@@ -18150,7 +22837,9 @@ instance FromJSRef ScriptProfileNode where
 
 instance IsGObject ScriptProfileNode where
   toGObject = GObject . castRef . unScriptProfileNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ScriptProfileNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToScriptProfileNode :: IsGObject obj => obj -> ScriptProfileNode
 castToScriptProfileNode = castTo gTypeScriptProfileNode "ScriptProfileNode"
@@ -18162,15 +22851,65 @@ gTypeScriptProfileNode = GType gTypeScriptProfileNode'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicy".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy Mozilla SecurityPolicy documentation>
+newtype SecurityPolicy = SecurityPolicy { unSecurityPolicy :: JSRef SecurityPolicy }
+
+instance Eq (SecurityPolicy) where
+  (SecurityPolicy a) == (SecurityPolicy b) = js_eq a b
+
+instance PToJSRef SecurityPolicy where
+  pToJSRef = unSecurityPolicy
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SecurityPolicy where
+  pFromJSRef = SecurityPolicy
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef SecurityPolicy where
+  toJSRef = return . unSecurityPolicy
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef SecurityPolicy where
+  fromJSRef = return . fmap SecurityPolicy . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject SecurityPolicy where
+  toGObject = GObject . castRef . unSecurityPolicy
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = SecurityPolicy . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToSecurityPolicy :: IsGObject obj => obj -> SecurityPolicy
+castToSecurityPolicy = castTo gTypeSecurityPolicy "SecurityPolicy"
+
+foreign import javascript unsafe "window[\"SecurityPolicy\"]" gTypeSecurityPolicy' :: JSRef GType
+gTypeSecurityPolicy = GType gTypeSecurityPolicy'
+#else
+type IsSecurityPolicy o = SecurityPolicyClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicyViolationEvent".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent Mozilla SecurityPolicyViolationEvent documentation>
-newtype SecurityPolicyViolationEvent = SecurityPolicyViolationEvent (JSRef SecurityPolicyViolationEvent) deriving (Eq)
+newtype SecurityPolicyViolationEvent = SecurityPolicyViolationEvent { unSecurityPolicyViolationEvent :: JSRef SecurityPolicyViolationEvent }
 
-unSecurityPolicyViolationEvent (SecurityPolicyViolationEvent o) = o
+instance Eq (SecurityPolicyViolationEvent) where
+  (SecurityPolicyViolationEvent a) == (SecurityPolicyViolationEvent b) = js_eq a b
+
+instance PToJSRef SecurityPolicyViolationEvent where
+  pToJSRef = unSecurityPolicyViolationEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SecurityPolicyViolationEvent where
+  pFromJSRef = SecurityPolicyViolationEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SecurityPolicyViolationEvent where
   toJSRef = return . unSecurityPolicyViolationEvent
@@ -18183,7 +22922,9 @@ instance FromJSRef SecurityPolicyViolationEvent where
 instance IsEvent SecurityPolicyViolationEvent
 instance IsGObject SecurityPolicyViolationEvent where
   toGObject = GObject . castRef . unSecurityPolicyViolationEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SecurityPolicyViolationEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSecurityPolicyViolationEvent :: IsGObject obj => obj -> SecurityPolicyViolationEvent
 castToSecurityPolicyViolationEvent = castTo gTypeSecurityPolicyViolationEvent "SecurityPolicyViolationEvent"
@@ -18195,15 +22936,65 @@ gTypeSecurityPolicyViolationEvent = GType gTypeSecurityPolicyViolationEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Selection".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Selection Mozilla Selection documentation>
+newtype Selection = Selection { unSelection :: JSRef Selection }
+
+instance Eq (Selection) where
+  (Selection a) == (Selection b) = js_eq a b
+
+instance PToJSRef Selection where
+  pToJSRef = unSelection
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Selection where
+  pFromJSRef = Selection
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef Selection where
+  toJSRef = return . unSelection
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Selection where
+  fromJSRef = return . fmap Selection . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject Selection where
+  toGObject = GObject . castRef . unSelection
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = Selection . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToSelection :: IsGObject obj => obj -> Selection
+castToSelection = castTo gTypeSelection "Selection"
+
+foreign import javascript unsafe "window[\"Selection\"]" gTypeSelection' :: JSRef GType
+gTypeSelection = GType gTypeSelection'
+#else
+type IsSelection o = SelectionClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SourceBuffer".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer Mozilla SourceBuffer documentation>
-newtype SourceBuffer = SourceBuffer (JSRef SourceBuffer) deriving (Eq)
+newtype SourceBuffer = SourceBuffer { unSourceBuffer :: JSRef SourceBuffer }
 
-unSourceBuffer (SourceBuffer o) = o
+instance Eq (SourceBuffer) where
+  (SourceBuffer a) == (SourceBuffer b) = js_eq a b
+
+instance PToJSRef SourceBuffer where
+  pToJSRef = unSourceBuffer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SourceBuffer where
+  pFromJSRef = SourceBuffer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SourceBuffer where
   toJSRef = return . unSourceBuffer
@@ -18216,7 +23007,9 @@ instance FromJSRef SourceBuffer where
 instance IsEventTarget SourceBuffer
 instance IsGObject SourceBuffer where
   toGObject = GObject . castRef . unSourceBuffer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SourceBuffer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSourceBuffer :: IsGObject obj => obj -> SourceBuffer
 castToSourceBuffer = castTo gTypeSourceBuffer "SourceBuffer"
@@ -18234,9 +23027,18 @@ gTypeSourceBuffer = GType gTypeSourceBuffer'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SourceBufferList Mozilla SourceBufferList documentation>
-newtype SourceBufferList = SourceBufferList (JSRef SourceBufferList) deriving (Eq)
+newtype SourceBufferList = SourceBufferList { unSourceBufferList :: JSRef SourceBufferList }
 
-unSourceBufferList (SourceBufferList o) = o
+instance Eq (SourceBufferList) where
+  (SourceBufferList a) == (SourceBufferList b) = js_eq a b
+
+instance PToJSRef SourceBufferList where
+  pToJSRef = unSourceBufferList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SourceBufferList where
+  pFromJSRef = SourceBufferList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SourceBufferList where
   toJSRef = return . unSourceBufferList
@@ -18249,7 +23051,9 @@ instance FromJSRef SourceBufferList where
 instance IsEventTarget SourceBufferList
 instance IsGObject SourceBufferList where
   toGObject = GObject . castRef . unSourceBufferList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SourceBufferList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSourceBufferList :: IsGObject obj => obj -> SourceBufferList
 castToSourceBufferList = castTo gTypeSourceBufferList "SourceBufferList"
@@ -18264,9 +23068,18 @@ gTypeSourceBufferList = GType gTypeSourceBufferList'
 -- | Functions for this inteface are in "GHCJS.DOM.SourceInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SourceInfo Mozilla SourceInfo documentation>
-newtype SourceInfo = SourceInfo (JSRef SourceInfo) deriving (Eq)
+newtype SourceInfo = SourceInfo { unSourceInfo :: JSRef SourceInfo }
 
-unSourceInfo (SourceInfo o) = o
+instance Eq (SourceInfo) where
+  (SourceInfo a) == (SourceInfo b) = js_eq a b
+
+instance PToJSRef SourceInfo where
+  pToJSRef = unSourceInfo
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SourceInfo where
+  pFromJSRef = SourceInfo
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SourceInfo where
   toJSRef = return . unSourceInfo
@@ -18278,7 +23091,9 @@ instance FromJSRef SourceInfo where
 
 instance IsGObject SourceInfo where
   toGObject = GObject . castRef . unSourceInfo
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SourceInfo . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSourceInfo :: IsGObject obj => obj -> SourceInfo
 castToSourceInfo = castTo gTypeSourceInfo "SourceInfo"
@@ -18293,9 +23108,18 @@ gTypeSourceInfo = GType gTypeSourceInfo'
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis Mozilla SpeechSynthesis documentation>
-newtype SpeechSynthesis = SpeechSynthesis (JSRef SpeechSynthesis) deriving (Eq)
+newtype SpeechSynthesis = SpeechSynthesis { unSpeechSynthesis :: JSRef SpeechSynthesis }
 
-unSpeechSynthesis (SpeechSynthesis o) = o
+instance Eq (SpeechSynthesis) where
+  (SpeechSynthesis a) == (SpeechSynthesis b) = js_eq a b
+
+instance PToJSRef SpeechSynthesis where
+  pToJSRef = unSpeechSynthesis
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SpeechSynthesis where
+  pFromJSRef = SpeechSynthesis
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SpeechSynthesis where
   toJSRef = return . unSpeechSynthesis
@@ -18307,7 +23131,9 @@ instance FromJSRef SpeechSynthesis where
 
 instance IsGObject SpeechSynthesis where
   toGObject = GObject . castRef . unSpeechSynthesis
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SpeechSynthesis . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSpeechSynthesis :: IsGObject obj => obj -> SpeechSynthesis
 castToSpeechSynthesis = castTo gTypeSpeechSynthesis "SpeechSynthesis"
@@ -18325,9 +23151,18 @@ gTypeSpeechSynthesis = GType gTypeSpeechSynthesis'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent Mozilla SpeechSynthesisEvent documentation>
-newtype SpeechSynthesisEvent = SpeechSynthesisEvent (JSRef SpeechSynthesisEvent) deriving (Eq)
+newtype SpeechSynthesisEvent = SpeechSynthesisEvent { unSpeechSynthesisEvent :: JSRef SpeechSynthesisEvent }
 
-unSpeechSynthesisEvent (SpeechSynthesisEvent o) = o
+instance Eq (SpeechSynthesisEvent) where
+  (SpeechSynthesisEvent a) == (SpeechSynthesisEvent b) = js_eq a b
+
+instance PToJSRef SpeechSynthesisEvent where
+  pToJSRef = unSpeechSynthesisEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SpeechSynthesisEvent where
+  pFromJSRef = SpeechSynthesisEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SpeechSynthesisEvent where
   toJSRef = return . unSpeechSynthesisEvent
@@ -18340,7 +23175,9 @@ instance FromJSRef SpeechSynthesisEvent where
 instance IsEvent SpeechSynthesisEvent
 instance IsGObject SpeechSynthesisEvent where
   toGObject = GObject . castRef . unSpeechSynthesisEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SpeechSynthesisEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSpeechSynthesisEvent :: IsGObject obj => obj -> SpeechSynthesisEvent
 castToSpeechSynthesisEvent = castTo gTypeSpeechSynthesisEvent "SpeechSynthesisEvent"
@@ -18358,9 +23195,18 @@ gTypeSpeechSynthesisEvent = GType gTypeSpeechSynthesisEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance Mozilla SpeechSynthesisUtterance documentation>
-newtype SpeechSynthesisUtterance = SpeechSynthesisUtterance (JSRef SpeechSynthesisUtterance) deriving (Eq)
+newtype SpeechSynthesisUtterance = SpeechSynthesisUtterance { unSpeechSynthesisUtterance :: JSRef SpeechSynthesisUtterance }
 
-unSpeechSynthesisUtterance (SpeechSynthesisUtterance o) = o
+instance Eq (SpeechSynthesisUtterance) where
+  (SpeechSynthesisUtterance a) == (SpeechSynthesisUtterance b) = js_eq a b
+
+instance PToJSRef SpeechSynthesisUtterance where
+  pToJSRef = unSpeechSynthesisUtterance
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SpeechSynthesisUtterance where
+  pFromJSRef = SpeechSynthesisUtterance
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SpeechSynthesisUtterance where
   toJSRef = return . unSpeechSynthesisUtterance
@@ -18373,7 +23219,9 @@ instance FromJSRef SpeechSynthesisUtterance where
 instance IsEventTarget SpeechSynthesisUtterance
 instance IsGObject SpeechSynthesisUtterance where
   toGObject = GObject . castRef . unSpeechSynthesisUtterance
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SpeechSynthesisUtterance . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSpeechSynthesisUtterance :: IsGObject obj => obj -> SpeechSynthesisUtterance
 castToSpeechSynthesisUtterance = castTo gTypeSpeechSynthesisUtterance "SpeechSynthesisUtterance"
@@ -18388,9 +23236,18 @@ gTypeSpeechSynthesisUtterance = GType gTypeSpeechSynthesisUtterance'
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisVoice".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice Mozilla SpeechSynthesisVoice documentation>
-newtype SpeechSynthesisVoice = SpeechSynthesisVoice (JSRef SpeechSynthesisVoice) deriving (Eq)
+newtype SpeechSynthesisVoice = SpeechSynthesisVoice { unSpeechSynthesisVoice :: JSRef SpeechSynthesisVoice }
 
-unSpeechSynthesisVoice (SpeechSynthesisVoice o) = o
+instance Eq (SpeechSynthesisVoice) where
+  (SpeechSynthesisVoice a) == (SpeechSynthesisVoice b) = js_eq a b
+
+instance PToJSRef SpeechSynthesisVoice where
+  pToJSRef = unSpeechSynthesisVoice
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SpeechSynthesisVoice where
+  pFromJSRef = SpeechSynthesisVoice
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SpeechSynthesisVoice where
   toJSRef = return . unSpeechSynthesisVoice
@@ -18402,7 +23259,9 @@ instance FromJSRef SpeechSynthesisVoice where
 
 instance IsGObject SpeechSynthesisVoice where
   toGObject = GObject . castRef . unSpeechSynthesisVoice
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SpeechSynthesisVoice . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSpeechSynthesisVoice :: IsGObject obj => obj -> SpeechSynthesisVoice
 castToSpeechSynthesisVoice = castTo gTypeSpeechSynthesisVoice "SpeechSynthesisVoice"
@@ -18417,9 +23276,18 @@ gTypeSpeechSynthesisVoice = GType gTypeSpeechSynthesisVoice'
 -- | Functions for this inteface are in "GHCJS.DOM.Storage".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Storage Mozilla Storage documentation>
-newtype Storage = Storage (JSRef Storage) deriving (Eq)
+newtype Storage = Storage { unStorage :: JSRef Storage }
 
-unStorage (Storage o) = o
+instance Eq (Storage) where
+  (Storage a) == (Storage b) = js_eq a b
+
+instance PToJSRef Storage where
+  pToJSRef = unStorage
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Storage where
+  pFromJSRef = Storage
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Storage where
   toJSRef = return . unStorage
@@ -18431,7 +23299,9 @@ instance FromJSRef Storage where
 
 instance IsGObject Storage where
   toGObject = GObject . castRef . unStorage
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Storage . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToStorage :: IsGObject obj => obj -> Storage
 castToStorage = castTo gTypeStorage "Storage"
@@ -18444,44 +23314,24 @@ type IsStorage o = StorageClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.StorageErrorCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation>
-newtype StorageErrorCallback = StorageErrorCallback (JSRef StorageErrorCallback) deriving (Eq)
-
-unStorageErrorCallback (StorageErrorCallback o) = o
-
-instance ToJSRef StorageErrorCallback where
-  toJSRef = return . unStorageErrorCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef StorageErrorCallback where
-  fromJSRef = return . fmap StorageErrorCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject StorageErrorCallback where
-  toGObject = GObject . castRef . unStorageErrorCallback
-  unsafeCastGObject = StorageErrorCallback . castRef . unGObject
-
-castToStorageErrorCallback :: IsGObject obj => obj -> StorageErrorCallback
-castToStorageErrorCallback = castTo gTypeStorageErrorCallback "StorageErrorCallback"
-
-foreign import javascript unsafe "window[\"StorageErrorCallback\"]" gTypeStorageErrorCallback' :: JSRef GType
-gTypeStorageErrorCallback = GType gTypeStorageErrorCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StorageEvent".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent Mozilla StorageEvent documentation>
-newtype StorageEvent = StorageEvent (JSRef StorageEvent) deriving (Eq)
+newtype StorageEvent = StorageEvent { unStorageEvent :: JSRef StorageEvent }
 
-unStorageEvent (StorageEvent o) = o
+instance Eq (StorageEvent) where
+  (StorageEvent a) == (StorageEvent b) = js_eq a b
+
+instance PToJSRef StorageEvent where
+  pToJSRef = unStorageEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef StorageEvent where
+  pFromJSRef = StorageEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef StorageEvent where
   toJSRef = return . unStorageEvent
@@ -18494,7 +23344,9 @@ instance FromJSRef StorageEvent where
 instance IsEvent StorageEvent
 instance IsGObject StorageEvent where
   toGObject = GObject . castRef . unStorageEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = StorageEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToStorageEvent :: IsGObject obj => obj -> StorageEvent
 castToStorageEvent = castTo gTypeStorageEvent "StorageEvent"
@@ -18509,9 +23361,18 @@ gTypeStorageEvent = GType gTypeStorageEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.StorageInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo Mozilla StorageInfo documentation>
-newtype StorageInfo = StorageInfo (JSRef StorageInfo) deriving (Eq)
+newtype StorageInfo = StorageInfo { unStorageInfo :: JSRef StorageInfo }
 
-unStorageInfo (StorageInfo o) = o
+instance Eq (StorageInfo) where
+  (StorageInfo a) == (StorageInfo b) = js_eq a b
+
+instance PToJSRef StorageInfo where
+  pToJSRef = unStorageInfo
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef StorageInfo where
+  pFromJSRef = StorageInfo
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef StorageInfo where
   toJSRef = return . unStorageInfo
@@ -18523,7 +23384,9 @@ instance FromJSRef StorageInfo where
 
 instance IsGObject StorageInfo where
   toGObject = GObject . castRef . unStorageInfo
+  {-# INLINE toGObject #-}
   unsafeCastGObject = StorageInfo . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToStorageInfo :: IsGObject obj => obj -> StorageInfo
 castToStorageInfo = castTo gTypeStorageInfo "StorageInfo"
@@ -18539,9 +23402,18 @@ type IsStorageInfo o = StorageInfoClass o
 -- | Functions for this inteface are in "GHCJS.DOM.StorageQuota".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota Mozilla StorageQuota documentation>
-newtype StorageQuota = StorageQuota (JSRef StorageQuota) deriving (Eq)
+newtype StorageQuota = StorageQuota { unStorageQuota :: JSRef StorageQuota }
 
-unStorageQuota (StorageQuota o) = o
+instance Eq (StorageQuota) where
+  (StorageQuota a) == (StorageQuota b) = js_eq a b
+
+instance PToJSRef StorageQuota where
+  pToJSRef = unStorageQuota
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef StorageQuota where
+  pFromJSRef = StorageQuota
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef StorageQuota where
   toJSRef = return . unStorageQuota
@@ -18553,7 +23425,9 @@ instance FromJSRef StorageQuota where
 
 instance IsGObject StorageQuota where
   toGObject = GObject . castRef . unStorageQuota
+  {-# INLINE toGObject #-}
   unsafeCastGObject = StorageQuota . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToStorageQuota :: IsGObject obj => obj -> StorageQuota
 castToStorageQuota = castTo gTypeStorageQuota "StorageQuota"
@@ -18566,99 +23440,21 @@ type IsStorageQuota o = StorageQuotaClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.StorageQuotaCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation>
-newtype StorageQuotaCallback = StorageQuotaCallback (JSRef StorageQuotaCallback) deriving (Eq)
-
-unStorageQuotaCallback (StorageQuotaCallback o) = o
-
-instance ToJSRef StorageQuotaCallback where
-  toJSRef = return . unStorageQuotaCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef StorageQuotaCallback where
-  fromJSRef = return . fmap StorageQuotaCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject StorageQuotaCallback where
-  toGObject = GObject . castRef . unStorageQuotaCallback
-  unsafeCastGObject = StorageQuotaCallback . castRef . unGObject
-
-castToStorageQuotaCallback :: IsGObject obj => obj -> StorageQuotaCallback
-castToStorageQuotaCallback = castTo gTypeStorageQuotaCallback "StorageQuotaCallback"
-
-foreign import javascript unsafe "window[\"StorageQuotaCallback\"]" gTypeStorageQuotaCallback' :: JSRef GType
-gTypeStorageQuotaCallback = GType gTypeStorageQuotaCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.StorageUsageCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation>
-newtype StorageUsageCallback = StorageUsageCallback (JSRef StorageUsageCallback) deriving (Eq)
-
-unStorageUsageCallback (StorageUsageCallback o) = o
-
-instance ToJSRef StorageUsageCallback where
-  toJSRef = return . unStorageUsageCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef StorageUsageCallback where
-  fromJSRef = return . fmap StorageUsageCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject StorageUsageCallback where
-  toGObject = GObject . castRef . unStorageUsageCallback
-  unsafeCastGObject = StorageUsageCallback . castRef . unGObject
-
-castToStorageUsageCallback :: IsGObject obj => obj -> StorageUsageCallback
-castToStorageUsageCallback = castTo gTypeStorageUsageCallback "StorageUsageCallback"
-
-foreign import javascript unsafe "window[\"StorageUsageCallback\"]" gTypeStorageUsageCallback' :: JSRef GType
-gTypeStorageUsageCallback = GType gTypeStorageUsageCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.StringCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation>
-newtype StringCallback = StringCallback (JSRef StringCallback) deriving (Eq)
-
-unStringCallback (StringCallback o) = o
-
-instance ToJSRef StringCallback where
-  toJSRef = return . unStringCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef StringCallback where
-  fromJSRef = return . fmap StringCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject StringCallback where
-  toGObject = GObject . castRef . unStringCallback
-  unsafeCastGObject = StringCallback . castRef . unGObject
-
-castToStringCallback :: IsGObject obj => obj -> StringCallback
-castToStringCallback = castTo gTypeStringCallback "StringCallback"
-
-foreign import javascript unsafe "window[\"StringCallback\"]" gTypeStringCallback' :: JSRef GType
-gTypeStringCallback = GType gTypeStringCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StyleMedia".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia Mozilla StyleMedia documentation>
-newtype StyleMedia = StyleMedia (JSRef StyleMedia) deriving (Eq)
+newtype StyleMedia = StyleMedia { unStyleMedia :: JSRef StyleMedia }
 
-unStyleMedia (StyleMedia o) = o
+instance Eq (StyleMedia) where
+  (StyleMedia a) == (StyleMedia b) = js_eq a b
+
+instance PToJSRef StyleMedia where
+  pToJSRef = unStyleMedia
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef StyleMedia where
+  pFromJSRef = StyleMedia
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef StyleMedia where
   toJSRef = return . unStyleMedia
@@ -18670,7 +23466,9 @@ instance FromJSRef StyleMedia where
 
 instance IsGObject StyleMedia where
   toGObject = GObject . castRef . unStyleMedia
+  {-# INLINE toGObject #-}
   unsafeCastGObject = StyleMedia . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToStyleMedia :: IsGObject obj => obj -> StyleMedia
 castToStyleMedia = castTo gTypeStyleMedia "StyleMedia"
@@ -18686,9 +23484,18 @@ type IsStyleMedia o = StyleMediaClass o
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet Mozilla StyleSheet documentation>
-newtype StyleSheet = StyleSheet (JSRef StyleSheet) deriving (Eq)
+newtype StyleSheet = StyleSheet { unStyleSheet :: JSRef StyleSheet }
 
-unStyleSheet (StyleSheet o) = o
+instance Eq (StyleSheet) where
+  (StyleSheet a) == (StyleSheet b) = js_eq a b
+
+instance PToJSRef StyleSheet where
+  pToJSRef = unStyleSheet
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef StyleSheet where
+  pFromJSRef = StyleSheet
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef StyleSheet where
   toJSRef = return . unStyleSheet
@@ -18705,7 +23512,9 @@ toStyleSheet = unsafeCastGObject . toGObject
 instance IsStyleSheet StyleSheet
 instance IsGObject StyleSheet where
   toGObject = GObject . castRef . unStyleSheet
+  {-# INLINE toGObject #-}
   unsafeCastGObject = StyleSheet . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToStyleSheet :: IsGObject obj => obj -> StyleSheet
 castToStyleSheet = castTo gTypeStyleSheet "StyleSheet"
@@ -18721,9 +23530,18 @@ type IsStyleSheet o = StyleSheetClass o
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheetList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList Mozilla StyleSheetList documentation>
-newtype StyleSheetList = StyleSheetList (JSRef StyleSheetList) deriving (Eq)
+newtype StyleSheetList = StyleSheetList { unStyleSheetList :: JSRef StyleSheetList }
 
-unStyleSheetList (StyleSheetList o) = o
+instance Eq (StyleSheetList) where
+  (StyleSheetList a) == (StyleSheetList b) = js_eq a b
+
+instance PToJSRef StyleSheetList where
+  pToJSRef = unStyleSheetList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef StyleSheetList where
+  pFromJSRef = StyleSheetList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef StyleSheetList where
   toJSRef = return . unStyleSheetList
@@ -18735,7 +23553,9 @@ instance FromJSRef StyleSheetList where
 
 instance IsGObject StyleSheetList where
   toGObject = GObject . castRef . unStyleSheetList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = StyleSheetList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToStyleSheetList :: IsGObject obj => obj -> StyleSheetList
 castToStyleSheetList = castTo gTypeStyleSheetList "StyleSheetList"
@@ -18751,9 +23571,18 @@ type IsStyleSheetList o = StyleSheetListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.SubtleCrypto".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto Mozilla WebKitSubtleCrypto documentation>
-newtype SubtleCrypto = SubtleCrypto (JSRef SubtleCrypto) deriving (Eq)
+newtype SubtleCrypto = SubtleCrypto { unSubtleCrypto :: JSRef SubtleCrypto }
 
-unSubtleCrypto (SubtleCrypto o) = o
+instance Eq (SubtleCrypto) where
+  (SubtleCrypto a) == (SubtleCrypto b) = js_eq a b
+
+instance PToJSRef SubtleCrypto where
+  pToJSRef = unSubtleCrypto
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef SubtleCrypto where
+  pFromJSRef = SubtleCrypto
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef SubtleCrypto where
   toJSRef = return . unSubtleCrypto
@@ -18765,7 +23594,9 @@ instance FromJSRef SubtleCrypto where
 
 instance IsGObject SubtleCrypto where
   toGObject = GObject . castRef . unSubtleCrypto
+  {-# INLINE toGObject #-}
   unsafeCastGObject = SubtleCrypto . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToSubtleCrypto :: IsGObject obj => obj -> SubtleCrypto
 castToSubtleCrypto = castTo gTypeSubtleCrypto "SubtleCrypto"
@@ -18785,9 +23616,18 @@ gTypeSubtleCrypto = GType gTypeSubtleCrypto'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Text Mozilla Text documentation>
-newtype Text = Text (JSRef Text) deriving (Eq)
+newtype Text = Text { unText :: JSRef Text }
 
-unText (Text o) = o
+instance Eq (Text) where
+  (Text a) == (Text b) = js_eq a b
+
+instance PToJSRef Text where
+  pToJSRef = unText
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Text where
+  pFromJSRef = Text
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Text where
   toJSRef = return . unText
@@ -18807,7 +23647,9 @@ instance IsNode Text
 instance IsEventTarget Text
 instance IsGObject Text where
   toGObject = GObject . castRef . unText
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Text . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToText :: IsGObject obj => obj -> Text
 castToText = castTo gTypeText "Text"
@@ -18827,9 +23669,18 @@ type IsText o = TextClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextEvent Mozilla TextEvent documentation>
-newtype TextEvent = TextEvent (JSRef TextEvent) deriving (Eq)
+newtype TextEvent = TextEvent { unTextEvent :: JSRef TextEvent }
 
-unTextEvent (TextEvent o) = o
+instance Eq (TextEvent) where
+  (TextEvent a) == (TextEvent b) = js_eq a b
+
+instance PToJSRef TextEvent where
+  pToJSRef = unTextEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TextEvent where
+  pFromJSRef = TextEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TextEvent where
   toJSRef = return . unTextEvent
@@ -18843,7 +23694,9 @@ instance IsUIEvent TextEvent
 instance IsEvent TextEvent
 instance IsGObject TextEvent where
   toGObject = GObject . castRef . unTextEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TextEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTextEvent :: IsGObject obj => obj -> TextEvent
 castToTextEvent = castTo gTypeTextEvent "TextEvent"
@@ -18858,9 +23711,18 @@ gTypeTextEvent = GType gTypeTextEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.TextMetrics".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics Mozilla TextMetrics documentation>
-newtype TextMetrics = TextMetrics (JSRef TextMetrics) deriving (Eq)
+newtype TextMetrics = TextMetrics { unTextMetrics :: JSRef TextMetrics }
 
-unTextMetrics (TextMetrics o) = o
+instance Eq (TextMetrics) where
+  (TextMetrics a) == (TextMetrics b) = js_eq a b
+
+instance PToJSRef TextMetrics where
+  pToJSRef = unTextMetrics
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TextMetrics where
+  pFromJSRef = TextMetrics
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TextMetrics where
   toJSRef = return . unTextMetrics
@@ -18872,7 +23734,9 @@ instance FromJSRef TextMetrics where
 
 instance IsGObject TextMetrics where
   toGObject = GObject . castRef . unTextMetrics
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TextMetrics . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTextMetrics :: IsGObject obj => obj -> TextMetrics
 castToTextMetrics = castTo gTypeTextMetrics "TextMetrics"
@@ -18885,11 +23749,23 @@ gTypeTextMetrics = GType gTypeTextMetrics'
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrack".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack Mozilla TextTrack documentation>
-newtype TextTrack = TextTrack (JSRef TextTrack) deriving (Eq)
+newtype TextTrack = TextTrack { unTextTrack :: JSRef TextTrack }
 
-unTextTrack (TextTrack o) = o
+instance Eq (TextTrack) where
+  (TextTrack a) == (TextTrack b) = js_eq a b
+
+instance PToJSRef TextTrack where
+  pToJSRef = unTextTrack
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TextTrack where
+  pFromJSRef = TextTrack
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TextTrack where
   toJSRef = return . unTextTrack
@@ -18899,9 +23775,12 @@ instance FromJSRef TextTrack where
   fromJSRef = return . fmap TextTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
+instance IsEventTarget TextTrack
 instance IsGObject TextTrack where
   toGObject = GObject . castRef . unTextTrack
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TextTrack . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTextTrack :: IsGObject obj => obj -> TextTrack
 castToTextTrack = castTo gTypeTextTrack "TextTrack"
@@ -18920,9 +23799,18 @@ type IsTextTrack o = TextTrackClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue Mozilla TextTrackCue documentation>
-newtype TextTrackCue = TextTrackCue (JSRef TextTrackCue) deriving (Eq)
+newtype TextTrackCue = TextTrackCue { unTextTrackCue :: JSRef TextTrackCue }
 
-unTextTrackCue (TextTrackCue o) = o
+instance Eq (TextTrackCue) where
+  (TextTrackCue a) == (TextTrackCue b) = js_eq a b
+
+instance PToJSRef TextTrackCue where
+  pToJSRef = unTextTrackCue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TextTrackCue where
+  pFromJSRef = TextTrackCue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TextTrackCue where
   toJSRef = return . unTextTrackCue
@@ -18940,7 +23828,9 @@ instance IsTextTrackCue TextTrackCue
 instance IsEventTarget TextTrackCue
 instance IsGObject TextTrackCue where
   toGObject = GObject . castRef . unTextTrackCue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TextTrackCue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTextTrackCue :: IsGObject obj => obj -> TextTrackCue
 castToTextTrackCue = castTo gTypeTextTrackCue "TextTrackCue"
@@ -18956,9 +23846,18 @@ type IsTextTrackCue o = TextTrackCueClass o
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCueList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCueList Mozilla TextTrackCueList documentation>
-newtype TextTrackCueList = TextTrackCueList (JSRef TextTrackCueList) deriving (Eq)
+newtype TextTrackCueList = TextTrackCueList { unTextTrackCueList :: JSRef TextTrackCueList }
 
-unTextTrackCueList (TextTrackCueList o) = o
+instance Eq (TextTrackCueList) where
+  (TextTrackCueList a) == (TextTrackCueList b) = js_eq a b
+
+instance PToJSRef TextTrackCueList where
+  pToJSRef = unTextTrackCueList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TextTrackCueList where
+  pFromJSRef = TextTrackCueList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TextTrackCueList where
   toJSRef = return . unTextTrackCueList
@@ -18970,7 +23869,9 @@ instance FromJSRef TextTrackCueList where
 
 instance IsGObject TextTrackCueList where
   toGObject = GObject . castRef . unTextTrackCueList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TextTrackCueList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTextTrackCueList :: IsGObject obj => obj -> TextTrackCueList
 castToTextTrackCueList = castTo gTypeTextTrackCueList "TextTrackCueList"
@@ -18989,9 +23890,18 @@ type IsTextTrackCueList o = TextTrackCueListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList Mozilla TextTrackList documentation>
-newtype TextTrackList = TextTrackList (JSRef TextTrackList) deriving (Eq)
+newtype TextTrackList = TextTrackList { unTextTrackList :: JSRef TextTrackList }
 
-unTextTrackList (TextTrackList o) = o
+instance Eq (TextTrackList) where
+  (TextTrackList a) == (TextTrackList b) = js_eq a b
+
+instance PToJSRef TextTrackList where
+  pToJSRef = unTextTrackList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TextTrackList where
+  pFromJSRef = TextTrackList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TextTrackList where
   toJSRef = return . unTextTrackList
@@ -19004,7 +23914,9 @@ instance FromJSRef TextTrackList where
 instance IsEventTarget TextTrackList
 instance IsGObject TextTrackList where
   toGObject = GObject . castRef . unTextTrackList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TextTrackList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTextTrackList :: IsGObject obj => obj -> TextTrackList
 castToTextTrackList = castTo gTypeTextTrackList "TextTrackList"
@@ -19020,9 +23932,18 @@ type IsTextTrackList o = TextTrackListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.TimeRanges".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges Mozilla TimeRanges documentation>
-newtype TimeRanges = TimeRanges (JSRef TimeRanges) deriving (Eq)
+newtype TimeRanges = TimeRanges { unTimeRanges :: JSRef TimeRanges }
 
-unTimeRanges (TimeRanges o) = o
+instance Eq (TimeRanges) where
+  (TimeRanges a) == (TimeRanges b) = js_eq a b
+
+instance PToJSRef TimeRanges where
+  pToJSRef = unTimeRanges
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TimeRanges where
+  pFromJSRef = TimeRanges
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TimeRanges where
   toJSRef = return . unTimeRanges
@@ -19034,7 +23955,9 @@ instance FromJSRef TimeRanges where
 
 instance IsGObject TimeRanges where
   toGObject = GObject . castRef . unTimeRanges
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TimeRanges . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTimeRanges :: IsGObject obj => obj -> TimeRanges
 castToTimeRanges = castTo gTypeTimeRanges "TimeRanges"
@@ -19050,9 +23973,18 @@ type IsTimeRanges o = TimeRangesClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Touch".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Touch Mozilla Touch documentation>
-newtype Touch = Touch (JSRef Touch) deriving (Eq)
+newtype Touch = Touch { unTouch :: JSRef Touch }
 
-unTouch (Touch o) = o
+instance Eq (Touch) where
+  (Touch a) == (Touch b) = js_eq a b
+
+instance PToJSRef Touch where
+  pToJSRef = unTouch
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Touch where
+  pFromJSRef = Touch
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Touch where
   toJSRef = return . unTouch
@@ -19064,7 +23996,9 @@ instance FromJSRef Touch where
 
 instance IsGObject Touch where
   toGObject = GObject . castRef . unTouch
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Touch . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTouch :: IsGObject obj => obj -> Touch
 castToTouch = castTo gTypeTouch "Touch"
@@ -19084,9 +24018,18 @@ type IsTouch o = TouchClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent Mozilla TouchEvent documentation>
-newtype TouchEvent = TouchEvent (JSRef TouchEvent) deriving (Eq)
+newtype TouchEvent = TouchEvent { unTouchEvent :: JSRef TouchEvent }
 
-unTouchEvent (TouchEvent o) = o
+instance Eq (TouchEvent) where
+  (TouchEvent a) == (TouchEvent b) = js_eq a b
+
+instance PToJSRef TouchEvent where
+  pToJSRef = unTouchEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TouchEvent where
+  pFromJSRef = TouchEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TouchEvent where
   toJSRef = return . unTouchEvent
@@ -19100,7 +24043,9 @@ instance IsUIEvent TouchEvent
 instance IsEvent TouchEvent
 instance IsGObject TouchEvent where
   toGObject = GObject . castRef . unTouchEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TouchEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTouchEvent :: IsGObject obj => obj -> TouchEvent
 castToTouchEvent = castTo gTypeTouchEvent "TouchEvent"
@@ -19115,9 +24060,18 @@ gTypeTouchEvent = GType gTypeTouchEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.TouchList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TouchList Mozilla TouchList documentation>
-newtype TouchList = TouchList (JSRef TouchList) deriving (Eq)
+newtype TouchList = TouchList { unTouchList :: JSRef TouchList }
 
-unTouchList (TouchList o) = o
+instance Eq (TouchList) where
+  (TouchList a) == (TouchList b) = js_eq a b
+
+instance PToJSRef TouchList where
+  pToJSRef = unTouchList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TouchList where
+  pFromJSRef = TouchList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TouchList where
   toJSRef = return . unTouchList
@@ -19129,7 +24083,9 @@ instance FromJSRef TouchList where
 
 instance IsGObject TouchList where
   toGObject = GObject . castRef . unTouchList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TouchList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTouchList :: IsGObject obj => obj -> TouchList
 castToTouchList = castTo gTypeTouchList "TouchList"
@@ -19147,9 +24103,18 @@ gTypeTouchList = GType gTypeTouchList'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TrackEvent Mozilla TrackEvent documentation>
-newtype TrackEvent = TrackEvent (JSRef TrackEvent) deriving (Eq)
+newtype TrackEvent = TrackEvent { unTrackEvent :: JSRef TrackEvent }
 
-unTrackEvent (TrackEvent o) = o
+instance Eq (TrackEvent) where
+  (TrackEvent a) == (TrackEvent b) = js_eq a b
+
+instance PToJSRef TrackEvent where
+  pToJSRef = unTrackEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TrackEvent where
+  pFromJSRef = TrackEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TrackEvent where
   toJSRef = return . unTrackEvent
@@ -19162,7 +24127,9 @@ instance FromJSRef TrackEvent where
 instance IsEvent TrackEvent
 instance IsGObject TrackEvent where
   toGObject = GObject . castRef . unTrackEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TrackEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTrackEvent :: IsGObject obj => obj -> TrackEvent
 castToTrackEvent = castTo gTypeTrackEvent "TrackEvent"
@@ -19180,9 +24147,18 @@ gTypeTrackEvent = GType gTypeTrackEvent'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent Mozilla TransitionEvent documentation>
-newtype TransitionEvent = TransitionEvent (JSRef TransitionEvent) deriving (Eq)
+newtype TransitionEvent = TransitionEvent { unTransitionEvent :: JSRef TransitionEvent }
 
-unTransitionEvent (TransitionEvent o) = o
+instance Eq (TransitionEvent) where
+  (TransitionEvent a) == (TransitionEvent b) = js_eq a b
+
+instance PToJSRef TransitionEvent where
+  pToJSRef = unTransitionEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TransitionEvent where
+  pFromJSRef = TransitionEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TransitionEvent where
   toJSRef = return . unTransitionEvent
@@ -19195,7 +24171,9 @@ instance FromJSRef TransitionEvent where
 instance IsEvent TransitionEvent
 instance IsGObject TransitionEvent where
   toGObject = GObject . castRef . unTransitionEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TransitionEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTransitionEvent :: IsGObject obj => obj -> TransitionEvent
 castToTransitionEvent = castTo gTypeTransitionEvent "TransitionEvent"
@@ -19210,9 +24188,18 @@ gTypeTransitionEvent = GType gTypeTransitionEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.TreeWalker".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker Mozilla TreeWalker documentation>
-newtype TreeWalker = TreeWalker (JSRef TreeWalker) deriving (Eq)
+newtype TreeWalker = TreeWalker { unTreeWalker :: JSRef TreeWalker }
 
-unTreeWalker (TreeWalker o) = o
+instance Eq (TreeWalker) where
+  (TreeWalker a) == (TreeWalker b) = js_eq a b
+
+instance PToJSRef TreeWalker where
+  pToJSRef = unTreeWalker
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TreeWalker where
+  pFromJSRef = TreeWalker
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TreeWalker where
   toJSRef = return . unTreeWalker
@@ -19224,7 +24211,9 @@ instance FromJSRef TreeWalker where
 
 instance IsGObject TreeWalker where
   toGObject = GObject . castRef . unTreeWalker
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TreeWalker . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTreeWalker :: IsGObject obj => obj -> TreeWalker
 castToTreeWalker = castTo gTypeTreeWalker "TreeWalker"
@@ -19240,9 +24229,18 @@ type IsTreeWalker o = TreeWalkerClass o
 -- | Functions for this inteface are in "GHCJS.DOM.TypeConversions".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions Mozilla TypeConversions documentation>
-newtype TypeConversions = TypeConversions (JSRef TypeConversions) deriving (Eq)
+newtype TypeConversions = TypeConversions { unTypeConversions :: JSRef TypeConversions }
 
-unTypeConversions (TypeConversions o) = o
+instance Eq (TypeConversions) where
+  (TypeConversions a) == (TypeConversions b) = js_eq a b
+
+instance PToJSRef TypeConversions where
+  pToJSRef = unTypeConversions
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef TypeConversions where
+  pFromJSRef = TypeConversions
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef TypeConversions where
   toJSRef = return . unTypeConversions
@@ -19254,7 +24252,9 @@ instance FromJSRef TypeConversions where
 
 instance IsGObject TypeConversions where
   toGObject = GObject . castRef . unTypeConversions
+  {-# INLINE toGObject #-}
   unsafeCastGObject = TypeConversions . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToTypeConversions :: IsGObject obj => obj -> TypeConversions
 castToTypeConversions = castTo gTypeTypeConversions "TypeConversions"
@@ -19272,9 +24272,18 @@ gTypeTypeConversions = GType gTypeTypeConversions'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent Mozilla UIEvent documentation>
-newtype UIEvent = UIEvent (JSRef UIEvent) deriving (Eq)
+newtype UIEvent = UIEvent { unUIEvent :: JSRef UIEvent }
 
-unUIEvent (UIEvent o) = o
+instance Eq (UIEvent) where
+  (UIEvent a) == (UIEvent b) = js_eq a b
+
+instance PToJSRef UIEvent where
+  pToJSRef = unUIEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef UIEvent where
+  pFromJSRef = UIEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef UIEvent where
   toJSRef = return . unUIEvent
@@ -19292,7 +24301,9 @@ instance IsUIEvent UIEvent
 instance IsEvent UIEvent
 instance IsGObject UIEvent where
   toGObject = GObject . castRef . unUIEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = UIEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToUIEvent :: IsGObject obj => obj -> UIEvent
 castToUIEvent = castTo gTypeUIEvent "UIEvent"
@@ -19312,9 +24323,18 @@ type IsUIEvent o = UIEventClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UIRequestEvent Mozilla UIRequestEvent documentation>
-newtype UIRequestEvent = UIRequestEvent (JSRef UIRequestEvent) deriving (Eq)
+newtype UIRequestEvent = UIRequestEvent { unUIRequestEvent :: JSRef UIRequestEvent }
 
-unUIRequestEvent (UIRequestEvent o) = o
+instance Eq (UIRequestEvent) where
+  (UIRequestEvent a) == (UIRequestEvent b) = js_eq a b
+
+instance PToJSRef UIRequestEvent where
+  pToJSRef = unUIRequestEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef UIRequestEvent where
+  pFromJSRef = UIRequestEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef UIRequestEvent where
   toJSRef = return . unUIRequestEvent
@@ -19328,7 +24348,9 @@ instance IsUIEvent UIRequestEvent
 instance IsEvent UIRequestEvent
 instance IsGObject UIRequestEvent where
   toGObject = GObject . castRef . unUIRequestEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = UIRequestEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToUIRequestEvent :: IsGObject obj => obj -> UIRequestEvent
 castToUIRequestEvent = castTo gTypeUIRequestEvent "UIRequestEvent"
@@ -19340,12 +24362,61 @@ gTypeUIRequestEvent = GType gTypeUIRequestEvent'
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.URL".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation>
+newtype URL = URL { unURL :: JSRef URL }
+
+instance Eq (URL) where
+  (URL a) == (URL b) = js_eq a b
+
+instance PToJSRef URL where
+  pToJSRef = unURL
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef URL where
+  pFromJSRef = URL
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef URL where
+  toJSRef = return . unURL
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef URL where
+  fromJSRef = return . fmap URL . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsGObject URL where
+  toGObject = GObject . castRef . unURL
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = URL . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToURL :: IsGObject obj => obj -> URL
+castToURL = castTo gTypeURL "URL"
+
+foreign import javascript unsafe "window[\"URL\"]" gTypeURL' :: JSRef GType
+gTypeURL = GType gTypeURL'
+#else
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.URLUtils".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils Mozilla URLUtils documentation>
-newtype URLUtils = URLUtils (JSRef URLUtils) deriving (Eq)
+newtype URLUtils = URLUtils { unURLUtils :: JSRef URLUtils }
 
-unURLUtils (URLUtils o) = o
+instance Eq (URLUtils) where
+  (URLUtils a) == (URLUtils b) = js_eq a b
+
+instance PToJSRef URLUtils where
+  pToJSRef = unURLUtils
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef URLUtils where
+  pFromJSRef = URLUtils
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef URLUtils where
   toJSRef = return . unURLUtils
@@ -19357,7 +24428,9 @@ instance FromJSRef URLUtils where
 
 instance IsGObject URLUtils where
   toGObject = GObject . castRef . unURLUtils
+  {-# INLINE toGObject #-}
   unsafeCastGObject = URLUtils . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToURLUtils :: IsGObject obj => obj -> URLUtils
 castToURLUtils = castTo gTypeURLUtils "URLUtils"
@@ -19372,9 +24445,18 @@ gTypeURLUtils = GType gTypeURLUtils'
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandler".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandler Mozilla UserMessageHandler documentation>
-newtype UserMessageHandler = UserMessageHandler (JSRef UserMessageHandler) deriving (Eq)
+newtype UserMessageHandler = UserMessageHandler { unUserMessageHandler :: JSRef UserMessageHandler }
 
-unUserMessageHandler (UserMessageHandler o) = o
+instance Eq (UserMessageHandler) where
+  (UserMessageHandler a) == (UserMessageHandler b) = js_eq a b
+
+instance PToJSRef UserMessageHandler where
+  pToJSRef = unUserMessageHandler
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef UserMessageHandler where
+  pFromJSRef = UserMessageHandler
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef UserMessageHandler where
   toJSRef = return . unUserMessageHandler
@@ -19386,7 +24468,9 @@ instance FromJSRef UserMessageHandler where
 
 instance IsGObject UserMessageHandler where
   toGObject = GObject . castRef . unUserMessageHandler
+  {-# INLINE toGObject #-}
   unsafeCastGObject = UserMessageHandler . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToUserMessageHandler :: IsGObject obj => obj -> UserMessageHandler
 castToUserMessageHandler = castTo gTypeUserMessageHandler "UserMessageHandler"
@@ -19401,9 +24485,18 @@ gTypeUserMessageHandler = GType gTypeUserMessageHandler'
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandlersNamespace".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandlersNamespace Mozilla UserMessageHandlersNamespace documentation>
-newtype UserMessageHandlersNamespace = UserMessageHandlersNamespace (JSRef UserMessageHandlersNamespace) deriving (Eq)
+newtype UserMessageHandlersNamespace = UserMessageHandlersNamespace { unUserMessageHandlersNamespace :: JSRef UserMessageHandlersNamespace }
 
-unUserMessageHandlersNamespace (UserMessageHandlersNamespace o) = o
+instance Eq (UserMessageHandlersNamespace) where
+  (UserMessageHandlersNamespace a) == (UserMessageHandlersNamespace b) = js_eq a b
+
+instance PToJSRef UserMessageHandlersNamespace where
+  pToJSRef = unUserMessageHandlersNamespace
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef UserMessageHandlersNamespace where
+  pFromJSRef = UserMessageHandlersNamespace
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef UserMessageHandlersNamespace where
   toJSRef = return . unUserMessageHandlersNamespace
@@ -19415,7 +24508,9 @@ instance FromJSRef UserMessageHandlersNamespace where
 
 instance IsGObject UserMessageHandlersNamespace where
   toGObject = GObject . castRef . unUserMessageHandlersNamespace
+  {-# INLINE toGObject #-}
   unsafeCastGObject = UserMessageHandlersNamespace . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToUserMessageHandlersNamespace :: IsGObject obj => obj -> UserMessageHandlersNamespace
 castToUserMessageHandlersNamespace = castTo gTypeUserMessageHandlersNamespace "UserMessageHandlersNamespace"
@@ -19434,9 +24529,18 @@ gTypeUserMessageHandlersNamespace = GType gTypeUserMessageHandlersNamespace'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue Mozilla VTTCue documentation>
-newtype VTTCue = VTTCue (JSRef VTTCue) deriving (Eq)
+newtype VTTCue = VTTCue { unVTTCue :: JSRef VTTCue }
 
-unVTTCue (VTTCue o) = o
+instance Eq (VTTCue) where
+  (VTTCue a) == (VTTCue b) = js_eq a b
+
+instance PToJSRef VTTCue where
+  pToJSRef = unVTTCue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef VTTCue where
+  pFromJSRef = VTTCue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef VTTCue where
   toJSRef = return . unVTTCue
@@ -19450,7 +24554,9 @@ instance IsTextTrackCue VTTCue
 instance IsEventTarget VTTCue
 instance IsGObject VTTCue where
   toGObject = GObject . castRef . unVTTCue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = VTTCue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToVTTCue :: IsGObject obj => obj -> VTTCue
 castToVTTCue = castTo gTypeVTTCue "VTTCue"
@@ -19465,9 +24571,18 @@ gTypeVTTCue = GType gTypeVTTCue'
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegion".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion Mozilla VTTRegion documentation>
-newtype VTTRegion = VTTRegion (JSRef VTTRegion) deriving (Eq)
+newtype VTTRegion = VTTRegion { unVTTRegion :: JSRef VTTRegion }
 
-unVTTRegion (VTTRegion o) = o
+instance Eq (VTTRegion) where
+  (VTTRegion a) == (VTTRegion b) = js_eq a b
+
+instance PToJSRef VTTRegion where
+  pToJSRef = unVTTRegion
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef VTTRegion where
+  pFromJSRef = VTTRegion
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef VTTRegion where
   toJSRef = return . unVTTRegion
@@ -19479,7 +24594,9 @@ instance FromJSRef VTTRegion where
 
 instance IsGObject VTTRegion where
   toGObject = GObject . castRef . unVTTRegion
+  {-# INLINE toGObject #-}
   unsafeCastGObject = VTTRegion . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToVTTRegion :: IsGObject obj => obj -> VTTRegion
 castToVTTRegion = castTo gTypeVTTRegion "VTTRegion"
@@ -19494,9 +24611,18 @@ gTypeVTTRegion = GType gTypeVTTRegion'
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegionList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList Mozilla VTTRegionList documentation>
-newtype VTTRegionList = VTTRegionList (JSRef VTTRegionList) deriving (Eq)
+newtype VTTRegionList = VTTRegionList { unVTTRegionList :: JSRef VTTRegionList }
 
-unVTTRegionList (VTTRegionList o) = o
+instance Eq (VTTRegionList) where
+  (VTTRegionList a) == (VTTRegionList b) = js_eq a b
+
+instance PToJSRef VTTRegionList where
+  pToJSRef = unVTTRegionList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef VTTRegionList where
+  pFromJSRef = VTTRegionList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef VTTRegionList where
   toJSRef = return . unVTTRegionList
@@ -19508,7 +24634,9 @@ instance FromJSRef VTTRegionList where
 
 instance IsGObject VTTRegionList where
   toGObject = GObject . castRef . unVTTRegionList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = VTTRegionList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToVTTRegionList :: IsGObject obj => obj -> VTTRegionList
 castToVTTRegionList = castTo gTypeVTTRegionList "VTTRegionList"
@@ -19523,9 +24651,18 @@ gTypeVTTRegionList = GType gTypeVTTRegionList'
 -- | Functions for this inteface are in "GHCJS.DOM.ValidityState".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ValidityState Mozilla ValidityState documentation>
-newtype ValidityState = ValidityState (JSRef ValidityState) deriving (Eq)
+newtype ValidityState = ValidityState { unValidityState :: JSRef ValidityState }
 
-unValidityState (ValidityState o) = o
+instance Eq (ValidityState) where
+  (ValidityState a) == (ValidityState b) = js_eq a b
+
+instance PToJSRef ValidityState where
+  pToJSRef = unValidityState
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef ValidityState where
+  pFromJSRef = ValidityState
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef ValidityState where
   toJSRef = return . unValidityState
@@ -19537,7 +24674,9 @@ instance FromJSRef ValidityState where
 
 instance IsGObject ValidityState where
   toGObject = GObject . castRef . unValidityState
+  {-# INLINE toGObject #-}
   unsafeCastGObject = ValidityState . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToValidityState :: IsGObject obj => obj -> ValidityState
 castToValidityState = castTo gTypeValidityState "ValidityState"
@@ -19553,9 +24692,18 @@ type IsValidityState o = ValidityStateClass o
 -- | Functions for this inteface are in "GHCJS.DOM.VideoPlaybackQuality".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality Mozilla VideoPlaybackQuality documentation>
-newtype VideoPlaybackQuality = VideoPlaybackQuality (JSRef VideoPlaybackQuality) deriving (Eq)
+newtype VideoPlaybackQuality = VideoPlaybackQuality { unVideoPlaybackQuality :: JSRef VideoPlaybackQuality }
 
-unVideoPlaybackQuality (VideoPlaybackQuality o) = o
+instance Eq (VideoPlaybackQuality) where
+  (VideoPlaybackQuality a) == (VideoPlaybackQuality b) = js_eq a b
+
+instance PToJSRef VideoPlaybackQuality where
+  pToJSRef = unVideoPlaybackQuality
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef VideoPlaybackQuality where
+  pFromJSRef = VideoPlaybackQuality
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef VideoPlaybackQuality where
   toJSRef = return . unVideoPlaybackQuality
@@ -19567,7 +24715,9 @@ instance FromJSRef VideoPlaybackQuality where
 
 instance IsGObject VideoPlaybackQuality where
   toGObject = GObject . castRef . unVideoPlaybackQuality
+  {-# INLINE toGObject #-}
   unsafeCastGObject = VideoPlaybackQuality . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToVideoPlaybackQuality :: IsGObject obj => obj -> VideoPlaybackQuality
 castToVideoPlaybackQuality = castTo gTypeVideoPlaybackQuality "VideoPlaybackQuality"
@@ -19586,9 +24736,18 @@ gTypeVideoPlaybackQuality = GType gTypeVideoPlaybackQuality'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoStreamTrack Mozilla VideoStreamTrack documentation>
-newtype VideoStreamTrack = VideoStreamTrack (JSRef VideoStreamTrack) deriving (Eq)
+newtype VideoStreamTrack = VideoStreamTrack { unVideoStreamTrack :: JSRef VideoStreamTrack }
 
-unVideoStreamTrack (VideoStreamTrack o) = o
+instance Eq (VideoStreamTrack) where
+  (VideoStreamTrack a) == (VideoStreamTrack b) = js_eq a b
+
+instance PToJSRef VideoStreamTrack where
+  pToJSRef = unVideoStreamTrack
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef VideoStreamTrack where
+  pFromJSRef = VideoStreamTrack
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef VideoStreamTrack where
   toJSRef = return . unVideoStreamTrack
@@ -19602,7 +24761,9 @@ instance IsMediaStreamTrack VideoStreamTrack
 instance IsEventTarget VideoStreamTrack
 instance IsGObject VideoStreamTrack where
   toGObject = GObject . castRef . unVideoStreamTrack
+  {-# INLINE toGObject #-}
   unsafeCastGObject = VideoStreamTrack . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToVideoStreamTrack :: IsGObject obj => obj -> VideoStreamTrack
 castToVideoStreamTrack = castTo gTypeVideoStreamTrack "VideoStreamTrack"
@@ -19617,9 +24778,18 @@ gTypeVideoStreamTrack = GType gTypeVideoStreamTrack'
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrack".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack Mozilla VideoTrack documentation>
-newtype VideoTrack = VideoTrack (JSRef VideoTrack) deriving (Eq)
+newtype VideoTrack = VideoTrack { unVideoTrack :: JSRef VideoTrack }
 
-unVideoTrack (VideoTrack o) = o
+instance Eq (VideoTrack) where
+  (VideoTrack a) == (VideoTrack b) = js_eq a b
+
+instance PToJSRef VideoTrack where
+  pToJSRef = unVideoTrack
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef VideoTrack where
+  pFromJSRef = VideoTrack
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef VideoTrack where
   toJSRef = return . unVideoTrack
@@ -19631,7 +24801,9 @@ instance FromJSRef VideoTrack where
 
 instance IsGObject VideoTrack where
   toGObject = GObject . castRef . unVideoTrack
+  {-# INLINE toGObject #-}
   unsafeCastGObject = VideoTrack . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToVideoTrack :: IsGObject obj => obj -> VideoTrack
 castToVideoTrack = castTo gTypeVideoTrack "VideoTrack"
@@ -19650,9 +24822,18 @@ type IsVideoTrack o = VideoTrackClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList Mozilla VideoTrackList documentation>
-newtype VideoTrackList = VideoTrackList (JSRef VideoTrackList) deriving (Eq)
+newtype VideoTrackList = VideoTrackList { unVideoTrackList :: JSRef VideoTrackList }
 
-unVideoTrackList (VideoTrackList o) = o
+instance Eq (VideoTrackList) where
+  (VideoTrackList a) == (VideoTrackList b) = js_eq a b
+
+instance PToJSRef VideoTrackList where
+  pToJSRef = unVideoTrackList
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef VideoTrackList where
+  pFromJSRef = VideoTrackList
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef VideoTrackList where
   toJSRef = return . unVideoTrackList
@@ -19665,7 +24846,9 @@ instance FromJSRef VideoTrackList where
 instance IsEventTarget VideoTrackList
 instance IsGObject VideoTrackList where
   toGObject = GObject . castRef . unVideoTrackList
+  {-# INLINE toGObject #-}
   unsafeCastGObject = VideoTrackList . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToVideoTrackList :: IsGObject obj => obj -> VideoTrackList
 castToVideoTrackList = castTo gTypeVideoTrackList "VideoTrackList"
@@ -19678,35 +24861,6 @@ type IsVideoTrackList o = VideoTrackListClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
--- | Functions for this inteface are in "GHCJS.DOM.VoidCallback".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/VoidCallback Mozilla VoidCallback documentation>
-newtype VoidCallback = VoidCallback (JSRef VoidCallback) deriving (Eq)
-
-unVoidCallback (VoidCallback o) = o
-
-instance ToJSRef VoidCallback where
-  toJSRef = return . unVoidCallback
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef VoidCallback where
-  fromJSRef = return . fmap VoidCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-instance IsGObject VoidCallback where
-  toGObject = GObject . castRef . unVoidCallback
-  unsafeCastGObject = VoidCallback . castRef . unGObject
-
-castToVoidCallback :: IsGObject obj => obj -> VoidCallback
-castToVoidCallback = castTo gTypeVoidCallback "VoidCallback"
-
-foreign import javascript unsafe "window[\"VoidCallback\"]" gTypeVoidCallback' :: JSRef GType
-gTypeVoidCallback = GType gTypeVoidCallback'
-#else
-#endif
-
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WaveShaperNode".
 -- Base interface functions are in:
 --
@@ -19714,9 +24868,18 @@ gTypeVoidCallback = GType gTypeVoidCallback'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode Mozilla WaveShaperNode documentation>
-newtype WaveShaperNode = WaveShaperNode (JSRef WaveShaperNode) deriving (Eq)
+newtype WaveShaperNode = WaveShaperNode { unWaveShaperNode :: JSRef WaveShaperNode }
 
-unWaveShaperNode (WaveShaperNode o) = o
+instance Eq (WaveShaperNode) where
+  (WaveShaperNode a) == (WaveShaperNode b) = js_eq a b
+
+instance PToJSRef WaveShaperNode where
+  pToJSRef = unWaveShaperNode
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WaveShaperNode where
+  pFromJSRef = WaveShaperNode
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WaveShaperNode where
   toJSRef = return . unWaveShaperNode
@@ -19730,7 +24893,9 @@ instance IsAudioNode WaveShaperNode
 instance IsEventTarget WaveShaperNode
 instance IsGObject WaveShaperNode where
   toGObject = GObject . castRef . unWaveShaperNode
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WaveShaperNode . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWaveShaperNode :: IsGObject obj => obj -> WaveShaperNode
 castToWaveShaperNode = castTo gTypeWaveShaperNode "WaveShaperNode"
@@ -19749,9 +24914,18 @@ gTypeWaveShaperNode = GType gTypeWaveShaperNode'
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext Mozilla WebGL2RenderingContext documentation>
-newtype WebGL2RenderingContext = WebGL2RenderingContext (JSRef WebGL2RenderingContext) deriving (Eq)
+newtype WebGL2RenderingContext = WebGL2RenderingContext { unWebGL2RenderingContext :: JSRef WebGL2RenderingContext }
 
-unWebGL2RenderingContext (WebGL2RenderingContext o) = o
+instance Eq (WebGL2RenderingContext) where
+  (WebGL2RenderingContext a) == (WebGL2RenderingContext b) = js_eq a b
+
+instance PToJSRef WebGL2RenderingContext where
+  pToJSRef = unWebGL2RenderingContext
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGL2RenderingContext where
+  pFromJSRef = WebGL2RenderingContext
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGL2RenderingContext where
   toJSRef = return . unWebGL2RenderingContext
@@ -19765,7 +24939,9 @@ instance IsWebGLRenderingContextBase WebGL2RenderingContext
 instance IsCanvasRenderingContext WebGL2RenderingContext
 instance IsGObject WebGL2RenderingContext where
   toGObject = GObject . castRef . unWebGL2RenderingContext
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGL2RenderingContext . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGL2RenderingContext :: IsGObject obj => obj -> WebGL2RenderingContext
 castToWebGL2RenderingContext = castTo gTypeWebGL2RenderingContext "WebGL2RenderingContext"
@@ -19780,9 +24956,18 @@ gTypeWebGL2RenderingContext = GType gTypeWebGL2RenderingContext'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLActiveInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo Mozilla WebGLActiveInfo documentation>
-newtype WebGLActiveInfo = WebGLActiveInfo (JSRef WebGLActiveInfo) deriving (Eq)
+newtype WebGLActiveInfo = WebGLActiveInfo { unWebGLActiveInfo :: JSRef WebGLActiveInfo }
 
-unWebGLActiveInfo (WebGLActiveInfo o) = o
+instance Eq (WebGLActiveInfo) where
+  (WebGLActiveInfo a) == (WebGLActiveInfo b) = js_eq a b
+
+instance PToJSRef WebGLActiveInfo where
+  pToJSRef = unWebGLActiveInfo
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLActiveInfo where
+  pFromJSRef = WebGLActiveInfo
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLActiveInfo where
   toJSRef = return . unWebGLActiveInfo
@@ -19794,7 +24979,9 @@ instance FromJSRef WebGLActiveInfo where
 
 instance IsGObject WebGLActiveInfo where
   toGObject = GObject . castRef . unWebGLActiveInfo
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLActiveInfo . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLActiveInfo :: IsGObject obj => obj -> WebGLActiveInfo
 castToWebGLActiveInfo = castTo gTypeWebGLActiveInfo "WebGLActiveInfo"
@@ -19809,9 +24996,18 @@ gTypeWebGLActiveInfo = GType gTypeWebGLActiveInfo'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLBuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLBuffer Mozilla WebGLBuffer documentation>
-newtype WebGLBuffer = WebGLBuffer (JSRef WebGLBuffer) deriving (Eq)
+newtype WebGLBuffer = WebGLBuffer { unWebGLBuffer :: JSRef WebGLBuffer }
 
-unWebGLBuffer (WebGLBuffer o) = o
+instance Eq (WebGLBuffer) where
+  (WebGLBuffer a) == (WebGLBuffer b) = js_eq a b
+
+instance PToJSRef WebGLBuffer where
+  pToJSRef = unWebGLBuffer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLBuffer where
+  pFromJSRef = WebGLBuffer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLBuffer where
   toJSRef = return . unWebGLBuffer
@@ -19823,7 +25019,9 @@ instance FromJSRef WebGLBuffer where
 
 instance IsGObject WebGLBuffer where
   toGObject = GObject . castRef . unWebGLBuffer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLBuffer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLBuffer :: IsGObject obj => obj -> WebGLBuffer
 castToWebGLBuffer = castTo gTypeWebGLBuffer "WebGLBuffer"
@@ -19838,9 +25036,18 @@ gTypeWebGLBuffer = GType gTypeWebGLBuffer'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureATC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureATC Mozilla WebGLCompressedTextureATC documentation>
-newtype WebGLCompressedTextureATC = WebGLCompressedTextureATC (JSRef WebGLCompressedTextureATC) deriving (Eq)
+newtype WebGLCompressedTextureATC = WebGLCompressedTextureATC { unWebGLCompressedTextureATC :: JSRef WebGLCompressedTextureATC }
 
-unWebGLCompressedTextureATC (WebGLCompressedTextureATC o) = o
+instance Eq (WebGLCompressedTextureATC) where
+  (WebGLCompressedTextureATC a) == (WebGLCompressedTextureATC b) = js_eq a b
+
+instance PToJSRef WebGLCompressedTextureATC where
+  pToJSRef = unWebGLCompressedTextureATC
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLCompressedTextureATC where
+  pFromJSRef = WebGLCompressedTextureATC
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLCompressedTextureATC where
   toJSRef = return . unWebGLCompressedTextureATC
@@ -19852,7 +25059,9 @@ instance FromJSRef WebGLCompressedTextureATC where
 
 instance IsGObject WebGLCompressedTextureATC where
   toGObject = GObject . castRef . unWebGLCompressedTextureATC
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLCompressedTextureATC . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLCompressedTextureATC :: IsGObject obj => obj -> WebGLCompressedTextureATC
 castToWebGLCompressedTextureATC = castTo gTypeWebGLCompressedTextureATC "WebGLCompressedTextureATC"
@@ -19867,9 +25076,18 @@ gTypeWebGLCompressedTextureATC = GType gTypeWebGLCompressedTextureATC'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTexturePVRTC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTexturePVRTC Mozilla WebGLCompressedTexturePVRTC documentation>
-newtype WebGLCompressedTexturePVRTC = WebGLCompressedTexturePVRTC (JSRef WebGLCompressedTexturePVRTC) deriving (Eq)
+newtype WebGLCompressedTexturePVRTC = WebGLCompressedTexturePVRTC { unWebGLCompressedTexturePVRTC :: JSRef WebGLCompressedTexturePVRTC }
 
-unWebGLCompressedTexturePVRTC (WebGLCompressedTexturePVRTC o) = o
+instance Eq (WebGLCompressedTexturePVRTC) where
+  (WebGLCompressedTexturePVRTC a) == (WebGLCompressedTexturePVRTC b) = js_eq a b
+
+instance PToJSRef WebGLCompressedTexturePVRTC where
+  pToJSRef = unWebGLCompressedTexturePVRTC
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLCompressedTexturePVRTC where
+  pFromJSRef = WebGLCompressedTexturePVRTC
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLCompressedTexturePVRTC where
   toJSRef = return . unWebGLCompressedTexturePVRTC
@@ -19881,7 +25099,9 @@ instance FromJSRef WebGLCompressedTexturePVRTC where
 
 instance IsGObject WebGLCompressedTexturePVRTC where
   toGObject = GObject . castRef . unWebGLCompressedTexturePVRTC
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLCompressedTexturePVRTC . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLCompressedTexturePVRTC :: IsGObject obj => obj -> WebGLCompressedTexturePVRTC
 castToWebGLCompressedTexturePVRTC = castTo gTypeWebGLCompressedTexturePVRTC "WebGLCompressedTexturePVRTC"
@@ -19896,9 +25116,18 @@ gTypeWebGLCompressedTexturePVRTC = GType gTypeWebGLCompressedTexturePVRTC'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureS3TC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureS3TC Mozilla WebGLCompressedTextureS3TC documentation>
-newtype WebGLCompressedTextureS3TC = WebGLCompressedTextureS3TC (JSRef WebGLCompressedTextureS3TC) deriving (Eq)
+newtype WebGLCompressedTextureS3TC = WebGLCompressedTextureS3TC { unWebGLCompressedTextureS3TC :: JSRef WebGLCompressedTextureS3TC }
 
-unWebGLCompressedTextureS3TC (WebGLCompressedTextureS3TC o) = o
+instance Eq (WebGLCompressedTextureS3TC) where
+  (WebGLCompressedTextureS3TC a) == (WebGLCompressedTextureS3TC b) = js_eq a b
+
+instance PToJSRef WebGLCompressedTextureS3TC where
+  pToJSRef = unWebGLCompressedTextureS3TC
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLCompressedTextureS3TC where
+  pFromJSRef = WebGLCompressedTextureS3TC
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLCompressedTextureS3TC where
   toJSRef = return . unWebGLCompressedTextureS3TC
@@ -19910,7 +25139,9 @@ instance FromJSRef WebGLCompressedTextureS3TC where
 
 instance IsGObject WebGLCompressedTextureS3TC where
   toGObject = GObject . castRef . unWebGLCompressedTextureS3TC
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLCompressedTextureS3TC . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLCompressedTextureS3TC :: IsGObject obj => obj -> WebGLCompressedTextureS3TC
 castToWebGLCompressedTextureS3TC = castTo gTypeWebGLCompressedTextureS3TC "WebGLCompressedTextureS3TC"
@@ -19925,9 +25156,18 @@ gTypeWebGLCompressedTextureS3TC = GType gTypeWebGLCompressedTextureS3TC'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextAttributes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes Mozilla WebGLContextAttributes documentation>
-newtype WebGLContextAttributes = WebGLContextAttributes (JSRef WebGLContextAttributes) deriving (Eq)
+newtype WebGLContextAttributes = WebGLContextAttributes { unWebGLContextAttributes :: JSRef WebGLContextAttributes }
 
-unWebGLContextAttributes (WebGLContextAttributes o) = o
+instance Eq (WebGLContextAttributes) where
+  (WebGLContextAttributes a) == (WebGLContextAttributes b) = js_eq a b
+
+instance PToJSRef WebGLContextAttributes where
+  pToJSRef = unWebGLContextAttributes
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLContextAttributes where
+  pFromJSRef = WebGLContextAttributes
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLContextAttributes where
   toJSRef = return . unWebGLContextAttributes
@@ -19939,7 +25179,9 @@ instance FromJSRef WebGLContextAttributes where
 
 instance IsGObject WebGLContextAttributes where
   toGObject = GObject . castRef . unWebGLContextAttributes
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLContextAttributes . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLContextAttributes :: IsGObject obj => obj -> WebGLContextAttributes
 castToWebGLContextAttributes = castTo gTypeWebGLContextAttributes "WebGLContextAttributes"
@@ -19957,9 +25199,18 @@ gTypeWebGLContextAttributes = GType gTypeWebGLContextAttributes'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextEvent Mozilla WebGLContextEvent documentation>
-newtype WebGLContextEvent = WebGLContextEvent (JSRef WebGLContextEvent) deriving (Eq)
+newtype WebGLContextEvent = WebGLContextEvent { unWebGLContextEvent :: JSRef WebGLContextEvent }
 
-unWebGLContextEvent (WebGLContextEvent o) = o
+instance Eq (WebGLContextEvent) where
+  (WebGLContextEvent a) == (WebGLContextEvent b) = js_eq a b
+
+instance PToJSRef WebGLContextEvent where
+  pToJSRef = unWebGLContextEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLContextEvent where
+  pFromJSRef = WebGLContextEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLContextEvent where
   toJSRef = return . unWebGLContextEvent
@@ -19972,7 +25223,9 @@ instance FromJSRef WebGLContextEvent where
 instance IsEvent WebGLContextEvent
 instance IsGObject WebGLContextEvent where
   toGObject = GObject . castRef . unWebGLContextEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLContextEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLContextEvent :: IsGObject obj => obj -> WebGLContextEvent
 castToWebGLContextEvent = castTo gTypeWebGLContextEvent "WebGLContextEvent"
@@ -19987,9 +25240,18 @@ gTypeWebGLContextEvent = GType gTypeWebGLContextEvent'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugRendererInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugRendererInfo Mozilla WebGLDebugRendererInfo documentation>
-newtype WebGLDebugRendererInfo = WebGLDebugRendererInfo (JSRef WebGLDebugRendererInfo) deriving (Eq)
+newtype WebGLDebugRendererInfo = WebGLDebugRendererInfo { unWebGLDebugRendererInfo :: JSRef WebGLDebugRendererInfo }
 
-unWebGLDebugRendererInfo (WebGLDebugRendererInfo o) = o
+instance Eq (WebGLDebugRendererInfo) where
+  (WebGLDebugRendererInfo a) == (WebGLDebugRendererInfo b) = js_eq a b
+
+instance PToJSRef WebGLDebugRendererInfo where
+  pToJSRef = unWebGLDebugRendererInfo
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLDebugRendererInfo where
+  pFromJSRef = WebGLDebugRendererInfo
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLDebugRendererInfo where
   toJSRef = return . unWebGLDebugRendererInfo
@@ -20001,7 +25263,9 @@ instance FromJSRef WebGLDebugRendererInfo where
 
 instance IsGObject WebGLDebugRendererInfo where
   toGObject = GObject . castRef . unWebGLDebugRendererInfo
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLDebugRendererInfo . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLDebugRendererInfo :: IsGObject obj => obj -> WebGLDebugRendererInfo
 castToWebGLDebugRendererInfo = castTo gTypeWebGLDebugRendererInfo "WebGLDebugRendererInfo"
@@ -20016,9 +25280,18 @@ gTypeWebGLDebugRendererInfo = GType gTypeWebGLDebugRendererInfo'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugShaders".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugShaders Mozilla WebGLDebugShaders documentation>
-newtype WebGLDebugShaders = WebGLDebugShaders (JSRef WebGLDebugShaders) deriving (Eq)
+newtype WebGLDebugShaders = WebGLDebugShaders { unWebGLDebugShaders :: JSRef WebGLDebugShaders }
 
-unWebGLDebugShaders (WebGLDebugShaders o) = o
+instance Eq (WebGLDebugShaders) where
+  (WebGLDebugShaders a) == (WebGLDebugShaders b) = js_eq a b
+
+instance PToJSRef WebGLDebugShaders where
+  pToJSRef = unWebGLDebugShaders
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLDebugShaders where
+  pFromJSRef = WebGLDebugShaders
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLDebugShaders where
   toJSRef = return . unWebGLDebugShaders
@@ -20030,7 +25303,9 @@ instance FromJSRef WebGLDebugShaders where
 
 instance IsGObject WebGLDebugShaders where
   toGObject = GObject . castRef . unWebGLDebugShaders
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLDebugShaders . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLDebugShaders :: IsGObject obj => obj -> WebGLDebugShaders
 castToWebGLDebugShaders = castTo gTypeWebGLDebugShaders "WebGLDebugShaders"
@@ -20045,9 +25320,18 @@ gTypeWebGLDebugShaders = GType gTypeWebGLDebugShaders'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDepthTexture".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDepthTexture Mozilla WebGLDepthTexture documentation>
-newtype WebGLDepthTexture = WebGLDepthTexture (JSRef WebGLDepthTexture) deriving (Eq)
+newtype WebGLDepthTexture = WebGLDepthTexture { unWebGLDepthTexture :: JSRef WebGLDepthTexture }
 
-unWebGLDepthTexture (WebGLDepthTexture o) = o
+instance Eq (WebGLDepthTexture) where
+  (WebGLDepthTexture a) == (WebGLDepthTexture b) = js_eq a b
+
+instance PToJSRef WebGLDepthTexture where
+  pToJSRef = unWebGLDepthTexture
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLDepthTexture where
+  pFromJSRef = WebGLDepthTexture
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLDepthTexture where
   toJSRef = return . unWebGLDepthTexture
@@ -20059,7 +25343,9 @@ instance FromJSRef WebGLDepthTexture where
 
 instance IsGObject WebGLDepthTexture where
   toGObject = GObject . castRef . unWebGLDepthTexture
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLDepthTexture . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLDepthTexture :: IsGObject obj => obj -> WebGLDepthTexture
 castToWebGLDepthTexture = castTo gTypeWebGLDepthTexture "WebGLDepthTexture"
@@ -20074,9 +25360,18 @@ gTypeWebGLDepthTexture = GType gTypeWebGLDepthTexture'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDrawBuffers".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDrawBuffers Mozilla WebGLDrawBuffers documentation>
-newtype WebGLDrawBuffers = WebGLDrawBuffers (JSRef WebGLDrawBuffers) deriving (Eq)
+newtype WebGLDrawBuffers = WebGLDrawBuffers { unWebGLDrawBuffers :: JSRef WebGLDrawBuffers }
 
-unWebGLDrawBuffers (WebGLDrawBuffers o) = o
+instance Eq (WebGLDrawBuffers) where
+  (WebGLDrawBuffers a) == (WebGLDrawBuffers b) = js_eq a b
+
+instance PToJSRef WebGLDrawBuffers where
+  pToJSRef = unWebGLDrawBuffers
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLDrawBuffers where
+  pFromJSRef = WebGLDrawBuffers
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLDrawBuffers where
   toJSRef = return . unWebGLDrawBuffers
@@ -20088,7 +25383,9 @@ instance FromJSRef WebGLDrawBuffers where
 
 instance IsGObject WebGLDrawBuffers where
   toGObject = GObject . castRef . unWebGLDrawBuffers
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLDrawBuffers . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLDrawBuffers :: IsGObject obj => obj -> WebGLDrawBuffers
 castToWebGLDrawBuffers = castTo gTypeWebGLDrawBuffers "WebGLDrawBuffers"
@@ -20103,9 +25400,18 @@ gTypeWebGLDrawBuffers = GType gTypeWebGLDrawBuffers'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLFramebuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLFramebuffer Mozilla WebGLFramebuffer documentation>
-newtype WebGLFramebuffer = WebGLFramebuffer (JSRef WebGLFramebuffer) deriving (Eq)
+newtype WebGLFramebuffer = WebGLFramebuffer { unWebGLFramebuffer :: JSRef WebGLFramebuffer }
 
-unWebGLFramebuffer (WebGLFramebuffer o) = o
+instance Eq (WebGLFramebuffer) where
+  (WebGLFramebuffer a) == (WebGLFramebuffer b) = js_eq a b
+
+instance PToJSRef WebGLFramebuffer where
+  pToJSRef = unWebGLFramebuffer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLFramebuffer where
+  pFromJSRef = WebGLFramebuffer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLFramebuffer where
   toJSRef = return . unWebGLFramebuffer
@@ -20117,7 +25423,9 @@ instance FromJSRef WebGLFramebuffer where
 
 instance IsGObject WebGLFramebuffer where
   toGObject = GObject . castRef . unWebGLFramebuffer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLFramebuffer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLFramebuffer :: IsGObject obj => obj -> WebGLFramebuffer
 castToWebGLFramebuffer = castTo gTypeWebGLFramebuffer "WebGLFramebuffer"
@@ -20132,9 +25440,18 @@ gTypeWebGLFramebuffer = GType gTypeWebGLFramebuffer'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLLoseContext".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext Mozilla WebGLLoseContext documentation>
-newtype WebGLLoseContext = WebGLLoseContext (JSRef WebGLLoseContext) deriving (Eq)
+newtype WebGLLoseContext = WebGLLoseContext { unWebGLLoseContext :: JSRef WebGLLoseContext }
 
-unWebGLLoseContext (WebGLLoseContext o) = o
+instance Eq (WebGLLoseContext) where
+  (WebGLLoseContext a) == (WebGLLoseContext b) = js_eq a b
+
+instance PToJSRef WebGLLoseContext where
+  pToJSRef = unWebGLLoseContext
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLLoseContext where
+  pFromJSRef = WebGLLoseContext
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLLoseContext where
   toJSRef = return . unWebGLLoseContext
@@ -20146,7 +25463,9 @@ instance FromJSRef WebGLLoseContext where
 
 instance IsGObject WebGLLoseContext where
   toGObject = GObject . castRef . unWebGLLoseContext
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLLoseContext . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLLoseContext :: IsGObject obj => obj -> WebGLLoseContext
 castToWebGLLoseContext = castTo gTypeWebGLLoseContext "WebGLLoseContext"
@@ -20161,9 +25480,18 @@ gTypeWebGLLoseContext = GType gTypeWebGLLoseContext'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLProgram".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLProgram Mozilla WebGLProgram documentation>
-newtype WebGLProgram = WebGLProgram (JSRef WebGLProgram) deriving (Eq)
+newtype WebGLProgram = WebGLProgram { unWebGLProgram :: JSRef WebGLProgram }
 
-unWebGLProgram (WebGLProgram o) = o
+instance Eq (WebGLProgram) where
+  (WebGLProgram a) == (WebGLProgram b) = js_eq a b
+
+instance PToJSRef WebGLProgram where
+  pToJSRef = unWebGLProgram
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLProgram where
+  pFromJSRef = WebGLProgram
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLProgram where
   toJSRef = return . unWebGLProgram
@@ -20175,7 +25503,9 @@ instance FromJSRef WebGLProgram where
 
 instance IsGObject WebGLProgram where
   toGObject = GObject . castRef . unWebGLProgram
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLProgram . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLProgram :: IsGObject obj => obj -> WebGLProgram
 castToWebGLProgram = castTo gTypeWebGLProgram "WebGLProgram"
@@ -20190,9 +25520,18 @@ gTypeWebGLProgram = GType gTypeWebGLProgram'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLQuery".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLQuery Mozilla WebGLQuery documentation>
-newtype WebGLQuery = WebGLQuery (JSRef WebGLQuery) deriving (Eq)
+newtype WebGLQuery = WebGLQuery { unWebGLQuery :: JSRef WebGLQuery }
 
-unWebGLQuery (WebGLQuery o) = o
+instance Eq (WebGLQuery) where
+  (WebGLQuery a) == (WebGLQuery b) = js_eq a b
+
+instance PToJSRef WebGLQuery where
+  pToJSRef = unWebGLQuery
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLQuery where
+  pFromJSRef = WebGLQuery
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLQuery where
   toJSRef = return . unWebGLQuery
@@ -20204,7 +25543,9 @@ instance FromJSRef WebGLQuery where
 
 instance IsGObject WebGLQuery where
   toGObject = GObject . castRef . unWebGLQuery
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLQuery . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLQuery :: IsGObject obj => obj -> WebGLQuery
 castToWebGLQuery = castTo gTypeWebGLQuery "WebGLQuery"
@@ -20219,9 +25560,18 @@ gTypeWebGLQuery = GType gTypeWebGLQuery'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderbuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderbuffer Mozilla WebGLRenderbuffer documentation>
-newtype WebGLRenderbuffer = WebGLRenderbuffer (JSRef WebGLRenderbuffer) deriving (Eq)
+newtype WebGLRenderbuffer = WebGLRenderbuffer { unWebGLRenderbuffer :: JSRef WebGLRenderbuffer }
 
-unWebGLRenderbuffer (WebGLRenderbuffer o) = o
+instance Eq (WebGLRenderbuffer) where
+  (WebGLRenderbuffer a) == (WebGLRenderbuffer b) = js_eq a b
+
+instance PToJSRef WebGLRenderbuffer where
+  pToJSRef = unWebGLRenderbuffer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLRenderbuffer where
+  pFromJSRef = WebGLRenderbuffer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLRenderbuffer where
   toJSRef = return . unWebGLRenderbuffer
@@ -20233,7 +25583,9 @@ instance FromJSRef WebGLRenderbuffer where
 
 instance IsGObject WebGLRenderbuffer where
   toGObject = GObject . castRef . unWebGLRenderbuffer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLRenderbuffer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLRenderbuffer :: IsGObject obj => obj -> WebGLRenderbuffer
 castToWebGLRenderbuffer = castTo gTypeWebGLRenderbuffer "WebGLRenderbuffer"
@@ -20252,9 +25604,18 @@ gTypeWebGLRenderbuffer = GType gTypeWebGLRenderbuffer'
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext Mozilla WebGLRenderingContext documentation>
-newtype WebGLRenderingContext = WebGLRenderingContext (JSRef WebGLRenderingContext) deriving (Eq)
+newtype WebGLRenderingContext = WebGLRenderingContext { unWebGLRenderingContext :: JSRef WebGLRenderingContext }
 
-unWebGLRenderingContext (WebGLRenderingContext o) = o
+instance Eq (WebGLRenderingContext) where
+  (WebGLRenderingContext a) == (WebGLRenderingContext b) = js_eq a b
+
+instance PToJSRef WebGLRenderingContext where
+  pToJSRef = unWebGLRenderingContext
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLRenderingContext where
+  pFromJSRef = WebGLRenderingContext
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLRenderingContext where
   toJSRef = return . unWebGLRenderingContext
@@ -20268,7 +25629,9 @@ instance IsWebGLRenderingContextBase WebGLRenderingContext
 instance IsCanvasRenderingContext WebGLRenderingContext
 instance IsGObject WebGLRenderingContext where
   toGObject = GObject . castRef . unWebGLRenderingContext
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLRenderingContext . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLRenderingContext :: IsGObject obj => obj -> WebGLRenderingContext
 castToWebGLRenderingContext = castTo gTypeWebGLRenderingContext "WebGLRenderingContext"
@@ -20286,9 +25649,18 @@ gTypeWebGLRenderingContext = GType gTypeWebGLRenderingContext'
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase Mozilla WebGLRenderingContextBase documentation>
-newtype WebGLRenderingContextBase = WebGLRenderingContextBase (JSRef WebGLRenderingContextBase) deriving (Eq)
+newtype WebGLRenderingContextBase = WebGLRenderingContextBase { unWebGLRenderingContextBase :: JSRef WebGLRenderingContextBase }
 
-unWebGLRenderingContextBase (WebGLRenderingContextBase o) = o
+instance Eq (WebGLRenderingContextBase) where
+  (WebGLRenderingContextBase a) == (WebGLRenderingContextBase b) = js_eq a b
+
+instance PToJSRef WebGLRenderingContextBase where
+  pToJSRef = unWebGLRenderingContextBase
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLRenderingContextBase where
+  pFromJSRef = WebGLRenderingContextBase
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLRenderingContextBase where
   toJSRef = return . unWebGLRenderingContextBase
@@ -20306,7 +25678,9 @@ instance IsWebGLRenderingContextBase WebGLRenderingContextBase
 instance IsCanvasRenderingContext WebGLRenderingContextBase
 instance IsGObject WebGLRenderingContextBase where
   toGObject = GObject . castRef . unWebGLRenderingContextBase
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLRenderingContextBase . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLRenderingContextBase :: IsGObject obj => obj -> WebGLRenderingContextBase
 castToWebGLRenderingContextBase = castTo gTypeWebGLRenderingContextBase "WebGLRenderingContextBase"
@@ -20321,9 +25695,18 @@ gTypeWebGLRenderingContextBase = GType gTypeWebGLRenderingContextBase'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSampler".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSampler Mozilla WebGLSampler documentation>
-newtype WebGLSampler = WebGLSampler (JSRef WebGLSampler) deriving (Eq)
+newtype WebGLSampler = WebGLSampler { unWebGLSampler :: JSRef WebGLSampler }
 
-unWebGLSampler (WebGLSampler o) = o
+instance Eq (WebGLSampler) where
+  (WebGLSampler a) == (WebGLSampler b) = js_eq a b
+
+instance PToJSRef WebGLSampler where
+  pToJSRef = unWebGLSampler
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLSampler where
+  pFromJSRef = WebGLSampler
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLSampler where
   toJSRef = return . unWebGLSampler
@@ -20335,7 +25718,9 @@ instance FromJSRef WebGLSampler where
 
 instance IsGObject WebGLSampler where
   toGObject = GObject . castRef . unWebGLSampler
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLSampler . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLSampler :: IsGObject obj => obj -> WebGLSampler
 castToWebGLSampler = castTo gTypeWebGLSampler "WebGLSampler"
@@ -20350,9 +25735,18 @@ gTypeWebGLSampler = GType gTypeWebGLSampler'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShader".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShader Mozilla WebGLShader documentation>
-newtype WebGLShader = WebGLShader (JSRef WebGLShader) deriving (Eq)
+newtype WebGLShader = WebGLShader { unWebGLShader :: JSRef WebGLShader }
 
-unWebGLShader (WebGLShader o) = o
+instance Eq (WebGLShader) where
+  (WebGLShader a) == (WebGLShader b) = js_eq a b
+
+instance PToJSRef WebGLShader where
+  pToJSRef = unWebGLShader
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLShader where
+  pFromJSRef = WebGLShader
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLShader where
   toJSRef = return . unWebGLShader
@@ -20364,7 +25758,9 @@ instance FromJSRef WebGLShader where
 
 instance IsGObject WebGLShader where
   toGObject = GObject . castRef . unWebGLShader
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLShader . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLShader :: IsGObject obj => obj -> WebGLShader
 castToWebGLShader = castTo gTypeWebGLShader "WebGLShader"
@@ -20379,9 +25775,18 @@ gTypeWebGLShader = GType gTypeWebGLShader'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShaderPrecisionFormat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat Mozilla WebGLShaderPrecisionFormat documentation>
-newtype WebGLShaderPrecisionFormat = WebGLShaderPrecisionFormat (JSRef WebGLShaderPrecisionFormat) deriving (Eq)
+newtype WebGLShaderPrecisionFormat = WebGLShaderPrecisionFormat { unWebGLShaderPrecisionFormat :: JSRef WebGLShaderPrecisionFormat }
 
-unWebGLShaderPrecisionFormat (WebGLShaderPrecisionFormat o) = o
+instance Eq (WebGLShaderPrecisionFormat) where
+  (WebGLShaderPrecisionFormat a) == (WebGLShaderPrecisionFormat b) = js_eq a b
+
+instance PToJSRef WebGLShaderPrecisionFormat where
+  pToJSRef = unWebGLShaderPrecisionFormat
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLShaderPrecisionFormat where
+  pFromJSRef = WebGLShaderPrecisionFormat
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLShaderPrecisionFormat where
   toJSRef = return . unWebGLShaderPrecisionFormat
@@ -20393,7 +25798,9 @@ instance FromJSRef WebGLShaderPrecisionFormat where
 
 instance IsGObject WebGLShaderPrecisionFormat where
   toGObject = GObject . castRef . unWebGLShaderPrecisionFormat
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLShaderPrecisionFormat . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLShaderPrecisionFormat :: IsGObject obj => obj -> WebGLShaderPrecisionFormat
 castToWebGLShaderPrecisionFormat = castTo gTypeWebGLShaderPrecisionFormat "WebGLShaderPrecisionFormat"
@@ -20408,9 +25815,18 @@ gTypeWebGLShaderPrecisionFormat = GType gTypeWebGLShaderPrecisionFormat'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSync".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSync Mozilla WebGLSync documentation>
-newtype WebGLSync = WebGLSync (JSRef WebGLSync) deriving (Eq)
+newtype WebGLSync = WebGLSync { unWebGLSync :: JSRef WebGLSync }
 
-unWebGLSync (WebGLSync o) = o
+instance Eq (WebGLSync) where
+  (WebGLSync a) == (WebGLSync b) = js_eq a b
+
+instance PToJSRef WebGLSync where
+  pToJSRef = unWebGLSync
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLSync where
+  pFromJSRef = WebGLSync
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLSync where
   toJSRef = return . unWebGLSync
@@ -20422,7 +25838,9 @@ instance FromJSRef WebGLSync where
 
 instance IsGObject WebGLSync where
   toGObject = GObject . castRef . unWebGLSync
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLSync . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLSync :: IsGObject obj => obj -> WebGLSync
 castToWebGLSync = castTo gTypeWebGLSync "WebGLSync"
@@ -20437,9 +25855,18 @@ gTypeWebGLSync = GType gTypeWebGLSync'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTexture".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTexture Mozilla WebGLTexture documentation>
-newtype WebGLTexture = WebGLTexture (JSRef WebGLTexture) deriving (Eq)
+newtype WebGLTexture = WebGLTexture { unWebGLTexture :: JSRef WebGLTexture }
 
-unWebGLTexture (WebGLTexture o) = o
+instance Eq (WebGLTexture) where
+  (WebGLTexture a) == (WebGLTexture b) = js_eq a b
+
+instance PToJSRef WebGLTexture where
+  pToJSRef = unWebGLTexture
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLTexture where
+  pFromJSRef = WebGLTexture
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLTexture where
   toJSRef = return . unWebGLTexture
@@ -20451,7 +25878,9 @@ instance FromJSRef WebGLTexture where
 
 instance IsGObject WebGLTexture where
   toGObject = GObject . castRef . unWebGLTexture
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLTexture . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLTexture :: IsGObject obj => obj -> WebGLTexture
 castToWebGLTexture = castTo gTypeWebGLTexture "WebGLTexture"
@@ -20466,9 +25895,18 @@ gTypeWebGLTexture = GType gTypeWebGLTexture'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTransformFeedback".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTransformFeedback Mozilla WebGLTransformFeedback documentation>
-newtype WebGLTransformFeedback = WebGLTransformFeedback (JSRef WebGLTransformFeedback) deriving (Eq)
+newtype WebGLTransformFeedback = WebGLTransformFeedback { unWebGLTransformFeedback :: JSRef WebGLTransformFeedback }
 
-unWebGLTransformFeedback (WebGLTransformFeedback o) = o
+instance Eq (WebGLTransformFeedback) where
+  (WebGLTransformFeedback a) == (WebGLTransformFeedback b) = js_eq a b
+
+instance PToJSRef WebGLTransformFeedback where
+  pToJSRef = unWebGLTransformFeedback
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLTransformFeedback where
+  pFromJSRef = WebGLTransformFeedback
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLTransformFeedback where
   toJSRef = return . unWebGLTransformFeedback
@@ -20480,7 +25918,9 @@ instance FromJSRef WebGLTransformFeedback where
 
 instance IsGObject WebGLTransformFeedback where
   toGObject = GObject . castRef . unWebGLTransformFeedback
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLTransformFeedback . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLTransformFeedback :: IsGObject obj => obj -> WebGLTransformFeedback
 castToWebGLTransformFeedback = castTo gTypeWebGLTransformFeedback "WebGLTransformFeedback"
@@ -20495,9 +25935,18 @@ gTypeWebGLTransformFeedback = GType gTypeWebGLTransformFeedback'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLUniformLocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLUniformLocation Mozilla WebGLUniformLocation documentation>
-newtype WebGLUniformLocation = WebGLUniformLocation (JSRef WebGLUniformLocation) deriving (Eq)
+newtype WebGLUniformLocation = WebGLUniformLocation { unWebGLUniformLocation :: JSRef WebGLUniformLocation }
 
-unWebGLUniformLocation (WebGLUniformLocation o) = o
+instance Eq (WebGLUniformLocation) where
+  (WebGLUniformLocation a) == (WebGLUniformLocation b) = js_eq a b
+
+instance PToJSRef WebGLUniformLocation where
+  pToJSRef = unWebGLUniformLocation
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLUniformLocation where
+  pFromJSRef = WebGLUniformLocation
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLUniformLocation where
   toJSRef = return . unWebGLUniformLocation
@@ -20509,7 +25958,9 @@ instance FromJSRef WebGLUniformLocation where
 
 instance IsGObject WebGLUniformLocation where
   toGObject = GObject . castRef . unWebGLUniformLocation
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLUniformLocation . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLUniformLocation :: IsGObject obj => obj -> WebGLUniformLocation
 castToWebGLUniformLocation = castTo gTypeWebGLUniformLocation "WebGLUniformLocation"
@@ -20524,9 +25975,18 @@ gTypeWebGLUniformLocation = GType gTypeWebGLUniformLocation'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObject".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObject Mozilla WebGLVertexArrayObject documentation>
-newtype WebGLVertexArrayObject = WebGLVertexArrayObject (JSRef WebGLVertexArrayObject) deriving (Eq)
+newtype WebGLVertexArrayObject = WebGLVertexArrayObject { unWebGLVertexArrayObject :: JSRef WebGLVertexArrayObject }
 
-unWebGLVertexArrayObject (WebGLVertexArrayObject o) = o
+instance Eq (WebGLVertexArrayObject) where
+  (WebGLVertexArrayObject a) == (WebGLVertexArrayObject b) = js_eq a b
+
+instance PToJSRef WebGLVertexArrayObject where
+  pToJSRef = unWebGLVertexArrayObject
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLVertexArrayObject where
+  pFromJSRef = WebGLVertexArrayObject
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLVertexArrayObject where
   toJSRef = return . unWebGLVertexArrayObject
@@ -20538,7 +25998,9 @@ instance FromJSRef WebGLVertexArrayObject where
 
 instance IsGObject WebGLVertexArrayObject where
   toGObject = GObject . castRef . unWebGLVertexArrayObject
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLVertexArrayObject . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLVertexArrayObject :: IsGObject obj => obj -> WebGLVertexArrayObject
 castToWebGLVertexArrayObject = castTo gTypeWebGLVertexArrayObject "WebGLVertexArrayObject"
@@ -20553,9 +26015,18 @@ gTypeWebGLVertexArrayObject = GType gTypeWebGLVertexArrayObject'
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObjectOES".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObjectOES Mozilla WebGLVertexArrayObjectOES documentation>
-newtype WebGLVertexArrayObjectOES = WebGLVertexArrayObjectOES (JSRef WebGLVertexArrayObjectOES) deriving (Eq)
+newtype WebGLVertexArrayObjectOES = WebGLVertexArrayObjectOES { unWebGLVertexArrayObjectOES :: JSRef WebGLVertexArrayObjectOES }
 
-unWebGLVertexArrayObjectOES (WebGLVertexArrayObjectOES o) = o
+instance Eq (WebGLVertexArrayObjectOES) where
+  (WebGLVertexArrayObjectOES a) == (WebGLVertexArrayObjectOES b) = js_eq a b
+
+instance PToJSRef WebGLVertexArrayObjectOES where
+  pToJSRef = unWebGLVertexArrayObjectOES
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebGLVertexArrayObjectOES where
+  pFromJSRef = WebGLVertexArrayObjectOES
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebGLVertexArrayObjectOES where
   toJSRef = return . unWebGLVertexArrayObjectOES
@@ -20567,7 +26038,9 @@ instance FromJSRef WebGLVertexArrayObjectOES where
 
 instance IsGObject WebGLVertexArrayObjectOES where
   toGObject = GObject . castRef . unWebGLVertexArrayObjectOES
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebGLVertexArrayObjectOES . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebGLVertexArrayObjectOES :: IsGObject obj => obj -> WebGLVertexArrayObjectOES
 castToWebGLVertexArrayObjectOES = castTo gTypeWebGLVertexArrayObjectOES "WebGLVertexArrayObjectOES"
@@ -20585,9 +26058,18 @@ gTypeWebGLVertexArrayObjectOES = GType gTypeWebGLVertexArrayObjectOES'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitAnimationEvent Mozilla WebKitAnimationEvent documentation>
-newtype WebKitAnimationEvent = WebKitAnimationEvent (JSRef WebKitAnimationEvent) deriving (Eq)
+newtype WebKitAnimationEvent = WebKitAnimationEvent { unWebKitAnimationEvent :: JSRef WebKitAnimationEvent }
 
-unWebKitAnimationEvent (WebKitAnimationEvent o) = o
+instance Eq (WebKitAnimationEvent) where
+  (WebKitAnimationEvent a) == (WebKitAnimationEvent b) = js_eq a b
+
+instance PToJSRef WebKitAnimationEvent where
+  pToJSRef = unWebKitAnimationEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitAnimationEvent where
+  pFromJSRef = WebKitAnimationEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitAnimationEvent where
   toJSRef = return . unWebKitAnimationEvent
@@ -20600,7 +26082,9 @@ instance FromJSRef WebKitAnimationEvent where
 instance IsEvent WebKitAnimationEvent
 instance IsGObject WebKitAnimationEvent where
   toGObject = GObject . castRef . unWebKitAnimationEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitAnimationEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitAnimationEvent :: IsGObject obj => obj -> WebKitAnimationEvent
 castToWebKitAnimationEvent = castTo gTypeWebKitAnimationEvent "WebKitAnimationEvent"
@@ -20619,9 +26103,18 @@ gTypeWebKitAnimationEvent = GType gTypeWebKitAnimationEvent'
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue Mozilla WebKitCSSFilterValue documentation>
-newtype WebKitCSSFilterValue = WebKitCSSFilterValue (JSRef WebKitCSSFilterValue) deriving (Eq)
+newtype WebKitCSSFilterValue = WebKitCSSFilterValue { unWebKitCSSFilterValue :: JSRef WebKitCSSFilterValue }
 
-unWebKitCSSFilterValue (WebKitCSSFilterValue o) = o
+instance Eq (WebKitCSSFilterValue) where
+  (WebKitCSSFilterValue a) == (WebKitCSSFilterValue b) = js_eq a b
+
+instance PToJSRef WebKitCSSFilterValue where
+  pToJSRef = unWebKitCSSFilterValue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitCSSFilterValue where
+  pFromJSRef = WebKitCSSFilterValue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitCSSFilterValue where
   toJSRef = return . unWebKitCSSFilterValue
@@ -20635,7 +26128,9 @@ instance IsCSSValueList WebKitCSSFilterValue
 instance IsCSSValue WebKitCSSFilterValue
 instance IsGObject WebKitCSSFilterValue where
   toGObject = GObject . castRef . unWebKitCSSFilterValue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitCSSFilterValue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitCSSFilterValue :: IsGObject obj => obj -> WebKitCSSFilterValue
 castToWebKitCSSFilterValue = castTo gTypeWebKitCSSFilterValue "WebKitCSSFilterValue"
@@ -20650,9 +26145,18 @@ gTypeWebKitCSSFilterValue = GType gTypeWebKitCSSFilterValue'
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSMatrix".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix Mozilla WebKitCSSMatrix documentation>
-newtype WebKitCSSMatrix = WebKitCSSMatrix (JSRef WebKitCSSMatrix) deriving (Eq)
+newtype WebKitCSSMatrix = WebKitCSSMatrix { unWebKitCSSMatrix :: JSRef WebKitCSSMatrix }
 
-unWebKitCSSMatrix (WebKitCSSMatrix o) = o
+instance Eq (WebKitCSSMatrix) where
+  (WebKitCSSMatrix a) == (WebKitCSSMatrix b) = js_eq a b
+
+instance PToJSRef WebKitCSSMatrix where
+  pToJSRef = unWebKitCSSMatrix
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitCSSMatrix where
+  pFromJSRef = WebKitCSSMatrix
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitCSSMatrix where
   toJSRef = return . unWebKitCSSMatrix
@@ -20664,7 +26168,9 @@ instance FromJSRef WebKitCSSMatrix where
 
 instance IsGObject WebKitCSSMatrix where
   toGObject = GObject . castRef . unWebKitCSSMatrix
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitCSSMatrix . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitCSSMatrix :: IsGObject obj => obj -> WebKitCSSMatrix
 castToWebKitCSSMatrix = castTo gTypeWebKitCSSMatrix "WebKitCSSMatrix"
@@ -20682,9 +26188,18 @@ gTypeWebKitCSSMatrix = GType gTypeWebKitCSSMatrix'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSRegionRule Mozilla WebKitCSSRegionRule documentation>
-newtype WebKitCSSRegionRule = WebKitCSSRegionRule (JSRef WebKitCSSRegionRule) deriving (Eq)
+newtype WebKitCSSRegionRule = WebKitCSSRegionRule { unWebKitCSSRegionRule :: JSRef WebKitCSSRegionRule }
 
-unWebKitCSSRegionRule (WebKitCSSRegionRule o) = o
+instance Eq (WebKitCSSRegionRule) where
+  (WebKitCSSRegionRule a) == (WebKitCSSRegionRule b) = js_eq a b
+
+instance PToJSRef WebKitCSSRegionRule where
+  pToJSRef = unWebKitCSSRegionRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitCSSRegionRule where
+  pFromJSRef = WebKitCSSRegionRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitCSSRegionRule where
   toJSRef = return . unWebKitCSSRegionRule
@@ -20697,7 +26212,9 @@ instance FromJSRef WebKitCSSRegionRule where
 instance IsCSSRule WebKitCSSRegionRule
 instance IsGObject WebKitCSSRegionRule where
   toGObject = GObject . castRef . unWebKitCSSRegionRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitCSSRegionRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitCSSRegionRule :: IsGObject obj => obj -> WebKitCSSRegionRule
 castToWebKitCSSRegionRule = castTo gTypeWebKitCSSRegionRule "WebKitCSSRegionRule"
@@ -20716,9 +26233,18 @@ gTypeWebKitCSSRegionRule = GType gTypeWebKitCSSRegionRule'
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue Mozilla WebKitCSSTransformValue documentation>
-newtype WebKitCSSTransformValue = WebKitCSSTransformValue (JSRef WebKitCSSTransformValue) deriving (Eq)
+newtype WebKitCSSTransformValue = WebKitCSSTransformValue { unWebKitCSSTransformValue :: JSRef WebKitCSSTransformValue }
 
-unWebKitCSSTransformValue (WebKitCSSTransformValue o) = o
+instance Eq (WebKitCSSTransformValue) where
+  (WebKitCSSTransformValue a) == (WebKitCSSTransformValue b) = js_eq a b
+
+instance PToJSRef WebKitCSSTransformValue where
+  pToJSRef = unWebKitCSSTransformValue
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitCSSTransformValue where
+  pFromJSRef = WebKitCSSTransformValue
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitCSSTransformValue where
   toJSRef = return . unWebKitCSSTransformValue
@@ -20732,7 +26258,9 @@ instance IsCSSValueList WebKitCSSTransformValue
 instance IsCSSValue WebKitCSSTransformValue
 instance IsGObject WebKitCSSTransformValue where
   toGObject = GObject . castRef . unWebKitCSSTransformValue
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitCSSTransformValue . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitCSSTransformValue :: IsGObject obj => obj -> WebKitCSSTransformValue
 castToWebKitCSSTransformValue = castTo gTypeWebKitCSSTransformValue "WebKitCSSTransformValue"
@@ -20750,9 +26278,18 @@ gTypeWebKitCSSTransformValue = GType gTypeWebKitCSSTransformValue'
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSViewportRule Mozilla WebKitCSSViewportRule documentation>
-newtype WebKitCSSViewportRule = WebKitCSSViewportRule (JSRef WebKitCSSViewportRule) deriving (Eq)
+newtype WebKitCSSViewportRule = WebKitCSSViewportRule { unWebKitCSSViewportRule :: JSRef WebKitCSSViewportRule }
 
-unWebKitCSSViewportRule (WebKitCSSViewportRule o) = o
+instance Eq (WebKitCSSViewportRule) where
+  (WebKitCSSViewportRule a) == (WebKitCSSViewportRule b) = js_eq a b
+
+instance PToJSRef WebKitCSSViewportRule where
+  pToJSRef = unWebKitCSSViewportRule
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitCSSViewportRule where
+  pFromJSRef = WebKitCSSViewportRule
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitCSSViewportRule where
   toJSRef = return . unWebKitCSSViewportRule
@@ -20765,7 +26302,9 @@ instance FromJSRef WebKitCSSViewportRule where
 instance IsCSSRule WebKitCSSViewportRule
 instance IsGObject WebKitCSSViewportRule where
   toGObject = GObject . castRef . unWebKitCSSViewportRule
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitCSSViewportRule . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitCSSViewportRule :: IsGObject obj => obj -> WebKitCSSViewportRule
 castToWebKitCSSViewportRule = castTo gTypeWebKitCSSViewportRule "WebKitCSSViewportRule"
@@ -20783,9 +26322,18 @@ gTypeWebKitCSSViewportRule = GType gTypeWebKitCSSViewportRule'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow Mozilla WebKitNamedFlow documentation>
-newtype WebKitNamedFlow = WebKitNamedFlow (JSRef WebKitNamedFlow) deriving (Eq)
+newtype WebKitNamedFlow = WebKitNamedFlow { unWebKitNamedFlow :: JSRef WebKitNamedFlow }
 
-unWebKitNamedFlow (WebKitNamedFlow o) = o
+instance Eq (WebKitNamedFlow) where
+  (WebKitNamedFlow a) == (WebKitNamedFlow b) = js_eq a b
+
+instance PToJSRef WebKitNamedFlow where
+  pToJSRef = unWebKitNamedFlow
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitNamedFlow where
+  pFromJSRef = WebKitNamedFlow
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitNamedFlow where
   toJSRef = return . unWebKitNamedFlow
@@ -20798,7 +26346,9 @@ instance FromJSRef WebKitNamedFlow where
 instance IsEventTarget WebKitNamedFlow
 instance IsGObject WebKitNamedFlow where
   toGObject = GObject . castRef . unWebKitNamedFlow
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitNamedFlow . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitNamedFlow :: IsGObject obj => obj -> WebKitNamedFlow
 castToWebKitNamedFlow = castTo gTypeWebKitNamedFlow "WebKitNamedFlow"
@@ -20814,9 +26364,18 @@ type IsWebKitNamedFlow o = WebKitNamedFlowClass o
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamespace".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamespace Mozilla WebKitNamespace documentation>
-newtype WebKitNamespace = WebKitNamespace (JSRef WebKitNamespace) deriving (Eq)
+newtype WebKitNamespace = WebKitNamespace { unWebKitNamespace :: JSRef WebKitNamespace }
 
-unWebKitNamespace (WebKitNamespace o) = o
+instance Eq (WebKitNamespace) where
+  (WebKitNamespace a) == (WebKitNamespace b) = js_eq a b
+
+instance PToJSRef WebKitNamespace where
+  pToJSRef = unWebKitNamespace
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitNamespace where
+  pFromJSRef = WebKitNamespace
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitNamespace where
   toJSRef = return . unWebKitNamespace
@@ -20828,7 +26387,9 @@ instance FromJSRef WebKitNamespace where
 
 instance IsGObject WebKitNamespace where
   toGObject = GObject . castRef . unWebKitNamespace
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitNamespace . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitNamespace :: IsGObject obj => obj -> WebKitNamespace
 castToWebKitNamespace = castTo gTypeWebKitNamespace "WebKitNamespace"
@@ -20846,9 +26407,18 @@ gTypeWebKitNamespace = GType gTypeWebKitNamespace'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPlaybackTargetAvailabilityEvent Mozilla WebKitPlaybackTargetAvailabilityEvent documentation>
-newtype WebKitPlaybackTargetAvailabilityEvent = WebKitPlaybackTargetAvailabilityEvent (JSRef WebKitPlaybackTargetAvailabilityEvent) deriving (Eq)
+newtype WebKitPlaybackTargetAvailabilityEvent = WebKitPlaybackTargetAvailabilityEvent { unWebKitPlaybackTargetAvailabilityEvent :: JSRef WebKitPlaybackTargetAvailabilityEvent }
 
-unWebKitPlaybackTargetAvailabilityEvent (WebKitPlaybackTargetAvailabilityEvent o) = o
+instance Eq (WebKitPlaybackTargetAvailabilityEvent) where
+  (WebKitPlaybackTargetAvailabilityEvent a) == (WebKitPlaybackTargetAvailabilityEvent b) = js_eq a b
+
+instance PToJSRef WebKitPlaybackTargetAvailabilityEvent where
+  pToJSRef = unWebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitPlaybackTargetAvailabilityEvent where
+  pFromJSRef = WebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitPlaybackTargetAvailabilityEvent where
   toJSRef = return . unWebKitPlaybackTargetAvailabilityEvent
@@ -20861,7 +26431,9 @@ instance FromJSRef WebKitPlaybackTargetAvailabilityEvent where
 instance IsEvent WebKitPlaybackTargetAvailabilityEvent
 instance IsGObject WebKitPlaybackTargetAvailabilityEvent where
   toGObject = GObject . castRef . unWebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitPlaybackTargetAvailabilityEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitPlaybackTargetAvailabilityEvent :: IsGObject obj => obj -> WebKitPlaybackTargetAvailabilityEvent
 castToWebKitPlaybackTargetAvailabilityEvent = castTo gTypeWebKitPlaybackTargetAvailabilityEvent "WebKitPlaybackTargetAvailabilityEvent"
@@ -20876,9 +26448,18 @@ gTypeWebKitPlaybackTargetAvailabilityEvent = GType gTypeWebKitPlaybackTargetAvai
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPoint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPoint Mozilla WebKitPoint documentation>
-newtype WebKitPoint = WebKitPoint (JSRef WebKitPoint) deriving (Eq)
+newtype WebKitPoint = WebKitPoint { unWebKitPoint :: JSRef WebKitPoint }
 
-unWebKitPoint (WebKitPoint o) = o
+instance Eq (WebKitPoint) where
+  (WebKitPoint a) == (WebKitPoint b) = js_eq a b
+
+instance PToJSRef WebKitPoint where
+  pToJSRef = unWebKitPoint
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitPoint where
+  pFromJSRef = WebKitPoint
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitPoint where
   toJSRef = return . unWebKitPoint
@@ -20890,7 +26471,9 @@ instance FromJSRef WebKitPoint where
 
 instance IsGObject WebKitPoint where
   toGObject = GObject . castRef . unWebKitPoint
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitPoint . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitPoint :: IsGObject obj => obj -> WebKitPoint
 castToWebKitPoint = castTo gTypeWebKitPoint "WebKitPoint"
@@ -20909,9 +26492,18 @@ type IsWebKitPoint o = WebKitPointClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent Mozilla WebKitTransitionEvent documentation>
-newtype WebKitTransitionEvent = WebKitTransitionEvent (JSRef WebKitTransitionEvent) deriving (Eq)
+newtype WebKitTransitionEvent = WebKitTransitionEvent { unWebKitTransitionEvent :: JSRef WebKitTransitionEvent }
 
-unWebKitTransitionEvent (WebKitTransitionEvent o) = o
+instance Eq (WebKitTransitionEvent) where
+  (WebKitTransitionEvent a) == (WebKitTransitionEvent b) = js_eq a b
+
+instance PToJSRef WebKitTransitionEvent where
+  pToJSRef = unWebKitTransitionEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebKitTransitionEvent where
+  pFromJSRef = WebKitTransitionEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebKitTransitionEvent where
   toJSRef = return . unWebKitTransitionEvent
@@ -20924,7 +26516,9 @@ instance FromJSRef WebKitTransitionEvent where
 instance IsEvent WebKitTransitionEvent
 instance IsGObject WebKitTransitionEvent where
   toGObject = GObject . castRef . unWebKitTransitionEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebKitTransitionEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebKitTransitionEvent :: IsGObject obj => obj -> WebKitTransitionEvent
 castToWebKitTransitionEvent = castTo gTypeWebKitTransitionEvent "WebKitTransitionEvent"
@@ -20942,9 +26536,18 @@ gTypeWebKitTransitionEvent = GType gTypeWebKitTransitionEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation>
-newtype WebSocket = WebSocket (JSRef WebSocket) deriving (Eq)
+newtype WebSocket = WebSocket { unWebSocket :: JSRef WebSocket }
 
-unWebSocket (WebSocket o) = o
+instance Eq (WebSocket) where
+  (WebSocket a) == (WebSocket b) = js_eq a b
+
+instance PToJSRef WebSocket where
+  pToJSRef = unWebSocket
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WebSocket where
+  pFromJSRef = WebSocket
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WebSocket where
   toJSRef = return . unWebSocket
@@ -20957,7 +26560,9 @@ instance FromJSRef WebSocket where
 instance IsEventTarget WebSocket
 instance IsGObject WebSocket where
   toGObject = GObject . castRef . unWebSocket
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WebSocket . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWebSocket :: IsGObject obj => obj -> WebSocket
 castToWebSocket = castTo gTypeWebSocket "WebSocket"
@@ -20977,9 +26582,18 @@ gTypeWebSocket = GType gTypeWebSocket'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent Mozilla WheelEvent documentation>
-newtype WheelEvent = WheelEvent (JSRef WheelEvent) deriving (Eq)
+newtype WheelEvent = WheelEvent { unWheelEvent :: JSRef WheelEvent }
 
-unWheelEvent (WheelEvent o) = o
+instance Eq (WheelEvent) where
+  (WheelEvent a) == (WheelEvent b) = js_eq a b
+
+instance PToJSRef WheelEvent where
+  pToJSRef = unWheelEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WheelEvent where
+  pFromJSRef = WheelEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WheelEvent where
   toJSRef = return . unWheelEvent
@@ -20994,7 +26608,9 @@ instance IsUIEvent WheelEvent
 instance IsEvent WheelEvent
 instance IsGObject WheelEvent where
   toGObject = GObject . castRef . unWheelEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WheelEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWheelEvent :: IsGObject obj => obj -> WheelEvent
 castToWheelEvent = castTo gTypeWheelEvent "WheelEvent"
@@ -21007,12 +26623,66 @@ type IsWheelEvent o = WheelEventClass o
 
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+-- | Functions for this inteface are in "GHCJS.DOM.Window".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Window Mozilla Window documentation>
+newtype Window = Window { unWindow :: JSRef Window }
+
+instance Eq (Window) where
+  (Window a) == (Window b) = js_eq a b
+
+instance PToJSRef Window where
+  pToJSRef = unWindow
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Window where
+  pFromJSRef = Window
+  {-# INLINE pFromJSRef #-}
+
+instance ToJSRef Window where
+  toJSRef = return . unWindow
+  {-# INLINE toJSRef #-}
+
+instance FromJSRef Window where
+  fromJSRef = return . fmap Window . maybeJSNullOrUndefined
+  {-# INLINE fromJSRef #-}
+
+instance IsEventTarget Window
+instance IsGObject Window where
+  toGObject = GObject . castRef . unWindow
+  {-# INLINE toGObject #-}
+  unsafeCastGObject = Window . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
+
+castToWindow :: IsGObject obj => obj -> Window
+castToWindow = castTo gTypeWindow "Window"
+
+foreign import javascript unsafe "window[\"Window\"]" gTypeWindow' :: JSRef GType
+gTypeWindow = GType gTypeWindow'
+#else
+type IsWindow o = WindowClass o
+#endif
+
+
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WindowBase64".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64 Mozilla WindowBase64 documentation>
-newtype WindowBase64 = WindowBase64 (JSRef WindowBase64) deriving (Eq)
+newtype WindowBase64 = WindowBase64 { unWindowBase64 :: JSRef WindowBase64 }
 
-unWindowBase64 (WindowBase64 o) = o
+instance Eq (WindowBase64) where
+  (WindowBase64 a) == (WindowBase64 b) = js_eq a b
+
+instance PToJSRef WindowBase64 where
+  pToJSRef = unWindowBase64
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WindowBase64 where
+  pFromJSRef = WindowBase64
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WindowBase64 where
   toJSRef = return . unWindowBase64
@@ -21024,7 +26694,9 @@ instance FromJSRef WindowBase64 where
 
 instance IsGObject WindowBase64 where
   toGObject = GObject . castRef . unWindowBase64
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WindowBase64 . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWindowBase64 :: IsGObject obj => obj -> WindowBase64
 castToWindowBase64 = castTo gTypeWindowBase64 "WindowBase64"
@@ -21039,9 +26711,18 @@ gTypeWindowBase64 = GType gTypeWindowBase64'
 -- | Functions for this inteface are in "GHCJS.DOM.WindowTimers".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers Mozilla WindowTimers documentation>
-newtype WindowTimers = WindowTimers (JSRef WindowTimers) deriving (Eq)
+newtype WindowTimers = WindowTimers { unWindowTimers :: JSRef WindowTimers }
 
-unWindowTimers (WindowTimers o) = o
+instance Eq (WindowTimers) where
+  (WindowTimers a) == (WindowTimers b) = js_eq a b
+
+instance PToJSRef WindowTimers where
+  pToJSRef = unWindowTimers
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WindowTimers where
+  pFromJSRef = WindowTimers
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WindowTimers where
   toJSRef = return . unWindowTimers
@@ -21053,7 +26734,9 @@ instance FromJSRef WindowTimers where
 
 instance IsGObject WindowTimers where
   toGObject = GObject . castRef . unWindowTimers
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WindowTimers . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWindowTimers :: IsGObject obj => obj -> WindowTimers
 castToWindowTimers = castTo gTypeWindowTimers "WindowTimers"
@@ -21071,9 +26754,18 @@ gTypeWindowTimers = GType gTypeWindowTimers'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Worker Mozilla Worker documentation>
-newtype Worker = Worker (JSRef Worker) deriving (Eq)
+newtype Worker = Worker { unWorker :: JSRef Worker }
 
-unWorker (Worker o) = o
+instance Eq (Worker) where
+  (Worker a) == (Worker b) = js_eq a b
+
+instance PToJSRef Worker where
+  pToJSRef = unWorker
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef Worker where
+  pFromJSRef = Worker
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef Worker where
   toJSRef = return . unWorker
@@ -21086,7 +26778,9 @@ instance FromJSRef Worker where
 instance IsEventTarget Worker
 instance IsGObject Worker where
   toGObject = GObject . castRef . unWorker
+  {-# INLINE toGObject #-}
   unsafeCastGObject = Worker . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWorker :: IsGObject obj => obj -> Worker
 castToWorker = castTo gTypeWorker "Worker"
@@ -21104,9 +26798,18 @@ gTypeWorker = GType gTypeWorker'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope Mozilla WorkerGlobalScope documentation>
-newtype WorkerGlobalScope = WorkerGlobalScope (JSRef WorkerGlobalScope) deriving (Eq)
+newtype WorkerGlobalScope = WorkerGlobalScope { unWorkerGlobalScope :: JSRef WorkerGlobalScope }
 
-unWorkerGlobalScope (WorkerGlobalScope o) = o
+instance Eq (WorkerGlobalScope) where
+  (WorkerGlobalScope a) == (WorkerGlobalScope b) = js_eq a b
+
+instance PToJSRef WorkerGlobalScope where
+  pToJSRef = unWorkerGlobalScope
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WorkerGlobalScope where
+  pFromJSRef = WorkerGlobalScope
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WorkerGlobalScope where
   toJSRef = return . unWorkerGlobalScope
@@ -21124,7 +26827,9 @@ instance IsWorkerGlobalScope WorkerGlobalScope
 instance IsEventTarget WorkerGlobalScope
 instance IsGObject WorkerGlobalScope where
   toGObject = GObject . castRef . unWorkerGlobalScope
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WorkerGlobalScope . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWorkerGlobalScope :: IsGObject obj => obj -> WorkerGlobalScope
 castToWorkerGlobalScope = castTo gTypeWorkerGlobalScope "WorkerGlobalScope"
@@ -21139,9 +26844,18 @@ gTypeWorkerGlobalScope = GType gTypeWorkerGlobalScope'
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerLocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation Mozilla WorkerLocation documentation>
-newtype WorkerLocation = WorkerLocation (JSRef WorkerLocation) deriving (Eq)
+newtype WorkerLocation = WorkerLocation { unWorkerLocation :: JSRef WorkerLocation }
 
-unWorkerLocation (WorkerLocation o) = o
+instance Eq (WorkerLocation) where
+  (WorkerLocation a) == (WorkerLocation b) = js_eq a b
+
+instance PToJSRef WorkerLocation where
+  pToJSRef = unWorkerLocation
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WorkerLocation where
+  pFromJSRef = WorkerLocation
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WorkerLocation where
   toJSRef = return . unWorkerLocation
@@ -21153,7 +26867,9 @@ instance FromJSRef WorkerLocation where
 
 instance IsGObject WorkerLocation where
   toGObject = GObject . castRef . unWorkerLocation
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WorkerLocation . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWorkerLocation :: IsGObject obj => obj -> WorkerLocation
 castToWorkerLocation = castTo gTypeWorkerLocation "WorkerLocation"
@@ -21168,9 +26884,18 @@ gTypeWorkerLocation = GType gTypeWorkerLocation'
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerNavigator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator Mozilla WorkerNavigator documentation>
-newtype WorkerNavigator = WorkerNavigator (JSRef WorkerNavigator) deriving (Eq)
+newtype WorkerNavigator = WorkerNavigator { unWorkerNavigator :: JSRef WorkerNavigator }
 
-unWorkerNavigator (WorkerNavigator o) = o
+instance Eq (WorkerNavigator) where
+  (WorkerNavigator a) == (WorkerNavigator b) = js_eq a b
+
+instance PToJSRef WorkerNavigator where
+  pToJSRef = unWorkerNavigator
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef WorkerNavigator where
+  pFromJSRef = WorkerNavigator
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef WorkerNavigator where
   toJSRef = return . unWorkerNavigator
@@ -21182,7 +26907,9 @@ instance FromJSRef WorkerNavigator where
 
 instance IsGObject WorkerNavigator where
   toGObject = GObject . castRef . unWorkerNavigator
+  {-# INLINE toGObject #-}
   unsafeCastGObject = WorkerNavigator . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToWorkerNavigator :: IsGObject obj => obj -> WorkerNavigator
 castToWorkerNavigator = castTo gTypeWorkerNavigator "WorkerNavigator"
@@ -21200,9 +26927,18 @@ gTypeWorkerNavigator = GType gTypeWorkerNavigator'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest Mozilla XMLHttpRequest documentation>
-newtype XMLHttpRequest = XMLHttpRequest (JSRef XMLHttpRequest) deriving (Eq)
+newtype XMLHttpRequest = XMLHttpRequest { unXMLHttpRequest :: JSRef XMLHttpRequest }
 
-unXMLHttpRequest (XMLHttpRequest o) = o
+instance Eq (XMLHttpRequest) where
+  (XMLHttpRequest a) == (XMLHttpRequest b) = js_eq a b
+
+instance PToJSRef XMLHttpRequest where
+  pToJSRef = unXMLHttpRequest
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XMLHttpRequest where
+  pFromJSRef = XMLHttpRequest
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XMLHttpRequest where
   toJSRef = return . unXMLHttpRequest
@@ -21215,7 +26951,9 @@ instance FromJSRef XMLHttpRequest where
 instance IsEventTarget XMLHttpRequest
 instance IsGObject XMLHttpRequest where
   toGObject = GObject . castRef . unXMLHttpRequest
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XMLHttpRequest . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXMLHttpRequest :: IsGObject obj => obj -> XMLHttpRequest
 castToXMLHttpRequest = castTo gTypeXMLHttpRequest "XMLHttpRequest"
@@ -21234,9 +26972,18 @@ gTypeXMLHttpRequest = GType gTypeXMLHttpRequest'
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent Mozilla XMLHttpRequestProgressEvent documentation>
-newtype XMLHttpRequestProgressEvent = XMLHttpRequestProgressEvent (JSRef XMLHttpRequestProgressEvent) deriving (Eq)
+newtype XMLHttpRequestProgressEvent = XMLHttpRequestProgressEvent { unXMLHttpRequestProgressEvent :: JSRef XMLHttpRequestProgressEvent }
 
-unXMLHttpRequestProgressEvent (XMLHttpRequestProgressEvent o) = o
+instance Eq (XMLHttpRequestProgressEvent) where
+  (XMLHttpRequestProgressEvent a) == (XMLHttpRequestProgressEvent b) = js_eq a b
+
+instance PToJSRef XMLHttpRequestProgressEvent where
+  pToJSRef = unXMLHttpRequestProgressEvent
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XMLHttpRequestProgressEvent where
+  pFromJSRef = XMLHttpRequestProgressEvent
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XMLHttpRequestProgressEvent where
   toJSRef = return . unXMLHttpRequestProgressEvent
@@ -21250,7 +26997,9 @@ instance IsProgressEvent XMLHttpRequestProgressEvent
 instance IsEvent XMLHttpRequestProgressEvent
 instance IsGObject XMLHttpRequestProgressEvent where
   toGObject = GObject . castRef . unXMLHttpRequestProgressEvent
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XMLHttpRequestProgressEvent . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXMLHttpRequestProgressEvent :: IsGObject obj => obj -> XMLHttpRequestProgressEvent
 castToXMLHttpRequestProgressEvent = castTo gTypeXMLHttpRequestProgressEvent "XMLHttpRequestProgressEvent"
@@ -21268,9 +27017,18 @@ gTypeXMLHttpRequestProgressEvent = GType gTypeXMLHttpRequestProgressEvent'
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestUpload Mozilla XMLHttpRequestUpload documentation>
-newtype XMLHttpRequestUpload = XMLHttpRequestUpload (JSRef XMLHttpRequestUpload) deriving (Eq)
+newtype XMLHttpRequestUpload = XMLHttpRequestUpload { unXMLHttpRequestUpload :: JSRef XMLHttpRequestUpload }
 
-unXMLHttpRequestUpload (XMLHttpRequestUpload o) = o
+instance Eq (XMLHttpRequestUpload) where
+  (XMLHttpRequestUpload a) == (XMLHttpRequestUpload b) = js_eq a b
+
+instance PToJSRef XMLHttpRequestUpload where
+  pToJSRef = unXMLHttpRequestUpload
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XMLHttpRequestUpload where
+  pFromJSRef = XMLHttpRequestUpload
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XMLHttpRequestUpload where
   toJSRef = return . unXMLHttpRequestUpload
@@ -21283,7 +27041,9 @@ instance FromJSRef XMLHttpRequestUpload where
 instance IsEventTarget XMLHttpRequestUpload
 instance IsGObject XMLHttpRequestUpload where
   toGObject = GObject . castRef . unXMLHttpRequestUpload
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XMLHttpRequestUpload . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXMLHttpRequestUpload :: IsGObject obj => obj -> XMLHttpRequestUpload
 castToXMLHttpRequestUpload = castTo gTypeXMLHttpRequestUpload "XMLHttpRequestUpload"
@@ -21298,9 +27058,18 @@ gTypeXMLHttpRequestUpload = GType gTypeXMLHttpRequestUpload'
 -- | Functions for this inteface are in "GHCJS.DOM.XMLSerializer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer Mozilla XMLSerializer documentation>
-newtype XMLSerializer = XMLSerializer (JSRef XMLSerializer) deriving (Eq)
+newtype XMLSerializer = XMLSerializer { unXMLSerializer :: JSRef XMLSerializer }
 
-unXMLSerializer (XMLSerializer o) = o
+instance Eq (XMLSerializer) where
+  (XMLSerializer a) == (XMLSerializer b) = js_eq a b
+
+instance PToJSRef XMLSerializer where
+  pToJSRef = unXMLSerializer
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XMLSerializer where
+  pFromJSRef = XMLSerializer
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XMLSerializer where
   toJSRef = return . unXMLSerializer
@@ -21312,7 +27081,9 @@ instance FromJSRef XMLSerializer where
 
 instance IsGObject XMLSerializer where
   toGObject = GObject . castRef . unXMLSerializer
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XMLSerializer . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXMLSerializer :: IsGObject obj => obj -> XMLSerializer
 castToXMLSerializer = castTo gTypeXMLSerializer "XMLSerializer"
@@ -21327,9 +27098,18 @@ gTypeXMLSerializer = GType gTypeXMLSerializer'
 -- | Functions for this inteface are in "GHCJS.DOM.XPathEvaluator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator Mozilla XPathEvaluator documentation>
-newtype XPathEvaluator = XPathEvaluator (JSRef XPathEvaluator) deriving (Eq)
+newtype XPathEvaluator = XPathEvaluator { unXPathEvaluator :: JSRef XPathEvaluator }
 
-unXPathEvaluator (XPathEvaluator o) = o
+instance Eq (XPathEvaluator) where
+  (XPathEvaluator a) == (XPathEvaluator b) = js_eq a b
+
+instance PToJSRef XPathEvaluator where
+  pToJSRef = unXPathEvaluator
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XPathEvaluator where
+  pFromJSRef = XPathEvaluator
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XPathEvaluator where
   toJSRef = return . unXPathEvaluator
@@ -21341,7 +27121,9 @@ instance FromJSRef XPathEvaluator where
 
 instance IsGObject XPathEvaluator where
   toGObject = GObject . castRef . unXPathEvaluator
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XPathEvaluator . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXPathEvaluator :: IsGObject obj => obj -> XPathEvaluator
 castToXPathEvaluator = castTo gTypeXPathEvaluator "XPathEvaluator"
@@ -21356,9 +27138,18 @@ gTypeXPathEvaluator = GType gTypeXPathEvaluator'
 -- | Functions for this inteface are in "GHCJS.DOM.XPathExpression".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathExpression Mozilla XPathExpression documentation>
-newtype XPathExpression = XPathExpression (JSRef XPathExpression) deriving (Eq)
+newtype XPathExpression = XPathExpression { unXPathExpression :: JSRef XPathExpression }
 
-unXPathExpression (XPathExpression o) = o
+instance Eq (XPathExpression) where
+  (XPathExpression a) == (XPathExpression b) = js_eq a b
+
+instance PToJSRef XPathExpression where
+  pToJSRef = unXPathExpression
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XPathExpression where
+  pFromJSRef = XPathExpression
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XPathExpression where
   toJSRef = return . unXPathExpression
@@ -21370,7 +27161,9 @@ instance FromJSRef XPathExpression where
 
 instance IsGObject XPathExpression where
   toGObject = GObject . castRef . unXPathExpression
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XPathExpression . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXPathExpression :: IsGObject obj => obj -> XPathExpression
 castToXPathExpression = castTo gTypeXPathExpression "XPathExpression"
@@ -21386,9 +27179,18 @@ type IsXPathExpression o = XPathExpressionClass o
 -- | Functions for this inteface are in "GHCJS.DOM.XPathNSResolver".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver Mozilla XPathNSResolver documentation>
-newtype XPathNSResolver = XPathNSResolver (JSRef XPathNSResolver) deriving (Eq)
+newtype XPathNSResolver = XPathNSResolver { unXPathNSResolver :: JSRef XPathNSResolver }
 
-unXPathNSResolver (XPathNSResolver o) = o
+instance Eq (XPathNSResolver) where
+  (XPathNSResolver a) == (XPathNSResolver b) = js_eq a b
+
+instance PToJSRef XPathNSResolver where
+  pToJSRef = unXPathNSResolver
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XPathNSResolver where
+  pFromJSRef = XPathNSResolver
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XPathNSResolver where
   toJSRef = return . unXPathNSResolver
@@ -21400,7 +27202,9 @@ instance FromJSRef XPathNSResolver where
 
 instance IsGObject XPathNSResolver where
   toGObject = GObject . castRef . unXPathNSResolver
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XPathNSResolver . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXPathNSResolver :: IsGObject obj => obj -> XPathNSResolver
 castToXPathNSResolver = castTo gTypeXPathNSResolver "XPathNSResolver"
@@ -21416,9 +27220,18 @@ type IsXPathNSResolver o = XPathNSResolverClass o
 -- | Functions for this inteface are in "GHCJS.DOM.XPathResult".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult Mozilla XPathResult documentation>
-newtype XPathResult = XPathResult (JSRef XPathResult) deriving (Eq)
+newtype XPathResult = XPathResult { unXPathResult :: JSRef XPathResult }
 
-unXPathResult (XPathResult o) = o
+instance Eq (XPathResult) where
+  (XPathResult a) == (XPathResult b) = js_eq a b
+
+instance PToJSRef XPathResult where
+  pToJSRef = unXPathResult
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XPathResult where
+  pFromJSRef = XPathResult
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XPathResult where
   toJSRef = return . unXPathResult
@@ -21430,7 +27243,9 @@ instance FromJSRef XPathResult where
 
 instance IsGObject XPathResult where
   toGObject = GObject . castRef . unXPathResult
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XPathResult . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXPathResult :: IsGObject obj => obj -> XPathResult
 castToXPathResult = castTo gTypeXPathResult "XPathResult"
@@ -21446,9 +27261,18 @@ type IsXPathResult o = XPathResultClass o
 -- | Functions for this inteface are in "GHCJS.DOM.XSLTProcessor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor Mozilla XSLTProcessor documentation>
-newtype XSLTProcessor = XSLTProcessor (JSRef XSLTProcessor) deriving (Eq)
+newtype XSLTProcessor = XSLTProcessor { unXSLTProcessor :: JSRef XSLTProcessor }
 
-unXSLTProcessor (XSLTProcessor o) = o
+instance Eq (XSLTProcessor) where
+  (XSLTProcessor a) == (XSLTProcessor b) = js_eq a b
+
+instance PToJSRef XSLTProcessor where
+  pToJSRef = unXSLTProcessor
+  {-# INLINE pToJSRef #-}
+
+instance PFromJSRef XSLTProcessor where
+  pFromJSRef = XSLTProcessor
+  {-# INLINE pFromJSRef #-}
 
 instance ToJSRef XSLTProcessor where
   toJSRef = return . unXSLTProcessor
@@ -21460,7 +27284,9 @@ instance FromJSRef XSLTProcessor where
 
 instance IsGObject XSLTProcessor where
   toGObject = GObject . castRef . unXSLTProcessor
+  {-# INLINE toGObject #-}
   unsafeCastGObject = XSLTProcessor . castRef . unGObject
+  {-# INLINE unsafeCastGObject #-}
 
 castToXSLTProcessor :: IsGObject obj => obj -> XSLTProcessor
 castToXSLTProcessor = castTo gTypeXSLTProcessor "XSLTProcessor"

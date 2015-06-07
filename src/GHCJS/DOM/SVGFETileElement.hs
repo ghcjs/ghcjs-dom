@@ -1,33 +1,11 @@
-{-# LANGUAGE CPP, PatternSynonyms #-}
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
-module GHCJS.DOM.SVGFETileElement
-       (js_getIn1, getIn1, SVGFETileElement, castToSVGFETileElement,
-        gTypeSVGFETileElement)
-       where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
-import GHCJS.Types (JSRef(..), JSString, castRef)
-import GHCJS.Foreign (jsNull, ToJSString(..), FromJSString(..), syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, ForeignRetention(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
-import Control.Monad.IO.Class (MonadIO(..))
-import Data.Int (Int64)
-import Data.Word (Word, Word64)
-import GHCJS.DOM.Types
-import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
-
- 
-foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
-        JSRef SVGFETileElement -> IO (JSRef SVGAnimatedString)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETileElement.in1 Mozilla SVGFETileElement.in1 documentation> 
-getIn1 ::
-       (MonadIO m) => SVGFETileElement -> m (Maybe SVGAnimatedString)
-getIn1 self
-  = liftIO ((js_getIn1 (unSVGFETileElement self)) >>= fromJSRef)
-#else
+{-# LANGUAGE CPP #-}
 module GHCJS.DOM.SVGFETileElement (
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+  module GHCJS.DOM.JSFFI.Generated.SVGFETileElement
+#else
+#endif
   ) where
+#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+import GHCJS.DOM.JSFFI.Generated.SVGFETileElement
+#else
 #endif

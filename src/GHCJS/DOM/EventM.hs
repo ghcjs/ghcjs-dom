@@ -1,14 +1,19 @@
 {-# LANGUAGE ConstraintKinds #-}
 module GHCJS.DOM.EventM
 (
-  EventM (..)
+  EventM(..)
+, SaferEventListener(..)
 , EventName
 , newListener
+, newListenerSync
+, newListenerAsync
 , addListener
 , removeListener
+, releaseListener
 , on
 , event
 , eventTarget
+, target
 , eventCurrentTarget
 , eventPhase
 , bubbles
@@ -75,6 +80,12 @@ type EventM t e = ReaderT e IO
 newListener :: (IsEvent e) => EventM t e () -> IO (SaferEventListener t e)
 newListener f = SaferEventListener <$> eventListenerNew (runReaderT f)
 
+newListenerSync :: (IsEvent e) => EventM t e () -> IO (SaferEventListener t e)
+newListenerSync f = SaferEventListener <$> eventListenerNewSync (runReaderT f)
+
+newListenerAsync :: (IsEvent e) => EventM t e () -> IO (SaferEventListener t e)
+newListenerAsync f = SaferEventListener <$> eventListenerNewAsync (runReaderT f)
+
 addListener :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> SaferEventListener t e -> Bool -> IO ()
 addListener target (EventName eventName) (SaferEventListener l) useCapture =
     addEventListener target eventName (Just l) useCapture
@@ -83,20 +94,23 @@ removeListener :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> SaferEve
 removeListener target (EventName eventName) (SaferEventListener l) useCapture =
     removeEventListener target eventName (Just l) useCapture
 
+releaseListener :: (IsEventTarget t, IsEvent e) => SaferEventListener t e -> IO ()
+releaseListener (SaferEventListener l) = eventListenerRelease l
+
 on :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> EventM t e () -> IO (IO ())
 on target eventName callback = do
     l <- newListener callback
     addListener target eventName l False
     return (removeListener target eventName l False)
 
-target :: (IsEvent e, IsGObject t) => EventM t e (Maybe t)
-target = (fmap (unsafeCastGObject . toGObject)) <$> (ask >>= Event.getTarget)
-
 event :: EventM t e e
 event = ask
 
 eventTarget :: IsEvent e => EventM t e (Maybe EventTarget)
 eventTarget = event >>= Event.getTarget
+
+target :: (IsEvent e, IsGObject t) => EventM t e (Maybe t)
+target = (fmap (unsafeCastGObject . toGObject)) <$> eventTarget
 
 eventCurrentTarget :: IsEvent e => EventM t e (Maybe EventTarget)
 eventCurrentTarget = event >>= Event.getCurrentTarget
@@ -140,7 +154,7 @@ getReturnValue = event >>= Event.getReturnValue
 returnValue :: IsEvent e => Bool -> EventM t e ()
 returnValue f = event >>= flip Event.setReturnValue f
 
-uiView :: IsUIEvent e => EventM t e (Maybe DOMWindow)
+uiView :: IsUIEvent e => EventM t e (Maybe Window)
 uiView = event >>= UIEvent.getView
 
 uiDetail :: IsUIEvent e => EventM t e Int
