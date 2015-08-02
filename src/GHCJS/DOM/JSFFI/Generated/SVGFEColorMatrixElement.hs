@@ -5,10 +5,12 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEColorMatrixElement
         pattern SVG_FECOLORMATRIX_TYPE_SATURATE,
         pattern SVG_FECOLORMATRIX_TYPE_HUEROTATE,
         pattern SVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA, js_getIn1, getIn1,
-        js_getValues, getValues, SVGFEColorMatrixElement,
-        castToSVGFEColorMatrixElement, gTypeSVGFEColorMatrixElement)
+        js_getType, getType, js_getValues, getValues,
+        SVGFEColorMatrixElement, castToSVGFEColorMatrixElement,
+        gTypeSVGFEColorMatrixElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -37,6 +39,17 @@ getIn1 ::
 getIn1 self
   = liftIO
       ((js_getIn1 (unSVGFEColorMatrixElement self)) >>= fromJSRef)
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef SVGFEColorMatrixElement -> IO (JSRef SVGAnimatedEnumeration)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.type Mozilla SVGFEColorMatrixElement.type documentation> 
+getType ::
+        (MonadIO m) =>
+          SVGFEColorMatrixElement -> m (Maybe SVGAnimatedEnumeration)
+getType self
+  = liftIO
+      ((js_getType (unSVGFEColorMatrixElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"values\"]" js_getValues ::
         JSRef SVGFEColorMatrixElement -> IO (JSRef SVGAnimatedNumberList)

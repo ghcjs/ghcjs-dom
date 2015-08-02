@@ -6,7 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSKeyframesRule
         getCssRules, CSSKeyframesRule, castToCSSKeyframesRule,
         gTypeCSSKeyframesRule)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -72,22 +73,26 @@ _get self index
   = liftIO ((js__get (unCSSKeyframesRule self) index) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
-        JSRef CSSKeyframesRule -> JSString -> IO ()
+        JSRef CSSKeyframesRule -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.name Mozilla CSSKeyframesRule.name documentation> 
 setName ::
-        (MonadIO m, ToJSString val) => CSSKeyframesRule -> val -> m ()
+        (MonadIO m, ToJSString val) =>
+          CSSKeyframesRule -> Maybe val -> m ()
 setName self val
-  = liftIO (js_setName (unCSSKeyframesRule self) (toJSString val))
+  = liftIO
+      (js_setName (unCSSKeyframesRule self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef CSSKeyframesRule -> IO JSString
+        JSRef CSSKeyframesRule -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.name Mozilla CSSKeyframesRule.name documentation> 
 getName ::
-        (MonadIO m, FromJSString result) => CSSKeyframesRule -> m result
+        (MonadIO m, FromJSString result) =>
+          CSSKeyframesRule -> m (Maybe result)
 getName self
-  = liftIO (fromJSString <$> (js_getName (unCSSKeyframesRule self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getName (unCSSKeyframesRule self)))
  
 foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
         :: JSRef CSSKeyframesRule -> IO (JSRef CSSRuleList)

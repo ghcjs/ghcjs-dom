@@ -10,7 +10,8 @@ module GHCJS.DOM.JSFFI.Generated.WebSocket
         js_setBinaryType, setBinaryType, js_getBinaryType, getBinaryType,
         WebSocket, castToWebSocket, gTypeWebSocket)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -149,22 +150,24 @@ closeEvent :: EventName WebSocket Event
 closeEvent = unsafeEventName (toJSString "close")
  
 foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
-        :: JSRef WebSocket -> IO JSString
+        :: JSRef WebSocket -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.protocol Mozilla WebSocket.protocol documentation> 
 getProtocol ::
-            (MonadIO m, FromJSString result) => WebSocket -> m result
+            (MonadIO m, FromJSString result) => WebSocket -> m (Maybe result)
 getProtocol self
-  = liftIO (fromJSString <$> (js_getProtocol (unWebSocket self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getProtocol (unWebSocket self)))
  
 foreign import javascript unsafe "$1[\"extensions\"]"
-        js_getExtensions :: JSRef WebSocket -> IO JSString
+        js_getExtensions :: JSRef WebSocket -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.extensions Mozilla WebSocket.extensions documentation> 
 getExtensions ::
-              (MonadIO m, FromJSString result) => WebSocket -> m result
+              (MonadIO m, FromJSString result) => WebSocket -> m (Maybe result)
 getExtensions self
-  = liftIO (fromJSString <$> (js_getExtensions (unWebSocket self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getExtensions (unWebSocket self)))
  
 foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
         js_setBinaryType :: JSRef WebSocket -> JSString -> IO ()

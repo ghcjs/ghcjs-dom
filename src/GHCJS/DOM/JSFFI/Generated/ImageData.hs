@@ -1,10 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ImageData
        (js_newImageData, newImageData, js_newImageData', newImageData',
-        js_getWidth, getWidth, js_getHeight, getHeight, js_getData,
-        getData, ImageData, castToImageData, gTypeImageData)
+        js_getWidth, getWidth, js_getHeight, getHeight, ImageData,
+        castToImageData, gTypeImageData)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -56,11 +57,3 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.height Mozilla ImageData.height documentation> 
 getHeight :: (MonadIO m) => ImageData -> m Int
 getHeight self = liftIO (js_getHeight (unImageData self))
- 
-foreign import javascript unsafe "$1[\"data\"]" js_getData ::
-        JSRef ImageData -> IO (JSRef Uint8ClampedArray)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.data Mozilla ImageData.data documentation> 
-getData :: (MonadIO m) => ImageData -> m (Maybe Uint8ClampedArray)
-getData self
-  = liftIO ((js_getData (unImageData self)) >>= fromJSRef)

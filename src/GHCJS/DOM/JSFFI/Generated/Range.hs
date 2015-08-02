@@ -9,7 +9,8 @@ module GHCJS.DOM.JSFFI.Generated.Range
         deleteContents, js_extractContents, extractContents,
         js_cloneContents, cloneContents, js_insertNode, insertNode,
         js_surroundContents, surroundContents, js_cloneRange, cloneRange,
-        js_toString, toString, js_detach, detach,
+        js_toString, toString, js_detach, detach, js_getClientRects,
+        getClientRects, js_getBoundingClientRect, getBoundingClientRect,
         js_createContextualFragment, createContextualFragment,
         js_intersectsNode, intersectsNode, js_compareNode, compareNode,
         js_comparePoint, comparePoint, js_isPointInRange, isPointInRange,
@@ -20,10 +21,10 @@ module GHCJS.DOM.JSFFI.Generated.Range
         js_getStartOffset, getStartOffset, js_getEndContainer,
         getEndContainer, js_getEndOffset, getEndOffset, js_getCollapsed,
         getCollapsed, js_getCommonAncestorContainer,
-        getCommonAncestorContainer, js_getText, getText, Range,
-        castToRange, gTypeRange)
+        getCommonAncestorContainer, Range, castToRange, gTypeRange)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -223,6 +224,23 @@ foreign import javascript unsafe "$1[\"detach\"]()" js_detach ::
 detach :: (MonadIO m) => Range -> m ()
 detach self = liftIO (js_detach (unRange self))
  
+foreign import javascript unsafe "$1[\"getClientRects\"]()"
+        js_getClientRects :: JSRef Range -> IO (JSRef ClientRectList)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
+getClientRects :: (MonadIO m) => Range -> m (Maybe ClientRectList)
+getClientRects self
+  = liftIO ((js_getClientRects (unRange self)) >>= fromJSRef)
+ 
+foreign import javascript unsafe "$1[\"getBoundingClientRect\"]()"
+        js_getBoundingClientRect :: JSRef Range -> IO (JSRef ClientRect)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
+getBoundingClientRect ::
+                      (MonadIO m) => Range -> m (Maybe ClientRect)
+getBoundingClientRect self
+  = liftIO ((js_getBoundingClientRect (unRange self)) >>= fromJSRef)
+ 
 foreign import javascript unsafe
         "$1[\"createContextualFragment\"]($2)" js_createContextualFragment
         :: JSRef Range -> JSString -> IO (JSRef DocumentFragment)
@@ -348,11 +366,3 @@ getCommonAncestorContainer ::
 getCommonAncestorContainer self
   = liftIO
       ((js_getCommonAncestorContainer (unRange self)) >>= fromJSRef)
- 
-foreign import javascript unsafe "$1[\"text\"]" js_getText ::
-        JSRef Range -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.text Mozilla Range.text documentation> 
-getText :: (MonadIO m, FromJSString result) => Range -> m result
-getText self
-  = liftIO (fromJSString <$> (js_getText (unRange self)))

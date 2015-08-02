@@ -73,7 +73,8 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
         getWebkitImageSmoothingEnabled, CanvasRenderingContext2D,
         castToCanvasRenderingContext2D, gTypeCanvasRenderingContext2D)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -1143,36 +1144,39 @@ webkitPutImageDataHDDirty self imagedata dx dy dirtyX dirtyY
 foreign import javascript unsafe "$1[\"createPattern\"]($2, $3)"
         js_createPatternFromCanvas ::
         JSRef CanvasRenderingContext2D ->
-          JSRef HTMLCanvasElement -> JSString -> IO (JSRef CanvasPattern)
+          JSRef HTMLCanvasElement ->
+            JSRef (Maybe JSString) -> IO (JSRef CanvasPattern)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPatternFromCanvas ::
                         (MonadIO m, ToJSString repetitionType) =>
                           CanvasRenderingContext2D ->
                             Maybe HTMLCanvasElement ->
-                              repetitionType -> m (Maybe CanvasPattern)
+                              Maybe repetitionType -> m (Maybe CanvasPattern)
 createPatternFromCanvas self canvas repetitionType
   = liftIO
       ((js_createPatternFromCanvas (unCanvasRenderingContext2D self)
           (maybe jsNull pToJSRef canvas)
-          (toJSString repetitionType))
+          (toMaybeJSString repetitionType))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createPattern\"]($2, $3)"
         js_createPattern ::
         JSRef CanvasRenderingContext2D ->
-          JSRef HTMLImageElement -> JSString -> IO (JSRef CanvasPattern)
+          JSRef HTMLImageElement ->
+            JSRef (Maybe JSString) -> IO (JSRef CanvasPattern)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPattern ::
               (MonadIO m, ToJSString repetitionType) =>
                 CanvasRenderingContext2D ->
-                  Maybe HTMLImageElement -> repetitionType -> m (Maybe CanvasPattern)
+                  Maybe HTMLImageElement ->
+                    Maybe repetitionType -> m (Maybe CanvasPattern)
 createPattern self image repetitionType
   = liftIO
       ((js_createPattern (unCanvasRenderingContext2D self)
           (maybe jsNull pToJSRef image)
-          (toJSString repetitionType))
+          (toMaybeJSString repetitionType))
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"createImageData\"]($2)"
@@ -1287,28 +1291,28 @@ getGlobalAlpha self
 foreign import javascript unsafe
         "$1[\"globalCompositeOperation\"] = $2;"
         js_setGlobalCompositeOperation ::
-        JSRef CanvasRenderingContext2D -> JSString -> IO ()
+        JSRef CanvasRenderingContext2D -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.globalCompositeOperation Mozilla CanvasRenderingContext2D.globalCompositeOperation documentation> 
 setGlobalCompositeOperation ::
                             (MonadIO m, ToJSString val) =>
-                              CanvasRenderingContext2D -> val -> m ()
+                              CanvasRenderingContext2D -> Maybe val -> m ()
 setGlobalCompositeOperation self val
   = liftIO
       (js_setGlobalCompositeOperation (unCanvasRenderingContext2D self)
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"globalCompositeOperation\"]"
         js_getGlobalCompositeOperation ::
-        JSRef CanvasRenderingContext2D -> IO JSString
+        JSRef CanvasRenderingContext2D -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.globalCompositeOperation Mozilla CanvasRenderingContext2D.globalCompositeOperation documentation> 
 getGlobalCompositeOperation ::
                             (MonadIO m, FromJSString result) =>
-                              CanvasRenderingContext2D -> m result
+                              CanvasRenderingContext2D -> m (Maybe result)
 getGlobalCompositeOperation self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getGlobalCompositeOperation (unCanvasRenderingContext2D self)))
  
 foreign import javascript unsafe "$1[\"lineWidth\"] = $2;"
@@ -1330,50 +1334,52 @@ getLineWidth self
  
 foreign import javascript unsafe "$1[\"lineCap\"] = $2;"
         js_setLineCap ::
-        JSRef CanvasRenderingContext2D -> JSString -> IO ()
+        JSRef CanvasRenderingContext2D -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineCap Mozilla CanvasRenderingContext2D.lineCap documentation> 
 setLineCap ::
            (MonadIO m, ToJSString val) =>
-             CanvasRenderingContext2D -> val -> m ()
+             CanvasRenderingContext2D -> Maybe val -> m ()
 setLineCap self val
   = liftIO
-      (js_setLineCap (unCanvasRenderingContext2D self) (toJSString val))
+      (js_setLineCap (unCanvasRenderingContext2D self)
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"lineCap\"]" js_getLineCap ::
-        JSRef CanvasRenderingContext2D -> IO JSString
+        JSRef CanvasRenderingContext2D -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineCap Mozilla CanvasRenderingContext2D.lineCap documentation> 
 getLineCap ::
            (MonadIO m, FromJSString result) =>
-             CanvasRenderingContext2D -> m result
+             CanvasRenderingContext2D -> m (Maybe result)
 getLineCap self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getLineCap (unCanvasRenderingContext2D self)))
  
 foreign import javascript unsafe "$1[\"lineJoin\"] = $2;"
         js_setLineJoin ::
-        JSRef CanvasRenderingContext2D -> JSString -> IO ()
+        JSRef CanvasRenderingContext2D -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineJoin Mozilla CanvasRenderingContext2D.lineJoin documentation> 
 setLineJoin ::
             (MonadIO m, ToJSString val) =>
-              CanvasRenderingContext2D -> val -> m ()
+              CanvasRenderingContext2D -> Maybe val -> m ()
 setLineJoin self val
   = liftIO
-      (js_setLineJoin (unCanvasRenderingContext2D self) (toJSString val))
+      (js_setLineJoin (unCanvasRenderingContext2D self)
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"lineJoin\"]" js_getLineJoin
-        :: JSRef CanvasRenderingContext2D -> IO JSString
+        :: JSRef CanvasRenderingContext2D -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineJoin Mozilla CanvasRenderingContext2D.lineJoin documentation> 
 getLineJoin ::
             (MonadIO m, FromJSString result) =>
-              CanvasRenderingContext2D -> m result
+              CanvasRenderingContext2D -> m (Maybe result)
 getLineJoin self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getLineJoin (unCanvasRenderingContext2D self)))
  
 foreign import javascript unsafe "$1[\"miterLimit\"] = $2;"
@@ -1454,27 +1460,28 @@ getShadowBlur self
  
 foreign import javascript unsafe "$1[\"shadowColor\"] = $2;"
         js_setShadowColor ::
-        JSRef CanvasRenderingContext2D -> JSString -> IO ()
+        JSRef CanvasRenderingContext2D -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.shadowColor Mozilla CanvasRenderingContext2D.shadowColor documentation> 
 setShadowColor ::
                (MonadIO m, ToJSString val) =>
-                 CanvasRenderingContext2D -> val -> m ()
+                 CanvasRenderingContext2D -> Maybe val -> m ()
 setShadowColor self val
   = liftIO
       (js_setShadowColor (unCanvasRenderingContext2D self)
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"shadowColor\"]"
-        js_getShadowColor :: JSRef CanvasRenderingContext2D -> IO JSString
+        js_getShadowColor ::
+        JSRef CanvasRenderingContext2D -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.shadowColor Mozilla CanvasRenderingContext2D.shadowColor documentation> 
 getShadowColor ::
                (MonadIO m, FromJSString result) =>
-                 CanvasRenderingContext2D -> m result
+                 CanvasRenderingContext2D -> m (Maybe result)
 getShadowColor self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getShadowColor (unCanvasRenderingContext2D self)))
  
 foreign import javascript unsafe "$1[\"lineDashOffset\"] = $2;"

@@ -4,7 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSImportRule
         getStyleSheet, CSSImportRule, castToCSSImportRule,
         gTypeCSSImportRule)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -19,13 +20,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
-        JSRef CSSImportRule -> IO JSString
+        JSRef CSSImportRule -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.href Mozilla CSSImportRule.href documentation> 
 getHref ::
-        (MonadIO m, FromJSString result) => CSSImportRule -> m result
+        (MonadIO m, FromJSString result) =>
+          CSSImportRule -> m (Maybe result)
 getHref self
-  = liftIO (fromJSString <$> (js_getHref (unCSSImportRule self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getHref (unCSSImportRule self)))
  
 foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
         JSRef CSSImportRule -> IO (JSRef MediaList)

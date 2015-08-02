@@ -4,7 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.DOMSettableTokenList
         DOMSettableTokenList, castToDOMSettableTokenList,
         gTypeDOMSettableTokenList)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -19,15 +20,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
-        JSRef DOMSettableTokenList -> Word -> IO JSString
+        JSRef DOMSettableTokenList -> Word -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList._get Mozilla DOMSettableTokenList._get documentation> 
 _get ::
      (MonadIO m, FromJSString result) =>
-       DOMSettableTokenList -> Word -> m result
+       DOMSettableTokenList -> Word -> m (Maybe result)
 _get self index
   = liftIO
-      (fromJSString <$> (js__get (unDOMSettableTokenList self) index))
+      (fromMaybeJSString <$>
+         (js__get (unDOMSettableTokenList self) index))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
         :: JSRef DOMSettableTokenList -> JSString -> IO ()

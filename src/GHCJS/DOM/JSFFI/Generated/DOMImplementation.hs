@@ -6,7 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.DOMImplementation
         createHTMLDocument, DOMImplementation, castToDOMImplementation,
         gTypeDOMImplementation)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -22,52 +23,57 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "($1[\"hasFeature\"]($2,\n$3) ? 1 : 0)" js_hasFeature ::
-        JSRef DOMImplementation -> JSString -> JSString -> IO Bool
+        JSRef DOMImplementation ->
+          JSString -> JSRef (Maybe JSString) -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.hasFeature Mozilla DOMImplementation.hasFeature documentation> 
 hasFeature ::
            (MonadIO m, ToJSString feature, ToJSString version) =>
-             DOMImplementation -> feature -> version -> m Bool
+             DOMImplementation -> feature -> Maybe version -> m Bool
 hasFeature self feature version
   = liftIO
       (js_hasFeature (unDOMImplementation self) (toJSString feature)
-         (toJSString version))
+         (toMaybeJSString version))
  
 foreign import javascript unsafe
         "$1[\"createDocumentType\"]($2, $3,\n$4)" js_createDocumentType ::
         JSRef DOMImplementation ->
-          JSString -> JSString -> JSString -> IO (JSRef DocumentType)
+          JSRef (Maybe JSString) ->
+            JSRef (Maybe JSString) ->
+              JSRef (Maybe JSString) -> IO (JSRef DocumentType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocumentType Mozilla DOMImplementation.createDocumentType documentation> 
 createDocumentType ::
                    (MonadIO m, ToJSString qualifiedName, ToJSString publicId,
                     ToJSString systemId) =>
                      DOMImplementation ->
-                       qualifiedName -> publicId -> systemId -> m (Maybe DocumentType)
+                       Maybe qualifiedName ->
+                         Maybe publicId -> Maybe systemId -> m (Maybe DocumentType)
 createDocumentType self qualifiedName publicId systemId
   = liftIO
       ((js_createDocumentType (unDOMImplementation self)
-          (toJSString qualifiedName)
-          (toJSString publicId)
-          (toJSString systemId))
+          (toMaybeJSString qualifiedName)
+          (toMaybeJSString publicId)
+          (toMaybeJSString systemId))
          >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"createDocument\"]($2, $3, $4)" js_createDocument ::
         JSRef DOMImplementation ->
-          JSString -> JSString -> JSRef DocumentType -> IO (JSRef Document)
+          JSRef (Maybe JSString) ->
+            JSRef (Maybe JSString) -> JSRef DocumentType -> IO (JSRef Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocument Mozilla DOMImplementation.createDocument documentation> 
 createDocument ::
                (MonadIO m, ToJSString namespaceURI, ToJSString qualifiedName) =>
                  DOMImplementation ->
-                   namespaceURI ->
-                     qualifiedName -> Maybe DocumentType -> m (Maybe Document)
+                   Maybe namespaceURI ->
+                     Maybe qualifiedName -> Maybe DocumentType -> m (Maybe Document)
 createDocument self namespaceURI qualifiedName doctype
   = liftIO
       ((js_createDocument (unDOMImplementation self)
-          (toJSString namespaceURI)
-          (toJSString qualifiedName)
+          (toMaybeJSString namespaceURI)
+          (toMaybeJSString qualifiedName)
           (maybe jsNull pToJSRef doctype))
          >>= fromJSRef)
  

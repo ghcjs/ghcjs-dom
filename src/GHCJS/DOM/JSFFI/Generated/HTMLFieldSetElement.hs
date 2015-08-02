@@ -3,12 +3,13 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFieldSetElement
        (js_checkValidity, checkValidity, js_setCustomValidity,
         setCustomValidity, js_setDisabled, setDisabled, js_getDisabled,
         getDisabled, js_getForm, getForm, js_setName, setName, js_getName,
-        getName, js_getElements, getElements, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity,
+        getName, js_getType, getType, js_getElements, getElements,
+        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
         js_getValidationMessage, getValidationMessage, HTMLFieldSetElement,
         castToHTMLFieldSetElement, gTypeHTMLFieldSetElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -33,16 +34,16 @@ checkValidity self
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
-        JSRef HTMLFieldSetElement -> JSString -> IO ()
+        JSRef HTMLFieldSetElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.setCustomValidity Mozilla HTMLFieldSetElement.setCustomValidity documentation> 
 setCustomValidity ::
                   (MonadIO m, ToJSString error) =>
-                    HTMLFieldSetElement -> error -> m ()
+                    HTMLFieldSetElement -> Maybe error -> m ()
 setCustomValidity self error
   = liftIO
       (js_setCustomValidity (unHTMLFieldSetElement self)
-         (toJSString error))
+         (toMaybeJSString error))
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         js_setDisabled :: JSRef HTMLFieldSetElement -> Bool -> IO ()
@@ -87,6 +88,16 @@ getName ::
 getName self
   = liftIO
       (fromJSString <$> (js_getName (unHTMLFieldSetElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLFieldSetElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.type Mozilla HTMLFieldSetElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLFieldSetElement -> m result
+getType self
+  = liftIO
+      (fromJSString <$> (js_getType (unHTMLFieldSetElement self)))
  
 foreign import javascript unsafe "$1[\"elements\"]" js_getElements
         :: JSRef HTMLFieldSetElement -> IO (JSRef HTMLCollection)

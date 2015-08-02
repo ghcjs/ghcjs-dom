@@ -3,7 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGLineElement
        (js_getX1, getX1, js_getY1, getY1, js_getX2, getX2, js_getY2,
         getY2, SVGLineElement, castToSVGLineElement, gTypeSVGLineElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))

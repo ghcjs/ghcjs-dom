@@ -1,9 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.RGBColor
        (js_getRed, getRed, js_getGreen, getGreen, js_getBlue, getBlue,
-        js_getAlpha, getAlpha, RGBColor, castToRGBColor, gTypeRGBColor)
+        RGBColor, castToRGBColor, gTypeRGBColor)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -39,11 +40,3 @@ foreign import javascript unsafe "$1[\"blue\"]" js_getBlue ::
 getBlue :: (MonadIO m) => RGBColor -> m (Maybe CSSPrimitiveValue)
 getBlue self
   = liftIO ((js_getBlue (unRGBColor self)) >>= fromJSRef)
- 
-foreign import javascript unsafe "$1[\"alpha\"]" js_getAlpha ::
-        JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.alpha Mozilla RGBColor.alpha documentation> 
-getAlpha :: (MonadIO m) => RGBColor -> m (Maybe CSSPrimitiveValue)
-getAlpha self
-  = liftIO ((js_getAlpha (unRGBColor self)) >>= fromJSRef)

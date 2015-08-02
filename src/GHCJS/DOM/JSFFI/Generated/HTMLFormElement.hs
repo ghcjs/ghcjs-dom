@@ -17,7 +17,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFormElement
         getAutocapitalize, autocomplete, autocompleteerror,
         HTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -129,60 +130,70 @@ getAutocomplete self
       (fromJSString <$> (js_getAutocomplete (unHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"enctype\"] = $2;"
-        js_setEnctype :: JSRef HTMLFormElement -> JSString -> IO ()
+        js_setEnctype ::
+        JSRef HTMLFormElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
 setEnctype ::
-           (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
+           (MonadIO m, ToJSString val) => HTMLFormElement -> Maybe val -> m ()
 setEnctype self val
-  = liftIO (js_setEnctype (unHTMLFormElement self) (toJSString val))
+  = liftIO
+      (js_setEnctype (unHTMLFormElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"enctype\"]" js_getEnctype ::
-        JSRef HTMLFormElement -> IO JSString
+        JSRef HTMLFormElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
 getEnctype ::
-           (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+           (MonadIO m, FromJSString result) =>
+             HTMLFormElement -> m (Maybe result)
 getEnctype self
   = liftIO
-      (fromJSString <$> (js_getEnctype (unHTMLFormElement self)))
+      (fromMaybeJSString <$> (js_getEnctype (unHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"encoding\"] = $2;"
-        js_setEncoding :: JSRef HTMLFormElement -> JSString -> IO ()
+        js_setEncoding ::
+        JSRef HTMLFormElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
 setEncoding ::
-            (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
+            (MonadIO m, ToJSString val) => HTMLFormElement -> Maybe val -> m ()
 setEncoding self val
-  = liftIO (js_setEncoding (unHTMLFormElement self) (toJSString val))
+  = liftIO
+      (js_setEncoding (unHTMLFormElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"encoding\"]" js_getEncoding
-        :: JSRef HTMLFormElement -> IO JSString
+        :: JSRef HTMLFormElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
 getEncoding ::
-            (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+            (MonadIO m, FromJSString result) =>
+              HTMLFormElement -> m (Maybe result)
 getEncoding self
   = liftIO
-      (fromJSString <$> (js_getEncoding (unHTMLFormElement self)))
+      (fromMaybeJSString <$> (js_getEncoding (unHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"method\"] = $2;"
-        js_setMethod :: JSRef HTMLFormElement -> JSString -> IO ()
+        js_setMethod ::
+        JSRef HTMLFormElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
 setMethod ::
-          (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
+          (MonadIO m, ToJSString val) => HTMLFormElement -> Maybe val -> m ()
 setMethod self val
-  = liftIO (js_setMethod (unHTMLFormElement self) (toJSString val))
+  = liftIO
+      (js_setMethod (unHTMLFormElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"method\"]" js_getMethod ::
-        JSRef HTMLFormElement -> IO JSString
+        JSRef HTMLFormElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
 getMethod ::
-          (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+          (MonadIO m, FromJSString result) =>
+            HTMLFormElement -> m (Maybe result)
 getMethod self
-  = liftIO (fromJSString <$> (js_getMethod (unHTMLFormElement self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getMethod (unHTMLFormElement self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLFormElement -> JSString -> IO ()
@@ -269,24 +280,29 @@ getAutocorrect self
   = liftIO (js_getAutocorrect (unHTMLFormElement self))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
-        js_setAutocapitalize :: JSRef HTMLFormElement -> JSString -> IO ()
+        js_setAutocapitalize ::
+        JSRef HTMLFormElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocapitalize Mozilla HTMLFormElement.autocapitalize documentation> 
 setAutocapitalize ::
-                  (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
+                  (MonadIO m, ToJSString val) => HTMLFormElement -> Maybe val -> m ()
 setAutocapitalize self val
   = liftIO
-      (js_setAutocapitalize (unHTMLFormElement self) (toJSString val))
+      (js_setAutocapitalize (unHTMLFormElement self)
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"]"
-        js_getAutocapitalize :: JSRef HTMLFormElement -> IO JSString
+        js_getAutocapitalize ::
+        JSRef HTMLFormElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocapitalize Mozilla HTMLFormElement.autocapitalize documentation> 
 getAutocapitalize ::
-                  (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+                  (MonadIO m, FromJSString result) =>
+                    HTMLFormElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO
-      (fromJSString <$> (js_getAutocapitalize (unHTMLFormElement self)))
+      (fromMaybeJSString <$>
+         (js_getAutocapitalize (unHTMLFormElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.onautocomplete Mozilla HTMLFormElement.onautocomplete documentation> 
 autocomplete :: EventName HTMLFormElement onautocomplete

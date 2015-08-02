@@ -9,10 +9,11 @@ module GHCJS.DOM.JSFFI.Generated.MouseEvent
         getMovementX, js_getMovementY, getMovementY, js_getOffsetX,
         getOffsetX, js_getOffsetY, getOffsetY, js_getX, getX, js_getY,
         getY, js_getFromElement, getFromElement, js_getToElement,
-        getToElement, MouseEvent, castToMouseEvent, gTypeMouseEvent,
-        IsMouseEvent, toMouseEvent)
+        getToElement, js_getDataTransfer, getDataTransfer, MouseEvent,
+        castToMouseEvent, gTypeMouseEvent, IsMouseEvent, toMouseEvent)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -226,4 +227,15 @@ getToElement ::
 getToElement self
   = liftIO
       ((js_getToElement (unMouseEvent (toMouseEvent self))) >>=
+         fromJSRef)
+ 
+foreign import javascript unsafe "$1[\"dataTransfer\"]"
+        js_getDataTransfer :: JSRef MouseEvent -> IO (JSRef DataTransfer)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.dataTransfer Mozilla MouseEvent.dataTransfer documentation> 
+getDataTransfer ::
+                (MonadIO m, IsMouseEvent self) => self -> m (Maybe DataTransfer)
+getDataTransfer self
+  = liftIO
+      ((js_getDataTransfer (unMouseEvent (toMouseEvent self))) >>=
          fromJSRef)

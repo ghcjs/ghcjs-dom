@@ -7,7 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.XSLTProcessor
         removeParameter, js_clearParameters, clearParameters, js_reset,
         reset, XSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -89,16 +90,17 @@ setParameter self namespaceURI localName value
  
 foreign import javascript unsafe "$1[\"getParameter\"]($2, $3)"
         js_getParameter ::
-        JSRef XSLTProcessor -> JSString -> JSString -> IO JSString
+        JSRef XSLTProcessor ->
+          JSString -> JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.getParameter Mozilla XSLTProcessor.getParameter documentation> 
 getParameter ::
              (MonadIO m, ToJSString namespaceURI, ToJSString localName,
               FromJSString result) =>
-               XSLTProcessor -> namespaceURI -> localName -> m result
+               XSLTProcessor -> namespaceURI -> localName -> m (Maybe result)
 getParameter self namespaceURI localName
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getParameter (unXSLTProcessor self) (toJSString namespaceURI)
             (toJSString localName)))
  

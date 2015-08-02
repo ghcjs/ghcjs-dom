@@ -4,34 +4,35 @@ module GHCJS.DOM.JSFFI.Generated.HTMLInputElement
         checkValidity, js_setCustomValidity, setCustomValidity, js_select,
         select, js_setRangeText, setRangeText, js_setRangeText4,
         setRangeText4, js_setSelectionRange, setSelectionRange,
-        js_setValueForUser, setValueForUser, js_setAccept, setAccept,
-        js_getAccept, getAccept, js_setAlt, setAlt, js_getAlt, getAlt,
-        js_setAutocomplete, setAutocomplete, js_getAutocomplete,
-        getAutocomplete, js_setAutofocus, setAutofocus, js_getAutofocus,
-        getAutofocus, js_setDefaultChecked, setDefaultChecked,
-        js_getDefaultChecked, getDefaultChecked, js_setChecked, setChecked,
-        js_getChecked, getChecked, js_setDirName, setDirName,
-        js_getDirName, getDirName, js_setDisabled, setDisabled,
-        js_getDisabled, getDisabled, js_getForm, getForm, js_setFiles,
-        setFiles, js_getFiles, getFiles, js_setFormAction, setFormAction,
-        js_getFormAction, getFormAction, js_setFormEnctype, setFormEnctype,
-        js_getFormEnctype, getFormEnctype, js_setFormMethod, setFormMethod,
-        js_getFormMethod, getFormMethod, js_setFormNoValidate,
-        setFormNoValidate, js_getFormNoValidate, getFormNoValidate,
-        js_setFormTarget, setFormTarget, js_getFormTarget, getFormTarget,
-        js_setHeight, setHeight, js_getHeight, getHeight,
-        js_setIndeterminate, setIndeterminate, js_getIndeterminate,
-        getIndeterminate, js_getList, getList, js_setMax, setMax,
-        js_getMax, getMax, js_setMaxLength, setMaxLength, js_getMaxLength,
-        getMaxLength, js_setMin, setMin, js_getMin, getMin, js_setMultiple,
-        setMultiple, js_getMultiple, getMultiple, js_setName, setName,
-        js_getName, getName, js_setPattern, setPattern, js_getPattern,
-        getPattern, js_setPlaceholder, setPlaceholder, js_getPlaceholder,
+        js_setAccept, setAccept, js_getAccept, getAccept, js_setAlt,
+        setAlt, js_getAlt, getAlt, js_setAutocomplete, setAutocomplete,
+        js_getAutocomplete, getAutocomplete, js_setAutofocus, setAutofocus,
+        js_getAutofocus, getAutofocus, js_setDefaultChecked,
+        setDefaultChecked, js_getDefaultChecked, getDefaultChecked,
+        js_setChecked, setChecked, js_getChecked, getChecked,
+        js_setDirName, setDirName, js_getDirName, getDirName,
+        js_setDisabled, setDisabled, js_getDisabled, getDisabled,
+        js_getForm, getForm, js_setFiles, setFiles, js_getFiles, getFiles,
+        js_setFormAction, setFormAction, js_getFormAction, getFormAction,
+        js_setFormEnctype, setFormEnctype, js_getFormEnctype,
+        getFormEnctype, js_setFormMethod, setFormMethod, js_getFormMethod,
+        getFormMethod, js_setFormNoValidate, setFormNoValidate,
+        js_getFormNoValidate, getFormNoValidate, js_setFormTarget,
+        setFormTarget, js_getFormTarget, getFormTarget, js_setHeight,
+        setHeight, js_getHeight, getHeight, js_setIndeterminate,
+        setIndeterminate, js_getIndeterminate, getIndeterminate,
+        js_getList, getList, js_setMax, setMax, js_getMax, getMax,
+        js_setMaxLength, setMaxLength, js_getMaxLength, getMaxLength,
+        js_setMin, setMin, js_getMin, getMin, js_setMultiple, setMultiple,
+        js_getMultiple, getMultiple, js_setName, setName, js_getName,
+        getName, js_setPattern, setPattern, js_getPattern, getPattern,
+        js_setPlaceholder, setPlaceholder, js_getPlaceholder,
         getPlaceholder, js_setReadOnly, setReadOnly, js_getReadOnly,
         getReadOnly, js_setRequired, setRequired, js_getRequired,
         getRequired, js_setSize, setSize, js_getSize, getSize, js_setSrc,
         setSrc, js_getSrc, getSrc, js_setStep, setStep, js_getStep,
-        getStep, js_setDefaultValue, setDefaultValue, js_getDefaultValue,
+        getStep, js_setType, setType, js_getType, getType,
+        js_setDefaultValue, setDefaultValue, js_getDefaultValue,
         getDefaultValue, js_setValue, setValue, js_getValue, getValue,
         js_setValueAsDate, setValueAsDate, js_getValueAsDate,
         getValueAsDate, js_setValueAsNumber, setValueAsNumber,
@@ -52,7 +53,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLInputElement
         js_setCapture, setCapture, js_getCapture, getCapture,
         HTMLInputElement, castToHTMLInputElement, gTypeHTMLInputElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -90,14 +92,17 @@ checkValidity self
   = liftIO (js_checkValidity (unHTMLInputElement self))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
-        js_setCustomValidity :: JSRef HTMLInputElement -> JSString -> IO ()
+        js_setCustomValidity ::
+        JSRef HTMLInputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.setCustomValidity Mozilla HTMLInputElement.setCustomValidity documentation> 
 setCustomValidity ::
-                  (MonadIO m, ToJSString error) => HTMLInputElement -> error -> m ()
+                  (MonadIO m, ToJSString error) =>
+                    HTMLInputElement -> Maybe error -> m ()
 setCustomValidity self error
   = liftIO
-      (js_setCustomValidity (unHTMLInputElement self) (toJSString error))
+      (js_setCustomValidity (unHTMLInputElement self)
+         (toMaybeJSString error))
  
 foreign import javascript unsafe "$1[\"select\"]()" js_select ::
         JSRef HTMLInputElement -> IO ()
@@ -148,16 +153,6 @@ setSelectionRange self start end direction
   = liftIO
       (js_setSelectionRange (unHTMLInputElement self) start end
          (toJSString direction))
- 
-foreign import javascript unsafe "$1[\"setValueForUser\"]($2)"
-        js_setValueForUser :: JSRef HTMLInputElement -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.setValueForUser Mozilla HTMLInputElement.setValueForUser documentation> 
-setValueForUser ::
-                (MonadIO m, ToJSString value) => HTMLInputElement -> value -> m ()
-setValueForUser self value
-  = liftIO
-      (js_setValueForUser (unHTMLInputElement self) (toJSString value))
  
 foreign import javascript unsafe "$1[\"accept\"] = $2;"
         js_setAccept :: JSRef HTMLInputElement -> JSString -> IO ()
@@ -347,44 +342,54 @@ getFormAction self
       (fromJSString <$> (js_getFormAction (unHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
-        js_setFormEnctype :: JSRef HTMLInputElement -> JSString -> IO ()
+        js_setFormEnctype ::
+        JSRef HTMLInputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formEnctype Mozilla HTMLInputElement.formEnctype documentation> 
 setFormEnctype ::
-               (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
+               (MonadIO m, ToJSString val) =>
+                 HTMLInputElement -> Maybe val -> m ()
 setFormEnctype self val
   = liftIO
-      (js_setFormEnctype (unHTMLInputElement self) (toJSString val))
+      (js_setFormEnctype (unHTMLInputElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"formEnctype\"]"
-        js_getFormEnctype :: JSRef HTMLInputElement -> IO JSString
+        js_getFormEnctype ::
+        JSRef HTMLInputElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formEnctype Mozilla HTMLInputElement.formEnctype documentation> 
 getFormEnctype ::
-               (MonadIO m, FromJSString result) => HTMLInputElement -> m result
+               (MonadIO m, FromJSString result) =>
+                 HTMLInputElement -> m (Maybe result)
 getFormEnctype self
   = liftIO
-      (fromJSString <$> (js_getFormEnctype (unHTMLInputElement self)))
+      (fromMaybeJSString <$>
+         (js_getFormEnctype (unHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
-        js_setFormMethod :: JSRef HTMLInputElement -> JSString -> IO ()
+        js_setFormMethod ::
+        JSRef HTMLInputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formMethod Mozilla HTMLInputElement.formMethod documentation> 
 setFormMethod ::
-              (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
+              (MonadIO m, ToJSString val) =>
+                HTMLInputElement -> Maybe val -> m ()
 setFormMethod self val
   = liftIO
-      (js_setFormMethod (unHTMLInputElement self) (toJSString val))
+      (js_setFormMethod (unHTMLInputElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"formMethod\"]"
-        js_getFormMethod :: JSRef HTMLInputElement -> IO JSString
+        js_getFormMethod ::
+        JSRef HTMLInputElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formMethod Mozilla HTMLInputElement.formMethod documentation> 
 getFormMethod ::
-              (MonadIO m, FromJSString result) => HTMLInputElement -> m result
+              (MonadIO m, FromJSString result) =>
+                HTMLInputElement -> m (Maybe result)
 getFormMethod self
   = liftIO
-      (fromJSString <$> (js_getFormMethod (unHTMLInputElement self)))
+      (fromMaybeJSString <$>
+         (js_getFormMethod (unHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         js_setFormNoValidate :: JSRef HTMLInputElement -> Bool -> IO ()
@@ -670,43 +675,71 @@ getStep ::
 getStep self
   = liftIO (fromJSString <$> (js_getStep (unHTMLInputElement self)))
  
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLInputElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.type Mozilla HTMLInputElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLInputElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLInputElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.type Mozilla HTMLInputElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLInputElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLInputElement self)))
+ 
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
-        js_setDefaultValue :: JSRef HTMLInputElement -> JSString -> IO ()
+        js_setDefaultValue ::
+        JSRef HTMLInputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultValue Mozilla HTMLInputElement.defaultValue documentation> 
 setDefaultValue ::
-                (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
+                (MonadIO m, ToJSString val) =>
+                  HTMLInputElement -> Maybe val -> m ()
 setDefaultValue self val
   = liftIO
-      (js_setDefaultValue (unHTMLInputElement self) (toJSString val))
+      (js_setDefaultValue (unHTMLInputElement self)
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"defaultValue\"]"
-        js_getDefaultValue :: JSRef HTMLInputElement -> IO JSString
+        js_getDefaultValue ::
+        JSRef HTMLInputElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultValue Mozilla HTMLInputElement.defaultValue documentation> 
 getDefaultValue ::
-                (MonadIO m, FromJSString result) => HTMLInputElement -> m result
+                (MonadIO m, FromJSString result) =>
+                  HTMLInputElement -> m (Maybe result)
 getDefaultValue self
   = liftIO
-      (fromJSString <$> (js_getDefaultValue (unHTMLInputElement self)))
+      (fromMaybeJSString <$>
+         (js_getDefaultValue (unHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: JSRef HTMLInputElement -> JSString -> IO ()
+        :: JSRef HTMLInputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
 setValue ::
-         (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
+         (MonadIO m, ToJSString val) =>
+           HTMLInputElement -> Maybe val -> m ()
 setValue self val
-  = liftIO (js_setValue (unHTMLInputElement self) (toJSString val))
+  = liftIO
+      (js_setValue (unHTMLInputElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        JSRef HTMLInputElement -> IO JSString
+        JSRef HTMLInputElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
 getValue ::
-         (MonadIO m, FromJSString result) => HTMLInputElement -> m result
+         (MonadIO m, FromJSString result) =>
+           HTMLInputElement -> m (Maybe result)
 getValue self
-  = liftIO (fromJSString <$> (js_getValue (unHTMLInputElement self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getValue (unHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"valueAsDate\"] = $2;"
         js_setValueAsDate :: JSRef HTMLInputElement -> JSRef Date -> IO ()
@@ -921,24 +954,30 @@ getAutocorrect self
   = liftIO (js_getAutocorrect (unHTMLInputElement self))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
-        js_setAutocapitalize :: JSRef HTMLInputElement -> JSString -> IO ()
+        js_setAutocapitalize ::
+        JSRef HTMLInputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocapitalize Mozilla HTMLInputElement.autocapitalize documentation> 
 setAutocapitalize ::
-                  (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
+                  (MonadIO m, ToJSString val) =>
+                    HTMLInputElement -> Maybe val -> m ()
 setAutocapitalize self val
   = liftIO
-      (js_setAutocapitalize (unHTMLInputElement self) (toJSString val))
+      (js_setAutocapitalize (unHTMLInputElement self)
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"]"
-        js_getAutocapitalize :: JSRef HTMLInputElement -> IO JSString
+        js_getAutocapitalize ::
+        JSRef HTMLInputElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocapitalize Mozilla HTMLInputElement.autocapitalize documentation> 
 getAutocapitalize ::
-                  (MonadIO m, FromJSString result) => HTMLInputElement -> m result
+                  (MonadIO m, FromJSString result) =>
+                    HTMLInputElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO
-      (fromJSString <$> (js_getAutocapitalize (unHTMLInputElement self)))
+      (fromMaybeJSString <$>
+         (js_getAutocapitalize (unHTMLInputElement self)))
  
 foreign import javascript unsafe "$1[\"capture\"] = $2;"
         js_setCapture :: JSRef HTMLInputElement -> Bool -> IO ()

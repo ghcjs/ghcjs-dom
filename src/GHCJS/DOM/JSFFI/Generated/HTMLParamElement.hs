@@ -1,11 +1,12 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLParamElement
-       (js_setName, setName, js_getName, getName, js_setValue, setValue,
-        js_getValue, getValue, js_setValueType, setValueType,
-        js_getValueType, getValueType, HTMLParamElement,
-        castToHTMLParamElement, gTypeHTMLParamElement)
+       (js_setName, setName, js_getName, getName, js_setType, setType,
+        js_getType, getType, js_setValue, setValue, js_getValue, getValue,
+        js_setValueType, setValueType, js_getValueType, getValueType,
+        HTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -36,6 +37,24 @@ getName ::
         (MonadIO m, FromJSString result) => HTMLParamElement -> m result
 getName self
   = liftIO (fromJSString <$> (js_getName (unHTMLParamElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLParamElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.type Mozilla HTMLParamElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLParamElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLParamElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLParamElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.type Mozilla HTMLParamElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLParamElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLParamElement self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
         :: JSRef HTMLParamElement -> JSString -> IO ()

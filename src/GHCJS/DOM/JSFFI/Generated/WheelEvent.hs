@@ -1,15 +1,17 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WheelEvent
-       (js_initWheelEvent, initWheelEvent, pattern DOM_DELTA_PIXEL,
-        pattern DOM_DELTA_LINE, pattern DOM_DELTA_PAGE, js_getDeltaX,
-        getDeltaX, js_getDeltaY, getDeltaY, js_getDeltaZ, getDeltaZ,
-        js_getDeltaMode, getDeltaMode, js_getWheelDeltaX, getWheelDeltaX,
-        js_getWheelDeltaY, getWheelDeltaY, js_getWheelDelta, getWheelDelta,
+       (js_initWebKitWheelEvent, initWebKitWheelEvent,
+        pattern DOM_DELTA_PIXEL, pattern DOM_DELTA_LINE,
+        pattern DOM_DELTA_PAGE, js_getDeltaX, getDeltaX, js_getDeltaY,
+        getDeltaY, js_getDeltaZ, getDeltaZ, js_getDeltaMode, getDeltaMode,
+        js_getWheelDeltaX, getWheelDeltaX, js_getWheelDeltaY,
+        getWheelDeltaY, js_getWheelDelta, getWheelDelta,
         js_getWebkitDirectionInvertedFromDevice,
         getWebkitDirectionInvertedFromDevice, WheelEvent, castToWheelEvent,
         gTypeWheelEvent)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -24,26 +26,27 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
-        "$1[\"initWheelEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12)"
-        js_initWheelEvent ::
+        "$1[\"initWebKitWheelEvent\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10,\n$11, $12)"
+        js_initWebKitWheelEvent ::
         JSRef WheelEvent ->
           Int ->
             Int ->
               JSRef Window ->
                 Int -> Int -> Int -> Int -> Bool -> Bool -> Bool -> Bool -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.initWheelEvent Mozilla WheelEvent.initWheelEvent documentation> 
-initWheelEvent ::
-               (MonadIO m) =>
-                 WheelEvent ->
-                   Int ->
-                     Int ->
-                       Maybe Window ->
-                         Int -> Int -> Int -> Int -> Bool -> Bool -> Bool -> Bool -> m ()
-initWheelEvent self wheelDeltaX wheelDeltaY view screenX screenY
-  clientX clientY ctrlKey altKey shiftKey metaKey
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.initWebKitWheelEvent Mozilla WheelEvent.initWebKitWheelEvent documentation> 
+initWebKitWheelEvent ::
+                     (MonadIO m) =>
+                       WheelEvent ->
+                         Int ->
+                           Int ->
+                             Maybe Window ->
+                               Int -> Int -> Int -> Int -> Bool -> Bool -> Bool -> Bool -> m ()
+initWebKitWheelEvent self wheelDeltaX wheelDeltaY view screenX
+  screenY clientX clientY ctrlKey altKey shiftKey metaKey
   = liftIO
-      (js_initWheelEvent (unWheelEvent self) wheelDeltaX wheelDeltaY
+      (js_initWebKitWheelEvent (unWheelEvent self) wheelDeltaX
+         wheelDeltaY
          (maybe jsNull pToJSRef view)
          screenX
          screenY

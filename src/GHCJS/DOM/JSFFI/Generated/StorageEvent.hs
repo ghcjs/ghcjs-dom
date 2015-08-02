@@ -5,7 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.StorageEvent
         js_getUrl, getUrl, js_getStorageArea, getStorageArea, StorageEvent,
         castToStorageEvent, gTypeStorageEvent)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -27,7 +28,8 @@ foreign import javascript unsafe
             Bool ->
               Bool ->
                 JSString ->
-                  JSString -> JSString -> JSString -> JSRef Storage -> IO ()
+                  JSRef (Maybe JSString) ->
+                    JSRef (Maybe JSString) -> JSString -> JSRef Storage -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.initStorageEvent Mozilla StorageEvent.initStorageEvent documentation> 
 initStorageEvent ::
@@ -39,7 +41,8 @@ initStorageEvent ::
                        Bool ->
                          Bool ->
                            keyArg ->
-                             oldValueArg -> newValueArg -> urlArg -> Maybe Storage -> m ()
+                             Maybe oldValueArg ->
+                               Maybe newValueArg -> urlArg -> Maybe Storage -> m ()
 initStorageEvent self typeArg canBubbleArg cancelableArg keyArg
   oldValueArg newValueArg urlArg storageAreaArg
   = liftIO
@@ -47,8 +50,8 @@ initStorageEvent self typeArg canBubbleArg cancelableArg keyArg
          canBubbleArg
          cancelableArg
          (toJSString keyArg)
-         (toJSString oldValueArg)
-         (toJSString newValueArg)
+         (toMaybeJSString oldValueArg)
+         (toMaybeJSString newValueArg)
          (toJSString urlArg)
          (maybe jsNull pToJSRef storageAreaArg))
  
@@ -62,22 +65,26 @@ getKey self
   = liftIO (fromJSString <$> (js_getKey (unStorageEvent self)))
  
 foreign import javascript unsafe "$1[\"oldValue\"]" js_getOldValue
-        :: JSRef StorageEvent -> IO JSString
+        :: JSRef StorageEvent -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.oldValue Mozilla StorageEvent.oldValue documentation> 
 getOldValue ::
-            (MonadIO m, FromJSString result) => StorageEvent -> m result
+            (MonadIO m, FromJSString result) =>
+              StorageEvent -> m (Maybe result)
 getOldValue self
-  = liftIO (fromJSString <$> (js_getOldValue (unStorageEvent self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getOldValue (unStorageEvent self)))
  
 foreign import javascript unsafe "$1[\"newValue\"]" js_getNewValue
-        :: JSRef StorageEvent -> IO JSString
+        :: JSRef StorageEvent -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.newValue Mozilla StorageEvent.newValue documentation> 
 getNewValue ::
-            (MonadIO m, FromJSString result) => StorageEvent -> m result
+            (MonadIO m, FromJSString result) =>
+              StorageEvent -> m (Maybe result)
 getNewValue self
-  = liftIO (fromJSString <$> (js_getNewValue (unStorageEvent self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getNewValue (unStorageEvent self)))
  
 foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
         JSRef StorageEvent -> IO JSString

@@ -1,10 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DataTransferItem
        (js_getAsString, getAsString, js_getAsFile, getAsFile, js_getKind,
-        getKind, DataTransferItem, castToDataTransferItem,
-        gTypeDataTransferItem)
+        getKind, js_getType, getType, DataTransferItem,
+        castToDataTransferItem, gTypeDataTransferItem)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -47,3 +48,12 @@ getKind ::
         (MonadIO m, FromJSString result) => DataTransferItem -> m result
 getKind self
   = liftIO (fromJSString <$> (js_getKind (unDataTransferItem self)))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef DataTransferItem -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.type Mozilla DataTransferItem.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => DataTransferItem -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unDataTransferItem self)))

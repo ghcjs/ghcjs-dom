@@ -10,7 +10,8 @@ module GHCJS.DOM.JSFFI.Generated.IDBObjectStore
         getTransaction, js_getAutoIncrement, getAutoIncrement,
         IDBObjectStore, castToIDBObjectStore, gTypeIDBObjectStore)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -210,13 +211,15 @@ count self key
   = liftIO ((js_count (unIDBObjectStore self) key) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef IDBObjectStore -> IO JSString
+        JSRef IDBObjectStore -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.name Mozilla IDBObjectStore.name documentation> 
 getName ::
-        (MonadIO m, FromJSString result) => IDBObjectStore -> m result
+        (MonadIO m, FromJSString result) =>
+          IDBObjectStore -> m (Maybe result)
 getName self
-  = liftIO (fromJSString <$> (js_getName (unIDBObjectStore self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getName (unIDBObjectStore self)))
  
 foreign import javascript unsafe "$1[\"keyPath\"]" js_getKeyPath ::
         JSRef IDBObjectStore -> IO (JSRef IDBAny)

@@ -13,10 +13,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
         getPlaceholder, js_setReadOnly, setReadOnly, js_getReadOnly,
         getReadOnly, js_setRequired, setRequired, js_getRequired,
         getRequired, js_setRows, setRows, js_getRows, getRows, js_setWrap,
-        setWrap, js_getWrap, getWrap, js_setDefaultValue, setDefaultValue,
-        js_getDefaultValue, getDefaultValue, js_setValue, setValue,
-        js_getValue, getValue, js_getTextLength, getTextLength,
-        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
+        setWrap, js_getWrap, getWrap, js_getType, getType,
+        js_setDefaultValue, setDefaultValue, js_getDefaultValue,
+        getDefaultValue, js_setValue, setValue, js_getValue, getValue,
+        js_getTextLength, getTextLength, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity,
         js_getValidationMessage, getValidationMessage, js_getLabels,
         getLabels, js_setSelectionStart, setSelectionStart,
         js_getSelectionStart, getSelectionStart, js_setSelectionEnd,
@@ -28,7 +29,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
         getAutocapitalize, HTMLTextAreaElement, castToHTMLTextAreaElement,
         gTypeHTMLTextAreaElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -53,16 +55,16 @@ checkValidity self
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
-        JSRef HTMLTextAreaElement -> JSString -> IO ()
+        JSRef HTMLTextAreaElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.setCustomValidity Mozilla HTMLTextAreaElement.setCustomValidity documentation> 
 setCustomValidity ::
                   (MonadIO m, ToJSString error) =>
-                    HTMLTextAreaElement -> error -> m ()
+                    HTMLTextAreaElement -> Maybe error -> m ()
 setCustomValidity self error
   = liftIO
       (js_setCustomValidity (unHTMLTextAreaElement self)
-         (toJSString error))
+         (toMaybeJSString error))
  
 foreign import javascript unsafe "$1[\"select\"]()" js_select ::
         JSRef HTMLTextAreaElement -> IO ()
@@ -311,47 +313,63 @@ getWrap self
   = liftIO
       (fromJSString <$> (js_getWrap (unHTMLTextAreaElement self)))
  
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLTextAreaElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.type Mozilla HTMLTextAreaElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getType self
+  = liftIO
+      (fromJSString <$> (js_getType (unHTMLTextAreaElement self)))
+ 
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
         js_setDefaultValue ::
-        JSRef HTMLTextAreaElement -> JSString -> IO ()
+        JSRef HTMLTextAreaElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.defaultValue Mozilla HTMLTextAreaElement.defaultValue documentation> 
 setDefaultValue ::
-                (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+                (MonadIO m, ToJSString val) =>
+                  HTMLTextAreaElement -> Maybe val -> m ()
 setDefaultValue self val
   = liftIO
-      (js_setDefaultValue (unHTMLTextAreaElement self) (toJSString val))
+      (js_setDefaultValue (unHTMLTextAreaElement self)
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"defaultValue\"]"
-        js_getDefaultValue :: JSRef HTMLTextAreaElement -> IO JSString
+        js_getDefaultValue ::
+        JSRef HTMLTextAreaElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.defaultValue Mozilla HTMLTextAreaElement.defaultValue documentation> 
 getDefaultValue ::
-                (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+                (MonadIO m, FromJSString result) =>
+                  HTMLTextAreaElement -> m (Maybe result)
 getDefaultValue self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getDefaultValue (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: JSRef HTMLTextAreaElement -> JSString -> IO ()
+        :: JSRef HTMLTextAreaElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
 setValue ::
-         (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+         (MonadIO m, ToJSString val) =>
+           HTMLTextAreaElement -> Maybe val -> m ()
 setValue self val
   = liftIO
-      (js_setValue (unHTMLTextAreaElement self) (toJSString val))
+      (js_setValue (unHTMLTextAreaElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        JSRef HTMLTextAreaElement -> IO JSString
+        JSRef HTMLTextAreaElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
 getValue ::
-         (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+         (MonadIO m, FromJSString result) =>
+           HTMLTextAreaElement -> m (Maybe result)
 getValue self
   = liftIO
-      (fromJSString <$> (js_getValue (unHTMLTextAreaElement self)))
+      (fromMaybeJSString <$> (js_getValue (unHTMLTextAreaElement self)))
  
 foreign import javascript unsafe "$1[\"textLength\"]"
         js_getTextLength :: JSRef HTMLTextAreaElement -> IO Word
@@ -477,23 +495,26 @@ getAutocorrect self
  
 foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
         js_setAutocapitalize ::
-        JSRef HTMLTextAreaElement -> JSString -> IO ()
+        JSRef HTMLTextAreaElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocapitalize Mozilla HTMLTextAreaElement.autocapitalize documentation> 
 setAutocapitalize ::
-                  (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+                  (MonadIO m, ToJSString val) =>
+                    HTMLTextAreaElement -> Maybe val -> m ()
 setAutocapitalize self val
   = liftIO
       (js_setAutocapitalize (unHTMLTextAreaElement self)
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"]"
-        js_getAutocapitalize :: JSRef HTMLTextAreaElement -> IO JSString
+        js_getAutocapitalize ::
+        JSRef HTMLTextAreaElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocapitalize Mozilla HTMLTextAreaElement.autocapitalize documentation> 
 getAutocapitalize ::
-                  (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+                  (MonadIO m, FromJSString result) =>
+                    HTMLTextAreaElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getAutocapitalize (unHTMLTextAreaElement self)))

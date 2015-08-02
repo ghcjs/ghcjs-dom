@@ -2,15 +2,16 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLOutputElement
        (js_checkValidity, checkValidity, js_setCustomValidity,
         setCustomValidity, js_getHtmlFor, getHtmlFor, js_getForm, getForm,
-        js_setName, setName, js_getName, getName, js_setDefaultValue,
-        setDefaultValue, js_getDefaultValue, getDefaultValue, js_setValue,
-        setValue, js_getValue, getValue, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity,
+        js_setName, setName, js_getName, getName, js_getType, getType,
+        js_setDefaultValue, setDefaultValue, js_getDefaultValue,
+        getDefaultValue, js_setValue, setValue, js_getValue, getValue,
+        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
         js_getValidationMessage, getValidationMessage, js_getLabels,
         getLabels, HTMLOutputElement, castToHTMLOutputElement,
         gTypeHTMLOutputElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -35,15 +36,16 @@ checkValidity self
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
-        JSRef HTMLOutputElement -> JSString -> IO ()
+        JSRef HTMLOutputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.setCustomValidity Mozilla HTMLOutputElement.setCustomValidity documentation> 
 setCustomValidity ::
-                  (MonadIO m, ToJSString error) => HTMLOutputElement -> error -> m ()
+                  (MonadIO m, ToJSString error) =>
+                    HTMLOutputElement -> Maybe error -> m ()
 setCustomValidity self error
   = liftIO
       (js_setCustomValidity (unHTMLOutputElement self)
-         (toJSString error))
+         (toMaybeJSString error))
  
 foreign import javascript unsafe "$1[\"htmlFor\"]" js_getHtmlFor ::
         JSRef HTMLOutputElement -> IO (JSRef DOMSettableTokenList)
@@ -81,44 +83,62 @@ getName ::
 getName self
   = liftIO (fromJSString <$> (js_getName (unHTMLOutputElement self)))
  
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLOutputElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.type Mozilla HTMLOutputElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLOutputElement self)))
+ 
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
-        js_setDefaultValue :: JSRef HTMLOutputElement -> JSString -> IO ()
+        js_setDefaultValue ::
+        JSRef HTMLOutputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
 setDefaultValue ::
-                (MonadIO m, ToJSString val) => HTMLOutputElement -> val -> m ()
+                (MonadIO m, ToJSString val) =>
+                  HTMLOutputElement -> Maybe val -> m ()
 setDefaultValue self val
   = liftIO
-      (js_setDefaultValue (unHTMLOutputElement self) (toJSString val))
+      (js_setDefaultValue (unHTMLOutputElement self)
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"defaultValue\"]"
-        js_getDefaultValue :: JSRef HTMLOutputElement -> IO JSString
+        js_getDefaultValue ::
+        JSRef HTMLOutputElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
 getDefaultValue ::
-                (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
+                (MonadIO m, FromJSString result) =>
+                  HTMLOutputElement -> m (Maybe result)
 getDefaultValue self
   = liftIO
-      (fromJSString <$> (js_getDefaultValue (unHTMLOutputElement self)))
+      (fromMaybeJSString <$>
+         (js_getDefaultValue (unHTMLOutputElement self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: JSRef HTMLOutputElement -> JSString -> IO ()
+        :: JSRef HTMLOutputElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
 setValue ::
-         (MonadIO m, ToJSString val) => HTMLOutputElement -> val -> m ()
+         (MonadIO m, ToJSString val) =>
+           HTMLOutputElement -> Maybe val -> m ()
 setValue self val
-  = liftIO (js_setValue (unHTMLOutputElement self) (toJSString val))
+  = liftIO
+      (js_setValue (unHTMLOutputElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        JSRef HTMLOutputElement -> IO JSString
+        JSRef HTMLOutputElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
 getValue ::
-         (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
+         (MonadIO m, FromJSString result) =>
+           HTMLOutputElement -> m (Maybe result)
 getValue self
   = liftIO
-      (fromJSString <$> (js_getValue (unHTMLOutputElement self)))
+      (fromMaybeJSString <$> (js_getValue (unHTMLOutputElement self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         js_getWillValidate :: JSRef HTMLOutputElement -> IO Bool

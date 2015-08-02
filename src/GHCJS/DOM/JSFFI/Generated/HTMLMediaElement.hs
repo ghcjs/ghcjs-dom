@@ -51,7 +51,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMediaElement
         castToHTMLMediaElement, gTypeHTMLMediaElement, IsHTMLMediaElement,
         toHTMLMediaElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -75,19 +76,20 @@ load self
  
 foreign import javascript unsafe "$1[\"canPlayType\"]($2, $3)"
         js_canPlayType ::
-        JSRef HTMLMediaElement -> JSString -> JSString -> IO JSString
+        JSRef HTMLMediaElement ->
+          JSString -> JSRef (Maybe JSString) -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.canPlayType Mozilla HTMLMediaElement.canPlayType documentation> 
 canPlayType ::
             (MonadIO m, IsHTMLMediaElement self, ToJSString type',
              ToJSString keySystem, FromJSString result) =>
-              self -> type' -> keySystem -> m result
+              self -> type' -> Maybe keySystem -> m result
 canPlayType self type' keySystem
   = liftIO
       (fromJSString <$>
          (js_canPlayType (unHTMLMediaElement (toHTMLMediaElement self))
             (toJSString type')
-            (toJSString keySystem)))
+            (toMaybeJSString keySystem)))
  
 foreign import javascript unsafe "$1[\"play\"]()" js_play ::
         JSRef HTMLMediaElement -> IO ()
@@ -118,24 +120,25 @@ fastSeek self time
 foreign import javascript unsafe
         "$1[\"webkitGenerateKeyRequest\"]($2,\n$3)"
         js_webkitGenerateKeyRequest ::
-        JSRef HTMLMediaElement -> JSString -> JSRef Uint8Array -> IO ()
+        JSRef HTMLMediaElement ->
+          JSRef (Maybe JSString) -> JSRef Uint8Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitGenerateKeyRequest Mozilla HTMLMediaElement.webkitGenerateKeyRequest documentation> 
 webkitGenerateKeyRequest ::
                          (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
                           IsUint8Array initData) =>
-                           self -> keySystem -> Maybe initData -> m ()
+                           self -> Maybe keySystem -> Maybe initData -> m ()
 webkitGenerateKeyRequest self keySystem initData
   = liftIO
       (js_webkitGenerateKeyRequest
          (unHTMLMediaElement (toHTMLMediaElement self))
-         (toJSString keySystem)
+         (toMaybeJSString keySystem)
          (maybe jsNull (unUint8Array . toUint8Array) initData))
  
 foreign import javascript unsafe
         "$1[\"webkitAddKey\"]($2, $3, $4,\n$5)" js_webkitAddKey ::
         JSRef HTMLMediaElement ->
-          JSString ->
+          JSRef (Maybe JSString) ->
             JSRef Uint8Array -> JSRef Uint8Array -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitAddKey Mozilla HTMLMediaElement.webkitAddKey documentation> 
@@ -143,29 +146,31 @@ webkitAddKey ::
              (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
               IsUint8Array key, IsUint8Array initData, ToJSString sessionId) =>
                self ->
-                 keySystem -> Maybe key -> Maybe initData -> sessionId -> m ()
+                 Maybe keySystem -> Maybe key -> Maybe initData -> sessionId -> m ()
 webkitAddKey self keySystem key initData sessionId
   = liftIO
       (js_webkitAddKey (unHTMLMediaElement (toHTMLMediaElement self))
-         (toJSString keySystem)
+         (toMaybeJSString keySystem)
          (maybe jsNull (unUint8Array . toUint8Array) key)
          (maybe jsNull (unUint8Array . toUint8Array) initData)
          (toJSString sessionId))
  
 foreign import javascript unsafe
         "$1[\"webkitCancelKeyRequest\"]($2,\n$3)" js_webkitCancelKeyRequest
-        :: JSRef HTMLMediaElement -> JSString -> JSString -> IO ()
+        ::
+        JSRef HTMLMediaElement ->
+          JSRef (Maybe JSString) -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitCancelKeyRequest Mozilla HTMLMediaElement.webkitCancelKeyRequest documentation> 
 webkitCancelKeyRequest ::
                        (MonadIO m, IsHTMLMediaElement self, ToJSString keySystem,
                         ToJSString sessionId) =>
-                         self -> keySystem -> sessionId -> m ()
+                         self -> Maybe keySystem -> sessionId -> m ()
 webkitCancelKeyRequest self keySystem sessionId
   = liftIO
       (js_webkitCancelKeyRequest
          (unHTMLMediaElement (toHTMLMediaElement self))
-         (toJSString keySystem)
+         (toMaybeJSString keySystem)
          (toJSString sessionId))
  
 foreign import javascript unsafe "$1[\"webkitSetMediaKeys\"]($2)"
@@ -836,27 +841,29 @@ getVideoTracks self
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"mediaGroup\"] = $2;"
-        js_setMediaGroup :: JSRef HTMLMediaElement -> JSString -> IO ()
+        js_setMediaGroup ::
+        JSRef HTMLMediaElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.mediaGroup Mozilla HTMLMediaElement.mediaGroup documentation> 
 setMediaGroup ::
               (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
-                self -> val -> m ()
+                self -> Maybe val -> m ()
 setMediaGroup self val
   = liftIO
       (js_setMediaGroup (unHTMLMediaElement (toHTMLMediaElement self))
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"mediaGroup\"]"
-        js_getMediaGroup :: JSRef HTMLMediaElement -> IO JSString
+        js_getMediaGroup ::
+        JSRef HTMLMediaElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.mediaGroup Mozilla HTMLMediaElement.mediaGroup documentation> 
 getMediaGroup ::
               (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
-                self -> m result
+                self -> m (Maybe result)
 getMediaGroup self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getMediaGroup (unHTMLMediaElement (toHTMLMediaElement self))))
  
 foreign import javascript unsafe "$1[\"controller\"] = $2;"

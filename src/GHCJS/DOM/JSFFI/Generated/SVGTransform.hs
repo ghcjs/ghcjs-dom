@@ -6,10 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.SVGTransform
         pattern SVG_TRANSFORM_MATRIX, pattern SVG_TRANSFORM_TRANSLATE,
         pattern SVG_TRANSFORM_SCALE, pattern SVG_TRANSFORM_ROTATE,
         pattern SVG_TRANSFORM_SKEWX, pattern SVG_TRANSFORM_SKEWY,
-        js_getMatrix, getMatrix, js_getAngle, getAngle, SVGTransform,
-        castToSVGTransform, gTypeSVGTransform)
+        js_getType, getType, js_getMatrix, getMatrix, js_getAngle,
+        getAngle, SVGTransform, castToSVGTransform, gTypeSVGTransform)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -81,6 +82,13 @@ pattern SVG_TRANSFORM_SCALE = 3
 pattern SVG_TRANSFORM_ROTATE = 4
 pattern SVG_TRANSFORM_SKEWX = 5
 pattern SVG_TRANSFORM_SKEWY = 6
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef SVGTransform -> IO Word
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.type Mozilla SVGTransform.type documentation> 
+getType :: (MonadIO m) => SVGTransform -> m Word
+getType self = liftIO (js_getType (unSVGTransform self))
  
 foreign import javascript unsafe "$1[\"matrix\"]" js_getMatrix ::
         JSRef SVGTransform -> IO (JSRef SVGMatrix)

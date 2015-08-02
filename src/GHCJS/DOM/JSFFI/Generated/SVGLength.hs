@@ -14,7 +14,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGLength
         js_setValueAsString, setValueAsString, js_getValueAsString,
         getValueAsString, SVGLength, castToSVGLength, gTypeSVGLength)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -100,20 +101,23 @@ getValueInSpecifiedUnits self
   = liftIO (js_getValueInSpecifiedUnits (unSVGLength self))
  
 foreign import javascript unsafe "$1[\"valueAsString\"] = $2;"
-        js_setValueAsString :: JSRef SVGLength -> JSString -> IO ()
+        js_setValueAsString ::
+        JSRef SVGLength -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
 setValueAsString ::
-                 (MonadIO m, ToJSString val) => SVGLength -> val -> m ()
+                 (MonadIO m, ToJSString val) => SVGLength -> Maybe val -> m ()
 setValueAsString self val
-  = liftIO (js_setValueAsString (unSVGLength self) (toJSString val))
+  = liftIO
+      (js_setValueAsString (unSVGLength self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"valueAsString\"]"
-        js_getValueAsString :: JSRef SVGLength -> IO JSString
+        js_getValueAsString ::
+        JSRef SVGLength -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
 getValueAsString ::
-                 (MonadIO m, FromJSString result) => SVGLength -> m result
+                 (MonadIO m, FromJSString result) => SVGLength -> m (Maybe result)
 getValueAsString self
   = liftIO
-      (fromJSString <$> (js_getValueAsString (unSVGLength self)))
+      (fromMaybeJSString <$> (js_getValueAsString (unSVGLength self)))

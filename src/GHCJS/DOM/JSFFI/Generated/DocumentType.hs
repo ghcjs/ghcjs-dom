@@ -5,7 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.DocumentType
         getSystemId, js_getInternalSubset, getInternalSubset, DocumentType,
         castToDocumentType, gTypeDocumentType)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -47,29 +48,36 @@ getNotations self
   = liftIO ((js_getNotations (unDocumentType self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"publicId\"]" js_getPublicId
-        :: JSRef DocumentType -> IO JSString
+        :: JSRef DocumentType -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.publicId Mozilla DocumentType.publicId documentation> 
 getPublicId ::
-            (MonadIO m, FromJSString result) => DocumentType -> m result
+            (MonadIO m, FromJSString result) =>
+              DocumentType -> m (Maybe result)
 getPublicId self
-  = liftIO (fromJSString <$> (js_getPublicId (unDocumentType self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getPublicId (unDocumentType self)))
  
 foreign import javascript unsafe "$1[\"systemId\"]" js_getSystemId
-        :: JSRef DocumentType -> IO JSString
+        :: JSRef DocumentType -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.systemId Mozilla DocumentType.systemId documentation> 
 getSystemId ::
-            (MonadIO m, FromJSString result) => DocumentType -> m result
+            (MonadIO m, FromJSString result) =>
+              DocumentType -> m (Maybe result)
 getSystemId self
-  = liftIO (fromJSString <$> (js_getSystemId (unDocumentType self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getSystemId (unDocumentType self)))
  
 foreign import javascript unsafe "$1[\"internalSubset\"]"
-        js_getInternalSubset :: JSRef DocumentType -> IO JSString
+        js_getInternalSubset ::
+        JSRef DocumentType -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.internalSubset Mozilla DocumentType.internalSubset documentation> 
 getInternalSubset ::
-                  (MonadIO m, FromJSString result) => DocumentType -> m result
+                  (MonadIO m, FromJSString result) =>
+                    DocumentType -> m (Maybe result)
 getInternalSubset self
   = liftIO
-      (fromJSString <$> (js_getInternalSubset (unDocumentType self)))
+      (fromMaybeJSString <$>
+         (js_getInternalSubset (unDocumentType self)))

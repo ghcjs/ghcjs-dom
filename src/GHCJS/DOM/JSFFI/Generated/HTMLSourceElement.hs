@@ -1,10 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLSourceElement
-       (js_setSrc, setSrc, js_getSrc, getSrc, js_setMedia, setMedia,
-        js_getMedia, getMedia, HTMLSourceElement, castToHTMLSourceElement,
-        gTypeHTMLSourceElement)
+       (js_setSrc, setSrc, js_getSrc, getSrc, js_setType, setType,
+        js_getType, getType, js_setMedia, setMedia, js_getMedia, getMedia,
+        HTMLSourceElement, castToHTMLSourceElement, gTypeHTMLSourceElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -35,6 +36,24 @@ getSrc ::
        (MonadIO m, FromJSString result) => HTMLSourceElement -> m result
 getSrc self
   = liftIO (fromJSString <$> (js_getSrc (unHTMLSourceElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLSourceElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.type Mozilla HTMLSourceElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLSourceElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLSourceElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLSourceElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.type Mozilla HTMLSourceElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLSourceElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLSourceElement self)))
  
 foreign import javascript unsafe "$1[\"media\"] = $2;" js_setMedia
         :: JSRef HTMLSourceElement -> JSString -> IO ()

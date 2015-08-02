@@ -17,7 +17,8 @@ module GHCJS.DOM.JSFFI.Generated.XMLHttpRequest
         js_getStatusText, getStatusText, js_getResponseURL, getResponseURL,
         XMLHttpRequest, castToXMLHttpRequest, gTypeXMLHttpRequest)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -85,27 +86,29 @@ abort :: (MonadIO m) => XMLHttpRequest -> m ()
 abort self = liftIO (js_abort (unXMLHttpRequest self))
  
 foreign import javascript unsafe "$1[\"getAllResponseHeaders\"]()"
-        js_getAllResponseHeaders :: JSRef XMLHttpRequest -> IO JSString
+        js_getAllResponseHeaders ::
+        JSRef XMLHttpRequest -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.getAllResponseHeaders Mozilla XMLHttpRequest.getAllResponseHeaders documentation> 
 getAllResponseHeaders ::
-                      (MonadIO m, FromJSString result) => XMLHttpRequest -> m result
+                      (MonadIO m, FromJSString result) =>
+                        XMLHttpRequest -> m (Maybe result)
 getAllResponseHeaders self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getAllResponseHeaders (unXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"getResponseHeader\"]($2)"
         js_getResponseHeader ::
-        JSRef XMLHttpRequest -> JSString -> IO JSString
+        JSRef XMLHttpRequest -> JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.getResponseHeader Mozilla XMLHttpRequest.getResponseHeader documentation> 
 getResponseHeader ::
                   (MonadIO m, ToJSString header, FromJSString result) =>
-                    XMLHttpRequest -> header -> m result
+                    XMLHttpRequest -> header -> m (Maybe result)
 getResponseHeader self header
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getResponseHeader (unXMLHttpRequest self) (toJSString header)))
  
 foreign import javascript unsafe "$1[\"overrideMimeType\"]($2)"
@@ -206,14 +209,17 @@ getUpload self
   = liftIO ((js_getUpload (unXMLHttpRequest self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"responseText\"]"
-        js_getResponseText :: JSRef XMLHttpRequest -> IO JSString
+        js_getResponseText ::
+        JSRef XMLHttpRequest -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseText Mozilla XMLHttpRequest.responseText documentation> 
 getResponseText ::
-                (MonadIO m, FromJSString result) => XMLHttpRequest -> m result
+                (MonadIO m, FromJSString result) =>
+                  XMLHttpRequest -> m (Maybe result)
 getResponseText self
   = liftIO
-      (fromJSString <$> (js_getResponseText (unXMLHttpRequest self)))
+      (fromMaybeJSString <$>
+         (js_getResponseText (unXMLHttpRequest self)))
  
 foreign import javascript unsafe "$1[\"responseXML\"]"
         js_getResponseXML :: JSRef XMLHttpRequest -> IO (JSRef Document)

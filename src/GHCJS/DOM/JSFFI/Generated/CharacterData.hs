@@ -7,7 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.CharacterData
         castToCharacterData, gTypeCharacterData, IsCharacterData,
         toCharacterData)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -23,15 +24,15 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"substringData\"]($2, $3)"
         js_substringData ::
-        JSRef CharacterData -> Word -> Word -> IO JSString
+        JSRef CharacterData -> Word -> Word -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
 substringData ::
               (MonadIO m, IsCharacterData self, FromJSString result) =>
-                self -> Word -> Word -> m result
+                self -> Word -> Word -> m (Maybe result)
 substringData self offset length
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_substringData (unCharacterData (toCharacterData self)) offset
             length))
  
@@ -85,27 +86,27 @@ replaceData self offset length data'
          (toJSString data'))
  
 foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::
-        JSRef CharacterData -> JSString -> IO ()
+        JSRef CharacterData -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 setData ::
         (MonadIO m, IsCharacterData self, ToJSString val) =>
-          self -> val -> m ()
+          self -> Maybe val -> m ()
 setData self val
   = liftIO
       (js_setData (unCharacterData (toCharacterData self))
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"data\"]" js_getData ::
-        JSRef CharacterData -> IO JSString
+        JSRef CharacterData -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 getData ::
         (MonadIO m, IsCharacterData self, FromJSString result) =>
-          self -> m result
+          self -> m (Maybe result)
 getData self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getData (unCharacterData (toCharacterData self))))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::

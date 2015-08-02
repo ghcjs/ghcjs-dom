@@ -1,10 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CryptoKey
-       (js_getExtractable, getExtractable, js_getAlgorithm, getAlgorithm,
-        js_getUsages, getUsages, CryptoKey, castToCryptoKey,
-        gTypeCryptoKey)
+       (js_getType, getType, js_getExtractable, getExtractable,
+        js_getAlgorithm, getAlgorithm, js_getUsages, getUsages, CryptoKey,
+        castToCryptoKey, gTypeCryptoKey)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -17,6 +18,14 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef CryptoKey -> IO (JSRef KeyType)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey.type Mozilla CryptoKey.type documentation> 
+getType :: (MonadIO m) => CryptoKey -> m KeyType
+getType self
+  = liftIO ((js_getType (unCryptoKey self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "($1[\"extractable\"] ? 1 : 0)"
         js_getExtractable :: JSRef CryptoKey -> IO Bool

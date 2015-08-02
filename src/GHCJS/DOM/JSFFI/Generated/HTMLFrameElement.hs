@@ -14,7 +14,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFrameElement
         js_getWidth, getWidth, js_getHeight, getHeight, HTMLFrameElement,
         castToHTMLFrameElement, gTypeHTMLFrameElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -213,24 +214,27 @@ getContentWindow self
       ((js_getContentWindow (unHTMLFrameElement self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"location\"] = $2;"
-        js_setLocation :: JSRef HTMLFrameElement -> JSString -> IO ()
+        js_setLocation ::
+        JSRef HTMLFrameElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 
 setLocation ::
-            (MonadIO m, ToJSString val) => HTMLFrameElement -> val -> m ()
+            (MonadIO m, ToJSString val) =>
+              HTMLFrameElement -> Maybe val -> m ()
 setLocation self val
   = liftIO
-      (js_setLocation (unHTMLFrameElement self) (toJSString val))
+      (js_setLocation (unHTMLFrameElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"location\"]" js_getLocation
-        :: JSRef HTMLFrameElement -> IO JSString
+        :: JSRef HTMLFrameElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 
 getLocation ::
-            (MonadIO m, FromJSString result) => HTMLFrameElement -> m result
+            (MonadIO m, FromJSString result) =>
+              HTMLFrameElement -> m (Maybe result)
 getLocation self
   = liftIO
-      (fromJSString <$> (js_getLocation (unHTMLFrameElement self)))
+      (fromMaybeJSString <$> (js_getLocation (unHTMLFrameElement self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         JSRef HTMLFrameElement -> IO Int

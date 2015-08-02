@@ -4,12 +4,13 @@ module GHCJS.DOM.JSFFI.Generated.OscillatorNode
         noteOff, js_setPeriodicWave, setPeriodicWave, pattern SINE,
         pattern SQUARE, pattern SAWTOOTH, pattern TRIANGLE, pattern CUSTOM,
         pattern UNSCHEDULED_STATE, pattern SCHEDULED_STATE,
-        pattern PLAYING_STATE, pattern FINISHED_STATE, js_getPlaybackState,
-        getPlaybackState, js_getFrequency, getFrequency, js_getDetune,
-        getDetune, ended, OscillatorNode, castToOscillatorNode,
-        gTypeOscillatorNode)
+        pattern PLAYING_STATE, pattern FINISHED_STATE, js_setType, setType,
+        js_getType, getType, js_getPlaybackState, getPlaybackState,
+        js_getFrequency, getFrequency, js_getDetune, getDetune, ended,
+        OscillatorNode, castToOscillatorNode, gTypeOscillatorNode)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -72,6 +73,24 @@ pattern UNSCHEDULED_STATE = 0
 pattern SCHEDULED_STATE = 1
 pattern PLAYING_STATE = 2
 pattern FINISHED_STATE = 3
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef OscillatorNode -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.type Mozilla OscillatorNode.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => OscillatorNode -> val -> m ()
+setType self val
+  = liftIO (js_setType (unOscillatorNode self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef OscillatorNode -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.type Mozilla OscillatorNode.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => OscillatorNode -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unOscillatorNode self)))
  
 foreign import javascript unsafe "$1[\"playbackState\"]"
         js_getPlaybackState :: JSRef OscillatorNode -> IO Word

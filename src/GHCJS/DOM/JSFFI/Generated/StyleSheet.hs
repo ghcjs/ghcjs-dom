@@ -1,12 +1,13 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.StyleSheet
-       (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
-        js_getOwnerNode, getOwnerNode, js_getParentStyleSheet,
+       (js_getType, getType, js_setDisabled, setDisabled, js_getDisabled,
+        getDisabled, js_getOwnerNode, getOwnerNode, js_getParentStyleSheet,
         getParentStyleSheet, js_getHref, getHref, js_getTitle, getTitle,
         js_getMedia, getMedia, StyleSheet, castToStyleSheet,
         gTypeStyleSheet, IsStyleSheet, toStyleSheet)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -19,6 +20,18 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef StyleSheet -> IO (JSRef (Maybe JSString))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.type Mozilla StyleSheet.type documentation> 
+getType ::
+        (MonadIO m, IsStyleSheet self, FromJSString result) =>
+          self -> m (Maybe result)
+getType self
+  = liftIO
+      (fromMaybeJSString <$>
+         (js_getType (unStyleSheet (toStyleSheet self))))
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         js_setDisabled :: JSRef StyleSheet -> Bool -> IO ()
@@ -60,26 +73,28 @@ getParentStyleSheet self
          fromJSRef)
  
 foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
-        JSRef StyleSheet -> IO JSString
+        JSRef StyleSheet -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.href Mozilla StyleSheet.href documentation> 
 getHref ::
         (MonadIO m, IsStyleSheet self, FromJSString result) =>
-          self -> m result
+          self -> m (Maybe result)
 getHref self
   = liftIO
-      (fromJSString <$> (js_getHref (unStyleSheet (toStyleSheet self))))
+      (fromMaybeJSString <$>
+         (js_getHref (unStyleSheet (toStyleSheet self))))
  
 foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
-        JSRef StyleSheet -> IO JSString
+        JSRef StyleSheet -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.title Mozilla StyleSheet.title documentation> 
 getTitle ::
          (MonadIO m, IsStyleSheet self, FromJSString result) =>
-           self -> m result
+           self -> m (Maybe result)
 getTitle self
   = liftIO
-      (fromJSString <$> (js_getTitle (unStyleSheet (toStyleSheet self))))
+      (fromMaybeJSString <$>
+         (js_getTitle (unStyleSheet (toStyleSheet self))))
  
 foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
         JSRef StyleSheet -> IO (JSRef MediaList)

@@ -5,12 +5,13 @@ module GHCJS.DOM.JSFFI.Generated.CSSRule
         pattern PAGE_RULE, pattern KEYFRAMES_RULE, pattern KEYFRAME_RULE,
         pattern SUPPORTS_RULE, pattern WEBKIT_VIEWPORT_RULE,
         pattern WEBKIT_REGION_RULE, pattern WEBKIT_KEYFRAMES_RULE,
-        pattern WEBKIT_KEYFRAME_RULE, js_setCssText, setCssText,
-        js_getCssText, getCssText, js_getParentStyleSheet,
+        pattern WEBKIT_KEYFRAME_RULE, js_getType, getType, js_setCssText,
+        setCssText, js_getCssText, getCssText, js_getParentStyleSheet,
         getParentStyleSheet, js_getParentRule, getParentRule, CSSRule,
         castToCSSRule, gTypeCSSRule, IsCSSRule, toCSSRule)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -38,26 +39,35 @@ pattern WEBKIT_REGION_RULE = 16
 pattern WEBKIT_KEYFRAMES_RULE = 7
 pattern WEBKIT_KEYFRAME_RULE = 8
  
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef CSSRule -> IO Word
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.type Mozilla CSSRule.type documentation> 
+getType :: (MonadIO m, IsCSSRule self) => self -> m Word
+getType self = liftIO (js_getType (unCSSRule (toCSSRule self)))
+ 
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
-        js_setCssText :: JSRef CSSRule -> JSString -> IO ()
+        js_setCssText :: JSRef CSSRule -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
 setCssText ::
-           (MonadIO m, IsCSSRule self, ToJSString val) => self -> val -> m ()
+           (MonadIO m, IsCSSRule self, ToJSString val) =>
+             self -> Maybe val -> m ()
 setCssText self val
   = liftIO
-      (js_setCssText (unCSSRule (toCSSRule self)) (toJSString val))
+      (js_setCssText (unCSSRule (toCSSRule self)) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"cssText\"]" js_getCssText ::
-        JSRef CSSRule -> IO JSString
+        JSRef CSSRule -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
 getCssText ::
            (MonadIO m, IsCSSRule self, FromJSString result) =>
-             self -> m result
+             self -> m (Maybe result)
 getCssText self
   = liftIO
-      (fromJSString <$> (js_getCssText (unCSSRule (toCSSRule self))))
+      (fromMaybeJSString <$>
+         (js_getCssText (unCSSRule (toCSSRule self))))
  
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
         js_getParentStyleSheet :: JSRef CSSRule -> IO (JSRef CSSStyleSheet)

@@ -10,7 +10,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGElement
         SVGElement, castToSVGElement, gTypeSVGElement, IsSVGElement,
         toSVGElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -39,26 +40,28 @@ getPresentationAttribute self name
          >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"xmlbase\"] = $2;"
-        js_setXmlbase :: JSRef SVGElement -> JSString -> IO ()
+        js_setXmlbase ::
+        JSRef SVGElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
 setXmlbase ::
            (MonadIO m, IsSVGElement self, ToJSString val) =>
-             self -> val -> m ()
+             self -> Maybe val -> m ()
 setXmlbase self val
   = liftIO
-      (js_setXmlbase (unSVGElement (toSVGElement self)) (toJSString val))
+      (js_setXmlbase (unSVGElement (toSVGElement self))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"xmlbase\"]" js_getXmlbase ::
-        JSRef SVGElement -> IO JSString
+        JSRef SVGElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
 getXmlbase ::
            (MonadIO m, IsSVGElement self, FromJSString result) =>
-             self -> m result
+             self -> m (Maybe result)
 getXmlbase self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getXmlbase (unSVGElement (toSVGElement self))))
  
 foreign import javascript unsafe "$1[\"ownerSVGElement\"]"

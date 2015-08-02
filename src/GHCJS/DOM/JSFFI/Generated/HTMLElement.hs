@@ -19,7 +19,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLElement
         js_getSpellcheck, getSpellcheck, HTMLElement, castToHTMLElement,
         gTypeHTMLElement, IsHTMLElement, toHTMLElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -273,51 +274,53 @@ getAccessKey self
          (js_getAccessKey (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"innerText\"] = $2;"
-        js_setInnerText :: JSRef HTMLElement -> JSString -> IO ()
+        js_setInnerText ::
+        JSRef HTMLElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 setInnerText ::
              (MonadIO m, IsHTMLElement self, ToJSString val) =>
-               self -> val -> m ()
+               self -> Maybe val -> m ()
 setInnerText self val
   = liftIO
       (js_setInnerText (unHTMLElement (toHTMLElement self))
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"innerText\"]"
-        js_getInnerText :: JSRef HTMLElement -> IO JSString
+        js_getInnerText :: JSRef HTMLElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 getInnerText ::
              (MonadIO m, IsHTMLElement self, FromJSString result) =>
-               self -> m result
+               self -> m (Maybe result)
 getInnerText self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getInnerText (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"outerText\"] = $2;"
-        js_setOuterText :: JSRef HTMLElement -> JSString -> IO ()
+        js_setOuterText ::
+        JSRef HTMLElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 setOuterText ::
              (MonadIO m, IsHTMLElement self, ToJSString val) =>
-               self -> val -> m ()
+               self -> Maybe val -> m ()
 setOuterText self val
   = liftIO
       (js_setOuterText (unHTMLElement (toHTMLElement self))
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"outerText\"]"
-        js_getOuterText :: JSRef HTMLElement -> IO JSString
+        js_getOuterText :: JSRef HTMLElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 getOuterText ::
              (MonadIO m, IsHTMLElement self, FromJSString result) =>
-               self -> m result
+               self -> m (Maybe result)
 getOuterText self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getOuterText (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe "$1[\"children\"]" js_getChildren
@@ -332,27 +335,29 @@ getChildren self
          fromJSRef)
  
 foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
-        js_setContentEditable :: JSRef HTMLElement -> JSString -> IO ()
+        js_setContentEditable ::
+        JSRef HTMLElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
 setContentEditable ::
                    (MonadIO m, IsHTMLElement self, ToJSString val) =>
-                     self -> val -> m ()
+                     self -> Maybe val -> m ()
 setContentEditable self val
   = liftIO
       (js_setContentEditable (unHTMLElement (toHTMLElement self))
-         (toJSString val))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"contentEditable\"]"
-        js_getContentEditable :: JSRef HTMLElement -> IO JSString
+        js_getContentEditable ::
+        JSRef HTMLElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
 getContentEditable ::
                    (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                     self -> m result
+                     self -> m (Maybe result)
 getContentEditable self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getContentEditable (unHTMLElement (toHTMLElement self))))
  
 foreign import javascript unsafe

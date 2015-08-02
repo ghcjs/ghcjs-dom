@@ -3,7 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.WebGLDebugShaders
        (js_getTranslatedShaderSource, getTranslatedShaderSource,
         WebGLDebugShaders, castToWebGLDebugShaders, gTypeWebGLDebugShaders)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -20,14 +21,15 @@ import GHCJS.DOM.Enums
 foreign import javascript unsafe
         "$1[\"getTranslatedShaderSource\"]($2)"
         js_getTranslatedShaderSource ::
-        JSRef WebGLDebugShaders -> JSRef WebGLShader -> IO JSString
+        JSRef WebGLDebugShaders ->
+          JSRef WebGLShader -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugShaders.getTranslatedShaderSource Mozilla WebGLDebugShaders.getTranslatedShaderSource documentation> 
 getTranslatedShaderSource ::
                           (MonadIO m, FromJSString result) =>
-                            WebGLDebugShaders -> Maybe WebGLShader -> m result
+                            WebGLDebugShaders -> Maybe WebGLShader -> m (Maybe result)
 getTranslatedShaderSource self shader
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getTranslatedShaderSource (unWebGLDebugShaders self)
             (maybe jsNull pToJSRef shader)))

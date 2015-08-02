@@ -3,7 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSCharsetRule
        (js_setEncoding, setEncoding, js_getEncoding, getEncoding,
         CSSCharsetRule, castToCSSCharsetRule, gTypeCSSCharsetRule)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -18,20 +19,23 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"encoding\"] = $2;"
-        js_setEncoding :: JSRef CSSCharsetRule -> JSString -> IO ()
+        js_setEncoding ::
+        JSRef CSSCharsetRule -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule.encoding Mozilla CSSCharsetRule.encoding documentation> 
 setEncoding ::
-            (MonadIO m, ToJSString val) => CSSCharsetRule -> val -> m ()
+            (MonadIO m, ToJSString val) => CSSCharsetRule -> Maybe val -> m ()
 setEncoding self val
-  = liftIO (js_setEncoding (unCSSCharsetRule self) (toJSString val))
+  = liftIO
+      (js_setEncoding (unCSSCharsetRule self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"encoding\"]" js_getEncoding
-        :: JSRef CSSCharsetRule -> IO JSString
+        :: JSRef CSSCharsetRule -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule.encoding Mozilla CSSCharsetRule.encoding documentation> 
 getEncoding ::
-            (MonadIO m, FromJSString result) => CSSCharsetRule -> m result
+            (MonadIO m, FromJSString result) =>
+              CSSCharsetRule -> m (Maybe result)
 getEncoding self
   = liftIO
-      (fromJSString <$> (js_getEncoding (unCSSCharsetRule self)))
+      (fromMaybeJSString <$> (js_getEncoding (unCSSCharsetRule self)))

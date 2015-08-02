@@ -1,11 +1,13 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.PerformanceNavigation
        (pattern TYPE_NAVIGATE, pattern TYPE_RELOAD,
-        pattern TYPE_BACK_FORWARD, pattern TYPE_RESERVED,
-        js_getRedirectCount, getRedirectCount, PerformanceNavigation,
-        castToPerformanceNavigation, gTypePerformanceNavigation)
+        pattern TYPE_BACK_FORWARD, pattern TYPE_RESERVED, js_getType,
+        getType, js_getRedirectCount, getRedirectCount,
+        PerformanceNavigation, castToPerformanceNavigation,
+        gTypePerformanceNavigation)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -22,6 +24,13 @@ pattern TYPE_NAVIGATE = 0
 pattern TYPE_RELOAD = 1
 pattern TYPE_BACK_FORWARD = 2
 pattern TYPE_RESERVED = 255
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef PerformanceNavigation -> IO Word
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation.type Mozilla PerformanceNavigation.type documentation> 
+getType :: (MonadIO m) => PerformanceNavigation -> m Word
+getType self = liftIO (js_getType (unPerformanceNavigation self))
  
 foreign import javascript unsafe "$1[\"redirectCount\"]"
         js_getRedirectCount :: JSRef PerformanceNavigation -> IO Word

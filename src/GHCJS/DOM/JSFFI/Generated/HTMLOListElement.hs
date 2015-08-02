@@ -2,10 +2,12 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLOListElement
        (js_setCompact, setCompact, js_getCompact, getCompact, js_setStart,
         setStart, js_getStart, getStart, js_setReversed, setReversed,
-        js_getReversed, getReversed, HTMLOListElement,
-        castToHTMLOListElement, gTypeHTMLOListElement)
+        js_getReversed, getReversed, js_setType, setType, js_getType,
+        getType, HTMLOListElement, castToHTMLOListElement,
+        gTypeHTMLOListElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -64,3 +66,21 @@ foreign import javascript unsafe "($1[\"reversed\"] ? 1 : 0)"
 getReversed :: (MonadIO m) => HTMLOListElement -> m Bool
 getReversed self
   = liftIO (js_getReversed (unHTMLOListElement self))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLOListElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.type Mozilla HTMLOListElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLOListElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLOListElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLOListElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.type Mozilla HTMLOListElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLOListElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLOListElement self)))

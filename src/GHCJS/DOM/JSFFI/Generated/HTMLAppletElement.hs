@@ -11,7 +11,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAppletElement
         js_setWidth, setWidth, js_getWidth, getWidth, HTMLAppletElement,
         castToHTMLAppletElement, gTypeHTMLAppletElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -140,19 +141,23 @@ getHeight self
       (fromJSString <$> (js_getHeight (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"hspace\"] = $2;"
-        js_setHspace :: JSRef HTMLAppletElement -> Int -> IO ()
+        js_setHspace :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.hspace Mozilla HTMLAppletElement.hspace documentation> 
-setHspace :: (MonadIO m) => HTMLAppletElement -> Int -> m ()
+setHspace ::
+          (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
 setHspace self val
-  = liftIO (js_setHspace (unHTMLAppletElement self) val)
+  = liftIO (js_setHspace (unHTMLAppletElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"hspace\"]" js_getHspace ::
-        JSRef HTMLAppletElement -> IO Int
+        JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.hspace Mozilla HTMLAppletElement.hspace documentation> 
-getHspace :: (MonadIO m) => HTMLAppletElement -> m Int
-getHspace self = liftIO (js_getHspace (unHTMLAppletElement self))
+getHspace ::
+          (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getHspace self
+  = liftIO
+      (fromJSString <$> (js_getHspace (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLAppletElement -> JSString -> IO ()
@@ -192,19 +197,23 @@ getObject self
       (fromJSString <$> (js_getObject (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"vspace\"] = $2;"
-        js_setVspace :: JSRef HTMLAppletElement -> Int -> IO ()
+        js_setVspace :: JSRef HTMLAppletElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.vspace Mozilla HTMLAppletElement.vspace documentation> 
-setVspace :: (MonadIO m) => HTMLAppletElement -> Int -> m ()
+setVspace ::
+          (MonadIO m, ToJSString val) => HTMLAppletElement -> val -> m ()
 setVspace self val
-  = liftIO (js_setVspace (unHTMLAppletElement self) val)
+  = liftIO (js_setVspace (unHTMLAppletElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"vspace\"]" js_getVspace ::
-        JSRef HTMLAppletElement -> IO Int
+        JSRef HTMLAppletElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement.vspace Mozilla HTMLAppletElement.vspace documentation> 
-getVspace :: (MonadIO m) => HTMLAppletElement -> m Int
-getVspace self = liftIO (js_getVspace (unHTMLAppletElement self))
+getVspace ::
+          (MonadIO m, FromJSString result) => HTMLAppletElement -> m result
+getVspace self
+  = liftIO
+      (fromJSString <$> (js_getVspace (unHTMLAppletElement self)))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
         :: JSRef HTMLAppletElement -> JSString -> IO ()

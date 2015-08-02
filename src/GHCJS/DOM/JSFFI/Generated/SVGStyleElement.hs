@@ -1,11 +1,13 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGStyleElement
        (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
-        js_setMedia, setMedia, js_getMedia, getMedia, js_setTitle,
-        setTitle, js_getTitle, getTitle, SVGStyleElement,
-        castToSVGStyleElement, gTypeSVGStyleElement)
+        js_setType, setType, js_getType, getType, js_setMedia, setMedia,
+        js_getMedia, getMedia, js_setTitle, setTitle, js_getTitle,
+        getTitle, SVGStyleElement, castToSVGStyleElement,
+        gTypeSVGStyleElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -33,6 +35,24 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.disabled Mozilla SVGStyleElement.disabled documentation> 
 getDisabled :: (MonadIO m) => SVGStyleElement -> m Bool
 getDisabled self = liftIO (js_getDisabled (unSVGStyleElement self))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef SVGStyleElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.type Mozilla SVGStyleElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => SVGStyleElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unSVGStyleElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef SVGStyleElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.type Mozilla SVGStyleElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => SVGStyleElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unSVGStyleElement self)))
  
 foreign import javascript unsafe "$1[\"media\"] = $2;" js_setMedia
         :: JSRef SVGStyleElement -> JSString -> IO ()

@@ -228,7 +228,8 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
         castToWebGLRenderingContextBase, gTypeWebGLRenderingContextBase,
         IsWebGLRenderingContextBase, toWebGLRenderingContextBase)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -1339,16 +1340,16 @@ getProgramParameter self program pname
 foreign import javascript unsafe "$1[\"getProgramInfoLog\"]($2)"
         js_getProgramInfoLog ::
         JSRef WebGLRenderingContextBase ->
-          JSRef WebGLProgram -> IO JSString
+          JSRef WebGLProgram -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getProgramInfoLog Mozilla WebGLRenderingContextBase.getProgramInfoLog documentation> 
 getProgramInfoLog ::
                   (MonadIO m, IsWebGLRenderingContextBase self,
                    FromJSString result) =>
-                    self -> Maybe WebGLProgram -> m result
+                    self -> Maybe WebGLProgram -> m (Maybe result)
 getProgramInfoLog self program
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getProgramInfoLog
             (unWebGLRenderingContextBase (toWebGLRenderingContextBase self))
             (maybe jsNull pToJSRef program)))
@@ -1387,16 +1388,17 @@ getShaderParameter self shader pname
  
 foreign import javascript unsafe "$1[\"getShaderInfoLog\"]($2)"
         js_getShaderInfoLog ::
-        JSRef WebGLRenderingContextBase -> JSRef WebGLShader -> IO JSString
+        JSRef WebGLRenderingContextBase ->
+          JSRef WebGLShader -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderInfoLog Mozilla WebGLRenderingContextBase.getShaderInfoLog documentation> 
 getShaderInfoLog ::
                  (MonadIO m, IsWebGLRenderingContextBase self,
                   FromJSString result) =>
-                   self -> Maybe WebGLShader -> m result
+                   self -> Maybe WebGLShader -> m (Maybe result)
 getShaderInfoLog self shader
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getShaderInfoLog
             (unWebGLRenderingContextBase (toWebGLRenderingContextBase self))
             (maybe jsNull pToJSRef shader)))
@@ -1421,16 +1423,17 @@ getShaderPrecisionFormat self shadertype precisiontype
  
 foreign import javascript unsafe "$1[\"getShaderSource\"]($2)"
         js_getShaderSource ::
-        JSRef WebGLRenderingContextBase -> JSRef WebGLShader -> IO JSString
+        JSRef WebGLRenderingContextBase ->
+          JSRef WebGLShader -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderSource Mozilla WebGLRenderingContextBase.getShaderSource documentation> 
 getShaderSource ::
                 (MonadIO m, IsWebGLRenderingContextBase self,
                  FromJSString result) =>
-                  self -> Maybe WebGLShader -> m result
+                  self -> Maybe WebGLShader -> m (Maybe result)
 getShaderSource self shader
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getShaderSource
             (unWebGLRenderingContextBase (toWebGLRenderingContextBase self))
             (maybe jsNull pToJSRef shader)))

@@ -4,7 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.Worker
         js_terminate, terminate, message, Worker, castToWorker,
         gTypeWorker)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -30,19 +31,19 @@ newWorker scriptUrl
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3)"
         js_postMessage ::
-        JSRef Worker ->
-          JSRef SerializedScriptValue -> JSRef MessagePort -> IO ()
+        JSRef Worker -> JSRef SerializedScriptValue -> JSRef Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker.postMessage Mozilla Worker.postMessage documentation> 
 postMessage ::
-            (MonadIO m, IsSerializedScriptValue message) =>
-              Worker -> Maybe message -> Maybe MessagePort -> m ()
-postMessage self message messagePort
+            (MonadIO m, IsSerializedScriptValue message,
+             IsArray messagePorts) =>
+              Worker -> Maybe message -> Maybe messagePorts -> m ()
+postMessage self message messagePorts
   = liftIO
       (js_postMessage (unWorker self)
          (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
             message)
-         (maybe jsNull pToJSRef messagePort))
+         (maybe jsNull (unArray . toArray) messagePorts))
  
 foreign import javascript unsafe "$1[\"terminate\"]()" js_terminate
         :: JSRef Worker -> IO ()

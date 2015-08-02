@@ -5,17 +5,18 @@ module GHCJS.DOM.JSFFI.Generated.Selection
         deleteFromDocument, js_containsNode, containsNode,
         js_selectAllChildren, selectAllChildren, js_extend, extend,
         js_getRangeAt, getRangeAt, js_removeAllRanges, removeAllRanges,
-        js_addRange, addRange, js_modify, modify, js_setBaseAndExtent,
-        setBaseAndExtent, js_setPosition, setPosition, js_empty, empty,
-        js_getAnchorNode, getAnchorNode, js_getAnchorOffset,
-        getAnchorOffset, js_getFocusNode, getFocusNode, js_getFocusOffset,
-        getFocusOffset, js_getIsCollapsed, getIsCollapsed,
-        js_getRangeCount, getRangeCount, js_getBaseNode, getBaseNode,
-        js_getBaseOffset, getBaseOffset, js_getExtentNode, getExtentNode,
-        js_getExtentOffset, getExtentOffset, Selection, castToSelection,
-        gTypeSelection)
+        js_addRange, addRange, js_toString, toString, js_modify, modify,
+        js_setBaseAndExtent, setBaseAndExtent, js_setPosition, setPosition,
+        js_empty, empty, js_getAnchorNode, getAnchorNode,
+        js_getAnchorOffset, getAnchorOffset, js_getFocusNode, getFocusNode,
+        js_getFocusOffset, getFocusOffset, js_getIsCollapsed,
+        getIsCollapsed, js_getRangeCount, getRangeCount, js_getBaseNode,
+        getBaseNode, js_getBaseOffset, getBaseOffset, js_getExtentNode,
+        getExtentNode, js_getExtentOffset, getExtentOffset, js_getType,
+        getType, Selection, castToSelection, gTypeSelection)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -124,6 +125,15 @@ addRange :: (MonadIO m) => Selection -> Maybe Range -> m ()
 addRange self range
   = liftIO
       (js_addRange (unSelection self) (maybe jsNull pToJSRef range))
+ 
+foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+        :: JSRef Selection -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.toString Mozilla Selection.toString documentation> 
+toString ::
+         (MonadIO m, FromJSString result) => Selection -> m result
+toString self
+  = liftIO (fromJSString <$> (js_toString (unSelection self)))
  
 foreign import javascript unsafe "$1[\"modify\"]($2, $3, $4)"
         js_modify ::
@@ -251,3 +261,12 @@ foreign import javascript unsafe "$1[\"extentOffset\"]"
 getExtentOffset :: (MonadIO m) => Selection -> m Int
 getExtentOffset self
   = liftIO (js_getExtentOffset (unSelection self))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef Selection -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.type Mozilla Selection.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => Selection -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unSelection self)))

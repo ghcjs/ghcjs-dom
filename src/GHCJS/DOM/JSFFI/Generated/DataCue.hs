@@ -2,9 +2,11 @@
 module GHCJS.DOM.JSFFI.Generated.DataCue
        (js_newDataCue, newDataCue, js_newDataCue', newDataCue',
         js_setData, setData, js_getData, getData, js_setValue, setValue,
-        js_getValue, getValue, DataCue, castToDataCue, gTypeDataCue)
+        js_getValue, getValue, js_getType, getType, DataCue, castToDataCue,
+        gTypeDataCue)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -69,3 +71,11 @@ foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.value Mozilla WebKitDataCue.value documentation> 
 getValue :: (MonadIO m) => DataCue -> m (JSRef a)
 getValue self = liftIO (js_getValue (unDataCue self))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef DataCue -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.type Mozilla WebKitDataCue.type documentation> 
+getType :: (MonadIO m, FromJSString result) => DataCue -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unDataCue self)))

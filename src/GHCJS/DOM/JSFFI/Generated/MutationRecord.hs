@@ -1,13 +1,15 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MutationRecord
-       (js_getTarget, getTarget, js_getAddedNodes, getAddedNodes,
-        js_getRemovedNodes, getRemovedNodes, js_getPreviousSibling,
-        getPreviousSibling, js_getNextSibling, getNextSibling,
-        js_getAttributeName, getAttributeName, js_getAttributeNamespace,
-        getAttributeNamespace, js_getOldValue, getOldValue, MutationRecord,
-        castToMutationRecord, gTypeMutationRecord)
+       (js_getType, getType, js_getTarget, getTarget, js_getAddedNodes,
+        getAddedNodes, js_getRemovedNodes, getRemovedNodes,
+        js_getPreviousSibling, getPreviousSibling, js_getNextSibling,
+        getNextSibling, js_getAttributeName, getAttributeName,
+        js_getAttributeNamespace, getAttributeNamespace, js_getOldValue,
+        getOldValue, MutationRecord, castToMutationRecord,
+        gTypeMutationRecord)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -20,6 +22,15 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef MutationRecord -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.type Mozilla MutationRecord.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => MutationRecord -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unMutationRecord self)))
  
 foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
         JSRef MutationRecord -> IO (JSRef Node)
@@ -68,32 +79,38 @@ getNextSibling self
       ((js_getNextSibling (unMutationRecord self)) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"attributeName\"]"
-        js_getAttributeName :: JSRef MutationRecord -> IO JSString
+        js_getAttributeName ::
+        JSRef MutationRecord -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeName Mozilla MutationRecord.attributeName documentation> 
 getAttributeName ::
-                 (MonadIO m, FromJSString result) => MutationRecord -> m result
+                 (MonadIO m, FromJSString result) =>
+                   MutationRecord -> m (Maybe result)
 getAttributeName self
   = liftIO
-      (fromJSString <$> (js_getAttributeName (unMutationRecord self)))
+      (fromMaybeJSString <$>
+         (js_getAttributeName (unMutationRecord self)))
  
 foreign import javascript unsafe "$1[\"attributeNamespace\"]"
-        js_getAttributeNamespace :: JSRef MutationRecord -> IO JSString
+        js_getAttributeNamespace ::
+        JSRef MutationRecord -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeNamespace Mozilla MutationRecord.attributeNamespace documentation> 
 getAttributeNamespace ::
-                      (MonadIO m, FromJSString result) => MutationRecord -> m result
+                      (MonadIO m, FromJSString result) =>
+                        MutationRecord -> m (Maybe result)
 getAttributeNamespace self
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getAttributeNamespace (unMutationRecord self)))
  
 foreign import javascript unsafe "$1[\"oldValue\"]" js_getOldValue
-        :: JSRef MutationRecord -> IO JSString
+        :: JSRef MutationRecord -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.oldValue Mozilla MutationRecord.oldValue documentation> 
 getOldValue ::
-            (MonadIO m, FromJSString result) => MutationRecord -> m result
+            (MonadIO m, FromJSString result) =>
+              MutationRecord -> m (Maybe result)
 getOldValue self
   = liftIO
-      (fromJSString <$> (js_getOldValue (unMutationRecord self)))
+      (fromMaybeJSString <$> (js_getOldValue (unMutationRecord self)))

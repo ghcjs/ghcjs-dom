@@ -7,7 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.NamedNodeMap
         js_getLength, getLength, NamedNodeMap, castToNamedNodeMap,
         gTypeNamedNodeMap)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -71,15 +72,17 @@ item self index
  
 foreign import javascript unsafe "$1[\"getNamedItemNS\"]($2, $3)"
         js_getNamedItemNS ::
-        JSRef NamedNodeMap -> JSString -> JSString -> IO (JSRef Node)
+        JSRef NamedNodeMap ->
+          JSRef (Maybe JSString) -> JSString -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItemNS Mozilla NamedNodeMap.getNamedItemNS documentation> 
 getNamedItemNS ::
                (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
-                 NamedNodeMap -> namespaceURI -> localName -> m (Maybe Node)
+                 NamedNodeMap -> Maybe namespaceURI -> localName -> m (Maybe Node)
 getNamedItemNS self namespaceURI localName
   = liftIO
-      ((js_getNamedItemNS (unNamedNodeMap self) (toJSString namespaceURI)
+      ((js_getNamedItemNS (unNamedNodeMap self)
+          (toMaybeJSString namespaceURI)
           (toJSString localName))
          >>= fromJSRef)
  
@@ -99,16 +102,17 @@ setNamedItemNS self node
  
 foreign import javascript unsafe
         "$1[\"removeNamedItemNS\"]($2, $3)" js_removeNamedItemNS ::
-        JSRef NamedNodeMap -> JSString -> JSString -> IO (JSRef Node)
+        JSRef NamedNodeMap ->
+          JSRef (Maybe JSString) -> JSString -> IO (JSRef Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItemNS Mozilla NamedNodeMap.removeNamedItemNS documentation> 
 removeNamedItemNS ::
                   (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
-                    NamedNodeMap -> namespaceURI -> localName -> m (Maybe Node)
+                    NamedNodeMap -> Maybe namespaceURI -> localName -> m (Maybe Node)
 removeNamedItemNS self namespaceURI localName
   = liftIO
       ((js_removeNamedItemNS (unNamedNodeMap self)
-          (toJSString namespaceURI)
+          (toMaybeJSString namespaceURI)
           (toJSString localName))
          >>= fromJSRef)
  

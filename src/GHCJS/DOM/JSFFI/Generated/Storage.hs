@@ -4,7 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.Storage
         js_removeItem, removeItem, js_clear, clear, js_getLength,
         getLength, Storage, castToStorage, gTypeStorage)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -19,24 +20,26 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"key\"]($2)" js_key ::
-        JSRef Storage -> Word -> IO JSString
+        JSRef Storage -> Word -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
 key ::
-    (MonadIO m, FromJSString result) => Storage -> Word -> m result
+    (MonadIO m, FromJSString result) =>
+      Storage -> Word -> m (Maybe result)
 key self index
-  = liftIO (fromJSString <$> (js_key (unStorage self) index))
+  = liftIO (fromMaybeJSString <$> (js_key (unStorage self) index))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: JSRef Storage -> JSString -> IO JSString
+        :: JSRef Storage -> JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
 getItem ::
         (MonadIO m, ToJSString key, FromJSString result) =>
-          Storage -> key -> m result
+          Storage -> key -> m (Maybe result)
 getItem self key
   = liftIO
-      (fromJSString <$> (js_getItem (unStorage self) (toJSString key)))
+      (fromMaybeJSString <$>
+         (js_getItem (unStorage self) (toJSString key)))
  
 foreign import javascript unsafe "$1[\"setItem\"]($2, $3)"
         js_setItem :: JSRef Storage -> JSString -> JSString -> IO ()

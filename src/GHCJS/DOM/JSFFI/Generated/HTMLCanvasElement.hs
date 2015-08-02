@@ -6,7 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLCanvasElement
         js_getHeight, getHeight, HTMLCanvasElement,
         castToHTMLCanvasElement, gTypeHTMLCanvasElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -21,16 +22,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"toDataURL\"]($2)"
-        js_toDataURL :: JSRef HTMLCanvasElement -> JSString -> IO JSString
+        js_toDataURL ::
+        JSRef HTMLCanvasElement -> JSRef (Maybe JSString) -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL Mozilla HTMLCanvasElement.toDataURL documentation> 
 toDataURL ::
           (MonadIO m, ToJSString type', FromJSString result) =>
-            HTMLCanvasElement -> type' -> m result
+            HTMLCanvasElement -> Maybe type' -> m result
 toDataURL self type'
   = liftIO
       (fromJSString <$>
-         (js_toDataURL (unHTMLCanvasElement self) (toJSString type')))
+         (js_toDataURL (unHTMLCanvasElement self) (toMaybeJSString type')))
  
 foreign import javascript unsafe "$1[\"getContext\"]($2)"
         js_getContext ::

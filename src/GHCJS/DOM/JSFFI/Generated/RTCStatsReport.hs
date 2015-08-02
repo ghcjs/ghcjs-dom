@@ -1,10 +1,12 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.RTCStatsReport
        (js_stat, stat, js_names, names, js_getTimestamp, getTimestamp,
-        js_getId, getId, js_getLocal, getLocal, js_getRemote, getRemote,
-        RTCStatsReport, castToRTCStatsReport, gTypeRTCStatsReport)
+        js_getId, getId, js_getType, getType, js_getLocal, getLocal,
+        js_getRemote, getRemote, RTCStatsReport, castToRTCStatsReport,
+        gTypeRTCStatsReport)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -56,6 +58,15 @@ getId ::
       (MonadIO m, FromJSString result) => RTCStatsReport -> m result
 getId self
   = liftIO (fromJSString <$> (js_getId (unRTCStatsReport self)))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef RTCStatsReport -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.type Mozilla RTCStatsReport.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => RTCStatsReport -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unRTCStatsReport self)))
  
 foreign import javascript unsafe "$1[\"local\"]" js_getLocal ::
         JSRef RTCStatsReport -> IO (JSRef RTCStatsReport)

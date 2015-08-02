@@ -9,16 +9,18 @@ module GHCJS.DOM.JSFFI.Generated.Event
         pattern MOUSEDRAG, pattern CLICK, pattern DBLCLICK,
         pattern KEYDOWN, pattern KEYUP, pattern KEYPRESS, pattern DRAGDROP,
         pattern FOCUS, pattern BLUR, pattern SELECT, pattern CHANGE,
-        js_getTarget, getTarget, js_getCurrentTarget, getCurrentTarget,
-        js_getEventPhase, getEventPhase, js_getBubbles, getBubbles,
-        js_getCancelable, getCancelable, js_getTimeStamp, getTimeStamp,
-        js_getDefaultPrevented, getDefaultPrevented, js_getSrcElement,
-        getSrcElement, js_setReturnValue, setReturnValue,
+        js_getType, getType, js_getTarget, getTarget, js_getCurrentTarget,
+        getCurrentTarget, js_getEventPhase, getEventPhase, js_getBubbles,
+        getBubbles, js_getCancelable, getCancelable, js_getTimeStamp,
+        getTimeStamp, js_getDefaultPrevented, getDefaultPrevented,
+        js_getSrcElement, getSrcElement, js_setReturnValue, setReturnValue,
         js_getReturnValue, getReturnValue, js_setCancelBubble,
-        setCancelBubble, js_getCancelBubble, getCancelBubble, Event,
-        castToEvent, gTypeEvent, IsEvent, toEvent)
+        setCancelBubble, js_getCancelBubble, getCancelBubble,
+        js_getClipboardData, getClipboardData, Event, castToEvent,
+        gTypeEvent, IsEvent, toEvent)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -89,6 +91,15 @@ pattern FOCUS = 4096
 pattern BLUR = 8192
 pattern SELECT = 16384
 pattern CHANGE = 32768
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef Event -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.type Mozilla Event.type documentation> 
+getType ::
+        (MonadIO m, IsEvent self, FromJSString result) => self -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unEvent (toEvent self))))
  
 foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
         JSRef Event -> IO (JSRef EventTarget)
@@ -191,3 +202,13 @@ foreign import javascript unsafe "($1[\"cancelBubble\"] ? 1 : 0)"
 getCancelBubble :: (MonadIO m, IsEvent self) => self -> m Bool
 getCancelBubble self
   = liftIO (js_getCancelBubble (unEvent (toEvent self)))
+ 
+foreign import javascript unsafe "$1[\"clipboardData\"]"
+        js_getClipboardData :: JSRef Event -> IO (JSRef DataTransfer)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.clipboardData Mozilla Event.clipboardData documentation> 
+getClipboardData ::
+                 (MonadIO m, IsEvent self) => self -> m (Maybe DataTransfer)
+getClipboardData self
+  = liftIO
+      ((js_getClipboardData (unEvent (toEvent self))) >>= fromJSRef)

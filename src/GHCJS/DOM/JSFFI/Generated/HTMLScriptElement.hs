@@ -5,12 +5,13 @@ module GHCJS.DOM.JSFFI.Generated.HTMLScriptElement
         js_getEvent, getEvent, js_setCharset, setCharset, js_getCharset,
         getCharset, js_setAsync, setAsync, js_getAsync, getAsync,
         js_setDefer, setDefer, js_getDefer, getDefer, js_setSrc, setSrc,
-        js_getSrc, getSrc, js_setCrossOrigin, setCrossOrigin,
-        js_getCrossOrigin, getCrossOrigin, js_setNonce, setNonce,
-        js_getNonce, getNonce, HTMLScriptElement, castToHTMLScriptElement,
-        gTypeHTMLScriptElement)
+        js_getSrc, getSrc, js_setType, setType, js_getType, getType,
+        js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
+        getCrossOrigin, js_setNonce, setNonce, js_getNonce, getNonce,
+        HTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -25,22 +26,26 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
-        JSRef HTMLScriptElement -> JSString -> IO ()
+        JSRef HTMLScriptElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
 setText ::
-        (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+        (MonadIO m, ToJSString val) =>
+          HTMLScriptElement -> Maybe val -> m ()
 setText self val
-  = liftIO (js_setText (unHTMLScriptElement self) (toJSString val))
+  = liftIO
+      (js_setText (unHTMLScriptElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"text\"]" js_getText ::
-        JSRef HTMLScriptElement -> IO JSString
+        JSRef HTMLScriptElement -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
 getText ::
-        (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+        (MonadIO m, FromJSString result) =>
+          HTMLScriptElement -> m (Maybe result)
 getText self
-  = liftIO (fromJSString <$> (js_getText (unHTMLScriptElement self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getText (unHTMLScriptElement self)))
  
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
         js_setHtmlFor :: JSRef HTMLScriptElement -> JSString -> IO ()
@@ -148,6 +153,24 @@ getSrc ::
        (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
 getSrc self
   = liftIO (fromJSString <$> (js_getSrc (unHTMLScriptElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLScriptElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.type Mozilla HTMLScriptElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLScriptElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLScriptElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.type Mozilla HTMLScriptElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLScriptElement self)))
  
 foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
         js_setCrossOrigin :: JSRef HTMLScriptElement -> JSString -> IO ()

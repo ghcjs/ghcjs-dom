@@ -5,11 +5,14 @@ module GHCJS.DOM.JSFFI.Generated.HTMLLinkElement
         setHref, js_getHref, getHref, js_setHreflang, setHreflang,
         js_getHreflang, getHreflang, js_setMedia, setMedia, js_getMedia,
         getMedia, js_setRel, setRel, js_getRel, getRel, js_setRev, setRev,
-        js_getRev, getRev, js_setTarget, setTarget, js_getTarget,
-        getTarget, js_getSheet, getSheet, js_getRelList, getRelList,
-        HTMLLinkElement, castToHTMLLinkElement, gTypeHTMLLinkElement)
+        js_getRev, getRev, js_setSizes, setSizes, js_getSizes, getSizes,
+        js_setTarget, setTarget, js_getTarget, getTarget, js_setType,
+        setType, js_getType, getType, js_getSheet, getSheet, js_getRelList,
+        getRelList, HTMLLinkElement, castToHTMLLinkElement,
+        gTypeHTMLLinkElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -148,6 +151,26 @@ getRev ::
 getRev self
   = liftIO (fromJSString <$> (js_getRev (unHTMLLinkElement self)))
  
+foreign import javascript unsafe "$1[\"sizes\"] = $2;" js_setSizes
+        :: JSRef HTMLLinkElement -> JSRef DOMSettableTokenList -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
+setSizes ::
+         (MonadIO m) =>
+           HTMLLinkElement -> Maybe DOMSettableTokenList -> m ()
+setSizes self val
+  = liftIO
+      (js_setSizes (unHTMLLinkElement self) (maybe jsNull pToJSRef val))
+ 
+foreign import javascript unsafe "$1[\"sizes\"]" js_getSizes ::
+        JSRef HTMLLinkElement -> IO (JSRef DOMSettableTokenList)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
+getSizes ::
+         (MonadIO m) => HTMLLinkElement -> m (Maybe DOMSettableTokenList)
+getSizes self
+  = liftIO ((js_getSizes (unHTMLLinkElement self)) >>= fromJSRef)
+ 
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         js_setTarget :: JSRef HTMLLinkElement -> JSString -> IO ()
 
@@ -165,6 +188,24 @@ getTarget ::
           (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getTarget self
   = liftIO (fromJSString <$> (js_getTarget (unHTMLLinkElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLLinkElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.type Mozilla HTMLLinkElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLLinkElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLLinkElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.type Mozilla HTMLLinkElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLLinkElement self)))
  
 foreign import javascript unsafe "$1[\"sheet\"]" js_getSheet ::
         JSRef HTMLLinkElement -> IO (JSRef StyleSheet)

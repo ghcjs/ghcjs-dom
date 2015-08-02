@@ -11,7 +11,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGAngle
         js_setValueAsString, setValueAsString, js_getValueAsString,
         getValueAsString, SVGAngle, castToSVGAngle, gTypeSVGAngle)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -91,19 +92,23 @@ getValueInSpecifiedUnits self
   = liftIO (js_getValueInSpecifiedUnits (unSVGAngle self))
  
 foreign import javascript unsafe "$1[\"valueAsString\"] = $2;"
-        js_setValueAsString :: JSRef SVGAngle -> JSString -> IO ()
+        js_setValueAsString ::
+        JSRef SVGAngle -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueAsString Mozilla SVGAngle.valueAsString documentation> 
 setValueAsString ::
-                 (MonadIO m, ToJSString val) => SVGAngle -> val -> m ()
+                 (MonadIO m, ToJSString val) => SVGAngle -> Maybe val -> m ()
 setValueAsString self val
-  = liftIO (js_setValueAsString (unSVGAngle self) (toJSString val))
+  = liftIO
+      (js_setValueAsString (unSVGAngle self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"valueAsString\"]"
-        js_getValueAsString :: JSRef SVGAngle -> IO JSString
+        js_getValueAsString ::
+        JSRef SVGAngle -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueAsString Mozilla SVGAngle.valueAsString documentation> 
 getValueAsString ::
-                 (MonadIO m, FromJSString result) => SVGAngle -> m result
+                 (MonadIO m, FromJSString result) => SVGAngle -> m (Maybe result)
 getValueAsString self
-  = liftIO (fromJSString <$> (js_getValueAsString (unSVGAngle self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getValueAsString (unSVGAngle self)))

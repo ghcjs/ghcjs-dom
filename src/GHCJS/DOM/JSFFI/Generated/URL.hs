@@ -6,7 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.URL
         js_createObjectURLStream, createObjectURLStream, URL, castToURL,
         gTypeURL)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -52,15 +53,16 @@ newURL'' url base
          fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
-        js_createObjectURL :: JSRef URL -> JSRef Blob -> IO JSString
+        js_createObjectURL ::
+        JSRef URL -> JSRef Blob -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURL ::
                 (MonadIO m, IsBlob blob, FromJSString result) =>
-                  URL -> Maybe blob -> m result
+                  URL -> Maybe blob -> m (Maybe result)
 createObjectURL self blob
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_createObjectURL (unURL self)
             (maybe jsNull (unBlob . toBlob) blob)))
  
@@ -75,28 +77,28 @@ revokeObjectURL self url
  
 foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
         js_createObjectURLSource ::
-        JSRef URL -> JSRef MediaSource -> IO JSString
+        JSRef URL -> JSRef MediaSource -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURLSource ::
                       (MonadIO m, FromJSString result) =>
-                        URL -> Maybe MediaSource -> m result
+                        URL -> Maybe MediaSource -> m (Maybe result)
 createObjectURLSource self source
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_createObjectURLSource (unURL self)
             (maybe jsNull pToJSRef source)))
  
 foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
         js_createObjectURLStream ::
-        JSRef URL -> JSRef MediaStream -> IO JSString
+        JSRef URL -> JSRef MediaStream -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURLStream ::
                       (MonadIO m, FromJSString result) =>
-                        URL -> Maybe MediaStream -> m result
+                        URL -> Maybe MediaStream -> m (Maybe result)
 createObjectURLStream self stream
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_createObjectURLStream (unURL self)
             (maybe jsNull pToJSRef stream)))

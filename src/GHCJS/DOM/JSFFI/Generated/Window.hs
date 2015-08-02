@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.Window
         find, js_scrollBy, scrollBy, js_scrollTo, scrollTo, js_scroll,
         scroll, js_moveBy, moveBy, js_moveTo, moveTo, js_resizeBy,
         resizeBy, js_resizeTo, resizeTo, js_matchMedia, matchMedia,
-        js_getComputedStyle, getComputedStyle,
-        js_webkitConvertPointFromPageToNode,
+        js_getComputedStyle, getComputedStyle, js_getMatchedCSSRules,
+        getMatchedCSSRules, js_webkitConvertPointFromPageToNode,
         webkitConvertPointFromPageToNode,
         js_webkitConvertPointFromNodeToPage,
         webkitConvertPointFromNodeToPage, js_postMessage, postMessage,
@@ -39,11 +39,12 @@ module GHCJS.DOM.JSFFI.Generated.Window
         getPageYOffset, js_getClosed, getClosed, js_getLength, getLength,
         js_setName, setName, js_getName, getName, js_setStatus, setStatus,
         js_getStatus, getStatus, js_setDefaultStatus, setDefaultStatus,
-        js_getDefaultStatus, getDefaultStatus, js_getSelf, getSelf,
-        js_getWindow, getWindow, js_getFrames, getFrames, js_getOpener,
-        getOpener, js_getParent, getParent, js_getTop, getTop,
-        js_getDocument, getDocument, js_getStyleMedia, getStyleMedia,
-        js_getDevicePixelRatio, getDevicePixelRatio,
+        js_getDefaultStatus, getDefaultStatus, js_setDefaultstatus,
+        setDefaultstatus, js_getDefaultstatus, getDefaultstatus,
+        js_getSelf, getSelf, js_getWindow, getWindow, js_getFrames,
+        getFrames, js_getOpener, getOpener, js_getParent, getParent,
+        js_getTop, getTop, js_getDocument, getDocument, js_getStyleMedia,
+        getStyleMedia, js_getDevicePixelRatio, getDevicePixelRatio,
         js_getApplicationCache, getApplicationCache, js_getSessionStorage,
         getSessionStorage, js_getLocalStorage, getLocalStorage,
         js_getOrientation, getOrientation, js_getPerformance,
@@ -67,7 +68,8 @@ module GHCJS.DOM.JSFFI.Generated.Window
         webKitWillRevealRight, webKitWillRevealTop, Window, castToWindow,
         gTypeWindow)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -196,18 +198,20 @@ confirm self message
   = liftIO (js_confirm (unWindow self) (toJSString message))
  
 foreign import javascript unsafe "$1[\"prompt\"]($2, $3)" js_prompt
-        :: JSRef Window -> JSString -> JSString -> IO JSString
+        ::
+        JSRef Window ->
+          JSString -> JSRef (Maybe JSString) -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.prompt Mozilla Window.prompt documentation> 
 prompt ::
        (MonadIO m, ToJSString message, ToJSString defaultValue,
         FromJSString result) =>
-         Window -> message -> defaultValue -> m result
+         Window -> message -> Maybe defaultValue -> m (Maybe result)
 prompt self message defaultValue
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_prompt (unWindow self) (toJSString message)
-            (toJSString defaultValue)))
+            (toMaybeJSString defaultValue)))
  
 foreign import javascript unsafe
         "($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0)" js_find ::
@@ -294,18 +298,37 @@ matchMedia self query
 foreign import javascript unsafe "$1[\"getComputedStyle\"]($2, $3)"
         js_getComputedStyle ::
         JSRef Window ->
-          JSRef Element -> JSString -> IO (JSRef CSSStyleDeclaration)
+          JSRef Element ->
+            JSRef (Maybe JSString) -> IO (JSRef CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getComputedStyle Mozilla Window.getComputedStyle documentation> 
 getComputedStyle ::
                  (MonadIO m, IsElement element, ToJSString pseudoElement) =>
                    Window ->
-                     Maybe element -> pseudoElement -> m (Maybe CSSStyleDeclaration)
+                     Maybe element ->
+                       Maybe pseudoElement -> m (Maybe CSSStyleDeclaration)
 getComputedStyle self element pseudoElement
   = liftIO
       ((js_getComputedStyle (unWindow self)
           (maybe jsNull (unElement . toElement) element)
-          (toJSString pseudoElement))
+          (toMaybeJSString pseudoElement))
+         >>= fromJSRef)
+ 
+foreign import javascript unsafe
+        "$1[\"getMatchedCSSRules\"]($2, $3)" js_getMatchedCSSRules ::
+        JSRef Window ->
+          JSRef Element -> JSRef (Maybe JSString) -> IO (JSRef CSSRuleList)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getMatchedCSSRules Mozilla Window.getMatchedCSSRules documentation> 
+getMatchedCSSRules ::
+                   (MonadIO m, IsElement element, ToJSString pseudoElement) =>
+                     Window ->
+                       Maybe element -> Maybe pseudoElement -> m (Maybe CSSRuleList)
+getMatchedCSSRules self element pseudoElement
+  = liftIO
+      ((js_getMatchedCSSRules (unWindow self)
+          (maybe jsNull (unElement . toElement) element)
+          (toMaybeJSString pseudoElement))
          >>= fromJSRef)
  
 foreign import javascript unsafe
@@ -347,22 +370,21 @@ webkitConvertPointFromNodeToPage self node p
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3, $4)"
         js_postMessage ::
         JSRef Window ->
-          JSRef SerializedScriptValue ->
-            JSRef MessagePort -> JSString -> IO ()
+          JSRef SerializedScriptValue -> JSString -> JSRef Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage Mozilla Window.postMessage documentation> 
 postMessage ::
             (MonadIO m, IsSerializedScriptValue message,
-             ToJSString targetOrigin) =>
+             ToJSString targetOrigin, IsArray messagePorts) =>
               Window ->
-                Maybe message -> Maybe MessagePort -> targetOrigin -> m ()
-postMessage self message messagePort targetOrigin
+                Maybe message -> targetOrigin -> Maybe messagePorts -> m ()
+postMessage self message targetOrigin messagePorts
   = liftIO
       (js_postMessage (unWindow self)
          (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
             message)
-         (maybe jsNull pToJSRef messagePort)
-         (toJSString targetOrigin))
+         (toJSString targetOrigin)
+         (maybe jsNull (unArray . toArray) messagePorts))
  
 foreign import javascript unsafe
         "$1[\"requestAnimationFrame\"]($2)" js_requestAnimationFrame ::
@@ -745,6 +767,24 @@ getDefaultStatus ::
                  (MonadIO m, FromJSString result) => Window -> m result
 getDefaultStatus self
   = liftIO (fromJSString <$> (js_getDefaultStatus (unWindow self)))
+ 
+foreign import javascript unsafe "$1[\"defaultstatus\"] = $2;"
+        js_setDefaultstatus :: JSRef Window -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultstatus Mozilla Window.defaultstatus documentation> 
+setDefaultstatus ::
+                 (MonadIO m, ToJSString val) => Window -> val -> m ()
+setDefaultstatus self val
+  = liftIO (js_setDefaultstatus (unWindow self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"defaultstatus\"]"
+        js_getDefaultstatus :: JSRef Window -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultstatus Mozilla Window.defaultstatus documentation> 
+getDefaultstatus ::
+                 (MonadIO m, FromJSString result) => Window -> m result
+getDefaultstatus self
+  = liftIO (fromJSString <$> (js_getDefaultstatus (unWindow self)))
  
 foreign import javascript unsafe "$1[\"self\"]" js_getSelf ::
         JSRef Window -> IO (JSRef Window)

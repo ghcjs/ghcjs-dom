@@ -6,12 +6,13 @@ module GHCJS.DOM.JSFFI.Generated.HTMLKeygenElement
         getChallenge, js_setDisabled, setDisabled, js_getDisabled,
         getDisabled, js_getForm, getForm, js_setKeytype, setKeytype,
         js_getKeytype, getKeytype, js_setName, setName, js_getName,
-        getName, js_getWillValidate, getWillValidate, js_getValidity,
-        getValidity, js_getValidationMessage, getValidationMessage,
-        js_getLabels, getLabels, HTMLKeygenElement,
+        getName, js_getType, getType, js_getWillValidate, getWillValidate,
+        js_getValidity, getValidity, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels, HTMLKeygenElement,
         castToHTMLKeygenElement, gTypeHTMLKeygenElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -36,15 +37,16 @@ checkValidity self
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
-        JSRef HTMLKeygenElement -> JSString -> IO ()
+        JSRef HTMLKeygenElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.setCustomValidity Mozilla HTMLKeygenElement.setCustomValidity documentation> 
 setCustomValidity ::
-                  (MonadIO m, ToJSString error) => HTMLKeygenElement -> error -> m ()
+                  (MonadIO m, ToJSString error) =>
+                    HTMLKeygenElement -> Maybe error -> m ()
 setCustomValidity self error
   = liftIO
       (js_setCustomValidity (unHTMLKeygenElement self)
-         (toJSString error))
+         (toMaybeJSString error))
  
 foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
         js_setAutofocus :: JSRef HTMLKeygenElement -> Bool -> IO ()
@@ -144,6 +146,15 @@ getName ::
         (MonadIO m, FromJSString result) => HTMLKeygenElement -> m result
 getName self
   = liftIO (fromJSString <$> (js_getName (unHTMLKeygenElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLKeygenElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.type Mozilla HTMLKeygenElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLKeygenElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLKeygenElement self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         js_getWillValidate :: JSRef HTMLKeygenElement -> IO Bool

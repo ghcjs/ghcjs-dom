@@ -44,7 +44,8 @@ module GHCJS.DOM.JSFFI.Generated.Enums
         js_XMLHttpRequestResponseTypeJson,
         js_XMLHttpRequestResponseTypeText)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -59,6 +60,7 @@ import Control.Applicative ((<$>))
 data KeyType = KeyTypeSecret
              | KeyTypePublic
              | KeyTypePrivate
+             deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef KeyType where
         pToJSRef KeyTypeSecret = js_KeyTypeSecret
@@ -69,9 +71,9 @@ instance ToJSRef KeyType where
         toJSRef = return . pToJSRef
  
 instance PFromJSRef KeyType where
-        pFromJSRef x | x == js_KeyTypeSecret = KeyTypeSecret
-        pFromJSRef x | x == js_KeyTypePublic = KeyTypePublic
-        pFromJSRef x | x == js_KeyTypePrivate = KeyTypePrivate
+        pFromJSRef x | x `js_eq` js_KeyTypeSecret = KeyTypeSecret
+        pFromJSRef x | x `js_eq` js_KeyTypePublic = KeyTypePublic
+        pFromJSRef x | x `js_eq` js_KeyTypePrivate = KeyTypePrivate
  
 instance FromJSRef KeyType where
         fromJSRefUnchecked = return . pFromJSRef
@@ -94,6 +96,7 @@ data KeyUsage = KeyUsageEncrypt
               | KeyUsageDeriveBits
               | KeyUsageWrapKey
               | KeyUsageUnwrapKey
+              deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef KeyUsage where
         pToJSRef KeyUsageEncrypt = js_KeyUsageEncrypt
@@ -109,14 +112,14 @@ instance ToJSRef KeyUsage where
         toJSRef = return . pToJSRef
  
 instance PFromJSRef KeyUsage where
-        pFromJSRef x | x == js_KeyUsageEncrypt = KeyUsageEncrypt
-        pFromJSRef x | x == js_KeyUsageDecrypt = KeyUsageDecrypt
-        pFromJSRef x | x == js_KeyUsageSign = KeyUsageSign
-        pFromJSRef x | x == js_KeyUsageVerify = KeyUsageVerify
-        pFromJSRef x | x == js_KeyUsageDeriveKey = KeyUsageDeriveKey
-        pFromJSRef x | x == js_KeyUsageDeriveBits = KeyUsageDeriveBits
-        pFromJSRef x | x == js_KeyUsageWrapKey = KeyUsageWrapKey
-        pFromJSRef x | x == js_KeyUsageUnwrapKey = KeyUsageUnwrapKey
+        pFromJSRef x | x `js_eq` js_KeyUsageEncrypt = KeyUsageEncrypt
+        pFromJSRef x | x `js_eq` js_KeyUsageDecrypt = KeyUsageDecrypt
+        pFromJSRef x | x `js_eq` js_KeyUsageSign = KeyUsageSign
+        pFromJSRef x | x `js_eq` js_KeyUsageVerify = KeyUsageVerify
+        pFromJSRef x | x `js_eq` js_KeyUsageDeriveKey = KeyUsageDeriveKey
+        pFromJSRef x | x `js_eq` js_KeyUsageDeriveBits = KeyUsageDeriveBits
+        pFromJSRef x | x `js_eq` js_KeyUsageWrapKey = KeyUsageWrapKey
+        pFromJSRef x | x `js_eq` js_KeyUsageUnwrapKey = KeyUsageUnwrapKey
  
 instance FromJSRef KeyUsage where
         fromJSRefUnchecked = return . pFromJSRef
@@ -148,6 +151,7 @@ foreign import javascript unsafe "\"unwrapKey\""
  
 data CanvasWindingRule = CanvasWindingRuleNonzero
                        | CanvasWindingRuleEvenodd
+                       deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef CanvasWindingRule where
         pToJSRef CanvasWindingRuleNonzero = js_CanvasWindingRuleNonzero
@@ -158,9 +162,9 @@ instance ToJSRef CanvasWindingRule where
  
 instance PFromJSRef CanvasWindingRule where
         pFromJSRef x
-          | x == js_CanvasWindingRuleNonzero = CanvasWindingRuleNonzero
+          | x `js_eq` js_CanvasWindingRuleNonzero = CanvasWindingRuleNonzero
         pFromJSRef x
-          | x == js_CanvasWindingRuleEvenodd = CanvasWindingRuleEvenodd
+          | x `js_eq` js_CanvasWindingRuleEvenodd = CanvasWindingRuleEvenodd
  
 instance FromJSRef CanvasWindingRule where
         fromJSRefUnchecked = return . pFromJSRef
@@ -175,6 +179,7 @@ foreign import javascript unsafe "\"evenodd\""
 data VideoPresentationMode = VideoPresentationModeFullscreen
                            | VideoPresentationModeOptimized
                            | VideoPresentationModeInline
+                           deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef VideoPresentationMode where
         pToJSRef VideoPresentationModeFullscreen
@@ -189,13 +194,14 @@ instance ToJSRef VideoPresentationMode where
  
 instance PFromJSRef VideoPresentationMode where
         pFromJSRef x
-          | x == js_VideoPresentationModeFullscreen =
+          | x `js_eq` js_VideoPresentationModeFullscreen =
             VideoPresentationModeFullscreen
         pFromJSRef x
-          | x == js_VideoPresentationModeOptimized =
+          | x `js_eq` js_VideoPresentationModeOptimized =
             VideoPresentationModeOptimized
         pFromJSRef x
-          | x == js_VideoPresentationModeInline = VideoPresentationModeInline
+          | x `js_eq` js_VideoPresentationModeInline =
+            VideoPresentationModeInline
  
 instance FromJSRef VideoPresentationMode where
         fromJSRefUnchecked = return . pFromJSRef
@@ -213,6 +219,7 @@ foreign import javascript unsafe "\"inline\""
 data TextTrackMode = TextTrackModeDisabled
                    | TextTrackModeHidden
                    | TextTrackModeShowing
+                   deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef TextTrackMode where
         pToJSRef TextTrackModeDisabled = js_TextTrackModeDisabled
@@ -224,9 +231,11 @@ instance ToJSRef TextTrackMode where
  
 instance PFromJSRef TextTrackMode where
         pFromJSRef x
-          | x == js_TextTrackModeDisabled = TextTrackModeDisabled
-        pFromJSRef x | x == js_TextTrackModeHidden = TextTrackModeHidden
-        pFromJSRef x | x == js_TextTrackModeShowing = TextTrackModeShowing
+          | x `js_eq` js_TextTrackModeDisabled = TextTrackModeDisabled
+        pFromJSRef x
+          | x `js_eq` js_TextTrackModeHidden = TextTrackModeHidden
+        pFromJSRef x
+          | x `js_eq` js_TextTrackModeShowing = TextTrackModeShowing
  
 instance FromJSRef TextTrackMode where
         fromJSRefUnchecked = return . pFromJSRef
@@ -246,6 +255,7 @@ data TextTrackKind = TextTrackKindSubtitles
                    | TextTrackKindDescriptions
                    | TextTrackKindChapters
                    | TextTrackKindMetadata
+                   deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef TextTrackKind where
         pToJSRef TextTrackKindSubtitles = js_TextTrackKindSubtitles
@@ -259,15 +269,16 @@ instance ToJSRef TextTrackKind where
  
 instance PFromJSRef TextTrackKind where
         pFromJSRef x
-          | x == js_TextTrackKindSubtitles = TextTrackKindSubtitles
+          | x `js_eq` js_TextTrackKindSubtitles = TextTrackKindSubtitles
         pFromJSRef x
-          | x == js_TextTrackKindCaptions = TextTrackKindCaptions
+          | x `js_eq` js_TextTrackKindCaptions = TextTrackKindCaptions
         pFromJSRef x
-          | x == js_TextTrackKindDescriptions = TextTrackKindDescriptions
+          | x `js_eq` js_TextTrackKindDescriptions =
+            TextTrackKindDescriptions
         pFromJSRef x
-          | x == js_TextTrackKindChapters = TextTrackKindChapters
+          | x `js_eq` js_TextTrackKindChapters = TextTrackKindChapters
         pFromJSRef x
-          | x == js_TextTrackKindMetadata = TextTrackKindMetadata
+          | x `js_eq` js_TextTrackKindMetadata = TextTrackKindMetadata
  
 instance FromJSRef TextTrackKind where
         fromJSRefUnchecked = return . pFromJSRef
@@ -291,6 +302,7 @@ foreign import javascript unsafe "\"metadata\""
 data DeviceType = DeviceTypeNone
                 | DeviceTypeAirplay
                 | DeviceTypeTvout
+                deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef DeviceType where
         pToJSRef DeviceTypeNone = js_DeviceTypeNone
@@ -301,9 +313,9 @@ instance ToJSRef DeviceType where
         toJSRef = return . pToJSRef
  
 instance PFromJSRef DeviceType where
-        pFromJSRef x | x == js_DeviceTypeNone = DeviceTypeNone
-        pFromJSRef x | x == js_DeviceTypeAirplay = DeviceTypeAirplay
-        pFromJSRef x | x == js_DeviceTypeTvout = DeviceTypeTvout
+        pFromJSRef x | x `js_eq` js_DeviceTypeNone = DeviceTypeNone
+        pFromJSRef x | x `js_eq` js_DeviceTypeAirplay = DeviceTypeAirplay
+        pFromJSRef x | x `js_eq` js_DeviceTypeTvout = DeviceTypeTvout
  
 instance FromJSRef DeviceType where
         fromJSRefUnchecked = return . pFromJSRef
@@ -320,6 +332,7 @@ foreign import javascript unsafe "\"tvout\"" js_DeviceTypeTvout ::
  
 data MediaUIPartID = MediaUIPartIDOptimizedFullscreenButton
                    | MediaUIPartIDOptimizedFullscreenPlaceholder
+                   deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef MediaUIPartID where
         pToJSRef MediaUIPartIDOptimizedFullscreenButton
@@ -332,10 +345,10 @@ instance ToJSRef MediaUIPartID where
  
 instance PFromJSRef MediaUIPartID where
         pFromJSRef x
-          | x == js_MediaUIPartIDOptimizedFullscreenButton =
+          | x `js_eq` js_MediaUIPartIDOptimizedFullscreenButton =
             MediaUIPartIDOptimizedFullscreenButton
         pFromJSRef x
-          | x == js_MediaUIPartIDOptimizedFullscreenPlaceholder =
+          | x `js_eq` js_MediaUIPartIDOptimizedFullscreenPlaceholder =
             MediaUIPartIDOptimizedFullscreenPlaceholder
  
 instance FromJSRef MediaUIPartID where
@@ -352,6 +365,7 @@ foreign import javascript unsafe
  
 data EndOfStreamError = EndOfStreamErrorNetwork
                       | EndOfStreamErrorDecode
+                      deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef EndOfStreamError where
         pToJSRef EndOfStreamErrorNetwork = js_EndOfStreamErrorNetwork
@@ -362,9 +376,9 @@ instance ToJSRef EndOfStreamError where
  
 instance PFromJSRef EndOfStreamError where
         pFromJSRef x
-          | x == js_EndOfStreamErrorNetwork = EndOfStreamErrorNetwork
+          | x `js_eq` js_EndOfStreamErrorNetwork = EndOfStreamErrorNetwork
         pFromJSRef x
-          | x == js_EndOfStreamErrorDecode = EndOfStreamErrorDecode
+          | x `js_eq` js_EndOfStreamErrorDecode = EndOfStreamErrorDecode
  
 instance FromJSRef EndOfStreamError where
         fromJSRefUnchecked = return . pFromJSRef
@@ -378,6 +392,7 @@ foreign import javascript unsafe "\"decode\""
  
 data AppendMode = AppendModeSegments
                 | AppendModeSequence
+                deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef AppendMode where
         pToJSRef AppendModeSegments = js_AppendModeSegments
@@ -387,8 +402,8 @@ instance ToJSRef AppendMode where
         toJSRef = return . pToJSRef
  
 instance PFromJSRef AppendMode where
-        pFromJSRef x | x == js_AppendModeSegments = AppendModeSegments
-        pFromJSRef x | x == js_AppendModeSequence = AppendModeSequence
+        pFromJSRef x | x `js_eq` js_AppendModeSegments = AppendModeSegments
+        pFromJSRef x | x `js_eq` js_AppendModeSequence = AppendModeSequence
  
 instance FromJSRef AppendMode where
         fromJSRefUnchecked = return . pFromJSRef
@@ -403,6 +418,7 @@ foreign import javascript unsafe "\"sequence\""
 data SourceTypeEnum = SourceTypeEnumNone
                     | SourceTypeEnumCamera
                     | SourceTypeEnumMicrophone
+                    deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef SourceTypeEnum where
         pToJSRef SourceTypeEnumNone = js_SourceTypeEnumNone
@@ -413,10 +429,11 @@ instance ToJSRef SourceTypeEnum where
         toJSRef = return . pToJSRef
  
 instance PFromJSRef SourceTypeEnum where
-        pFromJSRef x | x == js_SourceTypeEnumNone = SourceTypeEnumNone
-        pFromJSRef x | x == js_SourceTypeEnumCamera = SourceTypeEnumCamera
+        pFromJSRef x | x `js_eq` js_SourceTypeEnumNone = SourceTypeEnumNone
         pFromJSRef x
-          | x == js_SourceTypeEnumMicrophone = SourceTypeEnumMicrophone
+          | x `js_eq` js_SourceTypeEnumCamera = SourceTypeEnumCamera
+        pFromJSRef x
+          | x `js_eq` js_SourceTypeEnumMicrophone = SourceTypeEnumMicrophone
  
 instance FromJSRef SourceTypeEnum where
         fromJSRefUnchecked = return . pFromJSRef
@@ -435,6 +452,7 @@ data VideoFacingModeEnum = VideoFacingModeEnumUser
                          | VideoFacingModeEnumEnvironment
                          | VideoFacingModeEnumLeft
                          | VideoFacingModeEnumRight
+                         deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef VideoFacingModeEnum where
         pToJSRef VideoFacingModeEnumUser = js_VideoFacingModeEnumUser
@@ -448,14 +466,14 @@ instance ToJSRef VideoFacingModeEnum where
  
 instance PFromJSRef VideoFacingModeEnum where
         pFromJSRef x
-          | x == js_VideoFacingModeEnumUser = VideoFacingModeEnumUser
+          | x `js_eq` js_VideoFacingModeEnumUser = VideoFacingModeEnumUser
         pFromJSRef x
-          | x == js_VideoFacingModeEnumEnvironment =
+          | x `js_eq` js_VideoFacingModeEnumEnvironment =
             VideoFacingModeEnumEnvironment
         pFromJSRef x
-          | x == js_VideoFacingModeEnumLeft = VideoFacingModeEnumLeft
+          | x `js_eq` js_VideoFacingModeEnumLeft = VideoFacingModeEnumLeft
         pFromJSRef x
-          | x == js_VideoFacingModeEnumRight = VideoFacingModeEnumRight
+          | x `js_eq` js_VideoFacingModeEnumRight = VideoFacingModeEnumRight
  
 instance FromJSRef VideoFacingModeEnum where
         fromJSRefUnchecked = return . pFromJSRef
@@ -476,6 +494,7 @@ foreign import javascript unsafe "\"right\""
 data MediaStreamTrackState = MediaStreamTrackStateNew
                            | MediaStreamTrackStateLive
                            | MediaStreamTrackStateEnded
+                           deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef MediaStreamTrackState where
         pToJSRef MediaStreamTrackStateNew = js_MediaStreamTrackStateNew
@@ -487,11 +506,13 @@ instance ToJSRef MediaStreamTrackState where
  
 instance PFromJSRef MediaStreamTrackState where
         pFromJSRef x
-          | x == js_MediaStreamTrackStateNew = MediaStreamTrackStateNew
+          | x `js_eq` js_MediaStreamTrackStateNew = MediaStreamTrackStateNew
         pFromJSRef x
-          | x == js_MediaStreamTrackStateLive = MediaStreamTrackStateLive
+          | x `js_eq` js_MediaStreamTrackStateLive =
+            MediaStreamTrackStateLive
         pFromJSRef x
-          | x == js_MediaStreamTrackStateEnded = MediaStreamTrackStateEnded
+          | x `js_eq` js_MediaStreamTrackStateEnded =
+            MediaStreamTrackStateEnded
  
 instance FromJSRef MediaStreamTrackState where
         fromJSRefUnchecked = return . pFromJSRef
@@ -509,6 +530,7 @@ foreign import javascript unsafe "\"ended\""
 data RTCIceTransportsEnum = RTCIceTransportsEnumNone
                           | RTCIceTransportsEnumRelay
                           | RTCIceTransportsEnumAll
+                          deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef RTCIceTransportsEnum where
         pToJSRef RTCIceTransportsEnumNone = js_RTCIceTransportsEnumNone
@@ -520,11 +542,12 @@ instance ToJSRef RTCIceTransportsEnum where
  
 instance PFromJSRef RTCIceTransportsEnum where
         pFromJSRef x
-          | x == js_RTCIceTransportsEnumNone = RTCIceTransportsEnumNone
+          | x `js_eq` js_RTCIceTransportsEnumNone = RTCIceTransportsEnumNone
         pFromJSRef x
-          | x == js_RTCIceTransportsEnumRelay = RTCIceTransportsEnumRelay
+          | x `js_eq` js_RTCIceTransportsEnumRelay =
+            RTCIceTransportsEnumRelay
         pFromJSRef x
-          | x == js_RTCIceTransportsEnumAll = RTCIceTransportsEnumAll
+          | x `js_eq` js_RTCIceTransportsEnumAll = RTCIceTransportsEnumAll
  
 instance FromJSRef RTCIceTransportsEnum where
         fromJSRefUnchecked = return . pFromJSRef
@@ -542,6 +565,7 @@ foreign import javascript unsafe "\"all\""
 data RTCIdentityOptionEnum = RTCIdentityOptionEnumYes
                            | RTCIdentityOptionEnumNo
                            | RTCIdentityOptionEnumIfconfigured
+                           deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef RTCIdentityOptionEnum where
         pToJSRef RTCIdentityOptionEnumYes = js_RTCIdentityOptionEnumYes
@@ -554,11 +578,11 @@ instance ToJSRef RTCIdentityOptionEnum where
  
 instance PFromJSRef RTCIdentityOptionEnum where
         pFromJSRef x
-          | x == js_RTCIdentityOptionEnumYes = RTCIdentityOptionEnumYes
+          | x `js_eq` js_RTCIdentityOptionEnumYes = RTCIdentityOptionEnumYes
         pFromJSRef x
-          | x == js_RTCIdentityOptionEnumNo = RTCIdentityOptionEnumNo
+          | x `js_eq` js_RTCIdentityOptionEnumNo = RTCIdentityOptionEnumNo
         pFromJSRef x
-          | x == js_RTCIdentityOptionEnumIfconfigured =
+          | x `js_eq` js_RTCIdentityOptionEnumIfconfigured =
             RTCIdentityOptionEnumIfconfigured
  
 instance FromJSRef RTCIdentityOptionEnum where
@@ -578,6 +602,7 @@ data ReadableStreamStateType = ReadableStreamStateTypeReadable
                              | ReadableStreamStateTypeWaiting
                              | ReadableStreamStateTypeClosed
                              | ReadableStreamStateTypeErrored
+                             deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef ReadableStreamStateType where
         pToJSRef ReadableStreamStateTypeReadable
@@ -594,16 +619,16 @@ instance ToJSRef ReadableStreamStateType where
  
 instance PFromJSRef ReadableStreamStateType where
         pFromJSRef x
-          | x == js_ReadableStreamStateTypeReadable =
+          | x `js_eq` js_ReadableStreamStateTypeReadable =
             ReadableStreamStateTypeReadable
         pFromJSRef x
-          | x == js_ReadableStreamStateTypeWaiting =
+          | x `js_eq` js_ReadableStreamStateTypeWaiting =
             ReadableStreamStateTypeWaiting
         pFromJSRef x
-          | x == js_ReadableStreamStateTypeClosed =
+          | x `js_eq` js_ReadableStreamStateTypeClosed =
             ReadableStreamStateTypeClosed
         pFromJSRef x
-          | x == js_ReadableStreamStateTypeErrored =
+          | x `js_eq` js_ReadableStreamStateTypeErrored =
             ReadableStreamStateTypeErrored
  
 instance FromJSRef ReadableStreamStateType where
@@ -625,6 +650,7 @@ foreign import javascript unsafe "\"errored\""
 data OverSampleType = OverSampleTypeNone
                     | OverSampleType2x
                     | OverSampleType4x
+                    deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef OverSampleType where
         pToJSRef OverSampleTypeNone = js_OverSampleTypeNone
@@ -635,9 +661,9 @@ instance ToJSRef OverSampleType where
         toJSRef = return . pToJSRef
  
 instance PFromJSRef OverSampleType where
-        pFromJSRef x | x == js_OverSampleTypeNone = OverSampleTypeNone
-        pFromJSRef x | x == js_OverSampleType2x = OverSampleType2x
-        pFromJSRef x | x == js_OverSampleType4x = OverSampleType4x
+        pFromJSRef x | x `js_eq` js_OverSampleTypeNone = OverSampleTypeNone
+        pFromJSRef x | x `js_eq` js_OverSampleType2x = OverSampleType2x
+        pFromJSRef x | x `js_eq` js_OverSampleType4x = OverSampleType4x
  
 instance FromJSRef OverSampleType where
         fromJSRefUnchecked = return . pFromJSRef
@@ -654,6 +680,7 @@ foreign import javascript unsafe "\"4x\"" js_OverSampleType4x ::
  
 data PageOverlayType = PageOverlayTypeView
                      | PageOverlayTypeDocument
+                     deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef PageOverlayType where
         pToJSRef PageOverlayTypeView = js_PageOverlayTypeView
@@ -663,9 +690,10 @@ instance ToJSRef PageOverlayType where
         toJSRef = return . pToJSRef
  
 instance PFromJSRef PageOverlayType where
-        pFromJSRef x | x == js_PageOverlayTypeView = PageOverlayTypeView
         pFromJSRef x
-          | x == js_PageOverlayTypeDocument = PageOverlayTypeDocument
+          | x `js_eq` js_PageOverlayTypeView = PageOverlayTypeView
+        pFromJSRef x
+          | x `js_eq` js_PageOverlayTypeDocument = PageOverlayTypeDocument
  
 instance FromJSRef PageOverlayType where
         fromJSRefUnchecked = return . pFromJSRef
@@ -683,6 +711,7 @@ data XMLHttpRequestResponseType = XMLHttpRequestResponseType
                                 | XMLHttpRequestResponseTypeDocument
                                 | XMLHttpRequestResponseTypeJson
                                 | XMLHttpRequestResponseTypeText
+                                deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSRef XMLHttpRequestResponseType where
         pToJSRef XMLHttpRequestResponseType = js_XMLHttpRequestResponseType
@@ -702,21 +731,22 @@ instance ToJSRef XMLHttpRequestResponseType where
  
 instance PFromJSRef XMLHttpRequestResponseType where
         pFromJSRef x
-          | x == js_XMLHttpRequestResponseType = XMLHttpRequestResponseType
+          | x `js_eq` js_XMLHttpRequestResponseType =
+            XMLHttpRequestResponseType
         pFromJSRef x
-          | x == js_XMLHttpRequestResponseTypeArraybuffer =
+          | x `js_eq` js_XMLHttpRequestResponseTypeArraybuffer =
             XMLHttpRequestResponseTypeArraybuffer
         pFromJSRef x
-          | x == js_XMLHttpRequestResponseTypeBlob =
+          | x `js_eq` js_XMLHttpRequestResponseTypeBlob =
             XMLHttpRequestResponseTypeBlob
         pFromJSRef x
-          | x == js_XMLHttpRequestResponseTypeDocument =
+          | x `js_eq` js_XMLHttpRequestResponseTypeDocument =
             XMLHttpRequestResponseTypeDocument
         pFromJSRef x
-          | x == js_XMLHttpRequestResponseTypeJson =
+          | x `js_eq` js_XMLHttpRequestResponseTypeJson =
             XMLHttpRequestResponseTypeJson
         pFromJSRef x
-          | x == js_XMLHttpRequestResponseTypeText =
+          | x `js_eq` js_XMLHttpRequestResponseTypeText =
             XMLHttpRequestResponseTypeText
  
 instance FromJSRef XMLHttpRequestResponseType where

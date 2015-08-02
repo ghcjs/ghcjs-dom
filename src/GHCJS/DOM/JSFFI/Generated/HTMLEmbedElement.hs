@@ -3,11 +3,12 @@ module GHCJS.DOM.JSFFI.Generated.HTMLEmbedElement
        (js_getSVGDocument, getSVGDocument, js_setAlign, setAlign,
         js_getAlign, getAlign, js_setHeight, setHeight, js_getHeight,
         getHeight, js_setName, setName, js_getName, getName, js_setSrc,
-        setSrc, js_getSrc, getSrc, js_setWidth, setWidth, js_getWidth,
-        getWidth, HTMLEmbedElement, castToHTMLEmbedElement,
-        gTypeHTMLEmbedElement)
+        setSrc, js_getSrc, getSrc, js_setType, setType, js_getType,
+        getType, js_setWidth, setWidth, js_getWidth, getWidth,
+        HTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -51,19 +52,23 @@ getAlign self
   = liftIO (fromJSString <$> (js_getAlign (unHTMLEmbedElement self)))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        js_setHeight :: JSRef HTMLEmbedElement -> Int -> IO ()
+        js_setHeight :: JSRef HTMLEmbedElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.height Mozilla HTMLEmbedElement.height documentation> 
-setHeight :: (MonadIO m) => HTMLEmbedElement -> Int -> m ()
+setHeight ::
+          (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
 setHeight self val
-  = liftIO (js_setHeight (unHTMLEmbedElement self) val)
+  = liftIO (js_setHeight (unHTMLEmbedElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
-        JSRef HTMLEmbedElement -> IO Int
+        JSRef HTMLEmbedElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.height Mozilla HTMLEmbedElement.height documentation> 
-getHeight :: (MonadIO m) => HTMLEmbedElement -> m Int
-getHeight self = liftIO (js_getHeight (unHTMLEmbedElement self))
+getHeight ::
+          (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
+getHeight self
+  = liftIO
+      (fromJSString <$> (js_getHeight (unHTMLEmbedElement self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         JSRef HTMLEmbedElement -> JSString -> IO ()
@@ -101,17 +106,38 @@ getSrc ::
 getSrc self
   = liftIO (fromJSString <$> (js_getSrc (unHTMLEmbedElement self)))
  
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLEmbedElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.type Mozilla HTMLEmbedElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLEmbedElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLEmbedElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.type Mozilla HTMLEmbedElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLEmbedElement self)))
+ 
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
-        :: JSRef HTMLEmbedElement -> Int -> IO ()
+        :: JSRef HTMLEmbedElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.width Mozilla HTMLEmbedElement.width documentation> 
-setWidth :: (MonadIO m) => HTMLEmbedElement -> Int -> m ()
+setWidth ::
+         (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
 setWidth self val
-  = liftIO (js_setWidth (unHTMLEmbedElement self) val)
+  = liftIO (js_setWidth (unHTMLEmbedElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
-        JSRef HTMLEmbedElement -> IO Int
+        JSRef HTMLEmbedElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.width Mozilla HTMLEmbedElement.width documentation> 
-getWidth :: (MonadIO m) => HTMLEmbedElement -> m Int
-getWidth self = liftIO (js_getWidth (unHTMLEmbedElement self))
+getWidth ::
+         (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
+getWidth self
+  = liftIO (fromJSString <$> (js_getWidth (unHTMLEmbedElement self)))

@@ -1,9 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebGLActiveInfo
-       (js_getSize, getSize, js_getName, getName, WebGLActiveInfo,
-        castToWebGLActiveInfo, gTypeWebGLActiveInfo)
+       (js_getSize, getSize, js_getType, getType, js_getName, getName,
+        WebGLActiveInfo, castToWebGLActiveInfo, gTypeWebGLActiveInfo)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -23,6 +24,13 @@ foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo.size Mozilla WebGLActiveInfo.size documentation> 
 getSize :: (MonadIO m) => WebGLActiveInfo -> m Int
 getSize self = liftIO (js_getSize (unWebGLActiveInfo self))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef WebGLActiveInfo -> IO Word
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo.type Mozilla WebGLActiveInfo.type documentation> 
+getType :: (MonadIO m) => WebGLActiveInfo -> m Word
+getType self = liftIO (js_getType (unWebGLActiveInfo self))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         JSRef WebGLActiveInfo -> IO JSString

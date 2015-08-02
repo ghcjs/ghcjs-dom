@@ -5,7 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.MediaList
         getMediaText, js_getLength, getLength, MediaList, castToMediaList,
         gTypeMediaList)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -20,13 +21,14 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef MediaList -> Word -> IO JSString
+        JSRef MediaList -> Word -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.item Mozilla MediaList.item documentation> 
 item ::
-     (MonadIO m, FromJSString result) => MediaList -> Word -> m result
+     (MonadIO m, FromJSString result) =>
+       MediaList -> Word -> m (Maybe result)
 item self index
-  = liftIO (fromJSString <$> (js_item (unMediaList self) index))
+  = liftIO (fromMaybeJSString <$> (js_item (unMediaList self) index))
  
 foreign import javascript unsafe "$1[\"deleteMedium\"]($2)"
         js_deleteMedium :: JSRef MediaList -> JSString -> IO ()
@@ -49,22 +51,24 @@ appendMedium self newMedium
       (js_appendMedium (unMediaList self) (toJSString newMedium))
  
 foreign import javascript unsafe "$1[\"mediaText\"] = $2;"
-        js_setMediaText :: JSRef MediaList -> JSString -> IO ()
+        js_setMediaText ::
+        JSRef MediaList -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 
 setMediaText ::
-             (MonadIO m, ToJSString val) => MediaList -> val -> m ()
+             (MonadIO m, ToJSString val) => MediaList -> Maybe val -> m ()
 setMediaText self val
-  = liftIO (js_setMediaText (unMediaList self) (toJSString val))
+  = liftIO (js_setMediaText (unMediaList self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"mediaText\"]"
-        js_getMediaText :: JSRef MediaList -> IO JSString
+        js_getMediaText :: JSRef MediaList -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 
 getMediaText ::
-             (MonadIO m, FromJSString result) => MediaList -> m result
+             (MonadIO m, FromJSString result) => MediaList -> m (Maybe result)
 getMediaText self
-  = liftIO (fromJSString <$> (js_getMediaText (unMediaList self)))
+  = liftIO
+      (fromMaybeJSString <$> (js_getMediaText (unMediaList self)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef MediaList -> IO Word

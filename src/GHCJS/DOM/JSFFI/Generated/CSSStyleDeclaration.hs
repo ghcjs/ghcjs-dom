@@ -9,7 +9,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSStyleDeclaration
         getLength, js_getParentRule, getParentRule, CSSStyleDeclaration,
         castToCSSStyleDeclaration, gTypeCSSStyleDeclaration)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -25,15 +26,16 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"getPropertyValue\"]($2)"
         js_getPropertyValue ::
-        JSRef CSSStyleDeclaration -> JSString -> IO JSString
+        JSRef CSSStyleDeclaration ->
+          JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyValue Mozilla CSSStyleDeclaration.getPropertyValue documentation> 
 getPropertyValue ::
                  (MonadIO m, ToJSString propertyName, FromJSString result) =>
-                   CSSStyleDeclaration -> propertyName -> m result
+                   CSSStyleDeclaration -> propertyName -> m (Maybe result)
 getPropertyValue self propertyName
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getPropertyValue (unCSSStyleDeclaration self)
             (toJSString propertyName)))
  
@@ -53,47 +55,50 @@ getPropertyCSSValue self propertyName
  
 foreign import javascript unsafe "$1[\"removeProperty\"]($2)"
         js_removeProperty ::
-        JSRef CSSStyleDeclaration -> JSString -> IO JSString
+        JSRef CSSStyleDeclaration ->
+          JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.removeProperty Mozilla CSSStyleDeclaration.removeProperty documentation> 
 removeProperty ::
                (MonadIO m, ToJSString propertyName, FromJSString result) =>
-                 CSSStyleDeclaration -> propertyName -> m result
+                 CSSStyleDeclaration -> propertyName -> m (Maybe result)
 removeProperty self propertyName
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_removeProperty (unCSSStyleDeclaration self)
             (toJSString propertyName)))
  
 foreign import javascript unsafe "$1[\"getPropertyPriority\"]($2)"
         js_getPropertyPriority ::
-        JSRef CSSStyleDeclaration -> JSString -> IO JSString
+        JSRef CSSStyleDeclaration ->
+          JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyPriority Mozilla CSSStyleDeclaration.getPropertyPriority documentation> 
 getPropertyPriority ::
                     (MonadIO m, ToJSString propertyName, FromJSString result) =>
-                      CSSStyleDeclaration -> propertyName -> m result
+                      CSSStyleDeclaration -> propertyName -> m (Maybe result)
 getPropertyPriority self propertyName
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getPropertyPriority (unCSSStyleDeclaration self)
             (toJSString propertyName)))
  
 foreign import javascript unsafe "$1[\"setProperty\"]($2, $3, $4)"
         js_setProperty ::
         JSRef CSSStyleDeclaration ->
-          JSString -> JSString -> JSString -> IO ()
+          JSString -> JSRef (Maybe JSString) -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.setProperty Mozilla CSSStyleDeclaration.setProperty documentation> 
 setProperty ::
             (MonadIO m, ToJSString propertyName, ToJSString value,
              ToJSString priority) =>
-              CSSStyleDeclaration -> propertyName -> value -> priority -> m ()
+              CSSStyleDeclaration ->
+                propertyName -> Maybe value -> priority -> m ()
 setProperty self propertyName value priority
   = liftIO
       (js_setProperty (unCSSStyleDeclaration self)
          (toJSString propertyName)
-         (toJSString value)
+         (toMaybeJSString value)
          (toJSString priority))
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
@@ -109,15 +114,16 @@ item self index
  
 foreign import javascript unsafe "$1[\"getPropertyShorthand\"]($2)"
         js_getPropertyShorthand ::
-        JSRef CSSStyleDeclaration -> JSString -> IO JSString
+        JSRef CSSStyleDeclaration ->
+          JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyShorthand Mozilla CSSStyleDeclaration.getPropertyShorthand documentation> 
 getPropertyShorthand ::
                      (MonadIO m, ToJSString propertyName, FromJSString result) =>
-                       CSSStyleDeclaration -> propertyName -> m result
+                       CSSStyleDeclaration -> propertyName -> m (Maybe result)
 getPropertyShorthand self propertyName
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getPropertyShorthand (unCSSStyleDeclaration self)
             (toJSString propertyName)))
  
@@ -135,24 +141,28 @@ isPropertyImplicit self propertyName
          (toJSString propertyName))
  
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
-        js_setCssText :: JSRef CSSStyleDeclaration -> JSString -> IO ()
+        js_setCssText ::
+        JSRef CSSStyleDeclaration -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 
 setCssText ::
-           (MonadIO m, ToJSString val) => CSSStyleDeclaration -> val -> m ()
+           (MonadIO m, ToJSString val) =>
+             CSSStyleDeclaration -> Maybe val -> m ()
 setCssText self val
   = liftIO
-      (js_setCssText (unCSSStyleDeclaration self) (toJSString val))
+      (js_setCssText (unCSSStyleDeclaration self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"cssText\"]" js_getCssText ::
-        JSRef CSSStyleDeclaration -> IO JSString
+        JSRef CSSStyleDeclaration -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 
 getCssText ::
-           (MonadIO m, FromJSString result) => CSSStyleDeclaration -> m result
+           (MonadIO m, FromJSString result) =>
+             CSSStyleDeclaration -> m (Maybe result)
 getCssText self
   = liftIO
-      (fromJSString <$> (js_getCssText (unCSSStyleDeclaration self)))
+      (fromMaybeJSString <$>
+         (js_getCssText (unCSSStyleDeclaration self)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         JSRef CSSStyleDeclaration -> IO Word

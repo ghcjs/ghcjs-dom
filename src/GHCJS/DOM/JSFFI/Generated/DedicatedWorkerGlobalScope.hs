@@ -3,7 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.DedicatedWorkerGlobalScope
        (js_postMessage, postMessage, message, DedicatedWorkerGlobalScope,
         castToDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -19,18 +20,16 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3)"
         js_postMessage ::
-        JSRef DedicatedWorkerGlobalScope ->
-          JSString -> JSRef MessagePort -> IO ()
+        JSRef DedicatedWorkerGlobalScope -> JSRef a -> JSRef Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope.postMessage Mozilla DedicatedWorkerGlobalScope.postMessage documentation> 
 postMessage ::
-            (MonadIO m, ToJSString message) =>
-              DedicatedWorkerGlobalScope -> message -> Maybe MessagePort -> m ()
-postMessage self message messagePort
+            (MonadIO m, IsArray messagePorts) =>
+              DedicatedWorkerGlobalScope -> JSRef a -> Maybe messagePorts -> m ()
+postMessage self message messagePorts
   = liftIO
-      (js_postMessage (unDedicatedWorkerGlobalScope self)
-         (toJSString message)
-         (maybe jsNull pToJSRef messagePort))
+      (js_postMessage (unDedicatedWorkerGlobalScope self) message
+         (maybe jsNull (unArray . toArray) messagePorts))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope.onmessage Mozilla DedicatedWorkerGlobalScope.onmessage documentation> 
 message :: EventName DedicatedWorkerGlobalScope MessageEvent

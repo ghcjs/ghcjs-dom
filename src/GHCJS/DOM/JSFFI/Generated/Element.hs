@@ -17,7 +17,8 @@ module GHCJS.DOM.JSFFI.Generated.Element
         js_getElementsByClassName, getElementsByClassName,
         js_querySelector, querySelector, js_querySelectorAll,
         querySelectorAll, js_matches, matches, js_closest, closest,
-        js_webkitMatchesSelector, webkitMatchesSelector,
+        js_webkitMatchesSelector, webkitMatchesSelector, js_getClientRects,
+        getClientRects, js_getBoundingClientRect, getBoundingClientRect,
         js_webkitRequestFullScreen, webkitRequestFullScreen,
         js_webkitRequestFullscreen, webkitRequestFullscreen,
         js_requestPointerLock, requestPointerLock,
@@ -36,8 +37,9 @@ module GHCJS.DOM.JSFFI.Generated.Element
         js_setInnerHTML, setInnerHTML, js_getInnerHTML, getInnerHTML,
         js_setOuterHTML, setOuterHTML, js_getOuterHTML, getOuterHTML,
         js_setClassName, setClassName, js_getClassName, getClassName,
-        js_getClassList, getClassList, js_getFirstElementChild,
-        getFirstElementChild, js_getLastElementChild, getLastElementChild,
+        js_getClassList, getClassList, js_getDataset, getDataset,
+        js_getFirstElementChild, getFirstElementChild,
+        js_getLastElementChild, getLastElementChild,
         js_getPreviousElementSibling, getPreviousElementSibling,
         js_getNextElementSibling, getNextElementSibling,
         js_getChildElementCount, getChildElementCount, js_setUiactions,
@@ -55,7 +57,8 @@ module GHCJS.DOM.JSFFI.Generated.Element
         webKitWillRevealRight, webKitWillRevealTop, Element, castToElement,
         gTypeElement, IsElement, toElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -70,16 +73,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"getAttribute\"]($2)"
-        js_getAttribute :: JSRef Element -> JSString -> IO JSString
+        js_getAttribute ::
+        JSRef Element -> JSString -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttribute Mozilla Element.getAttribute documentation> 
 getAttribute ::
              (MonadIO m, IsElement self, ToJSString name,
               FromJSString result) =>
-               self -> name -> m result
+               self -> name -> m (Maybe result)
 getAttribute self name
   = liftIO
-      (fromJSString <$>
+      (fromMaybeJSString <$>
          (js_getAttribute (unElement (toElement self)) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"setAttribute\"]($2, $3)"
@@ -169,80 +173,84 @@ hasAttributes self
  
 foreign import javascript unsafe "$1[\"getAttributeNS\"]($2, $3)"
         js_getAttributeNS ::
-        JSRef Element -> JSString -> JSString -> IO JSString
+        JSRef Element -> JSRef (Maybe JSString) -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNS Mozilla Element.getAttributeNS documentation> 
 getAttributeNS ::
                (MonadIO m, IsElement self, ToJSString namespaceURI,
                 ToJSString localName, FromJSString result) =>
-                 self -> namespaceURI -> localName -> m result
+                 self -> Maybe namespaceURI -> localName -> m result
 getAttributeNS self namespaceURI localName
   = liftIO
       (fromJSString <$>
          (js_getAttributeNS (unElement (toElement self))
-            (toJSString namespaceURI)
+            (toMaybeJSString namespaceURI)
             (toJSString localName)))
  
 foreign import javascript unsafe
         "$1[\"setAttributeNS\"]($2, $3, $4)" js_setAttributeNS ::
-        JSRef Element -> JSString -> JSString -> JSString -> IO ()
+        JSRef Element ->
+          JSRef (Maybe JSString) -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNS Mozilla Element.setAttributeNS documentation> 
 setAttributeNS ::
                (MonadIO m, IsElement self, ToJSString namespaceURI,
                 ToJSString qualifiedName, ToJSString value) =>
-                 self -> namespaceURI -> qualifiedName -> value -> m ()
+                 self -> Maybe namespaceURI -> qualifiedName -> value -> m ()
 setAttributeNS self namespaceURI qualifiedName value
   = liftIO
       (js_setAttributeNS (unElement (toElement self))
-         (toJSString namespaceURI)
+         (toMaybeJSString namespaceURI)
          (toJSString qualifiedName)
          (toJSString value))
  
 foreign import javascript unsafe
         "$1[\"removeAttributeNS\"]($2, $3)" js_removeAttributeNS ::
-        JSRef Element -> JSString -> JSString -> IO ()
+        JSRef Element -> JSRef (Maybe JSString) -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNS Mozilla Element.removeAttributeNS documentation> 
 removeAttributeNS ::
                   (MonadIO m, IsElement self, ToJSString namespaceURI,
                    ToJSString localName) =>
-                    self -> namespaceURI -> localName -> m ()
+                    self -> Maybe namespaceURI -> localName -> m ()
 removeAttributeNS self namespaceURI localName
   = liftIO
       (js_removeAttributeNS (unElement (toElement self))
-         (toJSString namespaceURI)
+         (toMaybeJSString namespaceURI)
          (toJSString localName))
  
 foreign import javascript unsafe
         "$1[\"getElementsByTagNameNS\"]($2,\n$3)" js_getElementsByTagNameNS
-        :: JSRef Element -> JSString -> JSString -> IO (JSRef NodeList)
+        ::
+        JSRef Element ->
+          JSRef (Maybe JSString) -> JSString -> IO (JSRef NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByTagNameNS Mozilla Element.getElementsByTagNameNS documentation> 
 getElementsByTagNameNS ::
                        (MonadIO m, IsElement self, ToJSString namespaceURI,
                         ToJSString localName) =>
-                         self -> namespaceURI -> localName -> m (Maybe NodeList)
+                         self -> Maybe namespaceURI -> localName -> m (Maybe NodeList)
 getElementsByTagNameNS self namespaceURI localName
   = liftIO
       ((js_getElementsByTagNameNS (unElement (toElement self))
-          (toJSString namespaceURI)
+          (toMaybeJSString namespaceURI)
           (toJSString localName))
          >>= fromJSRef)
  
 foreign import javascript unsafe
         "$1[\"getAttributeNodeNS\"]($2, $3)" js_getAttributeNodeNS ::
-        JSRef Element -> JSString -> JSString -> IO (JSRef Attr)
+        JSRef Element ->
+          JSRef (Maybe JSString) -> JSString -> IO (JSRef Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNodeNS Mozilla Element.getAttributeNodeNS documentation> 
 getAttributeNodeNS ::
                    (MonadIO m, IsElement self, ToJSString namespaceURI,
                     ToJSString localName) =>
-                     self -> namespaceURI -> localName -> m (Maybe Attr)
+                     self -> Maybe namespaceURI -> localName -> m (Maybe Attr)
 getAttributeNodeNS self namespaceURI localName
   = liftIO
       ((js_getAttributeNodeNS (unElement (toElement self))
-          (toJSString namespaceURI)
+          (toMaybeJSString namespaceURI)
           (toJSString localName))
          >>= fromJSRef)
  
@@ -273,17 +281,17 @@ hasAttribute self name
  
 foreign import javascript unsafe
         "($1[\"hasAttributeNS\"]($2,\n$3) ? 1 : 0)" js_hasAttributeNS ::
-        JSRef Element -> JSString -> JSString -> IO Bool
+        JSRef Element -> JSRef (Maybe JSString) -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.hasAttributeNS Mozilla Element.hasAttributeNS documentation> 
 hasAttributeNS ::
                (MonadIO m, IsElement self, ToJSString namespaceURI,
                 ToJSString localName) =>
-                 self -> namespaceURI -> localName -> m Bool
+                 self -> Maybe namespaceURI -> localName -> m Bool
 hasAttributeNS self namespaceURI localName
   = liftIO
       (js_hasAttributeNS (unElement (toElement self))
-         (toJSString namespaceURI)
+         (toMaybeJSString namespaceURI)
          (toJSString localName))
  
 foreign import javascript unsafe "$1[\"focus\"]()" js_focus ::
@@ -415,6 +423,27 @@ webkitMatchesSelector self selectors
       (js_webkitMatchesSelector (unElement (toElement self))
          (toJSString selectors))
  
+foreign import javascript unsafe "$1[\"getClientRects\"]()"
+        js_getClientRects :: JSRef Element -> IO (JSRef ClientRectList)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getClientRects Mozilla Element.getClientRects documentation> 
+getClientRects ::
+               (MonadIO m, IsElement self) => self -> m (Maybe ClientRectList)
+getClientRects self
+  = liftIO
+      ((js_getClientRects (unElement (toElement self))) >>= fromJSRef)
+ 
+foreign import javascript unsafe "$1[\"getBoundingClientRect\"]()"
+        js_getBoundingClientRect :: JSRef Element -> IO (JSRef ClientRect)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getBoundingClientRect Mozilla Element.getBoundingClientRect documentation> 
+getBoundingClientRect ::
+                      (MonadIO m, IsElement self) => self -> m (Maybe ClientRect)
+getBoundingClientRect self
+  = liftIO
+      ((js_getBoundingClientRect (unElement (toElement self))) >>=
+         fromJSRef)
+ 
 foreign import javascript unsafe
         "$1[\"webkitRequestFullScreen\"]($2)" js_webkitRequestFullScreen ::
         JSRef Element -> Word -> IO ()
@@ -458,15 +487,16 @@ webkitGetRegionFlowRanges self
 pattern ALLOW_KEYBOARD_INPUT = 1
  
 foreign import javascript unsafe "$1[\"tagName\"]" js_getTagName ::
-        JSRef Element -> IO JSString
+        JSRef Element -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.tagName Mozilla Element.tagName documentation> 
 getTagName ::
            (MonadIO m, IsElement self, FromJSString result) =>
-             self -> m result
+             self -> m (Maybe result)
 getTagName self
   = liftIO
-      (fromJSString <$> (js_getTagName (unElement (toElement self))))
+      (fromMaybeJSString <$>
+         (js_getTagName (unElement (toElement self))))
  
 foreign import javascript unsafe "$1[\"attributes\"]"
         js_getAttributes :: JSRef Element -> IO (JSRef NamedNodeMap)
@@ -630,46 +660,52 @@ getOffsetParent self
       ((js_getOffsetParent (unElement (toElement self))) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"innerHTML\"] = $2;"
-        js_setInnerHTML :: JSRef Element -> JSString -> IO ()
+        js_setInnerHTML :: JSRef Element -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
 setInnerHTML ::
-             (MonadIO m, IsElement self, ToJSString val) => self -> val -> m ()
+             (MonadIO m, IsElement self, ToJSString val) =>
+               self -> Maybe val -> m ()
 setInnerHTML self val
   = liftIO
-      (js_setInnerHTML (unElement (toElement self)) (toJSString val))
+      (js_setInnerHTML (unElement (toElement self))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"innerHTML\"]"
-        js_getInnerHTML :: JSRef Element -> IO JSString
+        js_getInnerHTML :: JSRef Element -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
 getInnerHTML ::
              (MonadIO m, IsElement self, FromJSString result) =>
-               self -> m result
+               self -> m (Maybe result)
 getInnerHTML self
   = liftIO
-      (fromJSString <$> (js_getInnerHTML (unElement (toElement self))))
+      (fromMaybeJSString <$>
+         (js_getInnerHTML (unElement (toElement self))))
  
 foreign import javascript unsafe "$1[\"outerHTML\"] = $2;"
-        js_setOuterHTML :: JSRef Element -> JSString -> IO ()
+        js_setOuterHTML :: JSRef Element -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
 setOuterHTML ::
-             (MonadIO m, IsElement self, ToJSString val) => self -> val -> m ()
+             (MonadIO m, IsElement self, ToJSString val) =>
+               self -> Maybe val -> m ()
 setOuterHTML self val
   = liftIO
-      (js_setOuterHTML (unElement (toElement self)) (toJSString val))
+      (js_setOuterHTML (unElement (toElement self))
+         (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"outerHTML\"]"
-        js_getOuterHTML :: JSRef Element -> IO JSString
+        js_getOuterHTML :: JSRef Element -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
 getOuterHTML ::
              (MonadIO m, IsElement self, FromJSString result) =>
-               self -> m result
+               self -> m (Maybe result)
 getOuterHTML self
   = liftIO
-      (fromJSString <$> (js_getOuterHTML (unElement (toElement self))))
+      (fromMaybeJSString <$>
+         (js_getOuterHTML (unElement (toElement self))))
  
 foreign import javascript unsafe "$1[\"className\"] = $2;"
         js_setClassName :: JSRef Element -> JSString -> IO ()
@@ -701,6 +737,16 @@ getClassList ::
 getClassList self
   = liftIO
       ((js_getClassList (unElement (toElement self))) >>= fromJSRef)
+ 
+foreign import javascript unsafe "$1[\"dataset\"]" js_getDataset ::
+        JSRef Element -> IO (JSRef DOMStringMap)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dataset Mozilla Element.dataset documentation> 
+getDataset ::
+           (MonadIO m, IsElement self) => self -> m (Maybe DOMStringMap)
+getDataset self
+  = liftIO
+      ((js_getDataset (unElement (toElement self))) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"firstElementChild\"]"
         js_getFirstElementChild :: JSRef Element -> IO (JSRef Element)

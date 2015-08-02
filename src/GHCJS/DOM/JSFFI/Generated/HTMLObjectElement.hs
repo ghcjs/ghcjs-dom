@@ -11,15 +11,17 @@ module GHCJS.DOM.JSFFI.Generated.HTMLObjectElement
         js_setDeclare, setDeclare, js_getDeclare, getDeclare, js_setHeight,
         setHeight, js_getHeight, getHeight, js_setHspace, setHspace,
         js_getHspace, getHspace, js_setName, setName, js_getName, getName,
-        js_setStandby, setStandby, js_getStandby, getStandby, js_setUseMap,
-        setUseMap, js_getUseMap, getUseMap, js_setVspace, setVspace,
-        js_getVspace, getVspace, js_setWidth, setWidth, js_getWidth,
-        getWidth, js_getWillValidate, getWillValidate, js_getValidity,
-        getValidity, js_getValidationMessage, getValidationMessage,
+        js_setStandby, setStandby, js_getStandby, getStandby, js_setType,
+        setType, js_getType, getType, js_setUseMap, setUseMap,
+        js_getUseMap, getUseMap, js_setVspace, setVspace, js_getVspace,
+        getVspace, js_setWidth, setWidth, js_getWidth, getWidth,
+        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
+        js_getValidationMessage, getValidationMessage,
         js_getContentDocument, getContentDocument, HTMLObjectElement,
         castToHTMLObjectElement, gTypeHTMLObjectElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -44,15 +46,16 @@ checkValidity self
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
-        JSRef HTMLObjectElement -> JSString -> IO ()
+        JSRef HTMLObjectElement -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.setCustomValidity Mozilla HTMLObjectElement.setCustomValidity documentation> 
 setCustomValidity ::
-                  (MonadIO m, ToJSString error) => HTMLObjectElement -> error -> m ()
+                  (MonadIO m, ToJSString error) =>
+                    HTMLObjectElement -> Maybe error -> m ()
 setCustomValidity self error
   = liftIO
       (js_setCustomValidity (unHTMLObjectElement self)
-         (toJSString error))
+         (toMaybeJSString error))
  
 foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
         js_getSVGDocument ::
@@ -294,6 +297,24 @@ getStandby ::
 getStandby self
   = liftIO
       (fromJSString <$> (js_getStandby (unHTMLObjectElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLObjectElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.type Mozilla HTMLObjectElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLObjectElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLObjectElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.type Mozilla HTMLObjectElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLObjectElement self)))
  
 foreign import javascript unsafe "$1[\"useMap\"] = $2;"
         js_setUseMap :: JSRef HTMLObjectElement -> JSString -> IO ()

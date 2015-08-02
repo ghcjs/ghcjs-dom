@@ -1,11 +1,12 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLStyleElement
        (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
-        js_setMedia, setMedia, js_getMedia, getMedia, js_getSheet,
-        getSheet, HTMLStyleElement, castToHTMLStyleElement,
-        gTypeHTMLStyleElement)
+        js_setMedia, setMedia, js_getMedia, getMedia, js_setType, setType,
+        js_getType, getType, js_getSheet, getSheet, HTMLStyleElement,
+        castToHTMLStyleElement, gTypeHTMLStyleElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -52,6 +53,24 @@ getMedia ::
          (MonadIO m, FromJSString result) => HTMLStyleElement -> m result
 getMedia self
   = liftIO (fromJSString <$> (js_getMedia (unHTMLStyleElement self)))
+ 
+foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+        JSRef HTMLStyleElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.type Mozilla HTMLStyleElement.type documentation> 
+setType ::
+        (MonadIO m, ToJSString val) => HTMLStyleElement -> val -> m ()
+setType self val
+  = liftIO (js_setType (unHTMLStyleElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef HTMLStyleElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.type Mozilla HTMLStyleElement.type documentation> 
+getType ::
+        (MonadIO m, FromJSString result) => HTMLStyleElement -> m result
+getType self
+  = liftIO (fromJSString <$> (js_getType (unHTMLStyleElement self)))
  
 foreign import javascript unsafe "$1[\"sheet\"]" js_getSheet ::
         JSRef HTMLStyleElement -> IO (JSRef StyleSheet)

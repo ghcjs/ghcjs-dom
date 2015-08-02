@@ -5,10 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLOptionElement
         js_setDefaultSelected, setDefaultSelected, js_getDefaultSelected,
         getDefaultSelected, js_setSelected, setSelected, js_getSelected,
         getSelected, js_setValue, setValue, js_getValue, getValue,
-        js_getText, getText, js_getIndex, getIndex, HTMLOptionElement,
-        castToHTMLOptionElement, gTypeHTMLOptionElement)
+        js_setText, setText, js_getText, getText, js_getIndex, getIndex,
+        HTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -118,6 +119,15 @@ getValue ::
 getValue self
   = liftIO
       (fromJSString <$> (js_getValue (unHTMLOptionElement self)))
+ 
+foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
+        JSRef HTMLOptionElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.text Mozilla HTMLOptionElement.text documentation> 
+setText ::
+        (MonadIO m, ToJSString val) => HTMLOptionElement -> val -> m ()
+setText self val
+  = liftIO (js_setText (unHTMLOptionElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"text\"]" js_getText ::
         JSRef HTMLOptionElement -> IO JSString

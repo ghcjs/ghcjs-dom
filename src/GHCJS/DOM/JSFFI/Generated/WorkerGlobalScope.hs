@@ -1,12 +1,13 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WorkerGlobalScope
-       (js_close, close, js_importScripts, importScripts, js_getLocation,
-        getLocation, error, offline, online, js_getNavigator, getNavigator,
-        js_setWebkitURL, setWebkitURL, js_getWebkitURL, getWebkitURL,
-        WorkerGlobalScope, castToWorkerGlobalScope, gTypeWorkerGlobalScope,
+       (js_close, close, js_importScripts, importScripts, js_getSelf,
+        getSelf, js_getLocation, getLocation, error, offline, online,
+        js_getNavigator, getNavigator, WorkerGlobalScope,
+        castToWorkerGlobalScope, gTypeWorkerGlobalScope,
         IsWorkerGlobalScope, toWorkerGlobalScope)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -38,6 +39,18 @@ importScripts ::
 importScripts self
   = liftIO
       (js_importScripts (unWorkerGlobalScope (toWorkerGlobalScope self)))
+ 
+foreign import javascript unsafe "$1[\"self\"]" js_getSelf ::
+        JSRef WorkerGlobalScope -> IO (JSRef WorkerGlobalScope)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
+getSelf ::
+        (MonadIO m, IsWorkerGlobalScope self) =>
+          self -> m (Maybe WorkerGlobalScope)
+getSelf self
+  = liftIO
+      ((js_getSelf (unWorkerGlobalScope (toWorkerGlobalScope self))) >>=
+         fromJSRef)
  
 foreign import javascript unsafe "$1[\"location\"]" js_getLocation
         :: JSRef WorkerGlobalScope -> IO (JSRef WorkerLocation)
@@ -80,30 +93,4 @@ getNavigator ::
 getNavigator self
   = liftIO
       ((js_getNavigator (unWorkerGlobalScope (toWorkerGlobalScope self)))
-         >>= fromJSRef)
- 
-foreign import javascript unsafe "$1[\"webkitURL\"] = $2;"
-        js_setWebkitURL ::
-        JSRef WorkerGlobalScope -> JSRef DOMURLConstructor -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.webkitURL Mozilla WorkerGlobalScope.webkitURL documentation> 
-setWebkitURL ::
-             (MonadIO m, IsWorkerGlobalScope self, IsDOMURLConstructor val) =>
-               self -> Maybe val -> m ()
-setWebkitURL self val
-  = liftIO
-      (js_setWebkitURL (unWorkerGlobalScope (toWorkerGlobalScope self))
-         (maybe jsNull (unDOMURLConstructor . toDOMURLConstructor) val))
- 
-foreign import javascript unsafe "$1[\"webkitURL\"]"
-        js_getWebkitURL ::
-        JSRef WorkerGlobalScope -> IO (JSRef DOMURLConstructor)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.webkitURL Mozilla WorkerGlobalScope.webkitURL documentation> 
-getWebkitURL ::
-             (MonadIO m, IsWorkerGlobalScope self) =>
-               self -> m (Maybe DOMURLConstructor)
-getWebkitURL self
-  = liftIO
-      ((js_getWebkitURL (unWorkerGlobalScope (toWorkerGlobalScope self)))
          >>= fromJSRef)

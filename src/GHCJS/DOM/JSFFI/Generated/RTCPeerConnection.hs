@@ -18,7 +18,8 @@ module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
         iceConnectionStateChange, dataChannel, RTCPeerConnection,
         castToRTCPeerConnection, gTypeRTCPeerConnection)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -255,17 +256,18 @@ getStats self successCallback failureCallback selector
 foreign import javascript unsafe
         "$1[\"createDataChannel\"]($2, $3)" js_createDataChannel ::
         JSRef RTCPeerConnection ->
-          JSString -> JSRef Dictionary -> IO (JSRef RTCDataChannel)
+          JSRef (Maybe JSString) ->
+            JSRef Dictionary -> IO (JSRef RTCDataChannel)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
 createDataChannel ::
                   (MonadIO m, ToJSString label, IsDictionary options) =>
                     RTCPeerConnection ->
-                      label -> Maybe options -> m (Maybe RTCDataChannel)
+                      Maybe label -> Maybe options -> m (Maybe RTCDataChannel)
 createDataChannel self label options
   = liftIO
       ((js_createDataChannel (unRTCPeerConnection self)
-          (toJSString label)
+          (toMaybeJSString label)
           (maybe jsNull (unDictionary . toDictionary) options))
          >>= fromJSRef)
  

@@ -1,17 +1,18 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Location
        (js_assign, assign, js_replace, replace, js_reload, reload,
-        js_setHref, setHref, js_getHref, getHref, js_setProtocol,
-        setProtocol, js_getProtocol, getProtocol, js_setHost, setHost,
-        js_getHost, getHost, js_setHostname, setHostname, js_getHostname,
-        getHostname, js_setPort, setPort, js_getPort, getPort,
-        js_setPathname, setPathname, js_getPathname, getPathname,
-        js_setSearch, setSearch, js_getSearch, getSearch, js_setHash,
-        setHash, js_getHash, getHash, js_getOrigin, getOrigin,
+        js_toString, toString, js_setHref, setHref, js_getHref, getHref,
+        js_setProtocol, setProtocol, js_getProtocol, getProtocol,
+        js_setHost, setHost, js_getHost, getHost, js_setHostname,
+        setHostname, js_getHostname, getHostname, js_setPort, setPort,
+        js_getPort, getPort, js_setPathname, setPathname, js_getPathname,
+        getPathname, js_setSearch, setSearch, js_getSearch, getSearch,
+        js_setHash, setHash, js_getHash, getHash, js_getOrigin, getOrigin,
         js_getAncestorOrigins, getAncestorOrigins, Location,
         castToLocation, gTypeLocation)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -47,6 +48,15 @@ foreign import javascript unsafe "$1[\"reload\"]()" js_reload ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.reload Mozilla Location.reload documentation> 
 reload :: (MonadIO m) => Location -> m ()
 reload self = liftIO (js_reload (unLocation self))
+ 
+foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+        :: JSRef Location -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.toString Mozilla Location.toString documentation> 
+toString ::
+         (MonadIO m, FromJSString result) => Location -> m result
+toString self
+  = liftIO (fromJSString <$> (js_toString (unLocation self)))
  
 foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         JSRef Location -> JSString -> IO ()

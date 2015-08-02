@@ -32,7 +32,8 @@ module GHCJS.DOM.JSFFI.Generated.Node
         js_getTextContent, getTextContent, js_getParentElement,
         getParentElement, Node, castToNode, gTypeNode, IsNode, toNode)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -129,16 +130,16 @@ normalize self = liftIO (js_normalize (unNode (toNode self)))
  
 foreign import javascript unsafe
         "($1[\"isSupported\"]($2,\n$3) ? 1 : 0)" js_isSupported ::
-        JSRef Node -> JSString -> JSString -> IO Bool
+        JSRef Node -> JSString -> JSRef (Maybe JSString) -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSupported Mozilla Node.isSupported documentation> 
 isSupported ::
             (MonadIO m, IsNode self, ToJSString feature, ToJSString version) =>
-              self -> feature -> version -> m Bool
+              self -> feature -> Maybe version -> m Bool
 isSupported self feature version
   = liftIO
       (js_isSupported (unNode (toNode self)) (toJSString feature)
-         (toJSString version))
+         (toMaybeJSString version))
  
 foreign import javascript unsafe "($1[\"isSameNode\"]($2) ? 1 : 0)"
         js_isSameNode :: JSRef Node -> JSRef Node -> IO Bool
@@ -166,42 +167,46 @@ isEqualNode self other
          (maybe jsNull (unNode . toNode) other))
  
 foreign import javascript unsafe "$1[\"lookupPrefix\"]($2)"
-        js_lookupPrefix :: JSRef Node -> JSString -> IO JSString
+        js_lookupPrefix ::
+        JSRef Node -> JSRef (Maybe JSString) -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupPrefix Mozilla Node.lookupPrefix documentation> 
 lookupPrefix ::
              (MonadIO m, IsNode self, ToJSString namespaceURI,
               FromJSString result) =>
-               self -> namespaceURI -> m result
+               self -> Maybe namespaceURI -> m (Maybe result)
 lookupPrefix self namespaceURI
   = liftIO
-      (fromJSString <$>
-         (js_lookupPrefix (unNode (toNode self)) (toJSString namespaceURI)))
+      (fromMaybeJSString <$>
+         (js_lookupPrefix (unNode (toNode self))
+            (toMaybeJSString namespaceURI)))
  
 foreign import javascript unsafe
         "($1[\"isDefaultNamespace\"]($2) ? 1 : 0)" js_isDefaultNamespace ::
-        JSRef Node -> JSString -> IO Bool
+        JSRef Node -> JSRef (Maybe JSString) -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isDefaultNamespace Mozilla Node.isDefaultNamespace documentation> 
 isDefaultNamespace ::
                    (MonadIO m, IsNode self, ToJSString namespaceURI) =>
-                     self -> namespaceURI -> m Bool
+                     self -> Maybe namespaceURI -> m Bool
 isDefaultNamespace self namespaceURI
   = liftIO
       (js_isDefaultNamespace (unNode (toNode self))
-         (toJSString namespaceURI))
+         (toMaybeJSString namespaceURI))
  
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
-        js_lookupNamespaceURI :: JSRef Node -> JSString -> IO JSString
+        js_lookupNamespaceURI ::
+        JSRef Node -> JSRef (Maybe JSString) -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupNamespaceURI Mozilla Node.lookupNamespaceURI documentation> 
 lookupNamespaceURI ::
                    (MonadIO m, IsNode self, ToJSString prefix, FromJSString result) =>
-                     self -> prefix -> m result
+                     self -> Maybe prefix -> m (Maybe result)
 lookupNamespaceURI self prefix
   = liftIO
-      (fromJSString <$>
-         (js_lookupNamespaceURI (unNode (toNode self)) (toJSString prefix)))
+      (fromMaybeJSString <$>
+         (js_lookupNamespaceURI (unNode (toNode self))
+            (toMaybeJSString prefix)))
  
 foreign import javascript unsafe
         "$1[\"compareDocumentPosition\"]($2)" js_compareDocumentPosition ::
@@ -247,32 +252,37 @@ pattern DOCUMENT_POSITION_CONTAINED_BY = 16
 pattern DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC = 32
  
 foreign import javascript unsafe "$1[\"nodeName\"]" js_getNodeName
-        :: JSRef Node -> IO JSString
+        :: JSRef Node -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeName Mozilla Node.nodeName documentation> 
 getNodeName ::
-            (MonadIO m, IsNode self, FromJSString result) => self -> m result
+            (MonadIO m, IsNode self, FromJSString result) =>
+              self -> m (Maybe result)
 getNodeName self
-  = liftIO (fromJSString <$> (js_getNodeName (unNode (toNode self))))
+  = liftIO
+      (fromMaybeJSString <$> (js_getNodeName (unNode (toNode self))))
  
 foreign import javascript unsafe "$1[\"nodeValue\"] = $2;"
-        js_setNodeValue :: JSRef Node -> JSString -> IO ()
+        js_setNodeValue :: JSRef Node -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
 setNodeValue ::
-             (MonadIO m, IsNode self, ToJSString val) => self -> val -> m ()
+             (MonadIO m, IsNode self, ToJSString val) =>
+               self -> Maybe val -> m ()
 setNodeValue self val
-  = liftIO (js_setNodeValue (unNode (toNode self)) (toJSString val))
+  = liftIO
+      (js_setNodeValue (unNode (toNode self)) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"nodeValue\"]"
-        js_getNodeValue :: JSRef Node -> IO JSString
+        js_getNodeValue :: JSRef Node -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
 getNodeValue ::
-             (MonadIO m, IsNode self, FromJSString result) => self -> m result
+             (MonadIO m, IsNode self, FromJSString result) =>
+               self -> m (Maybe result)
 getNodeValue self
   = liftIO
-      (fromJSString <$> (js_getNodeValue (unNode (toNode self))))
+      (fromMaybeJSString <$> (js_getNodeValue (unNode (toNode self))))
  
 foreign import javascript unsafe "$1[\"nodeType\"]" js_getNodeType
         :: JSRef Node -> IO Word
@@ -344,71 +354,81 @@ getOwnerDocument self
       ((js_getOwnerDocument (unNode (toNode self))) >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"namespaceURI\"]"
-        js_getNamespaceURI :: JSRef Node -> IO JSString
+        js_getNamespaceURI :: JSRef Node -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.namespaceURI Mozilla Node.namespaceURI documentation> 
 getNamespaceURI ::
-                (MonadIO m, IsNode self, FromJSString result) => self -> m result
+                (MonadIO m, IsNode self, FromJSString result) =>
+                  self -> m (Maybe result)
 getNamespaceURI self
   = liftIO
-      (fromJSString <$> (js_getNamespaceURI (unNode (toNode self))))
+      (fromMaybeJSString <$> (js_getNamespaceURI (unNode (toNode self))))
  
 foreign import javascript unsafe "$1[\"prefix\"] = $2;"
-        js_setPrefix :: JSRef Node -> JSString -> IO ()
+        js_setPrefix :: JSRef Node -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
 setPrefix ::
-          (MonadIO m, IsNode self, ToJSString val) => self -> val -> m ()
+          (MonadIO m, IsNode self, ToJSString val) =>
+            self -> Maybe val -> m ()
 setPrefix self val
-  = liftIO (js_setPrefix (unNode (toNode self)) (toJSString val))
+  = liftIO
+      (js_setPrefix (unNode (toNode self)) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"prefix\"]" js_getPrefix ::
-        JSRef Node -> IO JSString
+        JSRef Node -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
 getPrefix ::
-          (MonadIO m, IsNode self, FromJSString result) => self -> m result
+          (MonadIO m, IsNode self, FromJSString result) =>
+            self -> m (Maybe result)
 getPrefix self
-  = liftIO (fromJSString <$> (js_getPrefix (unNode (toNode self))))
+  = liftIO
+      (fromMaybeJSString <$> (js_getPrefix (unNode (toNode self))))
  
 foreign import javascript unsafe "$1[\"localName\"]"
-        js_getLocalName :: JSRef Node -> IO JSString
+        js_getLocalName :: JSRef Node -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.localName Mozilla Node.localName documentation> 
 getLocalName ::
-             (MonadIO m, IsNode self, FromJSString result) => self -> m result
+             (MonadIO m, IsNode self, FromJSString result) =>
+               self -> m (Maybe result)
 getLocalName self
   = liftIO
-      (fromJSString <$> (js_getLocalName (unNode (toNode self))))
+      (fromMaybeJSString <$> (js_getLocalName (unNode (toNode self))))
  
 foreign import javascript unsafe "$1[\"baseURI\"]" js_getBaseURI ::
-        JSRef Node -> IO JSString
+        JSRef Node -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.baseURI Mozilla Node.baseURI documentation> 
 getBaseURI ::
-           (MonadIO m, IsNode self, FromJSString result) => self -> m result
+           (MonadIO m, IsNode self, FromJSString result) =>
+             self -> m (Maybe result)
 getBaseURI self
-  = liftIO (fromJSString <$> (js_getBaseURI (unNode (toNode self))))
+  = liftIO
+      (fromMaybeJSString <$> (js_getBaseURI (unNode (toNode self))))
  
 foreign import javascript unsafe "$1[\"textContent\"] = $2;"
-        js_setTextContent :: JSRef Node -> JSString -> IO ()
+        js_setTextContent :: JSRef Node -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 
 setTextContent ::
-               (MonadIO m, IsNode self, ToJSString val) => self -> val -> m ()
+               (MonadIO m, IsNode self, ToJSString val) =>
+                 self -> Maybe val -> m ()
 setTextContent self val
   = liftIO
-      (js_setTextContent (unNode (toNode self)) (toJSString val))
+      (js_setTextContent (unNode (toNode self)) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"textContent\"]"
-        js_getTextContent :: JSRef Node -> IO JSString
+        js_getTextContent :: JSRef Node -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 
 getTextContent ::
-               (MonadIO m, IsNode self, FromJSString result) => self -> m result
+               (MonadIO m, IsNode self, FromJSString result) =>
+                 self -> m (Maybe result)
 getTextContent self
   = liftIO
-      (fromJSString <$> (js_getTextContent (unNode (toNode self))))
+      (fromMaybeJSString <$> (js_getTextContent (unNode (toNode self))))
  
 foreign import javascript unsafe "$1[\"parentElement\"]"
         js_getParentElement :: JSRef Node -> IO (JSRef Element)

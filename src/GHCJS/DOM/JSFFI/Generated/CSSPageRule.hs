@@ -4,7 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSPageRule
         getSelectorText, js_getStyle, getStyle, CSSPageRule,
         castToCSSPageRule, gTypeCSSPageRule)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -19,23 +20,26 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"selectorText\"] = $2;"
-        js_setSelectorText :: JSRef CSSPageRule -> JSString -> IO ()
+        js_setSelectorText ::
+        JSRef CSSPageRule -> JSRef (Maybe JSString) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.selectorText Mozilla CSSPageRule.selectorText documentation> 
 setSelectorText ::
-                (MonadIO m, ToJSString val) => CSSPageRule -> val -> m ()
+                (MonadIO m, ToJSString val) => CSSPageRule -> Maybe val -> m ()
 setSelectorText self val
-  = liftIO (js_setSelectorText (unCSSPageRule self) (toJSString val))
+  = liftIO
+      (js_setSelectorText (unCSSPageRule self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"selectorText\"]"
-        js_getSelectorText :: JSRef CSSPageRule -> IO JSString
+        js_getSelectorText ::
+        JSRef CSSPageRule -> IO (JSRef (Maybe JSString))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.selectorText Mozilla CSSPageRule.selectorText documentation> 
 getSelectorText ::
-                (MonadIO m, FromJSString result) => CSSPageRule -> m result
+                (MonadIO m, FromJSString result) => CSSPageRule -> m (Maybe result)
 getSelectorText self
   = liftIO
-      (fromJSString <$> (js_getSelectorText (unCSSPageRule self)))
+      (fromMaybeJSString <$> (js_getSelectorText (unCSSPageRule self)))
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
         JSRef CSSPageRule -> IO (JSRef CSSStyleDeclaration)

@@ -7,10 +7,12 @@ module GHCJS.DOM.JSFFI.Generated.SVGFETurbulenceElement
         pattern SVG_STITCHTYPE_NOSTITCH, js_getBaseFrequencyX,
         getBaseFrequencyX, js_getBaseFrequencyY, getBaseFrequencyY,
         js_getNumOctaves, getNumOctaves, js_getSeed, getSeed,
-        js_getStitchTiles, getStitchTiles, SVGFETurbulenceElement,
-        castToSVGFETurbulenceElement, gTypeSVGFETurbulenceElement)
+        js_getStitchTiles, getStitchTiles, js_getType, getType,
+        SVGFETurbulenceElement, castToSVGFETurbulenceElement,
+        gTypeSVGFETurbulenceElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -90,3 +92,14 @@ getStitchTiles ::
 getStitchTiles self
   = liftIO
       ((js_getStitchTiles (unSVGFETurbulenceElement self)) >>= fromJSRef)
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef SVGFETurbulenceElement -> IO (JSRef SVGAnimatedEnumeration)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.type Mozilla SVGFETurbulenceElement.type documentation> 
+getType ::
+        (MonadIO m) =>
+          SVGFETurbulenceElement -> m (Maybe SVGAnimatedEnumeration)
+getType self
+  = liftIO
+      ((js_getType (unSVGFETurbulenceElement self)) >>= fromJSRef)

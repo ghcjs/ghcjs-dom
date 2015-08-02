@@ -9,9 +9,11 @@ module GHCJS.DOM.Types (
   -- * Object
     maybeJSNullOrUndefined, propagateGError, GType(..)
   , GObject(..), IsGObject, toGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA, objectToString
+  , js_eq
 
   -- * DOMString
-  , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString, ToJSString(..), FromJSString(..), toJSString, fromJSString
+  , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString, ToJSString(..), FromJSString(..)
+  , toJSString, fromJSString, toMaybeJSString, fromMaybeJSString
 
   -- * Callbacks
   , AudioBufferCallback
@@ -79,7 +81,6 @@ module GHCJS.DOM.Types (
   , CanvasStyle(CanvasStyle), unCanvasStyle, IsCanvasStyle, toCanvasStyle
 
   , DOMException(DOMException), unDOMException, IsDOMException, toDOMException
-  , DOMURLConstructor(DOMURLConstructor), unDOMURLConstructor, IsDOMURLConstructor, toDOMURLConstructor
 
   -- * WebGL typedefs
   , GLenum(..), GLboolean(..), GLbitfield(..), GLbyte(..), GLshort(..), GLint(..), GLsizei(..)
@@ -655,6 +656,8 @@ module GHCJS.DOM.Types (
 -- AUTO GENERATION ENDS HERE
 #else
     propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
+  , FocusEvent
+  , TouchEvent
   , module Graphics.UI.Gtk.WebKit.Types
   , IsGObject
   , IsAttr
@@ -816,9 +819,6 @@ propagateGError = id
 
 data GType = GType (JSRef GType)
 
-instance Eq (JSRef a) where
-  a == b = js_eq a b
-
 foreign import javascript unsafe
   "$1===$2" js_eq :: JSRef a -> JSRef a -> Bool
 
@@ -927,6 +927,14 @@ fromJSString :: FromJSString a => JSString -> a
 fromJSString = pFromJSRef . castRef . pToJSRef
 {-# INLINE fromJSString #-}
 
+toMaybeJSString :: ToJSString a => Maybe a -> JSRef (Maybe JSString)
+toMaybeJSString = pFromJSRef . castRef . pToJSRef
+{-# INLINE toMaybeJSString #-}
+
+fromMaybeJSString :: FromJSString a => JSRef (Maybe JSString) -> Maybe a
+fromMaybeJSString = pFromJSRef . castRef . pToJSRef
+{-# INLINE fromMaybeJSString #-}
+
 instance ToJSString   [Char]
 instance FromJSString [Char]
 instance ToJSString   T.Text
@@ -948,6 +956,9 @@ type DOMString = T.Text
 
 type ToDOMString s = GlibString s
 type FromDOMString s = GlibString s
+
+type FocusEvent = UIEvent
+type TouchEvent = UIEvent
 #endif
 
 type IsDOMString s = (ToDOMString s, FromDOMString s)
@@ -980,7 +991,10 @@ type VoidCallback = Callback (IO ())
 
 -- Custom types
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype SerializedScriptValue = SerializedScriptValue { unSerializedScriptValue :: JSRef SerializedScriptValue }  deriving (Eq)
+newtype SerializedScriptValue = SerializedScriptValue { unSerializedScriptValue :: JSRef SerializedScriptValue }
+
+instance Eq SerializedScriptValue where
+  (SerializedScriptValue a) == (SerializedScriptValue b) = js_eq a b
 
 instance PToJSRef SerializedScriptValue where
   pToJSRef = unSerializedScriptValue
@@ -1012,7 +1026,10 @@ instance IsGObject SerializedScriptValue where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype PositionOptions = PositionOptions { unPositionOptions :: JSRef PositionOptions } deriving (Eq)
+newtype PositionOptions = PositionOptions { unPositionOptions :: JSRef PositionOptions }
+
+instance Eq PositionOptions where
+  (PositionOptions a) == (PositionOptions b) = js_eq a b
 
 instance PToJSRef PositionOptions where
   pToJSRef = unPositionOptions
@@ -1044,7 +1061,10 @@ instance IsGObject PositionOptions where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Dictionary = Dictionary { unDictionary :: JSRef Dictionary } deriving (Eq)
+newtype Dictionary = Dictionary { unDictionary :: JSRef Dictionary }
+
+instance Eq Dictionary where
+  (Dictionary a) == (Dictionary b) = js_eq a b
 
 instance PToJSRef Dictionary where
   pToJSRef = unDictionary
@@ -1076,7 +1096,10 @@ instance IsGObject Dictionary where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSRef BlobPropertyBag } deriving (Eq)
+newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSRef BlobPropertyBag }
+
+instance Eq BlobPropertyBag where
+  (BlobPropertyBag a) == (BlobPropertyBag b) = js_eq a b
 
 instance PToJSRef BlobPropertyBag where
   pToJSRef = unBlobPropertyBag
@@ -1108,7 +1131,10 @@ instance IsGObject BlobPropertyBag where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype MutationCallback = MutationCallback { unMutationCallback :: JSRef MutationCallback } deriving (Eq)
+newtype MutationCallback = MutationCallback { unMutationCallback :: JSRef MutationCallback }
+
+instance Eq MutationCallback where
+  (MutationCallback a) == (MutationCallback b) = js_eq a b
 
 instance PToJSRef MutationCallback where
   pToJSRef = unMutationCallback
@@ -1140,7 +1166,10 @@ instance IsGObject MutationCallback where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Promise = Promise { unPromise :: JSRef Promise } deriving (Eq)
+newtype Promise = Promise { unPromise :: JSRef Promise }
+
+instance Eq Promise where
+  (Promise a) == (Promise b) = js_eq a b
 
 instance PToJSRef Promise where
   pToJSRef = unPromise
@@ -1178,7 +1207,10 @@ gTypePromise = GType gTypePromise'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ArrayBuffer = ArrayBuffer { unArrayBuffer :: JSRef ArrayBuffer } deriving (Eq)
+newtype ArrayBuffer = ArrayBuffer { unArrayBuffer :: JSRef ArrayBuffer }
+
+instance Eq ArrayBuffer where
+  (ArrayBuffer a) == (ArrayBuffer b) = js_eq a b
 
 instance PToJSRef ArrayBuffer where
   pToJSRef = unArrayBuffer
@@ -1215,7 +1247,10 @@ gTypeArrayBuffer = GType gTypeArrayBuffer'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Float32Array = Float32Array { unFloat32Array :: JSRef Float32Array } deriving (Eq)
+newtype Float32Array = Float32Array { unFloat32Array :: JSRef Float32Array }
+
+instance Eq Float32Array where
+  (Float32Array a) == (Float32Array b) = js_eq a b
 
 instance PToJSRef Float32Array where
   pToJSRef = unFloat32Array
@@ -1253,7 +1288,10 @@ gTypeFloat32Array = GType gTypeFloat32Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Float64Array = Float64Array { unFloat64Array :: JSRef Float64Array } deriving (Eq)
+newtype Float64Array = Float64Array { unFloat64Array :: JSRef Float64Array }
+
+instance Eq Float64Array where
+  (Float64Array a) == (Float64Array b) = js_eq a b
 
 instance PToJSRef Float64Array where
   pToJSRef = unFloat64Array
@@ -1291,7 +1329,10 @@ gTypeFloat64Array = GType gTypeFloat64Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint8Array = Uint8Array { unUint8Array :: JSRef Uint8Array } deriving (Eq)
+newtype Uint8Array = Uint8Array { unUint8Array :: JSRef Uint8Array }
+
+instance Eq Uint8Array where
+  (Uint8Array a) == (Uint8Array b) = js_eq a b
 
 instance PToJSRef Uint8Array where
   pToJSRef = unUint8Array
@@ -1329,7 +1370,10 @@ gTypeUint8Array = GType gTypeUint8Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSRef Uint8ClampedArray } deriving (Eq)
+newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSRef Uint8ClampedArray }
+
+instance Eq Uint8ClampedArray where
+  (Uint8ClampedArray a) == (Uint8ClampedArray b) = js_eq a b
 
 instance PToJSRef Uint8ClampedArray where
   pToJSRef = unUint8ClampedArray
@@ -1367,7 +1411,10 @@ gTypeUint8ClampedArray = GType gTypeUint8ClampedArray'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint16Array = Uint16Array { unUint16Array :: JSRef Uint16Array } deriving (Eq)
+newtype Uint16Array = Uint16Array { unUint16Array :: JSRef Uint16Array }
+
+instance Eq Uint16Array where
+  (Uint16Array a) == (Uint16Array b) = js_eq a b
 
 instance PToJSRef Uint16Array where
   pToJSRef = unUint16Array
@@ -1405,7 +1452,10 @@ gTypeUint16Array = GType gTypeUint16Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint32Array = Uint32Array { unUint32Array :: JSRef Uint32Array } deriving (Eq)
+newtype Uint32Array = Uint32Array { unUint32Array :: JSRef Uint32Array }
+
+instance Eq Uint32Array where
+  (Uint32Array a) == (Uint32Array b) = js_eq a b
 
 instance PToJSRef Uint32Array where
   pToJSRef = unUint32Array
@@ -1443,7 +1493,10 @@ gTypeUint32Array = GType gTypeUint32Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int8Array = Int8Array { unInt8Array :: JSRef Int8Array } deriving (Eq)
+newtype Int8Array = Int8Array { unInt8Array :: JSRef Int8Array }
+
+instance Eq Int8Array where
+  (Int8Array a) == (Int8Array b) = js_eq a b
 
 instance PToJSRef Int8Array where
   pToJSRef = unInt8Array
@@ -1481,7 +1534,10 @@ gTypeInt8Array = GType gTypeInt8Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int16Array = Int16Array { unInt16Array :: JSRef Int16Array } deriving (Eq)
+newtype Int16Array = Int16Array { unInt16Array :: JSRef Int16Array }
+
+instance Eq Int16Array where
+  (Int16Array a) == (Int16Array b) = js_eq a b
 
 instance PToJSRef Int16Array where
   pToJSRef = unInt16Array
@@ -1519,7 +1575,10 @@ gTypeInt16Array = GType gTypeInt16Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int32Array = Int32Array { unInt32Array :: JSRef Int32Array } deriving (Eq)
+newtype Int32Array = Int32Array { unInt32Array :: JSRef Int32Array }
+
+instance Eq Int32Array where
+  (Int32Array a) == (Int32Array b) = js_eq a b
 
 instance PToJSRef Int32Array where
   pToJSRef = unInt32Array
@@ -1557,7 +1616,10 @@ gTypeInt32Array = GType gTypeInt32Array'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ObjectArray = ObjectArray { unObjectArray :: JSRef ObjectArray } deriving (Eq)
+newtype ObjectArray = ObjectArray { unObjectArray :: JSRef ObjectArray }
+
+instance Eq ObjectArray where
+  (ObjectArray a) == (ObjectArray b) = js_eq a b
 
 instance PToJSRef ObjectArray where
   pToJSRef = unObjectArray
@@ -1589,7 +1651,10 @@ instance IsGObject ObjectArray where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSRef ArrayBufferView } deriving (Eq)
+newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSRef ArrayBufferView }
+
+instance Eq ArrayBufferView where
+  (ArrayBufferView a) == (ArrayBufferView b) = js_eq a b
 
 instance PToJSRef ArrayBufferView where
   pToJSRef = unArrayBufferView
@@ -1621,7 +1686,10 @@ instance IsGObject ArrayBufferView where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Array = Array { unArray :: JSRef Array } deriving (Eq)
+newtype Array = Array { unArray :: JSRef Array }
+
+instance Eq Array where
+  (Array a) == (Array b) = js_eq a b
 
 instance PToJSRef Array where
   pToJSRef = unArray
@@ -1659,7 +1727,10 @@ gTypeArray = GType gTypeArray'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Date = Date { unDate :: JSRef Date } deriving (Eq)
+newtype Date = Date { unDate :: JSRef Date }
+
+instance Eq Date where
+  (Date a) == (Date b) = js_eq a b
 
 instance PToJSRef Date where
   pToJSRef = unDate
@@ -1697,7 +1768,10 @@ gTypeDate = GType gTypeDate'
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Acceleration = Acceleration { unAcceleration :: JSRef Acceleration } deriving (Eq)
+newtype Acceleration = Acceleration { unAcceleration :: JSRef Acceleration }
+
+instance Eq Acceleration where
+  (Acceleration a) == (Acceleration b) = js_eq a b
 
 instance PToJSRef Acceleration where
   pToJSRef = unAcceleration
@@ -1729,7 +1803,10 @@ instance IsGObject Acceleration where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype RotationRate = RotationRate { unRotationRate :: JSRef RotationRate } deriving (Eq)
+newtype RotationRate = RotationRate { unRotationRate :: JSRef RotationRate }
+
+instance Eq RotationRate where
+  (RotationRate a) == (RotationRate b) = js_eq a b
 
 instance PToJSRef RotationRate where
   pToJSRef = unRotationRate
@@ -1761,7 +1838,10 @@ instance IsGObject RotationRate where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Algorithm = Algorithm { unAlgorithm :: JSRef Algorithm } deriving (Eq)
+newtype Algorithm = Algorithm { unAlgorithm :: JSRef Algorithm }
+
+instance Eq Algorithm where
+  (Algorithm a) == (Algorithm b) = js_eq a b
 
 instance PToJSRef Algorithm where
   pToJSRef = unAlgorithm
@@ -1793,7 +1873,10 @@ instance IsGObject Algorithm where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSRef CryptoOperationData } deriving (Eq)
+newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSRef CryptoOperationData }
+
+instance Eq CryptoOperationData where
+  (CryptoOperationData a) == (CryptoOperationData b) = js_eq a b
 
 instance PToJSRef CryptoOperationData where
   pToJSRef = unCryptoOperationData
@@ -1826,7 +1909,10 @@ instance IsCryptoOperationData ArrayBufferView
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype CanvasStyle = CanvasStyle { unCanvasStyle :: JSRef CanvasStyle } deriving (Eq)
+newtype CanvasStyle = CanvasStyle { unCanvasStyle :: JSRef CanvasStyle }
+
+instance Eq CanvasStyle where
+  (CanvasStyle a) == (CanvasStyle b) = js_eq a b
 
 instance PToJSRef CanvasStyle where
   pToJSRef = unCanvasStyle
@@ -1859,7 +1945,10 @@ instance IsCanvasStyle CanvasPattern
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype DOMException = DOMException { unDOMException :: JSRef DOMException } deriving (Eq)
+newtype DOMException = DOMException { unDOMException :: JSRef DOMException }
+
+instance Eq DOMException where
+  (DOMException a) == (DOMException b) = js_eq a b
 
 instance PToJSRef DOMException where
   pToJSRef = unDOMException
@@ -1887,37 +1976,6 @@ instance IsGObject DOMException where
   unsafeCastGObject = DOMException . castRef . unGObject
 #else
 -- TODO work out how we can support DOMException in native code
-#endif
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype DOMURLConstructor = DOMURLConstructor { unDOMURLConstructor :: JSRef DOMURLConstructor } deriving (Eq)
-
-instance PToJSRef DOMURLConstructor where
-  pToJSRef = unDOMURLConstructor
-  {-# INLINE pToJSRef #-}
-
-instance PFromJSRef DOMURLConstructor where
-  pFromJSRef = DOMURLConstructor
-  {-# INLINE pFromJSRef #-}
-
-instance ToJSRef DOMURLConstructor where
-  toJSRef = return . unDOMURLConstructor
-  {-# INLINE toJSRef #-}
-
-instance FromJSRef DOMURLConstructor where
-  fromJSRef = return . fmap DOMURLConstructor . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
-
-class IsGObject o => IsDOMURLConstructor o
-toDOMURLConstructor :: IsDOMURLConstructor o => o -> DOMURLConstructor
-toDOMURLConstructor = unsafeCastGObject . toGObject
-
-instance IsDOMURLConstructor DOMURLConstructor
-instance IsGObject DOMURLConstructor where
-  toGObject = GObject . castRef . unDOMURLConstructor
-  unsafeCastGObject = DOMURLConstructor . castRef . unGObject
-#else
--- TODO work out how we can support DOMURLConstructor in native code
 #endif
 
 type GLenum = Word32

@@ -5,17 +5,18 @@ module GHCJS.DOM.JSFFI.Generated.SVGComponentTransferFunctionElement
         pattern SVG_FECOMPONENTTRANSFER_TYPE_TABLE,
         pattern SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE,
         pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR,
-        pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA, js_getTableValues,
-        getTableValues, js_getSlope, getSlope, js_getIntercept,
-        getIntercept, js_getAmplitude, getAmplitude, js_getExponent,
-        getExponent, js_getOffset, getOffset,
+        pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA, js_getType, getType,
+        js_getTableValues, getTableValues, js_getSlope, getSlope,
+        js_getIntercept, getIntercept, js_getAmplitude, getAmplitude,
+        js_getExponent, getExponent, js_getOffset, getOffset,
         SVGComponentTransferFunctionElement,
         castToSVGComponentTransferFunctionElement,
         gTypeSVGComponentTransferFunctionElement,
         IsSVGComponentTransferFunctionElement,
         toSVGComponentTransferFunctionElement)
        where
-import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap)
+import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import Data.Typeable (Typeable)
 import GHCJS.Types (JSRef(..), JSString, castRef)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
@@ -34,6 +35,21 @@ pattern SVG_FECOMPONENTTRANSFER_TYPE_TABLE = 2
 pattern SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE = 3
 pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR = 4
 pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA = 5
+ 
+foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+        JSRef SVGComponentTransferFunctionElement ->
+          IO (JSRef SVGAnimatedEnumeration)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.type Mozilla SVGComponentTransferFunctionElement.type documentation> 
+getType ::
+        (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+          self -> m (Maybe SVGAnimatedEnumeration)
+getType self
+  = liftIO
+      ((js_getType
+          (unSVGComponentTransferFunctionElement
+             (toSVGComponentTransferFunctionElement self)))
+         >>= fromJSRef)
  
 foreign import javascript unsafe "$1[\"tableValues\"]"
         js_getTableValues ::

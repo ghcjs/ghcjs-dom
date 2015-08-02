@@ -98,7 +98,6 @@ library
           GHCJS.DOM.CompositionEvent
           GHCJS.DOM.ConvolverNode
           GHCJS.DOM.Coordinates
---          GHCJS.DOM.Core
           GHCJS.DOM.Counter
           GHCJS.DOM.Crypto
           GHCJS.DOM.CryptoKey
@@ -281,6 +280,7 @@ library
           GHCJS.DOM.MemoryInfo
           GHCJS.DOM.MessageChannel
           GHCJS.DOM.MessageEvent
+          GHCJS.DOM.MessagePort
           GHCJS.DOM.MouseEvent
           GHCJS.DOM.MutationEvent
           GHCJS.DOM.MutationObserver
@@ -441,6 +441,7 @@ library
           GHCJS.DOM.SVGRect
           GHCJS.DOM.SVGRectElement
           GHCJS.DOM.SVGRenderingIntent
+          GHCJS.DOM.SVGScriptElement
           GHCJS.DOM.SVGSVGElement
           GHCJS.DOM.SVGStopElement
           GHCJS.DOM.SVGStringList
@@ -632,7 +633,6 @@ library
           GHCJS.DOM.JSFFI.Generated.CompositionEvent
           GHCJS.DOM.JSFFI.Generated.ConvolverNode
           GHCJS.DOM.JSFFI.Generated.Coordinates
---          GHCJS.DOM.JSFFI.Generated.Core
           GHCJS.DOM.JSFFI.Generated.Counter
           GHCJS.DOM.JSFFI.Generated.Crypto
           GHCJS.DOM.JSFFI.Generated.CryptoKey
@@ -813,6 +813,7 @@ library
           GHCJS.DOM.JSFFI.Generated.MemoryInfo
           GHCJS.DOM.JSFFI.Generated.MessageChannel
           GHCJS.DOM.JSFFI.Generated.MessageEvent
+          GHCJS.DOM.JSFFI.Generated.MessagePort
           GHCJS.DOM.JSFFI.Generated.MouseEvent
           GHCJS.DOM.JSFFI.Generated.MutationEvent
           GHCJS.DOM.JSFFI.Generated.MutationObserver
@@ -973,6 +974,7 @@ library
           GHCJS.DOM.JSFFI.Generated.SVGRect
           GHCJS.DOM.JSFFI.Generated.SVGRectElement
           GHCJS.DOM.JSFFI.Generated.SVGRenderingIntent
+          GHCJS.DOM.JSFFI.Generated.SVGScriptElement
           GHCJS.DOM.JSFFI.Generated.SVGSVGElement
           GHCJS.DOM.JSFFI.Generated.SVGStopElement
           GHCJS.DOM.JSFFI.Generated.SVGStringList
@@ -1091,7 +1093,7 @@ library
         build-depends: glib >=0.13.0.0 && <0.14,
                        transformers >=0.3.0.0 && <0.5
         if flag(gtk3)
-            build-depends: gtk3 >=0.13.0.0 && <0.14, webkitgtk3 >=0.14.0.0 && <0.15
+            build-depends: gtk3 >=0.13.0.0 && <0.15, webkitgtk3 >=0.14.0.0 && <0.15
         else
             build-depends: gtk >=0.13.0.0 && <0.14, webkit >=0.14.0.0 && <0.15
         c-sources:      cbits/ghcjs_stubs.c
