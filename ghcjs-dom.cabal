@@ -24,6 +24,12 @@ flag webkit
     description: Use WebKitGtk DOM functions
     default: False
 
+flag old-webkit
+    description: If you have an old version of WebKitGTK+ this will get ghcjs-dom
+                 to build, leaving out functions that are new or have changed.
+                 This option is mainly here to get the travis builds to work.
+    default: False
+
 flag jsc
     description: Use WebKitGtk JavaScriptCore
     default: False
@@ -1097,6 +1103,9 @@ library
         else
             build-depends: gtk >=0.13.0.0 && <0.14, webkit >=0.14.0.0 && <0.15
         c-sources:      cbits/ghcjs_stubs.c
+
+    if flag(old-webkit)
+        cpp-options: -DUSE_OLD_WEBKIT
 
     hs-source-dirs: src
     exposed: True

@@ -653,16 +653,32 @@ module GHCJS.DOM.Types (
   , XPathNSResolver(XPathNSResolver), unXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
   , XPathResult(XPathResult), unXPathResult, castToXPathResult, gTypeXPathResult
   , XSLTProcessor(XSLTProcessor), unXSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor
--- AUTO GENERATION ENDS HERE
 #else
     propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
   , FocusEvent
   , TouchEvent
   , module Graphics.UI.Gtk.WebKit.Types
   , IsGObject
+
+  , IsApplicationCache
   , IsAttr
+#ifndef USE_OLD_WEBKIT
+  , IsAudioTrack
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsAudioTrackList
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsBarProp
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsBatteryManager
+#endif
   , IsBlob
   , IsCDATASection
+#ifndef USE_OLD_WEBKIT
+  , IsCSS
+#endif
   , IsCSSRule
   , IsCSSRuleList
   , IsCSSStyleDeclaration
@@ -670,18 +686,13 @@ module GHCJS.DOM.Types (
   , IsCSSValue
   , IsCharacterData
   , IsComment
-  , IsApplicationCache
   , IsDOMImplementation
-  , IsMimeType
-  , IsMimeTypeArray
-  , IsPlugin
-  , IsPluginArray
-  , IsSelection
+#ifndef USE_OLD_WEBKIT
+  , IsDOMNamedFlowCollection
+#endif
   , IsDOMSettableTokenList
   , IsDOMStringList
   , IsDOMTokenList
-  , IsWindow
-  , IsCSS
   , IsDocument
   , IsDocumentFragment
   , IsDocumentType
@@ -756,11 +767,16 @@ module GHCJS.DOM.Types (
   , IsHTMLUListElement
   , IsHTMLVideoElement
   , IsHistory
+#ifndef USE_OLD_WEBKIT
+  , IsKeyboardEvent
+#endif
   , IsLocation
   , IsMediaError
   , IsMediaList
   , IsMediaQueryList
   , IsMessagePort
+  , IsMimeType
+  , IsMimeTypeArray
   , IsMouseEvent
   , IsNamedNodeMap
   , IsNavigator
@@ -768,23 +784,70 @@ module GHCJS.DOM.Types (
   , IsNodeFilter
   , IsNodeIterator
   , IsNodeList
+#ifndef USE_OLD_WEBKIT
+  , IsPerformance
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsPerformanceNavigation
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsPerformanceTiming
+#endif
+  , IsPlugin
+  , IsPluginArray
   , IsProcessingInstruction
   , IsRange
   , IsScreen
+#ifndef USE_OLD_WEBKIT
+  , IsSecurityPolicy
+#endif
+  , IsSelection
   , IsStorage
+#ifndef USE_OLD_WEBKIT
+  , IsStorageInfo
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsStorageQuota
+#endif
   , IsStyleMedia
   , IsStyleSheet
   , IsStyleSheetList
   , IsText
+#ifndef USE_OLD_WEBKIT
+  , IsTextTrack
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsTextTrackCue
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsTextTrackCueList
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsTextTrackList
+#endif
   , IsTimeRanges
+#ifndef USE_OLD_WEBKIT
+  , IsTouch
+#endif
   , IsTreeWalker
   , IsUIEvent
   , IsValidityState
+#ifndef USE_OLD_WEBKIT
+  , IsVideoTrack
+#endif
+#ifndef USE_OLD_WEBKIT
+  , IsVideoTrackList
+#endif
   , IsWebKitNamedFlow
   , IsWebKitPoint
+#ifndef USE_OLD_WEBKIT
+  , IsWheelEvent
+#endif
+  , IsWindow
   , IsXPathExpression
   , IsXPathNSResolver
   , IsXPathResult
+-- AUTO GENERATION ENDS HERE
 #endif
   ) where
 
@@ -2033,7 +2096,6 @@ castToANGLEInstancedArrays = castTo gTypeANGLEInstancedArrays "ANGLEInstancedArr
 
 foreign import javascript unsafe "window[\"ANGLEInstancedArrays\"]" gTypeANGLEInstancedArrays' :: JSRef GType
 gTypeANGLEInstancedArrays = GType gTypeANGLEInstancedArrays'
-#else
 #endif
 
 
@@ -2073,7 +2135,6 @@ castToAbstractView = castTo gTypeAbstractView "AbstractView"
 
 foreign import javascript unsafe "window[\"AbstractView\"]" gTypeAbstractView' :: JSRef GType
 gTypeAbstractView = GType gTypeAbstractView'
-#else
 #endif
 
 
@@ -2113,7 +2174,6 @@ castToAbstractWorker = castTo gTypeAbstractWorker "AbstractWorker"
 
 foreign import javascript unsafe "window[\"AbstractWorker\"]" gTypeAbstractWorker' :: JSRef GType
 gTypeAbstractWorker = GType gTypeAbstractWorker'
-#else
 #endif
 
 
@@ -2157,7 +2217,6 @@ castToAllAudioCapabilities = castTo gTypeAllAudioCapabilities "AllAudioCapabilit
 
 foreign import javascript unsafe "window[\"AllAudioCapabilities\"]" gTypeAllAudioCapabilities' :: JSRef GType
 gTypeAllAudioCapabilities = GType gTypeAllAudioCapabilities'
-#else
 #endif
 
 
@@ -2201,7 +2260,6 @@ castToAllVideoCapabilities = castTo gTypeAllVideoCapabilities "AllVideoCapabilit
 
 foreign import javascript unsafe "window[\"AllVideoCapabilities\"]" gTypeAllVideoCapabilities' :: JSRef GType
 gTypeAllVideoCapabilities = GType gTypeAllVideoCapabilities'
-#else
 #endif
 
 
@@ -2247,7 +2305,6 @@ castToAnalyserNode = castTo gTypeAnalyserNode "AnalyserNode"
 
 foreign import javascript unsafe "window[\"AnalyserNode\"]" gTypeAnalyserNode' :: JSRef GType
 gTypeAnalyserNode = GType gTypeAnalyserNode'
-#else
 #endif
 
 
@@ -2291,7 +2348,6 @@ castToAnimationEvent = castTo gTypeAnimationEvent "AnimationEvent"
 
 foreign import javascript unsafe "window[\"AnimationEvent\"]" gTypeAnimationEvent' :: JSRef GType
 gTypeAnimationEvent = GType gTypeAnimationEvent'
-#else
 #endif
 
 
@@ -2423,7 +2479,6 @@ castToAudioBuffer = castTo gTypeAudioBuffer "AudioBuffer"
 
 foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer' :: JSRef GType
 gTypeAudioBuffer = GType gTypeAudioBuffer'
-#else
 #endif
 
 
@@ -2469,7 +2524,6 @@ castToAudioBufferSourceNode = castTo gTypeAudioBufferSourceNode "AudioBufferSour
 
 foreign import javascript unsafe "window[\"AudioBufferSourceNode\"]" gTypeAudioBufferSourceNode' :: JSRef GType
 gTypeAudioBufferSourceNode = GType gTypeAudioBufferSourceNode'
-#else
 #endif
 
 
@@ -2518,7 +2572,6 @@ castToAudioContext = castTo gTypeAudioContext "AudioContext"
 
 foreign import javascript unsafe "window[\"AudioContext\"]" gTypeAudioContext' :: JSRef GType
 gTypeAudioContext = GType gTypeAudioContext'
-#else
 #endif
 
 
@@ -2564,7 +2617,6 @@ castToAudioDestinationNode = castTo gTypeAudioDestinationNode "AudioDestinationN
 
 foreign import javascript unsafe "window[\"AudioDestinationNode\"]" gTypeAudioDestinationNode' :: JSRef GType
 gTypeAudioDestinationNode = GType gTypeAudioDestinationNode'
-#else
 #endif
 
 
@@ -2604,7 +2656,6 @@ castToAudioListener = castTo gTypeAudioListener "AudioListener"
 
 foreign import javascript unsafe "window[\"AudioListener\"]" gTypeAudioListener' :: JSRef GType
 gTypeAudioListener = GType gTypeAudioListener'
-#else
 #endif
 
 
@@ -2653,7 +2704,6 @@ castToAudioNode = castTo gTypeAudioNode "AudioNode"
 
 foreign import javascript unsafe "window[\"AudioNode\"]" gTypeAudioNode' :: JSRef GType
 gTypeAudioNode = GType gTypeAudioNode'
-#else
 #endif
 
 
@@ -2693,7 +2743,6 @@ castToAudioParam = castTo gTypeAudioParam "AudioParam"
 
 foreign import javascript unsafe "window[\"AudioParam\"]" gTypeAudioParam' :: JSRef GType
 gTypeAudioParam = GType gTypeAudioParam'
-#else
 #endif
 
 
@@ -2737,7 +2786,6 @@ castToAudioProcessingEvent = castTo gTypeAudioProcessingEvent "AudioProcessingEv
 
 foreign import javascript unsafe "window[\"AudioProcessingEvent\"]" gTypeAudioProcessingEvent' :: JSRef GType
 gTypeAudioProcessingEvent = GType gTypeAudioProcessingEvent'
-#else
 #endif
 
 
@@ -2783,7 +2831,6 @@ castToAudioStreamTrack = castTo gTypeAudioStreamTrack "AudioStreamTrack"
 
 foreign import javascript unsafe "window[\"AudioStreamTrack\"]" gTypeAudioStreamTrack' :: JSRef GType
 gTypeAudioStreamTrack = GType gTypeAudioStreamTrack'
-#else
 #endif
 
 
@@ -2824,7 +2871,9 @@ castToAudioTrack = castTo gTypeAudioTrack "AudioTrack"
 foreign import javascript unsafe "window[\"AudioTrack\"]" gTypeAudioTrack' :: JSRef GType
 gTypeAudioTrack = GType gTypeAudioTrack'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsAudioTrack o = AudioTrackClass o
+#endif
 #endif
 
 
@@ -2869,7 +2918,9 @@ castToAudioTrackList = castTo gTypeAudioTrackList "AudioTrackList"
 foreign import javascript unsafe "window[\"AudioTrackList\"]" gTypeAudioTrackList' :: JSRef GType
 gTypeAudioTrackList = GType gTypeAudioTrackList'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsAudioTrackList o = AudioTrackListClass o
+#endif
 #endif
 
 
@@ -2913,7 +2964,6 @@ castToAutocompleteErrorEvent = castTo gTypeAutocompleteErrorEvent "AutocompleteE
 
 foreign import javascript unsafe "window[\"AutocompleteErrorEvent\"]" gTypeAutocompleteErrorEvent' :: JSRef GType
 gTypeAutocompleteErrorEvent = GType gTypeAutocompleteErrorEvent'
-#else
 #endif
 
 
@@ -2954,7 +3004,9 @@ castToBarProp = castTo gTypeBarProp "BarProp"
 foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp' :: JSRef GType
 gTypeBarProp = GType gTypeBarProp'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsBarProp o = BarPropClass o
+#endif
 #endif
 
 
@@ -2999,7 +3051,9 @@ castToBatteryManager = castTo gTypeBatteryManager "BatteryManager"
 foreign import javascript unsafe "window[\"BatteryManager\"]" gTypeBatteryManager' :: JSRef GType
 gTypeBatteryManager = GType gTypeBatteryManager'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsBatteryManager o = BatteryManagerClass o
+#endif
 #endif
 
 
@@ -3043,7 +3097,6 @@ castToBeforeLoadEvent = castTo gTypeBeforeLoadEvent "BeforeLoadEvent"
 
 foreign import javascript unsafe "window[\"BeforeLoadEvent\"]" gTypeBeforeLoadEvent' :: JSRef GType
 gTypeBeforeLoadEvent = GType gTypeBeforeLoadEvent'
-#else
 #endif
 
 
@@ -3087,7 +3140,6 @@ castToBeforeUnloadEvent = castTo gTypeBeforeUnloadEvent "BeforeUnloadEvent"
 
 foreign import javascript unsafe "window[\"BeforeUnloadEvent\"]" gTypeBeforeUnloadEvent' :: JSRef GType
 gTypeBeforeUnloadEvent = GType gTypeBeforeUnloadEvent'
-#else
 #endif
 
 
@@ -3133,7 +3185,6 @@ castToBiquadFilterNode = castTo gTypeBiquadFilterNode "BiquadFilterNode"
 
 foreign import javascript unsafe "window[\"BiquadFilterNode\"]" gTypeBiquadFilterNode' :: JSRef GType
 gTypeBiquadFilterNode = GType gTypeBiquadFilterNode'
-#else
 #endif
 
 
@@ -3271,7 +3322,9 @@ castToCSS = castTo gTypeCSS "CSS"
 foreign import javascript unsafe "window[\"CSS\"]" gTypeCSS' :: JSRef GType
 gTypeCSS = GType gTypeCSS'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsCSS o = CSSClass o
+#endif
 #endif
 
 
@@ -3315,7 +3368,6 @@ castToCSSCharsetRule = castTo gTypeCSSCharsetRule "CSSCharsetRule"
 
 foreign import javascript unsafe "window[\"CSSCharsetRule\"]" gTypeCSSCharsetRule' :: JSRef GType
 gTypeCSSCharsetRule = GType gTypeCSSCharsetRule'
-#else
 #endif
 
 
@@ -3359,7 +3411,6 @@ castToCSSFontFaceLoadEvent = castTo gTypeCSSFontFaceLoadEvent "CSSFontFaceLoadEv
 
 foreign import javascript unsafe "window[\"CSSFontFaceLoadEvent\"]" gTypeCSSFontFaceLoadEvent' :: JSRef GType
 gTypeCSSFontFaceLoadEvent = GType gTypeCSSFontFaceLoadEvent'
-#else
 #endif
 
 
@@ -3403,7 +3454,6 @@ castToCSSFontFaceRule = castTo gTypeCSSFontFaceRule "CSSFontFaceRule"
 
 foreign import javascript unsafe "window[\"CSSFontFaceRule\"]" gTypeCSSFontFaceRule' :: JSRef GType
 gTypeCSSFontFaceRule = GType gTypeCSSFontFaceRule'
-#else
 #endif
 
 
@@ -3447,7 +3497,6 @@ castToCSSImportRule = castTo gTypeCSSImportRule "CSSImportRule"
 
 foreign import javascript unsafe "window[\"CSSImportRule\"]" gTypeCSSImportRule' :: JSRef GType
 gTypeCSSImportRule = GType gTypeCSSImportRule'
-#else
 #endif
 
 
@@ -3491,7 +3540,6 @@ castToCSSKeyframeRule = castTo gTypeCSSKeyframeRule "CSSKeyframeRule"
 
 foreign import javascript unsafe "window[\"CSSKeyframeRule\"]" gTypeCSSKeyframeRule' :: JSRef GType
 gTypeCSSKeyframeRule = GType gTypeCSSKeyframeRule'
-#else
 #endif
 
 
@@ -3535,7 +3583,6 @@ castToCSSKeyframesRule = castTo gTypeCSSKeyframesRule "CSSKeyframesRule"
 
 foreign import javascript unsafe "window[\"CSSKeyframesRule\"]" gTypeCSSKeyframesRule' :: JSRef GType
 gTypeCSSKeyframesRule = GType gTypeCSSKeyframesRule'
-#else
 #endif
 
 
@@ -3579,7 +3626,6 @@ castToCSSMediaRule = castTo gTypeCSSMediaRule "CSSMediaRule"
 
 foreign import javascript unsafe "window[\"CSSMediaRule\"]" gTypeCSSMediaRule' :: JSRef GType
 gTypeCSSMediaRule = GType gTypeCSSMediaRule'
-#else
 #endif
 
 
@@ -3623,7 +3669,6 @@ castToCSSPageRule = castTo gTypeCSSPageRule "CSSPageRule"
 
 foreign import javascript unsafe "window[\"CSSPageRule\"]" gTypeCSSPageRule' :: JSRef GType
 gTypeCSSPageRule = GType gTypeCSSPageRule'
-#else
 #endif
 
 
@@ -3667,7 +3712,6 @@ castToCSSPrimitiveValue = castTo gTypeCSSPrimitiveValue "CSSPrimitiveValue"
 
 foreign import javascript unsafe "window[\"CSSPrimitiveValue\"]" gTypeCSSPrimitiveValue' :: JSRef GType
 gTypeCSSPrimitiveValue = GType gTypeCSSPrimitiveValue'
-#else
 #endif
 
 
@@ -3839,7 +3883,6 @@ castToCSSStyleRule = castTo gTypeCSSStyleRule "CSSStyleRule"
 
 foreign import javascript unsafe "window[\"CSSStyleRule\"]" gTypeCSSStyleRule' :: JSRef GType
 gTypeCSSStyleRule = GType gTypeCSSStyleRule'
-#else
 #endif
 
 
@@ -3928,7 +3971,6 @@ castToCSSSupportsRule = castTo gTypeCSSSupportsRule "CSSSupportsRule"
 
 foreign import javascript unsafe "window[\"CSSSupportsRule\"]" gTypeCSSSupportsRule' :: JSRef GType
 gTypeCSSSupportsRule = GType gTypeCSSSupportsRule'
-#else
 #endif
 
 
@@ -3972,7 +4014,6 @@ castToCSSUnknownRule = castTo gTypeCSSUnknownRule "CSSUnknownRule"
 
 foreign import javascript unsafe "window[\"CSSUnknownRule\"]" gTypeCSSUnknownRule' :: JSRef GType
 gTypeCSSUnknownRule = GType gTypeCSSUnknownRule'
-#else
 #endif
 
 
@@ -4067,7 +4108,6 @@ castToCSSValueList = castTo gTypeCSSValueList "CSSValueList"
 
 foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList' :: JSRef GType
 gTypeCSSValueList = GType gTypeCSSValueList'
-#else
 #endif
 
 
@@ -4107,7 +4147,6 @@ castToCanvasGradient = castTo gTypeCanvasGradient "CanvasGradient"
 
 foreign import javascript unsafe "window[\"CanvasGradient\"]" gTypeCanvasGradient' :: JSRef GType
 gTypeCanvasGradient = GType gTypeCanvasGradient'
-#else
 #endif
 
 
@@ -4147,7 +4186,6 @@ castToCanvasPattern = castTo gTypeCanvasPattern "CanvasPattern"
 
 foreign import javascript unsafe "window[\"CanvasPattern\"]" gTypeCanvasPattern' :: JSRef GType
 gTypeCanvasPattern = GType gTypeCanvasPattern'
-#else
 #endif
 
 
@@ -4187,7 +4225,6 @@ castToCanvasProxy = castTo gTypeCanvasProxy "CanvasProxy"
 
 foreign import javascript unsafe "window[\"CanvasProxy\"]" gTypeCanvasProxy' :: JSRef GType
 gTypeCanvasProxy = GType gTypeCanvasProxy'
-#else
 #endif
 
 
@@ -4232,7 +4269,6 @@ castToCanvasRenderingContext = castTo gTypeCanvasRenderingContext "CanvasRenderi
 
 foreign import javascript unsafe "window[\"CanvasRenderingContext\"]" gTypeCanvasRenderingContext' :: JSRef GType
 gTypeCanvasRenderingContext = GType gTypeCanvasRenderingContext'
-#else
 #endif
 
 
@@ -4276,7 +4312,6 @@ castToCanvasRenderingContext2D = castTo gTypeCanvasRenderingContext2D "CanvasRen
 
 foreign import javascript unsafe "window[\"CanvasRenderingContext2D\"]" gTypeCanvasRenderingContext2D' :: JSRef GType
 gTypeCanvasRenderingContext2D = GType gTypeCanvasRenderingContext2D'
-#else
 #endif
 
 
@@ -4316,7 +4351,6 @@ castToCapabilityRange = castTo gTypeCapabilityRange "CapabilityRange"
 
 foreign import javascript unsafe "window[\"CapabilityRange\"]" gTypeCapabilityRange' :: JSRef GType
 gTypeCapabilityRange = GType gTypeCapabilityRange'
-#else
 #endif
 
 
@@ -4362,7 +4396,6 @@ castToChannelMergerNode = castTo gTypeChannelMergerNode "ChannelMergerNode"
 
 foreign import javascript unsafe "window[\"ChannelMergerNode\"]" gTypeChannelMergerNode' :: JSRef GType
 gTypeChannelMergerNode = GType gTypeChannelMergerNode'
-#else
 #endif
 
 
@@ -4408,7 +4441,6 @@ castToChannelSplitterNode = castTo gTypeChannelSplitterNode "ChannelSplitterNode
 
 foreign import javascript unsafe "window[\"ChannelSplitterNode\"]" gTypeChannelSplitterNode' :: JSRef GType
 gTypeChannelSplitterNode = GType gTypeChannelSplitterNode'
-#else
 #endif
 
 
@@ -4500,7 +4532,6 @@ castToChildNode = castTo gTypeChildNode "ChildNode"
 
 foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode' :: JSRef GType
 gTypeChildNode = GType gTypeChildNode'
-#else
 #endif
 
 
@@ -4540,7 +4571,6 @@ castToClientRect = castTo gTypeClientRect "ClientRect"
 
 foreign import javascript unsafe "window[\"ClientRect\"]" gTypeClientRect' :: JSRef GType
 gTypeClientRect = GType gTypeClientRect'
-#else
 #endif
 
 
@@ -4580,7 +4610,6 @@ castToClientRectList = castTo gTypeClientRectList "ClientRectList"
 
 foreign import javascript unsafe "window[\"ClientRectList\"]" gTypeClientRectList' :: JSRef GType
 gTypeClientRectList = GType gTypeClientRectList'
-#else
 #endif
 
 
@@ -4624,7 +4653,6 @@ castToCloseEvent = castTo gTypeCloseEvent "CloseEvent"
 
 foreign import javascript unsafe "window[\"CloseEvent\"]" gTypeCloseEvent' :: JSRef GType
 gTypeCloseEvent = GType gTypeCloseEvent'
-#else
 #endif
 
 
@@ -4664,7 +4692,6 @@ castToCommandLineAPIHost = castTo gTypeCommandLineAPIHost "CommandLineAPIHost"
 
 foreign import javascript unsafe "window[\"CommandLineAPIHost\"]" gTypeCommandLineAPIHost' :: JSRef GType
 gTypeCommandLineAPIHost = GType gTypeCommandLineAPIHost'
-#else
 #endif
 
 
@@ -4759,7 +4786,6 @@ castToCompositionEvent = castTo gTypeCompositionEvent "CompositionEvent"
 
 foreign import javascript unsafe "window[\"CompositionEvent\"]" gTypeCompositionEvent' :: JSRef GType
 gTypeCompositionEvent = GType gTypeCompositionEvent'
-#else
 #endif
 
 
@@ -4805,7 +4831,6 @@ castToConvolverNode = castTo gTypeConvolverNode "ConvolverNode"
 
 foreign import javascript unsafe "window[\"ConvolverNode\"]" gTypeConvolverNode' :: JSRef GType
 gTypeConvolverNode = GType gTypeConvolverNode'
-#else
 #endif
 
 
@@ -4845,7 +4870,6 @@ castToCoordinates = castTo gTypeCoordinates "Coordinates"
 
 foreign import javascript unsafe "window[\"Coordinates\"]" gTypeCoordinates' :: JSRef GType
 gTypeCoordinates = GType gTypeCoordinates'
-#else
 #endif
 
 
@@ -4885,7 +4909,6 @@ castToCounter = castTo gTypeCounter "Counter"
 
 foreign import javascript unsafe "window[\"Counter\"]" gTypeCounter' :: JSRef GType
 gTypeCounter = GType gTypeCounter'
-#else
 #endif
 
 
@@ -4925,7 +4948,6 @@ castToCrypto = castTo gTypeCrypto "Crypto"
 
 foreign import javascript unsafe "window[\"Crypto\"]" gTypeCrypto' :: JSRef GType
 gTypeCrypto = GType gTypeCrypto'
-#else
 #endif
 
 
@@ -4965,7 +4987,6 @@ castToCryptoKey = castTo gTypeCryptoKey "CryptoKey"
 
 foreign import javascript unsafe "window[\"CryptoKey\"]" gTypeCryptoKey' :: JSRef GType
 gTypeCryptoKey = GType gTypeCryptoKey'
-#else
 #endif
 
 
@@ -5005,7 +5026,6 @@ castToCryptoKeyPair = castTo gTypeCryptoKeyPair "CryptoKeyPair"
 
 foreign import javascript unsafe "window[\"CryptoKeyPair\"]" gTypeCryptoKeyPair' :: JSRef GType
 gTypeCryptoKeyPair = GType gTypeCryptoKeyPair'
-#else
 #endif
 
 
@@ -5049,7 +5069,6 @@ castToCustomEvent = castTo gTypeCustomEvent "CustomEvent"
 
 foreign import javascript unsafe "window[\"CustomEvent\"]" gTypeCustomEvent' :: JSRef GType
 gTypeCustomEvent = GType gTypeCustomEvent'
-#else
 #endif
 
 
@@ -5094,7 +5113,6 @@ castToDOMError = castTo gTypeDOMError "DOMError"
 
 foreign import javascript unsafe "window[\"DOMError\"]" gTypeDOMError' :: JSRef GType
 gTypeDOMError = GType gTypeDOMError'
-#else
 #endif
 
 
@@ -5176,7 +5194,9 @@ castToDOMNamedFlowCollection = castTo gTypeDOMNamedFlowCollection "DOMNamedFlowC
 foreign import javascript unsafe "window[\"WebKitNamedFlowCollection\"]" gTypeDOMNamedFlowCollection' :: JSRef GType
 gTypeDOMNamedFlowCollection = GType gTypeDOMNamedFlowCollection'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsDOMNamedFlowCollection o = DOMNamedFlowCollectionClass o
+#endif
 #endif
 
 
@@ -5216,7 +5236,6 @@ castToDOMParser = castTo gTypeDOMParser "DOMParser"
 
 foreign import javascript unsafe "window[\"DOMParser\"]" gTypeDOMParser' :: JSRef GType
 gTypeDOMParser = GType gTypeDOMParser'
-#else
 #endif
 
 
@@ -5342,7 +5361,6 @@ castToDOMStringMap = castTo gTypeDOMStringMap "DOMStringMap"
 
 foreign import javascript unsafe "window[\"DOMStringMap\"]" gTypeDOMStringMap' :: JSRef GType
 gTypeDOMStringMap = GType gTypeDOMStringMap'
-#else
 #endif
 
 
@@ -5434,7 +5452,6 @@ castToDataCue = castTo gTypeDataCue "DataCue"
 
 foreign import javascript unsafe "window[\"WebKitDataCue\"]" gTypeDataCue' :: JSRef GType
 gTypeDataCue = GType gTypeDataCue'
-#else
 #endif
 
 
@@ -5474,7 +5491,6 @@ castToDataTransfer = castTo gTypeDataTransfer "DataTransfer"
 
 foreign import javascript unsafe "window[\"DataTransfer\"]" gTypeDataTransfer' :: JSRef GType
 gTypeDataTransfer = GType gTypeDataTransfer'
-#else
 #endif
 
 
@@ -5514,7 +5530,6 @@ castToDataTransferItem = castTo gTypeDataTransferItem "DataTransferItem"
 
 foreign import javascript unsafe "window[\"DataTransferItem\"]" gTypeDataTransferItem' :: JSRef GType
 gTypeDataTransferItem = GType gTypeDataTransferItem'
-#else
 #endif
 
 
@@ -5554,7 +5569,6 @@ castToDataTransferItemList = castTo gTypeDataTransferItemList "DataTransferItemL
 
 foreign import javascript unsafe "window[\"DataTransferItemList\"]" gTypeDataTransferItemList' :: JSRef GType
 gTypeDataTransferItemList = GType gTypeDataTransferItemList'
-#else
 #endif
 
 
@@ -5594,7 +5608,6 @@ castToDatabase = castTo gTypeDatabase "Database"
 
 foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase' :: JSRef GType
 gTypeDatabase = GType gTypeDatabase'
-#else
 #endif
 
 
@@ -5640,7 +5653,6 @@ castToDedicatedWorkerGlobalScope = castTo gTypeDedicatedWorkerGlobalScope "Dedic
 
 foreign import javascript unsafe "window[\"DedicatedWorkerGlobalScope\"]" gTypeDedicatedWorkerGlobalScope' :: JSRef GType
 gTypeDedicatedWorkerGlobalScope = GType gTypeDedicatedWorkerGlobalScope'
-#else
 #endif
 
 
@@ -5686,7 +5698,6 @@ castToDelayNode = castTo gTypeDelayNode "DelayNode"
 
 foreign import javascript unsafe "window[\"DelayNode\"]" gTypeDelayNode' :: JSRef GType
 gTypeDelayNode = GType gTypeDelayNode'
-#else
 #endif
 
 
@@ -5730,7 +5741,6 @@ castToDeviceMotionEvent = castTo gTypeDeviceMotionEvent "DeviceMotionEvent"
 
 foreign import javascript unsafe "window[\"DeviceMotionEvent\"]" gTypeDeviceMotionEvent' :: JSRef GType
 gTypeDeviceMotionEvent = GType gTypeDeviceMotionEvent'
-#else
 #endif
 
 
@@ -5774,7 +5784,6 @@ castToDeviceOrientationEvent = castTo gTypeDeviceOrientationEvent "DeviceOrienta
 
 foreign import javascript unsafe "window[\"DeviceOrientationEvent\"]" gTypeDeviceOrientationEvent' :: JSRef GType
 gTypeDeviceOrientationEvent = GType gTypeDeviceOrientationEvent'
-#else
 #endif
 
 
@@ -5818,7 +5827,6 @@ castToDeviceProximityEvent = castTo gTypeDeviceProximityEvent "DeviceProximityEv
 
 foreign import javascript unsafe "window[\"DeviceProximityEvent\"]" gTypeDeviceProximityEvent' :: JSRef GType
 gTypeDeviceProximityEvent = GType gTypeDeviceProximityEvent'
-#else
 #endif
 
 
@@ -6010,7 +6018,6 @@ castToDynamicsCompressorNode = castTo gTypeDynamicsCompressorNode "DynamicsCompr
 
 foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynamicsCompressorNode' :: JSRef GType
 gTypeDynamicsCompressorNode = GType gTypeDynamicsCompressorNode'
-#else
 #endif
 
 
@@ -6050,7 +6057,6 @@ castToEXTBlendMinMax = castTo gTypeEXTBlendMinMax "EXTBlendMinMax"
 
 foreign import javascript unsafe "window[\"EXTBlendMinMax\"]" gTypeEXTBlendMinMax' :: JSRef GType
 gTypeEXTBlendMinMax = GType gTypeEXTBlendMinMax'
-#else
 #endif
 
 
@@ -6090,7 +6096,6 @@ castToEXTFragDepth = castTo gTypeEXTFragDepth "EXTFragDepth"
 
 foreign import javascript unsafe "window[\"EXTFragDepth\"]" gTypeEXTFragDepth' :: JSRef GType
 gTypeEXTFragDepth = GType gTypeEXTFragDepth'
-#else
 #endif
 
 
@@ -6130,7 +6135,6 @@ castToEXTShaderTextureLOD = castTo gTypeEXTShaderTextureLOD "EXTShaderTextureLOD
 
 foreign import javascript unsafe "window[\"EXTShaderTextureLOD\"]" gTypeEXTShaderTextureLOD' :: JSRef GType
 gTypeEXTShaderTextureLOD = GType gTypeEXTShaderTextureLOD'
-#else
 #endif
 
 
@@ -6170,7 +6174,6 @@ castToEXTTextureFilterAnisotropic = castTo gTypeEXTTextureFilterAnisotropic "EXT
 
 foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gTypeEXTTextureFilterAnisotropic' :: JSRef GType
 gTypeEXTTextureFilterAnisotropic = GType gTypeEXTTextureFilterAnisotropic'
-#else
 #endif
 
 
@@ -6210,7 +6213,6 @@ castToEXTsRGB = castTo gTypeEXTsRGB "EXTsRGB"
 
 foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB' :: JSRef GType
 gTypeEXTsRGB = GType gTypeEXTsRGB'
-#else
 #endif
 
 
@@ -6308,7 +6310,6 @@ castToEntity = castTo gTypeEntity "Entity"
 
 foreign import javascript unsafe "window[\"Entity\"]" gTypeEntity' :: JSRef GType
 gTypeEntity = GType gTypeEntity'
-#else
 #endif
 
 
@@ -6399,7 +6400,6 @@ castToErrorEvent = castTo gTypeErrorEvent "ErrorEvent"
 
 foreign import javascript unsafe "window[\"ErrorEvent\"]" gTypeErrorEvent' :: JSRef GType
 gTypeErrorEvent = GType gTypeErrorEvent'
-#else
 #endif
 
 
@@ -6485,7 +6485,6 @@ castToEventListener = castTo gTypeEventListener "EventListener"
 
 foreign import javascript unsafe "window[\"EventListener\"]" gTypeEventListener' :: JSRef GType
 gTypeEventListener = GType gTypeEventListener'
-#else
 #endif
 
 
@@ -6529,7 +6528,6 @@ castToEventSource = castTo gTypeEventSource "EventSource"
 
 foreign import javascript unsafe "window[\"EventSource\"]" gTypeEventSource' :: JSRef GType
 gTypeEventSource = GType gTypeEventSource'
-#else
 #endif
 
 
@@ -6660,7 +6658,6 @@ castToFileError = castTo gTypeFileError "FileError"
 
 foreign import javascript unsafe "window[\"FileError\"]" gTypeFileError' :: JSRef GType
 gTypeFileError = GType gTypeFileError'
-#else
 #endif
 
 
@@ -6745,7 +6742,6 @@ castToFileReader = castTo gTypeFileReader "FileReader"
 
 foreign import javascript unsafe "window[\"FileReader\"]" gTypeFileReader' :: JSRef GType
 gTypeFileReader = GType gTypeFileReader'
-#else
 #endif
 
 
@@ -6785,7 +6781,6 @@ castToFileReaderSync = castTo gTypeFileReaderSync "FileReaderSync"
 
 foreign import javascript unsafe "window[\"FileReaderSync\"]" gTypeFileReaderSync' :: JSRef GType
 gTypeFileReaderSync = GType gTypeFileReaderSync'
-#else
 #endif
 
 
@@ -6831,7 +6826,6 @@ castToFocusEvent = castTo gTypeFocusEvent "FocusEvent"
 
 foreign import javascript unsafe "window[\"FocusEvent\"]" gTypeFocusEvent' :: JSRef GType
 gTypeFocusEvent = GType gTypeFocusEvent'
-#else
 #endif
 
 
@@ -6875,7 +6869,6 @@ castToFontLoader = castTo gTypeFontLoader "FontLoader"
 
 foreign import javascript unsafe "window[\"FontLoader\"]" gTypeFontLoader' :: JSRef GType
 gTypeFontLoader = GType gTypeFontLoader'
-#else
 #endif
 
 
@@ -6915,7 +6908,6 @@ castToFormData = castTo gTypeFormData "FormData"
 
 foreign import javascript unsafe "window[\"FormData\"]" gTypeFormData' :: JSRef GType
 gTypeFormData = GType gTypeFormData'
-#else
 #endif
 
 
@@ -6961,7 +6953,6 @@ castToGainNode = castTo gTypeGainNode "GainNode"
 
 foreign import javascript unsafe "window[\"GainNode\"]" gTypeGainNode' :: JSRef GType
 gTypeGainNode = GType gTypeGainNode'
-#else
 #endif
 
 
@@ -7001,7 +6992,6 @@ castToGamepad = castTo gTypeGamepad "Gamepad"
 
 foreign import javascript unsafe "window[\"Gamepad\"]" gTypeGamepad' :: JSRef GType
 gTypeGamepad = GType gTypeGamepad'
-#else
 #endif
 
 
@@ -7041,7 +7031,6 @@ castToGamepadButton = castTo gTypeGamepadButton "GamepadButton"
 
 foreign import javascript unsafe "window[\"GamepadButton\"]" gTypeGamepadButton' :: JSRef GType
 gTypeGamepadButton = GType gTypeGamepadButton'
-#else
 #endif
 
 
@@ -7085,7 +7074,6 @@ castToGamepadEvent = castTo gTypeGamepadEvent "GamepadEvent"
 
 foreign import javascript unsafe "window[\"GamepadEvent\"]" gTypeGamepadEvent' :: JSRef GType
 gTypeGamepadEvent = GType gTypeGamepadEvent'
-#else
 #endif
 
 
@@ -7166,7 +7154,6 @@ castToGeoposition = castTo gTypeGeoposition "Geoposition"
 
 foreign import javascript unsafe "window[\"Geoposition\"]" gTypeGeoposition' :: JSRef GType
 gTypeGeoposition = GType gTypeGeoposition'
-#else
 #endif
 
 
@@ -7206,7 +7193,6 @@ castToHTMLAllCollection = castTo gTypeHTMLAllCollection "HTMLAllCollection"
 
 foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCollection' :: JSRef GType
 gTypeHTMLAllCollection = GType gTypeHTMLAllCollection'
-#else
 #endif
 
 
@@ -7865,7 +7851,6 @@ castToHTMLDataListElement = castTo gTypeHTMLDataListElement "HTMLDataListElement
 
 foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLDataListElement' :: JSRef GType
 gTypeHTMLDataListElement = GType gTypeHTMLDataListElement'
-#else
 #endif
 
 
@@ -8318,7 +8303,6 @@ castToHTMLFormControlsCollection = castTo gTypeHTMLFormControlsCollection "HTMLF
 
 foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeHTMLFormControlsCollection' :: JSRef GType
 gTypeHTMLFormControlsCollection = GType gTypeHTMLFormControlsCollection'
-#else
 #endif
 
 
@@ -9393,7 +9377,6 @@ castToHTMLMeterElement = castTo gTypeHTMLMeterElement "HTMLMeterElement"
 
 foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterElement' :: JSRef GType
 gTypeHTMLMeterElement = GType gTypeHTMLMeterElement'
-#else
 #endif
 
 
@@ -9743,7 +9726,6 @@ castToHTMLOutputElement = castTo gTypeHTMLOutputElement "HTMLOutputElement"
 
 foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutputElement' :: JSRef GType
 gTypeHTMLOutputElement = GType gTypeHTMLOutputElement'
-#else
 #endif
 
 
@@ -9946,7 +9928,6 @@ castToHTMLProgressElement = castTo gTypeHTMLProgressElement "HTMLProgressElement
 
 foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProgressElement' :: JSRef GType
 gTypeHTMLProgressElement = GType gTypeHTMLProgressElement'
-#else
 #endif
 
 
@@ -10149,7 +10130,6 @@ castToHTMLSourceElement = castTo gTypeHTMLSourceElement "HTMLSourceElement"
 
 foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSourceElement' :: JSRef GType
 gTypeHTMLSourceElement = GType gTypeHTMLSourceElement'
-#else
 #endif
 
 
@@ -10199,7 +10179,6 @@ castToHTMLSpanElement = castTo gTypeHTMLSpanElement "HTMLSpanElement"
 
 foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElement' :: JSRef GType
 gTypeHTMLSpanElement = GType gTypeHTMLSpanElement'
-#else
 #endif
 
 
@@ -10606,7 +10585,6 @@ castToHTMLTemplateElement = castTo gTypeHTMLTemplateElement "HTMLTemplateElement
 
 foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemplateElement' :: JSRef GType
 gTypeHTMLTemplateElement = GType gTypeHTMLTemplateElement'
-#else
 #endif
 
 
@@ -10758,7 +10736,6 @@ castToHTMLTrackElement = castTo gTypeHTMLTrackElement "HTMLTrackElement"
 
 foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackElement' :: JSRef GType
 gTypeHTMLTrackElement = GType gTypeHTMLTrackElement'
-#else
 #endif
 
 
@@ -10859,7 +10836,6 @@ castToHTMLUnknownElement = castTo gTypeHTMLUnknownElement "HTMLUnknownElement"
 
 foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnknownElement' :: JSRef GType
 gTypeHTMLUnknownElement = GType gTypeHTMLUnknownElement'
-#else
 #endif
 
 
@@ -10956,7 +10932,6 @@ castToHashChangeEvent = castTo gTypeHashChangeEvent "HashChangeEvent"
 
 foreign import javascript unsafe "window[\"HashChangeEvent\"]" gTypeHashChangeEvent' :: JSRef GType
 gTypeHashChangeEvent = GType gTypeHashChangeEvent'
-#else
 #endif
 
 
@@ -11037,7 +11012,6 @@ castToIDBAny = castTo gTypeIDBAny "IDBAny"
 
 foreign import javascript unsafe "window[\"IDBAny\"]" gTypeIDBAny' :: JSRef GType
 gTypeIDBAny = GType gTypeIDBAny'
-#else
 #endif
 
 
@@ -11082,7 +11056,6 @@ castToIDBCursor = castTo gTypeIDBCursor "IDBCursor"
 
 foreign import javascript unsafe "window[\"IDBCursor\"]" gTypeIDBCursor' :: JSRef GType
 gTypeIDBCursor = GType gTypeIDBCursor'
-#else
 #endif
 
 
@@ -11126,7 +11099,6 @@ castToIDBCursorWithValue = castTo gTypeIDBCursorWithValue "IDBCursorWithValue"
 
 foreign import javascript unsafe "window[\"IDBCursorWithValue\"]" gTypeIDBCursorWithValue' :: JSRef GType
 gTypeIDBCursorWithValue = GType gTypeIDBCursorWithValue'
-#else
 #endif
 
 
@@ -11170,7 +11142,6 @@ castToIDBDatabase = castTo gTypeIDBDatabase "IDBDatabase"
 
 foreign import javascript unsafe "window[\"IDBDatabase\"]" gTypeIDBDatabase' :: JSRef GType
 gTypeIDBDatabase = GType gTypeIDBDatabase'
-#else
 #endif
 
 
@@ -11210,7 +11181,6 @@ castToIDBFactory = castTo gTypeIDBFactory "IDBFactory"
 
 foreign import javascript unsafe "window[\"IDBFactory\"]" gTypeIDBFactory' :: JSRef GType
 gTypeIDBFactory = GType gTypeIDBFactory'
-#else
 #endif
 
 
@@ -11250,7 +11220,6 @@ castToIDBIndex = castTo gTypeIDBIndex "IDBIndex"
 
 foreign import javascript unsafe "window[\"IDBIndex\"]" gTypeIDBIndex' :: JSRef GType
 gTypeIDBIndex = GType gTypeIDBIndex'
-#else
 #endif
 
 
@@ -11290,7 +11259,6 @@ castToIDBKeyRange = castTo gTypeIDBKeyRange "IDBKeyRange"
 
 foreign import javascript unsafe "window[\"IDBKeyRange\"]" gTypeIDBKeyRange' :: JSRef GType
 gTypeIDBKeyRange = GType gTypeIDBKeyRange'
-#else
 #endif
 
 
@@ -11330,7 +11298,6 @@ castToIDBObjectStore = castTo gTypeIDBObjectStore "IDBObjectStore"
 
 foreign import javascript unsafe "window[\"IDBObjectStore\"]" gTypeIDBObjectStore' :: JSRef GType
 gTypeIDBObjectStore = GType gTypeIDBObjectStore'
-#else
 #endif
 
 
@@ -11376,7 +11343,6 @@ castToIDBOpenDBRequest = castTo gTypeIDBOpenDBRequest "IDBOpenDBRequest"
 
 foreign import javascript unsafe "window[\"IDBOpenDBRequest\"]" gTypeIDBOpenDBRequest' :: JSRef GType
 gTypeIDBOpenDBRequest = GType gTypeIDBOpenDBRequest'
-#else
 #endif
 
 
@@ -11425,7 +11391,6 @@ castToIDBRequest = castTo gTypeIDBRequest "IDBRequest"
 
 foreign import javascript unsafe "window[\"IDBRequest\"]" gTypeIDBRequest' :: JSRef GType
 gTypeIDBRequest = GType gTypeIDBRequest'
-#else
 #endif
 
 
@@ -11469,7 +11434,6 @@ castToIDBTransaction = castTo gTypeIDBTransaction "IDBTransaction"
 
 foreign import javascript unsafe "window[\"IDBTransaction\"]" gTypeIDBTransaction' :: JSRef GType
 gTypeIDBTransaction = GType gTypeIDBTransaction'
-#else
 #endif
 
 
@@ -11513,7 +11477,6 @@ castToIDBVersionChangeEvent = castTo gTypeIDBVersionChangeEvent "IDBVersionChang
 
 foreign import javascript unsafe "window[\"IDBVersionChangeEvent\"]" gTypeIDBVersionChangeEvent' :: JSRef GType
 gTypeIDBVersionChangeEvent = GType gTypeIDBVersionChangeEvent'
-#else
 #endif
 
 
@@ -11553,7 +11516,6 @@ castToImageData = castTo gTypeImageData "ImageData"
 
 foreign import javascript unsafe "window[\"ImageData\"]" gTypeImageData' :: JSRef GType
 gTypeImageData = GType gTypeImageData'
-#else
 #endif
 
 
@@ -11593,7 +11555,6 @@ castToInspectorFrontendHost = castTo gTypeInspectorFrontendHost "InspectorFronte
 
 foreign import javascript unsafe "window[\"InspectorFrontendHost\"]" gTypeInspectorFrontendHost' :: JSRef GType
 gTypeInspectorFrontendHost = GType gTypeInspectorFrontendHost'
-#else
 #endif
 
 
@@ -11635,7 +11596,6 @@ castToInternalSettings = castTo gTypeInternalSettings "InternalSettings"
 
 foreign import javascript unsafe "window[\"InternalSettings\"]" gTypeInternalSettings' :: JSRef GType
 gTypeInternalSettings = GType gTypeInternalSettings'
-#else
 #endif
 
 
@@ -11675,7 +11635,6 @@ castToInternals = castTo gTypeInternals "Internals"
 
 foreign import javascript unsafe "window[\"Internals\"]" gTypeInternals' :: JSRef GType
 gTypeInternals = GType gTypeInternals'
-#else
 #endif
 
 
@@ -11722,7 +11681,9 @@ castToKeyboardEvent = castTo gTypeKeyboardEvent "KeyboardEvent"
 foreign import javascript unsafe "window[\"KeyboardEvent\"]" gTypeKeyboardEvent' :: JSRef GType
 gTypeKeyboardEvent = GType gTypeKeyboardEvent'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsKeyboardEvent o = KeyboardEventClass o
+#endif
 #endif
 
 
@@ -11803,7 +11764,6 @@ castToMallocStatistics = castTo gTypeMallocStatistics "MallocStatistics"
 
 foreign import javascript unsafe "window[\"MallocStatistics\"]" gTypeMallocStatistics' :: JSRef GType
 gTypeMallocStatistics = GType gTypeMallocStatistics'
-#else
 #endif
 
 
@@ -11847,7 +11807,6 @@ castToMediaController = castTo gTypeMediaController "MediaController"
 
 foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaController' :: JSRef GType
 gTypeMediaController = GType gTypeMediaController'
-#else
 #endif
 
 
@@ -11887,7 +11846,6 @@ castToMediaControlsHost = castTo gTypeMediaControlsHost "MediaControlsHost"
 
 foreign import javascript unsafe "window[\"MediaControlsHost\"]" gTypeMediaControlsHost' :: JSRef GType
 gTypeMediaControlsHost = GType gTypeMediaControlsHost'
-#else
 #endif
 
 
@@ -11933,7 +11891,6 @@ castToMediaElementAudioSourceNode = castTo gTypeMediaElementAudioSourceNode "Med
 
 foreign import javascript unsafe "window[\"MediaElementAudioSourceNode\"]" gTypeMediaElementAudioSourceNode' :: JSRef GType
 gTypeMediaElementAudioSourceNode = GType gTypeMediaElementAudioSourceNode'
-#else
 #endif
 
 
@@ -12014,7 +11971,6 @@ castToMediaKeyError = castTo gTypeMediaKeyError "MediaKeyError"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeyError\"]" gTypeMediaKeyError' :: JSRef GType
 gTypeMediaKeyError = GType gTypeMediaKeyError'
-#else
 #endif
 
 
@@ -12058,7 +12014,6 @@ castToMediaKeyEvent = castTo gTypeMediaKeyEvent "MediaKeyEvent"
 
 foreign import javascript unsafe "window[\"MediaKeyEvent\"]" gTypeMediaKeyEvent' :: JSRef GType
 gTypeMediaKeyEvent = GType gTypeMediaKeyEvent'
-#else
 #endif
 
 
@@ -12102,7 +12057,6 @@ castToMediaKeyMessageEvent = castTo gTypeMediaKeyMessageEvent "MediaKeyMessageEv
 
 foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeMediaKeyMessageEvent' :: JSRef GType
 gTypeMediaKeyMessageEvent = GType gTypeMediaKeyMessageEvent'
-#else
 #endif
 
 
@@ -12146,7 +12100,6 @@ castToMediaKeyNeededEvent = castTo gTypeMediaKeyNeededEvent "MediaKeyNeededEvent
 
 foreign import javascript unsafe "window[\"MediaKeyNeededEvent\"]" gTypeMediaKeyNeededEvent' :: JSRef GType
 gTypeMediaKeyNeededEvent = GType gTypeMediaKeyNeededEvent'
-#else
 #endif
 
 
@@ -12190,7 +12143,6 @@ castToMediaKeySession = castTo gTypeMediaKeySession "MediaKeySession"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeMediaKeySession' :: JSRef GType
 gTypeMediaKeySession = GType gTypeMediaKeySession'
-#else
 #endif
 
 
@@ -12230,7 +12182,6 @@ castToMediaKeys = castTo gTypeMediaKeys "MediaKeys"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeMediaKeys' :: JSRef GType
 gTypeMediaKeys = GType gTypeMediaKeys'
-#else
 #endif
 
 
@@ -12356,7 +12307,6 @@ castToMediaSource = castTo gTypeMediaSource "MediaSource"
 
 foreign import javascript unsafe "window[\"MediaSource\"]" gTypeMediaSource' :: JSRef GType
 gTypeMediaSource = GType gTypeMediaSource'
-#else
 #endif
 
 
@@ -12396,7 +12346,6 @@ castToMediaSourceStates = castTo gTypeMediaSourceStates "MediaSourceStates"
 
 foreign import javascript unsafe "window[\"MediaSourceStates\"]" gTypeMediaSourceStates' :: JSRef GType
 gTypeMediaSourceStates = GType gTypeMediaSourceStates'
-#else
 #endif
 
 
@@ -12440,7 +12389,6 @@ castToMediaStream = castTo gTypeMediaStream "MediaStream"
 
 foreign import javascript unsafe "window[\"webkitMediaStream\"]" gTypeMediaStream' :: JSRef GType
 gTypeMediaStream = GType gTypeMediaStream'
-#else
 #endif
 
 
@@ -12486,7 +12434,6 @@ castToMediaStreamAudioDestinationNode = castTo gTypeMediaStreamAudioDestinationN
 
 foreign import javascript unsafe "window[\"MediaStreamAudioDestinationNode\"]" gTypeMediaStreamAudioDestinationNode' :: JSRef GType
 gTypeMediaStreamAudioDestinationNode = GType gTypeMediaStreamAudioDestinationNode'
-#else
 #endif
 
 
@@ -12532,7 +12479,6 @@ castToMediaStreamAudioSourceNode = castTo gTypeMediaStreamAudioSourceNode "Media
 
 foreign import javascript unsafe "window[\"MediaStreamAudioSourceNode\"]" gTypeMediaStreamAudioSourceNode' :: JSRef GType
 gTypeMediaStreamAudioSourceNode = GType gTypeMediaStreamAudioSourceNode'
-#else
 #endif
 
 
@@ -12577,7 +12523,6 @@ castToMediaStreamCapabilities = castTo gTypeMediaStreamCapabilities "MediaStream
 
 foreign import javascript unsafe "window[\"MediaStreamCapabilities\"]" gTypeMediaStreamCapabilities' :: JSRef GType
 gTypeMediaStreamCapabilities = GType gTypeMediaStreamCapabilities'
-#else
 #endif
 
 
@@ -12621,7 +12566,6 @@ castToMediaStreamEvent = castTo gTypeMediaStreamEvent "MediaStreamEvent"
 
 foreign import javascript unsafe "window[\"MediaStreamEvent\"]" gTypeMediaStreamEvent' :: JSRef GType
 gTypeMediaStreamEvent = GType gTypeMediaStreamEvent'
-#else
 #endif
 
 
@@ -12670,7 +12614,6 @@ castToMediaStreamTrack = castTo gTypeMediaStreamTrack "MediaStreamTrack"
 
 foreign import javascript unsafe "window[\"MediaStreamTrack\"]" gTypeMediaStreamTrack' :: JSRef GType
 gTypeMediaStreamTrack = GType gTypeMediaStreamTrack'
-#else
 #endif
 
 
@@ -12714,7 +12657,6 @@ castToMediaStreamTrackEvent = castTo gTypeMediaStreamTrackEvent "MediaStreamTrac
 
 foreign import javascript unsafe "window[\"MediaStreamTrackEvent\"]" gTypeMediaStreamTrackEvent' :: JSRef GType
 gTypeMediaStreamTrackEvent = GType gTypeMediaStreamTrackEvent'
-#else
 #endif
 
 
@@ -12754,7 +12696,6 @@ castToMediaTrackConstraint = castTo gTypeMediaTrackConstraint "MediaTrackConstra
 
 foreign import javascript unsafe "window[\"MediaTrackConstraint\"]" gTypeMediaTrackConstraint' :: JSRef GType
 gTypeMediaTrackConstraint = GType gTypeMediaTrackConstraint'
-#else
 #endif
 
 
@@ -12794,7 +12735,6 @@ castToMediaTrackConstraintSet = castTo gTypeMediaTrackConstraintSet "MediaTrackC
 
 foreign import javascript unsafe "window[\"MediaTrackConstraintSet\"]" gTypeMediaTrackConstraintSet' :: JSRef GType
 gTypeMediaTrackConstraintSet = GType gTypeMediaTrackConstraintSet'
-#else
 #endif
 
 
@@ -12834,7 +12774,6 @@ castToMediaTrackConstraints = castTo gTypeMediaTrackConstraints "MediaTrackConst
 
 foreign import javascript unsafe "window[\"MediaTrackConstraints\"]" gTypeMediaTrackConstraints' :: JSRef GType
 gTypeMediaTrackConstraints = GType gTypeMediaTrackConstraints'
-#else
 #endif
 
 
@@ -12874,7 +12813,6 @@ castToMemoryInfo = castTo gTypeMemoryInfo "MemoryInfo"
 
 foreign import javascript unsafe "window[\"MemoryInfo\"]" gTypeMemoryInfo' :: JSRef GType
 gTypeMemoryInfo = GType gTypeMemoryInfo'
-#else
 #endif
 
 
@@ -12914,7 +12852,6 @@ castToMessageChannel = castTo gTypeMessageChannel "MessageChannel"
 
 foreign import javascript unsafe "window[\"MessageChannel\"]" gTypeMessageChannel' :: JSRef GType
 gTypeMessageChannel = GType gTypeMessageChannel'
-#else
 #endif
 
 
@@ -12958,7 +12895,6 @@ castToMessageEvent = castTo gTypeMessageEvent "MessageEvent"
 
 foreign import javascript unsafe "window[\"MessageEvent\"]" gTypeMessageEvent' :: JSRef GType
 gTypeMessageEvent = GType gTypeMessageEvent'
-#else
 #endif
 
 
@@ -13181,7 +13117,6 @@ castToMutationEvent = castTo gTypeMutationEvent "MutationEvent"
 
 foreign import javascript unsafe "window[\"MutationEvent\"]" gTypeMutationEvent' :: JSRef GType
 gTypeMutationEvent = GType gTypeMutationEvent'
-#else
 #endif
 
 
@@ -13221,7 +13156,6 @@ castToMutationObserver = castTo gTypeMutationObserver "MutationObserver"
 
 foreign import javascript unsafe "window[\"MutationObserver\"]" gTypeMutationObserver' :: JSRef GType
 gTypeMutationObserver = GType gTypeMutationObserver'
-#else
 #endif
 
 
@@ -13261,7 +13195,6 @@ castToMutationRecord = castTo gTypeMutationRecord "MutationRecord"
 
 foreign import javascript unsafe "window[\"MutationRecord\"]" gTypeMutationRecord' :: JSRef GType
 gTypeMutationRecord = GType gTypeMutationRecord'
-#else
 #endif
 
 
@@ -13387,7 +13320,6 @@ castToNavigatorUserMediaError = castTo gTypeNavigatorUserMediaError "NavigatorUs
 
 foreign import javascript unsafe "window[\"NavigatorUserMediaError\"]" gTypeNavigatorUserMediaError' :: JSRef GType
 gTypeNavigatorUserMediaError = GType gTypeNavigatorUserMediaError'
-#else
 #endif
 
 
@@ -13609,7 +13541,6 @@ castToNotification = castTo gTypeNotification "Notification"
 
 foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification' :: JSRef GType
 gTypeNotification = GType gTypeNotification'
-#else
 #endif
 
 
@@ -13649,7 +13580,6 @@ castToNotificationCenter = castTo gTypeNotificationCenter "NotificationCenter"
 
 foreign import javascript unsafe "window[\"NotificationCenter\"]" gTypeNotificationCenter' :: JSRef GType
 gTypeNotificationCenter = GType gTypeNotificationCenter'
-#else
 #endif
 
 
@@ -13689,7 +13619,6 @@ castToOESElementIndexUint = castTo gTypeOESElementIndexUint "OESElementIndexUint
 
 foreign import javascript unsafe "window[\"OESElementIndexUint\"]" gTypeOESElementIndexUint' :: JSRef GType
 gTypeOESElementIndexUint = GType gTypeOESElementIndexUint'
-#else
 #endif
 
 
@@ -13729,7 +13658,6 @@ castToOESStandardDerivatives = castTo gTypeOESStandardDerivatives "OESStandardDe
 
 foreign import javascript unsafe "window[\"OESStandardDerivatives\"]" gTypeOESStandardDerivatives' :: JSRef GType
 gTypeOESStandardDerivatives = GType gTypeOESStandardDerivatives'
-#else
 #endif
 
 
@@ -13769,7 +13697,6 @@ castToOESTextureFloat = castTo gTypeOESTextureFloat "OESTextureFloat"
 
 foreign import javascript unsafe "window[\"OESTextureFloat\"]" gTypeOESTextureFloat' :: JSRef GType
 gTypeOESTextureFloat = GType gTypeOESTextureFloat'
-#else
 #endif
 
 
@@ -13809,7 +13736,6 @@ castToOESTextureFloatLinear = castTo gTypeOESTextureFloatLinear "OESTextureFloat
 
 foreign import javascript unsafe "window[\"OESTextureFloatLinear\"]" gTypeOESTextureFloatLinear' :: JSRef GType
 gTypeOESTextureFloatLinear = GType gTypeOESTextureFloatLinear'
-#else
 #endif
 
 
@@ -13849,7 +13775,6 @@ castToOESTextureHalfFloat = castTo gTypeOESTextureHalfFloat "OESTextureHalfFloat
 
 foreign import javascript unsafe "window[\"OESTextureHalfFloat\"]" gTypeOESTextureHalfFloat' :: JSRef GType
 gTypeOESTextureHalfFloat = GType gTypeOESTextureHalfFloat'
-#else
 #endif
 
 
@@ -13889,7 +13814,6 @@ castToOESTextureHalfFloatLinear = castTo gTypeOESTextureHalfFloatLinear "OESText
 
 foreign import javascript unsafe "window[\"OESTextureHalfFloatLinear\"]" gTypeOESTextureHalfFloatLinear' :: JSRef GType
 gTypeOESTextureHalfFloatLinear = GType gTypeOESTextureHalfFloatLinear'
-#else
 #endif
 
 
@@ -13929,7 +13853,6 @@ castToOESVertexArrayObject = castTo gTypeOESVertexArrayObject "OESVertexArrayObj
 
 foreign import javascript unsafe "window[\"OESVertexArrayObject\"]" gTypeOESVertexArrayObject' :: JSRef GType
 gTypeOESVertexArrayObject = GType gTypeOESVertexArrayObject'
-#else
 #endif
 
 
@@ -13973,7 +13896,6 @@ castToOfflineAudioCompletionEvent = castTo gTypeOfflineAudioCompletionEvent "Off
 
 foreign import javascript unsafe "window[\"OfflineAudioCompletionEvent\"]" gTypeOfflineAudioCompletionEvent' :: JSRef GType
 gTypeOfflineAudioCompletionEvent = GType gTypeOfflineAudioCompletionEvent'
-#else
 #endif
 
 
@@ -14019,7 +13941,6 @@ castToOfflineAudioContext = castTo gTypeOfflineAudioContext "OfflineAudioContext
 
 foreign import javascript unsafe "window[\"OfflineAudioContext\"]" gTypeOfflineAudioContext' :: JSRef GType
 gTypeOfflineAudioContext = GType gTypeOfflineAudioContext'
-#else
 #endif
 
 
@@ -14065,7 +13986,6 @@ castToOscillatorNode = castTo gTypeOscillatorNode "OscillatorNode"
 
 foreign import javascript unsafe "window[\"OscillatorNode\"]" gTypeOscillatorNode' :: JSRef GType
 gTypeOscillatorNode = GType gTypeOscillatorNode'
-#else
 #endif
 
 
@@ -14109,7 +14029,6 @@ castToOverflowEvent = castTo gTypeOverflowEvent "OverflowEvent"
 
 foreign import javascript unsafe "window[\"OverflowEvent\"]" gTypeOverflowEvent' :: JSRef GType
 gTypeOverflowEvent = GType gTypeOverflowEvent'
-#else
 #endif
 
 
@@ -14153,7 +14072,6 @@ castToPageTransitionEvent = castTo gTypePageTransitionEvent "PageTransitionEvent
 
 foreign import javascript unsafe "window[\"PageTransitionEvent\"]" gTypePageTransitionEvent' :: JSRef GType
 gTypePageTransitionEvent = GType gTypePageTransitionEvent'
-#else
 #endif
 
 
@@ -14199,7 +14117,6 @@ castToPannerNode = castTo gTypePannerNode "PannerNode"
 
 foreign import javascript unsafe "window[\"webkitAudioPannerNode\"]" gTypePannerNode' :: JSRef GType
 gTypePannerNode = GType gTypePannerNode'
-#else
 #endif
 
 
@@ -14239,7 +14156,6 @@ castToPath2D = castTo gTypePath2D "Path2D"
 
 foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D' :: JSRef GType
 gTypePath2D = GType gTypePath2D'
-#else
 #endif
 
 
@@ -14284,7 +14200,9 @@ castToPerformance = castTo gTypePerformance "Performance"
 foreign import javascript unsafe "window[\"Performance\"]" gTypePerformance' :: JSRef GType
 gTypePerformance = GType gTypePerformance'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsPerformance o = PerformanceClass o
+#endif
 #endif
 
 
@@ -14329,7 +14247,6 @@ castToPerformanceEntry = castTo gTypePerformanceEntry "PerformanceEntry"
 
 foreign import javascript unsafe "window[\"PerformanceEntry\"]" gTypePerformanceEntry' :: JSRef GType
 gTypePerformanceEntry = GType gTypePerformanceEntry'
-#else
 #endif
 
 
@@ -14369,7 +14286,6 @@ castToPerformanceEntryList = castTo gTypePerformanceEntryList "PerformanceEntryL
 
 foreign import javascript unsafe "window[\"PerformanceEntryList\"]" gTypePerformanceEntryList' :: JSRef GType
 gTypePerformanceEntryList = GType gTypePerformanceEntryList'
-#else
 #endif
 
 
@@ -14413,7 +14329,6 @@ castToPerformanceMark = castTo gTypePerformanceMark "PerformanceMark"
 
 foreign import javascript unsafe "window[\"PerformanceMark\"]" gTypePerformanceMark' :: JSRef GType
 gTypePerformanceMark = GType gTypePerformanceMark'
-#else
 #endif
 
 
@@ -14457,7 +14372,6 @@ castToPerformanceMeasure = castTo gTypePerformanceMeasure "PerformanceMeasure"
 
 foreign import javascript unsafe "window[\"PerformanceMeasure\"]" gTypePerformanceMeasure' :: JSRef GType
 gTypePerformanceMeasure = GType gTypePerformanceMeasure'
-#else
 #endif
 
 
@@ -14498,7 +14412,9 @@ castToPerformanceNavigation = castTo gTypePerformanceNavigation "PerformanceNavi
 foreign import javascript unsafe "window[\"PerformanceNavigation\"]" gTypePerformanceNavigation' :: JSRef GType
 gTypePerformanceNavigation = GType gTypePerformanceNavigation'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsPerformanceNavigation o = PerformanceNavigationClass o
+#endif
 #endif
 
 
@@ -14542,7 +14458,6 @@ castToPerformanceResourceTiming = castTo gTypePerformanceResourceTiming "Perform
 
 foreign import javascript unsafe "window[\"PerformanceResourceTiming\"]" gTypePerformanceResourceTiming' :: JSRef GType
 gTypePerformanceResourceTiming = GType gTypePerformanceResourceTiming'
-#else
 #endif
 
 
@@ -14583,7 +14498,9 @@ castToPerformanceTiming = castTo gTypePerformanceTiming "PerformanceTiming"
 foreign import javascript unsafe "window[\"PerformanceTiming\"]" gTypePerformanceTiming' :: JSRef GType
 gTypePerformanceTiming = GType gTypePerformanceTiming'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsPerformanceTiming o = PerformanceTimingClass o
+#endif
 #endif
 
 
@@ -14623,7 +14540,6 @@ castToPeriodicWave = castTo gTypePeriodicWave "PeriodicWave"
 
 foreign import javascript unsafe "window[\"PeriodicWave\"]" gTypePeriodicWave' :: JSRef GType
 gTypePeriodicWave = GType gTypePeriodicWave'
-#else
 #endif
 
 
@@ -14749,7 +14665,6 @@ castToPopStateEvent = castTo gTypePopStateEvent "PopStateEvent"
 
 foreign import javascript unsafe "window[\"PopStateEvent\"]" gTypePopStateEvent' :: JSRef GType
 gTypePopStateEvent = GType gTypePopStateEvent'
-#else
 #endif
 
 
@@ -14789,7 +14704,6 @@ castToPositionError = castTo gTypePositionError "PositionError"
 
 foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError' :: JSRef GType
 gTypePositionError = GType gTypePositionError'
-#else
 #endif
 
 
@@ -14887,7 +14801,6 @@ castToProgressEvent = castTo gTypeProgressEvent "ProgressEvent"
 
 foreign import javascript unsafe "window[\"ProgressEvent\"]" gTypeProgressEvent' :: JSRef GType
 gTypeProgressEvent = GType gTypeProgressEvent'
-#else
 #endif
 
 
@@ -14927,7 +14840,6 @@ castToQuickTimePluginReplacement = castTo gTypeQuickTimePluginReplacement "Quick
 
 foreign import javascript unsafe "window[\"QuickTimePluginReplacement\"]" gTypeQuickTimePluginReplacement' :: JSRef GType
 gTypeQuickTimePluginReplacement = GType gTypeQuickTimePluginReplacement'
-#else
 #endif
 
 
@@ -14967,7 +14879,6 @@ castToRGBColor = castTo gTypeRGBColor "RGBColor"
 
 foreign import javascript unsafe "window[\"RGBColor\"]" gTypeRGBColor' :: JSRef GType
 gTypeRGBColor = GType gTypeRGBColor'
-#else
 #endif
 
 
@@ -15007,7 +14918,6 @@ castToRTCConfiguration = castTo gTypeRTCConfiguration "RTCConfiguration"
 
 foreign import javascript unsafe "window[\"RTCConfiguration\"]" gTypeRTCConfiguration' :: JSRef GType
 gTypeRTCConfiguration = GType gTypeRTCConfiguration'
-#else
 #endif
 
 
@@ -15051,7 +14961,6 @@ castToRTCDTMFSender = castTo gTypeRTCDTMFSender "RTCDTMFSender"
 
 foreign import javascript unsafe "window[\"RTCDTMFSender\"]" gTypeRTCDTMFSender' :: JSRef GType
 gTypeRTCDTMFSender = GType gTypeRTCDTMFSender'
-#else
 #endif
 
 
@@ -15095,7 +15004,6 @@ castToRTCDTMFToneChangeEvent = castTo gTypeRTCDTMFToneChangeEvent "RTCDTMFToneCh
 
 foreign import javascript unsafe "window[\"RTCDTMFToneChangeEvent\"]" gTypeRTCDTMFToneChangeEvent' :: JSRef GType
 gTypeRTCDTMFToneChangeEvent = GType gTypeRTCDTMFToneChangeEvent'
-#else
 #endif
 
 
@@ -15139,7 +15047,6 @@ castToRTCDataChannel = castTo gTypeRTCDataChannel "RTCDataChannel"
 
 foreign import javascript unsafe "window[\"RTCDataChannel\"]" gTypeRTCDataChannel' :: JSRef GType
 gTypeRTCDataChannel = GType gTypeRTCDataChannel'
-#else
 #endif
 
 
@@ -15183,7 +15090,6 @@ castToRTCDataChannelEvent = castTo gTypeRTCDataChannelEvent "RTCDataChannelEvent
 
 foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataChannelEvent' :: JSRef GType
 gTypeRTCDataChannelEvent = GType gTypeRTCDataChannelEvent'
-#else
 #endif
 
 
@@ -15223,7 +15129,6 @@ castToRTCIceCandidate = castTo gTypeRTCIceCandidate "RTCIceCandidate"
 
 foreign import javascript unsafe "window[\"RTCIceCandidate\"]" gTypeRTCIceCandidate' :: JSRef GType
 gTypeRTCIceCandidate = GType gTypeRTCIceCandidate'
-#else
 #endif
 
 
@@ -15267,7 +15172,6 @@ castToRTCIceCandidateEvent = castTo gTypeRTCIceCandidateEvent "RTCIceCandidateEv
 
 foreign import javascript unsafe "window[\"RTCIceCandidateEvent\"]" gTypeRTCIceCandidateEvent' :: JSRef GType
 gTypeRTCIceCandidateEvent = GType gTypeRTCIceCandidateEvent'
-#else
 #endif
 
 
@@ -15307,7 +15211,6 @@ castToRTCIceServer = castTo gTypeRTCIceServer "RTCIceServer"
 
 foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer' :: JSRef GType
 gTypeRTCIceServer = GType gTypeRTCIceServer'
-#else
 #endif
 
 
@@ -15351,7 +15254,6 @@ castToRTCPeerConnection = castTo gTypeRTCPeerConnection "RTCPeerConnection"
 
 foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCPeerConnection' :: JSRef GType
 gTypeRTCPeerConnection = GType gTypeRTCPeerConnection'
-#else
 #endif
 
 
@@ -15391,7 +15293,6 @@ castToRTCSessionDescription = castTo gTypeRTCSessionDescription "RTCSessionDescr
 
 foreign import javascript unsafe "window[\"RTCSessionDescription\"]" gTypeRTCSessionDescription' :: JSRef GType
 gTypeRTCSessionDescription = GType gTypeRTCSessionDescription'
-#else
 #endif
 
 
@@ -15431,7 +15332,6 @@ castToRTCStatsReport = castTo gTypeRTCStatsReport "RTCStatsReport"
 
 foreign import javascript unsafe "window[\"RTCStatsReport\"]" gTypeRTCStatsReport' :: JSRef GType
 gTypeRTCStatsReport = GType gTypeRTCStatsReport'
-#else
 #endif
 
 
@@ -15471,7 +15371,6 @@ castToRTCStatsResponse = castTo gTypeRTCStatsResponse "RTCStatsResponse"
 
 foreign import javascript unsafe "window[\"RTCStatsResponse\"]" gTypeRTCStatsResponse' :: JSRef GType
 gTypeRTCStatsResponse = GType gTypeRTCStatsResponse'
-#else
 #endif
 
 
@@ -15515,7 +15414,6 @@ castToRadioNodeList = castTo gTypeRadioNodeList "RadioNodeList"
 
 foreign import javascript unsafe "window[\"RadioNodeList\"]" gTypeRadioNodeList' :: JSRef GType
 gTypeRadioNodeList = GType gTypeRadioNodeList'
-#else
 #endif
 
 
@@ -15596,7 +15494,6 @@ castToReadableStream = castTo gTypeReadableStream "ReadableStream"
 
 foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStream' :: JSRef GType
 gTypeReadableStream = GType gTypeReadableStream'
-#else
 #endif
 
 
@@ -15636,7 +15533,6 @@ castToRect = castTo gTypeRect "Rect"
 
 foreign import javascript unsafe "window[\"Rect\"]" gTypeRect' :: JSRef GType
 gTypeRect = GType gTypeRect'
-#else
 #endif
 
 
@@ -15676,7 +15572,6 @@ castToSQLError = castTo gTypeSQLError "SQLError"
 
 foreign import javascript unsafe "window[\"SQLError\"]" gTypeSQLError' :: JSRef GType
 gTypeSQLError = GType gTypeSQLError'
-#else
 #endif
 
 
@@ -15716,7 +15611,6 @@ castToSQLResultSet = castTo gTypeSQLResultSet "SQLResultSet"
 
 foreign import javascript unsafe "window[\"SQLResultSet\"]" gTypeSQLResultSet' :: JSRef GType
 gTypeSQLResultSet = GType gTypeSQLResultSet'
-#else
 #endif
 
 
@@ -15756,7 +15650,6 @@ castToSQLResultSetRowList = castTo gTypeSQLResultSetRowList "SQLResultSetRowList
 
 foreign import javascript unsafe "window[\"SQLResultSetRowList\"]" gTypeSQLResultSetRowList' :: JSRef GType
 gTypeSQLResultSetRowList = GType gTypeSQLResultSetRowList'
-#else
 #endif
 
 
@@ -15796,7 +15689,6 @@ castToSQLTransaction = castTo gTypeSQLTransaction "SQLTransaction"
 
 foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransaction' :: JSRef GType
 gTypeSQLTransaction = GType gTypeSQLTransaction'
-#else
 #endif
 
 
@@ -15848,7 +15740,6 @@ castToSVGAElement = castTo gTypeSVGAElement "SVGAElement"
 
 foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement' :: JSRef GType
 gTypeSVGAElement = GType gTypeSVGAElement'
-#else
 #endif
 
 
@@ -15898,7 +15789,6 @@ castToSVGAltGlyphDefElement = castTo gTypeSVGAltGlyphDefElement "SVGAltGlyphDefE
 
 foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAltGlyphDefElement' :: JSRef GType
 gTypeSVGAltGlyphDefElement = GType gTypeSVGAltGlyphDefElement'
-#else
 #endif
 
 
@@ -15954,7 +15844,6 @@ castToSVGAltGlyphElement = castTo gTypeSVGAltGlyphElement "SVGAltGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGlyphElement' :: JSRef GType
 gTypeSVGAltGlyphElement = GType gTypeSVGAltGlyphElement'
-#else
 #endif
 
 
@@ -16004,7 +15893,6 @@ castToSVGAltGlyphItemElement = castTo gTypeSVGAltGlyphItemElement "SVGAltGlyphIt
 
 foreign import javascript unsafe "window[\"SVGAltGlyphItemElement\"]" gTypeSVGAltGlyphItemElement' :: JSRef GType
 gTypeSVGAltGlyphItemElement = GType gTypeSVGAltGlyphItemElement'
-#else
 #endif
 
 
@@ -16044,7 +15932,6 @@ castToSVGAngle = castTo gTypeSVGAngle "SVGAngle"
 
 foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle' :: JSRef GType
 gTypeSVGAngle = GType gTypeSVGAngle'
-#else
 #endif
 
 
@@ -16096,7 +15983,6 @@ castToSVGAnimateColorElement = castTo gTypeSVGAnimateColorElement "SVGAnimateCol
 
 foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAnimateColorElement' :: JSRef GType
 gTypeSVGAnimateColorElement = GType gTypeSVGAnimateColorElement'
-#else
 #endif
 
 
@@ -16148,7 +16034,6 @@ castToSVGAnimateElement = castTo gTypeSVGAnimateElement "SVGAnimateElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimateElement' :: JSRef GType
 gTypeSVGAnimateElement = GType gTypeSVGAnimateElement'
-#else
 #endif
 
 
@@ -16200,7 +16085,6 @@ castToSVGAnimateMotionElement = castTo gTypeSVGAnimateMotionElement "SVGAnimateM
 
 foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGAnimateMotionElement' :: JSRef GType
 gTypeSVGAnimateMotionElement = GType gTypeSVGAnimateMotionElement'
-#else
 #endif
 
 
@@ -16252,7 +16136,6 @@ castToSVGAnimateTransformElement = castTo gTypeSVGAnimateTransformElement "SVGAn
 
 foreign import javascript unsafe "window[\"SVGAnimateTransformElement\"]" gTypeSVGAnimateTransformElement' :: JSRef GType
 gTypeSVGAnimateTransformElement = GType gTypeSVGAnimateTransformElement'
-#else
 #endif
 
 
@@ -16292,7 +16175,6 @@ castToSVGAnimatedAngle = castTo gTypeSVGAnimatedAngle "SVGAnimatedAngle"
 
 foreign import javascript unsafe "window[\"SVGAnimatedAngle\"]" gTypeSVGAnimatedAngle' :: JSRef GType
 gTypeSVGAnimatedAngle = GType gTypeSVGAnimatedAngle'
-#else
 #endif
 
 
@@ -16332,7 +16214,6 @@ castToSVGAnimatedBoolean = castTo gTypeSVGAnimatedBoolean "SVGAnimatedBoolean"
 
 foreign import javascript unsafe "window[\"SVGAnimatedBoolean\"]" gTypeSVGAnimatedBoolean' :: JSRef GType
 gTypeSVGAnimatedBoolean = GType gTypeSVGAnimatedBoolean'
-#else
 #endif
 
 
@@ -16372,7 +16253,6 @@ castToSVGAnimatedEnumeration = castTo gTypeSVGAnimatedEnumeration "SVGAnimatedEn
 
 foreign import javascript unsafe "window[\"SVGAnimatedEnumeration\"]" gTypeSVGAnimatedEnumeration' :: JSRef GType
 gTypeSVGAnimatedEnumeration = GType gTypeSVGAnimatedEnumeration'
-#else
 #endif
 
 
@@ -16412,7 +16292,6 @@ castToSVGAnimatedInteger = castTo gTypeSVGAnimatedInteger "SVGAnimatedInteger"
 
 foreign import javascript unsafe "window[\"SVGAnimatedInteger\"]" gTypeSVGAnimatedInteger' :: JSRef GType
 gTypeSVGAnimatedInteger = GType gTypeSVGAnimatedInteger'
-#else
 #endif
 
 
@@ -16452,7 +16331,6 @@ castToSVGAnimatedLength = castTo gTypeSVGAnimatedLength "SVGAnimatedLength"
 
 foreign import javascript unsafe "window[\"SVGAnimatedLength\"]" gTypeSVGAnimatedLength' :: JSRef GType
 gTypeSVGAnimatedLength = GType gTypeSVGAnimatedLength'
-#else
 #endif
 
 
@@ -16492,7 +16370,6 @@ castToSVGAnimatedLengthList = castTo gTypeSVGAnimatedLengthList "SVGAnimatedLeng
 
 foreign import javascript unsafe "window[\"SVGAnimatedLengthList\"]" gTypeSVGAnimatedLengthList' :: JSRef GType
 gTypeSVGAnimatedLengthList = GType gTypeSVGAnimatedLengthList'
-#else
 #endif
 
 
@@ -16532,7 +16409,6 @@ castToSVGAnimatedNumber = castTo gTypeSVGAnimatedNumber "SVGAnimatedNumber"
 
 foreign import javascript unsafe "window[\"SVGAnimatedNumber\"]" gTypeSVGAnimatedNumber' :: JSRef GType
 gTypeSVGAnimatedNumber = GType gTypeSVGAnimatedNumber'
-#else
 #endif
 
 
@@ -16572,7 +16448,6 @@ castToSVGAnimatedNumberList = castTo gTypeSVGAnimatedNumberList "SVGAnimatedNumb
 
 foreign import javascript unsafe "window[\"SVGAnimatedNumberList\"]" gTypeSVGAnimatedNumberList' :: JSRef GType
 gTypeSVGAnimatedNumberList = GType gTypeSVGAnimatedNumberList'
-#else
 #endif
 
 
@@ -16612,7 +16487,6 @@ castToSVGAnimatedPreserveAspectRatio = castTo gTypeSVGAnimatedPreserveAspectRati
 
 foreign import javascript unsafe "window[\"SVGAnimatedPreserveAspectRatio\"]" gTypeSVGAnimatedPreserveAspectRatio' :: JSRef GType
 gTypeSVGAnimatedPreserveAspectRatio = GType gTypeSVGAnimatedPreserveAspectRatio'
-#else
 #endif
 
 
@@ -16652,7 +16526,6 @@ castToSVGAnimatedRect = castTo gTypeSVGAnimatedRect "SVGAnimatedRect"
 
 foreign import javascript unsafe "window[\"SVGAnimatedRect\"]" gTypeSVGAnimatedRect' :: JSRef GType
 gTypeSVGAnimatedRect = GType gTypeSVGAnimatedRect'
-#else
 #endif
 
 
@@ -16692,7 +16565,6 @@ castToSVGAnimatedString = castTo gTypeSVGAnimatedString "SVGAnimatedString"
 
 foreign import javascript unsafe "window[\"SVGAnimatedString\"]" gTypeSVGAnimatedString' :: JSRef GType
 gTypeSVGAnimatedString = GType gTypeSVGAnimatedString'
-#else
 #endif
 
 
@@ -16732,7 +16604,6 @@ castToSVGAnimatedTransformList = castTo gTypeSVGAnimatedTransformList "SVGAnimat
 
 foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVGAnimatedTransformList' :: JSRef GType
 gTypeSVGAnimatedTransformList = GType gTypeSVGAnimatedTransformList'
-#else
 #endif
 
 
@@ -16787,7 +16658,6 @@ castToSVGAnimationElement = castTo gTypeSVGAnimationElement "SVGAnimationElement
 
 foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnimationElement' :: JSRef GType
 gTypeSVGAnimationElement = GType gTypeSVGAnimationElement'
-#else
 #endif
 
 
@@ -16839,7 +16709,6 @@ castToSVGCircleElement = castTo gTypeSVGCircleElement "SVGCircleElement"
 
 foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleElement' :: JSRef GType
 gTypeSVGCircleElement = GType gTypeSVGCircleElement'
-#else
 #endif
 
 
@@ -16891,7 +16760,6 @@ castToSVGClipPathElement = castTo gTypeSVGClipPathElement "SVGClipPathElement"
 
 foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPathElement' :: JSRef GType
 gTypeSVGClipPathElement = GType gTypeSVGClipPathElement'
-#else
 #endif
 
 
@@ -16940,7 +16808,6 @@ castToSVGColor = castTo gTypeSVGColor "SVGColor"
 
 foreign import javascript unsafe "window[\"SVGColor\"]" gTypeSVGColor' :: JSRef GType
 gTypeSVGColor = GType gTypeSVGColor'
-#else
 #endif
 
 
@@ -16995,7 +16862,6 @@ castToSVGComponentTransferFunctionElement = castTo gTypeSVGComponentTransferFunc
 
 foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"]" gTypeSVGComponentTransferFunctionElement' :: JSRef GType
 gTypeSVGComponentTransferFunctionElement = GType gTypeSVGComponentTransferFunctionElement'
-#else
 #endif
 
 
@@ -17045,7 +16911,6 @@ castToSVGCursorElement = castTo gTypeSVGCursorElement "SVGCursorElement"
 
 foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorElement' :: JSRef GType
 gTypeSVGCursorElement = GType gTypeSVGCursorElement'
-#else
 #endif
 
 
@@ -17097,7 +16962,6 @@ castToSVGDefsElement = castTo gTypeSVGDefsElement "SVGDefsElement"
 
 foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElement' :: JSRef GType
 gTypeSVGDefsElement = GType gTypeSVGDefsElement'
-#else
 #endif
 
 
@@ -17147,7 +17011,6 @@ castToSVGDescElement = castTo gTypeSVGDescElement "SVGDescElement"
 
 foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElement' :: JSRef GType
 gTypeSVGDescElement = GType gTypeSVGDescElement'
-#else
 #endif
 
 
@@ -17195,7 +17058,6 @@ castToSVGDocument = castTo gTypeSVGDocument "SVGDocument"
 
 foreign import javascript unsafe "window[\"SVGDocument\"]" gTypeSVGDocument' :: JSRef GType
 gTypeSVGDocument = GType gTypeSVGDocument'
-#else
 #endif
 
 
@@ -17248,7 +17110,6 @@ castToSVGElement = castTo gTypeSVGElement "SVGElement"
 
 foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement' :: JSRef GType
 gTypeSVGElement = GType gTypeSVGElement'
-#else
 #endif
 
 
@@ -17300,7 +17161,6 @@ castToSVGEllipseElement = castTo gTypeSVGEllipseElement "SVGEllipseElement"
 
 foreign import javascript unsafe "window[\"SVGEllipseElement\"]" gTypeSVGEllipseElement' :: JSRef GType
 gTypeSVGEllipseElement = GType gTypeSVGEllipseElement'
-#else
 #endif
 
 
@@ -17340,7 +17200,6 @@ castToSVGExternalResourcesRequired = castTo gTypeSVGExternalResourcesRequired "S
 
 foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTypeSVGExternalResourcesRequired' :: JSRef GType
 gTypeSVGExternalResourcesRequired = GType gTypeSVGExternalResourcesRequired'
-#else
 #endif
 
 
@@ -17390,7 +17249,6 @@ castToSVGFEBlendElement = castTo gTypeSVGFEBlendElement "SVGFEBlendElement"
 
 foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlendElement' :: JSRef GType
 gTypeSVGFEBlendElement = GType gTypeSVGFEBlendElement'
-#else
 #endif
 
 
@@ -17440,7 +17298,6 @@ castToSVGFEColorMatrixElement = castTo gTypeSVGFEColorMatrixElement "SVGFEColorM
 
 foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGFEColorMatrixElement' :: JSRef GType
 gTypeSVGFEColorMatrixElement = GType gTypeSVGFEColorMatrixElement'
-#else
 #endif
 
 
@@ -17490,7 +17347,6 @@ castToSVGFEComponentTransferElement = castTo gTypeSVGFEComponentTransferElement 
 
 foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTypeSVGFEComponentTransferElement' :: JSRef GType
 gTypeSVGFEComponentTransferElement = GType gTypeSVGFEComponentTransferElement'
-#else
 #endif
 
 
@@ -17540,7 +17396,6 @@ castToSVGFECompositeElement = castTo gTypeSVGFECompositeElement "SVGFECompositeE
 
 foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFECompositeElement' :: JSRef GType
 gTypeSVGFECompositeElement = GType gTypeSVGFECompositeElement'
-#else
 #endif
 
 
@@ -17590,7 +17445,6 @@ castToSVGFEConvolveMatrixElement = castTo gTypeSVGFEConvolveMatrixElement "SVGFE
 
 foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeSVGFEConvolveMatrixElement' :: JSRef GType
 gTypeSVGFEConvolveMatrixElement = GType gTypeSVGFEConvolveMatrixElement'
-#else
 #endif
 
 
@@ -17640,7 +17494,6 @@ castToSVGFEDiffuseLightingElement = castTo gTypeSVGFEDiffuseLightingElement "SVG
 
 foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gTypeSVGFEDiffuseLightingElement' :: JSRef GType
 gTypeSVGFEDiffuseLightingElement = GType gTypeSVGFEDiffuseLightingElement'
-#else
 #endif
 
 
@@ -17690,7 +17543,6 @@ castToSVGFEDisplacementMapElement = castTo gTypeSVGFEDisplacementMapElement "SVG
 
 foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gTypeSVGFEDisplacementMapElement' :: JSRef GType
 gTypeSVGFEDisplacementMapElement = GType gTypeSVGFEDisplacementMapElement'
-#else
 #endif
 
 
@@ -17740,7 +17592,6 @@ castToSVGFEDistantLightElement = castTo gTypeSVGFEDistantLightElement "SVGFEDist
 
 foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVGFEDistantLightElement' :: JSRef GType
 gTypeSVGFEDistantLightElement = GType gTypeSVGFEDistantLightElement'
-#else
 #endif
 
 
@@ -17790,7 +17641,6 @@ castToSVGFEDropShadowElement = castTo gTypeSVGFEDropShadowElement "SVGFEDropShad
 
 foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFEDropShadowElement' :: JSRef GType
 gTypeSVGFEDropShadowElement = GType gTypeSVGFEDropShadowElement'
-#else
 #endif
 
 
@@ -17840,7 +17690,6 @@ castToSVGFEFloodElement = castTo gTypeSVGFEFloodElement "SVGFEFloodElement"
 
 foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFloodElement' :: JSRef GType
 gTypeSVGFEFloodElement = GType gTypeSVGFEFloodElement'
-#else
 #endif
 
 
@@ -17892,7 +17741,6 @@ castToSVGFEFuncAElement = castTo gTypeSVGFEFuncAElement "SVGFEFuncAElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncAElement' :: JSRef GType
 gTypeSVGFEFuncAElement = GType gTypeSVGFEFuncAElement'
-#else
 #endif
 
 
@@ -17944,7 +17792,6 @@ castToSVGFEFuncBElement = castTo gTypeSVGFEFuncBElement "SVGFEFuncBElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncBElement' :: JSRef GType
 gTypeSVGFEFuncBElement = GType gTypeSVGFEFuncBElement'
-#else
 #endif
 
 
@@ -17996,7 +17843,6 @@ castToSVGFEFuncGElement = castTo gTypeSVGFEFuncGElement "SVGFEFuncGElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncGElement' :: JSRef GType
 gTypeSVGFEFuncGElement = GType gTypeSVGFEFuncGElement'
-#else
 #endif
 
 
@@ -18048,7 +17894,6 @@ castToSVGFEFuncRElement = castTo gTypeSVGFEFuncRElement "SVGFEFuncRElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncRElement' :: JSRef GType
 gTypeSVGFEFuncRElement = GType gTypeSVGFEFuncRElement'
-#else
 #endif
 
 
@@ -18098,7 +17943,6 @@ castToSVGFEGaussianBlurElement = castTo gTypeSVGFEGaussianBlurElement "SVGFEGaus
 
 foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVGFEGaussianBlurElement' :: JSRef GType
 gTypeSVGFEGaussianBlurElement = GType gTypeSVGFEGaussianBlurElement'
-#else
 #endif
 
 
@@ -18148,7 +17992,6 @@ castToSVGFEImageElement = castTo gTypeSVGFEImageElement "SVGFEImageElement"
 
 foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImageElement' :: JSRef GType
 gTypeSVGFEImageElement = GType gTypeSVGFEImageElement'
-#else
 #endif
 
 
@@ -18198,7 +18041,6 @@ castToSVGFEMergeElement = castTo gTypeSVGFEMergeElement "SVGFEMergeElement"
 
 foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMergeElement' :: JSRef GType
 gTypeSVGFEMergeElement = GType gTypeSVGFEMergeElement'
-#else
 #endif
 
 
@@ -18248,7 +18090,6 @@ castToSVGFEMergeNodeElement = castTo gTypeSVGFEMergeNodeElement "SVGFEMergeNodeE
 
 foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEMergeNodeElement' :: JSRef GType
 gTypeSVGFEMergeNodeElement = GType gTypeSVGFEMergeNodeElement'
-#else
 #endif
 
 
@@ -18298,7 +18139,6 @@ castToSVGFEMorphologyElement = castTo gTypeSVGFEMorphologyElement "SVGFEMorpholo
 
 foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFEMorphologyElement' :: JSRef GType
 gTypeSVGFEMorphologyElement = GType gTypeSVGFEMorphologyElement'
-#else
 #endif
 
 
@@ -18348,7 +18188,6 @@ castToSVGFEOffsetElement = castTo gTypeSVGFEOffsetElement "SVGFEOffsetElement"
 
 foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffsetElement' :: JSRef GType
 gTypeSVGFEOffsetElement = GType gTypeSVGFEOffsetElement'
-#else
 #endif
 
 
@@ -18398,7 +18237,6 @@ castToSVGFEPointLightElement = castTo gTypeSVGFEPointLightElement "SVGFEPointLig
 
 foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFEPointLightElement' :: JSRef GType
 gTypeSVGFEPointLightElement = GType gTypeSVGFEPointLightElement'
-#else
 #endif
 
 
@@ -18448,7 +18286,6 @@ castToSVGFESpecularLightingElement = castTo gTypeSVGFESpecularLightingElement "S
 
 foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTypeSVGFESpecularLightingElement' :: JSRef GType
 gTypeSVGFESpecularLightingElement = GType gTypeSVGFESpecularLightingElement'
-#else
 #endif
 
 
@@ -18498,7 +18335,6 @@ castToSVGFESpotLightElement = castTo gTypeSVGFESpotLightElement "SVGFESpotLightE
 
 foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFESpotLightElement' :: JSRef GType
 gTypeSVGFESpotLightElement = GType gTypeSVGFESpotLightElement'
-#else
 #endif
 
 
@@ -18548,7 +18384,6 @@ castToSVGFETileElement = castTo gTypeSVGFETileElement "SVGFETileElement"
 
 foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileElement' :: JSRef GType
 gTypeSVGFETileElement = GType gTypeSVGFETileElement'
-#else
 #endif
 
 
@@ -18598,7 +18433,6 @@ castToSVGFETurbulenceElement = castTo gTypeSVGFETurbulenceElement "SVGFETurbulen
 
 foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFETurbulenceElement' :: JSRef GType
 gTypeSVGFETurbulenceElement = GType gTypeSVGFETurbulenceElement'
-#else
 #endif
 
 
@@ -18648,7 +18482,6 @@ castToSVGFilterElement = castTo gTypeSVGFilterElement "SVGFilterElement"
 
 foreign import javascript unsafe "window[\"SVGFilterElement\"]" gTypeSVGFilterElement' :: JSRef GType
 gTypeSVGFilterElement = GType gTypeSVGFilterElement'
-#else
 #endif
 
 
@@ -18688,7 +18521,6 @@ castToSVGFilterPrimitiveStandardAttributes = castTo gTypeSVGFilterPrimitiveStand
 
 foreign import javascript unsafe "window[\"SVGFilterPrimitiveStandardAttributes\"]" gTypeSVGFilterPrimitiveStandardAttributes' :: JSRef GType
 gTypeSVGFilterPrimitiveStandardAttributes = GType gTypeSVGFilterPrimitiveStandardAttributes'
-#else
 #endif
 
 
@@ -18728,7 +18560,6 @@ castToSVGFitToViewBox = castTo gTypeSVGFitToViewBox "SVGFitToViewBox"
 
 foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToViewBox' :: JSRef GType
 gTypeSVGFitToViewBox = GType gTypeSVGFitToViewBox'
-#else
 #endif
 
 
@@ -18778,7 +18609,6 @@ castToSVGFontElement = castTo gTypeSVGFontElement "SVGFontElement"
 
 foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElement' :: JSRef GType
 gTypeSVGFontElement = GType gTypeSVGFontElement'
-#else
 #endif
 
 
@@ -18828,7 +18658,6 @@ castToSVGFontFaceElement = castTo gTypeSVGFontFaceElement "SVGFontFaceElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFaceElement' :: JSRef GType
 gTypeSVGFontFaceElement = GType gTypeSVGFontFaceElement'
-#else
 #endif
 
 
@@ -18878,7 +18707,6 @@ castToSVGFontFaceFormatElement = castTo gTypeSVGFontFaceFormatElement "SVGFontFa
 
 foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVGFontFaceFormatElement' :: JSRef GType
 gTypeSVGFontFaceFormatElement = GType gTypeSVGFontFaceFormatElement'
-#else
 #endif
 
 
@@ -18928,7 +18756,6 @@ castToSVGFontFaceNameElement = castTo gTypeSVGFontFaceNameElement "SVGFontFaceNa
 
 foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFontFaceNameElement' :: JSRef GType
 gTypeSVGFontFaceNameElement = GType gTypeSVGFontFaceNameElement'
-#else
 #endif
 
 
@@ -18978,7 +18805,6 @@ castToSVGFontFaceSrcElement = castTo gTypeSVGFontFaceSrcElement "SVGFontFaceSrcE
 
 foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFontFaceSrcElement' :: JSRef GType
 gTypeSVGFontFaceSrcElement = GType gTypeSVGFontFaceSrcElement'
-#else
 #endif
 
 
@@ -19028,7 +18854,6 @@ castToSVGFontFaceUriElement = castTo gTypeSVGFontFaceUriElement "SVGFontFaceUriE
 
 foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFontFaceUriElement' :: JSRef GType
 gTypeSVGFontFaceUriElement = GType gTypeSVGFontFaceUriElement'
-#else
 #endif
 
 
@@ -19080,7 +18905,6 @@ castToSVGForeignObjectElement = castTo gTypeSVGForeignObjectElement "SVGForeignO
 
 foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGForeignObjectElement' :: JSRef GType
 gTypeSVGForeignObjectElement = GType gTypeSVGForeignObjectElement'
-#else
 #endif
 
 
@@ -19132,7 +18956,6 @@ castToSVGGElement = castTo gTypeSVGGElement "SVGGElement"
 
 foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement' :: JSRef GType
 gTypeSVGGElement = GType gTypeSVGGElement'
-#else
 #endif
 
 
@@ -19182,7 +19005,6 @@ castToSVGGlyphElement = castTo gTypeSVGGlyphElement "SVGGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElement' :: JSRef GType
 gTypeSVGGlyphElement = GType gTypeSVGGlyphElement'
-#else
 #endif
 
 
@@ -19232,7 +19054,6 @@ castToSVGGlyphRefElement = castTo gTypeSVGGlyphRefElement "SVGGlyphRefElement"
 
 foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphRefElement' :: JSRef GType
 gTypeSVGGlyphRefElement = GType gTypeSVGGlyphRefElement'
-#else
 #endif
 
 
@@ -19287,7 +19108,6 @@ castToSVGGradientElement = castTo gTypeSVGGradientElement "SVGGradientElement"
 
 foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradientElement' :: JSRef GType
 gTypeSVGGradientElement = GType gTypeSVGGradientElement'
-#else
 #endif
 
 
@@ -19342,7 +19162,6 @@ castToSVGGraphicsElement = castTo gTypeSVGGraphicsElement "SVGGraphicsElement"
 
 foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphicsElement' :: JSRef GType
 gTypeSVGGraphicsElement = GType gTypeSVGGraphicsElement'
-#else
 #endif
 
 
@@ -19392,7 +19211,6 @@ castToSVGHKernElement = castTo gTypeSVGHKernElement "SVGHKernElement"
 
 foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElement' :: JSRef GType
 gTypeSVGHKernElement = GType gTypeSVGHKernElement'
-#else
 #endif
 
 
@@ -19444,7 +19262,6 @@ castToSVGImageElement = castTo gTypeSVGImageElement "SVGImageElement"
 
 foreign import javascript unsafe "window[\"SVGImageElement\"]" gTypeSVGImageElement' :: JSRef GType
 gTypeSVGImageElement = GType gTypeSVGImageElement'
-#else
 #endif
 
 
@@ -19484,7 +19301,6 @@ castToSVGLength = castTo gTypeSVGLength "SVGLength"
 
 foreign import javascript unsafe "window[\"SVGLength\"]" gTypeSVGLength' :: JSRef GType
 gTypeSVGLength = GType gTypeSVGLength'
-#else
 #endif
 
 
@@ -19524,7 +19340,6 @@ castToSVGLengthList = castTo gTypeSVGLengthList "SVGLengthList"
 
 foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList' :: JSRef GType
 gTypeSVGLengthList = GType gTypeSVGLengthList'
-#else
 #endif
 
 
@@ -19576,7 +19391,6 @@ castToSVGLineElement = castTo gTypeSVGLineElement "SVGLineElement"
 
 foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElement' :: JSRef GType
 gTypeSVGLineElement = GType gTypeSVGLineElement'
-#else
 #endif
 
 
@@ -19628,7 +19442,6 @@ castToSVGLinearGradientElement = castTo gTypeSVGLinearGradientElement "SVGLinear
 
 foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVGLinearGradientElement' :: JSRef GType
 gTypeSVGLinearGradientElement = GType gTypeSVGLinearGradientElement'
-#else
 #endif
 
 
@@ -19678,7 +19491,6 @@ castToSVGMPathElement = castTo gTypeSVGMPathElement "SVGMPathElement"
 
 foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElement' :: JSRef GType
 gTypeSVGMPathElement = GType gTypeSVGMPathElement'
-#else
 #endif
 
 
@@ -19728,7 +19540,6 @@ castToSVGMarkerElement = castTo gTypeSVGMarkerElement "SVGMarkerElement"
 
 foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerElement' :: JSRef GType
 gTypeSVGMarkerElement = GType gTypeSVGMarkerElement'
-#else
 #endif
 
 
@@ -19778,7 +19589,6 @@ castToSVGMaskElement = castTo gTypeSVGMaskElement "SVGMaskElement"
 
 foreign import javascript unsafe "window[\"SVGMaskElement\"]" gTypeSVGMaskElement' :: JSRef GType
 gTypeSVGMaskElement = GType gTypeSVGMaskElement'
-#else
 #endif
 
 
@@ -19818,7 +19628,6 @@ castToSVGMatrix = castTo gTypeSVGMatrix "SVGMatrix"
 
 foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix' :: JSRef GType
 gTypeSVGMatrix = GType gTypeSVGMatrix'
-#else
 #endif
 
 
@@ -19868,7 +19677,6 @@ castToSVGMetadataElement = castTo gTypeSVGMetadataElement "SVGMetadataElement"
 
 foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetadataElement' :: JSRef GType
 gTypeSVGMetadataElement = GType gTypeSVGMetadataElement'
-#else
 #endif
 
 
@@ -19918,7 +19726,6 @@ castToSVGMissingGlyphElement = castTo gTypeSVGMissingGlyphElement "SVGMissingGly
 
 foreign import javascript unsafe "window[\"SVGMissingGlyphElement\"]" gTypeSVGMissingGlyphElement' :: JSRef GType
 gTypeSVGMissingGlyphElement = GType gTypeSVGMissingGlyphElement'
-#else
 #endif
 
 
@@ -19958,7 +19765,6 @@ castToSVGNumber = castTo gTypeSVGNumber "SVGNumber"
 
 foreign import javascript unsafe "window[\"SVGNumber\"]" gTypeSVGNumber' :: JSRef GType
 gTypeSVGNumber = GType gTypeSVGNumber'
-#else
 #endif
 
 
@@ -19998,7 +19804,6 @@ castToSVGNumberList = castTo gTypeSVGNumberList "SVGNumberList"
 
 foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList' :: JSRef GType
 gTypeSVGNumberList = GType gTypeSVGNumberList'
-#else
 #endif
 
 
@@ -20044,7 +19849,6 @@ castToSVGPaint = castTo gTypeSVGPaint "SVGPaint"
 
 foreign import javascript unsafe "window[\"SVGPaint\"]" gTypeSVGPaint' :: JSRef GType
 gTypeSVGPaint = GType gTypeSVGPaint'
-#else
 #endif
 
 
@@ -20096,7 +19900,6 @@ castToSVGPathElement = castTo gTypeSVGPathElement "SVGPathElement"
 
 foreign import javascript unsafe "window[\"SVGPathElement\"]" gTypeSVGPathElement' :: JSRef GType
 gTypeSVGPathElement = GType gTypeSVGPathElement'
-#else
 #endif
 
 
@@ -20141,7 +19944,6 @@ castToSVGPathSeg = castTo gTypeSVGPathSeg "SVGPathSeg"
 
 foreign import javascript unsafe "window[\"SVGPathSeg\"]" gTypeSVGPathSeg' :: JSRef GType
 gTypeSVGPathSeg = GType gTypeSVGPathSeg'
-#else
 #endif
 
 
@@ -20185,7 +19987,6 @@ castToSVGPathSegArcAbs = castTo gTypeSVGPathSegArcAbs "SVGPathSegArcAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegArcAbs\"]" gTypeSVGPathSegArcAbs' :: JSRef GType
 gTypeSVGPathSegArcAbs = GType gTypeSVGPathSegArcAbs'
-#else
 #endif
 
 
@@ -20229,7 +20030,6 @@ castToSVGPathSegArcRel = castTo gTypeSVGPathSegArcRel "SVGPathSegArcRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegArcRel\"]" gTypeSVGPathSegArcRel' :: JSRef GType
 gTypeSVGPathSegArcRel = GType gTypeSVGPathSegArcRel'
-#else
 #endif
 
 
@@ -20273,7 +20073,6 @@ castToSVGPathSegClosePath = castTo gTypeSVGPathSegClosePath "SVGPathSegClosePath
 
 foreign import javascript unsafe "window[\"SVGPathSegClosePath\"]" gTypeSVGPathSegClosePath' :: JSRef GType
 gTypeSVGPathSegClosePath = GType gTypeSVGPathSegClosePath'
-#else
 #endif
 
 
@@ -20317,7 +20116,6 @@ castToSVGPathSegCurvetoCubicAbs = castTo gTypeSVGPathSegCurvetoCubicAbs "SVGPath
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicAbs\"]" gTypeSVGPathSegCurvetoCubicAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicAbs = GType gTypeSVGPathSegCurvetoCubicAbs'
-#else
 #endif
 
 
@@ -20361,7 +20159,6 @@ castToSVGPathSegCurvetoCubicRel = castTo gTypeSVGPathSegCurvetoCubicRel "SVGPath
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicRel\"]" gTypeSVGPathSegCurvetoCubicRel' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicRel = GType gTypeSVGPathSegCurvetoCubicRel'
-#else
 #endif
 
 
@@ -20405,7 +20202,6 @@ castToSVGPathSegCurvetoCubicSmoothAbs = castTo gTypeSVGPathSegCurvetoCubicSmooth
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothAbs\"]" gTypeSVGPathSegCurvetoCubicSmoothAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicSmoothAbs = GType gTypeSVGPathSegCurvetoCubicSmoothAbs'
-#else
 #endif
 
 
@@ -20449,7 +20245,6 @@ castToSVGPathSegCurvetoCubicSmoothRel = castTo gTypeSVGPathSegCurvetoCubicSmooth
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothRel\"]" gTypeSVGPathSegCurvetoCubicSmoothRel' :: JSRef GType
 gTypeSVGPathSegCurvetoCubicSmoothRel = GType gTypeSVGPathSegCurvetoCubicSmoothRel'
-#else
 #endif
 
 
@@ -20493,7 +20288,6 @@ castToSVGPathSegCurvetoQuadraticAbs = castTo gTypeSVGPathSegCurvetoQuadraticAbs 
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticAbs\"]" gTypeSVGPathSegCurvetoQuadraticAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticAbs = GType gTypeSVGPathSegCurvetoQuadraticAbs'
-#else
 #endif
 
 
@@ -20537,7 +20331,6 @@ castToSVGPathSegCurvetoQuadraticRel = castTo gTypeSVGPathSegCurvetoQuadraticRel 
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticRel\"]" gTypeSVGPathSegCurvetoQuadraticRel' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticRel = GType gTypeSVGPathSegCurvetoQuadraticRel'
-#else
 #endif
 
 
@@ -20581,7 +20374,6 @@ castToSVGPathSegCurvetoQuadraticSmoothAbs = castTo gTypeSVGPathSegCurvetoQuadrat
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"]" gTypeSVGPathSegCurvetoQuadraticSmoothAbs' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticSmoothAbs = GType gTypeSVGPathSegCurvetoQuadraticSmoothAbs'
-#else
 #endif
 
 
@@ -20625,7 +20417,6 @@ castToSVGPathSegCurvetoQuadraticSmoothRel = castTo gTypeSVGPathSegCurvetoQuadrat
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothRel\"]" gTypeSVGPathSegCurvetoQuadraticSmoothRel' :: JSRef GType
 gTypeSVGPathSegCurvetoQuadraticSmoothRel = GType gTypeSVGPathSegCurvetoQuadraticSmoothRel'
-#else
 #endif
 
 
@@ -20669,7 +20460,6 @@ castToSVGPathSegLinetoAbs = castTo gTypeSVGPathSegLinetoAbs "SVGPathSegLinetoAbs
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoAbs\"]" gTypeSVGPathSegLinetoAbs' :: JSRef GType
 gTypeSVGPathSegLinetoAbs = GType gTypeSVGPathSegLinetoAbs'
-#else
 #endif
 
 
@@ -20713,7 +20503,6 @@ castToSVGPathSegLinetoHorizontalAbs = castTo gTypeSVGPathSegLinetoHorizontalAbs 
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalAbs\"]" gTypeSVGPathSegLinetoHorizontalAbs' :: JSRef GType
 gTypeSVGPathSegLinetoHorizontalAbs = GType gTypeSVGPathSegLinetoHorizontalAbs'
-#else
 #endif
 
 
@@ -20757,7 +20546,6 @@ castToSVGPathSegLinetoHorizontalRel = castTo gTypeSVGPathSegLinetoHorizontalRel 
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalRel\"]" gTypeSVGPathSegLinetoHorizontalRel' :: JSRef GType
 gTypeSVGPathSegLinetoHorizontalRel = GType gTypeSVGPathSegLinetoHorizontalRel'
-#else
 #endif
 
 
@@ -20801,7 +20589,6 @@ castToSVGPathSegLinetoRel = castTo gTypeSVGPathSegLinetoRel "SVGPathSegLinetoRel
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoRel\"]" gTypeSVGPathSegLinetoRel' :: JSRef GType
 gTypeSVGPathSegLinetoRel = GType gTypeSVGPathSegLinetoRel'
-#else
 #endif
 
 
@@ -20845,7 +20632,6 @@ castToSVGPathSegLinetoVerticalAbs = castTo gTypeSVGPathSegLinetoVerticalAbs "SVG
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalAbs\"]" gTypeSVGPathSegLinetoVerticalAbs' :: JSRef GType
 gTypeSVGPathSegLinetoVerticalAbs = GType gTypeSVGPathSegLinetoVerticalAbs'
-#else
 #endif
 
 
@@ -20889,7 +20675,6 @@ castToSVGPathSegLinetoVerticalRel = castTo gTypeSVGPathSegLinetoVerticalRel "SVG
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalRel\"]" gTypeSVGPathSegLinetoVerticalRel' :: JSRef GType
 gTypeSVGPathSegLinetoVerticalRel = GType gTypeSVGPathSegLinetoVerticalRel'
-#else
 #endif
 
 
@@ -20929,7 +20714,6 @@ castToSVGPathSegList = castTo gTypeSVGPathSegList "SVGPathSegList"
 
 foreign import javascript unsafe "window[\"SVGPathSegList\"]" gTypeSVGPathSegList' :: JSRef GType
 gTypeSVGPathSegList = GType gTypeSVGPathSegList'
-#else
 #endif
 
 
@@ -20973,7 +20757,6 @@ castToSVGPathSegMovetoAbs = castTo gTypeSVGPathSegMovetoAbs "SVGPathSegMovetoAbs
 
 foreign import javascript unsafe "window[\"SVGPathSegMovetoAbs\"]" gTypeSVGPathSegMovetoAbs' :: JSRef GType
 gTypeSVGPathSegMovetoAbs = GType gTypeSVGPathSegMovetoAbs'
-#else
 #endif
 
 
@@ -21017,7 +20800,6 @@ castToSVGPathSegMovetoRel = castTo gTypeSVGPathSegMovetoRel "SVGPathSegMovetoRel
 
 foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathSegMovetoRel' :: JSRef GType
 gTypeSVGPathSegMovetoRel = GType gTypeSVGPathSegMovetoRel'
-#else
 #endif
 
 
@@ -21067,7 +20849,6 @@ castToSVGPatternElement = castTo gTypeSVGPatternElement "SVGPatternElement"
 
 foreign import javascript unsafe "window[\"SVGPatternElement\"]" gTypeSVGPatternElement' :: JSRef GType
 gTypeSVGPatternElement = GType gTypeSVGPatternElement'
-#else
 #endif
 
 
@@ -21107,7 +20888,6 @@ castToSVGPoint = castTo gTypeSVGPoint "SVGPoint"
 
 foreign import javascript unsafe "window[\"SVGPoint\"]" gTypeSVGPoint' :: JSRef GType
 gTypeSVGPoint = GType gTypeSVGPoint'
-#else
 #endif
 
 
@@ -21147,7 +20927,6 @@ castToSVGPointList = castTo gTypeSVGPointList "SVGPointList"
 
 foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList' :: JSRef GType
 gTypeSVGPointList = GType gTypeSVGPointList'
-#else
 #endif
 
 
@@ -21199,7 +20978,6 @@ castToSVGPolygonElement = castTo gTypeSVGPolygonElement "SVGPolygonElement"
 
 foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygonElement' :: JSRef GType
 gTypeSVGPolygonElement = GType gTypeSVGPolygonElement'
-#else
 #endif
 
 
@@ -21251,7 +21029,6 @@ castToSVGPolylineElement = castTo gTypeSVGPolylineElement "SVGPolylineElement"
 
 foreign import javascript unsafe "window[\"SVGPolylineElement\"]" gTypeSVGPolylineElement' :: JSRef GType
 gTypeSVGPolylineElement = GType gTypeSVGPolylineElement'
-#else
 #endif
 
 
@@ -21291,7 +21068,6 @@ castToSVGPreserveAspectRatio = castTo gTypeSVGPreserveAspectRatio "SVGPreserveAs
 
 foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPreserveAspectRatio' :: JSRef GType
 gTypeSVGPreserveAspectRatio = GType gTypeSVGPreserveAspectRatio'
-#else
 #endif
 
 
@@ -21343,7 +21119,6 @@ castToSVGRadialGradientElement = castTo gTypeSVGRadialGradientElement "SVGRadial
 
 foreign import javascript unsafe "window[\"SVGRadialGradientElement\"]" gTypeSVGRadialGradientElement' :: JSRef GType
 gTypeSVGRadialGradientElement = GType gTypeSVGRadialGradientElement'
-#else
 #endif
 
 
@@ -21383,7 +21158,6 @@ castToSVGRect = castTo gTypeSVGRect "SVGRect"
 
 foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect' :: JSRef GType
 gTypeSVGRect = GType gTypeSVGRect'
-#else
 #endif
 
 
@@ -21435,7 +21209,6 @@ castToSVGRectElement = castTo gTypeSVGRectElement "SVGRectElement"
 
 foreign import javascript unsafe "window[\"SVGRectElement\"]" gTypeSVGRectElement' :: JSRef GType
 gTypeSVGRectElement = GType gTypeSVGRectElement'
-#else
 #endif
 
 
@@ -21475,7 +21248,6 @@ castToSVGRenderingIntent = castTo gTypeSVGRenderingIntent "SVGRenderingIntent"
 
 foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRenderingIntent' :: JSRef GType
 gTypeSVGRenderingIntent = GType gTypeSVGRenderingIntent'
-#else
 #endif
 
 
@@ -21527,7 +21299,6 @@ castToSVGSVGElement = castTo gTypeSVGSVGElement "SVGSVGElement"
 
 foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement' :: JSRef GType
 gTypeSVGSVGElement = GType gTypeSVGSVGElement'
-#else
 #endif
 
 
@@ -21577,7 +21348,6 @@ castToSVGScriptElement = castTo gTypeSVGScriptElement "SVGScriptElement"
 
 foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptElement' :: JSRef GType
 gTypeSVGScriptElement = GType gTypeSVGScriptElement'
-#else
 #endif
 
 
@@ -21629,7 +21399,6 @@ castToSVGSetElement = castTo gTypeSVGSetElement "SVGSetElement"
 
 foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement' :: JSRef GType
 gTypeSVGSetElement = GType gTypeSVGSetElement'
-#else
 #endif
 
 
@@ -21679,7 +21448,6 @@ castToSVGStopElement = castTo gTypeSVGStopElement "SVGStopElement"
 
 foreign import javascript unsafe "window[\"SVGStopElement\"]" gTypeSVGStopElement' :: JSRef GType
 gTypeSVGStopElement = GType gTypeSVGStopElement'
-#else
 #endif
 
 
@@ -21719,7 +21487,6 @@ castToSVGStringList = castTo gTypeSVGStringList "SVGStringList"
 
 foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList' :: JSRef GType
 gTypeSVGStringList = GType gTypeSVGStringList'
-#else
 #endif
 
 
@@ -21769,7 +21536,6 @@ castToSVGStyleElement = castTo gTypeSVGStyleElement "SVGStyleElement"
 
 foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElement' :: JSRef GType
 gTypeSVGStyleElement = GType gTypeSVGStyleElement'
-#else
 #endif
 
 
@@ -21821,7 +21587,6 @@ castToSVGSwitchElement = castTo gTypeSVGSwitchElement "SVGSwitchElement"
 
 foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchElement' :: JSRef GType
 gTypeSVGSwitchElement = GType gTypeSVGSwitchElement'
-#else
 #endif
 
 
@@ -21871,7 +21636,6 @@ castToSVGSymbolElement = castTo gTypeSVGSymbolElement "SVGSymbolElement"
 
 foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolElement' :: JSRef GType
 gTypeSVGSymbolElement = GType gTypeSVGSymbolElement'
-#else
 #endif
 
 
@@ -21927,7 +21691,6 @@ castToSVGTRefElement = castTo gTypeSVGTRefElement "SVGTRefElement"
 
 foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElement' :: JSRef GType
 gTypeSVGTRefElement = GType gTypeSVGTRefElement'
-#else
 #endif
 
 
@@ -21983,7 +21746,6 @@ castToSVGTSpanElement = castTo gTypeSVGTSpanElement "SVGTSpanElement"
 
 foreign import javascript unsafe "window[\"SVGTSpanElement\"]" gTypeSVGTSpanElement' :: JSRef GType
 gTypeSVGTSpanElement = GType gTypeSVGTSpanElement'
-#else
 #endif
 
 
@@ -22023,7 +21785,6 @@ castToSVGTests = castTo gTypeSVGTests "SVGTests"
 
 foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests' :: JSRef GType
 gTypeSVGTests = GType gTypeSVGTests'
-#else
 #endif
 
 
@@ -22080,7 +21841,6 @@ castToSVGTextContentElement = castTo gTypeSVGTextContentElement "SVGTextContentE
 
 foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTextContentElement' :: JSRef GType
 gTypeSVGTextContentElement = GType gTypeSVGTextContentElement'
-#else
 #endif
 
 
@@ -22136,7 +21896,6 @@ castToSVGTextElement = castTo gTypeSVGTextElement "SVGTextElement"
 
 foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElement' :: JSRef GType
 gTypeSVGTextElement = GType gTypeSVGTextElement'
-#else
 #endif
 
 
@@ -22190,7 +21949,6 @@ castToSVGTextPathElement = castTo gTypeSVGTextPathElement "SVGTextPathElement"
 
 foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPathElement' :: JSRef GType
 gTypeSVGTextPathElement = GType gTypeSVGTextPathElement'
-#else
 #endif
 
 
@@ -22249,7 +22007,6 @@ castToSVGTextPositioningElement = castTo gTypeSVGTextPositioningElement "SVGText
 
 foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSVGTextPositioningElement' :: JSRef GType
 gTypeSVGTextPositioningElement = GType gTypeSVGTextPositioningElement'
-#else
 #endif
 
 
@@ -22299,7 +22056,6 @@ castToSVGTitleElement = castTo gTypeSVGTitleElement "SVGTitleElement"
 
 foreign import javascript unsafe "window[\"SVGTitleElement\"]" gTypeSVGTitleElement' :: JSRef GType
 gTypeSVGTitleElement = GType gTypeSVGTitleElement'
-#else
 #endif
 
 
@@ -22339,7 +22095,6 @@ castToSVGTransform = castTo gTypeSVGTransform "SVGTransform"
 
 foreign import javascript unsafe "window[\"SVGTransform\"]" gTypeSVGTransform' :: JSRef GType
 gTypeSVGTransform = GType gTypeSVGTransform'
-#else
 #endif
 
 
@@ -22379,7 +22134,6 @@ castToSVGTransformList = castTo gTypeSVGTransformList "SVGTransformList"
 
 foreign import javascript unsafe "window[\"SVGTransformList\"]" gTypeSVGTransformList' :: JSRef GType
 gTypeSVGTransformList = GType gTypeSVGTransformList'
-#else
 #endif
 
 
@@ -22419,7 +22173,6 @@ castToSVGURIReference = castTo gTypeSVGURIReference "SVGURIReference"
 
 foreign import javascript unsafe "window[\"SVGURIReference\"]" gTypeSVGURIReference' :: JSRef GType
 gTypeSVGURIReference = GType gTypeSVGURIReference'
-#else
 #endif
 
 
@@ -22459,7 +22212,6 @@ castToSVGUnitTypes = castTo gTypeSVGUnitTypes "SVGUnitTypes"
 
 foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes' :: JSRef GType
 gTypeSVGUnitTypes = GType gTypeSVGUnitTypes'
-#else
 #endif
 
 
@@ -22511,7 +22263,6 @@ castToSVGUseElement = castTo gTypeSVGUseElement "SVGUseElement"
 
 foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement' :: JSRef GType
 gTypeSVGUseElement = GType gTypeSVGUseElement'
-#else
 #endif
 
 
@@ -22561,7 +22312,6 @@ castToSVGVKernElement = castTo gTypeSVGVKernElement "SVGVKernElement"
 
 foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElement' :: JSRef GType
 gTypeSVGVKernElement = GType gTypeSVGVKernElement'
-#else
 #endif
 
 
@@ -22611,7 +22361,6 @@ castToSVGViewElement = castTo gTypeSVGViewElement "SVGViewElement"
 
 foreign import javascript unsafe "window[\"SVGViewElement\"]" gTypeSVGViewElement' :: JSRef GType
 gTypeSVGViewElement = GType gTypeSVGViewElement'
-#else
 #endif
 
 
@@ -22651,7 +22400,6 @@ castToSVGViewSpec = castTo gTypeSVGViewSpec "SVGViewSpec"
 
 foreign import javascript unsafe "window[\"SVGViewSpec\"]" gTypeSVGViewSpec' :: JSRef GType
 gTypeSVGViewSpec = GType gTypeSVGViewSpec'
-#else
 #endif
 
 
@@ -22691,7 +22439,6 @@ castToSVGZoomAndPan = castTo gTypeSVGZoomAndPan "SVGZoomAndPan"
 
 foreign import javascript unsafe "window[\"SVGZoomAndPan\"]" gTypeSVGZoomAndPan' :: JSRef GType
 gTypeSVGZoomAndPan = GType gTypeSVGZoomAndPan'
-#else
 #endif
 
 
@@ -22737,7 +22484,6 @@ castToSVGZoomEvent = castTo gTypeSVGZoomEvent "SVGZoomEvent"
 
 foreign import javascript unsafe "window[\"SVGZoomEvent\"]" gTypeSVGZoomEvent' :: JSRef GType
 gTypeSVGZoomEvent = GType gTypeSVGZoomEvent'
-#else
 #endif
 
 
@@ -22824,7 +22570,6 @@ castToScriptProcessorNode = castTo gTypeScriptProcessorNode "ScriptProcessorNode
 
 foreign import javascript unsafe "window[\"ScriptProcessorNode\"]" gTypeScriptProcessorNode' :: JSRef GType
 gTypeScriptProcessorNode = GType gTypeScriptProcessorNode'
-#else
 #endif
 
 
@@ -22864,7 +22609,6 @@ castToScriptProfile = castTo gTypeScriptProfile "ScriptProfile"
 
 foreign import javascript unsafe "window[\"ScriptProfile\"]" gTypeScriptProfile' :: JSRef GType
 gTypeScriptProfile = GType gTypeScriptProfile'
-#else
 #endif
 
 
@@ -22904,7 +22648,6 @@ castToScriptProfileNode = castTo gTypeScriptProfileNode "ScriptProfileNode"
 
 foreign import javascript unsafe "window[\"ScriptProfileNode\"]" gTypeScriptProfileNode' :: JSRef GType
 gTypeScriptProfileNode = GType gTypeScriptProfileNode'
-#else
 #endif
 
 
@@ -22945,7 +22688,9 @@ castToSecurityPolicy = castTo gTypeSecurityPolicy "SecurityPolicy"
 foreign import javascript unsafe "window[\"SecurityPolicy\"]" gTypeSecurityPolicy' :: JSRef GType
 gTypeSecurityPolicy = GType gTypeSecurityPolicy'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsSecurityPolicy o = SecurityPolicyClass o
+#endif
 #endif
 
 
@@ -22989,7 +22734,6 @@ castToSecurityPolicyViolationEvent = castTo gTypeSecurityPolicyViolationEvent "S
 
 foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTypeSecurityPolicyViolationEvent' :: JSRef GType
 gTypeSecurityPolicyViolationEvent = GType gTypeSecurityPolicyViolationEvent'
-#else
 #endif
 
 
@@ -23074,7 +22818,6 @@ castToSourceBuffer = castTo gTypeSourceBuffer "SourceBuffer"
 
 foreign import javascript unsafe "window[\"SourceBuffer\"]" gTypeSourceBuffer' :: JSRef GType
 gTypeSourceBuffer = GType gTypeSourceBuffer'
-#else
 #endif
 
 
@@ -23118,7 +22861,6 @@ castToSourceBufferList = castTo gTypeSourceBufferList "SourceBufferList"
 
 foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBufferList' :: JSRef GType
 gTypeSourceBufferList = GType gTypeSourceBufferList'
-#else
 #endif
 
 
@@ -23158,7 +22900,6 @@ castToSourceInfo = castTo gTypeSourceInfo "SourceInfo"
 
 foreign import javascript unsafe "window[\"SourceInfo\"]" gTypeSourceInfo' :: JSRef GType
 gTypeSourceInfo = GType gTypeSourceInfo'
-#else
 #endif
 
 
@@ -23198,7 +22939,6 @@ castToSpeechSynthesis = castTo gTypeSpeechSynthesis "SpeechSynthesis"
 
 foreign import javascript unsafe "window[\"SpeechSynthesis\"]" gTypeSpeechSynthesis' :: JSRef GType
 gTypeSpeechSynthesis = GType gTypeSpeechSynthesis'
-#else
 #endif
 
 
@@ -23242,7 +22982,6 @@ castToSpeechSynthesisEvent = castTo gTypeSpeechSynthesisEvent "SpeechSynthesisEv
 
 foreign import javascript unsafe "window[\"SpeechSynthesisEvent\"]" gTypeSpeechSynthesisEvent' :: JSRef GType
 gTypeSpeechSynthesisEvent = GType gTypeSpeechSynthesisEvent'
-#else
 #endif
 
 
@@ -23286,7 +23025,6 @@ castToSpeechSynthesisUtterance = castTo gTypeSpeechSynthesisUtterance "SpeechSyn
 
 foreign import javascript unsafe "window[\"SpeechSynthesisUtterance\"]" gTypeSpeechSynthesisUtterance' :: JSRef GType
 gTypeSpeechSynthesisUtterance = GType gTypeSpeechSynthesisUtterance'
-#else
 #endif
 
 
@@ -23326,7 +23064,6 @@ castToSpeechSynthesisVoice = castTo gTypeSpeechSynthesisVoice "SpeechSynthesisVo
 
 foreign import javascript unsafe "window[\"SpeechSynthesisVoice\"]" gTypeSpeechSynthesisVoice' :: JSRef GType
 gTypeSpeechSynthesisVoice = GType gTypeSpeechSynthesisVoice'
-#else
 #endif
 
 
@@ -23411,7 +23148,6 @@ castToStorageEvent = castTo gTypeStorageEvent "StorageEvent"
 
 foreign import javascript unsafe "window[\"StorageEvent\"]" gTypeStorageEvent' :: JSRef GType
 gTypeStorageEvent = GType gTypeStorageEvent'
-#else
 #endif
 
 
@@ -23452,7 +23188,9 @@ castToStorageInfo = castTo gTypeStorageInfo "StorageInfo"
 foreign import javascript unsafe "window[\"StorageInfo\"]" gTypeStorageInfo' :: JSRef GType
 gTypeStorageInfo = GType gTypeStorageInfo'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsStorageInfo o = StorageInfoClass o
+#endif
 #endif
 
 
@@ -23493,7 +23231,9 @@ castToStorageQuota = castTo gTypeStorageQuota "StorageQuota"
 foreign import javascript unsafe "window[\"StorageQuota\"]" gTypeStorageQuota' :: JSRef GType
 gTypeStorageQuota = GType gTypeStorageQuota'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsStorageQuota o = StorageQuotaClass o
+#endif
 #endif
 
 
@@ -23661,7 +23401,6 @@ castToSubtleCrypto = castTo gTypeSubtleCrypto "SubtleCrypto"
 
 foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeSubtleCrypto' :: JSRef GType
 gTypeSubtleCrypto = GType gTypeSubtleCrypto'
-#else
 #endif
 
 
@@ -23761,7 +23500,6 @@ castToTextEvent = castTo gTypeTextEvent "TextEvent"
 
 foreign import javascript unsafe "window[\"TextEvent\"]" gTypeTextEvent' :: JSRef GType
 gTypeTextEvent = GType gTypeTextEvent'
-#else
 #endif
 
 
@@ -23801,7 +23539,6 @@ castToTextMetrics = castTo gTypeTextMetrics "TextMetrics"
 
 foreign import javascript unsafe "window[\"TextMetrics\"]" gTypeTextMetrics' :: JSRef GType
 gTypeTextMetrics = GType gTypeTextMetrics'
-#else
 #endif
 
 
@@ -23846,7 +23583,9 @@ castToTextTrack = castTo gTypeTextTrack "TextTrack"
 foreign import javascript unsafe "window[\"TextTrack\"]" gTypeTextTrack' :: JSRef GType
 gTypeTextTrack = GType gTypeTextTrack'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsTextTrack o = TextTrackClass o
+#endif
 #endif
 
 
@@ -23896,7 +23635,9 @@ castToTextTrackCue = castTo gTypeTextTrackCue "TextTrackCue"
 foreign import javascript unsafe "window[\"TextTrackCue\"]" gTypeTextTrackCue' :: JSRef GType
 gTypeTextTrackCue = GType gTypeTextTrackCue'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsTextTrackCue o = TextTrackCueClass o
+#endif
 #endif
 
 
@@ -23937,7 +23678,9 @@ castToTextTrackCueList = castTo gTypeTextTrackCueList "TextTrackCueList"
 foreign import javascript unsafe "window[\"TextTrackCueList\"]" gTypeTextTrackCueList' :: JSRef GType
 gTypeTextTrackCueList = GType gTypeTextTrackCueList'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsTextTrackCueList o = TextTrackCueListClass o
+#endif
 #endif
 
 
@@ -23982,7 +23725,9 @@ castToTextTrackList = castTo gTypeTextTrackList "TextTrackList"
 foreign import javascript unsafe "window[\"TextTrackList\"]" gTypeTextTrackList' :: JSRef GType
 gTypeTextTrackList = GType gTypeTextTrackList'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsTextTrackList o = TextTrackListClass o
+#endif
 #endif
 
 
@@ -24064,7 +23809,9 @@ castToTouch = castTo gTypeTouch "Touch"
 foreign import javascript unsafe "window[\"Touch\"]" gTypeTouch' :: JSRef GType
 gTypeTouch = GType gTypeTouch'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsTouch o = TouchClass o
+#endif
 #endif
 
 
@@ -24110,7 +23857,6 @@ castToTouchEvent = castTo gTypeTouchEvent "TouchEvent"
 
 foreign import javascript unsafe "window[\"TouchEvent\"]" gTypeTouchEvent' :: JSRef GType
 gTypeTouchEvent = GType gTypeTouchEvent'
-#else
 #endif
 
 
@@ -24150,7 +23896,6 @@ castToTouchList = castTo gTypeTouchList "TouchList"
 
 foreign import javascript unsafe "window[\"TouchList\"]" gTypeTouchList' :: JSRef GType
 gTypeTouchList = GType gTypeTouchList'
-#else
 #endif
 
 
@@ -24194,7 +23939,6 @@ castToTrackEvent = castTo gTypeTrackEvent "TrackEvent"
 
 foreign import javascript unsafe "window[\"TrackEvent\"]" gTypeTrackEvent' :: JSRef GType
 gTypeTrackEvent = GType gTypeTrackEvent'
-#else
 #endif
 
 
@@ -24238,7 +23982,6 @@ castToTransitionEvent = castTo gTypeTransitionEvent "TransitionEvent"
 
 foreign import javascript unsafe "window[\"TransitionEvent\"]" gTypeTransitionEvent' :: JSRef GType
 gTypeTransitionEvent = GType gTypeTransitionEvent'
-#else
 #endif
 
 
@@ -24319,7 +24062,6 @@ castToTypeConversions = castTo gTypeTypeConversions "TypeConversions"
 
 foreign import javascript unsafe "window[\"TypeConversions\"]" gTypeTypeConversions' :: JSRef GType
 gTypeTypeConversions = GType gTypeTypeConversions'
-#else
 #endif
 
 
@@ -24415,7 +24157,6 @@ castToUIRequestEvent = castTo gTypeUIRequestEvent "UIRequestEvent"
 
 foreign import javascript unsafe "window[\"UIRequestEvent\"]" gTypeUIRequestEvent' :: JSRef GType
 gTypeUIRequestEvent = GType gTypeUIRequestEvent'
-#else
 #endif
 
 
@@ -24455,7 +24196,6 @@ castToURL = castTo gTypeURL "URL"
 
 foreign import javascript unsafe "window[\"URL\"]" gTypeURL' :: JSRef GType
 gTypeURL = GType gTypeURL'
-#else
 #endif
 
 
@@ -24495,7 +24235,6 @@ castToURLUtils = castTo gTypeURLUtils "URLUtils"
 
 foreign import javascript unsafe "window[\"URLUtils\"]" gTypeURLUtils' :: JSRef GType
 gTypeURLUtils = GType gTypeURLUtils'
-#else
 #endif
 
 
@@ -24535,7 +24274,6 @@ castToUserMessageHandler = castTo gTypeUserMessageHandler "UserMessageHandler"
 
 foreign import javascript unsafe "window[\"UserMessageHandler\"]" gTypeUserMessageHandler' :: JSRef GType
 gTypeUserMessageHandler = GType gTypeUserMessageHandler'
-#else
 #endif
 
 
@@ -24575,7 +24313,6 @@ castToUserMessageHandlersNamespace = castTo gTypeUserMessageHandlersNamespace "U
 
 foreign import javascript unsafe "window[\"UserMessageHandlersNamespace\"]" gTypeUserMessageHandlersNamespace' :: JSRef GType
 gTypeUserMessageHandlersNamespace = GType gTypeUserMessageHandlersNamespace'
-#else
 #endif
 
 
@@ -24621,7 +24358,6 @@ castToVTTCue = castTo gTypeVTTCue "VTTCue"
 
 foreign import javascript unsafe "window[\"VTTCue\"]" gTypeVTTCue' :: JSRef GType
 gTypeVTTCue = GType gTypeVTTCue'
-#else
 #endif
 
 
@@ -24661,7 +24397,6 @@ castToVTTRegion = castTo gTypeVTTRegion "VTTRegion"
 
 foreign import javascript unsafe "window[\"VTTRegion\"]" gTypeVTTRegion' :: JSRef GType
 gTypeVTTRegion = GType gTypeVTTRegion'
-#else
 #endif
 
 
@@ -24701,7 +24436,6 @@ castToVTTRegionList = castTo gTypeVTTRegionList "VTTRegionList"
 
 foreign import javascript unsafe "window[\"VTTRegionList\"]" gTypeVTTRegionList' :: JSRef GType
 gTypeVTTRegionList = GType gTypeVTTRegionList'
-#else
 #endif
 
 
@@ -24782,7 +24516,6 @@ castToVideoPlaybackQuality = castTo gTypeVideoPlaybackQuality "VideoPlaybackQual
 
 foreign import javascript unsafe "window[\"VideoPlaybackQuality\"]" gTypeVideoPlaybackQuality' :: JSRef GType
 gTypeVideoPlaybackQuality = GType gTypeVideoPlaybackQuality'
-#else
 #endif
 
 
@@ -24828,7 +24561,6 @@ castToVideoStreamTrack = castTo gTypeVideoStreamTrack "VideoStreamTrack"
 
 foreign import javascript unsafe "window[\"VideoStreamTrack\"]" gTypeVideoStreamTrack' :: JSRef GType
 gTypeVideoStreamTrack = GType gTypeVideoStreamTrack'
-#else
 #endif
 
 
@@ -24869,7 +24601,9 @@ castToVideoTrack = castTo gTypeVideoTrack "VideoTrack"
 foreign import javascript unsafe "window[\"VideoTrack\"]" gTypeVideoTrack' :: JSRef GType
 gTypeVideoTrack = GType gTypeVideoTrack'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsVideoTrack o = VideoTrackClass o
+#endif
 #endif
 
 
@@ -24914,7 +24648,9 @@ castToVideoTrackList = castTo gTypeVideoTrackList "VideoTrackList"
 foreign import javascript unsafe "window[\"VideoTrackList\"]" gTypeVideoTrackList' :: JSRef GType
 gTypeVideoTrackList = GType gTypeVideoTrackList'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsVideoTrackList o = VideoTrackListClass o
+#endif
 #endif
 
 
@@ -24960,7 +24696,6 @@ castToWaveShaperNode = castTo gTypeWaveShaperNode "WaveShaperNode"
 
 foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNode' :: JSRef GType
 gTypeWaveShaperNode = GType gTypeWaveShaperNode'
-#else
 #endif
 
 
@@ -25006,7 +24741,6 @@ castToWebGL2RenderingContext = castTo gTypeWebGL2RenderingContext "WebGL2Renderi
 
 foreign import javascript unsafe "window[\"WebGL2RenderingContext\"]" gTypeWebGL2RenderingContext' :: JSRef GType
 gTypeWebGL2RenderingContext = GType gTypeWebGL2RenderingContext'
-#else
 #endif
 
 
@@ -25046,7 +24780,6 @@ castToWebGLActiveInfo = castTo gTypeWebGLActiveInfo "WebGLActiveInfo"
 
 foreign import javascript unsafe "window[\"WebGLActiveInfo\"]" gTypeWebGLActiveInfo' :: JSRef GType
 gTypeWebGLActiveInfo = GType gTypeWebGLActiveInfo'
-#else
 #endif
 
 
@@ -25086,7 +24819,6 @@ castToWebGLBuffer = castTo gTypeWebGLBuffer "WebGLBuffer"
 
 foreign import javascript unsafe "window[\"WebGLBuffer\"]" gTypeWebGLBuffer' :: JSRef GType
 gTypeWebGLBuffer = GType gTypeWebGLBuffer'
-#else
 #endif
 
 
@@ -25126,7 +24858,6 @@ castToWebGLCompressedTextureATC = castTo gTypeWebGLCompressedTextureATC "WebGLCo
 
 foreign import javascript unsafe "window[\"WebGLCompressedTextureATC\"]" gTypeWebGLCompressedTextureATC' :: JSRef GType
 gTypeWebGLCompressedTextureATC = GType gTypeWebGLCompressedTextureATC'
-#else
 #endif
 
 
@@ -25166,7 +24897,6 @@ castToWebGLCompressedTexturePVRTC = castTo gTypeWebGLCompressedTexturePVRTC "Web
 
 foreign import javascript unsafe "window[\"WebGLCompressedTexturePVRTC\"]" gTypeWebGLCompressedTexturePVRTC' :: JSRef GType
 gTypeWebGLCompressedTexturePVRTC = GType gTypeWebGLCompressedTexturePVRTC'
-#else
 #endif
 
 
@@ -25206,7 +24936,6 @@ castToWebGLCompressedTextureS3TC = castTo gTypeWebGLCompressedTextureS3TC "WebGL
 
 foreign import javascript unsafe "window[\"WebGLCompressedTextureS3TC\"]" gTypeWebGLCompressedTextureS3TC' :: JSRef GType
 gTypeWebGLCompressedTextureS3TC = GType gTypeWebGLCompressedTextureS3TC'
-#else
 #endif
 
 
@@ -25246,7 +24975,6 @@ castToWebGLContextAttributes = castTo gTypeWebGLContextAttributes "WebGLContextA
 
 foreign import javascript unsafe "window[\"WebGLContextAttributes\"]" gTypeWebGLContextAttributes' :: JSRef GType
 gTypeWebGLContextAttributes = GType gTypeWebGLContextAttributes'
-#else
 #endif
 
 
@@ -25290,7 +25018,6 @@ castToWebGLContextEvent = castTo gTypeWebGLContextEvent "WebGLContextEvent"
 
 foreign import javascript unsafe "window[\"WebGLContextEvent\"]" gTypeWebGLContextEvent' :: JSRef GType
 gTypeWebGLContextEvent = GType gTypeWebGLContextEvent'
-#else
 #endif
 
 
@@ -25330,7 +25057,6 @@ castToWebGLDebugRendererInfo = castTo gTypeWebGLDebugRendererInfo "WebGLDebugRen
 
 foreign import javascript unsafe "window[\"WebGLDebugRendererInfo\"]" gTypeWebGLDebugRendererInfo' :: JSRef GType
 gTypeWebGLDebugRendererInfo = GType gTypeWebGLDebugRendererInfo'
-#else
 #endif
 
 
@@ -25370,7 +25096,6 @@ castToWebGLDebugShaders = castTo gTypeWebGLDebugShaders "WebGLDebugShaders"
 
 foreign import javascript unsafe "window[\"WebGLDebugShaders\"]" gTypeWebGLDebugShaders' :: JSRef GType
 gTypeWebGLDebugShaders = GType gTypeWebGLDebugShaders'
-#else
 #endif
 
 
@@ -25410,7 +25135,6 @@ castToWebGLDepthTexture = castTo gTypeWebGLDepthTexture "WebGLDepthTexture"
 
 foreign import javascript unsafe "window[\"WebGLDepthTexture\"]" gTypeWebGLDepthTexture' :: JSRef GType
 gTypeWebGLDepthTexture = GType gTypeWebGLDepthTexture'
-#else
 #endif
 
 
@@ -25450,7 +25174,6 @@ castToWebGLDrawBuffers = castTo gTypeWebGLDrawBuffers "WebGLDrawBuffers"
 
 foreign import javascript unsafe "window[\"WebGLDrawBuffers\"]" gTypeWebGLDrawBuffers' :: JSRef GType
 gTypeWebGLDrawBuffers = GType gTypeWebGLDrawBuffers'
-#else
 #endif
 
 
@@ -25490,7 +25213,6 @@ castToWebGLFramebuffer = castTo gTypeWebGLFramebuffer "WebGLFramebuffer"
 
 foreign import javascript unsafe "window[\"WebGLFramebuffer\"]" gTypeWebGLFramebuffer' :: JSRef GType
 gTypeWebGLFramebuffer = GType gTypeWebGLFramebuffer'
-#else
 #endif
 
 
@@ -25530,7 +25252,6 @@ castToWebGLLoseContext = castTo gTypeWebGLLoseContext "WebGLLoseContext"
 
 foreign import javascript unsafe "window[\"WebGLLoseContext\"]" gTypeWebGLLoseContext' :: JSRef GType
 gTypeWebGLLoseContext = GType gTypeWebGLLoseContext'
-#else
 #endif
 
 
@@ -25570,7 +25291,6 @@ castToWebGLProgram = castTo gTypeWebGLProgram "WebGLProgram"
 
 foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram' :: JSRef GType
 gTypeWebGLProgram = GType gTypeWebGLProgram'
-#else
 #endif
 
 
@@ -25610,7 +25330,6 @@ castToWebGLQuery = castTo gTypeWebGLQuery "WebGLQuery"
 
 foreign import javascript unsafe "window[\"WebGLQuery\"]" gTypeWebGLQuery' :: JSRef GType
 gTypeWebGLQuery = GType gTypeWebGLQuery'
-#else
 #endif
 
 
@@ -25650,7 +25369,6 @@ castToWebGLRenderbuffer = castTo gTypeWebGLRenderbuffer "WebGLRenderbuffer"
 
 foreign import javascript unsafe "window[\"WebGLRenderbuffer\"]" gTypeWebGLRenderbuffer' :: JSRef GType
 gTypeWebGLRenderbuffer = GType gTypeWebGLRenderbuffer'
-#else
 #endif
 
 
@@ -25696,7 +25414,6 @@ castToWebGLRenderingContext = castTo gTypeWebGLRenderingContext "WebGLRenderingC
 
 foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLRenderingContext' :: JSRef GType
 gTypeWebGLRenderingContext = GType gTypeWebGLRenderingContext'
-#else
 #endif
 
 
@@ -25745,7 +25462,6 @@ castToWebGLRenderingContextBase = castTo gTypeWebGLRenderingContextBase "WebGLRe
 
 foreign import javascript unsafe "window[\"WebGLRenderingContextBase\"]" gTypeWebGLRenderingContextBase' :: JSRef GType
 gTypeWebGLRenderingContextBase = GType gTypeWebGLRenderingContextBase'
-#else
 #endif
 
 
@@ -25785,7 +25501,6 @@ castToWebGLSampler = castTo gTypeWebGLSampler "WebGLSampler"
 
 foreign import javascript unsafe "window[\"WebGLSampler\"]" gTypeWebGLSampler' :: JSRef GType
 gTypeWebGLSampler = GType gTypeWebGLSampler'
-#else
 #endif
 
 
@@ -25825,7 +25540,6 @@ castToWebGLShader = castTo gTypeWebGLShader "WebGLShader"
 
 foreign import javascript unsafe "window[\"WebGLShader\"]" gTypeWebGLShader' :: JSRef GType
 gTypeWebGLShader = GType gTypeWebGLShader'
-#else
 #endif
 
 
@@ -25865,7 +25579,6 @@ castToWebGLShaderPrecisionFormat = castTo gTypeWebGLShaderPrecisionFormat "WebGL
 
 foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeWebGLShaderPrecisionFormat' :: JSRef GType
 gTypeWebGLShaderPrecisionFormat = GType gTypeWebGLShaderPrecisionFormat'
-#else
 #endif
 
 
@@ -25905,7 +25618,6 @@ castToWebGLSync = castTo gTypeWebGLSync "WebGLSync"
 
 foreign import javascript unsafe "window[\"WebGLSync\"]" gTypeWebGLSync' :: JSRef GType
 gTypeWebGLSync = GType gTypeWebGLSync'
-#else
 #endif
 
 
@@ -25945,7 +25657,6 @@ castToWebGLTexture = castTo gTypeWebGLTexture "WebGLTexture"
 
 foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture' :: JSRef GType
 gTypeWebGLTexture = GType gTypeWebGLTexture'
-#else
 #endif
 
 
@@ -25985,7 +25696,6 @@ castToWebGLTransformFeedback = castTo gTypeWebGLTransformFeedback "WebGLTransfor
 
 foreign import javascript unsafe "window[\"WebGLTransformFeedback\"]" gTypeWebGLTransformFeedback' :: JSRef GType
 gTypeWebGLTransformFeedback = GType gTypeWebGLTransformFeedback'
-#else
 #endif
 
 
@@ -26025,7 +25735,6 @@ castToWebGLUniformLocation = castTo gTypeWebGLUniformLocation "WebGLUniformLocat
 
 foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUniformLocation' :: JSRef GType
 gTypeWebGLUniformLocation = GType gTypeWebGLUniformLocation'
-#else
 #endif
 
 
@@ -26065,7 +25774,6 @@ castToWebGLVertexArrayObject = castTo gTypeWebGLVertexArrayObject "WebGLVertexAr
 
 foreign import javascript unsafe "window[\"WebGLVertexArrayObject\"]" gTypeWebGLVertexArrayObject' :: JSRef GType
 gTypeWebGLVertexArrayObject = GType gTypeWebGLVertexArrayObject'
-#else
 #endif
 
 
@@ -26105,7 +25813,6 @@ castToWebGLVertexArrayObjectOES = castTo gTypeWebGLVertexArrayObjectOES "WebGLVe
 
 foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWebGLVertexArrayObjectOES' :: JSRef GType
 gTypeWebGLVertexArrayObjectOES = GType gTypeWebGLVertexArrayObjectOES'
-#else
 #endif
 
 
@@ -26149,7 +25856,6 @@ castToWebKitAnimationEvent = castTo gTypeWebKitAnimationEvent "WebKitAnimationEv
 
 foreign import javascript unsafe "window[\"WebKitAnimationEvent\"]" gTypeWebKitAnimationEvent' :: JSRef GType
 gTypeWebKitAnimationEvent = GType gTypeWebKitAnimationEvent'
-#else
 #endif
 
 
@@ -26195,7 +25901,6 @@ castToWebKitCSSFilterValue = castTo gTypeWebKitCSSFilterValue "WebKitCSSFilterVa
 
 foreign import javascript unsafe "window[\"WebKitCSSFilterValue\"]" gTypeWebKitCSSFilterValue' :: JSRef GType
 gTypeWebKitCSSFilterValue = GType gTypeWebKitCSSFilterValue'
-#else
 #endif
 
 
@@ -26235,7 +25940,6 @@ castToWebKitCSSMatrix = castTo gTypeWebKitCSSMatrix "WebKitCSSMatrix"
 
 foreign import javascript unsafe "window[\"WebKitCSSMatrix\"]" gTypeWebKitCSSMatrix' :: JSRef GType
 gTypeWebKitCSSMatrix = GType gTypeWebKitCSSMatrix'
-#else
 #endif
 
 
@@ -26279,7 +25983,6 @@ castToWebKitCSSRegionRule = castTo gTypeWebKitCSSRegionRule "WebKitCSSRegionRule
 
 foreign import javascript unsafe "window[\"WebKitCSSRegionRule\"]" gTypeWebKitCSSRegionRule' :: JSRef GType
 gTypeWebKitCSSRegionRule = GType gTypeWebKitCSSRegionRule'
-#else
 #endif
 
 
@@ -26325,7 +26028,6 @@ castToWebKitCSSTransformValue = castTo gTypeWebKitCSSTransformValue "WebKitCSSTr
 
 foreign import javascript unsafe "window[\"WebKitCSSTransformValue\"]" gTypeWebKitCSSTransformValue' :: JSRef GType
 gTypeWebKitCSSTransformValue = GType gTypeWebKitCSSTransformValue'
-#else
 #endif
 
 
@@ -26369,7 +26071,6 @@ castToWebKitCSSViewportRule = castTo gTypeWebKitCSSViewportRule "WebKitCSSViewpo
 
 foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKitCSSViewportRule' :: JSRef GType
 gTypeWebKitCSSViewportRule = GType gTypeWebKitCSSViewportRule'
-#else
 #endif
 
 
@@ -26454,7 +26155,6 @@ castToWebKitNamespace = castTo gTypeWebKitNamespace "WebKitNamespace"
 
 foreign import javascript unsafe "window[\"WebKitNamespace\"]" gTypeWebKitNamespace' :: JSRef GType
 gTypeWebKitNamespace = GType gTypeWebKitNamespace'
-#else
 #endif
 
 
@@ -26498,7 +26198,6 @@ castToWebKitPlaybackTargetAvailabilityEvent = castTo gTypeWebKitPlaybackTargetAv
 
 foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEvent\"]" gTypeWebKitPlaybackTargetAvailabilityEvent' :: JSRef GType
 gTypeWebKitPlaybackTargetAvailabilityEvent = GType gTypeWebKitPlaybackTargetAvailabilityEvent'
-#else
 #endif
 
 
@@ -26583,7 +26282,6 @@ castToWebKitTransitionEvent = castTo gTypeWebKitTransitionEvent "WebKitTransitio
 
 foreign import javascript unsafe "window[\"WebKitTransitionEvent\"]" gTypeWebKitTransitionEvent' :: JSRef GType
 gTypeWebKitTransitionEvent = GType gTypeWebKitTransitionEvent'
-#else
 #endif
 
 
@@ -26627,7 +26325,6 @@ castToWebSocket = castTo gTypeWebSocket "WebSocket"
 
 foreign import javascript unsafe "window[\"WebSocket\"]" gTypeWebSocket' :: JSRef GType
 gTypeWebSocket = GType gTypeWebSocket'
-#else
 #endif
 
 
@@ -26676,7 +26373,9 @@ castToWheelEvent = castTo gTypeWheelEvent "WheelEvent"
 foreign import javascript unsafe "window[\"WheelEvent\"]" gTypeWheelEvent' :: JSRef GType
 gTypeWheelEvent = GType gTypeWheelEvent'
 #else
+#ifndef USE_OLD_WEBKIT
 type IsWheelEvent o = WheelEventClass o
+#endif
 #endif
 
 
@@ -26761,7 +26460,6 @@ castToWindowBase64 = castTo gTypeWindowBase64 "WindowBase64"
 
 foreign import javascript unsafe "window[\"WindowBase64\"]" gTypeWindowBase64' :: JSRef GType
 gTypeWindowBase64 = GType gTypeWindowBase64'
-#else
 #endif
 
 
@@ -26801,7 +26499,6 @@ castToWindowTimers = castTo gTypeWindowTimers "WindowTimers"
 
 foreign import javascript unsafe "window[\"WindowTimers\"]" gTypeWindowTimers' :: JSRef GType
 gTypeWindowTimers = GType gTypeWindowTimers'
-#else
 #endif
 
 
@@ -26845,7 +26542,6 @@ castToWorker = castTo gTypeWorker "Worker"
 
 foreign import javascript unsafe "window[\"Worker\"]" gTypeWorker' :: JSRef GType
 gTypeWorker = GType gTypeWorker'
-#else
 #endif
 
 
@@ -26894,7 +26590,6 @@ castToWorkerGlobalScope = castTo gTypeWorkerGlobalScope "WorkerGlobalScope"
 
 foreign import javascript unsafe "window[\"WorkerGlobalScope\"]" gTypeWorkerGlobalScope' :: JSRef GType
 gTypeWorkerGlobalScope = GType gTypeWorkerGlobalScope'
-#else
 #endif
 
 
@@ -26934,7 +26629,6 @@ castToWorkerLocation = castTo gTypeWorkerLocation "WorkerLocation"
 
 foreign import javascript unsafe "window[\"WorkerLocation\"]" gTypeWorkerLocation' :: JSRef GType
 gTypeWorkerLocation = GType gTypeWorkerLocation'
-#else
 #endif
 
 
@@ -26974,7 +26668,6 @@ castToWorkerNavigator = castTo gTypeWorkerNavigator "WorkerNavigator"
 
 foreign import javascript unsafe "window[\"WorkerNavigator\"]" gTypeWorkerNavigator' :: JSRef GType
 gTypeWorkerNavigator = GType gTypeWorkerNavigator'
-#else
 #endif
 
 
@@ -27018,7 +26711,6 @@ castToXMLHttpRequest = castTo gTypeXMLHttpRequest "XMLHttpRequest"
 
 foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpRequest' :: JSRef GType
 gTypeXMLHttpRequest = GType gTypeXMLHttpRequest'
-#else
 #endif
 
 
@@ -27064,7 +26756,6 @@ castToXMLHttpRequestProgressEvent = castTo gTypeXMLHttpRequestProgressEvent "XML
 
 foreign import javascript unsafe "window[\"XMLHttpRequestProgressEvent\"]" gTypeXMLHttpRequestProgressEvent' :: JSRef GType
 gTypeXMLHttpRequestProgressEvent = GType gTypeXMLHttpRequestProgressEvent'
-#else
 #endif
 
 
@@ -27108,7 +26799,6 @@ castToXMLHttpRequestUpload = castTo gTypeXMLHttpRequestUpload "XMLHttpRequestUpl
 
 foreign import javascript unsafe "window[\"XMLHttpRequestUpload\"]" gTypeXMLHttpRequestUpload' :: JSRef GType
 gTypeXMLHttpRequestUpload = GType gTypeXMLHttpRequestUpload'
-#else
 #endif
 
 
@@ -27148,7 +26838,6 @@ castToXMLSerializer = castTo gTypeXMLSerializer "XMLSerializer"
 
 foreign import javascript unsafe "window[\"XMLSerializer\"]" gTypeXMLSerializer' :: JSRef GType
 gTypeXMLSerializer = GType gTypeXMLSerializer'
-#else
 #endif
 
 
@@ -27188,7 +26877,6 @@ castToXPathEvaluator = castTo gTypeXPathEvaluator "XPathEvaluator"
 
 foreign import javascript unsafe "window[\"XPathEvaluator\"]" gTypeXPathEvaluator' :: JSRef GType
 gTypeXPathEvaluator = GType gTypeXPathEvaluator'
-#else
 #endif
 
 
@@ -27351,7 +27039,6 @@ castToXSLTProcessor = castTo gTypeXSLTProcessor "XSLTProcessor"
 
 foreign import javascript unsafe "window[\"XSLTProcessor\"]" gTypeXSLTProcessor' :: JSRef GType
 gTypeXSLTProcessor = GType gTypeXSLTProcessor'
-#else
 #endif
 
 
