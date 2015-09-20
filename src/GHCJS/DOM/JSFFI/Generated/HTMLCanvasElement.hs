@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLCanvasElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,7 +23,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"toDataURL\"]($2)"
         js_toDataURL ::
-        JSRef HTMLCanvasElement -> JSRef (Maybe JSString) -> IO JSString
+        HTMLCanvasElement -> Nullable JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL Mozilla HTMLCanvasElement.toDataURL documentation> 
 toDataURL ::
@@ -31,60 +31,53 @@ toDataURL ::
             HTMLCanvasElement -> Maybe type' -> m result
 toDataURL self type'
   = liftIO
-      (fromJSString <$>
-         (js_toDataURL (unHTMLCanvasElement self) (toMaybeJSString type')))
+      (fromJSString <$> (js_toDataURL (self) (toMaybeJSString type')))
  
 foreign import javascript unsafe "$1[\"getContext\"]($2)"
-        js_getContext ::
-        JSRef HTMLCanvasElement -> JSString -> IO (JSRef a)
+        js_getContext :: HTMLCanvasElement -> JSString -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.getContext Mozilla HTMLCanvasElement.getContext documentation> 
 getContext ::
            (MonadIO m, ToJSString contextId) =>
-             HTMLCanvasElement -> contextId -> m (JSRef a)
+             HTMLCanvasElement -> contextId -> m JSRef
 getContext self contextId
-  = liftIO
-      (js_getContext (unHTMLCanvasElement self) (toJSString contextId))
+  = liftIO (js_getContext (self) (toJSString contextId))
  
 foreign import javascript unsafe
         "$1[\"probablySupportsContext\"]($2)" js_probablySupportsContext ::
-        JSRef HTMLCanvasElement -> JSString -> IO (JSRef a)
+        HTMLCanvasElement -> JSString -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.probablySupportsContext Mozilla HTMLCanvasElement.probablySupportsContext documentation> 
 probablySupportsContext ::
                         (MonadIO m, ToJSString contextId) =>
-                          HTMLCanvasElement -> contextId -> m (JSRef a)
+                          HTMLCanvasElement -> contextId -> m JSRef
 probablySupportsContext self contextId
-  = liftIO
-      (js_probablySupportsContext (unHTMLCanvasElement self)
-         (toJSString contextId))
+  = liftIO (js_probablySupportsContext (self) (toJSString contextId))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
-        :: JSRef HTMLCanvasElement -> Int -> IO ()
+        :: HTMLCanvasElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
 setWidth :: (MonadIO m) => HTMLCanvasElement -> Int -> m ()
-setWidth self val
-  = liftIO (js_setWidth (unHTMLCanvasElement self) val)
+setWidth self val = liftIO (js_setWidth (self) val)
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
-        JSRef HTMLCanvasElement -> IO Int
+        HTMLCanvasElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
 getWidth :: (MonadIO m) => HTMLCanvasElement -> m Int
-getWidth self = liftIO (js_getWidth (unHTMLCanvasElement self))
+getWidth self = liftIO (js_getWidth (self))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
-        js_setHeight :: JSRef HTMLCanvasElement -> Int -> IO ()
+        js_setHeight :: HTMLCanvasElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 
 setHeight :: (MonadIO m) => HTMLCanvasElement -> Int -> m ()
-setHeight self val
-  = liftIO (js_setHeight (unHTMLCanvasElement self) val)
+setHeight self val = liftIO (js_setHeight (self) val)
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
-        JSRef HTMLCanvasElement -> IO Int
+        HTMLCanvasElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 
 getHeight :: (MonadIO m) => HTMLCanvasElement -> m Int
-getHeight self = liftIO (js_getHeight (unHTMLCanvasElement self))
+getHeight self = liftIO (js_getHeight (self))

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.CustomEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,22 +20,21 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"initCustomEvent\"]($2, $3,\n$4, $5)" js_initCustomEvent ::
-        JSRef CustomEvent -> JSString -> Bool -> Bool -> JSRef a -> IO ()
+        CustomEvent -> JSString -> Bool -> Bool -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.initCustomEvent Mozilla CustomEvent.initCustomEvent documentation> 
 initCustomEvent ::
                 (MonadIO m, ToJSString typeArg) =>
-                  CustomEvent -> typeArg -> Bool -> Bool -> JSRef a -> m ()
+                  CustomEvent -> typeArg -> Bool -> Bool -> JSRef -> m ()
 initCustomEvent self typeArg canBubbleArg cancelableArg detailArg
   = liftIO
-      (js_initCustomEvent (unCustomEvent self) (toJSString typeArg)
-         canBubbleArg
+      (js_initCustomEvent (self) (toJSString typeArg) canBubbleArg
          cancelableArg
          detailArg)
  
 foreign import javascript unsafe "$1[\"detail\"]" js_getDetail ::
-        JSRef CustomEvent -> IO (JSRef a)
+        CustomEvent -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.detail Mozilla CustomEvent.detail documentation> 
-getDetail :: (MonadIO m) => CustomEvent -> m (JSRef a)
-getDetail self = liftIO (js_getDetail (unCustomEvent self))
+getDetail :: (MonadIO m) => CustomEvent -> m JSRef
+getDetail self = liftIO (js_getDetail (self))

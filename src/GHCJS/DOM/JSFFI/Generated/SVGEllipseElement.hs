@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGEllipseElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,37 +20,33 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"cx\"]" js_getCx ::
-        JSRef SVGEllipseElement -> IO (JSRef SVGAnimatedLength)
+        SVGEllipseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGEllipseElement.cx Mozilla SVGEllipseElement.cx documentation> 
 getCx ::
       (MonadIO m) => SVGEllipseElement -> m (Maybe SVGAnimatedLength)
-getCx self
-  = liftIO ((js_getCx (unSVGEllipseElement self)) >>= fromJSRef)
+getCx self = liftIO (nullableToMaybe <$> (js_getCx (self)))
  
 foreign import javascript unsafe "$1[\"cy\"]" js_getCy ::
-        JSRef SVGEllipseElement -> IO (JSRef SVGAnimatedLength)
+        SVGEllipseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGEllipseElement.cy Mozilla SVGEllipseElement.cy documentation> 
 getCy ::
       (MonadIO m) => SVGEllipseElement -> m (Maybe SVGAnimatedLength)
-getCy self
-  = liftIO ((js_getCy (unSVGEllipseElement self)) >>= fromJSRef)
+getCy self = liftIO (nullableToMaybe <$> (js_getCy (self)))
  
 foreign import javascript unsafe "$1[\"rx\"]" js_getRx ::
-        JSRef SVGEllipseElement -> IO (JSRef SVGAnimatedLength)
+        SVGEllipseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGEllipseElement.rx Mozilla SVGEllipseElement.rx documentation> 
 getRx ::
       (MonadIO m) => SVGEllipseElement -> m (Maybe SVGAnimatedLength)
-getRx self
-  = liftIO ((js_getRx (unSVGEllipseElement self)) >>= fromJSRef)
+getRx self = liftIO (nullableToMaybe <$> (js_getRx (self)))
  
 foreign import javascript unsafe "$1[\"ry\"]" js_getRy ::
-        JSRef SVGEllipseElement -> IO (JSRef SVGAnimatedLength)
+        SVGEllipseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGEllipseElement.ry Mozilla SVGEllipseElement.ry documentation> 
 getRy ::
       (MonadIO m) => SVGEllipseElement -> m (Maybe SVGAnimatedLength)
-getRy self
-  = liftIO ((js_getRy (unSVGEllipseElement self)) >>= fromJSRef)
+getRy self = liftIO (nullableToMaybe <$> (js_getRy (self)))

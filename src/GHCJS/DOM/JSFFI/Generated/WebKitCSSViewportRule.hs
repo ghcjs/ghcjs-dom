@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.WebKitCSSViewportRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,12 +19,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
-        JSRef WebKitCSSViewportRule -> IO (JSRef CSSStyleDeclaration)
+        WebKitCSSViewportRule -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSViewportRule.style Mozilla WebKitCSSViewportRule.style documentation> 
 getStyle ::
          (MonadIO m) =>
            WebKitCSSViewportRule -> m (Maybe CSSStyleDeclaration)
-getStyle self
-  = liftIO
-      ((js_getStyle (unWebKitCSSViewportRule self)) >>= fromJSRef)
+getStyle self = liftIO (nullableToMaybe <$> (js_getStyle (self)))

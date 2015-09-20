@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.XPathNSResolver
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,7 +20,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
         js_lookupNamespaceURI ::
-        JSRef XPathNSResolver -> JSString -> IO (JSRef (Maybe JSString))
+        XPathNSResolver -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver.lookupNamespaceURI Mozilla XPathNSResolver.lookupNamespaceURI documentation> 
 lookupNamespaceURI ::
@@ -29,5 +29,4 @@ lookupNamespaceURI ::
 lookupNamespaceURI self prefix
   = liftIO
       (fromMaybeJSString <$>
-         (js_lookupNamespaceURI (unXPathNSResolver self)
-            (toJSString prefix)))
+         (js_lookupNamespaceURI (self) (toJSString prefix)))

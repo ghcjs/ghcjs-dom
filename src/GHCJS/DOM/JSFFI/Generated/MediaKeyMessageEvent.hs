@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeyMessageEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,23 +20,20 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
-        JSRef MediaKeyMessageEvent -> IO (JSRef Uint8Array)
+        MediaKeyMessageEvent -> IO (Nullable Uint8Array)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.message Mozilla WebKitMediaKeyMessageEvent.message documentation> 
 getMessage ::
            (MonadIO m) => MediaKeyMessageEvent -> m (Maybe Uint8Array)
 getMessage self
-  = liftIO
-      ((js_getMessage (unMediaKeyMessageEvent self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getMessage (self)))
  
 foreign import javascript unsafe "$1[\"destinationURL\"]"
-        js_getDestinationURL :: JSRef MediaKeyMessageEvent -> IO JSString
+        js_getDestinationURL :: MediaKeyMessageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.destinationURL Mozilla WebKitMediaKeyMessageEvent.destinationURL documentation> 
 getDestinationURL ::
                   (MonadIO m, FromJSString result) =>
                     MediaKeyMessageEvent -> m result
 getDestinationURL self
-  = liftIO
-      (fromJSString <$>
-         (js_getDestinationURL (unMediaKeyMessageEvent self)))
+  = liftIO (fromJSString <$> (js_getDestinationURL (self)))

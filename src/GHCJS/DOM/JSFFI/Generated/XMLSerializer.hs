@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.XMLSerializer
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,16 +20,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"XMLSerializer\"]()"
-        js_newXMLSerializer :: IO (JSRef XMLSerializer)
+        js_newXMLSerializer :: IO XMLSerializer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer Mozilla XMLSerializer documentation> 
 newXMLSerializer :: (MonadIO m) => m XMLSerializer
-newXMLSerializer
-  = liftIO (js_newXMLSerializer >>= fromJSRefUnchecked)
+newXMLSerializer = liftIO (js_newXMLSerializer)
  
 foreign import javascript unsafe "$1[\"serializeToString\"]($2)"
         js_serializeToString ::
-        JSRef XMLSerializer -> JSRef Node -> IO JSString
+        XMLSerializer -> Nullable Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer.serializeToString Mozilla XMLSerializer.serializeToString documentation> 
 serializeToString ::
@@ -38,5 +37,4 @@ serializeToString ::
 serializeToString self node
   = liftIO
       (fromJSString <$>
-         (js_serializeToString (unXMLSerializer self)
-            (maybe jsNull (unNode . toNode) node)))
+         (js_serializeToString (self) (maybeToNullable (fmap toNode node))))

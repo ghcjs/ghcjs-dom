@@ -23,7 +23,7 @@ module GHCJS.DOM.JSFFI.Generated.WebGLDrawBuffers
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -37,8 +37,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"drawBuffersWEBGL\"]($2)"
-        js_drawBuffersWEBGL ::
-        JSRef WebGLDrawBuffers -> JSRef [GLenum] -> IO ()
+        js_drawBuffersWEBGL :: WebGLDrawBuffers -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDrawBuffers.drawBuffersWEBGL Mozilla WebGLDrawBuffers.drawBuffersWEBGL documentation> 
 drawBuffersWEBGL ::
@@ -46,8 +45,7 @@ drawBuffersWEBGL ::
 drawBuffersWEBGL self buffers
   = liftIO
       (toJSRef buffers >>=
-         \ buffers' ->
-           js_drawBuffersWEBGL (unWebGLDrawBuffers self) buffers')
+         \ buffers' -> js_drawBuffersWEBGL (self) buffers')
 pattern COLOR_ATTACHMENT0_WEBGL = 36064
 pattern COLOR_ATTACHMENT1_WEBGL = 36065
 pattern COLOR_ATTACHMENT2_WEBGL = 36066

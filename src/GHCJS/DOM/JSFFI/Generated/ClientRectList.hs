@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.ClientRectList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,17 +19,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef ClientRectList -> Word -> IO (JSRef ClientRect)
+        ClientRectList -> Word -> IO (Nullable ClientRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList.item Mozilla ClientRectList.item documentation> 
 item ::
      (MonadIO m) => ClientRectList -> Word -> m (Maybe ClientRect)
 item self index
-  = liftIO ((js_item (unClientRectList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef ClientRectList -> IO Word
+        ClientRectList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList.length Mozilla ClientRectList.length documentation> 
 getLength :: (MonadIO m) => ClientRectList -> m Word
-getLength self = liftIO (js_getLength (unClientRectList self))
+getLength self = liftIO (js_getLength (self))

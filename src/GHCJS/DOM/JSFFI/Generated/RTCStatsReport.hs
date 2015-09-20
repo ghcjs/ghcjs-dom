@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCStatsReport
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,67 +21,59 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"stat\"]($2)" js_stat ::
-        JSRef RTCStatsReport -> JSString -> IO JSString
+        RTCStatsReport -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.stat Mozilla RTCStatsReport.stat documentation> 
 stat ::
      (MonadIO m, ToJSString name, FromJSString result) =>
        RTCStatsReport -> name -> m result
 stat self name
-  = liftIO
-      (fromJSString <$>
-         (js_stat (unRTCStatsReport self) (toJSString name)))
+  = liftIO (fromJSString <$> (js_stat (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"names\"]()" js_names ::
-        JSRef RTCStatsReport -> IO (JSRef [result])
+        RTCStatsReport -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.names Mozilla RTCStatsReport.names documentation> 
 names ::
       (MonadIO m, FromJSString result) => RTCStatsReport -> m [result]
-names self
-  = liftIO
-      ((js_names (unRTCStatsReport self)) >>= fromJSRefUnchecked)
+names self = liftIO ((js_names (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"timestamp\"]"
-        js_getTimestamp :: JSRef RTCStatsReport -> IO (JSRef Date)
+        js_getTimestamp :: RTCStatsReport -> IO (Nullable Date)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.timestamp Mozilla RTCStatsReport.timestamp documentation> 
 getTimestamp :: (MonadIO m) => RTCStatsReport -> m (Maybe Date)
 getTimestamp self
-  = liftIO ((js_getTimestamp (unRTCStatsReport self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getTimestamp (self)))
  
 foreign import javascript unsafe "$1[\"id\"]" js_getId ::
-        JSRef RTCStatsReport -> IO JSString
+        RTCStatsReport -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.id Mozilla RTCStatsReport.id documentation> 
 getId ::
       (MonadIO m, FromJSString result) => RTCStatsReport -> m result
-getId self
-  = liftIO (fromJSString <$> (js_getId (unRTCStatsReport self)))
+getId self = liftIO (fromJSString <$> (js_getId (self)))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef RTCStatsReport -> IO JSString
+        RTCStatsReport -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.type Mozilla RTCStatsReport.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => RTCStatsReport -> m result
-getType self
-  = liftIO (fromJSString <$> (js_getType (unRTCStatsReport self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"local\"]" js_getLocal ::
-        JSRef RTCStatsReport -> IO (JSRef RTCStatsReport)
+        RTCStatsReport -> IO (Nullable RTCStatsReport)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.local Mozilla RTCStatsReport.local documentation> 
 getLocal ::
          (MonadIO m) => RTCStatsReport -> m (Maybe RTCStatsReport)
-getLocal self
-  = liftIO ((js_getLocal (unRTCStatsReport self)) >>= fromJSRef)
+getLocal self = liftIO (nullableToMaybe <$> (js_getLocal (self)))
  
 foreign import javascript unsafe "$1[\"remote\"]" js_getRemote ::
-        JSRef RTCStatsReport -> IO (JSRef RTCStatsReport)
+        RTCStatsReport -> IO (Nullable RTCStatsReport)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.remote Mozilla RTCStatsReport.remote documentation> 
 getRemote ::
           (MonadIO m) => RTCStatsReport -> m (Maybe RTCStatsReport)
-getRemote self
-  = liftIO ((js_getRemote (unRTCStatsReport self)) >>= fromJSRef)
+getRemote self = liftIO (nullableToMaybe <$> (js_getRemote (self)))

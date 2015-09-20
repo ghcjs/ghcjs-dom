@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.DOMImplementation
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,8 +23,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "($1[\"hasFeature\"]($2,\n$3) ? 1 : 0)" js_hasFeature ::
-        JSRef DOMImplementation ->
-          JSString -> JSRef (Maybe JSString) -> IO Bool
+        DOMImplementation -> JSString -> Nullable JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.hasFeature Mozilla DOMImplementation.hasFeature documentation> 
 hasFeature ::
@@ -32,15 +31,15 @@ hasFeature ::
              DOMImplementation -> feature -> Maybe version -> m Bool
 hasFeature self feature version
   = liftIO
-      (js_hasFeature (unDOMImplementation self) (toJSString feature)
+      (js_hasFeature (self) (toJSString feature)
          (toMaybeJSString version))
  
 foreign import javascript unsafe
         "$1[\"createDocumentType\"]($2, $3,\n$4)" js_createDocumentType ::
-        JSRef DOMImplementation ->
-          JSRef (Maybe JSString) ->
-            JSRef (Maybe JSString) ->
-              JSRef (Maybe JSString) -> IO (JSRef DocumentType)
+        DOMImplementation ->
+          Nullable JSString ->
+            Nullable JSString ->
+              Nullable JSString -> IO (Nullable DocumentType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocumentType Mozilla DOMImplementation.createDocumentType documentation> 
 createDocumentType ::
@@ -51,17 +50,17 @@ createDocumentType ::
                          Maybe publicId -> Maybe systemId -> m (Maybe DocumentType)
 createDocumentType self qualifiedName publicId systemId
   = liftIO
-      ((js_createDocumentType (unDOMImplementation self)
-          (toMaybeJSString qualifiedName)
-          (toMaybeJSString publicId)
-          (toMaybeJSString systemId))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createDocumentType (self) (toMaybeJSString qualifiedName)
+            (toMaybeJSString publicId)
+            (toMaybeJSString systemId)))
  
 foreign import javascript unsafe
         "$1[\"createDocument\"]($2, $3, $4)" js_createDocument ::
-        JSRef DOMImplementation ->
-          JSRef (Maybe JSString) ->
-            JSRef (Maybe JSString) -> JSRef DocumentType -> IO (JSRef Document)
+        DOMImplementation ->
+          Nullable JSString ->
+            Nullable JSString ->
+              Nullable DocumentType -> IO (Nullable Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocument Mozilla DOMImplementation.createDocument documentation> 
 createDocument ::
@@ -71,16 +70,15 @@ createDocument ::
                      Maybe qualifiedName -> Maybe DocumentType -> m (Maybe Document)
 createDocument self namespaceURI qualifiedName doctype
   = liftIO
-      ((js_createDocument (unDOMImplementation self)
-          (toMaybeJSString namespaceURI)
-          (toMaybeJSString qualifiedName)
-          (maybe jsNull pToJSRef doctype))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createDocument (self) (toMaybeJSString namespaceURI)
+            (toMaybeJSString qualifiedName)
+            (maybeToNullable doctype)))
  
 foreign import javascript unsafe
         "$1[\"createCSSStyleSheet\"]($2,\n$3)" js_createCSSStyleSheet ::
-        JSRef DOMImplementation ->
-          JSString -> JSString -> IO (JSRef CSSStyleSheet)
+        DOMImplementation ->
+          JSString -> JSString -> IO (Nullable CSSStyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createCSSStyleSheet Mozilla DOMImplementation.createCSSStyleSheet documentation> 
 createCSSStyleSheet ::
@@ -88,14 +86,13 @@ createCSSStyleSheet ::
                       DOMImplementation -> title -> media -> m (Maybe CSSStyleSheet)
 createCSSStyleSheet self title media
   = liftIO
-      ((js_createCSSStyleSheet (unDOMImplementation self)
-          (toJSString title)
-          (toJSString media))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createCSSStyleSheet (self) (toJSString title)
+            (toJSString media)))
  
 foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"
         js_createHTMLDocument ::
-        JSRef DOMImplementation -> JSString -> IO (JSRef HTMLDocument)
+        DOMImplementation -> JSString -> IO (Nullable HTMLDocument)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createHTMLDocument Mozilla DOMImplementation.createHTMLDocument documentation> 
 createHTMLDocument ::
@@ -103,6 +100,5 @@ createHTMLDocument ::
                      DOMImplementation -> title -> m (Maybe HTMLDocument)
 createHTMLDocument self title
   = liftIO
-      ((js_createHTMLDocument (unDOMImplementation self)
-          (toJSString title))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createHTMLDocument (self) (toJSString title)))

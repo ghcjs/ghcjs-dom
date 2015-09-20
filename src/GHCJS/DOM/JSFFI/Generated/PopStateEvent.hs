@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.PopStateEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,8 +19,8 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"state\"]" js_getState ::
-        JSRef PopStateEvent -> IO (JSRef a)
+        PopStateEvent -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PopStateEvent.state Mozilla PopStateEvent.state documentation> 
-getState :: (MonadIO m) => PopStateEvent -> m (JSRef a)
-getState self = liftIO (js_getState (unPopStateEvent self))
+getState :: (MonadIO m) => PopStateEvent -> m JSRef
+getState self = liftIO (js_getState (self))

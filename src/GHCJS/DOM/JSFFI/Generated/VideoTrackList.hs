@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.VideoTrackList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,17 +21,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef VideoTrackList -> Word -> IO (JSRef VideoTrack)
+        VideoTrackList -> Word -> IO (Nullable VideoTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList.item Mozilla VideoTrackList.item documentation> 
 item ::
      (MonadIO m) => VideoTrackList -> Word -> m (Maybe VideoTrack)
 item self index
-  = liftIO ((js_item (unVideoTrackList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
         js_getTrackById ::
-        JSRef VideoTrackList -> JSString -> IO (JSRef VideoTrack)
+        VideoTrackList -> JSString -> IO (Nullable VideoTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList.getTrackById Mozilla VideoTrackList.getTrackById documentation> 
 getTrackById ::
@@ -39,23 +39,21 @@ getTrackById ::
                VideoTrackList -> id -> m (Maybe VideoTrack)
 getTrackById self id
   = liftIO
-      ((js_getTrackById (unVideoTrackList self) (toJSString id)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getTrackById (self) (toJSString id)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef VideoTrackList -> IO Word
+        VideoTrackList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList.length Mozilla VideoTrackList.length documentation> 
 getLength :: (MonadIO m) => VideoTrackList -> m Word
-getLength self = liftIO (js_getLength (unVideoTrackList self))
+getLength self = liftIO (js_getLength (self))
  
 foreign import javascript unsafe "$1[\"selectedIndex\"]"
-        js_getSelectedIndex :: JSRef VideoTrackList -> IO Int
+        js_getSelectedIndex :: VideoTrackList -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList.selectedIndex Mozilla VideoTrackList.selectedIndex documentation> 
 getSelectedIndex :: (MonadIO m) => VideoTrackList -> m Int
-getSelectedIndex self
-  = liftIO (js_getSelectedIndex (unVideoTrackList self))
+getSelectedIndex self = liftIO (js_getSelectedIndex (self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList.onchange Mozilla VideoTrackList.onchange documentation> 
 change :: EventName VideoTrackList Event

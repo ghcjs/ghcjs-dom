@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGTextPositioningElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,7 +21,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGTextPositioningElement -> IO (JSRef SVGAnimatedLengthList)
+        SVGTextPositioningElement -> IO (Nullable SVGAnimatedLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.x Mozilla SVGTextPositioningElement.x documentation> 
 getX ::
@@ -29,12 +29,10 @@ getX ::
        self -> m (Maybe SVGAnimatedLengthList)
 getX self
   = liftIO
-      ((js_getX
-          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getX (toSVGTextPositioningElement self)))
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGTextPositioningElement -> IO (JSRef SVGAnimatedLengthList)
+        SVGTextPositioningElement -> IO (Nullable SVGAnimatedLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.y Mozilla SVGTextPositioningElement.y documentation> 
 getY ::
@@ -42,12 +40,10 @@ getY ::
        self -> m (Maybe SVGAnimatedLengthList)
 getY self
   = liftIO
-      ((js_getY
-          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getY (toSVGTextPositioningElement self)))
  
 foreign import javascript unsafe "$1[\"dx\"]" js_getDx ::
-        JSRef SVGTextPositioningElement -> IO (JSRef SVGAnimatedLengthList)
+        SVGTextPositioningElement -> IO (Nullable SVGAnimatedLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dx Mozilla SVGTextPositioningElement.dx documentation> 
 getDx ::
@@ -55,12 +51,10 @@ getDx ::
         self -> m (Maybe SVGAnimatedLengthList)
 getDx self
   = liftIO
-      ((js_getDx
-          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getDx (toSVGTextPositioningElement self)))
  
 foreign import javascript unsafe "$1[\"dy\"]" js_getDy ::
-        JSRef SVGTextPositioningElement -> IO (JSRef SVGAnimatedLengthList)
+        SVGTextPositioningElement -> IO (Nullable SVGAnimatedLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dy Mozilla SVGTextPositioningElement.dy documentation> 
 getDy ::
@@ -68,12 +62,10 @@ getDy ::
         self -> m (Maybe SVGAnimatedLengthList)
 getDy self
   = liftIO
-      ((js_getDy
-          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getDy (toSVGTextPositioningElement self)))
  
 foreign import javascript unsafe "$1[\"rotate\"]" js_getRotate ::
-        JSRef SVGTextPositioningElement -> IO (JSRef SVGAnimatedNumberList)
+        SVGTextPositioningElement -> IO (Nullable SVGAnimatedNumberList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.rotate Mozilla SVGTextPositioningElement.rotate documentation> 
 getRotate ::
@@ -81,6 +73,5 @@ getRotate ::
             self -> m (Maybe SVGAnimatedNumberList)
 getRotate self
   = liftIO
-      ((js_getRotate
-          (unSVGTextPositioningElement (toSVGTextPositioningElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getRotate (toSVGTextPositioningElement self)))

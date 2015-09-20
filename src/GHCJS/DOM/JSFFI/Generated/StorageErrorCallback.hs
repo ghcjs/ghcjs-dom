@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.StorageErrorCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,9 +24,10 @@ newStorageErrorCallback ::
                           (Maybe DOMException -> IO ()) -> m StorageErrorCallback
 newStorageErrorCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ error ->
-            fromJSRefUnchecked error >>= \ error' -> callback error'))
+      (StorageErrorCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ error ->
+              fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation> 
 newStorageErrorCallbackSync ::
@@ -34,9 +35,10 @@ newStorageErrorCallbackSync ::
                               (Maybe DOMException -> IO ()) -> m StorageErrorCallback
 newStorageErrorCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ error ->
-            fromJSRefUnchecked error >>= \ error' -> callback error'))
+      (StorageErrorCallback <$>
+         syncCallback1 ContinueAsync
+           (\ error ->
+              fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageErrorCallback Mozilla StorageErrorCallback documentation> 
 newStorageErrorCallbackAsync ::
@@ -44,6 +46,7 @@ newStorageErrorCallbackAsync ::
                                (Maybe DOMException -> IO ()) -> m StorageErrorCallback
 newStorageErrorCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ error ->
-            fromJSRefUnchecked error >>= \ error' -> callback error'))
+      (StorageErrorCallback <$>
+         asyncCallback1
+           (\ error ->
+              fromJSRefUnchecked error >>= \ error' -> callback error'))

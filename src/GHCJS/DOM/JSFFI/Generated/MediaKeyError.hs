@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeyError
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -28,16 +28,15 @@ pattern MEDIA_KEYERR_HARDWARECHANGE = 5
 pattern MEDIA_KEYERR_DOMAIN = 6
  
 foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
-        JSRef MediaKeyError -> IO Word
+        MediaKeyError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError.code Mozilla WebKitMediaKeyError.code documentation> 
 getCode :: (MonadIO m) => MediaKeyError -> m Word
-getCode self = liftIO (js_getCode (unMediaKeyError self))
+getCode self = liftIO (js_getCode (self))
  
 foreign import javascript unsafe "$1[\"systemCode\"]"
-        js_getSystemCode :: JSRef MediaKeyError -> IO Word
+        js_getSystemCode :: MediaKeyError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError.systemCode Mozilla WebKitMediaKeyError.systemCode documentation> 
 getSystemCode :: (MonadIO m) => MediaKeyError -> m Word
-getSystemCode self
-  = liftIO (js_getSystemCode (unMediaKeyError self))
+getSystemCode self = liftIO (js_getSystemCode (self))

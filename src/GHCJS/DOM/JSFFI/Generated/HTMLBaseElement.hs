@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLBaseElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,40 +20,34 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
-        JSRef HTMLBaseElement -> JSRef (Maybe JSString) -> IO ()
+        HTMLBaseElement -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
 setHref ::
         (MonadIO m, ToJSString val) => HTMLBaseElement -> Maybe val -> m ()
-setHref self val
-  = liftIO
-      (js_setHref (unHTMLBaseElement self) (toMaybeJSString val))
+setHref self val = liftIO (js_setHref (self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
-        JSRef HTMLBaseElement -> IO (JSRef (Maybe JSString))
+        HTMLBaseElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
 getHref ::
         (MonadIO m, FromJSString result) =>
           HTMLBaseElement -> m (Maybe result)
-getHref self
-  = liftIO
-      (fromMaybeJSString <$> (js_getHref (unHTMLBaseElement self)))
+getHref self = liftIO (fromMaybeJSString <$> (js_getHref (self)))
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
-        js_setTarget :: JSRef HTMLBaseElement -> JSString -> IO ()
+        js_setTarget :: HTMLBaseElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.target Mozilla HTMLBaseElement.target documentation> 
 setTarget ::
           (MonadIO m, ToJSString val) => HTMLBaseElement -> val -> m ()
-setTarget self val
-  = liftIO (js_setTarget (unHTMLBaseElement self) (toJSString val))
+setTarget self val = liftIO (js_setTarget (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
-        JSRef HTMLBaseElement -> IO JSString
+        HTMLBaseElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.target Mozilla HTMLBaseElement.target documentation> 
 getTarget ::
           (MonadIO m, FromJSString result) => HTMLBaseElement -> m result
-getTarget self
-  = liftIO (fromJSString <$> (js_getTarget (unHTMLBaseElement self)))
+getTarget self = liftIO (fromJSString <$> (js_getTarget (self)))

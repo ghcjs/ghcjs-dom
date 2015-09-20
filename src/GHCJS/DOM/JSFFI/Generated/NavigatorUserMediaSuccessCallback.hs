@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.NavigatorUserMediaSuccessCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,9 +27,10 @@ newNavigatorUserMediaSuccessCallback ::
                                          m NavigatorUserMediaSuccessCallback
 newNavigatorUserMediaSuccessCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ stream ->
-            fromJSRefUnchecked stream >>= \ stream' -> callback stream'))
+      (NavigatorUserMediaSuccessCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ stream ->
+              fromJSRefUnchecked stream >>= \ stream' -> callback stream'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaSuccessCallback Mozilla NavigatorUserMediaSuccessCallback documentation> 
 newNavigatorUserMediaSuccessCallbackSync ::
@@ -38,9 +39,10 @@ newNavigatorUserMediaSuccessCallbackSync ::
                                              m NavigatorUserMediaSuccessCallback
 newNavigatorUserMediaSuccessCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ stream ->
-            fromJSRefUnchecked stream >>= \ stream' -> callback stream'))
+      (NavigatorUserMediaSuccessCallback <$>
+         syncCallback1 ContinueAsync
+           (\ stream ->
+              fromJSRefUnchecked stream >>= \ stream' -> callback stream'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaSuccessCallback Mozilla NavigatorUserMediaSuccessCallback documentation> 
 newNavigatorUserMediaSuccessCallbackAsync ::
@@ -49,6 +51,7 @@ newNavigatorUserMediaSuccessCallbackAsync ::
                                               m NavigatorUserMediaSuccessCallback
 newNavigatorUserMediaSuccessCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ stream ->
-            fromJSRefUnchecked stream >>= \ stream' -> callback stream'))
+      (NavigatorUserMediaSuccessCallback <$>
+         asyncCallback1
+           (\ stream ->
+              fromJSRefUnchecked stream >>= \ stream' -> callback stream'))

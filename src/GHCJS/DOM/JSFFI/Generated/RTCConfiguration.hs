@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCConfiguration
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,37 +20,28 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"iceServers\"]"
-        js_getIceServers ::
-        JSRef RTCConfiguration -> IO (JSRef [Maybe RTCIceServer])
+        js_getIceServers :: RTCConfiguration -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration.iceServers Mozilla RTCConfiguration.iceServers documentation> 
 getIceServers ::
               (MonadIO m) => RTCConfiguration -> m [Maybe RTCIceServer]
 getIceServers self
-  = liftIO
-      ((js_getIceServers (unRTCConfiguration self)) >>=
-         fromJSRefUnchecked)
+  = liftIO ((js_getIceServers (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"iceTransports\"]"
-        js_getIceTransports ::
-        JSRef RTCConfiguration -> IO (JSRef RTCIceTransportsEnum)
+        js_getIceTransports :: RTCConfiguration -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration.iceTransports Mozilla RTCConfiguration.iceTransports documentation> 
 getIceTransports ::
                  (MonadIO m) => RTCConfiguration -> m RTCIceTransportsEnum
 getIceTransports self
-  = liftIO
-      ((js_getIceTransports (unRTCConfiguration self)) >>=
-         fromJSRefUnchecked)
+  = liftIO ((js_getIceTransports (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"requestIdentity\"]"
-        js_getRequestIdentity ::
-        JSRef RTCConfiguration -> IO (JSRef RTCIdentityOptionEnum)
+        js_getRequestIdentity :: RTCConfiguration -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration.requestIdentity Mozilla RTCConfiguration.requestIdentity documentation> 
 getRequestIdentity ::
                    (MonadIO m) => RTCConfiguration -> m RTCIdentityOptionEnum
 getRequestIdentity self
-  = liftIO
-      ((js_getRequestIdentity (unRTCConfiguration self)) >>=
-         fromJSRefUnchecked)
+  = liftIO ((js_getRequestIdentity (self)) >>= fromJSRefUnchecked)

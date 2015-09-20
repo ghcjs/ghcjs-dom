@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGTests
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,41 +22,38 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "($1[\"hasExtension\"]($2) ? 1 : 0)" js_hasExtension ::
-        JSRef SVGTests -> JSString -> IO Bool
+        SVGTests -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.hasExtension Mozilla SVGTests.hasExtension documentation> 
 hasExtension ::
              (MonadIO m, ToJSString extension) =>
                SVGTests -> extension -> m Bool
 hasExtension self extension
-  = liftIO (js_hasExtension (unSVGTests self) (toJSString extension))
+  = liftIO (js_hasExtension (self) (toJSString extension))
  
 foreign import javascript unsafe "$1[\"requiredFeatures\"]"
-        js_getRequiredFeatures ::
-        JSRef SVGTests -> IO (JSRef SVGStringList)
+        js_getRequiredFeatures :: SVGTests -> IO (Nullable SVGStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredFeatures Mozilla SVGTests.requiredFeatures documentation> 
 getRequiredFeatures ::
                     (MonadIO m) => SVGTests -> m (Maybe SVGStringList)
 getRequiredFeatures self
-  = liftIO ((js_getRequiredFeatures (unSVGTests self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getRequiredFeatures (self)))
  
 foreign import javascript unsafe "$1[\"requiredExtensions\"]"
-        js_getRequiredExtensions ::
-        JSRef SVGTests -> IO (JSRef SVGStringList)
+        js_getRequiredExtensions :: SVGTests -> IO (Nullable SVGStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredExtensions Mozilla SVGTests.requiredExtensions documentation> 
 getRequiredExtensions ::
                       (MonadIO m) => SVGTests -> m (Maybe SVGStringList)
 getRequiredExtensions self
-  = liftIO
-      ((js_getRequiredExtensions (unSVGTests self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getRequiredExtensions (self)))
  
 foreign import javascript unsafe "$1[\"systemLanguage\"]"
-        js_getSystemLanguage :: JSRef SVGTests -> IO (JSRef SVGStringList)
+        js_getSystemLanguage :: SVGTests -> IO (Nullable SVGStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.systemLanguage Mozilla SVGTests.systemLanguage documentation> 
 getSystemLanguage ::
                   (MonadIO m) => SVGTests -> m (Maybe SVGStringList)
 getSystemLanguage self
-  = liftIO ((js_getSystemLanguage (unSVGTests self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSystemLanguage (self)))

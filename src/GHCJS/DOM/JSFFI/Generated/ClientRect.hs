@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.ClientRect
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,43 +20,43 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"top\"]" js_getTop ::
-        JSRef ClientRect -> IO Float
+        ClientRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect.top Mozilla ClientRect.top documentation> 
 getTop :: (MonadIO m) => ClientRect -> m Float
-getTop self = liftIO (js_getTop (unClientRect self))
+getTop self = liftIO (js_getTop (self))
  
 foreign import javascript unsafe "$1[\"right\"]" js_getRight ::
-        JSRef ClientRect -> IO Float
+        ClientRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect.right Mozilla ClientRect.right documentation> 
 getRight :: (MonadIO m) => ClientRect -> m Float
-getRight self = liftIO (js_getRight (unClientRect self))
+getRight self = liftIO (js_getRight (self))
  
 foreign import javascript unsafe "$1[\"bottom\"]" js_getBottom ::
-        JSRef ClientRect -> IO Float
+        ClientRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect.bottom Mozilla ClientRect.bottom documentation> 
 getBottom :: (MonadIO m) => ClientRect -> m Float
-getBottom self = liftIO (js_getBottom (unClientRect self))
+getBottom self = liftIO (js_getBottom (self))
  
 foreign import javascript unsafe "$1[\"left\"]" js_getLeft ::
-        JSRef ClientRect -> IO Float
+        ClientRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect.left Mozilla ClientRect.left documentation> 
 getLeft :: (MonadIO m) => ClientRect -> m Float
-getLeft self = liftIO (js_getLeft (unClientRect self))
+getLeft self = liftIO (js_getLeft (self))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
-        JSRef ClientRect -> IO Float
+        ClientRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect.width Mozilla ClientRect.width documentation> 
 getWidth :: (MonadIO m) => ClientRect -> m Float
-getWidth self = liftIO (js_getWidth (unClientRect self))
+getWidth self = liftIO (js_getWidth (self))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
-        JSRef ClientRect -> IO Float
+        ClientRect -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect.height Mozilla ClientRect.height documentation> 
 getHeight :: (MonadIO m) => ClientRect -> m Float
-getHeight self = liftIO (js_getHeight (unClientRect self))
+getHeight self = liftIO (js_getHeight (self))

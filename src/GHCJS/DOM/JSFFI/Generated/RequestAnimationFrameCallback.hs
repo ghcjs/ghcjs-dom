@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.RequestAnimationFrameCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -25,10 +25,11 @@ newRequestAnimationFrameCallback ::
                                  (MonadIO m) => (Double -> IO ()) -> m RequestAnimationFrameCallback
 newRequestAnimationFrameCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ highResTime ->
-            fromJSRefUnchecked highResTime >>=
-              \ highResTime' -> callback highResTime'))
+      (RequestAnimationFrameCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ highResTime ->
+              fromJSRefUnchecked highResTime >>=
+                \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
 newRequestAnimationFrameCallbackSync ::
@@ -36,10 +37,11 @@ newRequestAnimationFrameCallbackSync ::
                                        (Double -> IO ()) -> m RequestAnimationFrameCallback
 newRequestAnimationFrameCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ highResTime ->
-            fromJSRefUnchecked highResTime >>=
-              \ highResTime' -> callback highResTime'))
+      (RequestAnimationFrameCallback <$>
+         syncCallback1 ContinueAsync
+           (\ highResTime ->
+              fromJSRefUnchecked highResTime >>=
+                \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
 newRequestAnimationFrameCallbackAsync ::
@@ -47,7 +49,8 @@ newRequestAnimationFrameCallbackAsync ::
                                         (Double -> IO ()) -> m RequestAnimationFrameCallback
 newRequestAnimationFrameCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ highResTime ->
-            fromJSRefUnchecked highResTime >>=
-              \ highResTime' -> callback highResTime'))
+      (RequestAnimationFrameCallback <$>
+         asyncCallback1
+           (\ highResTime ->
+              fromJSRefUnchecked highResTime >>=
+                \ highResTime' -> callback highResTime'))

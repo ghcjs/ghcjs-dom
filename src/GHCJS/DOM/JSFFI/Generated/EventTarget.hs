@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.EventTarget
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,8 +20,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"addEventListener\"]($2, $3,\n$4)" js_addEventListener ::
-        JSRef EventTarget ->
-          JSString -> JSRef EventListener -> Bool -> IO ()
+        EventTarget -> JSString -> Nullable EventListener -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener Mozilla EventTarget.addEventListener documentation> 
 addEventListener ::
@@ -29,16 +28,14 @@ addEventListener ::
                    self -> type' -> Maybe EventListener -> Bool -> m ()
 addEventListener self type' listener useCapture
   = liftIO
-      (js_addEventListener (unEventTarget (toEventTarget self))
-         (toJSString type')
-         (maybe jsNull pToJSRef listener)
+      (js_addEventListener (toEventTarget self) (toJSString type')
+         (maybeToNullable listener)
          useCapture)
  
 foreign import javascript unsafe
         "$1[\"removeEventListener\"]($2,\n$3, $4)" js_removeEventListener
         ::
-        JSRef EventTarget ->
-          JSString -> JSRef EventListener -> Bool -> IO ()
+        EventTarget -> JSString -> Nullable EventListener -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.removeEventListener Mozilla EventTarget.removeEventListener documentation> 
 removeEventListener ::
@@ -46,14 +43,13 @@ removeEventListener ::
                       self -> type' -> Maybe EventListener -> Bool -> m ()
 removeEventListener self type' listener useCapture
   = liftIO
-      (js_removeEventListener (unEventTarget (toEventTarget self))
-         (toJSString type')
-         (maybe jsNull pToJSRef listener)
+      (js_removeEventListener (toEventTarget self) (toJSString type')
+         (maybeToNullable listener)
          useCapture)
  
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)" js_dispatchEvent ::
-        JSRef EventTarget -> JSRef Event -> IO Bool
+        EventTarget -> Nullable Event -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.dispatchEvent Mozilla EventTarget.dispatchEvent documentation> 
 dispatchEvent ::
@@ -61,5 +57,5 @@ dispatchEvent ::
                 self -> Maybe event -> m Bool
 dispatchEvent self event
   = liftIO
-      (js_dispatchEvent (unEventTarget (toEventTarget self))
-         (maybe jsNull (unEvent . toEvent) event))
+      (js_dispatchEvent (toEventTarget self)
+         (maybeToNullable (fmap toEvent event)))

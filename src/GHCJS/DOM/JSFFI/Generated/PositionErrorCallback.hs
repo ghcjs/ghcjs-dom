@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.PositionErrorCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,9 +24,10 @@ newPositionErrorCallback ::
                            (Maybe PositionError -> IO ()) -> m PositionErrorCallback
 newPositionErrorCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ error ->
-            fromJSRefUnchecked error >>= \ error' -> callback error'))
+      (PositionErrorCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ error ->
+              fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionErrorCallback Mozilla PositionErrorCallback documentation> 
 newPositionErrorCallbackSync ::
@@ -34,9 +35,10 @@ newPositionErrorCallbackSync ::
                                (Maybe PositionError -> IO ()) -> m PositionErrorCallback
 newPositionErrorCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ error ->
-            fromJSRefUnchecked error >>= \ error' -> callback error'))
+      (PositionErrorCallback <$>
+         syncCallback1 ContinueAsync
+           (\ error ->
+              fromJSRefUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionErrorCallback Mozilla PositionErrorCallback documentation> 
 newPositionErrorCallbackAsync ::
@@ -44,6 +46,7 @@ newPositionErrorCallbackAsync ::
                                 (Maybe PositionError -> IO ()) -> m PositionErrorCallback
 newPositionErrorCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ error ->
-            fromJSRefUnchecked error >>= \ error' -> callback error'))
+      (PositionErrorCallback <$>
+         asyncCallback1
+           (\ error ->
+              fromJSRefUnchecked error >>= \ error' -> callback error'))

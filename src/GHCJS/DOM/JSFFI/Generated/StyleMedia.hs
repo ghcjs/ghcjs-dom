@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.StyleMedia
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,21 +20,19 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "($1[\"matchMedium\"]($2) ? 1 : 0)" js_matchMedium ::
-        JSRef StyleMedia -> JSString -> IO Bool
+        StyleMedia -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia.matchMedium Mozilla StyleMedia.matchMedium documentation> 
 matchMedium ::
             (MonadIO m, ToJSString mediaquery) =>
               StyleMedia -> mediaquery -> m Bool
 matchMedium self mediaquery
-  = liftIO
-      (js_matchMedium (unStyleMedia self) (toJSString mediaquery))
+  = liftIO (js_matchMedium (self) (toJSString mediaquery))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef StyleMedia -> IO JSString
+        StyleMedia -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia.type Mozilla StyleMedia.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => StyleMedia -> m result
-getType self
-  = liftIO (fromJSString <$> (js_getType (unStyleMedia self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))

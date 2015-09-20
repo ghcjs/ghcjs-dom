@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.EventSource
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,7 +23,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"EventSource\"]($1,\n$2)" js_newEventSource ::
-        JSString -> JSRef Dictionary -> IO (JSRef EventSource)
+        JSString -> Nullable Dictionary -> IO EventSource
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource Mozilla EventSource documentation> 
 newEventSource ::
@@ -32,43 +32,40 @@ newEventSource ::
 newEventSource url eventSourceInit
   = liftIO
       (js_newEventSource (toJSString url)
-         (maybe jsNull (unDictionary . toDictionary) eventSourceInit)
-         >>= fromJSRefUnchecked)
+         (maybeToNullable (fmap toDictionary eventSourceInit)))
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
-        JSRef EventSource -> IO ()
+        EventSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.close Mozilla EventSource.close documentation> 
 close :: (MonadIO m) => EventSource -> m ()
-close self = liftIO (js_close (unEventSource self))
+close self = liftIO (js_close (self))
 pattern CONNECTING = 0
 pattern OPEN = 1
 pattern CLOSED = 2
  
 foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
-        JSRef EventSource -> IO JSString
+        EventSource -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.url Mozilla EventSource.url documentation> 
 getUrl ::
        (MonadIO m, FromJSString result) => EventSource -> m result
-getUrl self
-  = liftIO (fromJSString <$> (js_getUrl (unEventSource self)))
+getUrl self = liftIO (fromJSString <$> (js_getUrl (self)))
  
 foreign import javascript unsafe
         "($1[\"withCredentials\"] ? 1 : 0)" js_getWithCredentials ::
-        JSRef EventSource -> IO Bool
+        EventSource -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.withCredentials Mozilla EventSource.withCredentials documentation> 
 getWithCredentials :: (MonadIO m) => EventSource -> m Bool
-getWithCredentials self
-  = liftIO (js_getWithCredentials (unEventSource self))
+getWithCredentials self = liftIO (js_getWithCredentials (self))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        js_getReadyState :: JSRef EventSource -> IO Word
+        js_getReadyState :: EventSource -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.readyState Mozilla EventSource.readyState documentation> 
 getReadyState :: (MonadIO m) => EventSource -> m Word
-getReadyState self = liftIO (js_getReadyState (unEventSource self))
+getReadyState self = liftIO (js_getReadyState (self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.onopen Mozilla EventSource.onopen documentation> 
 open :: EventName EventSource Event

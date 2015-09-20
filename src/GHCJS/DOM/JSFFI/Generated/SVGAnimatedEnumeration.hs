@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGAnimatedEnumeration
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,25 +20,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
-        js_setBaseVal :: JSRef SVGAnimatedEnumeration -> Word -> IO ()
+        js_setBaseVal :: SVGAnimatedEnumeration -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.baseVal Mozilla SVGAnimatedEnumeration.baseVal documentation> 
 setBaseVal :: (MonadIO m) => SVGAnimatedEnumeration -> Word -> m ()
-setBaseVal self val
-  = liftIO (js_setBaseVal (unSVGAnimatedEnumeration self) val)
+setBaseVal self val = liftIO (js_setBaseVal (self) val)
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
-        JSRef SVGAnimatedEnumeration -> IO Word
+        SVGAnimatedEnumeration -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.baseVal Mozilla SVGAnimatedEnumeration.baseVal documentation> 
 getBaseVal :: (MonadIO m) => SVGAnimatedEnumeration -> m Word
-getBaseVal self
-  = liftIO (js_getBaseVal (unSVGAnimatedEnumeration self))
+getBaseVal self = liftIO (js_getBaseVal (self))
  
 foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
-        JSRef SVGAnimatedEnumeration -> IO Word
+        SVGAnimatedEnumeration -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.animVal Mozilla SVGAnimatedEnumeration.animVal documentation> 
 getAnimVal :: (MonadIO m) => SVGAnimatedEnumeration -> m Word
-getAnimVal self
-  = liftIO (js_getAnimVal (unSVGAnimatedEnumeration self))
+getAnimVal self = liftIO (js_getAnimVal (self))

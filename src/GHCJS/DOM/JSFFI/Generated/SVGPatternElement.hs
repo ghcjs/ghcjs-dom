@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPatternElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,73 +23,65 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"patternUnits\"]"
         js_getPatternUnits ::
-        JSRef SVGPatternElement -> IO (JSRef SVGAnimatedEnumeration)
+        SVGPatternElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.patternUnits Mozilla SVGPatternElement.patternUnits documentation> 
 getPatternUnits ::
                 (MonadIO m) =>
                   SVGPatternElement -> m (Maybe SVGAnimatedEnumeration)
 getPatternUnits self
-  = liftIO
-      ((js_getPatternUnits (unSVGPatternElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPatternUnits (self)))
  
 foreign import javascript unsafe "$1[\"patternContentUnits\"]"
         js_getPatternContentUnits ::
-        JSRef SVGPatternElement -> IO (JSRef SVGAnimatedEnumeration)
+        SVGPatternElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.patternContentUnits Mozilla SVGPatternElement.patternContentUnits documentation> 
 getPatternContentUnits ::
                        (MonadIO m) =>
                          SVGPatternElement -> m (Maybe SVGAnimatedEnumeration)
 getPatternContentUnits self
-  = liftIO
-      ((js_getPatternContentUnits (unSVGPatternElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPatternContentUnits (self)))
  
 foreign import javascript unsafe "$1[\"patternTransform\"]"
         js_getPatternTransform ::
-        JSRef SVGPatternElement -> IO (JSRef SVGAnimatedTransformList)
+        SVGPatternElement -> IO (Nullable SVGAnimatedTransformList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.patternTransform Mozilla SVGPatternElement.patternTransform documentation> 
 getPatternTransform ::
                     (MonadIO m) =>
                       SVGPatternElement -> m (Maybe SVGAnimatedTransformList)
 getPatternTransform self
-  = liftIO
-      ((js_getPatternTransform (unSVGPatternElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPatternTransform (self)))
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGPatternElement -> IO (JSRef SVGAnimatedLength)
+        SVGPatternElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.x Mozilla SVGPatternElement.x documentation> 
 getX ::
      (MonadIO m) => SVGPatternElement -> m (Maybe SVGAnimatedLength)
-getX self
-  = liftIO ((js_getX (unSVGPatternElement self)) >>= fromJSRef)
+getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGPatternElement -> IO (JSRef SVGAnimatedLength)
+        SVGPatternElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.y Mozilla SVGPatternElement.y documentation> 
 getY ::
      (MonadIO m) => SVGPatternElement -> m (Maybe SVGAnimatedLength)
-getY self
-  = liftIO ((js_getY (unSVGPatternElement self)) >>= fromJSRef)
+getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
-        JSRef SVGPatternElement -> IO (JSRef SVGAnimatedLength)
+        SVGPatternElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.width Mozilla SVGPatternElement.width documentation> 
 getWidth ::
          (MonadIO m) => SVGPatternElement -> m (Maybe SVGAnimatedLength)
-getWidth self
-  = liftIO ((js_getWidth (unSVGPatternElement self)) >>= fromJSRef)
+getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
-        JSRef SVGPatternElement -> IO (JSRef SVGAnimatedLength)
+        SVGPatternElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement.height Mozilla SVGPatternElement.height documentation> 
 getHeight ::
           (MonadIO m) => SVGPatternElement -> m (Maybe SVGAnimatedLength)
-getHeight self
-  = liftIO ((js_getHeight (unSVGPatternElement self)) >>= fromJSRef)
+getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))

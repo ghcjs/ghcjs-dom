@@ -16,8 +16,6 @@ import Control.Monad.IO.Class (MonadIO(..))
 
 import GHCJS.Prim (JSRef(..))
 import GHCJS.Types (JSString)
-import GHCJS.Foreign (jsNull)
-import GHCJS.Marshal (fromJSRefUnchecked)
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.SQLError (throwSQLException)
@@ -25,12 +23,12 @@ import GHCJS.DOM.JSFFI.Generated.SQLTransaction as Generated hiding (js_executeS
 
 foreign import javascript interruptible
         "$1[\"executeSql\"]($2, $3, function(tx, rs) { $c(true, rs); }, function(tx, e) { $c(false, e); });"
-        js_executeSql :: JSRef SQLTransaction -> JSString -> JSRef ObjectArray -> State# RealWorld -> (# State# RealWorld, Bool, ByteArray# #)
+        js_executeSql :: SQLTransaction -> JSString -> Nullable ObjectArray -> State# RealWorld -> (# State# RealWorld, Bool, ByteArray# #)
 
 executeSql' :: (MonadIO m, ToJSString sqlStatement, IsObjectArray arguments) =>
               SQLTransaction -> sqlStatement -> Maybe arguments -> m (Either SQLError SQLResultSet)
 executeSql' self sqlStatement arguments = liftIO $ IO $ \s# ->
-      case js_executeSql (unSQLTransaction self) (toJSString sqlStatement) (maybe jsNull (unObjectArray . toObjectArray) arguments) s# of
+      case js_executeSql self (toJSString sqlStatement) (maybeToNullable . fmap toObjectArray $ arguments) s# of
           (# s2#, False, error #) -> (# s2#, Left  (SQLError     (JSRef error)) #)
           (# s2#, True,  rs    #) -> (# s2#, Right (SQLResultSet (JSRef rs   )) #)
 

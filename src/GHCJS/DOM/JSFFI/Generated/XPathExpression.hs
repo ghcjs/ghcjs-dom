@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.XPathExpression
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,8 +20,9 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"evaluate\"]($2, $3, $4)"
         js_evaluate ::
-        JSRef XPathExpression ->
-          JSRef Node -> Word -> JSRef XPathResult -> IO (JSRef XPathResult)
+        XPathExpression ->
+          Nullable Node ->
+            Word -> Nullable XPathResult -> IO (Nullable XPathResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathExpression.evaluate Mozilla XPathExpression.evaluate documentation> 
 evaluate ::
@@ -31,8 +32,7 @@ evaluate ::
                Word -> Maybe XPathResult -> m (Maybe XPathResult)
 evaluate self contextNode type' inResult
   = liftIO
-      ((js_evaluate (unXPathExpression self)
-          (maybe jsNull (unNode . toNode) contextNode)
-          type'
-          (maybe jsNull pToJSRef inResult))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_evaluate (self) (maybeToNullable (fmap toNode contextNode))
+            type'
+            (maybeToNullable inResult)))

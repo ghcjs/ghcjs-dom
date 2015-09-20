@@ -10,7 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGGradientElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -29,7 +29,7 @@ pattern SVG_SPREADMETHOD_REPEAT = 3
  
 foreign import javascript unsafe "$1[\"gradientUnits\"]"
         js_getGradientUnits ::
-        JSRef SVGGradientElement -> IO (JSRef SVGAnimatedEnumeration)
+        SVGGradientElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientUnits Mozilla SVGGradientElement.gradientUnits documentation> 
 getGradientUnits ::
@@ -37,13 +37,12 @@ getGradientUnits ::
                    self -> m (Maybe SVGAnimatedEnumeration)
 getGradientUnits self
   = liftIO
-      ((js_getGradientUnits
-          (unSVGGradientElement (toSVGGradientElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getGradientUnits (toSVGGradientElement self)))
  
 foreign import javascript unsafe "$1[\"gradientTransform\"]"
         js_getGradientTransform ::
-        JSRef SVGGradientElement -> IO (JSRef SVGAnimatedTransformList)
+        SVGGradientElement -> IO (Nullable SVGAnimatedTransformList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientTransform Mozilla SVGGradientElement.gradientTransform documentation> 
 getGradientTransform ::
@@ -51,13 +50,12 @@ getGradientTransform ::
                        self -> m (Maybe SVGAnimatedTransformList)
 getGradientTransform self
   = liftIO
-      ((js_getGradientTransform
-          (unSVGGradientElement (toSVGGradientElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getGradientTransform (toSVGGradientElement self)))
  
 foreign import javascript unsafe "$1[\"spreadMethod\"]"
         js_getSpreadMethod ::
-        JSRef SVGGradientElement -> IO (JSRef SVGAnimatedEnumeration)
+        SVGGradientElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.spreadMethod Mozilla SVGGradientElement.spreadMethod documentation> 
 getSpreadMethod ::
@@ -65,6 +63,5 @@ getSpreadMethod ::
                   self -> m (Maybe SVGAnimatedEnumeration)
 getSpreadMethod self
   = liftIO
-      ((js_getSpreadMethod
-          (unSVGGradientElement (toSVGGradientElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getSpreadMethod (toSVGGradientElement self)))

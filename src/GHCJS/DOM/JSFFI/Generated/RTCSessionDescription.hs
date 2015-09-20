@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCSessionDescription
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,7 +23,7 @@ import GHCJS.DOM.Enums
 foreign import javascript unsafe
         "new window[\"RTCSessionDescription\"]($1)"
         js_newRTCSessionDescription ::
-        JSRef Dictionary -> IO (JSRef RTCSessionDescription)
+        Nullable Dictionary -> IO RTCSessionDescription
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription Mozilla RTCSessionDescription documentation> 
 newRTCSessionDescription ::
@@ -32,47 +32,38 @@ newRTCSessionDescription ::
 newRTCSessionDescription dictionary
   = liftIO
       (js_newRTCSessionDescription
-         (maybe jsNull (unDictionary . toDictionary) dictionary)
-         >>= fromJSRefUnchecked)
+         (maybeToNullable (fmap toDictionary dictionary)))
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
-        JSRef RTCSessionDescription -> JSString -> IO ()
+        RTCSessionDescription -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription.type Mozilla RTCSessionDescription.type documentation> 
 setType ::
         (MonadIO m, ToJSString val) => RTCSessionDescription -> val -> m ()
-setType self val
-  = liftIO
-      (js_setType (unRTCSessionDescription self) (toJSString val))
+setType self val = liftIO (js_setType (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef RTCSessionDescription -> IO JSString
+        RTCSessionDescription -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription.type Mozilla RTCSessionDescription.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) =>
           RTCSessionDescription -> m result
-getType self
-  = liftIO
-      (fromJSString <$> (js_getType (unRTCSessionDescription self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"sdp\"] = $2;" js_setSdp ::
-        JSRef RTCSessionDescription -> JSString -> IO ()
+        RTCSessionDescription -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription.sdp Mozilla RTCSessionDescription.sdp documentation> 
 setSdp ::
        (MonadIO m, ToJSString val) => RTCSessionDescription -> val -> m ()
-setSdp self val
-  = liftIO
-      (js_setSdp (unRTCSessionDescription self) (toJSString val))
+setSdp self val = liftIO (js_setSdp (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"sdp\"]" js_getSdp ::
-        JSRef RTCSessionDescription -> IO JSString
+        RTCSessionDescription -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription.sdp Mozilla RTCSessionDescription.sdp documentation> 
 getSdp ::
        (MonadIO m, FromJSString result) =>
          RTCSessionDescription -> m result
-getSdp self
-  = liftIO
-      (fromJSString <$> (js_getSdp (unRTCSessionDescription self)))
+getSdp self = liftIO (fromJSString <$> (js_getSdp (self)))

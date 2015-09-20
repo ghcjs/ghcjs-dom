@@ -13,7 +13,7 @@ module GHCJS.DOM.JSFFI.Generated.WebKitCSSTransformValue
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,15 +27,14 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
-        JSRef WebKitCSSTransformValue -> Word -> IO (JSRef CSSValue)
+        WebKitCSSTransformValue -> Word -> IO (Nullable CSSValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue._get Mozilla WebKitCSSTransformValue._get documentation> 
 _get ::
      (MonadIO m) =>
        WebKitCSSTransformValue -> Word -> m (Maybe CSSValue)
 _get self index
-  = liftIO
-      ((js__get (unWebKitCSSTransformValue self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js__get (self) index))
 pattern CSS_TRANSLATE = 1
 pattern CSS_TRANSLATEX = 2
 pattern CSS_TRANSLATEY = 3
@@ -59,10 +58,9 @@ pattern CSS_PERSPECTIVE = 20
 pattern CSS_MATRIX3D = 21
  
 foreign import javascript unsafe "$1[\"operationType\"]"
-        js_getOperationType :: JSRef WebKitCSSTransformValue -> IO Word
+        js_getOperationType :: WebKitCSSTransformValue -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue.operationType Mozilla WebKitCSSTransformValue.operationType documentation> 
 getOperationType ::
                  (MonadIO m) => WebKitCSSTransformValue -> m Word
-getOperationType self
-  = liftIO (js_getOperationType (unWebKitCSSTransformValue self))
+getOperationType self = liftIO (js_getOperationType (self))

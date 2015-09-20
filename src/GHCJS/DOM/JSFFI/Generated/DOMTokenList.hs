@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.DOMTokenList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,7 +21,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef DOMTokenList -> Word -> IO (JSRef (Maybe JSString))
+        DOMTokenList -> Word -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.item Mozilla DOMTokenList.item documentation> 
 item ::
@@ -29,23 +29,20 @@ item ::
        self -> Word -> m (Maybe result)
 item self index
   = liftIO
-      (fromMaybeJSString <$>
-         (js_item (unDOMTokenList (toDOMTokenList self)) index))
+      (fromMaybeJSString <$> (js_item (toDOMTokenList self) index))
  
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
-        js_contains :: JSRef DOMTokenList -> JSString -> IO Bool
+        js_contains :: DOMTokenList -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.contains Mozilla DOMTokenList.contains documentation> 
 contains ::
          (MonadIO m, IsDOMTokenList self, ToJSString token) =>
            self -> token -> m Bool
 contains self token
-  = liftIO
-      (js_contains (unDOMTokenList (toDOMTokenList self))
-         (toJSString token))
+  = liftIO (js_contains (toDOMTokenList self) (toJSString token))
  
 foreign import javascript unsafe "$1[\"add\"].apply($1, $2)" js_add
-        :: JSRef DOMTokenList -> JSRef [a] -> IO ()
+        :: DOMTokenList -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.add Mozilla DOMTokenList.add documentation> 
 add ::
@@ -55,10 +52,10 @@ add ::
 add self tokens
   = liftIO
       (toJSRef tokens >>=
-         \ tokens' -> js_add (unDOMTokenList (toDOMTokenList self)) tokens')
+         \ tokens' -> js_add (toDOMTokenList self) tokens')
  
 foreign import javascript unsafe "$1[\"remove\"].apply($1, $2)"
-        js_remove :: JSRef DOMTokenList -> JSRef [a] -> IO ()
+        js_remove :: DOMTokenList -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.remove Mozilla DOMTokenList.remove documentation> 
 remove ::
@@ -68,38 +65,31 @@ remove ::
 remove self tokens
   = liftIO
       (toJSRef tokens >>=
-         \ tokens' ->
-           js_remove (unDOMTokenList (toDOMTokenList self)) tokens')
+         \ tokens' -> js_remove (toDOMTokenList self) tokens')
  
 foreign import javascript unsafe "($1[\"toggle\"]($2, $3) ? 1 : 0)"
-        js_toggle :: JSRef DOMTokenList -> JSString -> Bool -> IO Bool
+        js_toggle :: DOMTokenList -> JSString -> Bool -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.toggle Mozilla DOMTokenList.toggle documentation> 
 toggle ::
        (MonadIO m, IsDOMTokenList self, ToJSString token) =>
          self -> token -> Bool -> m Bool
 toggle self token force
-  = liftIO
-      (js_toggle (unDOMTokenList (toDOMTokenList self))
-         (toJSString token)
-         force)
+  = liftIO (js_toggle (toDOMTokenList self) (toJSString token) force)
  
 foreign import javascript unsafe "$1[\"toString\"]()" js_toString
-        :: JSRef DOMTokenList -> IO JSString
+        :: DOMTokenList -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.toString Mozilla DOMTokenList.toString documentation> 
 toString ::
          (MonadIO m, IsDOMTokenList self, FromJSString result) =>
            self -> m result
 toString self
-  = liftIO
-      (fromJSString <$>
-         (js_toString (unDOMTokenList (toDOMTokenList self))))
+  = liftIO (fromJSString <$> (js_toString (toDOMTokenList self)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef DOMTokenList -> IO Word
+        DOMTokenList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.length Mozilla DOMTokenList.length documentation> 
 getLength :: (MonadIO m, IsDOMTokenList self) => self -> m Word
-getLength self
-  = liftIO (js_getLength (unDOMTokenList (toDOMTokenList self)))
+getLength self = liftIO (js_getLength (toDOMTokenList self))

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.CSS
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,7 +20,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "($1[\"supports\"]($2, $3) ? 1 : 0)" js_supports2 ::
-        JSRef CSS -> JSString -> JSString -> IO Bool
+        CSS -> JSString -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 supports2 ::
@@ -28,15 +28,14 @@ supports2 ::
             CSS -> property -> value -> m Bool
 supports2 self property value
   = liftIO
-      (js_supports2 (unCSS self) (toJSString property)
-         (toJSString value))
+      (js_supports2 (self) (toJSString property) (toJSString value))
  
 foreign import javascript unsafe "($1[\"supports\"]($2) ? 1 : 0)"
-        js_supports :: JSRef CSS -> JSString -> IO Bool
+        js_supports :: CSS -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 supports ::
          (MonadIO m, ToJSString conditionText) =>
            CSS -> conditionText -> m Bool
 supports self conditionText
-  = liftIO (js_supports (unCSS self) (toJSString conditionText))
+  = liftIO (js_supports (self) (toJSString conditionText))

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGAnimatedInteger
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,25 +20,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
-        js_setBaseVal :: JSRef SVGAnimatedInteger -> Int -> IO ()
+        js_setBaseVal :: SVGAnimatedInteger -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger.baseVal Mozilla SVGAnimatedInteger.baseVal documentation> 
 setBaseVal :: (MonadIO m) => SVGAnimatedInteger -> Int -> m ()
-setBaseVal self val
-  = liftIO (js_setBaseVal (unSVGAnimatedInteger self) val)
+setBaseVal self val = liftIO (js_setBaseVal (self) val)
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
-        JSRef SVGAnimatedInteger -> IO Int
+        SVGAnimatedInteger -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger.baseVal Mozilla SVGAnimatedInteger.baseVal documentation> 
 getBaseVal :: (MonadIO m) => SVGAnimatedInteger -> m Int
-getBaseVal self
-  = liftIO (js_getBaseVal (unSVGAnimatedInteger self))
+getBaseVal self = liftIO (js_getBaseVal (self))
  
 foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
-        JSRef SVGAnimatedInteger -> IO Int
+        SVGAnimatedInteger -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger.animVal Mozilla SVGAnimatedInteger.animVal documentation> 
 getAnimVal :: (MonadIO m) => SVGAnimatedInteger -> m Int
-getAnimVal self
-  = liftIO (js_getAnimVal (unSVGAnimatedInteger self))
+getAnimVal self = liftIO (js_getAnimVal (self))

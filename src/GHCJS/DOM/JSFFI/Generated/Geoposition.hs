@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.Geoposition
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"coords\"]" js_getCoords ::
-        JSRef Geoposition -> IO (JSRef Coordinates)
+        Geoposition -> IO (Nullable Coordinates)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition.coords Mozilla Geoposition.coords documentation> 
 getCoords :: (MonadIO m) => Geoposition -> m (Maybe Coordinates)
-getCoords self
-  = liftIO ((js_getCoords (unGeoposition self)) >>= fromJSRef)
+getCoords self = liftIO (nullableToMaybe <$> (js_getCoords (self)))
  
 foreign import javascript unsafe "$1[\"timestamp\"]"
-        js_getTimestamp :: JSRef Geoposition -> IO Word
+        js_getTimestamp :: Geoposition -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition.timestamp Mozilla Geoposition.timestamp documentation> 
 getTimestamp :: (MonadIO m) => Geoposition -> m Word
-getTimestamp self = liftIO (js_getTimestamp (unGeoposition self))
+getTimestamp self = liftIO (js_getTimestamp (self))

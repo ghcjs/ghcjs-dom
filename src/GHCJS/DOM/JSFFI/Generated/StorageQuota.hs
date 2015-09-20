@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.StorageQuota
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,8 +20,9 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"queryUsageAndQuota\"]($2, $3)" js_queryUsageAndQuota ::
-        JSRef StorageQuota ->
-          JSRef StorageUsageCallback -> JSRef StorageErrorCallback -> IO ()
+        StorageQuota ->
+          Nullable StorageUsageCallback ->
+            Nullable StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota.queryUsageAndQuota Mozilla StorageQuota.queryUsageAndQuota documentation> 
 queryUsageAndQuota ::
@@ -30,15 +31,15 @@ queryUsageAndQuota ::
                        Maybe StorageUsageCallback -> Maybe StorageErrorCallback -> m ()
 queryUsageAndQuota self usageCallback errorCallback
   = liftIO
-      (js_queryUsageAndQuota (unStorageQuota self)
-         (maybe jsNull pToJSRef usageCallback)
-         (maybe jsNull pToJSRef errorCallback))
+      (js_queryUsageAndQuota (self) (maybeToNullable usageCallback)
+         (maybeToNullable errorCallback))
  
 foreign import javascript unsafe "$1[\"requestQuota\"]($2, $3, $4)"
         js_requestQuota ::
-        JSRef StorageQuota ->
+        StorageQuota ->
           Double ->
-            JSRef StorageQuotaCallback -> JSRef StorageErrorCallback -> IO ()
+            Nullable StorageQuotaCallback ->
+              Nullable StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota.requestQuota Mozilla StorageQuota.requestQuota documentation> 
 requestQuota ::
@@ -48,7 +49,6 @@ requestQuota ::
                    Maybe StorageQuotaCallback -> Maybe StorageErrorCallback -> m ()
 requestQuota self newQuotaInBytes quotaCallback errorCallback
   = liftIO
-      (js_requestQuota (unStorageQuota self)
-         (fromIntegral newQuotaInBytes)
-         (maybe jsNull pToJSRef quotaCallback)
-         (maybe jsNull pToJSRef errorCallback))
+      (js_requestQuota (self) (fromIntegral newQuotaInBytes)
+         (maybeToNullable quotaCallback)
+         (maybeToNullable errorCallback))

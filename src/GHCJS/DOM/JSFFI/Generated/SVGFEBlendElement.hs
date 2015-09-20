@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEBlendElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -28,29 +28,26 @@ pattern SVG_FEBLEND_MODE_DARKEN = 4
 pattern SVG_FEBLEND_MODE_LIGHTEN = 5
  
 foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
-        JSRef SVGFEBlendElement -> IO (JSRef SVGAnimatedString)
+        SVGFEBlendElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.in1 Mozilla SVGFEBlendElement.in1 documentation> 
 getIn1 ::
        (MonadIO m) => SVGFEBlendElement -> m (Maybe SVGAnimatedString)
-getIn1 self
-  = liftIO ((js_getIn1 (unSVGFEBlendElement self)) >>= fromJSRef)
+getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"in2\"]" js_getIn2 ::
-        JSRef SVGFEBlendElement -> IO (JSRef SVGAnimatedString)
+        SVGFEBlendElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.in2 Mozilla SVGFEBlendElement.in2 documentation> 
 getIn2 ::
        (MonadIO m) => SVGFEBlendElement -> m (Maybe SVGAnimatedString)
-getIn2 self
-  = liftIO ((js_getIn2 (unSVGFEBlendElement self)) >>= fromJSRef)
+getIn2 self = liftIO (nullableToMaybe <$> (js_getIn2 (self)))
  
 foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
-        JSRef SVGFEBlendElement -> IO (JSRef SVGAnimatedEnumeration)
+        SVGFEBlendElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement.mode Mozilla SVGFEBlendElement.mode documentation> 
 getMode ::
         (MonadIO m) =>
           SVGFEBlendElement -> m (Maybe SVGAnimatedEnumeration)
-getMode self
-  = liftIO ((js_getMode (unSVGFEBlendElement self)) >>= fromJSRef)
+getMode self = liftIO (nullableToMaybe <$> (js_getMode (self)))

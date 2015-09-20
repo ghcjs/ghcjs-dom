@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSCharsetRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,23 +19,20 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"encoding\"] = $2;"
-        js_setEncoding ::
-        JSRef CSSCharsetRule -> JSRef (Maybe JSString) -> IO ()
+        js_setEncoding :: CSSCharsetRule -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule.encoding Mozilla CSSCharsetRule.encoding documentation> 
 setEncoding ::
             (MonadIO m, ToJSString val) => CSSCharsetRule -> Maybe val -> m ()
 setEncoding self val
-  = liftIO
-      (js_setEncoding (unCSSCharsetRule self) (toMaybeJSString val))
+  = liftIO (js_setEncoding (self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"encoding\"]" js_getEncoding
-        :: JSRef CSSCharsetRule -> IO (JSRef (Maybe JSString))
+        :: CSSCharsetRule -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule.encoding Mozilla CSSCharsetRule.encoding documentation> 
 getEncoding ::
             (MonadIO m, FromJSString result) =>
               CSSCharsetRule -> m (Maybe result)
 getEncoding self
-  = liftIO
-      (fromMaybeJSString <$> (js_getEncoding (unCSSCharsetRule self)))
+  = liftIO (fromMaybeJSString <$> (js_getEncoding (self)))

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCStatsResponse
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,18 +19,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"result\"]()" js_result ::
-        JSRef RTCStatsResponse -> IO (JSRef [Maybe RTCStatsReport])
+        RTCStatsResponse -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsResponse.result Mozilla RTCStatsResponse.result documentation> 
 result ::
        (MonadIO m) => RTCStatsResponse -> m [Maybe RTCStatsReport]
-result self
-  = liftIO
-      ((js_result (unRTCStatsResponse self)) >>= fromJSRefUnchecked)
+result self = liftIO ((js_result (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         js_namedItem ::
-        JSRef RTCStatsResponse -> JSString -> IO (JSRef RTCStatsReport)
+        RTCStatsResponse -> JSString -> IO (Nullable RTCStatsReport)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsResponse.namedItem Mozilla RTCStatsResponse.namedItem documentation> 
 namedItem ::
@@ -38,5 +36,4 @@ namedItem ::
             RTCStatsResponse -> name -> m (Maybe RTCStatsReport)
 namedItem self name
   = liftIO
-      ((js_namedItem (unRTCStatsResponse self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_namedItem (self) (toJSString name)))

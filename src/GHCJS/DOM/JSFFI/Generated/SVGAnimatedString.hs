@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGAnimatedString
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,31 +20,26 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
-        js_setBaseVal :: JSRef SVGAnimatedString -> JSString -> IO ()
+        js_setBaseVal :: SVGAnimatedString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
 setBaseVal ::
            (MonadIO m, ToJSString val) => SVGAnimatedString -> val -> m ()
 setBaseVal self val
-  = liftIO
-      (js_setBaseVal (unSVGAnimatedString self) (toJSString val))
+  = liftIO (js_setBaseVal (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
-        JSRef SVGAnimatedString -> IO JSString
+        SVGAnimatedString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.baseVal Mozilla SVGAnimatedString.baseVal documentation> 
 getBaseVal ::
            (MonadIO m, FromJSString result) => SVGAnimatedString -> m result
-getBaseVal self
-  = liftIO
-      (fromJSString <$> (js_getBaseVal (unSVGAnimatedString self)))
+getBaseVal self = liftIO (fromJSString <$> (js_getBaseVal (self)))
  
 foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
-        JSRef SVGAnimatedString -> IO JSString
+        SVGAnimatedString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString.animVal Mozilla SVGAnimatedString.animVal documentation> 
 getAnimVal ::
            (MonadIO m, FromJSString result) => SVGAnimatedString -> m result
-getAnimVal self
-  = liftIO
-      (fromJSString <$> (js_getAnimVal (unSVGAnimatedString self)))
+getAnimVal self = liftIO (fromJSString <$> (js_getAnimVal (self)))

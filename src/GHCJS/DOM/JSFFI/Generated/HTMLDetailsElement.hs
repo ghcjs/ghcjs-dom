@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLDetailsElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"open\"] = $2;" js_setOpen ::
-        JSRef HTMLDetailsElement -> Bool -> IO ()
+        HTMLDetailsElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement.open Mozilla HTMLDetailsElement.open documentation> 
 setOpen :: (MonadIO m) => HTMLDetailsElement -> Bool -> m ()
-setOpen self val
-  = liftIO (js_setOpen (unHTMLDetailsElement self) val)
+setOpen self val = liftIO (js_setOpen (self) val)
  
 foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
-        js_getOpen :: JSRef HTMLDetailsElement -> IO Bool
+        js_getOpen :: HTMLDetailsElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement.open Mozilla HTMLDetailsElement.open documentation> 
 getOpen :: (MonadIO m) => HTMLDetailsElement -> m Bool
-getOpen self = liftIO (js_getOpen (unHTMLDetailsElement self))
+getOpen self = liftIO (js_getOpen (self))

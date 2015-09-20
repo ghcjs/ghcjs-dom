@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSPageRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,32 +20,27 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"selectorText\"] = $2;"
-        js_setSelectorText ::
-        JSRef CSSPageRule -> JSRef (Maybe JSString) -> IO ()
+        js_setSelectorText :: CSSPageRule -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.selectorText Mozilla CSSPageRule.selectorText documentation> 
 setSelectorText ::
                 (MonadIO m, ToJSString val) => CSSPageRule -> Maybe val -> m ()
 setSelectorText self val
-  = liftIO
-      (js_setSelectorText (unCSSPageRule self) (toMaybeJSString val))
+  = liftIO (js_setSelectorText (self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"selectorText\"]"
-        js_getSelectorText ::
-        JSRef CSSPageRule -> IO (JSRef (Maybe JSString))
+        js_getSelectorText :: CSSPageRule -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.selectorText Mozilla CSSPageRule.selectorText documentation> 
 getSelectorText ::
                 (MonadIO m, FromJSString result) => CSSPageRule -> m (Maybe result)
 getSelectorText self
-  = liftIO
-      (fromMaybeJSString <$> (js_getSelectorText (unCSSPageRule self)))
+  = liftIO (fromMaybeJSString <$> (js_getSelectorText (self)))
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
-        JSRef CSSPageRule -> IO (JSRef CSSStyleDeclaration)
+        CSSPageRule -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.style Mozilla CSSPageRule.style documentation> 
 getStyle ::
          (MonadIO m) => CSSPageRule -> m (Maybe CSSStyleDeclaration)
-getStyle self
-  = liftIO ((js_getStyle (unCSSPageRule self)) >>= fromJSRef)
+getStyle self = liftIO (nullableToMaybe <$> (js_getStyle (self)))

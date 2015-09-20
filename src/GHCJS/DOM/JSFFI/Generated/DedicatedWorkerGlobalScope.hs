@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.DedicatedWorkerGlobalScope
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,16 +20,16 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3)"
         js_postMessage ::
-        JSRef DedicatedWorkerGlobalScope -> JSRef a -> JSRef Array -> IO ()
+        DedicatedWorkerGlobalScope -> JSRef -> Nullable Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope.postMessage Mozilla DedicatedWorkerGlobalScope.postMessage documentation> 
 postMessage ::
             (MonadIO m, IsArray messagePorts) =>
-              DedicatedWorkerGlobalScope -> JSRef a -> Maybe messagePorts -> m ()
+              DedicatedWorkerGlobalScope -> JSRef -> Maybe messagePorts -> m ()
 postMessage self message messagePorts
   = liftIO
-      (js_postMessage (unDedicatedWorkerGlobalScope self) message
-         (maybe jsNull (unArray . toArray) messagePorts))
+      (js_postMessage (self) message
+         (maybeToNullable (fmap toArray messagePorts)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope.onmessage Mozilla DedicatedWorkerGlobalScope.onmessage documentation> 
 message :: EventName DedicatedWorkerGlobalScope MessageEvent

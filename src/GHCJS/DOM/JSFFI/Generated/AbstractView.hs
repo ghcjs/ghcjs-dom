@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.AbstractView
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,18 +19,18 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"document\"]" js_getDocument
-        :: JSRef AbstractView -> IO (JSRef Document)
+        :: AbstractView -> IO (Nullable Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.document Mozilla AbstractView.document documentation> 
 getDocument :: (MonadIO m) => AbstractView -> m (Maybe Document)
 getDocument self
-  = liftIO ((js_getDocument (unAbstractView self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getDocument (self)))
  
 foreign import javascript unsafe "$1[\"styleMedia\"]"
-        js_getStyleMedia :: JSRef AbstractView -> IO (JSRef StyleMedia)
+        js_getStyleMedia :: AbstractView -> IO (Nullable StyleMedia)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.styleMedia Mozilla AbstractView.styleMedia documentation> 
 getStyleMedia ::
               (MonadIO m) => AbstractView -> m (Maybe StyleMedia)
 getStyleMedia self
-  = liftIO ((js_getStyleMedia (unAbstractView self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getStyleMedia (self)))

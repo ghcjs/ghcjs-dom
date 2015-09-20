@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGLengthList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,15 +22,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
-        JSRef SVGLengthList -> IO ()
+        SVGLengthList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.clear Mozilla SVGLengthList.clear documentation> 
 clear :: (MonadIO m) => SVGLengthList -> m ()
-clear self = liftIO (js_clear (unSVGLengthList self))
+clear self = liftIO (js_clear (self))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
         js_initialize ::
-        JSRef SVGLengthList -> JSRef SVGLength -> IO (JSRef SVGLength)
+        SVGLengthList -> Nullable SVGLength -> IO (Nullable SVGLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.initialize Mozilla SVGLengthList.initialize documentation> 
 initialize ::
@@ -38,23 +38,21 @@ initialize ::
              SVGLengthList -> Maybe SVGLength -> m (Maybe SVGLength)
 initialize self item
   = liftIO
-      ((js_initialize (unSVGLengthList self)
-          (maybe jsNull pToJSRef item))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_initialize (self) (maybeToNullable item)))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: JSRef SVGLengthList -> Word -> IO (JSRef SVGLength)
+        :: SVGLengthList -> Word -> IO (Nullable SVGLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.getItem Mozilla SVGLengthList.getItem documentation> 
 getItem ::
         (MonadIO m) => SVGLengthList -> Word -> m (Maybe SVGLength)
 getItem self index
-  = liftIO ((js_getItem (unSVGLengthList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getItem (self) index))
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
-        JSRef SVGLengthList ->
-          JSRef SVGLength -> Word -> IO (JSRef SVGLength)
+        SVGLengthList ->
+          Nullable SVGLength -> Word -> IO (Nullable SVGLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.insertItemBefore Mozilla SVGLengthList.insertItemBefore documentation> 
 insertItemBefore ::
@@ -62,15 +60,13 @@ insertItemBefore ::
                    SVGLengthList -> Maybe SVGLength -> Word -> m (Maybe SVGLength)
 insertItemBefore self item index
   = liftIO
-      ((js_insertItemBefore (unSVGLengthList self)
-          (maybe jsNull pToJSRef item)
-          index)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_insertItemBefore (self) (maybeToNullable item) index))
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
         js_replaceItem ::
-        JSRef SVGLengthList ->
-          JSRef SVGLength -> Word -> IO (JSRef SVGLength)
+        SVGLengthList ->
+          Nullable SVGLength -> Word -> IO (Nullable SVGLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.replaceItem Mozilla SVGLengthList.replaceItem documentation> 
 replaceItem ::
@@ -78,25 +74,21 @@ replaceItem ::
               SVGLengthList -> Maybe SVGLength -> Word -> m (Maybe SVGLength)
 replaceItem self item index
   = liftIO
-      ((js_replaceItem (unSVGLengthList self)
-          (maybe jsNull pToJSRef item)
-          index)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_replaceItem (self) (maybeToNullable item) index))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
-        js_removeItem ::
-        JSRef SVGLengthList -> Word -> IO (JSRef SVGLength)
+        js_removeItem :: SVGLengthList -> Word -> IO (Nullable SVGLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.removeItem Mozilla SVGLengthList.removeItem documentation> 
 removeItem ::
            (MonadIO m) => SVGLengthList -> Word -> m (Maybe SVGLength)
 removeItem self index
-  = liftIO
-      ((js_removeItem (unSVGLengthList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_removeItem (self) index))
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         js_appendItem ::
-        JSRef SVGLengthList -> JSRef SVGLength -> IO (JSRef SVGLength)
+        SVGLengthList -> Nullable SVGLength -> IO (Nullable SVGLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.appendItem Mozilla SVGLengthList.appendItem documentation> 
 appendItem ::
@@ -104,14 +96,11 @@ appendItem ::
              SVGLengthList -> Maybe SVGLength -> m (Maybe SVGLength)
 appendItem self item
   = liftIO
-      ((js_appendItem (unSVGLengthList self)
-          (maybe jsNull pToJSRef item))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_appendItem (self) (maybeToNullable item)))
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
-        js_getNumberOfItems :: JSRef SVGLengthList -> IO Word
+        js_getNumberOfItems :: SVGLengthList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.numberOfItems Mozilla SVGLengthList.numberOfItems documentation> 
 getNumberOfItems :: (MonadIO m) => SVGLengthList -> m Word
-getNumberOfItems self
-  = liftIO (js_getNumberOfItems (unSVGLengthList self))
+getNumberOfItems self = liftIO (js_getNumberOfItems (self))

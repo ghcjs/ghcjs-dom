@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGDocument
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,7 +19,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"createEvent\"]($2)"
-        js_createEvent :: JSRef SVGDocument -> JSString -> IO (JSRef Event)
+        js_createEvent :: SVGDocument -> JSString -> IO (Nullable Event)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument.createEvent Mozilla SVGDocument.createEvent documentation> 
 createEvent ::
@@ -27,14 +27,14 @@ createEvent ::
               SVGDocument -> eventType -> m (Maybe Event)
 createEvent self eventType
   = liftIO
-      ((js_createEvent (unSVGDocument self) (toJSString eventType)) >>=
-         fromJSRef)
+      (nullableToMaybe <$>
+         (js_createEvent (self) (toJSString eventType)))
  
 foreign import javascript unsafe "$1[\"rootElement\"]"
-        js_getRootElement :: JSRef SVGDocument -> IO (JSRef SVGSVGElement)
+        js_getRootElement :: SVGDocument -> IO (Nullable SVGSVGElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument.rootElement Mozilla SVGDocument.rootElement documentation> 
 getRootElement ::
                (MonadIO m) => SVGDocument -> m (Maybe SVGSVGElement)
 getRootElement self
-  = liftIO ((js_getRootElement (unSVGDocument self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getRootElement (self)))

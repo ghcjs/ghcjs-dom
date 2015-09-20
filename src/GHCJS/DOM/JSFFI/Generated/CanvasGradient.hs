@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.CanvasGradient
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,13 +19,11 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"addColorStop\"]($2, $3)"
-        js_addColorStop ::
-        JSRef CanvasGradient -> Float -> JSString -> IO ()
+        js_addColorStop :: CanvasGradient -> Float -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient.addColorStop Mozilla CanvasGradient.addColorStop documentation> 
 addColorStop ::
              (MonadIO m, ToJSString color) =>
                CanvasGradient -> Float -> color -> m ()
 addColorStop self offset color
-  = liftIO
-      (js_addColorStop (unCanvasGradient self) offset (toJSString color))
+  = liftIO (js_addColorStop (self) offset (toJSString color))

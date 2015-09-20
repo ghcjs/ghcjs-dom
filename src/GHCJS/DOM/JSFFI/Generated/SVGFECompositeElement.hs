@@ -14,7 +14,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFECompositeElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -35,66 +35,59 @@ pattern SVG_FECOMPOSITE_OPERATOR_XOR = 5
 pattern SVG_FECOMPOSITE_OPERATOR_ARITHMETIC = 6
  
 foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
-        JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedString)
+        SVGFECompositeElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.in1 Mozilla SVGFECompositeElement.in1 documentation> 
 getIn1 ::
        (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedString)
-getIn1 self
-  = liftIO ((js_getIn1 (unSVGFECompositeElement self)) >>= fromJSRef)
+getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"in2\"]" js_getIn2 ::
-        JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedString)
+        SVGFECompositeElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.in2 Mozilla SVGFECompositeElement.in2 documentation> 
 getIn2 ::
        (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedString)
-getIn2 self
-  = liftIO ((js_getIn2 (unSVGFECompositeElement self)) >>= fromJSRef)
+getIn2 self = liftIO (nullableToMaybe <$> (js_getIn2 (self)))
  
 foreign import javascript unsafe "$1[\"operator\"]" js_getOperator
-        :: JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedEnumeration)
+        :: SVGFECompositeElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.operator Mozilla SVGFECompositeElement.operator documentation> 
 getOperator ::
             (MonadIO m) =>
               SVGFECompositeElement -> m (Maybe SVGAnimatedEnumeration)
 getOperator self
-  = liftIO
-      ((js_getOperator (unSVGFECompositeElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getOperator (self)))
  
 foreign import javascript unsafe "$1[\"k1\"]" js_getK1 ::
-        JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFECompositeElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k1 Mozilla SVGFECompositeElement.k1 documentation> 
 getK1 ::
       (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
-getK1 self
-  = liftIO ((js_getK1 (unSVGFECompositeElement self)) >>= fromJSRef)
+getK1 self = liftIO (nullableToMaybe <$> (js_getK1 (self)))
  
 foreign import javascript unsafe "$1[\"k2\"]" js_getK2 ::
-        JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFECompositeElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k2 Mozilla SVGFECompositeElement.k2 documentation> 
 getK2 ::
       (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
-getK2 self
-  = liftIO ((js_getK2 (unSVGFECompositeElement self)) >>= fromJSRef)
+getK2 self = liftIO (nullableToMaybe <$> (js_getK2 (self)))
  
 foreign import javascript unsafe "$1[\"k3\"]" js_getK3 ::
-        JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFECompositeElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k3 Mozilla SVGFECompositeElement.k3 documentation> 
 getK3 ::
       (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
-getK3 self
-  = liftIO ((js_getK3 (unSVGFECompositeElement self)) >>= fromJSRef)
+getK3 self = liftIO (nullableToMaybe <$> (js_getK3 (self)))
  
 foreign import javascript unsafe "$1[\"k4\"]" js_getK4 ::
-        JSRef SVGFECompositeElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFECompositeElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement.k4 Mozilla SVGFECompositeElement.k4 documentation> 
 getK4 ::
       (MonadIO m) => SVGFECompositeElement -> m (Maybe SVGAnimatedNumber)
-getK4 self
-  = liftIO ((js_getK4 (unSVGFECompositeElement self)) >>= fromJSRef)
+getK4 self = liftIO (nullableToMaybe <$> (js_getK4 (self)))

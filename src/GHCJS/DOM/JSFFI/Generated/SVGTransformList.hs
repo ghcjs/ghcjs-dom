@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGTransformList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,16 +23,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
-        JSRef SVGTransformList -> IO ()
+        SVGTransformList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.clear Mozilla SVGTransformList.clear documentation> 
 clear :: (MonadIO m) => SVGTransformList -> m ()
-clear self = liftIO (js_clear (unSVGTransformList self))
+clear self = liftIO (js_clear (self))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
         js_initialize ::
-        JSRef SVGTransformList ->
-          JSRef SVGTransform -> IO (JSRef SVGTransform)
+        SVGTransformList ->
+          Nullable SVGTransform -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.initialize Mozilla SVGTransformList.initialize documentation> 
 initialize ::
@@ -40,24 +40,21 @@ initialize ::
              SVGTransformList -> Maybe SVGTransform -> m (Maybe SVGTransform)
 initialize self item
   = liftIO
-      ((js_initialize (unSVGTransformList self)
-          (maybe jsNull pToJSRef item))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_initialize (self) (maybeToNullable item)))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: JSRef SVGTransformList -> Word -> IO (JSRef SVGTransform)
+        :: SVGTransformList -> Word -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.getItem Mozilla SVGTransformList.getItem documentation> 
 getItem ::
         (MonadIO m) => SVGTransformList -> Word -> m (Maybe SVGTransform)
 getItem self index
-  = liftIO
-      ((js_getItem (unSVGTransformList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getItem (self) index))
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
-        JSRef SVGTransformList ->
-          JSRef SVGTransform -> Word -> IO (JSRef SVGTransform)
+        SVGTransformList ->
+          Nullable SVGTransform -> Word -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.insertItemBefore Mozilla SVGTransformList.insertItemBefore documentation> 
 insertItemBefore ::
@@ -66,15 +63,13 @@ insertItemBefore ::
                      Maybe SVGTransform -> Word -> m (Maybe SVGTransform)
 insertItemBefore self item index
   = liftIO
-      ((js_insertItemBefore (unSVGTransformList self)
-          (maybe jsNull pToJSRef item)
-          index)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_insertItemBefore (self) (maybeToNullable item) index))
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
         js_replaceItem ::
-        JSRef SVGTransformList ->
-          JSRef SVGTransform -> Word -> IO (JSRef SVGTransform)
+        SVGTransformList ->
+          Nullable SVGTransform -> Word -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.replaceItem Mozilla SVGTransformList.replaceItem documentation> 
 replaceItem ::
@@ -83,26 +78,23 @@ replaceItem ::
                 Maybe SVGTransform -> Word -> m (Maybe SVGTransform)
 replaceItem self item index
   = liftIO
-      ((js_replaceItem (unSVGTransformList self)
-          (maybe jsNull pToJSRef item)
-          index)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_replaceItem (self) (maybeToNullable item) index))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
         js_removeItem ::
-        JSRef SVGTransformList -> Word -> IO (JSRef SVGTransform)
+        SVGTransformList -> Word -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.removeItem Mozilla SVGTransformList.removeItem documentation> 
 removeItem ::
            (MonadIO m) => SVGTransformList -> Word -> m (Maybe SVGTransform)
 removeItem self index
-  = liftIO
-      ((js_removeItem (unSVGTransformList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_removeItem (self) index))
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         js_appendItem ::
-        JSRef SVGTransformList ->
-          JSRef SVGTransform -> IO (JSRef SVGTransform)
+        SVGTransformList ->
+          Nullable SVGTransform -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.appendItem Mozilla SVGTransformList.appendItem documentation> 
 appendItem ::
@@ -110,15 +102,13 @@ appendItem ::
              SVGTransformList -> Maybe SVGTransform -> m (Maybe SVGTransform)
 appendItem self item
   = liftIO
-      ((js_appendItem (unSVGTransformList self)
-          (maybe jsNull pToJSRef item))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_appendItem (self) (maybeToNullable item)))
  
 foreign import javascript unsafe
         "$1[\"createSVGTransformFromMatrix\"]($2)"
         js_createSVGTransformFromMatrix ::
-        JSRef SVGTransformList ->
-          JSRef SVGMatrix -> IO (JSRef SVGTransform)
+        SVGTransformList ->
+          Nullable SVGMatrix -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.createSVGTransformFromMatrix Mozilla SVGTransformList.createSVGTransformFromMatrix documentation> 
 createSVGTransformFromMatrix ::
@@ -126,23 +116,21 @@ createSVGTransformFromMatrix ::
                                SVGTransformList -> Maybe SVGMatrix -> m (Maybe SVGTransform)
 createSVGTransformFromMatrix self matrix
   = liftIO
-      ((js_createSVGTransformFromMatrix (unSVGTransformList self)
-          (maybe jsNull pToJSRef matrix))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createSVGTransformFromMatrix (self) (maybeToNullable matrix)))
  
 foreign import javascript unsafe "$1[\"consolidate\"]()"
-        js_consolidate :: JSRef SVGTransformList -> IO (JSRef SVGTransform)
+        js_consolidate :: SVGTransformList -> IO (Nullable SVGTransform)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.consolidate Mozilla SVGTransformList.consolidate documentation> 
 consolidate ::
             (MonadIO m) => SVGTransformList -> m (Maybe SVGTransform)
 consolidate self
-  = liftIO ((js_consolidate (unSVGTransformList self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_consolidate (self)))
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
-        js_getNumberOfItems :: JSRef SVGTransformList -> IO Word
+        js_getNumberOfItems :: SVGTransformList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.numberOfItems Mozilla SVGTransformList.numberOfItems documentation> 
 getNumberOfItems :: (MonadIO m) => SVGTransformList -> m Word
-getNumberOfItems self
-  = liftIO (js_getNumberOfItems (unSVGTransformList self))
+getNumberOfItems self = liftIO (js_getNumberOfItems (self))

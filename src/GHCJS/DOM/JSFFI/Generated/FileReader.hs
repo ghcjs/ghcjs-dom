@@ -10,7 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.FileReader
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,37 +24,34 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"FileReader\"]()"
-        js_newFileReader :: IO (JSRef FileReader)
+        js_newFileReader :: IO FileReader
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader Mozilla FileReader documentation> 
 newFileReader :: (MonadIO m) => m FileReader
-newFileReader = liftIO (js_newFileReader >>= fromJSRefUnchecked)
+newFileReader = liftIO (js_newFileReader)
  
 foreign import javascript unsafe "$1[\"readAsArrayBuffer\"]($2)"
-        js_readAsArrayBuffer :: JSRef FileReader -> JSRef Blob -> IO ()
+        js_readAsArrayBuffer :: FileReader -> Nullable Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsArrayBuffer Mozilla FileReader.readAsArrayBuffer documentation> 
 readAsArrayBuffer ::
                   (MonadIO m, IsBlob blob) => FileReader -> Maybe blob -> m ()
 readAsArrayBuffer self blob
   = liftIO
-      (js_readAsArrayBuffer (unFileReader self)
-         (maybe jsNull (unBlob . toBlob) blob))
+      (js_readAsArrayBuffer (self) (maybeToNullable (fmap toBlob blob)))
  
 foreign import javascript unsafe "$1[\"readAsBinaryString\"]($2)"
-        js_readAsBinaryString :: JSRef FileReader -> JSRef Blob -> IO ()
+        js_readAsBinaryString :: FileReader -> Nullable Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsBinaryString Mozilla FileReader.readAsBinaryString documentation> 
 readAsBinaryString ::
                    (MonadIO m, IsBlob blob) => FileReader -> Maybe blob -> m ()
 readAsBinaryString self blob
   = liftIO
-      (js_readAsBinaryString (unFileReader self)
-         (maybe jsNull (unBlob . toBlob) blob))
+      (js_readAsBinaryString (self) (maybeToNullable (fmap toBlob blob)))
  
 foreign import javascript unsafe "$1[\"readAsText\"]($2, $3)"
-        js_readAsText ::
-        JSRef FileReader -> JSRef Blob -> JSString -> IO ()
+        js_readAsText :: FileReader -> Nullable Blob -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsText Mozilla FileReader.readAsText documentation> 
 readAsText ::
@@ -62,52 +59,49 @@ readAsText ::
              FileReader -> Maybe blob -> encoding -> m ()
 readAsText self blob encoding
   = liftIO
-      (js_readAsText (unFileReader self)
-         (maybe jsNull (unBlob . toBlob) blob)
+      (js_readAsText (self) (maybeToNullable (fmap toBlob blob))
          (toJSString encoding))
  
 foreign import javascript unsafe "$1[\"readAsDataURL\"]($2)"
-        js_readAsDataURL :: JSRef FileReader -> JSRef Blob -> IO ()
+        js_readAsDataURL :: FileReader -> Nullable Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsDataURL Mozilla FileReader.readAsDataURL documentation> 
 readAsDataURL ::
               (MonadIO m, IsBlob blob) => FileReader -> Maybe blob -> m ()
 readAsDataURL self blob
   = liftIO
-      (js_readAsDataURL (unFileReader self)
-         (maybe jsNull (unBlob . toBlob) blob))
+      (js_readAsDataURL (self) (maybeToNullable (fmap toBlob blob)))
  
 foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
-        JSRef FileReader -> IO ()
+        FileReader -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.abort Mozilla FileReader.abort documentation> 
 abort :: (MonadIO m) => FileReader -> m ()
-abort self = liftIO (js_abort (unFileReader self))
+abort self = liftIO (js_abort (self))
 pattern EMPTY = 0
 pattern LOADING = 1
 pattern DONE = 2
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        js_getReadyState :: JSRef FileReader -> IO Word
+        js_getReadyState :: FileReader -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readyState Mozilla FileReader.readyState documentation> 
 getReadyState :: (MonadIO m) => FileReader -> m Word
-getReadyState self = liftIO (js_getReadyState (unFileReader self))
+getReadyState self = liftIO (js_getReadyState (self))
  
 foreign import javascript unsafe "$1[\"result\"]" js_getResult ::
-        JSRef FileReader -> IO (JSRef a)
+        FileReader -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.result Mozilla FileReader.result documentation> 
-getResult :: (MonadIO m) => FileReader -> m (JSRef a)
-getResult self = liftIO (js_getResult (unFileReader self))
+getResult :: (MonadIO m) => FileReader -> m JSRef
+getResult self = liftIO (js_getResult (self))
  
 foreign import javascript unsafe "$1[\"error\"]" js_getError ::
-        JSRef FileReader -> IO (JSRef FileError)
+        FileReader -> IO (Nullable FileError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.error Mozilla FileReader.error documentation> 
 getError :: (MonadIO m) => FileReader -> m (Maybe FileError)
-getError self
-  = liftIO ((js_getError (unFileReader self)) >>= fromJSRef)
+getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onloadstart Mozilla FileReader.onloadstart documentation> 
 loadStart :: EventName FileReader ProgressEvent

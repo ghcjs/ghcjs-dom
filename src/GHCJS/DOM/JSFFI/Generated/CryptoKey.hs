@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CryptoKey
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,32 +20,31 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef CryptoKey -> IO (JSRef KeyType)
+        CryptoKey -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey.type Mozilla CryptoKey.type documentation> 
 getType :: (MonadIO m) => CryptoKey -> m KeyType
-getType self
-  = liftIO ((js_getType (unCryptoKey self)) >>= fromJSRefUnchecked)
+getType self = liftIO ((js_getType (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "($1[\"extractable\"] ? 1 : 0)"
-        js_getExtractable :: JSRef CryptoKey -> IO Bool
+        js_getExtractable :: CryptoKey -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey.extractable Mozilla CryptoKey.extractable documentation> 
 getExtractable :: (MonadIO m) => CryptoKey -> m Bool
-getExtractable self = liftIO (js_getExtractable (unCryptoKey self))
+getExtractable self = liftIO (js_getExtractable (self))
  
 foreign import javascript unsafe "$1[\"algorithm\"]"
-        js_getAlgorithm :: JSRef CryptoKey -> IO (JSRef Algorithm)
+        js_getAlgorithm :: CryptoKey -> IO (Nullable Algorithm)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey.algorithm Mozilla CryptoKey.algorithm documentation> 
 getAlgorithm :: (MonadIO m) => CryptoKey -> m (Maybe Algorithm)
 getAlgorithm self
-  = liftIO ((js_getAlgorithm (unCryptoKey self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getAlgorithm (self)))
  
 foreign import javascript unsafe "$1[\"usages\"]" js_getUsages ::
-        JSRef CryptoKey -> IO (JSRef [KeyUsage])
+        CryptoKey -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey.usages Mozilla CryptoKey.usages documentation> 
 getUsages :: (MonadIO m) => CryptoKey -> m [KeyUsage]
 getUsages self
-  = liftIO ((js_getUsages (unCryptoKey self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getUsages (self)) >>= fromJSRefUnchecked)

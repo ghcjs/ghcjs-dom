@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.XSLTProcessor
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,15 +23,14 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"XSLTProcessor\"]()"
-        js_newXSLTProcessor :: IO (JSRef XSLTProcessor)
+        js_newXSLTProcessor :: IO XSLTProcessor
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor Mozilla XSLTProcessor documentation> 
 newXSLTProcessor :: (MonadIO m) => m XSLTProcessor
-newXSLTProcessor
-  = liftIO (js_newXSLTProcessor >>= fromJSRefUnchecked)
+newXSLTProcessor = liftIO (js_newXSLTProcessor)
  
 foreign import javascript unsafe "$1[\"importStylesheet\"]($2)"
-        js_importStylesheet :: JSRef XSLTProcessor -> JSRef Node -> IO ()
+        js_importStylesheet :: XSLTProcessor -> Nullable Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.importStylesheet Mozilla XSLTProcessor.importStylesheet documentation> 
 importStylesheet ::
@@ -39,13 +38,14 @@ importStylesheet ::
                    XSLTProcessor -> Maybe stylesheet -> m ()
 importStylesheet self stylesheet
   = liftIO
-      (js_importStylesheet (unXSLTProcessor self)
-         (maybe jsNull (unNode . toNode) stylesheet))
+      (js_importStylesheet (self)
+         (maybeToNullable (fmap toNode stylesheet)))
  
 foreign import javascript unsafe
         "$1[\"transformToFragment\"]($2,\n$3)" js_transformToFragment ::
-        JSRef XSLTProcessor ->
-          JSRef Node -> JSRef Document -> IO (JSRef DocumentFragment)
+        XSLTProcessor ->
+          Nullable Node ->
+            Nullable Document -> IO (Nullable DocumentFragment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToFragment Mozilla XSLTProcessor.transformToFragment documentation> 
 transformToFragment ::
@@ -54,14 +54,14 @@ transformToFragment ::
                         Maybe source -> Maybe docVal -> m (Maybe DocumentFragment)
 transformToFragment self source docVal
   = liftIO
-      ((js_transformToFragment (unXSLTProcessor self)
-          (maybe jsNull (unNode . toNode) source)
-          (maybe jsNull (unDocument . toDocument) docVal))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_transformToFragment (self)
+            (maybeToNullable (fmap toNode source))
+            (maybeToNullable (fmap toDocument docVal))))
  
 foreign import javascript unsafe "$1[\"transformToDocument\"]($2)"
         js_transformToDocument ::
-        JSRef XSLTProcessor -> JSRef Node -> IO (JSRef Document)
+        XSLTProcessor -> Nullable Node -> IO (Nullable Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToDocument Mozilla XSLTProcessor.transformToDocument documentation> 
 transformToDocument ::
@@ -69,13 +69,13 @@ transformToDocument ::
                       XSLTProcessor -> Maybe source -> m (Maybe Document)
 transformToDocument self source
   = liftIO
-      ((js_transformToDocument (unXSLTProcessor self)
-          (maybe jsNull (unNode . toNode) source))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_transformToDocument (self)
+            (maybeToNullable (fmap toNode source))))
  
 foreign import javascript unsafe "$1[\"setParameter\"]($2, $3, $4)"
         js_setParameter ::
-        JSRef XSLTProcessor -> JSString -> JSString -> JSString -> IO ()
+        XSLTProcessor -> JSString -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.setParameter Mozilla XSLTProcessor.setParameter documentation> 
 setParameter ::
@@ -84,14 +84,13 @@ setParameter ::
                XSLTProcessor -> namespaceURI -> localName -> value -> m ()
 setParameter self namespaceURI localName value
   = liftIO
-      (js_setParameter (unXSLTProcessor self) (toJSString namespaceURI)
+      (js_setParameter (self) (toJSString namespaceURI)
          (toJSString localName)
          (toJSString value))
  
 foreign import javascript unsafe "$1[\"getParameter\"]($2, $3)"
         js_getParameter ::
-        JSRef XSLTProcessor ->
-          JSString -> JSString -> IO (JSRef (Maybe JSString))
+        XSLTProcessor -> JSString -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.getParameter Mozilla XSLTProcessor.getParameter documentation> 
 getParameter ::
@@ -101,12 +100,12 @@ getParameter ::
 getParameter self namespaceURI localName
   = liftIO
       (fromMaybeJSString <$>
-         (js_getParameter (unXSLTProcessor self) (toJSString namespaceURI)
+         (js_getParameter (self) (toJSString namespaceURI)
             (toJSString localName)))
  
 foreign import javascript unsafe "$1[\"removeParameter\"]($2, $3)"
         js_removeParameter ::
-        JSRef XSLTProcessor -> JSString -> JSString -> IO ()
+        XSLTProcessor -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.removeParameter Mozilla XSLTProcessor.removeParameter documentation> 
 removeParameter ::
@@ -114,21 +113,19 @@ removeParameter ::
                   XSLTProcessor -> namespaceURI -> localName -> m ()
 removeParameter self namespaceURI localName
   = liftIO
-      (js_removeParameter (unXSLTProcessor self)
-         (toJSString namespaceURI)
+      (js_removeParameter (self) (toJSString namespaceURI)
          (toJSString localName))
  
 foreign import javascript unsafe "$1[\"clearParameters\"]()"
-        js_clearParameters :: JSRef XSLTProcessor -> IO ()
+        js_clearParameters :: XSLTProcessor -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.clearParameters Mozilla XSLTProcessor.clearParameters documentation> 
 clearParameters :: (MonadIO m) => XSLTProcessor -> m ()
-clearParameters self
-  = liftIO (js_clearParameters (unXSLTProcessor self))
+clearParameters self = liftIO (js_clearParameters (self))
  
 foreign import javascript unsafe "$1[\"reset\"]()" js_reset ::
-        JSRef XSLTProcessor -> IO ()
+        XSLTProcessor -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.reset Mozilla XSLTProcessor.reset documentation> 
 reset :: (MonadIO m) => XSLTProcessor -> m ()
-reset self = liftIO (js_reset (unXSLTProcessor self))
+reset self = liftIO (js_reset (self))

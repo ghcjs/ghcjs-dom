@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.MemoryInfo
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,17 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"usedJSHeapSize\"]"
-        js_getUsedJSHeapSize :: JSRef MemoryInfo -> IO Word
+        js_getUsedJSHeapSize :: MemoryInfo -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo.usedJSHeapSize Mozilla MemoryInfo.usedJSHeapSize documentation> 
 getUsedJSHeapSize :: (MonadIO m) => MemoryInfo -> m Word
-getUsedJSHeapSize self
-  = liftIO (js_getUsedJSHeapSize (unMemoryInfo self))
+getUsedJSHeapSize self = liftIO (js_getUsedJSHeapSize (self))
  
 foreign import javascript unsafe "$1[\"totalJSHeapSize\"]"
-        js_getTotalJSHeapSize :: JSRef MemoryInfo -> IO Word
+        js_getTotalJSHeapSize :: MemoryInfo -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo.totalJSHeapSize Mozilla MemoryInfo.totalJSHeapSize documentation> 
 getTotalJSHeapSize :: (MonadIO m) => MemoryInfo -> m Word
-getTotalJSHeapSize self
-  = liftIO (js_getTotalJSHeapSize (unMemoryInfo self))
+getTotalJSHeapSize self = liftIO (js_getTotalJSHeapSize (self))

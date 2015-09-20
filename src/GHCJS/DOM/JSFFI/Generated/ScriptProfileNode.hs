@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.ScriptProfileNode
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,53 +21,48 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"children\"]()" js_children
-        :: JSRef ScriptProfileNode -> IO (JSRef [Maybe ScriptProfileNode])
+        :: ScriptProfileNode -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode.children Mozilla ScriptProfileNode.children documentation> 
 children ::
          (MonadIO m) => ScriptProfileNode -> m [Maybe ScriptProfileNode]
 children self
-  = liftIO
-      ((js_children (unScriptProfileNode self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_children (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"id\"]" js_getId ::
-        JSRef ScriptProfileNode -> IO Word
+        ScriptProfileNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode.id Mozilla ScriptProfileNode.id documentation> 
 getId :: (MonadIO m) => ScriptProfileNode -> m Word
-getId self = liftIO (js_getId (unScriptProfileNode self))
+getId self = liftIO (js_getId (self))
  
 foreign import javascript unsafe "$1[\"functionName\"]"
-        js_getFunctionName :: JSRef ScriptProfileNode -> IO JSString
+        js_getFunctionName :: ScriptProfileNode -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode.functionName Mozilla ScriptProfileNode.functionName documentation> 
 getFunctionName ::
                 (MonadIO m, FromJSString result) => ScriptProfileNode -> m result
 getFunctionName self
-  = liftIO
-      (fromJSString <$> (js_getFunctionName (unScriptProfileNode self)))
+  = liftIO (fromJSString <$> (js_getFunctionName (self)))
  
 foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
-        JSRef ScriptProfileNode -> IO JSString
+        ScriptProfileNode -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode.url Mozilla ScriptProfileNode.url documentation> 
 getUrl ::
        (MonadIO m, FromJSString result) => ScriptProfileNode -> m result
-getUrl self
-  = liftIO (fromJSString <$> (js_getUrl (unScriptProfileNode self)))
+getUrl self = liftIO (fromJSString <$> (js_getUrl (self)))
  
 foreign import javascript unsafe "$1[\"lineNumber\"]"
-        js_getLineNumber :: JSRef ScriptProfileNode -> IO Word
+        js_getLineNumber :: ScriptProfileNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode.lineNumber Mozilla ScriptProfileNode.lineNumber documentation> 
 getLineNumber :: (MonadIO m) => ScriptProfileNode -> m Word
-getLineNumber self
-  = liftIO (js_getLineNumber (unScriptProfileNode self))
+getLineNumber self = liftIO (js_getLineNumber (self))
  
 foreign import javascript unsafe "$1[\"columnNumber\"]"
-        js_getColumnNumber :: JSRef ScriptProfileNode -> IO Word
+        js_getColumnNumber :: ScriptProfileNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode.columnNumber Mozilla ScriptProfileNode.columnNumber documentation> 
 getColumnNumber :: (MonadIO m) => ScriptProfileNode -> m Word
-getColumnNumber self
-  = liftIO (js_getColumnNumber (unScriptProfileNode self))
+getColumnNumber self = liftIO (js_getColumnNumber (self))

@@ -20,7 +20,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -36,7 +36,7 @@ import GHCJS.DOM.Enums
 foreign import javascript unsafe
         "new window[\"webkitRTCPeerConnection\"]($1)"
         js_newRTCPeerConnection ::
-        JSRef Dictionary -> IO (JSRef RTCPeerConnection)
+        Nullable Dictionary -> IO RTCPeerConnection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection Mozilla webkitRTCPeerConnection documentation> 
 newRTCPeerConnection ::
@@ -45,14 +45,14 @@ newRTCPeerConnection ::
 newRTCPeerConnection rtcConfiguration
   = liftIO
       (js_newRTCPeerConnection
-         (maybe jsNull (unDictionary . toDictionary) rtcConfiguration)
-         >>= fromJSRefUnchecked)
+         (maybeToNullable (fmap toDictionary rtcConfiguration)))
  
 foreign import javascript unsafe "$1[\"createOffer\"]($2, $3, $4)"
         js_createOffer ::
-        JSRef RTCPeerConnection ->
-          JSRef RTCSessionDescriptionCallback ->
-            JSRef RTCPeerConnectionErrorCallback -> JSRef Dictionary -> IO ()
+        RTCPeerConnection ->
+          Nullable RTCSessionDescriptionCallback ->
+            Nullable RTCPeerConnectionErrorCallback ->
+              Nullable Dictionary -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createOffer Mozilla webkitRTCPeerConnection.createOffer documentation> 
 createOffer ::
@@ -62,16 +62,16 @@ createOffer ::
                   Maybe RTCPeerConnectionErrorCallback -> Maybe offerOptions -> m ()
 createOffer self successCallback failureCallback offerOptions
   = liftIO
-      (js_createOffer (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef successCallback)
-         (maybe jsNull pToJSRef failureCallback)
-         (maybe jsNull (unDictionary . toDictionary) offerOptions))
+      (js_createOffer (self) (maybeToNullable successCallback)
+         (maybeToNullable failureCallback)
+         (maybeToNullable (fmap toDictionary offerOptions)))
  
 foreign import javascript unsafe "$1[\"createAnswer\"]($2, $3, $4)"
         js_createAnswer ::
-        JSRef RTCPeerConnection ->
-          JSRef RTCSessionDescriptionCallback ->
-            JSRef RTCPeerConnectionErrorCallback -> JSRef Dictionary -> IO ()
+        RTCPeerConnection ->
+          Nullable RTCSessionDescriptionCallback ->
+            Nullable RTCPeerConnectionErrorCallback ->
+              Nullable Dictionary -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createAnswer Mozilla webkitRTCPeerConnection.createAnswer documentation> 
 createAnswer ::
@@ -81,17 +81,17 @@ createAnswer ::
                    Maybe RTCPeerConnectionErrorCallback -> Maybe answerOptions -> m ()
 createAnswer self successCallback failureCallback answerOptions
   = liftIO
-      (js_createAnswer (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef successCallback)
-         (maybe jsNull pToJSRef failureCallback)
-         (maybe jsNull (unDictionary . toDictionary) answerOptions))
+      (js_createAnswer (self) (maybeToNullable successCallback)
+         (maybeToNullable failureCallback)
+         (maybeToNullable (fmap toDictionary answerOptions)))
  
 foreign import javascript unsafe
         "$1[\"setLocalDescription\"]($2,\n$3, $4)" js_setLocalDescription
         ::
-        JSRef RTCPeerConnection ->
-          JSRef RTCSessionDescription ->
-            JSRef VoidCallback -> JSRef RTCPeerConnectionErrorCallback -> IO ()
+        RTCPeerConnection ->
+          Nullable RTCSessionDescription ->
+            Nullable VoidCallback ->
+              Nullable RTCPeerConnectionErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.setLocalDescription Mozilla webkitRTCPeerConnection.setLocalDescription documentation> 
 setLocalDescription ::
@@ -102,17 +102,17 @@ setLocalDescription ::
 setLocalDescription self description successCallback
   failureCallback
   = liftIO
-      (js_setLocalDescription (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef description)
-         (maybe jsNull pToJSRef successCallback)
-         (maybe jsNull pToJSRef failureCallback))
+      (js_setLocalDescription (self) (maybeToNullable description)
+         (maybeToNullable successCallback)
+         (maybeToNullable failureCallback))
  
 foreign import javascript unsafe
         "$1[\"setRemoteDescription\"]($2,\n$3, $4)" js_setRemoteDescription
         ::
-        JSRef RTCPeerConnection ->
-          JSRef RTCSessionDescription ->
-            JSRef VoidCallback -> JSRef RTCPeerConnectionErrorCallback -> IO ()
+        RTCPeerConnection ->
+          Nullable RTCSessionDescription ->
+            Nullable VoidCallback ->
+              Nullable RTCPeerConnectionErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.setRemoteDescription Mozilla webkitRTCPeerConnection.setRemoteDescription documentation> 
 setRemoteDescription ::
@@ -123,14 +123,12 @@ setRemoteDescription ::
 setRemoteDescription self description successCallback
   failureCallback
   = liftIO
-      (js_setRemoteDescription (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef description)
-         (maybe jsNull pToJSRef successCallback)
-         (maybe jsNull pToJSRef failureCallback))
+      (js_setRemoteDescription (self) (maybeToNullable description)
+         (maybeToNullable successCallback)
+         (maybeToNullable failureCallback))
  
 foreign import javascript unsafe "$1[\"updateIce\"]($2)"
-        js_updateIce ::
-        JSRef RTCPeerConnection -> JSRef Dictionary -> IO ()
+        js_updateIce :: RTCPeerConnection -> Nullable Dictionary -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.updateIce Mozilla webkitRTCPeerConnection.updateIce documentation> 
 updateIce ::
@@ -138,14 +136,15 @@ updateIce ::
             RTCPeerConnection -> Maybe configuration -> m ()
 updateIce self configuration
   = liftIO
-      (js_updateIce (unRTCPeerConnection self)
-         (maybe jsNull (unDictionary . toDictionary) configuration))
+      (js_updateIce (self)
+         (maybeToNullable (fmap toDictionary configuration)))
  
 foreign import javascript unsafe
         "$1[\"addIceCandidate\"]($2, $3,\n$4)" js_addIceCandidate ::
-        JSRef RTCPeerConnection ->
-          JSRef RTCIceCandidate ->
-            JSRef VoidCallback -> JSRef RTCPeerConnectionErrorCallback -> IO ()
+        RTCPeerConnection ->
+          Nullable RTCIceCandidate ->
+            Nullable VoidCallback ->
+              Nullable RTCPeerConnectionErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.addIceCandidate Mozilla webkitRTCPeerConnection.addIceCandidate documentation> 
 addIceCandidate ::
@@ -155,38 +154,31 @@ addIceCandidate ::
                       Maybe VoidCallback -> Maybe RTCPeerConnectionErrorCallback -> m ()
 addIceCandidate self candidate successCallback failureCallback
   = liftIO
-      (js_addIceCandidate (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef candidate)
-         (maybe jsNull pToJSRef successCallback)
-         (maybe jsNull pToJSRef failureCallback))
+      (js_addIceCandidate (self) (maybeToNullable candidate)
+         (maybeToNullable successCallback)
+         (maybeToNullable failureCallback))
  
 foreign import javascript unsafe "$1[\"getLocalStreams\"]()"
-        js_getLocalStreams ::
-        JSRef RTCPeerConnection -> IO (JSRef [Maybe MediaStream])
+        js_getLocalStreams :: RTCPeerConnection -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getLocalStreams Mozilla webkitRTCPeerConnection.getLocalStreams documentation> 
 getLocalStreams ::
                 (MonadIO m) => RTCPeerConnection -> m [Maybe MediaStream]
 getLocalStreams self
-  = liftIO
-      ((js_getLocalStreams (unRTCPeerConnection self)) >>=
-         fromJSRefUnchecked)
+  = liftIO ((js_getLocalStreams (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"getRemoteStreams\"]()"
-        js_getRemoteStreams ::
-        JSRef RTCPeerConnection -> IO (JSRef [Maybe MediaStream])
+        js_getRemoteStreams :: RTCPeerConnection -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getRemoteStreams Mozilla webkitRTCPeerConnection.getRemoteStreams documentation> 
 getRemoteStreams ::
                  (MonadIO m) => RTCPeerConnection -> m [Maybe MediaStream]
 getRemoteStreams self
-  = liftIO
-      ((js_getRemoteStreams (unRTCPeerConnection self)) >>=
-         fromJSRefUnchecked)
+  = liftIO ((js_getRemoteStreams (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"getStreamById\"]($2)"
         js_getStreamById ::
-        JSRef RTCPeerConnection -> JSString -> IO (JSRef MediaStream)
+        RTCPeerConnection -> JSString -> IO (Nullable MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStreamById Mozilla webkitRTCPeerConnection.getStreamById documentation> 
 getStreamById ::
@@ -194,51 +186,44 @@ getStreamById ::
                 RTCPeerConnection -> streamId -> m (Maybe MediaStream)
 getStreamById self streamId
   = liftIO
-      ((js_getStreamById (unRTCPeerConnection self)
-          (toJSString streamId))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getStreamById (self) (toJSString streamId)))
  
 foreign import javascript unsafe "$1[\"getConfiguration\"]()"
         js_getConfiguration ::
-        JSRef RTCPeerConnection -> IO (JSRef RTCConfiguration)
+        RTCPeerConnection -> IO (Nullable RTCConfiguration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getConfiguration Mozilla webkitRTCPeerConnection.getConfiguration documentation> 
 getConfiguration ::
                  (MonadIO m) => RTCPeerConnection -> m (Maybe RTCConfiguration)
 getConfiguration self
-  = liftIO
-      ((js_getConfiguration (unRTCPeerConnection self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getConfiguration (self)))
  
 foreign import javascript unsafe "$1[\"addStream\"]($2)"
-        js_addStream ::
-        JSRef RTCPeerConnection -> JSRef MediaStream -> IO ()
+        js_addStream :: RTCPeerConnection -> Nullable MediaStream -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.addStream Mozilla webkitRTCPeerConnection.addStream documentation> 
 addStream ::
           (MonadIO m) => RTCPeerConnection -> Maybe MediaStream -> m ()
 addStream self stream
-  = liftIO
-      (js_addStream (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef stream))
+  = liftIO (js_addStream (self) (maybeToNullable stream))
  
 foreign import javascript unsafe "$1[\"removeStream\"]($2)"
         js_removeStream ::
-        JSRef RTCPeerConnection -> JSRef MediaStream -> IO ()
+        RTCPeerConnection -> Nullable MediaStream -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.removeStream Mozilla webkitRTCPeerConnection.removeStream documentation> 
 removeStream ::
              (MonadIO m) => RTCPeerConnection -> Maybe MediaStream -> m ()
 removeStream self stream
-  = liftIO
-      (js_removeStream (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef stream))
+  = liftIO (js_removeStream (self) (maybeToNullable stream))
  
 foreign import javascript unsafe "$1[\"getStats\"]($2, $3, $4)"
         js_getStats ::
-        JSRef RTCPeerConnection ->
-          JSRef RTCStatsCallback ->
-            JSRef RTCPeerConnectionErrorCallback ->
-              JSRef MediaStreamTrack -> IO ()
+        RTCPeerConnection ->
+          Nullable RTCStatsCallback ->
+            Nullable RTCPeerConnectionErrorCallback ->
+              Nullable MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStats Mozilla webkitRTCPeerConnection.getStats documentation> 
 getStats ::
@@ -248,16 +233,15 @@ getStats ::
                Maybe RTCPeerConnectionErrorCallback -> Maybe selector -> m ()
 getStats self successCallback failureCallback selector
   = liftIO
-      (js_getStats (unRTCPeerConnection self)
-         (maybe jsNull pToJSRef successCallback)
-         (maybe jsNull pToJSRef failureCallback)
-         (maybe jsNull (unMediaStreamTrack . toMediaStreamTrack) selector))
+      (js_getStats (self) (maybeToNullable successCallback)
+         (maybeToNullable failureCallback)
+         (maybeToNullable (fmap toMediaStreamTrack selector)))
  
 foreign import javascript unsafe
         "$1[\"createDataChannel\"]($2, $3)" js_createDataChannel ::
-        JSRef RTCPeerConnection ->
-          JSRef (Maybe JSString) ->
-            JSRef Dictionary -> IO (JSRef RTCDataChannel)
+        RTCPeerConnection ->
+          Nullable JSString ->
+            Nullable Dictionary -> IO (Nullable RTCDataChannel)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
 createDataChannel ::
@@ -266,15 +250,14 @@ createDataChannel ::
                       Maybe label -> Maybe options -> m (Maybe RTCDataChannel)
 createDataChannel self label options
   = liftIO
-      ((js_createDataChannel (unRTCPeerConnection self)
-          (toMaybeJSString label)
-          (maybe jsNull (unDictionary . toDictionary) options))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createDataChannel (self) (toMaybeJSString label)
+            (maybeToNullable (fmap toDictionary options))))
  
 foreign import javascript unsafe "$1[\"createDTMFSender\"]($2)"
         js_createDTMFSender ::
-        JSRef RTCPeerConnection ->
-          JSRef MediaStreamTrack -> IO (JSRef RTCDTMFSender)
+        RTCPeerConnection ->
+          Nullable MediaStreamTrack -> IO (Nullable RTCDTMFSender)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDTMFSender Mozilla webkitRTCPeerConnection.createDTMFSender documentation> 
 createDTMFSender ::
@@ -282,72 +265,63 @@ createDTMFSender ::
                    RTCPeerConnection -> Maybe track -> m (Maybe RTCDTMFSender)
 createDTMFSender self track
   = liftIO
-      ((js_createDTMFSender (unRTCPeerConnection self)
-          (maybe jsNull (unMediaStreamTrack . toMediaStreamTrack) track))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createDTMFSender (self)
+            (maybeToNullable (fmap toMediaStreamTrack track))))
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
-        JSRef RTCPeerConnection -> IO ()
+        RTCPeerConnection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.close Mozilla webkitRTCPeerConnection.close documentation> 
 close :: (MonadIO m) => RTCPeerConnection -> m ()
-close self = liftIO (js_close (unRTCPeerConnection self))
+close self = liftIO (js_close (self))
  
 foreign import javascript unsafe "$1[\"localDescription\"]"
         js_getLocalDescription ::
-        JSRef RTCPeerConnection -> IO (JSRef RTCSessionDescription)
+        RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.localDescription Mozilla webkitRTCPeerConnection.localDescription documentation> 
 getLocalDescription ::
                     (MonadIO m) => RTCPeerConnection -> m (Maybe RTCSessionDescription)
 getLocalDescription self
-  = liftIO
-      ((js_getLocalDescription (unRTCPeerConnection self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLocalDescription (self)))
  
 foreign import javascript unsafe "$1[\"remoteDescription\"]"
         js_getRemoteDescription ::
-        JSRef RTCPeerConnection -> IO (JSRef RTCSessionDescription)
+        RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.remoteDescription Mozilla webkitRTCPeerConnection.remoteDescription documentation> 
 getRemoteDescription ::
                      (MonadIO m) => RTCPeerConnection -> m (Maybe RTCSessionDescription)
 getRemoteDescription self
-  = liftIO
-      ((js_getRemoteDescription (unRTCPeerConnection self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getRemoteDescription (self)))
  
 foreign import javascript unsafe "$1[\"signalingState\"]"
-        js_getSignalingState :: JSRef RTCPeerConnection -> IO JSString
+        js_getSignalingState :: RTCPeerConnection -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.signalingState Mozilla webkitRTCPeerConnection.signalingState documentation> 
 getSignalingState ::
                   (MonadIO m, FromJSString result) => RTCPeerConnection -> m result
 getSignalingState self
-  = liftIO
-      (fromJSString <$>
-         (js_getSignalingState (unRTCPeerConnection self)))
+  = liftIO (fromJSString <$> (js_getSignalingState (self)))
  
 foreign import javascript unsafe "$1[\"iceGatheringState\"]"
-        js_getIceGatheringState :: JSRef RTCPeerConnection -> IO JSString
+        js_getIceGatheringState :: RTCPeerConnection -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.iceGatheringState Mozilla webkitRTCPeerConnection.iceGatheringState documentation> 
 getIceGatheringState ::
                      (MonadIO m, FromJSString result) => RTCPeerConnection -> m result
 getIceGatheringState self
-  = liftIO
-      (fromJSString <$>
-         (js_getIceGatheringState (unRTCPeerConnection self)))
+  = liftIO (fromJSString <$> (js_getIceGatheringState (self)))
  
 foreign import javascript unsafe "$1[\"iceConnectionState\"]"
-        js_getIceConnectionState :: JSRef RTCPeerConnection -> IO JSString
+        js_getIceConnectionState :: RTCPeerConnection -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.iceConnectionState Mozilla webkitRTCPeerConnection.iceConnectionState documentation> 
 getIceConnectionState ::
                       (MonadIO m, FromJSString result) => RTCPeerConnection -> m result
 getIceConnectionState self
-  = liftIO
-      (fromJSString <$>
-         (js_getIceConnectionState (unRTCPeerConnection self)))
+  = liftIO (fromJSString <$> (js_getIceConnectionState (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.onnegotiationneeded Mozilla webkitRTCPeerConnection.onnegotiationneeded documentation> 
 negotiationNeeded :: EventName RTCPeerConnection Event

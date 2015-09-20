@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.ErrorEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,33 +20,32 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
-        JSRef ErrorEvent -> IO JSString
+        ErrorEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.message Mozilla ErrorEvent.message documentation> 
 getMessage ::
            (MonadIO m, FromJSString result) => ErrorEvent -> m result
-getMessage self
-  = liftIO (fromJSString <$> (js_getMessage (unErrorEvent self)))
+getMessage self = liftIO (fromJSString <$> (js_getMessage (self)))
  
 foreign import javascript unsafe "$1[\"filename\"]" js_getFilename
-        :: JSRef ErrorEvent -> IO JSString
+        :: ErrorEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.filename Mozilla ErrorEvent.filename documentation> 
 getFilename ::
             (MonadIO m, FromJSString result) => ErrorEvent -> m result
 getFilename self
-  = liftIO (fromJSString <$> (js_getFilename (unErrorEvent self)))
+  = liftIO (fromJSString <$> (js_getFilename (self)))
  
 foreign import javascript unsafe "$1[\"lineno\"]" js_getLineno ::
-        JSRef ErrorEvent -> IO Word
+        ErrorEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.lineno Mozilla ErrorEvent.lineno documentation> 
 getLineno :: (MonadIO m) => ErrorEvent -> m Word
-getLineno self = liftIO (js_getLineno (unErrorEvent self))
+getLineno self = liftIO (js_getLineno (self))
  
 foreign import javascript unsafe "$1[\"colno\"]" js_getColno ::
-        JSRef ErrorEvent -> IO Word
+        ErrorEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent.colno Mozilla ErrorEvent.colno documentation> 
 getColno :: (MonadIO m) => ErrorEvent -> m Word
-getColno self = liftIO (js_getColno (unErrorEvent self))
+getColno self = liftIO (js_getColno (self))

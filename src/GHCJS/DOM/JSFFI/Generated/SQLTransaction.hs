@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SQLTransaction
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,11 +20,11 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"executeSql\"]($2, $3, $4, $5)" js_executeSql ::
-        JSRef SQLTransaction ->
+        SQLTransaction ->
           JSString ->
-            JSRef ObjectArray ->
-              JSRef SQLStatementCallback ->
-                JSRef SQLStatementErrorCallback -> IO ()
+            Nullable ObjectArray ->
+              Nullable SQLStatementCallback ->
+                Nullable SQLStatementErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransaction.executeSql Mozilla SQLTransaction.executeSql documentation> 
 executeSql ::
@@ -36,7 +36,7 @@ executeSql ::
                      Maybe SQLStatementErrorCallback -> m ()
 executeSql self sqlStatement arguments callback errorCallback
   = liftIO
-      (js_executeSql (unSQLTransaction self) (toJSString sqlStatement)
-         (maybe jsNull (unObjectArray . toObjectArray) arguments)
-         (maybe jsNull pToJSRef callback)
-         (maybe jsNull pToJSRef errorCallback))
+      (js_executeSql (self) (toJSString sqlStatement)
+         (maybeToNullable (fmap toObjectArray arguments))
+         (maybeToNullable callback)
+         (maybeToNullable errorCallback))

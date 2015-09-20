@@ -53,7 +53,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMediaElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -67,17 +67,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"load\"]()" js_load ::
-        JSRef HTMLMediaElement -> IO ()
+        HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.load Mozilla HTMLMediaElement.load documentation> 
 load :: (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-load self
-  = liftIO (js_load (unHTMLMediaElement (toHTMLMediaElement self)))
+load self = liftIO (js_load (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"canPlayType\"]($2, $3)"
         js_canPlayType ::
-        JSRef HTMLMediaElement ->
-          JSString -> JSRef (Maybe JSString) -> IO JSString
+        HTMLMediaElement -> JSString -> Nullable JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.canPlayType Mozilla HTMLMediaElement.canPlayType documentation> 
 canPlayType ::
@@ -87,41 +85,37 @@ canPlayType ::
 canPlayType self type' keySystem
   = liftIO
       (fromJSString <$>
-         (js_canPlayType (unHTMLMediaElement (toHTMLMediaElement self))
-            (toJSString type')
+         (js_canPlayType (toHTMLMediaElement self) (toJSString type')
             (toMaybeJSString keySystem)))
  
 foreign import javascript unsafe "$1[\"play\"]()" js_play ::
-        JSRef HTMLMediaElement -> IO ()
+        HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.play Mozilla HTMLMediaElement.play documentation> 
 play :: (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-play self
-  = liftIO (js_play (unHTMLMediaElement (toHTMLMediaElement self)))
+play self = liftIO (js_play (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"pause\"]()" js_pause ::
-        JSRef HTMLMediaElement -> IO ()
+        HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.pause Mozilla HTMLMediaElement.pause documentation> 
 pause :: (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-pause self
-  = liftIO (js_pause (unHTMLMediaElement (toHTMLMediaElement self)))
+pause self = liftIO (js_pause (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"fastSeek\"]($2)" js_fastSeek
-        :: JSRef HTMLMediaElement -> Double -> IO ()
+        :: HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.fastSeek Mozilla HTMLMediaElement.fastSeek documentation> 
 fastSeek ::
          (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
 fastSeek self time
-  = liftIO
-      (js_fastSeek (unHTMLMediaElement (toHTMLMediaElement self)) time)
+  = liftIO (js_fastSeek (toHTMLMediaElement self) time)
  
 foreign import javascript unsafe
         "$1[\"webkitGenerateKeyRequest\"]($2,\n$3)"
         js_webkitGenerateKeyRequest ::
-        JSRef HTMLMediaElement ->
-          JSRef (Maybe JSString) -> JSRef Uint8Array -> IO ()
+        HTMLMediaElement ->
+          Nullable JSString -> Nullable Uint8Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitGenerateKeyRequest Mozilla HTMLMediaElement.webkitGenerateKeyRequest documentation> 
 webkitGenerateKeyRequest ::
@@ -130,16 +124,15 @@ webkitGenerateKeyRequest ::
                            self -> Maybe keySystem -> Maybe initData -> m ()
 webkitGenerateKeyRequest self keySystem initData
   = liftIO
-      (js_webkitGenerateKeyRequest
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_webkitGenerateKeyRequest (toHTMLMediaElement self)
          (toMaybeJSString keySystem)
-         (maybe jsNull (unUint8Array . toUint8Array) initData))
+         (maybeToNullable (fmap toUint8Array initData)))
  
 foreign import javascript unsafe
         "$1[\"webkitAddKey\"]($2, $3, $4,\n$5)" js_webkitAddKey ::
-        JSRef HTMLMediaElement ->
-          JSRef (Maybe JSString) ->
-            JSRef Uint8Array -> JSRef Uint8Array -> JSString -> IO ()
+        HTMLMediaElement ->
+          Nullable JSString ->
+            Nullable Uint8Array -> Nullable Uint8Array -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitAddKey Mozilla HTMLMediaElement.webkitAddKey documentation> 
 webkitAddKey ::
@@ -149,17 +142,15 @@ webkitAddKey ::
                  Maybe keySystem -> Maybe key -> Maybe initData -> sessionId -> m ()
 webkitAddKey self keySystem key initData sessionId
   = liftIO
-      (js_webkitAddKey (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_webkitAddKey (toHTMLMediaElement self)
          (toMaybeJSString keySystem)
-         (maybe jsNull (unUint8Array . toUint8Array) key)
-         (maybe jsNull (unUint8Array . toUint8Array) initData)
+         (maybeToNullable (fmap toUint8Array key))
+         (maybeToNullable (fmap toUint8Array initData))
          (toJSString sessionId))
  
 foreign import javascript unsafe
         "$1[\"webkitCancelKeyRequest\"]($2,\n$3)" js_webkitCancelKeyRequest
-        ::
-        JSRef HTMLMediaElement ->
-          JSRef (Maybe JSString) -> JSString -> IO ()
+        :: HTMLMediaElement -> Nullable JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitCancelKeyRequest Mozilla HTMLMediaElement.webkitCancelKeyRequest documentation> 
 webkitCancelKeyRequest ::
@@ -168,14 +159,13 @@ webkitCancelKeyRequest ::
                          self -> Maybe keySystem -> sessionId -> m ()
 webkitCancelKeyRequest self keySystem sessionId
   = liftIO
-      (js_webkitCancelKeyRequest
-         (unHTMLMediaElement (toHTMLMediaElement self))
+      (js_webkitCancelKeyRequest (toHTMLMediaElement self)
          (toMaybeJSString keySystem)
          (toJSString sessionId))
  
 foreign import javascript unsafe "$1[\"webkitSetMediaKeys\"]($2)"
         js_webkitSetMediaKeys ::
-        JSRef HTMLMediaElement -> JSRef MediaKeys -> IO ()
+        HTMLMediaElement -> Nullable MediaKeys -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitSetMediaKeys Mozilla HTMLMediaElement.webkitSetMediaKeys documentation> 
 webkitSetMediaKeys ::
@@ -183,14 +173,13 @@ webkitSetMediaKeys ::
                      self -> Maybe MediaKeys -> m ()
 webkitSetMediaKeys self mediaKeys
   = liftIO
-      (js_webkitSetMediaKeys
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         (maybe jsNull pToJSRef mediaKeys))
+      (js_webkitSetMediaKeys (toHTMLMediaElement self)
+         (maybeToNullable mediaKeys))
  
 foreign import javascript unsafe "$1[\"addTextTrack\"]($2, $3, $4)"
         js_addTextTrack ::
-        JSRef HTMLMediaElement ->
-          JSString -> JSString -> JSString -> IO (JSRef TextTrack)
+        HTMLMediaElement ->
+          JSString -> JSString -> JSString -> IO (Nullable TextTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.addTextTrack Mozilla HTMLMediaElement.addTextTrack documentation> 
 addTextTrack ::
@@ -199,15 +188,14 @@ addTextTrack ::
                self -> kind -> label -> language -> m (Maybe TextTrack)
 addTextTrack self kind label language
   = liftIO
-      ((js_addTextTrack (unHTMLMediaElement (toHTMLMediaElement self))
-          (toJSString kind)
-          (toJSString label)
-          (toJSString language))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_addTextTrack (toHTMLMediaElement self) (toJSString kind)
+            (toJSString label)
+            (toJSString language)))
  
 foreign import javascript unsafe
         "$1[\"getVideoPlaybackQuality\"]()" js_getVideoPlaybackQuality ::
-        JSRef HTMLMediaElement -> IO (JSRef VideoPlaybackQuality)
+        HTMLMediaElement -> IO (Nullable VideoPlaybackQuality)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.getVideoPlaybackQuality Mozilla HTMLMediaElement.getVideoPlaybackQuality documentation> 
 getVideoPlaybackQuality ::
@@ -215,22 +203,19 @@ getVideoPlaybackQuality ::
                           self -> m (Maybe VideoPlaybackQuality)
 getVideoPlaybackQuality self
   = liftIO
-      ((js_getVideoPlaybackQuality
-          (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getVideoPlaybackQuality (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
         "$1[\"webkitShowPlaybackTargetPicker\"]()"
-        js_webkitShowPlaybackTargetPicker ::
-        JSRef HTMLMediaElement -> IO ()
+        js_webkitShowPlaybackTargetPicker :: HTMLMediaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitShowPlaybackTargetPicker Mozilla HTMLMediaElement.webkitShowPlaybackTargetPicker documentation> 
 webkitShowPlaybackTargetPicker ::
                                (MonadIO m, IsHTMLMediaElement self) => self -> m ()
 webkitShowPlaybackTargetPicker self
   = liftIO
-      (js_webkitShowPlaybackTargetPicker
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_webkitShowPlaybackTargetPicker (toHTMLMediaElement self))
 pattern NETWORK_EMPTY = 0
 pattern NETWORK_IDLE = 1
 pattern NETWORK_LOADING = 2
@@ -242,7 +227,7 @@ pattern HAVE_FUTURE_DATA = 3
 pattern HAVE_ENOUGH_DATA = 4
  
 foreign import javascript unsafe "$1[\"error\"]" js_getError ::
-        JSRef HTMLMediaElement -> IO (JSRef MediaError)
+        HTMLMediaElement -> IO (Nullable MediaError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.error Mozilla HTMLMediaElement.error documentation> 
 getError ::
@@ -250,35 +235,30 @@ getError ::
            self -> m (Maybe MediaError)
 getError self
   = liftIO
-      ((js_getError (unHTMLMediaElement (toHTMLMediaElement self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getError (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
-        JSRef HTMLMediaElement -> JSString -> IO ()
+        HTMLMediaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.src Mozilla HTMLMediaElement.src documentation> 
 setSrc ::
        (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
          self -> val -> m ()
 setSrc self val
-  = liftIO
-      (js_setSrc (unHTMLMediaElement (toHTMLMediaElement self))
-         (toJSString val))
+  = liftIO (js_setSrc (toHTMLMediaElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
-        JSRef HTMLMediaElement -> IO JSString
+        HTMLMediaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.src Mozilla HTMLMediaElement.src documentation> 
 getSrc ::
        (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
          self -> m result
 getSrc self
-  = liftIO
-      (fromJSString <$>
-         (js_getSrc (unHTMLMediaElement (toHTMLMediaElement self))))
+  = liftIO (fromJSString <$> (js_getSrc (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"currentSrc\"]"
-        js_getCurrentSrc :: JSRef HTMLMediaElement -> IO JSString
+        js_getCurrentSrc :: HTMLMediaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.currentSrc Mozilla HTMLMediaElement.currentSrc documentation> 
 getCurrentSrc ::
@@ -286,33 +266,29 @@ getCurrentSrc ::
                 self -> m result
 getCurrentSrc self
   = liftIO
-      (fromJSString <$>
-         (js_getCurrentSrc (unHTMLMediaElement (toHTMLMediaElement self))))
+      (fromJSString <$> (js_getCurrentSrc (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"networkState\"]"
-        js_getNetworkState :: JSRef HTMLMediaElement -> IO Word
+        js_getNetworkState :: HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.networkState Mozilla HTMLMediaElement.networkState documentation> 
 getNetworkState ::
                 (MonadIO m, IsHTMLMediaElement self) => self -> m Word
 getNetworkState self
-  = liftIO
-      (js_getNetworkState (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getNetworkState (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"preload\"] = $2;"
-        js_setPreload :: JSRef HTMLMediaElement -> JSString -> IO ()
+        js_setPreload :: HTMLMediaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.preload Mozilla HTMLMediaElement.preload documentation> 
 setPreload ::
            (MonadIO m, IsHTMLMediaElement self, ToJSString val) =>
              self -> val -> m ()
 setPreload self val
-  = liftIO
-      (js_setPreload (unHTMLMediaElement (toHTMLMediaElement self))
-         (toJSString val))
+  = liftIO (js_setPreload (toHTMLMediaElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"preload\"]" js_getPreload ::
-        JSRef HTMLMediaElement -> IO JSString
+        HTMLMediaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.preload Mozilla HTMLMediaElement.preload documentation> 
 getPreload ::
@@ -320,11 +296,10 @@ getPreload ::
              self -> m result
 getPreload self
   = liftIO
-      (fromJSString <$>
-         (js_getPreload (unHTMLMediaElement (toHTMLMediaElement self))))
+      (fromJSString <$> (js_getPreload (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"buffered\"]" js_getBuffered
-        :: JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
+        :: HTMLMediaElement -> IO (Nullable TimeRanges)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.buffered Mozilla HTMLMediaElement.buffered documentation> 
 getBuffered ::
@@ -332,116 +307,98 @@ getBuffered ::
               self -> m (Maybe TimeRanges)
 getBuffered self
   = liftIO
-      ((js_getBuffered (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getBuffered (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        js_getReadyState :: JSRef HTMLMediaElement -> IO Word
+        js_getReadyState :: HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.readyState Mozilla HTMLMediaElement.readyState documentation> 
 getReadyState ::
               (MonadIO m, IsHTMLMediaElement self) => self -> m Word
 getReadyState self
-  = liftIO
-      (js_getReadyState (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getReadyState (toHTMLMediaElement self))
  
 foreign import javascript unsafe "($1[\"seeking\"] ? 1 : 0)"
-        js_getSeeking :: JSRef HTMLMediaElement -> IO Bool
+        js_getSeeking :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.seeking Mozilla HTMLMediaElement.seeking documentation> 
 getSeeking ::
            (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-getSeeking self
-  = liftIO
-      (js_getSeeking (unHTMLMediaElement (toHTMLMediaElement self)))
+getSeeking self = liftIO (js_getSeeking (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"currentTime\"] = $2;"
-        js_setCurrentTime :: JSRef HTMLMediaElement -> Double -> IO ()
+        js_setCurrentTime :: HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.currentTime Mozilla HTMLMediaElement.currentTime documentation> 
 setCurrentTime ::
                (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
 setCurrentTime self val
-  = liftIO
-      (js_setCurrentTime (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+  = liftIO (js_setCurrentTime (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "$1[\"currentTime\"]"
-        js_getCurrentTime :: JSRef HTMLMediaElement -> IO Double
+        js_getCurrentTime :: HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.currentTime Mozilla HTMLMediaElement.currentTime documentation> 
 getCurrentTime ::
                (MonadIO m, IsHTMLMediaElement self) => self -> m Double
 getCurrentTime self
-  = liftIO
-      (js_getCurrentTime (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getCurrentTime (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
-        :: JSRef HTMLMediaElement -> IO Double
+        :: HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.duration Mozilla HTMLMediaElement.duration documentation> 
 getDuration ::
             (MonadIO m, IsHTMLMediaElement self) => self -> m Double
 getDuration self
-  = liftIO
-      (js_getDuration (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getDuration (toHTMLMediaElement self))
  
 foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
-        js_getPaused :: JSRef HTMLMediaElement -> IO Bool
+        js_getPaused :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.paused Mozilla HTMLMediaElement.paused documentation> 
 getPaused :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-getPaused self
-  = liftIO
-      (js_getPaused (unHTMLMediaElement (toHTMLMediaElement self)))
+getPaused self = liftIO (js_getPaused (toHTMLMediaElement self))
  
 foreign import javascript unsafe
         "$1[\"defaultPlaybackRate\"] = $2;" js_setDefaultPlaybackRate ::
-        JSRef HTMLMediaElement -> Double -> IO ()
+        HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultPlaybackRate Mozilla HTMLMediaElement.defaultPlaybackRate documentation> 
 setDefaultPlaybackRate ::
                        (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
 setDefaultPlaybackRate self val
-  = liftIO
-      (js_setDefaultPlaybackRate
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+  = liftIO (js_setDefaultPlaybackRate (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "$1[\"defaultPlaybackRate\"]"
-        js_getDefaultPlaybackRate :: JSRef HTMLMediaElement -> IO Double
+        js_getDefaultPlaybackRate :: HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultPlaybackRate Mozilla HTMLMediaElement.defaultPlaybackRate documentation> 
 getDefaultPlaybackRate ::
                        (MonadIO m, IsHTMLMediaElement self) => self -> m Double
 getDefaultPlaybackRate self
-  = liftIO
-      (js_getDefaultPlaybackRate
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getDefaultPlaybackRate (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"playbackRate\"] = $2;"
-        js_setPlaybackRate :: JSRef HTMLMediaElement -> Double -> IO ()
+        js_setPlaybackRate :: HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.playbackRate Mozilla HTMLMediaElement.playbackRate documentation> 
 setPlaybackRate ::
                 (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
 setPlaybackRate self val
-  = liftIO
-      (js_setPlaybackRate (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+  = liftIO (js_setPlaybackRate (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "$1[\"playbackRate\"]"
-        js_getPlaybackRate :: JSRef HTMLMediaElement -> IO Double
+        js_getPlaybackRate :: HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.playbackRate Mozilla HTMLMediaElement.playbackRate documentation> 
 getPlaybackRate ::
                 (MonadIO m, IsHTMLMediaElement self) => self -> m Double
 getPlaybackRate self
-  = liftIO
-      (js_getPlaybackRate (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getPlaybackRate (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"played\"]" js_getPlayed ::
-        JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
+        HTMLMediaElement -> IO (Nullable TimeRanges)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.played Mozilla HTMLMediaElement.played documentation> 
 getPlayed ::
@@ -449,11 +406,10 @@ getPlayed ::
             self -> m (Maybe TimeRanges)
 getPlayed self
   = liftIO
-      ((js_getPlayed (unHTMLMediaElement (toHTMLMediaElement self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getPlayed (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"seekable\"]" js_getSeekable
-        :: JSRef HTMLMediaElement -> IO (JSRef TimeRanges)
+        :: HTMLMediaElement -> IO (Nullable TimeRanges)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.seekable Mozilla HTMLMediaElement.seekable documentation> 
 getSeekable ::
@@ -461,136 +417,117 @@ getSeekable ::
               self -> m (Maybe TimeRanges)
 getSeekable self
   = liftIO
-      ((js_getSeekable (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getSeekable (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
-        js_getEnded :: JSRef HTMLMediaElement -> IO Bool
+        js_getEnded :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.ended Mozilla HTMLMediaElement.ended documentation> 
 getEnded :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-getEnded self
-  = liftIO
-      (js_getEnded (unHTMLMediaElement (toHTMLMediaElement self)))
+getEnded self = liftIO (js_getEnded (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"autoplay\"] = $2;"
-        js_setAutoplay :: JSRef HTMLMediaElement -> Bool -> IO ()
+        js_setAutoplay :: HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.autoplay Mozilla HTMLMediaElement.autoplay documentation> 
 setAutoplay ::
             (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
 setAutoplay self val
-  = liftIO
-      (js_setAutoplay (unHTMLMediaElement (toHTMLMediaElement self)) val)
+  = liftIO (js_setAutoplay (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "($1[\"autoplay\"] ? 1 : 0)"
-        js_getAutoplay :: JSRef HTMLMediaElement -> IO Bool
+        js_getAutoplay :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.autoplay Mozilla HTMLMediaElement.autoplay documentation> 
 getAutoplay ::
             (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
 getAutoplay self
-  = liftIO
-      (js_getAutoplay (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getAutoplay (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"loop\"] = $2;" js_setLoop ::
-        JSRef HTMLMediaElement -> Bool -> IO ()
+        HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.loop Mozilla HTMLMediaElement.loop documentation> 
 setLoop ::
         (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
 setLoop self val
-  = liftIO
-      (js_setLoop (unHTMLMediaElement (toHTMLMediaElement self)) val)
+  = liftIO (js_setLoop (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "($1[\"loop\"] ? 1 : 0)"
-        js_getLoop :: JSRef HTMLMediaElement -> IO Bool
+        js_getLoop :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.loop Mozilla HTMLMediaElement.loop documentation> 
 getLoop :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-getLoop self
-  = liftIO
-      (js_getLoop (unHTMLMediaElement (toHTMLMediaElement self)))
+getLoop self = liftIO (js_getLoop (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"controls\"] = $2;"
-        js_setControls :: JSRef HTMLMediaElement -> Bool -> IO ()
+        js_setControls :: HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controls Mozilla HTMLMediaElement.controls documentation> 
 setControls ::
             (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
 setControls self val
-  = liftIO
-      (js_setControls (unHTMLMediaElement (toHTMLMediaElement self)) val)
+  = liftIO (js_setControls (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "($1[\"controls\"] ? 1 : 0)"
-        js_getControls :: JSRef HTMLMediaElement -> IO Bool
+        js_getControls :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controls Mozilla HTMLMediaElement.controls documentation> 
 getControls ::
             (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
 getControls self
-  = liftIO
-      (js_getControls (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getControls (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"volume\"] = $2;"
-        js_setVolume :: JSRef HTMLMediaElement -> Double -> IO ()
+        js_setVolume :: HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.volume Mozilla HTMLMediaElement.volume documentation> 
 setVolume ::
           (MonadIO m, IsHTMLMediaElement self) => self -> Double -> m ()
 setVolume self val
-  = liftIO
-      (js_setVolume (unHTMLMediaElement (toHTMLMediaElement self)) val)
+  = liftIO (js_setVolume (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "$1[\"volume\"]" js_getVolume ::
-        JSRef HTMLMediaElement -> IO Double
+        HTMLMediaElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.volume Mozilla HTMLMediaElement.volume documentation> 
 getVolume ::
           (MonadIO m, IsHTMLMediaElement self) => self -> m Double
-getVolume self
-  = liftIO
-      (js_getVolume (unHTMLMediaElement (toHTMLMediaElement self)))
+getVolume self = liftIO (js_getVolume (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"muted\"] = $2;" js_setMuted
-        :: JSRef HTMLMediaElement -> Bool -> IO ()
+        :: HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.muted Mozilla HTMLMediaElement.muted documentation> 
 setMuted ::
          (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
 setMuted self val
-  = liftIO
-      (js_setMuted (unHTMLMediaElement (toHTMLMediaElement self)) val)
+  = liftIO (js_setMuted (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
-        js_getMuted :: JSRef HTMLMediaElement -> IO Bool
+        js_getMuted :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.muted Mozilla HTMLMediaElement.muted documentation> 
 getMuted :: (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
-getMuted self
-  = liftIO
-      (js_getMuted (unHTMLMediaElement (toHTMLMediaElement self)))
+getMuted self = liftIO (js_getMuted (toHTMLMediaElement self))
  
 foreign import javascript unsafe "$1[\"defaultMuted\"] = $2;"
-        js_setDefaultMuted :: JSRef HTMLMediaElement -> Bool -> IO ()
+        js_setDefaultMuted :: HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultMuted Mozilla HTMLMediaElement.defaultMuted documentation> 
 setDefaultMuted ::
                 (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
 setDefaultMuted self val
-  = liftIO
-      (js_setDefaultMuted (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+  = liftIO (js_setDefaultMuted (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe "($1[\"defaultMuted\"] ? 1 : 0)"
-        js_getDefaultMuted :: JSRef HTMLMediaElement -> IO Bool
+        js_getDefaultMuted :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.defaultMuted Mozilla HTMLMediaElement.defaultMuted documentation> 
 getDefaultMuted ::
                 (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
 getDefaultMuted self
-  = liftIO
-      (js_getDefaultMuted (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getDefaultMuted (toHTMLMediaElement self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onemptied Mozilla HTMLMediaElement.onemptied documentation> 
 emptied ::
@@ -678,93 +615,78 @@ volumeChange = unsafeEventName (toJSString "volumechange")
  
 foreign import javascript unsafe
         "$1[\"webkitPreservesPitch\"] = $2;" js_setWebkitPreservesPitch ::
-        JSRef HTMLMediaElement -> Bool -> IO ()
+        HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitPreservesPitch Mozilla HTMLMediaElement.webkitPreservesPitch documentation> 
 setWebkitPreservesPitch ::
                         (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
 setWebkitPreservesPitch self val
-  = liftIO
-      (js_setWebkitPreservesPitch
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+  = liftIO (js_setWebkitPreservesPitch (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe
         "($1[\"webkitPreservesPitch\"] ? 1 : 0)" js_getWebkitPreservesPitch
-        :: JSRef HTMLMediaElement -> IO Bool
+        :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitPreservesPitch Mozilla HTMLMediaElement.webkitPreservesPitch documentation> 
 getWebkitPreservesPitch ::
                         (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
 getWebkitPreservesPitch self
-  = liftIO
-      (js_getWebkitPreservesPitch
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getWebkitPreservesPitch (toHTMLMediaElement self))
  
 foreign import javascript unsafe
         "($1[\"webkitHasClosedCaptions\"] ? 1 : 0)"
-        js_getWebkitHasClosedCaptions :: JSRef HTMLMediaElement -> IO Bool
+        js_getWebkitHasClosedCaptions :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitHasClosedCaptions Mozilla HTMLMediaElement.webkitHasClosedCaptions documentation> 
 getWebkitHasClosedCaptions ::
                            (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
 getWebkitHasClosedCaptions self
-  = liftIO
-      (js_getWebkitHasClosedCaptions
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+  = liftIO (js_getWebkitHasClosedCaptions (toHTMLMediaElement self))
  
 foreign import javascript unsafe
         "$1[\"webkitClosedCaptionsVisible\"] = $2;"
         js_setWebkitClosedCaptionsVisible ::
-        JSRef HTMLMediaElement -> Bool -> IO ()
+        HTMLMediaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitClosedCaptionsVisible Mozilla HTMLMediaElement.webkitClosedCaptionsVisible documentation> 
 setWebkitClosedCaptionsVisible ::
                                (MonadIO m, IsHTMLMediaElement self) => self -> Bool -> m ()
 setWebkitClosedCaptionsVisible self val
   = liftIO
-      (js_setWebkitClosedCaptionsVisible
-         (unHTMLMediaElement (toHTMLMediaElement self))
-         val)
+      (js_setWebkitClosedCaptionsVisible (toHTMLMediaElement self) val)
  
 foreign import javascript unsafe
         "($1[\"webkitClosedCaptionsVisible\"] ? 1 : 0)"
-        js_getWebkitClosedCaptionsVisible ::
-        JSRef HTMLMediaElement -> IO Bool
+        js_getWebkitClosedCaptionsVisible :: HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitClosedCaptionsVisible Mozilla HTMLMediaElement.webkitClosedCaptionsVisible documentation> 
 getWebkitClosedCaptionsVisible ::
                                (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
 getWebkitClosedCaptionsVisible self
   = liftIO
-      (js_getWebkitClosedCaptionsVisible
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getWebkitClosedCaptionsVisible (toHTMLMediaElement self))
  
 foreign import javascript unsafe
         "$1[\"webkitAudioDecodedByteCount\"]"
-        js_getWebkitAudioDecodedByteCount ::
-        JSRef HTMLMediaElement -> IO Word
+        js_getWebkitAudioDecodedByteCount :: HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitAudioDecodedByteCount Mozilla HTMLMediaElement.webkitAudioDecodedByteCount documentation> 
 getWebkitAudioDecodedByteCount ::
                                (MonadIO m, IsHTMLMediaElement self) => self -> m Word
 getWebkitAudioDecodedByteCount self
   = liftIO
-      (js_getWebkitAudioDecodedByteCount
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getWebkitAudioDecodedByteCount (toHTMLMediaElement self))
  
 foreign import javascript unsafe
         "$1[\"webkitVideoDecodedByteCount\"]"
-        js_getWebkitVideoDecodedByteCount ::
-        JSRef HTMLMediaElement -> IO Word
+        js_getWebkitVideoDecodedByteCount :: HTMLMediaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitVideoDecodedByteCount Mozilla HTMLMediaElement.webkitVideoDecodedByteCount documentation> 
 getWebkitVideoDecodedByteCount ::
                                (MonadIO m, IsHTMLMediaElement self) => self -> m Word
 getWebkitVideoDecodedByteCount self
   = liftIO
-      (js_getWebkitVideoDecodedByteCount
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+      (js_getWebkitVideoDecodedByteCount (toHTMLMediaElement self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitkeyadded Mozilla HTMLMediaElement.onwebkitkeyadded documentation> 
 webKitKeyAdded ::
@@ -791,19 +713,18 @@ webKitNeedKey ::
 webKitNeedKey = unsafeEventName (toJSString "webkitneedkey")
  
 foreign import javascript unsafe "$1[\"webkitKeys\"]"
-        js_getWebkitKeys :: JSRef HTMLMediaElement -> IO (JSRef MediaKeys)
+        js_getWebkitKeys :: HTMLMediaElement -> IO (Nullable MediaKeys)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitKeys Mozilla HTMLMediaElement.webkitKeys documentation> 
 getWebkitKeys ::
               (MonadIO m, IsHTMLMediaElement self) => self -> m (Maybe MediaKeys)
 getWebkitKeys self
   = liftIO
-      ((js_getWebkitKeys (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getWebkitKeys (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"audioTracks\"]"
         js_getAudioTracks ::
-        JSRef HTMLMediaElement -> IO (JSRef AudioTrackList)
+        HTMLMediaElement -> IO (Nullable AudioTrackList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.audioTracks Mozilla HTMLMediaElement.audioTracks documentation> 
 getAudioTracks ::
@@ -811,12 +732,10 @@ getAudioTracks ::
                  self -> m (Maybe AudioTrackList)
 getAudioTracks self
   = liftIO
-      ((js_getAudioTracks (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getAudioTracks (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"textTracks\"]"
-        js_getTextTracks ::
-        JSRef HTMLMediaElement -> IO (JSRef TextTrackList)
+        js_getTextTracks :: HTMLMediaElement -> IO (Nullable TextTrackList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.textTracks Mozilla HTMLMediaElement.textTracks documentation> 
 getTextTracks ::
@@ -824,12 +743,11 @@ getTextTracks ::
                 self -> m (Maybe TextTrackList)
 getTextTracks self
   = liftIO
-      ((js_getTextTracks (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getTextTracks (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"videoTracks\"]"
         js_getVideoTracks ::
-        JSRef HTMLMediaElement -> IO (JSRef VideoTrackList)
+        HTMLMediaElement -> IO (Nullable VideoTrackList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.videoTracks Mozilla HTMLMediaElement.videoTracks documentation> 
 getVideoTracks ::
@@ -837,12 +755,10 @@ getVideoTracks ::
                  self -> m (Maybe VideoTrackList)
 getVideoTracks self
   = liftIO
-      ((js_getVideoTracks (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getVideoTracks (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"mediaGroup\"] = $2;"
-        js_setMediaGroup ::
-        JSRef HTMLMediaElement -> JSRef (Maybe JSString) -> IO ()
+        js_setMediaGroup :: HTMLMediaElement -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.mediaGroup Mozilla HTMLMediaElement.mediaGroup documentation> 
 setMediaGroup ::
@@ -850,12 +766,10 @@ setMediaGroup ::
                 self -> Maybe val -> m ()
 setMediaGroup self val
   = liftIO
-      (js_setMediaGroup (unHTMLMediaElement (toHTMLMediaElement self))
-         (toMaybeJSString val))
+      (js_setMediaGroup (toHTMLMediaElement self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"mediaGroup\"]"
-        js_getMediaGroup ::
-        JSRef HTMLMediaElement -> IO (JSRef (Maybe JSString))
+        js_getMediaGroup :: HTMLMediaElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.mediaGroup Mozilla HTMLMediaElement.mediaGroup documentation> 
 getMediaGroup ::
@@ -864,11 +778,11 @@ getMediaGroup ::
 getMediaGroup self
   = liftIO
       (fromMaybeJSString <$>
-         (js_getMediaGroup (unHTMLMediaElement (toHTMLMediaElement self))))
+         (js_getMediaGroup (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"controller\"] = $2;"
         js_setController ::
-        JSRef HTMLMediaElement -> JSRef MediaController -> IO ()
+        HTMLMediaElement -> Nullable MediaController -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controller Mozilla HTMLMediaElement.controller documentation> 
 setController ::
@@ -876,12 +790,11 @@ setController ::
                 self -> Maybe MediaController -> m ()
 setController self val
   = liftIO
-      (js_setController (unHTMLMediaElement (toHTMLMediaElement self))
-         (maybe jsNull pToJSRef val))
+      (js_setController (toHTMLMediaElement self) (maybeToNullable val))
  
 foreign import javascript unsafe "$1[\"controller\"]"
         js_getController ::
-        JSRef HTMLMediaElement -> IO (JSRef MediaController)
+        HTMLMediaElement -> IO (Nullable MediaController)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controller Mozilla HTMLMediaElement.controller documentation> 
 getController ::
@@ -889,13 +802,12 @@ getController ::
                 self -> m (Maybe MediaController)
 getController self
   = liftIO
-      ((js_getController (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getController (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
         "($1[\"webkitCurrentPlaybackTargetIsWireless\"] ? 1 : 0)"
         js_getWebkitCurrentPlaybackTargetIsWireless ::
-        JSRef HTMLMediaElement -> IO Bool
+        HTMLMediaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitCurrentPlaybackTargetIsWireless Mozilla HTMLMediaElement.webkitCurrentPlaybackTargetIsWireless documentation> 
 getWebkitCurrentPlaybackTargetIsWireless ::
@@ -903,7 +815,7 @@ getWebkitCurrentPlaybackTargetIsWireless ::
 getWebkitCurrentPlaybackTargetIsWireless self
   = liftIO
       (js_getWebkitCurrentPlaybackTargetIsWireless
-         (unHTMLMediaElement (toHTMLMediaElement self)))
+         (toHTMLMediaElement self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.onwebkitcurrentplaybacktargetiswirelesschanged Mozilla HTMLMediaElement.onwebkitcurrentplaybacktargetiswirelesschanged documentation> 
 webKitCurrentPlaybackTargetIsWirelessChanged ::
@@ -923,7 +835,7 @@ webKitPlaybackTargetAvailabilityChanged
  
 foreign import javascript unsafe "$1[\"srcObject\"] = $2;"
         js_setSrcObject ::
-        JSRef HTMLMediaElement -> JSRef MediaStream -> IO ()
+        HTMLMediaElement -> Nullable MediaStream -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.srcObject Mozilla HTMLMediaElement.srcObject documentation> 
 setSrcObject ::
@@ -931,12 +843,10 @@ setSrcObject ::
                self -> Maybe MediaStream -> m ()
 setSrcObject self val
   = liftIO
-      (js_setSrcObject (unHTMLMediaElement (toHTMLMediaElement self))
-         (maybe jsNull pToJSRef val))
+      (js_setSrcObject (toHTMLMediaElement self) (maybeToNullable val))
  
 foreign import javascript unsafe "$1[\"srcObject\"]"
-        js_getSrcObject ::
-        JSRef HTMLMediaElement -> IO (JSRef (Maybe MediaStream))
+        js_getSrcObject :: HTMLMediaElement -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.srcObject Mozilla HTMLMediaElement.srcObject documentation> 
 getSrcObject ::
@@ -944,5 +854,5 @@ getSrcObject ::
                self -> m (Maybe MediaStream)
 getSrcObject self
   = liftIO
-      ((js_getSrcObject (unHTMLMediaElement (toHTMLMediaElement self)))
-         >>= fromJSRefUnchecked)
+      ((js_getSrcObject (toHTMLMediaElement self)) >>=
+         fromJSRefUnchecked)

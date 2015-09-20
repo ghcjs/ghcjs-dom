@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CompositionEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,8 +22,8 @@ import GHCJS.DOM.Enums
 foreign import javascript unsafe
         "$1[\"initCompositionEvent\"]($2,\n$3, $4, $5, $6)"
         js_initCompositionEvent ::
-        JSRef CompositionEvent ->
-          JSString -> Bool -> Bool -> JSRef Window -> JSString -> IO ()
+        CompositionEvent ->
+          JSString -> Bool -> Bool -> Nullable Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent.initCompositionEvent Mozilla CompositionEvent.initCompositionEvent documentation> 
 initCompositionEvent ::
@@ -33,18 +33,15 @@ initCompositionEvent ::
 initCompositionEvent self typeArg canBubbleArg cancelableArg
   viewArg dataArg
   = liftIO
-      (js_initCompositionEvent (unCompositionEvent self)
-         (toJSString typeArg)
-         canBubbleArg
+      (js_initCompositionEvent (self) (toJSString typeArg) canBubbleArg
          cancelableArg
-         (maybe jsNull pToJSRef viewArg)
+         (maybeToNullable viewArg)
          (toJSString dataArg))
  
 foreign import javascript unsafe "$1[\"data\"]" js_getData ::
-        JSRef CompositionEvent -> IO JSString
+        CompositionEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent.data Mozilla CompositionEvent.data documentation> 
 getData ::
         (MonadIO m, FromJSString result) => CompositionEvent -> m result
-getData self
-  = liftIO (fromJSString <$> (js_getData (unCompositionEvent self)))
+getData self = liftIO (fromJSString <$> (js_getData (self)))

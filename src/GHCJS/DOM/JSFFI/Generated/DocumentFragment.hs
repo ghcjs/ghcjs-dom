@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.DocumentFragment
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,16 +21,15 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"DocumentFragment\"]()" js_newDocumentFragment ::
-        IO (JSRef DocumentFragment)
+        IO DocumentFragment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment Mozilla DocumentFragment documentation> 
 newDocumentFragment :: (MonadIO m) => m DocumentFragment
-newDocumentFragment
-  = liftIO (js_newDocumentFragment >>= fromJSRefUnchecked)
+newDocumentFragment = liftIO (js_newDocumentFragment)
  
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
         js_querySelector ::
-        JSRef DocumentFragment -> JSString -> IO (JSRef Element)
+        DocumentFragment -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelector Mozilla DocumentFragment.querySelector documentation> 
 querySelector ::
@@ -38,13 +37,12 @@ querySelector ::
                 DocumentFragment -> selectors -> m (Maybe Element)
 querySelector self selectors
   = liftIO
-      ((js_querySelector (unDocumentFragment self)
-          (toJSString selectors))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_querySelector (self) (toJSString selectors)))
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         js_querySelectorAll ::
-        JSRef DocumentFragment -> JSString -> IO (JSRef NodeList)
+        DocumentFragment -> JSString -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelectorAll Mozilla DocumentFragment.querySelectorAll documentation> 
 querySelectorAll ::
@@ -52,6 +50,5 @@ querySelectorAll ::
                    DocumentFragment -> selectors -> m (Maybe NodeList)
 querySelectorAll self selectors
   = liftIO
-      ((js_querySelectorAll (unDocumentFragment self)
-          (toJSString selectors))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_querySelectorAll (self) (toJSString selectors)))

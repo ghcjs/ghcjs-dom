@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.StringCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,9 +24,10 @@ newStringCallback ::
                     (data' -> IO ()) -> m (StringCallback data')
 newStringCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ data' ->
-            fromJSRefUnchecked data' >>= \ data'' -> callback data''))
+      (StringCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ data' ->
+              fromJSRefUnchecked data' >>= \ data'' -> callback data''))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation> 
 newStringCallbackSync ::
@@ -34,9 +35,10 @@ newStringCallbackSync ::
                         (data' -> IO ()) -> m (StringCallback data')
 newStringCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ data' ->
-            fromJSRefUnchecked data' >>= \ data'' -> callback data''))
+      (StringCallback <$>
+         syncCallback1 ContinueAsync
+           (\ data' ->
+              fromJSRefUnchecked data' >>= \ data'' -> callback data''))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StringCallback Mozilla StringCallback documentation> 
 newStringCallbackAsync ::
@@ -44,6 +46,7 @@ newStringCallbackAsync ::
                          (data' -> IO ()) -> m (StringCallback data')
 newStringCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ data' ->
-            fromJSRefUnchecked data' >>= \ data'' -> callback data''))
+      (StringCallback <$>
+         asyncCallback1
+           (\ data' ->
+              fromJSRefUnchecked data' >>= \ data'' -> callback data''))

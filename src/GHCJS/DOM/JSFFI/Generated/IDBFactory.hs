@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBFactory
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,8 +19,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"open\"]($2, $3)" js_open ::
-        JSRef IDBFactory ->
-          JSString -> Double -> IO (JSRef IDBOpenDBRequest)
+        IDBFactory -> JSString -> Double -> IO (Nullable IDBOpenDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
 open ::
@@ -28,13 +27,12 @@ open ::
        IDBFactory -> name -> Word64 -> m (Maybe IDBOpenDBRequest)
 open self name version
   = liftIO
-      ((js_open (unIDBFactory self) (toJSString name)
-          (fromIntegral version))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_open (self) (toJSString name) (fromIntegral version)))
  
 foreign import javascript unsafe "$1[\"deleteDatabase\"]($2)"
         js_deleteDatabase ::
-        JSRef IDBFactory -> JSString -> IO (JSRef IDBOpenDBRequest)
+        IDBFactory -> JSString -> IO (Nullable IDBOpenDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
 deleteDatabase ::
@@ -42,13 +40,11 @@ deleteDatabase ::
                  IDBFactory -> name -> m (Maybe IDBOpenDBRequest)
 deleteDatabase self name
   = liftIO
-      ((js_deleteDatabase (unIDBFactory self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_deleteDatabase (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"cmp\"]($2, $3)" js_cmp ::
-        JSRef IDBFactory -> JSRef a -> JSRef a -> IO Int
+        IDBFactory -> JSRef -> JSRef -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.cmp Mozilla IDBFactory.cmp documentation> 
-cmp :: (MonadIO m) => IDBFactory -> JSRef a -> JSRef a -> m Int
-cmp self first second
-  = liftIO (js_cmp (unIDBFactory self) first second)
+cmp :: (MonadIO m) => IDBFactory -> JSRef -> JSRef -> m Int
+cmp self first second = liftIO (js_cmp (self) first second)

@@ -11,7 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLBodyElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -25,115 +25,103 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"aLink\"] = $2;" js_setALink
-        :: JSRef HTMLBodyElement -> JSString -> IO ()
+        :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
 setALink ::
          (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
-setALink self val
-  = liftIO (js_setALink (unHTMLBodyElement self) (toJSString val))
+setALink self val = liftIO (js_setALink (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"aLink\"]" js_getALink ::
-        JSRef HTMLBodyElement -> IO JSString
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
 getALink ::
          (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getALink self
-  = liftIO (fromJSString <$> (js_getALink (unHTMLBodyElement self)))
+getALink self = liftIO (fromJSString <$> (js_getALink (self)))
  
 foreign import javascript unsafe "$1[\"background\"] = $2;"
-        js_setBackground :: JSRef HTMLBodyElement -> JSString -> IO ()
+        js_setBackground :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.background Mozilla HTMLBodyElement.background documentation> 
 setBackground ::
               (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
 setBackground self val
-  = liftIO
-      (js_setBackground (unHTMLBodyElement self) (toJSString val))
+  = liftIO (js_setBackground (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"background\"]"
-        js_getBackground :: JSRef HTMLBodyElement -> IO JSString
+        js_getBackground :: HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.background Mozilla HTMLBodyElement.background documentation> 
 getBackground ::
               (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
 getBackground self
-  = liftIO
-      (fromJSString <$> (js_getBackground (unHTMLBodyElement self)))
+  = liftIO (fromJSString <$> (js_getBackground (self)))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        js_setBgColor :: JSRef HTMLBodyElement -> JSString -> IO ()
+        js_setBgColor :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
 setBgColor ::
            (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
 setBgColor self val
-  = liftIO (js_setBgColor (unHTMLBodyElement self) (toJSString val))
+  = liftIO (js_setBgColor (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
-        JSRef HTMLBodyElement -> IO JSString
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
 getBgColor ::
            (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getBgColor self
-  = liftIO
-      (fromJSString <$> (js_getBgColor (unHTMLBodyElement self)))
+getBgColor self = liftIO (fromJSString <$> (js_getBgColor (self)))
  
 foreign import javascript unsafe "$1[\"link\"] = $2;" js_setLink ::
-        JSRef HTMLBodyElement -> JSString -> IO ()
+        HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
 setLink ::
         (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
-setLink self val
-  = liftIO (js_setLink (unHTMLBodyElement self) (toJSString val))
+setLink self val = liftIO (js_setLink (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"link\"]" js_getLink ::
-        JSRef HTMLBodyElement -> IO JSString
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
 getLink ::
         (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getLink self
-  = liftIO (fromJSString <$> (js_getLink (unHTMLBodyElement self)))
+getLink self = liftIO (fromJSString <$> (js_getLink (self)))
  
 foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
-        JSRef HTMLBodyElement -> JSString -> IO ()
+        HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
 setText ::
         (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
-setText self val
-  = liftIO (js_setText (unHTMLBodyElement self) (toJSString val))
+setText self val = liftIO (js_setText (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"text\"]" js_getText ::
-        JSRef HTMLBodyElement -> IO JSString
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
 getText ::
         (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getText self
-  = liftIO (fromJSString <$> (js_getText (unHTMLBodyElement self)))
+getText self = liftIO (fromJSString <$> (js_getText (self)))
  
 foreign import javascript unsafe "$1[\"vLink\"] = $2;" js_setVLink
-        :: JSRef HTMLBodyElement -> JSString -> IO ()
+        :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
 setVLink ::
          (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
-setVLink self val
-  = liftIO (js_setVLink (unHTMLBodyElement self) (toJSString val))
+setVLink self val = liftIO (js_setVLink (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"vLink\"]" js_getVLink ::
-        JSRef HTMLBodyElement -> IO JSString
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
 getVLink ::
          (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getVLink self
-  = liftIO (fromJSString <$> (js_getVLink (unHTMLBodyElement self)))
+getVLink self = liftIO (fromJSString <$> (js_getVLink (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onbeforeunload Mozilla HTMLBodyElement.onbeforeunload documentation> 
 beforeUnload :: EventName HTMLBodyElement BeforeUnloadEvent

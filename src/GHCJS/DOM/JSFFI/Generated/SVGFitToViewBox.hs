@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFitToViewBox
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,23 +20,21 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"viewBox\"]" js_getViewBox ::
-        JSRef SVGFitToViewBox -> IO (JSRef SVGAnimatedRect)
+        SVGFitToViewBox -> IO (Nullable SVGAnimatedRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.viewBox Mozilla SVGFitToViewBox.viewBox documentation> 
 getViewBox ::
            (MonadIO m) => SVGFitToViewBox -> m (Maybe SVGAnimatedRect)
 getViewBox self
-  = liftIO ((js_getViewBox (unSVGFitToViewBox self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getViewBox (self)))
  
 foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
         js_getPreserveAspectRatio ::
-        JSRef SVGFitToViewBox -> IO (JSRef SVGAnimatedPreserveAspectRatio)
+        SVGFitToViewBox -> IO (Nullable SVGAnimatedPreserveAspectRatio)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.preserveAspectRatio Mozilla SVGFitToViewBox.preserveAspectRatio documentation> 
 getPreserveAspectRatio ::
                        (MonadIO m) =>
                          SVGFitToViewBox -> m (Maybe SVGAnimatedPreserveAspectRatio)
 getPreserveAspectRatio self
-  = liftIO
-      ((js_getPreserveAspectRatio (unSVGFitToViewBox self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPreserveAspectRatio (self)))

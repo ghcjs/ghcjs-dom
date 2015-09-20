@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.VideoStreamTrack
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,7 +20,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"VideoStreamTrack\"]($1)" js_newVideoStreamTrack ::
-        JSRef Dictionary -> IO (JSRef VideoStreamTrack)
+        Nullable Dictionary -> IO VideoStreamTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoStreamTrack Mozilla VideoStreamTrack documentation> 
 newVideoStreamTrack ::
@@ -29,5 +29,4 @@ newVideoStreamTrack ::
 newVideoStreamTrack videoConstraints
   = liftIO
       (js_newVideoStreamTrack
-         (maybe jsNull (unDictionary . toDictionary) videoConstraints)
-         >>= fromJSRefUnchecked)
+         (maybeToNullable (fmap toDictionary videoConstraints)))

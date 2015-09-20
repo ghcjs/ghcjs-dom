@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSKeyframeRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,29 +20,26 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"keyText\"] = $2;"
-        js_setKeyText :: JSRef CSSKeyframeRule -> JSString -> IO ()
+        js_setKeyText :: CSSKeyframeRule -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule.keyText Mozilla CSSKeyframeRule.keyText documentation> 
 setKeyText ::
            (MonadIO m, ToJSString val) => CSSKeyframeRule -> val -> m ()
 setKeyText self val
-  = liftIO (js_setKeyText (unCSSKeyframeRule self) (toJSString val))
+  = liftIO (js_setKeyText (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"keyText\"]" js_getKeyText ::
-        JSRef CSSKeyframeRule -> IO JSString
+        CSSKeyframeRule -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule.keyText Mozilla CSSKeyframeRule.keyText documentation> 
 getKeyText ::
            (MonadIO m, FromJSString result) => CSSKeyframeRule -> m result
-getKeyText self
-  = liftIO
-      (fromJSString <$> (js_getKeyText (unCSSKeyframeRule self)))
+getKeyText self = liftIO (fromJSString <$> (js_getKeyText (self)))
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
-        JSRef CSSKeyframeRule -> IO (JSRef CSSStyleDeclaration)
+        CSSKeyframeRule -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule.style Mozilla CSSKeyframeRule.style documentation> 
 getStyle ::
          (MonadIO m) => CSSKeyframeRule -> m (Maybe CSSStyleDeclaration)
-getStyle self
-  = liftIO ((js_getStyle (unCSSKeyframeRule self)) >>= fromJSRef)
+getStyle self = liftIO (nullableToMaybe <$> (js_getStyle (self)))

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SQLTransactionCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,10 +24,11 @@ newSQLTransactionCallback ::
                             (Maybe SQLTransaction -> IO ()) -> m SQLTransactionCallback
 newSQLTransactionCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ transaction ->
-            fromJSRefUnchecked transaction >>=
-              \ transaction' -> callback transaction'))
+      (SQLTransactionCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ transaction ->
+              fromJSRefUnchecked transaction >>=
+                \ transaction' -> callback transaction'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation> 
 newSQLTransactionCallbackSync ::
@@ -35,10 +36,11 @@ newSQLTransactionCallbackSync ::
                                 (Maybe SQLTransaction -> IO ()) -> m SQLTransactionCallback
 newSQLTransactionCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ transaction ->
-            fromJSRefUnchecked transaction >>=
-              \ transaction' -> callback transaction'))
+      (SQLTransactionCallback <$>
+         syncCallback1 ContinueAsync
+           (\ transaction ->
+              fromJSRefUnchecked transaction >>=
+                \ transaction' -> callback transaction'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionCallback Mozilla SQLTransactionCallback documentation> 
 newSQLTransactionCallbackAsync ::
@@ -46,7 +48,8 @@ newSQLTransactionCallbackAsync ::
                                  (Maybe SQLTransaction -> IO ()) -> m SQLTransactionCallback
 newSQLTransactionCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ transaction ->
-            fromJSRefUnchecked transaction >>=
-              \ transaction' -> callback transaction'))
+      (SQLTransactionCallback <$>
+         asyncCallback1
+           (\ transaction ->
+              fromJSRefUnchecked transaction >>=
+                \ transaction' -> callback transaction'))

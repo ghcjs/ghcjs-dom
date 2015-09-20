@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLParamElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,75 +21,67 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
-        JSRef HTMLParamElement -> JSString -> IO ()
+        HTMLParamElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.name Mozilla HTMLParamElement.name documentation> 
 setName ::
         (MonadIO m, ToJSString val) => HTMLParamElement -> val -> m ()
-setName self val
-  = liftIO (js_setName (unHTMLParamElement self) (toJSString val))
+setName self val = liftIO (js_setName (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef HTMLParamElement -> IO JSString
+        HTMLParamElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.name Mozilla HTMLParamElement.name documentation> 
 getName ::
         (MonadIO m, FromJSString result) => HTMLParamElement -> m result
-getName self
-  = liftIO (fromJSString <$> (js_getName (unHTMLParamElement self)))
+getName self = liftIO (fromJSString <$> (js_getName (self)))
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
-        JSRef HTMLParamElement -> JSString -> IO ()
+        HTMLParamElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.type Mozilla HTMLParamElement.type documentation> 
 setType ::
         (MonadIO m, ToJSString val) => HTMLParamElement -> val -> m ()
-setType self val
-  = liftIO (js_setType (unHTMLParamElement self) (toJSString val))
+setType self val = liftIO (js_setType (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef HTMLParamElement -> IO JSString
+        HTMLParamElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.type Mozilla HTMLParamElement.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => HTMLParamElement -> m result
-getType self
-  = liftIO (fromJSString <$> (js_getType (unHTMLParamElement self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: JSRef HTMLParamElement -> JSString -> IO ()
+        :: HTMLParamElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.value Mozilla HTMLParamElement.value documentation> 
 setValue ::
          (MonadIO m, ToJSString val) => HTMLParamElement -> val -> m ()
-setValue self val
-  = liftIO (js_setValue (unHTMLParamElement self) (toJSString val))
+setValue self val = liftIO (js_setValue (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        JSRef HTMLParamElement -> IO JSString
+        HTMLParamElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.value Mozilla HTMLParamElement.value documentation> 
 getValue ::
          (MonadIO m, FromJSString result) => HTMLParamElement -> m result
-getValue self
-  = liftIO (fromJSString <$> (js_getValue (unHTMLParamElement self)))
+getValue self = liftIO (fromJSString <$> (js_getValue (self)))
  
 foreign import javascript unsafe "$1[\"valueType\"] = $2;"
-        js_setValueType :: JSRef HTMLParamElement -> JSString -> IO ()
+        js_setValueType :: HTMLParamElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.valueType Mozilla HTMLParamElement.valueType documentation> 
 setValueType ::
              (MonadIO m, ToJSString val) => HTMLParamElement -> val -> m ()
 setValueType self val
-  = liftIO
-      (js_setValueType (unHTMLParamElement self) (toJSString val))
+  = liftIO (js_setValueType (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"valueType\"]"
-        js_getValueType :: JSRef HTMLParamElement -> IO JSString
+        js_getValueType :: HTMLParamElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.valueType Mozilla HTMLParamElement.valueType documentation> 
 getValueType ::
              (MonadIO m, FromJSString result) => HTMLParamElement -> m result
 getValueType self
-  = liftIO
-      (fromJSString <$> (js_getValueType (unHTMLParamElement self)))
+  = liftIO (fromJSString <$> (js_getValueType (self)))

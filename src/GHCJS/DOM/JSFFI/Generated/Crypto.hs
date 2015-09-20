@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.Crypto
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,7 +20,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"getRandomValues\"]($2)"
         js_getRandomValues ::
-        JSRef Crypto -> JSRef ArrayBufferView -> IO (JSRef ArrayBufferView)
+        Crypto -> Nullable ArrayBufferView -> IO (Nullable ArrayBufferView)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.getRandomValues Mozilla Crypto.getRandomValues documentation> 
 getRandomValues ::
@@ -28,14 +28,14 @@ getRandomValues ::
                   Crypto -> Maybe array -> m (Maybe ArrayBufferView)
 getRandomValues self array
   = liftIO
-      ((js_getRandomValues (unCrypto self)
-          (maybe jsNull (unArrayBufferView . toArrayBufferView) array))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getRandomValues (self)
+            (maybeToNullable (fmap toArrayBufferView array))))
  
 foreign import javascript unsafe "$1[\"webkitSubtle\"]"
-        js_getWebkitSubtle :: JSRef Crypto -> IO (JSRef SubtleCrypto)
+        js_getWebkitSubtle :: Crypto -> IO (Nullable SubtleCrypto)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.webkitSubtle Mozilla Crypto.webkitSubtle documentation> 
 getWebkitSubtle :: (MonadIO m) => Crypto -> m (Maybe SubtleCrypto)
 getWebkitSubtle self
-  = liftIO ((js_getWebkitSubtle (unCrypto self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getWebkitSubtle (self)))

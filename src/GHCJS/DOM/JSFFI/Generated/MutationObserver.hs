@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.MutationObserver
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,7 +21,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"MutationObserver\"]($1)" js_newMutationObserver ::
-        JSRef MutationCallback -> IO (JSRef MutationObserver)
+        Nullable MutationCallback -> IO MutationObserver
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver Mozilla MutationObserver documentation> 
 newMutationObserver ::
@@ -30,12 +30,11 @@ newMutationObserver ::
 newMutationObserver callback
   = liftIO
       (js_newMutationObserver
-         (maybe jsNull (unMutationCallback . toMutationCallback) callback)
-         >>= fromJSRefUnchecked)
+         (maybeToNullable (fmap toMutationCallback callback)))
  
 foreign import javascript unsafe "$1[\"observe\"]($2, $3)"
         js_observe ::
-        JSRef MutationObserver -> JSRef Node -> JSRef Dictionary -> IO ()
+        MutationObserver -> Nullable Node -> Nullable Dictionary -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.observe Mozilla MutationObserver.observe documentation> 
 observe ::
@@ -43,24 +42,21 @@ observe ::
           MutationObserver -> Maybe target -> Maybe options -> m ()
 observe self target options
   = liftIO
-      (js_observe (unMutationObserver self)
-         (maybe jsNull (unNode . toNode) target)
-         (maybe jsNull (unDictionary . toDictionary) options))
+      (js_observe (self) (maybeToNullable (fmap toNode target))
+         (maybeToNullable (fmap toDictionary options)))
  
 foreign import javascript unsafe "$1[\"takeRecords\"]()"
-        js_takeRecords ::
-        JSRef MutationObserver -> IO (JSRef [Maybe MutationRecord])
+        js_takeRecords :: MutationObserver -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.takeRecords Mozilla MutationObserver.takeRecords documentation> 
 takeRecords ::
             (MonadIO m) => MutationObserver -> m [Maybe MutationRecord]
 takeRecords self
-  = liftIO
-      ((js_takeRecords (unMutationObserver self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_takeRecords (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"disconnect\"]()"
-        js_disconnect :: JSRef MutationObserver -> IO ()
+        js_disconnect :: MutationObserver -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.disconnect Mozilla MutationObserver.disconnect documentation> 
 disconnect :: (MonadIO m) => MutationObserver -> m ()
-disconnect self = liftIO (js_disconnect (unMutationObserver self))
+disconnect self = liftIO (js_disconnect (self))

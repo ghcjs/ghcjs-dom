@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.ProgressEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,29 +22,26 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "($1[\"lengthComputable\"] ? 1 : 0)" js_getLengthComputable ::
-        JSRef ProgressEvent -> IO Bool
+        ProgressEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.lengthComputable Mozilla ProgressEvent.lengthComputable documentation> 
 getLengthComputable ::
                     (MonadIO m, IsProgressEvent self) => self -> m Bool
 getLengthComputable self
-  = liftIO
-      (js_getLengthComputable (unProgressEvent (toProgressEvent self)))
+  = liftIO (js_getLengthComputable (toProgressEvent self))
  
 foreign import javascript unsafe "$1[\"loaded\"]" js_getLoaded ::
-        JSRef ProgressEvent -> IO Double
+        ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.loaded Mozilla ProgressEvent.loaded documentation> 
 getLoaded :: (MonadIO m, IsProgressEvent self) => self -> m Word64
 getLoaded self
-  = liftIO
-      (round <$> (js_getLoaded (unProgressEvent (toProgressEvent self))))
+  = liftIO (round <$> (js_getLoaded (toProgressEvent self)))
  
 foreign import javascript unsafe "$1[\"total\"]" js_getTotal ::
-        JSRef ProgressEvent -> IO Double
+        ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.total Mozilla ProgressEvent.total documentation> 
 getTotal :: (MonadIO m, IsProgressEvent self) => self -> m Word64
 getTotal self
-  = liftIO
-      (round <$> (js_getTotal (unProgressEvent (toProgressEvent self))))
+  = liftIO (round <$> (js_getTotal (toProgressEvent self)))

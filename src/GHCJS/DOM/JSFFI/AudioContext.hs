@@ -23,13 +23,13 @@ instance Exception DecodeAudioError
 
 foreign import javascript interruptible
         "$1[\"decodeAudioData\"]($2, $c, function() { $c(null); });" js_decodeAudioData ::
-        JSRef AudioContext -> JSRef ArrayBuffer -> IO (JSRef AudioBuffer)
+        AudioContext -> ArrayBuffer -> IO (Nullable AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.decodeAudioData Mozilla AudioContext.decodeAudioData documentation>
 decodeAudioData :: (MonadIO m, IsAudioContext self, IsArrayBuffer audioData) =>
                    self -> audioData -> m AudioBuffer
-decodeAudioData self audioData = liftIO $ js_decodeAudioData
-        (unAudioContext (toAudioContext self))
-        (unArrayBuffer  (toArrayBuffer audioData))
-            >>= fromJSRef >>= maybe (throwIO DecodeAudioError) return
+decodeAudioData self audioData = liftIO $ nullableToMaybe <$> js_decodeAudioData
+        (toAudioContext self)
+        (toArrayBuffer audioData)
+            >>= maybe (throwIO DecodeAudioError) return
 

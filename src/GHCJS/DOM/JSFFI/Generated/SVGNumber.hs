@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGNumber
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,15 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: JSRef SVGNumber -> Float -> IO ()
+        :: SVGNumber -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumber.value Mozilla SVGNumber.value documentation> 
 setValue :: (MonadIO m) => SVGNumber -> Float -> m ()
-setValue self val = liftIO (js_setValue (unSVGNumber self) val)
+setValue self val = liftIO (js_setValue (self) val)
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        JSRef SVGNumber -> IO Float
+        SVGNumber -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumber.value Mozilla SVGNumber.value documentation> 
 getValue :: (MonadIO m) => SVGNumber -> m Float
-getValue self = liftIO (js_getValue (unSVGNumber self))
+getValue self = liftIO (js_getValue (self))

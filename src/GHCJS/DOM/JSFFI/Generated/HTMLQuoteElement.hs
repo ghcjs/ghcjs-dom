@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLQuoteElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,19 +19,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"cite\"] = $2;" js_setCite ::
-        JSRef HTMLQuoteElement -> JSString -> IO ()
+        HTMLQuoteElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
 setCite ::
         (MonadIO m, ToJSString val) => HTMLQuoteElement -> val -> m ()
-setCite self val
-  = liftIO (js_setCite (unHTMLQuoteElement self) (toJSString val))
+setCite self val = liftIO (js_setCite (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"cite\"]" js_getCite ::
-        JSRef HTMLQuoteElement -> IO JSString
+        HTMLQuoteElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement.cite Mozilla HTMLQuoteElement.cite documentation> 
 getCite ::
         (MonadIO m, FromJSString result) => HTMLQuoteElement -> m result
-getCite self
-  = liftIO (fromJSString <$> (js_getCite (unHTMLQuoteElement self)))
+getCite self = liftIO (fromJSString <$> (js_getCite (self)))

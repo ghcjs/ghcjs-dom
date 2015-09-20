@@ -171,7 +171,7 @@ module GHCJS.DOM.JSFFI.Generated.Internals
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -185,7 +185,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"address\"]($2)" js_address
-        :: JSRef Internals -> JSRef Node -> IO JSString
+        :: Internals -> Nullable Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.address Mozilla Internals.address documentation> 
 address ::
@@ -194,36 +194,33 @@ address ::
 address self node
   = liftIO
       (fromJSString <$>
-         (js_address (unInternals self)
-            (maybe jsNull (unNode . toNode) node)))
+         (js_address (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe
         "($1[\"nodeNeedsStyleRecalc\"]($2) ? 1 : 0)"
-        js_nodeNeedsStyleRecalc :: JSRef Internals -> JSRef Node -> IO Bool
+        js_nodeNeedsStyleRecalc :: Internals -> Nullable Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.nodeNeedsStyleRecalc Mozilla Internals.nodeNeedsStyleRecalc documentation> 
 nodeNeedsStyleRecalc ::
                      (MonadIO m, IsNode node) => Internals -> Maybe node -> m Bool
 nodeNeedsStyleRecalc self node
   = liftIO
-      (js_nodeNeedsStyleRecalc (unInternals self)
-         (maybe jsNull (unNode . toNode) node))
+      (js_nodeNeedsStyleRecalc (self)
+         (maybeToNullable (fmap toNode node)))
  
 foreign import javascript unsafe "$1[\"description\"]($2)"
-        js_description :: JSRef Internals -> JSRef a -> IO JSString
+        js_description :: Internals -> JSRef -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.description Mozilla Internals.description documentation> 
 description ::
-            (MonadIO m, FromJSString result) =>
-              Internals -> JSRef a -> m result
+            (MonadIO m, FromJSString result) => Internals -> JSRef -> m result
 description self value
-  = liftIO
-      (fromJSString <$> (js_description (unInternals self) value))
+  = liftIO (fromJSString <$> (js_description (self) value))
  
 foreign import javascript unsafe
         "($1[\"hasPausedImageAnimations\"]($2) ? 1 : 0)"
         js_hasPausedImageAnimations ::
-        JSRef Internals -> JSRef Element -> IO Bool
+        Internals -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.hasPausedImageAnimations Mozilla Internals.hasPausedImageAnimations documentation> 
 hasPausedImageAnimations ::
@@ -231,12 +228,12 @@ hasPausedImageAnimations ::
                            Internals -> Maybe element -> m Bool
 hasPausedImageAnimations self element
   = liftIO
-      (js_hasPausedImageAnimations (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_hasPausedImageAnimations (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "$1[\"elementRenderTreeAsText\"]($2)" js_elementRenderTreeAsText ::
-        JSRef Internals -> JSRef Element -> IO JSString
+        Internals -> Nullable Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.elementRenderTreeAsText Mozilla Internals.elementRenderTreeAsText documentation> 
 elementRenderTreeAsText ::
@@ -245,34 +242,32 @@ elementRenderTreeAsText ::
 elementRenderTreeAsText self element
   = liftIO
       (fromJSString <$>
-         (js_elementRenderTreeAsText (unInternals self)
-            (maybe jsNull (unElement . toElement) element)))
+         (js_elementRenderTreeAsText (self)
+            (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe
         "($1[\"isPreloaded\"]($2) ? 1 : 0)" js_isPreloaded ::
-        JSRef Internals -> JSString -> IO Bool
+        Internals -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isPreloaded Mozilla Internals.isPreloaded documentation> 
 isPreloaded ::
             (MonadIO m, ToJSString url) => Internals -> url -> m Bool
 isPreloaded self url
-  = liftIO (js_isPreloaded (unInternals self) (toJSString url))
+  = liftIO (js_isPreloaded (self) (toJSString url))
  
 foreign import javascript unsafe
         "($1[\"isLoadingFromMemoryCache\"]($2) ? 1 : 0)"
-        js_isLoadingFromMemoryCache ::
-        JSRef Internals -> JSString -> IO Bool
+        js_isLoadingFromMemoryCache :: Internals -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isLoadingFromMemoryCache Mozilla Internals.isLoadingFromMemoryCache documentation> 
 isLoadingFromMemoryCache ::
                          (MonadIO m, ToJSString url) => Internals -> url -> m Bool
 isLoadingFromMemoryCache self url
-  = liftIO
-      (js_isLoadingFromMemoryCache (unInternals self) (toJSString url))
+  = liftIO (js_isLoadingFromMemoryCache (self) (toJSString url))
  
 foreign import javascript unsafe "$1[\"xhrResponseSource\"]($2)"
         js_xhrResponseSource ::
-        JSRef Internals -> JSRef XMLHttpRequest -> IO JSString
+        Internals -> Nullable XMLHttpRequest -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.xhrResponseSource Mozilla Internals.xhrResponseSource documentation> 
 xhrResponseSource ::
@@ -281,52 +276,49 @@ xhrResponseSource ::
 xhrResponseSource self xhr
   = liftIO
       (fromJSString <$>
-         (js_xhrResponseSource (unInternals self)
-            (maybe jsNull pToJSRef xhr)))
+         (js_xhrResponseSource (self) (maybeToNullable xhr)))
  
 foreign import javascript unsafe "$1[\"clearMemoryCache\"]()"
-        js_clearMemoryCache :: JSRef Internals -> IO ()
+        js_clearMemoryCache :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.clearMemoryCache Mozilla Internals.clearMemoryCache documentation> 
 clearMemoryCache :: (MonadIO m) => Internals -> m ()
-clearMemoryCache self
-  = liftIO (js_clearMemoryCache (unInternals self))
+clearMemoryCache self = liftIO (js_clearMemoryCache (self))
  
 foreign import javascript unsafe
         "$1[\"pruneMemoryCacheToSize\"]($2)" js_pruneMemoryCacheToSize ::
-        JSRef Internals -> Int -> IO ()
+        Internals -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pruneMemoryCacheToSize Mozilla Internals.pruneMemoryCacheToSize documentation> 
 pruneMemoryCacheToSize :: (MonadIO m) => Internals -> Int -> m ()
 pruneMemoryCacheToSize self size
-  = liftIO (js_pruneMemoryCacheToSize (unInternals self) size)
+  = liftIO (js_pruneMemoryCacheToSize (self) size)
  
 foreign import javascript unsafe "$1[\"memoryCacheSize\"]()"
-        js_memoryCacheSize :: JSRef Internals -> IO Int
+        js_memoryCacheSize :: Internals -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.memoryCacheSize Mozilla Internals.memoryCacheSize documentation> 
 memoryCacheSize :: (MonadIO m) => Internals -> m Int
-memoryCacheSize self
-  = liftIO (js_memoryCacheSize (unInternals self))
+memoryCacheSize self = liftIO (js_memoryCacheSize (self))
  
 foreign import javascript unsafe "$1[\"clearPageCache\"]()"
-        js_clearPageCache :: JSRef Internals -> IO ()
+        js_clearPageCache :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.clearPageCache Mozilla Internals.clearPageCache documentation> 
 clearPageCache :: (MonadIO m) => Internals -> m ()
-clearPageCache self = liftIO (js_clearPageCache (unInternals self))
+clearPageCache self = liftIO (js_clearPageCache (self))
  
 foreign import javascript unsafe "$1[\"pageCacheSize\"]()"
-        js_pageCacheSize :: JSRef Internals -> IO Word
+        js_pageCacheSize :: Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pageCacheSize Mozilla Internals.pageCacheSize documentation> 
 pageCacheSize :: (MonadIO m) => Internals -> m Word
-pageCacheSize self = liftIO (js_pageCacheSize (unInternals self))
+pageCacheSize self = liftIO (js_pageCacheSize (self))
  
 foreign import javascript unsafe
         "$1[\"computedStyleIncludingVisitedInfo\"]($2)"
         js_computedStyleIncludingVisitedInfo ::
-        JSRef Internals -> JSRef Node -> IO (JSRef CSSStyleDeclaration)
+        Internals -> Nullable Node -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.computedStyleIncludingVisitedInfo Mozilla Internals.computedStyleIncludingVisitedInfo documentation> 
 computedStyleIncludingVisitedInfo ::
@@ -334,13 +326,13 @@ computedStyleIncludingVisitedInfo ::
                                     Internals -> Maybe node -> m (Maybe CSSStyleDeclaration)
 computedStyleIncludingVisitedInfo self node
   = liftIO
-      ((js_computedStyleIncludingVisitedInfo (unInternals self)
-          (maybe jsNull (unNode . toNode) node))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_computedStyleIncludingVisitedInfo (self)
+            (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"ensureShadowRoot\"]($2)"
         js_ensureShadowRoot ::
-        JSRef Internals -> JSRef Element -> IO (JSRef Node)
+        Internals -> Nullable Element -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.ensureShadowRoot Mozilla Internals.ensureShadowRoot documentation> 
 ensureShadowRoot ::
@@ -348,13 +340,13 @@ ensureShadowRoot ::
                    Internals -> Maybe host -> m (Maybe Node)
 ensureShadowRoot self host
   = liftIO
-      ((js_ensureShadowRoot (unInternals self)
-          (maybe jsNull (unElement . toElement) host))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_ensureShadowRoot (self)
+            (maybeToNullable (fmap toElement host))))
  
 foreign import javascript unsafe "$1[\"createShadowRoot\"]($2)"
         js_createShadowRoot ::
-        JSRef Internals -> JSRef Element -> IO (JSRef Node)
+        Internals -> Nullable Element -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.createShadowRoot Mozilla Internals.createShadowRoot documentation> 
 createShadowRoot ::
@@ -362,13 +354,13 @@ createShadowRoot ::
                    Internals -> Maybe host -> m (Maybe Node)
 createShadowRoot self host
   = liftIO
-      ((js_createShadowRoot (unInternals self)
-          (maybe jsNull (unElement . toElement) host))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createShadowRoot (self)
+            (maybeToNullable (fmap toElement host))))
  
 foreign import javascript unsafe "$1[\"shadowRoot\"]($2)"
         js_shadowRoot ::
-        JSRef Internals -> JSRef Element -> IO (JSRef Node)
+        Internals -> Nullable Element -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.shadowRoot Mozilla Internals.shadowRoot documentation> 
 shadowRoot ::
@@ -376,12 +368,11 @@ shadowRoot ::
              Internals -> Maybe host -> m (Maybe Node)
 shadowRoot self host
   = liftIO
-      ((js_shadowRoot (unInternals self)
-          (maybe jsNull (unElement . toElement) host))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_shadowRoot (self) (maybeToNullable (fmap toElement host))))
  
 foreign import javascript unsafe "$1[\"shadowRootType\"]($2)"
-        js_shadowRootType :: JSRef Internals -> JSRef Node -> IO JSString
+        js_shadowRootType :: Internals -> Nullable Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.shadowRootType Mozilla Internals.shadowRootType documentation> 
 shadowRootType ::
@@ -390,12 +381,11 @@ shadowRootType ::
 shadowRootType self root
   = liftIO
       (fromJSString <$>
-         (js_shadowRootType (unInternals self)
-            (maybe jsNull (unNode . toNode) root)))
+         (js_shadowRootType (self) (maybeToNullable (fmap toNode root))))
  
 foreign import javascript unsafe "$1[\"includerFor\"]($2)"
         js_includerFor ::
-        JSRef Internals -> JSRef Node -> IO (JSRef Element)
+        Internals -> Nullable Node -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.includerFor Mozilla Internals.includerFor documentation> 
 includerFor ::
@@ -403,13 +393,11 @@ includerFor ::
               Internals -> Maybe node -> m (Maybe Element)
 includerFor self node
   = liftIO
-      ((js_includerFor (unInternals self)
-          (maybe jsNull (unNode . toNode) node))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_includerFor (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"shadowPseudoId\"]($2)"
-        js_shadowPseudoId ::
-        JSRef Internals -> JSRef Element -> IO JSString
+        js_shadowPseudoId :: Internals -> Nullable Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.shadowPseudoId Mozilla Internals.shadowPseudoId documentation> 
 shadowPseudoId ::
@@ -418,12 +406,12 @@ shadowPseudoId ::
 shadowPseudoId self element
   = liftIO
       (fromJSString <$>
-         (js_shadowPseudoId (unInternals self)
-            (maybe jsNull (unElement . toElement) element)))
+         (js_shadowPseudoId (self)
+            (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe
         "$1[\"setShadowPseudoId\"]($2, $3)" js_setShadowPseudoId ::
-        JSRef Internals -> JSRef Element -> JSString -> IO ()
+        Internals -> Nullable Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setShadowPseudoId Mozilla Internals.setShadowPseudoId documentation> 
 setShadowPseudoId ::
@@ -431,13 +419,13 @@ setShadowPseudoId ::
                     Internals -> Maybe element -> id -> m ()
 setShadowPseudoId self element id
   = liftIO
-      (js_setShadowPseudoId (unInternals self)
-         (maybe jsNull (unElement . toElement) element)
+      (js_setShadowPseudoId (self)
+         (maybeToNullable (fmap toElement element))
          (toJSString id))
  
 foreign import javascript unsafe "$1[\"treeScopeRootNode\"]($2)"
         js_treeScopeRootNode ::
-        JSRef Internals -> JSRef Node -> IO (JSRef Node)
+        Internals -> Nullable Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.treeScopeRootNode Mozilla Internals.treeScopeRootNode documentation> 
 treeScopeRootNode ::
@@ -445,13 +433,12 @@ treeScopeRootNode ::
                     Internals -> Maybe node -> m (Maybe Node)
 treeScopeRootNode self node
   = liftIO
-      ((js_treeScopeRootNode (unInternals self)
-          (maybe jsNull (unNode . toNode) node))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_treeScopeRootNode (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"parentTreeScope\"]($2)"
         js_parentTreeScope ::
-        JSRef Internals -> JSRef Node -> IO (JSRef Node)
+        Internals -> Nullable Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.parentTreeScope Mozilla Internals.parentTreeScope documentation> 
 parentTreeScope ::
@@ -459,60 +446,55 @@ parentTreeScope ::
                   Internals -> Maybe node -> m (Maybe Node)
 parentTreeScope self node
   = liftIO
-      ((js_parentTreeScope (unInternals self)
-          (maybe jsNull (unNode . toNode) node))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_parentTreeScope (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe
         "$1[\"lastSpatialNavigationCandidateCount\"]()"
-        js_lastSpatialNavigationCandidateCount ::
-        JSRef Internals -> IO Word
+        js_lastSpatialNavigationCandidateCount :: Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.lastSpatialNavigationCandidateCount Mozilla Internals.lastSpatialNavigationCandidateCount documentation> 
 lastSpatialNavigationCandidateCount ::
                                     (MonadIO m) => Internals -> m Word
 lastSpatialNavigationCandidateCount self
-  = liftIO
-      (js_lastSpatialNavigationCandidateCount (unInternals self))
+  = liftIO (js_lastSpatialNavigationCandidateCount (self))
  
 foreign import javascript unsafe
         "$1[\"numberOfActiveAnimations\"]()" js_numberOfActiveAnimations ::
-        JSRef Internals -> IO Word
+        Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.numberOfActiveAnimations Mozilla Internals.numberOfActiveAnimations documentation> 
 numberOfActiveAnimations :: (MonadIO m) => Internals -> m Word
 numberOfActiveAnimations self
-  = liftIO (js_numberOfActiveAnimations (unInternals self))
+  = liftIO (js_numberOfActiveAnimations (self))
  
 foreign import javascript unsafe "$1[\"suspendAnimations\"]()"
-        js_suspendAnimations :: JSRef Internals -> IO ()
+        js_suspendAnimations :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.suspendAnimations Mozilla Internals.suspendAnimations documentation> 
 suspendAnimations :: (MonadIO m) => Internals -> m ()
-suspendAnimations self
-  = liftIO (js_suspendAnimations (unInternals self))
+suspendAnimations self = liftIO (js_suspendAnimations (self))
  
 foreign import javascript unsafe "$1[\"resumeAnimations\"]()"
-        js_resumeAnimations :: JSRef Internals -> IO ()
+        js_resumeAnimations :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.resumeAnimations Mozilla Internals.resumeAnimations documentation> 
 resumeAnimations :: (MonadIO m) => Internals -> m ()
-resumeAnimations self
-  = liftIO (js_resumeAnimations (unInternals self))
+resumeAnimations self = liftIO (js_resumeAnimations (self))
  
 foreign import javascript unsafe
         "($1[\"animationsAreSuspended\"]() ? 1 : 0)"
-        js_animationsAreSuspended :: JSRef Internals -> IO Bool
+        js_animationsAreSuspended :: Internals -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.animationsAreSuspended Mozilla Internals.animationsAreSuspended documentation> 
 animationsAreSuspended :: (MonadIO m) => Internals -> m Bool
 animationsAreSuspended self
-  = liftIO (js_animationsAreSuspended (unInternals self))
+  = liftIO (js_animationsAreSuspended (self))
  
 foreign import javascript unsafe
         "($1[\"pauseAnimationAtTimeOnElement\"]($2,\n$3, $4) ? 1 : 0)"
         js_pauseAnimationAtTimeOnElement ::
-        JSRef Internals -> JSString -> Double -> JSRef Element -> IO Bool
+        Internals -> JSString -> Double -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pauseAnimationAtTimeOnElement Mozilla Internals.pauseAnimationAtTimeOnElement documentation> 
 pauseAnimationAtTimeOnElement ::
@@ -520,16 +502,15 @@ pauseAnimationAtTimeOnElement ::
                                 Internals -> animationName -> Double -> Maybe element -> m Bool
 pauseAnimationAtTimeOnElement self animationName pauseTime element
   = liftIO
-      (js_pauseAnimationAtTimeOnElement (unInternals self)
-         (toJSString animationName)
+      (js_pauseAnimationAtTimeOnElement (self) (toJSString animationName)
          pauseTime
-         (maybe jsNull (unElement . toElement) element))
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "($1[\"pauseAnimationAtTimeOnPseudoElement\"]($2,\n$3, $4, $5) ? 1 : 0)"
         js_pauseAnimationAtTimeOnPseudoElement ::
-        JSRef Internals ->
-          JSString -> Double -> JSRef Element -> JSString -> IO Bool
+        Internals ->
+          JSString -> Double -> Nullable Element -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pauseAnimationAtTimeOnPseudoElement Mozilla Internals.pauseAnimationAtTimeOnPseudoElement documentation> 
 pauseAnimationAtTimeOnPseudoElement ::
@@ -541,16 +522,16 @@ pauseAnimationAtTimeOnPseudoElement ::
 pauseAnimationAtTimeOnPseudoElement self animationName pauseTime
   element pseudoId
   = liftIO
-      (js_pauseAnimationAtTimeOnPseudoElement (unInternals self)
+      (js_pauseAnimationAtTimeOnPseudoElement (self)
          (toJSString animationName)
          pauseTime
-         (maybe jsNull (unElement . toElement) element)
+         (maybeToNullable (fmap toElement element))
          (toJSString pseudoId))
  
 foreign import javascript unsafe
         "($1[\"pauseTransitionAtTimeOnElement\"]($2,\n$3, $4) ? 1 : 0)"
         js_pauseTransitionAtTimeOnElement ::
-        JSRef Internals -> JSString -> Double -> JSRef Element -> IO Bool
+        Internals -> JSString -> Double -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pauseTransitionAtTimeOnElement Mozilla Internals.pauseTransitionAtTimeOnElement documentation> 
 pauseTransitionAtTimeOnElement ::
@@ -558,16 +539,15 @@ pauseTransitionAtTimeOnElement ::
                                  Internals -> propertyName -> Double -> Maybe element -> m Bool
 pauseTransitionAtTimeOnElement self propertyName pauseTime element
   = liftIO
-      (js_pauseTransitionAtTimeOnElement (unInternals self)
-         (toJSString propertyName)
+      (js_pauseTransitionAtTimeOnElement (self) (toJSString propertyName)
          pauseTime
-         (maybe jsNull (unElement . toElement) element))
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "($1[\"pauseTransitionAtTimeOnPseudoElement\"]($2,\n$3, $4, $5) ? 1 : 0)"
         js_pauseTransitionAtTimeOnPseudoElement ::
-        JSRef Internals ->
-          JSString -> Double -> JSRef Element -> JSString -> IO Bool
+        Internals ->
+          JSString -> Double -> Nullable Element -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pauseTransitionAtTimeOnPseudoElement Mozilla Internals.pauseTransitionAtTimeOnPseudoElement documentation> 
 pauseTransitionAtTimeOnPseudoElement ::
@@ -578,26 +558,24 @@ pauseTransitionAtTimeOnPseudoElement ::
 pauseTransitionAtTimeOnPseudoElement self property pauseTime
   element pseudoId
   = liftIO
-      (js_pauseTransitionAtTimeOnPseudoElement (unInternals self)
+      (js_pauseTransitionAtTimeOnPseudoElement (self)
          (toJSString property)
          pauseTime
-         (maybe jsNull (unElement . toElement) element)
+         (maybeToNullable (fmap toElement element))
          (toJSString pseudoId))
  
 foreign import javascript unsafe "($1[\"attached\"]($2) ? 1 : 0)"
-        js_attached :: JSRef Internals -> JSRef Node -> IO Bool
+        js_attached :: Internals -> Nullable Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.attached Mozilla Internals.attached documentation> 
 attached ::
          (MonadIO m, IsNode node) => Internals -> Maybe node -> m Bool
 attached self node
-  = liftIO
-      (js_attached (unInternals self)
-         (maybe jsNull (unNode . toNode) node))
+  = liftIO (js_attached (self) (maybeToNullable (fmap toNode node)))
  
 foreign import javascript unsafe "$1[\"visiblePlaceholder\"]($2)"
         js_visiblePlaceholder ::
-        JSRef Internals -> JSRef Element -> IO JSString
+        Internals -> Nullable Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.visiblePlaceholder Mozilla Internals.visiblePlaceholder documentation> 
 visiblePlaceholder ::
@@ -606,13 +584,13 @@ visiblePlaceholder ::
 visiblePlaceholder self element
   = liftIO
       (fromJSString <$>
-         (js_visiblePlaceholder (unInternals self)
-            (maybe jsNull (unElement . toElement) element)))
+         (js_visiblePlaceholder (self)
+            (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe
         "$1[\"selectColorInColorChooser\"]($2,\n$3)"
         js_selectColorInColorChooser ::
-        JSRef Internals -> JSRef Element -> JSString -> IO ()
+        Internals -> Nullable Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.selectColorInColorChooser Mozilla Internals.selectColorInColorChooser documentation> 
 selectColorInColorChooser ::
@@ -620,27 +598,26 @@ selectColorInColorChooser ::
                             Internals -> Maybe element -> colorValue -> m ()
 selectColorInColorChooser self element colorValue
   = liftIO
-      (js_selectColorInColorChooser (unInternals self)
-         (maybe jsNull (unElement . toElement) element)
+      (js_selectColorInColorChooser (self)
+         (maybeToNullable (fmap toElement element))
          (toJSString colorValue))
  
 foreign import javascript unsafe
         "$1[\"formControlStateOfPreviousHistoryItem\"]()"
-        js_formControlStateOfPreviousHistoryItem ::
-        JSRef Internals -> IO (JSRef [result])
+        js_formControlStateOfPreviousHistoryItem :: Internals -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.formControlStateOfPreviousHistoryItem Mozilla Internals.formControlStateOfPreviousHistoryItem documentation> 
 formControlStateOfPreviousHistoryItem ::
                                       (MonadIO m, FromJSString result) => Internals -> m [result]
 formControlStateOfPreviousHistoryItem self
   = liftIO
-      ((js_formControlStateOfPreviousHistoryItem (unInternals self)) >>=
+      ((js_formControlStateOfPreviousHistoryItem (self)) >>=
          fromJSRefUnchecked)
  
 foreign import javascript unsafe
         "$1[\"setFormControlStateOfPreviousHistoryItem\"]($2)"
         js_setFormControlStateOfPreviousHistoryItem ::
-        JSRef Internals -> JSRef [values] -> IO ()
+        Internals -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setFormControlStateOfPreviousHistoryItem Mozilla Internals.setFormControlStateOfPreviousHistoryItem documentation> 
 setFormControlStateOfPreviousHistoryItem ::
@@ -650,22 +627,20 @@ setFormControlStateOfPreviousHistoryItem self values
   = liftIO
       (toJSRef values >>=
          \ values' ->
-           js_setFormControlStateOfPreviousHistoryItem (unInternals self)
-             values')
+           js_setFormControlStateOfPreviousHistoryItem (self) values')
  
 foreign import javascript unsafe "$1[\"absoluteCaretBounds\"]()"
-        js_absoluteCaretBounds :: JSRef Internals -> IO (JSRef ClientRect)
+        js_absoluteCaretBounds :: Internals -> IO (Nullable ClientRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.absoluteCaretBounds Mozilla Internals.absoluteCaretBounds documentation> 
 absoluteCaretBounds ::
                     (MonadIO m) => Internals -> m (Maybe ClientRect)
 absoluteCaretBounds self
-  = liftIO
-      ((js_absoluteCaretBounds (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_absoluteCaretBounds (self)))
  
 foreign import javascript unsafe "$1[\"boundingBox\"]($2)"
         js_boundingBox ::
-        JSRef Internals -> JSRef Element -> IO (JSRef ClientRect)
+        Internals -> Nullable Element -> IO (Nullable ClientRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.boundingBox Mozilla Internals.boundingBox documentation> 
 boundingBox ::
@@ -673,35 +648,32 @@ boundingBox ::
               Internals -> Maybe element -> m (Maybe ClientRect)
 boundingBox self element
   = liftIO
-      ((js_boundingBox (unInternals self)
-          (maybe jsNull (unElement . toElement) element))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_boundingBox (self) (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe
         "$1[\"inspectorHighlightRects\"]()" js_inspectorHighlightRects ::
-        JSRef Internals -> IO (JSRef ClientRectList)
+        Internals -> IO (Nullable ClientRectList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.inspectorHighlightRects Mozilla Internals.inspectorHighlightRects documentation> 
 inspectorHighlightRects ::
                         (MonadIO m) => Internals -> m (Maybe ClientRectList)
 inspectorHighlightRects self
-  = liftIO
-      ((js_inspectorHighlightRects (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_inspectorHighlightRects (self)))
  
 foreign import javascript unsafe
         "$1[\"inspectorHighlightObject\"]()" js_inspectorHighlightObject ::
-        JSRef Internals -> IO JSString
+        Internals -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.inspectorHighlightObject Mozilla Internals.inspectorHighlightObject documentation> 
 inspectorHighlightObject ::
                          (MonadIO m, FromJSString result) => Internals -> m result
 inspectorHighlightObject self
-  = liftIO
-      (fromJSString <$> (js_inspectorHighlightObject (unInternals self)))
+  = liftIO (fromJSString <$> (js_inspectorHighlightObject (self)))
  
 foreign import javascript unsafe
         "$1[\"markerCountForNode\"]($2, $3)" js_markerCountForNode ::
-        JSRef Internals -> JSRef Node -> JSString -> IO Word
+        Internals -> Nullable Node -> JSString -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.markerCountForNode Mozilla Internals.markerCountForNode documentation> 
 markerCountForNode ::
@@ -709,14 +681,13 @@ markerCountForNode ::
                      Internals -> Maybe node -> markerType -> m Word
 markerCountForNode self node markerType
   = liftIO
-      (js_markerCountForNode (unInternals self)
-         (maybe jsNull (unNode . toNode) node)
+      (js_markerCountForNode (self) (maybeToNullable (fmap toNode node))
          (toJSString markerType))
  
 foreign import javascript unsafe
         "$1[\"markerRangeForNode\"]($2, $3,\n$4)" js_markerRangeForNode ::
-        JSRef Internals ->
-          JSRef Node -> JSString -> Word -> IO (JSRef Range)
+        Internals ->
+          Nullable Node -> JSString -> Word -> IO (Nullable Range)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.markerRangeForNode Mozilla Internals.markerRangeForNode documentation> 
 markerRangeForNode ::
@@ -724,16 +695,15 @@ markerRangeForNode ::
                      Internals -> Maybe node -> markerType -> Word -> m (Maybe Range)
 markerRangeForNode self node markerType index
   = liftIO
-      ((js_markerRangeForNode (unInternals self)
-          (maybe jsNull (unNode . toNode) node)
-          (toJSString markerType)
-          index)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_markerRangeForNode (self) (maybeToNullable (fmap toNode node))
+            (toJSString markerType)
+            index))
  
 foreign import javascript unsafe
         "$1[\"markerDescriptionForNode\"]($2,\n$3, $4)"
         js_markerDescriptionForNode ::
-        JSRef Internals -> JSRef Node -> JSString -> Word -> IO JSString
+        Internals -> Nullable Node -> JSString -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.markerDescriptionForNode Mozilla Internals.markerDescriptionForNode documentation> 
 markerDescriptionForNode ::
@@ -743,71 +713,64 @@ markerDescriptionForNode ::
 markerDescriptionForNode self node markerType index
   = liftIO
       (fromJSString <$>
-         (js_markerDescriptionForNode (unInternals self)
-            (maybe jsNull (unNode . toNode) node)
+         (js_markerDescriptionForNode (self)
+            (maybeToNullable (fmap toNode node))
             (toJSString markerType)
             index))
  
 foreign import javascript unsafe
         "$1[\"addTextMatchMarker\"]($2, $3)" js_addTextMatchMarker ::
-        JSRef Internals -> JSRef Range -> Bool -> IO ()
+        Internals -> Nullable Range -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.addTextMatchMarker Mozilla Internals.addTextMatchMarker documentation> 
 addTextMatchMarker ::
                    (MonadIO m) => Internals -> Maybe Range -> Bool -> m ()
 addTextMatchMarker self range isActive
   = liftIO
-      (js_addTextMatchMarker (unInternals self)
-         (maybe jsNull pToJSRef range)
-         isActive)
+      (js_addTextMatchMarker (self) (maybeToNullable range) isActive)
  
 foreign import javascript unsafe
         "$1[\"setMarkedTextMatchesAreHighlighted\"]($2)"
-        js_setMarkedTextMatchesAreHighlighted ::
-        JSRef Internals -> Bool -> IO ()
+        js_setMarkedTextMatchesAreHighlighted :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setMarkedTextMatchesAreHighlighted Mozilla Internals.setMarkedTextMatchesAreHighlighted documentation> 
 setMarkedTextMatchesAreHighlighted ::
                                    (MonadIO m) => Internals -> Bool -> m ()
 setMarkedTextMatchesAreHighlighted self flag
-  = liftIO
-      (js_setMarkedTextMatchesAreHighlighted (unInternals self) flag)
+  = liftIO (js_setMarkedTextMatchesAreHighlighted (self) flag)
  
 foreign import javascript unsafe "$1[\"invalidateFontCache\"]()"
-        js_invalidateFontCache :: JSRef Internals -> IO ()
+        js_invalidateFontCache :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.invalidateFontCache Mozilla Internals.invalidateFontCache documentation> 
 invalidateFontCache :: (MonadIO m) => Internals -> m ()
-invalidateFontCache self
-  = liftIO (js_invalidateFontCache (unInternals self))
+invalidateFontCache self = liftIO (js_invalidateFontCache (self))
  
 foreign import javascript unsafe
         "$1[\"setScrollViewPosition\"]($2,\n$3)" js_setScrollViewPosition
-        :: JSRef Internals -> Int -> Int -> IO ()
+        :: Internals -> Int -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setScrollViewPosition Mozilla Internals.setScrollViewPosition documentation> 
 setScrollViewPosition ::
                       (MonadIO m) => Internals -> Int -> Int -> m ()
 setScrollViewPosition self x y
-  = liftIO (js_setScrollViewPosition (unInternals self) x y)
+  = liftIO (js_setScrollViewPosition (self) x y)
  
 foreign import javascript unsafe
         "$1[\"setPagination\"]($2, $3, $4)" js_setPagination ::
-        JSRef Internals -> JSString -> Int -> Int -> IO ()
+        Internals -> JSString -> Int -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setPagination Mozilla Internals.setPagination documentation> 
 setPagination ::
               (MonadIO m, ToJSString mode) =>
                 Internals -> mode -> Int -> Int -> m ()
 setPagination self mode gap pageLength
-  = liftIO
-      (js_setPagination (unInternals self) (toJSString mode) gap
-         pageLength)
+  = liftIO (js_setPagination (self) (toJSString mode) gap pageLength)
  
 foreign import javascript unsafe
         "$1[\"configurationForViewport\"]($2,\n$3, $4, $5, $6)"
         js_configurationForViewport ::
-        JSRef Internals -> Float -> Int -> Int -> Int -> Int -> IO JSString
+        Internals -> Float -> Int -> Int -> Int -> Int -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.configurationForViewport Mozilla Internals.configurationForViewport documentation> 
 configurationForViewport ::
@@ -817,8 +780,7 @@ configurationForViewport self devicePixelRatio deviceWidth
   deviceHeight availableWidth availableHeight
   = liftIO
       (fromJSString <$>
-         (js_configurationForViewport (unInternals self) devicePixelRatio
-            deviceWidth
+         (js_configurationForViewport (self) devicePixelRatio deviceWidth
             deviceHeight
             availableWidth
             availableHeight))
@@ -826,7 +788,7 @@ configurationForViewport self devicePixelRatio deviceWidth
 foreign import javascript unsafe
         "($1[\"wasLastChangeUserEdit\"]($2) ? 1 : 0)"
         js_wasLastChangeUserEdit ::
-        JSRef Internals -> JSRef Element -> IO Bool
+        Internals -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.wasLastChangeUserEdit Mozilla Internals.wasLastChangeUserEdit documentation> 
 wasLastChangeUserEdit ::
@@ -834,13 +796,13 @@ wasLastChangeUserEdit ::
                         Internals -> Maybe textField -> m Bool
 wasLastChangeUserEdit self textField
   = liftIO
-      (js_wasLastChangeUserEdit (unInternals self)
-         (maybe jsNull (unElement . toElement) textField))
+      (js_wasLastChangeUserEdit (self)
+         (maybeToNullable (fmap toElement textField)))
  
 foreign import javascript unsafe
         "($1[\"elementShouldAutoComplete\"]($2) ? 1 : 0)"
         js_elementShouldAutoComplete ::
-        JSRef Internals -> JSRef Element -> IO Bool
+        Internals -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.elementShouldAutoComplete Mozilla Internals.elementShouldAutoComplete documentation> 
 elementShouldAutoComplete ::
@@ -848,12 +810,12 @@ elementShouldAutoComplete ::
                             Internals -> Maybe inputElement -> m Bool
 elementShouldAutoComplete self inputElement
   = liftIO
-      (js_elementShouldAutoComplete (unInternals self)
-         (maybe jsNull (unElement . toElement) inputElement))
+      (js_elementShouldAutoComplete (self)
+         (maybeToNullable (fmap toElement inputElement)))
  
 foreign import javascript unsafe "$1[\"setEditingValue\"]($2, $3)"
         js_setEditingValue ::
-        JSRef Internals -> JSRef Element -> JSString -> IO ()
+        Internals -> Nullable Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setEditingValue Mozilla Internals.setEditingValue documentation> 
 setEditingValue ::
@@ -861,13 +823,12 @@ setEditingValue ::
                   Internals -> Maybe inputElement -> value -> m ()
 setEditingValue self inputElement value
   = liftIO
-      (js_setEditingValue (unInternals self)
-         (maybe jsNull (unElement . toElement) inputElement)
+      (js_setEditingValue (self)
+         (maybeToNullable (fmap toElement inputElement))
          (toJSString value))
  
 foreign import javascript unsafe "$1[\"setAutofilled\"]($2, $3)"
-        js_setAutofilled ::
-        JSRef Internals -> JSRef Element -> Bool -> IO ()
+        js_setAutofilled :: Internals -> Nullable Element -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setAutofilled Mozilla Internals.setAutofilled documentation> 
 setAutofilled ::
@@ -875,13 +836,13 @@ setAutofilled ::
                 Internals -> Maybe inputElement -> Bool -> m ()
 setAutofilled self inputElement enabled
   = liftIO
-      (js_setAutofilled (unInternals self)
-         (maybe jsNull (unElement . toElement) inputElement)
+      (js_setAutofilled (self)
+         (maybeToNullable (fmap toElement inputElement))
          enabled)
  
 foreign import javascript unsafe
         "$1[\"countMatchesForText\"]($2,\n$3, $4)" js_countMatchesForText
-        :: JSRef Internals -> JSString -> Word -> JSString -> IO Word
+        :: Internals -> JSString -> Word -> JSString -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.countMatchesForText Mozilla Internals.countMatchesForText documentation> 
 countMatchesForText ::
@@ -889,23 +850,20 @@ countMatchesForText ::
                       Internals -> text -> Word -> markMatches -> m Word
 countMatchesForText self text findOptions markMatches
   = liftIO
-      (js_countMatchesForText (unInternals self) (toJSString text)
-         findOptions
+      (js_countMatchesForText (self) (toJSString text) findOptions
          (toJSString markMatches))
  
 foreign import javascript unsafe "$1[\"paintControlTints\"]()"
-        js_paintControlTints :: JSRef Internals -> IO ()
+        js_paintControlTints :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.paintControlTints Mozilla Internals.paintControlTints documentation> 
 paintControlTints :: (MonadIO m) => Internals -> m ()
-paintControlTints self
-  = liftIO (js_paintControlTints (unInternals self))
+paintControlTints self = liftIO (js_paintControlTints (self))
  
 foreign import javascript unsafe
         "$1[\"scrollElementToRect\"]($2,\n$3, $4, $5, $6)"
         js_scrollElementToRect ::
-        JSRef Internals ->
-          JSRef Element -> Int -> Int -> Int -> Int -> IO ()
+        Internals -> Nullable Element -> Int -> Int -> Int -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.scrollElementToRect Mozilla Internals.scrollElementToRect documentation> 
 scrollElementToRect ::
@@ -913,8 +871,8 @@ scrollElementToRect ::
                       Internals -> Maybe element -> Int -> Int -> Int -> Int -> m ()
 scrollElementToRect self element x y w h
   = liftIO
-      (js_scrollElementToRect (unInternals self)
-         (maybe jsNull (unElement . toElement) element)
+      (js_scrollElementToRect (self)
+         (maybeToNullable (fmap toElement element))
          x
          y
          w
@@ -923,7 +881,7 @@ scrollElementToRect self element x y w h
 foreign import javascript unsafe
         "$1[\"rangeFromLocationAndLength\"]($2,\n$3, $4)"
         js_rangeFromLocationAndLength ::
-        JSRef Internals -> JSRef Element -> Int -> Int -> IO (JSRef Range)
+        Internals -> Nullable Element -> Int -> Int -> IO (Nullable Range)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.rangeFromLocationAndLength Mozilla Internals.rangeFromLocationAndLength documentation> 
 rangeFromLocationAndLength ::
@@ -931,15 +889,15 @@ rangeFromLocationAndLength ::
                              Internals -> Maybe scope -> Int -> Int -> m (Maybe Range)
 rangeFromLocationAndLength self scope rangeLocation rangeLength
   = liftIO
-      ((js_rangeFromLocationAndLength (unInternals self)
-          (maybe jsNull (unElement . toElement) scope)
-          rangeLocation
-          rangeLength)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_rangeFromLocationAndLength (self)
+            (maybeToNullable (fmap toElement scope))
+            rangeLocation
+            rangeLength))
  
 foreign import javascript unsafe
         "$1[\"locationFromRange\"]($2, $3)" js_locationFromRange ::
-        JSRef Internals -> JSRef Element -> JSRef Range -> IO Word
+        Internals -> Nullable Element -> Nullable Range -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.locationFromRange Mozilla Internals.locationFromRange documentation> 
 locationFromRange ::
@@ -947,13 +905,13 @@ locationFromRange ::
                     Internals -> Maybe scope -> Maybe Range -> m Word
 locationFromRange self scope range
   = liftIO
-      (js_locationFromRange (unInternals self)
-         (maybe jsNull (unElement . toElement) scope)
-         (maybe jsNull pToJSRef range))
+      (js_locationFromRange (self)
+         (maybeToNullable (fmap toElement scope))
+         (maybeToNullable range))
  
 foreign import javascript unsafe "$1[\"lengthFromRange\"]($2, $3)"
         js_lengthFromRange ::
-        JSRef Internals -> JSRef Element -> JSRef Range -> IO Word
+        Internals -> Nullable Element -> Nullable Range -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.lengthFromRange Mozilla Internals.lengthFromRange documentation> 
 lengthFromRange ::
@@ -961,12 +919,11 @@ lengthFromRange ::
                   Internals -> Maybe scope -> Maybe Range -> m Word
 lengthFromRange self scope range
   = liftIO
-      (js_lengthFromRange (unInternals self)
-         (maybe jsNull (unElement . toElement) scope)
-         (maybe jsNull pToJSRef range))
+      (js_lengthFromRange (self) (maybeToNullable (fmap toElement scope))
+         (maybeToNullable range))
  
 foreign import javascript unsafe "$1[\"rangeAsText\"]($2)"
-        js_rangeAsText :: JSRef Internals -> JSRef Range -> IO JSString
+        js_rangeAsText :: Internals -> Nullable Range -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.rangeAsText Mozilla Internals.rangeAsText documentation> 
 rangeAsText ::
@@ -974,12 +931,11 @@ rangeAsText ::
               Internals -> Maybe Range -> m result
 rangeAsText self range
   = liftIO
-      (fromJSString <$>
-         (js_rangeAsText (unInternals self) (maybe jsNull pToJSRef range)))
+      (fromJSString <$> (js_rangeAsText (self) (maybeToNullable range)))
  
 foreign import javascript unsafe "$1[\"subrange\"]($2, $3, $4)"
         js_subrange ::
-        JSRef Internals -> JSRef Range -> Int -> Int -> IO (JSRef Range)
+        Internals -> Nullable Range -> Int -> Int -> IO (Nullable Range)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.subrange Mozilla Internals.subrange documentation> 
 subrange ::
@@ -987,67 +943,64 @@ subrange ::
            Internals -> Maybe Range -> Int -> Int -> m (Maybe Range)
 subrange self range rangeLocation rangeLength
   = liftIO
-      ((js_subrange (unInternals self) (maybe jsNull pToJSRef range)
-          rangeLocation
-          rangeLength)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_subrange (self) (maybeToNullable range) rangeLocation
+            rangeLength))
  
 foreign import javascript unsafe
         "$1[\"rangeForDictionaryLookupAtLocation\"]($2,\n$3)"
         js_rangeForDictionaryLookupAtLocation ::
-        JSRef Internals -> Int -> Int -> IO (JSRef Range)
+        Internals -> Int -> Int -> IO (Nullable Range)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.rangeForDictionaryLookupAtLocation Mozilla Internals.rangeForDictionaryLookupAtLocation documentation> 
 rangeForDictionaryLookupAtLocation ::
                                    (MonadIO m) => Internals -> Int -> Int -> m (Maybe Range)
 rangeForDictionaryLookupAtLocation self x y
   = liftIO
-      ((js_rangeForDictionaryLookupAtLocation (unInternals self) x y) >>=
-         fromJSRef)
+      (nullableToMaybe <$>
+         (js_rangeForDictionaryLookupAtLocation (self) x y))
  
 foreign import javascript unsafe
         "$1[\"setDelegatesScrolling\"]($2)" js_setDelegatesScrolling ::
-        JSRef Internals -> Bool -> IO ()
+        Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setDelegatesScrolling Mozilla Internals.setDelegatesScrolling documentation> 
 setDelegatesScrolling :: (MonadIO m) => Internals -> Bool -> m ()
 setDelegatesScrolling self enabled
-  = liftIO (js_setDelegatesScrolling (unInternals self) enabled)
+  = liftIO (js_setDelegatesScrolling (self) enabled)
  
 foreign import javascript unsafe
         "$1[\"lastSpellCheckRequestSequence\"]()"
-        js_lastSpellCheckRequestSequence :: JSRef Internals -> IO Int
+        js_lastSpellCheckRequestSequence :: Internals -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.lastSpellCheckRequestSequence Mozilla Internals.lastSpellCheckRequestSequence documentation> 
 lastSpellCheckRequestSequence :: (MonadIO m) => Internals -> m Int
 lastSpellCheckRequestSequence self
-  = liftIO (js_lastSpellCheckRequestSequence (unInternals self))
+  = liftIO (js_lastSpellCheckRequestSequence (self))
  
 foreign import javascript unsafe
         "$1[\"lastSpellCheckProcessedSequence\"]()"
-        js_lastSpellCheckProcessedSequence :: JSRef Internals -> IO Int
+        js_lastSpellCheckProcessedSequence :: Internals -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.lastSpellCheckProcessedSequence Mozilla Internals.lastSpellCheckProcessedSequence documentation> 
 lastSpellCheckProcessedSequence ::
                                 (MonadIO m) => Internals -> m Int
 lastSpellCheckProcessedSequence self
-  = liftIO (js_lastSpellCheckProcessedSequence (unInternals self))
+  = liftIO (js_lastSpellCheckProcessedSequence (self))
  
 foreign import javascript unsafe "$1[\"userPreferredLanguages\"]()"
-        js_userPreferredLanguages :: JSRef Internals -> IO (JSRef [result])
+        js_userPreferredLanguages :: Internals -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.userPreferredLanguages Mozilla Internals.userPreferredLanguages documentation> 
 userPreferredLanguages ::
                        (MonadIO m, FromJSString result) => Internals -> m [result]
 userPreferredLanguages self
   = liftIO
-      ((js_userPreferredLanguages (unInternals self)) >>=
-         fromJSRefUnchecked)
+      ((js_userPreferredLanguages (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
         "$1[\"setUserPreferredLanguages\"]($2)"
-        js_setUserPreferredLanguages ::
-        JSRef Internals -> JSRef [languages] -> IO ()
+        js_setUserPreferredLanguages :: Internals -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setUserPreferredLanguages Mozilla Internals.setUserPreferredLanguages documentation> 
 setUserPreferredLanguages ::
@@ -1056,34 +1009,34 @@ setUserPreferredLanguages ::
 setUserPreferredLanguages self languages
   = liftIO
       (toJSRef languages >>=
-         \ languages' ->
-           js_setUserPreferredLanguages (unInternals self) languages')
+         \ languages' -> js_setUserPreferredLanguages (self) languages')
  
 foreign import javascript unsafe "$1[\"wheelEventHandlerCount\"]()"
-        js_wheelEventHandlerCount :: JSRef Internals -> IO Word
+        js_wheelEventHandlerCount :: Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.wheelEventHandlerCount Mozilla Internals.wheelEventHandlerCount documentation> 
 wheelEventHandlerCount :: (MonadIO m) => Internals -> m Word
 wheelEventHandlerCount self
-  = liftIO (js_wheelEventHandlerCount (unInternals self))
+  = liftIO (js_wheelEventHandlerCount (self))
  
 foreign import javascript unsafe "$1[\"touchEventHandlerCount\"]()"
-        js_touchEventHandlerCount :: JSRef Internals -> IO Word
+        js_touchEventHandlerCount :: Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.touchEventHandlerCount Mozilla Internals.touchEventHandlerCount documentation> 
 touchEventHandlerCount :: (MonadIO m) => Internals -> m Word
 touchEventHandlerCount self
-  = liftIO (js_touchEventHandlerCount (unInternals self))
+  = liftIO (js_touchEventHandlerCount (self))
  
 foreign import javascript unsafe
         "$1[\"nodesFromRect\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11)"
         js_nodesFromRect ::
-        JSRef Internals ->
-          JSRef Document ->
+        Internals ->
+          Nullable Document ->
             Int ->
               Int ->
                 Word ->
-                  Word -> Word -> Word -> Bool -> Bool -> Bool -> IO (JSRef NodeList)
+                  Word ->
+                    Word -> Word -> Bool -> Bool -> Bool -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.nodesFromRect Mozilla Internals.nodesFromRect documentation> 
 nodesFromRect ::
@@ -1098,183 +1051,169 @@ nodesFromRect self document x y topPadding rightPadding
   bottomPadding leftPadding ignoreClipping allowShadowContent
   allowChildFrameContent
   = liftIO
-      ((js_nodesFromRect (unInternals self)
-          (maybe jsNull (unDocument . toDocument) document)
-          x
-          y
-          topPadding
-          rightPadding
-          bottomPadding
-          leftPadding
-          ignoreClipping
-          allowShadowContent
-          allowChildFrameContent)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_nodesFromRect (self)
+            (maybeToNullable (fmap toDocument document))
+            x
+            y
+            topPadding
+            rightPadding
+            bottomPadding
+            leftPadding
+            ignoreClipping
+            allowShadowContent
+            allowChildFrameContent))
  
 foreign import javascript unsafe "$1[\"parserMetaData\"]($2)"
-        js_parserMetaData :: JSRef Internals -> JSRef a -> IO JSString
+        js_parserMetaData :: Internals -> JSRef -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.parserMetaData Mozilla Internals.parserMetaData documentation> 
 parserMetaData ::
-               (MonadIO m, FromJSString result) =>
-                 Internals -> JSRef a -> m result
+               (MonadIO m, FromJSString result) => Internals -> JSRef -> m result
 parserMetaData self func
-  = liftIO
-      (fromJSString <$> (js_parserMetaData (unInternals self) func))
+  = liftIO (fromJSString <$> (js_parserMetaData (self) func))
  
 foreign import javascript unsafe
         "$1[\"updateEditorUINowIfScheduled\"]()"
-        js_updateEditorUINowIfScheduled :: JSRef Internals -> IO ()
+        js_updateEditorUINowIfScheduled :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.updateEditorUINowIfScheduled Mozilla Internals.updateEditorUINowIfScheduled documentation> 
 updateEditorUINowIfScheduled :: (MonadIO m) => Internals -> m ()
 updateEditorUINowIfScheduled self
-  = liftIO (js_updateEditorUINowIfScheduled (unInternals self))
+  = liftIO (js_updateEditorUINowIfScheduled (self))
  
 foreign import javascript unsafe
         "($1[\"hasSpellingMarker\"]($2,\n$3) ? 1 : 0)" js_hasSpellingMarker
-        :: JSRef Internals -> Int -> Int -> IO Bool
+        :: Internals -> Int -> Int -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.hasSpellingMarker Mozilla Internals.hasSpellingMarker documentation> 
 hasSpellingMarker ::
                   (MonadIO m) => Internals -> Int -> Int -> m Bool
 hasSpellingMarker self from length
-  = liftIO (js_hasSpellingMarker (unInternals self) from length)
+  = liftIO (js_hasSpellingMarker (self) from length)
  
 foreign import javascript unsafe
         "($1[\"hasGrammarMarker\"]($2,\n$3) ? 1 : 0)" js_hasGrammarMarker
-        :: JSRef Internals -> Int -> Int -> IO Bool
+        :: Internals -> Int -> Int -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.hasGrammarMarker Mozilla Internals.hasGrammarMarker documentation> 
 hasGrammarMarker ::
                  (MonadIO m) => Internals -> Int -> Int -> m Bool
 hasGrammarMarker self from length
-  = liftIO (js_hasGrammarMarker (unInternals self) from length)
+  = liftIO (js_hasGrammarMarker (self) from length)
  
 foreign import javascript unsafe
         "($1[\"hasAutocorrectedMarker\"]($2,\n$3) ? 1 : 0)"
-        js_hasAutocorrectedMarker ::
-        JSRef Internals -> Int -> Int -> IO Bool
+        js_hasAutocorrectedMarker :: Internals -> Int -> Int -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.hasAutocorrectedMarker Mozilla Internals.hasAutocorrectedMarker documentation> 
 hasAutocorrectedMarker ::
                        (MonadIO m) => Internals -> Int -> Int -> m Bool
 hasAutocorrectedMarker self from length
-  = liftIO (js_hasAutocorrectedMarker (unInternals self) from length)
+  = liftIO (js_hasAutocorrectedMarker (self) from length)
  
 foreign import javascript unsafe
         "$1[\"setContinuousSpellCheckingEnabled\"]($2)"
-        js_setContinuousSpellCheckingEnabled ::
-        JSRef Internals -> Bool -> IO ()
+        js_setContinuousSpellCheckingEnabled :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setContinuousSpellCheckingEnabled Mozilla Internals.setContinuousSpellCheckingEnabled documentation> 
 setContinuousSpellCheckingEnabled ::
                                   (MonadIO m) => Internals -> Bool -> m ()
 setContinuousSpellCheckingEnabled self enabled
-  = liftIO
-      (js_setContinuousSpellCheckingEnabled (unInternals self) enabled)
+  = liftIO (js_setContinuousSpellCheckingEnabled (self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setAutomaticQuoteSubstitutionEnabled\"]($2)"
         js_setAutomaticQuoteSubstitutionEnabled ::
-        JSRef Internals -> Bool -> IO ()
+        Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setAutomaticQuoteSubstitutionEnabled Mozilla Internals.setAutomaticQuoteSubstitutionEnabled documentation> 
 setAutomaticQuoteSubstitutionEnabled ::
                                      (MonadIO m) => Internals -> Bool -> m ()
 setAutomaticQuoteSubstitutionEnabled self enabled
-  = liftIO
-      (js_setAutomaticQuoteSubstitutionEnabled (unInternals self)
-         enabled)
+  = liftIO (js_setAutomaticQuoteSubstitutionEnabled (self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setAutomaticLinkDetectionEnabled\"]($2)"
-        js_setAutomaticLinkDetectionEnabled ::
-        JSRef Internals -> Bool -> IO ()
+        js_setAutomaticLinkDetectionEnabled :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setAutomaticLinkDetectionEnabled Mozilla Internals.setAutomaticLinkDetectionEnabled documentation> 
 setAutomaticLinkDetectionEnabled ::
                                  (MonadIO m) => Internals -> Bool -> m ()
 setAutomaticLinkDetectionEnabled self enabled
-  = liftIO
-      (js_setAutomaticLinkDetectionEnabled (unInternals self) enabled)
+  = liftIO (js_setAutomaticLinkDetectionEnabled (self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setAutomaticDashSubstitutionEnabled\"]($2)"
         js_setAutomaticDashSubstitutionEnabled ::
-        JSRef Internals -> Bool -> IO ()
+        Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setAutomaticDashSubstitutionEnabled Mozilla Internals.setAutomaticDashSubstitutionEnabled documentation> 
 setAutomaticDashSubstitutionEnabled ::
                                     (MonadIO m) => Internals -> Bool -> m ()
 setAutomaticDashSubstitutionEnabled self enabled
-  = liftIO
-      (js_setAutomaticDashSubstitutionEnabled (unInternals self) enabled)
+  = liftIO (js_setAutomaticDashSubstitutionEnabled (self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setAutomaticTextReplacementEnabled\"]($2)"
-        js_setAutomaticTextReplacementEnabled ::
-        JSRef Internals -> Bool -> IO ()
+        js_setAutomaticTextReplacementEnabled :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setAutomaticTextReplacementEnabled Mozilla Internals.setAutomaticTextReplacementEnabled documentation> 
 setAutomaticTextReplacementEnabled ::
                                    (MonadIO m) => Internals -> Bool -> m ()
 setAutomaticTextReplacementEnabled self enabled
-  = liftIO
-      (js_setAutomaticTextReplacementEnabled (unInternals self) enabled)
+  = liftIO (js_setAutomaticTextReplacementEnabled (self) enabled)
  
 foreign import javascript unsafe
         "$1[\"setAutomaticSpellingCorrectionEnabled\"]($2)"
         js_setAutomaticSpellingCorrectionEnabled ::
-        JSRef Internals -> Bool -> IO ()
+        Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setAutomaticSpellingCorrectionEnabled Mozilla Internals.setAutomaticSpellingCorrectionEnabled documentation> 
 setAutomaticSpellingCorrectionEnabled ::
                                       (MonadIO m) => Internals -> Bool -> m ()
 setAutomaticSpellingCorrectionEnabled self enabled
-  = liftIO
-      (js_setAutomaticSpellingCorrectionEnabled (unInternals self)
-         enabled)
+  = liftIO (js_setAutomaticSpellingCorrectionEnabled (self) enabled)
  
 foreign import javascript unsafe
         "($1[\"isOverwriteModeEnabled\"]() ? 1 : 0)"
-        js_isOverwriteModeEnabled :: JSRef Internals -> IO Bool
+        js_isOverwriteModeEnabled :: Internals -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isOverwriteModeEnabled Mozilla Internals.isOverwriteModeEnabled documentation> 
 isOverwriteModeEnabled :: (MonadIO m) => Internals -> m Bool
 isOverwriteModeEnabled self
-  = liftIO (js_isOverwriteModeEnabled (unInternals self))
+  = liftIO (js_isOverwriteModeEnabled (self))
  
 foreign import javascript unsafe
         "$1[\"toggleOverwriteModeEnabled\"]()"
-        js_toggleOverwriteModeEnabled :: JSRef Internals -> IO ()
+        js_toggleOverwriteModeEnabled :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.toggleOverwriteModeEnabled Mozilla Internals.toggleOverwriteModeEnabled documentation> 
 toggleOverwriteModeEnabled :: (MonadIO m) => Internals -> m ()
 toggleOverwriteModeEnabled self
-  = liftIO (js_toggleOverwriteModeEnabled (unInternals self))
+  = liftIO (js_toggleOverwriteModeEnabled (self))
  
 foreign import javascript unsafe
         "$1[\"numberOfScrollableAreas\"]()" js_numberOfScrollableAreas ::
-        JSRef Internals -> IO Word
+        Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.numberOfScrollableAreas Mozilla Internals.numberOfScrollableAreas documentation> 
 numberOfScrollableAreas :: (MonadIO m) => Internals -> m Word
 numberOfScrollableAreas self
-  = liftIO (js_numberOfScrollableAreas (unInternals self))
+  = liftIO (js_numberOfScrollableAreas (self))
  
 foreign import javascript unsafe
         "($1[\"isPageBoxVisible\"]($2) ? 1 : 0)" js_isPageBoxVisible ::
-        JSRef Internals -> Int -> IO Bool
+        Internals -> Int -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isPageBoxVisible Mozilla Internals.isPageBoxVisible documentation> 
 isPageBoxVisible :: (MonadIO m) => Internals -> Int -> m Bool
 isPageBoxVisible self pageNumber
-  = liftIO (js_isPageBoxVisible (unInternals self) pageNumber)
+  = liftIO (js_isPageBoxVisible (self) pageNumber)
  
 foreign import javascript unsafe "$1[\"layerTreeAsText\"]($2, $3)"
         js_layerTreeAsText ::
-        JSRef Internals -> JSRef Document -> Word -> IO JSString
+        Internals -> Nullable Document -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.layerTreeAsText Mozilla Internals.layerTreeAsText documentation> 
 layerTreeAsText ::
@@ -1283,93 +1222,87 @@ layerTreeAsText ::
 layerTreeAsText self document flags
   = liftIO
       (fromJSString <$>
-         (js_layerTreeAsText (unInternals self)
-            (maybe jsNull (unDocument . toDocument) document)
+         (js_layerTreeAsText (self)
+            (maybeToNullable (fmap toDocument document))
             flags))
  
 foreign import javascript unsafe
         "$1[\"scrollingStateTreeAsText\"]()" js_scrollingStateTreeAsText ::
-        JSRef Internals -> IO JSString
+        Internals -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.scrollingStateTreeAsText Mozilla Internals.scrollingStateTreeAsText documentation> 
 scrollingStateTreeAsText ::
                          (MonadIO m, FromJSString result) => Internals -> m result
 scrollingStateTreeAsText self
-  = liftIO
-      (fromJSString <$> (js_scrollingStateTreeAsText (unInternals self)))
+  = liftIO (fromJSString <$> (js_scrollingStateTreeAsText (self)))
  
 foreign import javascript unsafe
         "$1[\"mainThreadScrollingReasons\"]()"
-        js_mainThreadScrollingReasons :: JSRef Internals -> IO JSString
+        js_mainThreadScrollingReasons :: Internals -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.mainThreadScrollingReasons Mozilla Internals.mainThreadScrollingReasons documentation> 
 mainThreadScrollingReasons ::
                            (MonadIO m, FromJSString result) => Internals -> m result
 mainThreadScrollingReasons self
-  = liftIO
-      (fromJSString <$>
-         (js_mainThreadScrollingReasons (unInternals self)))
+  = liftIO (fromJSString <$> (js_mainThreadScrollingReasons (self)))
  
 foreign import javascript unsafe "$1[\"nonFastScrollableRects\"]()"
         js_nonFastScrollableRects ::
-        JSRef Internals -> IO (JSRef ClientRectList)
+        Internals -> IO (Nullable ClientRectList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.nonFastScrollableRects Mozilla Internals.nonFastScrollableRects documentation> 
 nonFastScrollableRects ::
                        (MonadIO m) => Internals -> m (Maybe ClientRectList)
 nonFastScrollableRects self
-  = liftIO
-      ((js_nonFastScrollableRects (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_nonFastScrollableRects (self)))
  
 foreign import javascript unsafe "$1[\"repaintRectsAsText\"]()"
-        js_repaintRectsAsText :: JSRef Internals -> IO JSString
+        js_repaintRectsAsText :: Internals -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.repaintRectsAsText Mozilla Internals.repaintRectsAsText documentation> 
 repaintRectsAsText ::
                    (MonadIO m, FromJSString result) => Internals -> m result
 repaintRectsAsText self
-  = liftIO
-      (fromJSString <$> (js_repaintRectsAsText (unInternals self)))
+  = liftIO (fromJSString <$> (js_repaintRectsAsText (self)))
  
 foreign import javascript unsafe
         "$1[\"garbageCollectDocumentResources\"]()"
-        js_garbageCollectDocumentResources :: JSRef Internals -> IO ()
+        js_garbageCollectDocumentResources :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.garbageCollectDocumentResources Mozilla Internals.garbageCollectDocumentResources documentation> 
 garbageCollectDocumentResources :: (MonadIO m) => Internals -> m ()
 garbageCollectDocumentResources self
-  = liftIO (js_garbageCollectDocumentResources (unInternals self))
+  = liftIO (js_garbageCollectDocumentResources (self))
  
 foreign import javascript unsafe "$1[\"allowRoundingHacks\"]()"
-        js_allowRoundingHacks :: JSRef Internals -> IO ()
+        js_allowRoundingHacks :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.allowRoundingHacks Mozilla Internals.allowRoundingHacks documentation> 
 allowRoundingHacks :: (MonadIO m) => Internals -> m ()
-allowRoundingHacks self
-  = liftIO (js_allowRoundingHacks (unInternals self))
+allowRoundingHacks self = liftIO (js_allowRoundingHacks (self))
  
 foreign import javascript unsafe "$1[\"insertAuthorCSS\"]($2)"
-        js_insertAuthorCSS :: JSRef Internals -> JSString -> IO ()
+        js_insertAuthorCSS :: Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.insertAuthorCSS Mozilla Internals.insertAuthorCSS documentation> 
 insertAuthorCSS ::
                 (MonadIO m, ToJSString css) => Internals -> css -> m ()
 insertAuthorCSS self css
-  = liftIO (js_insertAuthorCSS (unInternals self) (toJSString css))
+  = liftIO (js_insertAuthorCSS (self) (toJSString css))
  
 foreign import javascript unsafe "$1[\"insertUserCSS\"]($2)"
-        js_insertUserCSS :: JSRef Internals -> JSString -> IO ()
+        js_insertUserCSS :: Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.insertUserCSS Mozilla Internals.insertUserCSS documentation> 
 insertUserCSS ::
               (MonadIO m, ToJSString css) => Internals -> css -> m ()
 insertUserCSS self css
-  = liftIO (js_insertUserCSS (unInternals self) (toJSString css))
+  = liftIO (js_insertUserCSS (self) (toJSString css))
  
 foreign import javascript unsafe
         "$1[\"setBatteryStatus\"]($2, $3,\n$4, $5, $6)" js_setBatteryStatus
         ::
-        JSRef Internals ->
+        Internals ->
           JSString -> Bool -> Double -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setBatteryStatus Mozilla Internals.setBatteryStatus documentation> 
@@ -1380,16 +1313,14 @@ setBatteryStatus ::
 setBatteryStatus self eventType charging chargingTime
   dischargingTime level
   = liftIO
-      (js_setBatteryStatus (unInternals self) (toJSString eventType)
-         charging
+      (js_setBatteryStatus (self) (toJSString eventType) charging
          chargingTime
          dischargingTime
          level)
  
 foreign import javascript unsafe
         "$1[\"setDeviceProximity\"]($2, $3,\n$4, $5)" js_setDeviceProximity
-        ::
-        JSRef Internals -> JSString -> Double -> Double -> Double -> IO ()
+        :: Internals -> JSString -> Double -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setDeviceProximity Mozilla Internals.setDeviceProximity documentation> 
 setDeviceProximity ::
@@ -1397,87 +1328,77 @@ setDeviceProximity ::
                      Internals -> eventType -> Double -> Double -> Double -> m ()
 setDeviceProximity self eventType value min max
   = liftIO
-      (js_setDeviceProximity (unInternals self) (toJSString eventType)
-         value
-         min
-         max)
+      (js_setDeviceProximity (self) (toJSString eventType) value min max)
  
 foreign import javascript unsafe "$1[\"numberOfLiveNodes\"]()"
-        js_numberOfLiveNodes :: JSRef Internals -> IO Word
+        js_numberOfLiveNodes :: Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.numberOfLiveNodes Mozilla Internals.numberOfLiveNodes documentation> 
 numberOfLiveNodes :: (MonadIO m) => Internals -> m Word
-numberOfLiveNodes self
-  = liftIO (js_numberOfLiveNodes (unInternals self))
+numberOfLiveNodes self = liftIO (js_numberOfLiveNodes (self))
  
 foreign import javascript unsafe "$1[\"numberOfLiveDocuments\"]()"
-        js_numberOfLiveDocuments :: JSRef Internals -> IO Word
+        js_numberOfLiveDocuments :: Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.numberOfLiveDocuments Mozilla Internals.numberOfLiveDocuments documentation> 
 numberOfLiveDocuments :: (MonadIO m) => Internals -> m Word
 numberOfLiveDocuments self
-  = liftIO (js_numberOfLiveDocuments (unInternals self))
+  = liftIO (js_numberOfLiveDocuments (self))
  
 foreign import javascript unsafe
         "$1[\"consoleMessageArgumentCounts\"]()"
-        js_consoleMessageArgumentCounts ::
-        JSRef Internals -> IO (JSRef [result])
+        js_consoleMessageArgumentCounts :: Internals -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.consoleMessageArgumentCounts Mozilla Internals.consoleMessageArgumentCounts documentation> 
 consoleMessageArgumentCounts ::
                              (MonadIO m, FromJSString result) => Internals -> m [result]
 consoleMessageArgumentCounts self
   = liftIO
-      ((js_consoleMessageArgumentCounts (unInternals self)) >>=
-         fromJSRefUnchecked)
+      ((js_consoleMessageArgumentCounts (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
         "$1[\"openDummyInspectorFrontend\"]($2)"
         js_openDummyInspectorFrontend ::
-        JSRef Internals -> JSString -> IO (JSRef Window)
+        Internals -> JSString -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.openDummyInspectorFrontend Mozilla Internals.openDummyInspectorFrontend documentation> 
 openDummyInspectorFrontend ::
                            (MonadIO m, ToJSString url) => Internals -> url -> m (Maybe Window)
 openDummyInspectorFrontend self url
   = liftIO
-      ((js_openDummyInspectorFrontend (unInternals self)
-          (toJSString url))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_openDummyInspectorFrontend (self) (toJSString url)))
  
 foreign import javascript unsafe
         "$1[\"closeDummyInspectorFrontend\"]()"
-        js_closeDummyInspectorFrontend :: JSRef Internals -> IO ()
+        js_closeDummyInspectorFrontend :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.closeDummyInspectorFrontend Mozilla Internals.closeDummyInspectorFrontend documentation> 
 closeDummyInspectorFrontend :: (MonadIO m) => Internals -> m ()
 closeDummyInspectorFrontend self
-  = liftIO (js_closeDummyInspectorFrontend (unInternals self))
+  = liftIO (js_closeDummyInspectorFrontend (self))
  
 foreign import javascript unsafe
         "$1[\"setJavaScriptProfilingEnabled\"]($2)"
-        js_setJavaScriptProfilingEnabled ::
-        JSRef Internals -> Bool -> IO ()
+        js_setJavaScriptProfilingEnabled :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setJavaScriptProfilingEnabled Mozilla Internals.setJavaScriptProfilingEnabled documentation> 
 setJavaScriptProfilingEnabled ::
                               (MonadIO m) => Internals -> Bool -> m ()
 setJavaScriptProfilingEnabled self creates
-  = liftIO
-      (js_setJavaScriptProfilingEnabled (unInternals self) creates)
+  = liftIO (js_setJavaScriptProfilingEnabled (self) creates)
  
 foreign import javascript unsafe
         "$1[\"setInspectorIsUnderTest\"]($2)" js_setInspectorIsUnderTest ::
-        JSRef Internals -> Bool -> IO ()
+        Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setInspectorIsUnderTest Mozilla Internals.setInspectorIsUnderTest documentation> 
 setInspectorIsUnderTest :: (MonadIO m) => Internals -> Bool -> m ()
 setInspectorIsUnderTest self isUnderTest
-  = liftIO
-      (js_setInspectorIsUnderTest (unInternals self) isUnderTest)
+  = liftIO (js_setInspectorIsUnderTest (self) isUnderTest)
  
 foreign import javascript unsafe "$1[\"counterValue\"]($2)"
-        js_counterValue :: JSRef Internals -> JSRef Element -> IO JSString
+        js_counterValue :: Internals -> Nullable Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.counterValue Mozilla Internals.counterValue documentation> 
 counterValue ::
@@ -1486,12 +1407,12 @@ counterValue ::
 counterValue self element
   = liftIO
       (fromJSString <$>
-         (js_counterValue (unInternals self)
-            (maybe jsNull (unElement . toElement) element)))
+         (js_counterValue (self)
+            (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe "$1[\"pageNumber\"]($2, $3, $4)"
         js_pageNumber ::
-        JSRef Internals -> JSRef Element -> Float -> Float -> IO Int
+        Internals -> Nullable Element -> Float -> Float -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pageNumber Mozilla Internals.pageNumber documentation> 
 pageNumber ::
@@ -1499,45 +1420,40 @@ pageNumber ::
              Internals -> Maybe element -> Float -> Float -> m Int
 pageNumber self element pageWidth pageHeight
   = liftIO
-      (js_pageNumber (unInternals self)
-         (maybe jsNull (unElement . toElement) element)
+      (js_pageNumber (self) (maybeToNullable (fmap toElement element))
          pageWidth
          pageHeight)
  
 foreign import javascript unsafe "$1[\"shortcutIconURLs\"]()"
-        js_shortcutIconURLs :: JSRef Internals -> IO (JSRef [result])
+        js_shortcutIconURLs :: Internals -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.shortcutIconURLs Mozilla Internals.shortcutIconURLs documentation> 
 shortcutIconURLs ::
                  (MonadIO m, FromJSString result) => Internals -> m [result]
 shortcutIconURLs self
-  = liftIO
-      ((js_shortcutIconURLs (unInternals self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_shortcutIconURLs (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"allIconURLs\"]()"
-        js_allIconURLs :: JSRef Internals -> IO (JSRef [result])
+        js_allIconURLs :: Internals -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.allIconURLs Mozilla Internals.allIconURLs documentation> 
 allIconURLs ::
             (MonadIO m, FromJSString result) => Internals -> m [result]
 allIconURLs self
-  = liftIO
-      ((js_allIconURLs (unInternals self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_allIconURLs (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"numberOfPages\"]($2, $3)"
-        js_numberOfPages :: JSRef Internals -> Double -> Double -> IO Int
+        js_numberOfPages :: Internals -> Double -> Double -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.numberOfPages Mozilla Internals.numberOfPages documentation> 
 numberOfPages ::
               (MonadIO m) => Internals -> Double -> Double -> m Int
 numberOfPages self pageWidthInPixels pageHeightInPixels
   = liftIO
-      (js_numberOfPages (unInternals self) pageWidthInPixels
-         pageHeightInPixels)
+      (js_numberOfPages (self) pageWidthInPixels pageHeightInPixels)
  
 foreign import javascript unsafe "$1[\"pageProperty\"]($2, $3)"
-        js_pageProperty ::
-        JSRef Internals -> JSString -> Int -> IO JSString
+        js_pageProperty :: Internals -> JSString -> Int -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pageProperty Mozilla Internals.pageProperty documentation> 
 pageProperty ::
@@ -1546,13 +1462,12 @@ pageProperty ::
 pageProperty self propertyName pageNumber
   = liftIO
       (fromJSString <$>
-         (js_pageProperty (unInternals self) (toJSString propertyName)
-            pageNumber))
+         (js_pageProperty (self) (toJSString propertyName) pageNumber))
  
 foreign import javascript unsafe
         "$1[\"pageSizeAndMarginsInPixels\"]($2,\n$3, $4, $5, $6, $7, $8)"
         js_pageSizeAndMarginsInPixels ::
-        JSRef Internals ->
+        Internals ->
           Int -> Int -> Int -> Int -> Int -> Int -> Int -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pageSizeAndMarginsInPixels Mozilla Internals.pageSizeAndMarginsInPixels documentation> 
@@ -1564,8 +1479,7 @@ pageSizeAndMarginsInPixels self pageIndex width height marginTop
   marginRight marginBottom marginLeft
   = liftIO
       (fromJSString <$>
-         (js_pageSizeAndMarginsInPixels (unInternals self) pageIndex width
-            height
+         (js_pageSizeAndMarginsInPixels (self) pageIndex width height
             marginTop
             marginRight
             marginBottom
@@ -1573,50 +1487,50 @@ pageSizeAndMarginsInPixels self pageIndex width height marginTop
  
 foreign import javascript unsafe
         "$1[\"setPageScaleFactor\"]($2, $3,\n$4)" js_setPageScaleFactor ::
-        JSRef Internals -> Float -> Int -> Int -> IO ()
+        Internals -> Float -> Int -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setPageScaleFactor Mozilla Internals.setPageScaleFactor documentation> 
 setPageScaleFactor ::
                    (MonadIO m) => Internals -> Float -> Int -> Int -> m ()
 setPageScaleFactor self scaleFactor x y
-  = liftIO (js_setPageScaleFactor (unInternals self) scaleFactor x y)
+  = liftIO (js_setPageScaleFactor (self) scaleFactor x y)
  
 foreign import javascript unsafe "$1[\"setPageZoomFactor\"]($2)"
-        js_setPageZoomFactor :: JSRef Internals -> Float -> IO ()
+        js_setPageZoomFactor :: Internals -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setPageZoomFactor Mozilla Internals.setPageZoomFactor documentation> 
 setPageZoomFactor :: (MonadIO m) => Internals -> Float -> m ()
 setPageZoomFactor self zoomFactor
-  = liftIO (js_setPageZoomFactor (unInternals self) zoomFactor)
+  = liftIO (js_setPageZoomFactor (self) zoomFactor)
  
 foreign import javascript unsafe "$1[\"setHeaderHeight\"]($2)"
-        js_setHeaderHeight :: JSRef Internals -> Float -> IO ()
+        js_setHeaderHeight :: Internals -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setHeaderHeight Mozilla Internals.setHeaderHeight documentation> 
 setHeaderHeight :: (MonadIO m) => Internals -> Float -> m ()
 setHeaderHeight self height
-  = liftIO (js_setHeaderHeight (unInternals self) height)
+  = liftIO (js_setHeaderHeight (self) height)
  
 foreign import javascript unsafe "$1[\"setFooterHeight\"]($2)"
-        js_setFooterHeight :: JSRef Internals -> Float -> IO ()
+        js_setFooterHeight :: Internals -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setFooterHeight Mozilla Internals.setFooterHeight documentation> 
 setFooterHeight :: (MonadIO m) => Internals -> Float -> m ()
 setFooterHeight self height
-  = liftIO (js_setFooterHeight (unInternals self) height)
+  = liftIO (js_setFooterHeight (self) height)
  
 foreign import javascript unsafe "$1[\"setTopContentInset\"]($2)"
-        js_setTopContentInset :: JSRef Internals -> Float -> IO ()
+        js_setTopContentInset :: Internals -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setTopContentInset Mozilla Internals.setTopContentInset documentation> 
 setTopContentInset :: (MonadIO m) => Internals -> Float -> m ()
 setTopContentInset self contentInset
-  = liftIO (js_setTopContentInset (unInternals self) contentInset)
+  = liftIO (js_setTopContentInset (self) contentInset)
  
 foreign import javascript unsafe
         "$1[\"webkitWillEnterFullScreenForElement\"]($2)"
         js_webkitWillEnterFullScreenForElement ::
-        JSRef Internals -> JSRef Element -> IO ()
+        Internals -> Nullable Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.webkitWillEnterFullScreenForElement Mozilla Internals.webkitWillEnterFullScreenForElement documentation> 
 webkitWillEnterFullScreenForElement ::
@@ -1624,13 +1538,13 @@ webkitWillEnterFullScreenForElement ::
                                       Internals -> Maybe element -> m ()
 webkitWillEnterFullScreenForElement self element
   = liftIO
-      (js_webkitWillEnterFullScreenForElement (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_webkitWillEnterFullScreenForElement (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "$1[\"webkitDidEnterFullScreenForElement\"]($2)"
         js_webkitDidEnterFullScreenForElement ::
-        JSRef Internals -> JSRef Element -> IO ()
+        Internals -> Nullable Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.webkitDidEnterFullScreenForElement Mozilla Internals.webkitDidEnterFullScreenForElement documentation> 
 webkitDidEnterFullScreenForElement ::
@@ -1638,13 +1552,13 @@ webkitDidEnterFullScreenForElement ::
                                      Internals -> Maybe element -> m ()
 webkitDidEnterFullScreenForElement self element
   = liftIO
-      (js_webkitDidEnterFullScreenForElement (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_webkitDidEnterFullScreenForElement (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "$1[\"webkitWillExitFullScreenForElement\"]($2)"
         js_webkitWillExitFullScreenForElement ::
-        JSRef Internals -> JSRef Element -> IO ()
+        Internals -> Nullable Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.webkitWillExitFullScreenForElement Mozilla Internals.webkitWillExitFullScreenForElement documentation> 
 webkitWillExitFullScreenForElement ::
@@ -1652,13 +1566,13 @@ webkitWillExitFullScreenForElement ::
                                      Internals -> Maybe element -> m ()
 webkitWillExitFullScreenForElement self element
   = liftIO
-      (js_webkitWillExitFullScreenForElement (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_webkitWillExitFullScreenForElement (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "$1[\"webkitDidExitFullScreenForElement\"]($2)"
         js_webkitDidExitFullScreenForElement ::
-        JSRef Internals -> JSRef Element -> IO ()
+        Internals -> Nullable Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.webkitDidExitFullScreenForElement Mozilla Internals.webkitDidExitFullScreenForElement documentation> 
 webkitDidExitFullScreenForElement ::
@@ -1666,26 +1580,24 @@ webkitDidExitFullScreenForElement ::
                                     Internals -> Maybe element -> m ()
 webkitDidExitFullScreenForElement self element
   = liftIO
-      (js_webkitDidExitFullScreenForElement (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_webkitDidExitFullScreenForElement (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "$1[\"setApplicationCacheOriginQuota\"]($2)"
-        js_setApplicationCacheOriginQuota ::
-        JSRef Internals -> Double -> IO ()
+        js_setApplicationCacheOriginQuota :: Internals -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setApplicationCacheOriginQuota Mozilla Internals.setApplicationCacheOriginQuota documentation> 
 setApplicationCacheOriginQuota ::
                                (MonadIO m) => Internals -> Word64 -> m ()
 setApplicationCacheOriginQuota self quota
   = liftIO
-      (js_setApplicationCacheOriginQuota (unInternals self)
-         (fromIntegral quota))
+      (js_setApplicationCacheOriginQuota (self) (fromIntegral quota))
  
 foreign import javascript unsafe
         "$1[\"registerURLSchemeAsBypassingContentSecurityPolicy\"]($2)"
         js_registerURLSchemeAsBypassingContentSecurityPolicy ::
-        JSRef Internals -> JSString -> IO ()
+        Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.registerURLSchemeAsBypassingContentSecurityPolicy Mozilla Internals.registerURLSchemeAsBypassingContentSecurityPolicy documentation> 
 registerURLSchemeAsBypassingContentSecurityPolicy ::
@@ -1693,14 +1605,13 @@ registerURLSchemeAsBypassingContentSecurityPolicy ::
                                                     Internals -> scheme -> m ()
 registerURLSchemeAsBypassingContentSecurityPolicy self scheme
   = liftIO
-      (js_registerURLSchemeAsBypassingContentSecurityPolicy
-         (unInternals self)
+      (js_registerURLSchemeAsBypassingContentSecurityPolicy (self)
          (toJSString scheme))
  
 foreign import javascript unsafe
         "$1[\"removeURLSchemeRegisteredAsBypassingContentSecurityPolicy\"]($2)"
         js_removeURLSchemeRegisteredAsBypassingContentSecurityPolicy ::
-        JSRef Internals -> JSString -> IO ()
+        Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.removeURLSchemeRegisteredAsBypassingContentSecurityPolicy Mozilla Internals.removeURLSchemeRegisteredAsBypassingContentSecurityPolicy documentation> 
 removeURLSchemeRegisteredAsBypassingContentSecurityPolicy ::
@@ -1710,76 +1621,73 @@ removeURLSchemeRegisteredAsBypassingContentSecurityPolicy self
   scheme
   = liftIO
       (js_removeURLSchemeRegisteredAsBypassingContentSecurityPolicy
-         (unInternals self)
+         (self)
          (toJSString scheme))
  
 foreign import javascript unsafe "$1[\"mallocStatistics\"]()"
-        js_mallocStatistics ::
-        JSRef Internals -> IO (JSRef MallocStatistics)
+        js_mallocStatistics :: Internals -> IO (Nullable MallocStatistics)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.mallocStatistics Mozilla Internals.mallocStatistics documentation> 
 mallocStatistics ::
                  (MonadIO m) => Internals -> m (Maybe MallocStatistics)
 mallocStatistics self
-  = liftIO ((js_mallocStatistics (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_mallocStatistics (self)))
  
 foreign import javascript unsafe "$1[\"typeConversions\"]()"
-        js_typeConversions :: JSRef Internals -> IO (JSRef TypeConversions)
+        js_typeConversions :: Internals -> IO (Nullable TypeConversions)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.typeConversions Mozilla Internals.typeConversions documentation> 
 typeConversions ::
                 (MonadIO m) => Internals -> m (Maybe TypeConversions)
 typeConversions self
-  = liftIO ((js_typeConversions (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_typeConversions (self)))
  
 foreign import javascript unsafe "$1[\"memoryInfo\"]()"
-        js_memoryInfo :: JSRef Internals -> IO (JSRef MemoryInfo)
+        js_memoryInfo :: Internals -> IO (Nullable MemoryInfo)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.memoryInfo Mozilla Internals.memoryInfo documentation> 
 memoryInfo :: (MonadIO m) => Internals -> m (Maybe MemoryInfo)
 memoryInfo self
-  = liftIO ((js_memoryInfo (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_memoryInfo (self)))
  
 foreign import javascript unsafe "$1[\"getReferencedFilePaths\"]()"
-        js_getReferencedFilePaths :: JSRef Internals -> IO (JSRef [result])
+        js_getReferencedFilePaths :: Internals -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.getReferencedFilePaths Mozilla Internals.getReferencedFilePaths documentation> 
 getReferencedFilePaths ::
                        (MonadIO m, FromJSString result) => Internals -> m [result]
 getReferencedFilePaths self
   = liftIO
-      ((js_getReferencedFilePaths (unInternals self)) >>=
-         fromJSRefUnchecked)
+      ((js_getReferencedFilePaths (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"startTrackingRepaints\"]()"
-        js_startTrackingRepaints :: JSRef Internals -> IO ()
+        js_startTrackingRepaints :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.startTrackingRepaints Mozilla Internals.startTrackingRepaints documentation> 
 startTrackingRepaints :: (MonadIO m) => Internals -> m ()
 startTrackingRepaints self
-  = liftIO (js_startTrackingRepaints (unInternals self))
+  = liftIO (js_startTrackingRepaints (self))
  
 foreign import javascript unsafe "$1[\"stopTrackingRepaints\"]()"
-        js_stopTrackingRepaints :: JSRef Internals -> IO ()
+        js_stopTrackingRepaints :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.stopTrackingRepaints Mozilla Internals.stopTrackingRepaints documentation> 
 stopTrackingRepaints :: (MonadIO m) => Internals -> m ()
-stopTrackingRepaints self
-  = liftIO (js_stopTrackingRepaints (unInternals self))
+stopTrackingRepaints self = liftIO (js_stopTrackingRepaints (self))
  
 foreign import javascript unsafe
         "($1[\"isTimerThrottled\"]($2) ? 1 : 0)" js_isTimerThrottled ::
-        JSRef Internals -> Int -> IO Bool
+        Internals -> Int -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isTimerThrottled Mozilla Internals.isTimerThrottled documentation> 
 isTimerThrottled :: (MonadIO m) => Internals -> Int -> m Bool
 isTimerThrottled self timerHandle
-  = liftIO (js_isTimerThrottled (unInternals self) timerHandle)
+  = liftIO (js_isTimerThrottled (self) timerHandle)
  
 foreign import javascript unsafe
         "$1[\"updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks\"]($2)"
         js_updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks ::
-        JSRef Internals -> JSRef Node -> IO ()
+        Internals -> Nullable Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks Mozilla Internals.updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks documentation> 
 updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks ::
@@ -1788,22 +1696,21 @@ updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks ::
 updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks self node
   = liftIO
       (js_updateLayoutIgnorePendingStylesheetsAndRunPostLayoutTasks
-         (unInternals self)
-         (maybe jsNull (unNode . toNode) node))
+         (self)
+         (maybeToNullable (fmap toNode node)))
  
 foreign import javascript unsafe "$1[\"getCurrentCursorInfo\"]()"
-        js_getCurrentCursorInfo :: JSRef Internals -> IO JSString
+        js_getCurrentCursorInfo :: Internals -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.getCurrentCursorInfo Mozilla Internals.getCurrentCursorInfo documentation> 
 getCurrentCursorInfo ::
                      (MonadIO m, FromJSString result) => Internals -> m result
 getCurrentCursorInfo self
-  = liftIO
-      (fromJSString <$> (js_getCurrentCursorInfo (unInternals self)))
+  = liftIO (fromJSString <$> (js_getCurrentCursorInfo (self)))
  
 foreign import javascript unsafe
         "$1[\"markerTextForListItem\"]($2)" js_markerTextForListItem ::
-        JSRef Internals -> JSRef Element -> IO JSString
+        Internals -> Nullable Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.markerTextForListItem Mozilla Internals.markerTextForListItem documentation> 
 markerTextForListItem ::
@@ -1812,12 +1719,12 @@ markerTextForListItem ::
 markerTextForListItem self element
   = liftIO
       (fromJSString <$>
-         (js_markerTextForListItem (unInternals self)
-            (maybe jsNull (unElement . toElement) element)))
+         (js_markerTextForListItem (self)
+            (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe "$1[\"toolTipFromElement\"]($2)"
         js_toolTipFromElement ::
-        JSRef Internals -> JSRef Element -> IO JSString
+        Internals -> Nullable Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.toolTipFromElement Mozilla Internals.toolTipFromElement documentation> 
 toolTipFromElement ::
@@ -1826,13 +1733,13 @@ toolTipFromElement ::
 toolTipFromElement self element
   = liftIO
       (fromJSString <$>
-         (js_toolTipFromElement (unInternals self)
-            (maybe jsNull (unElement . toElement) element)))
+         (js_toolTipFromElement (self)
+            (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe "$1[\"deserializeBuffer\"]($2)"
         js_deserializeBuffer ::
-        JSRef Internals ->
-          JSRef ArrayBuffer -> IO (JSRef SerializedScriptValue)
+        Internals ->
+          Nullable ArrayBuffer -> IO (Nullable SerializedScriptValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.deserializeBuffer Mozilla Internals.deserializeBuffer documentation> 
 deserializeBuffer ::
@@ -1840,14 +1747,14 @@ deserializeBuffer ::
                     Internals -> Maybe buffer -> m (Maybe SerializedScriptValue)
 deserializeBuffer self buffer
   = liftIO
-      ((js_deserializeBuffer (unInternals self)
-          (maybe jsNull (unArrayBuffer . toArrayBuffer) buffer))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_deserializeBuffer (self)
+            (maybeToNullable (fmap toArrayBuffer buffer))))
  
 foreign import javascript unsafe "$1[\"serializeObject\"]($2)"
         js_serializeObject ::
-        JSRef Internals ->
-          JSRef SerializedScriptValue -> IO (JSRef ArrayBuffer)
+        Internals ->
+          Nullable SerializedScriptValue -> IO (Nullable ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.serializeObject Mozilla Internals.serializeObject documentation> 
 serializeObject ::
@@ -1855,46 +1762,43 @@ serializeObject ::
                   Internals -> Maybe obj -> m (Maybe ArrayBuffer)
 serializeObject self obj
   = liftIO
-      ((js_serializeObject (unInternals self)
-          (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
-             obj))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_serializeObject (self)
+            (maybeToNullable (fmap toSerializedScriptValue obj))))
  
 foreign import javascript unsafe
         "$1[\"setUsesOverlayScrollbars\"]($2)" js_setUsesOverlayScrollbars
-        :: JSRef Internals -> Bool -> IO ()
+        :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setUsesOverlayScrollbars Mozilla Internals.setUsesOverlayScrollbars documentation> 
 setUsesOverlayScrollbars ::
                          (MonadIO m) => Internals -> Bool -> m ()
 setUsesOverlayScrollbars self enabled
-  = liftIO (js_setUsesOverlayScrollbars (unInternals self) enabled)
+  = liftIO (js_setUsesOverlayScrollbars (self) enabled)
  
 foreign import javascript unsafe "$1[\"forceReload\"]($2)"
-        js_forceReload :: JSRef Internals -> Bool -> IO ()
+        js_forceReload :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.forceReload Mozilla Internals.forceReload documentation> 
 forceReload :: (MonadIO m) => Internals -> Bool -> m ()
-forceReload self endToEnd
-  = liftIO (js_forceReload (unInternals self) endToEnd)
+forceReload self endToEnd = liftIO (js_forceReload (self) endToEnd)
  
 foreign import javascript unsafe
         "$1[\"simulateAudioInterruption\"]($2)"
-        js_simulateAudioInterruption ::
-        JSRef Internals -> JSRef Node -> IO ()
+        js_simulateAudioInterruption :: Internals -> Nullable Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.simulateAudioInterruption Mozilla Internals.simulateAudioInterruption documentation> 
 simulateAudioInterruption ::
                           (MonadIO m, IsNode node) => Internals -> Maybe node -> m ()
 simulateAudioInterruption self node
   = liftIO
-      (js_simulateAudioInterruption (unInternals self)
-         (maybe jsNull (unNode . toNode) node))
+      (js_simulateAudioInterruption (self)
+         (maybeToNullable (fmap toNode node)))
  
 foreign import javascript unsafe
         "($1[\"mediaElementHasCharacteristic\"]($2,\n$3) ? 1 : 0)"
         js_mediaElementHasCharacteristic ::
-        JSRef Internals -> JSRef Node -> JSString -> IO Bool
+        Internals -> Nullable Node -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.mediaElementHasCharacteristic Mozilla Internals.mediaElementHasCharacteristic documentation> 
 mediaElementHasCharacteristic ::
@@ -1902,30 +1806,29 @@ mediaElementHasCharacteristic ::
                                 Internals -> Maybe node -> characteristic -> m Bool
 mediaElementHasCharacteristic self node characteristic
   = liftIO
-      (js_mediaElementHasCharacteristic (unInternals self)
-         (maybe jsNull (unNode . toNode) node)
+      (js_mediaElementHasCharacteristic (self)
+         (maybeToNullable (fmap toNode node))
          (toJSString characteristic))
  
 foreign import javascript unsafe "$1[\"initializeMockCDM\"]()"
-        js_initializeMockCDM :: JSRef Internals -> IO ()
+        js_initializeMockCDM :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.initializeMockCDM Mozilla Internals.initializeMockCDM documentation> 
 initializeMockCDM :: (MonadIO m) => Internals -> m ()
-initializeMockCDM self
-  = liftIO (js_initializeMockCDM (unInternals self))
+initializeMockCDM self = liftIO (js_initializeMockCDM (self))
  
 foreign import javascript unsafe
         "$1[\"enableMockSpeechSynthesizer\"]()"
-        js_enableMockSpeechSynthesizer :: JSRef Internals -> IO ()
+        js_enableMockSpeechSynthesizer :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.enableMockSpeechSynthesizer Mozilla Internals.enableMockSpeechSynthesizer documentation> 
 enableMockSpeechSynthesizer :: (MonadIO m) => Internals -> m ()
 enableMockSpeechSynthesizer self
-  = liftIO (js_enableMockSpeechSynthesizer (unInternals self))
+  = liftIO (js_enableMockSpeechSynthesizer (self))
  
 foreign import javascript unsafe "$1[\"getImageSourceURL\"]($2)"
         js_getImageSourceURL ::
-        JSRef Internals -> JSRef Element -> IO JSString
+        Internals -> Nullable Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.getImageSourceURL Mozilla Internals.getImageSourceURL documentation> 
 getImageSourceURL ::
@@ -1934,38 +1837,34 @@ getImageSourceURL ::
 getImageSourceURL self element
   = liftIO
       (fromJSString <$>
-         (js_getImageSourceURL (unInternals self)
-            (maybe jsNull (unElement . toElement) element)))
+         (js_getImageSourceURL (self)
+            (maybeToNullable (fmap toElement element))))
  
 foreign import javascript unsafe
         "$1[\"captionsStyleSheetOverride\"]()"
-        js_captionsStyleSheetOverride :: JSRef Internals -> IO JSString
+        js_captionsStyleSheetOverride :: Internals -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.captionsStyleSheetOverride Mozilla Internals.captionsStyleSheetOverride documentation> 
 captionsStyleSheetOverride ::
                            (MonadIO m, FromJSString result) => Internals -> m result
 captionsStyleSheetOverride self
-  = liftIO
-      (fromJSString <$>
-         (js_captionsStyleSheetOverride (unInternals self)))
+  = liftIO (fromJSString <$> (js_captionsStyleSheetOverride (self)))
  
 foreign import javascript unsafe
         "$1[\"setCaptionsStyleSheetOverride\"]($2)"
-        js_setCaptionsStyleSheetOverride ::
-        JSRef Internals -> JSString -> IO ()
+        js_setCaptionsStyleSheetOverride :: Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setCaptionsStyleSheetOverride Mozilla Internals.setCaptionsStyleSheetOverride documentation> 
 setCaptionsStyleSheetOverride ::
                               (MonadIO m, ToJSString override) => Internals -> override -> m ()
 setCaptionsStyleSheetOverride self override
   = liftIO
-      (js_setCaptionsStyleSheetOverride (unInternals self)
-         (toJSString override))
+      (js_setCaptionsStyleSheetOverride (self) (toJSString override))
  
 foreign import javascript unsafe
         "$1[\"setPrimaryAudioTrackLanguageOverride\"]($2)"
         js_setPrimaryAudioTrackLanguageOverride ::
-        JSRef Internals -> JSString -> IO ()
+        Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setPrimaryAudioTrackLanguageOverride Mozilla Internals.setPrimaryAudioTrackLanguageOverride documentation> 
 setPrimaryAudioTrackLanguageOverride ::
@@ -1973,24 +1872,24 @@ setPrimaryAudioTrackLanguageOverride ::
                                        Internals -> language -> m ()
 setPrimaryAudioTrackLanguageOverride self language
   = liftIO
-      (js_setPrimaryAudioTrackLanguageOverride (unInternals self)
+      (js_setPrimaryAudioTrackLanguageOverride (self)
          (toJSString language))
  
 foreign import javascript unsafe
         "$1[\"setCaptionDisplayMode\"]($2)" js_setCaptionDisplayMode ::
-        JSRef Internals -> JSString -> IO ()
+        Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setCaptionDisplayMode Mozilla Internals.setCaptionDisplayMode documentation> 
 setCaptionDisplayMode ::
                       (MonadIO m, ToJSString mode) => Internals -> mode -> m ()
 setCaptionDisplayMode self mode
-  = liftIO
-      (js_setCaptionDisplayMode (unInternals self) (toJSString mode))
+  = liftIO (js_setCaptionDisplayMode (self) (toJSString mode))
  
 foreign import javascript unsafe "$1[\"createTimeRanges\"]($2, $3)"
         js_createTimeRanges ::
-        JSRef Internals ->
-          JSRef Float32Array -> JSRef Float32Array -> IO (JSRef TimeRanges)
+        Internals ->
+          Nullable Float32Array ->
+            Nullable Float32Array -> IO (Nullable TimeRanges)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.createTimeRanges Mozilla Internals.createTimeRanges documentation> 
 createTimeRanges ::
@@ -1999,47 +1898,46 @@ createTimeRanges ::
                      Maybe startTimes -> Maybe endTimes -> m (Maybe TimeRanges)
 createTimeRanges self startTimes endTimes
   = liftIO
-      ((js_createTimeRanges (unInternals self)
-          (maybe jsNull (unFloat32Array . toFloat32Array) startTimes)
-          (maybe jsNull (unFloat32Array . toFloat32Array) endTimes))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createTimeRanges (self)
+            (maybeToNullable (fmap toFloat32Array startTimes))
+            (maybeToNullable (fmap toFloat32Array endTimes))))
  
 foreign import javascript unsafe
         "$1[\"closestTimeToTimeRanges\"]($2,\n$3)"
         js_closestTimeToTimeRanges ::
-        JSRef Internals -> Double -> JSRef TimeRanges -> IO Double
+        Internals -> Double -> Nullable TimeRanges -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.closestTimeToTimeRanges Mozilla Internals.closestTimeToTimeRanges documentation> 
 closestTimeToTimeRanges ::
                         (MonadIO m) => Internals -> Double -> Maybe TimeRanges -> m Double
 closestTimeToTimeRanges self time ranges
   = liftIO
-      (js_closestTimeToTimeRanges (unInternals self) time
-         (maybe jsNull pToJSRef ranges))
+      (js_closestTimeToTimeRanges (self) time (maybeToNullable ranges))
  
 foreign import javascript unsafe
         "($1[\"isSelectPopupVisible\"]($2) ? 1 : 0)"
-        js_isSelectPopupVisible :: JSRef Internals -> JSRef Node -> IO Bool
+        js_isSelectPopupVisible :: Internals -> Nullable Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isSelectPopupVisible Mozilla Internals.isSelectPopupVisible documentation> 
 isSelectPopupVisible ::
                      (MonadIO m, IsNode node) => Internals -> Maybe node -> m Bool
 isSelectPopupVisible self node
   = liftIO
-      (js_isSelectPopupVisible (unInternals self)
-         (maybe jsNull (unNode . toNode) node))
+      (js_isSelectPopupVisible (self)
+         (maybeToNullable (fmap toNode node)))
  
 foreign import javascript unsafe "($1[\"isVibrating\"]() ? 1 : 0)"
-        js_isVibrating :: JSRef Internals -> IO Bool
+        js_isVibrating :: Internals -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isVibrating Mozilla Internals.isVibrating documentation> 
 isVibrating :: (MonadIO m) => Internals -> m Bool
-isVibrating self = liftIO (js_isVibrating (unInternals self))
+isVibrating self = liftIO (js_isVibrating (self))
  
 foreign import javascript unsafe
         "($1[\"isPluginUnavailabilityIndicatorObscured\"]($2) ? 1 : 0)"
         js_isPluginUnavailabilityIndicatorObscured ::
-        JSRef Internals -> JSRef Element -> IO Bool
+        Internals -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isPluginUnavailabilityIndicatorObscured Mozilla Internals.isPluginUnavailabilityIndicatorObscured documentation> 
 isPluginUnavailabilityIndicatorObscured ::
@@ -2047,12 +1945,12 @@ isPluginUnavailabilityIndicatorObscured ::
                                           Internals -> Maybe element -> m Bool
 isPluginUnavailabilityIndicatorObscured self element
   = liftIO
-      (js_isPluginUnavailabilityIndicatorObscured (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_isPluginUnavailabilityIndicatorObscured (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "($1[\"isPluginSnapshotted\"]($2) ? 1 : 0)" js_isPluginSnapshotted
-        :: JSRef Internals -> JSRef Element -> IO Bool
+        :: Internals -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isPluginSnapshotted Mozilla Internals.isPluginSnapshotted documentation> 
 isPluginSnapshotted ::
@@ -2060,31 +1958,30 @@ isPluginSnapshotted ::
                       Internals -> Maybe element -> m Bool
 isPluginSnapshotted self element
   = liftIO
-      (js_isPluginSnapshotted (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_isPluginSnapshotted (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe "$1[\"selectionBounds\"]()"
-        js_selectionBounds :: JSRef Internals -> IO (JSRef ClientRect)
+        js_selectionBounds :: Internals -> IO (Nullable ClientRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.selectionBounds Mozilla Internals.selectionBounds documentation> 
 selectionBounds :: (MonadIO m) => Internals -> m (Maybe ClientRect)
 selectionBounds self
-  = liftIO ((js_selectionBounds (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_selectionBounds (self)))
  
 foreign import javascript unsafe
         "$1[\"initializeMockMediaSource\"]()" js_initializeMockMediaSource
-        :: JSRef Internals -> IO ()
+        :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.initializeMockMediaSource Mozilla Internals.initializeMockMediaSource documentation> 
 initializeMockMediaSource :: (MonadIO m) => Internals -> m ()
 initializeMockMediaSource self
-  = liftIO (js_initializeMockMediaSource (unInternals self))
+  = liftIO (js_initializeMockMediaSource (self))
  
 foreign import javascript unsafe
         "$1[\"bufferedSamplesForTrackID\"]($2,\n$3)"
         js_bufferedSamplesForTrackID ::
-        JSRef Internals ->
-          JSRef SourceBuffer -> JSString -> IO (JSRef [result])
+        Internals -> Nullable SourceBuffer -> JSString -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.bufferedSamplesForTrackID Mozilla Internals.bufferedSamplesForTrackID documentation> 
 bufferedSamplesForTrackID ::
@@ -2092,55 +1989,51 @@ bufferedSamplesForTrackID ::
                             Internals -> Maybe SourceBuffer -> trackID -> m [result]
 bufferedSamplesForTrackID self buffer trackID
   = liftIO
-      ((js_bufferedSamplesForTrackID (unInternals self)
-          (maybe jsNull pToJSRef buffer)
+      ((js_bufferedSamplesForTrackID (self) (maybeToNullable buffer)
           (toJSString trackID))
          >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe
         "$1[\"beginMediaSessionInterruption\"]()"
-        js_beginMediaSessionInterruption :: JSRef Internals -> IO ()
+        js_beginMediaSessionInterruption :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.beginMediaSessionInterruption Mozilla Internals.beginMediaSessionInterruption documentation> 
 beginMediaSessionInterruption :: (MonadIO m) => Internals -> m ()
 beginMediaSessionInterruption self
-  = liftIO (js_beginMediaSessionInterruption (unInternals self))
+  = liftIO (js_beginMediaSessionInterruption (self))
  
 foreign import javascript unsafe
         "$1[\"endMediaSessionInterruption\"]($2)"
-        js_endMediaSessionInterruption ::
-        JSRef Internals -> JSString -> IO ()
+        js_endMediaSessionInterruption :: Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.endMediaSessionInterruption Mozilla Internals.endMediaSessionInterruption documentation> 
 endMediaSessionInterruption ::
                             (MonadIO m, ToJSString flags) => Internals -> flags -> m ()
 endMediaSessionInterruption self flags
-  = liftIO
-      (js_endMediaSessionInterruption (unInternals self)
-         (toJSString flags))
+  = liftIO (js_endMediaSessionInterruption (self) (toJSString flags))
  
 foreign import javascript unsafe
         "$1[\"applicationWillEnterForeground\"]()"
-        js_applicationWillEnterForeground :: JSRef Internals -> IO ()
+        js_applicationWillEnterForeground :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.applicationWillEnterForeground Mozilla Internals.applicationWillEnterForeground documentation> 
 applicationWillEnterForeground :: (MonadIO m) => Internals -> m ()
 applicationWillEnterForeground self
-  = liftIO (js_applicationWillEnterForeground (unInternals self))
+  = liftIO (js_applicationWillEnterForeground (self))
  
 foreign import javascript unsafe
         "$1[\"applicationWillEnterBackground\"]()"
-        js_applicationWillEnterBackground :: JSRef Internals -> IO ()
+        js_applicationWillEnterBackground :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.applicationWillEnterBackground Mozilla Internals.applicationWillEnterBackground documentation> 
 applicationWillEnterBackground :: (MonadIO m) => Internals -> m ()
 applicationWillEnterBackground self
-  = liftIO (js_applicationWillEnterBackground (unInternals self))
+  = liftIO (js_applicationWillEnterBackground (self))
  
 foreign import javascript unsafe
         "$1[\"setMediaSessionRestrictions\"]($2,\n$3)"
         js_setMediaSessionRestrictions ::
-        JSRef Internals -> JSString -> JSString -> IO ()
+        Internals -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setMediaSessionRestrictions Mozilla Internals.setMediaSessionRestrictions documentation> 
 setMediaSessionRestrictions ::
@@ -2148,42 +2041,37 @@ setMediaSessionRestrictions ::
                               Internals -> mediaType -> restrictions -> m ()
 setMediaSessionRestrictions self mediaType restrictions
   = liftIO
-      (js_setMediaSessionRestrictions (unInternals self)
-         (toJSString mediaType)
+      (js_setMediaSessionRestrictions (self) (toJSString mediaType)
          (toJSString restrictions))
  
 foreign import javascript unsafe
         "$1[\"postRemoteControlCommand\"]($2)" js_postRemoteControlCommand
-        :: JSRef Internals -> JSString -> IO ()
+        :: Internals -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.postRemoteControlCommand Mozilla Internals.postRemoteControlCommand documentation> 
 postRemoteControlCommand ::
                          (MonadIO m, ToJSString command) => Internals -> command -> m ()
 postRemoteControlCommand self command
-  = liftIO
-      (js_postRemoteControlCommand (unInternals self)
-         (toJSString command))
+  = liftIO (js_postRemoteControlCommand (self) (toJSString command))
  
 foreign import javascript unsafe "$1[\"simulateSystemSleep\"]()"
-        js_simulateSystemSleep :: JSRef Internals -> IO ()
+        js_simulateSystemSleep :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.simulateSystemSleep Mozilla Internals.simulateSystemSleep documentation> 
 simulateSystemSleep :: (MonadIO m) => Internals -> m ()
-simulateSystemSleep self
-  = liftIO (js_simulateSystemSleep (unInternals self))
+simulateSystemSleep self = liftIO (js_simulateSystemSleep (self))
  
 foreign import javascript unsafe "$1[\"simulateSystemWake\"]()"
-        js_simulateSystemWake :: JSRef Internals -> IO ()
+        js_simulateSystemWake :: Internals -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.simulateSystemWake Mozilla Internals.simulateSystemWake documentation> 
 simulateSystemWake :: (MonadIO m) => Internals -> m ()
-simulateSystemWake self
-  = liftIO (js_simulateSystemWake (unInternals self))
+simulateSystemWake self = liftIO (js_simulateSystemWake (self))
  
 foreign import javascript unsafe
         "($1[\"elementIsBlockingDisplaySleep\"]($2) ? 1 : 0)"
         js_elementIsBlockingDisplaySleep ::
-        JSRef Internals -> JSRef Element -> IO Bool
+        Internals -> Nullable Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.elementIsBlockingDisplaySleep Mozilla Internals.elementIsBlockingDisplaySleep documentation> 
 elementIsBlockingDisplaySleep ::
@@ -2191,48 +2079,43 @@ elementIsBlockingDisplaySleep ::
                                 Internals -> Maybe element -> m Bool
 elementIsBlockingDisplaySleep self element
   = liftIO
-      (js_elementIsBlockingDisplaySleep (unInternals self)
-         (maybe jsNull (unElement . toElement) element))
+      (js_elementIsBlockingDisplaySleep (self)
+         (maybeToNullable (fmap toElement element)))
  
 foreign import javascript unsafe
         "$1[\"installMockPageOverlay\"]($2)" js_installMockPageOverlay ::
-        JSRef Internals -> JSRef PageOverlayType -> IO ()
+        Internals -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.installMockPageOverlay Mozilla Internals.installMockPageOverlay documentation> 
 installMockPageOverlay ::
                        (MonadIO m) => Internals -> PageOverlayType -> m ()
 installMockPageOverlay self type'
-  = liftIO
-      (js_installMockPageOverlay (unInternals self) (pToJSRef type'))
+  = liftIO (js_installMockPageOverlay (self) (pToJSRef type'))
  
 foreign import javascript unsafe
         "$1[\"pageOverlayLayerTreeAsText\"]()"
-        js_pageOverlayLayerTreeAsText :: JSRef Internals -> IO JSString
+        js_pageOverlayLayerTreeAsText :: Internals -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.pageOverlayLayerTreeAsText Mozilla Internals.pageOverlayLayerTreeAsText documentation> 
 pageOverlayLayerTreeAsText ::
                            (MonadIO m, FromJSString result) => Internals -> m result
 pageOverlayLayerTreeAsText self
-  = liftIO
-      (fromJSString <$>
-         (js_pageOverlayLayerTreeAsText (unInternals self)))
+  = liftIO (fromJSString <$> (js_pageOverlayLayerTreeAsText (self)))
  
 foreign import javascript unsafe "$1[\"setPageMuted\"]($2)"
-        js_setPageMuted :: JSRef Internals -> Bool -> IO ()
+        js_setPageMuted :: Internals -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setPageMuted Mozilla Internals.setPageMuted documentation> 
 setPageMuted :: (MonadIO m) => Internals -> Bool -> m ()
-setPageMuted self muted
-  = liftIO (js_setPageMuted (unInternals self) muted)
+setPageMuted self muted = liftIO (js_setPageMuted (self) muted)
  
 foreign import javascript unsafe
         "($1[\"isPagePlayingAudio\"]() ? 1 : 0)" js_isPagePlayingAudio ::
-        JSRef Internals -> IO Bool
+        Internals -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.isPagePlayingAudio Mozilla Internals.isPagePlayingAudio documentation> 
 isPagePlayingAudio :: (MonadIO m) => Internals -> m Bool
-isPagePlayingAudio self
-  = liftIO (js_isPagePlayingAudio (unInternals self))
+isPagePlayingAudio self = liftIO (js_isPagePlayingAudio (self))
 pattern LAYER_TREE_INCLUDES_VISIBLE_RECTS = 1
 pattern LAYER_TREE_INCLUDES_TILE_CACHES = 2
 pattern LAYER_TREE_INCLUDES_REPAINT_RECTS = 4
@@ -2240,29 +2123,26 @@ pattern LAYER_TREE_INCLUDES_PAINTING_PHASES = 8
 pattern LAYER_TREE_INCLUDES_CONTENT_LAYERS = 16
  
 foreign import javascript unsafe "$1[\"settings\"]" js_getSettings
-        :: JSRef Internals -> IO (JSRef InternalSettings)
+        :: Internals -> IO (Nullable InternalSettings)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.settings Mozilla Internals.settings documentation> 
 getSettings ::
             (MonadIO m) => Internals -> m (Maybe InternalSettings)
 getSettings self
-  = liftIO ((js_getSettings (unInternals self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSettings (self)))
  
 foreign import javascript unsafe "$1[\"workerThreadCount\"]"
-        js_getWorkerThreadCount :: JSRef Internals -> IO Word
+        js_getWorkerThreadCount :: Internals -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.workerThreadCount Mozilla Internals.workerThreadCount documentation> 
 getWorkerThreadCount :: (MonadIO m) => Internals -> m Word
-getWorkerThreadCount self
-  = liftIO (js_getWorkerThreadCount (unInternals self))
+getWorkerThreadCount self = liftIO (js_getWorkerThreadCount (self))
  
 foreign import javascript unsafe "$1[\"consoleProfiles\"]"
-        js_getConsoleProfiles ::
-        JSRef Internals -> IO (JSRef [Maybe ScriptProfile])
+        js_getConsoleProfiles :: Internals -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.consoleProfiles Mozilla Internals.consoleProfiles documentation> 
 getConsoleProfiles ::
                    (MonadIO m) => Internals -> m [Maybe ScriptProfile]
 getConsoleProfiles self
-  = liftIO
-      ((js_getConsoleProfiles (unInternals self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getConsoleProfiles (self)) >>= fromJSRefUnchecked)

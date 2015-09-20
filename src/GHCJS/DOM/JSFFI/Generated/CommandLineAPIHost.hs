@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,46 +22,40 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"clearConsoleMessages\"]()"
-        js_clearConsoleMessages :: JSRef CommandLineAPIHost -> IO ()
+        js_clearConsoleMessages :: CommandLineAPIHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.clearConsoleMessages Mozilla CommandLineAPIHost.clearConsoleMessages documentation> 
 clearConsoleMessages :: (MonadIO m) => CommandLineAPIHost -> m ()
-clearConsoleMessages self
-  = liftIO (js_clearConsoleMessages (unCommandLineAPIHost self))
+clearConsoleMessages self = liftIO (js_clearConsoleMessages (self))
  
 foreign import javascript unsafe "$1[\"copyText\"]($2)" js_copyText
-        :: JSRef CommandLineAPIHost -> JSString -> IO ()
+        :: CommandLineAPIHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.copyText Mozilla CommandLineAPIHost.copyText documentation> 
 copyText ::
          (MonadIO m, ToJSString text) => CommandLineAPIHost -> text -> m ()
-copyText self text
-  = liftIO
-      (js_copyText (unCommandLineAPIHost self) (toJSString text))
+copyText self text = liftIO (js_copyText (self) (toJSString text))
  
 foreign import javascript unsafe "$1[\"inspect\"]($2, $3)"
-        js_inspect ::
-        JSRef CommandLineAPIHost -> JSRef a -> JSRef a -> IO ()
+        js_inspect :: CommandLineAPIHost -> JSRef -> JSRef -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspect Mozilla CommandLineAPIHost.inspect documentation> 
 inspect ::
-        (MonadIO m) => CommandLineAPIHost -> JSRef a -> JSRef a -> m ()
+        (MonadIO m) => CommandLineAPIHost -> JSRef -> JSRef -> m ()
 inspect self objectId hints
-  = liftIO (js_inspect (unCommandLineAPIHost self) objectId hints)
+  = liftIO (js_inspect (self) objectId hints)
  
 foreign import javascript unsafe "$1[\"inspectedObject\"]($2)"
-        js_inspectedObject ::
-        JSRef CommandLineAPIHost -> Int -> IO (JSRef a)
+        js_inspectedObject :: CommandLineAPIHost -> Int -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspectedObject Mozilla CommandLineAPIHost.inspectedObject documentation> 
 inspectedObject ::
-                (MonadIO m) => CommandLineAPIHost -> Int -> m (JSRef a)
-inspectedObject self num
-  = liftIO (js_inspectedObject (unCommandLineAPIHost self) num)
+                (MonadIO m) => CommandLineAPIHost -> Int -> m JSRef
+inspectedObject self num = liftIO (js_inspectedObject (self) num)
  
 foreign import javascript unsafe "$1[\"getEventListeners\"]($2)"
         js_getEventListeners ::
-        JSRef CommandLineAPIHost -> JSRef Node -> IO (JSRef Array)
+        CommandLineAPIHost -> Nullable Node -> IO (Nullable Array)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.getEventListeners Mozilla CommandLineAPIHost.getEventListeners documentation> 
 getEventListeners ::
@@ -69,30 +63,25 @@ getEventListeners ::
                     CommandLineAPIHost -> Maybe node -> m (Maybe Array)
 getEventListeners self node
   = liftIO
-      ((js_getEventListeners (unCommandLineAPIHost self)
-          (maybe jsNull (unNode . toNode) node))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getEventListeners (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"databaseId\"]($2)"
-        js_databaseId :: JSRef CommandLineAPIHost -> JSRef a -> IO JSString
+        js_databaseId :: CommandLineAPIHost -> JSRef -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.databaseId Mozilla CommandLineAPIHost.databaseId documentation> 
 databaseId ::
            (MonadIO m, FromJSString result) =>
-             CommandLineAPIHost -> JSRef a -> m result
+             CommandLineAPIHost -> JSRef -> m result
 databaseId self database
-  = liftIO
-      (fromJSString <$>
-         (js_databaseId (unCommandLineAPIHost self) database))
+  = liftIO (fromJSString <$> (js_databaseId (self) database))
  
 foreign import javascript unsafe "$1[\"storageId\"]($2)"
-        js_storageId :: JSRef CommandLineAPIHost -> JSRef a -> IO JSString
+        js_storageId :: CommandLineAPIHost -> JSRef -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.storageId Mozilla CommandLineAPIHost.storageId documentation> 
 storageId ::
           (MonadIO m, FromJSString result) =>
-            CommandLineAPIHost -> JSRef a -> m result
+            CommandLineAPIHost -> JSRef -> m result
 storageId self storage
-  = liftIO
-      (fromJSString <$>
-         (js_storageId (unCommandLineAPIHost self) storage))
+  = liftIO (fromJSString <$> (js_storageId (self) storage))

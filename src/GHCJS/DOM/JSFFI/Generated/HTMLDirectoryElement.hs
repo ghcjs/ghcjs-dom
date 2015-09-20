@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLDirectoryElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,17 +20,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
-        js_setCompact :: JSRef HTMLDirectoryElement -> Bool -> IO ()
+        js_setCompact :: HTMLDirectoryElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement.compact Mozilla HTMLDirectoryElement.compact documentation> 
 setCompact :: (MonadIO m) => HTMLDirectoryElement -> Bool -> m ()
-setCompact self val
-  = liftIO (js_setCompact (unHTMLDirectoryElement self) val)
+setCompact self val = liftIO (js_setCompact (self) val)
  
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
-        js_getCompact :: JSRef HTMLDirectoryElement -> IO Bool
+        js_getCompact :: HTMLDirectoryElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement.compact Mozilla HTMLDirectoryElement.compact documentation> 
 getCompact :: (MonadIO m) => HTMLDirectoryElement -> m Bool
-getCompact self
-  = liftIO (js_getCompact (unHTMLDirectoryElement self))
+getCompact self = liftIO (js_getCompact (self))

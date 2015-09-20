@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSegList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,15 +22,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
-        JSRef SVGPathSegList -> IO ()
+        SVGPathSegList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.clear Mozilla SVGPathSegList.clear documentation> 
 clear :: (MonadIO m) => SVGPathSegList -> m ()
-clear self = liftIO (js_clear (unSVGPathSegList self))
+clear self = liftIO (js_clear (self))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
         js_initialize ::
-        JSRef SVGPathSegList -> JSRef SVGPathSeg -> IO (JSRef SVGPathSeg)
+        SVGPathSegList -> Nullable SVGPathSeg -> IO (Nullable SVGPathSeg)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.initialize Mozilla SVGPathSegList.initialize documentation> 
 initialize ::
@@ -38,23 +38,23 @@ initialize ::
              SVGPathSegList -> Maybe newItem -> m (Maybe SVGPathSeg)
 initialize self newItem
   = liftIO
-      ((js_initialize (unSVGPathSegList self)
-          (maybe jsNull (unSVGPathSeg . toSVGPathSeg) newItem))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_initialize (self)
+            (maybeToNullable (fmap toSVGPathSeg newItem))))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: JSRef SVGPathSegList -> Word -> IO (JSRef SVGPathSeg)
+        :: SVGPathSegList -> Word -> IO (Nullable SVGPathSeg)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.getItem Mozilla SVGPathSegList.getItem documentation> 
 getItem ::
         (MonadIO m) => SVGPathSegList -> Word -> m (Maybe SVGPathSeg)
 getItem self index
-  = liftIO ((js_getItem (unSVGPathSegList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getItem (self) index))
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
-        JSRef SVGPathSegList ->
-          JSRef SVGPathSeg -> Word -> IO (JSRef SVGPathSeg)
+        SVGPathSegList ->
+          Nullable SVGPathSeg -> Word -> IO (Nullable SVGPathSeg)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.insertItemBefore Mozilla SVGPathSegList.insertItemBefore documentation> 
 insertItemBefore ::
@@ -62,15 +62,15 @@ insertItemBefore ::
                    SVGPathSegList -> Maybe newItem -> Word -> m (Maybe SVGPathSeg)
 insertItemBefore self newItem index
   = liftIO
-      ((js_insertItemBefore (unSVGPathSegList self)
-          (maybe jsNull (unSVGPathSeg . toSVGPathSeg) newItem)
-          index)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_insertItemBefore (self)
+            (maybeToNullable (fmap toSVGPathSeg newItem))
+            index))
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
         js_replaceItem ::
-        JSRef SVGPathSegList ->
-          JSRef SVGPathSeg -> Word -> IO (JSRef SVGPathSeg)
+        SVGPathSegList ->
+          Nullable SVGPathSeg -> Word -> IO (Nullable SVGPathSeg)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.replaceItem Mozilla SVGPathSegList.replaceItem documentation> 
 replaceItem ::
@@ -78,25 +78,23 @@ replaceItem ::
               SVGPathSegList -> Maybe newItem -> Word -> m (Maybe SVGPathSeg)
 replaceItem self newItem index
   = liftIO
-      ((js_replaceItem (unSVGPathSegList self)
-          (maybe jsNull (unSVGPathSeg . toSVGPathSeg) newItem)
-          index)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_replaceItem (self)
+            (maybeToNullable (fmap toSVGPathSeg newItem))
+            index))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
-        js_removeItem ::
-        JSRef SVGPathSegList -> Word -> IO (JSRef SVGPathSeg)
+        js_removeItem :: SVGPathSegList -> Word -> IO (Nullable SVGPathSeg)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.removeItem Mozilla SVGPathSegList.removeItem documentation> 
 removeItem ::
            (MonadIO m) => SVGPathSegList -> Word -> m (Maybe SVGPathSeg)
 removeItem self index
-  = liftIO
-      ((js_removeItem (unSVGPathSegList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_removeItem (self) index))
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         js_appendItem ::
-        JSRef SVGPathSegList -> JSRef SVGPathSeg -> IO (JSRef SVGPathSeg)
+        SVGPathSegList -> Nullable SVGPathSeg -> IO (Nullable SVGPathSeg)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.appendItem Mozilla SVGPathSegList.appendItem documentation> 
 appendItem ::
@@ -104,14 +102,13 @@ appendItem ::
              SVGPathSegList -> Maybe newItem -> m (Maybe SVGPathSeg)
 appendItem self newItem
   = liftIO
-      ((js_appendItem (unSVGPathSegList self)
-          (maybe jsNull (unSVGPathSeg . toSVGPathSeg) newItem))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_appendItem (self)
+            (maybeToNullable (fmap toSVGPathSeg newItem))))
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
-        js_getNumberOfItems :: JSRef SVGPathSegList -> IO Word
+        js_getNumberOfItems :: SVGPathSegList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.numberOfItems Mozilla SVGPathSegList.numberOfItems documentation> 
 getNumberOfItems :: (MonadIO m) => SVGPathSegList -> m Word
-getNumberOfItems self
-  = liftIO (js_getNumberOfItems (unSVGPathSegList self))
+getNumberOfItems self = liftIO (js_getNumberOfItems (self))

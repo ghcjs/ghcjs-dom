@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.StorageQuotaCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,27 +23,30 @@ newStorageQuotaCallback ::
                         (MonadIO m) => (Double -> IO ()) -> m StorageQuotaCallback
 newStorageQuotaCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ grantedQuotaInBytes ->
-            fromJSRefUnchecked grantedQuotaInBytes >>=
-              \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
+      (StorageQuotaCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ grantedQuotaInBytes ->
+              fromJSRefUnchecked grantedQuotaInBytes >>=
+                \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
 newStorageQuotaCallbackSync ::
                             (MonadIO m) => (Double -> IO ()) -> m StorageQuotaCallback
 newStorageQuotaCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ grantedQuotaInBytes ->
-            fromJSRefUnchecked grantedQuotaInBytes >>=
-              \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
+      (StorageQuotaCallback <$>
+         syncCallback1 ContinueAsync
+           (\ grantedQuotaInBytes ->
+              fromJSRefUnchecked grantedQuotaInBytes >>=
+                \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
 newStorageQuotaCallbackAsync ::
                              (MonadIO m) => (Double -> IO ()) -> m StorageQuotaCallback
 newStorageQuotaCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ grantedQuotaInBytes ->
-            fromJSRefUnchecked grantedQuotaInBytes >>=
-              \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
+      (StorageQuotaCallback <$>
+         asyncCallback1
+           (\ grantedQuotaInBytes ->
+              fromJSRefUnchecked grantedQuotaInBytes >>=
+                \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))

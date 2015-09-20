@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.StorageInfo
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,9 +21,10 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"queryUsageAndQuota\"]($2, $3,\n$4)" js_queryUsageAndQuota ::
-        JSRef StorageInfo ->
+        StorageInfo ->
           Word ->
-            JSRef StorageUsageCallback -> JSRef StorageErrorCallback -> IO ()
+            Nullable StorageUsageCallback ->
+              Nullable StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.queryUsageAndQuota Mozilla StorageInfo.queryUsageAndQuota documentation> 
 queryUsageAndQuota ::
@@ -33,16 +34,17 @@ queryUsageAndQuota ::
                          Maybe StorageUsageCallback -> Maybe StorageErrorCallback -> m ()
 queryUsageAndQuota self storageType usageCallback errorCallback
   = liftIO
-      (js_queryUsageAndQuota (unStorageInfo self) storageType
-         (maybe jsNull pToJSRef usageCallback)
-         (maybe jsNull pToJSRef errorCallback))
+      (js_queryUsageAndQuota (self) storageType
+         (maybeToNullable usageCallback)
+         (maybeToNullable errorCallback))
  
 foreign import javascript unsafe
         "$1[\"requestQuota\"]($2, $3, $4,\n$5)" js_requestQuota ::
-        JSRef StorageInfo ->
+        StorageInfo ->
           Word ->
             Double ->
-              JSRef StorageQuotaCallback -> JSRef StorageErrorCallback -> IO ()
+              Nullable StorageQuotaCallback ->
+                Nullable StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.requestQuota Mozilla StorageInfo.requestQuota documentation> 
 requestQuota ::
@@ -54,9 +56,8 @@ requestQuota ::
 requestQuota self storageType newQuotaInBytes quotaCallback
   errorCallback
   = liftIO
-      (js_requestQuota (unStorageInfo self) storageType
-         (fromIntegral newQuotaInBytes)
-         (maybe jsNull pToJSRef quotaCallback)
-         (maybe jsNull pToJSRef errorCallback))
+      (js_requestQuota (self) storageType (fromIntegral newQuotaInBytes)
+         (maybeToNullable quotaCallback)
+         (maybeToNullable errorCallback))
 pattern TEMPORARY = 0
 pattern PERSISTENT = 1

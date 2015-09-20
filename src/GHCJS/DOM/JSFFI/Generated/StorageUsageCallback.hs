@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.StorageUsageCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,13 +24,14 @@ newStorageUsageCallback ::
                           (Double -> Double -> IO ()) -> m StorageUsageCallback
 newStorageUsageCallback callback
   = liftIO
-      (syncCallback2 ThrowWouldBlock
-         (\ currentUsageInBytes currentQuotaInBytes ->
-            fromJSRefUnchecked currentQuotaInBytes >>=
-              \ currentQuotaInBytes' ->
-                fromJSRefUnchecked currentUsageInBytes >>=
-                  \ currentUsageInBytes' -> callback currentUsageInBytes'
-                  currentQuotaInBytes'))
+      (StorageUsageCallback <$>
+         syncCallback2 ThrowWouldBlock
+           (\ currentUsageInBytes currentQuotaInBytes ->
+              fromJSRefUnchecked currentQuotaInBytes >>=
+                \ currentQuotaInBytes' ->
+                  fromJSRefUnchecked currentUsageInBytes >>=
+                    \ currentUsageInBytes' -> callback currentUsageInBytes'
+                    currentQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation> 
 newStorageUsageCallbackSync ::
@@ -38,13 +39,14 @@ newStorageUsageCallbackSync ::
                               (Double -> Double -> IO ()) -> m StorageUsageCallback
 newStorageUsageCallbackSync callback
   = liftIO
-      (syncCallback2 ContinueAsync
-         (\ currentUsageInBytes currentQuotaInBytes ->
-            fromJSRefUnchecked currentQuotaInBytes >>=
-              \ currentQuotaInBytes' ->
-                fromJSRefUnchecked currentUsageInBytes >>=
-                  \ currentUsageInBytes' -> callback currentUsageInBytes'
-                  currentQuotaInBytes'))
+      (StorageUsageCallback <$>
+         syncCallback2 ContinueAsync
+           (\ currentUsageInBytes currentQuotaInBytes ->
+              fromJSRefUnchecked currentQuotaInBytes >>=
+                \ currentQuotaInBytes' ->
+                  fromJSRefUnchecked currentUsageInBytes >>=
+                    \ currentUsageInBytes' -> callback currentUsageInBytes'
+                    currentQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageUsageCallback Mozilla StorageUsageCallback documentation> 
 newStorageUsageCallbackAsync ::
@@ -52,10 +54,11 @@ newStorageUsageCallbackAsync ::
                                (Double -> Double -> IO ()) -> m StorageUsageCallback
 newStorageUsageCallbackAsync callback
   = liftIO
-      (asyncCallback2
-         (\ currentUsageInBytes currentQuotaInBytes ->
-            fromJSRefUnchecked currentQuotaInBytes >>=
-              \ currentQuotaInBytes' ->
-                fromJSRefUnchecked currentUsageInBytes >>=
-                  \ currentUsageInBytes' -> callback currentUsageInBytes'
-                  currentQuotaInBytes'))
+      (StorageUsageCallback <$>
+         asyncCallback2
+           (\ currentUsageInBytes currentQuotaInBytes ->
+              fromJSRefUnchecked currentQuotaInBytes >>=
+                \ currentQuotaInBytes' ->
+                  fromJSRefUnchecked currentUsageInBytes >>=
+                    \ currentUsageInBytes' -> callback currentUsageInBytes'
+                    currentQuotaInBytes'))

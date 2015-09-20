@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCSessionDescriptionCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,8 +27,9 @@ newRTCSessionDescriptionCallback ::
                                      m RTCSessionDescriptionCallback
 newRTCSessionDescriptionCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
+      (RTCSessionDescriptionCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation> 
 newRTCSessionDescriptionCallbackSync ::
@@ -37,8 +38,9 @@ newRTCSessionDescriptionCallbackSync ::
                                          m RTCSessionDescriptionCallback
 newRTCSessionDescriptionCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
+      (RTCSessionDescriptionCallback <$>
+         syncCallback1 ContinueAsync
+           (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback Mozilla RTCSessionDescriptionCallback documentation> 
 newRTCSessionDescriptionCallbackAsync ::
@@ -47,5 +49,6 @@ newRTCSessionDescriptionCallbackAsync ::
                                           m RTCSessionDescriptionCallback
 newRTCSessionDescriptionCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))
+      (RTCSessionDescriptionCallback <$>
+         asyncCallback1
+           (\ sdp -> fromJSRefUnchecked sdp >>= \ sdp' -> callback sdp'))

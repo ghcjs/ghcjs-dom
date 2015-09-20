@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLCollection
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,7 +20,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef HTMLCollection -> Word -> IO (JSRef Node)
+        HTMLCollection -> Word -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.item Mozilla HTMLCollection.item documentation> 
 item ::
@@ -28,11 +28,10 @@ item ::
        self -> Word -> m (Maybe Node)
 item self index
   = liftIO
-      ((js_item (unHTMLCollection (toHTMLCollection self)) index) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_item (toHTMLCollection self) index))
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        js_namedItem :: JSRef HTMLCollection -> JSString -> IO (JSRef Node)
+        js_namedItem :: HTMLCollection -> JSString -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.namedItem Mozilla HTMLCollection.namedItem documentation> 
 namedItem ::
@@ -40,14 +39,12 @@ namedItem ::
             self -> name -> m (Maybe Node)
 namedItem self name
   = liftIO
-      ((js_namedItem (unHTMLCollection (toHTMLCollection self))
-          (toJSString name))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_namedItem (toHTMLCollection self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef HTMLCollection -> IO Word
+        HTMLCollection -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.length Mozilla HTMLCollection.length documentation> 
 getLength :: (MonadIO m, IsHTMLCollection self) => self -> m Word
-getLength self
-  = liftIO (js_getLength (unHTMLCollection (toHTMLCollection self)))
+getLength self = liftIO (js_getLength (toHTMLCollection self))

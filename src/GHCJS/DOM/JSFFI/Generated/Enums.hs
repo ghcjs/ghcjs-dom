@@ -46,7 +46,7 @@ module GHCJS.DOM.JSFFI.Generated.Enums
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -77,16 +77,16 @@ instance PFromJSRef KeyType where
  
 instance FromJSRef KeyType where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"secret\"" js_KeyTypeSecret ::
-        JSRef KeyType
+        JSRef
  
 foreign import javascript unsafe "\"public\"" js_KeyTypePublic ::
-        JSRef KeyType
+        JSRef
  
 foreign import javascript unsafe "\"private\"" js_KeyTypePrivate ::
-        JSRef KeyType
+        JSRef
  
 data KeyUsage = KeyUsageEncrypt
               | KeyUsageDecrypt
@@ -123,31 +123,31 @@ instance PFromJSRef KeyUsage where
  
 instance FromJSRef KeyUsage where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"encrypt\"" js_KeyUsageEncrypt
-        :: JSRef KeyUsage
+        :: JSRef
  
 foreign import javascript unsafe "\"decrypt\"" js_KeyUsageDecrypt
-        :: JSRef KeyUsage
+        :: JSRef
  
 foreign import javascript unsafe "\"sign\"" js_KeyUsageSign ::
-        JSRef KeyUsage
+        JSRef
  
 foreign import javascript unsafe "\"verify\"" js_KeyUsageVerify ::
-        JSRef KeyUsage
+        JSRef
  
 foreign import javascript unsafe "\"deriveKey\""
-        js_KeyUsageDeriveKey :: JSRef KeyUsage
+        js_KeyUsageDeriveKey :: JSRef
  
 foreign import javascript unsafe "\"deriveBits\""
-        js_KeyUsageDeriveBits :: JSRef KeyUsage
+        js_KeyUsageDeriveBits :: JSRef
  
 foreign import javascript unsafe "\"wrapKey\"" js_KeyUsageWrapKey
-        :: JSRef KeyUsage
+        :: JSRef
  
 foreign import javascript unsafe "\"unwrapKey\""
-        js_KeyUsageUnwrapKey :: JSRef KeyUsage
+        js_KeyUsageUnwrapKey :: JSRef
  
 data CanvasWindingRule = CanvasWindingRuleNonzero
                        | CanvasWindingRuleEvenodd
@@ -168,13 +168,13 @@ instance PFromJSRef CanvasWindingRule where
  
 instance FromJSRef CanvasWindingRule where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"nonzero\""
-        js_CanvasWindingRuleNonzero :: JSRef CanvasWindingRule
+        js_CanvasWindingRuleNonzero :: JSRef
  
 foreign import javascript unsafe "\"evenodd\""
-        js_CanvasWindingRuleEvenodd :: JSRef CanvasWindingRule
+        js_CanvasWindingRuleEvenodd :: JSRef
  
 data VideoPresentationMode = VideoPresentationModeFullscreen
                            | VideoPresentationModeOptimized
@@ -205,16 +205,16 @@ instance PFromJSRef VideoPresentationMode where
  
 instance FromJSRef VideoPresentationMode where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"fullscreen\""
-        js_VideoPresentationModeFullscreen :: JSRef VideoPresentationMode
+        js_VideoPresentationModeFullscreen :: JSRef
  
 foreign import javascript unsafe "\"optimized\""
-        js_VideoPresentationModeOptimized :: JSRef VideoPresentationMode
+        js_VideoPresentationModeOptimized :: JSRef
  
 foreign import javascript unsafe "\"inline\""
-        js_VideoPresentationModeInline :: JSRef VideoPresentationMode
+        js_VideoPresentationModeInline :: JSRef
  
 data TextTrackMode = TextTrackModeDisabled
                    | TextTrackModeHidden
@@ -239,16 +239,16 @@ instance PFromJSRef TextTrackMode where
  
 instance FromJSRef TextTrackMode where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"disabled\""
-        js_TextTrackModeDisabled :: JSRef TextTrackMode
+        js_TextTrackModeDisabled :: JSRef
  
 foreign import javascript unsafe "\"hidden\""
-        js_TextTrackModeHidden :: JSRef TextTrackMode
+        js_TextTrackModeHidden :: JSRef
  
 foreign import javascript unsafe "\"showing\""
-        js_TextTrackModeShowing :: JSRef TextTrackMode
+        js_TextTrackModeShowing :: JSRef
  
 data TextTrackKind = TextTrackKindSubtitles
                    | TextTrackKindCaptions
@@ -282,22 +282,22 @@ instance PFromJSRef TextTrackKind where
  
 instance FromJSRef TextTrackKind where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"subtitles\""
-        js_TextTrackKindSubtitles :: JSRef TextTrackKind
+        js_TextTrackKindSubtitles :: JSRef
  
 foreign import javascript unsafe "\"captions\""
-        js_TextTrackKindCaptions :: JSRef TextTrackKind
+        js_TextTrackKindCaptions :: JSRef
  
 foreign import javascript unsafe "\"descriptions\""
-        js_TextTrackKindDescriptions :: JSRef TextTrackKind
+        js_TextTrackKindDescriptions :: JSRef
  
 foreign import javascript unsafe "\"chapters\""
-        js_TextTrackKindChapters :: JSRef TextTrackKind
+        js_TextTrackKindChapters :: JSRef
  
 foreign import javascript unsafe "\"metadata\""
-        js_TextTrackKindMetadata :: JSRef TextTrackKind
+        js_TextTrackKindMetadata :: JSRef
  
 data DeviceType = DeviceTypeNone
                 | DeviceTypeAirplay
@@ -319,16 +319,16 @@ instance PFromJSRef DeviceType where
  
 instance FromJSRef DeviceType where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"none\"" js_DeviceTypeNone ::
-        JSRef DeviceType
+        JSRef
  
 foreign import javascript unsafe "\"airplay\"" js_DeviceTypeAirplay
-        :: JSRef DeviceType
+        :: JSRef
  
 foreign import javascript unsafe "\"tvout\"" js_DeviceTypeTvout ::
-        JSRef DeviceType
+        JSRef
  
 data MediaUIPartID = MediaUIPartIDOptimizedFullscreenButton
                    | MediaUIPartIDOptimizedFullscreenPlaceholder
@@ -353,15 +353,14 @@ instance PFromJSRef MediaUIPartID where
  
 instance FromJSRef MediaUIPartID where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"optimized-fullscreen-button\""
-        js_MediaUIPartIDOptimizedFullscreenButton :: JSRef MediaUIPartID
+        js_MediaUIPartIDOptimizedFullscreenButton :: JSRef
  
 foreign import javascript unsafe
         "\"optimized-fullscreen-placeholder\""
-        js_MediaUIPartIDOptimizedFullscreenPlaceholder ::
-        JSRef MediaUIPartID
+        js_MediaUIPartIDOptimizedFullscreenPlaceholder :: JSRef
  
 data EndOfStreamError = EndOfStreamErrorNetwork
                       | EndOfStreamErrorDecode
@@ -382,13 +381,13 @@ instance PFromJSRef EndOfStreamError where
  
 instance FromJSRef EndOfStreamError where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"network\""
-        js_EndOfStreamErrorNetwork :: JSRef EndOfStreamError
+        js_EndOfStreamErrorNetwork :: JSRef
  
 foreign import javascript unsafe "\"decode\""
-        js_EndOfStreamErrorDecode :: JSRef EndOfStreamError
+        js_EndOfStreamErrorDecode :: JSRef
  
 data AppendMode = AppendModeSegments
                 | AppendModeSequence
@@ -407,13 +406,13 @@ instance PFromJSRef AppendMode where
  
 instance FromJSRef AppendMode where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"segments\""
-        js_AppendModeSegments :: JSRef AppendMode
+        js_AppendModeSegments :: JSRef
  
 foreign import javascript unsafe "\"sequence\""
-        js_AppendModeSequence :: JSRef AppendMode
+        js_AppendModeSequence :: JSRef
  
 data SourceTypeEnum = SourceTypeEnumNone
                     | SourceTypeEnumCamera
@@ -437,16 +436,16 @@ instance PFromJSRef SourceTypeEnum where
  
 instance FromJSRef SourceTypeEnum where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"none\"" js_SourceTypeEnumNone
-        :: JSRef SourceTypeEnum
+        :: JSRef
  
 foreign import javascript unsafe "\"camera\""
-        js_SourceTypeEnumCamera :: JSRef SourceTypeEnum
+        js_SourceTypeEnumCamera :: JSRef
  
 foreign import javascript unsafe "\"microphone\""
-        js_SourceTypeEnumMicrophone :: JSRef SourceTypeEnum
+        js_SourceTypeEnumMicrophone :: JSRef
  
 data VideoFacingModeEnum = VideoFacingModeEnumUser
                          | VideoFacingModeEnumEnvironment
@@ -477,19 +476,19 @@ instance PFromJSRef VideoFacingModeEnum where
  
 instance FromJSRef VideoFacingModeEnum where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"user\""
-        js_VideoFacingModeEnumUser :: JSRef VideoFacingModeEnum
+        js_VideoFacingModeEnumUser :: JSRef
  
 foreign import javascript unsafe "\"environment\""
-        js_VideoFacingModeEnumEnvironment :: JSRef VideoFacingModeEnum
+        js_VideoFacingModeEnumEnvironment :: JSRef
  
 foreign import javascript unsafe "\"left\""
-        js_VideoFacingModeEnumLeft :: JSRef VideoFacingModeEnum
+        js_VideoFacingModeEnumLeft :: JSRef
  
 foreign import javascript unsafe "\"right\""
-        js_VideoFacingModeEnumRight :: JSRef VideoFacingModeEnum
+        js_VideoFacingModeEnumRight :: JSRef
  
 data MediaStreamTrackState = MediaStreamTrackStateNew
                            | MediaStreamTrackStateLive
@@ -516,16 +515,16 @@ instance PFromJSRef MediaStreamTrackState where
  
 instance FromJSRef MediaStreamTrackState where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"new\""
-        js_MediaStreamTrackStateNew :: JSRef MediaStreamTrackState
+        js_MediaStreamTrackStateNew :: JSRef
  
 foreign import javascript unsafe "\"live\""
-        js_MediaStreamTrackStateLive :: JSRef MediaStreamTrackState
+        js_MediaStreamTrackStateLive :: JSRef
  
 foreign import javascript unsafe "\"ended\""
-        js_MediaStreamTrackStateEnded :: JSRef MediaStreamTrackState
+        js_MediaStreamTrackStateEnded :: JSRef
  
 data RTCIceTransportsEnum = RTCIceTransportsEnumNone
                           | RTCIceTransportsEnumRelay
@@ -551,16 +550,16 @@ instance PFromJSRef RTCIceTransportsEnum where
  
 instance FromJSRef RTCIceTransportsEnum where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"none\""
-        js_RTCIceTransportsEnumNone :: JSRef RTCIceTransportsEnum
+        js_RTCIceTransportsEnumNone :: JSRef
  
 foreign import javascript unsafe "\"relay\""
-        js_RTCIceTransportsEnumRelay :: JSRef RTCIceTransportsEnum
+        js_RTCIceTransportsEnumRelay :: JSRef
  
 foreign import javascript unsafe "\"all\""
-        js_RTCIceTransportsEnumAll :: JSRef RTCIceTransportsEnum
+        js_RTCIceTransportsEnumAll :: JSRef
  
 data RTCIdentityOptionEnum = RTCIdentityOptionEnumYes
                            | RTCIdentityOptionEnumNo
@@ -587,16 +586,16 @@ instance PFromJSRef RTCIdentityOptionEnum where
  
 instance FromJSRef RTCIdentityOptionEnum where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"yes\""
-        js_RTCIdentityOptionEnumYes :: JSRef RTCIdentityOptionEnum
+        js_RTCIdentityOptionEnumYes :: JSRef
  
 foreign import javascript unsafe "\"no\""
-        js_RTCIdentityOptionEnumNo :: JSRef RTCIdentityOptionEnum
+        js_RTCIdentityOptionEnumNo :: JSRef
  
 foreign import javascript unsafe "\"ifconfigured\""
-        js_RTCIdentityOptionEnumIfconfigured :: JSRef RTCIdentityOptionEnum
+        js_RTCIdentityOptionEnumIfconfigured :: JSRef
  
 data ReadableStreamStateType = ReadableStreamStateTypeReadable
                              | ReadableStreamStateTypeWaiting
@@ -633,19 +632,19 @@ instance PFromJSRef ReadableStreamStateType where
  
 instance FromJSRef ReadableStreamStateType where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"readable\""
-        js_ReadableStreamStateTypeReadable :: JSRef ReadableStreamStateType
+        js_ReadableStreamStateTypeReadable :: JSRef
  
 foreign import javascript unsafe "\"waiting\""
-        js_ReadableStreamStateTypeWaiting :: JSRef ReadableStreamStateType
+        js_ReadableStreamStateTypeWaiting :: JSRef
  
 foreign import javascript unsafe "\"closed\""
-        js_ReadableStreamStateTypeClosed :: JSRef ReadableStreamStateType
+        js_ReadableStreamStateTypeClosed :: JSRef
  
 foreign import javascript unsafe "\"errored\""
-        js_ReadableStreamStateTypeErrored :: JSRef ReadableStreamStateType
+        js_ReadableStreamStateTypeErrored :: JSRef
  
 data OverSampleType = OverSampleTypeNone
                     | OverSampleType2x
@@ -667,16 +666,16 @@ instance PFromJSRef OverSampleType where
  
 instance FromJSRef OverSampleType where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"none\"" js_OverSampleTypeNone
-        :: JSRef OverSampleType
+        :: JSRef
  
 foreign import javascript unsafe "\"2x\"" js_OverSampleType2x ::
-        JSRef OverSampleType
+        JSRef
  
 foreign import javascript unsafe "\"4x\"" js_OverSampleType4x ::
-        JSRef OverSampleType
+        JSRef
  
 data PageOverlayType = PageOverlayTypeView
                      | PageOverlayTypeDocument
@@ -697,13 +696,13 @@ instance PFromJSRef PageOverlayType where
  
 instance FromJSRef PageOverlayType where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"view\"" js_PageOverlayTypeView
-        :: JSRef PageOverlayType
+        :: JSRef
  
 foreign import javascript unsafe "\"document\""
-        js_PageOverlayTypeDocument :: JSRef PageOverlayType
+        js_PageOverlayTypeDocument :: JSRef
  
 data XMLHttpRequestResponseType = XMLHttpRequestResponseType
                                 | XMLHttpRequestResponseTypeArraybuffer
@@ -751,27 +750,22 @@ instance PFromJSRef XMLHttpRequestResponseType where
  
 instance FromJSRef XMLHttpRequestResponseType where
         fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef . castRef
+        fromJSRef = return . pFromJSRef
  
 foreign import javascript unsafe "\"\""
-        js_XMLHttpRequestResponseType :: JSRef XMLHttpRequestResponseType
+        js_XMLHttpRequestResponseType :: JSRef
  
 foreign import javascript unsafe "\"arraybuffer\""
-        js_XMLHttpRequestResponseTypeArraybuffer ::
-        JSRef XMLHttpRequestResponseType
+        js_XMLHttpRequestResponseTypeArraybuffer :: JSRef
  
 foreign import javascript unsafe "\"blob\""
-        js_XMLHttpRequestResponseTypeBlob ::
-        JSRef XMLHttpRequestResponseType
+        js_XMLHttpRequestResponseTypeBlob :: JSRef
  
 foreign import javascript unsafe "\"document\""
-        js_XMLHttpRequestResponseTypeDocument ::
-        JSRef XMLHttpRequestResponseType
+        js_XMLHttpRequestResponseTypeDocument :: JSRef
  
 foreign import javascript unsafe "\"json\""
-        js_XMLHttpRequestResponseTypeJson ::
-        JSRef XMLHttpRequestResponseType
+        js_XMLHttpRequestResponseTypeJson :: JSRef
  
 foreign import javascript unsafe "\"text\""
-        js_XMLHttpRequestResponseTypeText ::
-        JSRef XMLHttpRequestResponseType
+        js_XMLHttpRequestResponseTypeText :: JSRef

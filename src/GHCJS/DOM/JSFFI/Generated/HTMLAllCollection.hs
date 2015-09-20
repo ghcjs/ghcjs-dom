@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAllCollection
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,16 +20,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef HTMLAllCollection -> Word -> IO (JSRef Node)
+        HTMLAllCollection -> Word -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.item Mozilla HTMLAllCollection.item documentation> 
 item :: (MonadIO m) => HTMLAllCollection -> Word -> m (Maybe Node)
 item self index
-  = liftIO ((js_item (unHTMLAllCollection self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        js_namedItem ::
-        JSRef HTMLAllCollection -> JSString -> IO (JSRef Node)
+        js_namedItem :: HTMLAllCollection -> JSString -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.namedItem Mozilla HTMLAllCollection.namedItem documentation> 
 namedItem ::
@@ -37,24 +36,21 @@ namedItem ::
             HTMLAllCollection -> name -> m (Maybe Node)
 namedItem self name
   = liftIO
-      ((js_namedItem (unHTMLAllCollection self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_namedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"tags\"]($2)" js_tags ::
-        JSRef HTMLAllCollection -> JSString -> IO (JSRef NodeList)
+        HTMLAllCollection -> JSString -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.tags Mozilla HTMLAllCollection.tags documentation> 
 tags ::
      (MonadIO m, ToJSString name) =>
        HTMLAllCollection -> name -> m (Maybe NodeList)
 tags self name
-  = liftIO
-      ((js_tags (unHTMLAllCollection self) (toJSString name)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_tags (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef HTMLAllCollection -> IO Word
+        HTMLAllCollection -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.length Mozilla HTMLAllCollection.length documentation> 
 getLength :: (MonadIO m) => HTMLAllCollection -> m Word
-getLength self = liftIO (js_getLength (unHTMLAllCollection self))
+getLength self = liftIO (js_getLength (self))

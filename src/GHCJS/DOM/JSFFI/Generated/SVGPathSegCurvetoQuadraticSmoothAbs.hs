@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoQuadraticSmoothAbs
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,37 +21,33 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
-        JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> IO ()
+        SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.x Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.x documentation> 
 setX ::
      (MonadIO m) => SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> m ()
-setX self val
-  = liftIO (js_setX (unSVGPathSegCurvetoQuadraticSmoothAbs self) val)
+setX self val = liftIO (js_setX (self) val)
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> IO Float
+        SVGPathSegCurvetoQuadraticSmoothAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.x Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.x documentation> 
 getX ::
      (MonadIO m) => SVGPathSegCurvetoQuadraticSmoothAbs -> m Float
-getX self
-  = liftIO (js_getX (unSVGPathSegCurvetoQuadraticSmoothAbs self))
+getX self = liftIO (js_getX (self))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
-        JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> IO ()
+        SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.y Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.y documentation> 
 setY ::
      (MonadIO m) => SVGPathSegCurvetoQuadraticSmoothAbs -> Float -> m ()
-setY self val
-  = liftIO (js_setY (unSVGPathSegCurvetoQuadraticSmoothAbs self) val)
+setY self val = liftIO (js_setY (self) val)
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGPathSegCurvetoQuadraticSmoothAbs -> IO Float
+        SVGPathSegCurvetoQuadraticSmoothAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs.y Mozilla SVGPathSegCurvetoQuadraticSmoothAbs.y documentation> 
 getY ::
      (MonadIO m) => SVGPathSegCurvetoQuadraticSmoothAbs -> m Float
-getY self
-  = liftIO (js_getY (unSVGPathSegCurvetoQuadraticSmoothAbs self))
+getY self = liftIO (js_getY (self))

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SQLResultSet
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,25 +20,23 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
-        JSRef SQLResultSet -> IO (JSRef SQLResultSetRowList)
+        SQLResultSet -> IO (Nullable SQLResultSetRowList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet.rows Mozilla SQLResultSet.rows documentation> 
 getRows ::
         (MonadIO m) => SQLResultSet -> m (Maybe SQLResultSetRowList)
-getRows self
-  = liftIO ((js_getRows (unSQLResultSet self)) >>= fromJSRef)
+getRows self = liftIO (nullableToMaybe <$> (js_getRows (self)))
  
 foreign import javascript unsafe "$1[\"insertId\"]" js_getInsertId
-        :: JSRef SQLResultSet -> IO Int
+        :: SQLResultSet -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet.insertId Mozilla SQLResultSet.insertId documentation> 
 getInsertId :: (MonadIO m) => SQLResultSet -> m Int
-getInsertId self = liftIO (js_getInsertId (unSQLResultSet self))
+getInsertId self = liftIO (js_getInsertId (self))
  
 foreign import javascript unsafe "$1[\"rowsAffected\"]"
-        js_getRowsAffected :: JSRef SQLResultSet -> IO Int
+        js_getRowsAffected :: SQLResultSet -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet.rowsAffected Mozilla SQLResultSet.rowsAffected documentation> 
 getRowsAffected :: (MonadIO m) => SQLResultSet -> m Int
-getRowsAffected self
-  = liftIO (js_getRowsAffected (unSQLResultSet self))
+getRowsAffected self = liftIO (js_getRowsAffected (self))

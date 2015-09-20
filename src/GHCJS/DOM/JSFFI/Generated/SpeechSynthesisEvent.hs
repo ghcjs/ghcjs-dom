@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SpeechSynthesisEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,28 +20,24 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"charIndex\"]"
-        js_getCharIndex :: JSRef SpeechSynthesisEvent -> IO Word
+        js_getCharIndex :: SpeechSynthesisEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.charIndex Mozilla SpeechSynthesisEvent.charIndex documentation> 
 getCharIndex :: (MonadIO m) => SpeechSynthesisEvent -> m Word
-getCharIndex self
-  = liftIO (js_getCharIndex (unSpeechSynthesisEvent self))
+getCharIndex self = liftIO (js_getCharIndex (self))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
-        js_getElapsedTime :: JSRef SpeechSynthesisEvent -> IO Float
+        js_getElapsedTime :: SpeechSynthesisEvent -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.elapsedTime Mozilla SpeechSynthesisEvent.elapsedTime documentation> 
 getElapsedTime :: (MonadIO m) => SpeechSynthesisEvent -> m Float
-getElapsedTime self
-  = liftIO (js_getElapsedTime (unSpeechSynthesisEvent self))
+getElapsedTime self = liftIO (js_getElapsedTime (self))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef SpeechSynthesisEvent -> IO JSString
+        SpeechSynthesisEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.name Mozilla SpeechSynthesisEvent.name documentation> 
 getName ::
         (MonadIO m, FromJSString result) =>
           SpeechSynthesisEvent -> m result
-getName self
-  = liftIO
-      (fromJSString <$> (js_getName (unSpeechSynthesisEvent self)))
+getName self = liftIO (fromJSString <$> (js_getName (self)))

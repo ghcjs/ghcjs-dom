@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SQLError
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -29,17 +29,16 @@ pattern CONSTRAINT_ERR = 6
 pattern TIMEOUT_ERR = 7
  
 foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
-        JSRef SQLError -> IO Word
+        SQLError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLError.code Mozilla SQLError.code documentation> 
 getCode :: (MonadIO m) => SQLError -> m Word
-getCode self = liftIO (js_getCode (unSQLError self))
+getCode self = liftIO (js_getCode (self))
  
 foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
-        JSRef SQLError -> IO JSString
+        SQLError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLError.message Mozilla SQLError.message documentation> 
 getMessage ::
            (MonadIO m, FromJSString result) => SQLError -> m result
-getMessage self
-  = liftIO (fromJSString <$> (js_getMessage (unSQLError self)))
+getMessage self = liftIO (fromJSString <$> (js_getMessage (self)))

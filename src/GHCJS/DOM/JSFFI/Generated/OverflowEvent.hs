@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.OverflowEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,26 +24,25 @@ pattern VERTICAL = 1
 pattern BOTH = 2
  
 foreign import javascript unsafe "$1[\"orient\"]" js_getOrient ::
-        JSRef OverflowEvent -> IO Word
+        OverflowEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.orient Mozilla OverflowEvent.orient documentation> 
 getOrient :: (MonadIO m) => OverflowEvent -> m Word
-getOrient self = liftIO (js_getOrient (unOverflowEvent self))
+getOrient self = liftIO (js_getOrient (self))
  
 foreign import javascript unsafe
         "($1[\"horizontalOverflow\"] ? 1 : 0)" js_getHorizontalOverflow ::
-        JSRef OverflowEvent -> IO Bool
+        OverflowEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.horizontalOverflow Mozilla OverflowEvent.horizontalOverflow documentation> 
 getHorizontalOverflow :: (MonadIO m) => OverflowEvent -> m Bool
 getHorizontalOverflow self
-  = liftIO (js_getHorizontalOverflow (unOverflowEvent self))
+  = liftIO (js_getHorizontalOverflow (self))
  
 foreign import javascript unsafe
         "($1[\"verticalOverflow\"] ? 1 : 0)" js_getVerticalOverflow ::
-        JSRef OverflowEvent -> IO Bool
+        OverflowEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.verticalOverflow Mozilla OverflowEvent.verticalOverflow documentation> 
 getVerticalOverflow :: (MonadIO m) => OverflowEvent -> m Bool
-getVerticalOverflow self
-  = liftIO (js_getVerticalOverflow (unOverflowEvent self))
+getVerticalOverflow self = liftIO (js_getVerticalOverflow (self))

@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.FileReaderSync
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,16 +21,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"FileReaderSync\"]()"
-        js_newFileReaderSync :: IO (JSRef FileReaderSync)
+        js_newFileReaderSync :: IO FileReaderSync
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync Mozilla FileReaderSync documentation> 
 newFileReaderSync :: (MonadIO m) => m FileReaderSync
-newFileReaderSync
-  = liftIO (js_newFileReaderSync >>= fromJSRefUnchecked)
+newFileReaderSync = liftIO (js_newFileReaderSync)
  
 foreign import javascript unsafe "$1[\"readAsArrayBuffer\"]($2)"
         js_readAsArrayBuffer ::
-        JSRef FileReaderSync -> JSRef Blob -> IO (JSRef ArrayBuffer)
+        FileReaderSync -> Nullable Blob -> IO (Nullable ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsArrayBuffer Mozilla FileReaderSync.readAsArrayBuffer documentation> 
 readAsArrayBuffer ::
@@ -38,13 +37,12 @@ readAsArrayBuffer ::
                     FileReaderSync -> Maybe blob -> m (Maybe ArrayBuffer)
 readAsArrayBuffer self blob
   = liftIO
-      ((js_readAsArrayBuffer (unFileReaderSync self)
-          (maybe jsNull (unBlob . toBlob) blob))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_readAsArrayBuffer (self) (maybeToNullable (fmap toBlob blob))))
  
 foreign import javascript unsafe "$1[\"readAsBinaryString\"]($2)"
         js_readAsBinaryString ::
-        JSRef FileReaderSync -> JSRef Blob -> IO JSString
+        FileReaderSync -> Nullable Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsBinaryString Mozilla FileReaderSync.readAsBinaryString documentation> 
 readAsBinaryString ::
@@ -53,12 +51,12 @@ readAsBinaryString ::
 readAsBinaryString self blob
   = liftIO
       (fromJSString <$>
-         (js_readAsBinaryString (unFileReaderSync self)
-            (maybe jsNull (unBlob . toBlob) blob)))
+         (js_readAsBinaryString (self)
+            (maybeToNullable (fmap toBlob blob))))
  
 foreign import javascript unsafe "$1[\"readAsText\"]($2, $3)"
         js_readAsText ::
-        JSRef FileReaderSync -> JSRef Blob -> JSString -> IO JSString
+        FileReaderSync -> Nullable Blob -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsText Mozilla FileReaderSync.readAsText documentation> 
 readAsText ::
@@ -68,13 +66,11 @@ readAsText ::
 readAsText self blob encoding
   = liftIO
       (fromJSString <$>
-         (js_readAsText (unFileReaderSync self)
-            (maybe jsNull (unBlob . toBlob) blob)
+         (js_readAsText (self) (maybeToNullable (fmap toBlob blob))
             (toJSString encoding)))
  
 foreign import javascript unsafe "$1[\"readAsDataURL\"]($2)"
-        js_readAsDataURL ::
-        JSRef FileReaderSync -> JSRef Blob -> IO JSString
+        js_readAsDataURL :: FileReaderSync -> Nullable Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsDataURL Mozilla FileReaderSync.readAsDataURL documentation> 
 readAsDataURL ::
@@ -83,5 +79,4 @@ readAsDataURL ::
 readAsDataURL self blob
   = liftIO
       (fromJSString <$>
-         (js_readAsDataURL (unFileReaderSync self)
-            (maybe jsNull (unBlob . toBlob) blob)))
+         (js_readAsDataURL (self) (maybeToNullable (fmap toBlob blob))))

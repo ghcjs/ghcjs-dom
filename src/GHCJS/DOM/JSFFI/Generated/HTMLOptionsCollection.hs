@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLOptionsCollection
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,7 +23,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         js_namedItem ::
-        JSRef HTMLOptionsCollection -> JSString -> IO (JSRef Node)
+        HTMLOptionsCollection -> JSString -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.namedItem Mozilla HTMLOptionsCollection.namedItem documentation> 
 namedItem ::
@@ -31,13 +31,12 @@ namedItem ::
             HTMLOptionsCollection -> name -> m (Maybe Node)
 namedItem self name
   = liftIO
-      ((js_namedItem (unHTMLOptionsCollection self) (toJSString name))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_namedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_addBefore
         ::
-        JSRef HTMLOptionsCollection ->
-          JSRef HTMLElement -> JSRef HTMLElement -> IO ()
+        HTMLOptionsCollection ->
+          Nullable HTMLElement -> Nullable HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.add Mozilla HTMLOptionsCollection.add documentation> 
 addBefore ::
@@ -45,12 +44,11 @@ addBefore ::
             HTMLOptionsCollection -> Maybe element -> Maybe before -> m ()
 addBefore self element before
   = liftIO
-      (js_addBefore (unHTMLOptionsCollection self)
-         (maybe jsNull (unHTMLElement . toHTMLElement) element)
-         (maybe jsNull (unHTMLElement . toHTMLElement) before))
+      (js_addBefore (self) (maybeToNullable (fmap toHTMLElement element))
+         (maybeToNullable (fmap toHTMLElement before)))
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_add ::
-        JSRef HTMLOptionsCollection -> JSRef HTMLElement -> Int -> IO ()
+        HTMLOptionsCollection -> Nullable HTMLElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.add Mozilla HTMLOptionsCollection.add documentation> 
 add ::
@@ -58,47 +56,41 @@ add ::
       HTMLOptionsCollection -> Maybe element -> Int -> m ()
 add self element index
   = liftIO
-      (js_add (unHTMLOptionsCollection self)
-         (maybe jsNull (unHTMLElement . toHTMLElement) element)
+      (js_add (self) (maybeToNullable (fmap toHTMLElement element))
          index)
  
 foreign import javascript unsafe "$1[\"remove\"]($2)" js_remove ::
-        JSRef HTMLOptionsCollection -> Word -> IO ()
+        HTMLOptionsCollection -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.remove Mozilla HTMLOptionsCollection.remove documentation> 
 remove :: (MonadIO m) => HTMLOptionsCollection -> Word -> m ()
-remove self index
-  = liftIO (js_remove (unHTMLOptionsCollection self) index)
+remove self index = liftIO (js_remove (self) index)
  
 foreign import javascript unsafe "$1[\"selectedIndex\"] = $2;"
-        js_setSelectedIndex :: JSRef HTMLOptionsCollection -> Int -> IO ()
+        js_setSelectedIndex :: HTMLOptionsCollection -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.selectedIndex Mozilla HTMLOptionsCollection.selectedIndex documentation> 
 setSelectedIndex ::
                  (MonadIO m) => HTMLOptionsCollection -> Int -> m ()
-setSelectedIndex self val
-  = liftIO (js_setSelectedIndex (unHTMLOptionsCollection self) val)
+setSelectedIndex self val = liftIO (js_setSelectedIndex (self) val)
  
 foreign import javascript unsafe "$1[\"selectedIndex\"]"
-        js_getSelectedIndex :: JSRef HTMLOptionsCollection -> IO Int
+        js_getSelectedIndex :: HTMLOptionsCollection -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.selectedIndex Mozilla HTMLOptionsCollection.selectedIndex documentation> 
 getSelectedIndex :: (MonadIO m) => HTMLOptionsCollection -> m Int
-getSelectedIndex self
-  = liftIO (js_getSelectedIndex (unHTMLOptionsCollection self))
+getSelectedIndex self = liftIO (js_getSelectedIndex (self))
  
 foreign import javascript unsafe "$1[\"length\"] = $2;"
-        js_setLength :: JSRef HTMLOptionsCollection -> Word -> IO ()
+        js_setLength :: HTMLOptionsCollection -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.length Mozilla HTMLOptionsCollection.length documentation> 
 setLength :: (MonadIO m) => HTMLOptionsCollection -> Word -> m ()
-setLength self val
-  = liftIO (js_setLength (unHTMLOptionsCollection self) val)
+setLength self val = liftIO (js_setLength (self) val)
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef HTMLOptionsCollection -> IO Word
+        HTMLOptionsCollection -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.length Mozilla HTMLOptionsCollection.length documentation> 
 getLength :: (MonadIO m) => HTMLOptionsCollection -> m Word
-getLength self
-  = liftIO (js_getLength (unHTMLOptionsCollection self))
+getLength self = liftIO (js_getLength (self))

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.OfflineAudioCompletionEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,12 +21,10 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"renderedBuffer\"]"
         js_getRenderedBuffer ::
-        JSRef OfflineAudioCompletionEvent -> IO (JSRef AudioBuffer)
+        OfflineAudioCompletionEvent -> IO (Nullable AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioCompletionEvent.renderedBuffer Mozilla OfflineAudioCompletionEvent.renderedBuffer documentation> 
 getRenderedBuffer ::
                   (MonadIO m) => OfflineAudioCompletionEvent -> m (Maybe AudioBuffer)
 getRenderedBuffer self
-  = liftIO
-      ((js_getRenderedBuffer (unOfflineAudioCompletionEvent self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getRenderedBuffer (self)))

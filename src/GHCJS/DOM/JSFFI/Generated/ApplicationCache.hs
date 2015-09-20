@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.ApplicationCache
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,25 +23,25 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"update\"]()" js_update ::
-        JSRef ApplicationCache -> IO ()
+        ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.update Mozilla ApplicationCache.update documentation> 
 update :: (MonadIO m) => ApplicationCache -> m ()
-update self = liftIO (js_update (unApplicationCache self))
+update self = liftIO (js_update (self))
  
 foreign import javascript unsafe "$1[\"swapCache\"]()" js_swapCache
-        :: JSRef ApplicationCache -> IO ()
+        :: ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.swapCache Mozilla ApplicationCache.swapCache documentation> 
 swapCache :: (MonadIO m) => ApplicationCache -> m ()
-swapCache self = liftIO (js_swapCache (unApplicationCache self))
+swapCache self = liftIO (js_swapCache (self))
  
 foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
-        JSRef ApplicationCache -> IO ()
+        ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.abort Mozilla ApplicationCache.abort documentation> 
 abort :: (MonadIO m) => ApplicationCache -> m ()
-abort self = liftIO (js_abort (unApplicationCache self))
+abort self = liftIO (js_abort (self))
 pattern UNCACHED = 0
 pattern IDLE = 1
 pattern CHECKING = 2
@@ -50,11 +50,11 @@ pattern UPDATEREADY = 4
 pattern OBSOLETE = 5
  
 foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
-        JSRef ApplicationCache -> IO Word
+        ApplicationCache -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.status Mozilla ApplicationCache.status documentation> 
 getStatus :: (MonadIO m) => ApplicationCache -> m Word
-getStatus self = liftIO (js_getStatus (unApplicationCache self))
+getStatus self = liftIO (js_getStatus (self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.onchecking Mozilla ApplicationCache.onchecking documentation> 
 checking :: EventName ApplicationCache Event

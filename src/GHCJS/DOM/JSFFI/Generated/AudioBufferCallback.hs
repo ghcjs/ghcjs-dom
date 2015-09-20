@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.AudioBufferCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,10 +24,11 @@ newAudioBufferCallback ::
                          (Maybe AudioBuffer -> IO ()) -> m AudioBufferCallback
 newAudioBufferCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ audioBuffer ->
-            fromJSRefUnchecked audioBuffer >>=
-              \ audioBuffer' -> callback audioBuffer'))
+      (AudioBufferCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ audioBuffer ->
+              fromJSRefUnchecked audioBuffer >>=
+                \ audioBuffer' -> callback audioBuffer'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
 newAudioBufferCallbackSync ::
@@ -35,10 +36,11 @@ newAudioBufferCallbackSync ::
                              (Maybe AudioBuffer -> IO ()) -> m AudioBufferCallback
 newAudioBufferCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ audioBuffer ->
-            fromJSRefUnchecked audioBuffer >>=
-              \ audioBuffer' -> callback audioBuffer'))
+      (AudioBufferCallback <$>
+         syncCallback1 ContinueAsync
+           (\ audioBuffer ->
+              fromJSRefUnchecked audioBuffer >>=
+                \ audioBuffer' -> callback audioBuffer'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
 newAudioBufferCallbackAsync ::
@@ -46,7 +48,8 @@ newAudioBufferCallbackAsync ::
                               (Maybe AudioBuffer -> IO ()) -> m AudioBufferCallback
 newAudioBufferCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ audioBuffer ->
-            fromJSRefUnchecked audioBuffer >>=
-              \ audioBuffer' -> callback audioBuffer'))
+      (AudioBufferCallback <$>
+         asyncCallback1
+           (\ audioBuffer ->
+              fromJSRefUnchecked audioBuffer >>=
+                \ audioBuffer' -> callback audioBuffer'))

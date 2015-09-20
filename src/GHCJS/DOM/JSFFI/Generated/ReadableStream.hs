@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.ReadableStream
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,23 +23,22 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"ReadableStream\"]($1)" js_newReadableStream ::
-        JSRef a -> IO (JSRef ReadableStream)
+        JSRef -> IO ReadableStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation> 
-newReadableStream :: (MonadIO m) => JSRef a -> m ReadableStream
+newReadableStream :: (MonadIO m) => JSRef -> m ReadableStream
 newReadableStream properties
-  = liftIO (js_newReadableStream properties >>= fromJSRefUnchecked)
+  = liftIO (js_newReadableStream properties)
  
 foreign import javascript unsafe "$1[\"read\"]()" js_read ::
-        JSRef ReadableStream -> IO (JSRef GObject)
+        ReadableStream -> IO (Nullable GObject)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.read Mozilla ReadableStream.read documentation> 
 read :: (MonadIO m) => ReadableStream -> m (Maybe GObject)
-read self
-  = liftIO ((js_read (unReadableStream self)) >>= fromJSRef)
+read self = liftIO (nullableToMaybe <$> (js_read (self)))
  
 foreign import javascript unsafe "$1[\"cancel\"]($2)" js_cancel ::
-        JSRef ReadableStream -> JSString -> IO (JSRef Promise)
+        ReadableStream -> JSString -> IO (Nullable Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.cancel Mozilla ReadableStream.cancel documentation> 
 cancel ::
@@ -47,55 +46,48 @@ cancel ::
          ReadableStream -> reason -> m (Maybe Promise)
 cancel self reason
   = liftIO
-      ((js_cancel (unReadableStream self) (toJSString reason)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_cancel (self) (toJSString reason)))
  
 foreign import javascript unsafe "$1[\"pipeTo\"]($2, $3)" js_pipeTo
-        :: JSRef ReadableStream -> JSRef a -> JSRef a -> IO (JSRef Promise)
+        :: ReadableStream -> JSRef -> JSRef -> IO (Nullable Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeTo Mozilla ReadableStream.pipeTo documentation> 
 pipeTo ::
        (MonadIO m) =>
-         ReadableStream -> JSRef a -> JSRef a -> m (Maybe Promise)
+         ReadableStream -> JSRef -> JSRef -> m (Maybe Promise)
 pipeTo self streams options
-  = liftIO
-      ((js_pipeTo (unReadableStream self) streams options) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_pipeTo (self) streams options))
  
 foreign import javascript unsafe "$1[\"pipeThrough\"]($2, $3)"
         js_pipeThrough ::
-        JSRef ReadableStream -> JSRef a -> JSRef a -> IO (JSRef GObject)
+        ReadableStream -> JSRef -> JSRef -> IO (Nullable GObject)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeThrough Mozilla ReadableStream.pipeThrough documentation> 
 pipeThrough ::
             (MonadIO m) =>
-              ReadableStream -> JSRef a -> JSRef a -> m (Maybe GObject)
+              ReadableStream -> JSRef -> JSRef -> m (Maybe GObject)
 pipeThrough self dest options
-  = liftIO
-      ((js_pipeThrough (unReadableStream self) dest options) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_pipeThrough (self) dest options))
  
 foreign import javascript unsafe "$1[\"state\"]" js_getState ::
-        JSRef ReadableStream -> IO (JSRef ReadableStreamStateType)
+        ReadableStream -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.state Mozilla ReadableStream.state documentation> 
 getState ::
          (MonadIO m) => ReadableStream -> m ReadableStreamStateType
 getState self
-  = liftIO
-      ((js_getState (unReadableStream self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getState (self)) >>= fromJSRefUnchecked)
  
 foreign import javascript unsafe "$1[\"closed\"]" js_getClosed ::
-        JSRef ReadableStream -> IO (JSRef Promise)
+        ReadableStream -> IO (Nullable Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.closed Mozilla ReadableStream.closed documentation> 
 getClosed :: (MonadIO m) => ReadableStream -> m (Maybe Promise)
-getClosed self
-  = liftIO ((js_getClosed (unReadableStream self)) >>= fromJSRef)
+getClosed self = liftIO (nullableToMaybe <$> (js_getClosed (self)))
  
 foreign import javascript unsafe "$1[\"ready\"]" js_getReady ::
-        JSRef ReadableStream -> IO (JSRef Promise)
+        ReadableStream -> IO (Nullable Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.ready Mozilla ReadableStream.ready documentation> 
 getReady :: (MonadIO m) => ReadableStream -> m (Maybe Promise)
-getReady self
-  = liftIO ((js_getReady (unReadableStream self)) >>= fromJSRef)
+getReady self = liftIO (nullableToMaybe <$> (js_getReady (self)))

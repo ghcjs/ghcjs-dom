@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.XMLHttpRequestProgressEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,21 +20,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"position\"]" js_getPosition
-        :: JSRef XMLHttpRequestProgressEvent -> IO Double
+        :: XMLHttpRequestProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent.position Mozilla XMLHttpRequestProgressEvent.position documentation> 
 getPosition ::
             (MonadIO m) => XMLHttpRequestProgressEvent -> m Word64
-getPosition self
-  = liftIO
-      (round <$> (js_getPosition (unXMLHttpRequestProgressEvent self)))
+getPosition self = liftIO (round <$> (js_getPosition (self)))
  
 foreign import javascript unsafe "$1[\"totalSize\"]"
-        js_getTotalSize :: JSRef XMLHttpRequestProgressEvent -> IO Double
+        js_getTotalSize :: XMLHttpRequestProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent.totalSize Mozilla XMLHttpRequestProgressEvent.totalSize documentation> 
 getTotalSize ::
              (MonadIO m) => XMLHttpRequestProgressEvent -> m Word64
-getTotalSize self
-  = liftIO
-      (round <$> (js_getTotalSize (unXMLHttpRequestProgressEvent self)))
+getTotalSize self = liftIO (round <$> (js_getTotalSize (self)))

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.MallocStatistics
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,25 +20,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"reservedVMBytes\"]"
-        js_getReservedVMBytes :: JSRef MallocStatistics -> IO Word
+        js_getReservedVMBytes :: MallocStatistics -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MallocStatistics.reservedVMBytes Mozilla MallocStatistics.reservedVMBytes documentation> 
 getReservedVMBytes :: (MonadIO m) => MallocStatistics -> m Word
-getReservedVMBytes self
-  = liftIO (js_getReservedVMBytes (unMallocStatistics self))
+getReservedVMBytes self = liftIO (js_getReservedVMBytes (self))
  
 foreign import javascript unsafe "$1[\"committedVMBytes\"]"
-        js_getCommittedVMBytes :: JSRef MallocStatistics -> IO Word
+        js_getCommittedVMBytes :: MallocStatistics -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MallocStatistics.committedVMBytes Mozilla MallocStatistics.committedVMBytes documentation> 
 getCommittedVMBytes :: (MonadIO m) => MallocStatistics -> m Word
-getCommittedVMBytes self
-  = liftIO (js_getCommittedVMBytes (unMallocStatistics self))
+getCommittedVMBytes self = liftIO (js_getCommittedVMBytes (self))
  
 foreign import javascript unsafe "$1[\"freeListBytes\"]"
-        js_getFreeListBytes :: JSRef MallocStatistics -> IO Word
+        js_getFreeListBytes :: MallocStatistics -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MallocStatistics.freeListBytes Mozilla MallocStatistics.freeListBytes documentation> 
 getFreeListBytes :: (MonadIO m) => MallocStatistics -> m Word
-getFreeListBytes self
-  = liftIO (js_getFreeListBytes (unMallocStatistics self))
+getFreeListBytes self = liftIO (js_getFreeListBytes (self))

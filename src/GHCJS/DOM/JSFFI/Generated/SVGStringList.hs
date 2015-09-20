@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGStringList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,14 +22,14 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
-        JSRef SVGStringList -> IO ()
+        SVGStringList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.clear Mozilla SVGStringList.clear documentation> 
 clear :: (MonadIO m) => SVGStringList -> m ()
-clear self = liftIO (js_clear (unSVGStringList self))
+clear self = liftIO (js_clear (self))
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
-        js_initialize :: JSRef SVGStringList -> JSString -> IO JSString
+        js_initialize :: SVGStringList -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.initialize Mozilla SVGStringList.initialize documentation> 
 initialize ::
@@ -37,23 +37,21 @@ initialize ::
              SVGStringList -> item -> m result
 initialize self item
   = liftIO
-      (fromJSString <$>
-         (js_initialize (unSVGStringList self) (toJSString item)))
+      (fromJSString <$> (js_initialize (self) (toJSString item)))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: JSRef SVGStringList -> Word -> IO JSString
+        :: SVGStringList -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.getItem Mozilla SVGStringList.getItem documentation> 
 getItem ::
         (MonadIO m, FromJSString result) =>
           SVGStringList -> Word -> m result
 getItem self index
-  = liftIO
-      (fromJSString <$> (js_getItem (unSVGStringList self) index))
+  = liftIO (fromJSString <$> (js_getItem (self) index))
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
-        JSRef SVGStringList -> JSString -> Word -> IO JSString
+        SVGStringList -> JSString -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.insertItemBefore Mozilla SVGStringList.insertItemBefore documentation> 
 insertItemBefore ::
@@ -62,12 +60,10 @@ insertItemBefore ::
 insertItemBefore self item index
   = liftIO
       (fromJSString <$>
-         (js_insertItemBefore (unSVGStringList self) (toJSString item)
-            index))
+         (js_insertItemBefore (self) (toJSString item) index))
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
-        js_replaceItem ::
-        JSRef SVGStringList -> JSString -> Word -> IO JSString
+        js_replaceItem :: SVGStringList -> JSString -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.replaceItem Mozilla SVGStringList.replaceItem documentation> 
 replaceItem ::
@@ -75,22 +71,20 @@ replaceItem ::
               SVGStringList -> item -> Word -> m result
 replaceItem self item index
   = liftIO
-      (fromJSString <$>
-         (js_replaceItem (unSVGStringList self) (toJSString item) index))
+      (fromJSString <$> (js_replaceItem (self) (toJSString item) index))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
-        js_removeItem :: JSRef SVGStringList -> Word -> IO JSString
+        js_removeItem :: SVGStringList -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.removeItem Mozilla SVGStringList.removeItem documentation> 
 removeItem ::
            (MonadIO m, FromJSString result) =>
              SVGStringList -> Word -> m result
 removeItem self index
-  = liftIO
-      (fromJSString <$> (js_removeItem (unSVGStringList self) index))
+  = liftIO (fromJSString <$> (js_removeItem (self) index))
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
-        js_appendItem :: JSRef SVGStringList -> JSString -> IO JSString
+        js_appendItem :: SVGStringList -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.appendItem Mozilla SVGStringList.appendItem documentation> 
 appendItem ::
@@ -98,13 +92,11 @@ appendItem ::
              SVGStringList -> item -> m result
 appendItem self item
   = liftIO
-      (fromJSString <$>
-         (js_appendItem (unSVGStringList self) (toJSString item)))
+      (fromJSString <$> (js_appendItem (self) (toJSString item)))
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
-        js_getNumberOfItems :: JSRef SVGStringList -> IO Word
+        js_getNumberOfItems :: SVGStringList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.numberOfItems Mozilla SVGStringList.numberOfItems documentation> 
 getNumberOfItems :: (MonadIO m) => SVGStringList -> m Word
-getNumberOfItems self
-  = liftIO (js_getNumberOfItems (unSVGStringList self))
+getNumberOfItems self = liftIO (js_getNumberOfItems (self))

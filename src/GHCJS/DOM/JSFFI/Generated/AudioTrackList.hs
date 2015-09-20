@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.AudioTrackList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,17 +20,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef AudioTrackList -> Word -> IO (JSRef AudioTrack)
+        AudioTrackList -> Word -> IO (Nullable AudioTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.item Mozilla AudioTrackList.item documentation> 
 item ::
      (MonadIO m) => AudioTrackList -> Word -> m (Maybe AudioTrack)
 item self index
-  = liftIO ((js_item (unAudioTrackList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
         js_getTrackById ::
-        JSRef AudioTrackList -> JSString -> IO (JSRef AudioTrack)
+        AudioTrackList -> JSString -> IO (Nullable AudioTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.getTrackById Mozilla AudioTrackList.getTrackById documentation> 
 getTrackById ::
@@ -38,15 +38,14 @@ getTrackById ::
                AudioTrackList -> id -> m (Maybe AudioTrack)
 getTrackById self id
   = liftIO
-      ((js_getTrackById (unAudioTrackList self) (toJSString id)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getTrackById (self) (toJSString id)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef AudioTrackList -> IO Word
+        AudioTrackList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.length Mozilla AudioTrackList.length documentation> 
 getLength :: (MonadIO m) => AudioTrackList -> m Word
-getLength self = liftIO (js_getLength (unAudioTrackList self))
+getLength self = liftIO (js_getLength (self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.onchange Mozilla AudioTrackList.onchange documentation> 
 change :: EventName AudioTrackList Event

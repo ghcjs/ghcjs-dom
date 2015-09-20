@@ -13,7 +13,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEConvolveMatrixElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -31,145 +31,122 @@ pattern SVG_EDGEMODE_WRAP = 2
 pattern SVG_EDGEMODE_NONE = 3
  
 foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedString)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.in1 Mozilla SVGFEConvolveMatrixElement.in1 documentation> 
 getIn1 ::
        (MonadIO m) =>
          SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedString)
-getIn1 self
-  = liftIO
-      ((js_getIn1 (unSVGFEConvolveMatrixElement self)) >>= fromJSRef)
+getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"orderX\"]" js_getOrderX ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedInteger)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedInteger)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderX Mozilla SVGFEConvolveMatrixElement.orderX documentation> 
 getOrderX ::
           (MonadIO m) =>
             SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedInteger)
-getOrderX self
-  = liftIO
-      ((js_getOrderX (unSVGFEConvolveMatrixElement self)) >>= fromJSRef)
+getOrderX self = liftIO (nullableToMaybe <$> (js_getOrderX (self)))
  
 foreign import javascript unsafe "$1[\"orderY\"]" js_getOrderY ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedInteger)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedInteger)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderY Mozilla SVGFEConvolveMatrixElement.orderY documentation> 
 getOrderY ::
           (MonadIO m) =>
             SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedInteger)
-getOrderY self
-  = liftIO
-      ((js_getOrderY (unSVGFEConvolveMatrixElement self)) >>= fromJSRef)
+getOrderY self = liftIO (nullableToMaybe <$> (js_getOrderY (self)))
  
 foreign import javascript unsafe "$1[\"kernelMatrix\"]"
         js_getKernelMatrix ::
-        JSRef SVGFEConvolveMatrixElement ->
-          IO (JSRef SVGAnimatedNumberList)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedNumberList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelMatrix Mozilla SVGFEConvolveMatrixElement.kernelMatrix documentation> 
 getKernelMatrix ::
                 (MonadIO m) =>
                   SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedNumberList)
 getKernelMatrix self
-  = liftIO
-      ((js_getKernelMatrix (unSVGFEConvolveMatrixElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getKernelMatrix (self)))
  
 foreign import javascript unsafe "$1[\"divisor\"]" js_getDivisor ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.divisor Mozilla SVGFEConvolveMatrixElement.divisor documentation> 
 getDivisor ::
            (MonadIO m) =>
              SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedNumber)
 getDivisor self
-  = liftIO
-      ((js_getDivisor (unSVGFEConvolveMatrixElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getDivisor (self)))
  
 foreign import javascript unsafe "$1[\"bias\"]" js_getBias ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.bias Mozilla SVGFEConvolveMatrixElement.bias documentation> 
 getBias ::
         (MonadIO m) =>
           SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedNumber)
-getBias self
-  = liftIO
-      ((js_getBias (unSVGFEConvolveMatrixElement self)) >>= fromJSRef)
+getBias self = liftIO (nullableToMaybe <$> (js_getBias (self)))
  
 foreign import javascript unsafe "$1[\"targetX\"]" js_getTargetX ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedInteger)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedInteger)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetX Mozilla SVGFEConvolveMatrixElement.targetX documentation> 
 getTargetX ::
            (MonadIO m) =>
              SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedInteger)
 getTargetX self
-  = liftIO
-      ((js_getTargetX (unSVGFEConvolveMatrixElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getTargetX (self)))
  
 foreign import javascript unsafe "$1[\"targetY\"]" js_getTargetY ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedInteger)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedInteger)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetY Mozilla SVGFEConvolveMatrixElement.targetY documentation> 
 getTargetY ::
            (MonadIO m) =>
              SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedInteger)
 getTargetY self
-  = liftIO
-      ((js_getTargetY (unSVGFEConvolveMatrixElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getTargetY (self)))
  
 foreign import javascript unsafe "$1[\"edgeMode\"]" js_getEdgeMode
         ::
-        JSRef SVGFEConvolveMatrixElement ->
-          IO (JSRef SVGAnimatedEnumeration)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.edgeMode Mozilla SVGFEConvolveMatrixElement.edgeMode documentation> 
 getEdgeMode ::
             (MonadIO m) =>
               SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedEnumeration)
 getEdgeMode self
-  = liftIO
-      ((js_getEdgeMode (unSVGFEConvolveMatrixElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getEdgeMode (self)))
  
 foreign import javascript unsafe "$1[\"kernelUnitLengthX\"]"
         js_getKernelUnitLengthX ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthX Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthX documentation> 
 getKernelUnitLengthX ::
                      (MonadIO m) =>
                        SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedNumber)
 getKernelUnitLengthX self
-  = liftIO
-      ((js_getKernelUnitLengthX (unSVGFEConvolveMatrixElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getKernelUnitLengthX (self)))
  
 foreign import javascript unsafe "$1[\"kernelUnitLengthY\"]"
         js_getKernelUnitLengthY ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthY Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthY documentation> 
 getKernelUnitLengthY ::
                      (MonadIO m) =>
                        SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedNumber)
 getKernelUnitLengthY self
-  = liftIO
-      ((js_getKernelUnitLengthY (unSVGFEConvolveMatrixElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getKernelUnitLengthY (self)))
  
 foreign import javascript unsafe "$1[\"preserveAlpha\"]"
         js_getPreserveAlpha ::
-        JSRef SVGFEConvolveMatrixElement -> IO (JSRef SVGAnimatedBoolean)
+        SVGFEConvolveMatrixElement -> IO (Nullable SVGAnimatedBoolean)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.preserveAlpha Mozilla SVGFEConvolveMatrixElement.preserveAlpha documentation> 
 getPreserveAlpha ::
                  (MonadIO m) =>
                    SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedBoolean)
 getPreserveAlpha self
-  = liftIO
-      ((js_getPreserveAlpha (unSVGFEConvolveMatrixElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPreserveAlpha (self)))

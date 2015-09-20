@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.BeforeUnloadEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,21 +20,19 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"returnValue\"] = $2;"
-        js_setReturnValue :: JSRef BeforeUnloadEvent -> JSString -> IO ()
+        js_setReturnValue :: BeforeUnloadEvent -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent.returnValue Mozilla BeforeUnloadEvent.returnValue documentation> 
 setReturnValue ::
                (MonadIO m, ToJSString val) => BeforeUnloadEvent -> val -> m ()
 setReturnValue self val
-  = liftIO
-      (js_setReturnValue (unBeforeUnloadEvent self) (toJSString val))
+  = liftIO (js_setReturnValue (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"returnValue\"]"
-        js_getReturnValue :: JSRef BeforeUnloadEvent -> IO JSString
+        js_getReturnValue :: BeforeUnloadEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent.returnValue Mozilla BeforeUnloadEvent.returnValue documentation> 
 getReturnValue ::
                (MonadIO m, FromJSString result) => BeforeUnloadEvent -> m result
 getReturnValue self
-  = liftIO
-      (fromJSString <$> (js_getReturnValue (unBeforeUnloadEvent self)))
+  = liftIO (fromJSString <$> (js_getReturnValue (self)))

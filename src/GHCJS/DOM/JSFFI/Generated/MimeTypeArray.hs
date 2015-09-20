@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.MimeTypeArray
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef MimeTypeArray -> Word -> IO (JSRef MimeType)
+        MimeTypeArray -> Word -> IO (Nullable MimeType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray.item Mozilla MimeTypeArray.item documentation> 
 item :: (MonadIO m) => MimeTypeArray -> Word -> m (Maybe MimeType)
 item self index
-  = liftIO ((js_item (unMimeTypeArray self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        js_namedItem ::
-        JSRef MimeTypeArray -> JSString -> IO (JSRef MimeType)
+        js_namedItem :: MimeTypeArray -> JSString -> IO (Nullable MimeType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray.namedItem Mozilla MimeTypeArray.namedItem documentation> 
 namedItem ::
@@ -36,12 +35,11 @@ namedItem ::
             MimeTypeArray -> name -> m (Maybe MimeType)
 namedItem self name
   = liftIO
-      ((js_namedItem (unMimeTypeArray self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_namedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef MimeTypeArray -> IO Word
+        MimeTypeArray -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray.length Mozilla MimeTypeArray.length documentation> 
 getLength :: (MonadIO m) => MimeTypeArray -> m Word
-getLength self = liftIO (js_getLength (unMimeTypeArray self))
+getLength self = liftIO (js_getLength (self))

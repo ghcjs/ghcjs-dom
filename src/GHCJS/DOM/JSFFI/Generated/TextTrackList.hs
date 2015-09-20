@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.TextTrackList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,16 +20,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef TextTrackList -> Word -> IO (JSRef TextTrack)
+        TextTrackList -> Word -> IO (Nullable TextTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.item Mozilla TextTrackList.item documentation> 
 item :: (MonadIO m) => TextTrackList -> Word -> m (Maybe TextTrack)
 item self index
-  = liftIO ((js_item (unTextTrackList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
         js_getTrackById ::
-        JSRef TextTrackList -> JSString -> IO (JSRef TextTrack)
+        TextTrackList -> JSString -> IO (Nullable TextTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.getTrackById Mozilla TextTrackList.getTrackById documentation> 
 getTrackById ::
@@ -37,15 +37,14 @@ getTrackById ::
                TextTrackList -> id -> m (Maybe TextTrack)
 getTrackById self id
   = liftIO
-      ((js_getTrackById (unTextTrackList self) (toJSString id)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getTrackById (self) (toJSString id)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef TextTrackList -> IO Word
+        TextTrackList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.length Mozilla TextTrackList.length documentation> 
 getLength :: (MonadIO m) => TextTrackList -> m Word
-getLength self = liftIO (js_getLength (unTextTrackList self))
+getLength self = liftIO (js_getLength (self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.onaddtrack Mozilla TextTrackList.onaddtrack documentation> 
 addTrack :: EventName TextTrackList Event

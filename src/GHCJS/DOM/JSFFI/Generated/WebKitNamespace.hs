@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.WebKitNamespace
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,12 +20,11 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"messageHandlers\"]"
         js_getMessageHandlers ::
-        JSRef WebKitNamespace -> IO (JSRef UserMessageHandlersNamespace)
+        WebKitNamespace -> IO (Nullable UserMessageHandlersNamespace)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamespace.messageHandlers Mozilla WebKitNamespace.messageHandlers documentation> 
 getMessageHandlers ::
                    (MonadIO m) =>
                      WebKitNamespace -> m (Maybe UserMessageHandlersNamespace)
 getMessageHandlers self
-  = liftIO
-      ((js_getMessageHandlers (unWebKitNamespace self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getMessageHandlers (self)))

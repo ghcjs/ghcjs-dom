@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.XPathEvaluator
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,17 +21,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"XPathEvaluator\"]()"
-        js_newXPathEvaluator :: IO (JSRef XPathEvaluator)
+        js_newXPathEvaluator :: IO XPathEvaluator
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator Mozilla XPathEvaluator documentation> 
 newXPathEvaluator :: (MonadIO m) => m XPathEvaluator
-newXPathEvaluator
-  = liftIO (js_newXPathEvaluator >>= fromJSRefUnchecked)
+newXPathEvaluator = liftIO (js_newXPathEvaluator)
  
 foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
         js_createExpression ::
-        JSRef XPathEvaluator ->
-          JSString -> JSRef XPathNSResolver -> IO (JSRef XPathExpression)
+        XPathEvaluator ->
+          JSString ->
+            Nullable XPathNSResolver -> IO (Nullable XPathExpression)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createExpression Mozilla XPathEvaluator.createExpression documentation> 
 createExpression ::
@@ -40,14 +40,13 @@ createExpression ::
                      expression -> Maybe XPathNSResolver -> m (Maybe XPathExpression)
 createExpression self expression resolver
   = liftIO
-      ((js_createExpression (unXPathEvaluator self)
-          (toJSString expression)
-          (maybe jsNull pToJSRef resolver))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createExpression (self) (toJSString expression)
+            (maybeToNullable resolver)))
  
 foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
         js_createNSResolver ::
-        JSRef XPathEvaluator -> JSRef Node -> IO (JSRef XPathNSResolver)
+        XPathEvaluator -> Nullable Node -> IO (Nullable XPathNSResolver)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createNSResolver Mozilla XPathEvaluator.createNSResolver documentation> 
 createNSResolver ::
@@ -55,17 +54,17 @@ createNSResolver ::
                    XPathEvaluator -> Maybe nodeResolver -> m (Maybe XPathNSResolver)
 createNSResolver self nodeResolver
   = liftIO
-      ((js_createNSResolver (unXPathEvaluator self)
-          (maybe jsNull (unNode . toNode) nodeResolver))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createNSResolver (self)
+            (maybeToNullable (fmap toNode nodeResolver))))
  
 foreign import javascript unsafe
         "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" js_evaluate ::
-        JSRef XPathEvaluator ->
+        XPathEvaluator ->
           JSString ->
-            JSRef Node ->
-              JSRef XPathNSResolver ->
-                Word -> JSRef XPathResult -> IO (JSRef XPathResult)
+            Nullable Node ->
+              Nullable XPathNSResolver ->
+                Word -> Nullable XPathResult -> IO (Nullable XPathResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.evaluate Mozilla XPathEvaluator.evaluate documentation> 
 evaluate ::
@@ -77,9 +76,9 @@ evaluate ::
                    Word -> Maybe XPathResult -> m (Maybe XPathResult)
 evaluate self expression contextNode resolver type' inResult
   = liftIO
-      ((js_evaluate (unXPathEvaluator self) (toJSString expression)
-          (maybe jsNull (unNode . toNode) contextNode)
-          (maybe jsNull pToJSRef resolver)
-          type'
-          (maybe jsNull pToJSRef inResult))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_evaluate (self) (toJSString expression)
+            (maybeToNullable (fmap toNode contextNode))
+            (maybeToNullable resolver)
+            type'
+            (maybeToNullable inResult)))

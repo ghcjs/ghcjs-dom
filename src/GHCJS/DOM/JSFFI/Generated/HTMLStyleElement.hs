@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLStyleElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,61 +21,54 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        js_setDisabled :: JSRef HTMLStyleElement -> Bool -> IO ()
+        js_setDisabled :: HTMLStyleElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.disabled Mozilla HTMLStyleElement.disabled documentation> 
 setDisabled :: (MonadIO m) => HTMLStyleElement -> Bool -> m ()
-setDisabled self val
-  = liftIO (js_setDisabled (unHTMLStyleElement self) val)
+setDisabled self val = liftIO (js_setDisabled (self) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        js_getDisabled :: JSRef HTMLStyleElement -> IO Bool
+        js_getDisabled :: HTMLStyleElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.disabled Mozilla HTMLStyleElement.disabled documentation> 
 getDisabled :: (MonadIO m) => HTMLStyleElement -> m Bool
-getDisabled self
-  = liftIO (js_getDisabled (unHTMLStyleElement self))
+getDisabled self = liftIO (js_getDisabled (self))
  
 foreign import javascript unsafe "$1[\"media\"] = $2;" js_setMedia
-        :: JSRef HTMLStyleElement -> JSString -> IO ()
+        :: HTMLStyleElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.media Mozilla HTMLStyleElement.media documentation> 
 setMedia ::
          (MonadIO m, ToJSString val) => HTMLStyleElement -> val -> m ()
-setMedia self val
-  = liftIO (js_setMedia (unHTMLStyleElement self) (toJSString val))
+setMedia self val = liftIO (js_setMedia (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
-        JSRef HTMLStyleElement -> IO JSString
+        HTMLStyleElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.media Mozilla HTMLStyleElement.media documentation> 
 getMedia ::
          (MonadIO m, FromJSString result) => HTMLStyleElement -> m result
-getMedia self
-  = liftIO (fromJSString <$> (js_getMedia (unHTMLStyleElement self)))
+getMedia self = liftIO (fromJSString <$> (js_getMedia (self)))
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
-        JSRef HTMLStyleElement -> JSString -> IO ()
+        HTMLStyleElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.type Mozilla HTMLStyleElement.type documentation> 
 setType ::
         (MonadIO m, ToJSString val) => HTMLStyleElement -> val -> m ()
-setType self val
-  = liftIO (js_setType (unHTMLStyleElement self) (toJSString val))
+setType self val = liftIO (js_setType (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef HTMLStyleElement -> IO JSString
+        HTMLStyleElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.type Mozilla HTMLStyleElement.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => HTMLStyleElement -> m result
-getType self
-  = liftIO (fromJSString <$> (js_getType (unHTMLStyleElement self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"sheet\"]" js_getSheet ::
-        JSRef HTMLStyleElement -> IO (JSRef StyleSheet)
+        HTMLStyleElement -> IO (Nullable StyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement.sheet Mozilla HTMLStyleElement.sheet documentation> 
 getSheet :: (MonadIO m) => HTMLStyleElement -> m (Maybe StyleSheet)
-getSheet self
-  = liftIO ((js_getSheet (unHTMLStyleElement self)) >>= fromJSRef)
+getSheet self = liftIO (nullableToMaybe <$> (js_getSheet (self)))

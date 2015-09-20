@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.PositionError
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,17 +23,16 @@ pattern POSITION_UNAVAILABLE = 2
 pattern TIMEOUT = 3
  
 foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
-        JSRef PositionError -> IO Word
+        PositionError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.code Mozilla PositionError.code documentation> 
 getCode :: (MonadIO m) => PositionError -> m Word
-getCode self = liftIO (js_getCode (unPositionError self))
+getCode self = liftIO (js_getCode (self))
  
 foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
-        JSRef PositionError -> IO JSString
+        PositionError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.message Mozilla PositionError.message documentation> 
 getMessage ::
            (MonadIO m, FromJSString result) => PositionError -> m result
-getMessage self
-  = liftIO (fromJSString <$> (js_getMessage (unPositionError self)))
+getMessage self = liftIO (fromJSString <$> (js_getMessage (self)))

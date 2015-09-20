@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaStreamAudioSourceNode
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,12 +20,10 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"mediaStream\"]"
         js_getMediaStream ::
-        JSRef MediaStreamAudioSourceNode -> IO (JSRef MediaStream)
+        MediaStreamAudioSourceNode -> IO (Nullable MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode.mediaStream Mozilla MediaStreamAudioSourceNode.mediaStream documentation> 
 getMediaStream ::
                (MonadIO m) => MediaStreamAudioSourceNode -> m (Maybe MediaStream)
 getMediaStream self
-  = liftIO
-      ((js_getMediaStream (unMediaStreamAudioSourceNode self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getMediaStream (self)))

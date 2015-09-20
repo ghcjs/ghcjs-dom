@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.DatabaseCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,24 +23,27 @@ newDatabaseCallback ::
                     (MonadIO m) => (Maybe Database -> IO ()) -> m DatabaseCallback
 newDatabaseCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ database ->
-            fromJSRefUnchecked database >>= \ database' -> callback database'))
+      (DatabaseCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ database ->
+              fromJSRefUnchecked database >>= \ database' -> callback database'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseCallback Mozilla DatabaseCallback documentation> 
 newDatabaseCallbackSync ::
                         (MonadIO m) => (Maybe Database -> IO ()) -> m DatabaseCallback
 newDatabaseCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ database ->
-            fromJSRefUnchecked database >>= \ database' -> callback database'))
+      (DatabaseCallback <$>
+         syncCallback1 ContinueAsync
+           (\ database ->
+              fromJSRefUnchecked database >>= \ database' -> callback database'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DatabaseCallback Mozilla DatabaseCallback documentation> 
 newDatabaseCallbackAsync ::
                          (MonadIO m) => (Maybe Database -> IO ()) -> m DatabaseCallback
 newDatabaseCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ database ->
-            fromJSRefUnchecked database >>= \ database' -> callback database'))
+      (DatabaseCallback <$>
+         asyncCallback1
+           (\ database ->
+              fromJSRefUnchecked database >>= \ database' -> callback database'))

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSStyleRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,33 +20,28 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"selectorText\"] = $2;"
-        js_setSelectorText ::
-        JSRef CSSStyleRule -> JSRef (Maybe JSString) -> IO ()
+        js_setSelectorText :: CSSStyleRule -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 
 setSelectorText ::
                 (MonadIO m, ToJSString val) => CSSStyleRule -> Maybe val -> m ()
 setSelectorText self val
-  = liftIO
-      (js_setSelectorText (unCSSStyleRule self) (toMaybeJSString val))
+  = liftIO (js_setSelectorText (self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"selectorText\"]"
-        js_getSelectorText ::
-        JSRef CSSStyleRule -> IO (JSRef (Maybe JSString))
+        js_getSelectorText :: CSSStyleRule -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 
 getSelectorText ::
                 (MonadIO m, FromJSString result) =>
                   CSSStyleRule -> m (Maybe result)
 getSelectorText self
-  = liftIO
-      (fromMaybeJSString <$> (js_getSelectorText (unCSSStyleRule self)))
+  = liftIO (fromMaybeJSString <$> (js_getSelectorText (self)))
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
-        JSRef CSSStyleRule -> IO (JSRef CSSStyleDeclaration)
+        CSSStyleRule -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.style Mozilla CSSStyleRule.style documentation> 
 getStyle ::
          (MonadIO m) => CSSStyleRule -> m (Maybe CSSStyleDeclaration)
-getStyle self
-  = liftIO ((js_getStyle (unCSSStyleRule self)) >>= fromJSRef)
+getStyle self = liftIO (nullableToMaybe <$> (js_getStyle (self)))

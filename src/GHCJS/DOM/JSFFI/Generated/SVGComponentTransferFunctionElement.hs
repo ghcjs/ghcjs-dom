@@ -17,7 +17,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGComponentTransferFunctionElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -37,8 +37,8 @@ pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR = 4
 pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA = 5
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef SVGComponentTransferFunctionElement ->
-          IO (JSRef SVGAnimatedEnumeration)
+        SVGComponentTransferFunctionElement ->
+          IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.type Mozilla SVGComponentTransferFunctionElement.type documentation> 
 getType ::
@@ -46,15 +46,13 @@ getType ::
           self -> m (Maybe SVGAnimatedEnumeration)
 getType self
   = liftIO
-      ((js_getType
-          (unSVGComponentTransferFunctionElement
-             (toSVGComponentTransferFunctionElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getType (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"tableValues\"]"
         js_getTableValues ::
-        JSRef SVGComponentTransferFunctionElement ->
-          IO (JSRef SVGAnimatedNumberList)
+        SVGComponentTransferFunctionElement ->
+          IO (Nullable SVGAnimatedNumberList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.tableValues Mozilla SVGComponentTransferFunctionElement.tableValues documentation> 
 getTableValues ::
@@ -62,14 +60,12 @@ getTableValues ::
                  self -> m (Maybe SVGAnimatedNumberList)
 getTableValues self
   = liftIO
-      ((js_getTableValues
-          (unSVGComponentTransferFunctionElement
-             (toSVGComponentTransferFunctionElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getTableValues (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"slope\"]" js_getSlope ::
-        JSRef SVGComponentTransferFunctionElement ->
-          IO (JSRef SVGAnimatedNumber)
+        SVGComponentTransferFunctionElement ->
+          IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.slope Mozilla SVGComponentTransferFunctionElement.slope documentation> 
 getSlope ::
@@ -77,15 +73,13 @@ getSlope ::
            self -> m (Maybe SVGAnimatedNumber)
 getSlope self
   = liftIO
-      ((js_getSlope
-          (unSVGComponentTransferFunctionElement
-             (toSVGComponentTransferFunctionElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getSlope (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"intercept\"]"
         js_getIntercept ::
-        JSRef SVGComponentTransferFunctionElement ->
-          IO (JSRef SVGAnimatedNumber)
+        SVGComponentTransferFunctionElement ->
+          IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.intercept Mozilla SVGComponentTransferFunctionElement.intercept documentation> 
 getIntercept ::
@@ -93,15 +87,13 @@ getIntercept ::
                self -> m (Maybe SVGAnimatedNumber)
 getIntercept self
   = liftIO
-      ((js_getIntercept
-          (unSVGComponentTransferFunctionElement
-             (toSVGComponentTransferFunctionElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getIntercept (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"amplitude\"]"
         js_getAmplitude ::
-        JSRef SVGComponentTransferFunctionElement ->
-          IO (JSRef SVGAnimatedNumber)
+        SVGComponentTransferFunctionElement ->
+          IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.amplitude Mozilla SVGComponentTransferFunctionElement.amplitude documentation> 
 getAmplitude ::
@@ -109,15 +101,13 @@ getAmplitude ::
                self -> m (Maybe SVGAnimatedNumber)
 getAmplitude self
   = liftIO
-      ((js_getAmplitude
-          (unSVGComponentTransferFunctionElement
-             (toSVGComponentTransferFunctionElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getAmplitude (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"exponent\"]" js_getExponent
         ::
-        JSRef SVGComponentTransferFunctionElement ->
-          IO (JSRef SVGAnimatedNumber)
+        SVGComponentTransferFunctionElement ->
+          IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.exponent Mozilla SVGComponentTransferFunctionElement.exponent documentation> 
 getExponent ::
@@ -125,14 +115,12 @@ getExponent ::
               self -> m (Maybe SVGAnimatedNumber)
 getExponent self
   = liftIO
-      ((js_getExponent
-          (unSVGComponentTransferFunctionElement
-             (toSVGComponentTransferFunctionElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getExponent (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"offset\"]" js_getOffset ::
-        JSRef SVGComponentTransferFunctionElement ->
-          IO (JSRef SVGAnimatedNumber)
+        SVGComponentTransferFunctionElement ->
+          IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.offset Mozilla SVGComponentTransferFunctionElement.offset documentation> 
 getOffset ::
@@ -140,7 +128,5 @@ getOffset ::
             self -> m (Maybe SVGAnimatedNumber)
 getOffset self
   = liftIO
-      ((js_getOffset
-          (unSVGComponentTransferFunctionElement
-             (toSVGComponentTransferFunctionElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getOffset (toSVGComponentTransferFunctionElement self)))

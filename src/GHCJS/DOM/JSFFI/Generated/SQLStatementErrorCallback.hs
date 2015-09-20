@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SQLStatementErrorCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -25,13 +25,14 @@ newSQLStatementErrorCallback ::
                                  m SQLStatementErrorCallback
 newSQLStatementErrorCallback callback
   = liftIO
-      (syncCallback2 ThrowWouldBlock
-         (\ transaction error ->
-            fromJSRefUnchecked error >>=
-              \ error' ->
-                fromJSRefUnchecked transaction >>=
-                  \ transaction' -> callback transaction'
-                  error'))
+      (SQLStatementErrorCallback <$>
+         syncCallback2 ThrowWouldBlock
+           (\ transaction error ->
+              fromJSRefUnchecked error >>=
+                \ error' ->
+                  fromJSRefUnchecked transaction >>=
+                    \ transaction' -> callback transaction'
+                    error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
 newSQLStatementErrorCallbackSync ::
@@ -40,13 +41,14 @@ newSQLStatementErrorCallbackSync ::
                                      m SQLStatementErrorCallback
 newSQLStatementErrorCallbackSync callback
   = liftIO
-      (syncCallback2 ContinueAsync
-         (\ transaction error ->
-            fromJSRefUnchecked error >>=
-              \ error' ->
-                fromJSRefUnchecked transaction >>=
-                  \ transaction' -> callback transaction'
-                  error'))
+      (SQLStatementErrorCallback <$>
+         syncCallback2 ContinueAsync
+           (\ transaction error ->
+              fromJSRefUnchecked error >>=
+                \ error' ->
+                  fromJSRefUnchecked transaction >>=
+                    \ transaction' -> callback transaction'
+                    error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLStatementErrorCallback Mozilla SQLStatementErrorCallback documentation> 
 newSQLStatementErrorCallbackAsync ::
@@ -55,10 +57,11 @@ newSQLStatementErrorCallbackAsync ::
                                       m SQLStatementErrorCallback
 newSQLStatementErrorCallbackAsync callback
   = liftIO
-      (asyncCallback2
-         (\ transaction error ->
-            fromJSRefUnchecked error >>=
-              \ error' ->
-                fromJSRefUnchecked transaction >>=
-                  \ transaction' -> callback transaction'
-                  error'))
+      (SQLStatementErrorCallback <$>
+         asyncCallback2
+           (\ transaction error ->
+              fromJSRefUnchecked error >>=
+                \ error' ->
+                  fromJSRefUnchecked transaction >>=
+                    \ transaction' -> callback transaction'
+                    error'))

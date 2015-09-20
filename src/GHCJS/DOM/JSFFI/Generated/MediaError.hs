@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaError
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,8 +26,8 @@ pattern MEDIA_ERR_SRC_NOT_SUPPORTED = 4
 pattern MEDIA_ERR_ENCRYPTED = 5
  
 foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
-        JSRef MediaError -> IO Word
+        MediaError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaError.code Mozilla MediaError.code documentation> 
 getCode :: (MonadIO m) => MediaError -> m Word
-getCode self = liftIO (js_getCode (unMediaError self))
+getCode self = liftIO (js_getCode (self))

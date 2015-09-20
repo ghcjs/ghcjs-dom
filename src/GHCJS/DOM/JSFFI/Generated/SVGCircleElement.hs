@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGCircleElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,28 +19,25 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"cx\"]" js_getCx ::
-        JSRef SVGCircleElement -> IO (JSRef SVGAnimatedLength)
+        SVGCircleElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cx Mozilla SVGCircleElement.cx documentation> 
 getCx ::
       (MonadIO m) => SVGCircleElement -> m (Maybe SVGAnimatedLength)
-getCx self
-  = liftIO ((js_getCx (unSVGCircleElement self)) >>= fromJSRef)
+getCx self = liftIO (nullableToMaybe <$> (js_getCx (self)))
  
 foreign import javascript unsafe "$1[\"cy\"]" js_getCy ::
-        JSRef SVGCircleElement -> IO (JSRef SVGAnimatedLength)
+        SVGCircleElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cy Mozilla SVGCircleElement.cy documentation> 
 getCy ::
       (MonadIO m) => SVGCircleElement -> m (Maybe SVGAnimatedLength)
-getCy self
-  = liftIO ((js_getCy (unSVGCircleElement self)) >>= fromJSRef)
+getCy self = liftIO (nullableToMaybe <$> (js_getCy (self)))
  
 foreign import javascript unsafe "$1[\"r\"]" js_getR ::
-        JSRef SVGCircleElement -> IO (JSRef SVGAnimatedLength)
+        SVGCircleElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.r Mozilla SVGCircleElement.r documentation> 
 getR ::
      (MonadIO m) => SVGCircleElement -> m (Maybe SVGAnimatedLength)
-getR self
-  = liftIO ((js_getR (unSVGCircleElement self)) >>= fromJSRef)
+getR self = liftIO (nullableToMaybe <$> (js_getR (self)))

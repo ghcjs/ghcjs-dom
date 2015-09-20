@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.VoidCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,13 +21,14 @@ import GHCJS.DOM.Enums
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VoidCallback Mozilla VoidCallback documentation> 
 newVoidCallback :: (MonadIO m) => IO () -> m VoidCallback
 newVoidCallback callback
-  = liftIO (syncCallback ThrowWouldBlock callback)
+  = liftIO (VoidCallback <$> syncCallback ThrowWouldBlock callback)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VoidCallback Mozilla VoidCallback documentation> 
 newVoidCallbackSync :: (MonadIO m) => IO () -> m VoidCallback
 newVoidCallbackSync callback
-  = liftIO (syncCallback ContinueAsync callback)
+  = liftIO (VoidCallback <$> syncCallback ContinueAsync callback)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VoidCallback Mozilla VoidCallback documentation> 
 newVoidCallbackAsync :: (MonadIO m) => IO () -> m VoidCallback
-newVoidCallbackAsync callback = liftIO (asyncCallback callback)
+newVoidCallbackAsync callback
+  = liftIO (VoidCallback <$> asyncCallback callback)

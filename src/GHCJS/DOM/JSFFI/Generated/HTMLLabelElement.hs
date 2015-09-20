@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLLabelElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,38 +20,35 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
-        JSRef HTMLLabelElement -> IO (JSRef HTMLFormElement)
+        HTMLLabelElement -> IO (Nullable HTMLFormElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.form Mozilla HTMLLabelElement.form documentation> 
 getForm ::
         (MonadIO m) => HTMLLabelElement -> m (Maybe HTMLFormElement)
-getForm self
-  = liftIO ((js_getForm (unHTMLLabelElement self)) >>= fromJSRef)
+getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
-        js_setHtmlFor :: JSRef HTMLLabelElement -> JSString -> IO ()
+        js_setHtmlFor :: HTMLLabelElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.htmlFor Mozilla HTMLLabelElement.htmlFor documentation> 
 setHtmlFor ::
            (MonadIO m, ToJSString val) => HTMLLabelElement -> val -> m ()
 setHtmlFor self val
-  = liftIO (js_setHtmlFor (unHTMLLabelElement self) (toJSString val))
+  = liftIO (js_setHtmlFor (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"htmlFor\"]" js_getHtmlFor ::
-        JSRef HTMLLabelElement -> IO JSString
+        HTMLLabelElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.htmlFor Mozilla HTMLLabelElement.htmlFor documentation> 
 getHtmlFor ::
            (MonadIO m, FromJSString result) => HTMLLabelElement -> m result
-getHtmlFor self
-  = liftIO
-      (fromJSString <$> (js_getHtmlFor (unHTMLLabelElement self)))
+getHtmlFor self = liftIO (fromJSString <$> (js_getHtmlFor (self)))
  
 foreign import javascript unsafe "$1[\"control\"]" js_getControl ::
-        JSRef HTMLLabelElement -> IO (JSRef HTMLElement)
+        HTMLLabelElement -> IO (Nullable HTMLElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.control Mozilla HTMLLabelElement.control documentation> 
 getControl ::
            (MonadIO m) => HTMLLabelElement -> m (Maybe HTMLElement)
 getControl self
-  = liftIO ((js_getControl (unHTMLLabelElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getControl (self)))

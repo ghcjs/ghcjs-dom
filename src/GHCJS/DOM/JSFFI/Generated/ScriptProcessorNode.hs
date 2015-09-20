@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.ScriptProcessorNode
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,9 +24,8 @@ audioProcess :: EventName ScriptProcessorNode AudioProcessingEvent
 audioProcess = unsafeEventName (toJSString "audioprocess")
  
 foreign import javascript unsafe "$1[\"bufferSize\"]"
-        js_getBufferSize :: JSRef ScriptProcessorNode -> IO Int
+        js_getBufferSize :: ScriptProcessorNode -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode.bufferSize Mozilla ScriptProcessorNode.bufferSize documentation> 
 getBufferSize :: (MonadIO m) => ScriptProcessorNode -> m Int
-getBufferSize self
-  = liftIO (js_getBufferSize (unScriptProcessorNode self))
+getBufferSize self = liftIO (js_getBufferSize (self))

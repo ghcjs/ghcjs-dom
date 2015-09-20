@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.WebKitPlaybackTargetAvailabilityEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,14 +22,11 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"availability\"]"
         js_getAvailability ::
-        JSRef WebKitPlaybackTargetAvailabilityEvent -> IO JSString
+        WebKitPlaybackTargetAvailabilityEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPlaybackTargetAvailabilityEvent.availability Mozilla WebKitPlaybackTargetAvailabilityEvent.availability documentation> 
 getAvailability ::
                 (MonadIO m, FromJSString result) =>
                   WebKitPlaybackTargetAvailabilityEvent -> m result
 getAvailability self
-  = liftIO
-      (fromJSString <$>
-         (js_getAvailability
-            (unWebKitPlaybackTargetAvailabilityEvent self)))
+  = liftIO (fromJSString <$> (js_getAvailability (self)))

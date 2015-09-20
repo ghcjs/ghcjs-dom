@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeyNeededEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,11 +19,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"initData\"]" js_getInitData
-        :: JSRef MediaKeyNeededEvent -> IO (JSRef Uint8Array)
+        :: MediaKeyNeededEvent -> IO (Nullable Uint8Array)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyNeededEvent.initData Mozilla MediaKeyNeededEvent.initData documentation> 
 getInitData ::
             (MonadIO m) => MediaKeyNeededEvent -> m (Maybe Uint8Array)
 getInitData self
-  = liftIO
-      ((js_getInitData (unMediaKeyNeededEvent self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getInitData (self)))

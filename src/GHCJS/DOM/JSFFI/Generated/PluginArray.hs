@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.PluginArray
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,15 +20,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef PluginArray -> Word -> IO (JSRef Plugin)
+        PluginArray -> Word -> IO (Nullable Plugin)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.item Mozilla PluginArray.item documentation> 
 item :: (MonadIO m) => PluginArray -> Word -> m (Maybe Plugin)
 item self index
-  = liftIO ((js_item (unPluginArray self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        js_namedItem :: JSRef PluginArray -> JSString -> IO (JSRef Plugin)
+        js_namedItem :: PluginArray -> JSString -> IO (Nullable Plugin)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.namedItem Mozilla PluginArray.namedItem documentation> 
 namedItem ::
@@ -36,20 +36,18 @@ namedItem ::
             PluginArray -> name -> m (Maybe Plugin)
 namedItem self name
   = liftIO
-      ((js_namedItem (unPluginArray self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_namedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"refresh\"]($2)" js_refresh
-        :: JSRef PluginArray -> Bool -> IO ()
+        :: PluginArray -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.refresh Mozilla PluginArray.refresh documentation> 
 refresh :: (MonadIO m) => PluginArray -> Bool -> m ()
-refresh self reload
-  = liftIO (js_refresh (unPluginArray self) reload)
+refresh self reload = liftIO (js_refresh (self) reload)
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef PluginArray -> IO Word
+        PluginArray -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.length Mozilla PluginArray.length documentation> 
 getLength :: (MonadIO m) => PluginArray -> m Word
-getLength self = liftIO (js_getLength (unPluginArray self))
+getLength self = liftIO (js_getLength (self))

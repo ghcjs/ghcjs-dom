@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.TextEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,8 +20,8 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"initTextEvent\"]($2, $3, $4,\n$5, $6)" js_initTextEvent ::
-        JSRef TextEvent ->
-          JSString -> Bool -> Bool -> JSRef Window -> JSString -> IO ()
+        TextEvent ->
+          JSString -> Bool -> Bool -> Nullable Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextEvent.initTextEvent Mozilla TextEvent.initTextEvent documentation> 
 initTextEvent ::
@@ -31,17 +31,15 @@ initTextEvent ::
 initTextEvent self typeArg canBubbleArg cancelableArg viewArg
   dataArg
   = liftIO
-      (js_initTextEvent (unTextEvent self) (toJSString typeArg)
-         canBubbleArg
+      (js_initTextEvent (self) (toJSString typeArg) canBubbleArg
          cancelableArg
-         (maybe jsNull pToJSRef viewArg)
+         (maybeToNullable viewArg)
          (toJSString dataArg))
  
 foreign import javascript unsafe "$1[\"data\"]" js_getData ::
-        JSRef TextEvent -> IO JSString
+        TextEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextEvent.data Mozilla TextEvent.data documentation> 
 getData ::
         (MonadIO m, FromJSString result) => TextEvent -> m result
-getData self
-  = liftIO (fromJSString <$> (js_getData (unTextEvent self)))
+getData self = liftIO (fromJSString <$> (js_getData (self)))

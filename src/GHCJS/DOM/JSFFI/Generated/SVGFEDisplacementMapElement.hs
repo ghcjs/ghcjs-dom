@@ -10,7 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEDisplacementMapElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -29,62 +29,50 @@ pattern SVG_CHANNEL_B = 3
 pattern SVG_CHANNEL_A = 4
  
 foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
-        JSRef SVGFEDisplacementMapElement -> IO (JSRef SVGAnimatedString)
+        SVGFEDisplacementMapElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in1 Mozilla SVGFEDisplacementMapElement.in1 documentation> 
 getIn1 ::
        (MonadIO m) =>
          SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedString)
-getIn1 self
-  = liftIO
-      ((js_getIn1 (unSVGFEDisplacementMapElement self)) >>= fromJSRef)
+getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"in2\"]" js_getIn2 ::
-        JSRef SVGFEDisplacementMapElement -> IO (JSRef SVGAnimatedString)
+        SVGFEDisplacementMapElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in2 Mozilla SVGFEDisplacementMapElement.in2 documentation> 
 getIn2 ::
        (MonadIO m) =>
          SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedString)
-getIn2 self
-  = liftIO
-      ((js_getIn2 (unSVGFEDisplacementMapElement self)) >>= fromJSRef)
+getIn2 self = liftIO (nullableToMaybe <$> (js_getIn2 (self)))
  
 foreign import javascript unsafe "$1[\"scale\"]" js_getScale ::
-        JSRef SVGFEDisplacementMapElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEDisplacementMapElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.scale Mozilla SVGFEDisplacementMapElement.scale documentation> 
 getScale ::
          (MonadIO m) =>
            SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedNumber)
-getScale self
-  = liftIO
-      ((js_getScale (unSVGFEDisplacementMapElement self)) >>= fromJSRef)
+getScale self = liftIO (nullableToMaybe <$> (js_getScale (self)))
  
 foreign import javascript unsafe "$1[\"xChannelSelector\"]"
         js_getXChannelSelector ::
-        JSRef SVGFEDisplacementMapElement ->
-          IO (JSRef SVGAnimatedEnumeration)
+        SVGFEDisplacementMapElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.xChannelSelector Mozilla SVGFEDisplacementMapElement.xChannelSelector documentation> 
 getXChannelSelector ::
                     (MonadIO m) =>
                       SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedEnumeration)
 getXChannelSelector self
-  = liftIO
-      ((js_getXChannelSelector (unSVGFEDisplacementMapElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getXChannelSelector (self)))
  
 foreign import javascript unsafe "$1[\"yChannelSelector\"]"
         js_getYChannelSelector ::
-        JSRef SVGFEDisplacementMapElement ->
-          IO (JSRef SVGAnimatedEnumeration)
+        SVGFEDisplacementMapElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.yChannelSelector Mozilla SVGFEDisplacementMapElement.yChannelSelector documentation> 
 getYChannelSelector ::
                     (MonadIO m) =>
                       SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedEnumeration)
 getYChannelSelector self
-  = liftIO
-      ((js_getYChannelSelector (unSVGFEDisplacementMapElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getYChannelSelector (self)))

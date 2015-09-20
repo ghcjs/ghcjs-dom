@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.PerformanceNavigation
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,16 +26,15 @@ pattern TYPE_BACK_FORWARD = 2
 pattern TYPE_RESERVED = 255
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef PerformanceNavigation -> IO Word
+        PerformanceNavigation -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation.type Mozilla PerformanceNavigation.type documentation> 
 getType :: (MonadIO m) => PerformanceNavigation -> m Word
-getType self = liftIO (js_getType (unPerformanceNavigation self))
+getType self = liftIO (js_getType (self))
  
 foreign import javascript unsafe "$1[\"redirectCount\"]"
-        js_getRedirectCount :: JSRef PerformanceNavigation -> IO Word
+        js_getRedirectCount :: PerformanceNavigation -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation.redirectCount Mozilla PerformanceNavigation.redirectCount documentation> 
 getRedirectCount :: (MonadIO m) => PerformanceNavigation -> m Word
-getRedirectCount self
-  = liftIO (js_getRedirectCount (unPerformanceNavigation self))
+getRedirectCount self = liftIO (js_getRedirectCount (self))

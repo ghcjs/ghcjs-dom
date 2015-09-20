@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBDatabase
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,8 +24,8 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"createObjectStore\"]($2, $3)" js_createObjectStore ::
-        JSRef IDBDatabase ->
-          JSString -> JSRef Dictionary -> IO (JSRef IDBObjectStore)
+        IDBDatabase ->
+          JSString -> Nullable Dictionary -> IO (Nullable IDBObjectStore)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.createObjectStore Mozilla IDBDatabase.createObjectStore documentation> 
 createObjectStore ::
@@ -33,24 +33,22 @@ createObjectStore ::
                     IDBDatabase -> name -> Maybe options -> m (Maybe IDBObjectStore)
 createObjectStore self name options
   = liftIO
-      ((js_createObjectStore (unIDBDatabase self) (toJSString name)
-          (maybe jsNull (unDictionary . toDictionary) options))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createObjectStore (self) (toJSString name)
+            (maybeToNullable (fmap toDictionary options))))
  
 foreign import javascript unsafe "$1[\"deleteObjectStore\"]($2)"
-        js_deleteObjectStore :: JSRef IDBDatabase -> JSString -> IO ()
+        js_deleteObjectStore :: IDBDatabase -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.deleteObjectStore Mozilla IDBDatabase.deleteObjectStore documentation> 
 deleteObjectStore ::
                   (MonadIO m, ToJSString name) => IDBDatabase -> name -> m ()
 deleteObjectStore self name
-  = liftIO
-      (js_deleteObjectStore (unIDBDatabase self) (toJSString name))
+  = liftIO (js_deleteObjectStore (self) (toJSString name))
  
 foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
         js_transaction ::
-        JSRef IDBDatabase ->
-          JSString -> JSString -> IO (JSRef IDBTransaction)
+        IDBDatabase -> JSString -> JSString -> IO (Nullable IDBTransaction)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
 transaction ::
@@ -58,14 +56,12 @@ transaction ::
               IDBDatabase -> storeName -> mode -> m (Maybe IDBTransaction)
 transaction self storeName mode
   = liftIO
-      ((js_transaction (unIDBDatabase self) (toJSString storeName)
-          (toJSString mode))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_transaction (self) (toJSString storeName) (toJSString mode)))
  
 foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
         js_transaction' ::
-        JSRef IDBDatabase ->
-          JSRef [storeNames] -> JSString -> IO (JSRef IDBTransaction)
+        IDBDatabase -> JSRef -> JSString -> IO (Nullable IDBTransaction)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
 transaction' ::
@@ -73,45 +69,42 @@ transaction' ::
                IDBDatabase -> [storeNames] -> mode -> m (Maybe IDBTransaction)
 transaction' self storeNames mode
   = liftIO
-      ((toJSRef storeNames >>=
-          \ storeNames' -> js_transaction' (unIDBDatabase self) storeNames'
-          (toJSString mode))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (toJSRef storeNames >>=
+            \ storeNames' -> js_transaction' (self) storeNames'
+            (toJSString mode)))
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
-        JSRef IDBDatabase -> IO ()
+        IDBDatabase -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.close Mozilla IDBDatabase.close documentation> 
 close :: (MonadIO m) => IDBDatabase -> m ()
-close self = liftIO (js_close (unIDBDatabase self))
+close self = liftIO (js_close (self))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef IDBDatabase -> IO JSString
+        IDBDatabase -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.name Mozilla IDBDatabase.name documentation> 
 getName ::
         (MonadIO m, FromJSString result) => IDBDatabase -> m result
-getName self
-  = liftIO (fromJSString <$> (js_getName (unIDBDatabase self)))
+getName self = liftIO (fromJSString <$> (js_getName (self)))
  
 foreign import javascript unsafe "$1[\"version\"]" js_getVersion ::
-        JSRef IDBDatabase -> IO Double
+        IDBDatabase -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.version Mozilla IDBDatabase.version documentation> 
 getVersion :: (MonadIO m) => IDBDatabase -> m Word64
-getVersion self
-  = liftIO (round <$> (js_getVersion (unIDBDatabase self)))
+getVersion self = liftIO (round <$> (js_getVersion (self)))
  
 foreign import javascript unsafe "$1[\"objectStoreNames\"]"
         js_getObjectStoreNames ::
-        JSRef IDBDatabase -> IO (JSRef DOMStringList)
+        IDBDatabase -> IO (Nullable DOMStringList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.objectStoreNames Mozilla IDBDatabase.objectStoreNames documentation> 
 getObjectStoreNames ::
                     (MonadIO m) => IDBDatabase -> m (Maybe DOMStringList)
 getObjectStoreNames self
-  = liftIO
-      ((js_getObjectStoreNames (unIDBDatabase self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getObjectStoreNames (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.onabort Mozilla IDBDatabase.onabort documentation> 
 abort :: EventName IDBDatabase Event

@@ -10,7 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.FileError
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -36,8 +36,8 @@ pattern TYPE_MISMATCH_ERR = 11
 pattern PATH_EXISTS_ERR = 12
  
 foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
-        JSRef FileError -> IO Word
+        FileError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileError.code Mozilla FileError.code documentation> 
 getCode :: (MonadIO m) => FileError -> m Word
-getCode self = liftIO (js_getCode (unFileError self))
+getCode self = liftIO (js_getCode (self))

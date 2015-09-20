@@ -16,7 +16,7 @@ module GHCJS.DOM.JSFFI.Generated.XPathResult
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -30,22 +30,21 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"iterateNext\"]()"
-        js_iterateNext :: JSRef XPathResult -> IO (JSRef Node)
+        js_iterateNext :: XPathResult -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.iterateNext Mozilla XPathResult.iterateNext documentation> 
 iterateNext :: (MonadIO m) => XPathResult -> m (Maybe Node)
 iterateNext self
-  = liftIO ((js_iterateNext (unXPathResult self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_iterateNext (self)))
  
 foreign import javascript unsafe "$1[\"snapshotItem\"]($2)"
-        js_snapshotItem :: JSRef XPathResult -> Word -> IO (JSRef Node)
+        js_snapshotItem :: XPathResult -> Word -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotItem Mozilla XPathResult.snapshotItem documentation> 
 snapshotItem ::
              (MonadIO m) => XPathResult -> Word -> m (Maybe Node)
 snapshotItem self index
-  = liftIO
-      ((js_snapshotItem (unXPathResult self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_snapshotItem (self) index))
 pattern ANY_TYPE = 0
 pattern NUMBER_TYPE = 1
 pattern STRING_TYPE = 2
@@ -58,60 +57,55 @@ pattern ANY_UNORDERED_NODE_TYPE = 8
 pattern FIRST_ORDERED_NODE_TYPE = 9
  
 foreign import javascript unsafe "$1[\"resultType\"]"
-        js_getResultType :: JSRef XPathResult -> IO Word
+        js_getResultType :: XPathResult -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.resultType Mozilla XPathResult.resultType documentation> 
 getResultType :: (MonadIO m) => XPathResult -> m Word
-getResultType self = liftIO (js_getResultType (unXPathResult self))
+getResultType self = liftIO (js_getResultType (self))
  
 foreign import javascript unsafe "$1[\"numberValue\"]"
-        js_getNumberValue :: JSRef XPathResult -> IO Double
+        js_getNumberValue :: XPathResult -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.numberValue Mozilla XPathResult.numberValue documentation> 
 getNumberValue :: (MonadIO m) => XPathResult -> m Double
-getNumberValue self
-  = liftIO (js_getNumberValue (unXPathResult self))
+getNumberValue self = liftIO (js_getNumberValue (self))
  
 foreign import javascript unsafe "$1[\"stringValue\"]"
-        js_getStringValue :: JSRef XPathResult -> IO JSString
+        js_getStringValue :: XPathResult -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.stringValue Mozilla XPathResult.stringValue documentation> 
 getStringValue ::
                (MonadIO m, FromJSString result) => XPathResult -> m result
 getStringValue self
-  = liftIO
-      (fromJSString <$> (js_getStringValue (unXPathResult self)))
+  = liftIO (fromJSString <$> (js_getStringValue (self)))
  
 foreign import javascript unsafe "($1[\"booleanValue\"] ? 1 : 0)"
-        js_getBooleanValue :: JSRef XPathResult -> IO Bool
+        js_getBooleanValue :: XPathResult -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.booleanValue Mozilla XPathResult.booleanValue documentation> 
 getBooleanValue :: (MonadIO m) => XPathResult -> m Bool
-getBooleanValue self
-  = liftIO (js_getBooleanValue (unXPathResult self))
+getBooleanValue self = liftIO (js_getBooleanValue (self))
  
 foreign import javascript unsafe "$1[\"singleNodeValue\"]"
-        js_getSingleNodeValue :: JSRef XPathResult -> IO (JSRef Node)
+        js_getSingleNodeValue :: XPathResult -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.singleNodeValue Mozilla XPathResult.singleNodeValue documentation> 
 getSingleNodeValue :: (MonadIO m) => XPathResult -> m (Maybe Node)
 getSingleNodeValue self
-  = liftIO
-      ((js_getSingleNodeValue (unXPathResult self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSingleNodeValue (self)))
  
 foreign import javascript unsafe
         "($1[\"invalidIteratorState\"] ? 1 : 0)" js_getInvalidIteratorState
-        :: JSRef XPathResult -> IO Bool
+        :: XPathResult -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.invalidIteratorState Mozilla XPathResult.invalidIteratorState documentation> 
 getInvalidIteratorState :: (MonadIO m) => XPathResult -> m Bool
 getInvalidIteratorState self
-  = liftIO (js_getInvalidIteratorState (unXPathResult self))
+  = liftIO (js_getInvalidIteratorState (self))
  
 foreign import javascript unsafe "$1[\"snapshotLength\"]"
-        js_getSnapshotLength :: JSRef XPathResult -> IO Word
+        js_getSnapshotLength :: XPathResult -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotLength Mozilla XPathResult.snapshotLength documentation> 
 getSnapshotLength :: (MonadIO m) => XPathResult -> m Word
-getSnapshotLength self
-  = liftIO (js_getSnapshotLength (unXPathResult self))
+getSnapshotLength self = liftIO (js_getSnapshotLength (self))

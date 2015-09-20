@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.FileList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef FileList -> Word -> IO (JSRef File)
+        FileList -> Word -> IO (Nullable File)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileList.item Mozilla FileList.item documentation> 
 item :: (MonadIO m) => FileList -> Word -> m (Maybe File)
 item self index
-  = liftIO ((js_item (unFileList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef FileList -> IO Word
+        FileList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileList.length Mozilla FileList.length documentation> 
 getLength :: (MonadIO m) => FileList -> m Word
-getLength self = liftIO (js_getLength (unFileList self))
+getLength self = liftIO (js_getLength (self))

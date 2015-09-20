@@ -10,7 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGGraphicsElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,18 +24,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"getBBox\"]()" js_getBBox ::
-        JSRef SVGGraphicsElement -> IO (JSRef SVGRect)
+        SVGGraphicsElement -> IO (Nullable SVGRect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getBBox Mozilla SVGGraphicsElement.getBBox documentation> 
 getBBox ::
         (MonadIO m, IsSVGGraphicsElement self) => self -> m (Maybe SVGRect)
 getBBox self
   = liftIO
-      ((js_getBBox (unSVGGraphicsElement (toSVGGraphicsElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getBBox (toSVGGraphicsElement self)))
  
 foreign import javascript unsafe "$1[\"getCTM\"]()" js_getCTM ::
-        JSRef SVGGraphicsElement -> IO (JSRef SVGMatrix)
+        SVGGraphicsElement -> IO (Nullable SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getCTM Mozilla SVGGraphicsElement.getCTM documentation> 
 getCTM ::
@@ -43,11 +42,10 @@ getCTM ::
          self -> m (Maybe SVGMatrix)
 getCTM self
   = liftIO
-      ((js_getCTM (unSVGGraphicsElement (toSVGGraphicsElement self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getCTM (toSVGGraphicsElement self)))
  
 foreign import javascript unsafe "$1[\"getScreenCTM\"]()"
-        js_getScreenCTM :: JSRef SVGGraphicsElement -> IO (JSRef SVGMatrix)
+        js_getScreenCTM :: SVGGraphicsElement -> IO (Nullable SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getScreenCTM Mozilla SVGGraphicsElement.getScreenCTM documentation> 
 getScreenCTM ::
@@ -55,14 +53,12 @@ getScreenCTM ::
                self -> m (Maybe SVGMatrix)
 getScreenCTM self
   = liftIO
-      ((js_getScreenCTM
-          (unSVGGraphicsElement (toSVGGraphicsElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getScreenCTM (toSVGGraphicsElement self)))
  
 foreign import javascript unsafe
         "$1[\"getTransformToElement\"]($2)" js_getTransformToElement ::
-        JSRef SVGGraphicsElement ->
-          JSRef SVGElement -> IO (JSRef SVGMatrix)
+        SVGGraphicsElement ->
+          Nullable SVGElement -> IO (Nullable SVGMatrix)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getTransformToElement Mozilla SVGGraphicsElement.getTransformToElement documentation> 
 getTransformToElement ::
@@ -70,14 +66,13 @@ getTransformToElement ::
                         self -> Maybe element -> m (Maybe SVGMatrix)
 getTransformToElement self element
   = liftIO
-      ((js_getTransformToElement
-          (unSVGGraphicsElement (toSVGGraphicsElement self))
-          (maybe jsNull (unSVGElement . toSVGElement) element))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getTransformToElement (toSVGGraphicsElement self)
+            (maybeToNullable (fmap toSVGElement element))))
  
 foreign import javascript unsafe "$1[\"transform\"]"
         js_getTransform ::
-        JSRef SVGGraphicsElement -> IO (JSRef SVGAnimatedTransformList)
+        SVGGraphicsElement -> IO (Nullable SVGAnimatedTransformList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.transform Mozilla SVGGraphicsElement.transform documentation> 
 getTransform ::
@@ -85,13 +80,11 @@ getTransform ::
                self -> m (Maybe SVGAnimatedTransformList)
 getTransform self
   = liftIO
-      ((js_getTransform
-          (unSVGGraphicsElement (toSVGGraphicsElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getTransform (toSVGGraphicsElement self)))
  
 foreign import javascript unsafe "$1[\"nearestViewportElement\"]"
         js_getNearestViewportElement ::
-        JSRef SVGGraphicsElement -> IO (JSRef SVGElement)
+        SVGGraphicsElement -> IO (Nullable SVGElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.nearestViewportElement Mozilla SVGGraphicsElement.nearestViewportElement documentation> 
 getNearestViewportElement ::
@@ -99,13 +92,12 @@ getNearestViewportElement ::
                             self -> m (Maybe SVGElement)
 getNearestViewportElement self
   = liftIO
-      ((js_getNearestViewportElement
-          (unSVGGraphicsElement (toSVGGraphicsElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getNearestViewportElement (toSVGGraphicsElement self)))
  
 foreign import javascript unsafe "$1[\"farthestViewportElement\"]"
         js_getFarthestViewportElement ::
-        JSRef SVGGraphicsElement -> IO (JSRef SVGElement)
+        SVGGraphicsElement -> IO (Nullable SVGElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.farthestViewportElement Mozilla SVGGraphicsElement.farthestViewportElement documentation> 
 getFarthestViewportElement ::
@@ -113,6 +105,5 @@ getFarthestViewportElement ::
                              self -> m (Maybe SVGElement)
 getFarthestViewportElement self
   = liftIO
-      ((js_getFarthestViewportElement
-          (unSVGGraphicsElement (toSVGGraphicsElement self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getFarthestViewportElement (toSVGGraphicsElement self)))

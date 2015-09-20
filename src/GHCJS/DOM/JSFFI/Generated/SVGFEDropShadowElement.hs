@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEDropShadowElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,69 +22,59 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"setStdDeviation\"]($2, $3)"
         js_setStdDeviation ::
-        JSRef SVGFEDropShadowElement -> Float -> Float -> IO ()
+        SVGFEDropShadowElement -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.setStdDeviation Mozilla SVGFEDropShadowElement.setStdDeviation documentation> 
 setStdDeviation ::
                 (MonadIO m) => SVGFEDropShadowElement -> Float -> Float -> m ()
 setStdDeviation self stdDeviationX stdDeviationY
-  = liftIO
-      (js_setStdDeviation (unSVGFEDropShadowElement self) stdDeviationX
-         stdDeviationY)
+  = liftIO (js_setStdDeviation (self) stdDeviationX stdDeviationY)
  
 foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
-        JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedString)
+        SVGFEDropShadowElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.in1 Mozilla SVGFEDropShadowElement.in1 documentation> 
 getIn1 ::
        (MonadIO m) =>
          SVGFEDropShadowElement -> m (Maybe SVGAnimatedString)
-getIn1 self
-  = liftIO
-      ((js_getIn1 (unSVGFEDropShadowElement self)) >>= fromJSRef)
+getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"dx\"]" js_getDx ::
-        JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEDropShadowElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dx Mozilla SVGFEDropShadowElement.dx documentation> 
 getDx ::
       (MonadIO m) =>
         SVGFEDropShadowElement -> m (Maybe SVGAnimatedNumber)
-getDx self
-  = liftIO ((js_getDx (unSVGFEDropShadowElement self)) >>= fromJSRef)
+getDx self = liftIO (nullableToMaybe <$> (js_getDx (self)))
  
 foreign import javascript unsafe "$1[\"dy\"]" js_getDy ::
-        JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEDropShadowElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dy Mozilla SVGFEDropShadowElement.dy documentation> 
 getDy ::
       (MonadIO m) =>
         SVGFEDropShadowElement -> m (Maybe SVGAnimatedNumber)
-getDy self
-  = liftIO ((js_getDy (unSVGFEDropShadowElement self)) >>= fromJSRef)
+getDy self = liftIO (nullableToMaybe <$> (js_getDy (self)))
  
 foreign import javascript unsafe "$1[\"stdDeviationX\"]"
         js_getStdDeviationX ::
-        JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEDropShadowElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationX Mozilla SVGFEDropShadowElement.stdDeviationX documentation> 
 getStdDeviationX ::
                  (MonadIO m) =>
                    SVGFEDropShadowElement -> m (Maybe SVGAnimatedNumber)
 getStdDeviationX self
-  = liftIO
-      ((js_getStdDeviationX (unSVGFEDropShadowElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getStdDeviationX (self)))
  
 foreign import javascript unsafe "$1[\"stdDeviationY\"]"
         js_getStdDeviationY ::
-        JSRef SVGFEDropShadowElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEDropShadowElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationY Mozilla SVGFEDropShadowElement.stdDeviationY documentation> 
 getStdDeviationY ::
                  (MonadIO m) =>
                    SVGFEDropShadowElement -> m (Maybe SVGAnimatedNumber)
 getStdDeviationY self
-  = liftIO
-      ((js_getStdDeviationY (unSVGFEDropShadowElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getStdDeviationY (self)))

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.PositionCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,24 +23,27 @@ newPositionCallback ::
                     (MonadIO m) => (Maybe Geoposition -> IO ()) -> m PositionCallback
 newPositionCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ position ->
-            fromJSRefUnchecked position >>= \ position' -> callback position'))
+      (PositionCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ position ->
+              fromJSRefUnchecked position >>= \ position' -> callback position'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
 newPositionCallbackSync ::
                         (MonadIO m) => (Maybe Geoposition -> IO ()) -> m PositionCallback
 newPositionCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ position ->
-            fromJSRefUnchecked position >>= \ position' -> callback position'))
+      (PositionCallback <$>
+         syncCallback1 ContinueAsync
+           (\ position ->
+              fromJSRefUnchecked position >>= \ position' -> callback position'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
 newPositionCallbackAsync ::
                          (MonadIO m) => (Maybe Geoposition -> IO ()) -> m PositionCallback
 newPositionCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ position ->
-            fromJSRefUnchecked position >>= \ position' -> callback position'))
+      (PositionCallback <$>
+         asyncCallback1
+           (\ position ->
+              fromJSRefUnchecked position >>= \ position' -> callback position'))

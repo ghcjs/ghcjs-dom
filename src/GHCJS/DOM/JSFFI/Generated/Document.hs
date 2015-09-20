@@ -78,7 +78,7 @@ module GHCJS.DOM.JSFFI.Generated.Document
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -92,15 +92,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"Document\"]()"
-        js_newDocument :: IO (JSRef Document)
+        js_newDocument :: IO Document
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document Mozilla Document documentation> 
 newDocument :: (MonadIO m) => m Document
-newDocument = liftIO (js_newDocument >>= fromJSRefUnchecked)
+newDocument = liftIO (js_newDocument)
  
 foreign import javascript unsafe "$1[\"createElement\"]($2)"
         js_createElement ::
-        JSRef Document -> JSRef (Maybe JSString) -> IO (JSRef Element)
+        Document -> Nullable JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElement Mozilla Document.createElement documentation> 
 createElement ::
@@ -108,24 +108,22 @@ createElement ::
                 self -> Maybe tagName -> m (Maybe Element)
 createElement self tagName
   = liftIO
-      ((js_createElement (unDocument (toDocument self))
-          (toMaybeJSString tagName))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createElement (toDocument self) (toMaybeJSString tagName)))
  
 foreign import javascript unsafe "$1[\"createDocumentFragment\"]()"
         js_createDocumentFragment ::
-        JSRef Document -> IO (JSRef DocumentFragment)
+        Document -> IO (Nullable DocumentFragment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createDocumentFragment Mozilla Document.createDocumentFragment documentation> 
 createDocumentFragment ::
                        (MonadIO m, IsDocument self) => self -> m (Maybe DocumentFragment)
 createDocumentFragment self
   = liftIO
-      ((js_createDocumentFragment (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_createDocumentFragment (toDocument self)))
  
 foreign import javascript unsafe "$1[\"createTextNode\"]($2)"
-        js_createTextNode :: JSRef Document -> JSString -> IO (JSRef Text)
+        js_createTextNode :: Document -> JSString -> IO (Nullable Text)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTextNode Mozilla Document.createTextNode documentation> 
 createTextNode ::
@@ -133,13 +131,11 @@ createTextNode ::
                  self -> data' -> m (Maybe Text)
 createTextNode self data'
   = liftIO
-      ((js_createTextNode (unDocument (toDocument self))
-          (toJSString data'))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createTextNode (toDocument self) (toJSString data')))
  
 foreign import javascript unsafe "$1[\"createComment\"]($2)"
-        js_createComment ::
-        JSRef Document -> JSString -> IO (JSRef Comment)
+        js_createComment :: Document -> JSString -> IO (Nullable Comment)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createComment Mozilla Document.createComment documentation> 
 createComment ::
@@ -147,13 +143,12 @@ createComment ::
                 self -> data' -> m (Maybe Comment)
 createComment self data'
   = liftIO
-      ((js_createComment (unDocument (toDocument self))
-          (toJSString data'))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createComment (toDocument self) (toJSString data')))
  
 foreign import javascript unsafe "$1[\"createCDATASection\"]($2)"
         js_createCDATASection ::
-        JSRef Document -> JSString -> IO (JSRef CDATASection)
+        Document -> JSString -> IO (Nullable CDATASection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createCDATASection Mozilla Document.createCDATASection documentation> 
 createCDATASection ::
@@ -161,15 +156,14 @@ createCDATASection ::
                      self -> data' -> m (Maybe CDATASection)
 createCDATASection self data'
   = liftIO
-      ((js_createCDATASection (unDocument (toDocument self))
-          (toJSString data'))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createCDATASection (toDocument self) (toJSString data')))
  
 foreign import javascript unsafe
         "$1[\"createProcessingInstruction\"]($2,\n$3)"
         js_createProcessingInstruction ::
-        JSRef Document ->
-          JSString -> JSString -> IO (JSRef ProcessingInstruction)
+        Document ->
+          JSString -> JSString -> IO (Nullable ProcessingInstruction)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createProcessingInstruction Mozilla Document.createProcessingInstruction documentation> 
 createProcessingInstruction ::
@@ -178,13 +172,13 @@ createProcessingInstruction ::
                               self -> target -> data' -> m (Maybe ProcessingInstruction)
 createProcessingInstruction self target data'
   = liftIO
-      ((js_createProcessingInstruction (unDocument (toDocument self))
-          (toJSString target)
-          (toJSString data'))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createProcessingInstruction (toDocument self)
+            (toJSString target)
+            (toJSString data')))
  
 foreign import javascript unsafe "$1[\"createAttribute\"]($2)"
-        js_createAttribute :: JSRef Document -> JSString -> IO (JSRef Attr)
+        js_createAttribute :: Document -> JSString -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttribute Mozilla Document.createAttribute documentation> 
 createAttribute ::
@@ -192,13 +186,12 @@ createAttribute ::
                   self -> name -> m (Maybe Attr)
 createAttribute self name
   = liftIO
-      ((js_createAttribute (unDocument (toDocument self))
-          (toJSString name))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createAttribute (toDocument self) (toJSString name)))
  
 foreign import javascript unsafe
         "$1[\"createEntityReference\"]($2)" js_createEntityReference ::
-        JSRef Document -> JSString -> IO (JSRef EntityReference)
+        Document -> JSString -> IO (Nullable EntityReference)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEntityReference Mozilla Document.createEntityReference documentation> 
 createEntityReference ::
@@ -206,13 +199,12 @@ createEntityReference ::
                         self -> name -> m (Maybe EntityReference)
 createEntityReference self name
   = liftIO
-      ((js_createEntityReference (unDocument (toDocument self))
-          (toJSString name))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createEntityReference (toDocument self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
         js_getElementsByTagName ::
-        JSRef Document -> JSString -> IO (JSRef NodeList)
+        Document -> JSString -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagName Mozilla Document.getElementsByTagName documentation> 
 getElementsByTagName ::
@@ -220,13 +212,12 @@ getElementsByTagName ::
                        self -> tagname -> m (Maybe NodeList)
 getElementsByTagName self tagname
   = liftIO
-      ((js_getElementsByTagName (unDocument (toDocument self))
-          (toJSString tagname))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getElementsByTagName (toDocument self) (toJSString tagname)))
  
 foreign import javascript unsafe "$1[\"importNode\"]($2, $3)"
         js_importNode ::
-        JSRef Document -> JSRef Node -> Bool -> IO (JSRef Node)
+        Document -> Nullable Node -> Bool -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.importNode Mozilla Document.importNode documentation> 
 importNode ::
@@ -234,16 +225,15 @@ importNode ::
              self -> Maybe importedNode -> Bool -> m (Maybe Node)
 importNode self importedNode deep
   = liftIO
-      ((js_importNode (unDocument (toDocument self))
-          (maybe jsNull (unNode . toNode) importedNode)
-          deep)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_importNode (toDocument self)
+            (maybeToNullable (fmap toNode importedNode))
+            deep))
  
 foreign import javascript unsafe "$1[\"createElementNS\"]($2, $3)"
         js_createElementNS ::
-        JSRef Document ->
-          JSRef (Maybe JSString) ->
-            JSRef (Maybe JSString) -> IO (JSRef Element)
+        Document ->
+          Nullable JSString -> Nullable JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElementNS Mozilla Document.createElementNS documentation> 
 createElementNS ::
@@ -253,15 +243,15 @@ createElementNS ::
                     Maybe namespaceURI -> Maybe qualifiedName -> m (Maybe Element)
 createElementNS self namespaceURI qualifiedName
   = liftIO
-      ((js_createElementNS (unDocument (toDocument self))
-          (toMaybeJSString namespaceURI)
-          (toMaybeJSString qualifiedName))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createElementNS (toDocument self)
+            (toMaybeJSString namespaceURI)
+            (toMaybeJSString qualifiedName)))
  
 foreign import javascript unsafe
         "$1[\"createAttributeNS\"]($2, $3)" js_createAttributeNS ::
-        JSRef Document ->
-          JSRef (Maybe JSString) -> JSRef (Maybe JSString) -> IO (JSRef Attr)
+        Document ->
+          Nullable JSString -> Nullable JSString -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttributeNS Mozilla Document.createAttributeNS documentation> 
 createAttributeNS ::
@@ -270,16 +260,15 @@ createAttributeNS ::
                     self -> Maybe namespaceURI -> Maybe qualifiedName -> m (Maybe Attr)
 createAttributeNS self namespaceURI qualifiedName
   = liftIO
-      ((js_createAttributeNS (unDocument (toDocument self))
-          (toMaybeJSString namespaceURI)
-          (toMaybeJSString qualifiedName))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createAttributeNS (toDocument self)
+            (toMaybeJSString namespaceURI)
+            (toMaybeJSString qualifiedName)))
  
 foreign import javascript unsafe
         "$1[\"getElementsByTagNameNS\"]($2,\n$3)" js_getElementsByTagNameNS
         ::
-        JSRef Document ->
-          JSRef (Maybe JSString) -> JSString -> IO (JSRef NodeList)
+        Document -> Nullable JSString -> JSString -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagNameNS Mozilla Document.getElementsByTagNameNS documentation> 
 getElementsByTagNameNS ::
@@ -288,14 +277,13 @@ getElementsByTagNameNS ::
                          self -> Maybe namespaceURI -> localName -> m (Maybe NodeList)
 getElementsByTagNameNS self namespaceURI localName
   = liftIO
-      ((js_getElementsByTagNameNS (unDocument (toDocument self))
-          (toMaybeJSString namespaceURI)
-          (toJSString localName))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getElementsByTagNameNS (toDocument self)
+            (toMaybeJSString namespaceURI)
+            (toJSString localName)))
  
 foreign import javascript unsafe "$1[\"getElementById\"]($2)"
-        js_getElementById ::
-        JSRef Document -> JSString -> IO (JSRef Element)
+        js_getElementById :: Document -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementById Mozilla Document.getElementById documentation> 
 getElementById ::
@@ -303,12 +291,11 @@ getElementById ::
                  self -> elementId -> m (Maybe Element)
 getElementById self elementId
   = liftIO
-      ((js_getElementById (unDocument (toDocument self))
-          (toJSString elementId))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getElementById (toDocument self) (toJSString elementId)))
  
 foreign import javascript unsafe "$1[\"adoptNode\"]($2)"
-        js_adoptNode :: JSRef Document -> JSRef Node -> IO (JSRef Node)
+        js_adoptNode :: Document -> Nullable Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.adoptNode Mozilla Document.adoptNode documentation> 
 adoptNode ::
@@ -316,12 +303,12 @@ adoptNode ::
             self -> Maybe source -> m (Maybe Node)
 adoptNode self source
   = liftIO
-      ((js_adoptNode (unDocument (toDocument self))
-          (maybe jsNull (unNode . toNode) source))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_adoptNode (toDocument self)
+            (maybeToNullable (fmap toNode source))))
  
 foreign import javascript unsafe "$1[\"createEvent\"]($2)"
-        js_createEvent :: JSRef Document -> JSString -> IO (JSRef Event)
+        js_createEvent :: Document -> JSString -> IO (Nullable Event)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEvent Mozilla Document.createEvent documentation> 
 createEvent ::
@@ -329,26 +316,24 @@ createEvent ::
               self -> eventType -> m (Maybe Event)
 createEvent self eventType
   = liftIO
-      ((js_createEvent (unDocument (toDocument self))
-          (toJSString eventType))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createEvent (toDocument self) (toJSString eventType)))
  
 foreign import javascript unsafe "$1[\"createRange\"]()"
-        js_createRange :: JSRef Document -> IO (JSRef Range)
+        js_createRange :: Document -> IO (Nullable Range)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createRange Mozilla Document.createRange documentation> 
 createRange ::
             (MonadIO m, IsDocument self) => self -> m (Maybe Range)
 createRange self
-  = liftIO
-      ((js_createRange (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_createRange (toDocument self)))
  
 foreign import javascript unsafe
         "$1[\"createNodeIterator\"]($2, $3,\n$4, $5)" js_createNodeIterator
         ::
-        JSRef Document ->
-          JSRef Node ->
-            Word -> JSRef NodeFilter -> Bool -> IO (JSRef NodeIterator)
+        Document ->
+          Nullable Node ->
+            Word -> Nullable NodeFilter -> Bool -> IO (Nullable NodeIterator)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNodeIterator Mozilla Document.createNodeIterator documentation> 
 createNodeIterator ::
@@ -359,18 +344,18 @@ createNodeIterator ::
 createNodeIterator self root whatToShow filter
   expandEntityReferences
   = liftIO
-      ((js_createNodeIterator (unDocument (toDocument self))
-          (maybe jsNull (unNode . toNode) root)
-          whatToShow
-          (maybe jsNull pToJSRef filter)
-          expandEntityReferences)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createNodeIterator (toDocument self)
+            (maybeToNullable (fmap toNode root))
+            whatToShow
+            (maybeToNullable filter)
+            expandEntityReferences))
  
 foreign import javascript unsafe
         "$1[\"createTreeWalker\"]($2, $3,\n$4, $5)" js_createTreeWalker ::
-        JSRef Document ->
-          JSRef Node ->
-            Word -> JSRef NodeFilter -> Bool -> IO (JSRef TreeWalker)
+        Document ->
+          Nullable Node ->
+            Word -> Nullable NodeFilter -> Bool -> IO (Nullable TreeWalker)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTreeWalker Mozilla Document.createTreeWalker documentation> 
 createTreeWalker ::
@@ -380,17 +365,17 @@ createTreeWalker ::
                        Word -> Maybe NodeFilter -> Bool -> m (Maybe TreeWalker)
 createTreeWalker self root whatToShow filter expandEntityReferences
   = liftIO
-      ((js_createTreeWalker (unDocument (toDocument self))
-          (maybe jsNull (unNode . toNode) root)
-          whatToShow
-          (maybe jsNull pToJSRef filter)
-          expandEntityReferences)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createTreeWalker (toDocument self)
+            (maybeToNullable (fmap toNode root))
+            whatToShow
+            (maybeToNullable filter)
+            expandEntityReferences))
  
 foreign import javascript unsafe "$1[\"getOverrideStyle\"]($2, $3)"
         js_getOverrideStyle ::
-        JSRef Document ->
-          JSRef Element -> JSString -> IO (JSRef CSSStyleDeclaration)
+        Document ->
+          Nullable Element -> JSString -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getOverrideStyle Mozilla Document.getOverrideStyle documentation> 
 getOverrideStyle ::
@@ -400,15 +385,16 @@ getOverrideStyle ::
                      Maybe element -> pseudoElement -> m (Maybe CSSStyleDeclaration)
 getOverrideStyle self element pseudoElement
   = liftIO
-      ((js_getOverrideStyle (unDocument (toDocument self))
-          (maybe jsNull (unElement . toElement) element)
-          (toJSString pseudoElement))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getOverrideStyle (toDocument self)
+            (maybeToNullable (fmap toElement element))
+            (toJSString pseudoElement)))
  
 foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
         js_createExpression ::
-        JSRef Document ->
-          JSString -> JSRef XPathNSResolver -> IO (JSRef XPathExpression)
+        Document ->
+          JSString ->
+            Nullable XPathNSResolver -> IO (Nullable XPathExpression)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createExpression Mozilla Document.createExpression documentation> 
 createExpression ::
@@ -417,14 +403,13 @@ createExpression ::
                      expression -> Maybe XPathNSResolver -> m (Maybe XPathExpression)
 createExpression self expression resolver
   = liftIO
-      ((js_createExpression (unDocument (toDocument self))
-          (toJSString expression)
-          (maybe jsNull pToJSRef resolver))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createExpression (toDocument self) (toJSString expression)
+            (maybeToNullable resolver)))
  
 foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
         js_createNSResolver ::
-        JSRef Document -> JSRef Node -> IO (JSRef XPathNSResolver)
+        Document -> Nullable Node -> IO (Nullable XPathNSResolver)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNSResolver Mozilla Document.createNSResolver documentation> 
 createNSResolver ::
@@ -432,17 +417,17 @@ createNSResolver ::
                    self -> Maybe nodeResolver -> m (Maybe XPathNSResolver)
 createNSResolver self nodeResolver
   = liftIO
-      ((js_createNSResolver (unDocument (toDocument self))
-          (maybe jsNull (unNode . toNode) nodeResolver))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createNSResolver (toDocument self)
+            (maybeToNullable (fmap toNode nodeResolver))))
  
 foreign import javascript unsafe
         "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" js_evaluate ::
-        JSRef Document ->
+        Document ->
           JSString ->
-            JSRef Node ->
-              JSRef XPathNSResolver ->
-                Word -> JSRef XPathResult -> IO (JSRef XPathResult)
+            Nullable Node ->
+              Nullable XPathNSResolver ->
+                Word -> Nullable XPathResult -> IO (Nullable XPathResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.evaluate Mozilla Document.evaluate documentation> 
 evaluate ::
@@ -455,18 +440,16 @@ evaluate ::
                    Word -> Maybe XPathResult -> m (Maybe XPathResult)
 evaluate self expression contextNode resolver type' inResult
   = liftIO
-      ((js_evaluate (unDocument (toDocument self))
-          (toJSString expression)
-          (maybe jsNull (unNode . toNode) contextNode)
-          (maybe jsNull pToJSRef resolver)
-          type'
-          (maybe jsNull pToJSRef inResult))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_evaluate (toDocument self) (toJSString expression)
+            (maybeToNullable (fmap toNode contextNode))
+            (maybeToNullable resolver)
+            type'
+            (maybeToNullable inResult)))
  
 foreign import javascript unsafe
         "($1[\"execCommand\"]($2, $3,\n$4) ? 1 : 0)" js_execCommand ::
-        JSRef Document ->
-          JSString -> Bool -> JSRef (Maybe JSString) -> IO Bool
+        Document -> JSString -> Bool -> Nullable JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.execCommand Mozilla Document.execCommand documentation> 
 execCommand ::
@@ -475,13 +458,13 @@ execCommand ::
               self -> command -> Bool -> Maybe value -> m Bool
 execCommand self command userInterface value
   = liftIO
-      (js_execCommand (unDocument (toDocument self)) (toJSString command)
+      (js_execCommand (toDocument self) (toJSString command)
          userInterface
          (toMaybeJSString value))
  
 foreign import javascript unsafe
         "($1[\"queryCommandEnabled\"]($2) ? 1 : 0)" js_queryCommandEnabled
-        :: JSRef Document -> JSString -> IO Bool
+        :: Document -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandEnabled Mozilla Document.queryCommandEnabled documentation> 
 queryCommandEnabled ::
@@ -489,12 +472,11 @@ queryCommandEnabled ::
                       self -> command -> m Bool
 queryCommandEnabled self command
   = liftIO
-      (js_queryCommandEnabled (unDocument (toDocument self))
-         (toJSString command))
+      (js_queryCommandEnabled (toDocument self) (toJSString command))
  
 foreign import javascript unsafe
         "($1[\"queryCommandIndeterm\"]($2) ? 1 : 0)"
-        js_queryCommandIndeterm :: JSRef Document -> JSString -> IO Bool
+        js_queryCommandIndeterm :: Document -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandIndeterm Mozilla Document.queryCommandIndeterm documentation> 
 queryCommandIndeterm ::
@@ -502,12 +484,11 @@ queryCommandIndeterm ::
                        self -> command -> m Bool
 queryCommandIndeterm self command
   = liftIO
-      (js_queryCommandIndeterm (unDocument (toDocument self))
-         (toJSString command))
+      (js_queryCommandIndeterm (toDocument self) (toJSString command))
  
 foreign import javascript unsafe
         "($1[\"queryCommandState\"]($2) ? 1 : 0)" js_queryCommandState ::
-        JSRef Document -> JSString -> IO Bool
+        Document -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandState Mozilla Document.queryCommandState documentation> 
 queryCommandState ::
@@ -515,12 +496,11 @@ queryCommandState ::
                     self -> command -> m Bool
 queryCommandState self command
   = liftIO
-      (js_queryCommandState (unDocument (toDocument self))
-         (toJSString command))
+      (js_queryCommandState (toDocument self) (toJSString command))
  
 foreign import javascript unsafe
         "($1[\"queryCommandSupported\"]($2) ? 1 : 0)"
-        js_queryCommandSupported :: JSRef Document -> JSString -> IO Bool
+        js_queryCommandSupported :: Document -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandSupported Mozilla Document.queryCommandSupported documentation> 
 queryCommandSupported ::
@@ -528,11 +508,10 @@ queryCommandSupported ::
                         self -> command -> m Bool
 queryCommandSupported self command
   = liftIO
-      (js_queryCommandSupported (unDocument (toDocument self))
-         (toJSString command))
+      (js_queryCommandSupported (toDocument self) (toJSString command))
  
 foreign import javascript unsafe "$1[\"queryCommandValue\"]($2)"
-        js_queryCommandValue :: JSRef Document -> JSString -> IO JSString
+        js_queryCommandValue :: Document -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.queryCommandValue Mozilla Document.queryCommandValue documentation> 
 queryCommandValue ::
@@ -542,12 +521,11 @@ queryCommandValue ::
 queryCommandValue self command
   = liftIO
       (fromJSString <$>
-         (js_queryCommandValue (unDocument (toDocument self))
-            (toJSString command)))
+         (js_queryCommandValue (toDocument self) (toJSString command)))
  
 foreign import javascript unsafe "$1[\"getElementsByName\"]($2)"
         js_getElementsByName ::
-        JSRef Document -> JSString -> IO (JSRef NodeList)
+        Document -> JSString -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByName Mozilla Document.getElementsByName documentation> 
 getElementsByName ::
@@ -555,13 +533,12 @@ getElementsByName ::
                     self -> elementName -> m (Maybe NodeList)
 getElementsByName self elementName
   = liftIO
-      ((js_getElementsByName (unDocument (toDocument self))
-          (toJSString elementName))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getElementsByName (toDocument self) (toJSString elementName)))
  
 foreign import javascript unsafe "$1[\"elementFromPoint\"]($2, $3)"
         js_elementFromPoint ::
-        JSRef Document -> Int -> Int -> IO (JSRef Element)
+        Document -> Int -> Int -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementFromPoint Mozilla Document.elementFromPoint documentation> 
 elementFromPoint ::
@@ -569,12 +546,11 @@ elementFromPoint ::
                    self -> Int -> Int -> m (Maybe Element)
 elementFromPoint self x y
   = liftIO
-      ((js_elementFromPoint (unDocument (toDocument self)) x y) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_elementFromPoint (toDocument self) x y))
  
 foreign import javascript unsafe
         "$1[\"caretRangeFromPoint\"]($2,\n$3)" js_caretRangeFromPoint ::
-        JSRef Document -> Int -> Int -> IO (JSRef Range)
+        Document -> Int -> Int -> IO (Nullable Range)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.caretRangeFromPoint Mozilla Document.caretRangeFromPoint documentation> 
 caretRangeFromPoint ::
@@ -582,25 +558,24 @@ caretRangeFromPoint ::
                       self -> Int -> Int -> m (Maybe Range)
 caretRangeFromPoint self x y
   = liftIO
-      ((js_caretRangeFromPoint (unDocument (toDocument self)) x y) >>=
-         fromJSRef)
+      (nullableToMaybe <$>
+         (js_caretRangeFromPoint (toDocument self) x y))
  
 foreign import javascript unsafe "$1[\"getSelection\"]()"
-        js_getSelection :: JSRef Document -> IO (JSRef Selection)
+        js_getSelection :: Document -> IO (Nullable Selection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getSelection Mozilla Document.getSelection documentation> 
 getSelection ::
              (MonadIO m, IsDocument self) => self -> m (Maybe Selection)
 getSelection self
-  = liftIO
-      ((js_getSelection (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSelection (toDocument self)))
  
 foreign import javascript unsafe
         "$1[\"getCSSCanvasContext\"]($2,\n$3, $4, $5)"
         js_getCSSCanvasContext ::
-        JSRef Document ->
+        Document ->
           JSString ->
-            JSString -> Int -> Int -> IO (JSRef CanvasRenderingContext)
+            JSString -> Int -> Int -> IO (Nullable CanvasRenderingContext)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getCSSCanvasContext Mozilla Document.getCSSCanvasContext documentation> 
 getCSSCanvasContext ::
@@ -610,16 +585,15 @@ getCSSCanvasContext ::
                         contextId -> name -> Int -> Int -> m (Maybe CanvasRenderingContext)
 getCSSCanvasContext self contextId name width height
   = liftIO
-      ((js_getCSSCanvasContext (unDocument (toDocument self))
-          (toJSString contextId)
-          (toJSString name)
-          width
-          height)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getCSSCanvasContext (toDocument self) (toJSString contextId)
+            (toJSString name)
+            width
+            height))
  
 foreign import javascript unsafe
         "$1[\"getElementsByClassName\"]($2)" js_getElementsByClassName ::
-        JSRef Document -> JSString -> IO (JSRef NodeList)
+        Document -> JSString -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByClassName Mozilla Document.getElementsByClassName documentation> 
 getElementsByClassName ::
@@ -627,20 +601,18 @@ getElementsByClassName ::
                          self -> tagname -> m (Maybe NodeList)
 getElementsByClassName self tagname
   = liftIO
-      ((js_getElementsByClassName (unDocument (toDocument self))
-          (toJSString tagname))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getElementsByClassName (toDocument self) (toJSString tagname)))
  
 foreign import javascript unsafe "($1[\"hasFocus\"]() ? 1 : 0)"
-        js_hasFocus :: JSRef Document -> IO Bool
+        js_hasFocus :: Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.hasFocus Mozilla Document.hasFocus documentation> 
 hasFocus :: (MonadIO m, IsDocument self) => self -> m Bool
-hasFocus self = liftIO (js_hasFocus (unDocument (toDocument self)))
+hasFocus self = liftIO (js_hasFocus (toDocument self))
  
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
-        js_querySelector ::
-        JSRef Document -> JSString -> IO (JSRef Element)
+        js_querySelector :: Document -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelector Mozilla Document.querySelector documentation> 
 querySelector ::
@@ -648,13 +620,12 @@ querySelector ::
                 self -> selectors -> m (Maybe Element)
 querySelector self selectors
   = liftIO
-      ((js_querySelector (unDocument (toDocument self))
-          (toJSString selectors))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_querySelector (toDocument self) (toJSString selectors)))
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         js_querySelectorAll ::
-        JSRef Document -> JSString -> IO (JSRef NodeList)
+        Document -> JSString -> IO (Nullable NodeList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelectorAll Mozilla Document.querySelectorAll documentation> 
 querySelectorAll ::
@@ -662,39 +633,38 @@ querySelectorAll ::
                    self -> selectors -> m (Maybe NodeList)
 querySelectorAll self selectors
   = liftIO
-      ((js_querySelectorAll (unDocument (toDocument self))
-          (toJSString selectors))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_querySelectorAll (toDocument self) (toJSString selectors)))
  
 foreign import javascript unsafe "$1[\"webkitCancelFullScreen\"]()"
-        js_webkitCancelFullScreen :: JSRef Document -> IO ()
+        js_webkitCancelFullScreen :: Document -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitCancelFullScreen Mozilla Document.webkitCancelFullScreen documentation> 
 webkitCancelFullScreen ::
                        (MonadIO m, IsDocument self) => self -> m ()
 webkitCancelFullScreen self
-  = liftIO (js_webkitCancelFullScreen (unDocument (toDocument self)))
+  = liftIO (js_webkitCancelFullScreen (toDocument self))
  
 foreign import javascript unsafe "$1[\"webkitExitFullscreen\"]()"
-        js_webkitExitFullscreen :: JSRef Document -> IO ()
+        js_webkitExitFullscreen :: Document -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitExitFullscreen Mozilla Document.webkitExitFullscreen documentation> 
 webkitExitFullscreen ::
                      (MonadIO m, IsDocument self) => self -> m ()
 webkitExitFullscreen self
-  = liftIO (js_webkitExitFullscreen (unDocument (toDocument self)))
+  = liftIO (js_webkitExitFullscreen (toDocument self))
  
 foreign import javascript unsafe "$1[\"exitPointerLock\"]()"
-        js_exitPointerLock :: JSRef Document -> IO ()
+        js_exitPointerLock :: Document -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.exitPointerLock Mozilla Document.exitPointerLock documentation> 
 exitPointerLock :: (MonadIO m, IsDocument self) => self -> m ()
 exitPointerLock self
-  = liftIO (js_exitPointerLock (unDocument (toDocument self)))
+  = liftIO (js_exitPointerLock (toDocument self))
  
 foreign import javascript unsafe "$1[\"webkitGetNamedFlows\"]()"
         js_webkitGetNamedFlows ::
-        JSRef Document -> IO (JSRef DOMNamedFlowCollection)
+        Document -> IO (Nullable DOMNamedFlowCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitGetNamedFlows Mozilla Document.webkitGetNamedFlows documentation> 
 webkitGetNamedFlows ::
@@ -702,19 +672,18 @@ webkitGetNamedFlows ::
                       self -> m (Maybe DOMNamedFlowCollection)
 webkitGetNamedFlows self
   = liftIO
-      ((js_webkitGetNamedFlows (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_webkitGetNamedFlows (toDocument self)))
  
 foreign import javascript unsafe
         "$1[\"createTouch\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12)"
         js_createTouch ::
-        JSRef Document ->
-          JSRef Window ->
-            JSRef EventTarget ->
+        Document ->
+          Nullable Window ->
+            Nullable EventTarget ->
               Int ->
                 Int ->
                   Int ->
-                    Int -> Int -> Int -> Int -> Float -> Float -> IO (JSRef Touch)
+                    Int -> Int -> Int -> Int -> Float -> Float -> IO (Nullable Touch)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouch Mozilla Document.createTouch documentation> 
 createTouch ::
@@ -729,66 +698,60 @@ createTouch ::
 createTouch self window target identifier pageX pageY screenX
   screenY webkitRadiusX webkitRadiusY webkitRotationAngle webkitForce
   = liftIO
-      ((js_createTouch (unDocument (toDocument self))
-          (maybe jsNull pToJSRef window)
-          (maybe jsNull (unEventTarget . toEventTarget) target)
-          identifier
-          pageX
-          pageY
-          screenX
-          screenY
-          webkitRadiusX
-          webkitRadiusY
-          webkitRotationAngle
-          webkitForce)
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createTouch (toDocument self) (maybeToNullable window)
+            (maybeToNullable (fmap toEventTarget target))
+            identifier
+            pageX
+            pageY
+            screenX
+            screenY
+            webkitRadiusX
+            webkitRadiusY
+            webkitRotationAngle
+            webkitForce))
  
 foreign import javascript unsafe "$1[\"createTouchList\"]()"
-        js_createTouchList :: JSRef Document -> IO (JSRef TouchList)
+        js_createTouchList :: Document -> IO (Nullable TouchList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouchList Mozilla Document.createTouchList documentation> 
 createTouchList ::
                 (MonadIO m, IsDocument self) => self -> m (Maybe TouchList)
 createTouchList self
   = liftIO
-      ((js_createTouchList (unDocument (toDocument self))) >>= fromJSRef)
+      (nullableToMaybe <$> (js_createTouchList (toDocument self)))
  
 foreign import javascript unsafe "$1[\"doctype\"]" js_getDoctype ::
-        JSRef Document -> IO (JSRef DocumentType)
+        Document -> IO (Nullable DocumentType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.doctype Mozilla Document.doctype documentation> 
 getDoctype ::
            (MonadIO m, IsDocument self) => self -> m (Maybe DocumentType)
 getDoctype self
-  = liftIO
-      ((js_getDoctype (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getDoctype (toDocument self)))
  
 foreign import javascript unsafe "$1[\"implementation\"]"
-        js_getImplementation ::
-        JSRef Document -> IO (JSRef DOMImplementation)
+        js_getImplementation :: Document -> IO (Nullable DOMImplementation)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.implementation Mozilla Document.implementation documentation> 
 getImplementation ::
                   (MonadIO m, IsDocument self) => self -> m (Maybe DOMImplementation)
 getImplementation self
   = liftIO
-      ((js_getImplementation (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getImplementation (toDocument self)))
  
 foreign import javascript unsafe "$1[\"documentElement\"]"
-        js_getDocumentElement :: JSRef Document -> IO (JSRef Element)
+        js_getDocumentElement :: Document -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentElement Mozilla Document.documentElement documentation> 
 getDocumentElement ::
                    (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 getDocumentElement self
   = liftIO
-      ((js_getDocumentElement (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getDocumentElement (toDocument self)))
  
 foreign import javascript unsafe "$1[\"inputEncoding\"]"
-        js_getInputEncoding ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getInputEncoding :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.inputEncoding Mozilla Document.inputEncoding documentation> 
 getInputEncoding ::
@@ -796,11 +759,10 @@ getInputEncoding ::
                    self -> m (Maybe result)
 getInputEncoding self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getInputEncoding (unDocument (toDocument self))))
+      (fromMaybeJSString <$> (js_getInputEncoding (toDocument self)))
  
 foreign import javascript unsafe "$1[\"xmlEncoding\"]"
-        js_getXmlEncoding :: JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getXmlEncoding :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlEncoding Mozilla Document.xmlEncoding documentation> 
 getXmlEncoding ::
@@ -808,24 +770,20 @@ getXmlEncoding ::
                  self -> m (Maybe result)
 getXmlEncoding self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getXmlEncoding (unDocument (toDocument self))))
+      (fromMaybeJSString <$> (js_getXmlEncoding (toDocument self)))
  
 foreign import javascript unsafe "$1[\"xmlVersion\"] = $2;"
-        js_setXmlVersion ::
-        JSRef Document -> JSRef (Maybe JSString) -> IO ()
+        js_setXmlVersion :: Document -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlVersion Mozilla Document.xmlVersion documentation> 
 setXmlVersion ::
               (MonadIO m, IsDocument self, ToJSString val) =>
                 self -> Maybe val -> m ()
 setXmlVersion self val
-  = liftIO
-      (js_setXmlVersion (unDocument (toDocument self))
-         (toMaybeJSString val))
+  = liftIO (js_setXmlVersion (toDocument self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"xmlVersion\"]"
-        js_getXmlVersion :: JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getXmlVersion :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlVersion Mozilla Document.xmlVersion documentation> 
 getXmlVersion ::
@@ -833,28 +791,27 @@ getXmlVersion ::
                 self -> m (Maybe result)
 getXmlVersion self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getXmlVersion (unDocument (toDocument self))))
+      (fromMaybeJSString <$> (js_getXmlVersion (toDocument self)))
  
 foreign import javascript unsafe "$1[\"xmlStandalone\"] = $2;"
-        js_setXmlStandalone :: JSRef Document -> Bool -> IO ()
+        js_setXmlStandalone :: Document -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlStandalone Mozilla Document.xmlStandalone documentation> 
 setXmlStandalone ::
                  (MonadIO m, IsDocument self) => self -> Bool -> m ()
 setXmlStandalone self val
-  = liftIO (js_setXmlStandalone (unDocument (toDocument self)) val)
+  = liftIO (js_setXmlStandalone (toDocument self) val)
  
 foreign import javascript unsafe "($1[\"xmlStandalone\"] ? 1 : 0)"
-        js_getXmlStandalone :: JSRef Document -> IO Bool
+        js_getXmlStandalone :: Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlStandalone Mozilla Document.xmlStandalone documentation> 
 getXmlStandalone :: (MonadIO m, IsDocument self) => self -> m Bool
 getXmlStandalone self
-  = liftIO (js_getXmlStandalone (unDocument (toDocument self)))
+  = liftIO (js_getXmlStandalone (toDocument self))
  
 foreign import javascript unsafe "$1[\"documentURI\"]"
-        js_getDocumentURI :: JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getDocumentURI :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentURI Mozilla Document.documentURI documentation> 
 getDocumentURI ::
@@ -862,134 +819,120 @@ getDocumentURI ::
                  self -> m (Maybe result)
 getDocumentURI self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getDocumentURI (unDocument (toDocument self))))
+      (fromMaybeJSString <$> (js_getDocumentURI (toDocument self)))
  
 foreign import javascript unsafe "$1[\"defaultView\"]"
-        js_getDefaultView :: JSRef Document -> IO (JSRef Window)
+        js_getDefaultView :: Document -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultView Mozilla Document.defaultView documentation> 
 getDefaultView ::
                (MonadIO m, IsDocument self) => self -> m (Maybe Window)
 getDefaultView self
   = liftIO
-      ((js_getDefaultView (unDocument (toDocument self))) >>= fromJSRef)
+      (nullableToMaybe <$> (js_getDefaultView (toDocument self)))
  
 foreign import javascript unsafe "$1[\"styleSheets\"]"
-        js_getStyleSheets :: JSRef Document -> IO (JSRef StyleSheetList)
+        js_getStyleSheets :: Document -> IO (Nullable StyleSheetList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.styleSheets Mozilla Document.styleSheets documentation> 
 getStyleSheets ::
                (MonadIO m, IsDocument self) => self -> m (Maybe StyleSheetList)
 getStyleSheets self
   = liftIO
-      ((js_getStyleSheets (unDocument (toDocument self))) >>= fromJSRef)
+      (nullableToMaybe <$> (js_getStyleSheets (toDocument self)))
  
 foreign import javascript unsafe "$1[\"contentType\"]"
-        js_getContentType :: JSRef Document -> IO JSString
+        js_getContentType :: Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.contentType Mozilla Document.contentType documentation> 
 getContentType ::
                (MonadIO m, IsDocument self, FromJSString result) =>
                  self -> m result
 getContentType self
-  = liftIO
-      (fromJSString <$>
-         (js_getContentType (unDocument (toDocument self))))
+  = liftIO (fromJSString <$> (js_getContentType (toDocument self)))
  
 foreign import javascript unsafe "$1[\"title\"] = $2;" js_setTitle
-        :: JSRef Document -> JSRef (Maybe JSString) -> IO ()
+        :: Document -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
 setTitle ::
          (MonadIO m, IsDocument self, ToJSString val) =>
            self -> Maybe val -> m ()
 setTitle self val
-  = liftIO
-      (js_setTitle (unDocument (toDocument self)) (toMaybeJSString val))
+  = liftIO (js_setTitle (toDocument self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
 getTitle ::
          (MonadIO m, IsDocument self, FromJSString result) =>
            self -> m (Maybe result)
 getTitle self
-  = liftIO
-      (fromMaybeJSString <$>
-         (js_getTitle (unDocument (toDocument self))))
+  = liftIO (fromMaybeJSString <$> (js_getTitle (toDocument self)))
  
 foreign import javascript unsafe "$1[\"referrer\"]" js_getReferrer
-        :: JSRef Document -> IO JSString
+        :: Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.referrer Mozilla Document.referrer documentation> 
 getReferrer ::
             (MonadIO m, IsDocument self, FromJSString result) =>
               self -> m result
 getReferrer self
-  = liftIO
-      (fromJSString <$> (js_getReferrer (unDocument (toDocument self))))
+  = liftIO (fromJSString <$> (js_getReferrer (toDocument self)))
  
 foreign import javascript unsafe "$1[\"domain\"] = $2;"
-        js_setDomain :: JSRef Document -> JSRef (Maybe JSString) -> IO ()
+        js_setDomain :: Document -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
 setDomain ::
           (MonadIO m, IsDocument self, ToJSString val) =>
             self -> Maybe val -> m ()
 setDomain self val
-  = liftIO
-      (js_setDomain (unDocument (toDocument self)) (toMaybeJSString val))
+  = liftIO (js_setDomain (toDocument self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"domain\"]" js_getDomain ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
 getDomain ::
           (MonadIO m, IsDocument self, FromJSString result) =>
             self -> m (Maybe result)
 getDomain self
-  = liftIO
-      (fromMaybeJSString <$>
-         (js_getDomain (unDocument (toDocument self))))
+  = liftIO (fromMaybeJSString <$> (js_getDomain (toDocument self)))
  
 foreign import javascript unsafe "$1[\"URL\"]" js_getURL ::
-        JSRef Document -> IO JSString
+        Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.URL Mozilla Document.URL documentation> 
 getURL ::
        (MonadIO m, IsDocument self, FromJSString result) =>
          self -> m result
 getURL self
-  = liftIO
-      (fromJSString <$> (js_getURL (unDocument (toDocument self))))
+  = liftIO (fromJSString <$> (js_getURL (toDocument self)))
  
 foreign import javascript unsafe "$1[\"cookie\"] = $2;"
-        js_setCookie :: JSRef Document -> JSRef (Maybe JSString) -> IO ()
+        js_setCookie :: Document -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
 setCookie ::
           (MonadIO m, IsDocument self, ToJSString val) =>
             self -> Maybe val -> m ()
 setCookie self val
-  = liftIO
-      (js_setCookie (unDocument (toDocument self)) (toMaybeJSString val))
+  = liftIO (js_setCookie (toDocument self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"cookie\"]" js_getCookie ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
 getCookie ::
           (MonadIO m, IsDocument self, FromJSString result) =>
             self -> m (Maybe result)
 getCookie self
-  = liftIO
-      (fromMaybeJSString <$>
-         (js_getCookie (unDocument (toDocument self))))
+  = liftIO (fromMaybeJSString <$> (js_getCookie (toDocument self)))
  
 foreign import javascript unsafe "$1[\"body\"] = $2;" js_setBody ::
-        JSRef Document -> JSRef HTMLElement -> IO ()
+        Document -> Nullable HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
 setBody ::
@@ -997,139 +940,122 @@ setBody ::
           self -> Maybe val -> m ()
 setBody self val
   = liftIO
-      (js_setBody (unDocument (toDocument self))
-         (maybe jsNull (unHTMLElement . toHTMLElement) val))
+      (js_setBody (toDocument self)
+         (maybeToNullable (fmap toHTMLElement val)))
  
 foreign import javascript unsafe "$1[\"body\"]" js_getBody ::
-        JSRef Document -> IO (JSRef HTMLElement)
+        Document -> IO (Nullable HTMLElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
 getBody ::
         (MonadIO m, IsDocument self) => self -> m (Maybe HTMLElement)
 getBody self
-  = liftIO
-      ((js_getBody (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getBody (toDocument self)))
  
 foreign import javascript unsafe "$1[\"head\"]" js_getHead ::
-        JSRef Document -> IO (JSRef HTMLHeadElement)
+        Document -> IO (Nullable HTMLHeadElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.head Mozilla Document.head documentation> 
 getHead ::
         (MonadIO m, IsDocument self) => self -> m (Maybe HTMLHeadElement)
 getHead self
-  = liftIO
-      ((js_getHead (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getHead (toDocument self)))
  
 foreign import javascript unsafe "$1[\"images\"]" js_getImages ::
-        JSRef Document -> IO (JSRef HTMLCollection)
+        Document -> IO (Nullable HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.images Mozilla Document.images documentation> 
 getImages ::
           (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 getImages self
-  = liftIO
-      ((js_getImages (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getImages (toDocument self)))
  
 foreign import javascript unsafe "$1[\"applets\"]" js_getApplets ::
-        JSRef Document -> IO (JSRef HTMLCollection)
+        Document -> IO (Nullable HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.applets Mozilla Document.applets documentation> 
 getApplets ::
            (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 getApplets self
-  = liftIO
-      ((js_getApplets (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getApplets (toDocument self)))
  
 foreign import javascript unsafe "$1[\"links\"]" js_getLinks ::
-        JSRef Document -> IO (JSRef HTMLCollection)
+        Document -> IO (Nullable HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.links Mozilla Document.links documentation> 
 getLinks ::
          (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 getLinks self
-  = liftIO
-      ((js_getLinks (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLinks (toDocument self)))
  
 foreign import javascript unsafe "$1[\"forms\"]" js_getForms ::
-        JSRef Document -> IO (JSRef HTMLCollection)
+        Document -> IO (Nullable HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.forms Mozilla Document.forms documentation> 
 getForms ::
          (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 getForms self
-  = liftIO
-      ((js_getForms (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getForms (toDocument self)))
  
 foreign import javascript unsafe "$1[\"anchors\"]" js_getAnchors ::
-        JSRef Document -> IO (JSRef HTMLCollection)
+        Document -> IO (Nullable HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.anchors Mozilla Document.anchors documentation> 
 getAnchors ::
            (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 getAnchors self
-  = liftIO
-      ((js_getAnchors (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getAnchors (toDocument self)))
  
 foreign import javascript unsafe "$1[\"lastModified\"]"
-        js_getLastModified :: JSRef Document -> IO JSString
+        js_getLastModified :: Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.lastModified Mozilla Document.lastModified documentation> 
 getLastModified ::
                 (MonadIO m, IsDocument self, FromJSString result) =>
                   self -> m result
 getLastModified self
-  = liftIO
-      (fromJSString <$>
-         (js_getLastModified (unDocument (toDocument self))))
+  = liftIO (fromJSString <$> (js_getLastModified (toDocument self)))
  
 foreign import javascript unsafe "$1[\"location\"] = $2;"
-        js_setLocation :: JSRef Document -> JSRef Location -> IO ()
+        js_setLocation :: Document -> Nullable Location -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.location Mozilla Document.location documentation> 
 setLocation ::
             (MonadIO m, IsDocument self) => self -> Maybe Location -> m ()
 setLocation self val
-  = liftIO
-      (js_setLocation (unDocument (toDocument self))
-         (maybe jsNull pToJSRef val))
+  = liftIO (js_setLocation (toDocument self) (maybeToNullable val))
  
 foreign import javascript unsafe "$1[\"location\"]" js_getLocation
-        :: JSRef Document -> IO (JSRef Location)
+        :: Document -> IO (Nullable Location)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.location Mozilla Document.location documentation> 
 getLocation ::
             (MonadIO m, IsDocument self) => self -> m (Maybe Location)
 getLocation self
-  = liftIO
-      ((js_getLocation (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLocation (toDocument self)))
  
 foreign import javascript unsafe "$1[\"charset\"] = $2;"
-        js_setCharset :: JSRef Document -> JSRef (Maybe JSString) -> IO ()
+        js_setCharset :: Document -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.charset Mozilla Document.charset documentation> 
 setCharset ::
            (MonadIO m, IsDocument self, ToJSString val) =>
              self -> Maybe val -> m ()
 setCharset self val
-  = liftIO
-      (js_setCharset (unDocument (toDocument self))
-         (toMaybeJSString val))
+  = liftIO (js_setCharset (toDocument self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"charset\"]" js_getCharset ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.charset Mozilla Document.charset documentation> 
 getCharset ::
            (MonadIO m, IsDocument self, FromJSString result) =>
              self -> m (Maybe result)
 getCharset self
-  = liftIO
-      (fromMaybeJSString <$>
-         (js_getCharset (unDocument (toDocument self))))
+  = liftIO (fromMaybeJSString <$> (js_getCharset (toDocument self)))
  
 foreign import javascript unsafe "$1[\"defaultCharset\"]"
-        js_getDefaultCharset ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getDefaultCharset :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultCharset Mozilla Document.defaultCharset documentation> 
 getDefaultCharset ::
@@ -1137,11 +1063,10 @@ getDefaultCharset ::
                     self -> m (Maybe result)
 getDefaultCharset self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getDefaultCharset (unDocument (toDocument self))))
+      (fromMaybeJSString <$> (js_getDefaultCharset (toDocument self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        js_getReadyState :: JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getReadyState :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.readyState Mozilla Document.readyState documentation> 
 getReadyState ::
@@ -1149,11 +1074,10 @@ getReadyState ::
                 self -> m (Maybe result)
 getReadyState self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getReadyState (unDocument (toDocument self))))
+      (fromMaybeJSString <$> (js_getReadyState (toDocument self)))
  
 foreign import javascript unsafe "$1[\"characterSet\"]"
-        js_getCharacterSet :: JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getCharacterSet :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.characterSet Mozilla Document.characterSet documentation> 
 getCharacterSet ::
@@ -1161,12 +1085,10 @@ getCharacterSet ::
                   self -> m (Maybe result)
 getCharacterSet self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getCharacterSet (unDocument (toDocument self))))
+      (fromMaybeJSString <$> (js_getCharacterSet (toDocument self)))
  
 foreign import javascript unsafe "$1[\"preferredStylesheetSet\"]"
-        js_getPreferredStylesheetSet ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getPreferredStylesheetSet :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.preferredStylesheetSet Mozilla Document.preferredStylesheetSet documentation> 
 getPreferredStylesheetSet ::
@@ -1175,11 +1097,11 @@ getPreferredStylesheetSet ::
 getPreferredStylesheetSet self
   = liftIO
       (fromMaybeJSString <$>
-         (js_getPreferredStylesheetSet (unDocument (toDocument self))))
+         (js_getPreferredStylesheetSet (toDocument self)))
  
 foreign import javascript unsafe
         "$1[\"selectedStylesheetSet\"] = $2;" js_setSelectedStylesheetSet
-        :: JSRef Document -> JSRef (Maybe JSString) -> IO ()
+        :: Document -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.selectedStylesheetSet Mozilla Document.selectedStylesheetSet documentation> 
 setSelectedStylesheetSet ::
@@ -1187,12 +1109,11 @@ setSelectedStylesheetSet ::
                            self -> Maybe val -> m ()
 setSelectedStylesheetSet self val
   = liftIO
-      (js_setSelectedStylesheetSet (unDocument (toDocument self))
+      (js_setSelectedStylesheetSet (toDocument self)
          (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"selectedStylesheetSet\"]"
-        js_getSelectedStylesheetSet ::
-        JSRef Document -> IO (JSRef (Maybe JSString))
+        js_getSelectedStylesheetSet :: Document -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.selectedStylesheetSet Mozilla Document.selectedStylesheetSet documentation> 
 getSelectedStylesheetSet ::
@@ -1201,111 +1122,101 @@ getSelectedStylesheetSet ::
 getSelectedStylesheetSet self
   = liftIO
       (fromMaybeJSString <$>
-         (js_getSelectedStylesheetSet (unDocument (toDocument self))))
+         (js_getSelectedStylesheetSet (toDocument self)))
  
 foreign import javascript unsafe "$1[\"activeElement\"]"
-        js_getActiveElement :: JSRef Document -> IO (JSRef Element)
+        js_getActiveElement :: Document -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.activeElement Mozilla Document.activeElement documentation> 
 getActiveElement ::
                  (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 getActiveElement self
   = liftIO
-      ((js_getActiveElement (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getActiveElement (toDocument self)))
  
 foreign import javascript unsafe "$1[\"compatMode\"]"
-        js_getCompatMode :: JSRef Document -> IO JSString
+        js_getCompatMode :: Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.compatMode Mozilla Document.compatMode documentation> 
 getCompatMode ::
               (MonadIO m, IsDocument self, FromJSString result) =>
                 self -> m result
 getCompatMode self
-  = liftIO
-      (fromJSString <$>
-         (js_getCompatMode (unDocument (toDocument self))))
+  = liftIO (fromJSString <$> (js_getCompatMode (toDocument self)))
  
 foreign import javascript unsafe
         "($1[\"webkitIsFullScreen\"] ? 1 : 0)" js_getWebkitIsFullScreen ::
-        JSRef Document -> IO Bool
+        Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitIsFullScreen Mozilla Document.webkitIsFullScreen documentation> 
 getWebkitIsFullScreen ::
                       (MonadIO m, IsDocument self) => self -> m Bool
 getWebkitIsFullScreen self
-  = liftIO (js_getWebkitIsFullScreen (unDocument (toDocument self)))
+  = liftIO (js_getWebkitIsFullScreen (toDocument self))
  
 foreign import javascript unsafe
         "($1[\"webkitFullScreenKeyboardInputAllowed\"] ? 1 : 0)"
-        js_getWebkitFullScreenKeyboardInputAllowed ::
-        JSRef Document -> IO Bool
+        js_getWebkitFullScreenKeyboardInputAllowed :: Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullScreenKeyboardInputAllowed Mozilla Document.webkitFullScreenKeyboardInputAllowed documentation> 
 getWebkitFullScreenKeyboardInputAllowed ::
                                         (MonadIO m, IsDocument self) => self -> m Bool
 getWebkitFullScreenKeyboardInputAllowed self
   = liftIO
-      (js_getWebkitFullScreenKeyboardInputAllowed
-         (unDocument (toDocument self)))
+      (js_getWebkitFullScreenKeyboardInputAllowed (toDocument self))
  
 foreign import javascript unsafe
         "$1[\"webkitCurrentFullScreenElement\"]"
         js_getWebkitCurrentFullScreenElement ::
-        JSRef Document -> IO (JSRef Element)
+        Document -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitCurrentFullScreenElement Mozilla Document.webkitCurrentFullScreenElement documentation> 
 getWebkitCurrentFullScreenElement ::
                                   (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 getWebkitCurrentFullScreenElement self
   = liftIO
-      ((js_getWebkitCurrentFullScreenElement
-          (unDocument (toDocument self)))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getWebkitCurrentFullScreenElement (toDocument self)))
  
 foreign import javascript unsafe
         "($1[\"webkitFullscreenEnabled\"] ? 1 : 0)"
-        js_getWebkitFullscreenEnabled :: JSRef Document -> IO Bool
+        js_getWebkitFullscreenEnabled :: Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullscreenEnabled Mozilla Document.webkitFullscreenEnabled documentation> 
 getWebkitFullscreenEnabled ::
                            (MonadIO m, IsDocument self) => self -> m Bool
 getWebkitFullscreenEnabled self
-  = liftIO
-      (js_getWebkitFullscreenEnabled (unDocument (toDocument self)))
+  = liftIO (js_getWebkitFullscreenEnabled (toDocument self))
  
 foreign import javascript unsafe "$1[\"webkitFullscreenElement\"]"
-        js_getWebkitFullscreenElement ::
-        JSRef Document -> IO (JSRef Element)
+        js_getWebkitFullscreenElement :: Document -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullscreenElement Mozilla Document.webkitFullscreenElement documentation> 
 getWebkitFullscreenElement ::
                            (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 getWebkitFullscreenElement self
   = liftIO
-      ((js_getWebkitFullscreenElement (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$>
+         (js_getWebkitFullscreenElement (toDocument self)))
  
 foreign import javascript unsafe "$1[\"pointerLockElement\"]"
-        js_getPointerLockElement :: JSRef Document -> IO (JSRef Element)
+        js_getPointerLockElement :: Document -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.pointerLockElement Mozilla Document.pointerLockElement documentation> 
 getPointerLockElement ::
                       (MonadIO m, IsDocument self) => self -> m (Maybe Element)
 getPointerLockElement self
   = liftIO
-      ((js_getPointerLockElement (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getPointerLockElement (toDocument self)))
  
 foreign import javascript unsafe "$1[\"fonts\"]" js_getFonts ::
-        JSRef Document -> IO (JSRef FontLoader)
+        Document -> IO (Nullable FontLoader)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.fonts Mozilla Document.fonts documentation> 
 getFonts ::
          (MonadIO m, IsDocument self) => self -> m (Maybe FontLoader)
 getFonts self
-  = liftIO
-      ((js_getFonts (unDocument (toDocument self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getFonts (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onabort Mozilla Document.onabort documentation> 
 abort ::
@@ -1606,7 +1517,7 @@ webKitWillRevealTop
   = unsafeEventName (toJSString "webkitwillrevealtop")
  
 foreign import javascript unsafe "$1[\"visibilityState\"]"
-        js_getVisibilityState :: JSRef Document -> IO JSString
+        js_getVisibilityState :: Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.visibilityState Mozilla Document.visibilityState documentation> 
 getVisibilityState ::
@@ -1614,47 +1525,41 @@ getVisibilityState ::
                      self -> m result
 getVisibilityState self
   = liftIO
-      (fromJSString <$>
-         (js_getVisibilityState (unDocument (toDocument self))))
+      (fromJSString <$> (js_getVisibilityState (toDocument self)))
  
 foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
-        js_getHidden :: JSRef Document -> IO Bool
+        js_getHidden :: Document -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.hidden Mozilla Document.hidden documentation> 
 getHidden :: (MonadIO m, IsDocument self) => self -> m Bool
-getHidden self
-  = liftIO (js_getHidden (unDocument (toDocument self)))
+getHidden self = liftIO (js_getHidden (toDocument self))
  
 foreign import javascript unsafe "$1[\"securityPolicy\"]"
-        js_getSecurityPolicy :: JSRef Document -> IO (JSRef SecurityPolicy)
+        js_getSecurityPolicy :: Document -> IO (Nullable SecurityPolicy)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.securityPolicy Mozilla Document.securityPolicy documentation> 
 getSecurityPolicy ::
                   (MonadIO m, IsDocument self) => self -> m (Maybe SecurityPolicy)
 getSecurityPolicy self
   = liftIO
-      ((js_getSecurityPolicy (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getSecurityPolicy (toDocument self)))
  
 foreign import javascript unsafe "$1[\"currentScript\"]"
-        js_getCurrentScript ::
-        JSRef Document -> IO (JSRef HTMLScriptElement)
+        js_getCurrentScript :: Document -> IO (Nullable HTMLScriptElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.currentScript Mozilla Document.currentScript documentation> 
 getCurrentScript ::
                  (MonadIO m, IsDocument self) => self -> m (Maybe HTMLScriptElement)
 getCurrentScript self
   = liftIO
-      ((js_getCurrentScript (unDocument (toDocument self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getCurrentScript (toDocument self)))
  
 foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
-        JSRef Document -> IO JSString
+        Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.origin Mozilla Document.origin documentation> 
 getOrigin ::
           (MonadIO m, IsDocument self, FromJSString result) =>
             self -> m result
 getOrigin self
-  = liftIO
-      (fromJSString <$> (js_getOrigin (unDocument (toDocument self))))
+  = liftIO (fromJSString <$> (js_getOrigin (toDocument self)))

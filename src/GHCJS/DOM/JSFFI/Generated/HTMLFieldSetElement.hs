@@ -10,7 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFieldSetElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -25,115 +25,99 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
-        JSRef HTMLFieldSetElement -> IO Bool
+        HTMLFieldSetElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.checkValidity Mozilla HTMLFieldSetElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLFieldSetElement -> m Bool
-checkValidity self
-  = liftIO (js_checkValidity (unHTMLFieldSetElement self))
+checkValidity self = liftIO (js_checkValidity (self))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
-        JSRef HTMLFieldSetElement -> JSRef (Maybe JSString) -> IO ()
+        HTMLFieldSetElement -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.setCustomValidity Mozilla HTMLFieldSetElement.setCustomValidity documentation> 
 setCustomValidity ::
                   (MonadIO m, ToJSString error) =>
                     HTMLFieldSetElement -> Maybe error -> m ()
 setCustomValidity self error
-  = liftIO
-      (js_setCustomValidity (unHTMLFieldSetElement self)
-         (toMaybeJSString error))
+  = liftIO (js_setCustomValidity (self) (toMaybeJSString error))
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
-        js_setDisabled :: JSRef HTMLFieldSetElement -> Bool -> IO ()
+        js_setDisabled :: HTMLFieldSetElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.disabled Mozilla HTMLFieldSetElement.disabled documentation> 
 setDisabled :: (MonadIO m) => HTMLFieldSetElement -> Bool -> m ()
-setDisabled self val
-  = liftIO (js_setDisabled (unHTMLFieldSetElement self) val)
+setDisabled self val = liftIO (js_setDisabled (self) val)
  
 foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
-        js_getDisabled :: JSRef HTMLFieldSetElement -> IO Bool
+        js_getDisabled :: HTMLFieldSetElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.disabled Mozilla HTMLFieldSetElement.disabled documentation> 
 getDisabled :: (MonadIO m) => HTMLFieldSetElement -> m Bool
-getDisabled self
-  = liftIO (js_getDisabled (unHTMLFieldSetElement self))
+getDisabled self = liftIO (js_getDisabled (self))
  
 foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
-        JSRef HTMLFieldSetElement -> IO (JSRef HTMLFormElement)
+        HTMLFieldSetElement -> IO (Nullable HTMLFormElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.form Mozilla HTMLFieldSetElement.form documentation> 
 getForm ::
         (MonadIO m) => HTMLFieldSetElement -> m (Maybe HTMLFormElement)
-getForm self
-  = liftIO ((js_getForm (unHTMLFieldSetElement self)) >>= fromJSRef)
+getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
-        JSRef HTMLFieldSetElement -> JSString -> IO ()
+        HTMLFieldSetElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.name Mozilla HTMLFieldSetElement.name documentation> 
 setName ::
         (MonadIO m, ToJSString val) => HTMLFieldSetElement -> val -> m ()
-setName self val
-  = liftIO (js_setName (unHTMLFieldSetElement self) (toJSString val))
+setName self val = liftIO (js_setName (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef HTMLFieldSetElement -> IO JSString
+        HTMLFieldSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.name Mozilla HTMLFieldSetElement.name documentation> 
 getName ::
         (MonadIO m, FromJSString result) => HTMLFieldSetElement -> m result
-getName self
-  = liftIO
-      (fromJSString <$> (js_getName (unHTMLFieldSetElement self)))
+getName self = liftIO (fromJSString <$> (js_getName (self)))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef HTMLFieldSetElement -> IO JSString
+        HTMLFieldSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.type Mozilla HTMLFieldSetElement.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => HTMLFieldSetElement -> m result
-getType self
-  = liftIO
-      (fromJSString <$> (js_getType (unHTMLFieldSetElement self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"elements\"]" js_getElements
-        :: JSRef HTMLFieldSetElement -> IO (JSRef HTMLCollection)
+        :: HTMLFieldSetElement -> IO (Nullable HTMLCollection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.elements Mozilla HTMLFieldSetElement.elements documentation> 
 getElements ::
             (MonadIO m) => HTMLFieldSetElement -> m (Maybe HTMLCollection)
 getElements self
-  = liftIO
-      ((js_getElements (unHTMLFieldSetElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getElements (self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
-        js_getWillValidate :: JSRef HTMLFieldSetElement -> IO Bool
+        js_getWillValidate :: HTMLFieldSetElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.willValidate Mozilla HTMLFieldSetElement.willValidate documentation> 
 getWillValidate :: (MonadIO m) => HTMLFieldSetElement -> m Bool
-getWillValidate self
-  = liftIO (js_getWillValidate (unHTMLFieldSetElement self))
+getWillValidate self = liftIO (js_getWillValidate (self))
  
 foreign import javascript unsafe "$1[\"validity\"]" js_getValidity
-        :: JSRef HTMLFieldSetElement -> IO (JSRef ValidityState)
+        :: HTMLFieldSetElement -> IO (Nullable ValidityState)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.validity Mozilla HTMLFieldSetElement.validity documentation> 
 getValidity ::
             (MonadIO m) => HTMLFieldSetElement -> m (Maybe ValidityState)
 getValidity self
-  = liftIO
-      ((js_getValidity (unHTMLFieldSetElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getValidity (self)))
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
-        js_getValidationMessage :: JSRef HTMLFieldSetElement -> IO JSString
+        js_getValidationMessage :: HTMLFieldSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.validationMessage Mozilla HTMLFieldSetElement.validationMessage documentation> 
 getValidationMessage ::
                      (MonadIO m, FromJSString result) => HTMLFieldSetElement -> m result
 getValidationMessage self
-  = liftIO
-      (fromJSString <$>
-         (js_getValidationMessage (unHTMLFieldSetElement self)))
+  = liftIO (fromJSString <$> (js_getValidationMessage (self)))

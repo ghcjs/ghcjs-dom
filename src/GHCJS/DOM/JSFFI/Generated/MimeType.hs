@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.MimeType
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,35 +20,34 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef MimeType -> IO JSString
+        MimeType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.type Mozilla MimeType.type documentation> 
 getType :: (MonadIO m, FromJSString result) => MimeType -> m result
-getType self
-  = liftIO (fromJSString <$> (js_getType (unMimeType self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"suffixes\"]" js_getSuffixes
-        :: JSRef MimeType -> IO JSString
+        :: MimeType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.suffixes Mozilla MimeType.suffixes documentation> 
 getSuffixes ::
             (MonadIO m, FromJSString result) => MimeType -> m result
 getSuffixes self
-  = liftIO (fromJSString <$> (js_getSuffixes (unMimeType self)))
+  = liftIO (fromJSString <$> (js_getSuffixes (self)))
  
 foreign import javascript unsafe "$1[\"description\"]"
-        js_getDescription :: JSRef MimeType -> IO JSString
+        js_getDescription :: MimeType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.description Mozilla MimeType.description documentation> 
 getDescription ::
                (MonadIO m, FromJSString result) => MimeType -> m result
 getDescription self
-  = liftIO (fromJSString <$> (js_getDescription (unMimeType self)))
+  = liftIO (fromJSString <$> (js_getDescription (self)))
  
 foreign import javascript unsafe "$1[\"enabledPlugin\"]"
-        js_getEnabledPlugin :: JSRef MimeType -> IO (JSRef Plugin)
+        js_getEnabledPlugin :: MimeType -> IO (Nullable Plugin)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.enabledPlugin Mozilla MimeType.enabledPlugin documentation> 
 getEnabledPlugin :: (MonadIO m) => MimeType -> m (Maybe Plugin)
 getEnabledPlugin self
-  = liftIO ((js_getEnabledPlugin (unMimeType self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getEnabledPlugin (self)))

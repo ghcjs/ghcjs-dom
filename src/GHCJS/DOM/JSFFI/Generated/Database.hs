@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.Database
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,11 +21,12 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"changeVersion\"]($2, $3, $4,\n$5, $6)" js_changeVersion ::
-        JSRef Database ->
+        Database ->
           JSString ->
             JSString ->
-              JSRef SQLTransactionCallback ->
-                JSRef SQLTransactionErrorCallback -> JSRef VoidCallback -> IO ()
+              Nullable SQLTransactionCallback ->
+                Nullable SQLTransactionErrorCallback ->
+                  Nullable VoidCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Database.changeVersion Mozilla Database.changeVersion documentation> 
 changeVersion ::
@@ -38,17 +39,18 @@ changeVersion ::
 changeVersion self oldVersion newVersion callback errorCallback
   successCallback
   = liftIO
-      (js_changeVersion (unDatabase self) (toJSString oldVersion)
+      (js_changeVersion (self) (toJSString oldVersion)
          (toJSString newVersion)
-         (maybe jsNull pToJSRef callback)
-         (maybe jsNull pToJSRef errorCallback)
-         (maybe jsNull pToJSRef successCallback))
+         (maybeToNullable callback)
+         (maybeToNullable errorCallback)
+         (maybeToNullable successCallback))
  
 foreign import javascript unsafe "$1[\"transaction\"]($2, $3, $4)"
         js_transaction ::
-        JSRef Database ->
-          JSRef SQLTransactionCallback ->
-            JSRef SQLTransactionErrorCallback -> JSRef VoidCallback -> IO ()
+        Database ->
+          Nullable SQLTransactionCallback ->
+            Nullable SQLTransactionErrorCallback ->
+              Nullable VoidCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Database.transaction Mozilla Database.transaction documentation> 
 transaction ::
@@ -58,15 +60,16 @@ transaction ::
                   Maybe SQLTransactionErrorCallback -> Maybe VoidCallback -> m ()
 transaction self callback errorCallback successCallback
   = liftIO
-      (js_transaction (unDatabase self) (maybe jsNull pToJSRef callback)
-         (maybe jsNull pToJSRef errorCallback)
-         (maybe jsNull pToJSRef successCallback))
+      (js_transaction (self) (maybeToNullable callback)
+         (maybeToNullable errorCallback)
+         (maybeToNullable successCallback))
  
 foreign import javascript unsafe
         "$1[\"readTransaction\"]($2, $3,\n$4)" js_readTransaction ::
-        JSRef Database ->
-          JSRef SQLTransactionCallback ->
-            JSRef SQLTransactionErrorCallback -> JSRef VoidCallback -> IO ()
+        Database ->
+          Nullable SQLTransactionCallback ->
+            Nullable SQLTransactionErrorCallback ->
+              Nullable VoidCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Database.readTransaction Mozilla Database.readTransaction documentation> 
 readTransaction ::
@@ -76,16 +79,14 @@ readTransaction ::
                       Maybe SQLTransactionErrorCallback -> Maybe VoidCallback -> m ()
 readTransaction self callback errorCallback successCallback
   = liftIO
-      (js_readTransaction (unDatabase self)
-         (maybe jsNull pToJSRef callback)
-         (maybe jsNull pToJSRef errorCallback)
-         (maybe jsNull pToJSRef successCallback))
+      (js_readTransaction (self) (maybeToNullable callback)
+         (maybeToNullable errorCallback)
+         (maybeToNullable successCallback))
  
 foreign import javascript unsafe "$1[\"version\"]" js_getVersion ::
-        JSRef Database -> IO JSString
+        Database -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Database.version Mozilla Database.version documentation> 
 getVersion ::
            (MonadIO m, FromJSString result) => Database -> m result
-getVersion self
-  = liftIO (fromJSString <$> (js_getVersion (unDatabase self)))
+getVersion self = liftIO (fromJSString <$> (js_getVersion (self)))

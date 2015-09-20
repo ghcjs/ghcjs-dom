@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTableCaptionElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,23 +20,19 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
-        :: JSRef HTMLTableCaptionElement -> JSString -> IO ()
+        :: HTMLTableCaptionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement.align Mozilla HTMLTableCaptionElement.align documentation> 
 setAlign ::
          (MonadIO m, ToJSString val) =>
            HTMLTableCaptionElement -> val -> m ()
-setAlign self val
-  = liftIO
-      (js_setAlign (unHTMLTableCaptionElement self) (toJSString val))
+setAlign self val = liftIO (js_setAlign (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
-        JSRef HTMLTableCaptionElement -> IO JSString
+        HTMLTableCaptionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement.align Mozilla HTMLTableCaptionElement.align documentation> 
 getAlign ::
          (MonadIO m, FromJSString result) =>
            HTMLTableCaptionElement -> m result
-getAlign self
-  = liftIO
-      (fromJSString <$> (js_getAlign (unHTMLTableCaptionElement self)))
+getAlign self = liftIO (fromJSString <$> (js_getAlign (self)))

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLDListElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"compact\"] = $2;"
-        js_setCompact :: JSRef HTMLDListElement -> Bool -> IO ()
+        js_setCompact :: HTMLDListElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 
 setCompact :: (MonadIO m) => HTMLDListElement -> Bool -> m ()
-setCompact self val
-  = liftIO (js_setCompact (unHTMLDListElement self) val)
+setCompact self val = liftIO (js_setCompact (self) val)
  
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
-        js_getCompact :: JSRef HTMLDListElement -> IO Bool
+        js_getCompact :: HTMLDListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 
 getCompact :: (MonadIO m) => HTMLDListElement -> m Bool
-getCompact self = liftIO (js_getCompact (unHTMLDListElement self))
+getCompact self = liftIO (js_getCompact (self))

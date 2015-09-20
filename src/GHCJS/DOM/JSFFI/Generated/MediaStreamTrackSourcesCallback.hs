@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaStreamTrackSourcesCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,9 +27,10 @@ newMediaStreamTrackSourcesCallback ::
                                        m MediaStreamTrackSourcesCallback
 newMediaStreamTrackSourcesCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ sources ->
-            fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
+      (MediaStreamTrackSourcesCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ sources ->
+              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 newMediaStreamTrackSourcesCallbackSync ::
@@ -38,9 +39,10 @@ newMediaStreamTrackSourcesCallbackSync ::
                                            m MediaStreamTrackSourcesCallback
 newMediaStreamTrackSourcesCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ sources ->
-            fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
+      (MediaStreamTrackSourcesCallback <$>
+         syncCallback1 ContinueAsync
+           (\ sources ->
+              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 newMediaStreamTrackSourcesCallbackAsync ::
@@ -49,6 +51,7 @@ newMediaStreamTrackSourcesCallbackAsync ::
                                             m MediaStreamTrackSourcesCallback
 newMediaStreamTrackSourcesCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ sources ->
-            fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
+      (MediaStreamTrackSourcesCallback <$>
+         asyncCallback1
+           (\ sources ->
+              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))

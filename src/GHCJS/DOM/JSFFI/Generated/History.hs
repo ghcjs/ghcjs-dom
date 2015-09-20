@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.History
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,64 +20,60 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"back\"]()" js_back ::
-        JSRef History -> IO ()
+        History -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.back Mozilla History.back documentation> 
 back :: (MonadIO m) => History -> m ()
-back self = liftIO (js_back (unHistory self))
+back self = liftIO (js_back (self))
  
 foreign import javascript unsafe "$1[\"forward\"]()" js_forward ::
-        JSRef History -> IO ()
+        History -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.forward Mozilla History.forward documentation> 
 forward :: (MonadIO m) => History -> m ()
-forward self = liftIO (js_forward (unHistory self))
+forward self = liftIO (js_forward (self))
  
 foreign import javascript unsafe "$1[\"go\"]($2)" js_go ::
-        JSRef History -> Int -> IO ()
+        History -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.go Mozilla History.go documentation> 
 go :: (MonadIO m) => History -> Int -> m ()
-go self distance = liftIO (js_go (unHistory self) distance)
+go self distance = liftIO (js_go (self) distance)
  
 foreign import javascript unsafe "$1[\"pushState\"]($2, $3, $4)"
-        js_pushState ::
-        JSRef History -> JSRef a -> JSString -> JSString -> IO ()
+        js_pushState :: History -> JSRef -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.pushState Mozilla History.pushState documentation> 
 pushState ::
           (MonadIO m, ToJSString title, ToJSString url) =>
-            History -> JSRef a -> title -> url -> m ()
+            History -> JSRef -> title -> url -> m ()
 pushState self data' title url
   = liftIO
-      (js_pushState (unHistory self) data' (toJSString title)
-         (toJSString url))
+      (js_pushState (self) data' (toJSString title) (toJSString url))
  
 foreign import javascript unsafe "$1[\"replaceState\"]($2, $3, $4)"
         js_replaceState ::
-        JSRef History -> JSRef a -> JSString -> JSString -> IO ()
+        History -> JSRef -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.replaceState Mozilla History.replaceState documentation> 
 replaceState ::
              (MonadIO m, ToJSString title, ToJSString url) =>
-               History -> JSRef a -> title -> url -> m ()
+               History -> JSRef -> title -> url -> m ()
 replaceState self data' title url
   = liftIO
-      (js_replaceState (unHistory self) data' (toJSString title)
-         (toJSString url))
+      (js_replaceState (self) data' (toJSString title) (toJSString url))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef History -> IO Word
+        History -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.length Mozilla History.length documentation> 
 getLength :: (MonadIO m) => History -> m Word
-getLength self = liftIO (js_getLength (unHistory self))
+getLength self = liftIO (js_getLength (self))
  
 foreign import javascript unsafe "$1[\"state\"]" js_getState ::
-        JSRef History -> IO (JSRef SerializedScriptValue)
+        History -> IO (Nullable SerializedScriptValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.state Mozilla History.state documentation> 
 getState ::
          (MonadIO m) => History -> m (Maybe SerializedScriptValue)
-getState self
-  = liftIO ((js_getState (unHistory self)) >>= fromJSRef)
+getState self = liftIO (nullableToMaybe <$> (js_getState (self)))

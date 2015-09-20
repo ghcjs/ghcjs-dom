@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.WebKitCSSRegionRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,11 +19,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
-        :: JSRef WebKitCSSRegionRule -> IO (JSRef CSSRuleList)
+        :: WebKitCSSRegionRule -> IO (Nullable CSSRuleList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSRegionRule.cssRules Mozilla WebKitCSSRegionRule.cssRules documentation> 
 getCssRules ::
             (MonadIO m) => WebKitCSSRegionRule -> m (Maybe CSSRuleList)
 getCssRules self
-  = liftIO
-      ((js_getCssRules (unWebKitCSSRegionRule self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getCssRules (self)))

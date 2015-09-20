@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.DOMParser
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,15 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"DOMParser\"]()"
-        js_newDOMParser :: IO (JSRef DOMParser)
+        js_newDOMParser :: IO DOMParser
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser Mozilla DOMParser documentation> 
 newDOMParser :: (MonadIO m) => m DOMParser
-newDOMParser = liftIO (js_newDOMParser >>= fromJSRefUnchecked)
+newDOMParser = liftIO (js_newDOMParser)
  
 foreign import javascript unsafe "$1[\"parseFromString\"]($2, $3)"
         js_parseFromString ::
-        JSRef DOMParser -> JSString -> JSString -> IO (JSRef Document)
+        DOMParser -> JSString -> JSString -> IO (Nullable Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser.parseFromString Mozilla DOMParser.parseFromString documentation> 
 parseFromString ::
@@ -35,6 +35,6 @@ parseFromString ::
                   DOMParser -> str -> contentType -> m (Maybe Document)
 parseFromString self str contentType
   = liftIO
-      ((js_parseFromString (unDOMParser self) (toJSString str)
-          (toJSString contentType))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_parseFromString (self) (toJSString str)
+            (toJSString contentType)))

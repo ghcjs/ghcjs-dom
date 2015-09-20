@@ -70,7 +70,7 @@ module GHCJS.DOM.JSFFI.Generated.Window
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -85,10 +85,11 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"openDatabase\"]($2, $3, $4,\n$5, $6)" js_openDatabase ::
-        JSRef Window ->
+        Window ->
           JSString ->
             JSString ->
-              JSString -> Word -> JSRef DatabaseCallback -> IO (JSRef Database)
+              JSString ->
+                Word -> Nullable DatabaseCallback -> IO (Nullable Database)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.openDatabase Mozilla Window.openDatabase documentation> 
 openDatabase ::
@@ -101,60 +102,58 @@ openDatabase ::
 openDatabase self name version displayName estimatedSize
   creationCallback
   = liftIO
-      ((js_openDatabase (unWindow self) (toJSString name)
-          (toJSString version)
-          (toJSString displayName)
-          estimatedSize
-          (maybe jsNull pToJSRef creationCallback))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_openDatabase (self) (toJSString name) (toJSString version)
+            (toJSString displayName)
+            estimatedSize
+            (maybeToNullable creationCallback)))
  
 foreign import javascript unsafe "$1[\"getSelection\"]()"
-        js_getSelection :: JSRef Window -> IO (JSRef Selection)
+        js_getSelection :: Window -> IO (Nullable Selection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getSelection Mozilla Window.getSelection documentation> 
 getSelection :: (MonadIO m) => Window -> m (Maybe Selection)
 getSelection self
-  = liftIO ((js_getSelection (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSelection (self)))
  
 foreign import javascript unsafe "$1[\"focus\"]()" js_focus ::
-        JSRef Window -> IO ()
+        Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.focus Mozilla Window.focus documentation> 
 focus :: (MonadIO m) => Window -> m ()
-focus self = liftIO (js_focus (unWindow self))
+focus self = liftIO (js_focus (self))
  
 foreign import javascript unsafe "$1[\"blur\"]()" js_blur ::
-        JSRef Window -> IO ()
+        Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.blur Mozilla Window.blur documentation> 
 blur :: (MonadIO m) => Window -> m ()
-blur self = liftIO (js_blur (unWindow self))
+blur self = liftIO (js_blur (self))
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
-        JSRef Window -> IO ()
+        Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.close Mozilla Window.close documentation> 
 close :: (MonadIO m) => Window -> m ()
-close self = liftIO (js_close (unWindow self))
+close self = liftIO (js_close (self))
  
 foreign import javascript unsafe "$1[\"print\"]()" js_print ::
-        JSRef Window -> IO ()
+        Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.print Mozilla Window.print documentation> 
 print :: (MonadIO m) => Window -> m ()
-print self = liftIO (js_print (unWindow self))
+print self = liftIO (js_print (self))
  
 foreign import javascript unsafe "$1[\"stop\"]()" js_stop ::
-        JSRef Window -> IO ()
+        Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.stop Mozilla Window.stop documentation> 
 stop :: (MonadIO m) => Window -> m ()
-stop self = liftIO (js_stop (unWindow self))
+stop self = liftIO (js_stop (self))
  
 foreign import javascript unsafe "$1[\"open\"]($2, $3, $4)" js_open
         ::
-        JSRef Window ->
-          JSString -> JSString -> JSString -> IO (JSRef Window)
+        Window -> JSString -> JSString -> JSString -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.open Mozilla Window.open documentation> 
 open ::
@@ -162,45 +161,43 @@ open ::
        Window -> url -> name -> options -> m (Maybe Window)
 open self url name options
   = liftIO
-      ((js_open (unWindow self) (toJSString url) (toJSString name)
-          (toJSString options))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_open (self) (toJSString url) (toJSString name)
+            (toJSString options)))
  
 foreign import javascript unsafe
         "$1[\"showModalDialog\"]($2, $3,\n$4)" js_showModalDialog ::
-        JSRef Window -> JSString -> JSRef a -> JSString -> IO (JSRef a)
+        Window -> JSString -> JSRef -> JSString -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.showModalDialog Mozilla Window.showModalDialog documentation> 
 showModalDialog ::
                 (MonadIO m, ToJSString url, ToJSString featureArgs) =>
-                  Window -> url -> JSRef a -> featureArgs -> m (JSRef a)
+                  Window -> url -> JSRef -> featureArgs -> m JSRef
 showModalDialog self url dialogArgs featureArgs
   = liftIO
-      (js_showModalDialog (unWindow self) (toJSString url) dialogArgs
+      (js_showModalDialog (self) (toJSString url) dialogArgs
          (toJSString featureArgs))
  
 foreign import javascript unsafe "$1[\"alert\"]($2)" js_alert ::
-        JSRef Window -> JSString -> IO ()
+        Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.alert Mozilla Window.alert documentation> 
 alert ::
       (MonadIO m, ToJSString message) => Window -> message -> m ()
-alert self message
-  = liftIO (js_alert (unWindow self) (toJSString message))
+alert self message = liftIO (js_alert (self) (toJSString message))
  
 foreign import javascript unsafe "($1[\"confirm\"]($2) ? 1 : 0)"
-        js_confirm :: JSRef Window -> JSString -> IO Bool
+        js_confirm :: Window -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.confirm Mozilla Window.confirm documentation> 
 confirm ::
         (MonadIO m, ToJSString message) => Window -> message -> m Bool
 confirm self message
-  = liftIO (js_confirm (unWindow self) (toJSString message))
+  = liftIO (js_confirm (self) (toJSString message))
  
 foreign import javascript unsafe "$1[\"prompt\"]($2, $3)" js_prompt
         ::
-        JSRef Window ->
-          JSString -> JSRef (Maybe JSString) -> IO (JSRef (Maybe JSString))
+        Window -> JSString -> Nullable JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.prompt Mozilla Window.prompt documentation> 
 prompt ::
@@ -210,12 +207,12 @@ prompt ::
 prompt self message defaultValue
   = liftIO
       (fromMaybeJSString <$>
-         (js_prompt (unWindow self) (toJSString message)
+         (js_prompt (self) (toJSString message)
             (toMaybeJSString defaultValue)))
  
 foreign import javascript unsafe
         "($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0)" js_find ::
-        JSRef Window ->
+        Window ->
           JSString -> Bool -> Bool -> Bool -> Bool -> Bool -> Bool -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.find Mozilla Window.find documentation> 
@@ -226,66 +223,63 @@ find ::
 find self string caseSensitive backwards wrap wholeWord
   searchInFrames showDialog
   = liftIO
-      (js_find (unWindow self) (toJSString string) caseSensitive
-         backwards
-         wrap
+      (js_find (self) (toJSString string) caseSensitive backwards wrap
          wholeWord
          searchInFrames
          showDialog)
  
 foreign import javascript unsafe "$1[\"scrollBy\"]($2, $3)"
-        js_scrollBy :: JSRef Window -> Int -> Int -> IO ()
+        js_scrollBy :: Window -> Int -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollBy Mozilla Window.scrollBy documentation> 
 scrollBy :: (MonadIO m) => Window -> Int -> Int -> m ()
-scrollBy self x y = liftIO (js_scrollBy (unWindow self) x y)
+scrollBy self x y = liftIO (js_scrollBy (self) x y)
  
 foreign import javascript unsafe "$1[\"scrollTo\"]($2, $3)"
-        js_scrollTo :: JSRef Window -> Int -> Int -> IO ()
+        js_scrollTo :: Window -> Int -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollTo Mozilla Window.scrollTo documentation> 
 scrollTo :: (MonadIO m) => Window -> Int -> Int -> m ()
-scrollTo self x y = liftIO (js_scrollTo (unWindow self) x y)
+scrollTo self x y = liftIO (js_scrollTo (self) x y)
  
 foreign import javascript unsafe "$1[\"scroll\"]($2, $3)" js_scroll
-        :: JSRef Window -> Int -> Int -> IO ()
+        :: Window -> Int -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scroll Mozilla Window.scroll documentation> 
 scroll :: (MonadIO m) => Window -> Int -> Int -> m ()
-scroll self x y = liftIO (js_scroll (unWindow self) x y)
+scroll self x y = liftIO (js_scroll (self) x y)
  
 foreign import javascript unsafe "$1[\"moveBy\"]($2, $3)" js_moveBy
-        :: JSRef Window -> Float -> Float -> IO ()
+        :: Window -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.moveBy Mozilla Window.moveBy documentation> 
 moveBy :: (MonadIO m) => Window -> Float -> Float -> m ()
-moveBy self x y = liftIO (js_moveBy (unWindow self) x y)
+moveBy self x y = liftIO (js_moveBy (self) x y)
  
 foreign import javascript unsafe "$1[\"moveTo\"]($2, $3)" js_moveTo
-        :: JSRef Window -> Float -> Float -> IO ()
+        :: Window -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.moveTo Mozilla Window.moveTo documentation> 
 moveTo :: (MonadIO m) => Window -> Float -> Float -> m ()
-moveTo self x y = liftIO (js_moveTo (unWindow self) x y)
+moveTo self x y = liftIO (js_moveTo (self) x y)
  
 foreign import javascript unsafe "$1[\"resizeBy\"]($2, $3)"
-        js_resizeBy :: JSRef Window -> Float -> Float -> IO ()
+        js_resizeBy :: Window -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.resizeBy Mozilla Window.resizeBy documentation> 
 resizeBy :: (MonadIO m) => Window -> Float -> Float -> m ()
-resizeBy self x y = liftIO (js_resizeBy (unWindow self) x y)
+resizeBy self x y = liftIO (js_resizeBy (self) x y)
  
 foreign import javascript unsafe "$1[\"resizeTo\"]($2, $3)"
-        js_resizeTo :: JSRef Window -> Float -> Float -> IO ()
+        js_resizeTo :: Window -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.resizeTo Mozilla Window.resizeTo documentation> 
 resizeTo :: (MonadIO m) => Window -> Float -> Float -> m ()
 resizeTo self width height
-  = liftIO (js_resizeTo (unWindow self) width height)
+  = liftIO (js_resizeTo (self) width height)
  
 foreign import javascript unsafe "$1[\"matchMedia\"]($2)"
-        js_matchMedia ::
-        JSRef Window -> JSString -> IO (JSRef MediaQueryList)
+        js_matchMedia :: Window -> JSString -> IO (Nullable MediaQueryList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.matchMedia Mozilla Window.matchMedia documentation> 
 matchMedia ::
@@ -293,13 +287,13 @@ matchMedia ::
              Window -> query -> m (Maybe MediaQueryList)
 matchMedia self query
   = liftIO
-      ((js_matchMedia (unWindow self) (toJSString query)) >>= fromJSRef)
+      (nullableToMaybe <$> (js_matchMedia (self) (toJSString query)))
  
 foreign import javascript unsafe "$1[\"getComputedStyle\"]($2, $3)"
         js_getComputedStyle ::
-        JSRef Window ->
-          JSRef Element ->
-            JSRef (Maybe JSString) -> IO (JSRef CSSStyleDeclaration)
+        Window ->
+          Nullable Element ->
+            Nullable JSString -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getComputedStyle Mozilla Window.getComputedStyle documentation> 
 getComputedStyle ::
@@ -309,15 +303,15 @@ getComputedStyle ::
                        Maybe pseudoElement -> m (Maybe CSSStyleDeclaration)
 getComputedStyle self element pseudoElement
   = liftIO
-      ((js_getComputedStyle (unWindow self)
-          (maybe jsNull (unElement . toElement) element)
-          (toMaybeJSString pseudoElement))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getComputedStyle (self)
+            (maybeToNullable (fmap toElement element))
+            (toMaybeJSString pseudoElement)))
  
 foreign import javascript unsafe
         "$1[\"getMatchedCSSRules\"]($2, $3)" js_getMatchedCSSRules ::
-        JSRef Window ->
-          JSRef Element -> JSRef (Maybe JSString) -> IO (JSRef CSSRuleList)
+        Window ->
+          Nullable Element -> Nullable JSString -> IO (Nullable CSSRuleList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getMatchedCSSRules Mozilla Window.getMatchedCSSRules documentation> 
 getMatchedCSSRules ::
@@ -326,16 +320,16 @@ getMatchedCSSRules ::
                        Maybe element -> Maybe pseudoElement -> m (Maybe CSSRuleList)
 getMatchedCSSRules self element pseudoElement
   = liftIO
-      ((js_getMatchedCSSRules (unWindow self)
-          (maybe jsNull (unElement . toElement) element)
-          (toMaybeJSString pseudoElement))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getMatchedCSSRules (self)
+            (maybeToNullable (fmap toElement element))
+            (toMaybeJSString pseudoElement)))
  
 foreign import javascript unsafe
         "$1[\"webkitConvertPointFromPageToNode\"]($2,\n$3)"
         js_webkitConvertPointFromPageToNode ::
-        JSRef Window ->
-          JSRef Node -> JSRef WebKitPoint -> IO (JSRef WebKitPoint)
+        Window ->
+          Nullable Node -> Nullable WebKitPoint -> IO (Nullable WebKitPoint)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromPageToNode Mozilla Window.webkitConvertPointFromPageToNode documentation> 
 webkitConvertPointFromPageToNode ::
@@ -344,16 +338,16 @@ webkitConvertPointFromPageToNode ::
                                      Maybe node -> Maybe WebKitPoint -> m (Maybe WebKitPoint)
 webkitConvertPointFromPageToNode self node p
   = liftIO
-      ((js_webkitConvertPointFromPageToNode (unWindow self)
-          (maybe jsNull (unNode . toNode) node)
-          (maybe jsNull pToJSRef p))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_webkitConvertPointFromPageToNode (self)
+            (maybeToNullable (fmap toNode node))
+            (maybeToNullable p)))
  
 foreign import javascript unsafe
         "$1[\"webkitConvertPointFromNodeToPage\"]($2,\n$3)"
         js_webkitConvertPointFromNodeToPage ::
-        JSRef Window ->
-          JSRef Node -> JSRef WebKitPoint -> IO (JSRef WebKitPoint)
+        Window ->
+          Nullable Node -> Nullable WebKitPoint -> IO (Nullable WebKitPoint)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromNodeToPage Mozilla Window.webkitConvertPointFromNodeToPage documentation> 
 webkitConvertPointFromNodeToPage ::
@@ -362,15 +356,16 @@ webkitConvertPointFromNodeToPage ::
                                      Maybe node -> Maybe WebKitPoint -> m (Maybe WebKitPoint)
 webkitConvertPointFromNodeToPage self node p
   = liftIO
-      ((js_webkitConvertPointFromNodeToPage (unWindow self)
-          (maybe jsNull (unNode . toNode) node)
-          (maybe jsNull pToJSRef p))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_webkitConvertPointFromNodeToPage (self)
+            (maybeToNullable (fmap toNode node))
+            (maybeToNullable p)))
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3, $4)"
         js_postMessage ::
-        JSRef Window ->
-          JSRef SerializedScriptValue -> JSString -> JSRef Array -> IO ()
+        Window ->
+          Nullable SerializedScriptValue ->
+            JSString -> Nullable Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage Mozilla Window.postMessage documentation> 
 postMessage ::
@@ -380,15 +375,14 @@ postMessage ::
                 Maybe message -> targetOrigin -> Maybe messagePorts -> m ()
 postMessage self message targetOrigin messagePorts
   = liftIO
-      (js_postMessage (unWindow self)
-         (maybe jsNull (unSerializedScriptValue . toSerializedScriptValue)
-            message)
+      (js_postMessage (self)
+         (maybeToNullable (fmap toSerializedScriptValue message))
          (toJSString targetOrigin)
-         (maybe jsNull (unArray . toArray) messagePorts))
+         (maybeToNullable (fmap toArray messagePorts)))
  
 foreign import javascript unsafe
         "$1[\"requestAnimationFrame\"]($2)" js_requestAnimationFrame ::
-        JSRef Window -> JSRef RequestAnimationFrameCallback -> IO Int
+        Window -> Nullable RequestAnimationFrameCallback -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.requestAnimationFrame Mozilla Window.requestAnimationFrame documentation> 
 requestAnimationFrame ::
@@ -396,21 +390,20 @@ requestAnimationFrame ::
                         Window -> Maybe RequestAnimationFrameCallback -> m Int
 requestAnimationFrame self callback
   = liftIO
-      (js_requestAnimationFrame (unWindow self)
-         (maybe jsNull pToJSRef callback))
+      (js_requestAnimationFrame (self) (maybeToNullable callback))
  
 foreign import javascript unsafe "$1[\"cancelAnimationFrame\"]($2)"
-        js_cancelAnimationFrame :: JSRef Window -> Int -> IO ()
+        js_cancelAnimationFrame :: Window -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.cancelAnimationFrame Mozilla Window.cancelAnimationFrame documentation> 
 cancelAnimationFrame :: (MonadIO m) => Window -> Int -> m ()
 cancelAnimationFrame self id
-  = liftIO (js_cancelAnimationFrame (unWindow self) id)
+  = liftIO (js_cancelAnimationFrame (self) id)
  
 foreign import javascript unsafe
         "$1[\"webkitRequestAnimationFrame\"]($2)"
         js_webkitRequestAnimationFrame ::
-        JSRef Window -> JSRef RequestAnimationFrameCallback -> IO Int
+        Window -> Nullable RequestAnimationFrameCallback -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitRequestAnimationFrame Mozilla Window.webkitRequestAnimationFrame documentation> 
 webkitRequestAnimationFrame ::
@@ -418,491 +411,475 @@ webkitRequestAnimationFrame ::
                               Window -> Maybe RequestAnimationFrameCallback -> m Int
 webkitRequestAnimationFrame self callback
   = liftIO
-      (js_webkitRequestAnimationFrame (unWindow self)
-         (maybe jsNull pToJSRef callback))
+      (js_webkitRequestAnimationFrame (self) (maybeToNullable callback))
  
 foreign import javascript unsafe
         "$1[\"webkitCancelAnimationFrame\"]($2)"
-        js_webkitCancelAnimationFrame :: JSRef Window -> Int -> IO ()
+        js_webkitCancelAnimationFrame :: Window -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitCancelAnimationFrame Mozilla Window.webkitCancelAnimationFrame documentation> 
 webkitCancelAnimationFrame :: (MonadIO m) => Window -> Int -> m ()
 webkitCancelAnimationFrame self id
-  = liftIO (js_webkitCancelAnimationFrame (unWindow self) id)
+  = liftIO (js_webkitCancelAnimationFrame (self) id)
  
 foreign import javascript unsafe
         "$1[\"webkitCancelRequestAnimationFrame\"]($2)"
-        js_webkitCancelRequestAnimationFrame ::
-        JSRef Window -> Int -> IO ()
+        js_webkitCancelRequestAnimationFrame :: Window -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitCancelRequestAnimationFrame Mozilla Window.webkitCancelRequestAnimationFrame documentation> 
 webkitCancelRequestAnimationFrame ::
                                   (MonadIO m) => Window -> Int -> m ()
 webkitCancelRequestAnimationFrame self id
-  = liftIO (js_webkitCancelRequestAnimationFrame (unWindow self) id)
+  = liftIO (js_webkitCancelRequestAnimationFrame (self) id)
  
 foreign import javascript unsafe "$1[\"captureEvents\"]()"
-        js_captureEvents :: JSRef Window -> IO ()
+        js_captureEvents :: Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.captureEvents Mozilla Window.captureEvents documentation> 
 captureEvents :: (MonadIO m) => Window -> m ()
-captureEvents self = liftIO (js_captureEvents (unWindow self))
+captureEvents self = liftIO (js_captureEvents (self))
  
 foreign import javascript unsafe "$1[\"releaseEvents\"]()"
-        js_releaseEvents :: JSRef Window -> IO ()
+        js_releaseEvents :: Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.releaseEvents Mozilla Window.releaseEvents documentation> 
 releaseEvents :: (MonadIO m) => Window -> m ()
-releaseEvents self = liftIO (js_releaseEvents (unWindow self))
+releaseEvents self = liftIO (js_releaseEvents (self))
  
 foreign import javascript unsafe "$1[\"webkitIndexedDB\"]"
-        js_getWebkitIndexedDB :: JSRef Window -> IO (JSRef IDBFactory)
+        js_getWebkitIndexedDB :: Window -> IO (Nullable IDBFactory)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitIndexedDB Mozilla Window.webkitIndexedDB documentation> 
 getWebkitIndexedDB :: (MonadIO m) => Window -> m (Maybe IDBFactory)
 getWebkitIndexedDB self
-  = liftIO ((js_getWebkitIndexedDB (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getWebkitIndexedDB (self)))
  
 foreign import javascript unsafe "$1[\"indexedDB\"]"
-        js_getIndexedDB :: JSRef Window -> IO (JSRef IDBFactory)
+        js_getIndexedDB :: Window -> IO (Nullable IDBFactory)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.indexedDB Mozilla Window.indexedDB documentation> 
 getIndexedDB :: (MonadIO m) => Window -> m (Maybe IDBFactory)
 getIndexedDB self
-  = liftIO ((js_getIndexedDB (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getIndexedDB (self)))
  
 foreign import javascript unsafe "$1[\"webkitStorageInfo\"]"
-        js_getWebkitStorageInfo :: JSRef Window -> IO (JSRef StorageInfo)
+        js_getWebkitStorageInfo :: Window -> IO (Nullable StorageInfo)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitStorageInfo Mozilla Window.webkitStorageInfo documentation> 
 getWebkitStorageInfo ::
                      (MonadIO m) => Window -> m (Maybe StorageInfo)
 getWebkitStorageInfo self
-  = liftIO ((js_getWebkitStorageInfo (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getWebkitStorageInfo (self)))
  
 foreign import javascript unsafe "$1[\"speechSynthesis\"]"
-        js_getSpeechSynthesis :: JSRef Window -> IO (JSRef SpeechSynthesis)
+        js_getSpeechSynthesis :: Window -> IO (Nullable SpeechSynthesis)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.speechSynthesis Mozilla Window.speechSynthesis documentation> 
 getSpeechSynthesis ::
                    (MonadIO m) => Window -> m (Maybe SpeechSynthesis)
 getSpeechSynthesis self
-  = liftIO ((js_getSpeechSynthesis (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSpeechSynthesis (self)))
  
 foreign import javascript unsafe "$1[\"screen\"]" js_getScreen ::
-        JSRef Window -> IO (JSRef Screen)
+        Window -> IO (Nullable Screen)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screen Mozilla Window.screen documentation> 
 getScreen :: (MonadIO m) => Window -> m (Maybe Screen)
-getScreen self
-  = liftIO ((js_getScreen (unWindow self)) >>= fromJSRef)
+getScreen self = liftIO (nullableToMaybe <$> (js_getScreen (self)))
  
 foreign import javascript unsafe "$1[\"history\"]" js_getHistory ::
-        JSRef Window -> IO (JSRef History)
+        Window -> IO (Nullable History)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.history Mozilla Window.history documentation> 
 getHistory :: (MonadIO m) => Window -> m (Maybe History)
 getHistory self
-  = liftIO ((js_getHistory (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getHistory (self)))
  
 foreign import javascript unsafe "$1[\"locationbar\"]"
-        js_getLocationbar :: JSRef Window -> IO (JSRef BarProp)
+        js_getLocationbar :: Window -> IO (Nullable BarProp)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.locationbar Mozilla Window.locationbar documentation> 
 getLocationbar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getLocationbar self
-  = liftIO ((js_getLocationbar (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLocationbar (self)))
  
 foreign import javascript unsafe "$1[\"menubar\"]" js_getMenubar ::
-        JSRef Window -> IO (JSRef BarProp)
+        Window -> IO (Nullable BarProp)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.menubar Mozilla Window.menubar documentation> 
 getMenubar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getMenubar self
-  = liftIO ((js_getMenubar (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getMenubar (self)))
  
 foreign import javascript unsafe "$1[\"personalbar\"]"
-        js_getPersonalbar :: JSRef Window -> IO (JSRef BarProp)
+        js_getPersonalbar :: Window -> IO (Nullable BarProp)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.personalbar Mozilla Window.personalbar documentation> 
 getPersonalbar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getPersonalbar self
-  = liftIO ((js_getPersonalbar (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPersonalbar (self)))
  
 foreign import javascript unsafe "$1[\"scrollbars\"]"
-        js_getScrollbars :: JSRef Window -> IO (JSRef BarProp)
+        js_getScrollbars :: Window -> IO (Nullable BarProp)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollbars Mozilla Window.scrollbars documentation> 
 getScrollbars :: (MonadIO m) => Window -> m (Maybe BarProp)
 getScrollbars self
-  = liftIO ((js_getScrollbars (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getScrollbars (self)))
  
 foreign import javascript unsafe "$1[\"statusbar\"]"
-        js_getStatusbar :: JSRef Window -> IO (JSRef BarProp)
+        js_getStatusbar :: Window -> IO (Nullable BarProp)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.statusbar Mozilla Window.statusbar documentation> 
 getStatusbar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getStatusbar self
-  = liftIO ((js_getStatusbar (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getStatusbar (self)))
  
 foreign import javascript unsafe "$1[\"toolbar\"]" js_getToolbar ::
-        JSRef Window -> IO (JSRef BarProp)
+        Window -> IO (Nullable BarProp)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.toolbar Mozilla Window.toolbar documentation> 
 getToolbar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getToolbar self
-  = liftIO ((js_getToolbar (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getToolbar (self)))
  
 foreign import javascript unsafe "$1[\"navigator\"]"
-        js_getNavigator :: JSRef Window -> IO (JSRef Navigator)
+        js_getNavigator :: Window -> IO (Nullable Navigator)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.navigator Mozilla Window.navigator documentation> 
 getNavigator :: (MonadIO m) => Window -> m (Maybe Navigator)
 getNavigator self
-  = liftIO ((js_getNavigator (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getNavigator (self)))
  
 foreign import javascript unsafe "$1[\"clientInformation\"]"
-        js_getClientInformation :: JSRef Window -> IO (JSRef Navigator)
+        js_getClientInformation :: Window -> IO (Nullable Navigator)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.clientInformation Mozilla Window.clientInformation documentation> 
 getClientInformation ::
                      (MonadIO m) => Window -> m (Maybe Navigator)
 getClientInformation self
-  = liftIO ((js_getClientInformation (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getClientInformation (self)))
  
 foreign import javascript unsafe "$1[\"crypto\"]" js_getCrypto ::
-        JSRef Window -> IO (JSRef Crypto)
+        Window -> IO (Nullable Crypto)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.crypto Mozilla Window.crypto documentation> 
 getCrypto :: (MonadIO m) => Window -> m (Maybe Crypto)
-getCrypto self
-  = liftIO ((js_getCrypto (unWindow self)) >>= fromJSRef)
+getCrypto self = liftIO (nullableToMaybe <$> (js_getCrypto (self)))
  
 foreign import javascript unsafe "$1[\"location\"] = $2;"
-        js_setLocation :: JSRef Window -> JSRef Location -> IO ()
+        js_setLocation :: Window -> Nullable Location -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.location Mozilla Window.location documentation> 
 setLocation :: (MonadIO m) => Window -> Maybe Location -> m ()
 setLocation self val
-  = liftIO
-      (js_setLocation (unWindow self) (maybe jsNull pToJSRef val))
+  = liftIO (js_setLocation (self) (maybeToNullable val))
  
 foreign import javascript unsafe "$1[\"location\"]" js_getLocation
-        :: JSRef Window -> IO (JSRef Location)
+        :: Window -> IO (Nullable Location)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.location Mozilla Window.location documentation> 
 getLocation :: (MonadIO m) => Window -> m (Maybe Location)
 getLocation self
-  = liftIO ((js_getLocation (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLocation (self)))
  
 foreign import javascript unsafe "$1[\"event\"]" js_getEvent ::
-        JSRef Window -> IO (JSRef Event)
+        Window -> IO (Nullable Event)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.event Mozilla Window.event documentation> 
 getEvent :: (MonadIO m) => Window -> m (Maybe Event)
-getEvent self
-  = liftIO ((js_getEvent (unWindow self)) >>= fromJSRef)
+getEvent self = liftIO (nullableToMaybe <$> (js_getEvent (self)))
  
 foreign import javascript unsafe "$1[\"frameElement\"]"
-        js_getFrameElement :: JSRef Window -> IO (JSRef Element)
+        js_getFrameElement :: Window -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frameElement Mozilla Window.frameElement documentation> 
 getFrameElement :: (MonadIO m) => Window -> m (Maybe Element)
 getFrameElement self
-  = liftIO ((js_getFrameElement (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getFrameElement (self)))
  
 foreign import javascript unsafe
         "($1[\"offscreenBuffering\"] ? 1 : 0)" js_getOffscreenBuffering ::
-        JSRef Window -> IO Bool
+        Window -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.offscreenBuffering Mozilla Window.offscreenBuffering documentation> 
 getOffscreenBuffering :: (MonadIO m) => Window -> m Bool
 getOffscreenBuffering self
-  = liftIO (js_getOffscreenBuffering (unWindow self))
+  = liftIO (js_getOffscreenBuffering (self))
  
 foreign import javascript unsafe "$1[\"outerHeight\"]"
-        js_getOuterHeight :: JSRef Window -> IO Int
+        js_getOuterHeight :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.outerHeight Mozilla Window.outerHeight documentation> 
 getOuterHeight :: (MonadIO m) => Window -> m Int
-getOuterHeight self = liftIO (js_getOuterHeight (unWindow self))
+getOuterHeight self = liftIO (js_getOuterHeight (self))
  
 foreign import javascript unsafe "$1[\"outerWidth\"]"
-        js_getOuterWidth :: JSRef Window -> IO Int
+        js_getOuterWidth :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.outerWidth Mozilla Window.outerWidth documentation> 
 getOuterWidth :: (MonadIO m) => Window -> m Int
-getOuterWidth self = liftIO (js_getOuterWidth (unWindow self))
+getOuterWidth self = liftIO (js_getOuterWidth (self))
  
 foreign import javascript unsafe "$1[\"innerHeight\"]"
-        js_getInnerHeight :: JSRef Window -> IO Int
+        js_getInnerHeight :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.innerHeight Mozilla Window.innerHeight documentation> 
 getInnerHeight :: (MonadIO m) => Window -> m Int
-getInnerHeight self = liftIO (js_getInnerHeight (unWindow self))
+getInnerHeight self = liftIO (js_getInnerHeight (self))
  
 foreign import javascript unsafe "$1[\"innerWidth\"]"
-        js_getInnerWidth :: JSRef Window -> IO Int
+        js_getInnerWidth :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.innerWidth Mozilla Window.innerWidth documentation> 
 getInnerWidth :: (MonadIO m) => Window -> m Int
-getInnerWidth self = liftIO (js_getInnerWidth (unWindow self))
+getInnerWidth self = liftIO (js_getInnerWidth (self))
  
 foreign import javascript unsafe "$1[\"screenX\"]" js_getScreenX ::
-        JSRef Window -> IO Int
+        Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenX Mozilla Window.screenX documentation> 
 getScreenX :: (MonadIO m) => Window -> m Int
-getScreenX self = liftIO (js_getScreenX (unWindow self))
+getScreenX self = liftIO (js_getScreenX (self))
  
 foreign import javascript unsafe "$1[\"screenY\"]" js_getScreenY ::
-        JSRef Window -> IO Int
+        Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenY Mozilla Window.screenY documentation> 
 getScreenY :: (MonadIO m) => Window -> m Int
-getScreenY self = liftIO (js_getScreenY (unWindow self))
+getScreenY self = liftIO (js_getScreenY (self))
  
 foreign import javascript unsafe "$1[\"screenLeft\"]"
-        js_getScreenLeft :: JSRef Window -> IO Int
+        js_getScreenLeft :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenLeft Mozilla Window.screenLeft documentation> 
 getScreenLeft :: (MonadIO m) => Window -> m Int
-getScreenLeft self = liftIO (js_getScreenLeft (unWindow self))
+getScreenLeft self = liftIO (js_getScreenLeft (self))
  
 foreign import javascript unsafe "$1[\"screenTop\"]"
-        js_getScreenTop :: JSRef Window -> IO Int
+        js_getScreenTop :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenTop Mozilla Window.screenTop documentation> 
 getScreenTop :: (MonadIO m) => Window -> m Int
-getScreenTop self = liftIO (js_getScreenTop (unWindow self))
+getScreenTop self = liftIO (js_getScreenTop (self))
  
 foreign import javascript unsafe "$1[\"scrollX\"]" js_getScrollX ::
-        JSRef Window -> IO Int
+        Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollX Mozilla Window.scrollX documentation> 
 getScrollX :: (MonadIO m) => Window -> m Int
-getScrollX self = liftIO (js_getScrollX (unWindow self))
+getScrollX self = liftIO (js_getScrollX (self))
  
 foreign import javascript unsafe "$1[\"scrollY\"]" js_getScrollY ::
-        JSRef Window -> IO Int
+        Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollY Mozilla Window.scrollY documentation> 
 getScrollY :: (MonadIO m) => Window -> m Int
-getScrollY self = liftIO (js_getScrollY (unWindow self))
+getScrollY self = liftIO (js_getScrollY (self))
  
 foreign import javascript unsafe "$1[\"pageXOffset\"]"
-        js_getPageXOffset :: JSRef Window -> IO Int
+        js_getPageXOffset :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageXOffset Mozilla Window.pageXOffset documentation> 
 getPageXOffset :: (MonadIO m) => Window -> m Int
-getPageXOffset self = liftIO (js_getPageXOffset (unWindow self))
+getPageXOffset self = liftIO (js_getPageXOffset (self))
  
 foreign import javascript unsafe "$1[\"pageYOffset\"]"
-        js_getPageYOffset :: JSRef Window -> IO Int
+        js_getPageYOffset :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageYOffset Mozilla Window.pageYOffset documentation> 
 getPageYOffset :: (MonadIO m) => Window -> m Int
-getPageYOffset self = liftIO (js_getPageYOffset (unWindow self))
+getPageYOffset self = liftIO (js_getPageYOffset (self))
  
 foreign import javascript unsafe "($1[\"closed\"] ? 1 : 0)"
-        js_getClosed :: JSRef Window -> IO Bool
+        js_getClosed :: Window -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.closed Mozilla Window.closed documentation> 
 getClosed :: (MonadIO m) => Window -> m Bool
-getClosed self = liftIO (js_getClosed (unWindow self))
+getClosed self = liftIO (js_getClosed (self))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef Window -> IO Word
+        Window -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.length Mozilla Window.length documentation> 
 getLength :: (MonadIO m) => Window -> m Word
-getLength self = liftIO (js_getLength (unWindow self))
+getLength self = liftIO (js_getLength (self))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
-        JSRef Window -> JSString -> IO ()
+        Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.name Mozilla Window.name documentation> 
 setName :: (MonadIO m, ToJSString val) => Window -> val -> m ()
-setName self val
-  = liftIO (js_setName (unWindow self) (toJSString val))
+setName self val = liftIO (js_setName (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef Window -> IO JSString
+        Window -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.name Mozilla Window.name documentation> 
 getName :: (MonadIO m, FromJSString result) => Window -> m result
-getName self
-  = liftIO (fromJSString <$> (js_getName (unWindow self)))
+getName self = liftIO (fromJSString <$> (js_getName (self)))
  
 foreign import javascript unsafe "$1[\"status\"] = $2;"
-        js_setStatus :: JSRef Window -> JSString -> IO ()
+        js_setStatus :: Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.status Mozilla Window.status documentation> 
 setStatus :: (MonadIO m, ToJSString val) => Window -> val -> m ()
-setStatus self val
-  = liftIO (js_setStatus (unWindow self) (toJSString val))
+setStatus self val = liftIO (js_setStatus (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
-        JSRef Window -> IO JSString
+        Window -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.status Mozilla Window.status documentation> 
 getStatus :: (MonadIO m, FromJSString result) => Window -> m result
-getStatus self
-  = liftIO (fromJSString <$> (js_getStatus (unWindow self)))
+getStatus self = liftIO (fromJSString <$> (js_getStatus (self)))
  
 foreign import javascript unsafe "$1[\"defaultStatus\"] = $2;"
-        js_setDefaultStatus :: JSRef Window -> JSString -> IO ()
+        js_setDefaultStatus :: Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultStatus Mozilla Window.defaultStatus documentation> 
 setDefaultStatus ::
                  (MonadIO m, ToJSString val) => Window -> val -> m ()
 setDefaultStatus self val
-  = liftIO (js_setDefaultStatus (unWindow self) (toJSString val))
+  = liftIO (js_setDefaultStatus (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"defaultStatus\"]"
-        js_getDefaultStatus :: JSRef Window -> IO JSString
+        js_getDefaultStatus :: Window -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultStatus Mozilla Window.defaultStatus documentation> 
 getDefaultStatus ::
                  (MonadIO m, FromJSString result) => Window -> m result
 getDefaultStatus self
-  = liftIO (fromJSString <$> (js_getDefaultStatus (unWindow self)))
+  = liftIO (fromJSString <$> (js_getDefaultStatus (self)))
  
 foreign import javascript unsafe "$1[\"defaultstatus\"] = $2;"
-        js_setDefaultstatus :: JSRef Window -> JSString -> IO ()
+        js_setDefaultstatus :: Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultstatus Mozilla Window.defaultstatus documentation> 
 setDefaultstatus ::
                  (MonadIO m, ToJSString val) => Window -> val -> m ()
 setDefaultstatus self val
-  = liftIO (js_setDefaultstatus (unWindow self) (toJSString val))
+  = liftIO (js_setDefaultstatus (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"defaultstatus\"]"
-        js_getDefaultstatus :: JSRef Window -> IO JSString
+        js_getDefaultstatus :: Window -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultstatus Mozilla Window.defaultstatus documentation> 
 getDefaultstatus ::
                  (MonadIO m, FromJSString result) => Window -> m result
 getDefaultstatus self
-  = liftIO (fromJSString <$> (js_getDefaultstatus (unWindow self)))
+  = liftIO (fromJSString <$> (js_getDefaultstatus (self)))
  
 foreign import javascript unsafe "$1[\"self\"]" js_getSelf ::
-        JSRef Window -> IO (JSRef Window)
+        Window -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.self Mozilla Window.self documentation> 
 getSelf :: (MonadIO m) => Window -> m (Maybe Window)
-getSelf self = liftIO ((js_getSelf (unWindow self)) >>= fromJSRef)
+getSelf self = liftIO (nullableToMaybe <$> (js_getSelf (self)))
  
 foreign import javascript unsafe "$1[\"window\"]" js_getWindow ::
-        JSRef Window -> IO (JSRef Window)
+        Window -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.window Mozilla Window.window documentation> 
 getWindow :: (MonadIO m) => Window -> m (Maybe Window)
-getWindow self
-  = liftIO ((js_getWindow (unWindow self)) >>= fromJSRef)
+getWindow self = liftIO (nullableToMaybe <$> (js_getWindow (self)))
  
 foreign import javascript unsafe "$1[\"frames\"]" js_getFrames ::
-        JSRef Window -> IO (JSRef Window)
+        Window -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frames Mozilla Window.frames documentation> 
 getFrames :: (MonadIO m) => Window -> m (Maybe Window)
-getFrames self
-  = liftIO ((js_getFrames (unWindow self)) >>= fromJSRef)
+getFrames self = liftIO (nullableToMaybe <$> (js_getFrames (self)))
  
 foreign import javascript unsafe "$1[\"opener\"]" js_getOpener ::
-        JSRef Window -> IO (JSRef Window)
+        Window -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.opener Mozilla Window.opener documentation> 
 getOpener :: (MonadIO m) => Window -> m (Maybe Window)
-getOpener self
-  = liftIO ((js_getOpener (unWindow self)) >>= fromJSRef)
+getOpener self = liftIO (nullableToMaybe <$> (js_getOpener (self)))
  
 foreign import javascript unsafe "$1[\"parent\"]" js_getParent ::
-        JSRef Window -> IO (JSRef Window)
+        Window -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.parent Mozilla Window.parent documentation> 
 getParent :: (MonadIO m) => Window -> m (Maybe Window)
-getParent self
-  = liftIO ((js_getParent (unWindow self)) >>= fromJSRef)
+getParent self = liftIO (nullableToMaybe <$> (js_getParent (self)))
  
 foreign import javascript unsafe "$1[\"top\"]" js_getTop ::
-        JSRef Window -> IO (JSRef Window)
+        Window -> IO (Nullable Window)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.top Mozilla Window.top documentation> 
 getTop :: (MonadIO m) => Window -> m (Maybe Window)
-getTop self = liftIO ((js_getTop (unWindow self)) >>= fromJSRef)
+getTop self = liftIO (nullableToMaybe <$> (js_getTop (self)))
  
 foreign import javascript unsafe "$1[\"document\"]" js_getDocument
-        :: JSRef Window -> IO (JSRef Document)
+        :: Window -> IO (Nullable Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.document Mozilla Window.document documentation> 
 getDocument :: (MonadIO m) => Window -> m (Maybe Document)
 getDocument self
-  = liftIO ((js_getDocument (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getDocument (self)))
  
 foreign import javascript unsafe "$1[\"styleMedia\"]"
-        js_getStyleMedia :: JSRef Window -> IO (JSRef StyleMedia)
+        js_getStyleMedia :: Window -> IO (Nullable StyleMedia)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.styleMedia Mozilla Window.styleMedia documentation> 
 getStyleMedia :: (MonadIO m) => Window -> m (Maybe StyleMedia)
 getStyleMedia self
-  = liftIO ((js_getStyleMedia (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getStyleMedia (self)))
  
 foreign import javascript unsafe "$1[\"devicePixelRatio\"]"
-        js_getDevicePixelRatio :: JSRef Window -> IO Double
+        js_getDevicePixelRatio :: Window -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.devicePixelRatio Mozilla Window.devicePixelRatio documentation> 
 getDevicePixelRatio :: (MonadIO m) => Window -> m Double
-getDevicePixelRatio self
-  = liftIO (js_getDevicePixelRatio (unWindow self))
+getDevicePixelRatio self = liftIO (js_getDevicePixelRatio (self))
  
 foreign import javascript unsafe "$1[\"applicationCache\"]"
-        js_getApplicationCache ::
-        JSRef Window -> IO (JSRef ApplicationCache)
+        js_getApplicationCache :: Window -> IO (Nullable ApplicationCache)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.applicationCache Mozilla Window.applicationCache documentation> 
 getApplicationCache ::
                     (MonadIO m) => Window -> m (Maybe ApplicationCache)
 getApplicationCache self
-  = liftIO ((js_getApplicationCache (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getApplicationCache (self)))
  
 foreign import javascript unsafe "$1[\"sessionStorage\"]"
-        js_getSessionStorage :: JSRef Window -> IO (JSRef Storage)
+        js_getSessionStorage :: Window -> IO (Nullable Storage)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.sessionStorage Mozilla Window.sessionStorage documentation> 
 getSessionStorage :: (MonadIO m) => Window -> m (Maybe Storage)
 getSessionStorage self
-  = liftIO ((js_getSessionStorage (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSessionStorage (self)))
  
 foreign import javascript unsafe "$1[\"localStorage\"]"
-        js_getLocalStorage :: JSRef Window -> IO (JSRef Storage)
+        js_getLocalStorage :: Window -> IO (Nullable Storage)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.localStorage Mozilla Window.localStorage documentation> 
 getLocalStorage :: (MonadIO m) => Window -> m (Maybe Storage)
 getLocalStorage self
-  = liftIO ((js_getLocalStorage (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLocalStorage (self)))
  
 foreign import javascript unsafe "$1[\"orientation\"]"
-        js_getOrientation :: JSRef Window -> IO Int
+        js_getOrientation :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.orientation Mozilla Window.orientation documentation> 
 getOrientation :: (MonadIO m) => Window -> m Int
-getOrientation self = liftIO (js_getOrientation (unWindow self))
+getOrientation self = liftIO (js_getOrientation (self))
  
 foreign import javascript unsafe "$1[\"performance\"]"
-        js_getPerformance :: JSRef Window -> IO (JSRef Performance)
+        js_getPerformance :: Window -> IO (Nullable Performance)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.performance Mozilla Window.performance documentation> 
 getPerformance :: (MonadIO m) => Window -> m (Maybe Performance)
 getPerformance self
-  = liftIO ((js_getPerformance (unWindow self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPerformance (self)))
  
 foreign import javascript unsafe "$1[\"CSS\"]" js_getCSS ::
-        JSRef Window -> IO (JSRef CSS)
+        Window -> IO (Nullable CSS)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.CSS Mozilla Window.CSS documentation> 
 getCSS :: (MonadIO m) => Window -> m (Maybe CSS)
-getCSS self = liftIO ((js_getCSS (unWindow self)) >>= fromJSRef)
+getCSS self = liftIO (nullableToMaybe <$> (js_getCSS (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.onabort Mozilla Window.onabort documentation> 
 abort :: EventName Window UIEvent

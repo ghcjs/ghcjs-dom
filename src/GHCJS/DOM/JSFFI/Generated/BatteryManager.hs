@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.BatteryManager
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,34 +22,32 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "($1[\"charging\"] ? 1 : 0)"
-        js_getCharging :: JSRef BatteryManager -> IO Bool
+        js_getCharging :: BatteryManager -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.charging Mozilla BatteryManager.charging documentation> 
 getCharging :: (MonadIO m) => BatteryManager -> m Bool
-getCharging self = liftIO (js_getCharging (unBatteryManager self))
+getCharging self = liftIO (js_getCharging (self))
  
 foreign import javascript unsafe "$1[\"chargingTime\"]"
-        js_getChargingTime :: JSRef BatteryManager -> IO Double
+        js_getChargingTime :: BatteryManager -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.chargingTime Mozilla BatteryManager.chargingTime documentation> 
 getChargingTime :: (MonadIO m) => BatteryManager -> m Double
-getChargingTime self
-  = liftIO (js_getChargingTime (unBatteryManager self))
+getChargingTime self = liftIO (js_getChargingTime (self))
  
 foreign import javascript unsafe "$1[\"dischargingTime\"]"
-        js_getDischargingTime :: JSRef BatteryManager -> IO Double
+        js_getDischargingTime :: BatteryManager -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.dischargingTime Mozilla BatteryManager.dischargingTime documentation> 
 getDischargingTime :: (MonadIO m) => BatteryManager -> m Double
-getDischargingTime self
-  = liftIO (js_getDischargingTime (unBatteryManager self))
+getDischargingTime self = liftIO (js_getDischargingTime (self))
  
 foreign import javascript unsafe "$1[\"level\"]" js_getLevel ::
-        JSRef BatteryManager -> IO Double
+        BatteryManager -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.level Mozilla BatteryManager.level documentation> 
 getLevel :: (MonadIO m) => BatteryManager -> m Double
-getLevel self = liftIO (js_getLevel (unBatteryManager self))
+getLevel self = liftIO (js_getLevel (self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager.onchargingchange Mozilla BatteryManager.onchargingchange documentation> 
 chargingChange :: EventName BatteryManager Event

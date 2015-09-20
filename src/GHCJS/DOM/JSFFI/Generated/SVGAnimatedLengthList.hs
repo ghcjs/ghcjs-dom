@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGAnimatedLengthList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,21 +20,19 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
-        JSRef SVGAnimatedLengthList -> IO (JSRef SVGLengthList)
+        SVGAnimatedLengthList -> IO (Nullable SVGLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList.baseVal Mozilla SVGAnimatedLengthList.baseVal documentation> 
 getBaseVal ::
            (MonadIO m) => SVGAnimatedLengthList -> m (Maybe SVGLengthList)
 getBaseVal self
-  = liftIO
-      ((js_getBaseVal (unSVGAnimatedLengthList self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getBaseVal (self)))
  
 foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
-        JSRef SVGAnimatedLengthList -> IO (JSRef SVGLengthList)
+        SVGAnimatedLengthList -> IO (Nullable SVGLengthList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList.animVal Mozilla SVGAnimatedLengthList.animVal documentation> 
 getAnimVal ::
            (MonadIO m) => SVGAnimatedLengthList -> m (Maybe SVGLengthList)
 getAnimVal self
-  = liftIO
-      ((js_getAnimVal (unSVGAnimatedLengthList self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getAnimVal (self)))

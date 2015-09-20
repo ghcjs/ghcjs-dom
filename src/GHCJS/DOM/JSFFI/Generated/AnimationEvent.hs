@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.AnimationEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,19 +20,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"animationName\"]"
-        js_getAnimationName :: JSRef AnimationEvent -> IO JSString
+        js_getAnimationName :: AnimationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent.animationName Mozilla AnimationEvent.animationName documentation> 
 getAnimationName ::
                  (MonadIO m, FromJSString result) => AnimationEvent -> m result
 getAnimationName self
-  = liftIO
-      (fromJSString <$> (js_getAnimationName (unAnimationEvent self)))
+  = liftIO (fromJSString <$> (js_getAnimationName (self)))
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
-        js_getElapsedTime :: JSRef AnimationEvent -> IO Double
+        js_getElapsedTime :: AnimationEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent.elapsedTime Mozilla AnimationEvent.elapsedTime documentation> 
 getElapsedTime :: (MonadIO m) => AnimationEvent -> m Double
-getElapsedTime self
-  = liftIO (js_getElapsedTime (unAnimationEvent self))
+getElapsedTime self = liftIO (js_getElapsedTime (self))

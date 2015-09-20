@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.File
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef File -> IO JSString
+        File -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/File.name Mozilla File.name documentation> 
 getName :: (MonadIO m, FromJSString result) => File -> m result
-getName self = liftIO (fromJSString <$> (js_getName (unFile self)))
+getName self = liftIO (fromJSString <$> (js_getName (self)))
  
 foreign import javascript unsafe "$1[\"lastModifiedDate\"]"
-        js_getLastModifiedDate :: JSRef File -> IO (JSRef Date)
+        js_getLastModifiedDate :: File -> IO (Nullable Date)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/File.lastModifiedDate Mozilla File.lastModifiedDate documentation> 
 getLastModifiedDate :: (MonadIO m) => File -> m (Maybe Date)
 getLastModifiedDate self
-  = liftIO ((js_getLastModifiedDate (unFile self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLastModifiedDate (self)))

@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.OESVertexArrayObject
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,21 +23,18 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"createVertexArrayOES\"]()"
         js_createVertexArrayOES ::
-        JSRef OESVertexArrayObject -> IO (JSRef WebGLVertexArrayObjectOES)
+        OESVertexArrayObject -> IO (Nullable WebGLVertexArrayObjectOES)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.createVertexArrayOES Mozilla OESVertexArrayObject.createVertexArrayOES documentation> 
 createVertexArrayOES ::
                      (MonadIO m) =>
                        OESVertexArrayObject -> m (Maybe WebGLVertexArrayObjectOES)
 createVertexArrayOES self
-  = liftIO
-      ((js_createVertexArrayOES (unOESVertexArrayObject self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_createVertexArrayOES (self)))
  
 foreign import javascript unsafe "$1[\"deleteVertexArrayOES\"]($2)"
         js_deleteVertexArrayOES ::
-        JSRef OESVertexArrayObject ->
-          JSRef WebGLVertexArrayObjectOES -> IO ()
+        OESVertexArrayObject -> Nullable WebGLVertexArrayObjectOES -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.deleteVertexArrayOES Mozilla OESVertexArrayObject.deleteVertexArrayOES documentation> 
 deleteVertexArrayOES ::
@@ -45,27 +42,23 @@ deleteVertexArrayOES ::
                        OESVertexArrayObject -> Maybe WebGLVertexArrayObjectOES -> m ()
 deleteVertexArrayOES self arrayObject
   = liftIO
-      (js_deleteVertexArrayOES (unOESVertexArrayObject self)
-         (maybe jsNull pToJSRef arrayObject))
+      (js_deleteVertexArrayOES (self) (maybeToNullable arrayObject))
  
 foreign import javascript unsafe
         "($1[\"isVertexArrayOES\"]($2) ? 1 : 0)" js_isVertexArrayOES ::
-        JSRef OESVertexArrayObject ->
-          JSRef WebGLVertexArrayObjectOES -> IO Bool
+        OESVertexArrayObject ->
+          Nullable WebGLVertexArrayObjectOES -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.isVertexArrayOES Mozilla OESVertexArrayObject.isVertexArrayOES documentation> 
 isVertexArrayOES ::
                  (MonadIO m) =>
                    OESVertexArrayObject -> Maybe WebGLVertexArrayObjectOES -> m Bool
 isVertexArrayOES self arrayObject
-  = liftIO
-      (js_isVertexArrayOES (unOESVertexArrayObject self)
-         (maybe jsNull pToJSRef arrayObject))
+  = liftIO (js_isVertexArrayOES (self) (maybeToNullable arrayObject))
  
 foreign import javascript unsafe "$1[\"bindVertexArrayOES\"]($2)"
         js_bindVertexArrayOES ::
-        JSRef OESVertexArrayObject ->
-          JSRef WebGLVertexArrayObjectOES -> IO ()
+        OESVertexArrayObject -> Nullable WebGLVertexArrayObjectOES -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.bindVertexArrayOES Mozilla OESVertexArrayObject.bindVertexArrayOES documentation> 
 bindVertexArrayOES ::
@@ -73,6 +66,5 @@ bindVertexArrayOES ::
                      OESVertexArrayObject -> Maybe WebGLVertexArrayObjectOES -> m ()
 bindVertexArrayOES self arrayObject
   = liftIO
-      (js_bindVertexArrayOES (unOESVertexArrayObject self)
-         (maybe jsNull pToJSRef arrayObject))
+      (js_bindVertexArrayOES (self) (maybeToNullable arrayObject))
 pattern VERTEX_ARRAY_BINDING_OES = 34229

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSRuleList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef CSSRuleList -> Word -> IO (JSRef CSSRule)
+        CSSRuleList -> Word -> IO (Nullable CSSRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList.item Mozilla CSSRuleList.item documentation> 
 item :: (MonadIO m) => CSSRuleList -> Word -> m (Maybe CSSRule)
 item self index
-  = liftIO ((js_item (unCSSRuleList self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef CSSRuleList -> IO Word
+        CSSRuleList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList.length Mozilla CSSRuleList.length documentation> 
 getLength :: (MonadIO m) => CSSRuleList -> m Word
-getLength self = liftIO (js_getLength (unCSSRuleList self))
+getLength self = liftIO (js_getLength (self))

@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.AudioNode
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -27,7 +27,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"connect\"]($2, $3, $4)"
         js_connect ::
-        JSRef AudioNode -> JSRef AudioNode -> Word -> Word -> IO ()
+        AudioNode -> Nullable AudioNode -> Word -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.connect Mozilla AudioNode.connect documentation> 
 connect ::
@@ -35,14 +35,14 @@ connect ::
           self -> Maybe destination -> Word -> Word -> m ()
 connect self destination output input
   = liftIO
-      (js_connect (unAudioNode (toAudioNode self))
-         (maybe jsNull (unAudioNode . toAudioNode) destination)
+      (js_connect (toAudioNode self)
+         (maybeToNullable (fmap toAudioNode destination))
          output
          input)
  
 foreign import javascript unsafe "$1[\"connect\"]($2, $3)"
         js_connectParam ::
-        JSRef AudioNode -> JSRef AudioParam -> Word -> IO ()
+        AudioNode -> Nullable AudioParam -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.connect Mozilla AudioNode.connect documentation> 
 connectParam ::
@@ -50,65 +50,63 @@ connectParam ::
                self -> Maybe AudioParam -> Word -> m ()
 connectParam self destination output
   = liftIO
-      (js_connectParam (unAudioNode (toAudioNode self))
-         (maybe jsNull pToJSRef destination)
+      (js_connectParam (toAudioNode self) (maybeToNullable destination)
          output)
  
 foreign import javascript unsafe "$1[\"disconnect\"]($2)"
-        js_disconnect :: JSRef AudioNode -> Word -> IO ()
+        js_disconnect :: AudioNode -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.disconnect Mozilla AudioNode.disconnect documentation> 
 disconnect :: (MonadIO m, IsAudioNode self) => self -> Word -> m ()
 disconnect self output
-  = liftIO (js_disconnect (unAudioNode (toAudioNode self)) output)
+  = liftIO (js_disconnect (toAudioNode self) output)
  
 foreign import javascript unsafe "$1[\"context\"]" js_getContext ::
-        JSRef AudioNode -> IO (JSRef AudioContext)
+        AudioNode -> IO (Nullable AudioContext)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
 getContext ::
            (MonadIO m, IsAudioNode self) => self -> m (Maybe AudioContext)
 getContext self
-  = liftIO
-      ((js_getContext (unAudioNode (toAudioNode self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getContext (toAudioNode self)))
  
 foreign import javascript unsafe "$1[\"numberOfInputs\"]"
-        js_getNumberOfInputs :: JSRef AudioNode -> IO Word
+        js_getNumberOfInputs :: AudioNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.numberOfInputs Mozilla AudioNode.numberOfInputs documentation> 
 getNumberOfInputs ::
                   (MonadIO m, IsAudioNode self) => self -> m Word
 getNumberOfInputs self
-  = liftIO (js_getNumberOfInputs (unAudioNode (toAudioNode self)))
+  = liftIO (js_getNumberOfInputs (toAudioNode self))
  
 foreign import javascript unsafe "$1[\"numberOfOutputs\"]"
-        js_getNumberOfOutputs :: JSRef AudioNode -> IO Word
+        js_getNumberOfOutputs :: AudioNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.numberOfOutputs Mozilla AudioNode.numberOfOutputs documentation> 
 getNumberOfOutputs ::
                    (MonadIO m, IsAudioNode self) => self -> m Word
 getNumberOfOutputs self
-  = liftIO (js_getNumberOfOutputs (unAudioNode (toAudioNode self)))
+  = liftIO (js_getNumberOfOutputs (toAudioNode self))
  
 foreign import javascript unsafe "$1[\"channelCount\"] = $2;"
-        js_setChannelCount :: JSRef AudioNode -> Word -> IO ()
+        js_setChannelCount :: AudioNode -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelCount Mozilla AudioNode.channelCount documentation> 
 setChannelCount ::
                 (MonadIO m, IsAudioNode self) => self -> Word -> m ()
 setChannelCount self val
-  = liftIO (js_setChannelCount (unAudioNode (toAudioNode self)) val)
+  = liftIO (js_setChannelCount (toAudioNode self) val)
  
 foreign import javascript unsafe "$1[\"channelCount\"]"
-        js_getChannelCount :: JSRef AudioNode -> IO Word
+        js_getChannelCount :: AudioNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelCount Mozilla AudioNode.channelCount documentation> 
 getChannelCount :: (MonadIO m, IsAudioNode self) => self -> m Word
 getChannelCount self
-  = liftIO (js_getChannelCount (unAudioNode (toAudioNode self)))
+  = liftIO (js_getChannelCount (toAudioNode self))
  
 foreign import javascript unsafe "$1[\"channelCountMode\"] = $2;"
-        js_setChannelCountMode :: JSRef AudioNode -> JSString -> IO ()
+        js_setChannelCountMode :: AudioNode -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelCountMode Mozilla AudioNode.channelCountMode documentation> 
 setChannelCountMode ::
@@ -116,11 +114,10 @@ setChannelCountMode ::
                       self -> val -> m ()
 setChannelCountMode self val
   = liftIO
-      (js_setChannelCountMode (unAudioNode (toAudioNode self))
-         (toJSString val))
+      (js_setChannelCountMode (toAudioNode self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"channelCountMode\"]"
-        js_getChannelCountMode :: JSRef AudioNode -> IO JSString
+        js_getChannelCountMode :: AudioNode -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelCountMode Mozilla AudioNode.channelCountMode documentation> 
 getChannelCountMode ::
@@ -128,12 +125,11 @@ getChannelCountMode ::
                       self -> m result
 getChannelCountMode self
   = liftIO
-      (fromJSString <$>
-         (js_getChannelCountMode (unAudioNode (toAudioNode self))))
+      (fromJSString <$> (js_getChannelCountMode (toAudioNode self)))
  
 foreign import javascript unsafe
         "$1[\"channelInterpretation\"] = $2;" js_setChannelInterpretation
-        :: JSRef AudioNode -> JSString -> IO ()
+        :: AudioNode -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelInterpretation Mozilla AudioNode.channelInterpretation documentation> 
 setChannelInterpretation ::
@@ -141,11 +137,10 @@ setChannelInterpretation ::
                            self -> val -> m ()
 setChannelInterpretation self val
   = liftIO
-      (js_setChannelInterpretation (unAudioNode (toAudioNode self))
-         (toJSString val))
+      (js_setChannelInterpretation (toAudioNode self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"channelInterpretation\"]"
-        js_getChannelInterpretation :: JSRef AudioNode -> IO JSString
+        js_getChannelInterpretation :: AudioNode -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelInterpretation Mozilla AudioNode.channelInterpretation documentation> 
 getChannelInterpretation ::
@@ -153,5 +148,4 @@ getChannelInterpretation ::
                            self -> m result
 getChannelInterpretation self
   = liftIO
-      (fromJSString <$>
-         (js_getChannelInterpretation (unAudioNode (toAudioNode self))))
+      (fromJSString <$> (js_getChannelInterpretation (toAudioNode self)))

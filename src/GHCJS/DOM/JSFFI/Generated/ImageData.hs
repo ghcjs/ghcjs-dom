@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.ImageData
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,7 +21,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"ImageData\"]($1, $2,\n$3)" js_newImageData ::
-        JSRef Uint8ClampedArray -> Word -> Word -> IO (JSRef ImageData)
+        Nullable Uint8ClampedArray -> Word -> Word -> IO ImageData
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation> 
 newImageData ::
@@ -29,31 +29,28 @@ newImageData ::
                Maybe data' -> Word -> Word -> m ImageData
 newImageData data' sw sh
   = liftIO
-      (js_newImageData
-         (maybe jsNull (unUint8ClampedArray . toUint8ClampedArray) data')
+      (js_newImageData (maybeToNullable (fmap toUint8ClampedArray data'))
          sw
-         sh
-         >>= fromJSRefUnchecked)
+         sh)
  
 foreign import javascript unsafe
         "new window[\"ImageData\"]($1, $2)" js_newImageData' ::
-        Word -> Word -> IO (JSRef ImageData)
+        Word -> Word -> IO ImageData
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation> 
 newImageData' :: (MonadIO m) => Word -> Word -> m ImageData
-newImageData' sw sh
-  = liftIO (js_newImageData' sw sh >>= fromJSRefUnchecked)
+newImageData' sw sh = liftIO (js_newImageData' sw sh)
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
-        JSRef ImageData -> IO Int
+        ImageData -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.width Mozilla ImageData.width documentation> 
 getWidth :: (MonadIO m) => ImageData -> m Int
-getWidth self = liftIO (js_getWidth (unImageData self))
+getWidth self = liftIO (js_getWidth (self))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
-        JSRef ImageData -> IO Int
+        ImageData -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.height Mozilla ImageData.height documentation> 
 getHeight :: (MonadIO m) => ImageData -> m Int
-getHeight self = liftIO (js_getHeight (unImageData self))
+getHeight self = liftIO (js_getHeight (self))

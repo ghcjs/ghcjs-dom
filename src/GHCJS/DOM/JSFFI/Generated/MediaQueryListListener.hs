@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaQueryListListener
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,8 +24,9 @@ newMediaQueryListListener ::
                             (Maybe MediaQueryList -> IO ()) -> m MediaQueryListListener
 newMediaQueryListListener callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
+      (MediaQueryListListener <$>
+         syncCallback1 ThrowWouldBlock
+           (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
 newMediaQueryListListenerSync ::
@@ -33,8 +34,9 @@ newMediaQueryListListenerSync ::
                                 (Maybe MediaQueryList -> IO ()) -> m MediaQueryListListener
 newMediaQueryListListenerSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
+      (MediaQueryListListener <$>
+         syncCallback1 ContinueAsync
+           (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
 newMediaQueryListListenerAsync ::
@@ -42,5 +44,6 @@ newMediaQueryListListenerAsync ::
                                  (Maybe MediaQueryList -> IO ()) -> m MediaQueryListListener
 newMediaQueryListListenerAsync callback
   = liftIO
-      (asyncCallback1
-         (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
+      (MediaQueryListListener <$>
+         asyncCallback1
+           (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))

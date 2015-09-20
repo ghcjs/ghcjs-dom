@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SQLResultSetRowList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,16 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef SQLResultSetRowList -> Word -> IO (JSRef a)
+        SQLResultSetRowList -> Word -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList.item Mozilla SQLResultSetRowList.item documentation> 
-item :: (MonadIO m) => SQLResultSetRowList -> Word -> m (JSRef a)
-item self index
-  = liftIO (js_item (unSQLResultSetRowList self) index)
+item :: (MonadIO m) => SQLResultSetRowList -> Word -> m JSRef
+item self index = liftIO (js_item (self) index)
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef SQLResultSetRowList -> IO Word
+        SQLResultSetRowList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList.length Mozilla SQLResultSetRowList.length documentation> 
 getLength :: (MonadIO m) => SQLResultSetRowList -> m Word
-getLength self = liftIO (js_getLength (unSQLResultSetRowList self))
+getLength self = liftIO (js_getLength (self))

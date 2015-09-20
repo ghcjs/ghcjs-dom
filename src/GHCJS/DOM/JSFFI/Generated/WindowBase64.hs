@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.WindowBase64
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,25 +19,21 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"atob\"]($2)" js_atob ::
-        JSRef WindowBase64 -> JSString -> IO JSString
+        WindowBase64 -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64.atob Mozilla WindowBase64.atob documentation> 
 atob ::
      (MonadIO m, ToJSString string, FromJSString result) =>
        WindowBase64 -> string -> m result
 atob self string
-  = liftIO
-      (fromJSString <$>
-         (js_atob (unWindowBase64 self) (toJSString string)))
+  = liftIO (fromJSString <$> (js_atob (self) (toJSString string)))
  
 foreign import javascript unsafe "$1[\"btoa\"]($2)" js_btoa ::
-        JSRef WindowBase64 -> JSString -> IO JSString
+        WindowBase64 -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64.btoa Mozilla WindowBase64.btoa documentation> 
 btoa ::
      (MonadIO m, ToJSString string, FromJSString result) =>
        WindowBase64 -> string -> m result
 btoa self string
-  = liftIO
-      (fromJSString <$>
-         (js_btoa (unWindowBase64 self) (toJSString string)))
+  = liftIO (fromJSString <$> (js_btoa (self) (toJSString string)))

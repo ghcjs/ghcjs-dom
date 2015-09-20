@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.PerformanceEntry
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,19 +21,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef PerformanceEntry -> IO JSString
+        PerformanceEntry -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.name Mozilla PerformanceEntry.name documentation> 
 getName ::
         (MonadIO m, IsPerformanceEntry self, FromJSString result) =>
           self -> m result
 getName self
-  = liftIO
-      (fromJSString <$>
-         (js_getName (unPerformanceEntry (toPerformanceEntry self))))
+  = liftIO (fromJSString <$> (js_getName (toPerformanceEntry self)))
  
 foreign import javascript unsafe "$1[\"entryType\"]"
-        js_getEntryType :: JSRef PerformanceEntry -> IO JSString
+        js_getEntryType :: PerformanceEntry -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.entryType Mozilla PerformanceEntry.entryType documentation> 
 getEntryType ::
@@ -41,25 +39,22 @@ getEntryType ::
                self -> m result
 getEntryType self
   = liftIO
-      (fromJSString <$>
-         (js_getEntryType (unPerformanceEntry (toPerformanceEntry self))))
+      (fromJSString <$> (js_getEntryType (toPerformanceEntry self)))
  
 foreign import javascript unsafe "$1[\"startTime\"]"
-        js_getStartTime :: JSRef PerformanceEntry -> IO Double
+        js_getStartTime :: PerformanceEntry -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.startTime Mozilla PerformanceEntry.startTime documentation> 
 getStartTime ::
              (MonadIO m, IsPerformanceEntry self) => self -> m Double
 getStartTime self
-  = liftIO
-      (js_getStartTime (unPerformanceEntry (toPerformanceEntry self)))
+  = liftIO (js_getStartTime (toPerformanceEntry self))
  
 foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
-        :: JSRef PerformanceEntry -> IO Double
+        :: PerformanceEntry -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.duration Mozilla PerformanceEntry.duration documentation> 
 getDuration ::
             (MonadIO m, IsPerformanceEntry self) => self -> m Double
 getDuration self
-  = liftIO
-      (js_getDuration (unPerformanceEntry (toPerformanceEntry self)))
+  = liftIO (js_getDuration (toPerformanceEntry self))

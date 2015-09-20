@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.Blob
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,30 +20,27 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"Blob\"]()"
-        js_newBlob :: IO (JSRef Blob)
+        js_newBlob :: IO Blob
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation> 
 newBlob :: (MonadIO m) => m Blob
-newBlob = liftIO (js_newBlob >>= fromJSRefUnchecked)
+newBlob = liftIO (js_newBlob)
  
 foreign import javascript unsafe "new window[\"Blob\"]($1, $2)"
-        js_newBlob' ::
-        JSRef [JSRef a] -> JSRef BlobPropertyBag -> IO (JSRef Blob)
+        js_newBlob' :: JSRef -> Nullable BlobPropertyBag -> IO Blob
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation> 
 newBlob' ::
          (MonadIO m, IsBlobPropertyBag options) =>
-           [JSRef a] -> Maybe options -> m Blob
+           [JSRef] -> Maybe options -> m Blob
 newBlob' blobParts options
   = liftIO
       (toJSRef blobParts >>= \ blobParts' -> js_newBlob' blobParts'
-         (maybe jsNull (unBlobPropertyBag . toBlobPropertyBag) options)
-         >>= fromJSRefUnchecked)
+         (maybeToNullable (fmap toBlobPropertyBag options)))
  
 foreign import javascript unsafe "$1[\"slice\"]($2, $3, $4)"
         js_slice ::
-        JSRef Blob ->
-          Double -> Double -> JSRef (Maybe JSString) -> IO (JSRef Blob)
+        Blob -> Double -> Double -> Nullable JSString -> IO (Nullable Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.slice Mozilla Blob.slice documentation> 
 slice ::
@@ -51,24 +48,21 @@ slice ::
         self -> Int64 -> Int64 -> Maybe contentType -> m (Maybe Blob)
 slice self start end contentType
   = liftIO
-      ((js_slice (unBlob (toBlob self)) (fromIntegral start)
-          (fromIntegral end)
-          (toMaybeJSString contentType))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_slice (toBlob self) (fromIntegral start) (fromIntegral end)
+            (toMaybeJSString contentType)))
  
 foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
-        JSRef Blob -> IO Double
+        Blob -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.size Mozilla Blob.size documentation> 
 getSize :: (MonadIO m, IsBlob self) => self -> m Word64
-getSize self
-  = liftIO (round <$> (js_getSize (unBlob (toBlob self))))
+getSize self = liftIO (round <$> (js_getSize (toBlob self)))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef Blob -> IO JSString
+        Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.type Mozilla Blob.type documentation> 
 getType ::
         (MonadIO m, IsBlob self, FromJSString result) => self -> m result
-getType self
-  = liftIO (fromJSString <$> (js_getType (unBlob (toBlob self))))
+getType self = liftIO (fromJSString <$> (js_getType (toBlob self)))

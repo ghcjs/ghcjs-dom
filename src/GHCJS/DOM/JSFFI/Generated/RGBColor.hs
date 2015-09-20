@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.RGBColor
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,24 +19,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"red\"]" js_getRed ::
-        JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
+        RGBColor -> IO (Nullable CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.red Mozilla RGBColor.red documentation> 
 getRed :: (MonadIO m) => RGBColor -> m (Maybe CSSPrimitiveValue)
-getRed self = liftIO ((js_getRed (unRGBColor self)) >>= fromJSRef)
+getRed self = liftIO (nullableToMaybe <$> (js_getRed (self)))
  
 foreign import javascript unsafe "$1[\"green\"]" js_getGreen ::
-        JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
+        RGBColor -> IO (Nullable CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.green Mozilla RGBColor.green documentation> 
 getGreen :: (MonadIO m) => RGBColor -> m (Maybe CSSPrimitiveValue)
-getGreen self
-  = liftIO ((js_getGreen (unRGBColor self)) >>= fromJSRef)
+getGreen self = liftIO (nullableToMaybe <$> (js_getGreen (self)))
  
 foreign import javascript unsafe "$1[\"blue\"]" js_getBlue ::
-        JSRef RGBColor -> IO (JSRef CSSPrimitiveValue)
+        RGBColor -> IO (Nullable CSSPrimitiveValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor.blue Mozilla RGBColor.blue documentation> 
 getBlue :: (MonadIO m) => RGBColor -> m (Maybe CSSPrimitiveValue)
-getBlue self
-  = liftIO ((js_getBlue (unRGBColor self)) >>= fromJSRef)
+getBlue self = liftIO (nullableToMaybe <$> (js_getBlue (self)))

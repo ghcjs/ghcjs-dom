@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSegArcRel
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,104 +23,99 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
-        JSRef SVGPathSegArcRel -> Float -> IO ()
+        SVGPathSegArcRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.x Mozilla SVGPathSegArcRel.x documentation> 
 setX :: (MonadIO m) => SVGPathSegArcRel -> Float -> m ()
-setX self val = liftIO (js_setX (unSVGPathSegArcRel self) val)
+setX self val = liftIO (js_setX (self) val)
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGPathSegArcRel -> IO Float
+        SVGPathSegArcRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.x Mozilla SVGPathSegArcRel.x documentation> 
 getX :: (MonadIO m) => SVGPathSegArcRel -> m Float
-getX self = liftIO (js_getX (unSVGPathSegArcRel self))
+getX self = liftIO (js_getX (self))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
-        JSRef SVGPathSegArcRel -> Float -> IO ()
+        SVGPathSegArcRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.y Mozilla SVGPathSegArcRel.y documentation> 
 setY :: (MonadIO m) => SVGPathSegArcRel -> Float -> m ()
-setY self val = liftIO (js_setY (unSVGPathSegArcRel self) val)
+setY self val = liftIO (js_setY (self) val)
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGPathSegArcRel -> IO Float
+        SVGPathSegArcRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.y Mozilla SVGPathSegArcRel.y documentation> 
 getY :: (MonadIO m) => SVGPathSegArcRel -> m Float
-getY self = liftIO (js_getY (unSVGPathSegArcRel self))
+getY self = liftIO (js_getY (self))
  
 foreign import javascript unsafe "$1[\"r1\"] = $2;" js_setR1 ::
-        JSRef SVGPathSegArcRel -> Float -> IO ()
+        SVGPathSegArcRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r1 Mozilla SVGPathSegArcRel.r1 documentation> 
 setR1 :: (MonadIO m) => SVGPathSegArcRel -> Float -> m ()
-setR1 self val = liftIO (js_setR1 (unSVGPathSegArcRel self) val)
+setR1 self val = liftIO (js_setR1 (self) val)
  
 foreign import javascript unsafe "$1[\"r1\"]" js_getR1 ::
-        JSRef SVGPathSegArcRel -> IO Float
+        SVGPathSegArcRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r1 Mozilla SVGPathSegArcRel.r1 documentation> 
 getR1 :: (MonadIO m) => SVGPathSegArcRel -> m Float
-getR1 self = liftIO (js_getR1 (unSVGPathSegArcRel self))
+getR1 self = liftIO (js_getR1 (self))
  
 foreign import javascript unsafe "$1[\"r2\"] = $2;" js_setR2 ::
-        JSRef SVGPathSegArcRel -> Float -> IO ()
+        SVGPathSegArcRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r2 Mozilla SVGPathSegArcRel.r2 documentation> 
 setR2 :: (MonadIO m) => SVGPathSegArcRel -> Float -> m ()
-setR2 self val = liftIO (js_setR2 (unSVGPathSegArcRel self) val)
+setR2 self val = liftIO (js_setR2 (self) val)
  
 foreign import javascript unsafe "$1[\"r2\"]" js_getR2 ::
-        JSRef SVGPathSegArcRel -> IO Float
+        SVGPathSegArcRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.r2 Mozilla SVGPathSegArcRel.r2 documentation> 
 getR2 :: (MonadIO m) => SVGPathSegArcRel -> m Float
-getR2 self = liftIO (js_getR2 (unSVGPathSegArcRel self))
+getR2 self = liftIO (js_getR2 (self))
  
 foreign import javascript unsafe "$1[\"angle\"] = $2;" js_setAngle
-        :: JSRef SVGPathSegArcRel -> Float -> IO ()
+        :: SVGPathSegArcRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.angle Mozilla SVGPathSegArcRel.angle documentation> 
 setAngle :: (MonadIO m) => SVGPathSegArcRel -> Float -> m ()
-setAngle self val
-  = liftIO (js_setAngle (unSVGPathSegArcRel self) val)
+setAngle self val = liftIO (js_setAngle (self) val)
  
 foreign import javascript unsafe "$1[\"angle\"]" js_getAngle ::
-        JSRef SVGPathSegArcRel -> IO Float
+        SVGPathSegArcRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.angle Mozilla SVGPathSegArcRel.angle documentation> 
 getAngle :: (MonadIO m) => SVGPathSegArcRel -> m Float
-getAngle self = liftIO (js_getAngle (unSVGPathSegArcRel self))
+getAngle self = liftIO (js_getAngle (self))
  
 foreign import javascript unsafe "$1[\"largeArcFlag\"] = $2;"
-        js_setLargeArcFlag :: JSRef SVGPathSegArcRel -> Bool -> IO ()
+        js_setLargeArcFlag :: SVGPathSegArcRel -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.largeArcFlag Mozilla SVGPathSegArcRel.largeArcFlag documentation> 
 setLargeArcFlag :: (MonadIO m) => SVGPathSegArcRel -> Bool -> m ()
-setLargeArcFlag self val
-  = liftIO (js_setLargeArcFlag (unSVGPathSegArcRel self) val)
+setLargeArcFlag self val = liftIO (js_setLargeArcFlag (self) val)
  
 foreign import javascript unsafe "($1[\"largeArcFlag\"] ? 1 : 0)"
-        js_getLargeArcFlag :: JSRef SVGPathSegArcRel -> IO Bool
+        js_getLargeArcFlag :: SVGPathSegArcRel -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.largeArcFlag Mozilla SVGPathSegArcRel.largeArcFlag documentation> 
 getLargeArcFlag :: (MonadIO m) => SVGPathSegArcRel -> m Bool
-getLargeArcFlag self
-  = liftIO (js_getLargeArcFlag (unSVGPathSegArcRel self))
+getLargeArcFlag self = liftIO (js_getLargeArcFlag (self))
  
 foreign import javascript unsafe "$1[\"sweepFlag\"] = $2;"
-        js_setSweepFlag :: JSRef SVGPathSegArcRel -> Bool -> IO ()
+        js_setSweepFlag :: SVGPathSegArcRel -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.sweepFlag Mozilla SVGPathSegArcRel.sweepFlag documentation> 
 setSweepFlag :: (MonadIO m) => SVGPathSegArcRel -> Bool -> m ()
-setSweepFlag self val
-  = liftIO (js_setSweepFlag (unSVGPathSegArcRel self) val)
+setSweepFlag self val = liftIO (js_setSweepFlag (self) val)
  
 foreign import javascript unsafe "($1[\"sweepFlag\"] ? 1 : 0)"
-        js_getSweepFlag :: JSRef SVGPathSegArcRel -> IO Bool
+        js_getSweepFlag :: SVGPathSegArcRel -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.sweepFlag Mozilla SVGPathSegArcRel.sweepFlag documentation> 
 getSweepFlag :: (MonadIO m) => SVGPathSegArcRel -> m Bool
-getSweepFlag self
-  = liftIO (js_getSweepFlag (unSVGPathSegArcRel self))
+getSweepFlag self = liftIO (js_getSweepFlag (self))

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.OfflineAudioContext
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,7 +22,7 @@ import GHCJS.DOM.Enums
 foreign import javascript unsafe
         "new window[\"OfflineAudioContext\"]($1,\n$2, $3)"
         js_newOfflineAudioContext ::
-        Word -> Word -> Float -> IO (JSRef OfflineAudioContext)
+        Word -> Word -> Float -> IO OfflineAudioContext
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioContext Mozilla OfflineAudioContext documentation> 
 newOfflineAudioContext ::
@@ -30,5 +30,4 @@ newOfflineAudioContext ::
 newOfflineAudioContext numberOfChannels numberOfFrames sampleRate
   = liftIO
       (js_newOfflineAudioContext numberOfChannels numberOfFrames
-         sampleRate
-         >>= fromJSRefUnchecked)
+         sampleRate)

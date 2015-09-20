@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLHeadElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,20 +19,18 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"profile\"] = $2;"
-        js_setProfile :: JSRef HTMLHeadElement -> JSString -> IO ()
+        js_setProfile :: HTMLHeadElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadElement.profile Mozilla HTMLHeadElement.profile documentation> 
 setProfile ::
            (MonadIO m, ToJSString val) => HTMLHeadElement -> val -> m ()
 setProfile self val
-  = liftIO (js_setProfile (unHTMLHeadElement self) (toJSString val))
+  = liftIO (js_setProfile (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"profile\"]" js_getProfile ::
-        JSRef HTMLHeadElement -> IO JSString
+        HTMLHeadElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadElement.profile Mozilla HTMLHeadElement.profile documentation> 
 getProfile ::
            (MonadIO m, FromJSString result) => HTMLHeadElement -> m result
-getProfile self
-  = liftIO
-      (fromJSString <$> (js_getProfile (unHTMLHeadElement self)))
+getProfile self = liftIO (fromJSString <$> (js_getProfile (self)))

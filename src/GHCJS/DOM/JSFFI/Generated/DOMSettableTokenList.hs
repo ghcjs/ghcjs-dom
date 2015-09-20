@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.DOMSettableTokenList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,34 +20,28 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
-        JSRef DOMSettableTokenList -> Word -> IO (JSRef (Maybe JSString))
+        DOMSettableTokenList -> Word -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList._get Mozilla DOMSettableTokenList._get documentation> 
 _get ::
      (MonadIO m, FromJSString result) =>
        DOMSettableTokenList -> Word -> m (Maybe result)
 _get self index
-  = liftIO
-      (fromMaybeJSString <$>
-         (js__get (unDOMSettableTokenList self) index))
+  = liftIO (fromMaybeJSString <$> (js__get (self) index))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: JSRef DOMSettableTokenList -> JSString -> IO ()
+        :: DOMSettableTokenList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList.value Mozilla DOMSettableTokenList.value documentation> 
 setValue ::
          (MonadIO m, ToJSString val) => DOMSettableTokenList -> val -> m ()
-setValue self val
-  = liftIO
-      (js_setValue (unDOMSettableTokenList self) (toJSString val))
+setValue self val = liftIO (js_setValue (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        JSRef DOMSettableTokenList -> IO JSString
+        DOMSettableTokenList -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList.value Mozilla DOMSettableTokenList.value documentation> 
 getValue ::
          (MonadIO m, FromJSString result) =>
            DOMSettableTokenList -> m result
-getValue self
-  = liftIO
-      (fromJSString <$> (js_getValue (unDOMSettableTokenList self)))
+getValue self = liftIO (fromJSString <$> (js_getValue (self)))

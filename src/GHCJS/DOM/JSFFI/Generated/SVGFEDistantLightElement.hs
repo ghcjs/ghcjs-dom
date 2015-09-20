@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEDistantLightElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,24 +20,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"azimuth\"]" js_getAzimuth ::
-        JSRef SVGFEDistantLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEDistantLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.azimuth Mozilla SVGFEDistantLightElement.azimuth documentation> 
 getAzimuth ::
            (MonadIO m) =>
              SVGFEDistantLightElement -> m (Maybe SVGAnimatedNumber)
 getAzimuth self
-  = liftIO
-      ((js_getAzimuth (unSVGFEDistantLightElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getAzimuth (self)))
  
 foreign import javascript unsafe "$1[\"elevation\"]"
         js_getElevation ::
-        JSRef SVGFEDistantLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFEDistantLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.elevation Mozilla SVGFEDistantLightElement.elevation documentation> 
 getElevation ::
              (MonadIO m) =>
                SVGFEDistantLightElement -> m (Maybe SVGAnimatedNumber)
 getElevation self
-  = liftIO
-      ((js_getElevation (unSVGFEDistantLightElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getElevation (self)))

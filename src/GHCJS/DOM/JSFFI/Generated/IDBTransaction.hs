@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBTransaction
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,7 +21,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"objectStore\"]($2)"
         js_objectStore ::
-        JSRef IDBTransaction -> JSString -> IO (JSRef IDBObjectStore)
+        IDBTransaction -> JSString -> IO (Nullable IDBObjectStore)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
 objectStore ::
@@ -29,40 +29,36 @@ objectStore ::
               IDBTransaction -> name -> m (Maybe IDBObjectStore)
 objectStore self name
   = liftIO
-      ((js_objectStore (unIDBTransaction self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_objectStore (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
-        JSRef IDBTransaction -> IO ()
+        IDBTransaction -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.abort Mozilla IDBTransaction.abort documentation> 
 abort :: (MonadIO m) => IDBTransaction -> m ()
-abort self = liftIO (js_abort (unIDBTransaction self))
+abort self = liftIO (js_abort (self))
  
 foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
-        JSRef IDBTransaction -> IO JSString
+        IDBTransaction -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.mode Mozilla IDBTransaction.mode documentation> 
 getMode ::
         (MonadIO m, FromJSString result) => IDBTransaction -> m result
-getMode self
-  = liftIO (fromJSString <$> (js_getMode (unIDBTransaction self)))
+getMode self = liftIO (fromJSString <$> (js_getMode (self)))
  
 foreign import javascript unsafe "$1[\"db\"]" js_getDb ::
-        JSRef IDBTransaction -> IO (JSRef IDBDatabase)
+        IDBTransaction -> IO (Nullable IDBDatabase)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.db Mozilla IDBTransaction.db documentation> 
 getDb :: (MonadIO m) => IDBTransaction -> m (Maybe IDBDatabase)
-getDb self
-  = liftIO ((js_getDb (unIDBTransaction self)) >>= fromJSRef)
+getDb self = liftIO (nullableToMaybe <$> (js_getDb (self)))
  
 foreign import javascript unsafe "$1[\"error\"]" js_getError ::
-        JSRef IDBTransaction -> IO (JSRef DOMError)
+        IDBTransaction -> IO (Nullable DOMError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
 getError :: (MonadIO m) => IDBTransaction -> m (Maybe DOMError)
-getError self
-  = liftIO ((js_getError (unIDBTransaction self)) >>= fromJSRef)
+getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.onabort Mozilla IDBTransaction.onabort documentation> 
 abortEvent :: EventName IDBTransaction Event

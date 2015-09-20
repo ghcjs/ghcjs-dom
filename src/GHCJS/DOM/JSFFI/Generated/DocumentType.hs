@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.DocumentType
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,63 +21,57 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
-        JSRef DocumentType -> IO JSString
+        DocumentType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.name Mozilla DocumentType.name documentation> 
 getName ::
         (MonadIO m, FromJSString result) => DocumentType -> m result
-getName self
-  = liftIO (fromJSString <$> (js_getName (unDocumentType self)))
+getName self = liftIO (fromJSString <$> (js_getName (self)))
  
 foreign import javascript unsafe "$1[\"entities\"]" js_getEntities
-        :: JSRef DocumentType -> IO (JSRef NamedNodeMap)
+        :: DocumentType -> IO (Nullable NamedNodeMap)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.entities Mozilla DocumentType.entities documentation> 
 getEntities ::
             (MonadIO m) => DocumentType -> m (Maybe NamedNodeMap)
 getEntities self
-  = liftIO ((js_getEntities (unDocumentType self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getEntities (self)))
  
 foreign import javascript unsafe "$1[\"notations\"]"
-        js_getNotations :: JSRef DocumentType -> IO (JSRef NamedNodeMap)
+        js_getNotations :: DocumentType -> IO (Nullable NamedNodeMap)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.notations Mozilla DocumentType.notations documentation> 
 getNotations ::
              (MonadIO m) => DocumentType -> m (Maybe NamedNodeMap)
 getNotations self
-  = liftIO ((js_getNotations (unDocumentType self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getNotations (self)))
  
 foreign import javascript unsafe "$1[\"publicId\"]" js_getPublicId
-        :: JSRef DocumentType -> IO (JSRef (Maybe JSString))
+        :: DocumentType -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.publicId Mozilla DocumentType.publicId documentation> 
 getPublicId ::
             (MonadIO m, FromJSString result) =>
               DocumentType -> m (Maybe result)
 getPublicId self
-  = liftIO
-      (fromMaybeJSString <$> (js_getPublicId (unDocumentType self)))
+  = liftIO (fromMaybeJSString <$> (js_getPublicId (self)))
  
 foreign import javascript unsafe "$1[\"systemId\"]" js_getSystemId
-        :: JSRef DocumentType -> IO (JSRef (Maybe JSString))
+        :: DocumentType -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.systemId Mozilla DocumentType.systemId documentation> 
 getSystemId ::
             (MonadIO m, FromJSString result) =>
               DocumentType -> m (Maybe result)
 getSystemId self
-  = liftIO
-      (fromMaybeJSString <$> (js_getSystemId (unDocumentType self)))
+  = liftIO (fromMaybeJSString <$> (js_getSystemId (self)))
  
 foreign import javascript unsafe "$1[\"internalSubset\"]"
-        js_getInternalSubset ::
-        JSRef DocumentType -> IO (JSRef (Maybe JSString))
+        js_getInternalSubset :: DocumentType -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.internalSubset Mozilla DocumentType.internalSubset documentation> 
 getInternalSubset ::
                   (MonadIO m, FromJSString result) =>
                     DocumentType -> m (Maybe result)
 getInternalSubset self
-  = liftIO
-      (fromMaybeJSString <$>
-         (js_getInternalSubset (unDocumentType self)))
+  = liftIO (fromMaybeJSString <$> (js_getInternalSubset (self)))

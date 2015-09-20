@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.DeviceOrientationEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,7 +23,7 @@ import GHCJS.DOM.Enums
 foreign import javascript unsafe
         "$1[\"initDeviceOrientationEvent\"]($2,\n$3, $4, $5, $6, $7, $8)"
         js_initDeviceOrientationEvent ::
-        JSRef DeviceOrientationEvent ->
+        DeviceOrientationEvent ->
           JSString ->
             Bool -> Bool -> Double -> Double -> Double -> Bool -> IO ()
 
@@ -35,9 +35,7 @@ initDeviceOrientationEvent ::
 initDeviceOrientationEvent self type' bubbles cancelable alpha beta
   gamma absolute
   = liftIO
-      (js_initDeviceOrientationEvent (unDeviceOrientationEvent self)
-         (toJSString type')
-         bubbles
+      (js_initDeviceOrientationEvent (self) (toJSString type') bubbles
          cancelable
          alpha
          beta
@@ -45,32 +43,29 @@ initDeviceOrientationEvent self type' bubbles cancelable alpha beta
          absolute)
  
 foreign import javascript unsafe "$1[\"alpha\"]" js_getAlpha ::
-        JSRef DeviceOrientationEvent -> IO Double
+        DeviceOrientationEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.alpha Mozilla DeviceOrientationEvent.alpha documentation> 
 getAlpha :: (MonadIO m) => DeviceOrientationEvent -> m Double
-getAlpha self
-  = liftIO (js_getAlpha (unDeviceOrientationEvent self))
+getAlpha self = liftIO (js_getAlpha (self))
  
 foreign import javascript unsafe "$1[\"beta\"]" js_getBeta ::
-        JSRef DeviceOrientationEvent -> IO Double
+        DeviceOrientationEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.beta Mozilla DeviceOrientationEvent.beta documentation> 
 getBeta :: (MonadIO m) => DeviceOrientationEvent -> m Double
-getBeta self = liftIO (js_getBeta (unDeviceOrientationEvent self))
+getBeta self = liftIO (js_getBeta (self))
  
 foreign import javascript unsafe "$1[\"gamma\"]" js_getGamma ::
-        JSRef DeviceOrientationEvent -> IO Double
+        DeviceOrientationEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.gamma Mozilla DeviceOrientationEvent.gamma documentation> 
 getGamma :: (MonadIO m) => DeviceOrientationEvent -> m Double
-getGamma self
-  = liftIO (js_getGamma (unDeviceOrientationEvent self))
+getGamma self = liftIO (js_getGamma (self))
  
 foreign import javascript unsafe "($1[\"absolute\"] ? 1 : 0)"
-        js_getAbsolute :: JSRef DeviceOrientationEvent -> IO Bool
+        js_getAbsolute :: DeviceOrientationEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.absolute Mozilla DeviceOrientationEvent.absolute documentation> 
 getAbsolute :: (MonadIO m) => DeviceOrientationEvent -> m Bool
-getAbsolute self
-  = liftIO (js_getAbsolute (unDeviceOrientationEvent self))
+getAbsolute self = liftIO (js_getAbsolute (self))

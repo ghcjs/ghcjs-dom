@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -40,52 +40,47 @@ pattern WEBKIT_KEYFRAMES_RULE = 7
 pattern WEBKIT_KEYFRAME_RULE = 8
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef CSSRule -> IO Word
+        CSSRule -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.type Mozilla CSSRule.type documentation> 
 getType :: (MonadIO m, IsCSSRule self) => self -> m Word
-getType self = liftIO (js_getType (unCSSRule (toCSSRule self)))
+getType self = liftIO (js_getType (toCSSRule self))
  
 foreign import javascript unsafe "$1[\"cssText\"] = $2;"
-        js_setCssText :: JSRef CSSRule -> JSRef (Maybe JSString) -> IO ()
+        js_setCssText :: CSSRule -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
 setCssText ::
            (MonadIO m, IsCSSRule self, ToJSString val) =>
              self -> Maybe val -> m ()
 setCssText self val
-  = liftIO
-      (js_setCssText (unCSSRule (toCSSRule self)) (toMaybeJSString val))
+  = liftIO (js_setCssText (toCSSRule self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"cssText\"]" js_getCssText ::
-        JSRef CSSRule -> IO (JSRef (Maybe JSString))
+        CSSRule -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
 getCssText ::
            (MonadIO m, IsCSSRule self, FromJSString result) =>
              self -> m (Maybe result)
 getCssText self
-  = liftIO
-      (fromMaybeJSString <$>
-         (js_getCssText (unCSSRule (toCSSRule self))))
+  = liftIO (fromMaybeJSString <$> (js_getCssText (toCSSRule self)))
  
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
-        js_getParentStyleSheet :: JSRef CSSRule -> IO (JSRef CSSStyleSheet)
+        js_getParentStyleSheet :: CSSRule -> IO (Nullable CSSStyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentStyleSheet Mozilla CSSRule.parentStyleSheet documentation> 
 getParentStyleSheet ::
                     (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSStyleSheet)
 getParentStyleSheet self
   = liftIO
-      ((js_getParentStyleSheet (unCSSRule (toCSSRule self))) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getParentStyleSheet (toCSSRule self)))
  
 foreign import javascript unsafe "$1[\"parentRule\"]"
-        js_getParentRule :: JSRef CSSRule -> IO (JSRef CSSRule)
+        js_getParentRule :: CSSRule -> IO (Nullable CSSRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentRule Mozilla CSSRule.parentRule documentation> 
 getParentRule ::
               (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSRule)
 getParentRule self
-  = liftIO
-      ((js_getParentRule (unCSSRule (toCSSRule self))) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getParentRule (toCSSRule self)))

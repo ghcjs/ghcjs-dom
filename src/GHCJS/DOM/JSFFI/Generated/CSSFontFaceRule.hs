@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSFontFaceRule
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,10 +19,9 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
-        JSRef CSSFontFaceRule -> IO (JSRef CSSStyleDeclaration)
+        CSSFontFaceRule -> IO (Nullable CSSStyleDeclaration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceRule.style Mozilla CSSFontFaceRule.style documentation> 
 getStyle ::
          (MonadIO m) => CSSFontFaceRule -> m (Maybe CSSStyleDeclaration)
-getStyle self
-  = liftIO ((js_getStyle (unCSSFontFaceRule self)) >>= fromJSRef)
+getStyle self = liftIO (nullableToMaybe <$> (js_getStyle (self)))

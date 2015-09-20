@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCIceCandidate
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,7 +22,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"RTCIceCandidate\"]($1)" js_newRTCIceCandidate ::
-        JSRef Dictionary -> IO (JSRef RTCIceCandidate)
+        Nullable Dictionary -> IO RTCIceCandidate
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate Mozilla RTCIceCandidate documentation> 
 newRTCIceCandidate ::
@@ -31,32 +31,28 @@ newRTCIceCandidate ::
 newRTCIceCandidate dictionary
   = liftIO
       (js_newRTCIceCandidate
-         (maybe jsNull (unDictionary . toDictionary) dictionary)
-         >>= fromJSRefUnchecked)
+         (maybeToNullable (fmap toDictionary dictionary)))
  
 foreign import javascript unsafe "$1[\"candidate\"]"
-        js_getCandidate :: JSRef RTCIceCandidate -> IO JSString
+        js_getCandidate :: RTCIceCandidate -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate.candidate Mozilla RTCIceCandidate.candidate documentation> 
 getCandidate ::
              (MonadIO m, FromJSString result) => RTCIceCandidate -> m result
 getCandidate self
-  = liftIO
-      (fromJSString <$> (js_getCandidate (unRTCIceCandidate self)))
+  = liftIO (fromJSString <$> (js_getCandidate (self)))
  
 foreign import javascript unsafe "$1[\"sdpMid\"]" js_getSdpMid ::
-        JSRef RTCIceCandidate -> IO JSString
+        RTCIceCandidate -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate.sdpMid Mozilla RTCIceCandidate.sdpMid documentation> 
 getSdpMid ::
           (MonadIO m, FromJSString result) => RTCIceCandidate -> m result
-getSdpMid self
-  = liftIO (fromJSString <$> (js_getSdpMid (unRTCIceCandidate self)))
+getSdpMid self = liftIO (fromJSString <$> (js_getSdpMid (self)))
  
 foreign import javascript unsafe "$1[\"sdpMLineIndex\"]"
-        js_getSdpMLineIndex :: JSRef RTCIceCandidate -> IO Word
+        js_getSdpMLineIndex :: RTCIceCandidate -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate.sdpMLineIndex Mozilla RTCIceCandidate.sdpMLineIndex documentation> 
 getSdpMLineIndex :: (MonadIO m) => RTCIceCandidate -> m Word
-getSdpMLineIndex self
-  = liftIO (js_getSdpMLineIndex (unRTCIceCandidate self))
+getSdpMLineIndex self = liftIO (js_getSdpMLineIndex (self))

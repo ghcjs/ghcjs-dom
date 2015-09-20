@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.ScriptProfile
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,26 +20,25 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
-        JSRef ScriptProfile -> IO JSString
+        ScriptProfile -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile.title Mozilla ScriptProfile.title documentation> 
 getTitle ::
          (MonadIO m, FromJSString result) => ScriptProfile -> m result
-getTitle self
-  = liftIO (fromJSString <$> (js_getTitle (unScriptProfile self)))
+getTitle self = liftIO (fromJSString <$> (js_getTitle (self)))
  
 foreign import javascript unsafe "$1[\"uid\"]" js_getUid ::
-        JSRef ScriptProfile -> IO Word
+        ScriptProfile -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile.uid Mozilla ScriptProfile.uid documentation> 
 getUid :: (MonadIO m) => ScriptProfile -> m Word
-getUid self = liftIO (js_getUid (unScriptProfile self))
+getUid self = liftIO (js_getUid (self))
  
 foreign import javascript unsafe "$1[\"rootNode\"]" js_getRootNode
-        :: JSRef ScriptProfile -> IO (JSRef ScriptProfileNode)
+        :: ScriptProfile -> IO (Nullable ScriptProfileNode)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile.rootNode Mozilla ScriptProfile.rootNode documentation> 
 getRootNode ::
             (MonadIO m) => ScriptProfile -> m (Maybe ScriptProfileNode)
 getRootNode self
-  = liftIO ((js_getRootNode (unScriptProfile self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getRootNode (self)))

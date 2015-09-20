@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCStatsCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -24,9 +24,10 @@ newRTCStatsCallback ::
                       (Maybe RTCStatsResponse -> IO ()) -> m RTCStatsCallback
 newRTCStatsCallback callback
   = liftIO
-      (syncCallback1 ThrowWouldBlock
-         (\ response ->
-            fromJSRefUnchecked response >>= \ response' -> callback response'))
+      (RTCStatsCallback <$>
+         syncCallback1 ThrowWouldBlock
+           (\ response ->
+              fromJSRefUnchecked response >>= \ response' -> callback response'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsCallback Mozilla RTCStatsCallback documentation> 
 newRTCStatsCallbackSync ::
@@ -34,9 +35,10 @@ newRTCStatsCallbackSync ::
                           (Maybe RTCStatsResponse -> IO ()) -> m RTCStatsCallback
 newRTCStatsCallbackSync callback
   = liftIO
-      (syncCallback1 ContinueAsync
-         (\ response ->
-            fromJSRefUnchecked response >>= \ response' -> callback response'))
+      (RTCStatsCallback <$>
+         syncCallback1 ContinueAsync
+           (\ response ->
+              fromJSRefUnchecked response >>= \ response' -> callback response'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsCallback Mozilla RTCStatsCallback documentation> 
 newRTCStatsCallbackAsync ::
@@ -44,6 +46,7 @@ newRTCStatsCallbackAsync ::
                            (Maybe RTCStatsResponse -> IO ()) -> m RTCStatsCallback
 newRTCStatsCallbackAsync callback
   = liftIO
-      (asyncCallback1
-         (\ response ->
-            fromJSRefUnchecked response >>= \ response' -> callback response'))
+      (RTCStatsCallback <$>
+         asyncCallback1
+           (\ response ->
+              fromJSRefUnchecked response >>= \ response' -> callback response'))

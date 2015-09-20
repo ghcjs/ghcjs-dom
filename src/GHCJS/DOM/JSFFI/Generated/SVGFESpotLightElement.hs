@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFESpotLightElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,85 +23,75 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.x Mozilla SVGFESpotLightElement.x documentation> 
 getX ::
      (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
-getX self
-  = liftIO ((js_getX (unSVGFESpotLightElement self)) >>= fromJSRef)
+getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.y Mozilla SVGFESpotLightElement.y documentation> 
 getY ::
      (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
-getY self
-  = liftIO ((js_getY (unSVGFESpotLightElement self)) >>= fromJSRef)
+getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
  
 foreign import javascript unsafe "$1[\"z\"]" js_getZ ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.z Mozilla SVGFESpotLightElement.z documentation> 
 getZ ::
      (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
-getZ self
-  = liftIO ((js_getZ (unSVGFESpotLightElement self)) >>= fromJSRef)
+getZ self = liftIO (nullableToMaybe <$> (js_getZ (self)))
  
 foreign import javascript unsafe "$1[\"pointsAtX\"]"
         js_getPointsAtX ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtX Mozilla SVGFESpotLightElement.pointsAtX documentation> 
 getPointsAtX ::
              (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getPointsAtX self
-  = liftIO
-      ((js_getPointsAtX (unSVGFESpotLightElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPointsAtX (self)))
  
 foreign import javascript unsafe "$1[\"pointsAtY\"]"
         js_getPointsAtY ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtY Mozilla SVGFESpotLightElement.pointsAtY documentation> 
 getPointsAtY ::
              (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getPointsAtY self
-  = liftIO
-      ((js_getPointsAtY (unSVGFESpotLightElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPointsAtY (self)))
  
 foreign import javascript unsafe "$1[\"pointsAtZ\"]"
         js_getPointsAtZ ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtZ Mozilla SVGFESpotLightElement.pointsAtZ documentation> 
 getPointsAtZ ::
              (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getPointsAtZ self
-  = liftIO
-      ((js_getPointsAtZ (unSVGFESpotLightElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getPointsAtZ (self)))
  
 foreign import javascript unsafe "$1[\"specularExponent\"]"
         js_getSpecularExponent ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.specularExponent Mozilla SVGFESpotLightElement.specularExponent documentation> 
 getSpecularExponent ::
                     (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getSpecularExponent self
-  = liftIO
-      ((js_getSpecularExponent (unSVGFESpotLightElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getSpecularExponent (self)))
  
 foreign import javascript unsafe "$1[\"limitingConeAngle\"]"
         js_getLimitingConeAngle ::
-        JSRef SVGFESpotLightElement -> IO (JSRef SVGAnimatedNumber)
+        SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.limitingConeAngle Mozilla SVGFESpotLightElement.limitingConeAngle documentation> 
 getLimitingConeAngle ::
                      (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getLimitingConeAngle self
-  = liftIO
-      ((js_getLimitingConeAngle (unSVGFESpotLightElement self)) >>=
-         fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getLimitingConeAngle (self)))

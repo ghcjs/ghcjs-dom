@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGURIReference
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,10 +19,9 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
-        JSRef SVGURIReference -> IO (JSRef SVGAnimatedString)
+        SVGURIReference -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGURIReference.href Mozilla SVGURIReference.href documentation> 
 getHref ::
         (MonadIO m) => SVGURIReference -> m (Maybe SVGAnimatedString)
-getHref self
-  = liftIO ((js_getHref (unSVGURIReference self)) >>= fromJSRef)
+getHref self = liftIO (nullableToMaybe <$> (js_getHref (self)))

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGUseElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,33 +19,31 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
+        SVGUseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.x Mozilla SVGUseElement.x documentation> 
 getX :: (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
-getX self = liftIO ((js_getX (unSVGUseElement self)) >>= fromJSRef)
+getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
+        SVGUseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.y Mozilla SVGUseElement.y documentation> 
 getY :: (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
-getY self = liftIO ((js_getY (unSVGUseElement self)) >>= fromJSRef)
+getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
-        JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
+        SVGUseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.width Mozilla SVGUseElement.width documentation> 
 getWidth ::
          (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
-getWidth self
-  = liftIO ((js_getWidth (unSVGUseElement self)) >>= fromJSRef)
+getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
-        JSRef SVGUseElement -> IO (JSRef SVGAnimatedLength)
+        SVGUseElement -> IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement.height Mozilla SVGUseElement.height documentation> 
 getHeight ::
           (MonadIO m) => SVGUseElement -> m (Maybe SVGAnimatedLength)
-getHeight self
-  = liftIO ((js_getHeight (unSVGUseElement self)) >>= fromJSRef)
+getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))

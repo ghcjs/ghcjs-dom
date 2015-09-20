@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.MessagePort
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,31 +19,30 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3)"
-        js_postMessage ::
-        JSRef MessagePort -> JSRef a -> JSRef Array -> IO ()
+        js_postMessage :: MessagePort -> JSRef -> Nullable Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort.postMessage Mozilla MessagePort.postMessage documentation> 
 postMessage ::
             (MonadIO m, IsArray messagePorts) =>
-              MessagePort -> JSRef a -> Maybe messagePorts -> m ()
+              MessagePort -> JSRef -> Maybe messagePorts -> m ()
 postMessage self message messagePorts
   = liftIO
-      (js_postMessage (unMessagePort self) message
-         (maybe jsNull (unArray . toArray) messagePorts))
+      (js_postMessage (self) message
+         (maybeToNullable (fmap toArray messagePorts)))
  
 foreign import javascript unsafe "$1[\"start\"]()" js_start ::
-        JSRef MessagePort -> IO ()
+        MessagePort -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort.start Mozilla MessagePort.start documentation> 
 start :: (MonadIO m) => MessagePort -> m ()
-start self = liftIO (js_start (unMessagePort self))
+start self = liftIO (js_start (self))
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
-        JSRef MessagePort -> IO ()
+        MessagePort -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort.close Mozilla MessagePort.close documentation> 
 close :: (MonadIO m) => MessagePort -> m ()
-close self = liftIO (js_close (unMessagePort self))
+close self = liftIO (js_close (self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort.onmessage Mozilla MessagePort.onmessage documentation> 
 message :: EventName MessagePort MessageEvent

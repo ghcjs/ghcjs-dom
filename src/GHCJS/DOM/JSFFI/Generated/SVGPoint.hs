@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPoint
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,41 +21,40 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"matrixTransform\"]($2)"
         js_matrixTransform ::
-        JSRef SVGPoint -> JSRef SVGMatrix -> IO (JSRef SVGPoint)
+        SVGPoint -> Nullable SVGMatrix -> IO (Nullable SVGPoint)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.matrixTransform Mozilla SVGPoint.matrixTransform documentation> 
 matrixTransform ::
                 (MonadIO m) => SVGPoint -> Maybe SVGMatrix -> m (Maybe SVGPoint)
 matrixTransform self matrix
   = liftIO
-      ((js_matrixTransform (unSVGPoint self)
-          (maybe jsNull pToJSRef matrix))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_matrixTransform (self) (maybeToNullable matrix)))
  
 foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
-        JSRef SVGPoint -> Float -> IO ()
+        SVGPoint -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.x Mozilla SVGPoint.x documentation> 
 setX :: (MonadIO m) => SVGPoint -> Float -> m ()
-setX self val = liftIO (js_setX (unSVGPoint self) val)
+setX self val = liftIO (js_setX (self) val)
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGPoint -> IO Float
+        SVGPoint -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.x Mozilla SVGPoint.x documentation> 
 getX :: (MonadIO m) => SVGPoint -> m Float
-getX self = liftIO (js_getX (unSVGPoint self))
+getX self = liftIO (js_getX (self))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
-        JSRef SVGPoint -> Float -> IO ()
+        SVGPoint -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.y Mozilla SVGPoint.y documentation> 
 setY :: (MonadIO m) => SVGPoint -> Float -> m ()
-setY self val = liftIO (js_setY (unSVGPoint self) val)
+setY self val = liftIO (js_setY (self) val)
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGPoint -> IO Float
+        SVGPoint -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.y Mozilla SVGPoint.y documentation> 
 getY :: (MonadIO m) => SVGPoint -> m Float
-getY self = liftIO (js_getY (unSVGPoint self))
+getY self = liftIO (js_getY (self))

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSFontFaceLoadEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,21 +20,18 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"fontface\"]" js_getFontface
-        :: JSRef CSSFontFaceLoadEvent -> IO (JSRef CSSFontFaceRule)
+        :: CSSFontFaceLoadEvent -> IO (Nullable CSSFontFaceRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.fontface Mozilla CSSFontFaceLoadEvent.fontface documentation> 
 getFontface ::
             (MonadIO m) => CSSFontFaceLoadEvent -> m (Maybe CSSFontFaceRule)
 getFontface self
-  = liftIO
-      ((js_getFontface (unCSSFontFaceLoadEvent self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getFontface (self)))
  
 foreign import javascript unsafe "$1[\"error\"]" js_getError ::
-        JSRef CSSFontFaceLoadEvent -> IO (JSRef DOMError)
+        CSSFontFaceLoadEvent -> IO (Nullable DOMError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.error Mozilla CSSFontFaceLoadEvent.error documentation> 
 getError ::
          (MonadIO m) => CSSFontFaceLoadEvent -> m (Maybe DOMError)
-getError self
-  = liftIO
-      ((js_getError (unCSSFontFaceLoadEvent self)) >>= fromJSRef)
+getError self = liftIO (nullableToMaybe <$> (js_getError (self)))

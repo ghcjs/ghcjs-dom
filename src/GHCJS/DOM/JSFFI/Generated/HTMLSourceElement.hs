@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLSourceElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,56 +20,49 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
-        JSRef HTMLSourceElement -> JSString -> IO ()
+        HTMLSourceElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.src Mozilla HTMLSourceElement.src documentation> 
 setSrc ::
        (MonadIO m, ToJSString val) => HTMLSourceElement -> val -> m ()
-setSrc self val
-  = liftIO (js_setSrc (unHTMLSourceElement self) (toJSString val))
+setSrc self val = liftIO (js_setSrc (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
-        JSRef HTMLSourceElement -> IO JSString
+        HTMLSourceElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.src Mozilla HTMLSourceElement.src documentation> 
 getSrc ::
        (MonadIO m, FromJSString result) => HTMLSourceElement -> m result
-getSrc self
-  = liftIO (fromJSString <$> (js_getSrc (unHTMLSourceElement self)))
+getSrc self = liftIO (fromJSString <$> (js_getSrc (self)))
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
-        JSRef HTMLSourceElement -> JSString -> IO ()
+        HTMLSourceElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.type Mozilla HTMLSourceElement.type documentation> 
 setType ::
         (MonadIO m, ToJSString val) => HTMLSourceElement -> val -> m ()
-setType self val
-  = liftIO (js_setType (unHTMLSourceElement self) (toJSString val))
+setType self val = liftIO (js_setType (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef HTMLSourceElement -> IO JSString
+        HTMLSourceElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.type Mozilla HTMLSourceElement.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => HTMLSourceElement -> m result
-getType self
-  = liftIO (fromJSString <$> (js_getType (unHTMLSourceElement self)))
+getType self = liftIO (fromJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"media\"] = $2;" js_setMedia
-        :: JSRef HTMLSourceElement -> JSString -> IO ()
+        :: HTMLSourceElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.media Mozilla HTMLSourceElement.media documentation> 
 setMedia ::
          (MonadIO m, ToJSString val) => HTMLSourceElement -> val -> m ()
-setMedia self val
-  = liftIO (js_setMedia (unHTMLSourceElement self) (toJSString val))
+setMedia self val = liftIO (js_setMedia (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
-        JSRef HTMLSourceElement -> IO JSString
+        HTMLSourceElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.media Mozilla HTMLSourceElement.media documentation> 
 getMedia ::
          (MonadIO m, FromJSString result) => HTMLSourceElement -> m result
-getMedia self
-  = liftIO
-      (fromJSString <$> (js_getMedia (unHTMLSourceElement self)))
+getMedia self = liftIO (fromJSString <$> (js_getMedia (self)))

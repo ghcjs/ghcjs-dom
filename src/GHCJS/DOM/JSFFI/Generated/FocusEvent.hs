@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.FocusEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,10 +19,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"relatedTarget\"]"
-        js_getRelatedTarget :: JSRef FocusEvent -> IO (JSRef EventTarget)
+        js_getRelatedTarget :: FocusEvent -> IO (Nullable EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent.relatedTarget Mozilla FocusEvent.relatedTarget documentation> 
 getRelatedTarget ::
                  (MonadIO m) => FocusEvent -> m (Maybe EventTarget)
 getRelatedTarget self
-  = liftIO ((js_getRelatedTarget (unFocusEvent self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getRelatedTarget (self)))

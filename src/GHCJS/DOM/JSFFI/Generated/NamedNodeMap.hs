@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.NamedNodeMap
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,8 +23,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"getNamedItem\"]($2)"
-        js_getNamedItem ::
-        JSRef NamedNodeMap -> JSString -> IO (JSRef Node)
+        js_getNamedItem :: NamedNodeMap -> JSString -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
 getNamedItem ::
@@ -32,12 +31,11 @@ getNamedItem ::
                NamedNodeMap -> name -> m (Maybe Node)
 getNamedItem self name
   = liftIO
-      ((js_getNamedItem (unNamedNodeMap self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_getNamedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"setNamedItem\"]($2)"
         js_setNamedItem ::
-        JSRef NamedNodeMap -> JSRef Node -> IO (JSRef Node)
+        NamedNodeMap -> Nullable Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItem Mozilla NamedNodeMap.setNamedItem documentation> 
 setNamedItem ::
@@ -45,13 +43,12 @@ setNamedItem ::
                NamedNodeMap -> Maybe node -> m (Maybe Node)
 setNamedItem self node
   = liftIO
-      ((js_setNamedItem (unNamedNodeMap self)
-          (maybe jsNull (unNode . toNode) node))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_setNamedItem (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"removeNamedItem\"]($2)"
         js_removeNamedItem ::
-        JSRef NamedNodeMap -> JSString -> IO (JSRef Node)
+        NamedNodeMap -> JSString -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItem Mozilla NamedNodeMap.removeNamedItem documentation> 
 removeNamedItem ::
@@ -59,21 +56,19 @@ removeNamedItem ::
                   NamedNodeMap -> name -> m (Maybe Node)
 removeNamedItem self name
   = liftIO
-      ((js_removeNamedItem (unNamedNodeMap self) (toJSString name)) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_removeNamedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef NamedNodeMap -> Word -> IO (JSRef Node)
+        NamedNodeMap -> Word -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.item Mozilla NamedNodeMap.item documentation> 
 item :: (MonadIO m) => NamedNodeMap -> Word -> m (Maybe Node)
 item self index
-  = liftIO ((js_item (unNamedNodeMap self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getNamedItemNS\"]($2, $3)"
         js_getNamedItemNS ::
-        JSRef NamedNodeMap ->
-          JSRef (Maybe JSString) -> JSString -> IO (JSRef Node)
+        NamedNodeMap -> Nullable JSString -> JSString -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItemNS Mozilla NamedNodeMap.getNamedItemNS documentation> 
 getNamedItemNS ::
@@ -81,14 +76,13 @@ getNamedItemNS ::
                  NamedNodeMap -> Maybe namespaceURI -> localName -> m (Maybe Node)
 getNamedItemNS self namespaceURI localName
   = liftIO
-      ((js_getNamedItemNS (unNamedNodeMap self)
-          (toMaybeJSString namespaceURI)
-          (toJSString localName))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_getNamedItemNS (self) (toMaybeJSString namespaceURI)
+            (toJSString localName)))
  
 foreign import javascript unsafe "$1[\"setNamedItemNS\"]($2)"
         js_setNamedItemNS ::
-        JSRef NamedNodeMap -> JSRef Node -> IO (JSRef Node)
+        NamedNodeMap -> Nullable Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItemNS Mozilla NamedNodeMap.setNamedItemNS documentation> 
 setNamedItemNS ::
@@ -96,14 +90,12 @@ setNamedItemNS ::
                  NamedNodeMap -> Maybe node -> m (Maybe Node)
 setNamedItemNS self node
   = liftIO
-      ((js_setNamedItemNS (unNamedNodeMap self)
-          (maybe jsNull (unNode . toNode) node))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_setNamedItemNS (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe
         "$1[\"removeNamedItemNS\"]($2, $3)" js_removeNamedItemNS ::
-        JSRef NamedNodeMap ->
-          JSRef (Maybe JSString) -> JSString -> IO (JSRef Node)
+        NamedNodeMap -> Nullable JSString -> JSString -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItemNS Mozilla NamedNodeMap.removeNamedItemNS documentation> 
 removeNamedItemNS ::
@@ -111,14 +103,13 @@ removeNamedItemNS ::
                     NamedNodeMap -> Maybe namespaceURI -> localName -> m (Maybe Node)
 removeNamedItemNS self namespaceURI localName
   = liftIO
-      ((js_removeNamedItemNS (unNamedNodeMap self)
-          (toMaybeJSString namespaceURI)
-          (toJSString localName))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_removeNamedItemNS (self) (toMaybeJSString namespaceURI)
+            (toJSString localName)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef NamedNodeMap -> IO Word
+        NamedNodeMap -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.length Mozilla NamedNodeMap.length documentation> 
 getLength :: (MonadIO m) => NamedNodeMap -> m Word
-getLength self = liftIO (js_getLength (unNamedNodeMap self))
+getLength self = liftIO (js_getLength (self))

@@ -59,20 +59,20 @@ postGUISync = id
 
 #ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "$r = window"
-  ghcjs_currentWindow :: IO (JSRef Window)
+  ghcjs_currentWindow :: IO (Nullable Window)
 foreign import javascript unsafe "$r = document"
-  ghcjs_currentDocument :: IO (JSRef Document)
+  ghcjs_currentDocument :: IO (Nullable Document)
 #else
-ghcjs_currentWindow :: IO (JSRef Window)
+ghcjs_currentWindow :: IO (Nullable Window)
 ghcjs_currentWindow = undefined
-ghcjs_currentDocument :: IO (JSRef Document)
+ghcjs_currentDocument :: IO (Nullable Document)
 ghcjs_currentDocument = undefined
 #endif
 
 currentWindow :: IO (Maybe Window)
-currentWindow = fmap Window . maybeJSNullOrUndefined <$> ghcjs_currentWindow
+currentWindow = nullableToMaybe <$> ghcjs_currentWindow
 currentDocument :: IO (Maybe Document)
-currentDocument = fmap Document . maybeJSNullOrUndefined <$> ghcjs_currentDocument
+currentDocument = nullableToMaybe <$> ghcjs_currentDocument
 
 type WebView = Window
 castToWebView = id

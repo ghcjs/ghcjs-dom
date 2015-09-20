@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeys
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,19 +21,18 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"WebKitMediaKeys\"]($1)" js_newMediaKeys ::
-        JSString -> IO (JSRef MediaKeys)
+        JSString -> IO MediaKeys
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation> 
 newMediaKeys ::
              (MonadIO m, ToJSString keySystem) => keySystem -> m MediaKeys
 newMediaKeys keySystem
-  = liftIO
-      (js_newMediaKeys (toJSString keySystem) >>= fromJSRefUnchecked)
+  = liftIO (js_newMediaKeys (toJSString keySystem))
  
 foreign import javascript unsafe "$1[\"createSession\"]($2, $3)"
         js_createSession ::
-        JSRef MediaKeys ->
-          JSString -> JSRef Uint8Array -> IO (JSRef MediaKeySession)
+        MediaKeys ->
+          JSString -> Nullable Uint8Array -> IO (Nullable MediaKeySession)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.createSession Mozilla WebKitMediaKeys.createSession documentation> 
 createSession ::
@@ -41,13 +40,13 @@ createSession ::
                 MediaKeys -> type' -> Maybe initData -> m (Maybe MediaKeySession)
 createSession self type' initData
   = liftIO
-      ((js_createSession (unMediaKeys self) (toJSString type')
-          (maybe jsNull (unUint8Array . toUint8Array) initData))
-         >>= fromJSRef)
+      (nullableToMaybe <$>
+         (js_createSession (self) (toJSString type')
+            (maybeToNullable (fmap toUint8Array initData))))
  
 foreign import javascript unsafe
         "($1[\"isTypeSupported\"]($2,\n$3) ? 1 : 0)" js_isTypeSupported ::
-        JSRef MediaKeys -> JSString -> JSString -> IO Bool
+        MediaKeys -> JSString -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.isTypeSupported Mozilla WebKitMediaKeys.isTypeSupported documentation> 
 isTypeSupported ::
@@ -55,14 +54,14 @@ isTypeSupported ::
                   MediaKeys -> keySystem -> type' -> m Bool
 isTypeSupported self keySystem type'
   = liftIO
-      (js_isTypeSupported (unMediaKeys self) (toJSString keySystem)
+      (js_isTypeSupported (self) (toJSString keySystem)
          (toJSString type'))
  
 foreign import javascript unsafe "$1[\"keySystem\"]"
-        js_getKeySystem :: JSRef MediaKeys -> IO JSString
+        js_getKeySystem :: MediaKeys -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.keySystem Mozilla WebKitMediaKeys.keySystem documentation> 
 getKeySystem ::
              (MonadIO m, FromJSString result) => MediaKeys -> m result
 getKeySystem self
-  = liftIO (fromJSString <$> (js_getKeySystem (unMediaKeys self)))
+  = liftIO (fromJSString <$> (js_getKeySystem (self)))

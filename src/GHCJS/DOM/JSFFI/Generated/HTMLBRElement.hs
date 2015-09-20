@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLBRElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,19 +19,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"clear\"] = $2;" js_setClear
-        :: JSRef HTMLBRElement -> JSString -> IO ()
+        :: HTMLBRElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement.clear Mozilla HTMLBRElement.clear documentation> 
 setClear ::
          (MonadIO m, ToJSString val) => HTMLBRElement -> val -> m ()
-setClear self val
-  = liftIO (js_setClear (unHTMLBRElement self) (toJSString val))
+setClear self val = liftIO (js_setClear (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"clear\"]" js_getClear ::
-        JSRef HTMLBRElement -> IO JSString
+        HTMLBRElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement.clear Mozilla HTMLBRElement.clear documentation> 
 getClear ::
          (MonadIO m, FromJSString result) => HTMLBRElement -> m result
-getClear self
-  = liftIO (fromJSString <$> (js_getClear (unHTMLBRElement self)))
+getClear self = liftIO (fromJSString <$> (js_getClear (self)))

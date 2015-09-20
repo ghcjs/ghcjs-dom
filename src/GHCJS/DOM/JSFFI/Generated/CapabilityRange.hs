@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CapabilityRange
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,23 +20,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"max\"]" js_getMax ::
-        JSRef CapabilityRange -> IO (JSRef a)
+        CapabilityRange -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.max Mozilla CapabilityRange.max documentation> 
-getMax :: (MonadIO m) => CapabilityRange -> m (JSRef a)
-getMax self = liftIO (js_getMax (unCapabilityRange self))
+getMax :: (MonadIO m) => CapabilityRange -> m JSRef
+getMax self = liftIO (js_getMax (self))
  
 foreign import javascript unsafe "$1[\"min\"]" js_getMin ::
-        JSRef CapabilityRange -> IO (JSRef a)
+        CapabilityRange -> IO JSRef
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.min Mozilla CapabilityRange.min documentation> 
-getMin :: (MonadIO m) => CapabilityRange -> m (JSRef a)
-getMin self = liftIO (js_getMin (unCapabilityRange self))
+getMin :: (MonadIO m) => CapabilityRange -> m JSRef
+getMin self = liftIO (js_getMin (self))
  
 foreign import javascript unsafe "($1[\"supported\"] ? 1 : 0)"
-        js_getSupported :: JSRef CapabilityRange -> IO Bool
+        js_getSupported :: CapabilityRange -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.supported Mozilla CapabilityRange.supported documentation> 
 getSupported :: (MonadIO m) => CapabilityRange -> m Bool
-getSupported self
-  = liftIO (js_getSupported (unCapabilityRange self))
+getSupported self = liftIO (js_getSupported (self))

@@ -11,7 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.WebKitCSSFilterValue
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -25,14 +25,13 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
-        JSRef WebKitCSSFilterValue -> Word -> IO (JSRef CSSValue)
+        WebKitCSSFilterValue -> Word -> IO (Nullable CSSValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue._get Mozilla WebKitCSSFilterValue._get documentation> 
 _get ::
      (MonadIO m) => WebKitCSSFilterValue -> Word -> m (Maybe CSSValue)
 _get self index
-  = liftIO
-      ((js__get (unWebKitCSSFilterValue self) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js__get (self) index))
 pattern CSS_FILTER_REFERENCE = 1
 pattern CSS_FILTER_GRAYSCALE = 2
 pattern CSS_FILTER_SEPIA = 3
@@ -46,9 +45,8 @@ pattern CSS_FILTER_BLUR = 10
 pattern CSS_FILTER_DROP_SHADOW = 11
  
 foreign import javascript unsafe "$1[\"operationType\"]"
-        js_getOperationType :: JSRef WebKitCSSFilterValue -> IO Word
+        js_getOperationType :: WebKitCSSFilterValue -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue.operationType Mozilla WebKitCSSFilterValue.operationType documentation> 
 getOperationType :: (MonadIO m) => WebKitCSSFilterValue -> m Word
-getOperationType self
-  = liftIO (js_getOperationType (unWebKitCSSFilterValue self))
+getOperationType self = liftIO (js_getOperationType (self))

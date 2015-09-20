@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGExternalResourcesRequired
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,8 +21,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"externalResourcesRequired\"]" js_getExternalResourcesRequired
-        ::
-        JSRef SVGExternalResourcesRequired -> IO (JSRef SVGAnimatedBoolean)
+        :: SVGExternalResourcesRequired -> IO (Nullable SVGAnimatedBoolean)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGExternalResourcesRequired.externalResourcesRequired Mozilla SVGExternalResourcesRequired.externalResourcesRequired documentation> 
 getExternalResourcesRequired ::
@@ -30,6 +29,4 @@ getExternalResourcesRequired ::
                                SVGExternalResourcesRequired -> m (Maybe SVGAnimatedBoolean)
 getExternalResourcesRequired self
   = liftIO
-      ((js_getExternalResourcesRequired
-          (unSVGExternalResourcesRequired self))
-         >>= fromJSRef)
+      (nullableToMaybe <$> (js_getExternalResourcesRequired (self)))

@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.NodeFilter
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -26,15 +26,13 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"acceptNode\"]($2)"
-        js_acceptNode :: JSRef NodeFilter -> JSRef Node -> IO Int
+        js_acceptNode :: NodeFilter -> Nullable Node -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter.acceptNode Mozilla NodeFilter.acceptNode documentation> 
 acceptNode ::
            (MonadIO m, IsNode n) => NodeFilter -> Maybe n -> m Int
 acceptNode self n
-  = liftIO
-      (js_acceptNode (unNodeFilter self)
-         (maybe jsNull (unNode . toNode) n))
+  = liftIO (js_acceptNode (self) (maybeToNullable (fmap toNode n)))
 pattern FILTER_ACCEPT = 1
 pattern FILTER_REJECT = 2
 pattern FILTER_SKIP = 3

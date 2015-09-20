@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.WebGLLoseContext
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,17 +19,15 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"loseContext\"]()"
-        js_loseContext :: JSRef WebGLLoseContext -> IO ()
+        js_loseContext :: WebGLLoseContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext.loseContext Mozilla WebGLLoseContext.loseContext documentation> 
 loseContext :: (MonadIO m) => WebGLLoseContext -> m ()
-loseContext self
-  = liftIO (js_loseContext (unWebGLLoseContext self))
+loseContext self = liftIO (js_loseContext (self))
  
 foreign import javascript unsafe "$1[\"restoreContext\"]()"
-        js_restoreContext :: JSRef WebGLLoseContext -> IO ()
+        js_restoreContext :: WebGLLoseContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext.restoreContext Mozilla WebGLLoseContext.restoreContext documentation> 
 restoreContext :: (MonadIO m) => WebGLLoseContext -> m ()
-restoreContext self
-  = liftIO (js_restoreContext (unWebGLLoseContext self))
+restoreContext self = liftIO (js_restoreContext (self))

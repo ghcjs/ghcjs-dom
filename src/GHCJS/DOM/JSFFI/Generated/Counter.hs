@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.Counter
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,28 +20,28 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"identifier\"]"
-        js_getIdentifier :: JSRef Counter -> IO JSString
+        js_getIdentifier :: Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.identifier Mozilla Counter.identifier documentation> 
 getIdentifier ::
               (MonadIO m, FromJSString result) => Counter -> m result
 getIdentifier self
-  = liftIO (fromJSString <$> (js_getIdentifier (unCounter self)))
+  = liftIO (fromJSString <$> (js_getIdentifier (self)))
  
 foreign import javascript unsafe "$1[\"listStyle\"]"
-        js_getListStyle :: JSRef Counter -> IO JSString
+        js_getListStyle :: Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.listStyle Mozilla Counter.listStyle documentation> 
 getListStyle ::
              (MonadIO m, FromJSString result) => Counter -> m result
 getListStyle self
-  = liftIO (fromJSString <$> (js_getListStyle (unCounter self)))
+  = liftIO (fromJSString <$> (js_getListStyle (self)))
  
 foreign import javascript unsafe "$1[\"separator\"]"
-        js_getSeparator :: JSRef Counter -> IO JSString
+        js_getSeparator :: Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.separator Mozilla Counter.separator documentation> 
 getSeparator ::
              (MonadIO m, FromJSString result) => Counter -> m result
 getSeparator self
-  = liftIO (fromJSString <$> (js_getSeparator (unCounter self)))
+  = liftIO (fromJSString <$> (js_getSeparator (self)))

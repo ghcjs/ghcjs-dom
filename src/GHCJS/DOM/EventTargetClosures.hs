@@ -10,33 +10,33 @@ import GHCJS.Foreign.Callback.Internal
 import GHCJS.Foreign.Callback
 import GHCJS.Marshal.Pure
 import GHCJS.DOM.Types
-import GHCJS.Marshal.Pure (pToJSRef, pFromJSRef)
+import GHCJS.Foreign.Callback.Internal
 
 newtype EventName t e = EventName DOMString
 newtype SaferEventListener t e = SaferEventListener EventListener
 
 instance PToJSRef (SaferEventListener t e) where
-    pToJSRef (SaferEventListener l) = castRef $ pToJSRef l
+    pToJSRef (SaferEventListener l) = pToJSRef l
     {-# INLINE pToJSRef #-}
 
 instance PFromJSRef (SaferEventListener t e) where
-    pFromJSRef = SaferEventListener . pFromJSRef . castRef
+    pFromJSRef = SaferEventListener . pFromJSRef
     {-# INLINE pFromJSRef #-}
 
 unsafeEventName :: DOMString -> EventName t e
 unsafeEventName = EventName
 
 eventListenerNew :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNew callback = (EventListener . castRef . pToJSRef) <$> syncCallback1 ContinueAsync (callback . unsafeCastGObject . GObject)
+eventListenerNew callback = (EventListener . jsref) <$> syncCallback1 ContinueAsync (callback . unsafeCastGObject . GObject)
 
 eventListenerNewSync :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNewSync callback = (EventListener . castRef . pToJSRef) <$> syncCallback1 ThrowWouldBlock (callback . unsafeCastGObject . GObject)
+eventListenerNewSync callback = (EventListener . jsref) <$> syncCallback1 ThrowWouldBlock (callback . unsafeCastGObject . GObject)
 
 eventListenerNewAsync :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNewAsync callback = (EventListener . castRef . pToJSRef) <$> asyncCallback1 (callback . unsafeCastGObject . GObject)
+eventListenerNewAsync callback = (EventListener . jsref) <$> asyncCallback1 (callback . unsafeCastGObject . GObject)
 
 eventListenerRelease :: EventListener -> IO ()
-eventListenerRelease (EventListener ref) = releaseCallback (Callback $ castRef ref)
+eventListenerRelease (EventListener ref) = releaseCallback (Callback ref)
 
 #else
 module GHCJS.DOM.EventTargetClosures (

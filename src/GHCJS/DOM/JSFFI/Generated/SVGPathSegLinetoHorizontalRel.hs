@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoHorizontalRel
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,17 +20,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
-        JSRef SVGPathSegLinetoHorizontalRel -> Float -> IO ()
+        SVGPathSegLinetoHorizontalRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalRel.x Mozilla SVGPathSegLinetoHorizontalRel.x documentation> 
 setX ::
      (MonadIO m) => SVGPathSegLinetoHorizontalRel -> Float -> m ()
-setX self val
-  = liftIO (js_setX (unSVGPathSegLinetoHorizontalRel self) val)
+setX self val = liftIO (js_setX (self) val)
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGPathSegLinetoHorizontalRel -> IO Float
+        SVGPathSegLinetoHorizontalRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalRel.x Mozilla SVGPathSegLinetoHorizontalRel.x documentation> 
 getX :: (MonadIO m) => SVGPathSegLinetoHorizontalRel -> m Float
-getX self = liftIO (js_getX (unSVGPathSegLinetoHorizontalRel self))
+getX self = liftIO (js_getX (self))

@@ -21,7 +21,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSeg
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -55,15 +55,15 @@ pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS = 18
 pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL = 19
  
 foreign import javascript unsafe "$1[\"pathSegType\"]"
-        js_getPathSegType :: JSRef SVGPathSeg -> IO Word
+        js_getPathSegType :: SVGPathSeg -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegType Mozilla SVGPathSeg.pathSegType documentation> 
 getPathSegType :: (MonadIO m, IsSVGPathSeg self) => self -> m Word
 getPathSegType self
-  = liftIO (js_getPathSegType (unSVGPathSeg (toSVGPathSeg self)))
+  = liftIO (js_getPathSegType (toSVGPathSeg self))
  
 foreign import javascript unsafe "$1[\"pathSegTypeAsLetter\"]"
-        js_getPathSegTypeAsLetter :: JSRef SVGPathSeg -> IO JSString
+        js_getPathSegTypeAsLetter :: SVGPathSeg -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegTypeAsLetter Mozilla SVGPathSeg.pathSegTypeAsLetter documentation> 
 getPathSegTypeAsLetter ::
@@ -71,5 +71,4 @@ getPathSegTypeAsLetter ::
                          self -> m result
 getPathSegTypeAsLetter self
   = liftIO
-      (fromJSString <$>
-         (js_getPathSegTypeAsLetter (unSVGPathSeg (toSVGPathSeg self))))
+      (fromJSString <$> (js_getPathSegTypeAsLetter (toSVGPathSeg self)))

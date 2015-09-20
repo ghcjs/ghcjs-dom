@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLHeadingElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,20 +19,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
-        :: JSRef HTMLHeadingElement -> JSString -> IO ()
+        :: HTMLHeadingElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement.align Mozilla HTMLHeadingElement.align documentation> 
 setAlign ::
          (MonadIO m, ToJSString val) => HTMLHeadingElement -> val -> m ()
-setAlign self val
-  = liftIO (js_setAlign (unHTMLHeadingElement self) (toJSString val))
+setAlign self val = liftIO (js_setAlign (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
-        JSRef HTMLHeadingElement -> IO JSString
+        HTMLHeadingElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement.align Mozilla HTMLHeadingElement.align documentation> 
 getAlign ::
          (MonadIO m, FromJSString result) => HTMLHeadingElement -> m result
-getAlign self
-  = liftIO
-      (fromJSString <$> (js_getAlign (unHTMLHeadingElement self)))
+getAlign self = liftIO (fromJSString <$> (js_getAlign (self)))

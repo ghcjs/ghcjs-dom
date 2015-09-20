@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.NodeList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,19 +19,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef NodeList -> Word -> IO (JSRef Node)
+        NodeList -> Word -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.item Mozilla NodeList.item documentation> 
 item ::
      (MonadIO m, IsNodeList self) => self -> Word -> m (Maybe Node)
 item self index
-  = liftIO
-      ((js_item (unNodeList (toNodeList self)) index) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_item (toNodeList self) index))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef NodeList -> IO Word
+        NodeList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.length Mozilla NodeList.length documentation> 
 getLength :: (MonadIO m, IsNodeList self) => self -> m Word
-getLength self
-  = liftIO (js_getLength (unNodeList (toNodeList self)))
+getLength self = liftIO (js_getLength (toNodeList self))

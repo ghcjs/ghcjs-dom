@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSValueList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,7 +20,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        JSRef CSSValueList -> Word -> IO (JSRef CSSValue)
+        CSSValueList -> Word -> IO (Nullable CSSValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValueList.item Mozilla CSSValueList.item documentation> 
 item ::
@@ -28,13 +28,11 @@ item ::
        self -> Word -> m (Maybe CSSValue)
 item self index
   = liftIO
-      ((js_item (unCSSValueList (toCSSValueList self)) index) >>=
-         fromJSRef)
+      (nullableToMaybe <$> (js_item (toCSSValueList self) index))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        JSRef CSSValueList -> IO Word
+        CSSValueList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValueList.length Mozilla CSSValueList.length documentation> 
 getLength :: (MonadIO m, IsCSSValueList self) => self -> m Word
-getLength self
-  = liftIO (js_getLength (unCSSValueList (toCSSValueList self)))
+getLength self = liftIO (js_getLength (toCSSValueList self))

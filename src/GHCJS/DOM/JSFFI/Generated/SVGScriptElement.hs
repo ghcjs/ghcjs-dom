@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGScriptElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,23 +19,19 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
-        JSRef SVGScriptElement -> JSRef (Maybe JSString) -> IO ()
+        SVGScriptElement -> Nullable JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGScriptElement.type Mozilla SVGScriptElement.type documentation> 
 setType ::
         (MonadIO m, ToJSString val) =>
           SVGScriptElement -> Maybe val -> m ()
-setType self val
-  = liftIO
-      (js_setType (unSVGScriptElement self) (toMaybeJSString val))
+setType self val = liftIO (js_setType (self) (toMaybeJSString val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef SVGScriptElement -> IO (JSRef (Maybe JSString))
+        SVGScriptElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGScriptElement.type Mozilla SVGScriptElement.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) =>
           SVGScriptElement -> m (Maybe result)
-getType self
-  = liftIO
-      (fromMaybeJSString <$> (js_getType (unSVGScriptElement self)))
+getType self = liftIO (fromMaybeJSString <$> (js_getType (self)))

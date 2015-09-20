@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGClipPathElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,12 +20,11 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"clipPathUnits\"]"
         js_getClipPathUnits ::
-        JSRef SVGClipPathElement -> IO (JSRef SVGAnimatedEnumeration)
+        SVGClipPathElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGClipPathElement.clipPathUnits Mozilla SVGClipPathElement.clipPathUnits documentation> 
 getClipPathUnits ::
                  (MonadIO m) =>
                    SVGClipPathElement -> m (Maybe SVGAnimatedEnumeration)
 getClipPathUnits self
-  = liftIO
-      ((js_getClipPathUnits (unSVGClipPathElement self)) >>= fromJSRef)
+  = liftIO (nullableToMaybe <$> (js_getClipPathUnits (self)))

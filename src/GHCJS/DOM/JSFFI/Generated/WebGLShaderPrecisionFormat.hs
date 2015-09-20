@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.WebGLShaderPrecisionFormat
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -20,25 +20,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"rangeMin\"]" js_getRangeMin
-        :: JSRef WebGLShaderPrecisionFormat -> IO Int
+        :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.rangeMin Mozilla WebGLShaderPrecisionFormat.rangeMin documentation> 
 getRangeMin :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
-getRangeMin self
-  = liftIO (js_getRangeMin (unWebGLShaderPrecisionFormat self))
+getRangeMin self = liftIO (js_getRangeMin (self))
  
 foreign import javascript unsafe "$1[\"rangeMax\"]" js_getRangeMax
-        :: JSRef WebGLShaderPrecisionFormat -> IO Int
+        :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.rangeMax Mozilla WebGLShaderPrecisionFormat.rangeMax documentation> 
 getRangeMax :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
-getRangeMax self
-  = liftIO (js_getRangeMax (unWebGLShaderPrecisionFormat self))
+getRangeMax self = liftIO (js_getRangeMax (self))
  
 foreign import javascript unsafe "$1[\"precision\"]"
-        js_getPrecision :: JSRef WebGLShaderPrecisionFormat -> IO Int
+        js_getPrecision :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.precision Mozilla WebGLShaderPrecisionFormat.precision documentation> 
 getPrecision :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
-getPrecision self
-  = liftIO (js_getPrecision (unWebGLShaderPrecisionFormat self))
+getPrecision self = liftIO (js_getPrecision (self))

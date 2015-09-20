@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGGlyphRefElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -23,97 +23,91 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"glyphRef\"] = $2;"
-        js_setGlyphRef :: JSRef SVGGlyphRefElement -> JSString -> IO ()
+        js_setGlyphRef :: SVGGlyphRefElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.glyphRef Mozilla SVGGlyphRefElement.glyphRef documentation> 
 setGlyphRef ::
             (MonadIO m, ToJSString val) => SVGGlyphRefElement -> val -> m ()
 setGlyphRef self val
-  = liftIO
-      (js_setGlyphRef (unSVGGlyphRefElement self) (toJSString val))
+  = liftIO (js_setGlyphRef (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"glyphRef\"]" js_getGlyphRef
-        :: JSRef SVGGlyphRefElement -> IO JSString
+        :: SVGGlyphRefElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.glyphRef Mozilla SVGGlyphRefElement.glyphRef documentation> 
 getGlyphRef ::
             (MonadIO m, FromJSString result) => SVGGlyphRefElement -> m result
 getGlyphRef self
-  = liftIO
-      (fromJSString <$> (js_getGlyphRef (unSVGGlyphRefElement self)))
+  = liftIO (fromJSString <$> (js_getGlyphRef (self)))
  
 foreign import javascript unsafe "$1[\"format\"] = $2;"
-        js_setFormat :: JSRef SVGGlyphRefElement -> JSString -> IO ()
+        js_setFormat :: SVGGlyphRefElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.format Mozilla SVGGlyphRefElement.format documentation> 
 setFormat ::
           (MonadIO m, ToJSString val) => SVGGlyphRefElement -> val -> m ()
-setFormat self val
-  = liftIO
-      (js_setFormat (unSVGGlyphRefElement self) (toJSString val))
+setFormat self val = liftIO (js_setFormat (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"format\"]" js_getFormat ::
-        JSRef SVGGlyphRefElement -> IO JSString
+        SVGGlyphRefElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.format Mozilla SVGGlyphRefElement.format documentation> 
 getFormat ::
           (MonadIO m, FromJSString result) => SVGGlyphRefElement -> m result
-getFormat self
-  = liftIO
-      (fromJSString <$> (js_getFormat (unSVGGlyphRefElement self)))
+getFormat self = liftIO (fromJSString <$> (js_getFormat (self)))
  
 foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
-        JSRef SVGGlyphRefElement -> Float -> IO ()
+        SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.x Mozilla SVGGlyphRefElement.x documentation> 
 setX :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
-setX self val = liftIO (js_setX (unSVGGlyphRefElement self) val)
+setX self val = liftIO (js_setX (self) val)
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGGlyphRefElement -> IO Float
+        SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.x Mozilla SVGGlyphRefElement.x documentation> 
 getX :: (MonadIO m) => SVGGlyphRefElement -> m Float
-getX self = liftIO (js_getX (unSVGGlyphRefElement self))
+getX self = liftIO (js_getX (self))
  
 foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
-        JSRef SVGGlyphRefElement -> Float -> IO ()
+        SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.y Mozilla SVGGlyphRefElement.y documentation> 
 setY :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
-setY self val = liftIO (js_setY (unSVGGlyphRefElement self) val)
+setY self val = liftIO (js_setY (self) val)
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGGlyphRefElement -> IO Float
+        SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.y Mozilla SVGGlyphRefElement.y documentation> 
 getY :: (MonadIO m) => SVGGlyphRefElement -> m Float
-getY self = liftIO (js_getY (unSVGGlyphRefElement self))
+getY self = liftIO (js_getY (self))
  
 foreign import javascript unsafe "$1[\"dx\"] = $2;" js_setDx ::
-        JSRef SVGGlyphRefElement -> Float -> IO ()
+        SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dx Mozilla SVGGlyphRefElement.dx documentation> 
 setDx :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
-setDx self val = liftIO (js_setDx (unSVGGlyphRefElement self) val)
+setDx self val = liftIO (js_setDx (self) val)
  
 foreign import javascript unsafe "$1[\"dx\"]" js_getDx ::
-        JSRef SVGGlyphRefElement -> IO Float
+        SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dx Mozilla SVGGlyphRefElement.dx documentation> 
 getDx :: (MonadIO m) => SVGGlyphRefElement -> m Float
-getDx self = liftIO (js_getDx (unSVGGlyphRefElement self))
+getDx self = liftIO (js_getDx (self))
  
 foreign import javascript unsafe "$1[\"dy\"] = $2;" js_setDy ::
-        JSRef SVGGlyphRefElement -> Float -> IO ()
+        SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dy Mozilla SVGGlyphRefElement.dy documentation> 
 setDy :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
-setDy self val = liftIO (js_setDy (unSVGGlyphRefElement self) val)
+setDy self val = liftIO (js_setDy (self) val)
  
 foreign import javascript unsafe "$1[\"dy\"]" js_getDy ::
-        JSRef SVGGlyphRefElement -> IO Float
+        SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dy Mozilla SVGGlyphRefElement.dy documentation> 
 getDy :: (MonadIO m) => SVGGlyphRefElement -> m Float
-getDy self = liftIO (js_getDy (unSVGGlyphRefElement self))
+getDy self = liftIO (js_getDy (self))

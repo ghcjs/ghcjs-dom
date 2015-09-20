@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.FormData
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -19,18 +19,14 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "new window[\"FormData\"]($1)"
-        js_newFormData :: JSRef HTMLFormElement -> IO (JSRef FormData)
+        js_newFormData :: Nullable HTMLFormElement -> IO FormData
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation> 
 newFormData :: (MonadIO m) => Maybe HTMLFormElement -> m FormData
-newFormData form
-  = liftIO
-      (js_newFormData (maybe jsNull pToJSRef form) >>=
-         fromJSRefUnchecked)
+newFormData form = liftIO (js_newFormData (maybeToNullable form))
  
 foreign import javascript unsafe "$1[\"append\"]($2, $3, $4)"
-        js_append ::
-        JSRef FormData -> JSString -> JSString -> JSString -> IO ()
+        js_append :: FormData -> JSString -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FormData.append Mozilla FormData.append documentation> 
 append ::
@@ -39,5 +35,5 @@ append ::
          FormData -> name -> value -> filename -> m ()
 append self name value filename
   = liftIO
-      (js_append (unFormData self) (toJSString name) (toJSString value)
+      (js_append (self) (toJSString name) (toJSString value)
          (toJSString filename))

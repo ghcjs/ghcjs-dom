@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLBaseFontElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -21,55 +21,47 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"color\"] = $2;" js_setColor
-        :: JSRef HTMLBaseFontElement -> JSString -> IO ()
+        :: HTMLBaseFontElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.color Mozilla HTMLBaseFontElement.color documentation> 
 setColor ::
          (MonadIO m, ToJSString val) => HTMLBaseFontElement -> val -> m ()
-setColor self val
-  = liftIO
-      (js_setColor (unHTMLBaseFontElement self) (toJSString val))
+setColor self val = liftIO (js_setColor (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"color\"]" js_getColor ::
-        JSRef HTMLBaseFontElement -> IO JSString
+        HTMLBaseFontElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.color Mozilla HTMLBaseFontElement.color documentation> 
 getColor ::
          (MonadIO m, FromJSString result) => HTMLBaseFontElement -> m result
-getColor self
-  = liftIO
-      (fromJSString <$> (js_getColor (unHTMLBaseFontElement self)))
+getColor self = liftIO (fromJSString <$> (js_getColor (self)))
  
 foreign import javascript unsafe "$1[\"face\"] = $2;" js_setFace ::
-        JSRef HTMLBaseFontElement -> JSString -> IO ()
+        HTMLBaseFontElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.face Mozilla HTMLBaseFontElement.face documentation> 
 setFace ::
         (MonadIO m, ToJSString val) => HTMLBaseFontElement -> val -> m ()
-setFace self val
-  = liftIO (js_setFace (unHTMLBaseFontElement self) (toJSString val))
+setFace self val = liftIO (js_setFace (self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"face\"]" js_getFace ::
-        JSRef HTMLBaseFontElement -> IO JSString
+        HTMLBaseFontElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.face Mozilla HTMLBaseFontElement.face documentation> 
 getFace ::
         (MonadIO m, FromJSString result) => HTMLBaseFontElement -> m result
-getFace self
-  = liftIO
-      (fromJSString <$> (js_getFace (unHTMLBaseFontElement self)))
+getFace self = liftIO (fromJSString <$> (js_getFace (self)))
  
 foreign import javascript unsafe "$1[\"size\"] = $2;" js_setSize ::
-        JSRef HTMLBaseFontElement -> Int -> IO ()
+        HTMLBaseFontElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.size Mozilla HTMLBaseFontElement.size documentation> 
 setSize :: (MonadIO m) => HTMLBaseFontElement -> Int -> m ()
-setSize self val
-  = liftIO (js_setSize (unHTMLBaseFontElement self) val)
+setSize self val = liftIO (js_setSize (self) val)
  
 foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
-        JSRef HTMLBaseFontElement -> IO Int
+        HTMLBaseFontElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement.size Mozilla HTMLBaseFontElement.size documentation> 
 getSize :: (MonadIO m) => HTMLBaseFontElement -> m Int
-getSize self = liftIO (js_getSize (unHTMLBaseFontElement self))
+getSize self = liftIO (js_getSize (self))

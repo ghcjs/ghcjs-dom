@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFilterPrimitiveStandardAttributes
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -22,66 +22,51 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
-        JSRef SVGFilterPrimitiveStandardAttributes ->
-          IO (JSRef SVGAnimatedLength)
+        SVGFilterPrimitiveStandardAttributes ->
+          IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.x Mozilla SVGFilterPrimitiveStandardAttributes.x documentation> 
 getX ::
      (MonadIO m) =>
        SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
-getX self
-  = liftIO
-      ((js_getX (unSVGFilterPrimitiveStandardAttributes self)) >>=
-         fromJSRef)
+getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
-        JSRef SVGFilterPrimitiveStandardAttributes ->
-          IO (JSRef SVGAnimatedLength)
+        SVGFilterPrimitiveStandardAttributes ->
+          IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.y Mozilla SVGFilterPrimitiveStandardAttributes.y documentation> 
 getY ::
      (MonadIO m) =>
        SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
-getY self
-  = liftIO
-      ((js_getY (unSVGFilterPrimitiveStandardAttributes self)) >>=
-         fromJSRef)
+getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
-        JSRef SVGFilterPrimitiveStandardAttributes ->
-          IO (JSRef SVGAnimatedLength)
+        SVGFilterPrimitiveStandardAttributes ->
+          IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.width Mozilla SVGFilterPrimitiveStandardAttributes.width documentation> 
 getWidth ::
          (MonadIO m) =>
            SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
-getWidth self
-  = liftIO
-      ((js_getWidth (unSVGFilterPrimitiveStandardAttributes self)) >>=
-         fromJSRef)
+getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
-        JSRef SVGFilterPrimitiveStandardAttributes ->
-          IO (JSRef SVGAnimatedLength)
+        SVGFilterPrimitiveStandardAttributes ->
+          IO (Nullable SVGAnimatedLength)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.height Mozilla SVGFilterPrimitiveStandardAttributes.height documentation> 
 getHeight ::
           (MonadIO m) =>
             SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedLength)
-getHeight self
-  = liftIO
-      ((js_getHeight (unSVGFilterPrimitiveStandardAttributes self)) >>=
-         fromJSRef)
+getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))
  
 foreign import javascript unsafe "$1[\"result\"]" js_getResult ::
-        JSRef SVGFilterPrimitiveStandardAttributes ->
-          IO (JSRef SVGAnimatedString)
+        SVGFilterPrimitiveStandardAttributes ->
+          IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.result Mozilla SVGFilterPrimitiveStandardAttributes.result documentation> 
 getResult ::
           (MonadIO m) =>
             SVGFilterPrimitiveStandardAttributes -> m (Maybe SVGAnimatedString)
-getResult self
-  = liftIO
-      ((js_getResult (unSVGFilterPrimitiveStandardAttributes self)) >>=
-         fromJSRef)
+getResult self = liftIO (nullableToMaybe <$> (js_getResult (self)))

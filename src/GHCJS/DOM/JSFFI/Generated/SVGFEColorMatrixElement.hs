@@ -11,7 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEColorMatrixElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString, castRef)
+import GHCJS.Types (JSRef(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
@@ -30,34 +30,28 @@ pattern SVG_FECOLORMATRIX_TYPE_HUEROTATE = 3
 pattern SVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA = 4
  
 foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
-        JSRef SVGFEColorMatrixElement -> IO (JSRef SVGAnimatedString)
+        SVGFEColorMatrixElement -> IO (Nullable SVGAnimatedString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.in1 Mozilla SVGFEColorMatrixElement.in1 documentation> 
 getIn1 ::
        (MonadIO m) =>
          SVGFEColorMatrixElement -> m (Maybe SVGAnimatedString)
-getIn1 self
-  = liftIO
-      ((js_getIn1 (unSVGFEColorMatrixElement self)) >>= fromJSRef)
+getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        JSRef SVGFEColorMatrixElement -> IO (JSRef SVGAnimatedEnumeration)
+        SVGFEColorMatrixElement -> IO (Nullable SVGAnimatedEnumeration)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.type Mozilla SVGFEColorMatrixElement.type documentation> 
 getType ::
         (MonadIO m) =>
           SVGFEColorMatrixElement -> m (Maybe SVGAnimatedEnumeration)
-getType self
-  = liftIO
-      ((js_getType (unSVGFEColorMatrixElement self)) >>= fromJSRef)
+getType self = liftIO (nullableToMaybe <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"values\"]" js_getValues ::
-        JSRef SVGFEColorMatrixElement -> IO (JSRef SVGAnimatedNumberList)
+        SVGFEColorMatrixElement -> IO (Nullable SVGAnimatedNumberList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.values Mozilla SVGFEColorMatrixElement.values documentation> 
 getValues ::
           (MonadIO m) =>
             SVGFEColorMatrixElement -> m (Maybe SVGAnimatedNumberList)
-getValues self
-  = liftIO
-      ((js_getValues (unSVGFEColorMatrixElement self)) >>= fromJSRef)
+getValues self = liftIO (nullableToMaybe <$> (js_getValues (self)))
