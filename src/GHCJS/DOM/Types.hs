@@ -879,9 +879,7 @@ maybeJSNullOrUndefined :: JSRef -> Maybe JSRef
 maybeJSNullOrUndefined r | isNull r || isUndefined r = Nothing
 maybeJSNullOrUndefined r = Just r
 
-
 propagateGError = id
-castRef = id
 
 newtype GType = GType JSRef
 
@@ -940,7 +938,7 @@ instance FromJSRef GObject where
   {-# INLINE fromJSRef #-}
 
 --instance IsGObject o => PToJSRef o where
---  pToJSRef = castRef . unGObject . toGObject
+--  pToJSRef = unGObject . toGObject
 --  {-# INLINE pToJSRef #-}
 --
 --instance IsGObject o => PFromJSRef o where
@@ -948,7 +946,7 @@ instance FromJSRef GObject where
 --  {-# INLINE pFromJSRef #-}
 --
 --instance IsGObject o => ToJSRef o where
---  toJSRef = return . castRef . unGObject . toGObject
+--  toJSRef = return . unGObject . toGObject
 --  {-# INLINE toJSRef #-}
 --
 --instance IsGObject o => FromJSRef o where
@@ -989,7 +987,7 @@ toJSString = pFromJSRef . pToJSRef
 {-# INLINE toJSString #-}
 
 fromJSString :: FromJSString a => JSString -> a
-fromJSString = pFromJSRef . castRef . pToJSRef
+fromJSString = pFromJSRef . pToJSRef
 {-# INLINE fromJSString #-}
 
 toMaybeJSString :: ToJSString a => Maybe a -> Nullable JSString
@@ -1105,8 +1103,8 @@ toSerializedScriptValue = unsafeCastGObject . toGObject
 
 instance IsSerializedScriptValue SerializedScriptValue
 instance IsGObject SerializedScriptValue where
-  toGObject = GObject . castRef . unSerializedScriptValue
-  unsafeCastGObject = SerializedScriptValue . castRef . unGObject
+  toGObject = GObject . unSerializedScriptValue
+  unsafeCastGObject = SerializedScriptValue . unGObject
 -- TODO add more IsSerializedScriptValue instances
 #else
 -- TODO work out how we can support SerializedScriptValue in native code
@@ -1140,8 +1138,8 @@ toPositionOptions = unsafeCastGObject . toGObject
 
 instance IsPositionOptions PositionOptions
 instance IsGObject PositionOptions where
-  toGObject = GObject . castRef . unPositionOptions
-  unsafeCastGObject = PositionOptions . castRef . unGObject
+  toGObject = GObject . unPositionOptions
+  unsafeCastGObject = PositionOptions . unGObject
 -- TODO add more IsPositionOptions instances
 #else
 -- TODO work out how we can support PositionOptions in native code
@@ -1175,8 +1173,8 @@ toDictionary = unsafeCastGObject . toGObject
 
 instance IsDictionary Dictionary
 instance IsGObject Dictionary where
-  toGObject = GObject . castRef . unDictionary
-  unsafeCastGObject = Dictionary . castRef . unGObject
+  toGObject = GObject . unDictionary
+  unsafeCastGObject = Dictionary . unGObject
 -- TODO add more IsDictionary instances
 #else
 -- TODO work out how we can support Dictionary in native code
@@ -1210,8 +1208,8 @@ toBlobPropertyBag = unsafeCastGObject . toGObject
 
 instance IsBlobPropertyBag BlobPropertyBag
 instance IsGObject BlobPropertyBag where
-  toGObject = GObject . castRef . unBlobPropertyBag
-  unsafeCastGObject = BlobPropertyBag . castRef . unGObject
+  toGObject = GObject . unBlobPropertyBag
+  unsafeCastGObject = BlobPropertyBag . unGObject
 -- TODO add more IsBlobPropertyBag instances
 #else
 -- TODO work out how we can support BlobPropertyBag in native code
@@ -1245,8 +1243,8 @@ toMutationCallback = unsafeCastGObject . toGObject
 
 instance IsMutationCallback MutationCallback
 instance IsGObject MutationCallback where
-  toGObject = GObject . castRef . unMutationCallback
-  unsafeCastGObject = MutationCallback . castRef . unGObject
+  toGObject = GObject . unMutationCallback
+  unsafeCastGObject = MutationCallback . unGObject
 -- TODO add more IsMutationCallback instances
 #else
 -- TODO work out how we can support MutationCallback in native code
@@ -1280,8 +1278,8 @@ toPromise = unsafeCastGObject . toGObject
 
 instance IsPromise Promise
 instance IsGObject Promise where
-  toGObject = GObject . castRef . unPromise
-  unsafeCastGObject = Promise . castRef . unGObject
+  toGObject = GObject . unPromise
+  unsafeCastGObject = Promise . unGObject
 -- TODO add more IsPromise instances
 
 castToPromise :: IsGObject obj => obj -> Promise
@@ -1320,8 +1318,8 @@ toArrayBuffer = unsafeCastGObject . toGObject
 
 instance IsArrayBuffer ArrayBuffer
 instance IsGObject ArrayBuffer where
-  toGObject = GObject . castRef . unArrayBuffer
-  unsafeCastGObject = ArrayBuffer . castRef . unGObject
+  toGObject = GObject . unArrayBuffer
+  unsafeCastGObject = ArrayBuffer . unGObject
 
 castToArrayBuffer :: IsGObject obj => obj -> ArrayBuffer
 castToArrayBuffer = castTo gTypeArrayBuffer "ArrayBuffer"
@@ -1359,8 +1357,8 @@ toFloat32Array = unsafeCastGObject . toGObject
 
 instance IsFloat32Array Float32Array
 instance IsGObject Float32Array where
-  toGObject = GObject . castRef . unFloat32Array
-  unsafeCastGObject = Float32Array . castRef . unGObject
+  toGObject = GObject . unFloat32Array
+  unsafeCastGObject = Float32Array . unGObject
 -- TODO add more IsFloat32Array instances
 
 castToFloat32Array :: IsGObject obj => obj -> Float32Array
@@ -1399,8 +1397,8 @@ toFloat64Array = unsafeCastGObject . toGObject
 
 instance IsFloat64Array Float64Array
 instance IsGObject Float64Array where
-  toGObject = GObject . castRef . unFloat64Array
-  unsafeCastGObject = Float64Array . castRef . unGObject
+  toGObject = GObject . unFloat64Array
+  unsafeCastGObject = Float64Array . unGObject
 -- TODO add more IsFloat64Array instances
 
 castToFloat64Array :: IsGObject obj => obj -> Float64Array
@@ -1439,8 +1437,8 @@ toUint8Array = unsafeCastGObject . toGObject
 
 instance IsUint8Array Uint8Array
 instance IsGObject Uint8Array where
-  toGObject = GObject . castRef . unUint8Array
-  unsafeCastGObject = Uint8Array . castRef . unGObject
+  toGObject = GObject . unUint8Array
+  unsafeCastGObject = Uint8Array . unGObject
 -- TODO add more IsUint8Array instances
 
 castToUint8Array :: IsGObject obj => obj -> Uint8Array
@@ -1479,8 +1477,8 @@ toUint8ClampedArray = unsafeCastGObject . toGObject
 
 instance IsUint8ClampedArray Uint8ClampedArray
 instance IsGObject Uint8ClampedArray where
-  toGObject = GObject . castRef . unUint8ClampedArray
-  unsafeCastGObject = Uint8ClampedArray . castRef . unGObject
+  toGObject = GObject . unUint8ClampedArray
+  unsafeCastGObject = Uint8ClampedArray . unGObject
 -- TODO add more IsUint8ClampedArray instances
 
 castToUint8ClampedArray :: IsGObject obj => obj -> Uint8ClampedArray
@@ -1519,8 +1517,8 @@ toUint16Array = unsafeCastGObject . toGObject
 
 instance IsUint16Array Uint16Array
 instance IsGObject Uint16Array where
-  toGObject = GObject . castRef . unUint16Array
-  unsafeCastGObject = Uint16Array . castRef . unGObject
+  toGObject = GObject . unUint16Array
+  unsafeCastGObject = Uint16Array . unGObject
 -- TODO add more IsUint16Array instances
 
 castToUint16Array :: IsGObject obj => obj -> Uint16Array
@@ -1559,8 +1557,8 @@ toUint32Array = unsafeCastGObject . toGObject
 
 instance IsUint32Array Uint32Array
 instance IsGObject Uint32Array where
-  toGObject = GObject . castRef . unUint32Array
-  unsafeCastGObject = Uint32Array . castRef . unGObject
+  toGObject = GObject . unUint32Array
+  unsafeCastGObject = Uint32Array . unGObject
 -- TODO add more IsUint32Array instances
 
 castToUint32Array :: IsGObject obj => obj -> Uint32Array
@@ -1599,8 +1597,8 @@ toInt8Array = unsafeCastGObject . toGObject
 
 instance IsInt8Array Int8Array
 instance IsGObject Int8Array where
-  toGObject = GObject . castRef . unInt8Array
-  unsafeCastGObject = Int8Array . castRef . unGObject
+  toGObject = GObject . unInt8Array
+  unsafeCastGObject = Int8Array . unGObject
 -- TODO add more IsInt8Array instances
 
 castToInt8Array :: IsGObject obj => obj -> Int8Array
@@ -1639,8 +1637,8 @@ toInt16Array = unsafeCastGObject . toGObject
 
 instance IsInt16Array Int16Array
 instance IsGObject Int16Array where
-  toGObject = GObject . castRef . unInt16Array
-  unsafeCastGObject = Int16Array . castRef . unGObject
+  toGObject = GObject . unInt16Array
+  unsafeCastGObject = Int16Array . unGObject
 -- TODO add more IsInt16Array instances
 
 castToInt16Array :: IsGObject obj => obj -> Int16Array
@@ -1679,8 +1677,8 @@ toInt32Array = unsafeCastGObject . toGObject
 
 instance IsInt32Array Int32Array
 instance IsGObject Int32Array where
-  toGObject = GObject . castRef . unInt32Array
-  unsafeCastGObject = Int32Array . castRef . unGObject
+  toGObject = GObject . unInt32Array
+  unsafeCastGObject = Int32Array . unGObject
 -- TODO add more IsInt32Array instances
 
 castToInt32Array :: IsGObject obj => obj -> Int32Array
@@ -1719,8 +1717,8 @@ toObjectArray = unsafeCastGObject . toGObject
 
 instance IsObjectArray ObjectArray
 instance IsGObject ObjectArray where
-  toGObject = GObject . castRef . unObjectArray
-  unsafeCastGObject = ObjectArray . castRef . unGObject
+  toGObject = GObject . unObjectArray
+  unsafeCastGObject = ObjectArray . unGObject
 -- TODO add more IsObjectArray instances
 #else
 -- TODO work out how we can support ObjectArray in native code
@@ -1754,8 +1752,8 @@ toArrayBufferView = unsafeCastGObject . toGObject
 
 instance IsArrayBufferView ArrayBufferView
 instance IsGObject ArrayBufferView where
-  toGObject = GObject . castRef . unArrayBufferView
-  unsafeCastGObject = ArrayBufferView . castRef . unGObject
+  toGObject = GObject . unArrayBufferView
+  unsafeCastGObject = ArrayBufferView . unGObject
 -- TODO add more IsArrayBufferView instances
 #else
 -- TODO work out how we can support ArrayBufferView in native code
@@ -1789,8 +1787,8 @@ toArray = unsafeCastGObject . toGObject
 
 instance IsArray Array
 instance IsGObject Array where
-  toGObject = GObject . castRef . unArray
-  unsafeCastGObject = Array . castRef . unGObject
+  toGObject = GObject . unArray
+  unsafeCastGObject = Array . unGObject
 -- TODO add more IsArray instances
 
 castToArray :: IsGObject obj => obj -> Array
@@ -1829,8 +1827,8 @@ toDate = unsafeCastGObject . toGObject
 
 instance IsDate Date
 instance IsGObject Date where
-  toGObject = GObject . castRef . unDate
-  unsafeCastGObject = Date . castRef . unGObject
+  toGObject = GObject . unDate
+  unsafeCastGObject = Date . unGObject
 -- TODO add more IsDate instances
 
 castToDate :: IsGObject obj => obj -> Date
@@ -1869,8 +1867,8 @@ toAcceleration = unsafeCastGObject . toGObject
 
 instance IsAcceleration Acceleration
 instance IsGObject Acceleration where
-  toGObject = GObject . castRef . unAcceleration
-  unsafeCastGObject = Acceleration . castRef . unGObject
+  toGObject = GObject . unAcceleration
+  unsafeCastGObject = Acceleration . unGObject
 -- TODO add more IsAcceleration instances
 #else
 -- TODO work out how we can support Acceleration in native code
@@ -1904,8 +1902,8 @@ toRotationRate = unsafeCastGObject . toGObject
 
 instance IsRotationRate RotationRate
 instance IsGObject RotationRate where
-  toGObject = GObject . castRef . unRotationRate
-  unsafeCastGObject = RotationRate . castRef . unGObject
+  toGObject = GObject . unRotationRate
+  unsafeCastGObject = RotationRate . unGObject
 -- TODO add more IsRotationRate instances
 #else
 -- TODO work out how we can support RotationRate in native code
@@ -1939,8 +1937,8 @@ toAlgorithm = unsafeCastGObject . toGObject
 
 instance IsAlgorithm Algorithm
 instance IsGObject Algorithm where
-  toGObject = GObject . castRef . unAlgorithm
-  unsafeCastGObject = Algorithm . castRef . unGObject
+  toGObject = GObject . unAlgorithm
+  unsafeCastGObject = Algorithm . unGObject
 -- TODO add more IsAlgorithm instances
 #else
 -- TODO work out how we can support Algorithm in native code
@@ -1974,8 +1972,8 @@ toCryptoOperationData = unsafeCastGObject . toGObject
 
 instance IsCryptoOperationData CryptoOperationData
 instance IsGObject CryptoOperationData where
-  toGObject = GObject . castRef . unCryptoOperationData
-  unsafeCastGObject = CryptoOperationData . castRef . unGObject
+  toGObject = GObject . unCryptoOperationData
+  unsafeCastGObject = CryptoOperationData . unGObject
 instance IsCryptoOperationData ArrayBuffer
 instance IsCryptoOperationData ArrayBufferView
 #else
@@ -2010,8 +2008,8 @@ toCanvasStyle = unsafeCastGObject . toGObject
 
 instance IsCanvasStyle CanvasStyle
 instance IsGObject CanvasStyle where
-  toGObject = GObject . castRef . unCanvasStyle
-  unsafeCastGObject = CanvasStyle . castRef . unGObject
+  toGObject = GObject . unCanvasStyle
+  unsafeCastGObject = CanvasStyle . unGObject
 instance IsCanvasStyle CanvasGradient
 instance IsCanvasStyle CanvasPattern
 #else
@@ -2046,8 +2044,8 @@ toDOMException = unsafeCastGObject . toGObject
 
 instance IsDOMException DOMException
 instance IsGObject DOMException where
-  toGObject = GObject . castRef . unDOMException
-  unsafeCastGObject = DOMException . castRef . unGObject
+  toGObject = GObject . unDOMException
+  unsafeCastGObject = DOMException . unGObject
 #else
 -- TODO work out how we can support DOMException in native code
 #endif
