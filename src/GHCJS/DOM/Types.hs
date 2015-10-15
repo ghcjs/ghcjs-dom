@@ -858,8 +858,8 @@ import qualified Data.Text.Lazy as LT (Text)
 import Data.JSString (pack, unpack)
 import Data.JSString.Text (textToJSString, textFromJSString, lazyTextToJSString, lazyTextFromJSString)
 import GHCJS.Types (JSRef(..), nullRef, isNull, isUndefined, JSString(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import GHCJS.Nullable (Nullable(..), nullableToMaybe, maybeToNullable)
 import GHCJS.Foreign.Callback.Internal (Callback(..))
 import Control.Monad.IO.Class (MonadIO(..))
@@ -915,41 +915,41 @@ isA obj = typeInstanceIsA (unGObject $ toGObject obj)
 
 newtype GObject = GObject { unGObject :: JSRef }
 
-class (ToJSRef o, FromJSRef o) => IsGObject o where
+class (ToJSVal o, FromJSVal o) => IsGObject o where
   -- | Safe upcast.
   toGObject         :: o -> GObject
   -- | Unchecked downcast.
   unsafeCastGObject :: GObject -> o
 
-instance PToJSRef GObject where
-  pToJSRef = unGObject
-  {-# INLINE pToJSRef #-}
+instance PToJSVal GObject where
+  pToJSVal = unGObject
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef GObject where
-  pFromJSRef = GObject
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal GObject where
+  pFromJSVal = GObject
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef GObject where
+instance ToJSVal GObject where
   toJSRef = return . unGObject
   {-# INLINE toJSRef #-}
 
-instance FromJSRef GObject where
+instance FromJSVal GObject where
   fromJSRef = return . fmap GObject . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
---instance IsGObject o => PToJSRef o where
---  pToJSRef = unGObject . toGObject
---  {-# INLINE pToJSRef #-}
+--instance IsGObject o => PToJSVal o where
+--  pToJSVal = unGObject . toGObject
+--  {-# INLINE pToJSVal #-}
 --
---instance IsGObject o => PFromJSRef o where
---  pFromJSRef = unsafeCastGObject . GObject . castRef
---  {-# INLINE pFromJSRef #-}
+--instance IsGObject o => PFromJSVal o where
+--  pFromJSVal = unsafeCastGObject . GObject . castRef
+--  {-# INLINE pFromJSVal #-}
 --
---instance IsGObject o => ToJSRef o where
+--instance IsGObject o => ToJSVal o where
 --  toJSRef = return . unGObject . toGObject
 --  {-# INLINE toJSRef #-}
 --
---instance IsGObject o => FromJSRef o where
+--instance IsGObject o => FromJSVal o where
 --  fromJSRef = return . fmap (unsafeCastGObject . GObject . castRef) . maybeJSNullOrUndefined
 --  {-# INLINE fromJSRef #-}
 
@@ -979,23 +979,23 @@ objectToString self = liftIO (fromJSString <$> (js_objectToString (toGObject sel
 --   give it back as is.
 type DOMString = JSString
 
-class (PToJSRef a, ToJSRef a) => ToJSString a
-class (PFromJSRef a, FromJSRef a) => FromJSString a
+class (PToJSVal a, ToJSVal a) => ToJSString a
+class (PFromJSVal a, FromJSVal a) => FromJSString a
 
 toJSString :: ToJSString a => a -> JSString
-toJSString = pFromJSRef . pToJSRef
+toJSString = pFromJSVal . pToJSVal
 {-# INLINE toJSString #-}
 
 fromJSString :: FromJSString a => JSString -> a
-fromJSString = pFromJSRef . pToJSRef
+fromJSString = pFromJSVal . pToJSVal
 {-# INLINE fromJSString #-}
 
 toMaybeJSString :: ToJSString a => Maybe a -> Nullable JSString
-toMaybeJSString = Nullable . pToJSRef
+toMaybeJSString = Nullable . pToJSVal
 {-# INLINE toMaybeJSString #-}
 
 fromMaybeJSString :: FromJSString a => Nullable JSString -> Maybe a
-fromMaybeJSString (Nullable r) = pFromJSRef r
+fromMaybeJSString (Nullable r) = pFromJSVal r
 {-# INLINE fromMaybeJSString #-}
 
 instance ToJSString   [Char]
@@ -1029,49 +1029,49 @@ type IsDOMString s = (ToDOMString s, FromDOMString s)
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- Callbacks
 newtype AudioBufferCallback = AudioBufferCallback (Callback (JSRef -> IO ()))
-instance PToJSRef AudioBufferCallback where pToJSRef (AudioBufferCallback (Callback r)) = r
+instance PToJSVal AudioBufferCallback where pToJSVal (AudioBufferCallback (Callback r)) = r
 newtype DatabaseCallback = DatabaseCallback (Callback (JSRef -> IO ()))
-instance PToJSRef DatabaseCallback where pToJSRef (DatabaseCallback (Callback r)) = r
+instance PToJSVal DatabaseCallback where pToJSVal (DatabaseCallback (Callback r)) = r
 newtype MediaQueryListListener = MediaQueryListListener (Callback (JSRef -> IO ()))
-instance PToJSRef MediaQueryListListener where pToJSRef (MediaQueryListListener (Callback r)) = r
+instance PToJSVal MediaQueryListListener where pToJSVal (MediaQueryListListener (Callback r)) = r
 newtype MediaStreamTrackSourcesCallback = MediaStreamTrackSourcesCallback (Callback (JSRef -> IO ()))
-instance PToJSRef MediaStreamTrackSourcesCallback where pToJSRef (MediaStreamTrackSourcesCallback (Callback r)) = r
+instance PToJSVal MediaStreamTrackSourcesCallback where pToJSVal (MediaStreamTrackSourcesCallback (Callback r)) = r
 newtype NavigatorUserMediaErrorCallback = NavigatorUserMediaErrorCallback (Callback (JSRef -> IO ()))
-instance PToJSRef NavigatorUserMediaErrorCallback where pToJSRef (NavigatorUserMediaErrorCallback (Callback r)) = r
+instance PToJSVal NavigatorUserMediaErrorCallback where pToJSVal (NavigatorUserMediaErrorCallback (Callback r)) = r
 newtype NavigatorUserMediaSuccessCallback = NavigatorUserMediaSuccessCallback (Callback (JSRef -> IO ()))
-instance PToJSRef NavigatorUserMediaSuccessCallback where pToJSRef (NavigatorUserMediaSuccessCallback (Callback r)) = r
+instance PToJSVal NavigatorUserMediaSuccessCallback where pToJSVal (NavigatorUserMediaSuccessCallback (Callback r)) = r
 newtype NotificationPermissionCallback permissions = NotificationPermissionCallback (Callback (JSRef -> IO ()))
-instance PToJSRef (NotificationPermissionCallback permissions) where pToJSRef (NotificationPermissionCallback (Callback r)) = r
+instance PToJSVal (NotificationPermissionCallback permissions) where pToJSVal (NotificationPermissionCallback (Callback r)) = r
 newtype PositionCallback = PositionCallback (Callback (JSRef -> IO ()))
-instance PToJSRef PositionCallback where pToJSRef (PositionCallback (Callback r)) = r
+instance PToJSVal PositionCallback where pToJSVal (PositionCallback (Callback r)) = r
 newtype PositionErrorCallback = PositionErrorCallback (Callback (JSRef -> IO ()))
-instance PToJSRef PositionErrorCallback where pToJSRef (PositionErrorCallback (Callback r)) = r
+instance PToJSVal PositionErrorCallback where pToJSVal (PositionErrorCallback (Callback r)) = r
 newtype RequestAnimationFrameCallback = RequestAnimationFrameCallback (Callback (JSRef -> IO ()))
-instance PToJSRef RequestAnimationFrameCallback where pToJSRef (RequestAnimationFrameCallback (Callback r)) = r
+instance PToJSVal RequestAnimationFrameCallback where pToJSVal (RequestAnimationFrameCallback (Callback r)) = r
 newtype RTCPeerConnectionErrorCallback = RTCPeerConnectionErrorCallback (Callback (JSRef -> IO ()))
-instance PToJSRef RTCPeerConnectionErrorCallback where pToJSRef (RTCPeerConnectionErrorCallback (Callback r)) = r
+instance PToJSVal RTCPeerConnectionErrorCallback where pToJSVal (RTCPeerConnectionErrorCallback (Callback r)) = r
 newtype RTCSessionDescriptionCallback = RTCSessionDescriptionCallback (Callback (JSRef -> IO ()))
-instance PToJSRef RTCSessionDescriptionCallback where pToJSRef (RTCSessionDescriptionCallback (Callback r)) = r
+instance PToJSVal RTCSessionDescriptionCallback where pToJSVal (RTCSessionDescriptionCallback (Callback r)) = r
 newtype RTCStatsCallback = RTCStatsCallback (Callback (JSRef -> IO ()))
-instance PToJSRef RTCStatsCallback where pToJSRef (RTCStatsCallback (Callback r)) = r
+instance PToJSVal RTCStatsCallback where pToJSVal (RTCStatsCallback (Callback r)) = r
 newtype SQLStatementCallback = SQLStatementCallback (Callback (JSRef -> JSRef -> IO ()))
-instance PToJSRef SQLStatementCallback where pToJSRef (SQLStatementCallback (Callback r)) = r
+instance PToJSVal SQLStatementCallback where pToJSVal (SQLStatementCallback (Callback r)) = r
 newtype SQLStatementErrorCallback = SQLStatementErrorCallback (Callback (JSRef -> JSRef -> IO ()))
-instance PToJSRef SQLStatementErrorCallback where pToJSRef (SQLStatementErrorCallback (Callback r)) = r
+instance PToJSVal SQLStatementErrorCallback where pToJSVal (SQLStatementErrorCallback (Callback r)) = r
 newtype SQLTransactionCallback = SQLTransactionCallback (Callback (JSRef -> IO ()))
-instance PToJSRef SQLTransactionCallback where pToJSRef (SQLTransactionCallback (Callback r)) = r
+instance PToJSVal SQLTransactionCallback where pToJSVal (SQLTransactionCallback (Callback r)) = r
 newtype SQLTransactionErrorCallback = SQLTransactionErrorCallback (Callback (JSRef -> IO ()))
-instance PToJSRef SQLTransactionErrorCallback where pToJSRef (SQLTransactionErrorCallback (Callback r)) = r
+instance PToJSVal SQLTransactionErrorCallback where pToJSVal (SQLTransactionErrorCallback (Callback r)) = r
 newtype StorageErrorCallback = StorageErrorCallback (Callback (JSRef -> IO ()))
-instance PToJSRef StorageErrorCallback where pToJSRef (StorageErrorCallback (Callback r)) = r
+instance PToJSVal StorageErrorCallback where pToJSVal (StorageErrorCallback (Callback r)) = r
 newtype StorageQuotaCallback = StorageQuotaCallback (Callback (JSRef -> IO ()))
-instance PToJSRef StorageQuotaCallback where pToJSRef (StorageQuotaCallback (Callback r)) = r
+instance PToJSVal StorageQuotaCallback where pToJSVal (StorageQuotaCallback (Callback r)) = r
 newtype StorageUsageCallback = StorageUsageCallback (Callback (JSRef -> JSRef -> IO ()))
-instance PToJSRef StorageUsageCallback where pToJSRef (StorageUsageCallback (Callback r)) = r
+instance PToJSVal StorageUsageCallback where pToJSVal (StorageUsageCallback (Callback r)) = r
 newtype StringCallback s = StringCallback (Callback (JSRef -> IO ()))
-instance PToJSRef (StringCallback s) where pToJSRef (StringCallback (Callback r)) = r
+instance PToJSVal (StringCallback s) where pToJSVal (StringCallback (Callback r)) = r
 newtype VoidCallback = VoidCallback (Callback (IO ()))
-instance PToJSRef VoidCallback where pToJSRef (VoidCallback (Callback r)) = r
+instance PToJSVal VoidCallback where pToJSVal (VoidCallback (Callback r)) = r
 #endif
 
 -- Custom types
@@ -1081,19 +1081,19 @@ newtype SerializedScriptValue = SerializedScriptValue { unSerializedScriptValue 
 instance Eq SerializedScriptValue where
   (SerializedScriptValue a) == (SerializedScriptValue b) = js_eq a b
 
-instance PToJSRef SerializedScriptValue where
-  pToJSRef = unSerializedScriptValue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SerializedScriptValue where
+  pToJSVal = unSerializedScriptValue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SerializedScriptValue where
-  pFromJSRef = SerializedScriptValue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SerializedScriptValue where
+  pFromJSVal = SerializedScriptValue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SerializedScriptValue where
+instance ToJSVal SerializedScriptValue where
   toJSRef = return . unSerializedScriptValue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SerializedScriptValue where
+instance FromJSVal SerializedScriptValue where
   fromJSRef = return . fmap SerializedScriptValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1116,19 +1116,19 @@ newtype PositionOptions = PositionOptions { unPositionOptions :: JSRef }
 instance Eq PositionOptions where
   (PositionOptions a) == (PositionOptions b) = js_eq a b
 
-instance PToJSRef PositionOptions where
-  pToJSRef = unPositionOptions
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PositionOptions where
+  pToJSVal = unPositionOptions
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PositionOptions where
-  pFromJSRef = PositionOptions
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PositionOptions where
+  pFromJSVal = PositionOptions
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PositionOptions where
+instance ToJSVal PositionOptions where
   toJSRef = return . unPositionOptions
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PositionOptions where
+instance FromJSVal PositionOptions where
   fromJSRef = return . fmap PositionOptions . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1151,19 +1151,19 @@ newtype Dictionary = Dictionary { unDictionary :: JSRef }
 instance Eq Dictionary where
   (Dictionary a) == (Dictionary b) = js_eq a b
 
-instance PToJSRef Dictionary where
-  pToJSRef = unDictionary
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Dictionary where
+  pToJSVal = unDictionary
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Dictionary where
-  pFromJSRef = Dictionary
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Dictionary where
+  pFromJSVal = Dictionary
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Dictionary where
+instance ToJSVal Dictionary where
   toJSRef = return . unDictionary
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Dictionary where
+instance FromJSVal Dictionary where
   fromJSRef = return . fmap Dictionary . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1186,19 +1186,19 @@ newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSRef }
 instance Eq BlobPropertyBag where
   (BlobPropertyBag a) == (BlobPropertyBag b) = js_eq a b
 
-instance PToJSRef BlobPropertyBag where
-  pToJSRef = unBlobPropertyBag
-  {-# INLINE pToJSRef #-}
+instance PToJSVal BlobPropertyBag where
+  pToJSVal = unBlobPropertyBag
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef BlobPropertyBag where
-  pFromJSRef = BlobPropertyBag
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal BlobPropertyBag where
+  pFromJSVal = BlobPropertyBag
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef BlobPropertyBag where
+instance ToJSVal BlobPropertyBag where
   toJSRef = return . unBlobPropertyBag
   {-# INLINE toJSRef #-}
 
-instance FromJSRef BlobPropertyBag where
+instance FromJSVal BlobPropertyBag where
   fromJSRef = return . fmap BlobPropertyBag . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1221,19 +1221,19 @@ newtype MutationCallback = MutationCallback { unMutationCallback :: JSRef }
 instance Eq MutationCallback where
   (MutationCallback a) == (MutationCallback b) = js_eq a b
 
-instance PToJSRef MutationCallback where
-  pToJSRef = unMutationCallback
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MutationCallback where
+  pToJSVal = unMutationCallback
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MutationCallback where
-  pFromJSRef = MutationCallback
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MutationCallback where
+  pFromJSVal = MutationCallback
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MutationCallback where
+instance ToJSVal MutationCallback where
   toJSRef = return . unMutationCallback
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MutationCallback where
+instance FromJSVal MutationCallback where
   fromJSRef = return . fmap MutationCallback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1256,19 +1256,19 @@ newtype Promise = Promise { unPromise :: JSRef }
 instance Eq Promise where
   (Promise a) == (Promise b) = js_eq a b
 
-instance PToJSRef Promise where
-  pToJSRef = unPromise
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Promise where
+  pToJSVal = unPromise
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Promise where
-  pFromJSRef = Promise
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Promise where
+  pFromJSVal = Promise
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Promise where
+instance ToJSVal Promise where
   toJSRef = return . unPromise
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Promise where
+instance FromJSVal Promise where
   fromJSRef = return . fmap Promise . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1296,19 +1296,19 @@ newtype ArrayBuffer = ArrayBuffer { unArrayBuffer :: JSRef }
 instance Eq ArrayBuffer where
   (ArrayBuffer a) == (ArrayBuffer b) = js_eq a b
 
-instance PToJSRef ArrayBuffer where
-  pToJSRef = unArrayBuffer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ArrayBuffer where
+  pToJSVal = unArrayBuffer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ArrayBuffer where
-  pFromJSRef = ArrayBuffer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ArrayBuffer where
+  pFromJSVal = ArrayBuffer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ArrayBuffer where
+instance ToJSVal ArrayBuffer where
   toJSRef = return . unArrayBuffer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ArrayBuffer where
+instance FromJSVal ArrayBuffer where
   fromJSRef = return . fmap ArrayBuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1335,19 +1335,19 @@ newtype Float32Array = Float32Array { unFloat32Array :: JSRef }
 instance Eq Float32Array where
   (Float32Array a) == (Float32Array b) = js_eq a b
 
-instance PToJSRef Float32Array where
-  pToJSRef = unFloat32Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Float32Array where
+  pToJSVal = unFloat32Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Float32Array where
-  pFromJSRef = Float32Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Float32Array where
+  pFromJSVal = Float32Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Float32Array where
+instance ToJSVal Float32Array where
   toJSRef = return . unFloat32Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Float32Array where
+instance FromJSVal Float32Array where
   fromJSRef = return . fmap Float32Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1375,19 +1375,19 @@ newtype Float64Array = Float64Array { unFloat64Array :: JSRef }
 instance Eq Float64Array where
   (Float64Array a) == (Float64Array b) = js_eq a b
 
-instance PToJSRef Float64Array where
-  pToJSRef = unFloat64Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Float64Array where
+  pToJSVal = unFloat64Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Float64Array where
-  pFromJSRef = Float64Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Float64Array where
+  pFromJSVal = Float64Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Float64Array where
+instance ToJSVal Float64Array where
   toJSRef = return . unFloat64Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Float64Array where
+instance FromJSVal Float64Array where
   fromJSRef = return . fmap Float64Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1415,19 +1415,19 @@ newtype Uint8Array = Uint8Array { unUint8Array :: JSRef }
 instance Eq Uint8Array where
   (Uint8Array a) == (Uint8Array b) = js_eq a b
 
-instance PToJSRef Uint8Array where
-  pToJSRef = unUint8Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Uint8Array where
+  pToJSVal = unUint8Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Uint8Array where
-  pFromJSRef = Uint8Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Uint8Array where
+  pFromJSVal = Uint8Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Uint8Array where
+instance ToJSVal Uint8Array where
   toJSRef = return . unUint8Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Uint8Array where
+instance FromJSVal Uint8Array where
   fromJSRef = return . fmap Uint8Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1455,19 +1455,19 @@ newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSRef }
 instance Eq Uint8ClampedArray where
   (Uint8ClampedArray a) == (Uint8ClampedArray b) = js_eq a b
 
-instance PToJSRef Uint8ClampedArray where
-  pToJSRef = unUint8ClampedArray
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Uint8ClampedArray where
+  pToJSVal = unUint8ClampedArray
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Uint8ClampedArray where
-  pFromJSRef = Uint8ClampedArray
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Uint8ClampedArray where
+  pFromJSVal = Uint8ClampedArray
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Uint8ClampedArray where
+instance ToJSVal Uint8ClampedArray where
   toJSRef = return . unUint8ClampedArray
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Uint8ClampedArray where
+instance FromJSVal Uint8ClampedArray where
   fromJSRef = return . fmap Uint8ClampedArray . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1495,19 +1495,19 @@ newtype Uint16Array = Uint16Array { unUint16Array :: JSRef }
 instance Eq Uint16Array where
   (Uint16Array a) == (Uint16Array b) = js_eq a b
 
-instance PToJSRef Uint16Array where
-  pToJSRef = unUint16Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Uint16Array where
+  pToJSVal = unUint16Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Uint16Array where
-  pFromJSRef = Uint16Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Uint16Array where
+  pFromJSVal = Uint16Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Uint16Array where
+instance ToJSVal Uint16Array where
   toJSRef = return . unUint16Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Uint16Array where
+instance FromJSVal Uint16Array where
   fromJSRef = return . fmap Uint16Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1535,19 +1535,19 @@ newtype Uint32Array = Uint32Array { unUint32Array :: JSRef }
 instance Eq Uint32Array where
   (Uint32Array a) == (Uint32Array b) = js_eq a b
 
-instance PToJSRef Uint32Array where
-  pToJSRef = unUint32Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Uint32Array where
+  pToJSVal = unUint32Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Uint32Array where
-  pFromJSRef = Uint32Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Uint32Array where
+  pFromJSVal = Uint32Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Uint32Array where
+instance ToJSVal Uint32Array where
   toJSRef = return . unUint32Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Uint32Array where
+instance FromJSVal Uint32Array where
   fromJSRef = return . fmap Uint32Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1575,19 +1575,19 @@ newtype Int8Array = Int8Array { unInt8Array :: JSRef }
 instance Eq Int8Array where
   (Int8Array a) == (Int8Array b) = js_eq a b
 
-instance PToJSRef Int8Array where
-  pToJSRef = unInt8Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Int8Array where
+  pToJSVal = unInt8Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Int8Array where
-  pFromJSRef = Int8Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Int8Array where
+  pFromJSVal = Int8Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Int8Array where
+instance ToJSVal Int8Array where
   toJSRef = return . unInt8Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Int8Array where
+instance FromJSVal Int8Array where
   fromJSRef = return . fmap Int8Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1615,19 +1615,19 @@ newtype Int16Array = Int16Array { unInt16Array :: JSRef }
 instance Eq Int16Array where
   (Int16Array a) == (Int16Array b) = js_eq a b
 
-instance PToJSRef Int16Array where
-  pToJSRef = unInt16Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Int16Array where
+  pToJSVal = unInt16Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Int16Array where
-  pFromJSRef = Int16Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Int16Array where
+  pFromJSVal = Int16Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Int16Array where
+instance ToJSVal Int16Array where
   toJSRef = return . unInt16Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Int16Array where
+instance FromJSVal Int16Array where
   fromJSRef = return . fmap Int16Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1655,19 +1655,19 @@ newtype Int32Array = Int32Array { unInt32Array :: JSRef }
 instance Eq Int32Array where
   (Int32Array a) == (Int32Array b) = js_eq a b
 
-instance PToJSRef Int32Array where
-  pToJSRef = unInt32Array
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Int32Array where
+  pToJSVal = unInt32Array
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Int32Array where
-  pFromJSRef = Int32Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Int32Array where
+  pFromJSVal = Int32Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Int32Array where
+instance ToJSVal Int32Array where
   toJSRef = return . unInt32Array
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Int32Array where
+instance FromJSVal Int32Array where
   fromJSRef = return . fmap Int32Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1695,19 +1695,19 @@ newtype ObjectArray = ObjectArray { unObjectArray :: JSRef }
 instance Eq ObjectArray where
   (ObjectArray a) == (ObjectArray b) = js_eq a b
 
-instance PToJSRef ObjectArray where
-  pToJSRef = unObjectArray
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ObjectArray where
+  pToJSVal = unObjectArray
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ObjectArray where
-  pFromJSRef = ObjectArray
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ObjectArray where
+  pFromJSVal = ObjectArray
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ObjectArray where
+instance ToJSVal ObjectArray where
   toJSRef = return . unObjectArray
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ObjectArray where
+instance FromJSVal ObjectArray where
   fromJSRef = return . fmap ObjectArray . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1730,19 +1730,19 @@ newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSRef }
 instance Eq ArrayBufferView where
   (ArrayBufferView a) == (ArrayBufferView b) = js_eq a b
 
-instance PToJSRef ArrayBufferView where
-  pToJSRef = unArrayBufferView
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ArrayBufferView where
+  pToJSVal = unArrayBufferView
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ArrayBufferView where
-  pFromJSRef = ArrayBufferView
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ArrayBufferView where
+  pFromJSVal = ArrayBufferView
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ArrayBufferView where
+instance ToJSVal ArrayBufferView where
   toJSRef = return . unArrayBufferView
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ArrayBufferView where
+instance FromJSVal ArrayBufferView where
   fromJSRef = return . fmap ArrayBufferView . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1765,19 +1765,19 @@ newtype Array = Array { unArray :: JSRef }
 instance Eq Array where
   (Array a) == (Array b) = js_eq a b
 
-instance PToJSRef Array where
-  pToJSRef = unArray
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Array where
+  pToJSVal = unArray
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Array where
-  pFromJSRef = Array
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Array where
+  pFromJSVal = Array
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Array where
+instance ToJSVal Array where
   toJSRef = return . unArray
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Array where
+instance FromJSVal Array where
   fromJSRef = return . fmap Array . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1805,19 +1805,19 @@ newtype Date = Date { unDate :: JSRef }
 instance Eq Date where
   (Date a) == (Date b) = js_eq a b
 
-instance PToJSRef Date where
-  pToJSRef = unDate
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Date where
+  pToJSVal = unDate
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Date where
-  pFromJSRef = Date
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Date where
+  pFromJSVal = Date
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Date where
+instance ToJSVal Date where
   toJSRef = return . unDate
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Date where
+instance FromJSVal Date where
   fromJSRef = return . fmap Date . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1845,19 +1845,19 @@ newtype Acceleration = Acceleration { unAcceleration :: JSRef }
 instance Eq Acceleration where
   (Acceleration a) == (Acceleration b) = js_eq a b
 
-instance PToJSRef Acceleration where
-  pToJSRef = unAcceleration
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Acceleration where
+  pToJSVal = unAcceleration
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Acceleration where
-  pFromJSRef = Acceleration
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Acceleration where
+  pFromJSVal = Acceleration
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Acceleration where
+instance ToJSVal Acceleration where
   toJSRef = return . unAcceleration
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Acceleration where
+instance FromJSVal Acceleration where
   fromJSRef = return . fmap Acceleration . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1880,19 +1880,19 @@ newtype RotationRate = RotationRate { unRotationRate :: JSRef }
 instance Eq RotationRate where
   (RotationRate a) == (RotationRate b) = js_eq a b
 
-instance PToJSRef RotationRate where
-  pToJSRef = unRotationRate
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RotationRate where
+  pToJSVal = unRotationRate
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RotationRate where
-  pFromJSRef = RotationRate
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RotationRate where
+  pFromJSVal = RotationRate
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RotationRate where
+instance ToJSVal RotationRate where
   toJSRef = return . unRotationRate
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RotationRate where
+instance FromJSVal RotationRate where
   fromJSRef = return . fmap RotationRate . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1915,19 +1915,19 @@ newtype Algorithm = Algorithm { unAlgorithm :: JSRef }
 instance Eq Algorithm where
   (Algorithm a) == (Algorithm b) = js_eq a b
 
-instance PToJSRef Algorithm where
-  pToJSRef = unAlgorithm
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Algorithm where
+  pToJSVal = unAlgorithm
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Algorithm where
-  pFromJSRef = Algorithm
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Algorithm where
+  pFromJSVal = Algorithm
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Algorithm where
+instance ToJSVal Algorithm where
   toJSRef = return . unAlgorithm
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Algorithm where
+instance FromJSVal Algorithm where
   fromJSRef = return . fmap Algorithm . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1950,19 +1950,19 @@ newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSR
 instance Eq CryptoOperationData where
   (CryptoOperationData a) == (CryptoOperationData b) = js_eq a b
 
-instance PToJSRef CryptoOperationData where
-  pToJSRef = unCryptoOperationData
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CryptoOperationData where
+  pToJSVal = unCryptoOperationData
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CryptoOperationData where
-  pFromJSRef = CryptoOperationData
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CryptoOperationData where
+  pFromJSVal = CryptoOperationData
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CryptoOperationData where
+instance ToJSVal CryptoOperationData where
   toJSRef = return . unCryptoOperationData
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CryptoOperationData where
+instance FromJSVal CryptoOperationData where
   fromJSRef = return . fmap CryptoOperationData . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -1986,19 +1986,19 @@ newtype CanvasStyle = CanvasStyle { unCanvasStyle :: JSRef }
 instance Eq CanvasStyle where
   (CanvasStyle a) == (CanvasStyle b) = js_eq a b
 
-instance PToJSRef CanvasStyle where
-  pToJSRef = unCanvasStyle
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CanvasStyle where
+  pToJSVal = unCanvasStyle
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CanvasStyle where
-  pFromJSRef = CanvasStyle
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CanvasStyle where
+  pFromJSVal = CanvasStyle
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CanvasStyle where
+instance ToJSVal CanvasStyle where
   toJSRef = return . unCanvasStyle
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CanvasStyle where
+instance FromJSVal CanvasStyle where
   fromJSRef = return . fmap CanvasStyle . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2022,19 +2022,19 @@ newtype DOMException = DOMException { unDOMException :: JSRef }
 instance Eq DOMException where
   (DOMException a) == (DOMException b) = js_eq a b
 
-instance PToJSRef DOMException where
-  pToJSRef = unDOMException
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMException where
+  pToJSVal = unDOMException
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMException where
-  pFromJSRef = DOMException
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMException where
+  pFromJSVal = DOMException
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMException where
+instance ToJSVal DOMException where
   toJSRef = return . unDOMException
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMException where
+instance FromJSVal DOMException where
   fromJSRef = return . fmap DOMException . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2078,19 +2078,19 @@ newtype ANGLEInstancedArrays = ANGLEInstancedArrays { unANGLEInstancedArrays :: 
 instance Eq (ANGLEInstancedArrays) where
   (ANGLEInstancedArrays a) == (ANGLEInstancedArrays b) = js_eq a b
 
-instance PToJSRef ANGLEInstancedArrays where
-  pToJSRef = unANGLEInstancedArrays
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ANGLEInstancedArrays where
+  pToJSVal = unANGLEInstancedArrays
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ANGLEInstancedArrays where
-  pFromJSRef = ANGLEInstancedArrays
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ANGLEInstancedArrays where
+  pFromJSVal = ANGLEInstancedArrays
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ANGLEInstancedArrays where
+instance ToJSVal ANGLEInstancedArrays where
   toJSRef = return . unANGLEInstancedArrays
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ANGLEInstancedArrays where
+instance FromJSVal ANGLEInstancedArrays where
   fromJSRef = return . fmap ANGLEInstancedArrays . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2116,19 +2116,19 @@ newtype AbstractView = AbstractView { unAbstractView :: JSRef }
 instance Eq (AbstractView) where
   (AbstractView a) == (AbstractView b) = js_eq a b
 
-instance PToJSRef AbstractView where
-  pToJSRef = unAbstractView
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AbstractView where
+  pToJSVal = unAbstractView
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AbstractView where
-  pFromJSRef = AbstractView
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AbstractView where
+  pFromJSVal = AbstractView
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AbstractView where
+instance ToJSVal AbstractView where
   toJSRef = return . unAbstractView
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AbstractView where
+instance FromJSVal AbstractView where
   fromJSRef = return . fmap AbstractView . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2154,19 +2154,19 @@ newtype AbstractWorker = AbstractWorker { unAbstractWorker :: JSRef }
 instance Eq (AbstractWorker) where
   (AbstractWorker a) == (AbstractWorker b) = js_eq a b
 
-instance PToJSRef AbstractWorker where
-  pToJSRef = unAbstractWorker
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AbstractWorker where
+  pToJSVal = unAbstractWorker
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AbstractWorker where
-  pFromJSRef = AbstractWorker
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AbstractWorker where
+  pFromJSVal = AbstractWorker
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AbstractWorker where
+instance ToJSVal AbstractWorker where
   toJSRef = return . unAbstractWorker
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AbstractWorker where
+instance FromJSVal AbstractWorker where
   fromJSRef = return . fmap AbstractWorker . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2195,19 +2195,19 @@ newtype AllAudioCapabilities = AllAudioCapabilities { unAllAudioCapabilities :: 
 instance Eq (AllAudioCapabilities) where
   (AllAudioCapabilities a) == (AllAudioCapabilities b) = js_eq a b
 
-instance PToJSRef AllAudioCapabilities where
-  pToJSRef = unAllAudioCapabilities
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AllAudioCapabilities where
+  pToJSVal = unAllAudioCapabilities
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AllAudioCapabilities where
-  pFromJSRef = AllAudioCapabilities
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AllAudioCapabilities where
+  pFromJSVal = AllAudioCapabilities
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AllAudioCapabilities where
+instance ToJSVal AllAudioCapabilities where
   toJSRef = return . unAllAudioCapabilities
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AllAudioCapabilities where
+instance FromJSVal AllAudioCapabilities where
   fromJSRef = return . fmap AllAudioCapabilities . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2237,19 +2237,19 @@ newtype AllVideoCapabilities = AllVideoCapabilities { unAllVideoCapabilities :: 
 instance Eq (AllVideoCapabilities) where
   (AllVideoCapabilities a) == (AllVideoCapabilities b) = js_eq a b
 
-instance PToJSRef AllVideoCapabilities where
-  pToJSRef = unAllVideoCapabilities
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AllVideoCapabilities where
+  pToJSVal = unAllVideoCapabilities
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AllVideoCapabilities where
-  pFromJSRef = AllVideoCapabilities
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AllVideoCapabilities where
+  pFromJSVal = AllVideoCapabilities
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AllVideoCapabilities where
+instance ToJSVal AllVideoCapabilities where
   toJSRef = return . unAllVideoCapabilities
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AllVideoCapabilities where
+instance FromJSVal AllVideoCapabilities where
   fromJSRef = return . fmap AllVideoCapabilities . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2280,19 +2280,19 @@ newtype AnalyserNode = AnalyserNode { unAnalyserNode :: JSRef }
 instance Eq (AnalyserNode) where
   (AnalyserNode a) == (AnalyserNode b) = js_eq a b
 
-instance PToJSRef AnalyserNode where
-  pToJSRef = unAnalyserNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AnalyserNode where
+  pToJSVal = unAnalyserNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AnalyserNode where
-  pFromJSRef = AnalyserNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AnalyserNode where
+  pFromJSVal = AnalyserNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AnalyserNode where
+instance ToJSVal AnalyserNode where
   toJSRef = return . unAnalyserNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AnalyserNode where
+instance FromJSVal AnalyserNode where
   fromJSRef = return . fmap AnalyserNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2323,19 +2323,19 @@ newtype AnimationEvent = AnimationEvent { unAnimationEvent :: JSRef }
 instance Eq (AnimationEvent) where
   (AnimationEvent a) == (AnimationEvent b) = js_eq a b
 
-instance PToJSRef AnimationEvent where
-  pToJSRef = unAnimationEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AnimationEvent where
+  pToJSVal = unAnimationEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AnimationEvent where
-  pFromJSRef = AnimationEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AnimationEvent where
+  pFromJSVal = AnimationEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AnimationEvent where
+instance ToJSVal AnimationEvent where
   toJSRef = return . unAnimationEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AnimationEvent where
+instance FromJSVal AnimationEvent where
   fromJSRef = return . fmap AnimationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2365,19 +2365,19 @@ newtype ApplicationCache = ApplicationCache { unApplicationCache :: JSRef }
 instance Eq (ApplicationCache) where
   (ApplicationCache a) == (ApplicationCache b) = js_eq a b
 
-instance PToJSRef ApplicationCache where
-  pToJSRef = unApplicationCache
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ApplicationCache where
+  pToJSVal = unApplicationCache
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ApplicationCache where
-  pFromJSRef = ApplicationCache
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ApplicationCache where
+  pFromJSVal = ApplicationCache
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ApplicationCache where
+instance ToJSVal ApplicationCache where
   toJSRef = return . unApplicationCache
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ApplicationCache where
+instance FromJSVal ApplicationCache where
   fromJSRef = return . fmap ApplicationCache . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2410,19 +2410,19 @@ newtype Attr = Attr { unAttr :: JSRef }
 instance Eq (Attr) where
   (Attr a) == (Attr b) = js_eq a b
 
-instance PToJSRef Attr where
-  pToJSRef = unAttr
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Attr where
+  pToJSVal = unAttr
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Attr where
-  pFromJSRef = Attr
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Attr where
+  pFromJSVal = Attr
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Attr where
+instance ToJSVal Attr where
   toJSRef = return . unAttr
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Attr where
+instance FromJSVal Attr where
   fromJSRef = return . fmap Attr . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2452,19 +2452,19 @@ newtype AudioBuffer = AudioBuffer { unAudioBuffer :: JSRef }
 instance Eq (AudioBuffer) where
   (AudioBuffer a) == (AudioBuffer b) = js_eq a b
 
-instance PToJSRef AudioBuffer where
-  pToJSRef = unAudioBuffer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioBuffer where
+  pToJSVal = unAudioBuffer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioBuffer where
-  pFromJSRef = AudioBuffer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioBuffer where
+  pFromJSVal = AudioBuffer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioBuffer where
+instance ToJSVal AudioBuffer where
   toJSRef = return . unAudioBuffer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioBuffer where
+instance FromJSVal AudioBuffer where
   fromJSRef = return . fmap AudioBuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2494,19 +2494,19 @@ newtype AudioBufferSourceNode = AudioBufferSourceNode { unAudioBufferSourceNode 
 instance Eq (AudioBufferSourceNode) where
   (AudioBufferSourceNode a) == (AudioBufferSourceNode b) = js_eq a b
 
-instance PToJSRef AudioBufferSourceNode where
-  pToJSRef = unAudioBufferSourceNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioBufferSourceNode where
+  pToJSVal = unAudioBufferSourceNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioBufferSourceNode where
-  pFromJSRef = AudioBufferSourceNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioBufferSourceNode where
+  pFromJSVal = AudioBufferSourceNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioBufferSourceNode where
+instance ToJSVal AudioBufferSourceNode where
   toJSRef = return . unAudioBufferSourceNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioBufferSourceNode where
+instance FromJSVal AudioBufferSourceNode where
   fromJSRef = return . fmap AudioBufferSourceNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2537,19 +2537,19 @@ newtype AudioContext = AudioContext { unAudioContext :: JSRef }
 instance Eq (AudioContext) where
   (AudioContext a) == (AudioContext b) = js_eq a b
 
-instance PToJSRef AudioContext where
-  pToJSRef = unAudioContext
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioContext where
+  pToJSVal = unAudioContext
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioContext where
-  pFromJSRef = AudioContext
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioContext where
+  pFromJSVal = AudioContext
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioContext where
+instance ToJSVal AudioContext where
   toJSRef = return . unAudioContext
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioContext where
+instance FromJSVal AudioContext where
   fromJSRef = return . fmap AudioContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2585,19 +2585,19 @@ newtype AudioDestinationNode = AudioDestinationNode { unAudioDestinationNode :: 
 instance Eq (AudioDestinationNode) where
   (AudioDestinationNode a) == (AudioDestinationNode b) = js_eq a b
 
-instance PToJSRef AudioDestinationNode where
-  pToJSRef = unAudioDestinationNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioDestinationNode where
+  pToJSVal = unAudioDestinationNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioDestinationNode where
-  pFromJSRef = AudioDestinationNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioDestinationNode where
+  pFromJSVal = AudioDestinationNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioDestinationNode where
+instance ToJSVal AudioDestinationNode where
   toJSRef = return . unAudioDestinationNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioDestinationNode where
+instance FromJSVal AudioDestinationNode where
   fromJSRef = return . fmap AudioDestinationNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2625,19 +2625,19 @@ newtype AudioListener = AudioListener { unAudioListener :: JSRef }
 instance Eq (AudioListener) where
   (AudioListener a) == (AudioListener b) = js_eq a b
 
-instance PToJSRef AudioListener where
-  pToJSRef = unAudioListener
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioListener where
+  pToJSVal = unAudioListener
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioListener where
-  pFromJSRef = AudioListener
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioListener where
+  pFromJSVal = AudioListener
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioListener where
+instance ToJSVal AudioListener where
   toJSRef = return . unAudioListener
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioListener where
+instance FromJSVal AudioListener where
   fromJSRef = return . fmap AudioListener . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2666,19 +2666,19 @@ newtype AudioNode = AudioNode { unAudioNode :: JSRef }
 instance Eq (AudioNode) where
   (AudioNode a) == (AudioNode b) = js_eq a b
 
-instance PToJSRef AudioNode where
-  pToJSRef = unAudioNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioNode where
+  pToJSVal = unAudioNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioNode where
-  pFromJSRef = AudioNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioNode where
+  pFromJSVal = AudioNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioNode where
+instance ToJSVal AudioNode where
   toJSRef = return . unAudioNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioNode where
+instance FromJSVal AudioNode where
   fromJSRef = return . fmap AudioNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2710,19 +2710,19 @@ newtype AudioParam = AudioParam { unAudioParam :: JSRef }
 instance Eq (AudioParam) where
   (AudioParam a) == (AudioParam b) = js_eq a b
 
-instance PToJSRef AudioParam where
-  pToJSRef = unAudioParam
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioParam where
+  pToJSVal = unAudioParam
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioParam where
-  pFromJSRef = AudioParam
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioParam where
+  pFromJSVal = AudioParam
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioParam where
+instance ToJSVal AudioParam where
   toJSRef = return . unAudioParam
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioParam where
+instance FromJSVal AudioParam where
   fromJSRef = return . fmap AudioParam . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2751,19 +2751,19 @@ newtype AudioProcessingEvent = AudioProcessingEvent { unAudioProcessingEvent :: 
 instance Eq (AudioProcessingEvent) where
   (AudioProcessingEvent a) == (AudioProcessingEvent b) = js_eq a b
 
-instance PToJSRef AudioProcessingEvent where
-  pToJSRef = unAudioProcessingEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioProcessingEvent where
+  pToJSVal = unAudioProcessingEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioProcessingEvent where
-  pFromJSRef = AudioProcessingEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioProcessingEvent where
+  pFromJSVal = AudioProcessingEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioProcessingEvent where
+instance ToJSVal AudioProcessingEvent where
   toJSRef = return . unAudioProcessingEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioProcessingEvent where
+instance FromJSVal AudioProcessingEvent where
   fromJSRef = return . fmap AudioProcessingEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2794,19 +2794,19 @@ newtype AudioStreamTrack = AudioStreamTrack { unAudioStreamTrack :: JSRef }
 instance Eq (AudioStreamTrack) where
   (AudioStreamTrack a) == (AudioStreamTrack b) = js_eq a b
 
-instance PToJSRef AudioStreamTrack where
-  pToJSRef = unAudioStreamTrack
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioStreamTrack where
+  pToJSVal = unAudioStreamTrack
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioStreamTrack where
-  pFromJSRef = AudioStreamTrack
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioStreamTrack where
+  pFromJSVal = AudioStreamTrack
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioStreamTrack where
+instance ToJSVal AudioStreamTrack where
   toJSRef = return . unAudioStreamTrack
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioStreamTrack where
+instance FromJSVal AudioStreamTrack where
   fromJSRef = return . fmap AudioStreamTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2834,19 +2834,19 @@ newtype AudioTrack = AudioTrack { unAudioTrack :: JSRef }
 instance Eq (AudioTrack) where
   (AudioTrack a) == (AudioTrack b) = js_eq a b
 
-instance PToJSRef AudioTrack where
-  pToJSRef = unAudioTrack
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioTrack where
+  pToJSVal = unAudioTrack
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioTrack where
-  pFromJSRef = AudioTrack
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioTrack where
+  pFromJSVal = AudioTrack
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioTrack where
+instance ToJSVal AudioTrack where
   toJSRef = return . unAudioTrack
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioTrack where
+instance FromJSVal AudioTrack where
   fromJSRef = return . fmap AudioTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2879,19 +2879,19 @@ newtype AudioTrackList = AudioTrackList { unAudioTrackList :: JSRef }
 instance Eq (AudioTrackList) where
   (AudioTrackList a) == (AudioTrackList b) = js_eq a b
 
-instance PToJSRef AudioTrackList where
-  pToJSRef = unAudioTrackList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AudioTrackList where
+  pToJSVal = unAudioTrackList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AudioTrackList where
-  pFromJSRef = AudioTrackList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AudioTrackList where
+  pFromJSVal = AudioTrackList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AudioTrackList where
+instance ToJSVal AudioTrackList where
   toJSRef = return . unAudioTrackList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AudioTrackList where
+instance FromJSVal AudioTrackList where
   fromJSRef = return . fmap AudioTrackList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2925,19 +2925,19 @@ newtype AutocompleteErrorEvent = AutocompleteErrorEvent { unAutocompleteErrorEve
 instance Eq (AutocompleteErrorEvent) where
   (AutocompleteErrorEvent a) == (AutocompleteErrorEvent b) = js_eq a b
 
-instance PToJSRef AutocompleteErrorEvent where
-  pToJSRef = unAutocompleteErrorEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal AutocompleteErrorEvent where
+  pToJSVal = unAutocompleteErrorEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef AutocompleteErrorEvent where
-  pFromJSRef = AutocompleteErrorEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal AutocompleteErrorEvent where
+  pFromJSVal = AutocompleteErrorEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef AutocompleteErrorEvent where
+instance ToJSVal AutocompleteErrorEvent where
   toJSRef = return . unAutocompleteErrorEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef AutocompleteErrorEvent where
+instance FromJSVal AutocompleteErrorEvent where
   fromJSRef = return . fmap AutocompleteErrorEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -2964,19 +2964,19 @@ newtype BarProp = BarProp { unBarProp :: JSRef }
 instance Eq (BarProp) where
   (BarProp a) == (BarProp b) = js_eq a b
 
-instance PToJSRef BarProp where
-  pToJSRef = unBarProp
-  {-# INLINE pToJSRef #-}
+instance PToJSVal BarProp where
+  pToJSVal = unBarProp
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef BarProp where
-  pFromJSRef = BarProp
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal BarProp where
+  pFromJSVal = BarProp
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef BarProp where
+instance ToJSVal BarProp where
   toJSRef = return . unBarProp
   {-# INLINE toJSRef #-}
 
-instance FromJSRef BarProp where
+instance FromJSVal BarProp where
   fromJSRef = return . fmap BarProp . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3009,19 +3009,19 @@ newtype BatteryManager = BatteryManager { unBatteryManager :: JSRef }
 instance Eq (BatteryManager) where
   (BatteryManager a) == (BatteryManager b) = js_eq a b
 
-instance PToJSRef BatteryManager where
-  pToJSRef = unBatteryManager
-  {-# INLINE pToJSRef #-}
+instance PToJSVal BatteryManager where
+  pToJSVal = unBatteryManager
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef BatteryManager where
-  pFromJSRef = BatteryManager
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal BatteryManager where
+  pFromJSVal = BatteryManager
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef BatteryManager where
+instance ToJSVal BatteryManager where
   toJSRef = return . unBatteryManager
   {-# INLINE toJSRef #-}
 
-instance FromJSRef BatteryManager where
+instance FromJSVal BatteryManager where
   fromJSRef = return . fmap BatteryManager . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3055,19 +3055,19 @@ newtype BeforeLoadEvent = BeforeLoadEvent { unBeforeLoadEvent :: JSRef }
 instance Eq (BeforeLoadEvent) where
   (BeforeLoadEvent a) == (BeforeLoadEvent b) = js_eq a b
 
-instance PToJSRef BeforeLoadEvent where
-  pToJSRef = unBeforeLoadEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal BeforeLoadEvent where
+  pToJSVal = unBeforeLoadEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef BeforeLoadEvent where
-  pFromJSRef = BeforeLoadEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal BeforeLoadEvent where
+  pFromJSVal = BeforeLoadEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef BeforeLoadEvent where
+instance ToJSVal BeforeLoadEvent where
   toJSRef = return . unBeforeLoadEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef BeforeLoadEvent where
+instance FromJSVal BeforeLoadEvent where
   fromJSRef = return . fmap BeforeLoadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3097,19 +3097,19 @@ newtype BeforeUnloadEvent = BeforeUnloadEvent { unBeforeUnloadEvent :: JSRef }
 instance Eq (BeforeUnloadEvent) where
   (BeforeUnloadEvent a) == (BeforeUnloadEvent b) = js_eq a b
 
-instance PToJSRef BeforeUnloadEvent where
-  pToJSRef = unBeforeUnloadEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal BeforeUnloadEvent where
+  pToJSVal = unBeforeUnloadEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef BeforeUnloadEvent where
-  pFromJSRef = BeforeUnloadEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal BeforeUnloadEvent where
+  pFromJSVal = BeforeUnloadEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef BeforeUnloadEvent where
+instance ToJSVal BeforeUnloadEvent where
   toJSRef = return . unBeforeUnloadEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef BeforeUnloadEvent where
+instance FromJSVal BeforeUnloadEvent where
   fromJSRef = return . fmap BeforeUnloadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3140,19 +3140,19 @@ newtype BiquadFilterNode = BiquadFilterNode { unBiquadFilterNode :: JSRef }
 instance Eq (BiquadFilterNode) where
   (BiquadFilterNode a) == (BiquadFilterNode b) = js_eq a b
 
-instance PToJSRef BiquadFilterNode where
-  pToJSRef = unBiquadFilterNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal BiquadFilterNode where
+  pToJSVal = unBiquadFilterNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef BiquadFilterNode where
-  pFromJSRef = BiquadFilterNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal BiquadFilterNode where
+  pFromJSVal = BiquadFilterNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef BiquadFilterNode where
+instance ToJSVal BiquadFilterNode where
   toJSRef = return . unBiquadFilterNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef BiquadFilterNode where
+instance FromJSVal BiquadFilterNode where
   fromJSRef = return . fmap BiquadFilterNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3180,19 +3180,19 @@ newtype Blob = Blob { unBlob :: JSRef }
 instance Eq (Blob) where
   (Blob a) == (Blob b) = js_eq a b
 
-instance PToJSRef Blob where
-  pToJSRef = unBlob
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Blob where
+  pToJSVal = unBlob
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Blob where
-  pFromJSRef = Blob
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Blob where
+  pFromJSVal = Blob
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Blob where
+instance ToJSVal Blob where
   toJSRef = return . unBlob
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Blob where
+instance FromJSVal Blob where
   fromJSRef = return . fmap Blob . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3231,19 +3231,19 @@ newtype CDATASection = CDATASection { unCDATASection :: JSRef }
 instance Eq (CDATASection) where
   (CDATASection a) == (CDATASection b) = js_eq a b
 
-instance PToJSRef CDATASection where
-  pToJSRef = unCDATASection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CDATASection where
+  pToJSVal = unCDATASection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CDATASection where
-  pFromJSRef = CDATASection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CDATASection where
+  pFromJSVal = CDATASection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CDATASection where
+instance ToJSVal CDATASection where
   toJSRef = return . unCDATASection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CDATASection where
+instance FromJSVal CDATASection where
   fromJSRef = return . fmap CDATASection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3275,19 +3275,19 @@ newtype CSS = CSS { unCSS :: JSRef }
 instance Eq (CSS) where
   (CSS a) == (CSS b) = js_eq a b
 
-instance PToJSRef CSS where
-  pToJSRef = unCSS
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSS where
+  pToJSVal = unCSS
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSS where
-  pFromJSRef = CSS
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSS where
+  pFromJSVal = CSS
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSS where
+instance ToJSVal CSS where
   toJSRef = return . unCSS
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSS where
+instance FromJSVal CSS where
   fromJSRef = return . fmap CSS . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3320,19 +3320,19 @@ newtype CSSCharsetRule = CSSCharsetRule { unCSSCharsetRule :: JSRef }
 instance Eq (CSSCharsetRule) where
   (CSSCharsetRule a) == (CSSCharsetRule b) = js_eq a b
 
-instance PToJSRef CSSCharsetRule where
-  pToJSRef = unCSSCharsetRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSCharsetRule where
+  pToJSVal = unCSSCharsetRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSCharsetRule where
-  pFromJSRef = CSSCharsetRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSCharsetRule where
+  pFromJSVal = CSSCharsetRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSCharsetRule where
+instance ToJSVal CSSCharsetRule where
   toJSRef = return . unCSSCharsetRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSCharsetRule where
+instance FromJSVal CSSCharsetRule where
   fromJSRef = return . fmap CSSCharsetRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3362,19 +3362,19 @@ newtype CSSFontFaceLoadEvent = CSSFontFaceLoadEvent { unCSSFontFaceLoadEvent :: 
 instance Eq (CSSFontFaceLoadEvent) where
   (CSSFontFaceLoadEvent a) == (CSSFontFaceLoadEvent b) = js_eq a b
 
-instance PToJSRef CSSFontFaceLoadEvent where
-  pToJSRef = unCSSFontFaceLoadEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSFontFaceLoadEvent where
+  pToJSVal = unCSSFontFaceLoadEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSFontFaceLoadEvent where
-  pFromJSRef = CSSFontFaceLoadEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSFontFaceLoadEvent where
+  pFromJSVal = CSSFontFaceLoadEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSFontFaceLoadEvent where
+instance ToJSVal CSSFontFaceLoadEvent where
   toJSRef = return . unCSSFontFaceLoadEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSFontFaceLoadEvent where
+instance FromJSVal CSSFontFaceLoadEvent where
   fromJSRef = return . fmap CSSFontFaceLoadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3404,19 +3404,19 @@ newtype CSSFontFaceRule = CSSFontFaceRule { unCSSFontFaceRule :: JSRef }
 instance Eq (CSSFontFaceRule) where
   (CSSFontFaceRule a) == (CSSFontFaceRule b) = js_eq a b
 
-instance PToJSRef CSSFontFaceRule where
-  pToJSRef = unCSSFontFaceRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSFontFaceRule where
+  pToJSVal = unCSSFontFaceRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSFontFaceRule where
-  pFromJSRef = CSSFontFaceRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSFontFaceRule where
+  pFromJSVal = CSSFontFaceRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSFontFaceRule where
+instance ToJSVal CSSFontFaceRule where
   toJSRef = return . unCSSFontFaceRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSFontFaceRule where
+instance FromJSVal CSSFontFaceRule where
   fromJSRef = return . fmap CSSFontFaceRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3446,19 +3446,19 @@ newtype CSSImportRule = CSSImportRule { unCSSImportRule :: JSRef }
 instance Eq (CSSImportRule) where
   (CSSImportRule a) == (CSSImportRule b) = js_eq a b
 
-instance PToJSRef CSSImportRule where
-  pToJSRef = unCSSImportRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSImportRule where
+  pToJSVal = unCSSImportRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSImportRule where
-  pFromJSRef = CSSImportRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSImportRule where
+  pFromJSVal = CSSImportRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSImportRule where
+instance ToJSVal CSSImportRule where
   toJSRef = return . unCSSImportRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSImportRule where
+instance FromJSVal CSSImportRule where
   fromJSRef = return . fmap CSSImportRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3488,19 +3488,19 @@ newtype CSSKeyframeRule = CSSKeyframeRule { unCSSKeyframeRule :: JSRef }
 instance Eq (CSSKeyframeRule) where
   (CSSKeyframeRule a) == (CSSKeyframeRule b) = js_eq a b
 
-instance PToJSRef CSSKeyframeRule where
-  pToJSRef = unCSSKeyframeRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSKeyframeRule where
+  pToJSVal = unCSSKeyframeRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSKeyframeRule where
-  pFromJSRef = CSSKeyframeRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSKeyframeRule where
+  pFromJSVal = CSSKeyframeRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSKeyframeRule where
+instance ToJSVal CSSKeyframeRule where
   toJSRef = return . unCSSKeyframeRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSKeyframeRule where
+instance FromJSVal CSSKeyframeRule where
   fromJSRef = return . fmap CSSKeyframeRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3530,19 +3530,19 @@ newtype CSSKeyframesRule = CSSKeyframesRule { unCSSKeyframesRule :: JSRef }
 instance Eq (CSSKeyframesRule) where
   (CSSKeyframesRule a) == (CSSKeyframesRule b) = js_eq a b
 
-instance PToJSRef CSSKeyframesRule where
-  pToJSRef = unCSSKeyframesRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSKeyframesRule where
+  pToJSVal = unCSSKeyframesRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSKeyframesRule where
-  pFromJSRef = CSSKeyframesRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSKeyframesRule where
+  pFromJSVal = CSSKeyframesRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSKeyframesRule where
+instance ToJSVal CSSKeyframesRule where
   toJSRef = return . unCSSKeyframesRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSKeyframesRule where
+instance FromJSVal CSSKeyframesRule where
   fromJSRef = return . fmap CSSKeyframesRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3572,19 +3572,19 @@ newtype CSSMediaRule = CSSMediaRule { unCSSMediaRule :: JSRef }
 instance Eq (CSSMediaRule) where
   (CSSMediaRule a) == (CSSMediaRule b) = js_eq a b
 
-instance PToJSRef CSSMediaRule where
-  pToJSRef = unCSSMediaRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSMediaRule where
+  pToJSVal = unCSSMediaRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSMediaRule where
-  pFromJSRef = CSSMediaRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSMediaRule where
+  pFromJSVal = CSSMediaRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSMediaRule where
+instance ToJSVal CSSMediaRule where
   toJSRef = return . unCSSMediaRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSMediaRule where
+instance FromJSVal CSSMediaRule where
   fromJSRef = return . fmap CSSMediaRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3614,19 +3614,19 @@ newtype CSSPageRule = CSSPageRule { unCSSPageRule :: JSRef }
 instance Eq (CSSPageRule) where
   (CSSPageRule a) == (CSSPageRule b) = js_eq a b
 
-instance PToJSRef CSSPageRule where
-  pToJSRef = unCSSPageRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSPageRule where
+  pToJSVal = unCSSPageRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSPageRule where
-  pFromJSRef = CSSPageRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSPageRule where
+  pFromJSVal = CSSPageRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSPageRule where
+instance ToJSVal CSSPageRule where
   toJSRef = return . unCSSPageRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSPageRule where
+instance FromJSVal CSSPageRule where
   fromJSRef = return . fmap CSSPageRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3656,19 +3656,19 @@ newtype CSSPrimitiveValue = CSSPrimitiveValue { unCSSPrimitiveValue :: JSRef }
 instance Eq (CSSPrimitiveValue) where
   (CSSPrimitiveValue a) == (CSSPrimitiveValue b) = js_eq a b
 
-instance PToJSRef CSSPrimitiveValue where
-  pToJSRef = unCSSPrimitiveValue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSPrimitiveValue where
+  pToJSVal = unCSSPrimitiveValue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSPrimitiveValue where
-  pFromJSRef = CSSPrimitiveValue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSPrimitiveValue where
+  pFromJSVal = CSSPrimitiveValue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSPrimitiveValue where
+instance ToJSVal CSSPrimitiveValue where
   toJSRef = return . unCSSPrimitiveValue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSPrimitiveValue where
+instance FromJSVal CSSPrimitiveValue where
   fromJSRef = return . fmap CSSPrimitiveValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3695,19 +3695,19 @@ newtype CSSRule = CSSRule { unCSSRule :: JSRef }
 instance Eq (CSSRule) where
   (CSSRule a) == (CSSRule b) = js_eq a b
 
-instance PToJSRef CSSRule where
-  pToJSRef = unCSSRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSRule where
+  pToJSVal = unCSSRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSRule where
-  pFromJSRef = CSSRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSRule where
+  pFromJSVal = CSSRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSRule where
+instance ToJSVal CSSRule where
   toJSRef = return . unCSSRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSRule where
+instance FromJSVal CSSRule where
   fromJSRef = return . fmap CSSRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3740,19 +3740,19 @@ newtype CSSRuleList = CSSRuleList { unCSSRuleList :: JSRef }
 instance Eq (CSSRuleList) where
   (CSSRuleList a) == (CSSRuleList b) = js_eq a b
 
-instance PToJSRef CSSRuleList where
-  pToJSRef = unCSSRuleList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSRuleList where
+  pToJSVal = unCSSRuleList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSRuleList where
-  pFromJSRef = CSSRuleList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSRuleList where
+  pFromJSVal = CSSRuleList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSRuleList where
+instance ToJSVal CSSRuleList where
   toJSRef = return . unCSSRuleList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSRuleList where
+instance FromJSVal CSSRuleList where
   fromJSRef = return . fmap CSSRuleList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3780,19 +3780,19 @@ newtype CSSStyleDeclaration = CSSStyleDeclaration { unCSSStyleDeclaration :: JSR
 instance Eq (CSSStyleDeclaration) where
   (CSSStyleDeclaration a) == (CSSStyleDeclaration b) = js_eq a b
 
-instance PToJSRef CSSStyleDeclaration where
-  pToJSRef = unCSSStyleDeclaration
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSStyleDeclaration where
+  pToJSVal = unCSSStyleDeclaration
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSStyleDeclaration where
-  pFromJSRef = CSSStyleDeclaration
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSStyleDeclaration where
+  pFromJSVal = CSSStyleDeclaration
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSStyleDeclaration where
+instance ToJSVal CSSStyleDeclaration where
   toJSRef = return . unCSSStyleDeclaration
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSStyleDeclaration where
+instance FromJSVal CSSStyleDeclaration where
   fromJSRef = return . fmap CSSStyleDeclaration . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3823,19 +3823,19 @@ newtype CSSStyleRule = CSSStyleRule { unCSSStyleRule :: JSRef }
 instance Eq (CSSStyleRule) where
   (CSSStyleRule a) == (CSSStyleRule b) = js_eq a b
 
-instance PToJSRef CSSStyleRule where
-  pToJSRef = unCSSStyleRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSStyleRule where
+  pToJSVal = unCSSStyleRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSStyleRule where
-  pFromJSRef = CSSStyleRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSStyleRule where
+  pFromJSVal = CSSStyleRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSStyleRule where
+instance ToJSVal CSSStyleRule where
   toJSRef = return . unCSSStyleRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSStyleRule where
+instance FromJSVal CSSStyleRule where
   fromJSRef = return . fmap CSSStyleRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3865,19 +3865,19 @@ newtype CSSStyleSheet = CSSStyleSheet { unCSSStyleSheet :: JSRef }
 instance Eq (CSSStyleSheet) where
   (CSSStyleSheet a) == (CSSStyleSheet b) = js_eq a b
 
-instance PToJSRef CSSStyleSheet where
-  pToJSRef = unCSSStyleSheet
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSStyleSheet where
+  pToJSVal = unCSSStyleSheet
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSStyleSheet where
-  pFromJSRef = CSSStyleSheet
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSStyleSheet where
+  pFromJSVal = CSSStyleSheet
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSStyleSheet where
+instance ToJSVal CSSStyleSheet where
   toJSRef = return . unCSSStyleSheet
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSStyleSheet where
+instance FromJSVal CSSStyleSheet where
   fromJSRef = return . fmap CSSStyleSheet . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3909,19 +3909,19 @@ newtype CSSSupportsRule = CSSSupportsRule { unCSSSupportsRule :: JSRef }
 instance Eq (CSSSupportsRule) where
   (CSSSupportsRule a) == (CSSSupportsRule b) = js_eq a b
 
-instance PToJSRef CSSSupportsRule where
-  pToJSRef = unCSSSupportsRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSSupportsRule where
+  pToJSVal = unCSSSupportsRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSSupportsRule where
-  pFromJSRef = CSSSupportsRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSSupportsRule where
+  pFromJSVal = CSSSupportsRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSSupportsRule where
+instance ToJSVal CSSSupportsRule where
   toJSRef = return . unCSSSupportsRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSSupportsRule where
+instance FromJSVal CSSSupportsRule where
   fromJSRef = return . fmap CSSSupportsRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3951,19 +3951,19 @@ newtype CSSUnknownRule = CSSUnknownRule { unCSSUnknownRule :: JSRef }
 instance Eq (CSSUnknownRule) where
   (CSSUnknownRule a) == (CSSUnknownRule b) = js_eq a b
 
-instance PToJSRef CSSUnknownRule where
-  pToJSRef = unCSSUnknownRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSUnknownRule where
+  pToJSVal = unCSSUnknownRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSUnknownRule where
-  pFromJSRef = CSSUnknownRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSUnknownRule where
+  pFromJSVal = CSSUnknownRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSUnknownRule where
+instance ToJSVal CSSUnknownRule where
   toJSRef = return . unCSSUnknownRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSUnknownRule where
+instance FromJSVal CSSUnknownRule where
   fromJSRef = return . fmap CSSUnknownRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -3990,19 +3990,19 @@ newtype CSSValue = CSSValue { unCSSValue :: JSRef }
 instance Eq (CSSValue) where
   (CSSValue a) == (CSSValue b) = js_eq a b
 
-instance PToJSRef CSSValue where
-  pToJSRef = unCSSValue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSValue where
+  pToJSVal = unCSSValue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSValue where
-  pFromJSRef = CSSValue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSValue where
+  pFromJSVal = CSSValue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSValue where
+instance ToJSVal CSSValue where
   toJSRef = return . unCSSValue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSValue where
+instance FromJSVal CSSValue where
   fromJSRef = return . fmap CSSValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4038,19 +4038,19 @@ newtype CSSValueList = CSSValueList { unCSSValueList :: JSRef }
 instance Eq (CSSValueList) where
   (CSSValueList a) == (CSSValueList b) = js_eq a b
 
-instance PToJSRef CSSValueList where
-  pToJSRef = unCSSValueList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CSSValueList where
+  pToJSVal = unCSSValueList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CSSValueList where
-  pFromJSRef = CSSValueList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CSSValueList where
+  pFromJSVal = CSSValueList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CSSValueList where
+instance ToJSVal CSSValueList where
   toJSRef = return . unCSSValueList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CSSValueList where
+instance FromJSVal CSSValueList where
   fromJSRef = return . fmap CSSValueList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4082,19 +4082,19 @@ newtype CanvasGradient = CanvasGradient { unCanvasGradient :: JSRef }
 instance Eq (CanvasGradient) where
   (CanvasGradient a) == (CanvasGradient b) = js_eq a b
 
-instance PToJSRef CanvasGradient where
-  pToJSRef = unCanvasGradient
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CanvasGradient where
+  pToJSVal = unCanvasGradient
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CanvasGradient where
-  pFromJSRef = CanvasGradient
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CanvasGradient where
+  pFromJSVal = CanvasGradient
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CanvasGradient where
+instance ToJSVal CanvasGradient where
   toJSRef = return . unCanvasGradient
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CanvasGradient where
+instance FromJSVal CanvasGradient where
   fromJSRef = return . fmap CanvasGradient . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4120,19 +4120,19 @@ newtype CanvasPattern = CanvasPattern { unCanvasPattern :: JSRef }
 instance Eq (CanvasPattern) where
   (CanvasPattern a) == (CanvasPattern b) = js_eq a b
 
-instance PToJSRef CanvasPattern where
-  pToJSRef = unCanvasPattern
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CanvasPattern where
+  pToJSVal = unCanvasPattern
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CanvasPattern where
-  pFromJSRef = CanvasPattern
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CanvasPattern where
+  pFromJSVal = CanvasPattern
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CanvasPattern where
+instance ToJSVal CanvasPattern where
   toJSRef = return . unCanvasPattern
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CanvasPattern where
+instance FromJSVal CanvasPattern where
   fromJSRef = return . fmap CanvasPattern . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4158,19 +4158,19 @@ newtype CanvasProxy = CanvasProxy { unCanvasProxy :: JSRef }
 instance Eq (CanvasProxy) where
   (CanvasProxy a) == (CanvasProxy b) = js_eq a b
 
-instance PToJSRef CanvasProxy where
-  pToJSRef = unCanvasProxy
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CanvasProxy where
+  pToJSVal = unCanvasProxy
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CanvasProxy where
-  pFromJSRef = CanvasProxy
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CanvasProxy where
+  pFromJSVal = CanvasProxy
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CanvasProxy where
+instance ToJSVal CanvasProxy where
   toJSRef = return . unCanvasProxy
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CanvasProxy where
+instance FromJSVal CanvasProxy where
   fromJSRef = return . fmap CanvasProxy . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4196,19 +4196,19 @@ newtype CanvasRenderingContext = CanvasRenderingContext { unCanvasRenderingConte
 instance Eq (CanvasRenderingContext) where
   (CanvasRenderingContext a) == (CanvasRenderingContext b) = js_eq a b
 
-instance PToJSRef CanvasRenderingContext where
-  pToJSRef = unCanvasRenderingContext
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CanvasRenderingContext where
+  pToJSVal = unCanvasRenderingContext
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CanvasRenderingContext where
-  pFromJSRef = CanvasRenderingContext
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CanvasRenderingContext where
+  pFromJSVal = CanvasRenderingContext
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CanvasRenderingContext where
+instance ToJSVal CanvasRenderingContext where
   toJSRef = return . unCanvasRenderingContext
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CanvasRenderingContext where
+instance FromJSVal CanvasRenderingContext where
   fromJSRef = return . fmap CanvasRenderingContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4242,19 +4242,19 @@ newtype CanvasRenderingContext2D = CanvasRenderingContext2D { unCanvasRenderingC
 instance Eq (CanvasRenderingContext2D) where
   (CanvasRenderingContext2D a) == (CanvasRenderingContext2D b) = js_eq a b
 
-instance PToJSRef CanvasRenderingContext2D where
-  pToJSRef = unCanvasRenderingContext2D
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CanvasRenderingContext2D where
+  pToJSVal = unCanvasRenderingContext2D
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CanvasRenderingContext2D where
-  pFromJSRef = CanvasRenderingContext2D
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CanvasRenderingContext2D where
+  pFromJSVal = CanvasRenderingContext2D
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CanvasRenderingContext2D where
+instance ToJSVal CanvasRenderingContext2D where
   toJSRef = return . unCanvasRenderingContext2D
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CanvasRenderingContext2D where
+instance FromJSVal CanvasRenderingContext2D where
   fromJSRef = return . fmap CanvasRenderingContext2D . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4281,19 +4281,19 @@ newtype CapabilityRange = CapabilityRange { unCapabilityRange :: JSRef }
 instance Eq (CapabilityRange) where
   (CapabilityRange a) == (CapabilityRange b) = js_eq a b
 
-instance PToJSRef CapabilityRange where
-  pToJSRef = unCapabilityRange
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CapabilityRange where
+  pToJSVal = unCapabilityRange
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CapabilityRange where
-  pFromJSRef = CapabilityRange
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CapabilityRange where
+  pFromJSVal = CapabilityRange
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CapabilityRange where
+instance ToJSVal CapabilityRange where
   toJSRef = return . unCapabilityRange
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CapabilityRange where
+instance FromJSVal CapabilityRange where
   fromJSRef = return . fmap CapabilityRange . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4323,19 +4323,19 @@ newtype ChannelMergerNode = ChannelMergerNode { unChannelMergerNode :: JSRef }
 instance Eq (ChannelMergerNode) where
   (ChannelMergerNode a) == (ChannelMergerNode b) = js_eq a b
 
-instance PToJSRef ChannelMergerNode where
-  pToJSRef = unChannelMergerNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ChannelMergerNode where
+  pToJSVal = unChannelMergerNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ChannelMergerNode where
-  pFromJSRef = ChannelMergerNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ChannelMergerNode where
+  pFromJSVal = ChannelMergerNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ChannelMergerNode where
+instance ToJSVal ChannelMergerNode where
   toJSRef = return . unChannelMergerNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ChannelMergerNode where
+instance FromJSVal ChannelMergerNode where
   fromJSRef = return . fmap ChannelMergerNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4367,19 +4367,19 @@ newtype ChannelSplitterNode = ChannelSplitterNode { unChannelSplitterNode :: JSR
 instance Eq (ChannelSplitterNode) where
   (ChannelSplitterNode a) == (ChannelSplitterNode b) = js_eq a b
 
-instance PToJSRef ChannelSplitterNode where
-  pToJSRef = unChannelSplitterNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ChannelSplitterNode where
+  pToJSVal = unChannelSplitterNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ChannelSplitterNode where
-  pFromJSRef = ChannelSplitterNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ChannelSplitterNode where
+  pFromJSVal = ChannelSplitterNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ChannelSplitterNode where
+instance ToJSVal ChannelSplitterNode where
   toJSRef = return . unChannelSplitterNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ChannelSplitterNode where
+instance FromJSVal ChannelSplitterNode where
   fromJSRef = return . fmap ChannelSplitterNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4411,19 +4411,19 @@ newtype CharacterData = CharacterData { unCharacterData :: JSRef }
 instance Eq (CharacterData) where
   (CharacterData a) == (CharacterData b) = js_eq a b
 
-instance PToJSRef CharacterData where
-  pToJSRef = unCharacterData
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CharacterData where
+  pToJSVal = unCharacterData
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CharacterData where
-  pFromJSRef = CharacterData
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CharacterData where
+  pFromJSVal = CharacterData
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CharacterData where
+instance ToJSVal CharacterData where
   toJSRef = return . unCharacterData
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CharacterData where
+instance FromJSVal CharacterData where
   fromJSRef = return . fmap CharacterData . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4458,19 +4458,19 @@ newtype ChildNode = ChildNode { unChildNode :: JSRef }
 instance Eq (ChildNode) where
   (ChildNode a) == (ChildNode b) = js_eq a b
 
-instance PToJSRef ChildNode where
-  pToJSRef = unChildNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ChildNode where
+  pToJSVal = unChildNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ChildNode where
-  pFromJSRef = ChildNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ChildNode where
+  pFromJSVal = ChildNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ChildNode where
+instance ToJSVal ChildNode where
   toJSRef = return . unChildNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ChildNode where
+instance FromJSVal ChildNode where
   fromJSRef = return . fmap ChildNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4496,19 +4496,19 @@ newtype ClientRect = ClientRect { unClientRect :: JSRef }
 instance Eq (ClientRect) where
   (ClientRect a) == (ClientRect b) = js_eq a b
 
-instance PToJSRef ClientRect where
-  pToJSRef = unClientRect
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ClientRect where
+  pToJSVal = unClientRect
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ClientRect where
-  pFromJSRef = ClientRect
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ClientRect where
+  pFromJSVal = ClientRect
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ClientRect where
+instance ToJSVal ClientRect where
   toJSRef = return . unClientRect
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ClientRect where
+instance FromJSVal ClientRect where
   fromJSRef = return . fmap ClientRect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4534,19 +4534,19 @@ newtype ClientRectList = ClientRectList { unClientRectList :: JSRef }
 instance Eq (ClientRectList) where
   (ClientRectList a) == (ClientRectList b) = js_eq a b
 
-instance PToJSRef ClientRectList where
-  pToJSRef = unClientRectList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ClientRectList where
+  pToJSVal = unClientRectList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ClientRectList where
-  pFromJSRef = ClientRectList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ClientRectList where
+  pFromJSVal = ClientRectList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ClientRectList where
+instance ToJSVal ClientRectList where
   toJSRef = return . unClientRectList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ClientRectList where
+instance FromJSVal ClientRectList where
   fromJSRef = return . fmap ClientRectList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4575,19 +4575,19 @@ newtype CloseEvent = CloseEvent { unCloseEvent :: JSRef }
 instance Eq (CloseEvent) where
   (CloseEvent a) == (CloseEvent b) = js_eq a b
 
-instance PToJSRef CloseEvent where
-  pToJSRef = unCloseEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CloseEvent where
+  pToJSVal = unCloseEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CloseEvent where
-  pFromJSRef = CloseEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CloseEvent where
+  pFromJSVal = CloseEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CloseEvent where
+instance ToJSVal CloseEvent where
   toJSRef = return . unCloseEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CloseEvent where
+instance FromJSVal CloseEvent where
   fromJSRef = return . fmap CloseEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4614,19 +4614,19 @@ newtype CommandLineAPIHost = CommandLineAPIHost { unCommandLineAPIHost :: JSRef 
 instance Eq (CommandLineAPIHost) where
   (CommandLineAPIHost a) == (CommandLineAPIHost b) = js_eq a b
 
-instance PToJSRef CommandLineAPIHost where
-  pToJSRef = unCommandLineAPIHost
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CommandLineAPIHost where
+  pToJSVal = unCommandLineAPIHost
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CommandLineAPIHost where
-  pFromJSRef = CommandLineAPIHost
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CommandLineAPIHost where
+  pFromJSVal = CommandLineAPIHost
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CommandLineAPIHost where
+instance ToJSVal CommandLineAPIHost where
   toJSRef = return . unCommandLineAPIHost
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CommandLineAPIHost where
+instance FromJSVal CommandLineAPIHost where
   fromJSRef = return . fmap CommandLineAPIHost . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4657,19 +4657,19 @@ newtype Comment = Comment { unComment :: JSRef }
 instance Eq (Comment) where
   (Comment a) == (Comment b) = js_eq a b
 
-instance PToJSRef Comment where
-  pToJSRef = unComment
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Comment where
+  pToJSVal = unComment
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Comment where
-  pFromJSRef = Comment
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Comment where
+  pFromJSVal = Comment
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Comment where
+instance ToJSVal Comment where
   toJSRef = return . unComment
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Comment where
+instance FromJSVal Comment where
   fromJSRef = return . fmap Comment . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4704,19 +4704,19 @@ newtype CompositionEvent = CompositionEvent { unCompositionEvent :: JSRef }
 instance Eq (CompositionEvent) where
   (CompositionEvent a) == (CompositionEvent b) = js_eq a b
 
-instance PToJSRef CompositionEvent where
-  pToJSRef = unCompositionEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CompositionEvent where
+  pToJSVal = unCompositionEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CompositionEvent where
-  pFromJSRef = CompositionEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CompositionEvent where
+  pFromJSVal = CompositionEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CompositionEvent where
+instance ToJSVal CompositionEvent where
   toJSRef = return . unCompositionEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CompositionEvent where
+instance FromJSVal CompositionEvent where
   fromJSRef = return . fmap CompositionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4748,19 +4748,19 @@ newtype ConvolverNode = ConvolverNode { unConvolverNode :: JSRef }
 instance Eq (ConvolverNode) where
   (ConvolverNode a) == (ConvolverNode b) = js_eq a b
 
-instance PToJSRef ConvolverNode where
-  pToJSRef = unConvolverNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ConvolverNode where
+  pToJSVal = unConvolverNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ConvolverNode where
-  pFromJSRef = ConvolverNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ConvolverNode where
+  pFromJSVal = ConvolverNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ConvolverNode where
+instance ToJSVal ConvolverNode where
   toJSRef = return . unConvolverNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ConvolverNode where
+instance FromJSVal ConvolverNode where
   fromJSRef = return . fmap ConvolverNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4788,19 +4788,19 @@ newtype Coordinates = Coordinates { unCoordinates :: JSRef }
 instance Eq (Coordinates) where
   (Coordinates a) == (Coordinates b) = js_eq a b
 
-instance PToJSRef Coordinates where
-  pToJSRef = unCoordinates
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Coordinates where
+  pToJSVal = unCoordinates
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Coordinates where
-  pFromJSRef = Coordinates
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Coordinates where
+  pFromJSVal = Coordinates
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Coordinates where
+instance ToJSVal Coordinates where
   toJSRef = return . unCoordinates
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Coordinates where
+instance FromJSVal Coordinates where
   fromJSRef = return . fmap Coordinates . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4826,19 +4826,19 @@ newtype Counter = Counter { unCounter :: JSRef }
 instance Eq (Counter) where
   (Counter a) == (Counter b) = js_eq a b
 
-instance PToJSRef Counter where
-  pToJSRef = unCounter
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Counter where
+  pToJSVal = unCounter
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Counter where
-  pFromJSRef = Counter
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Counter where
+  pFromJSVal = Counter
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Counter where
+instance ToJSVal Counter where
   toJSRef = return . unCounter
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Counter where
+instance FromJSVal Counter where
   fromJSRef = return . fmap Counter . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4864,19 +4864,19 @@ newtype Crypto = Crypto { unCrypto :: JSRef }
 instance Eq (Crypto) where
   (Crypto a) == (Crypto b) = js_eq a b
 
-instance PToJSRef Crypto where
-  pToJSRef = unCrypto
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Crypto where
+  pToJSVal = unCrypto
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Crypto where
-  pFromJSRef = Crypto
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Crypto where
+  pFromJSVal = Crypto
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Crypto where
+instance ToJSVal Crypto where
   toJSRef = return . unCrypto
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Crypto where
+instance FromJSVal Crypto where
   fromJSRef = return . fmap Crypto . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4902,19 +4902,19 @@ newtype CryptoKey = CryptoKey { unCryptoKey :: JSRef }
 instance Eq (CryptoKey) where
   (CryptoKey a) == (CryptoKey b) = js_eq a b
 
-instance PToJSRef CryptoKey where
-  pToJSRef = unCryptoKey
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CryptoKey where
+  pToJSVal = unCryptoKey
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CryptoKey where
-  pFromJSRef = CryptoKey
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CryptoKey where
+  pFromJSVal = CryptoKey
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CryptoKey where
+instance ToJSVal CryptoKey where
   toJSRef = return . unCryptoKey
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CryptoKey where
+instance FromJSVal CryptoKey where
   fromJSRef = return . fmap CryptoKey . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4940,19 +4940,19 @@ newtype CryptoKeyPair = CryptoKeyPair { unCryptoKeyPair :: JSRef }
 instance Eq (CryptoKeyPair) where
   (CryptoKeyPair a) == (CryptoKeyPair b) = js_eq a b
 
-instance PToJSRef CryptoKeyPair where
-  pToJSRef = unCryptoKeyPair
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CryptoKeyPair where
+  pToJSVal = unCryptoKeyPair
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CryptoKeyPair where
-  pFromJSRef = CryptoKeyPair
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CryptoKeyPair where
+  pFromJSVal = CryptoKeyPair
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CryptoKeyPair where
+instance ToJSVal CryptoKeyPair where
   toJSRef = return . unCryptoKeyPair
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CryptoKeyPair where
+instance FromJSVal CryptoKeyPair where
   fromJSRef = return . fmap CryptoKeyPair . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -4981,19 +4981,19 @@ newtype CustomEvent = CustomEvent { unCustomEvent :: JSRef }
 instance Eq (CustomEvent) where
   (CustomEvent a) == (CustomEvent b) = js_eq a b
 
-instance PToJSRef CustomEvent where
-  pToJSRef = unCustomEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal CustomEvent where
+  pToJSVal = unCustomEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef CustomEvent where
-  pFromJSRef = CustomEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal CustomEvent where
+  pFromJSVal = CustomEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef CustomEvent where
+instance ToJSVal CustomEvent where
   toJSRef = return . unCustomEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef CustomEvent where
+instance FromJSVal CustomEvent where
   fromJSRef = return . fmap CustomEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5020,19 +5020,19 @@ newtype DOMError = DOMError { unDOMError :: JSRef }
 instance Eq (DOMError) where
   (DOMError a) == (DOMError b) = js_eq a b
 
-instance PToJSRef DOMError where
-  pToJSRef = unDOMError
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMError where
+  pToJSVal = unDOMError
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMError where
-  pFromJSRef = DOMError
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMError where
+  pFromJSVal = DOMError
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMError where
+instance ToJSVal DOMError where
   toJSRef = return . unDOMError
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMError where
+instance FromJSVal DOMError where
   fromJSRef = return . fmap DOMError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5063,19 +5063,19 @@ newtype DOMImplementation = DOMImplementation { unDOMImplementation :: JSRef }
 instance Eq (DOMImplementation) where
   (DOMImplementation a) == (DOMImplementation b) = js_eq a b
 
-instance PToJSRef DOMImplementation where
-  pToJSRef = unDOMImplementation
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMImplementation where
+  pToJSVal = unDOMImplementation
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMImplementation where
-  pFromJSRef = DOMImplementation
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMImplementation where
+  pFromJSVal = DOMImplementation
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMImplementation where
+instance ToJSVal DOMImplementation where
   toJSRef = return . unDOMImplementation
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMImplementation where
+instance FromJSVal DOMImplementation where
   fromJSRef = return . fmap DOMImplementation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5103,19 +5103,19 @@ newtype DOMNamedFlowCollection = DOMNamedFlowCollection { unDOMNamedFlowCollecti
 instance Eq (DOMNamedFlowCollection) where
   (DOMNamedFlowCollection a) == (DOMNamedFlowCollection b) = js_eq a b
 
-instance PToJSRef DOMNamedFlowCollection where
-  pToJSRef = unDOMNamedFlowCollection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMNamedFlowCollection where
+  pToJSVal = unDOMNamedFlowCollection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMNamedFlowCollection where
-  pFromJSRef = DOMNamedFlowCollection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMNamedFlowCollection where
+  pFromJSVal = DOMNamedFlowCollection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMNamedFlowCollection where
+instance ToJSVal DOMNamedFlowCollection where
   toJSRef = return . unDOMNamedFlowCollection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMNamedFlowCollection where
+instance FromJSVal DOMNamedFlowCollection where
   fromJSRef = return . fmap DOMNamedFlowCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5145,19 +5145,19 @@ newtype DOMParser = DOMParser { unDOMParser :: JSRef }
 instance Eq (DOMParser) where
   (DOMParser a) == (DOMParser b) = js_eq a b
 
-instance PToJSRef DOMParser where
-  pToJSRef = unDOMParser
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMParser where
+  pToJSVal = unDOMParser
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMParser where
-  pFromJSRef = DOMParser
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMParser where
+  pFromJSVal = DOMParser
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMParser where
+instance ToJSVal DOMParser where
   toJSRef = return . unDOMParser
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMParser where
+instance FromJSVal DOMParser where
   fromJSRef = return . fmap DOMParser . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5186,19 +5186,19 @@ newtype DOMSettableTokenList = DOMSettableTokenList { unDOMSettableTokenList :: 
 instance Eq (DOMSettableTokenList) where
   (DOMSettableTokenList a) == (DOMSettableTokenList b) = js_eq a b
 
-instance PToJSRef DOMSettableTokenList where
-  pToJSRef = unDOMSettableTokenList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMSettableTokenList where
+  pToJSVal = unDOMSettableTokenList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMSettableTokenList where
-  pFromJSRef = DOMSettableTokenList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMSettableTokenList where
+  pFromJSVal = DOMSettableTokenList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMSettableTokenList where
+instance ToJSVal DOMSettableTokenList where
   toJSRef = return . unDOMSettableTokenList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMSettableTokenList where
+instance FromJSVal DOMSettableTokenList where
   fromJSRef = return . fmap DOMSettableTokenList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5227,19 +5227,19 @@ newtype DOMStringList = DOMStringList { unDOMStringList :: JSRef }
 instance Eq (DOMStringList) where
   (DOMStringList a) == (DOMStringList b) = js_eq a b
 
-instance PToJSRef DOMStringList where
-  pToJSRef = unDOMStringList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMStringList where
+  pToJSVal = unDOMStringList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMStringList where
-  pFromJSRef = DOMStringList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMStringList where
+  pFromJSVal = DOMStringList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMStringList where
+instance ToJSVal DOMStringList where
   toJSRef = return . unDOMStringList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMStringList where
+instance FromJSVal DOMStringList where
   fromJSRef = return . fmap DOMStringList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5267,19 +5267,19 @@ newtype DOMStringMap = DOMStringMap { unDOMStringMap :: JSRef }
 instance Eq (DOMStringMap) where
   (DOMStringMap a) == (DOMStringMap b) = js_eq a b
 
-instance PToJSRef DOMStringMap where
-  pToJSRef = unDOMStringMap
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMStringMap where
+  pToJSVal = unDOMStringMap
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMStringMap where
-  pFromJSRef = DOMStringMap
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMStringMap where
+  pFromJSVal = DOMStringMap
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMStringMap where
+instance ToJSVal DOMStringMap where
   toJSRef = return . unDOMStringMap
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMStringMap where
+instance FromJSVal DOMStringMap where
   fromJSRef = return . fmap DOMStringMap . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5305,19 +5305,19 @@ newtype DOMTokenList = DOMTokenList { unDOMTokenList :: JSRef }
 instance Eq (DOMTokenList) where
   (DOMTokenList a) == (DOMTokenList b) = js_eq a b
 
-instance PToJSRef DOMTokenList where
-  pToJSRef = unDOMTokenList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DOMTokenList where
+  pToJSVal = unDOMTokenList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DOMTokenList where
-  pFromJSRef = DOMTokenList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DOMTokenList where
+  pFromJSVal = DOMTokenList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DOMTokenList where
+instance ToJSVal DOMTokenList where
   toJSRef = return . unDOMTokenList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DOMTokenList where
+instance FromJSVal DOMTokenList where
   fromJSRef = return . fmap DOMTokenList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5354,19 +5354,19 @@ newtype DataCue = DataCue { unDataCue :: JSRef }
 instance Eq (DataCue) where
   (DataCue a) == (DataCue b) = js_eq a b
 
-instance PToJSRef DataCue where
-  pToJSRef = unDataCue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DataCue where
+  pToJSVal = unDataCue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DataCue where
-  pFromJSRef = DataCue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DataCue where
+  pFromJSVal = DataCue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DataCue where
+instance ToJSVal DataCue where
   toJSRef = return . unDataCue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DataCue where
+instance FromJSVal DataCue where
   fromJSRef = return . fmap DataCue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5394,19 +5394,19 @@ newtype DataTransfer = DataTransfer { unDataTransfer :: JSRef }
 instance Eq (DataTransfer) where
   (DataTransfer a) == (DataTransfer b) = js_eq a b
 
-instance PToJSRef DataTransfer where
-  pToJSRef = unDataTransfer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DataTransfer where
+  pToJSVal = unDataTransfer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DataTransfer where
-  pFromJSRef = DataTransfer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DataTransfer where
+  pFromJSVal = DataTransfer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DataTransfer where
+instance ToJSVal DataTransfer where
   toJSRef = return . unDataTransfer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DataTransfer where
+instance FromJSVal DataTransfer where
   fromJSRef = return . fmap DataTransfer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5432,19 +5432,19 @@ newtype DataTransferItem = DataTransferItem { unDataTransferItem :: JSRef }
 instance Eq (DataTransferItem) where
   (DataTransferItem a) == (DataTransferItem b) = js_eq a b
 
-instance PToJSRef DataTransferItem where
-  pToJSRef = unDataTransferItem
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DataTransferItem where
+  pToJSVal = unDataTransferItem
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DataTransferItem where
-  pFromJSRef = DataTransferItem
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DataTransferItem where
+  pFromJSVal = DataTransferItem
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DataTransferItem where
+instance ToJSVal DataTransferItem where
   toJSRef = return . unDataTransferItem
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DataTransferItem where
+instance FromJSVal DataTransferItem where
   fromJSRef = return . fmap DataTransferItem . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5470,19 +5470,19 @@ newtype DataTransferItemList = DataTransferItemList { unDataTransferItemList :: 
 instance Eq (DataTransferItemList) where
   (DataTransferItemList a) == (DataTransferItemList b) = js_eq a b
 
-instance PToJSRef DataTransferItemList where
-  pToJSRef = unDataTransferItemList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DataTransferItemList where
+  pToJSVal = unDataTransferItemList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DataTransferItemList where
-  pFromJSRef = DataTransferItemList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DataTransferItemList where
+  pFromJSVal = DataTransferItemList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DataTransferItemList where
+instance ToJSVal DataTransferItemList where
   toJSRef = return . unDataTransferItemList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DataTransferItemList where
+instance FromJSVal DataTransferItemList where
   fromJSRef = return . fmap DataTransferItemList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5508,19 +5508,19 @@ newtype Database = Database { unDatabase :: JSRef }
 instance Eq (Database) where
   (Database a) == (Database b) = js_eq a b
 
-instance PToJSRef Database where
-  pToJSRef = unDatabase
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Database where
+  pToJSVal = unDatabase
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Database where
-  pFromJSRef = Database
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Database where
+  pFromJSVal = Database
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Database where
+instance ToJSVal Database where
   toJSRef = return . unDatabase
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Database where
+instance FromJSVal Database where
   fromJSRef = return . fmap Database . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5550,19 +5550,19 @@ newtype DedicatedWorkerGlobalScope = DedicatedWorkerGlobalScope { unDedicatedWor
 instance Eq (DedicatedWorkerGlobalScope) where
   (DedicatedWorkerGlobalScope a) == (DedicatedWorkerGlobalScope b) = js_eq a b
 
-instance PToJSRef DedicatedWorkerGlobalScope where
-  pToJSRef = unDedicatedWorkerGlobalScope
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DedicatedWorkerGlobalScope where
+  pToJSVal = unDedicatedWorkerGlobalScope
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DedicatedWorkerGlobalScope where
-  pFromJSRef = DedicatedWorkerGlobalScope
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DedicatedWorkerGlobalScope where
+  pFromJSVal = DedicatedWorkerGlobalScope
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DedicatedWorkerGlobalScope where
+instance ToJSVal DedicatedWorkerGlobalScope where
   toJSRef = return . unDedicatedWorkerGlobalScope
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DedicatedWorkerGlobalScope where
+instance FromJSVal DedicatedWorkerGlobalScope where
   fromJSRef = return . fmap DedicatedWorkerGlobalScope . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5594,19 +5594,19 @@ newtype DelayNode = DelayNode { unDelayNode :: JSRef }
 instance Eq (DelayNode) where
   (DelayNode a) == (DelayNode b) = js_eq a b
 
-instance PToJSRef DelayNode where
-  pToJSRef = unDelayNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DelayNode where
+  pToJSVal = unDelayNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DelayNode where
-  pFromJSRef = DelayNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DelayNode where
+  pFromJSVal = DelayNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DelayNode where
+instance ToJSVal DelayNode where
   toJSRef = return . unDelayNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DelayNode where
+instance FromJSVal DelayNode where
   fromJSRef = return . fmap DelayNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5637,19 +5637,19 @@ newtype DeviceMotionEvent = DeviceMotionEvent { unDeviceMotionEvent :: JSRef }
 instance Eq (DeviceMotionEvent) where
   (DeviceMotionEvent a) == (DeviceMotionEvent b) = js_eq a b
 
-instance PToJSRef DeviceMotionEvent where
-  pToJSRef = unDeviceMotionEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DeviceMotionEvent where
+  pToJSVal = unDeviceMotionEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DeviceMotionEvent where
-  pFromJSRef = DeviceMotionEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DeviceMotionEvent where
+  pFromJSVal = DeviceMotionEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DeviceMotionEvent where
+instance ToJSVal DeviceMotionEvent where
   toJSRef = return . unDeviceMotionEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DeviceMotionEvent where
+instance FromJSVal DeviceMotionEvent where
   fromJSRef = return . fmap DeviceMotionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5679,19 +5679,19 @@ newtype DeviceOrientationEvent = DeviceOrientationEvent { unDeviceOrientationEve
 instance Eq (DeviceOrientationEvent) where
   (DeviceOrientationEvent a) == (DeviceOrientationEvent b) = js_eq a b
 
-instance PToJSRef DeviceOrientationEvent where
-  pToJSRef = unDeviceOrientationEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DeviceOrientationEvent where
+  pToJSVal = unDeviceOrientationEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DeviceOrientationEvent where
-  pFromJSRef = DeviceOrientationEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DeviceOrientationEvent where
+  pFromJSVal = DeviceOrientationEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DeviceOrientationEvent where
+instance ToJSVal DeviceOrientationEvent where
   toJSRef = return . unDeviceOrientationEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DeviceOrientationEvent where
+instance FromJSVal DeviceOrientationEvent where
   fromJSRef = return . fmap DeviceOrientationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5721,19 +5721,19 @@ newtype DeviceProximityEvent = DeviceProximityEvent { unDeviceProximityEvent :: 
 instance Eq (DeviceProximityEvent) where
   (DeviceProximityEvent a) == (DeviceProximityEvent b) = js_eq a b
 
-instance PToJSRef DeviceProximityEvent where
-  pToJSRef = unDeviceProximityEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DeviceProximityEvent where
+  pToJSVal = unDeviceProximityEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DeviceProximityEvent where
-  pFromJSRef = DeviceProximityEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DeviceProximityEvent where
+  pFromJSVal = DeviceProximityEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DeviceProximityEvent where
+instance ToJSVal DeviceProximityEvent where
   toJSRef = return . unDeviceProximityEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DeviceProximityEvent where
+instance FromJSVal DeviceProximityEvent where
   fromJSRef = return . fmap DeviceProximityEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5764,19 +5764,19 @@ newtype Document = Document { unDocument :: JSRef }
 instance Eq (Document) where
   (Document a) == (Document b) = js_eq a b
 
-instance PToJSRef Document where
-  pToJSRef = unDocument
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Document where
+  pToJSVal = unDocument
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Document where
-  pFromJSRef = Document
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Document where
+  pFromJSVal = Document
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Document where
+instance ToJSVal Document where
   toJSRef = return . unDocument
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Document where
+instance FromJSVal Document where
   fromJSRef = return . fmap Document . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5815,19 +5815,19 @@ newtype DocumentFragment = DocumentFragment { unDocumentFragment :: JSRef }
 instance Eq (DocumentFragment) where
   (DocumentFragment a) == (DocumentFragment b) = js_eq a b
 
-instance PToJSRef DocumentFragment where
-  pToJSRef = unDocumentFragment
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DocumentFragment where
+  pToJSVal = unDocumentFragment
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DocumentFragment where
-  pFromJSRef = DocumentFragment
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DocumentFragment where
+  pFromJSVal = DocumentFragment
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DocumentFragment where
+instance ToJSVal DocumentFragment where
   toJSRef = return . unDocumentFragment
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DocumentFragment where
+instance FromJSVal DocumentFragment where
   fromJSRef = return . fmap DocumentFragment . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5861,19 +5861,19 @@ newtype DocumentType = DocumentType { unDocumentType :: JSRef }
 instance Eq (DocumentType) where
   (DocumentType a) == (DocumentType b) = js_eq a b
 
-instance PToJSRef DocumentType where
-  pToJSRef = unDocumentType
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DocumentType where
+  pToJSVal = unDocumentType
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DocumentType where
-  pFromJSRef = DocumentType
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DocumentType where
+  pFromJSVal = DocumentType
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DocumentType where
+instance ToJSVal DocumentType where
   toJSRef = return . unDocumentType
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DocumentType where
+instance FromJSVal DocumentType where
   fromJSRef = return . fmap DocumentType . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5907,19 +5907,19 @@ newtype DynamicsCompressorNode = DynamicsCompressorNode { unDynamicsCompressorNo
 instance Eq (DynamicsCompressorNode) where
   (DynamicsCompressorNode a) == (DynamicsCompressorNode b) = js_eq a b
 
-instance PToJSRef DynamicsCompressorNode where
-  pToJSRef = unDynamicsCompressorNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal DynamicsCompressorNode where
+  pToJSVal = unDynamicsCompressorNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef DynamicsCompressorNode where
-  pFromJSRef = DynamicsCompressorNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal DynamicsCompressorNode where
+  pFromJSVal = DynamicsCompressorNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef DynamicsCompressorNode where
+instance ToJSVal DynamicsCompressorNode where
   toJSRef = return . unDynamicsCompressorNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef DynamicsCompressorNode where
+instance FromJSVal DynamicsCompressorNode where
   fromJSRef = return . fmap DynamicsCompressorNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5947,19 +5947,19 @@ newtype EXTBlendMinMax = EXTBlendMinMax { unEXTBlendMinMax :: JSRef }
 instance Eq (EXTBlendMinMax) where
   (EXTBlendMinMax a) == (EXTBlendMinMax b) = js_eq a b
 
-instance PToJSRef EXTBlendMinMax where
-  pToJSRef = unEXTBlendMinMax
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EXTBlendMinMax where
+  pToJSVal = unEXTBlendMinMax
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EXTBlendMinMax where
-  pFromJSRef = EXTBlendMinMax
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EXTBlendMinMax where
+  pFromJSVal = EXTBlendMinMax
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EXTBlendMinMax where
+instance ToJSVal EXTBlendMinMax where
   toJSRef = return . unEXTBlendMinMax
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EXTBlendMinMax where
+instance FromJSVal EXTBlendMinMax where
   fromJSRef = return . fmap EXTBlendMinMax . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -5985,19 +5985,19 @@ newtype EXTFragDepth = EXTFragDepth { unEXTFragDepth :: JSRef }
 instance Eq (EXTFragDepth) where
   (EXTFragDepth a) == (EXTFragDepth b) = js_eq a b
 
-instance PToJSRef EXTFragDepth where
-  pToJSRef = unEXTFragDepth
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EXTFragDepth where
+  pToJSVal = unEXTFragDepth
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EXTFragDepth where
-  pFromJSRef = EXTFragDepth
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EXTFragDepth where
+  pFromJSVal = EXTFragDepth
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EXTFragDepth where
+instance ToJSVal EXTFragDepth where
   toJSRef = return . unEXTFragDepth
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EXTFragDepth where
+instance FromJSVal EXTFragDepth where
   fromJSRef = return . fmap EXTFragDepth . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6023,19 +6023,19 @@ newtype EXTShaderTextureLOD = EXTShaderTextureLOD { unEXTShaderTextureLOD :: JSR
 instance Eq (EXTShaderTextureLOD) where
   (EXTShaderTextureLOD a) == (EXTShaderTextureLOD b) = js_eq a b
 
-instance PToJSRef EXTShaderTextureLOD where
-  pToJSRef = unEXTShaderTextureLOD
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EXTShaderTextureLOD where
+  pToJSVal = unEXTShaderTextureLOD
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EXTShaderTextureLOD where
-  pFromJSRef = EXTShaderTextureLOD
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EXTShaderTextureLOD where
+  pFromJSVal = EXTShaderTextureLOD
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EXTShaderTextureLOD where
+instance ToJSVal EXTShaderTextureLOD where
   toJSRef = return . unEXTShaderTextureLOD
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EXTShaderTextureLOD where
+instance FromJSVal EXTShaderTextureLOD where
   fromJSRef = return . fmap EXTShaderTextureLOD . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6061,19 +6061,19 @@ newtype EXTTextureFilterAnisotropic = EXTTextureFilterAnisotropic { unEXTTexture
 instance Eq (EXTTextureFilterAnisotropic) where
   (EXTTextureFilterAnisotropic a) == (EXTTextureFilterAnisotropic b) = js_eq a b
 
-instance PToJSRef EXTTextureFilterAnisotropic where
-  pToJSRef = unEXTTextureFilterAnisotropic
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EXTTextureFilterAnisotropic where
+  pToJSVal = unEXTTextureFilterAnisotropic
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EXTTextureFilterAnisotropic where
-  pFromJSRef = EXTTextureFilterAnisotropic
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EXTTextureFilterAnisotropic where
+  pFromJSVal = EXTTextureFilterAnisotropic
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EXTTextureFilterAnisotropic where
+instance ToJSVal EXTTextureFilterAnisotropic where
   toJSRef = return . unEXTTextureFilterAnisotropic
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EXTTextureFilterAnisotropic where
+instance FromJSVal EXTTextureFilterAnisotropic where
   fromJSRef = return . fmap EXTTextureFilterAnisotropic . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6099,19 +6099,19 @@ newtype EXTsRGB = EXTsRGB { unEXTsRGB :: JSRef }
 instance Eq (EXTsRGB) where
   (EXTsRGB a) == (EXTsRGB b) = js_eq a b
 
-instance PToJSRef EXTsRGB where
-  pToJSRef = unEXTsRGB
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EXTsRGB where
+  pToJSVal = unEXTsRGB
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EXTsRGB where
-  pFromJSRef = EXTsRGB
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EXTsRGB where
+  pFromJSVal = EXTsRGB
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EXTsRGB where
+instance ToJSVal EXTsRGB where
   toJSRef = return . unEXTsRGB
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EXTsRGB where
+instance FromJSVal EXTsRGB where
   fromJSRef = return . fmap EXTsRGB . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6141,19 +6141,19 @@ newtype Element = Element { unElement :: JSRef }
 instance Eq (Element) where
   (Element a) == (Element b) = js_eq a b
 
-instance PToJSRef Element where
-  pToJSRef = unElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Element where
+  pToJSVal = unElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Element where
-  pFromJSRef = Element
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Element where
+  pFromJSVal = Element
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Element where
+instance ToJSVal Element where
   toJSRef = return . unElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Element where
+instance FromJSVal Element where
   fromJSRef = return . fmap Element . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6192,19 +6192,19 @@ newtype Entity = Entity { unEntity :: JSRef }
 instance Eq (Entity) where
   (Entity a) == (Entity b) = js_eq a b
 
-instance PToJSRef Entity where
-  pToJSRef = unEntity
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Entity where
+  pToJSVal = unEntity
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Entity where
-  pFromJSRef = Entity
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Entity where
+  pFromJSVal = Entity
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Entity where
+instance ToJSVal Entity where
   toJSRef = return . unEntity
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Entity where
+instance FromJSVal Entity where
   fromJSRef = return . fmap Entity . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6236,19 +6236,19 @@ newtype EntityReference = EntityReference { unEntityReference :: JSRef }
 instance Eq (EntityReference) where
   (EntityReference a) == (EntityReference b) = js_eq a b
 
-instance PToJSRef EntityReference where
-  pToJSRef = unEntityReference
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EntityReference where
+  pToJSVal = unEntityReference
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EntityReference where
-  pFromJSRef = EntityReference
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EntityReference where
+  pFromJSVal = EntityReference
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EntityReference where
+instance ToJSVal EntityReference where
   toJSRef = return . unEntityReference
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EntityReference where
+instance FromJSVal EntityReference where
   fromJSRef = return . fmap EntityReference . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6281,19 +6281,19 @@ newtype ErrorEvent = ErrorEvent { unErrorEvent :: JSRef }
 instance Eq (ErrorEvent) where
   (ErrorEvent a) == (ErrorEvent b) = js_eq a b
 
-instance PToJSRef ErrorEvent where
-  pToJSRef = unErrorEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ErrorEvent where
+  pToJSVal = unErrorEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ErrorEvent where
-  pFromJSRef = ErrorEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ErrorEvent where
+  pFromJSVal = ErrorEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ErrorEvent where
+instance ToJSVal ErrorEvent where
   toJSRef = return . unErrorEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ErrorEvent where
+instance FromJSVal ErrorEvent where
   fromJSRef = return . fmap ErrorEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6320,19 +6320,19 @@ newtype Event = Event { unEvent :: JSRef }
 instance Eq (Event) where
   (Event a) == (Event b) = js_eq a b
 
-instance PToJSRef Event where
-  pToJSRef = unEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Event where
+  pToJSVal = unEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Event where
-  pFromJSRef = Event
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Event where
+  pFromJSVal = Event
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Event where
+instance ToJSVal Event where
   toJSRef = return . unEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Event where
+instance FromJSVal Event where
   fromJSRef = return . fmap Event . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6365,19 +6365,19 @@ newtype EventListener = EventListener { unEventListener :: JSRef }
 instance Eq (EventListener) where
   (EventListener a) == (EventListener b) = js_eq a b
 
-instance PToJSRef EventListener where
-  pToJSRef = unEventListener
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EventListener where
+  pToJSVal = unEventListener
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EventListener where
-  pFromJSRef = EventListener
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EventListener where
+  pFromJSVal = EventListener
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EventListener where
+instance ToJSVal EventListener where
   toJSRef = return . unEventListener
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EventListener where
+instance FromJSVal EventListener where
   fromJSRef = return . fmap EventListener . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6406,19 +6406,19 @@ newtype EventSource = EventSource { unEventSource :: JSRef }
 instance Eq (EventSource) where
   (EventSource a) == (EventSource b) = js_eq a b
 
-instance PToJSRef EventSource where
-  pToJSRef = unEventSource
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EventSource where
+  pToJSVal = unEventSource
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EventSource where
-  pFromJSRef = EventSource
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EventSource where
+  pFromJSVal = EventSource
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EventSource where
+instance ToJSVal EventSource where
   toJSRef = return . unEventSource
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EventSource where
+instance FromJSVal EventSource where
   fromJSRef = return . fmap EventSource . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6445,19 +6445,19 @@ newtype EventTarget = EventTarget { unEventTarget :: JSRef }
 instance Eq (EventTarget) where
   (EventTarget a) == (EventTarget b) = js_eq a b
 
-instance PToJSRef EventTarget where
-  pToJSRef = unEventTarget
-  {-# INLINE pToJSRef #-}
+instance PToJSVal EventTarget where
+  pToJSVal = unEventTarget
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef EventTarget where
-  pFromJSRef = EventTarget
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal EventTarget where
+  pFromJSVal = EventTarget
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef EventTarget where
+instance ToJSVal EventTarget where
   toJSRef = return . unEventTarget
   {-# INLINE toJSRef #-}
 
-instance FromJSRef EventTarget where
+instance FromJSVal EventTarget where
   fromJSRef = return . fmap EventTarget . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6493,19 +6493,19 @@ newtype File = File { unFile :: JSRef }
 instance Eq (File) where
   (File a) == (File b) = js_eq a b
 
-instance PToJSRef File where
-  pToJSRef = unFile
-  {-# INLINE pToJSRef #-}
+instance PToJSVal File where
+  pToJSVal = unFile
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef File where
-  pFromJSRef = File
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal File where
+  pFromJSVal = File
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef File where
+instance ToJSVal File where
   toJSRef = return . unFile
   {-# INLINE toJSRef #-}
 
-instance FromJSRef File where
+instance FromJSVal File where
   fromJSRef = return . fmap File . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6534,19 +6534,19 @@ newtype FileError = FileError { unFileError :: JSRef }
 instance Eq (FileError) where
   (FileError a) == (FileError b) = js_eq a b
 
-instance PToJSRef FileError where
-  pToJSRef = unFileError
-  {-# INLINE pToJSRef #-}
+instance PToJSVal FileError where
+  pToJSVal = unFileError
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef FileError where
-  pFromJSRef = FileError
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal FileError where
+  pFromJSVal = FileError
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef FileError where
+instance ToJSVal FileError where
   toJSRef = return . unFileError
   {-# INLINE toJSRef #-}
 
-instance FromJSRef FileError where
+instance FromJSVal FileError where
   fromJSRef = return . fmap FileError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6572,19 +6572,19 @@ newtype FileList = FileList { unFileList :: JSRef }
 instance Eq (FileList) where
   (FileList a) == (FileList b) = js_eq a b
 
-instance PToJSRef FileList where
-  pToJSRef = unFileList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal FileList where
+  pToJSVal = unFileList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef FileList where
-  pFromJSRef = FileList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal FileList where
+  pFromJSVal = FileList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef FileList where
+instance ToJSVal FileList where
   toJSRef = return . unFileList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef FileList where
+instance FromJSVal FileList where
   fromJSRef = return . fmap FileList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6615,19 +6615,19 @@ newtype FileReader = FileReader { unFileReader :: JSRef }
 instance Eq (FileReader) where
   (FileReader a) == (FileReader b) = js_eq a b
 
-instance PToJSRef FileReader where
-  pToJSRef = unFileReader
-  {-# INLINE pToJSRef #-}
+instance PToJSVal FileReader where
+  pToJSVal = unFileReader
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef FileReader where
-  pFromJSRef = FileReader
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal FileReader where
+  pFromJSVal = FileReader
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef FileReader where
+instance ToJSVal FileReader where
   toJSRef = return . unFileReader
   {-# INLINE toJSRef #-}
 
-instance FromJSRef FileReader where
+instance FromJSVal FileReader where
   fromJSRef = return . fmap FileReader . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6654,19 +6654,19 @@ newtype FileReaderSync = FileReaderSync { unFileReaderSync :: JSRef }
 instance Eq (FileReaderSync) where
   (FileReaderSync a) == (FileReaderSync b) = js_eq a b
 
-instance PToJSRef FileReaderSync where
-  pToJSRef = unFileReaderSync
-  {-# INLINE pToJSRef #-}
+instance PToJSVal FileReaderSync where
+  pToJSVal = unFileReaderSync
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef FileReaderSync where
-  pFromJSRef = FileReaderSync
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal FileReaderSync where
+  pFromJSVal = FileReaderSync
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef FileReaderSync where
+instance ToJSVal FileReaderSync where
   toJSRef = return . unFileReaderSync
   {-# INLINE toJSRef #-}
 
-instance FromJSRef FileReaderSync where
+instance FromJSVal FileReaderSync where
   fromJSRef = return . fmap FileReaderSync . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6696,19 +6696,19 @@ newtype FocusEvent = FocusEvent { unFocusEvent :: JSRef }
 instance Eq (FocusEvent) where
   (FocusEvent a) == (FocusEvent b) = js_eq a b
 
-instance PToJSRef FocusEvent where
-  pToJSRef = unFocusEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal FocusEvent where
+  pToJSVal = unFocusEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef FocusEvent where
-  pFromJSRef = FocusEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal FocusEvent where
+  pFromJSVal = FocusEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef FocusEvent where
+instance ToJSVal FocusEvent where
   toJSRef = return . unFocusEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef FocusEvent where
+instance FromJSVal FocusEvent where
   fromJSRef = return . fmap FocusEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6739,19 +6739,19 @@ newtype FontLoader = FontLoader { unFontLoader :: JSRef }
 instance Eq (FontLoader) where
   (FontLoader a) == (FontLoader b) = js_eq a b
 
-instance PToJSRef FontLoader where
-  pToJSRef = unFontLoader
-  {-# INLINE pToJSRef #-}
+instance PToJSVal FontLoader where
+  pToJSVal = unFontLoader
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef FontLoader where
-  pFromJSRef = FontLoader
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal FontLoader where
+  pFromJSVal = FontLoader
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef FontLoader where
+instance ToJSVal FontLoader where
   toJSRef = return . unFontLoader
   {-# INLINE toJSRef #-}
 
-instance FromJSRef FontLoader where
+instance FromJSVal FontLoader where
   fromJSRef = return . fmap FontLoader . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6778,19 +6778,19 @@ newtype FormData = FormData { unFormData :: JSRef }
 instance Eq (FormData) where
   (FormData a) == (FormData b) = js_eq a b
 
-instance PToJSRef FormData where
-  pToJSRef = unFormData
-  {-# INLINE pToJSRef #-}
+instance PToJSVal FormData where
+  pToJSVal = unFormData
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef FormData where
-  pFromJSRef = FormData
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal FormData where
+  pFromJSVal = FormData
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef FormData where
+instance ToJSVal FormData where
   toJSRef = return . unFormData
   {-# INLINE toJSRef #-}
 
-instance FromJSRef FormData where
+instance FromJSVal FormData where
   fromJSRef = return . fmap FormData . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6820,19 +6820,19 @@ newtype GainNode = GainNode { unGainNode :: JSRef }
 instance Eq (GainNode) where
   (GainNode a) == (GainNode b) = js_eq a b
 
-instance PToJSRef GainNode where
-  pToJSRef = unGainNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal GainNode where
+  pToJSVal = unGainNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef GainNode where
-  pFromJSRef = GainNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal GainNode where
+  pFromJSVal = GainNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef GainNode where
+instance ToJSVal GainNode where
   toJSRef = return . unGainNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef GainNode where
+instance FromJSVal GainNode where
   fromJSRef = return . fmap GainNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6860,19 +6860,19 @@ newtype Gamepad = Gamepad { unGamepad :: JSRef }
 instance Eq (Gamepad) where
   (Gamepad a) == (Gamepad b) = js_eq a b
 
-instance PToJSRef Gamepad where
-  pToJSRef = unGamepad
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Gamepad where
+  pToJSVal = unGamepad
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Gamepad where
-  pFromJSRef = Gamepad
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Gamepad where
+  pFromJSVal = Gamepad
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Gamepad where
+instance ToJSVal Gamepad where
   toJSRef = return . unGamepad
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Gamepad where
+instance FromJSVal Gamepad where
   fromJSRef = return . fmap Gamepad . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6898,19 +6898,19 @@ newtype GamepadButton = GamepadButton { unGamepadButton :: JSRef }
 instance Eq (GamepadButton) where
   (GamepadButton a) == (GamepadButton b) = js_eq a b
 
-instance PToJSRef GamepadButton where
-  pToJSRef = unGamepadButton
-  {-# INLINE pToJSRef #-}
+instance PToJSVal GamepadButton where
+  pToJSVal = unGamepadButton
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef GamepadButton where
-  pFromJSRef = GamepadButton
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal GamepadButton where
+  pFromJSVal = GamepadButton
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef GamepadButton where
+instance ToJSVal GamepadButton where
   toJSRef = return . unGamepadButton
   {-# INLINE toJSRef #-}
 
-instance FromJSRef GamepadButton where
+instance FromJSVal GamepadButton where
   fromJSRef = return . fmap GamepadButton . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6939,19 +6939,19 @@ newtype GamepadEvent = GamepadEvent { unGamepadEvent :: JSRef }
 instance Eq (GamepadEvent) where
   (GamepadEvent a) == (GamepadEvent b) = js_eq a b
 
-instance PToJSRef GamepadEvent where
-  pToJSRef = unGamepadEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal GamepadEvent where
+  pToJSVal = unGamepadEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef GamepadEvent where
-  pFromJSRef = GamepadEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal GamepadEvent where
+  pFromJSVal = GamepadEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef GamepadEvent where
+instance ToJSVal GamepadEvent where
   toJSRef = return . unGamepadEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef GamepadEvent where
+instance FromJSVal GamepadEvent where
   fromJSRef = return . fmap GamepadEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -6978,19 +6978,19 @@ newtype Geolocation = Geolocation { unGeolocation :: JSRef }
 instance Eq (Geolocation) where
   (Geolocation a) == (Geolocation b) = js_eq a b
 
-instance PToJSRef Geolocation where
-  pToJSRef = unGeolocation
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Geolocation where
+  pToJSVal = unGeolocation
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Geolocation where
-  pFromJSRef = Geolocation
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Geolocation where
+  pFromJSVal = Geolocation
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Geolocation where
+instance ToJSVal Geolocation where
   toJSRef = return . unGeolocation
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Geolocation where
+instance FromJSVal Geolocation where
   fromJSRef = return . fmap Geolocation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7018,19 +7018,19 @@ newtype Geoposition = Geoposition { unGeoposition :: JSRef }
 instance Eq (Geoposition) where
   (Geoposition a) == (Geoposition b) = js_eq a b
 
-instance PToJSRef Geoposition where
-  pToJSRef = unGeoposition
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Geoposition where
+  pToJSVal = unGeoposition
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Geoposition where
-  pFromJSRef = Geoposition
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Geoposition where
+  pFromJSVal = Geoposition
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Geoposition where
+instance ToJSVal Geoposition where
   toJSRef = return . unGeoposition
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Geoposition where
+instance FromJSVal Geoposition where
   fromJSRef = return . fmap Geoposition . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7056,19 +7056,19 @@ newtype HTMLAllCollection = HTMLAllCollection { unHTMLAllCollection :: JSRef }
 instance Eq (HTMLAllCollection) where
   (HTMLAllCollection a) == (HTMLAllCollection b) = js_eq a b
 
-instance PToJSRef HTMLAllCollection where
-  pToJSRef = unHTMLAllCollection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLAllCollection where
+  pToJSVal = unHTMLAllCollection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLAllCollection where
-  pFromJSRef = HTMLAllCollection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLAllCollection where
+  pFromJSVal = HTMLAllCollection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLAllCollection where
+instance ToJSVal HTMLAllCollection where
   toJSRef = return . unHTMLAllCollection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLAllCollection where
+instance FromJSVal HTMLAllCollection where
   fromJSRef = return . fmap HTMLAllCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7100,19 +7100,19 @@ newtype HTMLAnchorElement = HTMLAnchorElement { unHTMLAnchorElement :: JSRef }
 instance Eq (HTMLAnchorElement) where
   (HTMLAnchorElement a) == (HTMLAnchorElement b) = js_eq a b
 
-instance PToJSRef HTMLAnchorElement where
-  pToJSRef = unHTMLAnchorElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLAnchorElement where
+  pToJSVal = unHTMLAnchorElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLAnchorElement where
-  pFromJSRef = HTMLAnchorElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLAnchorElement where
+  pFromJSVal = HTMLAnchorElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLAnchorElement where
+instance ToJSVal HTMLAnchorElement where
   toJSRef = return . unHTMLAnchorElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLAnchorElement where
+instance FromJSVal HTMLAnchorElement where
   fromJSRef = return . fmap HTMLAnchorElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7150,19 +7150,19 @@ newtype HTMLAppletElement = HTMLAppletElement { unHTMLAppletElement :: JSRef }
 instance Eq (HTMLAppletElement) where
   (HTMLAppletElement a) == (HTMLAppletElement b) = js_eq a b
 
-instance PToJSRef HTMLAppletElement where
-  pToJSRef = unHTMLAppletElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLAppletElement where
+  pToJSVal = unHTMLAppletElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLAppletElement where
-  pFromJSRef = HTMLAppletElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLAppletElement where
+  pFromJSVal = HTMLAppletElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLAppletElement where
+instance ToJSVal HTMLAppletElement where
   toJSRef = return . unHTMLAppletElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLAppletElement where
+instance FromJSVal HTMLAppletElement where
   fromJSRef = return . fmap HTMLAppletElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7200,19 +7200,19 @@ newtype HTMLAreaElement = HTMLAreaElement { unHTMLAreaElement :: JSRef }
 instance Eq (HTMLAreaElement) where
   (HTMLAreaElement a) == (HTMLAreaElement b) = js_eq a b
 
-instance PToJSRef HTMLAreaElement where
-  pToJSRef = unHTMLAreaElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLAreaElement where
+  pToJSVal = unHTMLAreaElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLAreaElement where
-  pFromJSRef = HTMLAreaElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLAreaElement where
+  pFromJSVal = HTMLAreaElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLAreaElement where
+instance ToJSVal HTMLAreaElement where
   toJSRef = return . unHTMLAreaElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLAreaElement where
+instance FromJSVal HTMLAreaElement where
   fromJSRef = return . fmap HTMLAreaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7251,19 +7251,19 @@ newtype HTMLAudioElement = HTMLAudioElement { unHTMLAudioElement :: JSRef }
 instance Eq (HTMLAudioElement) where
   (HTMLAudioElement a) == (HTMLAudioElement b) = js_eq a b
 
-instance PToJSRef HTMLAudioElement where
-  pToJSRef = unHTMLAudioElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLAudioElement where
+  pToJSVal = unHTMLAudioElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLAudioElement where
-  pFromJSRef = HTMLAudioElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLAudioElement where
+  pFromJSVal = HTMLAudioElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLAudioElement where
+instance ToJSVal HTMLAudioElement where
   toJSRef = return . unHTMLAudioElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLAudioElement where
+instance FromJSVal HTMLAudioElement where
   fromJSRef = return . fmap HTMLAudioElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7302,19 +7302,19 @@ newtype HTMLBRElement = HTMLBRElement { unHTMLBRElement :: JSRef }
 instance Eq (HTMLBRElement) where
   (HTMLBRElement a) == (HTMLBRElement b) = js_eq a b
 
-instance PToJSRef HTMLBRElement where
-  pToJSRef = unHTMLBRElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLBRElement where
+  pToJSVal = unHTMLBRElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLBRElement where
-  pFromJSRef = HTMLBRElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLBRElement where
+  pFromJSVal = HTMLBRElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLBRElement where
+instance ToJSVal HTMLBRElement where
   toJSRef = return . unHTMLBRElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLBRElement where
+instance FromJSVal HTMLBRElement where
   fromJSRef = return . fmap HTMLBRElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7352,19 +7352,19 @@ newtype HTMLBaseElement = HTMLBaseElement { unHTMLBaseElement :: JSRef }
 instance Eq (HTMLBaseElement) where
   (HTMLBaseElement a) == (HTMLBaseElement b) = js_eq a b
 
-instance PToJSRef HTMLBaseElement where
-  pToJSRef = unHTMLBaseElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLBaseElement where
+  pToJSVal = unHTMLBaseElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLBaseElement where
-  pFromJSRef = HTMLBaseElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLBaseElement where
+  pFromJSVal = HTMLBaseElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLBaseElement where
+instance ToJSVal HTMLBaseElement where
   toJSRef = return . unHTMLBaseElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLBaseElement where
+instance FromJSVal HTMLBaseElement where
   fromJSRef = return . fmap HTMLBaseElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7402,19 +7402,19 @@ newtype HTMLBaseFontElement = HTMLBaseFontElement { unHTMLBaseFontElement :: JSR
 instance Eq (HTMLBaseFontElement) where
   (HTMLBaseFontElement a) == (HTMLBaseFontElement b) = js_eq a b
 
-instance PToJSRef HTMLBaseFontElement where
-  pToJSRef = unHTMLBaseFontElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLBaseFontElement where
+  pToJSVal = unHTMLBaseFontElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLBaseFontElement where
-  pFromJSRef = HTMLBaseFontElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLBaseFontElement where
+  pFromJSVal = HTMLBaseFontElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLBaseFontElement where
+instance ToJSVal HTMLBaseFontElement where
   toJSRef = return . unHTMLBaseFontElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLBaseFontElement where
+instance FromJSVal HTMLBaseFontElement where
   fromJSRef = return . fmap HTMLBaseFontElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7452,19 +7452,19 @@ newtype HTMLBodyElement = HTMLBodyElement { unHTMLBodyElement :: JSRef }
 instance Eq (HTMLBodyElement) where
   (HTMLBodyElement a) == (HTMLBodyElement b) = js_eq a b
 
-instance PToJSRef HTMLBodyElement where
-  pToJSRef = unHTMLBodyElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLBodyElement where
+  pToJSVal = unHTMLBodyElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLBodyElement where
-  pFromJSRef = HTMLBodyElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLBodyElement where
+  pFromJSVal = HTMLBodyElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLBodyElement where
+instance ToJSVal HTMLBodyElement where
   toJSRef = return . unHTMLBodyElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLBodyElement where
+instance FromJSVal HTMLBodyElement where
   fromJSRef = return . fmap HTMLBodyElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7502,19 +7502,19 @@ newtype HTMLButtonElement = HTMLButtonElement { unHTMLButtonElement :: JSRef }
 instance Eq (HTMLButtonElement) where
   (HTMLButtonElement a) == (HTMLButtonElement b) = js_eq a b
 
-instance PToJSRef HTMLButtonElement where
-  pToJSRef = unHTMLButtonElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLButtonElement where
+  pToJSVal = unHTMLButtonElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLButtonElement where
-  pFromJSRef = HTMLButtonElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLButtonElement where
+  pFromJSVal = HTMLButtonElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLButtonElement where
+instance ToJSVal HTMLButtonElement where
   toJSRef = return . unHTMLButtonElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLButtonElement where
+instance FromJSVal HTMLButtonElement where
   fromJSRef = return . fmap HTMLButtonElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7552,19 +7552,19 @@ newtype HTMLCanvasElement = HTMLCanvasElement { unHTMLCanvasElement :: JSRef }
 instance Eq (HTMLCanvasElement) where
   (HTMLCanvasElement a) == (HTMLCanvasElement b) = js_eq a b
 
-instance PToJSRef HTMLCanvasElement where
-  pToJSRef = unHTMLCanvasElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLCanvasElement where
+  pToJSVal = unHTMLCanvasElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLCanvasElement where
-  pFromJSRef = HTMLCanvasElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLCanvasElement where
+  pFromJSVal = HTMLCanvasElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLCanvasElement where
+instance ToJSVal HTMLCanvasElement where
   toJSRef = return . unHTMLCanvasElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLCanvasElement where
+instance FromJSVal HTMLCanvasElement where
   fromJSRef = return . fmap HTMLCanvasElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7596,19 +7596,19 @@ newtype HTMLCollection = HTMLCollection { unHTMLCollection :: JSRef }
 instance Eq (HTMLCollection) where
   (HTMLCollection a) == (HTMLCollection b) = js_eq a b
 
-instance PToJSRef HTMLCollection where
-  pToJSRef = unHTMLCollection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLCollection where
+  pToJSVal = unHTMLCollection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLCollection where
-  pFromJSRef = HTMLCollection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLCollection where
+  pFromJSVal = HTMLCollection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLCollection where
+instance ToJSVal HTMLCollection where
   toJSRef = return . unHTMLCollection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLCollection where
+instance FromJSVal HTMLCollection where
   fromJSRef = return . fmap HTMLCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7647,19 +7647,19 @@ newtype HTMLDListElement = HTMLDListElement { unHTMLDListElement :: JSRef }
 instance Eq (HTMLDListElement) where
   (HTMLDListElement a) == (HTMLDListElement b) = js_eq a b
 
-instance PToJSRef HTMLDListElement where
-  pToJSRef = unHTMLDListElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLDListElement where
+  pToJSVal = unHTMLDListElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLDListElement where
-  pFromJSRef = HTMLDListElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLDListElement where
+  pFromJSVal = HTMLDListElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLDListElement where
+instance ToJSVal HTMLDListElement where
   toJSRef = return . unHTMLDListElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLDListElement where
+instance FromJSVal HTMLDListElement where
   fromJSRef = return . fmap HTMLDListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7697,19 +7697,19 @@ newtype HTMLDataListElement = HTMLDataListElement { unHTMLDataListElement :: JSR
 instance Eq (HTMLDataListElement) where
   (HTMLDataListElement a) == (HTMLDataListElement b) = js_eq a b
 
-instance PToJSRef HTMLDataListElement where
-  pToJSRef = unHTMLDataListElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLDataListElement where
+  pToJSVal = unHTMLDataListElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLDataListElement where
-  pFromJSRef = HTMLDataListElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLDataListElement where
+  pFromJSVal = HTMLDataListElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLDataListElement where
+instance ToJSVal HTMLDataListElement where
   toJSRef = return . unHTMLDataListElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLDataListElement where
+instance FromJSVal HTMLDataListElement where
   fromJSRef = return . fmap HTMLDataListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7745,19 +7745,19 @@ newtype HTMLDetailsElement = HTMLDetailsElement { unHTMLDetailsElement :: JSRef 
 instance Eq (HTMLDetailsElement) where
   (HTMLDetailsElement a) == (HTMLDetailsElement b) = js_eq a b
 
-instance PToJSRef HTMLDetailsElement where
-  pToJSRef = unHTMLDetailsElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLDetailsElement where
+  pToJSVal = unHTMLDetailsElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLDetailsElement where
-  pFromJSRef = HTMLDetailsElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLDetailsElement where
+  pFromJSVal = HTMLDetailsElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLDetailsElement where
+instance ToJSVal HTMLDetailsElement where
   toJSRef = return . unHTMLDetailsElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLDetailsElement where
+instance FromJSVal HTMLDetailsElement where
   fromJSRef = return . fmap HTMLDetailsElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7795,19 +7795,19 @@ newtype HTMLDirectoryElement = HTMLDirectoryElement { unHTMLDirectoryElement :: 
 instance Eq (HTMLDirectoryElement) where
   (HTMLDirectoryElement a) == (HTMLDirectoryElement b) = js_eq a b
 
-instance PToJSRef HTMLDirectoryElement where
-  pToJSRef = unHTMLDirectoryElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLDirectoryElement where
+  pToJSVal = unHTMLDirectoryElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLDirectoryElement where
-  pFromJSRef = HTMLDirectoryElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLDirectoryElement where
+  pFromJSVal = HTMLDirectoryElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLDirectoryElement where
+instance ToJSVal HTMLDirectoryElement where
   toJSRef = return . unHTMLDirectoryElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLDirectoryElement where
+instance FromJSVal HTMLDirectoryElement where
   fromJSRef = return . fmap HTMLDirectoryElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7845,19 +7845,19 @@ newtype HTMLDivElement = HTMLDivElement { unHTMLDivElement :: JSRef }
 instance Eq (HTMLDivElement) where
   (HTMLDivElement a) == (HTMLDivElement b) = js_eq a b
 
-instance PToJSRef HTMLDivElement where
-  pToJSRef = unHTMLDivElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLDivElement where
+  pToJSVal = unHTMLDivElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLDivElement where
-  pFromJSRef = HTMLDivElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLDivElement where
+  pFromJSVal = HTMLDivElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLDivElement where
+instance ToJSVal HTMLDivElement where
   toJSRef = return . unHTMLDivElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLDivElement where
+instance FromJSVal HTMLDivElement where
   fromJSRef = return . fmap HTMLDivElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7894,19 +7894,19 @@ newtype HTMLDocument = HTMLDocument { unHTMLDocument :: JSRef }
 instance Eq (HTMLDocument) where
   (HTMLDocument a) == (HTMLDocument b) = js_eq a b
 
-instance PToJSRef HTMLDocument where
-  pToJSRef = unHTMLDocument
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLDocument where
+  pToJSVal = unHTMLDocument
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLDocument where
-  pFromJSRef = HTMLDocument
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLDocument where
+  pFromJSVal = HTMLDocument
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLDocument where
+instance ToJSVal HTMLDocument where
   toJSRef = return . unHTMLDocument
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLDocument where
+instance FromJSVal HTMLDocument where
   fromJSRef = return . fmap HTMLDocument . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7942,19 +7942,19 @@ newtype HTMLElement = HTMLElement { unHTMLElement :: JSRef }
 instance Eq (HTMLElement) where
   (HTMLElement a) == (HTMLElement b) = js_eq a b
 
-instance PToJSRef HTMLElement where
-  pToJSRef = unHTMLElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLElement where
+  pToJSVal = unHTMLElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLElement where
-  pFromJSRef = HTMLElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLElement where
+  pFromJSVal = HTMLElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLElement where
+instance ToJSVal HTMLElement where
   toJSRef = return . unHTMLElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLElement where
+instance FromJSVal HTMLElement where
   fromJSRef = return . fmap HTMLElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -7996,19 +7996,19 @@ newtype HTMLEmbedElement = HTMLEmbedElement { unHTMLEmbedElement :: JSRef }
 instance Eq (HTMLEmbedElement) where
   (HTMLEmbedElement a) == (HTMLEmbedElement b) = js_eq a b
 
-instance PToJSRef HTMLEmbedElement where
-  pToJSRef = unHTMLEmbedElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLEmbedElement where
+  pToJSVal = unHTMLEmbedElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLEmbedElement where
-  pFromJSRef = HTMLEmbedElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLEmbedElement where
+  pFromJSVal = HTMLEmbedElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLEmbedElement where
+instance ToJSVal HTMLEmbedElement where
   toJSRef = return . unHTMLEmbedElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLEmbedElement where
+instance FromJSVal HTMLEmbedElement where
   fromJSRef = return . fmap HTMLEmbedElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8046,19 +8046,19 @@ newtype HTMLFieldSetElement = HTMLFieldSetElement { unHTMLFieldSetElement :: JSR
 instance Eq (HTMLFieldSetElement) where
   (HTMLFieldSetElement a) == (HTMLFieldSetElement b) = js_eq a b
 
-instance PToJSRef HTMLFieldSetElement where
-  pToJSRef = unHTMLFieldSetElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLFieldSetElement where
+  pToJSVal = unHTMLFieldSetElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLFieldSetElement where
-  pFromJSRef = HTMLFieldSetElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLFieldSetElement where
+  pFromJSVal = HTMLFieldSetElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLFieldSetElement where
+instance ToJSVal HTMLFieldSetElement where
   toJSRef = return . unHTMLFieldSetElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLFieldSetElement where
+instance FromJSVal HTMLFieldSetElement where
   fromJSRef = return . fmap HTMLFieldSetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8096,19 +8096,19 @@ newtype HTMLFontElement = HTMLFontElement { unHTMLFontElement :: JSRef }
 instance Eq (HTMLFontElement) where
   (HTMLFontElement a) == (HTMLFontElement b) = js_eq a b
 
-instance PToJSRef HTMLFontElement where
-  pToJSRef = unHTMLFontElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLFontElement where
+  pToJSVal = unHTMLFontElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLFontElement where
-  pFromJSRef = HTMLFontElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLFontElement where
+  pFromJSVal = HTMLFontElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLFontElement where
+instance ToJSVal HTMLFontElement where
   toJSRef = return . unHTMLFontElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLFontElement where
+instance FromJSVal HTMLFontElement where
   fromJSRef = return . fmap HTMLFontElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8143,19 +8143,19 @@ newtype HTMLFormControlsCollection = HTMLFormControlsCollection { unHTMLFormCont
 instance Eq (HTMLFormControlsCollection) where
   (HTMLFormControlsCollection a) == (HTMLFormControlsCollection b) = js_eq a b
 
-instance PToJSRef HTMLFormControlsCollection where
-  pToJSRef = unHTMLFormControlsCollection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLFormControlsCollection where
+  pToJSVal = unHTMLFormControlsCollection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLFormControlsCollection where
-  pFromJSRef = HTMLFormControlsCollection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLFormControlsCollection where
+  pFromJSVal = HTMLFormControlsCollection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLFormControlsCollection where
+instance ToJSVal HTMLFormControlsCollection where
   toJSRef = return . unHTMLFormControlsCollection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLFormControlsCollection where
+instance FromJSVal HTMLFormControlsCollection where
   fromJSRef = return . fmap HTMLFormControlsCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8188,19 +8188,19 @@ newtype HTMLFormElement = HTMLFormElement { unHTMLFormElement :: JSRef }
 instance Eq (HTMLFormElement) where
   (HTMLFormElement a) == (HTMLFormElement b) = js_eq a b
 
-instance PToJSRef HTMLFormElement where
-  pToJSRef = unHTMLFormElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLFormElement where
+  pToJSVal = unHTMLFormElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLFormElement where
-  pFromJSRef = HTMLFormElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLFormElement where
+  pFromJSVal = HTMLFormElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLFormElement where
+instance ToJSVal HTMLFormElement where
   toJSRef = return . unHTMLFormElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLFormElement where
+instance FromJSVal HTMLFormElement where
   fromJSRef = return . fmap HTMLFormElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8238,19 +8238,19 @@ newtype HTMLFrameElement = HTMLFrameElement { unHTMLFrameElement :: JSRef }
 instance Eq (HTMLFrameElement) where
   (HTMLFrameElement a) == (HTMLFrameElement b) = js_eq a b
 
-instance PToJSRef HTMLFrameElement where
-  pToJSRef = unHTMLFrameElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLFrameElement where
+  pToJSVal = unHTMLFrameElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLFrameElement where
-  pFromJSRef = HTMLFrameElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLFrameElement where
+  pFromJSVal = HTMLFrameElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLFrameElement where
+instance ToJSVal HTMLFrameElement where
   toJSRef = return . unHTMLFrameElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLFrameElement where
+instance FromJSVal HTMLFrameElement where
   fromJSRef = return . fmap HTMLFrameElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8288,19 +8288,19 @@ newtype HTMLFrameSetElement = HTMLFrameSetElement { unHTMLFrameSetElement :: JSR
 instance Eq (HTMLFrameSetElement) where
   (HTMLFrameSetElement a) == (HTMLFrameSetElement b) = js_eq a b
 
-instance PToJSRef HTMLFrameSetElement where
-  pToJSRef = unHTMLFrameSetElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLFrameSetElement where
+  pToJSVal = unHTMLFrameSetElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLFrameSetElement where
-  pFromJSRef = HTMLFrameSetElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLFrameSetElement where
+  pFromJSVal = HTMLFrameSetElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLFrameSetElement where
+instance ToJSVal HTMLFrameSetElement where
   toJSRef = return . unHTMLFrameSetElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLFrameSetElement where
+instance FromJSVal HTMLFrameSetElement where
   fromJSRef = return . fmap HTMLFrameSetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8338,19 +8338,19 @@ newtype HTMLHRElement = HTMLHRElement { unHTMLHRElement :: JSRef }
 instance Eq (HTMLHRElement) where
   (HTMLHRElement a) == (HTMLHRElement b) = js_eq a b
 
-instance PToJSRef HTMLHRElement where
-  pToJSRef = unHTMLHRElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLHRElement where
+  pToJSVal = unHTMLHRElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLHRElement where
-  pFromJSRef = HTMLHRElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLHRElement where
+  pFromJSVal = HTMLHRElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLHRElement where
+instance ToJSVal HTMLHRElement where
   toJSRef = return . unHTMLHRElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLHRElement where
+instance FromJSVal HTMLHRElement where
   fromJSRef = return . fmap HTMLHRElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8388,19 +8388,19 @@ newtype HTMLHeadElement = HTMLHeadElement { unHTMLHeadElement :: JSRef }
 instance Eq (HTMLHeadElement) where
   (HTMLHeadElement a) == (HTMLHeadElement b) = js_eq a b
 
-instance PToJSRef HTMLHeadElement where
-  pToJSRef = unHTMLHeadElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLHeadElement where
+  pToJSVal = unHTMLHeadElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLHeadElement where
-  pFromJSRef = HTMLHeadElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLHeadElement where
+  pFromJSVal = HTMLHeadElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLHeadElement where
+instance ToJSVal HTMLHeadElement where
   toJSRef = return . unHTMLHeadElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLHeadElement where
+instance FromJSVal HTMLHeadElement where
   fromJSRef = return . fmap HTMLHeadElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8438,19 +8438,19 @@ newtype HTMLHeadingElement = HTMLHeadingElement { unHTMLHeadingElement :: JSRef 
 instance Eq (HTMLHeadingElement) where
   (HTMLHeadingElement a) == (HTMLHeadingElement b) = js_eq a b
 
-instance PToJSRef HTMLHeadingElement where
-  pToJSRef = unHTMLHeadingElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLHeadingElement where
+  pToJSVal = unHTMLHeadingElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLHeadingElement where
-  pFromJSRef = HTMLHeadingElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLHeadingElement where
+  pFromJSVal = HTMLHeadingElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLHeadingElement where
+instance ToJSVal HTMLHeadingElement where
   toJSRef = return . unHTMLHeadingElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLHeadingElement where
+instance FromJSVal HTMLHeadingElement where
   fromJSRef = return . fmap HTMLHeadingElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8488,19 +8488,19 @@ newtype HTMLHtmlElement = HTMLHtmlElement { unHTMLHtmlElement :: JSRef }
 instance Eq (HTMLHtmlElement) where
   (HTMLHtmlElement a) == (HTMLHtmlElement b) = js_eq a b
 
-instance PToJSRef HTMLHtmlElement where
-  pToJSRef = unHTMLHtmlElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLHtmlElement where
+  pToJSVal = unHTMLHtmlElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLHtmlElement where
-  pFromJSRef = HTMLHtmlElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLHtmlElement where
+  pFromJSVal = HTMLHtmlElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLHtmlElement where
+instance ToJSVal HTMLHtmlElement where
   toJSRef = return . unHTMLHtmlElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLHtmlElement where
+instance FromJSVal HTMLHtmlElement where
   fromJSRef = return . fmap HTMLHtmlElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8538,19 +8538,19 @@ newtype HTMLIFrameElement = HTMLIFrameElement { unHTMLIFrameElement :: JSRef }
 instance Eq (HTMLIFrameElement) where
   (HTMLIFrameElement a) == (HTMLIFrameElement b) = js_eq a b
 
-instance PToJSRef HTMLIFrameElement where
-  pToJSRef = unHTMLIFrameElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLIFrameElement where
+  pToJSVal = unHTMLIFrameElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLIFrameElement where
-  pFromJSRef = HTMLIFrameElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLIFrameElement where
+  pFromJSVal = HTMLIFrameElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLIFrameElement where
+instance ToJSVal HTMLIFrameElement where
   toJSRef = return . unHTMLIFrameElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLIFrameElement where
+instance FromJSVal HTMLIFrameElement where
   fromJSRef = return . fmap HTMLIFrameElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8588,19 +8588,19 @@ newtype HTMLImageElement = HTMLImageElement { unHTMLImageElement :: JSRef }
 instance Eq (HTMLImageElement) where
   (HTMLImageElement a) == (HTMLImageElement b) = js_eq a b
 
-instance PToJSRef HTMLImageElement where
-  pToJSRef = unHTMLImageElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLImageElement where
+  pToJSVal = unHTMLImageElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLImageElement where
-  pFromJSRef = HTMLImageElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLImageElement where
+  pFromJSVal = HTMLImageElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLImageElement where
+instance ToJSVal HTMLImageElement where
   toJSRef = return . unHTMLImageElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLImageElement where
+instance FromJSVal HTMLImageElement where
   fromJSRef = return . fmap HTMLImageElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8638,19 +8638,19 @@ newtype HTMLInputElement = HTMLInputElement { unHTMLInputElement :: JSRef }
 instance Eq (HTMLInputElement) where
   (HTMLInputElement a) == (HTMLInputElement b) = js_eq a b
 
-instance PToJSRef HTMLInputElement where
-  pToJSRef = unHTMLInputElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLInputElement where
+  pToJSVal = unHTMLInputElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLInputElement where
-  pFromJSRef = HTMLInputElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLInputElement where
+  pFromJSVal = HTMLInputElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLInputElement where
+instance ToJSVal HTMLInputElement where
   toJSRef = return . unHTMLInputElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLInputElement where
+instance FromJSVal HTMLInputElement where
   fromJSRef = return . fmap HTMLInputElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8688,19 +8688,19 @@ newtype HTMLKeygenElement = HTMLKeygenElement { unHTMLKeygenElement :: JSRef }
 instance Eq (HTMLKeygenElement) where
   (HTMLKeygenElement a) == (HTMLKeygenElement b) = js_eq a b
 
-instance PToJSRef HTMLKeygenElement where
-  pToJSRef = unHTMLKeygenElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLKeygenElement where
+  pToJSVal = unHTMLKeygenElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLKeygenElement where
-  pFromJSRef = HTMLKeygenElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLKeygenElement where
+  pFromJSVal = HTMLKeygenElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLKeygenElement where
+instance ToJSVal HTMLKeygenElement where
   toJSRef = return . unHTMLKeygenElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLKeygenElement where
+instance FromJSVal HTMLKeygenElement where
   fromJSRef = return . fmap HTMLKeygenElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8738,19 +8738,19 @@ newtype HTMLLIElement = HTMLLIElement { unHTMLLIElement :: JSRef }
 instance Eq (HTMLLIElement) where
   (HTMLLIElement a) == (HTMLLIElement b) = js_eq a b
 
-instance PToJSRef HTMLLIElement where
-  pToJSRef = unHTMLLIElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLLIElement where
+  pToJSVal = unHTMLLIElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLLIElement where
-  pFromJSRef = HTMLLIElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLLIElement where
+  pFromJSVal = HTMLLIElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLLIElement where
+instance ToJSVal HTMLLIElement where
   toJSRef = return . unHTMLLIElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLLIElement where
+instance FromJSVal HTMLLIElement where
   fromJSRef = return . fmap HTMLLIElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8788,19 +8788,19 @@ newtype HTMLLabelElement = HTMLLabelElement { unHTMLLabelElement :: JSRef }
 instance Eq (HTMLLabelElement) where
   (HTMLLabelElement a) == (HTMLLabelElement b) = js_eq a b
 
-instance PToJSRef HTMLLabelElement where
-  pToJSRef = unHTMLLabelElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLLabelElement where
+  pToJSVal = unHTMLLabelElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLLabelElement where
-  pFromJSRef = HTMLLabelElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLLabelElement where
+  pFromJSVal = HTMLLabelElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLLabelElement where
+instance ToJSVal HTMLLabelElement where
   toJSRef = return . unHTMLLabelElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLLabelElement where
+instance FromJSVal HTMLLabelElement where
   fromJSRef = return . fmap HTMLLabelElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8838,19 +8838,19 @@ newtype HTMLLegendElement = HTMLLegendElement { unHTMLLegendElement :: JSRef }
 instance Eq (HTMLLegendElement) where
   (HTMLLegendElement a) == (HTMLLegendElement b) = js_eq a b
 
-instance PToJSRef HTMLLegendElement where
-  pToJSRef = unHTMLLegendElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLLegendElement where
+  pToJSVal = unHTMLLegendElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLLegendElement where
-  pFromJSRef = HTMLLegendElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLLegendElement where
+  pFromJSVal = HTMLLegendElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLLegendElement where
+instance ToJSVal HTMLLegendElement where
   toJSRef = return . unHTMLLegendElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLLegendElement where
+instance FromJSVal HTMLLegendElement where
   fromJSRef = return . fmap HTMLLegendElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8888,19 +8888,19 @@ newtype HTMLLinkElement = HTMLLinkElement { unHTMLLinkElement :: JSRef }
 instance Eq (HTMLLinkElement) where
   (HTMLLinkElement a) == (HTMLLinkElement b) = js_eq a b
 
-instance PToJSRef HTMLLinkElement where
-  pToJSRef = unHTMLLinkElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLLinkElement where
+  pToJSVal = unHTMLLinkElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLLinkElement where
-  pFromJSRef = HTMLLinkElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLLinkElement where
+  pFromJSVal = HTMLLinkElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLLinkElement where
+instance ToJSVal HTMLLinkElement where
   toJSRef = return . unHTMLLinkElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLLinkElement where
+instance FromJSVal HTMLLinkElement where
   fromJSRef = return . fmap HTMLLinkElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8938,19 +8938,19 @@ newtype HTMLMapElement = HTMLMapElement { unHTMLMapElement :: JSRef }
 instance Eq (HTMLMapElement) where
   (HTMLMapElement a) == (HTMLMapElement b) = js_eq a b
 
-instance PToJSRef HTMLMapElement where
-  pToJSRef = unHTMLMapElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLMapElement where
+  pToJSVal = unHTMLMapElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLMapElement where
-  pFromJSRef = HTMLMapElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLMapElement where
+  pFromJSVal = HTMLMapElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLMapElement where
+instance ToJSVal HTMLMapElement where
   toJSRef = return . unHTMLMapElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLMapElement where
+instance FromJSVal HTMLMapElement where
   fromJSRef = return . fmap HTMLMapElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -8988,19 +8988,19 @@ newtype HTMLMarqueeElement = HTMLMarqueeElement { unHTMLMarqueeElement :: JSRef 
 instance Eq (HTMLMarqueeElement) where
   (HTMLMarqueeElement a) == (HTMLMarqueeElement b) = js_eq a b
 
-instance PToJSRef HTMLMarqueeElement where
-  pToJSRef = unHTMLMarqueeElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLMarqueeElement where
+  pToJSVal = unHTMLMarqueeElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLMarqueeElement where
-  pFromJSRef = HTMLMarqueeElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLMarqueeElement where
+  pFromJSVal = HTMLMarqueeElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLMarqueeElement where
+instance ToJSVal HTMLMarqueeElement where
   toJSRef = return . unHTMLMarqueeElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLMarqueeElement where
+instance FromJSVal HTMLMarqueeElement where
   fromJSRef = return . fmap HTMLMarqueeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9038,19 +9038,19 @@ newtype HTMLMediaElement = HTMLMediaElement { unHTMLMediaElement :: JSRef }
 instance Eq (HTMLMediaElement) where
   (HTMLMediaElement a) == (HTMLMediaElement b) = js_eq a b
 
-instance PToJSRef HTMLMediaElement where
-  pToJSRef = unHTMLMediaElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLMediaElement where
+  pToJSVal = unHTMLMediaElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLMediaElement where
-  pFromJSRef = HTMLMediaElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLMediaElement where
+  pFromJSVal = HTMLMediaElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLMediaElement where
+instance ToJSVal HTMLMediaElement where
   toJSRef = return . unHTMLMediaElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLMediaElement where
+instance FromJSVal HTMLMediaElement where
   fromJSRef = return . fmap HTMLMediaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9093,19 +9093,19 @@ newtype HTMLMenuElement = HTMLMenuElement { unHTMLMenuElement :: JSRef }
 instance Eq (HTMLMenuElement) where
   (HTMLMenuElement a) == (HTMLMenuElement b) = js_eq a b
 
-instance PToJSRef HTMLMenuElement where
-  pToJSRef = unHTMLMenuElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLMenuElement where
+  pToJSVal = unHTMLMenuElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLMenuElement where
-  pFromJSRef = HTMLMenuElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLMenuElement where
+  pFromJSVal = HTMLMenuElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLMenuElement where
+instance ToJSVal HTMLMenuElement where
   toJSRef = return . unHTMLMenuElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLMenuElement where
+instance FromJSVal HTMLMenuElement where
   fromJSRef = return . fmap HTMLMenuElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9143,19 +9143,19 @@ newtype HTMLMetaElement = HTMLMetaElement { unHTMLMetaElement :: JSRef }
 instance Eq (HTMLMetaElement) where
   (HTMLMetaElement a) == (HTMLMetaElement b) = js_eq a b
 
-instance PToJSRef HTMLMetaElement where
-  pToJSRef = unHTMLMetaElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLMetaElement where
+  pToJSVal = unHTMLMetaElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLMetaElement where
-  pFromJSRef = HTMLMetaElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLMetaElement where
+  pFromJSVal = HTMLMetaElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLMetaElement where
+instance ToJSVal HTMLMetaElement where
   toJSRef = return . unHTMLMetaElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLMetaElement where
+instance FromJSVal HTMLMetaElement where
   fromJSRef = return . fmap HTMLMetaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9193,19 +9193,19 @@ newtype HTMLMeterElement = HTMLMeterElement { unHTMLMeterElement :: JSRef }
 instance Eq (HTMLMeterElement) where
   (HTMLMeterElement a) == (HTMLMeterElement b) = js_eq a b
 
-instance PToJSRef HTMLMeterElement where
-  pToJSRef = unHTMLMeterElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLMeterElement where
+  pToJSVal = unHTMLMeterElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLMeterElement where
-  pFromJSRef = HTMLMeterElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLMeterElement where
+  pFromJSVal = HTMLMeterElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLMeterElement where
+instance ToJSVal HTMLMeterElement where
   toJSRef = return . unHTMLMeterElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLMeterElement where
+instance FromJSVal HTMLMeterElement where
   fromJSRef = return . fmap HTMLMeterElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9241,19 +9241,19 @@ newtype HTMLModElement = HTMLModElement { unHTMLModElement :: JSRef }
 instance Eq (HTMLModElement) where
   (HTMLModElement a) == (HTMLModElement b) = js_eq a b
 
-instance PToJSRef HTMLModElement where
-  pToJSRef = unHTMLModElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLModElement where
+  pToJSVal = unHTMLModElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLModElement where
-  pFromJSRef = HTMLModElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLModElement where
+  pFromJSVal = HTMLModElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLModElement where
+instance ToJSVal HTMLModElement where
   toJSRef = return . unHTMLModElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLModElement where
+instance FromJSVal HTMLModElement where
   fromJSRef = return . fmap HTMLModElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9291,19 +9291,19 @@ newtype HTMLOListElement = HTMLOListElement { unHTMLOListElement :: JSRef }
 instance Eq (HTMLOListElement) where
   (HTMLOListElement a) == (HTMLOListElement b) = js_eq a b
 
-instance PToJSRef HTMLOListElement where
-  pToJSRef = unHTMLOListElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLOListElement where
+  pToJSVal = unHTMLOListElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLOListElement where
-  pFromJSRef = HTMLOListElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLOListElement where
+  pFromJSVal = HTMLOListElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLOListElement where
+instance ToJSVal HTMLOListElement where
   toJSRef = return . unHTMLOListElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLOListElement where
+instance FromJSVal HTMLOListElement where
   fromJSRef = return . fmap HTMLOListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9341,19 +9341,19 @@ newtype HTMLObjectElement = HTMLObjectElement { unHTMLObjectElement :: JSRef }
 instance Eq (HTMLObjectElement) where
   (HTMLObjectElement a) == (HTMLObjectElement b) = js_eq a b
 
-instance PToJSRef HTMLObjectElement where
-  pToJSRef = unHTMLObjectElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLObjectElement where
+  pToJSVal = unHTMLObjectElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLObjectElement where
-  pFromJSRef = HTMLObjectElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLObjectElement where
+  pFromJSVal = HTMLObjectElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLObjectElement where
+instance ToJSVal HTMLObjectElement where
   toJSRef = return . unHTMLObjectElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLObjectElement where
+instance FromJSVal HTMLObjectElement where
   fromJSRef = return . fmap HTMLObjectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9391,19 +9391,19 @@ newtype HTMLOptGroupElement = HTMLOptGroupElement { unHTMLOptGroupElement :: JSR
 instance Eq (HTMLOptGroupElement) where
   (HTMLOptGroupElement a) == (HTMLOptGroupElement b) = js_eq a b
 
-instance PToJSRef HTMLOptGroupElement where
-  pToJSRef = unHTMLOptGroupElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLOptGroupElement where
+  pToJSVal = unHTMLOptGroupElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLOptGroupElement where
-  pFromJSRef = HTMLOptGroupElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLOptGroupElement where
+  pFromJSVal = HTMLOptGroupElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLOptGroupElement where
+instance ToJSVal HTMLOptGroupElement where
   toJSRef = return . unHTMLOptGroupElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLOptGroupElement where
+instance FromJSVal HTMLOptGroupElement where
   fromJSRef = return . fmap HTMLOptGroupElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9441,19 +9441,19 @@ newtype HTMLOptionElement = HTMLOptionElement { unHTMLOptionElement :: JSRef }
 instance Eq (HTMLOptionElement) where
   (HTMLOptionElement a) == (HTMLOptionElement b) = js_eq a b
 
-instance PToJSRef HTMLOptionElement where
-  pToJSRef = unHTMLOptionElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLOptionElement where
+  pToJSVal = unHTMLOptionElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLOptionElement where
-  pFromJSRef = HTMLOptionElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLOptionElement where
+  pFromJSVal = HTMLOptionElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLOptionElement where
+instance ToJSVal HTMLOptionElement where
   toJSRef = return . unHTMLOptionElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLOptionElement where
+instance FromJSVal HTMLOptionElement where
   fromJSRef = return . fmap HTMLOptionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9488,19 +9488,19 @@ newtype HTMLOptionsCollection = HTMLOptionsCollection { unHTMLOptionsCollection 
 instance Eq (HTMLOptionsCollection) where
   (HTMLOptionsCollection a) == (HTMLOptionsCollection b) = js_eq a b
 
-instance PToJSRef HTMLOptionsCollection where
-  pToJSRef = unHTMLOptionsCollection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLOptionsCollection where
+  pToJSVal = unHTMLOptionsCollection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLOptionsCollection where
-  pFromJSRef = HTMLOptionsCollection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLOptionsCollection where
+  pFromJSVal = HTMLOptionsCollection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLOptionsCollection where
+instance ToJSVal HTMLOptionsCollection where
   toJSRef = return . unHTMLOptionsCollection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLOptionsCollection where
+instance FromJSVal HTMLOptionsCollection where
   fromJSRef = return . fmap HTMLOptionsCollection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9535,19 +9535,19 @@ newtype HTMLOutputElement = HTMLOutputElement { unHTMLOutputElement :: JSRef }
 instance Eq (HTMLOutputElement) where
   (HTMLOutputElement a) == (HTMLOutputElement b) = js_eq a b
 
-instance PToJSRef HTMLOutputElement where
-  pToJSRef = unHTMLOutputElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLOutputElement where
+  pToJSVal = unHTMLOutputElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLOutputElement where
-  pFromJSRef = HTMLOutputElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLOutputElement where
+  pFromJSVal = HTMLOutputElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLOutputElement where
+instance ToJSVal HTMLOutputElement where
   toJSRef = return . unHTMLOutputElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLOutputElement where
+instance FromJSVal HTMLOutputElement where
   fromJSRef = return . fmap HTMLOutputElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9583,19 +9583,19 @@ newtype HTMLParagraphElement = HTMLParagraphElement { unHTMLParagraphElement :: 
 instance Eq (HTMLParagraphElement) where
   (HTMLParagraphElement a) == (HTMLParagraphElement b) = js_eq a b
 
-instance PToJSRef HTMLParagraphElement where
-  pToJSRef = unHTMLParagraphElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLParagraphElement where
+  pToJSVal = unHTMLParagraphElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLParagraphElement where
-  pFromJSRef = HTMLParagraphElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLParagraphElement where
+  pFromJSVal = HTMLParagraphElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLParagraphElement where
+instance ToJSVal HTMLParagraphElement where
   toJSRef = return . unHTMLParagraphElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLParagraphElement where
+instance FromJSVal HTMLParagraphElement where
   fromJSRef = return . fmap HTMLParagraphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9633,19 +9633,19 @@ newtype HTMLParamElement = HTMLParamElement { unHTMLParamElement :: JSRef }
 instance Eq (HTMLParamElement) where
   (HTMLParamElement a) == (HTMLParamElement b) = js_eq a b
 
-instance PToJSRef HTMLParamElement where
-  pToJSRef = unHTMLParamElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLParamElement where
+  pToJSVal = unHTMLParamElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLParamElement where
-  pFromJSRef = HTMLParamElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLParamElement where
+  pFromJSVal = HTMLParamElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLParamElement where
+instance ToJSVal HTMLParamElement where
   toJSRef = return . unHTMLParamElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLParamElement where
+instance FromJSVal HTMLParamElement where
   fromJSRef = return . fmap HTMLParamElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9683,19 +9683,19 @@ newtype HTMLPreElement = HTMLPreElement { unHTMLPreElement :: JSRef }
 instance Eq (HTMLPreElement) where
   (HTMLPreElement a) == (HTMLPreElement b) = js_eq a b
 
-instance PToJSRef HTMLPreElement where
-  pToJSRef = unHTMLPreElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLPreElement where
+  pToJSVal = unHTMLPreElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLPreElement where
-  pFromJSRef = HTMLPreElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLPreElement where
+  pFromJSVal = HTMLPreElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLPreElement where
+instance ToJSVal HTMLPreElement where
   toJSRef = return . unHTMLPreElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLPreElement where
+instance FromJSVal HTMLPreElement where
   fromJSRef = return . fmap HTMLPreElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9733,19 +9733,19 @@ newtype HTMLProgressElement = HTMLProgressElement { unHTMLProgressElement :: JSR
 instance Eq (HTMLProgressElement) where
   (HTMLProgressElement a) == (HTMLProgressElement b) = js_eq a b
 
-instance PToJSRef HTMLProgressElement where
-  pToJSRef = unHTMLProgressElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLProgressElement where
+  pToJSVal = unHTMLProgressElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLProgressElement where
-  pFromJSRef = HTMLProgressElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLProgressElement where
+  pFromJSVal = HTMLProgressElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLProgressElement where
+instance ToJSVal HTMLProgressElement where
   toJSRef = return . unHTMLProgressElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLProgressElement where
+instance FromJSVal HTMLProgressElement where
   fromJSRef = return . fmap HTMLProgressElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9781,19 +9781,19 @@ newtype HTMLQuoteElement = HTMLQuoteElement { unHTMLQuoteElement :: JSRef }
 instance Eq (HTMLQuoteElement) where
   (HTMLQuoteElement a) == (HTMLQuoteElement b) = js_eq a b
 
-instance PToJSRef HTMLQuoteElement where
-  pToJSRef = unHTMLQuoteElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLQuoteElement where
+  pToJSVal = unHTMLQuoteElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLQuoteElement where
-  pFromJSRef = HTMLQuoteElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLQuoteElement where
+  pFromJSVal = HTMLQuoteElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLQuoteElement where
+instance ToJSVal HTMLQuoteElement where
   toJSRef = return . unHTMLQuoteElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLQuoteElement where
+instance FromJSVal HTMLQuoteElement where
   fromJSRef = return . fmap HTMLQuoteElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9831,19 +9831,19 @@ newtype HTMLScriptElement = HTMLScriptElement { unHTMLScriptElement :: JSRef }
 instance Eq (HTMLScriptElement) where
   (HTMLScriptElement a) == (HTMLScriptElement b) = js_eq a b
 
-instance PToJSRef HTMLScriptElement where
-  pToJSRef = unHTMLScriptElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLScriptElement where
+  pToJSVal = unHTMLScriptElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLScriptElement where
-  pFromJSRef = HTMLScriptElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLScriptElement where
+  pFromJSVal = HTMLScriptElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLScriptElement where
+instance ToJSVal HTMLScriptElement where
   toJSRef = return . unHTMLScriptElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLScriptElement where
+instance FromJSVal HTMLScriptElement where
   fromJSRef = return . fmap HTMLScriptElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9881,19 +9881,19 @@ newtype HTMLSelectElement = HTMLSelectElement { unHTMLSelectElement :: JSRef }
 instance Eq (HTMLSelectElement) where
   (HTMLSelectElement a) == (HTMLSelectElement b) = js_eq a b
 
-instance PToJSRef HTMLSelectElement where
-  pToJSRef = unHTMLSelectElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLSelectElement where
+  pToJSVal = unHTMLSelectElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLSelectElement where
-  pFromJSRef = HTMLSelectElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLSelectElement where
+  pFromJSVal = HTMLSelectElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLSelectElement where
+instance ToJSVal HTMLSelectElement where
   toJSRef = return . unHTMLSelectElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLSelectElement where
+instance FromJSVal HTMLSelectElement where
   fromJSRef = return . fmap HTMLSelectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9931,19 +9931,19 @@ newtype HTMLSourceElement = HTMLSourceElement { unHTMLSourceElement :: JSRef }
 instance Eq (HTMLSourceElement) where
   (HTMLSourceElement a) == (HTMLSourceElement b) = js_eq a b
 
-instance PToJSRef HTMLSourceElement where
-  pToJSRef = unHTMLSourceElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLSourceElement where
+  pToJSVal = unHTMLSourceElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLSourceElement where
-  pFromJSRef = HTMLSourceElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLSourceElement where
+  pFromJSVal = HTMLSourceElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLSourceElement where
+instance ToJSVal HTMLSourceElement where
   toJSRef = return . unHTMLSourceElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLSourceElement where
+instance FromJSVal HTMLSourceElement where
   fromJSRef = return . fmap HTMLSourceElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -9979,19 +9979,19 @@ newtype HTMLSpanElement = HTMLSpanElement { unHTMLSpanElement :: JSRef }
 instance Eq (HTMLSpanElement) where
   (HTMLSpanElement a) == (HTMLSpanElement b) = js_eq a b
 
-instance PToJSRef HTMLSpanElement where
-  pToJSRef = unHTMLSpanElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLSpanElement where
+  pToJSVal = unHTMLSpanElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLSpanElement where
-  pFromJSRef = HTMLSpanElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLSpanElement where
+  pFromJSVal = HTMLSpanElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLSpanElement where
+instance ToJSVal HTMLSpanElement where
   toJSRef = return . unHTMLSpanElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLSpanElement where
+instance FromJSVal HTMLSpanElement where
   fromJSRef = return . fmap HTMLSpanElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10027,19 +10027,19 @@ newtype HTMLStyleElement = HTMLStyleElement { unHTMLStyleElement :: JSRef }
 instance Eq (HTMLStyleElement) where
   (HTMLStyleElement a) == (HTMLStyleElement b) = js_eq a b
 
-instance PToJSRef HTMLStyleElement where
-  pToJSRef = unHTMLStyleElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLStyleElement where
+  pToJSVal = unHTMLStyleElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLStyleElement where
-  pFromJSRef = HTMLStyleElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLStyleElement where
+  pFromJSVal = HTMLStyleElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLStyleElement where
+instance ToJSVal HTMLStyleElement where
   toJSRef = return . unHTMLStyleElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLStyleElement where
+instance FromJSVal HTMLStyleElement where
   fromJSRef = return . fmap HTMLStyleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10077,19 +10077,19 @@ newtype HTMLTableCaptionElement = HTMLTableCaptionElement { unHTMLTableCaptionEl
 instance Eq (HTMLTableCaptionElement) where
   (HTMLTableCaptionElement a) == (HTMLTableCaptionElement b) = js_eq a b
 
-instance PToJSRef HTMLTableCaptionElement where
-  pToJSRef = unHTMLTableCaptionElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTableCaptionElement where
+  pToJSVal = unHTMLTableCaptionElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTableCaptionElement where
-  pFromJSRef = HTMLTableCaptionElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTableCaptionElement where
+  pFromJSVal = HTMLTableCaptionElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTableCaptionElement where
+instance ToJSVal HTMLTableCaptionElement where
   toJSRef = return . unHTMLTableCaptionElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTableCaptionElement where
+instance FromJSVal HTMLTableCaptionElement where
   fromJSRef = return . fmap HTMLTableCaptionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10127,19 +10127,19 @@ newtype HTMLTableCellElement = HTMLTableCellElement { unHTMLTableCellElement :: 
 instance Eq (HTMLTableCellElement) where
   (HTMLTableCellElement a) == (HTMLTableCellElement b) = js_eq a b
 
-instance PToJSRef HTMLTableCellElement where
-  pToJSRef = unHTMLTableCellElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTableCellElement where
+  pToJSVal = unHTMLTableCellElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTableCellElement where
-  pFromJSRef = HTMLTableCellElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTableCellElement where
+  pFromJSVal = HTMLTableCellElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTableCellElement where
+instance ToJSVal HTMLTableCellElement where
   toJSRef = return . unHTMLTableCellElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTableCellElement where
+instance FromJSVal HTMLTableCellElement where
   fromJSRef = return . fmap HTMLTableCellElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10177,19 +10177,19 @@ newtype HTMLTableColElement = HTMLTableColElement { unHTMLTableColElement :: JSR
 instance Eq (HTMLTableColElement) where
   (HTMLTableColElement a) == (HTMLTableColElement b) = js_eq a b
 
-instance PToJSRef HTMLTableColElement where
-  pToJSRef = unHTMLTableColElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTableColElement where
+  pToJSVal = unHTMLTableColElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTableColElement where
-  pFromJSRef = HTMLTableColElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTableColElement where
+  pFromJSVal = HTMLTableColElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTableColElement where
+instance ToJSVal HTMLTableColElement where
   toJSRef = return . unHTMLTableColElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTableColElement where
+instance FromJSVal HTMLTableColElement where
   fromJSRef = return . fmap HTMLTableColElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10227,19 +10227,19 @@ newtype HTMLTableElement = HTMLTableElement { unHTMLTableElement :: JSRef }
 instance Eq (HTMLTableElement) where
   (HTMLTableElement a) == (HTMLTableElement b) = js_eq a b
 
-instance PToJSRef HTMLTableElement where
-  pToJSRef = unHTMLTableElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTableElement where
+  pToJSVal = unHTMLTableElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTableElement where
-  pFromJSRef = HTMLTableElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTableElement where
+  pFromJSVal = HTMLTableElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTableElement where
+instance ToJSVal HTMLTableElement where
   toJSRef = return . unHTMLTableElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTableElement where
+instance FromJSVal HTMLTableElement where
   fromJSRef = return . fmap HTMLTableElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10277,19 +10277,19 @@ newtype HTMLTableRowElement = HTMLTableRowElement { unHTMLTableRowElement :: JSR
 instance Eq (HTMLTableRowElement) where
   (HTMLTableRowElement a) == (HTMLTableRowElement b) = js_eq a b
 
-instance PToJSRef HTMLTableRowElement where
-  pToJSRef = unHTMLTableRowElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTableRowElement where
+  pToJSVal = unHTMLTableRowElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTableRowElement where
-  pFromJSRef = HTMLTableRowElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTableRowElement where
+  pFromJSVal = HTMLTableRowElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTableRowElement where
+instance ToJSVal HTMLTableRowElement where
   toJSRef = return . unHTMLTableRowElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTableRowElement where
+instance FromJSVal HTMLTableRowElement where
   fromJSRef = return . fmap HTMLTableRowElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10327,19 +10327,19 @@ newtype HTMLTableSectionElement = HTMLTableSectionElement { unHTMLTableSectionEl
 instance Eq (HTMLTableSectionElement) where
   (HTMLTableSectionElement a) == (HTMLTableSectionElement b) = js_eq a b
 
-instance PToJSRef HTMLTableSectionElement where
-  pToJSRef = unHTMLTableSectionElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTableSectionElement where
+  pToJSVal = unHTMLTableSectionElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTableSectionElement where
-  pFromJSRef = HTMLTableSectionElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTableSectionElement where
+  pFromJSVal = HTMLTableSectionElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTableSectionElement where
+instance ToJSVal HTMLTableSectionElement where
   toJSRef = return . unHTMLTableSectionElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTableSectionElement where
+instance FromJSVal HTMLTableSectionElement where
   fromJSRef = return . fmap HTMLTableSectionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10377,19 +10377,19 @@ newtype HTMLTemplateElement = HTMLTemplateElement { unHTMLTemplateElement :: JSR
 instance Eq (HTMLTemplateElement) where
   (HTMLTemplateElement a) == (HTMLTemplateElement b) = js_eq a b
 
-instance PToJSRef HTMLTemplateElement where
-  pToJSRef = unHTMLTemplateElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTemplateElement where
+  pToJSVal = unHTMLTemplateElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTemplateElement where
-  pFromJSRef = HTMLTemplateElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTemplateElement where
+  pFromJSVal = HTMLTemplateElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTemplateElement where
+instance ToJSVal HTMLTemplateElement where
   toJSRef = return . unHTMLTemplateElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTemplateElement where
+instance FromJSVal HTMLTemplateElement where
   fromJSRef = return . fmap HTMLTemplateElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10425,19 +10425,19 @@ newtype HTMLTextAreaElement = HTMLTextAreaElement { unHTMLTextAreaElement :: JSR
 instance Eq (HTMLTextAreaElement) where
   (HTMLTextAreaElement a) == (HTMLTextAreaElement b) = js_eq a b
 
-instance PToJSRef HTMLTextAreaElement where
-  pToJSRef = unHTMLTextAreaElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTextAreaElement where
+  pToJSVal = unHTMLTextAreaElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTextAreaElement where
-  pFromJSRef = HTMLTextAreaElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTextAreaElement where
+  pFromJSVal = HTMLTextAreaElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTextAreaElement where
+instance ToJSVal HTMLTextAreaElement where
   toJSRef = return . unHTMLTextAreaElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTextAreaElement where
+instance FromJSVal HTMLTextAreaElement where
   fromJSRef = return . fmap HTMLTextAreaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10475,19 +10475,19 @@ newtype HTMLTitleElement = HTMLTitleElement { unHTMLTitleElement :: JSRef }
 instance Eq (HTMLTitleElement) where
   (HTMLTitleElement a) == (HTMLTitleElement b) = js_eq a b
 
-instance PToJSRef HTMLTitleElement where
-  pToJSRef = unHTMLTitleElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTitleElement where
+  pToJSVal = unHTMLTitleElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTitleElement where
-  pFromJSRef = HTMLTitleElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTitleElement where
+  pFromJSVal = HTMLTitleElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTitleElement where
+instance ToJSVal HTMLTitleElement where
   toJSRef = return . unHTMLTitleElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTitleElement where
+instance FromJSVal HTMLTitleElement where
   fromJSRef = return . fmap HTMLTitleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10525,19 +10525,19 @@ newtype HTMLTrackElement = HTMLTrackElement { unHTMLTrackElement :: JSRef }
 instance Eq (HTMLTrackElement) where
   (HTMLTrackElement a) == (HTMLTrackElement b) = js_eq a b
 
-instance PToJSRef HTMLTrackElement where
-  pToJSRef = unHTMLTrackElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLTrackElement where
+  pToJSVal = unHTMLTrackElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLTrackElement where
-  pFromJSRef = HTMLTrackElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLTrackElement where
+  pFromJSVal = HTMLTrackElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLTrackElement where
+instance ToJSVal HTMLTrackElement where
   toJSRef = return . unHTMLTrackElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLTrackElement where
+instance FromJSVal HTMLTrackElement where
   fromJSRef = return . fmap HTMLTrackElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10573,19 +10573,19 @@ newtype HTMLUListElement = HTMLUListElement { unHTMLUListElement :: JSRef }
 instance Eq (HTMLUListElement) where
   (HTMLUListElement a) == (HTMLUListElement b) = js_eq a b
 
-instance PToJSRef HTMLUListElement where
-  pToJSRef = unHTMLUListElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLUListElement where
+  pToJSVal = unHTMLUListElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLUListElement where
-  pFromJSRef = HTMLUListElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLUListElement where
+  pFromJSVal = HTMLUListElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLUListElement where
+instance ToJSVal HTMLUListElement where
   toJSRef = return . unHTMLUListElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLUListElement where
+instance FromJSVal HTMLUListElement where
   fromJSRef = return . fmap HTMLUListElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10623,19 +10623,19 @@ newtype HTMLUnknownElement = HTMLUnknownElement { unHTMLUnknownElement :: JSRef 
 instance Eq (HTMLUnknownElement) where
   (HTMLUnknownElement a) == (HTMLUnknownElement b) = js_eq a b
 
-instance PToJSRef HTMLUnknownElement where
-  pToJSRef = unHTMLUnknownElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLUnknownElement where
+  pToJSVal = unHTMLUnknownElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLUnknownElement where
-  pFromJSRef = HTMLUnknownElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLUnknownElement where
+  pFromJSVal = HTMLUnknownElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLUnknownElement where
+instance ToJSVal HTMLUnknownElement where
   toJSRef = return . unHTMLUnknownElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLUnknownElement where
+instance FromJSVal HTMLUnknownElement where
   fromJSRef = return . fmap HTMLUnknownElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10672,19 +10672,19 @@ newtype HTMLVideoElement = HTMLVideoElement { unHTMLVideoElement :: JSRef }
 instance Eq (HTMLVideoElement) where
   (HTMLVideoElement a) == (HTMLVideoElement b) = js_eq a b
 
-instance PToJSRef HTMLVideoElement where
-  pToJSRef = unHTMLVideoElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HTMLVideoElement where
+  pToJSVal = unHTMLVideoElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HTMLVideoElement where
-  pFromJSRef = HTMLVideoElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HTMLVideoElement where
+  pFromJSVal = HTMLVideoElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HTMLVideoElement where
+instance ToJSVal HTMLVideoElement where
   toJSRef = return . unHTMLVideoElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HTMLVideoElement where
+instance FromJSVal HTMLVideoElement where
   fromJSRef = return . fmap HTMLVideoElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10720,19 +10720,19 @@ newtype HashChangeEvent = HashChangeEvent { unHashChangeEvent :: JSRef }
 instance Eq (HashChangeEvent) where
   (HashChangeEvent a) == (HashChangeEvent b) = js_eq a b
 
-instance PToJSRef HashChangeEvent where
-  pToJSRef = unHashChangeEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal HashChangeEvent where
+  pToJSVal = unHashChangeEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef HashChangeEvent where
-  pFromJSRef = HashChangeEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal HashChangeEvent where
+  pFromJSVal = HashChangeEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef HashChangeEvent where
+instance ToJSVal HashChangeEvent where
   toJSRef = return . unHashChangeEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef HashChangeEvent where
+instance FromJSVal HashChangeEvent where
   fromJSRef = return . fmap HashChangeEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10759,19 +10759,19 @@ newtype History = History { unHistory :: JSRef }
 instance Eq (History) where
   (History a) == (History b) = js_eq a b
 
-instance PToJSRef History where
-  pToJSRef = unHistory
-  {-# INLINE pToJSRef #-}
+instance PToJSVal History where
+  pToJSVal = unHistory
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef History where
-  pFromJSRef = History
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal History where
+  pFromJSVal = History
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef History where
+instance ToJSVal History where
   toJSRef = return . unHistory
   {-# INLINE toJSRef #-}
 
-instance FromJSRef History where
+instance FromJSVal History where
   fromJSRef = return . fmap History . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10799,19 +10799,19 @@ newtype IDBAny = IDBAny { unIDBAny :: JSRef }
 instance Eq (IDBAny) where
   (IDBAny a) == (IDBAny b) = js_eq a b
 
-instance PToJSRef IDBAny where
-  pToJSRef = unIDBAny
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBAny where
+  pToJSVal = unIDBAny
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBAny where
-  pFromJSRef = IDBAny
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBAny where
+  pFromJSVal = IDBAny
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBAny where
+instance ToJSVal IDBAny where
   toJSRef = return . unIDBAny
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBAny where
+instance FromJSVal IDBAny where
   fromJSRef = return . fmap IDBAny . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10837,19 +10837,19 @@ newtype IDBCursor = IDBCursor { unIDBCursor :: JSRef }
 instance Eq (IDBCursor) where
   (IDBCursor a) == (IDBCursor b) = js_eq a b
 
-instance PToJSRef IDBCursor where
-  pToJSRef = unIDBCursor
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBCursor where
+  pToJSVal = unIDBCursor
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBCursor where
-  pFromJSRef = IDBCursor
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBCursor where
+  pFromJSVal = IDBCursor
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBCursor where
+instance ToJSVal IDBCursor where
   toJSRef = return . unIDBCursor
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBCursor where
+instance FromJSVal IDBCursor where
   fromJSRef = return . fmap IDBCursor . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10883,19 +10883,19 @@ newtype IDBCursorWithValue = IDBCursorWithValue { unIDBCursorWithValue :: JSRef 
 instance Eq (IDBCursorWithValue) where
   (IDBCursorWithValue a) == (IDBCursorWithValue b) = js_eq a b
 
-instance PToJSRef IDBCursorWithValue where
-  pToJSRef = unIDBCursorWithValue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBCursorWithValue where
+  pToJSVal = unIDBCursorWithValue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBCursorWithValue where
-  pFromJSRef = IDBCursorWithValue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBCursorWithValue where
+  pFromJSVal = IDBCursorWithValue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBCursorWithValue where
+instance ToJSVal IDBCursorWithValue where
   toJSRef = return . unIDBCursorWithValue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBCursorWithValue where
+instance FromJSVal IDBCursorWithValue where
   fromJSRef = return . fmap IDBCursorWithValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10925,19 +10925,19 @@ newtype IDBDatabase = IDBDatabase { unIDBDatabase :: JSRef }
 instance Eq (IDBDatabase) where
   (IDBDatabase a) == (IDBDatabase b) = js_eq a b
 
-instance PToJSRef IDBDatabase where
-  pToJSRef = unIDBDatabase
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBDatabase where
+  pToJSVal = unIDBDatabase
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBDatabase where
-  pFromJSRef = IDBDatabase
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBDatabase where
+  pFromJSVal = IDBDatabase
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBDatabase where
+instance ToJSVal IDBDatabase where
   toJSRef = return . unIDBDatabase
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBDatabase where
+instance FromJSVal IDBDatabase where
   fromJSRef = return . fmap IDBDatabase . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -10964,19 +10964,19 @@ newtype IDBFactory = IDBFactory { unIDBFactory :: JSRef }
 instance Eq (IDBFactory) where
   (IDBFactory a) == (IDBFactory b) = js_eq a b
 
-instance PToJSRef IDBFactory where
-  pToJSRef = unIDBFactory
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBFactory where
+  pToJSVal = unIDBFactory
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBFactory where
-  pFromJSRef = IDBFactory
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBFactory where
+  pFromJSVal = IDBFactory
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBFactory where
+instance ToJSVal IDBFactory where
   toJSRef = return . unIDBFactory
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBFactory where
+instance FromJSVal IDBFactory where
   fromJSRef = return . fmap IDBFactory . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11002,19 +11002,19 @@ newtype IDBIndex = IDBIndex { unIDBIndex :: JSRef }
 instance Eq (IDBIndex) where
   (IDBIndex a) == (IDBIndex b) = js_eq a b
 
-instance PToJSRef IDBIndex where
-  pToJSRef = unIDBIndex
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBIndex where
+  pToJSVal = unIDBIndex
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBIndex where
-  pFromJSRef = IDBIndex
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBIndex where
+  pFromJSVal = IDBIndex
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBIndex where
+instance ToJSVal IDBIndex where
   toJSRef = return . unIDBIndex
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBIndex where
+instance FromJSVal IDBIndex where
   fromJSRef = return . fmap IDBIndex . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11040,19 +11040,19 @@ newtype IDBKeyRange = IDBKeyRange { unIDBKeyRange :: JSRef }
 instance Eq (IDBKeyRange) where
   (IDBKeyRange a) == (IDBKeyRange b) = js_eq a b
 
-instance PToJSRef IDBKeyRange where
-  pToJSRef = unIDBKeyRange
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBKeyRange where
+  pToJSVal = unIDBKeyRange
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBKeyRange where
-  pFromJSRef = IDBKeyRange
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBKeyRange where
+  pFromJSVal = IDBKeyRange
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBKeyRange where
+instance ToJSVal IDBKeyRange where
   toJSRef = return . unIDBKeyRange
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBKeyRange where
+instance FromJSVal IDBKeyRange where
   fromJSRef = return . fmap IDBKeyRange . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11078,19 +11078,19 @@ newtype IDBObjectStore = IDBObjectStore { unIDBObjectStore :: JSRef }
 instance Eq (IDBObjectStore) where
   (IDBObjectStore a) == (IDBObjectStore b) = js_eq a b
 
-instance PToJSRef IDBObjectStore where
-  pToJSRef = unIDBObjectStore
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBObjectStore where
+  pToJSVal = unIDBObjectStore
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBObjectStore where
-  pFromJSRef = IDBObjectStore
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBObjectStore where
+  pFromJSVal = IDBObjectStore
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBObjectStore where
+instance ToJSVal IDBObjectStore where
   toJSRef = return . unIDBObjectStore
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBObjectStore where
+instance FromJSVal IDBObjectStore where
   fromJSRef = return . fmap IDBObjectStore . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11120,19 +11120,19 @@ newtype IDBOpenDBRequest = IDBOpenDBRequest { unIDBOpenDBRequest :: JSRef }
 instance Eq (IDBOpenDBRequest) where
   (IDBOpenDBRequest a) == (IDBOpenDBRequest b) = js_eq a b
 
-instance PToJSRef IDBOpenDBRequest where
-  pToJSRef = unIDBOpenDBRequest
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBOpenDBRequest where
+  pToJSVal = unIDBOpenDBRequest
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBOpenDBRequest where
-  pFromJSRef = IDBOpenDBRequest
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBOpenDBRequest where
+  pFromJSVal = IDBOpenDBRequest
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBOpenDBRequest where
+instance ToJSVal IDBOpenDBRequest where
   toJSRef = return . unIDBOpenDBRequest
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBOpenDBRequest where
+instance FromJSVal IDBOpenDBRequest where
   fromJSRef = return . fmap IDBOpenDBRequest . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11163,19 +11163,19 @@ newtype IDBRequest = IDBRequest { unIDBRequest :: JSRef }
 instance Eq (IDBRequest) where
   (IDBRequest a) == (IDBRequest b) = js_eq a b
 
-instance PToJSRef IDBRequest where
-  pToJSRef = unIDBRequest
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBRequest where
+  pToJSVal = unIDBRequest
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBRequest where
-  pFromJSRef = IDBRequest
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBRequest where
+  pFromJSVal = IDBRequest
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBRequest where
+instance ToJSVal IDBRequest where
   toJSRef = return . unIDBRequest
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBRequest where
+instance FromJSVal IDBRequest where
   fromJSRef = return . fmap IDBRequest . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11210,19 +11210,19 @@ newtype IDBTransaction = IDBTransaction { unIDBTransaction :: JSRef }
 instance Eq (IDBTransaction) where
   (IDBTransaction a) == (IDBTransaction b) = js_eq a b
 
-instance PToJSRef IDBTransaction where
-  pToJSRef = unIDBTransaction
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBTransaction where
+  pToJSVal = unIDBTransaction
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBTransaction where
-  pFromJSRef = IDBTransaction
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBTransaction where
+  pFromJSVal = IDBTransaction
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBTransaction where
+instance ToJSVal IDBTransaction where
   toJSRef = return . unIDBTransaction
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBTransaction where
+instance FromJSVal IDBTransaction where
   fromJSRef = return . fmap IDBTransaction . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11252,19 +11252,19 @@ newtype IDBVersionChangeEvent = IDBVersionChangeEvent { unIDBVersionChangeEvent 
 instance Eq (IDBVersionChangeEvent) where
   (IDBVersionChangeEvent a) == (IDBVersionChangeEvent b) = js_eq a b
 
-instance PToJSRef IDBVersionChangeEvent where
-  pToJSRef = unIDBVersionChangeEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal IDBVersionChangeEvent where
+  pToJSVal = unIDBVersionChangeEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef IDBVersionChangeEvent where
-  pFromJSRef = IDBVersionChangeEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal IDBVersionChangeEvent where
+  pFromJSVal = IDBVersionChangeEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef IDBVersionChangeEvent where
+instance ToJSVal IDBVersionChangeEvent where
   toJSRef = return . unIDBVersionChangeEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef IDBVersionChangeEvent where
+instance FromJSVal IDBVersionChangeEvent where
   fromJSRef = return . fmap IDBVersionChangeEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11291,19 +11291,19 @@ newtype ImageData = ImageData { unImageData :: JSRef }
 instance Eq (ImageData) where
   (ImageData a) == (ImageData b) = js_eq a b
 
-instance PToJSRef ImageData where
-  pToJSRef = unImageData
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ImageData where
+  pToJSVal = unImageData
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ImageData where
-  pFromJSRef = ImageData
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ImageData where
+  pFromJSVal = ImageData
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ImageData where
+instance ToJSVal ImageData where
   toJSRef = return . unImageData
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ImageData where
+instance FromJSVal ImageData where
   fromJSRef = return . fmap ImageData . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11329,19 +11329,19 @@ newtype InspectorFrontendHost = InspectorFrontendHost { unInspectorFrontendHost 
 instance Eq (InspectorFrontendHost) where
   (InspectorFrontendHost a) == (InspectorFrontendHost b) = js_eq a b
 
-instance PToJSRef InspectorFrontendHost where
-  pToJSRef = unInspectorFrontendHost
-  {-# INLINE pToJSRef #-}
+instance PToJSVal InspectorFrontendHost where
+  pToJSVal = unInspectorFrontendHost
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef InspectorFrontendHost where
-  pFromJSRef = InspectorFrontendHost
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal InspectorFrontendHost where
+  pFromJSVal = InspectorFrontendHost
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef InspectorFrontendHost where
+instance ToJSVal InspectorFrontendHost where
   toJSRef = return . unInspectorFrontendHost
   {-# INLINE toJSRef #-}
 
-instance FromJSRef InspectorFrontendHost where
+instance FromJSVal InspectorFrontendHost where
   fromJSRef = return . fmap InspectorFrontendHost . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11369,19 +11369,19 @@ newtype InternalSettings = InternalSettings { unInternalSettings :: JSRef }
 instance Eq (InternalSettings) where
   (InternalSettings a) == (InternalSettings b) = js_eq a b
 
-instance PToJSRef InternalSettings where
-  pToJSRef = unInternalSettings
-  {-# INLINE pToJSRef #-}
+instance PToJSVal InternalSettings where
+  pToJSVal = unInternalSettings
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef InternalSettings where
-  pFromJSRef = InternalSettings
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal InternalSettings where
+  pFromJSVal = InternalSettings
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef InternalSettings where
+instance ToJSVal InternalSettings where
   toJSRef = return . unInternalSettings
   {-# INLINE toJSRef #-}
 
-instance FromJSRef InternalSettings where
+instance FromJSVal InternalSettings where
   fromJSRef = return . fmap InternalSettings . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11407,19 +11407,19 @@ newtype Internals = Internals { unInternals :: JSRef }
 instance Eq (Internals) where
   (Internals a) == (Internals b) = js_eq a b
 
-instance PToJSRef Internals where
-  pToJSRef = unInternals
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Internals where
+  pToJSVal = unInternals
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Internals where
-  pFromJSRef = Internals
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Internals where
+  pFromJSVal = Internals
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Internals where
+instance ToJSVal Internals where
   toJSRef = return . unInternals
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Internals where
+instance FromJSVal Internals where
   fromJSRef = return . fmap Internals . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11449,19 +11449,19 @@ newtype KeyboardEvent = KeyboardEvent { unKeyboardEvent :: JSRef }
 instance Eq (KeyboardEvent) where
   (KeyboardEvent a) == (KeyboardEvent b) = js_eq a b
 
-instance PToJSRef KeyboardEvent where
-  pToJSRef = unKeyboardEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal KeyboardEvent where
+  pToJSVal = unKeyboardEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef KeyboardEvent where
-  pFromJSRef = KeyboardEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal KeyboardEvent where
+  pFromJSVal = KeyboardEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef KeyboardEvent where
+instance ToJSVal KeyboardEvent where
   toJSRef = return . unKeyboardEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef KeyboardEvent where
+instance FromJSVal KeyboardEvent where
   fromJSRef = return . fmap KeyboardEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11493,19 +11493,19 @@ newtype Location = Location { unLocation :: JSRef }
 instance Eq (Location) where
   (Location a) == (Location b) = js_eq a b
 
-instance PToJSRef Location where
-  pToJSRef = unLocation
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Location where
+  pToJSVal = unLocation
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Location where
-  pFromJSRef = Location
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Location where
+  pFromJSVal = Location
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Location where
+instance ToJSVal Location where
   toJSRef = return . unLocation
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Location where
+instance FromJSVal Location where
   fromJSRef = return . fmap Location . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11533,19 +11533,19 @@ newtype MallocStatistics = MallocStatistics { unMallocStatistics :: JSRef }
 instance Eq (MallocStatistics) where
   (MallocStatistics a) == (MallocStatistics b) = js_eq a b
 
-instance PToJSRef MallocStatistics where
-  pToJSRef = unMallocStatistics
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MallocStatistics where
+  pToJSVal = unMallocStatistics
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MallocStatistics where
-  pFromJSRef = MallocStatistics
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MallocStatistics where
+  pFromJSVal = MallocStatistics
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MallocStatistics where
+instance ToJSVal MallocStatistics where
   toJSRef = return . unMallocStatistics
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MallocStatistics where
+instance FromJSVal MallocStatistics where
   fromJSRef = return . fmap MallocStatistics . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11574,19 +11574,19 @@ newtype MediaController = MediaController { unMediaController :: JSRef }
 instance Eq (MediaController) where
   (MediaController a) == (MediaController b) = js_eq a b
 
-instance PToJSRef MediaController where
-  pToJSRef = unMediaController
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaController where
+  pToJSVal = unMediaController
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaController where
-  pFromJSRef = MediaController
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaController where
+  pFromJSVal = MediaController
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaController where
+instance ToJSVal MediaController where
   toJSRef = return . unMediaController
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaController where
+instance FromJSVal MediaController where
   fromJSRef = return . fmap MediaController . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11613,19 +11613,19 @@ newtype MediaControlsHost = MediaControlsHost { unMediaControlsHost :: JSRef }
 instance Eq (MediaControlsHost) where
   (MediaControlsHost a) == (MediaControlsHost b) = js_eq a b
 
-instance PToJSRef MediaControlsHost where
-  pToJSRef = unMediaControlsHost
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaControlsHost where
+  pToJSVal = unMediaControlsHost
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaControlsHost where
-  pFromJSRef = MediaControlsHost
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaControlsHost where
+  pFromJSVal = MediaControlsHost
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaControlsHost where
+instance ToJSVal MediaControlsHost where
   toJSRef = return . unMediaControlsHost
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaControlsHost where
+instance FromJSVal MediaControlsHost where
   fromJSRef = return . fmap MediaControlsHost . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11655,19 +11655,19 @@ newtype MediaElementAudioSourceNode = MediaElementAudioSourceNode { unMediaEleme
 instance Eq (MediaElementAudioSourceNode) where
   (MediaElementAudioSourceNode a) == (MediaElementAudioSourceNode b) = js_eq a b
 
-instance PToJSRef MediaElementAudioSourceNode where
-  pToJSRef = unMediaElementAudioSourceNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaElementAudioSourceNode where
+  pToJSVal = unMediaElementAudioSourceNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaElementAudioSourceNode where
-  pFromJSRef = MediaElementAudioSourceNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaElementAudioSourceNode where
+  pFromJSVal = MediaElementAudioSourceNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaElementAudioSourceNode where
+instance ToJSVal MediaElementAudioSourceNode where
   toJSRef = return . unMediaElementAudioSourceNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaElementAudioSourceNode where
+instance FromJSVal MediaElementAudioSourceNode where
   fromJSRef = return . fmap MediaElementAudioSourceNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11695,19 +11695,19 @@ newtype MediaError = MediaError { unMediaError :: JSRef }
 instance Eq (MediaError) where
   (MediaError a) == (MediaError b) = js_eq a b
 
-instance PToJSRef MediaError where
-  pToJSRef = unMediaError
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaError where
+  pToJSVal = unMediaError
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaError where
-  pFromJSRef = MediaError
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaError where
+  pFromJSVal = MediaError
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaError where
+instance ToJSVal MediaError where
   toJSRef = return . unMediaError
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaError where
+instance FromJSVal MediaError where
   fromJSRef = return . fmap MediaError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11735,19 +11735,19 @@ newtype MediaKeyError = MediaKeyError { unMediaKeyError :: JSRef }
 instance Eq (MediaKeyError) where
   (MediaKeyError a) == (MediaKeyError b) = js_eq a b
 
-instance PToJSRef MediaKeyError where
-  pToJSRef = unMediaKeyError
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaKeyError where
+  pToJSVal = unMediaKeyError
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaKeyError where
-  pFromJSRef = MediaKeyError
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaKeyError where
+  pFromJSVal = MediaKeyError
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaKeyError where
+instance ToJSVal MediaKeyError where
   toJSRef = return . unMediaKeyError
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaKeyError where
+instance FromJSVal MediaKeyError where
   fromJSRef = return . fmap MediaKeyError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11776,19 +11776,19 @@ newtype MediaKeyEvent = MediaKeyEvent { unMediaKeyEvent :: JSRef }
 instance Eq (MediaKeyEvent) where
   (MediaKeyEvent a) == (MediaKeyEvent b) = js_eq a b
 
-instance PToJSRef MediaKeyEvent where
-  pToJSRef = unMediaKeyEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaKeyEvent where
+  pToJSVal = unMediaKeyEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaKeyEvent where
-  pFromJSRef = MediaKeyEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaKeyEvent where
+  pFromJSVal = MediaKeyEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaKeyEvent where
+instance ToJSVal MediaKeyEvent where
   toJSRef = return . unMediaKeyEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaKeyEvent where
+instance FromJSVal MediaKeyEvent where
   fromJSRef = return . fmap MediaKeyEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11818,19 +11818,19 @@ newtype MediaKeyMessageEvent = MediaKeyMessageEvent { unMediaKeyMessageEvent :: 
 instance Eq (MediaKeyMessageEvent) where
   (MediaKeyMessageEvent a) == (MediaKeyMessageEvent b) = js_eq a b
 
-instance PToJSRef MediaKeyMessageEvent where
-  pToJSRef = unMediaKeyMessageEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaKeyMessageEvent where
+  pToJSVal = unMediaKeyMessageEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaKeyMessageEvent where
-  pFromJSRef = MediaKeyMessageEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaKeyMessageEvent where
+  pFromJSVal = MediaKeyMessageEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaKeyMessageEvent where
+instance ToJSVal MediaKeyMessageEvent where
   toJSRef = return . unMediaKeyMessageEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaKeyMessageEvent where
+instance FromJSVal MediaKeyMessageEvent where
   fromJSRef = return . fmap MediaKeyMessageEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11860,19 +11860,19 @@ newtype MediaKeyNeededEvent = MediaKeyNeededEvent { unMediaKeyNeededEvent :: JSR
 instance Eq (MediaKeyNeededEvent) where
   (MediaKeyNeededEvent a) == (MediaKeyNeededEvent b) = js_eq a b
 
-instance PToJSRef MediaKeyNeededEvent where
-  pToJSRef = unMediaKeyNeededEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaKeyNeededEvent where
+  pToJSVal = unMediaKeyNeededEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaKeyNeededEvent where
-  pFromJSRef = MediaKeyNeededEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaKeyNeededEvent where
+  pFromJSVal = MediaKeyNeededEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaKeyNeededEvent where
+instance ToJSVal MediaKeyNeededEvent where
   toJSRef = return . unMediaKeyNeededEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaKeyNeededEvent where
+instance FromJSVal MediaKeyNeededEvent where
   fromJSRef = return . fmap MediaKeyNeededEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11902,19 +11902,19 @@ newtype MediaKeySession = MediaKeySession { unMediaKeySession :: JSRef }
 instance Eq (MediaKeySession) where
   (MediaKeySession a) == (MediaKeySession b) = js_eq a b
 
-instance PToJSRef MediaKeySession where
-  pToJSRef = unMediaKeySession
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaKeySession where
+  pToJSVal = unMediaKeySession
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaKeySession where
-  pFromJSRef = MediaKeySession
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaKeySession where
+  pFromJSVal = MediaKeySession
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaKeySession where
+instance ToJSVal MediaKeySession where
   toJSRef = return . unMediaKeySession
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaKeySession where
+instance FromJSVal MediaKeySession where
   fromJSRef = return . fmap MediaKeySession . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11941,19 +11941,19 @@ newtype MediaKeys = MediaKeys { unMediaKeys :: JSRef }
 instance Eq (MediaKeys) where
   (MediaKeys a) == (MediaKeys b) = js_eq a b
 
-instance PToJSRef MediaKeys where
-  pToJSRef = unMediaKeys
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaKeys where
+  pToJSVal = unMediaKeys
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaKeys where
-  pFromJSRef = MediaKeys
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaKeys where
+  pFromJSVal = MediaKeys
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaKeys where
+instance ToJSVal MediaKeys where
   toJSRef = return . unMediaKeys
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaKeys where
+instance FromJSVal MediaKeys where
   fromJSRef = return . fmap MediaKeys . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -11979,19 +11979,19 @@ newtype MediaList = MediaList { unMediaList :: JSRef }
 instance Eq (MediaList) where
   (MediaList a) == (MediaList b) = js_eq a b
 
-instance PToJSRef MediaList where
-  pToJSRef = unMediaList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaList where
+  pToJSVal = unMediaList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaList where
-  pFromJSRef = MediaList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaList where
+  pFromJSVal = MediaList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaList where
+instance ToJSVal MediaList where
   toJSRef = return . unMediaList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaList where
+instance FromJSVal MediaList where
   fromJSRef = return . fmap MediaList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12019,19 +12019,19 @@ newtype MediaQueryList = MediaQueryList { unMediaQueryList :: JSRef }
 instance Eq (MediaQueryList) where
   (MediaQueryList a) == (MediaQueryList b) = js_eq a b
 
-instance PToJSRef MediaQueryList where
-  pToJSRef = unMediaQueryList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaQueryList where
+  pToJSVal = unMediaQueryList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaQueryList where
-  pFromJSRef = MediaQueryList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaQueryList where
+  pFromJSVal = MediaQueryList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaQueryList where
+instance ToJSVal MediaQueryList where
   toJSRef = return . unMediaQueryList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaQueryList where
+instance FromJSVal MediaQueryList where
   fromJSRef = return . fmap MediaQueryList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12062,19 +12062,19 @@ newtype MediaSource = MediaSource { unMediaSource :: JSRef }
 instance Eq (MediaSource) where
   (MediaSource a) == (MediaSource b) = js_eq a b
 
-instance PToJSRef MediaSource where
-  pToJSRef = unMediaSource
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaSource where
+  pToJSVal = unMediaSource
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaSource where
-  pFromJSRef = MediaSource
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaSource where
+  pFromJSVal = MediaSource
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaSource where
+instance ToJSVal MediaSource where
   toJSRef = return . unMediaSource
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaSource where
+instance FromJSVal MediaSource where
   fromJSRef = return . fmap MediaSource . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12101,19 +12101,19 @@ newtype MediaSourceStates = MediaSourceStates { unMediaSourceStates :: JSRef }
 instance Eq (MediaSourceStates) where
   (MediaSourceStates a) == (MediaSourceStates b) = js_eq a b
 
-instance PToJSRef MediaSourceStates where
-  pToJSRef = unMediaSourceStates
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaSourceStates where
+  pToJSVal = unMediaSourceStates
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaSourceStates where
-  pFromJSRef = MediaSourceStates
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaSourceStates where
+  pFromJSVal = MediaSourceStates
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaSourceStates where
+instance ToJSVal MediaSourceStates where
   toJSRef = return . unMediaSourceStates
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaSourceStates where
+instance FromJSVal MediaSourceStates where
   fromJSRef = return . fmap MediaSourceStates . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12142,19 +12142,19 @@ newtype MediaStream = MediaStream { unMediaStream :: JSRef }
 instance Eq (MediaStream) where
   (MediaStream a) == (MediaStream b) = js_eq a b
 
-instance PToJSRef MediaStream where
-  pToJSRef = unMediaStream
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaStream where
+  pToJSVal = unMediaStream
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaStream where
-  pFromJSRef = MediaStream
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaStream where
+  pFromJSVal = MediaStream
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaStream where
+instance ToJSVal MediaStream where
   toJSRef = return . unMediaStream
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaStream where
+instance FromJSVal MediaStream where
   fromJSRef = return . fmap MediaStream . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12185,19 +12185,19 @@ newtype MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode { unMe
 instance Eq (MediaStreamAudioDestinationNode) where
   (MediaStreamAudioDestinationNode a) == (MediaStreamAudioDestinationNode b) = js_eq a b
 
-instance PToJSRef MediaStreamAudioDestinationNode where
-  pToJSRef = unMediaStreamAudioDestinationNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaStreamAudioDestinationNode where
+  pToJSVal = unMediaStreamAudioDestinationNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaStreamAudioDestinationNode where
-  pFromJSRef = MediaStreamAudioDestinationNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaStreamAudioDestinationNode where
+  pFromJSVal = MediaStreamAudioDestinationNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaStreamAudioDestinationNode where
+instance ToJSVal MediaStreamAudioDestinationNode where
   toJSRef = return . unMediaStreamAudioDestinationNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaStreamAudioDestinationNode where
+instance FromJSVal MediaStreamAudioDestinationNode where
   fromJSRef = return . fmap MediaStreamAudioDestinationNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12229,19 +12229,19 @@ newtype MediaStreamAudioSourceNode = MediaStreamAudioSourceNode { unMediaStreamA
 instance Eq (MediaStreamAudioSourceNode) where
   (MediaStreamAudioSourceNode a) == (MediaStreamAudioSourceNode b) = js_eq a b
 
-instance PToJSRef MediaStreamAudioSourceNode where
-  pToJSRef = unMediaStreamAudioSourceNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaStreamAudioSourceNode where
+  pToJSVal = unMediaStreamAudioSourceNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaStreamAudioSourceNode where
-  pFromJSRef = MediaStreamAudioSourceNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaStreamAudioSourceNode where
+  pFromJSVal = MediaStreamAudioSourceNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaStreamAudioSourceNode where
+instance ToJSVal MediaStreamAudioSourceNode where
   toJSRef = return . unMediaStreamAudioSourceNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaStreamAudioSourceNode where
+instance FromJSVal MediaStreamAudioSourceNode where
   fromJSRef = return . fmap MediaStreamAudioSourceNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12269,19 +12269,19 @@ newtype MediaStreamCapabilities = MediaStreamCapabilities { unMediaStreamCapabil
 instance Eq (MediaStreamCapabilities) where
   (MediaStreamCapabilities a) == (MediaStreamCapabilities b) = js_eq a b
 
-instance PToJSRef MediaStreamCapabilities where
-  pToJSRef = unMediaStreamCapabilities
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaStreamCapabilities where
+  pToJSVal = unMediaStreamCapabilities
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaStreamCapabilities where
-  pFromJSRef = MediaStreamCapabilities
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaStreamCapabilities where
+  pFromJSVal = MediaStreamCapabilities
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaStreamCapabilities where
+instance ToJSVal MediaStreamCapabilities where
   toJSRef = return . unMediaStreamCapabilities
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaStreamCapabilities where
+instance FromJSVal MediaStreamCapabilities where
   fromJSRef = return . fmap MediaStreamCapabilities . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12315,19 +12315,19 @@ newtype MediaStreamEvent = MediaStreamEvent { unMediaStreamEvent :: JSRef }
 instance Eq (MediaStreamEvent) where
   (MediaStreamEvent a) == (MediaStreamEvent b) = js_eq a b
 
-instance PToJSRef MediaStreamEvent where
-  pToJSRef = unMediaStreamEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaStreamEvent where
+  pToJSVal = unMediaStreamEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaStreamEvent where
-  pFromJSRef = MediaStreamEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaStreamEvent where
+  pFromJSVal = MediaStreamEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaStreamEvent where
+instance ToJSVal MediaStreamEvent where
   toJSRef = return . unMediaStreamEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaStreamEvent where
+instance FromJSVal MediaStreamEvent where
   fromJSRef = return . fmap MediaStreamEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12357,19 +12357,19 @@ newtype MediaStreamTrack = MediaStreamTrack { unMediaStreamTrack :: JSRef }
 instance Eq (MediaStreamTrack) where
   (MediaStreamTrack a) == (MediaStreamTrack b) = js_eq a b
 
-instance PToJSRef MediaStreamTrack where
-  pToJSRef = unMediaStreamTrack
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaStreamTrack where
+  pToJSVal = unMediaStreamTrack
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaStreamTrack where
-  pFromJSRef = MediaStreamTrack
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaStreamTrack where
+  pFromJSVal = MediaStreamTrack
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaStreamTrack where
+instance ToJSVal MediaStreamTrack where
   toJSRef = return . unMediaStreamTrack
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaStreamTrack where
+instance FromJSVal MediaStreamTrack where
   fromJSRef = return . fmap MediaStreamTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12404,19 +12404,19 @@ newtype MediaStreamTrackEvent = MediaStreamTrackEvent { unMediaStreamTrackEvent 
 instance Eq (MediaStreamTrackEvent) where
   (MediaStreamTrackEvent a) == (MediaStreamTrackEvent b) = js_eq a b
 
-instance PToJSRef MediaStreamTrackEvent where
-  pToJSRef = unMediaStreamTrackEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaStreamTrackEvent where
+  pToJSVal = unMediaStreamTrackEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaStreamTrackEvent where
-  pFromJSRef = MediaStreamTrackEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaStreamTrackEvent where
+  pFromJSVal = MediaStreamTrackEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaStreamTrackEvent where
+instance ToJSVal MediaStreamTrackEvent where
   toJSRef = return . unMediaStreamTrackEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaStreamTrackEvent where
+instance FromJSVal MediaStreamTrackEvent where
   fromJSRef = return . fmap MediaStreamTrackEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12443,19 +12443,19 @@ newtype MediaTrackConstraint = MediaTrackConstraint { unMediaTrackConstraint :: 
 instance Eq (MediaTrackConstraint) where
   (MediaTrackConstraint a) == (MediaTrackConstraint b) = js_eq a b
 
-instance PToJSRef MediaTrackConstraint where
-  pToJSRef = unMediaTrackConstraint
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaTrackConstraint where
+  pToJSVal = unMediaTrackConstraint
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaTrackConstraint where
-  pFromJSRef = MediaTrackConstraint
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaTrackConstraint where
+  pFromJSVal = MediaTrackConstraint
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaTrackConstraint where
+instance ToJSVal MediaTrackConstraint where
   toJSRef = return . unMediaTrackConstraint
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaTrackConstraint where
+instance FromJSVal MediaTrackConstraint where
   fromJSRef = return . fmap MediaTrackConstraint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12481,19 +12481,19 @@ newtype MediaTrackConstraintSet = MediaTrackConstraintSet { unMediaTrackConstrai
 instance Eq (MediaTrackConstraintSet) where
   (MediaTrackConstraintSet a) == (MediaTrackConstraintSet b) = js_eq a b
 
-instance PToJSRef MediaTrackConstraintSet where
-  pToJSRef = unMediaTrackConstraintSet
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaTrackConstraintSet where
+  pToJSVal = unMediaTrackConstraintSet
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaTrackConstraintSet where
-  pFromJSRef = MediaTrackConstraintSet
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaTrackConstraintSet where
+  pFromJSVal = MediaTrackConstraintSet
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaTrackConstraintSet where
+instance ToJSVal MediaTrackConstraintSet where
   toJSRef = return . unMediaTrackConstraintSet
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaTrackConstraintSet where
+instance FromJSVal MediaTrackConstraintSet where
   fromJSRef = return . fmap MediaTrackConstraintSet . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12519,19 +12519,19 @@ newtype MediaTrackConstraints = MediaTrackConstraints { unMediaTrackConstraints 
 instance Eq (MediaTrackConstraints) where
   (MediaTrackConstraints a) == (MediaTrackConstraints b) = js_eq a b
 
-instance PToJSRef MediaTrackConstraints where
-  pToJSRef = unMediaTrackConstraints
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MediaTrackConstraints where
+  pToJSVal = unMediaTrackConstraints
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MediaTrackConstraints where
-  pFromJSRef = MediaTrackConstraints
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MediaTrackConstraints where
+  pFromJSVal = MediaTrackConstraints
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MediaTrackConstraints where
+instance ToJSVal MediaTrackConstraints where
   toJSRef = return . unMediaTrackConstraints
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MediaTrackConstraints where
+instance FromJSVal MediaTrackConstraints where
   fromJSRef = return . fmap MediaTrackConstraints . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12557,19 +12557,19 @@ newtype MemoryInfo = MemoryInfo { unMemoryInfo :: JSRef }
 instance Eq (MemoryInfo) where
   (MemoryInfo a) == (MemoryInfo b) = js_eq a b
 
-instance PToJSRef MemoryInfo where
-  pToJSRef = unMemoryInfo
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MemoryInfo where
+  pToJSVal = unMemoryInfo
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MemoryInfo where
-  pFromJSRef = MemoryInfo
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MemoryInfo where
+  pFromJSVal = MemoryInfo
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MemoryInfo where
+instance ToJSVal MemoryInfo where
   toJSRef = return . unMemoryInfo
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MemoryInfo where
+instance FromJSVal MemoryInfo where
   fromJSRef = return . fmap MemoryInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12595,19 +12595,19 @@ newtype MessageChannel = MessageChannel { unMessageChannel :: JSRef }
 instance Eq (MessageChannel) where
   (MessageChannel a) == (MessageChannel b) = js_eq a b
 
-instance PToJSRef MessageChannel where
-  pToJSRef = unMessageChannel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MessageChannel where
+  pToJSVal = unMessageChannel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MessageChannel where
-  pFromJSRef = MessageChannel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MessageChannel where
+  pFromJSVal = MessageChannel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MessageChannel where
+instance ToJSVal MessageChannel where
   toJSRef = return . unMessageChannel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MessageChannel where
+instance FromJSVal MessageChannel where
   fromJSRef = return . fmap MessageChannel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12636,19 +12636,19 @@ newtype MessageEvent = MessageEvent { unMessageEvent :: JSRef }
 instance Eq (MessageEvent) where
   (MessageEvent a) == (MessageEvent b) = js_eq a b
 
-instance PToJSRef MessageEvent where
-  pToJSRef = unMessageEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MessageEvent where
+  pToJSVal = unMessageEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MessageEvent where
-  pFromJSRef = MessageEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MessageEvent where
+  pFromJSVal = MessageEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MessageEvent where
+instance ToJSVal MessageEvent where
   toJSRef = return . unMessageEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MessageEvent where
+instance FromJSVal MessageEvent where
   fromJSRef = return . fmap MessageEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12678,19 +12678,19 @@ newtype MessagePort = MessagePort { unMessagePort :: JSRef }
 instance Eq (MessagePort) where
   (MessagePort a) == (MessagePort b) = js_eq a b
 
-instance PToJSRef MessagePort where
-  pToJSRef = unMessagePort
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MessagePort where
+  pToJSVal = unMessagePort
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MessagePort where
-  pFromJSRef = MessagePort
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MessagePort where
+  pFromJSVal = MessagePort
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MessagePort where
+instance ToJSVal MessagePort where
   toJSRef = return . unMessagePort
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MessagePort where
+instance FromJSVal MessagePort where
   fromJSRef = return . fmap MessagePort . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12719,19 +12719,19 @@ newtype MimeType = MimeType { unMimeType :: JSRef }
 instance Eq (MimeType) where
   (MimeType a) == (MimeType b) = js_eq a b
 
-instance PToJSRef MimeType where
-  pToJSRef = unMimeType
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MimeType where
+  pToJSVal = unMimeType
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MimeType where
-  pFromJSRef = MimeType
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MimeType where
+  pFromJSVal = MimeType
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MimeType where
+instance ToJSVal MimeType where
   toJSRef = return . unMimeType
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MimeType where
+instance FromJSVal MimeType where
   fromJSRef = return . fmap MimeType . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12759,19 +12759,19 @@ newtype MimeTypeArray = MimeTypeArray { unMimeTypeArray :: JSRef }
 instance Eq (MimeTypeArray) where
   (MimeTypeArray a) == (MimeTypeArray b) = js_eq a b
 
-instance PToJSRef MimeTypeArray where
-  pToJSRef = unMimeTypeArray
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MimeTypeArray where
+  pToJSVal = unMimeTypeArray
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MimeTypeArray where
-  pFromJSRef = MimeTypeArray
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MimeTypeArray where
+  pFromJSVal = MimeTypeArray
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MimeTypeArray where
+instance ToJSVal MimeTypeArray where
   toJSRef = return . unMimeTypeArray
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MimeTypeArray where
+instance FromJSVal MimeTypeArray where
   fromJSRef = return . fmap MimeTypeArray . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12803,19 +12803,19 @@ newtype MouseEvent = MouseEvent { unMouseEvent :: JSRef }
 instance Eq (MouseEvent) where
   (MouseEvent a) == (MouseEvent b) = js_eq a b
 
-instance PToJSRef MouseEvent where
-  pToJSRef = unMouseEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MouseEvent where
+  pToJSVal = unMouseEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MouseEvent where
-  pFromJSRef = MouseEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MouseEvent where
+  pFromJSVal = MouseEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MouseEvent where
+instance ToJSVal MouseEvent where
   toJSRef = return . unMouseEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MouseEvent where
+instance FromJSVal MouseEvent where
   fromJSRef = return . fmap MouseEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12853,19 +12853,19 @@ newtype MutationEvent = MutationEvent { unMutationEvent :: JSRef }
 instance Eq (MutationEvent) where
   (MutationEvent a) == (MutationEvent b) = js_eq a b
 
-instance PToJSRef MutationEvent where
-  pToJSRef = unMutationEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MutationEvent where
+  pToJSVal = unMutationEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MutationEvent where
-  pFromJSRef = MutationEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MutationEvent where
+  pFromJSVal = MutationEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MutationEvent where
+instance ToJSVal MutationEvent where
   toJSRef = return . unMutationEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MutationEvent where
+instance FromJSVal MutationEvent where
   fromJSRef = return . fmap MutationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12892,19 +12892,19 @@ newtype MutationObserver = MutationObserver { unMutationObserver :: JSRef }
 instance Eq (MutationObserver) where
   (MutationObserver a) == (MutationObserver b) = js_eq a b
 
-instance PToJSRef MutationObserver where
-  pToJSRef = unMutationObserver
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MutationObserver where
+  pToJSVal = unMutationObserver
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MutationObserver where
-  pFromJSRef = MutationObserver
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MutationObserver where
+  pFromJSVal = MutationObserver
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MutationObserver where
+instance ToJSVal MutationObserver where
   toJSRef = return . unMutationObserver
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MutationObserver where
+instance FromJSVal MutationObserver where
   fromJSRef = return . fmap MutationObserver . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12930,19 +12930,19 @@ newtype MutationRecord = MutationRecord { unMutationRecord :: JSRef }
 instance Eq (MutationRecord) where
   (MutationRecord a) == (MutationRecord b) = js_eq a b
 
-instance PToJSRef MutationRecord where
-  pToJSRef = unMutationRecord
-  {-# INLINE pToJSRef #-}
+instance PToJSVal MutationRecord where
+  pToJSVal = unMutationRecord
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef MutationRecord where
-  pFromJSRef = MutationRecord
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal MutationRecord where
+  pFromJSVal = MutationRecord
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef MutationRecord where
+instance ToJSVal MutationRecord where
   toJSRef = return . unMutationRecord
   {-# INLINE toJSRef #-}
 
-instance FromJSRef MutationRecord where
+instance FromJSVal MutationRecord where
   fromJSRef = return . fmap MutationRecord . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -12968,19 +12968,19 @@ newtype NamedNodeMap = NamedNodeMap { unNamedNodeMap :: JSRef }
 instance Eq (NamedNodeMap) where
   (NamedNodeMap a) == (NamedNodeMap b) = js_eq a b
 
-instance PToJSRef NamedNodeMap where
-  pToJSRef = unNamedNodeMap
-  {-# INLINE pToJSRef #-}
+instance PToJSVal NamedNodeMap where
+  pToJSVal = unNamedNodeMap
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef NamedNodeMap where
-  pFromJSRef = NamedNodeMap
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal NamedNodeMap where
+  pFromJSVal = NamedNodeMap
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef NamedNodeMap where
+instance ToJSVal NamedNodeMap where
   toJSRef = return . unNamedNodeMap
   {-# INLINE toJSRef #-}
 
-instance FromJSRef NamedNodeMap where
+instance FromJSVal NamedNodeMap where
   fromJSRef = return . fmap NamedNodeMap . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13008,19 +13008,19 @@ newtype Navigator = Navigator { unNavigator :: JSRef }
 instance Eq (Navigator) where
   (Navigator a) == (Navigator b) = js_eq a b
 
-instance PToJSRef Navigator where
-  pToJSRef = unNavigator
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Navigator where
+  pToJSVal = unNavigator
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Navigator where
-  pFromJSRef = Navigator
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Navigator where
+  pFromJSVal = Navigator
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Navigator where
+instance ToJSVal Navigator where
   toJSRef = return . unNavigator
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Navigator where
+instance FromJSVal Navigator where
   fromJSRef = return . fmap Navigator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13051,19 +13051,19 @@ newtype NavigatorUserMediaError = NavigatorUserMediaError { unNavigatorUserMedia
 instance Eq (NavigatorUserMediaError) where
   (NavigatorUserMediaError a) == (NavigatorUserMediaError b) = js_eq a b
 
-instance PToJSRef NavigatorUserMediaError where
-  pToJSRef = unNavigatorUserMediaError
-  {-# INLINE pToJSRef #-}
+instance PToJSVal NavigatorUserMediaError where
+  pToJSVal = unNavigatorUserMediaError
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef NavigatorUserMediaError where
-  pFromJSRef = NavigatorUserMediaError
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal NavigatorUserMediaError where
+  pFromJSVal = NavigatorUserMediaError
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef NavigatorUserMediaError where
+instance ToJSVal NavigatorUserMediaError where
   toJSRef = return . unNavigatorUserMediaError
   {-# INLINE toJSRef #-}
 
-instance FromJSRef NavigatorUserMediaError where
+instance FromJSVal NavigatorUserMediaError where
   fromJSRef = return . fmap NavigatorUserMediaError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13093,19 +13093,19 @@ newtype Node = Node { unNode :: JSRef }
 instance Eq (Node) where
   (Node a) == (Node b) = js_eq a b
 
-instance PToJSRef Node where
-  pToJSRef = unNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Node where
+  pToJSVal = unNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Node where
-  pFromJSRef = Node
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Node where
+  pFromJSVal = Node
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Node where
+instance ToJSVal Node where
   toJSRef = return . unNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Node where
+instance FromJSVal Node where
   fromJSRef = return . fmap Node . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13139,19 +13139,19 @@ newtype NodeFilter = NodeFilter { unNodeFilter :: JSRef }
 instance Eq (NodeFilter) where
   (NodeFilter a) == (NodeFilter b) = js_eq a b
 
-instance PToJSRef NodeFilter where
-  pToJSRef = unNodeFilter
-  {-# INLINE pToJSRef #-}
+instance PToJSVal NodeFilter where
+  pToJSVal = unNodeFilter
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef NodeFilter where
-  pFromJSRef = NodeFilter
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal NodeFilter where
+  pFromJSVal = NodeFilter
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef NodeFilter where
+instance ToJSVal NodeFilter where
   toJSRef = return . unNodeFilter
   {-# INLINE toJSRef #-}
 
-instance FromJSRef NodeFilter where
+instance FromJSVal NodeFilter where
   fromJSRef = return . fmap NodeFilter . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13179,19 +13179,19 @@ newtype NodeIterator = NodeIterator { unNodeIterator :: JSRef }
 instance Eq (NodeIterator) where
   (NodeIterator a) == (NodeIterator b) = js_eq a b
 
-instance PToJSRef NodeIterator where
-  pToJSRef = unNodeIterator
-  {-# INLINE pToJSRef #-}
+instance PToJSVal NodeIterator where
+  pToJSVal = unNodeIterator
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef NodeIterator where
-  pFromJSRef = NodeIterator
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal NodeIterator where
+  pFromJSVal = NodeIterator
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef NodeIterator where
+instance ToJSVal NodeIterator where
   toJSRef = return . unNodeIterator
   {-# INLINE toJSRef #-}
 
-instance FromJSRef NodeIterator where
+instance FromJSVal NodeIterator where
   fromJSRef = return . fmap NodeIterator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13219,19 +13219,19 @@ newtype NodeList = NodeList { unNodeList :: JSRef }
 instance Eq (NodeList) where
   (NodeList a) == (NodeList b) = js_eq a b
 
-instance PToJSRef NodeList where
-  pToJSRef = unNodeList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal NodeList where
+  pToJSVal = unNodeList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef NodeList where
-  pFromJSRef = NodeList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal NodeList where
+  pFromJSVal = NodeList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef NodeList where
+instance ToJSVal NodeList where
   toJSRef = return . unNodeList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef NodeList where
+instance FromJSVal NodeList where
   fromJSRef = return . fmap NodeList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13267,19 +13267,19 @@ newtype Notification = Notification { unNotification :: JSRef }
 instance Eq (Notification) where
   (Notification a) == (Notification b) = js_eq a b
 
-instance PToJSRef Notification where
-  pToJSRef = unNotification
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Notification where
+  pToJSVal = unNotification
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Notification where
-  pFromJSRef = Notification
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Notification where
+  pFromJSVal = Notification
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Notification where
+instance ToJSVal Notification where
   toJSRef = return . unNotification
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Notification where
+instance FromJSVal Notification where
   fromJSRef = return . fmap Notification . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13306,19 +13306,19 @@ newtype NotificationCenter = NotificationCenter { unNotificationCenter :: JSRef 
 instance Eq (NotificationCenter) where
   (NotificationCenter a) == (NotificationCenter b) = js_eq a b
 
-instance PToJSRef NotificationCenter where
-  pToJSRef = unNotificationCenter
-  {-# INLINE pToJSRef #-}
+instance PToJSVal NotificationCenter where
+  pToJSVal = unNotificationCenter
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef NotificationCenter where
-  pFromJSRef = NotificationCenter
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal NotificationCenter where
+  pFromJSVal = NotificationCenter
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef NotificationCenter where
+instance ToJSVal NotificationCenter where
   toJSRef = return . unNotificationCenter
   {-# INLINE toJSRef #-}
 
-instance FromJSRef NotificationCenter where
+instance FromJSVal NotificationCenter where
   fromJSRef = return . fmap NotificationCenter . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13344,19 +13344,19 @@ newtype OESElementIndexUint = OESElementIndexUint { unOESElementIndexUint :: JSR
 instance Eq (OESElementIndexUint) where
   (OESElementIndexUint a) == (OESElementIndexUint b) = js_eq a b
 
-instance PToJSRef OESElementIndexUint where
-  pToJSRef = unOESElementIndexUint
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OESElementIndexUint where
+  pToJSVal = unOESElementIndexUint
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OESElementIndexUint where
-  pFromJSRef = OESElementIndexUint
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OESElementIndexUint where
+  pFromJSVal = OESElementIndexUint
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OESElementIndexUint where
+instance ToJSVal OESElementIndexUint where
   toJSRef = return . unOESElementIndexUint
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OESElementIndexUint where
+instance FromJSVal OESElementIndexUint where
   fromJSRef = return . fmap OESElementIndexUint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13382,19 +13382,19 @@ newtype OESStandardDerivatives = OESStandardDerivatives { unOESStandardDerivativ
 instance Eq (OESStandardDerivatives) where
   (OESStandardDerivatives a) == (OESStandardDerivatives b) = js_eq a b
 
-instance PToJSRef OESStandardDerivatives where
-  pToJSRef = unOESStandardDerivatives
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OESStandardDerivatives where
+  pToJSVal = unOESStandardDerivatives
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OESStandardDerivatives where
-  pFromJSRef = OESStandardDerivatives
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OESStandardDerivatives where
+  pFromJSVal = OESStandardDerivatives
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OESStandardDerivatives where
+instance ToJSVal OESStandardDerivatives where
   toJSRef = return . unOESStandardDerivatives
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OESStandardDerivatives where
+instance FromJSVal OESStandardDerivatives where
   fromJSRef = return . fmap OESStandardDerivatives . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13420,19 +13420,19 @@ newtype OESTextureFloat = OESTextureFloat { unOESTextureFloat :: JSRef }
 instance Eq (OESTextureFloat) where
   (OESTextureFloat a) == (OESTextureFloat b) = js_eq a b
 
-instance PToJSRef OESTextureFloat where
-  pToJSRef = unOESTextureFloat
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OESTextureFloat where
+  pToJSVal = unOESTextureFloat
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OESTextureFloat where
-  pFromJSRef = OESTextureFloat
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OESTextureFloat where
+  pFromJSVal = OESTextureFloat
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OESTextureFloat where
+instance ToJSVal OESTextureFloat where
   toJSRef = return . unOESTextureFloat
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OESTextureFloat where
+instance FromJSVal OESTextureFloat where
   fromJSRef = return . fmap OESTextureFloat . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13458,19 +13458,19 @@ newtype OESTextureFloatLinear = OESTextureFloatLinear { unOESTextureFloatLinear 
 instance Eq (OESTextureFloatLinear) where
   (OESTextureFloatLinear a) == (OESTextureFloatLinear b) = js_eq a b
 
-instance PToJSRef OESTextureFloatLinear where
-  pToJSRef = unOESTextureFloatLinear
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OESTextureFloatLinear where
+  pToJSVal = unOESTextureFloatLinear
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OESTextureFloatLinear where
-  pFromJSRef = OESTextureFloatLinear
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OESTextureFloatLinear where
+  pFromJSVal = OESTextureFloatLinear
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OESTextureFloatLinear where
+instance ToJSVal OESTextureFloatLinear where
   toJSRef = return . unOESTextureFloatLinear
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OESTextureFloatLinear where
+instance FromJSVal OESTextureFloatLinear where
   fromJSRef = return . fmap OESTextureFloatLinear . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13496,19 +13496,19 @@ newtype OESTextureHalfFloat = OESTextureHalfFloat { unOESTextureHalfFloat :: JSR
 instance Eq (OESTextureHalfFloat) where
   (OESTextureHalfFloat a) == (OESTextureHalfFloat b) = js_eq a b
 
-instance PToJSRef OESTextureHalfFloat where
-  pToJSRef = unOESTextureHalfFloat
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OESTextureHalfFloat where
+  pToJSVal = unOESTextureHalfFloat
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OESTextureHalfFloat where
-  pFromJSRef = OESTextureHalfFloat
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OESTextureHalfFloat where
+  pFromJSVal = OESTextureHalfFloat
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OESTextureHalfFloat where
+instance ToJSVal OESTextureHalfFloat where
   toJSRef = return . unOESTextureHalfFloat
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OESTextureHalfFloat where
+instance FromJSVal OESTextureHalfFloat where
   fromJSRef = return . fmap OESTextureHalfFloat . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13534,19 +13534,19 @@ newtype OESTextureHalfFloatLinear = OESTextureHalfFloatLinear { unOESTextureHalf
 instance Eq (OESTextureHalfFloatLinear) where
   (OESTextureHalfFloatLinear a) == (OESTextureHalfFloatLinear b) = js_eq a b
 
-instance PToJSRef OESTextureHalfFloatLinear where
-  pToJSRef = unOESTextureHalfFloatLinear
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OESTextureHalfFloatLinear where
+  pToJSVal = unOESTextureHalfFloatLinear
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OESTextureHalfFloatLinear where
-  pFromJSRef = OESTextureHalfFloatLinear
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OESTextureHalfFloatLinear where
+  pFromJSVal = OESTextureHalfFloatLinear
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OESTextureHalfFloatLinear where
+instance ToJSVal OESTextureHalfFloatLinear where
   toJSRef = return . unOESTextureHalfFloatLinear
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OESTextureHalfFloatLinear where
+instance FromJSVal OESTextureHalfFloatLinear where
   fromJSRef = return . fmap OESTextureHalfFloatLinear . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13572,19 +13572,19 @@ newtype OESVertexArrayObject = OESVertexArrayObject { unOESVertexArrayObject :: 
 instance Eq (OESVertexArrayObject) where
   (OESVertexArrayObject a) == (OESVertexArrayObject b) = js_eq a b
 
-instance PToJSRef OESVertexArrayObject where
-  pToJSRef = unOESVertexArrayObject
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OESVertexArrayObject where
+  pToJSVal = unOESVertexArrayObject
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OESVertexArrayObject where
-  pFromJSRef = OESVertexArrayObject
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OESVertexArrayObject where
+  pFromJSVal = OESVertexArrayObject
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OESVertexArrayObject where
+instance ToJSVal OESVertexArrayObject where
   toJSRef = return . unOESVertexArrayObject
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OESVertexArrayObject where
+instance FromJSVal OESVertexArrayObject where
   fromJSRef = return . fmap OESVertexArrayObject . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13613,19 +13613,19 @@ newtype OfflineAudioCompletionEvent = OfflineAudioCompletionEvent { unOfflineAud
 instance Eq (OfflineAudioCompletionEvent) where
   (OfflineAudioCompletionEvent a) == (OfflineAudioCompletionEvent b) = js_eq a b
 
-instance PToJSRef OfflineAudioCompletionEvent where
-  pToJSRef = unOfflineAudioCompletionEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OfflineAudioCompletionEvent where
+  pToJSVal = unOfflineAudioCompletionEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OfflineAudioCompletionEvent where
-  pFromJSRef = OfflineAudioCompletionEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OfflineAudioCompletionEvent where
+  pFromJSVal = OfflineAudioCompletionEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OfflineAudioCompletionEvent where
+instance ToJSVal OfflineAudioCompletionEvent where
   toJSRef = return . unOfflineAudioCompletionEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OfflineAudioCompletionEvent where
+instance FromJSVal OfflineAudioCompletionEvent where
   fromJSRef = return . fmap OfflineAudioCompletionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13656,19 +13656,19 @@ newtype OfflineAudioContext = OfflineAudioContext { unOfflineAudioContext :: JSR
 instance Eq (OfflineAudioContext) where
   (OfflineAudioContext a) == (OfflineAudioContext b) = js_eq a b
 
-instance PToJSRef OfflineAudioContext where
-  pToJSRef = unOfflineAudioContext
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OfflineAudioContext where
+  pToJSVal = unOfflineAudioContext
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OfflineAudioContext where
-  pFromJSRef = OfflineAudioContext
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OfflineAudioContext where
+  pFromJSVal = OfflineAudioContext
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OfflineAudioContext where
+instance ToJSVal OfflineAudioContext where
   toJSRef = return . unOfflineAudioContext
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OfflineAudioContext where
+instance FromJSVal OfflineAudioContext where
   fromJSRef = return . fmap OfflineAudioContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13700,19 +13700,19 @@ newtype OscillatorNode = OscillatorNode { unOscillatorNode :: JSRef }
 instance Eq (OscillatorNode) where
   (OscillatorNode a) == (OscillatorNode b) = js_eq a b
 
-instance PToJSRef OscillatorNode where
-  pToJSRef = unOscillatorNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OscillatorNode where
+  pToJSVal = unOscillatorNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OscillatorNode where
-  pFromJSRef = OscillatorNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OscillatorNode where
+  pFromJSVal = OscillatorNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OscillatorNode where
+instance ToJSVal OscillatorNode where
   toJSRef = return . unOscillatorNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OscillatorNode where
+instance FromJSVal OscillatorNode where
   fromJSRef = return . fmap OscillatorNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13743,19 +13743,19 @@ newtype OverflowEvent = OverflowEvent { unOverflowEvent :: JSRef }
 instance Eq (OverflowEvent) where
   (OverflowEvent a) == (OverflowEvent b) = js_eq a b
 
-instance PToJSRef OverflowEvent where
-  pToJSRef = unOverflowEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal OverflowEvent where
+  pToJSVal = unOverflowEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef OverflowEvent where
-  pFromJSRef = OverflowEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal OverflowEvent where
+  pFromJSVal = OverflowEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef OverflowEvent where
+instance ToJSVal OverflowEvent where
   toJSRef = return . unOverflowEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef OverflowEvent where
+instance FromJSVal OverflowEvent where
   fromJSRef = return . fmap OverflowEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13785,19 +13785,19 @@ newtype PageTransitionEvent = PageTransitionEvent { unPageTransitionEvent :: JSR
 instance Eq (PageTransitionEvent) where
   (PageTransitionEvent a) == (PageTransitionEvent b) = js_eq a b
 
-instance PToJSRef PageTransitionEvent where
-  pToJSRef = unPageTransitionEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PageTransitionEvent where
+  pToJSVal = unPageTransitionEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PageTransitionEvent where
-  pFromJSRef = PageTransitionEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PageTransitionEvent where
+  pFromJSVal = PageTransitionEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PageTransitionEvent where
+instance ToJSVal PageTransitionEvent where
   toJSRef = return . unPageTransitionEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PageTransitionEvent where
+instance FromJSVal PageTransitionEvent where
   fromJSRef = return . fmap PageTransitionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13828,19 +13828,19 @@ newtype PannerNode = PannerNode { unPannerNode :: JSRef }
 instance Eq (PannerNode) where
   (PannerNode a) == (PannerNode b) = js_eq a b
 
-instance PToJSRef PannerNode where
-  pToJSRef = unPannerNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PannerNode where
+  pToJSVal = unPannerNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PannerNode where
-  pFromJSRef = PannerNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PannerNode where
+  pFromJSVal = PannerNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PannerNode where
+instance ToJSVal PannerNode where
   toJSRef = return . unPannerNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PannerNode where
+instance FromJSVal PannerNode where
   fromJSRef = return . fmap PannerNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13868,19 +13868,19 @@ newtype Path2D = Path2D { unPath2D :: JSRef }
 instance Eq (Path2D) where
   (Path2D a) == (Path2D b) = js_eq a b
 
-instance PToJSRef Path2D where
-  pToJSRef = unPath2D
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Path2D where
+  pToJSVal = unPath2D
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Path2D where
-  pFromJSRef = Path2D
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Path2D where
+  pFromJSVal = Path2D
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Path2D where
+instance ToJSVal Path2D where
   toJSRef = return . unPath2D
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Path2D where
+instance FromJSVal Path2D where
   fromJSRef = return . fmap Path2D . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13909,19 +13909,19 @@ newtype Performance = Performance { unPerformance :: JSRef }
 instance Eq (Performance) where
   (Performance a) == (Performance b) = js_eq a b
 
-instance PToJSRef Performance where
-  pToJSRef = unPerformance
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Performance where
+  pToJSVal = unPerformance
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Performance where
-  pFromJSRef = Performance
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Performance where
+  pFromJSVal = Performance
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Performance where
+instance ToJSVal Performance where
   toJSRef = return . unPerformance
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Performance where
+instance FromJSVal Performance where
   fromJSRef = return . fmap Performance . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13952,19 +13952,19 @@ newtype PerformanceEntry = PerformanceEntry { unPerformanceEntry :: JSRef }
 instance Eq (PerformanceEntry) where
   (PerformanceEntry a) == (PerformanceEntry b) = js_eq a b
 
-instance PToJSRef PerformanceEntry where
-  pToJSRef = unPerformanceEntry
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PerformanceEntry where
+  pToJSVal = unPerformanceEntry
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PerformanceEntry where
-  pFromJSRef = PerformanceEntry
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PerformanceEntry where
+  pFromJSVal = PerformanceEntry
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PerformanceEntry where
+instance ToJSVal PerformanceEntry where
   toJSRef = return . unPerformanceEntry
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PerformanceEntry where
+instance FromJSVal PerformanceEntry where
   fromJSRef = return . fmap PerformanceEntry . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -13995,19 +13995,19 @@ newtype PerformanceEntryList = PerformanceEntryList { unPerformanceEntryList :: 
 instance Eq (PerformanceEntryList) where
   (PerformanceEntryList a) == (PerformanceEntryList b) = js_eq a b
 
-instance PToJSRef PerformanceEntryList where
-  pToJSRef = unPerformanceEntryList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PerformanceEntryList where
+  pToJSVal = unPerformanceEntryList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PerformanceEntryList where
-  pFromJSRef = PerformanceEntryList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PerformanceEntryList where
+  pFromJSVal = PerformanceEntryList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PerformanceEntryList where
+instance ToJSVal PerformanceEntryList where
   toJSRef = return . unPerformanceEntryList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PerformanceEntryList where
+instance FromJSVal PerformanceEntryList where
   fromJSRef = return . fmap PerformanceEntryList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14036,19 +14036,19 @@ newtype PerformanceMark = PerformanceMark { unPerformanceMark :: JSRef }
 instance Eq (PerformanceMark) where
   (PerformanceMark a) == (PerformanceMark b) = js_eq a b
 
-instance PToJSRef PerformanceMark where
-  pToJSRef = unPerformanceMark
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PerformanceMark where
+  pToJSVal = unPerformanceMark
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PerformanceMark where
-  pFromJSRef = PerformanceMark
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PerformanceMark where
+  pFromJSVal = PerformanceMark
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PerformanceMark where
+instance ToJSVal PerformanceMark where
   toJSRef = return . unPerformanceMark
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PerformanceMark where
+instance FromJSVal PerformanceMark where
   fromJSRef = return . fmap PerformanceMark . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14078,19 +14078,19 @@ newtype PerformanceMeasure = PerformanceMeasure { unPerformanceMeasure :: JSRef 
 instance Eq (PerformanceMeasure) where
   (PerformanceMeasure a) == (PerformanceMeasure b) = js_eq a b
 
-instance PToJSRef PerformanceMeasure where
-  pToJSRef = unPerformanceMeasure
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PerformanceMeasure where
+  pToJSVal = unPerformanceMeasure
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PerformanceMeasure where
-  pFromJSRef = PerformanceMeasure
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PerformanceMeasure where
+  pFromJSVal = PerformanceMeasure
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PerformanceMeasure where
+instance ToJSVal PerformanceMeasure where
   toJSRef = return . unPerformanceMeasure
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PerformanceMeasure where
+instance FromJSVal PerformanceMeasure where
   fromJSRef = return . fmap PerformanceMeasure . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14117,19 +14117,19 @@ newtype PerformanceNavigation = PerformanceNavigation { unPerformanceNavigation 
 instance Eq (PerformanceNavigation) where
   (PerformanceNavigation a) == (PerformanceNavigation b) = js_eq a b
 
-instance PToJSRef PerformanceNavigation where
-  pToJSRef = unPerformanceNavigation
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PerformanceNavigation where
+  pToJSVal = unPerformanceNavigation
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PerformanceNavigation where
-  pFromJSRef = PerformanceNavigation
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PerformanceNavigation where
+  pFromJSVal = PerformanceNavigation
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PerformanceNavigation where
+instance ToJSVal PerformanceNavigation where
   toJSRef = return . unPerformanceNavigation
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PerformanceNavigation where
+instance FromJSVal PerformanceNavigation where
   fromJSRef = return . fmap PerformanceNavigation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14162,19 +14162,19 @@ newtype PerformanceResourceTiming = PerformanceResourceTiming { unPerformanceRes
 instance Eq (PerformanceResourceTiming) where
   (PerformanceResourceTiming a) == (PerformanceResourceTiming b) = js_eq a b
 
-instance PToJSRef PerformanceResourceTiming where
-  pToJSRef = unPerformanceResourceTiming
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PerformanceResourceTiming where
+  pToJSVal = unPerformanceResourceTiming
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PerformanceResourceTiming where
-  pFromJSRef = PerformanceResourceTiming
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PerformanceResourceTiming where
+  pFromJSVal = PerformanceResourceTiming
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PerformanceResourceTiming where
+instance ToJSVal PerformanceResourceTiming where
   toJSRef = return . unPerformanceResourceTiming
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PerformanceResourceTiming where
+instance FromJSVal PerformanceResourceTiming where
   fromJSRef = return . fmap PerformanceResourceTiming . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14201,19 +14201,19 @@ newtype PerformanceTiming = PerformanceTiming { unPerformanceTiming :: JSRef }
 instance Eq (PerformanceTiming) where
   (PerformanceTiming a) == (PerformanceTiming b) = js_eq a b
 
-instance PToJSRef PerformanceTiming where
-  pToJSRef = unPerformanceTiming
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PerformanceTiming where
+  pToJSVal = unPerformanceTiming
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PerformanceTiming where
-  pFromJSRef = PerformanceTiming
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PerformanceTiming where
+  pFromJSVal = PerformanceTiming
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PerformanceTiming where
+instance ToJSVal PerformanceTiming where
   toJSRef = return . unPerformanceTiming
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PerformanceTiming where
+instance FromJSVal PerformanceTiming where
   fromJSRef = return . fmap PerformanceTiming . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14243,19 +14243,19 @@ newtype PeriodicWave = PeriodicWave { unPeriodicWave :: JSRef }
 instance Eq (PeriodicWave) where
   (PeriodicWave a) == (PeriodicWave b) = js_eq a b
 
-instance PToJSRef PeriodicWave where
-  pToJSRef = unPeriodicWave
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PeriodicWave where
+  pToJSVal = unPeriodicWave
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PeriodicWave where
-  pFromJSRef = PeriodicWave
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PeriodicWave where
+  pFromJSVal = PeriodicWave
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PeriodicWave where
+instance ToJSVal PeriodicWave where
   toJSRef = return . unPeriodicWave
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PeriodicWave where
+instance FromJSVal PeriodicWave where
   fromJSRef = return . fmap PeriodicWave . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14281,19 +14281,19 @@ newtype Plugin = Plugin { unPlugin :: JSRef }
 instance Eq (Plugin) where
   (Plugin a) == (Plugin b) = js_eq a b
 
-instance PToJSRef Plugin where
-  pToJSRef = unPlugin
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Plugin where
+  pToJSVal = unPlugin
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Plugin where
-  pFromJSRef = Plugin
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Plugin where
+  pFromJSVal = Plugin
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Plugin where
+instance ToJSVal Plugin where
   toJSRef = return . unPlugin
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Plugin where
+instance FromJSVal Plugin where
   fromJSRef = return . fmap Plugin . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14321,19 +14321,19 @@ newtype PluginArray = PluginArray { unPluginArray :: JSRef }
 instance Eq (PluginArray) where
   (PluginArray a) == (PluginArray b) = js_eq a b
 
-instance PToJSRef PluginArray where
-  pToJSRef = unPluginArray
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PluginArray where
+  pToJSVal = unPluginArray
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PluginArray where
-  pFromJSRef = PluginArray
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PluginArray where
+  pFromJSVal = PluginArray
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PluginArray where
+instance ToJSVal PluginArray where
   toJSRef = return . unPluginArray
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PluginArray where
+instance FromJSVal PluginArray where
   fromJSRef = return . fmap PluginArray . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14364,19 +14364,19 @@ newtype PopStateEvent = PopStateEvent { unPopStateEvent :: JSRef }
 instance Eq (PopStateEvent) where
   (PopStateEvent a) == (PopStateEvent b) = js_eq a b
 
-instance PToJSRef PopStateEvent where
-  pToJSRef = unPopStateEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PopStateEvent where
+  pToJSVal = unPopStateEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PopStateEvent where
-  pFromJSRef = PopStateEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PopStateEvent where
+  pFromJSVal = PopStateEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PopStateEvent where
+instance ToJSVal PopStateEvent where
   toJSRef = return . unPopStateEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PopStateEvent where
+instance FromJSVal PopStateEvent where
   fromJSRef = return . fmap PopStateEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14403,19 +14403,19 @@ newtype PositionError = PositionError { unPositionError :: JSRef }
 instance Eq (PositionError) where
   (PositionError a) == (PositionError b) = js_eq a b
 
-instance PToJSRef PositionError where
-  pToJSRef = unPositionError
-  {-# INLINE pToJSRef #-}
+instance PToJSVal PositionError where
+  pToJSVal = unPositionError
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef PositionError where
-  pFromJSRef = PositionError
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal PositionError where
+  pFromJSVal = PositionError
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef PositionError where
+instance ToJSVal PositionError where
   toJSRef = return . unPositionError
   {-# INLINE toJSRef #-}
 
-instance FromJSRef PositionError where
+instance FromJSVal PositionError where
   fromJSRef = return . fmap PositionError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14446,19 +14446,19 @@ newtype ProcessingInstruction = ProcessingInstruction { unProcessingInstruction 
 instance Eq (ProcessingInstruction) where
   (ProcessingInstruction a) == (ProcessingInstruction b) = js_eq a b
 
-instance PToJSRef ProcessingInstruction where
-  pToJSRef = unProcessingInstruction
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ProcessingInstruction where
+  pToJSVal = unProcessingInstruction
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ProcessingInstruction where
-  pFromJSRef = ProcessingInstruction
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ProcessingInstruction where
+  pFromJSVal = ProcessingInstruction
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ProcessingInstruction where
+instance ToJSVal ProcessingInstruction where
   toJSRef = return . unProcessingInstruction
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ProcessingInstruction where
+instance FromJSVal ProcessingInstruction where
   fromJSRef = return . fmap ProcessingInstruction . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14492,19 +14492,19 @@ newtype ProgressEvent = ProgressEvent { unProgressEvent :: JSRef }
 instance Eq (ProgressEvent) where
   (ProgressEvent a) == (ProgressEvent b) = js_eq a b
 
-instance PToJSRef ProgressEvent where
-  pToJSRef = unProgressEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ProgressEvent where
+  pToJSVal = unProgressEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ProgressEvent where
-  pFromJSRef = ProgressEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ProgressEvent where
+  pFromJSVal = ProgressEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ProgressEvent where
+instance ToJSVal ProgressEvent where
   toJSRef = return . unProgressEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ProgressEvent where
+instance FromJSVal ProgressEvent where
   fromJSRef = return . fmap ProgressEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14536,19 +14536,19 @@ newtype QuickTimePluginReplacement = QuickTimePluginReplacement { unQuickTimePlu
 instance Eq (QuickTimePluginReplacement) where
   (QuickTimePluginReplacement a) == (QuickTimePluginReplacement b) = js_eq a b
 
-instance PToJSRef QuickTimePluginReplacement where
-  pToJSRef = unQuickTimePluginReplacement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal QuickTimePluginReplacement where
+  pToJSVal = unQuickTimePluginReplacement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef QuickTimePluginReplacement where
-  pFromJSRef = QuickTimePluginReplacement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal QuickTimePluginReplacement where
+  pFromJSVal = QuickTimePluginReplacement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef QuickTimePluginReplacement where
+instance ToJSVal QuickTimePluginReplacement where
   toJSRef = return . unQuickTimePluginReplacement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef QuickTimePluginReplacement where
+instance FromJSVal QuickTimePluginReplacement where
   fromJSRef = return . fmap QuickTimePluginReplacement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14574,19 +14574,19 @@ newtype RGBColor = RGBColor { unRGBColor :: JSRef }
 instance Eq (RGBColor) where
   (RGBColor a) == (RGBColor b) = js_eq a b
 
-instance PToJSRef RGBColor where
-  pToJSRef = unRGBColor
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RGBColor where
+  pToJSVal = unRGBColor
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RGBColor where
-  pFromJSRef = RGBColor
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RGBColor where
+  pFromJSVal = RGBColor
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RGBColor where
+instance ToJSVal RGBColor where
   toJSRef = return . unRGBColor
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RGBColor where
+instance FromJSVal RGBColor where
   fromJSRef = return . fmap RGBColor . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14612,19 +14612,19 @@ newtype RTCConfiguration = RTCConfiguration { unRTCConfiguration :: JSRef }
 instance Eq (RTCConfiguration) where
   (RTCConfiguration a) == (RTCConfiguration b) = js_eq a b
 
-instance PToJSRef RTCConfiguration where
-  pToJSRef = unRTCConfiguration
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCConfiguration where
+  pToJSVal = unRTCConfiguration
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCConfiguration where
-  pFromJSRef = RTCConfiguration
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCConfiguration where
+  pFromJSVal = RTCConfiguration
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCConfiguration where
+instance ToJSVal RTCConfiguration where
   toJSRef = return . unRTCConfiguration
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCConfiguration where
+instance FromJSVal RTCConfiguration where
   fromJSRef = return . fmap RTCConfiguration . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14653,19 +14653,19 @@ newtype RTCDTMFSender = RTCDTMFSender { unRTCDTMFSender :: JSRef }
 instance Eq (RTCDTMFSender) where
   (RTCDTMFSender a) == (RTCDTMFSender b) = js_eq a b
 
-instance PToJSRef RTCDTMFSender where
-  pToJSRef = unRTCDTMFSender
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCDTMFSender where
+  pToJSVal = unRTCDTMFSender
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCDTMFSender where
-  pFromJSRef = RTCDTMFSender
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCDTMFSender where
+  pFromJSVal = RTCDTMFSender
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCDTMFSender where
+instance ToJSVal RTCDTMFSender where
   toJSRef = return . unRTCDTMFSender
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCDTMFSender where
+instance FromJSVal RTCDTMFSender where
   fromJSRef = return . fmap RTCDTMFSender . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14695,19 +14695,19 @@ newtype RTCDTMFToneChangeEvent = RTCDTMFToneChangeEvent { unRTCDTMFToneChangeEve
 instance Eq (RTCDTMFToneChangeEvent) where
   (RTCDTMFToneChangeEvent a) == (RTCDTMFToneChangeEvent b) = js_eq a b
 
-instance PToJSRef RTCDTMFToneChangeEvent where
-  pToJSRef = unRTCDTMFToneChangeEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCDTMFToneChangeEvent where
+  pToJSVal = unRTCDTMFToneChangeEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCDTMFToneChangeEvent where
-  pFromJSRef = RTCDTMFToneChangeEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCDTMFToneChangeEvent where
+  pFromJSVal = RTCDTMFToneChangeEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCDTMFToneChangeEvent where
+instance ToJSVal RTCDTMFToneChangeEvent where
   toJSRef = return . unRTCDTMFToneChangeEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCDTMFToneChangeEvent where
+instance FromJSVal RTCDTMFToneChangeEvent where
   fromJSRef = return . fmap RTCDTMFToneChangeEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14737,19 +14737,19 @@ newtype RTCDataChannel = RTCDataChannel { unRTCDataChannel :: JSRef }
 instance Eq (RTCDataChannel) where
   (RTCDataChannel a) == (RTCDataChannel b) = js_eq a b
 
-instance PToJSRef RTCDataChannel where
-  pToJSRef = unRTCDataChannel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCDataChannel where
+  pToJSVal = unRTCDataChannel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCDataChannel where
-  pFromJSRef = RTCDataChannel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCDataChannel where
+  pFromJSVal = RTCDataChannel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCDataChannel where
+instance ToJSVal RTCDataChannel where
   toJSRef = return . unRTCDataChannel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCDataChannel where
+instance FromJSVal RTCDataChannel where
   fromJSRef = return . fmap RTCDataChannel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14779,19 +14779,19 @@ newtype RTCDataChannelEvent = RTCDataChannelEvent { unRTCDataChannelEvent :: JSR
 instance Eq (RTCDataChannelEvent) where
   (RTCDataChannelEvent a) == (RTCDataChannelEvent b) = js_eq a b
 
-instance PToJSRef RTCDataChannelEvent where
-  pToJSRef = unRTCDataChannelEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCDataChannelEvent where
+  pToJSVal = unRTCDataChannelEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCDataChannelEvent where
-  pFromJSRef = RTCDataChannelEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCDataChannelEvent where
+  pFromJSVal = RTCDataChannelEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCDataChannelEvent where
+instance ToJSVal RTCDataChannelEvent where
   toJSRef = return . unRTCDataChannelEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCDataChannelEvent where
+instance FromJSVal RTCDataChannelEvent where
   fromJSRef = return . fmap RTCDataChannelEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14818,19 +14818,19 @@ newtype RTCIceCandidate = RTCIceCandidate { unRTCIceCandidate :: JSRef }
 instance Eq (RTCIceCandidate) where
   (RTCIceCandidate a) == (RTCIceCandidate b) = js_eq a b
 
-instance PToJSRef RTCIceCandidate where
-  pToJSRef = unRTCIceCandidate
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCIceCandidate where
+  pToJSVal = unRTCIceCandidate
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCIceCandidate where
-  pFromJSRef = RTCIceCandidate
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCIceCandidate where
+  pFromJSVal = RTCIceCandidate
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCIceCandidate where
+instance ToJSVal RTCIceCandidate where
   toJSRef = return . unRTCIceCandidate
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCIceCandidate where
+instance FromJSVal RTCIceCandidate where
   fromJSRef = return . fmap RTCIceCandidate . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14859,19 +14859,19 @@ newtype RTCIceCandidateEvent = RTCIceCandidateEvent { unRTCIceCandidateEvent :: 
 instance Eq (RTCIceCandidateEvent) where
   (RTCIceCandidateEvent a) == (RTCIceCandidateEvent b) = js_eq a b
 
-instance PToJSRef RTCIceCandidateEvent where
-  pToJSRef = unRTCIceCandidateEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCIceCandidateEvent where
+  pToJSVal = unRTCIceCandidateEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCIceCandidateEvent where
-  pFromJSRef = RTCIceCandidateEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCIceCandidateEvent where
+  pFromJSVal = RTCIceCandidateEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCIceCandidateEvent where
+instance ToJSVal RTCIceCandidateEvent where
   toJSRef = return . unRTCIceCandidateEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCIceCandidateEvent where
+instance FromJSVal RTCIceCandidateEvent where
   fromJSRef = return . fmap RTCIceCandidateEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14898,19 +14898,19 @@ newtype RTCIceServer = RTCIceServer { unRTCIceServer :: JSRef }
 instance Eq (RTCIceServer) where
   (RTCIceServer a) == (RTCIceServer b) = js_eq a b
 
-instance PToJSRef RTCIceServer where
-  pToJSRef = unRTCIceServer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCIceServer where
+  pToJSVal = unRTCIceServer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCIceServer where
-  pFromJSRef = RTCIceServer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCIceServer where
+  pFromJSVal = RTCIceServer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCIceServer where
+instance ToJSVal RTCIceServer where
   toJSRef = return . unRTCIceServer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCIceServer where
+instance FromJSVal RTCIceServer where
   fromJSRef = return . fmap RTCIceServer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14939,19 +14939,19 @@ newtype RTCPeerConnection = RTCPeerConnection { unRTCPeerConnection :: JSRef }
 instance Eq (RTCPeerConnection) where
   (RTCPeerConnection a) == (RTCPeerConnection b) = js_eq a b
 
-instance PToJSRef RTCPeerConnection where
-  pToJSRef = unRTCPeerConnection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCPeerConnection where
+  pToJSVal = unRTCPeerConnection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCPeerConnection where
-  pFromJSRef = RTCPeerConnection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCPeerConnection where
+  pFromJSVal = RTCPeerConnection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCPeerConnection where
+instance ToJSVal RTCPeerConnection where
   toJSRef = return . unRTCPeerConnection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCPeerConnection where
+instance FromJSVal RTCPeerConnection where
   fromJSRef = return . fmap RTCPeerConnection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -14978,19 +14978,19 @@ newtype RTCSessionDescription = RTCSessionDescription { unRTCSessionDescription 
 instance Eq (RTCSessionDescription) where
   (RTCSessionDescription a) == (RTCSessionDescription b) = js_eq a b
 
-instance PToJSRef RTCSessionDescription where
-  pToJSRef = unRTCSessionDescription
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCSessionDescription where
+  pToJSVal = unRTCSessionDescription
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCSessionDescription where
-  pFromJSRef = RTCSessionDescription
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCSessionDescription where
+  pFromJSVal = RTCSessionDescription
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCSessionDescription where
+instance ToJSVal RTCSessionDescription where
   toJSRef = return . unRTCSessionDescription
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCSessionDescription where
+instance FromJSVal RTCSessionDescription where
   fromJSRef = return . fmap RTCSessionDescription . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15016,19 +15016,19 @@ newtype RTCStatsReport = RTCStatsReport { unRTCStatsReport :: JSRef }
 instance Eq (RTCStatsReport) where
   (RTCStatsReport a) == (RTCStatsReport b) = js_eq a b
 
-instance PToJSRef RTCStatsReport where
-  pToJSRef = unRTCStatsReport
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCStatsReport where
+  pToJSVal = unRTCStatsReport
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCStatsReport where
-  pFromJSRef = RTCStatsReport
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCStatsReport where
+  pFromJSVal = RTCStatsReport
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCStatsReport where
+instance ToJSVal RTCStatsReport where
   toJSRef = return . unRTCStatsReport
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCStatsReport where
+instance FromJSVal RTCStatsReport where
   fromJSRef = return . fmap RTCStatsReport . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15054,19 +15054,19 @@ newtype RTCStatsResponse = RTCStatsResponse { unRTCStatsResponse :: JSRef }
 instance Eq (RTCStatsResponse) where
   (RTCStatsResponse a) == (RTCStatsResponse b) = js_eq a b
 
-instance PToJSRef RTCStatsResponse where
-  pToJSRef = unRTCStatsResponse
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RTCStatsResponse where
+  pToJSVal = unRTCStatsResponse
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RTCStatsResponse where
-  pFromJSRef = RTCStatsResponse
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RTCStatsResponse where
+  pFromJSVal = RTCStatsResponse
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RTCStatsResponse where
+instance ToJSVal RTCStatsResponse where
   toJSRef = return . unRTCStatsResponse
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RTCStatsResponse where
+instance FromJSVal RTCStatsResponse where
   fromJSRef = return . fmap RTCStatsResponse . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15095,19 +15095,19 @@ newtype RadioNodeList = RadioNodeList { unRadioNodeList :: JSRef }
 instance Eq (RadioNodeList) where
   (RadioNodeList a) == (RadioNodeList b) = js_eq a b
 
-instance PToJSRef RadioNodeList where
-  pToJSRef = unRadioNodeList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal RadioNodeList where
+  pToJSVal = unRadioNodeList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef RadioNodeList where
-  pFromJSRef = RadioNodeList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal RadioNodeList where
+  pFromJSVal = RadioNodeList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef RadioNodeList where
+instance ToJSVal RadioNodeList where
   toJSRef = return . unRadioNodeList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef RadioNodeList where
+instance FromJSVal RadioNodeList where
   fromJSRef = return . fmap RadioNodeList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15134,19 +15134,19 @@ newtype Range = Range { unRange :: JSRef }
 instance Eq (Range) where
   (Range a) == (Range b) = js_eq a b
 
-instance PToJSRef Range where
-  pToJSRef = unRange
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Range where
+  pToJSVal = unRange
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Range where
-  pFromJSRef = Range
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Range where
+  pFromJSVal = Range
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Range where
+instance ToJSVal Range where
   toJSRef = return . unRange
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Range where
+instance FromJSVal Range where
   fromJSRef = return . fmap Range . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15174,19 +15174,19 @@ newtype ReadableStream = ReadableStream { unReadableStream :: JSRef }
 instance Eq (ReadableStream) where
   (ReadableStream a) == (ReadableStream b) = js_eq a b
 
-instance PToJSRef ReadableStream where
-  pToJSRef = unReadableStream
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ReadableStream where
+  pToJSVal = unReadableStream
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ReadableStream where
-  pFromJSRef = ReadableStream
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ReadableStream where
+  pFromJSVal = ReadableStream
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ReadableStream where
+instance ToJSVal ReadableStream where
   toJSRef = return . unReadableStream
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ReadableStream where
+instance FromJSVal ReadableStream where
   fromJSRef = return . fmap ReadableStream . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15212,19 +15212,19 @@ newtype Rect = Rect { unRect :: JSRef }
 instance Eq (Rect) where
   (Rect a) == (Rect b) = js_eq a b
 
-instance PToJSRef Rect where
-  pToJSRef = unRect
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Rect where
+  pToJSVal = unRect
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Rect where
-  pFromJSRef = Rect
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Rect where
+  pFromJSVal = Rect
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Rect where
+instance ToJSVal Rect where
   toJSRef = return . unRect
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Rect where
+instance FromJSVal Rect where
   fromJSRef = return . fmap Rect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15250,19 +15250,19 @@ newtype SQLError = SQLError { unSQLError :: JSRef }
 instance Eq (SQLError) where
   (SQLError a) == (SQLError b) = js_eq a b
 
-instance PToJSRef SQLError where
-  pToJSRef = unSQLError
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SQLError where
+  pToJSVal = unSQLError
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SQLError where
-  pFromJSRef = SQLError
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SQLError where
+  pFromJSVal = SQLError
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SQLError where
+instance ToJSVal SQLError where
   toJSRef = return . unSQLError
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SQLError where
+instance FromJSVal SQLError where
   fromJSRef = return . fmap SQLError . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15288,19 +15288,19 @@ newtype SQLResultSet = SQLResultSet { unSQLResultSet :: JSRef }
 instance Eq (SQLResultSet) where
   (SQLResultSet a) == (SQLResultSet b) = js_eq a b
 
-instance PToJSRef SQLResultSet where
-  pToJSRef = unSQLResultSet
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SQLResultSet where
+  pToJSVal = unSQLResultSet
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SQLResultSet where
-  pFromJSRef = SQLResultSet
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SQLResultSet where
+  pFromJSVal = SQLResultSet
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SQLResultSet where
+instance ToJSVal SQLResultSet where
   toJSRef = return . unSQLResultSet
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SQLResultSet where
+instance FromJSVal SQLResultSet where
   fromJSRef = return . fmap SQLResultSet . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15326,19 +15326,19 @@ newtype SQLResultSetRowList = SQLResultSetRowList { unSQLResultSetRowList :: JSR
 instance Eq (SQLResultSetRowList) where
   (SQLResultSetRowList a) == (SQLResultSetRowList b) = js_eq a b
 
-instance PToJSRef SQLResultSetRowList where
-  pToJSRef = unSQLResultSetRowList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SQLResultSetRowList where
+  pToJSVal = unSQLResultSetRowList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SQLResultSetRowList where
-  pFromJSRef = SQLResultSetRowList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SQLResultSetRowList where
+  pFromJSVal = SQLResultSetRowList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SQLResultSetRowList where
+instance ToJSVal SQLResultSetRowList where
   toJSRef = return . unSQLResultSetRowList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SQLResultSetRowList where
+instance FromJSVal SQLResultSetRowList where
   fromJSRef = return . fmap SQLResultSetRowList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15364,19 +15364,19 @@ newtype SQLTransaction = SQLTransaction { unSQLTransaction :: JSRef }
 instance Eq (SQLTransaction) where
   (SQLTransaction a) == (SQLTransaction b) = js_eq a b
 
-instance PToJSRef SQLTransaction where
-  pToJSRef = unSQLTransaction
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SQLTransaction where
+  pToJSVal = unSQLTransaction
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SQLTransaction where
-  pFromJSRef = SQLTransaction
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SQLTransaction where
+  pFromJSVal = SQLTransaction
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SQLTransaction where
+instance ToJSVal SQLTransaction where
   toJSRef = return . unSQLTransaction
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SQLTransaction where
+instance FromJSVal SQLTransaction where
   fromJSRef = return . fmap SQLTransaction . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15409,19 +15409,19 @@ newtype SVGAElement = SVGAElement { unSVGAElement :: JSRef }
 instance Eq (SVGAElement) where
   (SVGAElement a) == (SVGAElement b) = js_eq a b
 
-instance PToJSRef SVGAElement where
-  pToJSRef = unSVGAElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAElement where
+  pToJSVal = unSVGAElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAElement where
-  pFromJSRef = SVGAElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAElement where
+  pFromJSVal = SVGAElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAElement where
+instance ToJSVal SVGAElement where
   toJSRef = return . unSVGAElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAElement where
+instance FromJSVal SVGAElement where
   fromJSRef = return . fmap SVGAElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15458,19 +15458,19 @@ newtype SVGAltGlyphDefElement = SVGAltGlyphDefElement { unSVGAltGlyphDefElement 
 instance Eq (SVGAltGlyphDefElement) where
   (SVGAltGlyphDefElement a) == (SVGAltGlyphDefElement b) = js_eq a b
 
-instance PToJSRef SVGAltGlyphDefElement where
-  pToJSRef = unSVGAltGlyphDefElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAltGlyphDefElement where
+  pToJSVal = unSVGAltGlyphDefElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAltGlyphDefElement where
-  pFromJSRef = SVGAltGlyphDefElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAltGlyphDefElement where
+  pFromJSVal = SVGAltGlyphDefElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAltGlyphDefElement where
+instance ToJSVal SVGAltGlyphDefElement where
   toJSRef = return . unSVGAltGlyphDefElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAltGlyphDefElement where
+instance FromJSVal SVGAltGlyphDefElement where
   fromJSRef = return . fmap SVGAltGlyphDefElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15509,19 +15509,19 @@ newtype SVGAltGlyphElement = SVGAltGlyphElement { unSVGAltGlyphElement :: JSRef 
 instance Eq (SVGAltGlyphElement) where
   (SVGAltGlyphElement a) == (SVGAltGlyphElement b) = js_eq a b
 
-instance PToJSRef SVGAltGlyphElement where
-  pToJSRef = unSVGAltGlyphElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAltGlyphElement where
+  pToJSVal = unSVGAltGlyphElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAltGlyphElement where
-  pFromJSRef = SVGAltGlyphElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAltGlyphElement where
+  pFromJSVal = SVGAltGlyphElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAltGlyphElement where
+instance ToJSVal SVGAltGlyphElement where
   toJSRef = return . unSVGAltGlyphElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAltGlyphElement where
+instance FromJSVal SVGAltGlyphElement where
   fromJSRef = return . fmap SVGAltGlyphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15560,19 +15560,19 @@ newtype SVGAltGlyphItemElement = SVGAltGlyphItemElement { unSVGAltGlyphItemEleme
 instance Eq (SVGAltGlyphItemElement) where
   (SVGAltGlyphItemElement a) == (SVGAltGlyphItemElement b) = js_eq a b
 
-instance PToJSRef SVGAltGlyphItemElement where
-  pToJSRef = unSVGAltGlyphItemElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAltGlyphItemElement where
+  pToJSVal = unSVGAltGlyphItemElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAltGlyphItemElement where
-  pFromJSRef = SVGAltGlyphItemElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAltGlyphItemElement where
+  pFromJSVal = SVGAltGlyphItemElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAltGlyphItemElement where
+instance ToJSVal SVGAltGlyphItemElement where
   toJSRef = return . unSVGAltGlyphItemElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAltGlyphItemElement where
+instance FromJSVal SVGAltGlyphItemElement where
   fromJSRef = return . fmap SVGAltGlyphItemElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15602,19 +15602,19 @@ newtype SVGAngle = SVGAngle { unSVGAngle :: JSRef }
 instance Eq (SVGAngle) where
   (SVGAngle a) == (SVGAngle b) = js_eq a b
 
-instance PToJSRef SVGAngle where
-  pToJSRef = unSVGAngle
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAngle where
+  pToJSVal = unSVGAngle
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAngle where
-  pFromJSRef = SVGAngle
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAngle where
+  pFromJSVal = SVGAngle
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAngle where
+instance ToJSVal SVGAngle where
   toJSRef = return . unSVGAngle
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAngle where
+instance FromJSVal SVGAngle where
   fromJSRef = return . fmap SVGAngle . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15647,19 +15647,19 @@ newtype SVGAnimateColorElement = SVGAnimateColorElement { unSVGAnimateColorEleme
 instance Eq (SVGAnimateColorElement) where
   (SVGAnimateColorElement a) == (SVGAnimateColorElement b) = js_eq a b
 
-instance PToJSRef SVGAnimateColorElement where
-  pToJSRef = unSVGAnimateColorElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimateColorElement where
+  pToJSVal = unSVGAnimateColorElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimateColorElement where
-  pFromJSRef = SVGAnimateColorElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimateColorElement where
+  pFromJSVal = SVGAnimateColorElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimateColorElement where
+instance ToJSVal SVGAnimateColorElement where
   toJSRef = return . unSVGAnimateColorElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimateColorElement where
+instance FromJSVal SVGAnimateColorElement where
   fromJSRef = return . fmap SVGAnimateColorElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15697,19 +15697,19 @@ newtype SVGAnimateElement = SVGAnimateElement { unSVGAnimateElement :: JSRef }
 instance Eq (SVGAnimateElement) where
   (SVGAnimateElement a) == (SVGAnimateElement b) = js_eq a b
 
-instance PToJSRef SVGAnimateElement where
-  pToJSRef = unSVGAnimateElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimateElement where
+  pToJSVal = unSVGAnimateElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimateElement where
-  pFromJSRef = SVGAnimateElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimateElement where
+  pFromJSVal = SVGAnimateElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimateElement where
+instance ToJSVal SVGAnimateElement where
   toJSRef = return . unSVGAnimateElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimateElement where
+instance FromJSVal SVGAnimateElement where
   fromJSRef = return . fmap SVGAnimateElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15747,19 +15747,19 @@ newtype SVGAnimateMotionElement = SVGAnimateMotionElement { unSVGAnimateMotionEl
 instance Eq (SVGAnimateMotionElement) where
   (SVGAnimateMotionElement a) == (SVGAnimateMotionElement b) = js_eq a b
 
-instance PToJSRef SVGAnimateMotionElement where
-  pToJSRef = unSVGAnimateMotionElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimateMotionElement where
+  pToJSVal = unSVGAnimateMotionElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimateMotionElement where
-  pFromJSRef = SVGAnimateMotionElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimateMotionElement where
+  pFromJSVal = SVGAnimateMotionElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimateMotionElement where
+instance ToJSVal SVGAnimateMotionElement where
   toJSRef = return . unSVGAnimateMotionElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimateMotionElement where
+instance FromJSVal SVGAnimateMotionElement where
   fromJSRef = return . fmap SVGAnimateMotionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15797,19 +15797,19 @@ newtype SVGAnimateTransformElement = SVGAnimateTransformElement { unSVGAnimateTr
 instance Eq (SVGAnimateTransformElement) where
   (SVGAnimateTransformElement a) == (SVGAnimateTransformElement b) = js_eq a b
 
-instance PToJSRef SVGAnimateTransformElement where
-  pToJSRef = unSVGAnimateTransformElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimateTransformElement where
+  pToJSVal = unSVGAnimateTransformElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimateTransformElement where
-  pFromJSRef = SVGAnimateTransformElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimateTransformElement where
+  pFromJSVal = SVGAnimateTransformElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimateTransformElement where
+instance ToJSVal SVGAnimateTransformElement where
   toJSRef = return . unSVGAnimateTransformElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimateTransformElement where
+instance FromJSVal SVGAnimateTransformElement where
   fromJSRef = return . fmap SVGAnimateTransformElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15840,19 +15840,19 @@ newtype SVGAnimatedAngle = SVGAnimatedAngle { unSVGAnimatedAngle :: JSRef }
 instance Eq (SVGAnimatedAngle) where
   (SVGAnimatedAngle a) == (SVGAnimatedAngle b) = js_eq a b
 
-instance PToJSRef SVGAnimatedAngle where
-  pToJSRef = unSVGAnimatedAngle
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedAngle where
+  pToJSVal = unSVGAnimatedAngle
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedAngle where
-  pFromJSRef = SVGAnimatedAngle
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedAngle where
+  pFromJSVal = SVGAnimatedAngle
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedAngle where
+instance ToJSVal SVGAnimatedAngle where
   toJSRef = return . unSVGAnimatedAngle
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedAngle where
+instance FromJSVal SVGAnimatedAngle where
   fromJSRef = return . fmap SVGAnimatedAngle . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15878,19 +15878,19 @@ newtype SVGAnimatedBoolean = SVGAnimatedBoolean { unSVGAnimatedBoolean :: JSRef 
 instance Eq (SVGAnimatedBoolean) where
   (SVGAnimatedBoolean a) == (SVGAnimatedBoolean b) = js_eq a b
 
-instance PToJSRef SVGAnimatedBoolean where
-  pToJSRef = unSVGAnimatedBoolean
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedBoolean where
+  pToJSVal = unSVGAnimatedBoolean
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedBoolean where
-  pFromJSRef = SVGAnimatedBoolean
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedBoolean where
+  pFromJSVal = SVGAnimatedBoolean
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedBoolean where
+instance ToJSVal SVGAnimatedBoolean where
   toJSRef = return . unSVGAnimatedBoolean
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedBoolean where
+instance FromJSVal SVGAnimatedBoolean where
   fromJSRef = return . fmap SVGAnimatedBoolean . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15916,19 +15916,19 @@ newtype SVGAnimatedEnumeration = SVGAnimatedEnumeration { unSVGAnimatedEnumerati
 instance Eq (SVGAnimatedEnumeration) where
   (SVGAnimatedEnumeration a) == (SVGAnimatedEnumeration b) = js_eq a b
 
-instance PToJSRef SVGAnimatedEnumeration where
-  pToJSRef = unSVGAnimatedEnumeration
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedEnumeration where
+  pToJSVal = unSVGAnimatedEnumeration
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedEnumeration where
-  pFromJSRef = SVGAnimatedEnumeration
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedEnumeration where
+  pFromJSVal = SVGAnimatedEnumeration
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedEnumeration where
+instance ToJSVal SVGAnimatedEnumeration where
   toJSRef = return . unSVGAnimatedEnumeration
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedEnumeration where
+instance FromJSVal SVGAnimatedEnumeration where
   fromJSRef = return . fmap SVGAnimatedEnumeration . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15954,19 +15954,19 @@ newtype SVGAnimatedInteger = SVGAnimatedInteger { unSVGAnimatedInteger :: JSRef 
 instance Eq (SVGAnimatedInteger) where
   (SVGAnimatedInteger a) == (SVGAnimatedInteger b) = js_eq a b
 
-instance PToJSRef SVGAnimatedInteger where
-  pToJSRef = unSVGAnimatedInteger
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedInteger where
+  pToJSVal = unSVGAnimatedInteger
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedInteger where
-  pFromJSRef = SVGAnimatedInteger
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedInteger where
+  pFromJSVal = SVGAnimatedInteger
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedInteger where
+instance ToJSVal SVGAnimatedInteger where
   toJSRef = return . unSVGAnimatedInteger
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedInteger where
+instance FromJSVal SVGAnimatedInteger where
   fromJSRef = return . fmap SVGAnimatedInteger . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -15992,19 +15992,19 @@ newtype SVGAnimatedLength = SVGAnimatedLength { unSVGAnimatedLength :: JSRef }
 instance Eq (SVGAnimatedLength) where
   (SVGAnimatedLength a) == (SVGAnimatedLength b) = js_eq a b
 
-instance PToJSRef SVGAnimatedLength where
-  pToJSRef = unSVGAnimatedLength
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedLength where
+  pToJSVal = unSVGAnimatedLength
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedLength where
-  pFromJSRef = SVGAnimatedLength
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedLength where
+  pFromJSVal = SVGAnimatedLength
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedLength where
+instance ToJSVal SVGAnimatedLength where
   toJSRef = return . unSVGAnimatedLength
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedLength where
+instance FromJSVal SVGAnimatedLength where
   fromJSRef = return . fmap SVGAnimatedLength . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16030,19 +16030,19 @@ newtype SVGAnimatedLengthList = SVGAnimatedLengthList { unSVGAnimatedLengthList 
 instance Eq (SVGAnimatedLengthList) where
   (SVGAnimatedLengthList a) == (SVGAnimatedLengthList b) = js_eq a b
 
-instance PToJSRef SVGAnimatedLengthList where
-  pToJSRef = unSVGAnimatedLengthList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedLengthList where
+  pToJSVal = unSVGAnimatedLengthList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedLengthList where
-  pFromJSRef = SVGAnimatedLengthList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedLengthList where
+  pFromJSVal = SVGAnimatedLengthList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedLengthList where
+instance ToJSVal SVGAnimatedLengthList where
   toJSRef = return . unSVGAnimatedLengthList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedLengthList where
+instance FromJSVal SVGAnimatedLengthList where
   fromJSRef = return . fmap SVGAnimatedLengthList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16068,19 +16068,19 @@ newtype SVGAnimatedNumber = SVGAnimatedNumber { unSVGAnimatedNumber :: JSRef }
 instance Eq (SVGAnimatedNumber) where
   (SVGAnimatedNumber a) == (SVGAnimatedNumber b) = js_eq a b
 
-instance PToJSRef SVGAnimatedNumber where
-  pToJSRef = unSVGAnimatedNumber
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedNumber where
+  pToJSVal = unSVGAnimatedNumber
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedNumber where
-  pFromJSRef = SVGAnimatedNumber
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedNumber where
+  pFromJSVal = SVGAnimatedNumber
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedNumber where
+instance ToJSVal SVGAnimatedNumber where
   toJSRef = return . unSVGAnimatedNumber
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedNumber where
+instance FromJSVal SVGAnimatedNumber where
   fromJSRef = return . fmap SVGAnimatedNumber . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16106,19 +16106,19 @@ newtype SVGAnimatedNumberList = SVGAnimatedNumberList { unSVGAnimatedNumberList 
 instance Eq (SVGAnimatedNumberList) where
   (SVGAnimatedNumberList a) == (SVGAnimatedNumberList b) = js_eq a b
 
-instance PToJSRef SVGAnimatedNumberList where
-  pToJSRef = unSVGAnimatedNumberList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedNumberList where
+  pToJSVal = unSVGAnimatedNumberList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedNumberList where
-  pFromJSRef = SVGAnimatedNumberList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedNumberList where
+  pFromJSVal = SVGAnimatedNumberList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedNumberList where
+instance ToJSVal SVGAnimatedNumberList where
   toJSRef = return . unSVGAnimatedNumberList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedNumberList where
+instance FromJSVal SVGAnimatedNumberList where
   fromJSRef = return . fmap SVGAnimatedNumberList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16144,19 +16144,19 @@ newtype SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio { unSVGA
 instance Eq (SVGAnimatedPreserveAspectRatio) where
   (SVGAnimatedPreserveAspectRatio a) == (SVGAnimatedPreserveAspectRatio b) = js_eq a b
 
-instance PToJSRef SVGAnimatedPreserveAspectRatio where
-  pToJSRef = unSVGAnimatedPreserveAspectRatio
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedPreserveAspectRatio where
+  pToJSVal = unSVGAnimatedPreserveAspectRatio
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedPreserveAspectRatio where
-  pFromJSRef = SVGAnimatedPreserveAspectRatio
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedPreserveAspectRatio where
+  pFromJSVal = SVGAnimatedPreserveAspectRatio
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedPreserveAspectRatio where
+instance ToJSVal SVGAnimatedPreserveAspectRatio where
   toJSRef = return . unSVGAnimatedPreserveAspectRatio
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedPreserveAspectRatio where
+instance FromJSVal SVGAnimatedPreserveAspectRatio where
   fromJSRef = return . fmap SVGAnimatedPreserveAspectRatio . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16182,19 +16182,19 @@ newtype SVGAnimatedRect = SVGAnimatedRect { unSVGAnimatedRect :: JSRef }
 instance Eq (SVGAnimatedRect) where
   (SVGAnimatedRect a) == (SVGAnimatedRect b) = js_eq a b
 
-instance PToJSRef SVGAnimatedRect where
-  pToJSRef = unSVGAnimatedRect
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedRect where
+  pToJSVal = unSVGAnimatedRect
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedRect where
-  pFromJSRef = SVGAnimatedRect
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedRect where
+  pFromJSVal = SVGAnimatedRect
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedRect where
+instance ToJSVal SVGAnimatedRect where
   toJSRef = return . unSVGAnimatedRect
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedRect where
+instance FromJSVal SVGAnimatedRect where
   fromJSRef = return . fmap SVGAnimatedRect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16220,19 +16220,19 @@ newtype SVGAnimatedString = SVGAnimatedString { unSVGAnimatedString :: JSRef }
 instance Eq (SVGAnimatedString) where
   (SVGAnimatedString a) == (SVGAnimatedString b) = js_eq a b
 
-instance PToJSRef SVGAnimatedString where
-  pToJSRef = unSVGAnimatedString
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedString where
+  pToJSVal = unSVGAnimatedString
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedString where
-  pFromJSRef = SVGAnimatedString
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedString where
+  pFromJSVal = SVGAnimatedString
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedString where
+instance ToJSVal SVGAnimatedString where
   toJSRef = return . unSVGAnimatedString
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedString where
+instance FromJSVal SVGAnimatedString where
   fromJSRef = return . fmap SVGAnimatedString . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16258,19 +16258,19 @@ newtype SVGAnimatedTransformList = SVGAnimatedTransformList { unSVGAnimatedTrans
 instance Eq (SVGAnimatedTransformList) where
   (SVGAnimatedTransformList a) == (SVGAnimatedTransformList b) = js_eq a b
 
-instance PToJSRef SVGAnimatedTransformList where
-  pToJSRef = unSVGAnimatedTransformList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimatedTransformList where
+  pToJSVal = unSVGAnimatedTransformList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimatedTransformList where
-  pFromJSRef = SVGAnimatedTransformList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimatedTransformList where
+  pFromJSVal = SVGAnimatedTransformList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimatedTransformList where
+instance ToJSVal SVGAnimatedTransformList where
   toJSRef = return . unSVGAnimatedTransformList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimatedTransformList where
+instance FromJSVal SVGAnimatedTransformList where
   fromJSRef = return . fmap SVGAnimatedTransformList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16302,19 +16302,19 @@ newtype SVGAnimationElement = SVGAnimationElement { unSVGAnimationElement :: JSR
 instance Eq (SVGAnimationElement) where
   (SVGAnimationElement a) == (SVGAnimationElement b) = js_eq a b
 
-instance PToJSRef SVGAnimationElement where
-  pToJSRef = unSVGAnimationElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGAnimationElement where
+  pToJSVal = unSVGAnimationElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGAnimationElement where
-  pFromJSRef = SVGAnimationElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGAnimationElement where
+  pFromJSVal = SVGAnimationElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGAnimationElement where
+instance ToJSVal SVGAnimationElement where
   toJSRef = return . unSVGAnimationElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGAnimationElement where
+instance FromJSVal SVGAnimationElement where
   fromJSRef = return . fmap SVGAnimationElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16356,19 +16356,19 @@ newtype SVGCircleElement = SVGCircleElement { unSVGCircleElement :: JSRef }
 instance Eq (SVGCircleElement) where
   (SVGCircleElement a) == (SVGCircleElement b) = js_eq a b
 
-instance PToJSRef SVGCircleElement where
-  pToJSRef = unSVGCircleElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGCircleElement where
+  pToJSVal = unSVGCircleElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGCircleElement where
-  pFromJSRef = SVGCircleElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGCircleElement where
+  pFromJSVal = SVGCircleElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGCircleElement where
+instance ToJSVal SVGCircleElement where
   toJSRef = return . unSVGCircleElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGCircleElement where
+instance FromJSVal SVGCircleElement where
   fromJSRef = return . fmap SVGCircleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16406,19 +16406,19 @@ newtype SVGClipPathElement = SVGClipPathElement { unSVGClipPathElement :: JSRef 
 instance Eq (SVGClipPathElement) where
   (SVGClipPathElement a) == (SVGClipPathElement b) = js_eq a b
 
-instance PToJSRef SVGClipPathElement where
-  pToJSRef = unSVGClipPathElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGClipPathElement where
+  pToJSVal = unSVGClipPathElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGClipPathElement where
-  pFromJSRef = SVGClipPathElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGClipPathElement where
+  pFromJSVal = SVGClipPathElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGClipPathElement where
+instance ToJSVal SVGClipPathElement where
   toJSRef = return . unSVGClipPathElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGClipPathElement where
+instance FromJSVal SVGClipPathElement where
   fromJSRef = return . fmap SVGClipPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16452,19 +16452,19 @@ newtype SVGColor = SVGColor { unSVGColor :: JSRef }
 instance Eq (SVGColor) where
   (SVGColor a) == (SVGColor b) = js_eq a b
 
-instance PToJSRef SVGColor where
-  pToJSRef = unSVGColor
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGColor where
+  pToJSVal = unSVGColor
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGColor where
-  pFromJSRef = SVGColor
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGColor where
+  pFromJSVal = SVGColor
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGColor where
+instance ToJSVal SVGColor where
   toJSRef = return . unSVGColor
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGColor where
+instance FromJSVal SVGColor where
   fromJSRef = return . fmap SVGColor . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16502,19 +16502,19 @@ newtype SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElemen
 instance Eq (SVGComponentTransferFunctionElement) where
   (SVGComponentTransferFunctionElement a) == (SVGComponentTransferFunctionElement b) = js_eq a b
 
-instance PToJSRef SVGComponentTransferFunctionElement where
-  pToJSRef = unSVGComponentTransferFunctionElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGComponentTransferFunctionElement where
+  pToJSVal = unSVGComponentTransferFunctionElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGComponentTransferFunctionElement where
-  pFromJSRef = SVGComponentTransferFunctionElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGComponentTransferFunctionElement where
+  pFromJSVal = SVGComponentTransferFunctionElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGComponentTransferFunctionElement where
+instance ToJSVal SVGComponentTransferFunctionElement where
   toJSRef = return . unSVGComponentTransferFunctionElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGComponentTransferFunctionElement where
+instance FromJSVal SVGComponentTransferFunctionElement where
   fromJSRef = return . fmap SVGComponentTransferFunctionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16555,19 +16555,19 @@ newtype SVGCursorElement = SVGCursorElement { unSVGCursorElement :: JSRef }
 instance Eq (SVGCursorElement) where
   (SVGCursorElement a) == (SVGCursorElement b) = js_eq a b
 
-instance PToJSRef SVGCursorElement where
-  pToJSRef = unSVGCursorElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGCursorElement where
+  pToJSVal = unSVGCursorElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGCursorElement where
-  pFromJSRef = SVGCursorElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGCursorElement where
+  pFromJSVal = SVGCursorElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGCursorElement where
+instance ToJSVal SVGCursorElement where
   toJSRef = return . unSVGCursorElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGCursorElement where
+instance FromJSVal SVGCursorElement where
   fromJSRef = return . fmap SVGCursorElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16604,19 +16604,19 @@ newtype SVGDefsElement = SVGDefsElement { unSVGDefsElement :: JSRef }
 instance Eq (SVGDefsElement) where
   (SVGDefsElement a) == (SVGDefsElement b) = js_eq a b
 
-instance PToJSRef SVGDefsElement where
-  pToJSRef = unSVGDefsElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGDefsElement where
+  pToJSVal = unSVGDefsElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGDefsElement where
-  pFromJSRef = SVGDefsElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGDefsElement where
+  pFromJSVal = SVGDefsElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGDefsElement where
+instance ToJSVal SVGDefsElement where
   toJSRef = return . unSVGDefsElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGDefsElement where
+instance FromJSVal SVGDefsElement where
   fromJSRef = return . fmap SVGDefsElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16653,19 +16653,19 @@ newtype SVGDescElement = SVGDescElement { unSVGDescElement :: JSRef }
 instance Eq (SVGDescElement) where
   (SVGDescElement a) == (SVGDescElement b) = js_eq a b
 
-instance PToJSRef SVGDescElement where
-  pToJSRef = unSVGDescElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGDescElement where
+  pToJSVal = unSVGDescElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGDescElement where
-  pFromJSRef = SVGDescElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGDescElement where
+  pFromJSVal = SVGDescElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGDescElement where
+instance ToJSVal SVGDescElement where
   toJSRef = return . unSVGDescElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGDescElement where
+instance FromJSVal SVGDescElement where
   fromJSRef = return . fmap SVGDescElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16700,19 +16700,19 @@ newtype SVGDocument = SVGDocument { unSVGDocument :: JSRef }
 instance Eq (SVGDocument) where
   (SVGDocument a) == (SVGDocument b) = js_eq a b
 
-instance PToJSRef SVGDocument where
-  pToJSRef = unSVGDocument
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGDocument where
+  pToJSVal = unSVGDocument
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGDocument where
-  pFromJSRef = SVGDocument
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGDocument where
+  pFromJSVal = SVGDocument
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGDocument where
+instance ToJSVal SVGDocument where
   toJSRef = return . unSVGDocument
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGDocument where
+instance FromJSVal SVGDocument where
   fromJSRef = return . fmap SVGDocument . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16746,19 +16746,19 @@ newtype SVGElement = SVGElement { unSVGElement :: JSRef }
 instance Eq (SVGElement) where
   (SVGElement a) == (SVGElement b) = js_eq a b
 
-instance PToJSRef SVGElement where
-  pToJSRef = unSVGElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGElement where
+  pToJSVal = unSVGElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGElement where
-  pFromJSRef = SVGElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGElement where
+  pFromJSVal = SVGElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGElement where
+instance ToJSVal SVGElement where
   toJSRef = return . unSVGElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGElement where
+instance FromJSVal SVGElement where
   fromJSRef = return . fmap SVGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16799,19 +16799,19 @@ newtype SVGEllipseElement = SVGEllipseElement { unSVGEllipseElement :: JSRef }
 instance Eq (SVGEllipseElement) where
   (SVGEllipseElement a) == (SVGEllipseElement b) = js_eq a b
 
-instance PToJSRef SVGEllipseElement where
-  pToJSRef = unSVGEllipseElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGEllipseElement where
+  pToJSVal = unSVGEllipseElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGEllipseElement where
-  pFromJSRef = SVGEllipseElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGEllipseElement where
+  pFromJSVal = SVGEllipseElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGEllipseElement where
+instance ToJSVal SVGEllipseElement where
   toJSRef = return . unSVGEllipseElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGEllipseElement where
+instance FromJSVal SVGEllipseElement where
   fromJSRef = return . fmap SVGEllipseElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16842,19 +16842,19 @@ newtype SVGExternalResourcesRequired = SVGExternalResourcesRequired { unSVGExter
 instance Eq (SVGExternalResourcesRequired) where
   (SVGExternalResourcesRequired a) == (SVGExternalResourcesRequired b) = js_eq a b
 
-instance PToJSRef SVGExternalResourcesRequired where
-  pToJSRef = unSVGExternalResourcesRequired
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGExternalResourcesRequired where
+  pToJSVal = unSVGExternalResourcesRequired
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGExternalResourcesRequired where
-  pFromJSRef = SVGExternalResourcesRequired
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGExternalResourcesRequired where
+  pFromJSVal = SVGExternalResourcesRequired
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGExternalResourcesRequired where
+instance ToJSVal SVGExternalResourcesRequired where
   toJSRef = return . unSVGExternalResourcesRequired
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGExternalResourcesRequired where
+instance FromJSVal SVGExternalResourcesRequired where
   fromJSRef = return . fmap SVGExternalResourcesRequired . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16886,19 +16886,19 @@ newtype SVGFEBlendElement = SVGFEBlendElement { unSVGFEBlendElement :: JSRef }
 instance Eq (SVGFEBlendElement) where
   (SVGFEBlendElement a) == (SVGFEBlendElement b) = js_eq a b
 
-instance PToJSRef SVGFEBlendElement where
-  pToJSRef = unSVGFEBlendElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEBlendElement where
+  pToJSVal = unSVGFEBlendElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEBlendElement where
-  pFromJSRef = SVGFEBlendElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEBlendElement where
+  pFromJSVal = SVGFEBlendElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEBlendElement where
+instance ToJSVal SVGFEBlendElement where
   toJSRef = return . unSVGFEBlendElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEBlendElement where
+instance FromJSVal SVGFEBlendElement where
   fromJSRef = return . fmap SVGFEBlendElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16934,19 +16934,19 @@ newtype SVGFEColorMatrixElement = SVGFEColorMatrixElement { unSVGFEColorMatrixEl
 instance Eq (SVGFEColorMatrixElement) where
   (SVGFEColorMatrixElement a) == (SVGFEColorMatrixElement b) = js_eq a b
 
-instance PToJSRef SVGFEColorMatrixElement where
-  pToJSRef = unSVGFEColorMatrixElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEColorMatrixElement where
+  pToJSVal = unSVGFEColorMatrixElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEColorMatrixElement where
-  pFromJSRef = SVGFEColorMatrixElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEColorMatrixElement where
+  pFromJSVal = SVGFEColorMatrixElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEColorMatrixElement where
+instance ToJSVal SVGFEColorMatrixElement where
   toJSRef = return . unSVGFEColorMatrixElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEColorMatrixElement where
+instance FromJSVal SVGFEColorMatrixElement where
   fromJSRef = return . fmap SVGFEColorMatrixElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -16982,19 +16982,19 @@ newtype SVGFEComponentTransferElement = SVGFEComponentTransferElement { unSVGFEC
 instance Eq (SVGFEComponentTransferElement) where
   (SVGFEComponentTransferElement a) == (SVGFEComponentTransferElement b) = js_eq a b
 
-instance PToJSRef SVGFEComponentTransferElement where
-  pToJSRef = unSVGFEComponentTransferElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEComponentTransferElement where
+  pToJSVal = unSVGFEComponentTransferElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEComponentTransferElement where
-  pFromJSRef = SVGFEComponentTransferElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEComponentTransferElement where
+  pFromJSVal = SVGFEComponentTransferElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEComponentTransferElement where
+instance ToJSVal SVGFEComponentTransferElement where
   toJSRef = return . unSVGFEComponentTransferElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEComponentTransferElement where
+instance FromJSVal SVGFEComponentTransferElement where
   fromJSRef = return . fmap SVGFEComponentTransferElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17030,19 +17030,19 @@ newtype SVGFECompositeElement = SVGFECompositeElement { unSVGFECompositeElement 
 instance Eq (SVGFECompositeElement) where
   (SVGFECompositeElement a) == (SVGFECompositeElement b) = js_eq a b
 
-instance PToJSRef SVGFECompositeElement where
-  pToJSRef = unSVGFECompositeElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFECompositeElement where
+  pToJSVal = unSVGFECompositeElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFECompositeElement where
-  pFromJSRef = SVGFECompositeElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFECompositeElement where
+  pFromJSVal = SVGFECompositeElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFECompositeElement where
+instance ToJSVal SVGFECompositeElement where
   toJSRef = return . unSVGFECompositeElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFECompositeElement where
+instance FromJSVal SVGFECompositeElement where
   fromJSRef = return . fmap SVGFECompositeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17078,19 +17078,19 @@ newtype SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement { unSVGFEConvolv
 instance Eq (SVGFEConvolveMatrixElement) where
   (SVGFEConvolveMatrixElement a) == (SVGFEConvolveMatrixElement b) = js_eq a b
 
-instance PToJSRef SVGFEConvolveMatrixElement where
-  pToJSRef = unSVGFEConvolveMatrixElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEConvolveMatrixElement where
+  pToJSVal = unSVGFEConvolveMatrixElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEConvolveMatrixElement where
-  pFromJSRef = SVGFEConvolveMatrixElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEConvolveMatrixElement where
+  pFromJSVal = SVGFEConvolveMatrixElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEConvolveMatrixElement where
+instance ToJSVal SVGFEConvolveMatrixElement where
   toJSRef = return . unSVGFEConvolveMatrixElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEConvolveMatrixElement where
+instance FromJSVal SVGFEConvolveMatrixElement where
   fromJSRef = return . fmap SVGFEConvolveMatrixElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17126,19 +17126,19 @@ newtype SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement { unSVGFEDiffu
 instance Eq (SVGFEDiffuseLightingElement) where
   (SVGFEDiffuseLightingElement a) == (SVGFEDiffuseLightingElement b) = js_eq a b
 
-instance PToJSRef SVGFEDiffuseLightingElement where
-  pToJSRef = unSVGFEDiffuseLightingElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEDiffuseLightingElement where
+  pToJSVal = unSVGFEDiffuseLightingElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEDiffuseLightingElement where
-  pFromJSRef = SVGFEDiffuseLightingElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEDiffuseLightingElement where
+  pFromJSVal = SVGFEDiffuseLightingElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEDiffuseLightingElement where
+instance ToJSVal SVGFEDiffuseLightingElement where
   toJSRef = return . unSVGFEDiffuseLightingElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEDiffuseLightingElement where
+instance FromJSVal SVGFEDiffuseLightingElement where
   fromJSRef = return . fmap SVGFEDiffuseLightingElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17174,19 +17174,19 @@ newtype SVGFEDisplacementMapElement = SVGFEDisplacementMapElement { unSVGFEDispl
 instance Eq (SVGFEDisplacementMapElement) where
   (SVGFEDisplacementMapElement a) == (SVGFEDisplacementMapElement b) = js_eq a b
 
-instance PToJSRef SVGFEDisplacementMapElement where
-  pToJSRef = unSVGFEDisplacementMapElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEDisplacementMapElement where
+  pToJSVal = unSVGFEDisplacementMapElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEDisplacementMapElement where
-  pFromJSRef = SVGFEDisplacementMapElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEDisplacementMapElement where
+  pFromJSVal = SVGFEDisplacementMapElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEDisplacementMapElement where
+instance ToJSVal SVGFEDisplacementMapElement where
   toJSRef = return . unSVGFEDisplacementMapElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEDisplacementMapElement where
+instance FromJSVal SVGFEDisplacementMapElement where
   fromJSRef = return . fmap SVGFEDisplacementMapElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17222,19 +17222,19 @@ newtype SVGFEDistantLightElement = SVGFEDistantLightElement { unSVGFEDistantLigh
 instance Eq (SVGFEDistantLightElement) where
   (SVGFEDistantLightElement a) == (SVGFEDistantLightElement b) = js_eq a b
 
-instance PToJSRef SVGFEDistantLightElement where
-  pToJSRef = unSVGFEDistantLightElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEDistantLightElement where
+  pToJSVal = unSVGFEDistantLightElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEDistantLightElement where
-  pFromJSRef = SVGFEDistantLightElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEDistantLightElement where
+  pFromJSVal = SVGFEDistantLightElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEDistantLightElement where
+instance ToJSVal SVGFEDistantLightElement where
   toJSRef = return . unSVGFEDistantLightElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEDistantLightElement where
+instance FromJSVal SVGFEDistantLightElement where
   fromJSRef = return . fmap SVGFEDistantLightElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17270,19 +17270,19 @@ newtype SVGFEDropShadowElement = SVGFEDropShadowElement { unSVGFEDropShadowEleme
 instance Eq (SVGFEDropShadowElement) where
   (SVGFEDropShadowElement a) == (SVGFEDropShadowElement b) = js_eq a b
 
-instance PToJSRef SVGFEDropShadowElement where
-  pToJSRef = unSVGFEDropShadowElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEDropShadowElement where
+  pToJSVal = unSVGFEDropShadowElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEDropShadowElement where
-  pFromJSRef = SVGFEDropShadowElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEDropShadowElement where
+  pFromJSVal = SVGFEDropShadowElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEDropShadowElement where
+instance ToJSVal SVGFEDropShadowElement where
   toJSRef = return . unSVGFEDropShadowElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEDropShadowElement where
+instance FromJSVal SVGFEDropShadowElement where
   fromJSRef = return . fmap SVGFEDropShadowElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17318,19 +17318,19 @@ newtype SVGFEFloodElement = SVGFEFloodElement { unSVGFEFloodElement :: JSRef }
 instance Eq (SVGFEFloodElement) where
   (SVGFEFloodElement a) == (SVGFEFloodElement b) = js_eq a b
 
-instance PToJSRef SVGFEFloodElement where
-  pToJSRef = unSVGFEFloodElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEFloodElement where
+  pToJSVal = unSVGFEFloodElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEFloodElement where
-  pFromJSRef = SVGFEFloodElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEFloodElement where
+  pFromJSVal = SVGFEFloodElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEFloodElement where
+instance ToJSVal SVGFEFloodElement where
   toJSRef = return . unSVGFEFloodElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEFloodElement where
+instance FromJSVal SVGFEFloodElement where
   fromJSRef = return . fmap SVGFEFloodElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17367,19 +17367,19 @@ newtype SVGFEFuncAElement = SVGFEFuncAElement { unSVGFEFuncAElement :: JSRef }
 instance Eq (SVGFEFuncAElement) where
   (SVGFEFuncAElement a) == (SVGFEFuncAElement b) = js_eq a b
 
-instance PToJSRef SVGFEFuncAElement where
-  pToJSRef = unSVGFEFuncAElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEFuncAElement where
+  pToJSVal = unSVGFEFuncAElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEFuncAElement where
-  pFromJSRef = SVGFEFuncAElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEFuncAElement where
+  pFromJSVal = SVGFEFuncAElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEFuncAElement where
+instance ToJSVal SVGFEFuncAElement where
   toJSRef = return . unSVGFEFuncAElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEFuncAElement where
+instance FromJSVal SVGFEFuncAElement where
   fromJSRef = return . fmap SVGFEFuncAElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17417,19 +17417,19 @@ newtype SVGFEFuncBElement = SVGFEFuncBElement { unSVGFEFuncBElement :: JSRef }
 instance Eq (SVGFEFuncBElement) where
   (SVGFEFuncBElement a) == (SVGFEFuncBElement b) = js_eq a b
 
-instance PToJSRef SVGFEFuncBElement where
-  pToJSRef = unSVGFEFuncBElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEFuncBElement where
+  pToJSVal = unSVGFEFuncBElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEFuncBElement where
-  pFromJSRef = SVGFEFuncBElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEFuncBElement where
+  pFromJSVal = SVGFEFuncBElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEFuncBElement where
+instance ToJSVal SVGFEFuncBElement where
   toJSRef = return . unSVGFEFuncBElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEFuncBElement where
+instance FromJSVal SVGFEFuncBElement where
   fromJSRef = return . fmap SVGFEFuncBElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17467,19 +17467,19 @@ newtype SVGFEFuncGElement = SVGFEFuncGElement { unSVGFEFuncGElement :: JSRef }
 instance Eq (SVGFEFuncGElement) where
   (SVGFEFuncGElement a) == (SVGFEFuncGElement b) = js_eq a b
 
-instance PToJSRef SVGFEFuncGElement where
-  pToJSRef = unSVGFEFuncGElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEFuncGElement where
+  pToJSVal = unSVGFEFuncGElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEFuncGElement where
-  pFromJSRef = SVGFEFuncGElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEFuncGElement where
+  pFromJSVal = SVGFEFuncGElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEFuncGElement where
+instance ToJSVal SVGFEFuncGElement where
   toJSRef = return . unSVGFEFuncGElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEFuncGElement where
+instance FromJSVal SVGFEFuncGElement where
   fromJSRef = return . fmap SVGFEFuncGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17517,19 +17517,19 @@ newtype SVGFEFuncRElement = SVGFEFuncRElement { unSVGFEFuncRElement :: JSRef }
 instance Eq (SVGFEFuncRElement) where
   (SVGFEFuncRElement a) == (SVGFEFuncRElement b) = js_eq a b
 
-instance PToJSRef SVGFEFuncRElement where
-  pToJSRef = unSVGFEFuncRElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEFuncRElement where
+  pToJSVal = unSVGFEFuncRElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEFuncRElement where
-  pFromJSRef = SVGFEFuncRElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEFuncRElement where
+  pFromJSVal = SVGFEFuncRElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEFuncRElement where
+instance ToJSVal SVGFEFuncRElement where
   toJSRef = return . unSVGFEFuncRElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEFuncRElement where
+instance FromJSVal SVGFEFuncRElement where
   fromJSRef = return . fmap SVGFEFuncRElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17566,19 +17566,19 @@ newtype SVGFEGaussianBlurElement = SVGFEGaussianBlurElement { unSVGFEGaussianBlu
 instance Eq (SVGFEGaussianBlurElement) where
   (SVGFEGaussianBlurElement a) == (SVGFEGaussianBlurElement b) = js_eq a b
 
-instance PToJSRef SVGFEGaussianBlurElement where
-  pToJSRef = unSVGFEGaussianBlurElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEGaussianBlurElement where
+  pToJSVal = unSVGFEGaussianBlurElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEGaussianBlurElement where
-  pFromJSRef = SVGFEGaussianBlurElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEGaussianBlurElement where
+  pFromJSVal = SVGFEGaussianBlurElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEGaussianBlurElement where
+instance ToJSVal SVGFEGaussianBlurElement where
   toJSRef = return . unSVGFEGaussianBlurElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEGaussianBlurElement where
+instance FromJSVal SVGFEGaussianBlurElement where
   fromJSRef = return . fmap SVGFEGaussianBlurElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17614,19 +17614,19 @@ newtype SVGFEImageElement = SVGFEImageElement { unSVGFEImageElement :: JSRef }
 instance Eq (SVGFEImageElement) where
   (SVGFEImageElement a) == (SVGFEImageElement b) = js_eq a b
 
-instance PToJSRef SVGFEImageElement where
-  pToJSRef = unSVGFEImageElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEImageElement where
+  pToJSVal = unSVGFEImageElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEImageElement where
-  pFromJSRef = SVGFEImageElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEImageElement where
+  pFromJSVal = SVGFEImageElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEImageElement where
+instance ToJSVal SVGFEImageElement where
   toJSRef = return . unSVGFEImageElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEImageElement where
+instance FromJSVal SVGFEImageElement where
   fromJSRef = return . fmap SVGFEImageElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17662,19 +17662,19 @@ newtype SVGFEMergeElement = SVGFEMergeElement { unSVGFEMergeElement :: JSRef }
 instance Eq (SVGFEMergeElement) where
   (SVGFEMergeElement a) == (SVGFEMergeElement b) = js_eq a b
 
-instance PToJSRef SVGFEMergeElement where
-  pToJSRef = unSVGFEMergeElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEMergeElement where
+  pToJSVal = unSVGFEMergeElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEMergeElement where
-  pFromJSRef = SVGFEMergeElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEMergeElement where
+  pFromJSVal = SVGFEMergeElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEMergeElement where
+instance ToJSVal SVGFEMergeElement where
   toJSRef = return . unSVGFEMergeElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEMergeElement where
+instance FromJSVal SVGFEMergeElement where
   fromJSRef = return . fmap SVGFEMergeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17710,19 +17710,19 @@ newtype SVGFEMergeNodeElement = SVGFEMergeNodeElement { unSVGFEMergeNodeElement 
 instance Eq (SVGFEMergeNodeElement) where
   (SVGFEMergeNodeElement a) == (SVGFEMergeNodeElement b) = js_eq a b
 
-instance PToJSRef SVGFEMergeNodeElement where
-  pToJSRef = unSVGFEMergeNodeElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEMergeNodeElement where
+  pToJSVal = unSVGFEMergeNodeElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEMergeNodeElement where
-  pFromJSRef = SVGFEMergeNodeElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEMergeNodeElement where
+  pFromJSVal = SVGFEMergeNodeElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEMergeNodeElement where
+instance ToJSVal SVGFEMergeNodeElement where
   toJSRef = return . unSVGFEMergeNodeElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEMergeNodeElement where
+instance FromJSVal SVGFEMergeNodeElement where
   fromJSRef = return . fmap SVGFEMergeNodeElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17758,19 +17758,19 @@ newtype SVGFEMorphologyElement = SVGFEMorphologyElement { unSVGFEMorphologyEleme
 instance Eq (SVGFEMorphologyElement) where
   (SVGFEMorphologyElement a) == (SVGFEMorphologyElement b) = js_eq a b
 
-instance PToJSRef SVGFEMorphologyElement where
-  pToJSRef = unSVGFEMorphologyElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEMorphologyElement where
+  pToJSVal = unSVGFEMorphologyElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEMorphologyElement where
-  pFromJSRef = SVGFEMorphologyElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEMorphologyElement where
+  pFromJSVal = SVGFEMorphologyElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEMorphologyElement where
+instance ToJSVal SVGFEMorphologyElement where
   toJSRef = return . unSVGFEMorphologyElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEMorphologyElement where
+instance FromJSVal SVGFEMorphologyElement where
   fromJSRef = return . fmap SVGFEMorphologyElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17806,19 +17806,19 @@ newtype SVGFEOffsetElement = SVGFEOffsetElement { unSVGFEOffsetElement :: JSRef 
 instance Eq (SVGFEOffsetElement) where
   (SVGFEOffsetElement a) == (SVGFEOffsetElement b) = js_eq a b
 
-instance PToJSRef SVGFEOffsetElement where
-  pToJSRef = unSVGFEOffsetElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEOffsetElement where
+  pToJSVal = unSVGFEOffsetElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEOffsetElement where
-  pFromJSRef = SVGFEOffsetElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEOffsetElement where
+  pFromJSVal = SVGFEOffsetElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEOffsetElement where
+instance ToJSVal SVGFEOffsetElement where
   toJSRef = return . unSVGFEOffsetElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEOffsetElement where
+instance FromJSVal SVGFEOffsetElement where
   fromJSRef = return . fmap SVGFEOffsetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17854,19 +17854,19 @@ newtype SVGFEPointLightElement = SVGFEPointLightElement { unSVGFEPointLightEleme
 instance Eq (SVGFEPointLightElement) where
   (SVGFEPointLightElement a) == (SVGFEPointLightElement b) = js_eq a b
 
-instance PToJSRef SVGFEPointLightElement where
-  pToJSRef = unSVGFEPointLightElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFEPointLightElement where
+  pToJSVal = unSVGFEPointLightElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFEPointLightElement where
-  pFromJSRef = SVGFEPointLightElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFEPointLightElement where
+  pFromJSVal = SVGFEPointLightElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFEPointLightElement where
+instance ToJSVal SVGFEPointLightElement where
   toJSRef = return . unSVGFEPointLightElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFEPointLightElement where
+instance FromJSVal SVGFEPointLightElement where
   fromJSRef = return . fmap SVGFEPointLightElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17902,19 +17902,19 @@ newtype SVGFESpecularLightingElement = SVGFESpecularLightingElement { unSVGFESpe
 instance Eq (SVGFESpecularLightingElement) where
   (SVGFESpecularLightingElement a) == (SVGFESpecularLightingElement b) = js_eq a b
 
-instance PToJSRef SVGFESpecularLightingElement where
-  pToJSRef = unSVGFESpecularLightingElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFESpecularLightingElement where
+  pToJSVal = unSVGFESpecularLightingElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFESpecularLightingElement where
-  pFromJSRef = SVGFESpecularLightingElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFESpecularLightingElement where
+  pFromJSVal = SVGFESpecularLightingElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFESpecularLightingElement where
+instance ToJSVal SVGFESpecularLightingElement where
   toJSRef = return . unSVGFESpecularLightingElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFESpecularLightingElement where
+instance FromJSVal SVGFESpecularLightingElement where
   fromJSRef = return . fmap SVGFESpecularLightingElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17950,19 +17950,19 @@ newtype SVGFESpotLightElement = SVGFESpotLightElement { unSVGFESpotLightElement 
 instance Eq (SVGFESpotLightElement) where
   (SVGFESpotLightElement a) == (SVGFESpotLightElement b) = js_eq a b
 
-instance PToJSRef SVGFESpotLightElement where
-  pToJSRef = unSVGFESpotLightElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFESpotLightElement where
+  pToJSVal = unSVGFESpotLightElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFESpotLightElement where
-  pFromJSRef = SVGFESpotLightElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFESpotLightElement where
+  pFromJSVal = SVGFESpotLightElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFESpotLightElement where
+instance ToJSVal SVGFESpotLightElement where
   toJSRef = return . unSVGFESpotLightElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFESpotLightElement where
+instance FromJSVal SVGFESpotLightElement where
   fromJSRef = return . fmap SVGFESpotLightElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -17998,19 +17998,19 @@ newtype SVGFETileElement = SVGFETileElement { unSVGFETileElement :: JSRef }
 instance Eq (SVGFETileElement) where
   (SVGFETileElement a) == (SVGFETileElement b) = js_eq a b
 
-instance PToJSRef SVGFETileElement where
-  pToJSRef = unSVGFETileElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFETileElement where
+  pToJSVal = unSVGFETileElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFETileElement where
-  pFromJSRef = SVGFETileElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFETileElement where
+  pFromJSVal = SVGFETileElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFETileElement where
+instance ToJSVal SVGFETileElement where
   toJSRef = return . unSVGFETileElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFETileElement where
+instance FromJSVal SVGFETileElement where
   fromJSRef = return . fmap SVGFETileElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18046,19 +18046,19 @@ newtype SVGFETurbulenceElement = SVGFETurbulenceElement { unSVGFETurbulenceEleme
 instance Eq (SVGFETurbulenceElement) where
   (SVGFETurbulenceElement a) == (SVGFETurbulenceElement b) = js_eq a b
 
-instance PToJSRef SVGFETurbulenceElement where
-  pToJSRef = unSVGFETurbulenceElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFETurbulenceElement where
+  pToJSVal = unSVGFETurbulenceElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFETurbulenceElement where
-  pFromJSRef = SVGFETurbulenceElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFETurbulenceElement where
+  pFromJSVal = SVGFETurbulenceElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFETurbulenceElement where
+instance ToJSVal SVGFETurbulenceElement where
   toJSRef = return . unSVGFETurbulenceElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFETurbulenceElement where
+instance FromJSVal SVGFETurbulenceElement where
   fromJSRef = return . fmap SVGFETurbulenceElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18094,19 +18094,19 @@ newtype SVGFilterElement = SVGFilterElement { unSVGFilterElement :: JSRef }
 instance Eq (SVGFilterElement) where
   (SVGFilterElement a) == (SVGFilterElement b) = js_eq a b
 
-instance PToJSRef SVGFilterElement where
-  pToJSRef = unSVGFilterElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFilterElement where
+  pToJSVal = unSVGFilterElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFilterElement where
-  pFromJSRef = SVGFilterElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFilterElement where
+  pFromJSVal = SVGFilterElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFilterElement where
+instance ToJSVal SVGFilterElement where
   toJSRef = return . unSVGFilterElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFilterElement where
+instance FromJSVal SVGFilterElement where
   fromJSRef = return . fmap SVGFilterElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18136,19 +18136,19 @@ newtype SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttribu
 instance Eq (SVGFilterPrimitiveStandardAttributes) where
   (SVGFilterPrimitiveStandardAttributes a) == (SVGFilterPrimitiveStandardAttributes b) = js_eq a b
 
-instance PToJSRef SVGFilterPrimitiveStandardAttributes where
-  pToJSRef = unSVGFilterPrimitiveStandardAttributes
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFilterPrimitiveStandardAttributes where
+  pToJSVal = unSVGFilterPrimitiveStandardAttributes
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFilterPrimitiveStandardAttributes where
-  pFromJSRef = SVGFilterPrimitiveStandardAttributes
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFilterPrimitiveStandardAttributes where
+  pFromJSVal = SVGFilterPrimitiveStandardAttributes
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFilterPrimitiveStandardAttributes where
+instance ToJSVal SVGFilterPrimitiveStandardAttributes where
   toJSRef = return . unSVGFilterPrimitiveStandardAttributes
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFilterPrimitiveStandardAttributes where
+instance FromJSVal SVGFilterPrimitiveStandardAttributes where
   fromJSRef = return . fmap SVGFilterPrimitiveStandardAttributes . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18174,19 +18174,19 @@ newtype SVGFitToViewBox = SVGFitToViewBox { unSVGFitToViewBox :: JSRef }
 instance Eq (SVGFitToViewBox) where
   (SVGFitToViewBox a) == (SVGFitToViewBox b) = js_eq a b
 
-instance PToJSRef SVGFitToViewBox where
-  pToJSRef = unSVGFitToViewBox
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFitToViewBox where
+  pToJSVal = unSVGFitToViewBox
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFitToViewBox where
-  pFromJSRef = SVGFitToViewBox
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFitToViewBox where
+  pFromJSVal = SVGFitToViewBox
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFitToViewBox where
+instance ToJSVal SVGFitToViewBox where
   toJSRef = return . unSVGFitToViewBox
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFitToViewBox where
+instance FromJSVal SVGFitToViewBox where
   fromJSRef = return . fmap SVGFitToViewBox . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18218,19 +18218,19 @@ newtype SVGFontElement = SVGFontElement { unSVGFontElement :: JSRef }
 instance Eq (SVGFontElement) where
   (SVGFontElement a) == (SVGFontElement b) = js_eq a b
 
-instance PToJSRef SVGFontElement where
-  pToJSRef = unSVGFontElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFontElement where
+  pToJSVal = unSVGFontElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFontElement where
-  pFromJSRef = SVGFontElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFontElement where
+  pFromJSVal = SVGFontElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFontElement where
+instance ToJSVal SVGFontElement where
   toJSRef = return . unSVGFontElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFontElement where
+instance FromJSVal SVGFontElement where
   fromJSRef = return . fmap SVGFontElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18266,19 +18266,19 @@ newtype SVGFontFaceElement = SVGFontFaceElement { unSVGFontFaceElement :: JSRef 
 instance Eq (SVGFontFaceElement) where
   (SVGFontFaceElement a) == (SVGFontFaceElement b) = js_eq a b
 
-instance PToJSRef SVGFontFaceElement where
-  pToJSRef = unSVGFontFaceElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFontFaceElement where
+  pToJSVal = unSVGFontFaceElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFontFaceElement where
-  pFromJSRef = SVGFontFaceElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFontFaceElement where
+  pFromJSVal = SVGFontFaceElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFontFaceElement where
+instance ToJSVal SVGFontFaceElement where
   toJSRef = return . unSVGFontFaceElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFontFaceElement where
+instance FromJSVal SVGFontFaceElement where
   fromJSRef = return . fmap SVGFontFaceElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18314,19 +18314,19 @@ newtype SVGFontFaceFormatElement = SVGFontFaceFormatElement { unSVGFontFaceForma
 instance Eq (SVGFontFaceFormatElement) where
   (SVGFontFaceFormatElement a) == (SVGFontFaceFormatElement b) = js_eq a b
 
-instance PToJSRef SVGFontFaceFormatElement where
-  pToJSRef = unSVGFontFaceFormatElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFontFaceFormatElement where
+  pToJSVal = unSVGFontFaceFormatElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFontFaceFormatElement where
-  pFromJSRef = SVGFontFaceFormatElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFontFaceFormatElement where
+  pFromJSVal = SVGFontFaceFormatElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFontFaceFormatElement where
+instance ToJSVal SVGFontFaceFormatElement where
   toJSRef = return . unSVGFontFaceFormatElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFontFaceFormatElement where
+instance FromJSVal SVGFontFaceFormatElement where
   fromJSRef = return . fmap SVGFontFaceFormatElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18362,19 +18362,19 @@ newtype SVGFontFaceNameElement = SVGFontFaceNameElement { unSVGFontFaceNameEleme
 instance Eq (SVGFontFaceNameElement) where
   (SVGFontFaceNameElement a) == (SVGFontFaceNameElement b) = js_eq a b
 
-instance PToJSRef SVGFontFaceNameElement where
-  pToJSRef = unSVGFontFaceNameElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFontFaceNameElement where
+  pToJSVal = unSVGFontFaceNameElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFontFaceNameElement where
-  pFromJSRef = SVGFontFaceNameElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFontFaceNameElement where
+  pFromJSVal = SVGFontFaceNameElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFontFaceNameElement where
+instance ToJSVal SVGFontFaceNameElement where
   toJSRef = return . unSVGFontFaceNameElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFontFaceNameElement where
+instance FromJSVal SVGFontFaceNameElement where
   fromJSRef = return . fmap SVGFontFaceNameElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18410,19 +18410,19 @@ newtype SVGFontFaceSrcElement = SVGFontFaceSrcElement { unSVGFontFaceSrcElement 
 instance Eq (SVGFontFaceSrcElement) where
   (SVGFontFaceSrcElement a) == (SVGFontFaceSrcElement b) = js_eq a b
 
-instance PToJSRef SVGFontFaceSrcElement where
-  pToJSRef = unSVGFontFaceSrcElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFontFaceSrcElement where
+  pToJSVal = unSVGFontFaceSrcElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFontFaceSrcElement where
-  pFromJSRef = SVGFontFaceSrcElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFontFaceSrcElement where
+  pFromJSVal = SVGFontFaceSrcElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFontFaceSrcElement where
+instance ToJSVal SVGFontFaceSrcElement where
   toJSRef = return . unSVGFontFaceSrcElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFontFaceSrcElement where
+instance FromJSVal SVGFontFaceSrcElement where
   fromJSRef = return . fmap SVGFontFaceSrcElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18458,19 +18458,19 @@ newtype SVGFontFaceUriElement = SVGFontFaceUriElement { unSVGFontFaceUriElement 
 instance Eq (SVGFontFaceUriElement) where
   (SVGFontFaceUriElement a) == (SVGFontFaceUriElement b) = js_eq a b
 
-instance PToJSRef SVGFontFaceUriElement where
-  pToJSRef = unSVGFontFaceUriElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGFontFaceUriElement where
+  pToJSVal = unSVGFontFaceUriElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGFontFaceUriElement where
-  pFromJSRef = SVGFontFaceUriElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGFontFaceUriElement where
+  pFromJSVal = SVGFontFaceUriElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGFontFaceUriElement where
+instance ToJSVal SVGFontFaceUriElement where
   toJSRef = return . unSVGFontFaceUriElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGFontFaceUriElement where
+instance FromJSVal SVGFontFaceUriElement where
   fromJSRef = return . fmap SVGFontFaceUriElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18507,19 +18507,19 @@ newtype SVGForeignObjectElement = SVGForeignObjectElement { unSVGForeignObjectEl
 instance Eq (SVGForeignObjectElement) where
   (SVGForeignObjectElement a) == (SVGForeignObjectElement b) = js_eq a b
 
-instance PToJSRef SVGForeignObjectElement where
-  pToJSRef = unSVGForeignObjectElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGForeignObjectElement where
+  pToJSVal = unSVGForeignObjectElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGForeignObjectElement where
-  pFromJSRef = SVGForeignObjectElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGForeignObjectElement where
+  pFromJSVal = SVGForeignObjectElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGForeignObjectElement where
+instance ToJSVal SVGForeignObjectElement where
   toJSRef = return . unSVGForeignObjectElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGForeignObjectElement where
+instance FromJSVal SVGForeignObjectElement where
   fromJSRef = return . fmap SVGForeignObjectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18557,19 +18557,19 @@ newtype SVGGElement = SVGGElement { unSVGGElement :: JSRef }
 instance Eq (SVGGElement) where
   (SVGGElement a) == (SVGGElement b) = js_eq a b
 
-instance PToJSRef SVGGElement where
-  pToJSRef = unSVGGElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGGElement where
+  pToJSVal = unSVGGElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGGElement where
-  pFromJSRef = SVGGElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGGElement where
+  pFromJSVal = SVGGElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGGElement where
+instance ToJSVal SVGGElement where
   toJSRef = return . unSVGGElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGGElement where
+instance FromJSVal SVGGElement where
   fromJSRef = return . fmap SVGGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18606,19 +18606,19 @@ newtype SVGGlyphElement = SVGGlyphElement { unSVGGlyphElement :: JSRef }
 instance Eq (SVGGlyphElement) where
   (SVGGlyphElement a) == (SVGGlyphElement b) = js_eq a b
 
-instance PToJSRef SVGGlyphElement where
-  pToJSRef = unSVGGlyphElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGGlyphElement where
+  pToJSVal = unSVGGlyphElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGGlyphElement where
-  pFromJSRef = SVGGlyphElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGGlyphElement where
+  pFromJSVal = SVGGlyphElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGGlyphElement where
+instance ToJSVal SVGGlyphElement where
   toJSRef = return . unSVGGlyphElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGGlyphElement where
+instance FromJSVal SVGGlyphElement where
   fromJSRef = return . fmap SVGGlyphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18654,19 +18654,19 @@ newtype SVGGlyphRefElement = SVGGlyphRefElement { unSVGGlyphRefElement :: JSRef 
 instance Eq (SVGGlyphRefElement) where
   (SVGGlyphRefElement a) == (SVGGlyphRefElement b) = js_eq a b
 
-instance PToJSRef SVGGlyphRefElement where
-  pToJSRef = unSVGGlyphRefElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGGlyphRefElement where
+  pToJSVal = unSVGGlyphRefElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGGlyphRefElement where
-  pFromJSRef = SVGGlyphRefElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGGlyphRefElement where
+  pFromJSVal = SVGGlyphRefElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGGlyphRefElement where
+instance ToJSVal SVGGlyphRefElement where
   toJSRef = return . unSVGGlyphRefElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGGlyphRefElement where
+instance FromJSVal SVGGlyphRefElement where
   fromJSRef = return . fmap SVGGlyphRefElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18702,19 +18702,19 @@ newtype SVGGradientElement = SVGGradientElement { unSVGGradientElement :: JSRef 
 instance Eq (SVGGradientElement) where
   (SVGGradientElement a) == (SVGGradientElement b) = js_eq a b
 
-instance PToJSRef SVGGradientElement where
-  pToJSRef = unSVGGradientElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGGradientElement where
+  pToJSVal = unSVGGradientElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGGradientElement where
-  pFromJSRef = SVGGradientElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGGradientElement where
+  pFromJSVal = SVGGradientElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGGradientElement where
+instance ToJSVal SVGGradientElement where
   toJSRef = return . unSVGGradientElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGGradientElement where
+instance FromJSVal SVGGradientElement where
   fromJSRef = return . fmap SVGGradientElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18755,19 +18755,19 @@ newtype SVGGraphicsElement = SVGGraphicsElement { unSVGGraphicsElement :: JSRef 
 instance Eq (SVGGraphicsElement) where
   (SVGGraphicsElement a) == (SVGGraphicsElement b) = js_eq a b
 
-instance PToJSRef SVGGraphicsElement where
-  pToJSRef = unSVGGraphicsElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGGraphicsElement where
+  pToJSVal = unSVGGraphicsElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGGraphicsElement where
-  pFromJSRef = SVGGraphicsElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGGraphicsElement where
+  pFromJSVal = SVGGraphicsElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGGraphicsElement where
+instance ToJSVal SVGGraphicsElement where
   toJSRef = return . unSVGGraphicsElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGGraphicsElement where
+instance FromJSVal SVGGraphicsElement where
   fromJSRef = return . fmap SVGGraphicsElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18808,19 +18808,19 @@ newtype SVGHKernElement = SVGHKernElement { unSVGHKernElement :: JSRef }
 instance Eq (SVGHKernElement) where
   (SVGHKernElement a) == (SVGHKernElement b) = js_eq a b
 
-instance PToJSRef SVGHKernElement where
-  pToJSRef = unSVGHKernElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGHKernElement where
+  pToJSVal = unSVGHKernElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGHKernElement where
-  pFromJSRef = SVGHKernElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGHKernElement where
+  pFromJSVal = SVGHKernElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGHKernElement where
+instance ToJSVal SVGHKernElement where
   toJSRef = return . unSVGHKernElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGHKernElement where
+instance FromJSVal SVGHKernElement where
   fromJSRef = return . fmap SVGHKernElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18857,19 +18857,19 @@ newtype SVGImageElement = SVGImageElement { unSVGImageElement :: JSRef }
 instance Eq (SVGImageElement) where
   (SVGImageElement a) == (SVGImageElement b) = js_eq a b
 
-instance PToJSRef SVGImageElement where
-  pToJSRef = unSVGImageElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGImageElement where
+  pToJSVal = unSVGImageElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGImageElement where
-  pFromJSRef = SVGImageElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGImageElement where
+  pFromJSVal = SVGImageElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGImageElement where
+instance ToJSVal SVGImageElement where
   toJSRef = return . unSVGImageElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGImageElement where
+instance FromJSVal SVGImageElement where
   fromJSRef = return . fmap SVGImageElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18900,19 +18900,19 @@ newtype SVGLength = SVGLength { unSVGLength :: JSRef }
 instance Eq (SVGLength) where
   (SVGLength a) == (SVGLength b) = js_eq a b
 
-instance PToJSRef SVGLength where
-  pToJSRef = unSVGLength
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGLength where
+  pToJSVal = unSVGLength
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGLength where
-  pFromJSRef = SVGLength
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGLength where
+  pFromJSVal = SVGLength
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGLength where
+instance ToJSVal SVGLength where
   toJSRef = return . unSVGLength
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGLength where
+instance FromJSVal SVGLength where
   fromJSRef = return . fmap SVGLength . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18938,19 +18938,19 @@ newtype SVGLengthList = SVGLengthList { unSVGLengthList :: JSRef }
 instance Eq (SVGLengthList) where
   (SVGLengthList a) == (SVGLengthList b) = js_eq a b
 
-instance PToJSRef SVGLengthList where
-  pToJSRef = unSVGLengthList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGLengthList where
+  pToJSVal = unSVGLengthList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGLengthList where
-  pFromJSRef = SVGLengthList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGLengthList where
+  pFromJSVal = SVGLengthList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGLengthList where
+instance ToJSVal SVGLengthList where
   toJSRef = return . unSVGLengthList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGLengthList where
+instance FromJSVal SVGLengthList where
   fromJSRef = return . fmap SVGLengthList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -18983,19 +18983,19 @@ newtype SVGLineElement = SVGLineElement { unSVGLineElement :: JSRef }
 instance Eq (SVGLineElement) where
   (SVGLineElement a) == (SVGLineElement b) = js_eq a b
 
-instance PToJSRef SVGLineElement where
-  pToJSRef = unSVGLineElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGLineElement where
+  pToJSVal = unSVGLineElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGLineElement where
-  pFromJSRef = SVGLineElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGLineElement where
+  pFromJSVal = SVGLineElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGLineElement where
+instance ToJSVal SVGLineElement where
   toJSRef = return . unSVGLineElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGLineElement where
+instance FromJSVal SVGLineElement where
   fromJSRef = return . fmap SVGLineElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19033,19 +19033,19 @@ newtype SVGLinearGradientElement = SVGLinearGradientElement { unSVGLinearGradien
 instance Eq (SVGLinearGradientElement) where
   (SVGLinearGradientElement a) == (SVGLinearGradientElement b) = js_eq a b
 
-instance PToJSRef SVGLinearGradientElement where
-  pToJSRef = unSVGLinearGradientElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGLinearGradientElement where
+  pToJSVal = unSVGLinearGradientElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGLinearGradientElement where
-  pFromJSRef = SVGLinearGradientElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGLinearGradientElement where
+  pFromJSVal = SVGLinearGradientElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGLinearGradientElement where
+instance ToJSVal SVGLinearGradientElement where
   toJSRef = return . unSVGLinearGradientElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGLinearGradientElement where
+instance FromJSVal SVGLinearGradientElement where
   fromJSRef = return . fmap SVGLinearGradientElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19082,19 +19082,19 @@ newtype SVGMPathElement = SVGMPathElement { unSVGMPathElement :: JSRef }
 instance Eq (SVGMPathElement) where
   (SVGMPathElement a) == (SVGMPathElement b) = js_eq a b
 
-instance PToJSRef SVGMPathElement where
-  pToJSRef = unSVGMPathElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGMPathElement where
+  pToJSVal = unSVGMPathElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGMPathElement where
-  pFromJSRef = SVGMPathElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGMPathElement where
+  pFromJSVal = SVGMPathElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGMPathElement where
+instance ToJSVal SVGMPathElement where
   toJSRef = return . unSVGMPathElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGMPathElement where
+instance FromJSVal SVGMPathElement where
   fromJSRef = return . fmap SVGMPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19130,19 +19130,19 @@ newtype SVGMarkerElement = SVGMarkerElement { unSVGMarkerElement :: JSRef }
 instance Eq (SVGMarkerElement) where
   (SVGMarkerElement a) == (SVGMarkerElement b) = js_eq a b
 
-instance PToJSRef SVGMarkerElement where
-  pToJSRef = unSVGMarkerElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGMarkerElement where
+  pToJSVal = unSVGMarkerElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGMarkerElement where
-  pFromJSRef = SVGMarkerElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGMarkerElement where
+  pFromJSVal = SVGMarkerElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGMarkerElement where
+instance ToJSVal SVGMarkerElement where
   toJSRef = return . unSVGMarkerElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGMarkerElement where
+instance FromJSVal SVGMarkerElement where
   fromJSRef = return . fmap SVGMarkerElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19178,19 +19178,19 @@ newtype SVGMaskElement = SVGMaskElement { unSVGMaskElement :: JSRef }
 instance Eq (SVGMaskElement) where
   (SVGMaskElement a) == (SVGMaskElement b) = js_eq a b
 
-instance PToJSRef SVGMaskElement where
-  pToJSRef = unSVGMaskElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGMaskElement where
+  pToJSVal = unSVGMaskElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGMaskElement where
-  pFromJSRef = SVGMaskElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGMaskElement where
+  pFromJSVal = SVGMaskElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGMaskElement where
+instance ToJSVal SVGMaskElement where
   toJSRef = return . unSVGMaskElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGMaskElement where
+instance FromJSVal SVGMaskElement where
   fromJSRef = return . fmap SVGMaskElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19220,19 +19220,19 @@ newtype SVGMatrix = SVGMatrix { unSVGMatrix :: JSRef }
 instance Eq (SVGMatrix) where
   (SVGMatrix a) == (SVGMatrix b) = js_eq a b
 
-instance PToJSRef SVGMatrix where
-  pToJSRef = unSVGMatrix
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGMatrix where
+  pToJSVal = unSVGMatrix
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGMatrix where
-  pFromJSRef = SVGMatrix
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGMatrix where
+  pFromJSVal = SVGMatrix
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGMatrix where
+instance ToJSVal SVGMatrix where
   toJSRef = return . unSVGMatrix
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGMatrix where
+instance FromJSVal SVGMatrix where
   fromJSRef = return . fmap SVGMatrix . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19264,19 +19264,19 @@ newtype SVGMetadataElement = SVGMetadataElement { unSVGMetadataElement :: JSRef 
 instance Eq (SVGMetadataElement) where
   (SVGMetadataElement a) == (SVGMetadataElement b) = js_eq a b
 
-instance PToJSRef SVGMetadataElement where
-  pToJSRef = unSVGMetadataElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGMetadataElement where
+  pToJSVal = unSVGMetadataElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGMetadataElement where
-  pFromJSRef = SVGMetadataElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGMetadataElement where
+  pFromJSVal = SVGMetadataElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGMetadataElement where
+instance ToJSVal SVGMetadataElement where
   toJSRef = return . unSVGMetadataElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGMetadataElement where
+instance FromJSVal SVGMetadataElement where
   fromJSRef = return . fmap SVGMetadataElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19312,19 +19312,19 @@ newtype SVGMissingGlyphElement = SVGMissingGlyphElement { unSVGMissingGlyphEleme
 instance Eq (SVGMissingGlyphElement) where
   (SVGMissingGlyphElement a) == (SVGMissingGlyphElement b) = js_eq a b
 
-instance PToJSRef SVGMissingGlyphElement where
-  pToJSRef = unSVGMissingGlyphElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGMissingGlyphElement where
+  pToJSVal = unSVGMissingGlyphElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGMissingGlyphElement where
-  pFromJSRef = SVGMissingGlyphElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGMissingGlyphElement where
+  pFromJSVal = SVGMissingGlyphElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGMissingGlyphElement where
+instance ToJSVal SVGMissingGlyphElement where
   toJSRef = return . unSVGMissingGlyphElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGMissingGlyphElement where
+instance FromJSVal SVGMissingGlyphElement where
   fromJSRef = return . fmap SVGMissingGlyphElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19354,19 +19354,19 @@ newtype SVGNumber = SVGNumber { unSVGNumber :: JSRef }
 instance Eq (SVGNumber) where
   (SVGNumber a) == (SVGNumber b) = js_eq a b
 
-instance PToJSRef SVGNumber where
-  pToJSRef = unSVGNumber
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGNumber where
+  pToJSVal = unSVGNumber
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGNumber where
-  pFromJSRef = SVGNumber
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGNumber where
+  pFromJSVal = SVGNumber
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGNumber where
+instance ToJSVal SVGNumber where
   toJSRef = return . unSVGNumber
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGNumber where
+instance FromJSVal SVGNumber where
   fromJSRef = return . fmap SVGNumber . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19392,19 +19392,19 @@ newtype SVGNumberList = SVGNumberList { unSVGNumberList :: JSRef }
 instance Eq (SVGNumberList) where
   (SVGNumberList a) == (SVGNumberList b) = js_eq a b
 
-instance PToJSRef SVGNumberList where
-  pToJSRef = unSVGNumberList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGNumberList where
+  pToJSVal = unSVGNumberList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGNumberList where
-  pFromJSRef = SVGNumberList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGNumberList where
+  pFromJSVal = SVGNumberList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGNumberList where
+instance ToJSVal SVGNumberList where
   toJSRef = return . unSVGNumberList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGNumberList where
+instance FromJSVal SVGNumberList where
   fromJSRef = return . fmap SVGNumberList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19434,19 +19434,19 @@ newtype SVGPaint = SVGPaint { unSVGPaint :: JSRef }
 instance Eq (SVGPaint) where
   (SVGPaint a) == (SVGPaint b) = js_eq a b
 
-instance PToJSRef SVGPaint where
-  pToJSRef = unSVGPaint
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPaint where
+  pToJSVal = unSVGPaint
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPaint where
-  pFromJSRef = SVGPaint
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPaint where
+  pFromJSVal = SVGPaint
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPaint where
+instance ToJSVal SVGPaint where
   toJSRef = return . unSVGPaint
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPaint where
+instance FromJSVal SVGPaint where
   fromJSRef = return . fmap SVGPaint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19481,19 +19481,19 @@ newtype SVGPathElement = SVGPathElement { unSVGPathElement :: JSRef }
 instance Eq (SVGPathElement) where
   (SVGPathElement a) == (SVGPathElement b) = js_eq a b
 
-instance PToJSRef SVGPathElement where
-  pToJSRef = unSVGPathElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathElement where
+  pToJSVal = unSVGPathElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathElement where
-  pFromJSRef = SVGPathElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathElement where
+  pFromJSVal = SVGPathElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathElement where
+instance ToJSVal SVGPathElement where
   toJSRef = return . unSVGPathElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathElement where
+instance FromJSVal SVGPathElement where
   fromJSRef = return . fmap SVGPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19524,19 +19524,19 @@ newtype SVGPathSeg = SVGPathSeg { unSVGPathSeg :: JSRef }
 instance Eq (SVGPathSeg) where
   (SVGPathSeg a) == (SVGPathSeg b) = js_eq a b
 
-instance PToJSRef SVGPathSeg where
-  pToJSRef = unSVGPathSeg
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSeg where
+  pToJSVal = unSVGPathSeg
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSeg where
-  pFromJSRef = SVGPathSeg
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSeg where
+  pFromJSVal = SVGPathSeg
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSeg where
+instance ToJSVal SVGPathSeg where
   toJSRef = return . unSVGPathSeg
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSeg where
+instance FromJSVal SVGPathSeg where
   fromJSRef = return . fmap SVGPathSeg . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19570,19 +19570,19 @@ newtype SVGPathSegArcAbs = SVGPathSegArcAbs { unSVGPathSegArcAbs :: JSRef }
 instance Eq (SVGPathSegArcAbs) where
   (SVGPathSegArcAbs a) == (SVGPathSegArcAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegArcAbs where
-  pToJSRef = unSVGPathSegArcAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegArcAbs where
+  pToJSVal = unSVGPathSegArcAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegArcAbs where
-  pFromJSRef = SVGPathSegArcAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegArcAbs where
+  pFromJSVal = SVGPathSegArcAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegArcAbs where
+instance ToJSVal SVGPathSegArcAbs where
   toJSRef = return . unSVGPathSegArcAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegArcAbs where
+instance FromJSVal SVGPathSegArcAbs where
   fromJSRef = return . fmap SVGPathSegArcAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19612,19 +19612,19 @@ newtype SVGPathSegArcRel = SVGPathSegArcRel { unSVGPathSegArcRel :: JSRef }
 instance Eq (SVGPathSegArcRel) where
   (SVGPathSegArcRel a) == (SVGPathSegArcRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegArcRel where
-  pToJSRef = unSVGPathSegArcRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegArcRel where
+  pToJSVal = unSVGPathSegArcRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegArcRel where
-  pFromJSRef = SVGPathSegArcRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegArcRel where
+  pFromJSVal = SVGPathSegArcRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegArcRel where
+instance ToJSVal SVGPathSegArcRel where
   toJSRef = return . unSVGPathSegArcRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegArcRel where
+instance FromJSVal SVGPathSegArcRel where
   fromJSRef = return . fmap SVGPathSegArcRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19654,19 +19654,19 @@ newtype SVGPathSegClosePath = SVGPathSegClosePath { unSVGPathSegClosePath :: JSR
 instance Eq (SVGPathSegClosePath) where
   (SVGPathSegClosePath a) == (SVGPathSegClosePath b) = js_eq a b
 
-instance PToJSRef SVGPathSegClosePath where
-  pToJSRef = unSVGPathSegClosePath
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegClosePath where
+  pToJSVal = unSVGPathSegClosePath
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegClosePath where
-  pFromJSRef = SVGPathSegClosePath
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegClosePath where
+  pFromJSVal = SVGPathSegClosePath
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegClosePath where
+instance ToJSVal SVGPathSegClosePath where
   toJSRef = return . unSVGPathSegClosePath
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegClosePath where
+instance FromJSVal SVGPathSegClosePath where
   fromJSRef = return . fmap SVGPathSegClosePath . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19696,19 +19696,19 @@ newtype SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs { unSVGPathSegCurv
 instance Eq (SVGPathSegCurvetoCubicAbs) where
   (SVGPathSegCurvetoCubicAbs a) == (SVGPathSegCurvetoCubicAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoCubicAbs where
-  pToJSRef = unSVGPathSegCurvetoCubicAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoCubicAbs where
+  pToJSVal = unSVGPathSegCurvetoCubicAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoCubicAbs where
-  pFromJSRef = SVGPathSegCurvetoCubicAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoCubicAbs where
+  pFromJSVal = SVGPathSegCurvetoCubicAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoCubicAbs where
+instance ToJSVal SVGPathSegCurvetoCubicAbs where
   toJSRef = return . unSVGPathSegCurvetoCubicAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoCubicAbs where
+instance FromJSVal SVGPathSegCurvetoCubicAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19738,19 +19738,19 @@ newtype SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel { unSVGPathSegCurv
 instance Eq (SVGPathSegCurvetoCubicRel) where
   (SVGPathSegCurvetoCubicRel a) == (SVGPathSegCurvetoCubicRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoCubicRel where
-  pToJSRef = unSVGPathSegCurvetoCubicRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoCubicRel where
+  pToJSVal = unSVGPathSegCurvetoCubicRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoCubicRel where
-  pFromJSRef = SVGPathSegCurvetoCubicRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoCubicRel where
+  pFromJSVal = SVGPathSegCurvetoCubicRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoCubicRel where
+instance ToJSVal SVGPathSegCurvetoCubicRel where
   toJSRef = return . unSVGPathSegCurvetoCubicRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoCubicRel where
+instance FromJSVal SVGPathSegCurvetoCubicRel where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19780,19 +19780,19 @@ newtype SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs { unSV
 instance Eq (SVGPathSegCurvetoCubicSmoothAbs) where
   (SVGPathSegCurvetoCubicSmoothAbs a) == (SVGPathSegCurvetoCubicSmoothAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoCubicSmoothAbs where
-  pToJSRef = unSVGPathSegCurvetoCubicSmoothAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoCubicSmoothAbs where
+  pToJSVal = unSVGPathSegCurvetoCubicSmoothAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoCubicSmoothAbs where
-  pFromJSRef = SVGPathSegCurvetoCubicSmoothAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoCubicSmoothAbs where
+  pFromJSVal = SVGPathSegCurvetoCubicSmoothAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoCubicSmoothAbs where
+instance ToJSVal SVGPathSegCurvetoCubicSmoothAbs where
   toJSRef = return . unSVGPathSegCurvetoCubicSmoothAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoCubicSmoothAbs where
+instance FromJSVal SVGPathSegCurvetoCubicSmoothAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicSmoothAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19822,19 +19822,19 @@ newtype SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel { unSV
 instance Eq (SVGPathSegCurvetoCubicSmoothRel) where
   (SVGPathSegCurvetoCubicSmoothRel a) == (SVGPathSegCurvetoCubicSmoothRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoCubicSmoothRel where
-  pToJSRef = unSVGPathSegCurvetoCubicSmoothRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoCubicSmoothRel where
+  pToJSVal = unSVGPathSegCurvetoCubicSmoothRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoCubicSmoothRel where
-  pFromJSRef = SVGPathSegCurvetoCubicSmoothRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoCubicSmoothRel where
+  pFromJSVal = SVGPathSegCurvetoCubicSmoothRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoCubicSmoothRel where
+instance ToJSVal SVGPathSegCurvetoCubicSmoothRel where
   toJSRef = return . unSVGPathSegCurvetoCubicSmoothRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoCubicSmoothRel where
+instance FromJSVal SVGPathSegCurvetoCubicSmoothRel where
   fromJSRef = return . fmap SVGPathSegCurvetoCubicSmoothRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19864,19 +19864,19 @@ newtype SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs { unSVGPat
 instance Eq (SVGPathSegCurvetoQuadraticAbs) where
   (SVGPathSegCurvetoQuadraticAbs a) == (SVGPathSegCurvetoQuadraticAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoQuadraticAbs where
-  pToJSRef = unSVGPathSegCurvetoQuadraticAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoQuadraticAbs where
+  pToJSVal = unSVGPathSegCurvetoQuadraticAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoQuadraticAbs where
-  pFromJSRef = SVGPathSegCurvetoQuadraticAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoQuadraticAbs where
+  pFromJSVal = SVGPathSegCurvetoQuadraticAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoQuadraticAbs where
+instance ToJSVal SVGPathSegCurvetoQuadraticAbs where
   toJSRef = return . unSVGPathSegCurvetoQuadraticAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoQuadraticAbs where
+instance FromJSVal SVGPathSegCurvetoQuadraticAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19906,19 +19906,19 @@ newtype SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel { unSVGPat
 instance Eq (SVGPathSegCurvetoQuadraticRel) where
   (SVGPathSegCurvetoQuadraticRel a) == (SVGPathSegCurvetoQuadraticRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoQuadraticRel where
-  pToJSRef = unSVGPathSegCurvetoQuadraticRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoQuadraticRel where
+  pToJSVal = unSVGPathSegCurvetoQuadraticRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoQuadraticRel where
-  pFromJSRef = SVGPathSegCurvetoQuadraticRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoQuadraticRel where
+  pFromJSVal = SVGPathSegCurvetoQuadraticRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoQuadraticRel where
+instance ToJSVal SVGPathSegCurvetoQuadraticRel where
   toJSRef = return . unSVGPathSegCurvetoQuadraticRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoQuadraticRel where
+instance FromJSVal SVGPathSegCurvetoQuadraticRel where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19948,19 +19948,19 @@ newtype SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAb
 instance Eq (SVGPathSegCurvetoQuadraticSmoothAbs) where
   (SVGPathSegCurvetoQuadraticSmoothAbs a) == (SVGPathSegCurvetoQuadraticSmoothAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
-  pToJSRef = unSVGPathSegCurvetoQuadraticSmoothAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
+  pToJSVal = unSVGPathSegCurvetoQuadraticSmoothAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
-  pFromJSRef = SVGPathSegCurvetoQuadraticSmoothAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
+  pFromJSVal = SVGPathSegCurvetoQuadraticSmoothAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
+instance ToJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
   toJSRef = return . unSVGPathSegCurvetoQuadraticSmoothAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoQuadraticSmoothAbs where
+instance FromJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticSmoothAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -19990,19 +19990,19 @@ newtype SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRe
 instance Eq (SVGPathSegCurvetoQuadraticSmoothRel) where
   (SVGPathSegCurvetoQuadraticSmoothRel a) == (SVGPathSegCurvetoQuadraticSmoothRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegCurvetoQuadraticSmoothRel where
-  pToJSRef = unSVGPathSegCurvetoQuadraticSmoothRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegCurvetoQuadraticSmoothRel where
+  pToJSVal = unSVGPathSegCurvetoQuadraticSmoothRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegCurvetoQuadraticSmoothRel where
-  pFromJSRef = SVGPathSegCurvetoQuadraticSmoothRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegCurvetoQuadraticSmoothRel where
+  pFromJSVal = SVGPathSegCurvetoQuadraticSmoothRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegCurvetoQuadraticSmoothRel where
+instance ToJSVal SVGPathSegCurvetoQuadraticSmoothRel where
   toJSRef = return . unSVGPathSegCurvetoQuadraticSmoothRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegCurvetoQuadraticSmoothRel where
+instance FromJSVal SVGPathSegCurvetoQuadraticSmoothRel where
   fromJSRef = return . fmap SVGPathSegCurvetoQuadraticSmoothRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20032,19 +20032,19 @@ newtype SVGPathSegLinetoAbs = SVGPathSegLinetoAbs { unSVGPathSegLinetoAbs :: JSR
 instance Eq (SVGPathSegLinetoAbs) where
   (SVGPathSegLinetoAbs a) == (SVGPathSegLinetoAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegLinetoAbs where
-  pToJSRef = unSVGPathSegLinetoAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegLinetoAbs where
+  pToJSVal = unSVGPathSegLinetoAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegLinetoAbs where
-  pFromJSRef = SVGPathSegLinetoAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegLinetoAbs where
+  pFromJSVal = SVGPathSegLinetoAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegLinetoAbs where
+instance ToJSVal SVGPathSegLinetoAbs where
   toJSRef = return . unSVGPathSegLinetoAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegLinetoAbs where
+instance FromJSVal SVGPathSegLinetoAbs where
   fromJSRef = return . fmap SVGPathSegLinetoAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20074,19 +20074,19 @@ newtype SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs { unSVGPat
 instance Eq (SVGPathSegLinetoHorizontalAbs) where
   (SVGPathSegLinetoHorizontalAbs a) == (SVGPathSegLinetoHorizontalAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegLinetoHorizontalAbs where
-  pToJSRef = unSVGPathSegLinetoHorizontalAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegLinetoHorizontalAbs where
+  pToJSVal = unSVGPathSegLinetoHorizontalAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegLinetoHorizontalAbs where
-  pFromJSRef = SVGPathSegLinetoHorizontalAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegLinetoHorizontalAbs where
+  pFromJSVal = SVGPathSegLinetoHorizontalAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegLinetoHorizontalAbs where
+instance ToJSVal SVGPathSegLinetoHorizontalAbs where
   toJSRef = return . unSVGPathSegLinetoHorizontalAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegLinetoHorizontalAbs where
+instance FromJSVal SVGPathSegLinetoHorizontalAbs where
   fromJSRef = return . fmap SVGPathSegLinetoHorizontalAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20116,19 +20116,19 @@ newtype SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel { unSVGPat
 instance Eq (SVGPathSegLinetoHorizontalRel) where
   (SVGPathSegLinetoHorizontalRel a) == (SVGPathSegLinetoHorizontalRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegLinetoHorizontalRel where
-  pToJSRef = unSVGPathSegLinetoHorizontalRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegLinetoHorizontalRel where
+  pToJSVal = unSVGPathSegLinetoHorizontalRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegLinetoHorizontalRel where
-  pFromJSRef = SVGPathSegLinetoHorizontalRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegLinetoHorizontalRel where
+  pFromJSVal = SVGPathSegLinetoHorizontalRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegLinetoHorizontalRel where
+instance ToJSVal SVGPathSegLinetoHorizontalRel where
   toJSRef = return . unSVGPathSegLinetoHorizontalRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegLinetoHorizontalRel where
+instance FromJSVal SVGPathSegLinetoHorizontalRel where
   fromJSRef = return . fmap SVGPathSegLinetoHorizontalRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20158,19 +20158,19 @@ newtype SVGPathSegLinetoRel = SVGPathSegLinetoRel { unSVGPathSegLinetoRel :: JSR
 instance Eq (SVGPathSegLinetoRel) where
   (SVGPathSegLinetoRel a) == (SVGPathSegLinetoRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegLinetoRel where
-  pToJSRef = unSVGPathSegLinetoRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegLinetoRel where
+  pToJSVal = unSVGPathSegLinetoRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegLinetoRel where
-  pFromJSRef = SVGPathSegLinetoRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegLinetoRel where
+  pFromJSVal = SVGPathSegLinetoRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegLinetoRel where
+instance ToJSVal SVGPathSegLinetoRel where
   toJSRef = return . unSVGPathSegLinetoRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegLinetoRel where
+instance FromJSVal SVGPathSegLinetoRel where
   fromJSRef = return . fmap SVGPathSegLinetoRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20200,19 +20200,19 @@ newtype SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs { unSVGPathSeg
 instance Eq (SVGPathSegLinetoVerticalAbs) where
   (SVGPathSegLinetoVerticalAbs a) == (SVGPathSegLinetoVerticalAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegLinetoVerticalAbs where
-  pToJSRef = unSVGPathSegLinetoVerticalAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegLinetoVerticalAbs where
+  pToJSVal = unSVGPathSegLinetoVerticalAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegLinetoVerticalAbs where
-  pFromJSRef = SVGPathSegLinetoVerticalAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegLinetoVerticalAbs where
+  pFromJSVal = SVGPathSegLinetoVerticalAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegLinetoVerticalAbs where
+instance ToJSVal SVGPathSegLinetoVerticalAbs where
   toJSRef = return . unSVGPathSegLinetoVerticalAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegLinetoVerticalAbs where
+instance FromJSVal SVGPathSegLinetoVerticalAbs where
   fromJSRef = return . fmap SVGPathSegLinetoVerticalAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20242,19 +20242,19 @@ newtype SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel { unSVGPathSeg
 instance Eq (SVGPathSegLinetoVerticalRel) where
   (SVGPathSegLinetoVerticalRel a) == (SVGPathSegLinetoVerticalRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegLinetoVerticalRel where
-  pToJSRef = unSVGPathSegLinetoVerticalRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegLinetoVerticalRel where
+  pToJSVal = unSVGPathSegLinetoVerticalRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegLinetoVerticalRel where
-  pFromJSRef = SVGPathSegLinetoVerticalRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegLinetoVerticalRel where
+  pFromJSVal = SVGPathSegLinetoVerticalRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegLinetoVerticalRel where
+instance ToJSVal SVGPathSegLinetoVerticalRel where
   toJSRef = return . unSVGPathSegLinetoVerticalRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegLinetoVerticalRel where
+instance FromJSVal SVGPathSegLinetoVerticalRel where
   fromJSRef = return . fmap SVGPathSegLinetoVerticalRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20281,19 +20281,19 @@ newtype SVGPathSegList = SVGPathSegList { unSVGPathSegList :: JSRef }
 instance Eq (SVGPathSegList) where
   (SVGPathSegList a) == (SVGPathSegList b) = js_eq a b
 
-instance PToJSRef SVGPathSegList where
-  pToJSRef = unSVGPathSegList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegList where
+  pToJSVal = unSVGPathSegList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegList where
-  pFromJSRef = SVGPathSegList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegList where
+  pFromJSVal = SVGPathSegList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegList where
+instance ToJSVal SVGPathSegList where
   toJSRef = return . unSVGPathSegList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegList where
+instance FromJSVal SVGPathSegList where
   fromJSRef = return . fmap SVGPathSegList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20322,19 +20322,19 @@ newtype SVGPathSegMovetoAbs = SVGPathSegMovetoAbs { unSVGPathSegMovetoAbs :: JSR
 instance Eq (SVGPathSegMovetoAbs) where
   (SVGPathSegMovetoAbs a) == (SVGPathSegMovetoAbs b) = js_eq a b
 
-instance PToJSRef SVGPathSegMovetoAbs where
-  pToJSRef = unSVGPathSegMovetoAbs
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegMovetoAbs where
+  pToJSVal = unSVGPathSegMovetoAbs
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegMovetoAbs where
-  pFromJSRef = SVGPathSegMovetoAbs
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegMovetoAbs where
+  pFromJSVal = SVGPathSegMovetoAbs
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegMovetoAbs where
+instance ToJSVal SVGPathSegMovetoAbs where
   toJSRef = return . unSVGPathSegMovetoAbs
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegMovetoAbs where
+instance FromJSVal SVGPathSegMovetoAbs where
   fromJSRef = return . fmap SVGPathSegMovetoAbs . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20364,19 +20364,19 @@ newtype SVGPathSegMovetoRel = SVGPathSegMovetoRel { unSVGPathSegMovetoRel :: JSR
 instance Eq (SVGPathSegMovetoRel) where
   (SVGPathSegMovetoRel a) == (SVGPathSegMovetoRel b) = js_eq a b
 
-instance PToJSRef SVGPathSegMovetoRel where
-  pToJSRef = unSVGPathSegMovetoRel
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPathSegMovetoRel where
+  pToJSVal = unSVGPathSegMovetoRel
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPathSegMovetoRel where
-  pFromJSRef = SVGPathSegMovetoRel
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPathSegMovetoRel where
+  pFromJSVal = SVGPathSegMovetoRel
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPathSegMovetoRel where
+instance ToJSVal SVGPathSegMovetoRel where
   toJSRef = return . unSVGPathSegMovetoRel
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPathSegMovetoRel where
+instance FromJSVal SVGPathSegMovetoRel where
   fromJSRef = return . fmap SVGPathSegMovetoRel . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20409,19 +20409,19 @@ newtype SVGPatternElement = SVGPatternElement { unSVGPatternElement :: JSRef }
 instance Eq (SVGPatternElement) where
   (SVGPatternElement a) == (SVGPatternElement b) = js_eq a b
 
-instance PToJSRef SVGPatternElement where
-  pToJSRef = unSVGPatternElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPatternElement where
+  pToJSVal = unSVGPatternElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPatternElement where
-  pFromJSRef = SVGPatternElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPatternElement where
+  pFromJSVal = SVGPatternElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPatternElement where
+instance ToJSVal SVGPatternElement where
   toJSRef = return . unSVGPatternElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPatternElement where
+instance FromJSVal SVGPatternElement where
   fromJSRef = return . fmap SVGPatternElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20451,19 +20451,19 @@ newtype SVGPoint = SVGPoint { unSVGPoint :: JSRef }
 instance Eq (SVGPoint) where
   (SVGPoint a) == (SVGPoint b) = js_eq a b
 
-instance PToJSRef SVGPoint where
-  pToJSRef = unSVGPoint
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPoint where
+  pToJSVal = unSVGPoint
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPoint where
-  pFromJSRef = SVGPoint
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPoint where
+  pFromJSVal = SVGPoint
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPoint where
+instance ToJSVal SVGPoint where
   toJSRef = return . unSVGPoint
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPoint where
+instance FromJSVal SVGPoint where
   fromJSRef = return . fmap SVGPoint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20489,19 +20489,19 @@ newtype SVGPointList = SVGPointList { unSVGPointList :: JSRef }
 instance Eq (SVGPointList) where
   (SVGPointList a) == (SVGPointList b) = js_eq a b
 
-instance PToJSRef SVGPointList where
-  pToJSRef = unSVGPointList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPointList where
+  pToJSVal = unSVGPointList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPointList where
-  pFromJSRef = SVGPointList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPointList where
+  pFromJSVal = SVGPointList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPointList where
+instance ToJSVal SVGPointList where
   toJSRef = return . unSVGPointList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPointList where
+instance FromJSVal SVGPointList where
   fromJSRef = return . fmap SVGPointList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20534,19 +20534,19 @@ newtype SVGPolygonElement = SVGPolygonElement { unSVGPolygonElement :: JSRef }
 instance Eq (SVGPolygonElement) where
   (SVGPolygonElement a) == (SVGPolygonElement b) = js_eq a b
 
-instance PToJSRef SVGPolygonElement where
-  pToJSRef = unSVGPolygonElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPolygonElement where
+  pToJSVal = unSVGPolygonElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPolygonElement where
-  pFromJSRef = SVGPolygonElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPolygonElement where
+  pFromJSVal = SVGPolygonElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPolygonElement where
+instance ToJSVal SVGPolygonElement where
   toJSRef = return . unSVGPolygonElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPolygonElement where
+instance FromJSVal SVGPolygonElement where
   fromJSRef = return . fmap SVGPolygonElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20584,19 +20584,19 @@ newtype SVGPolylineElement = SVGPolylineElement { unSVGPolylineElement :: JSRef 
 instance Eq (SVGPolylineElement) where
   (SVGPolylineElement a) == (SVGPolylineElement b) = js_eq a b
 
-instance PToJSRef SVGPolylineElement where
-  pToJSRef = unSVGPolylineElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPolylineElement where
+  pToJSVal = unSVGPolylineElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPolylineElement where
-  pFromJSRef = SVGPolylineElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPolylineElement where
+  pFromJSVal = SVGPolylineElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPolylineElement where
+instance ToJSVal SVGPolylineElement where
   toJSRef = return . unSVGPolylineElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPolylineElement where
+instance FromJSVal SVGPolylineElement where
   fromJSRef = return . fmap SVGPolylineElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20627,19 +20627,19 @@ newtype SVGPreserveAspectRatio = SVGPreserveAspectRatio { unSVGPreserveAspectRat
 instance Eq (SVGPreserveAspectRatio) where
   (SVGPreserveAspectRatio a) == (SVGPreserveAspectRatio b) = js_eq a b
 
-instance PToJSRef SVGPreserveAspectRatio where
-  pToJSRef = unSVGPreserveAspectRatio
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGPreserveAspectRatio where
+  pToJSVal = unSVGPreserveAspectRatio
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGPreserveAspectRatio where
-  pFromJSRef = SVGPreserveAspectRatio
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGPreserveAspectRatio where
+  pFromJSVal = SVGPreserveAspectRatio
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGPreserveAspectRatio where
+instance ToJSVal SVGPreserveAspectRatio where
   toJSRef = return . unSVGPreserveAspectRatio
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGPreserveAspectRatio where
+instance FromJSVal SVGPreserveAspectRatio where
   fromJSRef = return . fmap SVGPreserveAspectRatio . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20672,19 +20672,19 @@ newtype SVGRadialGradientElement = SVGRadialGradientElement { unSVGRadialGradien
 instance Eq (SVGRadialGradientElement) where
   (SVGRadialGradientElement a) == (SVGRadialGradientElement b) = js_eq a b
 
-instance PToJSRef SVGRadialGradientElement where
-  pToJSRef = unSVGRadialGradientElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGRadialGradientElement where
+  pToJSVal = unSVGRadialGradientElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGRadialGradientElement where
-  pFromJSRef = SVGRadialGradientElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGRadialGradientElement where
+  pFromJSVal = SVGRadialGradientElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGRadialGradientElement where
+instance ToJSVal SVGRadialGradientElement where
   toJSRef = return . unSVGRadialGradientElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGRadialGradientElement where
+instance FromJSVal SVGRadialGradientElement where
   fromJSRef = return . fmap SVGRadialGradientElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20715,19 +20715,19 @@ newtype SVGRect = SVGRect { unSVGRect :: JSRef }
 instance Eq (SVGRect) where
   (SVGRect a) == (SVGRect b) = js_eq a b
 
-instance PToJSRef SVGRect where
-  pToJSRef = unSVGRect
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGRect where
+  pToJSVal = unSVGRect
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGRect where
-  pFromJSRef = SVGRect
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGRect where
+  pFromJSVal = SVGRect
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGRect where
+instance ToJSVal SVGRect where
   toJSRef = return . unSVGRect
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGRect where
+instance FromJSVal SVGRect where
   fromJSRef = return . fmap SVGRect . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20760,19 +20760,19 @@ newtype SVGRectElement = SVGRectElement { unSVGRectElement :: JSRef }
 instance Eq (SVGRectElement) where
   (SVGRectElement a) == (SVGRectElement b) = js_eq a b
 
-instance PToJSRef SVGRectElement where
-  pToJSRef = unSVGRectElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGRectElement where
+  pToJSVal = unSVGRectElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGRectElement where
-  pFromJSRef = SVGRectElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGRectElement where
+  pFromJSVal = SVGRectElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGRectElement where
+instance ToJSVal SVGRectElement where
   toJSRef = return . unSVGRectElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGRectElement where
+instance FromJSVal SVGRectElement where
   fromJSRef = return . fmap SVGRectElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20803,19 +20803,19 @@ newtype SVGRenderingIntent = SVGRenderingIntent { unSVGRenderingIntent :: JSRef 
 instance Eq (SVGRenderingIntent) where
   (SVGRenderingIntent a) == (SVGRenderingIntent b) = js_eq a b
 
-instance PToJSRef SVGRenderingIntent where
-  pToJSRef = unSVGRenderingIntent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGRenderingIntent where
+  pToJSVal = unSVGRenderingIntent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGRenderingIntent where
-  pFromJSRef = SVGRenderingIntent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGRenderingIntent where
+  pFromJSVal = SVGRenderingIntent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGRenderingIntent where
+instance ToJSVal SVGRenderingIntent where
   toJSRef = return . unSVGRenderingIntent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGRenderingIntent where
+instance FromJSVal SVGRenderingIntent where
   fromJSRef = return . fmap SVGRenderingIntent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20848,19 +20848,19 @@ newtype SVGSVGElement = SVGSVGElement { unSVGSVGElement :: JSRef }
 instance Eq (SVGSVGElement) where
   (SVGSVGElement a) == (SVGSVGElement b) = js_eq a b
 
-instance PToJSRef SVGSVGElement where
-  pToJSRef = unSVGSVGElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGSVGElement where
+  pToJSVal = unSVGSVGElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGSVGElement where
-  pFromJSRef = SVGSVGElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGSVGElement where
+  pFromJSVal = SVGSVGElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGSVGElement where
+instance ToJSVal SVGSVGElement where
   toJSRef = return . unSVGSVGElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGSVGElement where
+instance FromJSVal SVGSVGElement where
   fromJSRef = return . fmap SVGSVGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20897,19 +20897,19 @@ newtype SVGScriptElement = SVGScriptElement { unSVGScriptElement :: JSRef }
 instance Eq (SVGScriptElement) where
   (SVGScriptElement a) == (SVGScriptElement b) = js_eq a b
 
-instance PToJSRef SVGScriptElement where
-  pToJSRef = unSVGScriptElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGScriptElement where
+  pToJSVal = unSVGScriptElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGScriptElement where
-  pFromJSRef = SVGScriptElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGScriptElement where
+  pFromJSVal = SVGScriptElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGScriptElement where
+instance ToJSVal SVGScriptElement where
   toJSRef = return . unSVGScriptElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGScriptElement where
+instance FromJSVal SVGScriptElement where
   fromJSRef = return . fmap SVGScriptElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20946,19 +20946,19 @@ newtype SVGSetElement = SVGSetElement { unSVGSetElement :: JSRef }
 instance Eq (SVGSetElement) where
   (SVGSetElement a) == (SVGSetElement b) = js_eq a b
 
-instance PToJSRef SVGSetElement where
-  pToJSRef = unSVGSetElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGSetElement where
+  pToJSVal = unSVGSetElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGSetElement where
-  pFromJSRef = SVGSetElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGSetElement where
+  pFromJSVal = SVGSetElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGSetElement where
+instance ToJSVal SVGSetElement where
   toJSRef = return . unSVGSetElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGSetElement where
+instance FromJSVal SVGSetElement where
   fromJSRef = return . fmap SVGSetElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -20995,19 +20995,19 @@ newtype SVGStopElement = SVGStopElement { unSVGStopElement :: JSRef }
 instance Eq (SVGStopElement) where
   (SVGStopElement a) == (SVGStopElement b) = js_eq a b
 
-instance PToJSRef SVGStopElement where
-  pToJSRef = unSVGStopElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGStopElement where
+  pToJSVal = unSVGStopElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGStopElement where
-  pFromJSRef = SVGStopElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGStopElement where
+  pFromJSVal = SVGStopElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGStopElement where
+instance ToJSVal SVGStopElement where
   toJSRef = return . unSVGStopElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGStopElement where
+instance FromJSVal SVGStopElement where
   fromJSRef = return . fmap SVGStopElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21037,19 +21037,19 @@ newtype SVGStringList = SVGStringList { unSVGStringList :: JSRef }
 instance Eq (SVGStringList) where
   (SVGStringList a) == (SVGStringList b) = js_eq a b
 
-instance PToJSRef SVGStringList where
-  pToJSRef = unSVGStringList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGStringList where
+  pToJSVal = unSVGStringList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGStringList where
-  pFromJSRef = SVGStringList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGStringList where
+  pFromJSVal = SVGStringList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGStringList where
+instance ToJSVal SVGStringList where
   toJSRef = return . unSVGStringList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGStringList where
+instance FromJSVal SVGStringList where
   fromJSRef = return . fmap SVGStringList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21081,19 +21081,19 @@ newtype SVGStyleElement = SVGStyleElement { unSVGStyleElement :: JSRef }
 instance Eq (SVGStyleElement) where
   (SVGStyleElement a) == (SVGStyleElement b) = js_eq a b
 
-instance PToJSRef SVGStyleElement where
-  pToJSRef = unSVGStyleElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGStyleElement where
+  pToJSVal = unSVGStyleElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGStyleElement where
-  pFromJSRef = SVGStyleElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGStyleElement where
+  pFromJSVal = SVGStyleElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGStyleElement where
+instance ToJSVal SVGStyleElement where
   toJSRef = return . unSVGStyleElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGStyleElement where
+instance FromJSVal SVGStyleElement where
   fromJSRef = return . fmap SVGStyleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21130,19 +21130,19 @@ newtype SVGSwitchElement = SVGSwitchElement { unSVGSwitchElement :: JSRef }
 instance Eq (SVGSwitchElement) where
   (SVGSwitchElement a) == (SVGSwitchElement b) = js_eq a b
 
-instance PToJSRef SVGSwitchElement where
-  pToJSRef = unSVGSwitchElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGSwitchElement where
+  pToJSVal = unSVGSwitchElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGSwitchElement where
-  pFromJSRef = SVGSwitchElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGSwitchElement where
+  pFromJSVal = SVGSwitchElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGSwitchElement where
+instance ToJSVal SVGSwitchElement where
   toJSRef = return . unSVGSwitchElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGSwitchElement where
+instance FromJSVal SVGSwitchElement where
   fromJSRef = return . fmap SVGSwitchElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21179,19 +21179,19 @@ newtype SVGSymbolElement = SVGSymbolElement { unSVGSymbolElement :: JSRef }
 instance Eq (SVGSymbolElement) where
   (SVGSymbolElement a) == (SVGSymbolElement b) = js_eq a b
 
-instance PToJSRef SVGSymbolElement where
-  pToJSRef = unSVGSymbolElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGSymbolElement where
+  pToJSVal = unSVGSymbolElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGSymbolElement where
-  pFromJSRef = SVGSymbolElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGSymbolElement where
+  pFromJSVal = SVGSymbolElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGSymbolElement where
+instance ToJSVal SVGSymbolElement where
   toJSRef = return . unSVGSymbolElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGSymbolElement where
+instance FromJSVal SVGSymbolElement where
   fromJSRef = return . fmap SVGSymbolElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21230,19 +21230,19 @@ newtype SVGTRefElement = SVGTRefElement { unSVGTRefElement :: JSRef }
 instance Eq (SVGTRefElement) where
   (SVGTRefElement a) == (SVGTRefElement b) = js_eq a b
 
-instance PToJSRef SVGTRefElement where
-  pToJSRef = unSVGTRefElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTRefElement where
+  pToJSVal = unSVGTRefElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTRefElement where
-  pFromJSRef = SVGTRefElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTRefElement where
+  pFromJSVal = SVGTRefElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTRefElement where
+instance ToJSVal SVGTRefElement where
   toJSRef = return . unSVGTRefElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTRefElement where
+instance FromJSVal SVGTRefElement where
   fromJSRef = return . fmap SVGTRefElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21284,19 +21284,19 @@ newtype SVGTSpanElement = SVGTSpanElement { unSVGTSpanElement :: JSRef }
 instance Eq (SVGTSpanElement) where
   (SVGTSpanElement a) == (SVGTSpanElement b) = js_eq a b
 
-instance PToJSRef SVGTSpanElement where
-  pToJSRef = unSVGTSpanElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTSpanElement where
+  pToJSVal = unSVGTSpanElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTSpanElement where
-  pFromJSRef = SVGTSpanElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTSpanElement where
+  pFromJSVal = SVGTSpanElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTSpanElement where
+instance ToJSVal SVGTSpanElement where
   toJSRef = return . unSVGTSpanElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTSpanElement where
+instance FromJSVal SVGTSpanElement where
   fromJSRef = return . fmap SVGTSpanElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21329,19 +21329,19 @@ newtype SVGTests = SVGTests { unSVGTests :: JSRef }
 instance Eq (SVGTests) where
   (SVGTests a) == (SVGTests b) = js_eq a b
 
-instance PToJSRef SVGTests where
-  pToJSRef = unSVGTests
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTests where
+  pToJSVal = unSVGTests
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTests where
-  pFromJSRef = SVGTests
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTests where
+  pFromJSVal = SVGTests
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTests where
+instance ToJSVal SVGTests where
   toJSRef = return . unSVGTests
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTests where
+instance FromJSVal SVGTests where
   fromJSRef = return . fmap SVGTests . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21374,19 +21374,19 @@ newtype SVGTextContentElement = SVGTextContentElement { unSVGTextContentElement 
 instance Eq (SVGTextContentElement) where
   (SVGTextContentElement a) == (SVGTextContentElement b) = js_eq a b
 
-instance PToJSRef SVGTextContentElement where
-  pToJSRef = unSVGTextContentElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTextContentElement where
+  pToJSVal = unSVGTextContentElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTextContentElement where
-  pFromJSRef = SVGTextContentElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTextContentElement where
+  pFromJSVal = SVGTextContentElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTextContentElement where
+instance ToJSVal SVGTextContentElement where
   toJSRef = return . unSVGTextContentElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTextContentElement where
+instance FromJSVal SVGTextContentElement where
   fromJSRef = return . fmap SVGTextContentElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21431,19 +21431,19 @@ newtype SVGTextElement = SVGTextElement { unSVGTextElement :: JSRef }
 instance Eq (SVGTextElement) where
   (SVGTextElement a) == (SVGTextElement b) = js_eq a b
 
-instance PToJSRef SVGTextElement where
-  pToJSRef = unSVGTextElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTextElement where
+  pToJSVal = unSVGTextElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTextElement where
-  pFromJSRef = SVGTextElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTextElement where
+  pFromJSVal = SVGTextElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTextElement where
+instance ToJSVal SVGTextElement where
   toJSRef = return . unSVGTextElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTextElement where
+instance FromJSVal SVGTextElement where
   fromJSRef = return . fmap SVGTextElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21484,19 +21484,19 @@ newtype SVGTextPathElement = SVGTextPathElement { unSVGTextPathElement :: JSRef 
 instance Eq (SVGTextPathElement) where
   (SVGTextPathElement a) == (SVGTextPathElement b) = js_eq a b
 
-instance PToJSRef SVGTextPathElement where
-  pToJSRef = unSVGTextPathElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTextPathElement where
+  pToJSVal = unSVGTextPathElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTextPathElement where
-  pFromJSRef = SVGTextPathElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTextPathElement where
+  pFromJSVal = SVGTextPathElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTextPathElement where
+instance ToJSVal SVGTextPathElement where
   toJSRef = return . unSVGTextPathElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTextPathElement where
+instance FromJSVal SVGTextPathElement where
   fromJSRef = return . fmap SVGTextPathElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21536,19 +21536,19 @@ newtype SVGTextPositioningElement = SVGTextPositioningElement { unSVGTextPositio
 instance Eq (SVGTextPositioningElement) where
   (SVGTextPositioningElement a) == (SVGTextPositioningElement b) = js_eq a b
 
-instance PToJSRef SVGTextPositioningElement where
-  pToJSRef = unSVGTextPositioningElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTextPositioningElement where
+  pToJSVal = unSVGTextPositioningElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTextPositioningElement where
-  pFromJSRef = SVGTextPositioningElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTextPositioningElement where
+  pFromJSVal = SVGTextPositioningElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTextPositioningElement where
+instance ToJSVal SVGTextPositioningElement where
   toJSRef = return . unSVGTextPositioningElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTextPositioningElement where
+instance FromJSVal SVGTextPositioningElement where
   fromJSRef = return . fmap SVGTextPositioningElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21591,19 +21591,19 @@ newtype SVGTitleElement = SVGTitleElement { unSVGTitleElement :: JSRef }
 instance Eq (SVGTitleElement) where
   (SVGTitleElement a) == (SVGTitleElement b) = js_eq a b
 
-instance PToJSRef SVGTitleElement where
-  pToJSRef = unSVGTitleElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTitleElement where
+  pToJSVal = unSVGTitleElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTitleElement where
-  pFromJSRef = SVGTitleElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTitleElement where
+  pFromJSVal = SVGTitleElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTitleElement where
+instance ToJSVal SVGTitleElement where
   toJSRef = return . unSVGTitleElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTitleElement where
+instance FromJSVal SVGTitleElement where
   fromJSRef = return . fmap SVGTitleElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21633,19 +21633,19 @@ newtype SVGTransform = SVGTransform { unSVGTransform :: JSRef }
 instance Eq (SVGTransform) where
   (SVGTransform a) == (SVGTransform b) = js_eq a b
 
-instance PToJSRef SVGTransform where
-  pToJSRef = unSVGTransform
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTransform where
+  pToJSVal = unSVGTransform
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTransform where
-  pFromJSRef = SVGTransform
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTransform where
+  pFromJSVal = SVGTransform
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTransform where
+instance ToJSVal SVGTransform where
   toJSRef = return . unSVGTransform
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTransform where
+instance FromJSVal SVGTransform where
   fromJSRef = return . fmap SVGTransform . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21671,19 +21671,19 @@ newtype SVGTransformList = SVGTransformList { unSVGTransformList :: JSRef }
 instance Eq (SVGTransformList) where
   (SVGTransformList a) == (SVGTransformList b) = js_eq a b
 
-instance PToJSRef SVGTransformList where
-  pToJSRef = unSVGTransformList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGTransformList where
+  pToJSVal = unSVGTransformList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGTransformList where
-  pFromJSRef = SVGTransformList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGTransformList where
+  pFromJSVal = SVGTransformList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGTransformList where
+instance ToJSVal SVGTransformList where
   toJSRef = return . unSVGTransformList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGTransformList where
+instance FromJSVal SVGTransformList where
   fromJSRef = return . fmap SVGTransformList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21709,19 +21709,19 @@ newtype SVGURIReference = SVGURIReference { unSVGURIReference :: JSRef }
 instance Eq (SVGURIReference) where
   (SVGURIReference a) == (SVGURIReference b) = js_eq a b
 
-instance PToJSRef SVGURIReference where
-  pToJSRef = unSVGURIReference
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGURIReference where
+  pToJSVal = unSVGURIReference
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGURIReference where
-  pFromJSRef = SVGURIReference
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGURIReference where
+  pFromJSVal = SVGURIReference
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGURIReference where
+instance ToJSVal SVGURIReference where
   toJSRef = return . unSVGURIReference
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGURIReference where
+instance FromJSVal SVGURIReference where
   fromJSRef = return . fmap SVGURIReference . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21747,19 +21747,19 @@ newtype SVGUnitTypes = SVGUnitTypes { unSVGUnitTypes :: JSRef }
 instance Eq (SVGUnitTypes) where
   (SVGUnitTypes a) == (SVGUnitTypes b) = js_eq a b
 
-instance PToJSRef SVGUnitTypes where
-  pToJSRef = unSVGUnitTypes
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGUnitTypes where
+  pToJSVal = unSVGUnitTypes
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGUnitTypes where
-  pFromJSRef = SVGUnitTypes
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGUnitTypes where
+  pFromJSVal = SVGUnitTypes
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGUnitTypes where
+instance ToJSVal SVGUnitTypes where
   toJSRef = return . unSVGUnitTypes
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGUnitTypes where
+instance FromJSVal SVGUnitTypes where
   fromJSRef = return . fmap SVGUnitTypes . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21792,19 +21792,19 @@ newtype SVGUseElement = SVGUseElement { unSVGUseElement :: JSRef }
 instance Eq (SVGUseElement) where
   (SVGUseElement a) == (SVGUseElement b) = js_eq a b
 
-instance PToJSRef SVGUseElement where
-  pToJSRef = unSVGUseElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGUseElement where
+  pToJSVal = unSVGUseElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGUseElement where
-  pFromJSRef = SVGUseElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGUseElement where
+  pFromJSVal = SVGUseElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGUseElement where
+instance ToJSVal SVGUseElement where
   toJSRef = return . unSVGUseElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGUseElement where
+instance FromJSVal SVGUseElement where
   fromJSRef = return . fmap SVGUseElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21841,19 +21841,19 @@ newtype SVGVKernElement = SVGVKernElement { unSVGVKernElement :: JSRef }
 instance Eq (SVGVKernElement) where
   (SVGVKernElement a) == (SVGVKernElement b) = js_eq a b
 
-instance PToJSRef SVGVKernElement where
-  pToJSRef = unSVGVKernElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGVKernElement where
+  pToJSVal = unSVGVKernElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGVKernElement where
-  pFromJSRef = SVGVKernElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGVKernElement where
+  pFromJSVal = SVGVKernElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGVKernElement where
+instance ToJSVal SVGVKernElement where
   toJSRef = return . unSVGVKernElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGVKernElement where
+instance FromJSVal SVGVKernElement where
   fromJSRef = return . fmap SVGVKernElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21889,19 +21889,19 @@ newtype SVGViewElement = SVGViewElement { unSVGViewElement :: JSRef }
 instance Eq (SVGViewElement) where
   (SVGViewElement a) == (SVGViewElement b) = js_eq a b
 
-instance PToJSRef SVGViewElement where
-  pToJSRef = unSVGViewElement
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGViewElement where
+  pToJSVal = unSVGViewElement
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGViewElement where
-  pFromJSRef = SVGViewElement
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGViewElement where
+  pFromJSVal = SVGViewElement
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGViewElement where
+instance ToJSVal SVGViewElement where
   toJSRef = return . unSVGViewElement
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGViewElement where
+instance FromJSVal SVGViewElement where
   fromJSRef = return . fmap SVGViewElement . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21931,19 +21931,19 @@ newtype SVGViewSpec = SVGViewSpec { unSVGViewSpec :: JSRef }
 instance Eq (SVGViewSpec) where
   (SVGViewSpec a) == (SVGViewSpec b) = js_eq a b
 
-instance PToJSRef SVGViewSpec where
-  pToJSRef = unSVGViewSpec
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGViewSpec where
+  pToJSVal = unSVGViewSpec
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGViewSpec where
-  pFromJSRef = SVGViewSpec
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGViewSpec where
+  pFromJSVal = SVGViewSpec
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGViewSpec where
+instance ToJSVal SVGViewSpec where
   toJSRef = return . unSVGViewSpec
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGViewSpec where
+instance FromJSVal SVGViewSpec where
   fromJSRef = return . fmap SVGViewSpec . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -21969,19 +21969,19 @@ newtype SVGZoomAndPan = SVGZoomAndPan { unSVGZoomAndPan :: JSRef }
 instance Eq (SVGZoomAndPan) where
   (SVGZoomAndPan a) == (SVGZoomAndPan b) = js_eq a b
 
-instance PToJSRef SVGZoomAndPan where
-  pToJSRef = unSVGZoomAndPan
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGZoomAndPan where
+  pToJSVal = unSVGZoomAndPan
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGZoomAndPan where
-  pFromJSRef = SVGZoomAndPan
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGZoomAndPan where
+  pFromJSVal = SVGZoomAndPan
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGZoomAndPan where
+instance ToJSVal SVGZoomAndPan where
   toJSRef = return . unSVGZoomAndPan
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGZoomAndPan where
+instance FromJSVal SVGZoomAndPan where
   fromJSRef = return . fmap SVGZoomAndPan . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22011,19 +22011,19 @@ newtype SVGZoomEvent = SVGZoomEvent { unSVGZoomEvent :: JSRef }
 instance Eq (SVGZoomEvent) where
   (SVGZoomEvent a) == (SVGZoomEvent b) = js_eq a b
 
-instance PToJSRef SVGZoomEvent where
-  pToJSRef = unSVGZoomEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SVGZoomEvent where
+  pToJSVal = unSVGZoomEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SVGZoomEvent where
-  pFromJSRef = SVGZoomEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SVGZoomEvent where
+  pFromJSVal = SVGZoomEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SVGZoomEvent where
+instance ToJSVal SVGZoomEvent where
   toJSRef = return . unSVGZoomEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SVGZoomEvent where
+instance FromJSVal SVGZoomEvent where
   fromJSRef = return . fmap SVGZoomEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22051,19 +22051,19 @@ newtype Screen = Screen { unScreen :: JSRef }
 instance Eq (Screen) where
   (Screen a) == (Screen b) = js_eq a b
 
-instance PToJSRef Screen where
-  pToJSRef = unScreen
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Screen where
+  pToJSVal = unScreen
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Screen where
-  pFromJSRef = Screen
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Screen where
+  pFromJSVal = Screen
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Screen where
+instance ToJSVal Screen where
   toJSRef = return . unScreen
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Screen where
+instance FromJSVal Screen where
   fromJSRef = return . fmap Screen . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22095,19 +22095,19 @@ newtype ScriptProcessorNode = ScriptProcessorNode { unScriptProcessorNode :: JSR
 instance Eq (ScriptProcessorNode) where
   (ScriptProcessorNode a) == (ScriptProcessorNode b) = js_eq a b
 
-instance PToJSRef ScriptProcessorNode where
-  pToJSRef = unScriptProcessorNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ScriptProcessorNode where
+  pToJSVal = unScriptProcessorNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ScriptProcessorNode where
-  pFromJSRef = ScriptProcessorNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ScriptProcessorNode where
+  pFromJSVal = ScriptProcessorNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ScriptProcessorNode where
+instance ToJSVal ScriptProcessorNode where
   toJSRef = return . unScriptProcessorNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ScriptProcessorNode where
+instance FromJSVal ScriptProcessorNode where
   fromJSRef = return . fmap ScriptProcessorNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22135,19 +22135,19 @@ newtype ScriptProfile = ScriptProfile { unScriptProfile :: JSRef }
 instance Eq (ScriptProfile) where
   (ScriptProfile a) == (ScriptProfile b) = js_eq a b
 
-instance PToJSRef ScriptProfile where
-  pToJSRef = unScriptProfile
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ScriptProfile where
+  pToJSVal = unScriptProfile
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ScriptProfile where
-  pFromJSRef = ScriptProfile
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ScriptProfile where
+  pFromJSVal = ScriptProfile
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ScriptProfile where
+instance ToJSVal ScriptProfile where
   toJSRef = return . unScriptProfile
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ScriptProfile where
+instance FromJSVal ScriptProfile where
   fromJSRef = return . fmap ScriptProfile . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22173,19 +22173,19 @@ newtype ScriptProfileNode = ScriptProfileNode { unScriptProfileNode :: JSRef }
 instance Eq (ScriptProfileNode) where
   (ScriptProfileNode a) == (ScriptProfileNode b) = js_eq a b
 
-instance PToJSRef ScriptProfileNode where
-  pToJSRef = unScriptProfileNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ScriptProfileNode where
+  pToJSVal = unScriptProfileNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ScriptProfileNode where
-  pFromJSRef = ScriptProfileNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ScriptProfileNode where
+  pFromJSVal = ScriptProfileNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ScriptProfileNode where
+instance ToJSVal ScriptProfileNode where
   toJSRef = return . unScriptProfileNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ScriptProfileNode where
+instance FromJSVal ScriptProfileNode where
   fromJSRef = return . fmap ScriptProfileNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22211,19 +22211,19 @@ newtype SecurityPolicy = SecurityPolicy { unSecurityPolicy :: JSRef }
 instance Eq (SecurityPolicy) where
   (SecurityPolicy a) == (SecurityPolicy b) = js_eq a b
 
-instance PToJSRef SecurityPolicy where
-  pToJSRef = unSecurityPolicy
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SecurityPolicy where
+  pToJSVal = unSecurityPolicy
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SecurityPolicy where
-  pFromJSRef = SecurityPolicy
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SecurityPolicy where
+  pFromJSVal = SecurityPolicy
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SecurityPolicy where
+instance ToJSVal SecurityPolicy where
   toJSRef = return . unSecurityPolicy
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SecurityPolicy where
+instance FromJSVal SecurityPolicy where
   fromJSRef = return . fmap SecurityPolicy . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22256,19 +22256,19 @@ newtype SecurityPolicyViolationEvent = SecurityPolicyViolationEvent { unSecurity
 instance Eq (SecurityPolicyViolationEvent) where
   (SecurityPolicyViolationEvent a) == (SecurityPolicyViolationEvent b) = js_eq a b
 
-instance PToJSRef SecurityPolicyViolationEvent where
-  pToJSRef = unSecurityPolicyViolationEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SecurityPolicyViolationEvent where
+  pToJSVal = unSecurityPolicyViolationEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SecurityPolicyViolationEvent where
-  pFromJSRef = SecurityPolicyViolationEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SecurityPolicyViolationEvent where
+  pFromJSVal = SecurityPolicyViolationEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SecurityPolicyViolationEvent where
+instance ToJSVal SecurityPolicyViolationEvent where
   toJSRef = return . unSecurityPolicyViolationEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SecurityPolicyViolationEvent where
+instance FromJSVal SecurityPolicyViolationEvent where
   fromJSRef = return . fmap SecurityPolicyViolationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22295,19 +22295,19 @@ newtype Selection = Selection { unSelection :: JSRef }
 instance Eq (Selection) where
   (Selection a) == (Selection b) = js_eq a b
 
-instance PToJSRef Selection where
-  pToJSRef = unSelection
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Selection where
+  pToJSVal = unSelection
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Selection where
-  pFromJSRef = Selection
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Selection where
+  pFromJSVal = Selection
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Selection where
+instance ToJSVal Selection where
   toJSRef = return . unSelection
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Selection where
+instance FromJSVal Selection where
   fromJSRef = return . fmap Selection . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22338,19 +22338,19 @@ newtype SourceBuffer = SourceBuffer { unSourceBuffer :: JSRef }
 instance Eq (SourceBuffer) where
   (SourceBuffer a) == (SourceBuffer b) = js_eq a b
 
-instance PToJSRef SourceBuffer where
-  pToJSRef = unSourceBuffer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SourceBuffer where
+  pToJSVal = unSourceBuffer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SourceBuffer where
-  pFromJSRef = SourceBuffer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SourceBuffer where
+  pFromJSVal = SourceBuffer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SourceBuffer where
+instance ToJSVal SourceBuffer where
   toJSRef = return . unSourceBuffer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SourceBuffer where
+instance FromJSVal SourceBuffer where
   fromJSRef = return . fmap SourceBuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22380,19 +22380,19 @@ newtype SourceBufferList = SourceBufferList { unSourceBufferList :: JSRef }
 instance Eq (SourceBufferList) where
   (SourceBufferList a) == (SourceBufferList b) = js_eq a b
 
-instance PToJSRef SourceBufferList where
-  pToJSRef = unSourceBufferList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SourceBufferList where
+  pToJSVal = unSourceBufferList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SourceBufferList where
-  pFromJSRef = SourceBufferList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SourceBufferList where
+  pFromJSVal = SourceBufferList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SourceBufferList where
+instance ToJSVal SourceBufferList where
   toJSRef = return . unSourceBufferList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SourceBufferList where
+instance FromJSVal SourceBufferList where
   fromJSRef = return . fmap SourceBufferList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22419,19 +22419,19 @@ newtype SourceInfo = SourceInfo { unSourceInfo :: JSRef }
 instance Eq (SourceInfo) where
   (SourceInfo a) == (SourceInfo b) = js_eq a b
 
-instance PToJSRef SourceInfo where
-  pToJSRef = unSourceInfo
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SourceInfo where
+  pToJSVal = unSourceInfo
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SourceInfo where
-  pFromJSRef = SourceInfo
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SourceInfo where
+  pFromJSVal = SourceInfo
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SourceInfo where
+instance ToJSVal SourceInfo where
   toJSRef = return . unSourceInfo
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SourceInfo where
+instance FromJSVal SourceInfo where
   fromJSRef = return . fmap SourceInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22457,19 +22457,19 @@ newtype SpeechSynthesis = SpeechSynthesis { unSpeechSynthesis :: JSRef }
 instance Eq (SpeechSynthesis) where
   (SpeechSynthesis a) == (SpeechSynthesis b) = js_eq a b
 
-instance PToJSRef SpeechSynthesis where
-  pToJSRef = unSpeechSynthesis
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SpeechSynthesis where
+  pToJSVal = unSpeechSynthesis
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SpeechSynthesis where
-  pFromJSRef = SpeechSynthesis
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SpeechSynthesis where
+  pFromJSVal = SpeechSynthesis
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SpeechSynthesis where
+instance ToJSVal SpeechSynthesis where
   toJSRef = return . unSpeechSynthesis
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SpeechSynthesis where
+instance FromJSVal SpeechSynthesis where
   fromJSRef = return . fmap SpeechSynthesis . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22498,19 +22498,19 @@ newtype SpeechSynthesisEvent = SpeechSynthesisEvent { unSpeechSynthesisEvent :: 
 instance Eq (SpeechSynthesisEvent) where
   (SpeechSynthesisEvent a) == (SpeechSynthesisEvent b) = js_eq a b
 
-instance PToJSRef SpeechSynthesisEvent where
-  pToJSRef = unSpeechSynthesisEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SpeechSynthesisEvent where
+  pToJSVal = unSpeechSynthesisEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SpeechSynthesisEvent where
-  pFromJSRef = SpeechSynthesisEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SpeechSynthesisEvent where
+  pFromJSVal = SpeechSynthesisEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SpeechSynthesisEvent where
+instance ToJSVal SpeechSynthesisEvent where
   toJSRef = return . unSpeechSynthesisEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SpeechSynthesisEvent where
+instance FromJSVal SpeechSynthesisEvent where
   fromJSRef = return . fmap SpeechSynthesisEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22540,19 +22540,19 @@ newtype SpeechSynthesisUtterance = SpeechSynthesisUtterance { unSpeechSynthesisU
 instance Eq (SpeechSynthesisUtterance) where
   (SpeechSynthesisUtterance a) == (SpeechSynthesisUtterance b) = js_eq a b
 
-instance PToJSRef SpeechSynthesisUtterance where
-  pToJSRef = unSpeechSynthesisUtterance
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SpeechSynthesisUtterance where
+  pToJSVal = unSpeechSynthesisUtterance
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SpeechSynthesisUtterance where
-  pFromJSRef = SpeechSynthesisUtterance
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SpeechSynthesisUtterance where
+  pFromJSVal = SpeechSynthesisUtterance
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SpeechSynthesisUtterance where
+instance ToJSVal SpeechSynthesisUtterance where
   toJSRef = return . unSpeechSynthesisUtterance
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SpeechSynthesisUtterance where
+instance FromJSVal SpeechSynthesisUtterance where
   fromJSRef = return . fmap SpeechSynthesisUtterance . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22579,19 +22579,19 @@ newtype SpeechSynthesisVoice = SpeechSynthesisVoice { unSpeechSynthesisVoice :: 
 instance Eq (SpeechSynthesisVoice) where
   (SpeechSynthesisVoice a) == (SpeechSynthesisVoice b) = js_eq a b
 
-instance PToJSRef SpeechSynthesisVoice where
-  pToJSRef = unSpeechSynthesisVoice
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SpeechSynthesisVoice where
+  pToJSVal = unSpeechSynthesisVoice
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SpeechSynthesisVoice where
-  pFromJSRef = SpeechSynthesisVoice
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SpeechSynthesisVoice where
+  pFromJSVal = SpeechSynthesisVoice
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SpeechSynthesisVoice where
+instance ToJSVal SpeechSynthesisVoice where
   toJSRef = return . unSpeechSynthesisVoice
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SpeechSynthesisVoice where
+instance FromJSVal SpeechSynthesisVoice where
   fromJSRef = return . fmap SpeechSynthesisVoice . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22617,19 +22617,19 @@ newtype Storage = Storage { unStorage :: JSRef }
 instance Eq (Storage) where
   (Storage a) == (Storage b) = js_eq a b
 
-instance PToJSRef Storage where
-  pToJSRef = unStorage
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Storage where
+  pToJSVal = unStorage
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Storage where
-  pFromJSRef = Storage
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Storage where
+  pFromJSVal = Storage
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Storage where
+instance ToJSVal Storage where
   toJSRef = return . unStorage
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Storage where
+instance FromJSVal Storage where
   fromJSRef = return . fmap Storage . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22660,19 +22660,19 @@ newtype StorageEvent = StorageEvent { unStorageEvent :: JSRef }
 instance Eq (StorageEvent) where
   (StorageEvent a) == (StorageEvent b) = js_eq a b
 
-instance PToJSRef StorageEvent where
-  pToJSRef = unStorageEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal StorageEvent where
+  pToJSVal = unStorageEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef StorageEvent where
-  pFromJSRef = StorageEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal StorageEvent where
+  pFromJSVal = StorageEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef StorageEvent where
+instance ToJSVal StorageEvent where
   toJSRef = return . unStorageEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef StorageEvent where
+instance FromJSVal StorageEvent where
   fromJSRef = return . fmap StorageEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22699,19 +22699,19 @@ newtype StorageInfo = StorageInfo { unStorageInfo :: JSRef }
 instance Eq (StorageInfo) where
   (StorageInfo a) == (StorageInfo b) = js_eq a b
 
-instance PToJSRef StorageInfo where
-  pToJSRef = unStorageInfo
-  {-# INLINE pToJSRef #-}
+instance PToJSVal StorageInfo where
+  pToJSVal = unStorageInfo
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef StorageInfo where
-  pFromJSRef = StorageInfo
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal StorageInfo where
+  pFromJSVal = StorageInfo
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef StorageInfo where
+instance ToJSVal StorageInfo where
   toJSRef = return . unStorageInfo
   {-# INLINE toJSRef #-}
 
-instance FromJSRef StorageInfo where
+instance FromJSVal StorageInfo where
   fromJSRef = return . fmap StorageInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22741,19 +22741,19 @@ newtype StorageQuota = StorageQuota { unStorageQuota :: JSRef }
 instance Eq (StorageQuota) where
   (StorageQuota a) == (StorageQuota b) = js_eq a b
 
-instance PToJSRef StorageQuota where
-  pToJSRef = unStorageQuota
-  {-# INLINE pToJSRef #-}
+instance PToJSVal StorageQuota where
+  pToJSVal = unStorageQuota
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef StorageQuota where
-  pFromJSRef = StorageQuota
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal StorageQuota where
+  pFromJSVal = StorageQuota
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef StorageQuota where
+instance ToJSVal StorageQuota where
   toJSRef = return . unStorageQuota
   {-# INLINE toJSRef #-}
 
-instance FromJSRef StorageQuota where
+instance FromJSVal StorageQuota where
   fromJSRef = return . fmap StorageQuota . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22783,19 +22783,19 @@ newtype StyleMedia = StyleMedia { unStyleMedia :: JSRef }
 instance Eq (StyleMedia) where
   (StyleMedia a) == (StyleMedia b) = js_eq a b
 
-instance PToJSRef StyleMedia where
-  pToJSRef = unStyleMedia
-  {-# INLINE pToJSRef #-}
+instance PToJSVal StyleMedia where
+  pToJSVal = unStyleMedia
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef StyleMedia where
-  pFromJSRef = StyleMedia
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal StyleMedia where
+  pFromJSVal = StyleMedia
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef StyleMedia where
+instance ToJSVal StyleMedia where
   toJSRef = return . unStyleMedia
   {-# INLINE toJSRef #-}
 
-instance FromJSRef StyleMedia where
+instance FromJSVal StyleMedia where
   fromJSRef = return . fmap StyleMedia . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22823,19 +22823,19 @@ newtype StyleSheet = StyleSheet { unStyleSheet :: JSRef }
 instance Eq (StyleSheet) where
   (StyleSheet a) == (StyleSheet b) = js_eq a b
 
-instance PToJSRef StyleSheet where
-  pToJSRef = unStyleSheet
-  {-# INLINE pToJSRef #-}
+instance PToJSVal StyleSheet where
+  pToJSVal = unStyleSheet
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef StyleSheet where
-  pFromJSRef = StyleSheet
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal StyleSheet where
+  pFromJSVal = StyleSheet
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef StyleSheet where
+instance ToJSVal StyleSheet where
   toJSRef = return . unStyleSheet
   {-# INLINE toJSRef #-}
 
-instance FromJSRef StyleSheet where
+instance FromJSVal StyleSheet where
   fromJSRef = return . fmap StyleSheet . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22868,19 +22868,19 @@ newtype StyleSheetList = StyleSheetList { unStyleSheetList :: JSRef }
 instance Eq (StyleSheetList) where
   (StyleSheetList a) == (StyleSheetList b) = js_eq a b
 
-instance PToJSRef StyleSheetList where
-  pToJSRef = unStyleSheetList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal StyleSheetList where
+  pToJSVal = unStyleSheetList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef StyleSheetList where
-  pFromJSRef = StyleSheetList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal StyleSheetList where
+  pFromJSVal = StyleSheetList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef StyleSheetList where
+instance ToJSVal StyleSheetList where
   toJSRef = return . unStyleSheetList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef StyleSheetList where
+instance FromJSVal StyleSheetList where
   fromJSRef = return . fmap StyleSheetList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22908,19 +22908,19 @@ newtype SubtleCrypto = SubtleCrypto { unSubtleCrypto :: JSRef }
 instance Eq (SubtleCrypto) where
   (SubtleCrypto a) == (SubtleCrypto b) = js_eq a b
 
-instance PToJSRef SubtleCrypto where
-  pToJSRef = unSubtleCrypto
-  {-# INLINE pToJSRef #-}
+instance PToJSVal SubtleCrypto where
+  pToJSVal = unSubtleCrypto
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef SubtleCrypto where
-  pFromJSRef = SubtleCrypto
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal SubtleCrypto where
+  pFromJSVal = SubtleCrypto
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef SubtleCrypto where
+instance ToJSVal SubtleCrypto where
   toJSRef = return . unSubtleCrypto
   {-# INLINE toJSRef #-}
 
-instance FromJSRef SubtleCrypto where
+instance FromJSVal SubtleCrypto where
   fromJSRef = return . fmap SubtleCrypto . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -22951,19 +22951,19 @@ newtype Text = Text { unText :: JSRef }
 instance Eq (Text) where
   (Text a) == (Text b) = js_eq a b
 
-instance PToJSRef Text where
-  pToJSRef = unText
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Text where
+  pToJSVal = unText
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Text where
-  pFromJSRef = Text
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Text where
+  pFromJSVal = Text
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Text where
+instance ToJSVal Text where
   toJSRef = return . unText
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Text where
+instance FromJSVal Text where
   fromJSRef = return . fmap Text . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23003,19 +23003,19 @@ newtype TextEvent = TextEvent { unTextEvent :: JSRef }
 instance Eq (TextEvent) where
   (TextEvent a) == (TextEvent b) = js_eq a b
 
-instance PToJSRef TextEvent where
-  pToJSRef = unTextEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TextEvent where
+  pToJSVal = unTextEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TextEvent where
-  pFromJSRef = TextEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TextEvent where
+  pFromJSVal = TextEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TextEvent where
+instance ToJSVal TextEvent where
   toJSRef = return . unTextEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TextEvent where
+instance FromJSVal TextEvent where
   fromJSRef = return . fmap TextEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23043,19 +23043,19 @@ newtype TextMetrics = TextMetrics { unTextMetrics :: JSRef }
 instance Eq (TextMetrics) where
   (TextMetrics a) == (TextMetrics b) = js_eq a b
 
-instance PToJSRef TextMetrics where
-  pToJSRef = unTextMetrics
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TextMetrics where
+  pToJSVal = unTextMetrics
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TextMetrics where
-  pFromJSRef = TextMetrics
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TextMetrics where
+  pFromJSVal = TextMetrics
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TextMetrics where
+instance ToJSVal TextMetrics where
   toJSRef = return . unTextMetrics
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TextMetrics where
+instance FromJSVal TextMetrics where
   fromJSRef = return . fmap TextMetrics . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23084,19 +23084,19 @@ newtype TextTrack = TextTrack { unTextTrack :: JSRef }
 instance Eq (TextTrack) where
   (TextTrack a) == (TextTrack b) = js_eq a b
 
-instance PToJSRef TextTrack where
-  pToJSRef = unTextTrack
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TextTrack where
+  pToJSVal = unTextTrack
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TextTrack where
-  pFromJSRef = TextTrack
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TextTrack where
+  pFromJSVal = TextTrack
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TextTrack where
+instance ToJSVal TextTrack where
   toJSRef = return . unTextTrack
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TextTrack where
+instance FromJSVal TextTrack where
   fromJSRef = return . fmap TextTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23130,19 +23130,19 @@ newtype TextTrackCue = TextTrackCue { unTextTrackCue :: JSRef }
 instance Eq (TextTrackCue) where
   (TextTrackCue a) == (TextTrackCue b) = js_eq a b
 
-instance PToJSRef TextTrackCue where
-  pToJSRef = unTextTrackCue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TextTrackCue where
+  pToJSVal = unTextTrackCue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TextTrackCue where
-  pFromJSRef = TextTrackCue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TextTrackCue where
+  pFromJSVal = TextTrackCue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TextTrackCue where
+instance ToJSVal TextTrackCue where
   toJSRef = return . unTextTrackCue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TextTrackCue where
+instance FromJSVal TextTrackCue where
   fromJSRef = return . fmap TextTrackCue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23178,19 +23178,19 @@ newtype TextTrackCueList = TextTrackCueList { unTextTrackCueList :: JSRef }
 instance Eq (TextTrackCueList) where
   (TextTrackCueList a) == (TextTrackCueList b) = js_eq a b
 
-instance PToJSRef TextTrackCueList where
-  pToJSRef = unTextTrackCueList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TextTrackCueList where
+  pToJSVal = unTextTrackCueList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TextTrackCueList where
-  pFromJSRef = TextTrackCueList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TextTrackCueList where
+  pFromJSVal = TextTrackCueList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TextTrackCueList where
+instance ToJSVal TextTrackCueList where
   toJSRef = return . unTextTrackCueList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TextTrackCueList where
+instance FromJSVal TextTrackCueList where
   fromJSRef = return . fmap TextTrackCueList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23223,19 +23223,19 @@ newtype TextTrackList = TextTrackList { unTextTrackList :: JSRef }
 instance Eq (TextTrackList) where
   (TextTrackList a) == (TextTrackList b) = js_eq a b
 
-instance PToJSRef TextTrackList where
-  pToJSRef = unTextTrackList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TextTrackList where
+  pToJSVal = unTextTrackList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TextTrackList where
-  pFromJSRef = TextTrackList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TextTrackList where
+  pFromJSVal = TextTrackList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TextTrackList where
+instance ToJSVal TextTrackList where
   toJSRef = return . unTextTrackList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TextTrackList where
+instance FromJSVal TextTrackList where
   fromJSRef = return . fmap TextTrackList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23266,19 +23266,19 @@ newtype TimeRanges = TimeRanges { unTimeRanges :: JSRef }
 instance Eq (TimeRanges) where
   (TimeRanges a) == (TimeRanges b) = js_eq a b
 
-instance PToJSRef TimeRanges where
-  pToJSRef = unTimeRanges
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TimeRanges where
+  pToJSVal = unTimeRanges
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TimeRanges where
-  pFromJSRef = TimeRanges
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TimeRanges where
+  pFromJSVal = TimeRanges
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TimeRanges where
+instance ToJSVal TimeRanges where
   toJSRef = return . unTimeRanges
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TimeRanges where
+instance FromJSVal TimeRanges where
   fromJSRef = return . fmap TimeRanges . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23306,19 +23306,19 @@ newtype Touch = Touch { unTouch :: JSRef }
 instance Eq (Touch) where
   (Touch a) == (Touch b) = js_eq a b
 
-instance PToJSRef Touch where
-  pToJSRef = unTouch
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Touch where
+  pToJSVal = unTouch
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Touch where
-  pFromJSRef = Touch
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Touch where
+  pFromJSVal = Touch
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Touch where
+instance ToJSVal Touch where
   toJSRef = return . unTouch
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Touch where
+instance FromJSVal Touch where
   fromJSRef = return . fmap Touch . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23352,19 +23352,19 @@ newtype TouchEvent = TouchEvent { unTouchEvent :: JSRef }
 instance Eq (TouchEvent) where
   (TouchEvent a) == (TouchEvent b) = js_eq a b
 
-instance PToJSRef TouchEvent where
-  pToJSRef = unTouchEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TouchEvent where
+  pToJSVal = unTouchEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TouchEvent where
-  pFromJSRef = TouchEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TouchEvent where
+  pFromJSVal = TouchEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TouchEvent where
+instance ToJSVal TouchEvent where
   toJSRef = return . unTouchEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TouchEvent where
+instance FromJSVal TouchEvent where
   fromJSRef = return . fmap TouchEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23392,19 +23392,19 @@ newtype TouchList = TouchList { unTouchList :: JSRef }
 instance Eq (TouchList) where
   (TouchList a) == (TouchList b) = js_eq a b
 
-instance PToJSRef TouchList where
-  pToJSRef = unTouchList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TouchList where
+  pToJSVal = unTouchList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TouchList where
-  pFromJSRef = TouchList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TouchList where
+  pFromJSVal = TouchList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TouchList where
+instance ToJSVal TouchList where
   toJSRef = return . unTouchList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TouchList where
+instance FromJSVal TouchList where
   fromJSRef = return . fmap TouchList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23433,19 +23433,19 @@ newtype TrackEvent = TrackEvent { unTrackEvent :: JSRef }
 instance Eq (TrackEvent) where
   (TrackEvent a) == (TrackEvent b) = js_eq a b
 
-instance PToJSRef TrackEvent where
-  pToJSRef = unTrackEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TrackEvent where
+  pToJSVal = unTrackEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TrackEvent where
-  pFromJSRef = TrackEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TrackEvent where
+  pFromJSVal = TrackEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TrackEvent where
+instance ToJSVal TrackEvent where
   toJSRef = return . unTrackEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TrackEvent where
+instance FromJSVal TrackEvent where
   fromJSRef = return . fmap TrackEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23475,19 +23475,19 @@ newtype TransitionEvent = TransitionEvent { unTransitionEvent :: JSRef }
 instance Eq (TransitionEvent) where
   (TransitionEvent a) == (TransitionEvent b) = js_eq a b
 
-instance PToJSRef TransitionEvent where
-  pToJSRef = unTransitionEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TransitionEvent where
+  pToJSVal = unTransitionEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TransitionEvent where
-  pFromJSRef = TransitionEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TransitionEvent where
+  pFromJSVal = TransitionEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TransitionEvent where
+instance ToJSVal TransitionEvent where
   toJSRef = return . unTransitionEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TransitionEvent where
+instance FromJSVal TransitionEvent where
   fromJSRef = return . fmap TransitionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23514,19 +23514,19 @@ newtype TreeWalker = TreeWalker { unTreeWalker :: JSRef }
 instance Eq (TreeWalker) where
   (TreeWalker a) == (TreeWalker b) = js_eq a b
 
-instance PToJSRef TreeWalker where
-  pToJSRef = unTreeWalker
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TreeWalker where
+  pToJSVal = unTreeWalker
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TreeWalker where
-  pFromJSRef = TreeWalker
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TreeWalker where
+  pFromJSVal = TreeWalker
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TreeWalker where
+instance ToJSVal TreeWalker where
   toJSRef = return . unTreeWalker
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TreeWalker where
+instance FromJSVal TreeWalker where
   fromJSRef = return . fmap TreeWalker . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23554,19 +23554,19 @@ newtype TypeConversions = TypeConversions { unTypeConversions :: JSRef }
 instance Eq (TypeConversions) where
   (TypeConversions a) == (TypeConversions b) = js_eq a b
 
-instance PToJSRef TypeConversions where
-  pToJSRef = unTypeConversions
-  {-# INLINE pToJSRef #-}
+instance PToJSVal TypeConversions where
+  pToJSVal = unTypeConversions
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef TypeConversions where
-  pFromJSRef = TypeConversions
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal TypeConversions where
+  pFromJSVal = TypeConversions
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef TypeConversions where
+instance ToJSVal TypeConversions where
   toJSRef = return . unTypeConversions
   {-# INLINE toJSRef #-}
 
-instance FromJSRef TypeConversions where
+instance FromJSVal TypeConversions where
   fromJSRef = return . fmap TypeConversions . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23595,19 +23595,19 @@ newtype UIEvent = UIEvent { unUIEvent :: JSRef }
 instance Eq (UIEvent) where
   (UIEvent a) == (UIEvent b) = js_eq a b
 
-instance PToJSRef UIEvent where
-  pToJSRef = unUIEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal UIEvent where
+  pToJSVal = unUIEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef UIEvent where
-  pFromJSRef = UIEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal UIEvent where
+  pFromJSVal = UIEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef UIEvent where
+instance ToJSVal UIEvent where
   toJSRef = return . unUIEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef UIEvent where
+instance FromJSVal UIEvent where
   fromJSRef = return . fmap UIEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23645,19 +23645,19 @@ newtype UIRequestEvent = UIRequestEvent { unUIRequestEvent :: JSRef }
 instance Eq (UIRequestEvent) where
   (UIRequestEvent a) == (UIRequestEvent b) = js_eq a b
 
-instance PToJSRef UIRequestEvent where
-  pToJSRef = unUIRequestEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal UIRequestEvent where
+  pToJSVal = unUIRequestEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef UIRequestEvent where
-  pFromJSRef = UIRequestEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal UIRequestEvent where
+  pFromJSVal = UIRequestEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef UIRequestEvent where
+instance ToJSVal UIRequestEvent where
   toJSRef = return . unUIRequestEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef UIRequestEvent where
+instance FromJSVal UIRequestEvent where
   fromJSRef = return . fmap UIRequestEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23685,19 +23685,19 @@ newtype URL = URL { unURL :: JSRef }
 instance Eq (URL) where
   (URL a) == (URL b) = js_eq a b
 
-instance PToJSRef URL where
-  pToJSRef = unURL
-  {-# INLINE pToJSRef #-}
+instance PToJSVal URL where
+  pToJSVal = unURL
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef URL where
-  pFromJSRef = URL
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal URL where
+  pFromJSVal = URL
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef URL where
+instance ToJSVal URL where
   toJSRef = return . unURL
   {-# INLINE toJSRef #-}
 
-instance FromJSRef URL where
+instance FromJSVal URL where
   fromJSRef = return . fmap URL . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23723,19 +23723,19 @@ newtype URLUtils = URLUtils { unURLUtils :: JSRef }
 instance Eq (URLUtils) where
   (URLUtils a) == (URLUtils b) = js_eq a b
 
-instance PToJSRef URLUtils where
-  pToJSRef = unURLUtils
-  {-# INLINE pToJSRef #-}
+instance PToJSVal URLUtils where
+  pToJSVal = unURLUtils
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef URLUtils where
-  pFromJSRef = URLUtils
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal URLUtils where
+  pFromJSVal = URLUtils
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef URLUtils where
+instance ToJSVal URLUtils where
   toJSRef = return . unURLUtils
   {-# INLINE toJSRef #-}
 
-instance FromJSRef URLUtils where
+instance FromJSVal URLUtils where
   fromJSRef = return . fmap URLUtils . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23761,19 +23761,19 @@ newtype UserMessageHandler = UserMessageHandler { unUserMessageHandler :: JSRef 
 instance Eq (UserMessageHandler) where
   (UserMessageHandler a) == (UserMessageHandler b) = js_eq a b
 
-instance PToJSRef UserMessageHandler where
-  pToJSRef = unUserMessageHandler
-  {-# INLINE pToJSRef #-}
+instance PToJSVal UserMessageHandler where
+  pToJSVal = unUserMessageHandler
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef UserMessageHandler where
-  pFromJSRef = UserMessageHandler
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal UserMessageHandler where
+  pFromJSVal = UserMessageHandler
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef UserMessageHandler where
+instance ToJSVal UserMessageHandler where
   toJSRef = return . unUserMessageHandler
   {-# INLINE toJSRef #-}
 
-instance FromJSRef UserMessageHandler where
+instance FromJSVal UserMessageHandler where
   fromJSRef = return . fmap UserMessageHandler . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23799,19 +23799,19 @@ newtype UserMessageHandlersNamespace = UserMessageHandlersNamespace { unUserMess
 instance Eq (UserMessageHandlersNamespace) where
   (UserMessageHandlersNamespace a) == (UserMessageHandlersNamespace b) = js_eq a b
 
-instance PToJSRef UserMessageHandlersNamespace where
-  pToJSRef = unUserMessageHandlersNamespace
-  {-# INLINE pToJSRef #-}
+instance PToJSVal UserMessageHandlersNamespace where
+  pToJSVal = unUserMessageHandlersNamespace
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef UserMessageHandlersNamespace where
-  pFromJSRef = UserMessageHandlersNamespace
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal UserMessageHandlersNamespace where
+  pFromJSVal = UserMessageHandlersNamespace
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef UserMessageHandlersNamespace where
+instance ToJSVal UserMessageHandlersNamespace where
   toJSRef = return . unUserMessageHandlersNamespace
   {-# INLINE toJSRef #-}
 
-instance FromJSRef UserMessageHandlersNamespace where
+instance FromJSVal UserMessageHandlersNamespace where
   fromJSRef = return . fmap UserMessageHandlersNamespace . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23841,19 +23841,19 @@ newtype VTTCue = VTTCue { unVTTCue :: JSRef }
 instance Eq (VTTCue) where
   (VTTCue a) == (VTTCue b) = js_eq a b
 
-instance PToJSRef VTTCue where
-  pToJSRef = unVTTCue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal VTTCue where
+  pToJSVal = unVTTCue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef VTTCue where
-  pFromJSRef = VTTCue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal VTTCue where
+  pFromJSVal = VTTCue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef VTTCue where
+instance ToJSVal VTTCue where
   toJSRef = return . unVTTCue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef VTTCue where
+instance FromJSVal VTTCue where
   fromJSRef = return . fmap VTTCue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23881,19 +23881,19 @@ newtype VTTRegion = VTTRegion { unVTTRegion :: JSRef }
 instance Eq (VTTRegion) where
   (VTTRegion a) == (VTTRegion b) = js_eq a b
 
-instance PToJSRef VTTRegion where
-  pToJSRef = unVTTRegion
-  {-# INLINE pToJSRef #-}
+instance PToJSVal VTTRegion where
+  pToJSVal = unVTTRegion
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef VTTRegion where
-  pFromJSRef = VTTRegion
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal VTTRegion where
+  pFromJSVal = VTTRegion
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef VTTRegion where
+instance ToJSVal VTTRegion where
   toJSRef = return . unVTTRegion
   {-# INLINE toJSRef #-}
 
-instance FromJSRef VTTRegion where
+instance FromJSVal VTTRegion where
   fromJSRef = return . fmap VTTRegion . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23919,19 +23919,19 @@ newtype VTTRegionList = VTTRegionList { unVTTRegionList :: JSRef }
 instance Eq (VTTRegionList) where
   (VTTRegionList a) == (VTTRegionList b) = js_eq a b
 
-instance PToJSRef VTTRegionList where
-  pToJSRef = unVTTRegionList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal VTTRegionList where
+  pToJSVal = unVTTRegionList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef VTTRegionList where
-  pFromJSRef = VTTRegionList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal VTTRegionList where
+  pFromJSVal = VTTRegionList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef VTTRegionList where
+instance ToJSVal VTTRegionList where
   toJSRef = return . unVTTRegionList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef VTTRegionList where
+instance FromJSVal VTTRegionList where
   fromJSRef = return . fmap VTTRegionList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23957,19 +23957,19 @@ newtype ValidityState = ValidityState { unValidityState :: JSRef }
 instance Eq (ValidityState) where
   (ValidityState a) == (ValidityState b) = js_eq a b
 
-instance PToJSRef ValidityState where
-  pToJSRef = unValidityState
-  {-# INLINE pToJSRef #-}
+instance PToJSVal ValidityState where
+  pToJSVal = unValidityState
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef ValidityState where
-  pFromJSRef = ValidityState
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal ValidityState where
+  pFromJSVal = ValidityState
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef ValidityState where
+instance ToJSVal ValidityState where
   toJSRef = return . unValidityState
   {-# INLINE toJSRef #-}
 
-instance FromJSRef ValidityState where
+instance FromJSVal ValidityState where
   fromJSRef = return . fmap ValidityState . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -23997,19 +23997,19 @@ newtype VideoPlaybackQuality = VideoPlaybackQuality { unVideoPlaybackQuality :: 
 instance Eq (VideoPlaybackQuality) where
   (VideoPlaybackQuality a) == (VideoPlaybackQuality b) = js_eq a b
 
-instance PToJSRef VideoPlaybackQuality where
-  pToJSRef = unVideoPlaybackQuality
-  {-# INLINE pToJSRef #-}
+instance PToJSVal VideoPlaybackQuality where
+  pToJSVal = unVideoPlaybackQuality
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef VideoPlaybackQuality where
-  pFromJSRef = VideoPlaybackQuality
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal VideoPlaybackQuality where
+  pFromJSVal = VideoPlaybackQuality
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef VideoPlaybackQuality where
+instance ToJSVal VideoPlaybackQuality where
   toJSRef = return . unVideoPlaybackQuality
   {-# INLINE toJSRef #-}
 
-instance FromJSRef VideoPlaybackQuality where
+instance FromJSVal VideoPlaybackQuality where
   fromJSRef = return . fmap VideoPlaybackQuality . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24039,19 +24039,19 @@ newtype VideoStreamTrack = VideoStreamTrack { unVideoStreamTrack :: JSRef }
 instance Eq (VideoStreamTrack) where
   (VideoStreamTrack a) == (VideoStreamTrack b) = js_eq a b
 
-instance PToJSRef VideoStreamTrack where
-  pToJSRef = unVideoStreamTrack
-  {-# INLINE pToJSRef #-}
+instance PToJSVal VideoStreamTrack where
+  pToJSVal = unVideoStreamTrack
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef VideoStreamTrack where
-  pFromJSRef = VideoStreamTrack
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal VideoStreamTrack where
+  pFromJSVal = VideoStreamTrack
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef VideoStreamTrack where
+instance ToJSVal VideoStreamTrack where
   toJSRef = return . unVideoStreamTrack
   {-# INLINE toJSRef #-}
 
-instance FromJSRef VideoStreamTrack where
+instance FromJSVal VideoStreamTrack where
   fromJSRef = return . fmap VideoStreamTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24079,19 +24079,19 @@ newtype VideoTrack = VideoTrack { unVideoTrack :: JSRef }
 instance Eq (VideoTrack) where
   (VideoTrack a) == (VideoTrack b) = js_eq a b
 
-instance PToJSRef VideoTrack where
-  pToJSRef = unVideoTrack
-  {-# INLINE pToJSRef #-}
+instance PToJSVal VideoTrack where
+  pToJSVal = unVideoTrack
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef VideoTrack where
-  pFromJSRef = VideoTrack
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal VideoTrack where
+  pFromJSVal = VideoTrack
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef VideoTrack where
+instance ToJSVal VideoTrack where
   toJSRef = return . unVideoTrack
   {-# INLINE toJSRef #-}
 
-instance FromJSRef VideoTrack where
+instance FromJSVal VideoTrack where
   fromJSRef = return . fmap VideoTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24124,19 +24124,19 @@ newtype VideoTrackList = VideoTrackList { unVideoTrackList :: JSRef }
 instance Eq (VideoTrackList) where
   (VideoTrackList a) == (VideoTrackList b) = js_eq a b
 
-instance PToJSRef VideoTrackList where
-  pToJSRef = unVideoTrackList
-  {-# INLINE pToJSRef #-}
+instance PToJSVal VideoTrackList where
+  pToJSVal = unVideoTrackList
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef VideoTrackList where
-  pFromJSRef = VideoTrackList
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal VideoTrackList where
+  pFromJSVal = VideoTrackList
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef VideoTrackList where
+instance ToJSVal VideoTrackList where
   toJSRef = return . unVideoTrackList
   {-# INLINE toJSRef #-}
 
-instance FromJSRef VideoTrackList where
+instance FromJSVal VideoTrackList where
   fromJSRef = return . fmap VideoTrackList . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24171,19 +24171,19 @@ newtype WaveShaperNode = WaveShaperNode { unWaveShaperNode :: JSRef }
 instance Eq (WaveShaperNode) where
   (WaveShaperNode a) == (WaveShaperNode b) = js_eq a b
 
-instance PToJSRef WaveShaperNode where
-  pToJSRef = unWaveShaperNode
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WaveShaperNode where
+  pToJSVal = unWaveShaperNode
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WaveShaperNode where
-  pFromJSRef = WaveShaperNode
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WaveShaperNode where
+  pFromJSVal = WaveShaperNode
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WaveShaperNode where
+instance ToJSVal WaveShaperNode where
   toJSRef = return . unWaveShaperNode
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WaveShaperNode where
+instance FromJSVal WaveShaperNode where
   fromJSRef = return . fmap WaveShaperNode . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24215,19 +24215,19 @@ newtype WebGL2RenderingContext = WebGL2RenderingContext { unWebGL2RenderingConte
 instance Eq (WebGL2RenderingContext) where
   (WebGL2RenderingContext a) == (WebGL2RenderingContext b) = js_eq a b
 
-instance PToJSRef WebGL2RenderingContext where
-  pToJSRef = unWebGL2RenderingContext
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGL2RenderingContext where
+  pToJSVal = unWebGL2RenderingContext
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGL2RenderingContext where
-  pFromJSRef = WebGL2RenderingContext
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGL2RenderingContext where
+  pFromJSVal = WebGL2RenderingContext
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGL2RenderingContext where
+instance ToJSVal WebGL2RenderingContext where
   toJSRef = return . unWebGL2RenderingContext
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGL2RenderingContext where
+instance FromJSVal WebGL2RenderingContext where
   fromJSRef = return . fmap WebGL2RenderingContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24255,19 +24255,19 @@ newtype WebGLActiveInfo = WebGLActiveInfo { unWebGLActiveInfo :: JSRef }
 instance Eq (WebGLActiveInfo) where
   (WebGLActiveInfo a) == (WebGLActiveInfo b) = js_eq a b
 
-instance PToJSRef WebGLActiveInfo where
-  pToJSRef = unWebGLActiveInfo
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLActiveInfo where
+  pToJSVal = unWebGLActiveInfo
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLActiveInfo where
-  pFromJSRef = WebGLActiveInfo
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLActiveInfo where
+  pFromJSVal = WebGLActiveInfo
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLActiveInfo where
+instance ToJSVal WebGLActiveInfo where
   toJSRef = return . unWebGLActiveInfo
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLActiveInfo where
+instance FromJSVal WebGLActiveInfo where
   fromJSRef = return . fmap WebGLActiveInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24293,19 +24293,19 @@ newtype WebGLBuffer = WebGLBuffer { unWebGLBuffer :: JSRef }
 instance Eq (WebGLBuffer) where
   (WebGLBuffer a) == (WebGLBuffer b) = js_eq a b
 
-instance PToJSRef WebGLBuffer where
-  pToJSRef = unWebGLBuffer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLBuffer where
+  pToJSVal = unWebGLBuffer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLBuffer where
-  pFromJSRef = WebGLBuffer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLBuffer where
+  pFromJSVal = WebGLBuffer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLBuffer where
+instance ToJSVal WebGLBuffer where
   toJSRef = return . unWebGLBuffer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLBuffer where
+instance FromJSVal WebGLBuffer where
   fromJSRef = return . fmap WebGLBuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24331,19 +24331,19 @@ newtype WebGLCompressedTextureATC = WebGLCompressedTextureATC { unWebGLCompresse
 instance Eq (WebGLCompressedTextureATC) where
   (WebGLCompressedTextureATC a) == (WebGLCompressedTextureATC b) = js_eq a b
 
-instance PToJSRef WebGLCompressedTextureATC where
-  pToJSRef = unWebGLCompressedTextureATC
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLCompressedTextureATC where
+  pToJSVal = unWebGLCompressedTextureATC
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLCompressedTextureATC where
-  pFromJSRef = WebGLCompressedTextureATC
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLCompressedTextureATC where
+  pFromJSVal = WebGLCompressedTextureATC
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLCompressedTextureATC where
+instance ToJSVal WebGLCompressedTextureATC where
   toJSRef = return . unWebGLCompressedTextureATC
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLCompressedTextureATC where
+instance FromJSVal WebGLCompressedTextureATC where
   fromJSRef = return . fmap WebGLCompressedTextureATC . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24369,19 +24369,19 @@ newtype WebGLCompressedTexturePVRTC = WebGLCompressedTexturePVRTC { unWebGLCompr
 instance Eq (WebGLCompressedTexturePVRTC) where
   (WebGLCompressedTexturePVRTC a) == (WebGLCompressedTexturePVRTC b) = js_eq a b
 
-instance PToJSRef WebGLCompressedTexturePVRTC where
-  pToJSRef = unWebGLCompressedTexturePVRTC
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLCompressedTexturePVRTC where
+  pToJSVal = unWebGLCompressedTexturePVRTC
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLCompressedTexturePVRTC where
-  pFromJSRef = WebGLCompressedTexturePVRTC
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLCompressedTexturePVRTC where
+  pFromJSVal = WebGLCompressedTexturePVRTC
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLCompressedTexturePVRTC where
+instance ToJSVal WebGLCompressedTexturePVRTC where
   toJSRef = return . unWebGLCompressedTexturePVRTC
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLCompressedTexturePVRTC where
+instance FromJSVal WebGLCompressedTexturePVRTC where
   fromJSRef = return . fmap WebGLCompressedTexturePVRTC . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24407,19 +24407,19 @@ newtype WebGLCompressedTextureS3TC = WebGLCompressedTextureS3TC { unWebGLCompres
 instance Eq (WebGLCompressedTextureS3TC) where
   (WebGLCompressedTextureS3TC a) == (WebGLCompressedTextureS3TC b) = js_eq a b
 
-instance PToJSRef WebGLCompressedTextureS3TC where
-  pToJSRef = unWebGLCompressedTextureS3TC
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLCompressedTextureS3TC where
+  pToJSVal = unWebGLCompressedTextureS3TC
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLCompressedTextureS3TC where
-  pFromJSRef = WebGLCompressedTextureS3TC
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLCompressedTextureS3TC where
+  pFromJSVal = WebGLCompressedTextureS3TC
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLCompressedTextureS3TC where
+instance ToJSVal WebGLCompressedTextureS3TC where
   toJSRef = return . unWebGLCompressedTextureS3TC
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLCompressedTextureS3TC where
+instance FromJSVal WebGLCompressedTextureS3TC where
   fromJSRef = return . fmap WebGLCompressedTextureS3TC . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24445,19 +24445,19 @@ newtype WebGLContextAttributes = WebGLContextAttributes { unWebGLContextAttribut
 instance Eq (WebGLContextAttributes) where
   (WebGLContextAttributes a) == (WebGLContextAttributes b) = js_eq a b
 
-instance PToJSRef WebGLContextAttributes where
-  pToJSRef = unWebGLContextAttributes
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLContextAttributes where
+  pToJSVal = unWebGLContextAttributes
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLContextAttributes where
-  pFromJSRef = WebGLContextAttributes
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLContextAttributes where
+  pFromJSVal = WebGLContextAttributes
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLContextAttributes where
+instance ToJSVal WebGLContextAttributes where
   toJSRef = return . unWebGLContextAttributes
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLContextAttributes where
+instance FromJSVal WebGLContextAttributes where
   fromJSRef = return . fmap WebGLContextAttributes . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24486,19 +24486,19 @@ newtype WebGLContextEvent = WebGLContextEvent { unWebGLContextEvent :: JSRef }
 instance Eq (WebGLContextEvent) where
   (WebGLContextEvent a) == (WebGLContextEvent b) = js_eq a b
 
-instance PToJSRef WebGLContextEvent where
-  pToJSRef = unWebGLContextEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLContextEvent where
+  pToJSVal = unWebGLContextEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLContextEvent where
-  pFromJSRef = WebGLContextEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLContextEvent where
+  pFromJSVal = WebGLContextEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLContextEvent where
+instance ToJSVal WebGLContextEvent where
   toJSRef = return . unWebGLContextEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLContextEvent where
+instance FromJSVal WebGLContextEvent where
   fromJSRef = return . fmap WebGLContextEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24525,19 +24525,19 @@ newtype WebGLDebugRendererInfo = WebGLDebugRendererInfo { unWebGLDebugRendererIn
 instance Eq (WebGLDebugRendererInfo) where
   (WebGLDebugRendererInfo a) == (WebGLDebugRendererInfo b) = js_eq a b
 
-instance PToJSRef WebGLDebugRendererInfo where
-  pToJSRef = unWebGLDebugRendererInfo
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLDebugRendererInfo where
+  pToJSVal = unWebGLDebugRendererInfo
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLDebugRendererInfo where
-  pFromJSRef = WebGLDebugRendererInfo
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLDebugRendererInfo where
+  pFromJSVal = WebGLDebugRendererInfo
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLDebugRendererInfo where
+instance ToJSVal WebGLDebugRendererInfo where
   toJSRef = return . unWebGLDebugRendererInfo
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLDebugRendererInfo where
+instance FromJSVal WebGLDebugRendererInfo where
   fromJSRef = return . fmap WebGLDebugRendererInfo . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24563,19 +24563,19 @@ newtype WebGLDebugShaders = WebGLDebugShaders { unWebGLDebugShaders :: JSRef }
 instance Eq (WebGLDebugShaders) where
   (WebGLDebugShaders a) == (WebGLDebugShaders b) = js_eq a b
 
-instance PToJSRef WebGLDebugShaders where
-  pToJSRef = unWebGLDebugShaders
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLDebugShaders where
+  pToJSVal = unWebGLDebugShaders
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLDebugShaders where
-  pFromJSRef = WebGLDebugShaders
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLDebugShaders where
+  pFromJSVal = WebGLDebugShaders
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLDebugShaders where
+instance ToJSVal WebGLDebugShaders where
   toJSRef = return . unWebGLDebugShaders
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLDebugShaders where
+instance FromJSVal WebGLDebugShaders where
   fromJSRef = return . fmap WebGLDebugShaders . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24601,19 +24601,19 @@ newtype WebGLDepthTexture = WebGLDepthTexture { unWebGLDepthTexture :: JSRef }
 instance Eq (WebGLDepthTexture) where
   (WebGLDepthTexture a) == (WebGLDepthTexture b) = js_eq a b
 
-instance PToJSRef WebGLDepthTexture where
-  pToJSRef = unWebGLDepthTexture
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLDepthTexture where
+  pToJSVal = unWebGLDepthTexture
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLDepthTexture where
-  pFromJSRef = WebGLDepthTexture
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLDepthTexture where
+  pFromJSVal = WebGLDepthTexture
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLDepthTexture where
+instance ToJSVal WebGLDepthTexture where
   toJSRef = return . unWebGLDepthTexture
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLDepthTexture where
+instance FromJSVal WebGLDepthTexture where
   fromJSRef = return . fmap WebGLDepthTexture . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24639,19 +24639,19 @@ newtype WebGLDrawBuffers = WebGLDrawBuffers { unWebGLDrawBuffers :: JSRef }
 instance Eq (WebGLDrawBuffers) where
   (WebGLDrawBuffers a) == (WebGLDrawBuffers b) = js_eq a b
 
-instance PToJSRef WebGLDrawBuffers where
-  pToJSRef = unWebGLDrawBuffers
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLDrawBuffers where
+  pToJSVal = unWebGLDrawBuffers
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLDrawBuffers where
-  pFromJSRef = WebGLDrawBuffers
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLDrawBuffers where
+  pFromJSVal = WebGLDrawBuffers
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLDrawBuffers where
+instance ToJSVal WebGLDrawBuffers where
   toJSRef = return . unWebGLDrawBuffers
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLDrawBuffers where
+instance FromJSVal WebGLDrawBuffers where
   fromJSRef = return . fmap WebGLDrawBuffers . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24677,19 +24677,19 @@ newtype WebGLFramebuffer = WebGLFramebuffer { unWebGLFramebuffer :: JSRef }
 instance Eq (WebGLFramebuffer) where
   (WebGLFramebuffer a) == (WebGLFramebuffer b) = js_eq a b
 
-instance PToJSRef WebGLFramebuffer where
-  pToJSRef = unWebGLFramebuffer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLFramebuffer where
+  pToJSVal = unWebGLFramebuffer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLFramebuffer where
-  pFromJSRef = WebGLFramebuffer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLFramebuffer where
+  pFromJSVal = WebGLFramebuffer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLFramebuffer where
+instance ToJSVal WebGLFramebuffer where
   toJSRef = return . unWebGLFramebuffer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLFramebuffer where
+instance FromJSVal WebGLFramebuffer where
   fromJSRef = return . fmap WebGLFramebuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24715,19 +24715,19 @@ newtype WebGLLoseContext = WebGLLoseContext { unWebGLLoseContext :: JSRef }
 instance Eq (WebGLLoseContext) where
   (WebGLLoseContext a) == (WebGLLoseContext b) = js_eq a b
 
-instance PToJSRef WebGLLoseContext where
-  pToJSRef = unWebGLLoseContext
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLLoseContext where
+  pToJSVal = unWebGLLoseContext
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLLoseContext where
-  pFromJSRef = WebGLLoseContext
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLLoseContext where
+  pFromJSVal = WebGLLoseContext
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLLoseContext where
+instance ToJSVal WebGLLoseContext where
   toJSRef = return . unWebGLLoseContext
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLLoseContext where
+instance FromJSVal WebGLLoseContext where
   fromJSRef = return . fmap WebGLLoseContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24753,19 +24753,19 @@ newtype WebGLProgram = WebGLProgram { unWebGLProgram :: JSRef }
 instance Eq (WebGLProgram) where
   (WebGLProgram a) == (WebGLProgram b) = js_eq a b
 
-instance PToJSRef WebGLProgram where
-  pToJSRef = unWebGLProgram
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLProgram where
+  pToJSVal = unWebGLProgram
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLProgram where
-  pFromJSRef = WebGLProgram
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLProgram where
+  pFromJSVal = WebGLProgram
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLProgram where
+instance ToJSVal WebGLProgram where
   toJSRef = return . unWebGLProgram
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLProgram where
+instance FromJSVal WebGLProgram where
   fromJSRef = return . fmap WebGLProgram . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24791,19 +24791,19 @@ newtype WebGLQuery = WebGLQuery { unWebGLQuery :: JSRef }
 instance Eq (WebGLQuery) where
   (WebGLQuery a) == (WebGLQuery b) = js_eq a b
 
-instance PToJSRef WebGLQuery where
-  pToJSRef = unWebGLQuery
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLQuery where
+  pToJSVal = unWebGLQuery
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLQuery where
-  pFromJSRef = WebGLQuery
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLQuery where
+  pFromJSVal = WebGLQuery
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLQuery where
+instance ToJSVal WebGLQuery where
   toJSRef = return . unWebGLQuery
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLQuery where
+instance FromJSVal WebGLQuery where
   fromJSRef = return . fmap WebGLQuery . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24829,19 +24829,19 @@ newtype WebGLRenderbuffer = WebGLRenderbuffer { unWebGLRenderbuffer :: JSRef }
 instance Eq (WebGLRenderbuffer) where
   (WebGLRenderbuffer a) == (WebGLRenderbuffer b) = js_eq a b
 
-instance PToJSRef WebGLRenderbuffer where
-  pToJSRef = unWebGLRenderbuffer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLRenderbuffer where
+  pToJSVal = unWebGLRenderbuffer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLRenderbuffer where
-  pFromJSRef = WebGLRenderbuffer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLRenderbuffer where
+  pFromJSVal = WebGLRenderbuffer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLRenderbuffer where
+instance ToJSVal WebGLRenderbuffer where
   toJSRef = return . unWebGLRenderbuffer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLRenderbuffer where
+instance FromJSVal WebGLRenderbuffer where
   fromJSRef = return . fmap WebGLRenderbuffer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24871,19 +24871,19 @@ newtype WebGLRenderingContext = WebGLRenderingContext { unWebGLRenderingContext 
 instance Eq (WebGLRenderingContext) where
   (WebGLRenderingContext a) == (WebGLRenderingContext b) = js_eq a b
 
-instance PToJSRef WebGLRenderingContext where
-  pToJSRef = unWebGLRenderingContext
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLRenderingContext where
+  pToJSVal = unWebGLRenderingContext
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLRenderingContext where
-  pFromJSRef = WebGLRenderingContext
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLRenderingContext where
+  pFromJSVal = WebGLRenderingContext
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLRenderingContext where
+instance ToJSVal WebGLRenderingContext where
   toJSRef = return . unWebGLRenderingContext
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLRenderingContext where
+instance FromJSVal WebGLRenderingContext where
   fromJSRef = return . fmap WebGLRenderingContext . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24914,19 +24914,19 @@ newtype WebGLRenderingContextBase = WebGLRenderingContextBase { unWebGLRendering
 instance Eq (WebGLRenderingContextBase) where
   (WebGLRenderingContextBase a) == (WebGLRenderingContextBase b) = js_eq a b
 
-instance PToJSRef WebGLRenderingContextBase where
-  pToJSRef = unWebGLRenderingContextBase
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLRenderingContextBase where
+  pToJSVal = unWebGLRenderingContextBase
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLRenderingContextBase where
-  pFromJSRef = WebGLRenderingContextBase
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLRenderingContextBase where
+  pFromJSVal = WebGLRenderingContextBase
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLRenderingContextBase where
+instance ToJSVal WebGLRenderingContextBase where
   toJSRef = return . unWebGLRenderingContextBase
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLRenderingContextBase where
+instance FromJSVal WebGLRenderingContextBase where
   fromJSRef = return . fmap WebGLRenderingContextBase . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24958,19 +24958,19 @@ newtype WebGLSampler = WebGLSampler { unWebGLSampler :: JSRef }
 instance Eq (WebGLSampler) where
   (WebGLSampler a) == (WebGLSampler b) = js_eq a b
 
-instance PToJSRef WebGLSampler where
-  pToJSRef = unWebGLSampler
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLSampler where
+  pToJSVal = unWebGLSampler
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLSampler where
-  pFromJSRef = WebGLSampler
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLSampler where
+  pFromJSVal = WebGLSampler
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLSampler where
+instance ToJSVal WebGLSampler where
   toJSRef = return . unWebGLSampler
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLSampler where
+instance FromJSVal WebGLSampler where
   fromJSRef = return . fmap WebGLSampler . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -24996,19 +24996,19 @@ newtype WebGLShader = WebGLShader { unWebGLShader :: JSRef }
 instance Eq (WebGLShader) where
   (WebGLShader a) == (WebGLShader b) = js_eq a b
 
-instance PToJSRef WebGLShader where
-  pToJSRef = unWebGLShader
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLShader where
+  pToJSVal = unWebGLShader
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLShader where
-  pFromJSRef = WebGLShader
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLShader where
+  pFromJSVal = WebGLShader
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLShader where
+instance ToJSVal WebGLShader where
   toJSRef = return . unWebGLShader
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLShader where
+instance FromJSVal WebGLShader where
   fromJSRef = return . fmap WebGLShader . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25034,19 +25034,19 @@ newtype WebGLShaderPrecisionFormat = WebGLShaderPrecisionFormat { unWebGLShaderP
 instance Eq (WebGLShaderPrecisionFormat) where
   (WebGLShaderPrecisionFormat a) == (WebGLShaderPrecisionFormat b) = js_eq a b
 
-instance PToJSRef WebGLShaderPrecisionFormat where
-  pToJSRef = unWebGLShaderPrecisionFormat
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLShaderPrecisionFormat where
+  pToJSVal = unWebGLShaderPrecisionFormat
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLShaderPrecisionFormat where
-  pFromJSRef = WebGLShaderPrecisionFormat
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLShaderPrecisionFormat where
+  pFromJSVal = WebGLShaderPrecisionFormat
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLShaderPrecisionFormat where
+instance ToJSVal WebGLShaderPrecisionFormat where
   toJSRef = return . unWebGLShaderPrecisionFormat
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLShaderPrecisionFormat where
+instance FromJSVal WebGLShaderPrecisionFormat where
   fromJSRef = return . fmap WebGLShaderPrecisionFormat . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25072,19 +25072,19 @@ newtype WebGLSync = WebGLSync { unWebGLSync :: JSRef }
 instance Eq (WebGLSync) where
   (WebGLSync a) == (WebGLSync b) = js_eq a b
 
-instance PToJSRef WebGLSync where
-  pToJSRef = unWebGLSync
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLSync where
+  pToJSVal = unWebGLSync
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLSync where
-  pFromJSRef = WebGLSync
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLSync where
+  pFromJSVal = WebGLSync
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLSync where
+instance ToJSVal WebGLSync where
   toJSRef = return . unWebGLSync
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLSync where
+instance FromJSVal WebGLSync where
   fromJSRef = return . fmap WebGLSync . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25110,19 +25110,19 @@ newtype WebGLTexture = WebGLTexture { unWebGLTexture :: JSRef }
 instance Eq (WebGLTexture) where
   (WebGLTexture a) == (WebGLTexture b) = js_eq a b
 
-instance PToJSRef WebGLTexture where
-  pToJSRef = unWebGLTexture
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLTexture where
+  pToJSVal = unWebGLTexture
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLTexture where
-  pFromJSRef = WebGLTexture
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLTexture where
+  pFromJSVal = WebGLTexture
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLTexture where
+instance ToJSVal WebGLTexture where
   toJSRef = return . unWebGLTexture
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLTexture where
+instance FromJSVal WebGLTexture where
   fromJSRef = return . fmap WebGLTexture . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25148,19 +25148,19 @@ newtype WebGLTransformFeedback = WebGLTransformFeedback { unWebGLTransformFeedba
 instance Eq (WebGLTransformFeedback) where
   (WebGLTransformFeedback a) == (WebGLTransformFeedback b) = js_eq a b
 
-instance PToJSRef WebGLTransformFeedback where
-  pToJSRef = unWebGLTransformFeedback
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLTransformFeedback where
+  pToJSVal = unWebGLTransformFeedback
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLTransformFeedback where
-  pFromJSRef = WebGLTransformFeedback
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLTransformFeedback where
+  pFromJSVal = WebGLTransformFeedback
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLTransformFeedback where
+instance ToJSVal WebGLTransformFeedback where
   toJSRef = return . unWebGLTransformFeedback
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLTransformFeedback where
+instance FromJSVal WebGLTransformFeedback where
   fromJSRef = return . fmap WebGLTransformFeedback . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25186,19 +25186,19 @@ newtype WebGLUniformLocation = WebGLUniformLocation { unWebGLUniformLocation :: 
 instance Eq (WebGLUniformLocation) where
   (WebGLUniformLocation a) == (WebGLUniformLocation b) = js_eq a b
 
-instance PToJSRef WebGLUniformLocation where
-  pToJSRef = unWebGLUniformLocation
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLUniformLocation where
+  pToJSVal = unWebGLUniformLocation
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLUniformLocation where
-  pFromJSRef = WebGLUniformLocation
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLUniformLocation where
+  pFromJSVal = WebGLUniformLocation
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLUniformLocation where
+instance ToJSVal WebGLUniformLocation where
   toJSRef = return . unWebGLUniformLocation
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLUniformLocation where
+instance FromJSVal WebGLUniformLocation where
   fromJSRef = return . fmap WebGLUniformLocation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25224,19 +25224,19 @@ newtype WebGLVertexArrayObject = WebGLVertexArrayObject { unWebGLVertexArrayObje
 instance Eq (WebGLVertexArrayObject) where
   (WebGLVertexArrayObject a) == (WebGLVertexArrayObject b) = js_eq a b
 
-instance PToJSRef WebGLVertexArrayObject where
-  pToJSRef = unWebGLVertexArrayObject
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLVertexArrayObject where
+  pToJSVal = unWebGLVertexArrayObject
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLVertexArrayObject where
-  pFromJSRef = WebGLVertexArrayObject
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLVertexArrayObject where
+  pFromJSVal = WebGLVertexArrayObject
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLVertexArrayObject where
+instance ToJSVal WebGLVertexArrayObject where
   toJSRef = return . unWebGLVertexArrayObject
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLVertexArrayObject where
+instance FromJSVal WebGLVertexArrayObject where
   fromJSRef = return . fmap WebGLVertexArrayObject . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25262,19 +25262,19 @@ newtype WebGLVertexArrayObjectOES = WebGLVertexArrayObjectOES { unWebGLVertexArr
 instance Eq (WebGLVertexArrayObjectOES) where
   (WebGLVertexArrayObjectOES a) == (WebGLVertexArrayObjectOES b) = js_eq a b
 
-instance PToJSRef WebGLVertexArrayObjectOES where
-  pToJSRef = unWebGLVertexArrayObjectOES
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebGLVertexArrayObjectOES where
+  pToJSVal = unWebGLVertexArrayObjectOES
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebGLVertexArrayObjectOES where
-  pFromJSRef = WebGLVertexArrayObjectOES
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebGLVertexArrayObjectOES where
+  pFromJSVal = WebGLVertexArrayObjectOES
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebGLVertexArrayObjectOES where
+instance ToJSVal WebGLVertexArrayObjectOES where
   toJSRef = return . unWebGLVertexArrayObjectOES
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebGLVertexArrayObjectOES where
+instance FromJSVal WebGLVertexArrayObjectOES where
   fromJSRef = return . fmap WebGLVertexArrayObjectOES . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25303,19 +25303,19 @@ newtype WebKitAnimationEvent = WebKitAnimationEvent { unWebKitAnimationEvent :: 
 instance Eq (WebKitAnimationEvent) where
   (WebKitAnimationEvent a) == (WebKitAnimationEvent b) = js_eq a b
 
-instance PToJSRef WebKitAnimationEvent where
-  pToJSRef = unWebKitAnimationEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitAnimationEvent where
+  pToJSVal = unWebKitAnimationEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitAnimationEvent where
-  pFromJSRef = WebKitAnimationEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitAnimationEvent where
+  pFromJSVal = WebKitAnimationEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitAnimationEvent where
+instance ToJSVal WebKitAnimationEvent where
   toJSRef = return . unWebKitAnimationEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitAnimationEvent where
+instance FromJSVal WebKitAnimationEvent where
   fromJSRef = return . fmap WebKitAnimationEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25346,19 +25346,19 @@ newtype WebKitCSSFilterValue = WebKitCSSFilterValue { unWebKitCSSFilterValue :: 
 instance Eq (WebKitCSSFilterValue) where
   (WebKitCSSFilterValue a) == (WebKitCSSFilterValue b) = js_eq a b
 
-instance PToJSRef WebKitCSSFilterValue where
-  pToJSRef = unWebKitCSSFilterValue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitCSSFilterValue where
+  pToJSVal = unWebKitCSSFilterValue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitCSSFilterValue where
-  pFromJSRef = WebKitCSSFilterValue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitCSSFilterValue where
+  pFromJSVal = WebKitCSSFilterValue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitCSSFilterValue where
+instance ToJSVal WebKitCSSFilterValue where
   toJSRef = return . unWebKitCSSFilterValue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitCSSFilterValue where
+instance FromJSVal WebKitCSSFilterValue where
   fromJSRef = return . fmap WebKitCSSFilterValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25386,19 +25386,19 @@ newtype WebKitCSSMatrix = WebKitCSSMatrix { unWebKitCSSMatrix :: JSRef }
 instance Eq (WebKitCSSMatrix) where
   (WebKitCSSMatrix a) == (WebKitCSSMatrix b) = js_eq a b
 
-instance PToJSRef WebKitCSSMatrix where
-  pToJSRef = unWebKitCSSMatrix
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitCSSMatrix where
+  pToJSVal = unWebKitCSSMatrix
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitCSSMatrix where
-  pFromJSRef = WebKitCSSMatrix
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitCSSMatrix where
+  pFromJSVal = WebKitCSSMatrix
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitCSSMatrix where
+instance ToJSVal WebKitCSSMatrix where
   toJSRef = return . unWebKitCSSMatrix
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitCSSMatrix where
+instance FromJSVal WebKitCSSMatrix where
   fromJSRef = return . fmap WebKitCSSMatrix . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25427,19 +25427,19 @@ newtype WebKitCSSRegionRule = WebKitCSSRegionRule { unWebKitCSSRegionRule :: JSR
 instance Eq (WebKitCSSRegionRule) where
   (WebKitCSSRegionRule a) == (WebKitCSSRegionRule b) = js_eq a b
 
-instance PToJSRef WebKitCSSRegionRule where
-  pToJSRef = unWebKitCSSRegionRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitCSSRegionRule where
+  pToJSVal = unWebKitCSSRegionRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitCSSRegionRule where
-  pFromJSRef = WebKitCSSRegionRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitCSSRegionRule where
+  pFromJSVal = WebKitCSSRegionRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitCSSRegionRule where
+instance ToJSVal WebKitCSSRegionRule where
   toJSRef = return . unWebKitCSSRegionRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitCSSRegionRule where
+instance FromJSVal WebKitCSSRegionRule where
   fromJSRef = return . fmap WebKitCSSRegionRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25470,19 +25470,19 @@ newtype WebKitCSSTransformValue = WebKitCSSTransformValue { unWebKitCSSTransform
 instance Eq (WebKitCSSTransformValue) where
   (WebKitCSSTransformValue a) == (WebKitCSSTransformValue b) = js_eq a b
 
-instance PToJSRef WebKitCSSTransformValue where
-  pToJSRef = unWebKitCSSTransformValue
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitCSSTransformValue where
+  pToJSVal = unWebKitCSSTransformValue
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitCSSTransformValue where
-  pFromJSRef = WebKitCSSTransformValue
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitCSSTransformValue where
+  pFromJSVal = WebKitCSSTransformValue
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitCSSTransformValue where
+instance ToJSVal WebKitCSSTransformValue where
   toJSRef = return . unWebKitCSSTransformValue
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitCSSTransformValue where
+instance FromJSVal WebKitCSSTransformValue where
   fromJSRef = return . fmap WebKitCSSTransformValue . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25513,19 +25513,19 @@ newtype WebKitCSSViewportRule = WebKitCSSViewportRule { unWebKitCSSViewportRule 
 instance Eq (WebKitCSSViewportRule) where
   (WebKitCSSViewportRule a) == (WebKitCSSViewportRule b) = js_eq a b
 
-instance PToJSRef WebKitCSSViewportRule where
-  pToJSRef = unWebKitCSSViewportRule
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitCSSViewportRule where
+  pToJSVal = unWebKitCSSViewportRule
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitCSSViewportRule where
-  pFromJSRef = WebKitCSSViewportRule
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitCSSViewportRule where
+  pFromJSVal = WebKitCSSViewportRule
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitCSSViewportRule where
+instance ToJSVal WebKitCSSViewportRule where
   toJSRef = return . unWebKitCSSViewportRule
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitCSSViewportRule where
+instance FromJSVal WebKitCSSViewportRule where
   fromJSRef = return . fmap WebKitCSSViewportRule . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25553,21 +25553,21 @@ foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKit
 newtype WebKitNamedFlow = WebKitNamedFlow { unWebKitNamedFlow :: JSRef }
 
 instance Eq (WebKitNamedFlow) where
-  (WebKitNamedFlow a) == (WebKitNamedFlow b) = js_eq a b
+(WebKitNamedFlow a) == (WebKitNamedFlow b) = js_eq a b
 
-instance PToJSRef WebKitNamedFlow where
-  pToJSRef = unWebKitNamedFlow
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitNamedFlow where
+pToJSVal = unWebKitNamedFlow
+{-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitNamedFlow where
-  pFromJSRef = WebKitNamedFlow
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitNamedFlow where
+  pFromJSVal = WebKitNamedFlow
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitNamedFlow where
+instance ToJSVal WebKitNamedFlow where
   toJSRef = return . unWebKitNamedFlow
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitNamedFlow where
+instance FromJSVal WebKitNamedFlow where
   fromJSRef = return . fmap WebKitNamedFlow . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25596,19 +25596,19 @@ newtype WebKitNamespace = WebKitNamespace { unWebKitNamespace :: JSRef }
 instance Eq (WebKitNamespace) where
   (WebKitNamespace a) == (WebKitNamespace b) = js_eq a b
 
-instance PToJSRef WebKitNamespace where
-  pToJSRef = unWebKitNamespace
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitNamespace where
+  pToJSVal = unWebKitNamespace
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitNamespace where
-  pFromJSRef = WebKitNamespace
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitNamespace where
+  pFromJSVal = WebKitNamespace
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitNamespace where
+instance ToJSVal WebKitNamespace where
   toJSRef = return . unWebKitNamespace
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitNamespace where
+instance FromJSVal WebKitNamespace where
   fromJSRef = return . fmap WebKitNamespace . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25637,19 +25637,19 @@ newtype WebKitPlaybackTargetAvailabilityEvent = WebKitPlaybackTargetAvailability
 instance Eq (WebKitPlaybackTargetAvailabilityEvent) where
   (WebKitPlaybackTargetAvailabilityEvent a) == (WebKitPlaybackTargetAvailabilityEvent b) = js_eq a b
 
-instance PToJSRef WebKitPlaybackTargetAvailabilityEvent where
-  pToJSRef = unWebKitPlaybackTargetAvailabilityEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitPlaybackTargetAvailabilityEvent where
+  pToJSVal = unWebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitPlaybackTargetAvailabilityEvent where
-  pFromJSRef = WebKitPlaybackTargetAvailabilityEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitPlaybackTargetAvailabilityEvent where
+  pFromJSVal = WebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitPlaybackTargetAvailabilityEvent where
+instance ToJSVal WebKitPlaybackTargetAvailabilityEvent where
   toJSRef = return . unWebKitPlaybackTargetAvailabilityEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitPlaybackTargetAvailabilityEvent where
+instance FromJSVal WebKitPlaybackTargetAvailabilityEvent where
   fromJSRef = return . fmap WebKitPlaybackTargetAvailabilityEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25676,19 +25676,19 @@ newtype WebKitPoint = WebKitPoint { unWebKitPoint :: JSRef }
 instance Eq (WebKitPoint) where
   (WebKitPoint a) == (WebKitPoint b) = js_eq a b
 
-instance PToJSRef WebKitPoint where
-  pToJSRef = unWebKitPoint
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitPoint where
+  pToJSVal = unWebKitPoint
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitPoint where
-  pFromJSRef = WebKitPoint
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitPoint where
+  pFromJSVal = WebKitPoint
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitPoint where
+instance ToJSVal WebKitPoint where
   toJSRef = return . unWebKitPoint
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitPoint where
+instance FromJSVal WebKitPoint where
   fromJSRef = return . fmap WebKitPoint . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25719,19 +25719,19 @@ newtype WebKitTransitionEvent = WebKitTransitionEvent { unWebKitTransitionEvent 
 instance Eq (WebKitTransitionEvent) where
   (WebKitTransitionEvent a) == (WebKitTransitionEvent b) = js_eq a b
 
-instance PToJSRef WebKitTransitionEvent where
-  pToJSRef = unWebKitTransitionEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebKitTransitionEvent where
+  pToJSVal = unWebKitTransitionEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebKitTransitionEvent where
-  pFromJSRef = WebKitTransitionEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebKitTransitionEvent where
+  pFromJSVal = WebKitTransitionEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebKitTransitionEvent where
+instance ToJSVal WebKitTransitionEvent where
   toJSRef = return . unWebKitTransitionEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebKitTransitionEvent where
+instance FromJSVal WebKitTransitionEvent where
   fromJSRef = return . fmap WebKitTransitionEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25761,19 +25761,19 @@ newtype WebSocket = WebSocket { unWebSocket :: JSRef }
 instance Eq (WebSocket) where
   (WebSocket a) == (WebSocket b) = js_eq a b
 
-instance PToJSRef WebSocket where
-  pToJSRef = unWebSocket
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WebSocket where
+  pToJSVal = unWebSocket
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WebSocket where
-  pFromJSRef = WebSocket
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WebSocket where
+  pFromJSVal = WebSocket
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WebSocket where
+instance ToJSVal WebSocket where
   toJSRef = return . unWebSocket
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WebSocket where
+instance FromJSVal WebSocket where
   fromJSRef = return . fmap WebSocket . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25805,19 +25805,19 @@ newtype WheelEvent = WheelEvent { unWheelEvent :: JSRef }
 instance Eq (WheelEvent) where
   (WheelEvent a) == (WheelEvent b) = js_eq a b
 
-instance PToJSRef WheelEvent where
-  pToJSRef = unWheelEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WheelEvent where
+  pToJSVal = unWheelEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WheelEvent where
-  pFromJSRef = WheelEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WheelEvent where
+  pFromJSVal = WheelEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WheelEvent where
+instance ToJSVal WheelEvent where
   toJSRef = return . unWheelEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WheelEvent where
+instance FromJSVal WheelEvent where
   fromJSRef = return . fmap WheelEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25853,19 +25853,19 @@ newtype Window = Window { unWindow :: JSRef }
 instance Eq (Window) where
   (Window a) == (Window b) = js_eq a b
 
-instance PToJSRef Window where
-  pToJSRef = unWindow
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Window where
+  pToJSVal = unWindow
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Window where
-  pFromJSRef = Window
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Window where
+  pFromJSVal = Window
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Window where
+instance ToJSVal Window where
   toJSRef = return . unWindow
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Window where
+instance FromJSVal Window where
   fromJSRef = return . fmap Window . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25894,19 +25894,19 @@ newtype WindowBase64 = WindowBase64 { unWindowBase64 :: JSRef }
 instance Eq (WindowBase64) where
   (WindowBase64 a) == (WindowBase64 b) = js_eq a b
 
-instance PToJSRef WindowBase64 where
-  pToJSRef = unWindowBase64
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WindowBase64 where
+  pToJSVal = unWindowBase64
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WindowBase64 where
-  pFromJSRef = WindowBase64
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WindowBase64 where
+  pFromJSVal = WindowBase64
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WindowBase64 where
+instance ToJSVal WindowBase64 where
   toJSRef = return . unWindowBase64
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WindowBase64 where
+instance FromJSVal WindowBase64 where
   fromJSRef = return . fmap WindowBase64 . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25932,19 +25932,19 @@ newtype WindowTimers = WindowTimers { unWindowTimers :: JSRef }
 instance Eq (WindowTimers) where
   (WindowTimers a) == (WindowTimers b) = js_eq a b
 
-instance PToJSRef WindowTimers where
-  pToJSRef = unWindowTimers
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WindowTimers where
+  pToJSVal = unWindowTimers
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WindowTimers where
-  pFromJSRef = WindowTimers
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WindowTimers where
+  pFromJSVal = WindowTimers
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WindowTimers where
+instance ToJSVal WindowTimers where
   toJSRef = return . unWindowTimers
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WindowTimers where
+instance FromJSVal WindowTimers where
   fromJSRef = return . fmap WindowTimers . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -25973,19 +25973,19 @@ newtype Worker = Worker { unWorker :: JSRef }
 instance Eq (Worker) where
   (Worker a) == (Worker b) = js_eq a b
 
-instance PToJSRef Worker where
-  pToJSRef = unWorker
-  {-# INLINE pToJSRef #-}
+instance PToJSVal Worker where
+  pToJSVal = unWorker
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef Worker where
-  pFromJSRef = Worker
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal Worker where
+  pFromJSVal = Worker
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef Worker where
+instance ToJSVal Worker where
   toJSRef = return . unWorker
   {-# INLINE toJSRef #-}
 
-instance FromJSRef Worker where
+instance FromJSVal Worker where
   fromJSRef = return . fmap Worker . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26015,19 +26015,19 @@ newtype WorkerGlobalScope = WorkerGlobalScope { unWorkerGlobalScope :: JSRef }
 instance Eq (WorkerGlobalScope) where
   (WorkerGlobalScope a) == (WorkerGlobalScope b) = js_eq a b
 
-instance PToJSRef WorkerGlobalScope where
-  pToJSRef = unWorkerGlobalScope
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WorkerGlobalScope where
+  pToJSVal = unWorkerGlobalScope
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WorkerGlobalScope where
-  pFromJSRef = WorkerGlobalScope
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WorkerGlobalScope where
+  pFromJSVal = WorkerGlobalScope
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WorkerGlobalScope where
+instance ToJSVal WorkerGlobalScope where
   toJSRef = return . unWorkerGlobalScope
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WorkerGlobalScope where
+instance FromJSVal WorkerGlobalScope where
   fromJSRef = return . fmap WorkerGlobalScope . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26059,19 +26059,19 @@ newtype WorkerLocation = WorkerLocation { unWorkerLocation :: JSRef }
 instance Eq (WorkerLocation) where
   (WorkerLocation a) == (WorkerLocation b) = js_eq a b
 
-instance PToJSRef WorkerLocation where
-  pToJSRef = unWorkerLocation
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WorkerLocation where
+  pToJSVal = unWorkerLocation
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WorkerLocation where
-  pFromJSRef = WorkerLocation
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WorkerLocation where
+  pFromJSVal = WorkerLocation
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WorkerLocation where
+instance ToJSVal WorkerLocation where
   toJSRef = return . unWorkerLocation
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WorkerLocation where
+instance FromJSVal WorkerLocation where
   fromJSRef = return . fmap WorkerLocation . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26097,19 +26097,19 @@ newtype WorkerNavigator = WorkerNavigator { unWorkerNavigator :: JSRef }
 instance Eq (WorkerNavigator) where
   (WorkerNavigator a) == (WorkerNavigator b) = js_eq a b
 
-instance PToJSRef WorkerNavigator where
-  pToJSRef = unWorkerNavigator
-  {-# INLINE pToJSRef #-}
+instance PToJSVal WorkerNavigator where
+  pToJSVal = unWorkerNavigator
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef WorkerNavigator where
-  pFromJSRef = WorkerNavigator
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal WorkerNavigator where
+  pFromJSVal = WorkerNavigator
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef WorkerNavigator where
+instance ToJSVal WorkerNavigator where
   toJSRef = return . unWorkerNavigator
   {-# INLINE toJSRef #-}
 
-instance FromJSRef WorkerNavigator where
+instance FromJSVal WorkerNavigator where
   fromJSRef = return . fmap WorkerNavigator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26138,19 +26138,19 @@ newtype XMLHttpRequest = XMLHttpRequest { unXMLHttpRequest :: JSRef }
 instance Eq (XMLHttpRequest) where
   (XMLHttpRequest a) == (XMLHttpRequest b) = js_eq a b
 
-instance PToJSRef XMLHttpRequest where
-  pToJSRef = unXMLHttpRequest
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XMLHttpRequest where
+  pToJSVal = unXMLHttpRequest
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XMLHttpRequest where
-  pFromJSRef = XMLHttpRequest
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XMLHttpRequest where
+  pFromJSVal = XMLHttpRequest
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XMLHttpRequest where
+instance ToJSVal XMLHttpRequest where
   toJSRef = return . unXMLHttpRequest
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XMLHttpRequest where
+instance FromJSVal XMLHttpRequest where
   fromJSRef = return . fmap XMLHttpRequest . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26181,19 +26181,19 @@ newtype XMLHttpRequestProgressEvent = XMLHttpRequestProgressEvent { unXMLHttpReq
 instance Eq (XMLHttpRequestProgressEvent) where
   (XMLHttpRequestProgressEvent a) == (XMLHttpRequestProgressEvent b) = js_eq a b
 
-instance PToJSRef XMLHttpRequestProgressEvent where
-  pToJSRef = unXMLHttpRequestProgressEvent
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XMLHttpRequestProgressEvent where
+  pToJSVal = unXMLHttpRequestProgressEvent
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XMLHttpRequestProgressEvent where
-  pFromJSRef = XMLHttpRequestProgressEvent
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XMLHttpRequestProgressEvent where
+  pFromJSVal = XMLHttpRequestProgressEvent
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XMLHttpRequestProgressEvent where
+instance ToJSVal XMLHttpRequestProgressEvent where
   toJSRef = return . unXMLHttpRequestProgressEvent
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XMLHttpRequestProgressEvent where
+instance FromJSVal XMLHttpRequestProgressEvent where
   fromJSRef = return . fmap XMLHttpRequestProgressEvent . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26224,19 +26224,19 @@ newtype XMLHttpRequestUpload = XMLHttpRequestUpload { unXMLHttpRequestUpload :: 
 instance Eq (XMLHttpRequestUpload) where
   (XMLHttpRequestUpload a) == (XMLHttpRequestUpload b) = js_eq a b
 
-instance PToJSRef XMLHttpRequestUpload where
-  pToJSRef = unXMLHttpRequestUpload
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XMLHttpRequestUpload where
+  pToJSVal = unXMLHttpRequestUpload
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XMLHttpRequestUpload where
-  pFromJSRef = XMLHttpRequestUpload
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XMLHttpRequestUpload where
+  pFromJSVal = XMLHttpRequestUpload
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XMLHttpRequestUpload where
+instance ToJSVal XMLHttpRequestUpload where
   toJSRef = return . unXMLHttpRequestUpload
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XMLHttpRequestUpload where
+instance FromJSVal XMLHttpRequestUpload where
   fromJSRef = return . fmap XMLHttpRequestUpload . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26263,19 +26263,19 @@ newtype XMLSerializer = XMLSerializer { unXMLSerializer :: JSRef }
 instance Eq (XMLSerializer) where
   (XMLSerializer a) == (XMLSerializer b) = js_eq a b
 
-instance PToJSRef XMLSerializer where
-  pToJSRef = unXMLSerializer
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XMLSerializer where
+  pToJSVal = unXMLSerializer
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XMLSerializer where
-  pFromJSRef = XMLSerializer
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XMLSerializer where
+  pFromJSVal = XMLSerializer
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XMLSerializer where
+instance ToJSVal XMLSerializer where
   toJSRef = return . unXMLSerializer
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XMLSerializer where
+instance FromJSVal XMLSerializer where
   fromJSRef = return . fmap XMLSerializer . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26301,19 +26301,19 @@ newtype XPathEvaluator = XPathEvaluator { unXPathEvaluator :: JSRef }
 instance Eq (XPathEvaluator) where
   (XPathEvaluator a) == (XPathEvaluator b) = js_eq a b
 
-instance PToJSRef XPathEvaluator where
-  pToJSRef = unXPathEvaluator
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XPathEvaluator where
+  pToJSVal = unXPathEvaluator
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XPathEvaluator where
-  pFromJSRef = XPathEvaluator
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XPathEvaluator where
+  pFromJSVal = XPathEvaluator
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XPathEvaluator where
+instance ToJSVal XPathEvaluator where
   toJSRef = return . unXPathEvaluator
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XPathEvaluator where
+instance FromJSVal XPathEvaluator where
   fromJSRef = return . fmap XPathEvaluator . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26339,19 +26339,19 @@ newtype XPathExpression = XPathExpression { unXPathExpression :: JSRef }
 instance Eq (XPathExpression) where
   (XPathExpression a) == (XPathExpression b) = js_eq a b
 
-instance PToJSRef XPathExpression where
-  pToJSRef = unXPathExpression
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XPathExpression where
+  pToJSVal = unXPathExpression
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XPathExpression where
-  pFromJSRef = XPathExpression
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XPathExpression where
+  pFromJSVal = XPathExpression
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XPathExpression where
+instance ToJSVal XPathExpression where
   toJSRef = return . unXPathExpression
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XPathExpression where
+instance FromJSVal XPathExpression where
   fromJSRef = return . fmap XPathExpression . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26379,19 +26379,19 @@ newtype XPathNSResolver = XPathNSResolver { unXPathNSResolver :: JSRef }
 instance Eq (XPathNSResolver) where
   (XPathNSResolver a) == (XPathNSResolver b) = js_eq a b
 
-instance PToJSRef XPathNSResolver where
-  pToJSRef = unXPathNSResolver
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XPathNSResolver where
+  pToJSVal = unXPathNSResolver
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XPathNSResolver where
-  pFromJSRef = XPathNSResolver
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XPathNSResolver where
+  pFromJSVal = XPathNSResolver
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XPathNSResolver where
+instance ToJSVal XPathNSResolver where
   toJSRef = return . unXPathNSResolver
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XPathNSResolver where
+instance FromJSVal XPathNSResolver where
   fromJSRef = return . fmap XPathNSResolver . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26419,19 +26419,19 @@ newtype XPathResult = XPathResult { unXPathResult :: JSRef }
 instance Eq (XPathResult) where
   (XPathResult a) == (XPathResult b) = js_eq a b
 
-instance PToJSRef XPathResult where
-  pToJSRef = unXPathResult
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XPathResult where
+  pToJSVal = unXPathResult
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XPathResult where
-  pFromJSRef = XPathResult
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XPathResult where
+  pFromJSVal = XPathResult
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XPathResult where
+instance ToJSVal XPathResult where
   toJSRef = return . unXPathResult
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XPathResult where
+instance FromJSVal XPathResult where
   fromJSRef = return . fmap XPathResult . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
@@ -26459,19 +26459,19 @@ newtype XSLTProcessor = XSLTProcessor { unXSLTProcessor :: JSRef }
 instance Eq (XSLTProcessor) where
   (XSLTProcessor a) == (XSLTProcessor b) = js_eq a b
 
-instance PToJSRef XSLTProcessor where
-  pToJSRef = unXSLTProcessor
-  {-# INLINE pToJSRef #-}
+instance PToJSVal XSLTProcessor where
+  pToJSVal = unXSLTProcessor
+  {-# INLINE pToJSVal #-}
 
-instance PFromJSRef XSLTProcessor where
-  pFromJSRef = XSLTProcessor
-  {-# INLINE pFromJSRef #-}
+instance PFromJSVal XSLTProcessor where
+  pFromJSVal = XSLTProcessor
+  {-# INLINE pFromJSVal #-}
 
-instance ToJSRef XSLTProcessor where
+instance ToJSVal XSLTProcessor where
   toJSRef = return . unXSLTProcessor
   {-# INLINE toJSRef #-}
 
-instance FromJSRef XSLTProcessor where
+instance FromJSVal XSLTProcessor where
   fromJSRef = return . fmap XSLTProcessor . maybeJSNullOrUndefined
   {-# INLINE fromJSRef #-}
 
