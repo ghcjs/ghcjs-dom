@@ -25553,11 +25553,11 @@ foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKit
 newtype WebKitNamedFlow = WebKitNamedFlow { unWebKitNamedFlow :: JSVal }
 
 instance Eq (WebKitNamedFlow) where
-(WebKitNamedFlow a) == (WebKitNamedFlow b) = js_eq a b
+  (WebKitNamedFlow a) == (WebKitNamedFlow b) = js_eq a b
 
 instance PToJSVal WebKitNamedFlow where
-pToJSVal = unWebKitNamedFlow
-{-# INLINE pToJSVal #-}
+  pToJSVal = unWebKitNamedFlow
+  {-# INLINE pToJSVal #-}
 
 instance PFromJSVal WebKitNamedFlow where
   pFromJSVal = WebKitNamedFlow
