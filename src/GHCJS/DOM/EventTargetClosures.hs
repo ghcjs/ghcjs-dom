@@ -27,13 +27,13 @@ unsafeEventName :: DOMString -> EventName t e
 unsafeEventName = EventName
 
 eventListenerNew :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNew callback = (EventListener . jsref) <$> syncCallback1 ContinueAsync (callback . unsafeCastGObject . GObject)
+eventListenerNew callback = (EventListener . jsval) <$> syncCallback1 ContinueAsync (callback . unsafeCastGObject . GObject)
 
 eventListenerNewSync :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNewSync callback = (EventListener . jsref) <$> syncCallback1 ThrowWouldBlock (callback . unsafeCastGObject . GObject)
+eventListenerNewSync callback = (EventListener . jsval) <$> syncCallback1 ThrowWouldBlock (callback . unsafeCastGObject . GObject)
 
 eventListenerNewAsync :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNewAsync callback = (EventListener . jsref) <$> asyncCallback1 (callback . unsafeCastGObject . GObject)
+eventListenerNewAsync callback = (EventListener . jsval) <$> asyncCallback1 (callback . unsafeCastGObject . GObject)
 
 eventListenerRelease :: EventListener -> IO ()
 eventListenerRelease (EventListener ref) = releaseCallback (Callback ref)
